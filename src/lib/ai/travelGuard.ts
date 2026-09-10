@@ -44,6 +44,58 @@ function echoesUser(c: { lo: number; hi: number; currency: string }, userClaims:
   return userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)
 }
 
+/**
+ * 🚨 THE USER'S BUDGET, HANDED BACK AS THE HOTEL'S PRICE.
+ *
+ * MEASURED on "Khach san dep o Da Nang gan bien khoang 2 trieu": the rows
+ * carried title/link/snippet and NO price field of any kind, and the reply said
+ * "Gia tham khao trong tam 2 trieu VND/dem". Every number in that sentence came
+ * from the question, not from the retrieval - but `echoesUser` marked it
+ * VERIFIED, because echoing the user is normally exactly right.
+ *
+ * The amount is not the problem; the FRAMING is. "Ban dang nham ngan sach 2
+ * trieu" is a constraint the reply should absolutely restate. "Gia phong khoang
+ * 2 trieu" is a fact about the property that nothing retrieved supports.
+ *
+ * So the exemption is withdrawn for exactly one case: a sentence that
+ * ATTRIBUTES the amount as a price, on a turn where no live fare exists. With
+ * fares present the guard behaves exactly as before, and a budget stated as a
+ * budget survives in both cases.
+ */
+const ATTRIBUTES_PRICE = /(gia phong|giá phòng|gia tham khao|giá tham khảo|co gia|có giá|gia khoang|giá khoảng|gia chi|giá chỉ|gia tu|giá từ|gia la|giá là|muc gia|mức giá|\/\s*(?:dem|đêm|night)|per night|room rate|priced at|costs?\b)/iu
+
+/**
+ * A user-stated budget said back AS a budget, not as the property's price.
+ *
+ * Deliberately EXPLICIT. "trong tầm" was here first and had to go: it means
+ * only "in the range of" and sits happily inside the very attribution this
+ * rescues from — the measured sentence is literally "Giá tham khảo trong tầm 2
+ * triệu VND/đêm", so a vague range word let the defect through its own escape
+ * hatch. What survives names the budget or names the user.
+ */
+const FRAMED_AS_BUDGET = /(ngan sach|ngân sách|budget|ban nham|bạn nhắm|ban muon|bạn muốn|yeu cau cua ban|yêu cầu của bạn|muc ban|mức bạn|ban dang|bạn đang)/iu
+
+/**
+ * The user-echo exemption, scoped to the sentence the amount sits in.
+ *
+ * Kept when the sentence frames the number as the user's budget, or makes no
+ * price attribution at all. Withdrawn only for an attributed price on a turn
+ * with no live fare - the measured defect.
+ */
+function userEchoStandsHere(
+  c: { lo: number; hi: number; currency: string; start: number },
+  userClaims: ReturnType<typeof extractMoneyClaims>,
+  text: string,
+  fares: number[],
+): boolean {
+  if (!echoesUser(c, userClaims)) return false
+  if (fares.length > 0) return true
+  const span = sentenceSpans(text).find(([a, b]) => c.start >= a && c.start < b)
+  const sentence = span ? text.slice(span[0], span[1]) : text
+  if (!ATTRIBUTES_PRICE.test(sentence)) return true
+  return FRAMED_AS_BUDGET.test(sentence)
+}
+
 // A specific clock time asserted in a departure/arrival context, e.g. "bay lúc
 // 8h", "khởi hành 8 giờ sáng", "leaves around 8 AM", "departs at 08:30". The time
 // token is mandatory (a bare "sáng"/"morning" is not a schedule claim), and a
@@ -115,7 +167,7 @@ export function guardTravelClaimsInText(
     const judged: MoneyClaim[] = claims.map(c => ({
       ...c,
       entity: null,
-      verdict: (tracesToLiveFare(c, fares) || echoesUser(c, userClaims)) ? 'VERIFIED' : 'UNVERIFIED',
+      verdict: (tracesToLiveFare(c, fares) || userEchoStandsHere(c, userClaims, out, fares)) ? 'VERIFIED' : 'UNVERIFIED',
     }))
     const bad = judged.filter(j => j.verdict !== 'VERIFIED').length
     if (bad > 0) { out = redactUnsupportedClaims(out, judged); redacted += bad }

@@ -5,6 +5,7 @@ import { ChevronLeft, Plus, Minus, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import AskTappyButton from '@/components/chat/AskTappyButton'
 
 const TIP_PRESETS = [0, 5, 10, 15, 20]
 
@@ -188,6 +189,17 @@ export default function SplitBillPage() {
               <p className="text-white/60">{t('splitBill.emptyPrompt')}</p>
             )}
           </div>
+        )}
+
+        {/* P4-12 — the tool result carries into the assistant (DD-004). A split used to
+            dead-end here; now the number can become a conversation ("where should we eat
+            for that?"). Only offered once there is a real result to carry. */}
+        {mode === 'equal' && totalNum > 0 && (
+          <AskTappyButton
+            kind="result"
+            variant="block"
+            subject={t('splitBill.bridgeSubject', { amount: fmt(perPerson), people: String(people) })}
+          />
         )}
 
         {/* Custom split */}

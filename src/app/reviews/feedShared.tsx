@@ -14,7 +14,7 @@ import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
-  X, Loader2, Plus, AlertCircle,
+  X, Loader2, Plus, AlertCircle, Sparkles,
 } from 'lucide-react'
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
@@ -23,6 +23,7 @@ import ReviewMusicDisc from './ReviewMusicDisc'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -310,6 +311,10 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   onOpenLikes?: (r: Review) => void
 }) {
   const { t } = useTranslation()
+  // S-07 offline state. The feed itself stays readable when the connection drops —
+  // only the Ask-Tappy bridge is withheld, because it is the one control here that
+  // cannot do anything without the network. Same hook the chat composer uses.
+  const online = useOnlineStatus()
   const photos = (r.photos || []).filter(Boolean)
   const isMe = me === r.user_id
   const name = r.profiles?.full_name || t('reviews.anonymous')
@@ -548,6 +553,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
+
         {/* The clip's sound — tap to open its sound page ("use this sound").
             Shown for ALL upload video clips. If the clip has a registered track
             (music.trackId), the disc links to the sound page; otherwise it's
@@ -564,10 +570,71 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
         {!isShareOnlyName(r.place_name) && (
-          <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
-            <span className="text-sm">📍</span> {r.place_name}
-            {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
-          </p>
+          <>
+            <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
+              <span className="text-sm">📍</span> {r.place_name}
+              {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
+            </p>
+
+            {/* ── Ask Tappy — the ONE thing V3 adds to Explore (OD-2 / IA-5) ────
+                It sits here, under the caption and the place, exactly where the
+                approved layout puts it — NOT in the action rail. On the rail it
+                would have been the largest, brightest control on the surface,
+                outweighing like/comment/share; those are Explore's own identity
+                and this pass does not touch them.
+
+                🚨 It carries WHAT THE ITEM IS, never what the user wants. The
+                prompt names the place and asks about it; it does not decide the
+                intent, because this text arrives in the thread as if the user
+                had typed it themselves.
+
+                🚨 It shares this `isShareOnlyName` guard with the place line for
+                a reason: no place, no subject. A bridge built from an empty name
+                would look like a working button and open a thread about nothing.
+                Same rule as Home's "Dành cho bạn" — no source, no affordance. */}
+            {online ? (
+              <Link
+                href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}`}
+                onClick={e => e.stopPropagation()}
+                /* min-h-[44px] is not decoration. Cross-screen invariant 5 puts the floor at
+                   44x44, and this control sits on a surface where every neighbouring tap
+                   scrolls the feed — an undersized target here mis-fires into a swipe.
+                   focus-visible is required by the same invariant: the feed is fully
+                   keyboard-reachable and an invisible focus ring is an invisible control. */
+                className="mt-2.5 inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                style={{ background: 'var(--v3-accent-fill)' }}
+              >
+                <Sparkles size={15} aria-hidden="true" />
+                {t('reviews.askAboutPlace')}
+              </Link>
+            ) : (
+              /* ── Offline (S-07 states) ───────────────────────────────────────
+                 The spec is precise: cached items stay READABLE and the ask
+                 affordance is DISABLED. So the caption, the place and the whole
+                 feed below are untouched — only this one control stops.
+
+                 It is dimmed AND says why. Dimming alone would leave the reason
+                 carried by colour, which cross-screen invariant 6 forbids, and
+                 a user who cannot see the difference would tap a dead control.
+
+                 `aria-disabled` on an element with no href keeps it announced
+                 but inert, matching how the chat composer withholds Send. */
+              <span
+                data-testid="ask-tappy-offline"
+                aria-disabled="true"
+                className="mt-2.5 inline-flex min-h-[44px] cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white/60"
+                style={{ background: 'var(--v3-accent-fill)', opacity: 0.45 }}
+              >
+                <Sparkles size={15} aria-hidden="true" />
+                {t('reviews.askAboutPlace')}
+              </span>
+            )}
+            {!online && (
+              <p role="status" className="mt-1.5 text-[11px] text-white/60">
+                {t('reviews.askOfflineReason')}
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>

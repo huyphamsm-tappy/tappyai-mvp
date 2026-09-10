@@ -8,9 +8,19 @@ import { createEnrichmentCollector } from './toolResultSplit'
 // route uses, the same collector, the same `0:` frames the client receives.
 //
 // The invariant under test is "detector in == user out": every structured marker rides in the
-// message text, so what the detectors analyse is exactly what ships and what persists. These pin
-// that a SECOND marker joined that rule instead of quietly bypassing it — and that it can never
-// widen what the turn counts as presented, because it only ever names places the prose named.
+// message text, so what the detectors analyse is exactly what ships and what persists.
+//
+// 🔄 WHAT CHANGED, AND WHY THESE NOW ASSERT ABSENCE. The durable [TAPPY_PLACES] block is owned by
+// `lib/recommendation/marker.ts` and is built from the RECOMMENDATION layer, not from tool
+// enrichment — and its emission is flag-gated OFF (`EMIT_TAPPY_PLACES = false` in config/product:
+// Android and iOS cannot strip a marker they were never told about, and a marker is permanent
+// storage, which Google Places terms forbid for Places content). So no places block reaches a
+// reply today, whatever the collector holds, and that is the property worth pinning here: the
+// gate is real, and shopping/TikTok composition is untouched by it.
+//
+// WHICH places would earn a card when the flag opens is asserted where that logic lives —
+// `placesGroundedInProse` in placesMarker.test.ts and placesProvenance.test.ts (text_ranked +
+// the reply must already name the place, in the reply's order).
 
 const line0 = (s: string) => '0:' + JSON.stringify(s)
 const SHOPPING = '[TAPPY_SHOPPING]{"v":1,"entities":[{"key":"k","config":"c","name":"Sony WH-1000XM5","offers":[]}]}[/TAPPY_SHOPPING]'
@@ -64,34 +74,27 @@ describe('[TAPPY_PLACES] rides the same text channel as [TAPPY_SHOPPING]', () =>
     expect(text).not.toContain('[TAPPY_PLACES]')
   })
 
-  it('C. prose + places emits the places marker, with the real name', async () => {
+  it('C. prose + places ships NO durable block while the flag is closed', async () => {
     const text = await run('Mình gợi ý **Quán A** nhé.', { places: [QUAN_A] })
-    const payload = placesPayload(text)
 
-    expect(payload).not.toBeNull()
-    expect(payload!.v).toBe(1)
-    expect(payload!.places).toHaveLength(1)
-    expect(payload!.places[0].name).toBe('Quán A')
-    expect(payload!.places[0].rating).toBe(4.8)
-    expect(payload!.places[0].reviewCount).toBe(320)
-    // The prose the reader sees is untouched by the marker.
+    expect(placesPayload(text)).toBeNull()
+    // The prose the reader sees is untouched either way.
     expect(text).toContain('Mình gợi ý')
+    expect(text).toContain('Quán A')
   })
 
-  it('D. both markers survive together', async () => {
+  it('D. the shopping marker is unaffected by the closed places gate', async () => {
     const text = await run('Mình gợi ý **Quán A** nhé.', { places: [QUAN_A], shopping: true })
     expect(text).toContain(SHOPPING)
-    expect(placesPayload(text)!.places[0].name).toBe('Quán A')
+    expect(text).not.toContain('[TAPPY_PLACES]')
   })
 
-  it('E. prose + TikTok + places keeps the video intact, markers after it', async () => {
+  it('E. prose + TikTok + places keeps the video intact', async () => {
     const text = await run('Mình gợi ý **Quán A** nhé.', { places: [QUAN_A], tiktok: true })
 
     expect(text).toContain('Video liên quan')
     expect(text).toContain(TIKTOK)
-    // The video closes the prose; the machine block follows it.
-    expect(text.indexOf('Video liên quan')).toBeLessThan(text.indexOf('[TAPPY_PLACES]'))
-    expect(placesPayload(text)!.places[0].name).toBe('Quán A')
+    expect(text).not.toContain('[TAPPY_PLACES]')
   })
 
   it('F. prose + TikTok + shopping + places: nothing is lost', async () => {
@@ -100,23 +103,23 @@ describe('[TAPPY_PLACES] rides the same text channel as [TAPPY_SHOPPING]', () =>
     expect(text).toContain('Mình gợi ý')
     expect(text).toContain(TIKTOK)
     expect(text).toContain(SHOPPING)
-    expect(placesPayload(text)!.places[0].name).toBe('Quán A')
-    // Existing marker order is untouched: shopping still precedes the newcomer.
-    expect(text.indexOf('[TAPPY_SHOPPING]')).toBeLessThan(text.indexOf('[TAPPY_PLACES]'))
+    // Existing composition is untouched: the shopping marker still leads, the video still closes.
+    expect(text.indexOf('[TAPPY_SHOPPING]')).toBeLessThan(text.indexOf('Mình gợi ý'))
+    expect(text.indexOf('Mình gợi ý')).toBeLessThan(text.indexOf('Video liên quan'))
+    expect(text).not.toContain('[TAPPY_PLACES]')
   })
 
-  it('G. the marker names only places the prose already named', async () => {
-    // Both places are in the collector; the reply names just one of them.
+  it('G. a place the reply never named cannot arrive through the stream', async () => {
+    // Both places are in the collector; the reply names just one of them. With the durable block
+    // closed nothing can smuggle the other in — and when the flag opens, the same guarantee is
+    // enforced by `placesGroundedInProse` before the serializer ever sees it.
     const text = await run('Mình gợi ý **Quán A** nhé.', { places: [QUAN_A, QUAN_B] })
-    const payload = placesPayload(text)!
 
-    expect(payload.places).toHaveLength(1)
-    expect(payload.places[0].name).toBe('Quán A')
-    // Quán B never reaches the reply, so the marker cannot make the turn count it as presented.
+    expect(placesPayload(text)).toBeNull()
     expect(text).not.toContain('Quán B')
   })
 
-  it('H. every name in the marker is a name the shipped reply already carries', async () => {
+  it('H. names presented in the reply come from the reply itself, not from a block', async () => {
     // The prose names neither place, so `injectPlaceEnrichment` falls back to its trailing
     // "📸 Hình ảnh & link review" block and presents both there — bold names, in the text the
     // user reads. The marker may therefore carry both, and the invariant still holds, because the
@@ -125,11 +128,12 @@ describe('[TAPPY_PLACES] rides the same text channel as [TAPPY_SHOPPING]', () =>
     // thing that could widen the turn. This asserts exactly that, on the case most likely to
     // break it.
     const text = await run('Mình chưa tìm được quán phù hợp.', { places: [QUAN_A, QUAN_B] })
-    const payload = placesPayload(text)!
-    const prose = text.slice(0, text.indexOf('[TAPPY_PLACES]'))
 
-    expect(payload.places.length).toBeGreaterThan(0)
-    for (const p of payload.places) expect(prose).toContain(p.name as string)
+    expect(placesPayload(text)).toBeNull()
+    // Both names still reach the reader through the enrichment block, which is the text
+    // `presentedNames` is resolved against — unchanged by the marker decision.
+    expect(text).toContain('Quán A')
+    expect(text).toContain('Quán B')
   })
 
   it('I. an empty collector leaves the reply exactly as it was', async () => {

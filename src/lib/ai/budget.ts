@@ -119,6 +119,32 @@ export function extractBudget(userMessage: string): Budget | null {
     if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
   }
 
+  /**
+   * 🚨 "gia 500k" - A STATED PRICE IS A CONSTRAINT, AND IT WAS BEING DROPPED.
+   *
+   * Measured on "muon mua op lung iphone 17pm gia 500k": every rule above needs
+   * "duoi" / "khoang" / "ngan sach", none of which is present, so extractBudget
+   * returned null. With no budget the filter, the ranker and
+   * `validateShoppingCandidates` all had nothing to enforce, and the reply
+   * offered cases at 620k, 719k, 1.05M, 1.09M and 1.33M against a stated 500k.
+   *
+   * Kept SEPARATE from the budget keywords above because it means something
+   * different: "ngan sach X" is a ceiling, while "gia X" names a target, so it
+   * gets the same +/-20% band "khoang X" already produces rather than becoming a
+   * hard cap. Both safety guards are unchanged - the match must start at the
+   * keyword and end at a money unit, so "gia re" and "gia tot" carry no number
+   * and cannot match.
+   */
+  const priceRe = new RegExp(
+    `\\b(?:gia|price)\\b[^.!?\\n]{0,25}?${N}\\s*(k|tr|trieu|ngan|nghin|m|mil|million)\\b`)
+  m = t.match(priceRe)
+  if (m) {
+    const base = parseMoneyAmount(m[1], m[2] || '')
+    if (base !== null && base > 0) {
+      return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
+    }
+  }
+
   return null
 }
 

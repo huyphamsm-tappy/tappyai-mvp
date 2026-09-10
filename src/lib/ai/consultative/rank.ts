@@ -18,6 +18,20 @@ export interface Reason {
   key: string
   /** Human-readable grounding, built only from values present in the evidence. */
   detail: string
+  /**
+   * The same grounding as DATA, so a client can say it in its own language.
+   *
+   * `detail` is English prose assembled here — "rated 4.9", "1500 reviews",
+   * "15900000 VND" — and it reached a Vietnamese user verbatim on the shopping
+   * card, raw integer and all. Translating the finished string in React would be
+   * a second, brittle authority over wording; the fix belongs at the source.
+   *
+   * `key` already names the reason class, so `key` + `params` is everything a
+   * dictionary needs. `detail` is unchanged and stays the fallback: prompt
+   * blocks, evidence records and native clients read it exactly as before, and a
+   * marker persisted before this field existed still renders.
+   */
+  params?: Record<string, string | number>
   /** Signed contribution to the score. Negative means evidence AGAINST. */
   contribution: number
 }
@@ -125,41 +139,41 @@ function scoreOne(
   const missing: string[] = []
   let score = 0
 
-  const add = (key: string, norm: number, detail: string) => {
+  const add = (key: string, norm: number, detail: string, params?: Record<string, string | number>) => {
     const w = (BASE[key] ?? 0) + priorityWeight(need, key)
     const contribution = w * norm
     if (contribution === 0) return
     score += contribution
-    reasons.push({ key, detail, contribution })
+    reasons.push({ key, detail, contribution, ...(params ? { params } : {}) })
   }
 
   // ── Rating: 3.0 is the floor of "worth mentioning", 5.0 the ceiling ────────
   if (a.rating !== undefined) {
-    add('rating', clamp01((a.rating - 3) / 2), `rated ${a.rating}`)
+    add('rating', clamp01((a.rating - 3) / 2), `rated ${a.rating}`, { value: a.rating })
   } else if (priorityWeight(need, 'rating') > 0) missing.push('rating')
 
   // ── Review count: confidence in the rating, log-scaled (10k ⇒ full) ───────
   if (a.reviewCount !== undefined) {
-    add('reviewCount', clamp01(Math.log10(Math.max(1, a.reviewCount)) / 4), `${a.reviewCount} reviews`)
+    add('reviewCount', clamp01(Math.log10(Math.max(1, a.reviewCount)) / 4), `${a.reviewCount} reviews`, { count: a.reviewCount })
   }
 
   // ── Distance: linear to 10km, beyond which further is simply "far" ────────
   if (a.distanceKm !== undefined) {
-    add('distance', clamp01(1 - a.distanceKm / 10), `${a.distanceKm}km away`)
+    add('distance', clamp01(1 - a.distanceKm / 10), `${a.distanceKm}km away`, { km: a.distanceKm })
   } else if (priorityWeight(need, 'distance') > 0) missing.push('distance')
 
   // ── Price: measured against the budget, or against the set's own top price ─
   if (a.priceVnd !== undefined && priceCeiling !== null && priceCeiling > 0) {
-    add('price', clamp01((priceCeiling - a.priceVnd) / priceCeiling), `${a.priceVnd} VND`)
+    add('price', clamp01((priceCeiling - a.priceVnd) / priceCeiling), `${a.priceVnd} VND`, { priceVnd: a.priceVnd })
   } else if (a.priceVnd === undefined && priorityWeight(need, 'price') > 0) missing.push('price')
 
   // ── Hotel stars ───────────────────────────────────────────────────────────
-  if (a.stars !== undefined) add('stars', clamp01((a.stars - 1) / 4), `${a.stars}-star`)
+  if (a.stars !== undefined) add('stars', clamp01((a.stars - 1) / 4), `${a.stars}-star`, { stars: a.stars })
 
   // ── Transport: minutes to PICKUP (not journey time) ──────────────────────
   // Linear to 20 minutes, beyond which a wait is simply "long".
   if (a.etaMinutes !== undefined) {
-    add('eta', clamp01(1 - a.etaMinutes / 20), `${a.etaMinutes} min to pickup`)
+    add('eta', clamp01(1 - a.etaMinutes / 20), `${a.etaMinutes} min to pickup`, { minutes: a.etaMinutes })
   } else if (priorityWeight(need, 'eta') > 0) missing.push('eta')
 
   // ── Source trust: a bookable hotel page beats a search-results page ───────
@@ -179,7 +193,7 @@ function scoreOne(
       if (priorityWeight(need, key) > 0) missing.push(key)
       continue
     }
-    add(key, v ? 1 : -1, v ? `has ${key}` : `no ${key}`)
+    add(key, v ? 1 : -1, v ? `has ${key}` : `no ${key}`, { attribute: key })
   }
 
   // ── Cuisine: matches a "cuisine:x" priority the user stated ───────────────
@@ -190,7 +204,7 @@ function scoreOne(
       if (a.cuisine.some(x => x.includes(want))) {
         const w = BASE.cuisine + p.weight
         score += w
-        reasons.push({ key: p.key, detail: `serves ${want}`, contribution: w })
+        reasons.push({ key: p.key, detail: `serves ${want}`, contribution: w, params: { cuisine: want } })
       }
     }
   } else if (need.priorities.some(p => p.key.startsWith('cuisine:'))) {

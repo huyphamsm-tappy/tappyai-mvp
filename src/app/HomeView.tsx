@@ -14,6 +14,15 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
 interface Conv { id: string; title: string; messageCount: number; updated_at: string }
 
+/**
+ * One "For You" item (ND-001).
+ *
+ * A discovery/content PREVIEW drawn from sources the product already has — never a personalised
+ * feed. There is deliberately no score, rank or reason field: adding one would be the first step
+ * toward a ranking engine, which V3 does not build.
+ */
+export interface ForYouItem { href: string; title: string; image?: string | null }
+
 // English hero greetings by VN-hour slot. Vietnamese keeps the server-computed
 // text (passed in) so its full weekday/weekend variety is preserved; EN is
 // computed here client-side when the user switches language.
@@ -35,6 +44,7 @@ function heroEN(hour: number, isWeekend: boolean, dom: number): string {
 
 export default function HomeView({
   user, userInfo, firstName, heroTextVi, heroHour, heroIsWeekend, heroDom, suggestions, conversations,
+  forYou,
 }: {
   user: boolean
   userInfo: ComponentProps<typeof Header>['user']
@@ -45,6 +55,8 @@ export default function HomeView({
   heroDom: number
   suggestions: Suggestion[]
   conversations: Conv[]
+  /** ND-001 — existing V3-available content only. Omitted today, so the section is hidden. */
+  forYou?: ForYouItem[]
 }) {
   const { t, locale } = useTranslation()
   const heroText = locale === 'en' ? heroEN(heroHour, heroIsWeekend, heroDom) : heroTextVi
@@ -68,14 +80,111 @@ export default function HomeView({
           </div>
         </div>
 
-        {/* Categories */}
+        {/* ── AI-FIRST BLOCK (P4-11 / DD-002) ──────────────────────────────
+            Ask Tappy is the primary action and sits at the top; what follows it is
+            the shortest path to a formed question, then the way back into an
+            unfinished one. Home is NOT Chat: nothing here renders a thread or
+            streams a reply — every control below navigates to /chat. */}
+
+        {/* Contextual suggestions — the fastest path from "I need something" to a
+            question worth asking. Prompt examples stay in their original language. */}
         <section>
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-            <Sparkles size={16} className="text-accent-500" />
-            {t('home.exploreByCategory')}
-          </h3>
-          <CategoryPills />
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('home.suggestionsTitle')}</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {suggestions.map((item) => {
+              const text = locale === 'en' ? item.textEn || item.text : item.text
+              return (
+                <Link key={item.text} href={`/chat?q=${encodeURIComponent(text)}&category=${item.category}`} className="group rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                  <div className={cn('h-16 flex items-center justify-center text-3xl bg-gradient-to-br', item.gradient)}>{item.emoji}</div>
+                  <div className="p-3">
+                    <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{text}</p>
+                  </div>
+                </Link>
+              )
+            })}
+          </div>
+          <div className="mt-4">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+              <Sparkles size={16} className="text-accent-500" />
+              {t('home.exploreByCategory')}
+            </h3>
+            <CategoryPills />
+          </div>
         </section>
+
+        {/* Continue — a returning user mostly resumes. This used to sit below
+            roughly twelve tool tiles, which is a long way to scroll to carry on a
+            conversation you were already having. */}
+        {user && conversations.length > 0 && (
+          <section>
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.recentTitle')}</h3>
+              <Link href="/profile" className="text-sm text-link font-medium">{t('home.seeAll')}</Link>
+            </div>
+            <div className="space-y-2">
+              {conversations.map((conv) => (
+                <Link key={conv.id} href={`/chat/${conv.id}`} className="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 hover:border-primary-200 dark:hover:border-primary-800 transition-all">
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
+                    <MessageCircle size={18} className="text-primary-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{conv.title}</p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('home.messages', { n: String(conv.messageCount) })} · {formatRelativeTime(conv.updated_at, t, locale)}</p>
+                  </div>
+                  <ChevronRight size={16} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {user && conversations.length === 0 && (
+          <div className="text-center py-8">
+            <div className="w-16 h-16 rounded-2xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mx-auto mb-3">
+              <MessageCircle size={28} className="text-primary-400" />
+            </div>
+            <p className="text-content-secondary text-sm">{t('home.emptyChat')}</p>
+            <Link href="/chat" className="inline-block mt-3 btn-primary text-sm py-2 px-5">{t('home.chatNow')}</Link>
+          </div>
+        )}
+
+        {!user && (
+          <div className="text-center py-4">
+            <p className="text-content-secondary text-sm mb-3">{t('home.loginPrompt')}</p>
+            <Link href="/login" className="inline-block btn-primary text-sm py-2.5 px-6">{t('home.login')}</Link>
+          </div>
+        )}
+
+        {/* For You — a discovery/content preview built on EXISTING V3-available
+            sources (ND-001). It is not a personalization system: no profiling, no
+            ranking engine, no behavioural scoring.
+            Nothing supplies `forYou` yet, so the section renders nothing. That is
+            the approved behaviour — when no source can fill it, the section is
+            hidden rather than padded with placeholder or invented content. */}
+        {forYou && forYou.length > 0 && (
+          <section data-testid="home-for-you">
+            <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('home.forYouTitle')}</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {forYou.map((item) => (
+                <Link key={item.href} href={item.href} className="group rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
+                  {item.image && (
+                    <img src={item.image} alt="" loading="lazy" className="h-24 w-full object-cover" />
+                  )}
+                  <div className="p-3">
+                    <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2">{item.title}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── TOOLS ─────────────────────────────────────────────────────────
+            De-emphasised, never removed (DD-002). Every tool below keeps its
+            route and its behaviour; only its position on the page changed. */}
+        <h2 className="pt-2 text-lg font-bold text-gray-900 dark:text-white">{t('home.toolsTitle')}</h2>
+
+        {/* Categories */}
 
         {/* Fortune */}
         <section>
@@ -155,11 +264,8 @@ export default function HomeView({
           </div>
         </section>
 
-        {/* Tools */}
+        {/* Everyday tools */}
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.toolsTitle')}</h3>
-          </div>
           <div className="grid grid-cols-2 gap-3">
             <Link href="/currency" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-900/30 dark:to-teal-900/30 flex items-center justify-center shadow-sm">
@@ -216,64 +322,6 @@ export default function HomeView({
           </Link>
         </section>
 
-        {/* AI Suggestions (prompt examples stay in their original language) */}
-        <section>
-          <h3 className="font-semibold text-gray-900 dark:text-white mb-3">{t('home.suggestionsTitle')}</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {suggestions.map((item) => {
-              const text = locale === 'en' ? item.textEn || item.text : item.text
-              return (
-                <Link key={item.text} href={`/chat?q=${encodeURIComponent(text)}&category=${item.category}`} className="group rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-                  <div className={cn('h-16 flex items-center justify-center text-3xl bg-gradient-to-br', item.gradient)}>{item.emoji}</div>
-                  <div className="p-3">
-                    <p className="text-sm leading-snug font-medium text-gray-700 dark:text-gray-200 line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{text}</p>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
-
-        {/* Recent conversations */}
-        {user && conversations.length > 0 && (
-          <section>
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-900 dark:text-white">{t('home.recentTitle')}</h3>
-              <Link href="/profile" className="text-sm text-link font-medium">{t('home.seeAll')}</Link>
-            </div>
-            <div className="space-y-2">
-              {conversations.map((conv) => (
-                <Link key={conv.id} href={`/chat/${conv.id}`} className="flex items-center gap-3 bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-100 dark:border-gray-800 hover:border-primary-200 dark:hover:border-primary-800 transition-all">
-                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center flex-shrink-0">
-                    <MessageCircle size={18} className="text-primary-400" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">{conv.title}</p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('home.messages', { n: String(conv.messageCount) })} · {formatRelativeTime(conv.updated_at, t, locale)}</p>
-                  </div>
-                  <ChevronRight size={16} className="text-gray-300 dark:text-gray-600 flex-shrink-0" />
-                </Link>
-              ))}
-            </div>
-          </section>
-        )}
-
-        {user && conversations.length === 0 && (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-2xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center mx-auto mb-3">
-              <MessageCircle size={28} className="text-primary-400" />
-            </div>
-            <p className="text-content-secondary text-sm">{t('home.emptyChat')}</p>
-            <Link href="/chat" className="inline-block mt-3 btn-primary text-sm py-2 px-5">{t('home.chatNow')}</Link>
-          </div>
-        )}
-
-        {!user && (
-          <div className="text-center py-4">
-            <p className="text-content-secondary text-sm mb-3">{t('home.loginPrompt')}</p>
-            <Link href="/login" className="inline-block btn-primary text-sm py-2.5 px-6">{t('home.login')}</Link>
-          </div>
-        )}
       </main>
 
       <BottomNav />

@@ -223,18 +223,26 @@ describe('the rendered wording matches what the evidence supports', () => {
     // `finalText` — the detector's input — is still built from it, so the link
     // is still inside what gets analysed. Both halves are asserted: a fold that
     // no longer reached `finalText` would leave the link unanalysed.
-    // The compose step is located by its assignment, not by the exact list of marker suffixes —
-    // that list grows ([TAPPY_SHOPPING], [TAPPY_PLACES], …) and pinning it here would make this
-    // test fail for reasons that have nothing to do with TikTok attribution. What matters, and is
-    // still asserted, is the ORDER: fold → compose → detect, and that the composed string is built
-    // from `prose` so the folded link is inside what the detector analyses.
-    const foldAt = filter.indexOf('const prose = (scaffoldStripped && batchTikTok')
+    // The fold now reads the GROUNDED prose (the grounding gate runs first), so
+    // the anchor moved. The ordering property this test owns is unchanged: the
+    // TikTok link is folded in before `finalText` is composed and therefore
+    // before the detector reads it.
+    const foldAt = filter.indexOf('const prose = (groundedProse && batchTikTok')
+    // The composition gained more suffixes (see identityGrounding.test.ts); the
+    // ordering property this test owns is unchanged, so it anchors on the start
+    // of the expression rather than its exact parts.
     const composeAt = filter.indexOf('const finalText = `')
-    const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
+    const detectAt = filter.indexOf('ungroundedNames = [...new Set([')
     expect(foldAt).toBeGreaterThan(-1)
     expect(composeAt).toBeGreaterThan(foldAt)
     expect(detectAt).toBeGreaterThan(composeAt)
-    expect(filter.match(/const finalText = `([^`]*)`/)?.[1]).toContain('${prose}')
+    // And the reachability half, which the ordering alone does not prove: the first term of the
+    // composition must still be the folded prose. It is now `ctaOwnedProse` — a CTA-stripped
+    // restatement of `prose`, not a different text — so both links of that chain are asserted
+    // rather than one literal byte string, which is what a renamed term would silently break.
+    const composed = filter.match(/const finalText = `([^`]*)`/)?.[1]
+    expect(composed).toMatch(/^\$\{ctaOwnedProse\}/)
+    expect(filter).toMatch(/const ctaOwnedProse = .*\bprose\b/)
   })
 
   it('re-validates the URL at the render boundary', () => {

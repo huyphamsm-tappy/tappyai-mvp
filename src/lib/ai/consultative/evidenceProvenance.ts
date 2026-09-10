@@ -57,12 +57,101 @@ export function classifyEvidence(source: EvidenceSource): EvidenceType {
   }
 }
 
+/**
+ * WHICH provider supplied a value, as opposed to what KIND of source it was.
+ *
+ * 🔑 `EvidenceSource` answers "how well is this supported" — a search snippet is
+ * REVIEW_SUPPORTED whoever ran the search. `SourceId` answers a different
+ * question the canonical entity has to answer and could not: with fields on one
+ * entity arriving from different providers, a card must be able to say why a row
+ * is empty, and a bug report has to be traceable to the provider that produced
+ * the value.
+ *
+ * 🚨 This is NOT a second confidence scale. It carries no ordering and no
+ * policy; nothing may branch on it to decide what the model is allowed to say.
+ * That decision belongs to `evidence_type` alone, which the shipped guards
+ * already enforce.
+ */
+export type SourceId =
+  | 'google_places'
+  | 'osm'
+  | 'serper_shopping'
+  | 'serper_search'
+  | 'serper_images'
+  | 'travelpayouts'
+  | 'tappy_reviews'
+  | 'official_website'
+  /** The application computed it (distance, price range, rank). Provenance is "us". */
+  | 'computed'
+  | 'user'
+
+/**
+ * WHO a piece of evidence is ABOUT — as opposed to how strong it is, or which
+ * provider produced it.
+ *
+ * 🚨 THE AXIS THAT WAS MISSING, AND THE CLAIM IT LET THROUGH. Measured on
+ * localhost 2026-09-09 for "bún bò ở Quận 1": the reply said
+ * "Bún Bò Huế Đông Ba — Giá tham khảo khoảng 25.000–50.000 đồng/phần".
+ * That price was REVIEW_SUPPORTED and it really did come from a retrieved
+ * snippet, so both existing axes were satisfied and every guard passed. The
+ * snippet was a listicle titled "Danh sách quán bún bò Quận 1" — evidence about
+ * the AREA, attached in prose to ONE restaurant that the snippet never priced.
+ *
+ * `evidence_type` answers "how well supported". `SourceId` answers "by whom".
+ * Neither can answer "about what", so an area-level price and an entity-level
+ * price were indistinguishable once they reached the model.
+ *
+ * 🚨 NOT A THIRD CONFIDENCE SCALE. `area` is not weaker than `entity`; it is
+ * about something else. A perfectly reliable area fact ("Quận 1 has many bún bò
+ * shops") is still not a fact about a named restaurant. Nothing may rank these,
+ * and nothing may promote `area` to `entity`: the only way to be entity-level is
+ * for the evidence's own text to name that entity.
+ */
+export type EvidenceScope =
+  /** The evidence names this specific place/product — it may be attributed to it. */
+  | 'entity'
+  /** The evidence is about the search area or query — it may NOT be attributed to any one row. */
+  | 'area'
+
+/**
+ * May a claim about `entityName` rest on this evidence?
+ *
+ * Entity-level evidence must name the entity it is attributed to; area-level
+ * evidence supports no entity at all. There is deliberately no "close enough"
+ * branch — the caller either has evidence about this place or it does not.
+ */
+export function mayAttributeToEntity(
+  scope: EvidenceScope,
+  evidenceAbout: string | null | undefined,
+  entityName: string,
+): boolean {
+  if (scope !== 'entity') return false
+  return !!evidenceAbout && evidenceAbout === entityName
+}
+
 /** A dynamic value that carries its own provenance into the model-facing payload. */
 export interface ProvenancedClaim<T = number> {
   /** The value, or the UNKNOWN sentinel when unsupported (Known<T> — one absence model). */
   value: Known<T>
   evidence_type: EvidenceType
   source_type: EvidenceSource
+  /**
+   * Optional by design. Every existing producer keeps working unchanged, and a
+   * claim whose provider genuinely does not matter is not forced to invent one.
+   */
+  source_id?: SourceId
+  /**
+   * WHO the evidence is about. Optional and additive for the same reason as
+   * `source_id`: omitting it leaves every shipped producer byte-identical.
+   *
+   * 🚨 ABSENT MEANS UNSTATED, NOT `entity`. A consumer that needs to attribute a
+   * value to a named row must require an explicit `'entity'` scope plus a
+   * matching `evidence_about`; treating a missing field as entity-level would
+   * reintroduce exactly the defect this axis exists to stop.
+   */
+  evidence_scope?: EvidenceScope
+  /** The entity name the evidence names, when `evidence_scope` is `'entity'`. */
+  evidence_about?: string
 }
 
 /** Only a FACT may be stated as a plain, unqualified fact. */
@@ -75,12 +164,23 @@ export function isUserConstraint(source: EvidenceSource): boolean {
   return source === 'user'
 }
 
-/** Build a classified claim. A null/absent value is UNKNOWN — never reconstructed. */
-export function provenancedClaim<T>(value: T | null | undefined, source: EvidenceSource): ProvenancedClaim<T> {
+/**
+ * Build a classified claim. A null/absent value is UNKNOWN — never reconstructed.
+ *
+ * `sourceId` is optional and additive: omitting it produces exactly the object
+ * this function produced before it existed, which is what keeps every shipped
+ * caller and its tests unchanged.
+ */
+export function provenancedClaim<T>(
+  value: T | null | undefined,
+  source: EvidenceSource,
+  sourceId?: SourceId,
+): ProvenancedClaim<T> {
+  const id = sourceId ? { source_id: sourceId } : {}
   if (value === null || value === undefined) {
-    return { value: UNKNOWN, evidence_type: 'UNKNOWN', source_type: source }
+    return { value: UNKNOWN, evidence_type: 'UNKNOWN', source_type: source, ...id }
   }
-  return { value, evidence_type: classifyEvidence(source), source_type: source }
+  return { value, evidence_type: classifyEvidence(source), source_type: source, ...id }
 }
 
 /**
@@ -97,6 +197,11 @@ export function renderEvidencePolicyBlock(): string {
     '  ("mot ket qua tim kiem hien thi khoang...", "gia tham khao"), TUYET DOI KHONG khang dinh la gia chinh xac.',
     '- INFERRED: suy luan (ke ca con so USER tu neu) -> noi ro la uoc doan/rang buoc, KHONG phai gia cua quan.',
     '- UNKNOWN: khong du bang chung -> KHONG noi con so, noi ro chua co du lieu; KHONG dung tu context khac.',
+    "PHAM VI BANG CHUNG ('evidence_scope') - KHAC voi do manh:",
+    "- entity: bang chung NEU DICH DANH dia diem do -> duoc gan cho dia diem do.",
+    "- area: bang chung ve CA KHU VUC/cau tim kiem (vd bai viet 'Danh sach quan ... Quan 1')",
+    "  -> TUYET DOI KHONG gan cho MOT dia diem cu the. Chi duoc noi chung ve khu vuc,",
+    "  hoac KHONG noi gi. Thieu 'evidence_scope' = CHUA XAC DINH, xu ly nhu area.",
     'Bang chung yeu KHONG duoc trinh bay nhu FACT. So cua user la RANG BUOC, khong phai gia ban.',
     '================================================================',
   ].join('\n')

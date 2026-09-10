@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { renderPlacesMarker } from './streamEnrichment'
+import { placesGroundedInProse } from './streamEnrichment'
 import { splitToolResult } from './toolResultSplit'
 
 /**
@@ -15,42 +15,41 @@ import { splitToolResult } from './toolResultSplit'
  *
  * The fixtures below are those exact names.
  */
-describe('[TAPPY_PLACES] is gated on the provider having ranked by query text', () => {
+describe('a durable card is gated on the provider having ranked by query text', () => {
   const prose = 'Mình gợi ý **Nhà Hàng Jaspas** và **Nhà Hàng Au Tresor** nhé.'
 
   it('a Google textSearch result may become a card', () => {
-    const marker = renderPlacesMarker(
+    const carded = placesGroundedInProse(
       [{ name: 'Nhà Hàng Jaspas', text_ranked: true }, { name: 'Nhà Hàng Au Tresor', text_ranked: true }],
       prose,
     )
-    expect(marker).toContain('[TAPPY_PLACES]')
-    expect(marker).toContain('Nhà Hàng Jaspas')
+    expect(carded).toHaveLength(2)
+    expect(carded.map(p => p.name)).toContain('Nhà Hàng Jaspas')
   })
 
   it('an OSM category-radius result may NOT become a card, even when the prose names it', () => {
-    const marker = renderPlacesMarker(
+    const carded = placesGroundedInProse(
       [{ name: 'Nhà Hàng Jaspas', text_ranked: false }, { name: 'Nhà Hàng Au Tresor', text_ranked: false }],
       prose,
     )
-    expect(marker).toBe('')
+    expect(carded).toEqual([])
   })
 
   it('unknown provenance is treated as not ranked — a provider must earn the card', () => {
-    expect(renderPlacesMarker([{ name: 'Nhà Hàng Jaspas' }], prose)).toBe('')
+    expect(placesGroundedInProse([{ name: 'Nhà Hàng Jaspas' }], prose)).toEqual([])
   })
 
   it('a mixed batch keeps only the text-ranked places', () => {
-    const marker = renderPlacesMarker(
+    const carded = placesGroundedInProse(
       [{ name: 'Nhà Hàng Jaspas', text_ranked: false }, { name: 'Nhà Hàng Au Tresor', text_ranked: true }],
       prose,
     )
-    expect(marker).toContain('Nhà Hàng Au Tresor')
-    expect(marker).not.toContain('Nhà Hàng Jaspas')
+    expect(carded.map(p => p.name)).toEqual(['Nhà Hàng Au Tresor'])
   })
 
   it('prose is never suppressed — the fallback still informs what the model writes', () => {
-    // The marker is empty, but nothing here touches the reply text itself.
-    expect(renderPlacesMarker([{ name: 'Nhà Hàng Jaspas', text_ranked: false }], prose)).toBe('')
+    // Nothing earns a card, but nothing here touches the reply text itself.
+    expect(placesGroundedInProse([{ name: 'Nhà Hàng Jaspas', text_ranked: false }], prose)).toEqual([])
     expect(prose).toContain('Nhà Hàng Jaspas')
   })
 })

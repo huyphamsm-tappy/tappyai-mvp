@@ -39,6 +39,26 @@ final class ChatViewModel: AppObservableObject {
     private let session: SessionStore
     private let locationCoordinator = LocationCoordinator()
     private var cachedLocation: [String: Double]?
+
+    /// DD-011 — whether the user's location may accompany a request.
+    ///
+    /// The location was already attached to every turn and shown nowhere, which is a trust problem
+    /// twice over: you cannot tell why an answer came out the way it did, and you cannot correct it
+    /// without guessing. The chip above the composer states that it is in use and this flag is what
+    /// the × clears. Nothing about the permission model changes — an existing input simply became
+    /// legible and refusable.
+    @Published var locationContextEnabled = true
+
+    /// The location actually sent, or nil once the user has switched it off.
+    var activeLocation: [String: Double]? { locationContextEnabled ? cachedLocation : nil }
+
+    /// Whether there is a location to disclose. The chip is shown only when one was actually
+    /// captured — announcing context the app does not have would be its own small dishonesty.
+    ///
+    /// Stored and @Published rather than computed from `cachedLocation`: that property is a
+    /// plain var, so a view reading through it would not re-render when the location finally
+    /// arrives, and the chip would stay hidden for the rest of the session.
+    @Published private(set) var hasLocationContext = false
     private var streamTask: Task<Void, Never>?
     private var thinkTimer: AnyCancellable?
     private var autoSendTask: Task<Void, Never>?
@@ -130,6 +150,7 @@ final class ChatViewModel: AppObservableObject {
 
         if let loc = await locationCoordinator.requestOnce() {
             cachedLocation = ["lat": loc.coordinate.latitude, "lng": loc.coordinate.longitude]
+            hasLocationContext = true
         }
     }
 
@@ -338,7 +359,7 @@ final class ChatViewModel: AppObservableObject {
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.cachedLocation
+                userLocation: self.activeLocation
             )
 
             do {

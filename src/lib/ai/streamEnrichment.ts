@@ -3,11 +3,18 @@ import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
-import { guardSnippetPricesInText, pricesFromSnippets } from './snippetPriceGuard'
+import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
+import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
+import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '@/lib/config/product'
+import { renderPlacesMarker } from '@/lib/recommendation/marker'
+import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
+import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
+import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
 //   0:"<text delta>"                         — assistant text chunk
@@ -28,6 +35,13 @@ type PlaceLike = {
   place_id?: string
   website_uri?: string
   address?: string
+  /**
+   * Google photo RESOURCE NAMES from the widened search field mask. Carried on
+   * the carved enrichment (never model-facing) so the late resolver can build a
+   * media URL directly, instead of paying a legacy Place Details call to learn
+   * a reference the search response already returned.
+   */
+  photo_names?: string[]
   /** Backend-validated TikTok review/video URL, or absent when the provider found none. */
   tiktok_review_url?: string
   // Structured place facts carried alongside the localized `google_rating` sentence, so the
@@ -104,38 +118,38 @@ const normName = (n: string) => normalizeVN(n.toLowerCase())
 
 const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) || p.photo_url)
 
-export const PLACES_MARKER_OPEN = '[TAPPY_PLACES]'
-export const PLACES_MARKER_CLOSE = '[/TAPPY_PLACES]'
-
 /**
- * The `[TAPPY_PLACES]` block for the places THIS reply named, or '' when there are none.
+ * Which places a durable card may name, and in which order.
  *
- * Scoped to what the prose actually mentions, and ranked by where it mentions them, so the block
- * can never advertise a place the reader was not shown or contradict the order they read. It is
- * built from the provider's own values only: a field the tool did not state is left out, never
- * defaulted. Photos come from each place's own entry — the association the collector already made,
- * never a positional guess.
+ * 🚨 THIS USED TO BE A SECOND `[TAPPY_PLACES]` RENDERER. It serialized its own
+ * `{ v: 1, places: [...] }` payload while `lib/recommendation/marker.ts` serialized
+ * `{ v: 1, items: [...] }` under the SAME marker literal and the SAME version number —
+ * two schemas, one wire contract, and only the latter had a client parser
+ * (`parsePlacesMarker` checks `payload.items`), a persistence policy (`mayPersist`) and a
+ * place in the shared three-platform fixture suite. The serializer therefore lives there
+ * and only there; what survives here is the part that was NOT duplicated: the two
+ * conditions under which a place has earned a card at all.
  *
- * One shape for food, spa and entertainment venues: the pipeline resolves all three through
- * `searchPlaces`, so they are the same object, and no subtype is invented. Actions are absent by
- * design — `[CTA_BUTTONS]` is the single action channel.
+ * 1. THE PROVIDER MUST HAVE RANKED IT AGAINST THE USER'S WORDS (`text_ranked`).
+ *    Google Places textSearch does. The OpenStreetMap fallback does not: it is handed a
+ *    category and a radius, so for "bún bò" it returns whatever restaurants are nearby.
+ *    Measured on 2026-09-08, with Google returning 403, that produced a Western
+ *    restaurant, a French restaurant and a steakhouse — all real, all nearby, none of
+ *    them an answer. Those rows still reach the model and can inform its prose; what they
+ *    must not do is become a numbered "Tappy recommends" rail.
+ *
+ * 2. THE REPLY MUST ALREADY NAME IT. A card can never advertise a place the reader was
+ *    not shown, nor contradict the order they read, so the result is ordered by where the
+ *    prose mentions each name.
+ *
+ * Returns [] when either condition removes everything — the caller emits no marker at all
+ * rather than an empty one.
  */
-export function renderPlacesMarker(places: PlaceLike[], prose: string): string {
-  if (!places || places.length === 0 || !prose.trim()) return ''
+export function placesGroundedInProse(places: PlaceLike[], prose: string): PlaceLike[] {
+  if (!places || places.length === 0 || !prose.trim()) return []
 
-  // ── The card is only as good as the ranking behind it ──────────────────────
-  //
-  // A place may appear here only if the provider ranked it against the user's WORDS. Google Places
-  // textSearch does. The OpenStreetMap fallback does not: it is handed a category and a radius, so
-  // for "bún bò" it returns whatever restaurants are nearby. Measured on 2026-09-08, with Google
-  // returning 403, that produced a Western restaurant, a French restaurant and a steakhouse — all
-  // real, all nearby, none of them an answer.
-  //
-  // Those rows still reach the model and can inform its prose, where it is free to say what it
-  // actually knows about them. What they must not do is become a numbered "Tappy recommends"
-  // rail, which asserts a relevance nothing established. Prose-only beats a confidently wrong card.
   const ranked = places.filter(p => p.text_ranked === true)
-  if (ranked.length === 0) return ''
+  if (ranked.length === 0) return []
   places = ranked
 
   // Same alignment guard injectPlaceEnrichment uses: normalizeVN must stay index-aligned for
@@ -153,28 +167,34 @@ export function renderPlacesMarker(places: PlaceLike[], prose: string): string {
     .filter(entry => entry.name !== '' && (!aligned || entry.at !== -1))
     .sort((a, b) => (aligned ? a.at - b.at : a.index - b.index))
 
-  if (named.length === 0) return ''
+  return named.map(entry => entry.place)
+}
 
-  const payload = {
-    v: 1 as const,
-    places: named.map(({ place, name }, i) => {
-      const photo = place.photo_urls?.[0] ?? place.photo_url
-      const attributes = place.attributes?.filter(a => a.trim() !== '')
-      return {
-        ...(place.place_id ? { placeId: place.place_id } : {}),
-        name,
-        rank: i + 1,
-        ...(photo ? { photo } : {}),
-        ...(place.address ? { address: place.address } : {}),
-        ...(typeof place.rating === 'number' ? { rating: place.rating } : {}),
-        ...(typeof place.review_count === 'number' ? { reviewCount: place.review_count } : {}),
-        ...(typeof place.distance_km === 'number' ? { distanceKm: place.distance_km } : {}),
-        ...(place.hours ? { hours: place.hours } : {}),
-        ...(attributes && attributes.length > 0 ? { attributes } : {}),
-      }
-    }),
-  }
-  return `\n\n${PLACES_MARKER_OPEN}${JSON.stringify(payload)}${PLACES_MARKER_CLOSE}`
+/**
+ * The same two conditions, applied to the RECOMMENDATIONS the durable marker serializes.
+ *
+ * `renderPlacesMarker` (marker.ts) takes `Recommendation[]`; the evidence for both
+ * conditions lives on the tool rows (`text_ranked`) and in the prose. So the rows decide,
+ * and the recommendations follow them — matched by name, ordered exactly as
+ * [placesGroundedInProse] ordered the rows, so the card cannot rank differently from the
+ * text the reader just read.
+ *
+ * A recommendation whose place is not in the grounded set is dropped rather than
+ * reordered: it has no card because the reply gave it no mention.
+ */
+export function recommendationsGroundedInProse(
+  recs: Recommendation[],
+  places: PlaceLike[],
+  prose: string,
+): Recommendation[] {
+  const grounded = placesGroundedInProse(places, prose)
+  if (grounded.length === 0) return []
+  const order = new Map(grounded.map((p, i) => [normName((p.name ?? '').trim()), i]))
+  return recs
+    .map(r => ({ r, at: order.get(normName(r.entity.identity.name.trim())) }))
+    .filter((e): e is { r: Recommendation; at: number } => e.at !== undefined)
+    .sort((a, b) => a.at - b.at)
+    .map(e => e.r)
 }
 
 // ── System-owned enrichment placement ────────────────────────────────────────
@@ -340,10 +360,14 @@ function placeContentLines(
 // only the *enriched* places let a first place's gallery run past its photo-less
 // neighbours all the way to the end of the message.) Index-aligned to the raw text.
 function placeMentionOffsets(places: PlaceLike[], dedupText: string, headers: Header[]): number[] {
+  const allNames = places.map(p => p.name || '').filter(Boolean)
   const offs: number[] = []
   for (const p of places) {
     if (!p.name) continue
-    const i = findPlaceOffset(p.name, dedupText, headers)
+    // Competitors = every OTHER place this turn. Without them a token-overlap
+    // match cannot know it is contested, which is how a link landed on the wrong
+    // restaurant (see headerIsContested in placeMatch.ts).
+    const i = findPlaceOffset(p.name, dedupText, headers, allNames.filter(n => n !== p.name))
     if (i !== -1) offs.push(i)
   }
   return offs
@@ -462,7 +486,8 @@ export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: str
   if (normRaw.length !== text.length) return named.slice(0, 3)
   const dedupText = normRaw.slice(0, earliestMarker(text))
   const headers = proseHeaders(dedupText)
-  const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = named.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   return (mentioned.length > 0 ? mentioned : named).slice(0, 3)
 }
 
@@ -526,12 +551,13 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   const headers = proseHeaders(dedupText)
   const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
 
-  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const insertions: { offset: number; text: string }[] = []
   for (const p of chosen) {
-    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name))
     if (ownIdx === -1) continue
     const windowEnd = boundaryAfter(ownIdx, mentionOffsets, textEnd)
     const { lines } = placeContentLines(p, decodedText, dedupText, windowEnd)
@@ -571,12 +597,13 @@ function appendTrailingBlock(usable: PlaceLike[], places: PlaceLike[], fullText:
   const textEnd = dedupText.length
   const headers = proseHeaders(dedupText)
   const mentionOffsets = placeMentionOffsets(places, dedupText, headers)
-  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers) !== -1)
+  const rivals = places.map(p => (p.name as string) || '').filter(Boolean)
+  const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
   const parts: string[] = []
   for (const p of chosen) {
-    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers)
+    const ownIdx = findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name))
     const windowEnd = boundaryAfter(ownIdx === -1 ? 0 : ownIdx, mentionOffsets, textEnd)
     const { lines, missingPhotoCount } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (missingPhotoCount > 0) parts.push([`**${p.name}**`, ...lines].join('\n'))
@@ -723,6 +750,24 @@ function relatedVideoLabel(lang: string): string {
   return lang === 'vi' ? 'Video liên quan trên TikTok' : 'Related video on TikTok'
 }
 
+/**
+ * Copy the photos the late resolver found onto the recommendations, by name.
+ *
+ * The recommendations were built at tool time, before any photo existed. Matching
+ * is by trimmed lowercase name because that is the only identity both sides
+ * carry here; a place whose photos never resolved simply keeps none.
+ */
+function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Recommendation[] {
+  const byName = new Map(resolved.map(p => [(p.name || '').trim().toLowerCase(), p]))
+  return recs.map(r => {
+    const hit = byName.get(r.entity.identity.name.trim().toLowerCase())
+    const urls = hit?.photo_urls?.length ? hit.photo_urls : (hit?.photo_url ? [hit.photo_url] : [])
+    if (urls.length === 0) return r
+    const gallery = urls.map(url => ({ url, source: 'serper_images' as const, stability: 'volatile' as const }))
+    return { ...r, entity: { ...r.entity, images: { primary: gallery[0], gallery } } }
+  })
+}
+
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -782,6 +827,47 @@ export function applyPlaceEnrichmentStreamFilter(
   /** VND amounts that appeared in food/spa price snippets (search_places). A stated
    *  price must trace to one of these (A5); a number in no snippet is fabricated. */
   const snippetPrices: number[] = []
+  /**
+   * The same prices, but keyed by the place each snippet actually NAMED.
+   *
+   * 🚨 `snippetPrices` alone cannot tell an area price from a restaurant price,
+   * which is how "Danh sách quán bún bò Quận 1" became one restaurant's menu
+   * price. `searchPlaces` stamps `evidence_scope` per snippet; this carries it
+   * to the guard instead of flattening it away.
+   */
+  const snippetPricesByEntity = new Map<string, number[]>()
+  const snippetPlaceNames: string[] = []
+  /** Retrieved prose that named exactly one place, keyed by that place. */
+  const placeEntityTexts = new Map<string, string[]>()
+  /** Places with a DIRECT ordering page — the only ones prose may call orderable. */
+  const orderablePlaces = new Set<string>()
+  /**
+   * Venues with a DIRECT, entity-level ticket page — the only ones prose may
+   * say sell tickets. A chain homepage (`https://cinestar.com.vn/`) is a front
+   * door, not evidence about one cinema; `isDirectTicketUrl` draws that line.
+   */
+  const ticketablePlaces = new Set<string>()
+  /**
+   * Quality facts keyed by the venue they belong to.
+   *
+   * 🚨 THE FLAT ARRAYS CANNOT SAY WHOSE NUMBER IT IS. `placeRatings` is
+   * batch-wide, so one rated row let the model state a rating for a DIFFERENT
+   * restaurant. A rating, a review count and a phone number are each facts about
+   * ONE business; they travel keyed by that business.
+   */
+  const ratingsByEntity = new Map<string, number[]>()
+  const reviewCountsByEntity = new Map<string, number[]>()
+  const phonesByEntity = new Map<string, string[]>()
+  /**
+   * Rating / distance evidence for `guardPlaceClaimsInText`, gathered the same
+   * way and at the same moment as `snippetPrices`: read off the provider's own
+   * rows as they stream past, never re-derived later. Empty means the provider
+   * returned none, which is exactly when a stated rating or distance is
+   * unsupported.
+   */
+  const placeRatings: number[] = []
+  const placeDistancesKm: number[] = []
+  const placeTexts: string[] = []
   /** True once a search_places (food/spa/places) tool result was seen this turn. */
   let hadPlaceSearch = false
   // Travel-intent turns ALWAYS buffer, so the fail-closed guard can inspect and
@@ -795,6 +881,27 @@ export function applyPlaceEnrichmentStreamFilter(
   // is highest.
   if (placeIntent) bufferMode = true
   /**
+   * 🚨 A TICKET QUESTION MUST BE GUARDED EVEN WHEN NO PLACE TOOL RUNS.
+   *
+   * Measured 2026-09-09: "cuối tuần này ở Quận 1 có sự kiện gì hay, mua vé ở
+   * đâu?" was answered with `get_news` + `web_search`. `needProfile.domain` was
+   * not `places`, so `placeIntent` was false, `bufferMode` stayed false — and
+   * `emitReconstructed` returns early on `!bufferMode`, so NOT ONE guard ran and
+   * the bytes were already on the wire.
+   *
+   * 🔑 THE TRIGGER IS THE USER'S OWN WORDS, decided before generation, so it is
+   * deterministic and costs nothing. Only turns that actually ask about vé /
+   * suất chiếu are affected: weather, gold price, news and chitchat keep the
+   * fully live path they have today.
+   *
+   * 🔑 STREAMING IS PRESERVED, NOT TRADED AWAY. Such a turn joins the
+   * `progressive` path, and `safeFlushPoint` already holds exactly the sentences
+   * the ticket rules can remove — so the claim-free part still streams as it
+   * arrives.
+   */
+  const ticketIntent = mentionsTickets(userText)
+  if (ticketIntent) bufferMode = true
+  /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
    * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
    * total — 13.5s of blank screen.
@@ -807,8 +914,13 @@ export function applyPlaceEnrichmentStreamFilter(
    * Stops the moment a place tool appears: after that, `injectPlaceEnrichment` rewrites the text
    * to position photos, and text already sent cannot be repositioned.
    */
-  const progressive = placeIntent && !travelIntent
+  const progressive = (placeIntent || ticketIntent) && !travelIntent
   let placeToolSeen = false
+  /**
+   * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
+   * recall turn or a non-place conversation is left exactly as it was before this existed.
+   */
+  let placeSearchStatus: PlaceSearchStatus = 'not_run'
   let flushedText = ''
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
@@ -883,11 +995,31 @@ export function applyPlaceEnrichmentStreamFilter(
   /**
    * Structured shopping records seen this turn, for the spec guard.
    *
-   * Read from `shopping_results` — the /shopping array whose fields are the
-   * provider's own — never from the organic `search_results`, which carry no
-   * structured attributes at all.
+   * 🚨 READING ONLY `shopping_results` MADE THE GUARD INERT ON EVERY LIVE TURN.
+   * `searchProducts` has two paths and they do not agree on a key: when Serper's
+   * /shopping endpoint answers - the PRIMARY path, and the one production takes -
+   * the structured rows land in `search_results` and there is no
+   * `shopping_results` key at all. Only the organic fallback emits that name.
+   *
+   * So on a normal shopping turn this array stayed empty, the guard was skipped
+   * for want of candidates, and a measured localhost reply asserted
+   * "Máy này nhẹ, pin tốt" - a weight claim AND a battery claim, the two
+   * attributes this guard exists to stop, neither of which Serper ever returns.
+   *
+   * The same wrong-key defect was already found and fixed for RANKING in
+   * `route.ts` (see the comment on `keys` there); the collector was never
+   * updated with it. Both arrays are read now, deduped by title, so whichever
+   * path the provider took the guard sees real product names.
    */
   const specRecords: SpecEvidence[] = []
+  const addSpecRecords = (rows: unknown) => {
+    if (!Array.isArray(rows)) return
+    for (const row of rows) {
+      const r = row as { title?: string; weightKg?: number; batteryHours?: number }
+      if (!r?.title || specRecords.some(e => e.name === r.title)) continue
+      specRecords.push({ name: r.title, weightKg: r.weightKg, batteryHours: r.batteryHours })
+    }
+  }
 
   /**
    * Merge places by name, upgrading an entry that gains a photo later. Shared by
@@ -983,7 +1115,43 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     }
 
-    const enriched = injectPlaceEnrichment(places, mainText, lang)
+    /**
+     * The card's payload, built here rather than at the end, because whether it
+     * EXISTS decides what the prose is allowed to repeat.
+     *
+     * Photos have just resolved above, the engine's recommendations are in the
+     * collector, and nothing has been sent yet — this is the one point where both
+     * halves of the answer are known.
+     */
+    const placesView = (EMIT_PLACES_ANNOTATION && collector?.placesRecommendations?.length)
+      ? buildPlacesLiveView(withResolvedPhotos(collector.placesRecommendations, places), { mapsSearchUrl: collector.placesMapsUrl })
+      : null
+
+    /**
+     * \u{1F6A8} THE SAME CONTENT TWICE WAS THE BUG. `injectPlaceEnrichment` writes the
+     * photo, the order links and the review link INTO the reply text, for clients
+     * that have no card. When the card is about to render exactly those three
+     * things, injecting them as well produced the duplicated Food answer the
+     * approved design forbids: prose recommendation, a loose image, a row of
+     * provider links — and then the same photo, the same links and the same
+     * places again inside the card.
+     *
+     * So the injection is skipped only for a request that is rendering the card
+     * (`rendersDecisionCard`, set from the web surface header). Android, iOS and
+     * any client that sends no header keep the injected block exactly as today —
+     * it is their only channel for these links.
+     *
+     * SHOPPING OBEYS THE SAME RULE, and used not to. `buildPlacesLiveView`
+     * deliberately returns null for a product (shopping owns its own decision
+     * card), so this read as "no card" on every shopping turn and injected
+     * anyway: a measured localhost reply carried a loose product thumbnail plus a
+     * "📸 Images & review links" block listing a Samsung Galaxy Note under an
+     * iPhone question, directly above a card showing the same products. The
+     * shopping marker is the shopping card's existence, so it counts here too.
+     */
+    const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
+    const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
+    const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -1019,9 +1187,55 @@ export function applyPlaceEnrichmentStreamFilter(
     // guarded whether or not it retrieved anything — with no snippets collected, `snippetPrices`
     // is empty and EVERY stated price is unsupported, which is the fail-closed direction travel
     // already takes. No evidence is carried between turns.
+    /**
+     * Scope is only supplied when this turn actually retrieved places to
+     * attribute against. With no rows there is nothing a sentence could name,
+     * and the guard keeps its existing area-level behaviour.
+     */
+    const placeScope = (): SnippetPriceScope | undefined =>
+      snippetPlaceNames.length > 0
+        ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
+        : undefined
     const foodGuarded = ((hadPlaceSearch || placeIntent) && !travelIntent)
-      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText).text
+      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope()).text
       : travelGuarded
+    /**
+     * PLACE QUALITY + DISTANCE BOUNDARY. Money guards what a place COSTS; this
+     * guards how GOOD and how FAR it is — the other two things a place reply
+     * asserts and the provider frequently never returned.
+     *
+     * Runs on place AND travel turns, because both make these claims: an OSM spa
+     * row carries no rating at all, and a hotel's star class lives only in its
+     * snippet. Composes with the guards above the same way they compose with
+     * each other — a pure function over prose whose prices are already settled,
+     * writing nothing that was not already in the text.
+     *
+     * Inert when the retrieval DID carry the evidence, which is the point: with
+     * Google Places restored, ratings arrive per row and the claims stand.
+     */
+    /**
+     * On a place/travel turn every rule applies. On a TICKET-ONLY turn (news,
+     * events) the place-specific evidence was never collected, so only the
+     * domain-independent ticket rules run — see `PlaceClaimOptions`.
+     */
+    const placeClaimScope: 'all' | 'tickets' =
+      (hadPlaceSearch || placeIntent || travelIntent) ? 'all' : 'tickets'
+    const placeGuarded = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
+      ? guardPlaceClaimsInText(foodGuarded, {
+        ratings: placeRatings,
+        distancesKm: placeDistancesKm,
+        texts: placeTexts,
+        // Which retrieved prose named which place — so a popularity claim about
+        // one restaurant cannot rest on a listicle about the whole district.
+        entityTexts: placeEntityTexts,
+        placeNames: snippetPlaceNames,
+        orderablePlaces,
+        ratingsByEntity,
+        reviewCountsByEntity,
+        phonesByEntity,
+        ticketablePlaces,
+      }, { scope: placeClaimScope }).text
+      : foodGuarded
     // Last point before the bytes leave the server: drop any provider tool-use
     // tags that leaked into the prose, so no client has to defend against them
     // (and so the end-anchored CTA fallback still matches).
@@ -1030,7 +1244,31 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(foodGuarded)
+    const scaffoldStripped = stripModelScaffolding(placeGuarded)
+    /**
+     * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
+     * enforcement. Applied HERE, before the TikTok fold and before `finalText`
+     * is composed, so every downstream consumer — the detectors, `presentedNames`,
+     * `presentedIds`, and the bytes the user receives — sees the same gated text.
+     *
+     * Safe to run this late because place-list prose is BUFFERED: `flushedText`
+     * is only released while `!placeToolSeen`, so nothing naming a venue has
+     * been streamed yet and there is nothing to retract.
+     */
+    const gated = suppressUngroundedVenues(
+      scaffoldStripped,
+      [
+        ...places.map(p => p.name || ''),
+        ...productRecords.map(r => r.title || ''),
+        ...(seed?.heldCandidates ?? []).map(c => c.name),
+      ],
+      lang,
+      // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check
+      // against because nothing was retrieved" from "nothing to check against because this
+      // is a recall turn" — and it stood down for both.
+      { placeSearch: placeSearchStatus },
+    )
+    const groundedProse = gated.text
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
@@ -1043,7 +1281,10 @@ export function applyPlaceEnrichmentStreamFilter(
      * detector reads must be byte-identical to the reply the user gets; appending afterwards would
      * have made the detector analyse a different string than the one that shipped.
      */
-    const batchTikTok = collector?.batchTikTokUrl
+    // 🚨 THE CARD CARRIES THE REVIEW LINK WHEN IT RENDERS, so the batch line is
+    // dropped at its source rather than in the fold below — that keeps the fold
+    // expression, and the ordering contract asserted on it, exactly as it was.
+    const batchTikTok = cardOwnsEnrichment ? undefined : collector?.batchTikTokUrl
     // Phase 9: the app-owned shopping DECISION marker is folded into the SAME
     // string the detector analyses and the client receives — part of `finalText`,
     // never appended afterwards — so "detector in == user out" holds (the TikTok
@@ -1053,9 +1294,40 @@ export function applyPlaceEnrichmentStreamFilter(
     // decision survives reload (a tool-result field does not). Client parses +
     // strips it; see parseShoppingMarker.
     const markerSuffix = collector?.shoppingMarker ? `\n\n${collector.shoppingMarker}` : ''
-    const prose = (scaffoldStripped && batchTikTok && isValidTikTokContentUrl(batchTikTok))
-      ? `${scaffoldStripped}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
-      : scaffoldStripped
+    /**
+     * The unified `[TAPPY_PLACES]` block, folded into `finalText` on exactly the
+     * same terms as the shopping marker above — part of the string the detectors
+     * read and the user receives, never appended afterwards.
+     *
+     * 🚨 EMISSION IS FLAG-GATED OFF. Two independent blockers, both recorded in
+     * `config/product.ts`: Android and iOS cannot strip a marker they have never
+     * been told about (shared fixture contract, rule 6), and a marker is
+     * permanent storage, which Google Places terms forbid for Places content.
+     * The recommendations are still BUILT on every turn — the data layer is
+     * exercised and tested — they are simply not written into the reply.
+     *
+     * Built here rather than at tool time because photos resolve late, inside
+     * this filter: serializing earlier would persist a block with no images.
+     *
+     * 🚨 DECLARED BELOW, NOT HERE. It needs `prose`, because a place earns a card
+     * only if this reply already named it — see `recommendationsGroundedInProse`.
+     */
+
+    /**
+     * Server-authored CTA. The model's own block is stripped FIRST — a prompt
+     * rule is not a guarantee, and the client's parser takes the first match, so
+     * leaving both would make the button set depend on ordering.
+     *
+     * 🚨 Also flag-gated off: the prompt still instructs the model to emit its
+     * own block, and deleting that instruction is what must ship alongside this.
+     * Until then the shipped behaviour is untouched.
+     */
+    const serverCta = (SERVER_AUTHORED_CTA && collector?.placesRecommendations?.length)
+      ? renderCtaBlock(collector.placesRecommendations, lang)
+      : ''
+    const prose = (groundedProse && batchTikTok && isValidTikTokContentUrl(batchTikTok))
+      ? `${groundedProse}\n\n🎵 [${escapeMarkdownLabel(relatedVideoLabel(lang))}](${sanitizeUrlForMarkdown(batchTikTok)})`
+      : groundedProse
     // `finalText` keeps carrying the marker whether or not it was already sent.
     // It is not only what ships — it is what the money/spec/grounding detectors
     // read and what presentedNames/presentedIds are resolved against, so the
@@ -1067,13 +1339,25 @@ export function applyPlaceEnrichmentStreamFilter(
     // therefore part of `finalText` too — the detectors read exactly what the user receives, and
     // "detector in == user out" still holds with two markers as it did with one.
     //
-    // It cannot widen what the turn counts as presented: renderPlacesMarker only emits places the
-    // prose ALREADY names (it drops any place `findPlaceOffset` cannot locate in the prose), so
-    // every name it carries is a name `seenIn` would have matched from the prose alone.
+    // It cannot widen what the turn counts as presented: `recommendationsGroundedInProse` keeps
+    // only places the prose ALREADY names (it drops any place `findPlaceOffset` cannot locate in
+    // the prose), so every name the block carries is a name `seenIn` would have matched from the
+    // prose alone. An empty grounded set emits no block at all, rather than an empty one.
     //
     // Appended after the shopping suffix so the existing marker order is untouched.
-    const placesSuffix = renderPlacesMarker(places, prose)
-    const finalText = `${prose}${markerSuffix}${placesSuffix}`
+    const groundedRecs = (EMIT_TAPPY_PLACES && collector?.placesRecommendations?.length)
+      ? recommendationsGroundedInProse(
+        withResolvedPhotos(collector.placesRecommendations, places),
+        places,
+        prose,
+      )
+      : []
+    const placesSuffix = groundedRecs.length > 0 ? `\n\n${renderPlacesMarker(groundedRecs)}` : ''
+    // With the server authoring the CTA, the model's block is removed from the
+    // prose before anything is appended; without the flag, `prose` is untouched.
+    const ctaOwnedProse = serverCta ? stripModelCta(prose) : prose
+    const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
+    const finalText = `${ctaOwnedProse}${markerSuffix}${placesSuffix}${ctaSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -1086,7 +1370,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
-    ungroundedNames = ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? [])
+    // The gate removed these, so the detector can no longer see them in
+    // `finalText`. Both are kept: the gate's own record is what shipped, and the
+    // detector still runs as defence in depth against a shape the gate missed.
+    ungroundedNames = [...new Set([
+      ...gated.suppressed,
+      ...ungroundedNamesIn(finalText, places, productRecords, seed?.heldCandidates ?? []),
+    ])]
     // What still needs sending. When the decision already went out after the
     // tool result, only the prose is left — re-sending the marker here would
     // put a second copy in the message text and render a duplicate card.
@@ -1104,6 +1394,26 @@ export function applyPlaceEnrichmentStreamFilter(
       ? outText.slice(flushedText.length)
       : outText
     if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
+
+    /**
+     * The place decision, as a message ANNOTATION rather than as text.
+     *
+     * 🚨 EMITTED HERE, AFTER THE PROSE, AND EXACTLY ONCE. This is the only point
+     * at which the turn is finished: photos have resolved (they resolve late,
+     * inside this filter), the grounding gate has already removed anything
+     * ungrounded, and the text the user will read is settled. Sending earlier
+     * would ship a card for a place the gate then deleted from the reply.
+     *
+     * It is an `8:` frame, not text: nothing here can leak into the message body,
+     * TTS, copy or a native client - Android reads only `0:` and iOS treats an
+     * unknown prefix as `.unknown`. It is also never persisted, which is what
+     * keeps the payload compliant where the durable marker is not. See
+     * `EMIT_PLACES_ANNOTATION`.
+     */
+    // `null` when the engine did not choose - flights, transport, a turn with too
+    // few candidates. No card is the honest answer there, and the prose then keeps
+    // its injected links because nothing else is going to carry them.
+    if (placesView) controller.enqueue(encoder.encode('8:' + JSON.stringify([placesView]) + '\n'))
   }
 
   const transform = new TransformStream<any, any>({
@@ -1218,7 +1528,11 @@ export function applyPlaceEnrichmentStreamFilter(
                 shopping_results?: Array<{ title?: string; weightKg?: number; batteryHours?: number }>
                 /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
                  *  the reply states must trace to one of these, else it's fabricated. */
-                price_search_results?: Array<{ title?: string; snippet?: string }>
+                price_search_results?: Array<{ title?: string; snippet?: string; link?: string; evidence_scope?: string; evidence_about?: string }>
+                /** Direct ordering pages, each attributed to the place its own text named. */
+                order_search_results?: Array<{ evidence_scope?: string; evidence_about?: string }>
+                /** The tool's own verdict on retrieval — see `PlaceSearchStatus`. */
+                place_search_status?: PlaceSearchStatus
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
@@ -1226,20 +1540,90 @@ export function applyPlaceEnrichmentStreamFilter(
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
+              /**
+               * 🚨 READ FROM THE TOOL, NEVER RE-DERIVED HERE.
+               *
+               * `searchPlaces` stamps this from the provider's rows before enrichment runs.
+               * Recomputing it locally would be a second classifier free to disagree with the
+               * one that actually saw the response — and the older `results?.length` reading
+               * available here cannot see WHY the array is empty.
+               *
+               * The fallback is `has_results` only when rows exist, so a result from an older
+               * shape without the field degrades to today's behaviour rather than to silence.
+               */
+              placeSearchStatus = res.result?.place_search_status
+                ?? (Array.isArray(results) && results.length > 0 ? 'has_results' : 'empty')
               // A5: the only evidence a food/spa price may trace to.
               hadPlaceSearch = true
               const priceSnips = res.result?.price_search_results
               if (Array.isArray(priceSnips)) {
                 snippetPrices.push(...pricesFromSnippets(priceSnips.map(r => `${r.title ?? ''} ${r.snippet ?? ''}`)))
+                // Keep the ENTITY-scoped prices separately. A snippet is only
+                // entity-scoped when its own text named exactly one place —
+                // `searchPlaces` made that call with the audited matcher.
+                for (const r of priceSnips) {
+                  const scoped = r as { title?: string; snippet?: string; evidence_scope?: string; evidence_about?: string }
+                  if (scoped.evidence_scope !== 'entity' || !scoped.evidence_about) continue
+                  const prices = pricesFromSnippets([`${scoped.title ?? ''} ${scoped.snippet ?? ''}`])
+                  if (prices.length === 0) continue
+                  const bucket = snippetPricesByEntity.get(scoped.evidence_about) ?? []
+                  bucket.push(...prices)
+                  snippetPricesByEntity.set(scoped.evidence_about, bucket)
+                }
+                // An entity-scoped snippet whose link is a DIRECT page for that
+                // venue is the only thing that can support a ticket-sale claim.
+                for (const r of priceSnips) {
+                  const scoped = r as { link?: string; evidence_scope?: string; evidence_about?: string }
+                  if (scoped.evidence_scope !== 'entity' || !scoped.evidence_about) continue
+                  if (isDirectTicketUrl(scoped.link)) ticketablePlaces.add(scoped.evidence_about)
+                }
+                // The same entity-scoped snippets are also the only text that can
+                // support a claim about how popular THAT place is.
+                for (const r of priceSnips) {
+                  const scoped = r as { title?: string; snippet?: string; evidence_scope?: string; evidence_about?: string }
+                  if (scoped.evidence_scope !== 'entity' || !scoped.evidence_about) continue
+                  const bucket = placeEntityTexts.get(scoped.evidence_about) ?? []
+                  bucket.push(`${scoped.title ?? ''} ${scoped.snippet ?? ''}`)
+                  placeEntityTexts.set(scoped.evidence_about, bucket)
+                }
+              }
+              for (const o of res.result?.order_search_results ?? []) {
+                if (o.evidence_scope === 'entity' && o.evidence_about) orderablePlaces.add(o.evidence_about)
+              }
+              // Same rows, two more kinds of evidence — see placeClaimGuard.
+              for (const row of (Array.isArray(results) ? results : []) as Array<Record<string, unknown>>) {
+                const rating = row.rating ?? row.google_rating
+                const rowName = typeof row.name === 'string' ? row.name : ''
+                if (rowName) snippetPlaceNames.push(rowName)
+                if (typeof rating === 'number') placeRatings.push(rating)
+                // The same facts, keyed by the venue they actually describe.
+                if (rowName && typeof rating === 'number') {
+                  ratingsByEntity.set(rowName, [...(ratingsByEntity.get(rowName) ?? []), rating])
+                }
+                if (rowName && typeof row.rating_count === 'number') {
+                  reviewCountsByEntity.set(rowName, [...(reviewCountsByEntity.get(rowName) ?? []), row.rating_count])
+                }
+                if (rowName && typeof row.website_uri === 'string' && isDirectTicketUrl(row.website_uri)) {
+                  ticketablePlaces.add(rowName)
+                }
+                if (rowName && typeof row.phone === 'string' && row.phone) {
+                  phonesByEntity.set(rowName, [...(phonesByEntity.get(rowName) ?? []), row.phone])
+                }
+                if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
+                for (const k of ['snippet', 'address', 'opening_hours']) {
+                  if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
+                }
+              }
+              if (Array.isArray(priceSnips)) {
+                for (const r of priceSnips) placeTexts.push(`${r.title ?? ''} ${r.snippet ?? ''}`)
               }
             }
             if (toolName === 'search_products') {
-              const structured = res.result?.shopping_results
-              if (Array.isArray(structured)) {
-                for (const r of structured) {
-                  if (r?.title) specRecords.push({ name: r.title, weightKg: r.weightKg, batteryHours: r.batteryHours })
-                }
-              }
+              // BOTH provider paths — see `addSpecRecords`. `shopping_results`
+              // is the organic fallback's name for the structured array;
+              // `search_results` is where the primary /shopping path puts it.
+              addSpecRecords(res.result?.shopping_results)
+              addSpecRecords(res.result?.search_results)
             }
             // P0 travel guard evidence: the ONLY live, structured travel price we
             // have. get_flight_prices returns `flights[].price_vnd` on success and
@@ -1249,6 +1633,17 @@ export function applyPlaceEnrichmentStreamFilter(
               const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
               if (Array.isArray(flights)) {
                 for (const f of flights) if (typeof f?.price_vnd === 'number') travelFares.push(f.price_vnd)
+              }
+            }
+            if (toolName === 'get_hotel_prices') {
+              // A hotel's star class and its "cách X 900 m" come from the row's own
+              // snippet, never a structured field — so the snippet IS the evidence
+              // for those numbers. Without this the place guard would redact a
+              // grounded "khách sạn 3 sao" as if the model had invented it.
+              for (const row of (res.result?.search_results ?? []) as Array<Record<string, unknown>>) {
+                for (const k of ['snippet', 'title']) {
+                  if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
+                }
               }
             }
             if (toolName === 'get_hotel_prices' || toolName === 'search_products') {

@@ -143,9 +143,21 @@ fun HomeScreen(
             // Web parity: section vertical rhythm is space-y-6 = 24px.
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xxxl),
         ) {
-            // Section order mirrors the web Home (HomeView.tsx): hero (gradient card w/ greeting +
-            // embedded search) → categories → fortune → scan → Tappy Together → recommendations+
-            // music → tools → content writer → suggestions → recent.
+            // ── P4-11 · AI-FIRST HOME (DD-002 / OD-1) ────────────────────────────────────
+            //
+            // Section order mirrors the web Home (HomeView.tsx), which V3 reordered: ask Tappy,
+            // then the suggestions that turn a vague need into a question worth asking, then
+            // Continue, then the tools. It used to be hero → categories → nine tool sections →
+            // suggestions → recent, so the conversation you were in the middle of sat below every
+            // tool on the page.
+            //
+            // 🚨 HOME IS NOT CHAT. Nothing here renders a thread, streams a reply, or shows
+            // assistant output in place — the hero and every suggestion NAVIGATE to the Chat tab.
+            // Home is a door, not a room.
+            //
+            // 🚨 NO TOOL WAS REMOVED to make that true (DD-002). All nine tool sections are still
+            // here, in the same order relative to each other; they moved down, they did not go.
+            //
             // The greeting's language comes from the resolved resources, not from the language
             // store, so it cannot drift out of step with the strings beside it — see
             // [HomeViewModel.greeting]. Reading it here also means a language switch recomposes it.
@@ -153,7 +165,18 @@ fun HomeScreen(
                 greeting = viewModel.greeting(booleanResource(R.bool.resources_are_english)),
                 onOpenChat = { onNavigateToTab(HomeTab.Chat) },
             )
+            SuggestionsSection(onOpenChatWithPrefill = onOpenChatWithPrefill)
             CategoryChipsSection(onOpenCategory = onOpenChatWithCategory)
+            RecentActivitySection(state = recentActivity, onOpenConversation = onOpenConversation)
+
+            // "For You" (ND-001) is a discovery/content preview on EXISTING V3-available sources.
+            // Android has no such source wired yet, and the approved behaviour when none can fill
+            // the section is to HIDE it — never to pad it with placeholder or invented content. So
+            // there is deliberately nothing here rather than an empty shell.
+
+            // ── Tools ───────────────────────────────────────────────────────────────────
+            // De-emphasised, never removed. Every tool keeps its destination and its behaviour.
+            SectionHeader(title = stringResource(R.string.home_section_tools_group))
             FortuneSection(
                 onOpenTarot = onOpenTarot,
                 onOpenTuVi = onOpenTuVi,
@@ -173,8 +196,6 @@ fun HomeScreen(
                 onOpenSplitBill = onOpenSplitBill,
             )
             ContentWriterSection(onOpenVietWriter = onOpenVietWriter)
-            SuggestionsSection(onOpenChatWithPrefill = onOpenChatWithPrefill)
-            RecentActivitySection(state = recentActivity, onOpenConversation = onOpenConversation)
         }
     }
 

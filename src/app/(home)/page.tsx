@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import { getMemory } from '@/lib/memory/memoryService'
-import HomeView from '../HomeView'
+// V3 Web redesign — the Home surface is now the V3 panel grid. `HomeView` (the
+// pre-V3 single-column composition) is retained in the tree unreferenced so the
+// old layout stays available for comparison during the visual review gate.
+import HomeV3 from '../HomeV3'
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -29,7 +32,11 @@ export default async function HomePage() {
   // Dynamic prompts — VN time UTC+7, shuffled fresh on each server render
   const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000)
   const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gender === 'female' ? 'female' : null
-  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender)
+  // 5, not the default 4: the approved Home reference shows five cards across the
+  // "Suggested for you" row. This is a DISPLAY COUNT, not new content — the extra prompt is
+  // drawn from the same real pool by the same generator, and nothing here fabricates a
+  // suggestion to fill the row.
+  const SUGGESTIONS = getDynamicPrompts(vnTime.getUTCHours(), vnTime.getUTCDay(), memory, gender, 5)
 
   // Dynamic hero heading theo giờ VN (Vietnamese — the client localizes to EN)
   const vnHour = vnTime.getUTCHours()
@@ -137,14 +144,10 @@ export default async function HomePage() {
   }))
 
   return (
-    <HomeView
+    <HomeV3
       user={!!user}
       userInfo={userInfo}
       firstName={firstName}
-      heroTextVi={heroTextVi}
-      heroHour={vnHour}
-      heroIsWeekend={isWeekend}
-      heroDom={dayOfMonth}
       suggestions={SUGGESTIONS}
       conversations={convList}
     />

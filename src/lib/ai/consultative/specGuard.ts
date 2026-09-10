@@ -27,6 +27,15 @@ export interface SpecEvidence {
   batteryHours?: number
 }
 
+/**
+ * A reference to "the product being discussed" that names no product.
+ *
+ * Normalised text only (`normalizeVN` has already stripped the diacritics), so
+ * "máy này" reads as "may nay". Bounded on both sides: "này" must follow the
+ * noun, which is what separates a deictic from "may man" or "con so".
+ */
+const DEICTIC = /\b(?:may|con|chiec|ban|em|san pham|mau)\s+(?:nay|do)\b|\bthis\s+(?:machine|laptop|one|model|product)\b/
+
 /** The attribute classes this guard governs. */
 type SpecAttr = 'weight' | 'battery'
 
@@ -137,9 +146,22 @@ const RESTORE_RE = /\uE000(\d+)\uE000/g
 const PROTECTED = /(\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]|\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|$)|\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]|!?\[[^\]]*\]\([^)]*\)|https?:\/\/\S+)/g
 
 /** Sentence split that never cuts inside a decimal — the C3-B.10.2 lesson. */
+/**
+ * Sentences AND the whitespace between them, alternating [text, gap, text, ...].
+ *
+ * 🚨 THE GUARD USED TO FLATTEN THE REPLY IT EDITED. It split on the gaps,
+ * dropped them, and rejoined with a single space - so once the guard actually
+ * started running on shopping turns (it had been inert; see streamEnrichment), a
+ * bulleted comparison came back as one run-on paragraph. Nothing about which
+ * claims are removed changes here; the reply simply keeps the shape the model
+ * gave it.
+ */
 function splitSentences(text: string): string[] {
-  return text.split(/(?<=[.!?…])\s+/)
+  return text.split(/((?<=[.!?…])\s+)/)
 }
+
+/** A list marker at the head of a line, which belongs to the LINE, not the clause. */
+const LIST_MARKER = /^(\s*(?:[-*•]|\d+[.)])\s+)/
 
 /** Clause split that keeps its delimiters, so removal can be surgical. */
 function splitClauses(sentence: string): string[] {
@@ -216,14 +238,43 @@ export function guardSpecClaimsInText(
    */
   let subject: SpecEvidence[] = []
 
-  const guardedSentences = splitSentences(masked).map(sentence => {
+  const parts = splitSentences(masked)
+  const guardedSentences = parts.map((sentence, partIndex) => {
+    // Odd indices are the captured gaps between sentences: whitespace only, never
+    // a claim. They pass through so the reply keeps its line breaks.
+    if (partIndex % 2 === 1) return sentence
     const ns = norm(sentence)
     if (!ns.trim()) return sentence
 
     const here = candidates.filter(c => names(norm(identityFor(sentence)), c.name))
     if (here.length > 0) subject = here
     const named = here.length > 0 ? here : subject
-    if (named.length === 0) return sentence
+    /**
+     * 🚨 "MÁY NÀY NHẸ, PIN TỐT" NAMES NOBODY, AND THAT USED TO BE A LOOPHOLE.
+     *
+     * Measured on a localhost shopping turn: the reply opened with two paragraphs
+     * that each began "Máy này …" and never wrote a product name at all, so
+     * `subject` was still empty, every claim was attributed to nobody, and a
+     * weight claim and a battery claim shipped untouched.
+     *
+     * Attribution cannot be invented — but it does not have to be. The question
+     * "could ANY candidate this turn retrieved support this?" is answerable
+     * without knowing which one is meant, and when the answer is no the claim is
+     * unsupported whoever it is about. So a sentence that POINTS AT a product
+     * without naming it is checked against the WHOLE candidate set, and survives
+     * the moment one of them carries the evidence: it fails closed on absence,
+     * never on ambiguity.
+     *
+     * Deliberately narrow. Only a deictic — "máy này", "con này", "this laptop" —
+     * opens this path, because only a deictic asserts something about a specific
+     * product from THIS turn's results. A bare "laptop văn phòng nhẹ" names
+     * nothing and points at nothing: it may be echoing the user's requirement
+     * (REQUIREMENT_FRAMING already exempts that) or speaking generally, and
+     * treating it as a product claim would let the guard delete sentences that
+     * assert nothing about anything.
+     */
+    const unattributed = named.length === 0 && DEICTIC.test(ns)
+    const scope = unattributed ? candidates : named
 
     // Framing and absence are decided PER CLAUSE, not per sentence.
     //
@@ -265,10 +316,15 @@ export function guardSpecClaimsInText(
       // A COMPARISON asserts the attribute of EVERY candidate it names, so all
       // of them must carry evidence. One-sided evidence cannot support
       // "A is lighter than B" — B's weight is exactly what is unknown.
-      const mustHaveAll = named.length > 1 && COMPARATIVE.test(ns)
-      const lacking = named.filter(c => !hasEvidence(c, attr))
+      const mustHaveAll = scope.length > 1 && COMPARATIVE.test(ns)
+      const lacking = scope.filter(c => !hasEvidence(c, attr))
       if (lacking.length === 0) continue
-      if (mustHaveAll || lacking.length === named.length || named.length === 1) {
+      // An unattributed claim needs EVERY candidate to lack the evidence before
+      // it is removed — one product with a real weight makes "máy này nhẹ" a
+      // sentence we cannot prove wrong, and deleting it would be the guard
+      // inventing a certainty of its own.
+      if (unattributed ? lacking.length === scope.length
+        : (mustHaveAll || lacking.length === scope.length || scope.length === 1)) {
         unsupported.push(attr)
         for (const c of lacking) {
           const label = `${c.name}:${attr}`
@@ -288,6 +344,11 @@ export function guardSpecClaimsInText(
 
     if (kept.length === 0) return ''      // whole sentence was the claim
 
+    // The list marker rode on the clause that was removed: "- Máy nhẹ hơn, dễ
+    // mang theo." lost "- " along with the weight claim and the survivor read as
+    // a stray fragment. The marker belongs to the line, so it is put back.
+    const marker = sentence.match(LIST_MARKER)?.[1] ?? ''
+
     // Removing a clause must not leave the sentence ungrammatical: dropping the
     // first clause strands the conjunction that joined it ("and the rating is
     // excellent."), and dropping the last takes the full stop with it.
@@ -302,6 +363,17 @@ export function guardSpecClaimsInText(
       // emitted "Nhược điểm là SSD 256GB chật —." Same class as the stranded
       // conjunction, at the other end of the sentence.
       .replace(/\s*[—–:]\s*$/, '')
+    /**
+     * An opening bracket whose contents were the ungrounded clause.
+     *
+     * Measured on localhost once the guard started firing on the primary path:
+     * "… Dell có 8GB (vẫn đủ." — the parenthetical said something about weight, the
+     * clause surgery took it, and the bracket was left hanging open. Same class
+     * as the stranded conjunction and the dangling dash above, at a third end.
+     */
+    const opens = (joined.match(/\(/g) ?? []).length
+    const closes = (joined.match(/\)/g) ?? []).length
+    if (opens > closes) joined = joined.slice(0, joined.lastIndexOf('(')).trimEnd().replace(/[,;—–:]$/, '')
     if (/[.!?…:]$/.test(sentence.trim()) && !/[.!?…:]$/.test(joined)) joined += '.'
     // Dropping the opening clause promotes whatever followed to the start of the
     // sentence, and it was written mid-sentence: "Máy nhẹ, phù hợp di chuyển."
@@ -316,10 +388,19 @@ export function guardSpecClaimsInText(
     // "… tiện cho lập trình. Tuy nhiên. Nếu bạn cần GPU riêng …". Nothing is lost
     // by dropping it, because it carried no information of its own.
     if (ONLY_CONNECTOR.test(norm(joined))) return ''
-    return joined
+    return marker && !LIST_MARKER.test(joined) ? marker + joined : joined
   })
 
-  let out = guardedSentences.filter(s => s.trim()).join(' ').replace(/\s{2,}/g, ' ').trim()
+  // Drop the gap that followed a sentence removed entirely, so two lines do not
+  // become three blank ones — but keep every other gap byte-for-byte.
+  const rebuilt: string[] = []
+  for (let i = 0; i < guardedSentences.length; i += 2) {
+    const body = guardedSentences[i]
+    if (!body || !body.trim()) continue
+    if (rebuilt.length > 0) rebuilt.push(guardedSentences[i - 1] ?? ' ')
+    rebuilt.push(body)
+  }
+  let out = rebuilt.join('').replace(/[^\S\n]{2,}/g, ' ').replace(/\n{3,}/g, '\n\n').trim()
 
   // Never emit nothing. A reply reduced to silence is the failure mode the money
   // guard shipped once (`if (finalText)` → an empty assistant turn), so if every

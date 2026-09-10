@@ -3,14 +3,19 @@ import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { buildFoodOrderLinks } from '@/lib/platformLinks/food'
 import { attributeTikTok } from '@/lib/links/tiktokAttribution'
+import { placeTokensFor, placeNamedBy } from '@/lib/links/placeAttribution'
 import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
+import { detectFoodConstraints, osmFilterFor, unmetConstraintNote } from '@/lib/ai/foodConstraints'
+import { rowServesDish } from '@/lib/ai/foodDish'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
 import { withSingleFlight } from './common'
 import type { PlacesBudget } from './placesBudget'
 import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnamCities'
+import { osmCategoryFor, osmUnionFor, placeDomainFor } from './osmCategory'
+import { usableOverpass } from './overpassResponse'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
 export async function getNews(query: string, lang = 'vi') {
@@ -129,58 +134,114 @@ export function belongsToDestination(
 }
 
 export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null, lang = 'vi') {
-  const loc = location || 'Ha Noi'
+  /**
+   * 🚨 THE DEFAULT CITY WAS A FABRICATION.
+   *
+   * This line read `location || 'Ha Noi'`. A query with no area and no GPS -
+   * "Quan cafe view dep" - therefore became a Hanoi search, and the reply
+   * recommended Hanoi cafes as though the user had asked for Hanoi. Measured on
+   * localhost 2026-09-08: tool called with no location, result `location: "Ha
+   * Noi"`, ten Hanoi rows, and nothing in the answer disclosing the assumption.
+   *
+   * There is no honest default. With no stated area and no device position we do
+   * not know where to look, so nothing is searched and the caller is told to ask.
+   */
+  if (!location && !locationBias) {
+    return {
+      location_required: true,
+      results: [],
+      no_results_instruction: messages.places.locationRequired(lang),
+      note: messages.places.locationRequired(lang),
+    }
+  }
+  // After the guard above, a missing `location` means GPS is driving the search,
+  // and the coordinate branch never reads `loc`. Empty is the honest value to
+  // report back - the old code reported "Ha Noi" here, which is the fabrication.
+  const loc = location ?? ''
   const googleMapsUrl = 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + loc)
   try {
-    const cityCoords: Record<string, [number, number]> = {
-      'ha noi': [21.0285, 105.8542], 'hanoi': [21.0285, 105.8542], 'hn': [21.0285, 105.8542],
-      'ho chi minh': [10.7769, 106.7009], 'hcm': [10.7769, 106.7009], 'saigon': [10.7769, 106.7009], 'sai gon': [10.7769, 106.7009],
-      'da nang': [16.0544, 108.2022], 'danang': [16.0544, 108.2022],
-      'hue': [16.4637, 107.5909], 'can tho': [10.0452, 105.7469],
-      'hai phong': [20.8449, 106.6881], 'nha trang': [12.2388, 109.1967],
-      'da lat': [11.9404, 108.4583], 'vung tau': [10.3460, 107.0843],
-      'hoi an': [15.8801, 108.3380],
-    }
-    // normalizeVN strips Vietnamese diacritics — without this, real user input like
-    // "Hà Nội"/"Hoàn Kiếm Hà Nội" never matches the ASCII-only keys below, silently
-    // falling through to slower Nominatim geocoding and skipping the dense-metro radius.
-    const locKey = normalizeVN(loc.toLowerCase())
-    const preset = Object.entries(cityCoords).find(([k]) => locKey.includes(k))
-    // Dense metro search radius: a 5km amenity radius times out against public Overpass
-    // mirrors in Hanoi/HCMC (measured: 504 after 12.7s at 5km vs 0.98s at 1.5km, same query).
-    // Other cities/locations are less venue-dense — keep the larger 5km radius there.
-    const DENSE_METRO_KEYS = new Set(['ha noi', 'hanoi', 'hn', 'ho chi minh', 'hcm', 'saigon', 'sai gon'])
+    /**
+     * 🚨 TWO CITY TABLES, AND THE SMALLER ONE WAS IN CHARGE OF PLACES.
+     *
+     * This function carried its own 16-alias list. `vietnamCities.ts` — written
+     * precisely because "there were three implementations of this in the
+     * repository" — carries the full one WITH coordinates, and it is what
+     * weather already resolves through. Quy Nhơn is in the shared table and was
+     * missing from the private one, so "quán cafe view đẹp ở Quy Nhơn" fell to
+     * Nominatim and, when that did not answer inside its 2.5s budget, the turn
+     * reported that a city the user had named plainly could not be looked up.
+     *
+     * `cityInText` also matches a city inside a longer phrase and folds
+     * diacritics, so "ở Quy Nhơn" and "quy nhon" both resolve — the private
+     * `includes()` scan did neither reliably.
+     */
+    const city = cityForName(loc) ?? cityInText(loc)
     // ── BUG-011 (D1): a NAMED destination outranks the caller's GPS ───────────
     // `remote` is true only when the caller named a city we know AND they are not in it. Every
     // other shape — no location, an unresolvable location, or a location that IS the city they
-    // are standing in — leaves the branches below exactly as they shipped.
+    // are standing in — leaves the branches below exactly as they shipped. It resolves through
+    // the SAME shared city table as `city` above, so the two can never disagree about which
+    // cities exist.
     const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
     let lat: number
     let lon: number
     let searchRadius: number
     /** True when the centre IS the user's position. Gates `distance_km` below (D2). */
     let centeredOnUser = false
+    // Did we actually establish WHERE to search, or only assume it?
+    let located = false
     if (locationBias && !remoteDestination) {
       // Real device GPS → search around the user's ACTUAL position with a tight
       // "right here, right now" radius (MFS 3.7 Nearby). Skip geocoding a city string;
       // the precise coords are what "gần đây" actually means.
+      located = true
       lat = locationBias.lat
       lon = locationBias.lng
-      searchRadius = 2000
+      /**
+       * 🚨 2000 EXCEEDED THE SERVER'S OWN BUDGET IN A DENSE METRO.
+       *
+       * Measured 2026-09-08 at 10.7756,106.7019 (District 1, HCMC) with the
+       * `[timeout:10]` this file sends: r=2000 -> 0 elements, "runtime error:
+       * Query timed out ... after 14 seconds"; r=1500 -> 10 elements; r=1000 ->
+       * 10 elements. The city-preset branch below already uses 1500 for dense
+       * metros on the same measurement; the GPS branch simply never got it, and
+       * every GPS-biased query in HCMC came back empty as a result.
+       */
+      searchRadius = 1500
       centeredOnUser = true
     } else if (remoteDestination && destination) {
       // The user is asking about somewhere else. Centre on the destination and drop the GPS
       // entirely — a bias toward where they happen to be standing is what produced a Saigon park
-      // for a Quy Nhơn question. Radius keeps the SAME dense-metro rule as the geocoded path
-      // below, so the tuned values are unchanged; only the centre moved.
+      // for a Quy Nhơn question. Only the centre moves: the radius is the SAME 1500 every other
+      // branch now uses, because the measurement above showed the larger values time out
+      // everywhere, not only in the dense metros.
+      located = true
       lat = destination.coords[0]
       lon = destination.coords[1]
-      searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
+      searchRadius = 1500
     } else {
-      lat = preset ? preset[1][0] : 21.0285
-      lon = preset ? preset[1][1] : 105.8542
-      searchRadius = preset && DENSE_METRO_KEYS.has(preset[0]) ? 1500 : 5000
-      if (!preset) {
+      located = !!city
+      lat = city ? city.coords[0] : 21.0285
+      lon = city ? city.coords[1] : 105.8542
+      /**
+       * 🚨 5km RETURNED NOTHING, EVERYWHERE — NOT JUST IN THE DENSE METROS.
+       *
+       * The split assumed only Hanoi/HCMC could not afford a 5km radius. Measured
+       * 2026-09-08 against both endpoints for Quy Nhơn (13.7820,109.2192) with
+       * the `[timeout:10]` this file sends:
+       *
+       *   r=5000 -> 0 rows, "runtime error: Query timed out"  (primary AND mirror)
+       *   r=3000 -> 504 Gateway Timeout
+       *   r=2000 -> 0 rows, timed out
+       *   r=1500 -> 10 named cafés, no remark   ← and Hanoi r=1500 also 10
+       *
+       * So "quán cafe view đẹp ở Quy Nhơn" retrieved nothing for a city that has
+       * plenty of cafés in OSM: the radius, not the data, was the problem. 1500
+       * is what the GPS branch and the dense-metro branch already use, and a
+       * radius that answers strictly dominates one that times out.
+       */
+      searchRadius = 1500
+      if (!city) {
         try {
           const geoResp = await Promise.race([
             fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc + ' Vietnam') + '&format=json&limit=1', {
@@ -189,39 +250,53 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
             new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500))
           ])
           const geoData = await (geoResp as Response).json()
-          if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon) }
+          if (geoData[0]) { lat = parseFloat(geoData[0].lat); lon = parseFloat(geoData[0].lon); located = true }
         } catch { /* use default */ }
       }
     }
-    const ql = query.toLowerCase()
-    // OSM tag key differs by category. Hotels are tagged tourism=hotel, NOT amenity=hotel —
-    // querying amenity=hotel returned 0 rows every time (verified: amenity=hotel→0 vs
-    // tourism=hotel→60 at Nha Trang), so the OSM hotel_list was silently always empty.
-    const qn = normalizeVN(ql)
-    let osmKey = 'amenity'
-    let osmValue = 'restaurant'
-    let osmOp = '=' // '~' for a regex alternation (attractions span several tourism subtypes)
-    // Attractions are tagged tourism=attraction/museum/viewpoint/... — NOT an amenity.
-    // 'artwork' deliberately excluded (heavily mistagged in VN OSM data).
-    const setAttraction = () => { osmKey = 'tourism'; osmValue = 'attraction|museum|viewpoint|theme_park|zoo|gallery'; osmOp = '~' }
-    // An explicit type from the tool call is authoritative over query-keyword guessing —
-    // the model chose it deliberately (e.g. type=attraction even if the query is a place name).
-    if (type === 'attraction') setAttraction()
-    else if (type === 'hotel') { osmKey = 'tourism'; osmValue = 'hotel' }
-    else if (type && ['cafe', 'spa', 'bar', 'gym', 'cinema', 'restaurant'].includes(type)) osmValue = type
-    else if (ql.match(/cafe|ca phe|coffee/)) osmValue = 'cafe'
-    else if (ql.match(/spa|massage/)) osmValue = 'spa'
-    else if (ql.match(/hotel|khach san|resort/)) { osmKey = 'tourism'; osmValue = 'hotel' }
-    // Without this branch, "diem tham quan Da Nang" fell through to the restaurant default.
-    else if (qn.match(/tham quan|thang canh|diem du lich|diem den|danh lam|bao tang|khu du lich|sightsee|attraction|museum/)) setAttraction()
-    else if (ql.match(/bar|pub/)) osmValue = 'bar'
-    else if (ql.match(/gym|fitness/)) osmValue = 'gym'
-    else if (ql.match(/cinema|phim|rap/)) osmValue = 'cinema'
-    else if (ql.match(/benh vien|hospital|clinic/)) osmValue = 'hospital'
-    else if (ql.match(/pharmacy|thuoc/)) osmValue = 'pharmacy'
-    else if (ql.match(/atm|ngan hang|bank/)) osmValue = 'bank'
-    const amenity = osmOp === '~' ? 'attraction' : osmValue
-    const oql = '[out:json][timeout:10];(node["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + ');way["' + osmKey + '"' + osmOp + '"' + osmValue + '"]["name"](around:' + searchRadius + ',' + lat + ',' + lon + '););out center 10;'
+    // Which OSM tag shapes this category lives under — see osmCategory.ts. The
+    // ladder moved there so it is unit-testable: a wrong tag key does not error,
+    // it returns zero rows and reads as "there are none here".
+    /**
+     * 🚨 AN UNRESOLVED CITY IS NOT A LICENCE TO SEARCH A DIFFERENT ONE.
+     *
+     * `lat`/`lon` are initialised to Hanoi and only overwritten by a preset hit
+     * or a successful geocode, so a failed lookup used to search Hanoi and label
+     * the answer with the user's city. Measured: "Quan cafe view dep o Quy Nhon"
+     * reported Quy Nhon while the coordinates never left Hanoi.
+     */
+    if (!located) {
+      return {
+        location_unresolved: true,
+        location: loc,
+        results: [],
+        no_results_instruction: messages.places.locationUnresolved(lang, loc),
+        note: messages.places.locationUnresolved(lang, loc),
+        google_maps_search: googleMapsUrl,
+      }
+    }
+    const osmCategory = osmCategoryFor(query, type)
+    const amenity = osmCategory.label
+
+    /**
+     * 🚨 BUG 2 — THE USER'S CONSTRAINT REACHES THE PROVIDER.
+     *
+     * "nhà hàng buffet" used to become `amenity=restaurant` and nothing else, so
+     * the reply was built from ten ordinary restaurants and the model invented
+     * buffet venues to close the gap. `cuisine` and `diet:*` are real, widely
+     * used OSM keys — nothing here invents provider syntax.
+     *
+     * 🔑 CONSTRAINED FIRST, THEN AN HONEST FALLBACK. OSM tagging is sparse, so a
+     * constrained query can legitimately return nothing. Rather than show an
+     * empty list (or, worse, silently drop the constraint as before), the
+     * unconstrained set is fetched and travels with `constraint_unmet` plus a
+     * note telling the model to say the constraint was NOT verified.
+     */
+    const foodConstraints = detectFoodConstraints(query)
+    const constraintFilter = osmFilterFor(foodConstraints)
+    const sel = (extra: string) => osmUnionFor(osmCategory, extra, searchRadius, lat, lon)
+    const buildOql = (extra: string) => '[out:json][timeout:10];(' + sel(extra) + ');out center 10;'
+    const oql = buildOql(constraintFilter)
     // overpass.kumi.systems is dead (serves an HTML/XML error page with HTTP 200, so the
     // .json() below throws and the fallback is silently useless). maps.mail.ru is a live,
     // fast Overpass mirror with full VN coverage — verified returning valid JSON. Keeping a
@@ -237,8 +312,55 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
           // previously 5000ms, which aborted before the server's own declared timeout.
           new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
         ])
-        if ((resp as Response).ok) { overpassData = await (resp as Response).json(); break }
+        if ((resp as Response).ok) {
+          overpassData = usableOverpass(await (resp as Response).json())
+          if (overpassData) break
+        }
       } catch { continue }
+    }
+    /**
+     * 🚨 OVERPASS NARROWED THE QUESTION; JAVASCRIPT DECIDES THE ANSWER.
+     *
+     * The dish filter reaches the provider as `["name"~"bún bò|bun bo",i]`,
+     * which is the right question to ask — measured 2026-09-09, it returns six
+     * real bún bò restaurants in D1 where the old bare `amenity=restaurant`
+     * search returned Jaspas, Au Tresor and Crazy Buffalo. But Overpass matches
+     * that regex over raw UTF-8 BYTES, so it is a narrowing device, not a
+     * boundary: it can admit a row the dish check would reject.
+     *
+     * So every returned row is re-checked here through `normalizeVN`, which
+     * strips diacritics properly. Rows that survive ARE the dish. If none
+     * survive, the list is emptied ON PURPOSE, which drops through to the
+     * unconstrained fallback below and travels with `constraint_unmet` — the
+     * user gets nearby venues plus a note saying the dish was not confirmed,
+     * never a venue relabelled as something it is not.
+     */
+    const dishConstraint = foodConstraints.find(c => c.kind === 'dish')
+    if (dishConstraint?.dish && overpassData) {
+      const dish = dishConstraint.dish
+      const verified = ((overpassData.elements ?? []) as Array<{ tags?: Record<string, string> }>)
+        .filter(el => rowServesDish({ name: el.tags?.['name:vi'] || el.tags?.name, cuisine: el.tags?.cuisine }, dish))
+      overpassData = { ...overpassData, elements: verified }
+    }
+
+    // The constraint found nothing. Fall back to the unconstrained set so the
+    // user still gets nearby options — but flagged, never passed off as matching.
+    let constraintUnmet = false
+    if (constraintFilter && (!overpassData || (overpassData.elements ?? []).length === 0)) {
+      constraintUnmet = true
+      const fallbackOql = buildOql('')
+      for (const endpoint of endpoints) {
+        try {
+          const resp = await Promise.race([
+            fetch(endpoint + '?data=' + encodeURIComponent(fallbackOql), { headers: { 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }),
+            new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 11000))
+          ])
+          if ((resp as Response).ok) {
+          overpassData = usableOverpass(await (resp as Response).json())
+          if (overpassData) break
+        }
+        } catch { continue }
+      }
     }
     if (!overpassData) return { note: messages.places.searchOnMaps(lang, googleMapsUrl), google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
@@ -276,9 +398,19 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       // Hotel star rating (MFS 3.4: accommodation quality is core "needs" info). ~13% of
       // tourism=hotel nodes carry it; only accept a sane 1–5 value.
       const stars = /^[1-5]$/.test((tags.stars || '').trim()) ? (tags.stars || '').trim() : null
+      // 🚨 AN ADDRESS SLOT IS FOR AN ADDRESS. This used to fall back to
+      // `messages.places.seeMap(lang)`, so a venue OSM has no `addr:*` tags for
+      // rendered the words "Xem ban do" in the address line of the card — a UI
+      // label sitting where a street should be, indistinguishable from a real
+      // address to the reader. Same class as the `KHONG CO DU LIEU` sentinel
+      // guarded in `liveView.ts`: an unknown field is ABSENT, never a stand-in
+      // string. `buildEntity` already maps a missing address to `unknownClaim`
+      // and `PlaceDecision` already renders the address line only when present,
+      // so omitting it is what the rest of the pipeline expects.
+      const addr = [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || null
       return {
         name: tags['name:vi'] || tags.name || '',
-        address: [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || messages.places.seeMap(lang),
+        ...(addr ? { address: addr } : {}),
         phone: tags.phone || tags['contact:phone'] || null,
         maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
         ...(cuisine ? { cuisine } : {}),
@@ -288,6 +420,10 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         ...(wifi ? { wifi: true } : {}),
         ...(outdoor ? { outdoor_seating: true } : {}),
         ...(stars ? { stars } : {}),
+        // Coordinates are EMITTED now, not just consumed. They were computed here
+        // for `maps_link` and `distance_km` and then dropped, which left an
+        // OSM-sourced entity with no position of its own.
+        ...((elat && elon) ? { lat: elat, lng: elon } : {}),
         // Distance from the user, only when we have both their GPS and the place's coords.
         //
         // BUG-011 (D2): and ONLY when the search was actually centred on the user. On a remote
@@ -305,6 +441,16 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     return {
       location: loc, amenity_type: amenity, source: 'OpenStreetMap', count: results.length, results,
       google_maps_search: googleMapsUrl,
+      // The constraint travels WITH the data, satisfied or not. A model that is
+      // told "these are not confirmed buffet" can say so; one that is told
+      // nothing fills the gap itself, which is the bug this fixes.
+      ...(foodConstraints.length > 0
+        ? {
+            requested_constraints: foodConstraints.map(c => c.label),
+            constraint_unmet: constraintUnmet,
+            ...(constraintUnmet ? { constraint_note: unmetConstraintNote(foodConstraints, lang) } : {}),
+          }
+        : {}),
       note: results.length === 0 ? messages.places.noOsmData(lang, googleMapsUrl) : messages.places.osmSourceNote(lang, googleMapsUrl)
     }
   } catch (e) { return { error: String(e), results: [], google_maps_search: googleMapsUrl } }
@@ -323,9 +469,158 @@ function isDirectFoodOrderLink(link: string): boolean {
   }
 }
 
+// ── Readers for the widened field mask (approved architecture rev 2, §4) ─────
+//
+// Each returns `undefined` when Google did not supply the field. NOTHING here
+// infers, defaults or reconstructs: an absent value stays absent so the
+// canonical entity can mark it UNKNOWN rather than guess. The row keys below are
+// the snake_case names the rest of the pipeline already speaks, so the OSM
+// fallback rows and the Google rows stay shape-compatible.
+
+interface GoogleOpeningHours { openNow?: boolean; weekdayDescriptions?: string[] }
+interface GooglePriceAmount { currencyCode?: string; units?: string | number }
+interface GooglePriceRange { startPrice?: GooglePriceAmount; endPrice?: GooglePriceAmount }
+
+/** Weekly hours as Google already formats them for the requested language. */
+function readOpeningHours(r: Record<string, unknown>): string | undefined {
+  const reg = r.regularOpeningHours as GoogleOpeningHours | undefined
+  const lines = reg?.weekdayDescriptions
+  if (!Array.isArray(lines) || lines.length === 0) return undefined
+  return lines.join('; ')
+}
+
+/**
+ * Open right now.
+ *
+ * 🔑 `currentOpeningHours` accounts for holidays and special hours;
+ * `regularOpeningHours` does not. Prefer the former, fall back to the latter,
+ * and return `undefined` — never `false` — when neither states it. "We don't
+ * know" and "closed" are different answers and must not collapse.
+ */
+function readOpenNow(r: Record<string, unknown>): boolean | undefined {
+  const cur = (r.currentOpeningHours as GoogleOpeningHours | undefined)?.openNow
+  if (typeof cur === 'boolean') return cur
+  const reg = (r.regularOpeningHours as GoogleOpeningHours | undefined)?.openNow
+  return typeof reg === 'boolean' ? reg : undefined
+}
+
+/** `PRICE_LEVEL_MODERATE` → 2. Unspecified and unknown members yield undefined. */
+const PRICE_LEVELS: Record<string, number> = {
+  PRICE_LEVEL_FREE: 0,
+  PRICE_LEVEL_INEXPENSIVE: 1,
+  PRICE_LEVEL_MODERATE: 2,
+  PRICE_LEVEL_EXPENSIVE: 3,
+  PRICE_LEVEL_VERY_EXPENSIVE: 4,
+}
+function readPriceLevel(r: Record<string, unknown>): number | undefined {
+  const raw = r.priceLevel
+  return typeof raw === 'string' && raw in PRICE_LEVELS ? PRICE_LEVELS[raw] : undefined
+}
+
+/** Provider price band. Only emitted when at least one bound and a currency exist. */
+function readPriceRange(r: Record<string, unknown>): { low?: number; high?: number; currency: string } | undefined {
+  const pr = r.priceRange as GooglePriceRange | undefined
+  if (!pr) return undefined
+  const amount = (a?: GooglePriceAmount) => {
+    const n = Number(a?.units)
+    return Number.isFinite(n) ? n : undefined
+  }
+  const low = amount(pr.startPrice)
+  const high = amount(pr.endPrice)
+  const currency = pr.startPrice?.currencyCode || pr.endPrice?.currencyCode
+  if ((low === undefined && high === undefined) || !currency) return undefined
+  return { ...(low !== undefined ? { low } : {}), ...(high !== undefined ? { high } : {}), currency }
+}
+
+function readCoords(r: Record<string, unknown>): { lat: number; lng: number } | undefined {
+  const loc = r.location as { latitude?: number; longitude?: number } | undefined
+  const lat = loc?.latitude
+  const lng = loc?.longitude
+  return typeof lat === 'number' && typeof lng === 'number' ? { lat, lng } : undefined
+}
+
+/**
+ * Photo RESOURCE NAMES ("places/ChIJ.../photos/AeZ..."), never URLs.
+ *
+ * 🚨 These are carved out of the model-facing payload by splitToolResult — the
+ * model must never see or write an image reference. They exist so
+ * resolvePlacePhotos can skip the legacy Place Details lookup entirely.
+ */
+function readPhotoNames(r: Record<string, unknown>): string[] | undefined {
+  const photos = r.photos as Array<{ name?: string }> | undefined
+  if (!Array.isArray(photos)) return undefined
+  const names = photos.map(p => p?.name).filter((n): n is string => typeof n === 'string' && n.length > 0)
+  return names.length > 0 ? names : undefined
+}
+
+/**
+ * 🚨 A CALL WE ALREADY KNOW WILL FAIL IS STILL A CALL.
+ *
+ * MEASURED 2026-09-08: `SearchTextRequest` on this project carries an effective
+ * limit of 100/day (Google's own default is 75,000), and once it is spent every
+ * place turn still opened a request, waited ~0.5s and threw the answer away
+ * before falling through to OSM. That is latency on every turn and, while any
+ * allowance remains, a wasted unit of it.
+ *
+ * So a hard refusal is remembered for a short while and Google is skipped until
+ * it expires. Deliberately SHORT and self-healing: this is not a kill switch. A
+ * daily quota resets and the onboarding may complete at any time, so the very
+ * next turn after the window simply tries again and, on success, the breaker is
+ * never armed. Nothing about the OSM fallback, the fields, or the cards changes
+ * either way - this only stops paying for a refusal we have already had.
+ *
+ * 🚨 AND THE ONE THING IT MAY NEVER COST US: THE RECOVERY CALL.
+ *
+ * The two refusals are not the same event, so they no longer arm the same way.
+ *
+ *   403 — permission / Maps Platform onboarding. A project CONFIGURATION state.
+ *         It cannot change between two turns, so re-asking inside the window
+ *         buys nothing: it arms on the first refusal, exactly as before.
+ *
+ *   429 — quota. The allowance resets on GOOGLE's clock, not ours, and with an
+ *         effective 100/day the request right after that reset is the single
+ *         most valuable one we make. Arming on the first 429 would close the
+ *         door for ten minutes precisely when it had just been unlocked — so
+ *         the first 429 records the refusal and nothing more, and the VERY NEXT
+ *         call still reaches Google. Only a SECOND consecutive 429 — evidence
+ *         that the allowance really is still spent — arms the breaker.
+ *
+ * The cost of that guarantee is exactly one extra refused request per window,
+ * and what it buys is that a reset is never missed by up to ten minutes.
+ */
+const PLACES_BREAKER_MS = 10 * 60 * 1000
+let placesUnavailableUntil = 0
+/** Consecutive 429s with no Google answer in between. The first one does not arm. */
+let placesQuotaRefusals = 0
+
+/** Read by tests; also the one place that decides whether to try Google. */
+export function googlePlacesLikelyAvailable(now = Date.now()): boolean {
+  return now >= placesUnavailableUntil
+}
+
+/** Arm the breaker after a refusal Google will keep repeating (quota/permission). */
+function notePlacesRefusal(status: number, now = Date.now()): void {
+  // Configuration, not allowance: nothing about it can change inside the window.
+  if (status === 403) { placesUnavailableUntil = now + PLACES_BREAKER_MS; return }
+  // Allowance: the next call is the recovery call and must not be sacrificed.
+  if (status === 429 && ++placesQuotaRefusals >= 2) placesUnavailableUntil = now + PLACES_BREAKER_MS
+}
+
+/** Google answered — the allowance is back, so the refusal streak starts over. */
+function notePlacesSuccess(): void {
+  placesQuotaRefusals = 0
+}
+
+/** Test seam — the breaker is module state, like the tool cache. */
+export function __resetPlacesBreaker(): void {
+  placesUnavailableUntil = 0
+  placesQuotaRefusals = 0
+}
+
 /**
  * The retrieval itself. Reached only through [searchPlaces], which owns the cache, the retrieval
- * budget and in-flight deduplication.
+ * budget and in-flight deduplication — this function owns the Google path, the field-mask readers
+ * above, the availability breaker and the OSM fallback, and nothing else.
  */
 async function searchPlacesUncached(
   query: string, location?: string, type?: string, lang = 'vi',
@@ -348,7 +643,9 @@ async function searchPlacesUncached(
    * answers none at all.
    */
   let googleOk = false
-  if (key) {
+  // The breaker is asked here, inside the uncached path: a refusal Google will repeat for the next
+  // ten minutes must not be paid for again, and the wrapper above has no business knowing why.
+  if (key && googlePlacesLikelyAvailable()) {
     try {
       const sq = location ? query + ' ' + location : query
       // Map legacy type values to Places API (New) includedType names
@@ -366,8 +663,42 @@ async function searchPlacesUncached(
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
       }
-      // places.photos excluded: key is restricted to old Places API only — new API silently returns 0 photos
-      const SEARCH_FIELD_MASK = 'places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.googleMapsUri,places.websiteUri'
+      /**
+       * ── FIELD MASK — approved architecture rev 2, Option A ──────────────────
+       *
+       * 🔑 THE MASK WAS ALREADY BILLED AT ENTERPRISE. `rating`, `userRatingCount`
+       * and `websiteUri` are Enterprise-tier fields, and Google bills a Text
+       * Search request at the HIGHEST tier present in the mask. Everything added
+       * below sits at or under that tier — Pro (`location`, `types`, `photos`) or
+       * Enterprise (`regularOpeningHours`, `currentOpeningHours`,
+       * `nationalPhoneNumber`, `priceLevel`, `priceRange`) — so the search cost
+       * delta is ZERO. Nothing here reaches Enterprise + Atmosphere, which is a
+       * separate, unapproved decision (`editorialSummary`, `reviews`).
+       *
+       * 🚨 `places.photos` returns photo RESOURCE NAMES, not URLs, and it replaces
+       * the legacy Place Details lookup in resolvePlacePhotos — that call was
+       * billed separately at Places Details Legacy. It was excluded here because
+       * the API key is restricted to the legacy Places API; that restriction is
+       * an environment problem, and while it stands this whole branch 403s and
+       * the OSM fallback answers instead.
+       */
+      const SEARCH_FIELD_MASK = [
+        'places.id',
+        'places.displayName',
+        'places.formattedAddress',
+        'places.googleMapsUri',
+        'places.websiteUri',
+        'places.rating',
+        'places.userRatingCount',
+        'places.regularOpeningHours',
+        'places.currentOpeningHours',
+        'places.nationalPhoneNumber',
+        'places.priceLevel',
+        'places.priceRange',
+        'places.location',
+        'places.types',
+        'places.photos',
+      ].join(',')
       const resp = await Promise.race([
         fetch('https://places.googleapis.com/v1/places:searchText', {
           method: 'POST',
@@ -381,6 +712,8 @@ async function searchPlacesUncached(
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
+      // An answer — of any shape — proves the allowance is not spent.
+      if ((resp as Response).ok) notePlacesSuccess()
       // ── BUG-011 (D3): geographic output guard, address-based ───────────────
       // The field mask does not request coordinates, so scope is judged from `formattedAddress`
       // via the same city resolver the rest of the repo uses. Reject only when the address
@@ -418,20 +751,53 @@ async function searchPlacesUncached(
           // The count the model reads must describe the rows it was GIVEN, not the rows the
           // provider offered before the destination guard ran.
           source: 'Google Maps', count: inScope.length,
-          results: placesData.map((r, idx) => ({
-            place_id: r.id as string,
-            name: (r.displayName as { text?: string })?.text || '',
-            address: r.formattedAddress,
-            google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
-            // The same two numbers the sentence above states, kept STRUCTURED as well. The
-            // localized string is what the model reads and cites, and it stays exactly as it was;
-            // these are what a client can render as a rating without parsing "4,7 sao (123 đánh
-            // giá)" back into numbers. Only ever the provider's own values — absent stays absent.
-            ...(typeof r.rating === 'number' ? { rating: r.rating } : {}),
-            ...(typeof r.userRatingCount === 'number' ? { review_count: r.userRatingCount } : {}),
-            maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
-            ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
-          }))
+          results: placesData.map((r) => {
+            const coords = readCoords(r)
+            const openingHours = readOpeningHours(r)
+            const openNow = readOpenNow(r)
+            const priceLevel = readPriceLevel(r)
+            const priceRange = readPriceRange(r)
+            const photoNames = readPhotoNames(r)
+            const types = Array.isArray(r.types) ? (r.types as string[]) : undefined
+            const ratingValue = typeof r.rating === 'number' ? r.rating : undefined
+            const ratingCount = typeof r.userRatingCount === 'number' ? r.userRatingCount : undefined
+            return {
+              place_id: r.id as string,
+              name: (r.displayName as { text?: string })?.text || '',
+              address: r.formattedAddress,
+              // The formatted string stays — the prompt, the injector and the
+              // ranker's back-parser all read it, and changing it would be an
+              // unrelated behavioural change.
+              google_rating: ratingValue !== undefined ? messages.places.googleRating(lang, ratingValue, ratingCount) : null,
+              // …and the NUMBERS travel beside it. `candidate.ts` currently reads
+              // the rating back out of our own formatted string; the canonical
+              // entity reads these instead, so the round trip stops here.
+              ...(ratingValue !== undefined ? { rating_value: ratingValue } : {}),
+              ...(ratingCount !== undefined ? { rating_count: ratingCount } : {}),
+              // The SAME two numbers under the keys `toolResultSplit` carves for the place card
+              // (`rating` / `review_count`). Two readers, two names, one source: the canonical
+              // entity reads `rating_value`/`rating_count`, the card reads these, and neither
+              // parses them back out of the localized `google_rating` sentence. Absent stays absent.
+              ...(ratingValue !== undefined ? { rating: ratingValue } : {}),
+              ...(ratingCount !== undefined ? { review_count: ratingCount } : {}),
+              maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
+              ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
+              ...(openingHours ? { opening_hours: openingHours } : {}),
+              ...(openNow !== undefined ? { open_now: openNow } : {}),
+              ...(typeof r.nationalPhoneNumber === 'string' ? { phone: r.nationalPhoneNumber } : {}),
+              ...(priceLevel !== undefined ? { price_level: priceLevel } : {}),
+              ...(priceRange ? { price_range: priceRange } : {}),
+              ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
+              ...(types ? { place_types: types } : {}),
+              ...(photoNames ? { photo_names: photoNames } : {}),
+              // D2: a distance is stated only when the search is actually centred on the user.
+              // On a remote-destination turn the caller's GPS is where they are STANDING, not
+              // where they asked about, so "2,1 km" would measure the wrong journey entirely.
+              ...(coords && locationBias && !remoteDestination
+                ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, coords.lat, coords.lng) * 10) / 10 }
+                : {}),
+            }
+          })
         }
       } else {
         const status = (resp as Response).status
@@ -441,6 +807,7 @@ async function searchPlacesUncached(
           outcome: status === 429 ? 'quota_exhausted' : status === 403 ? 'permission_denied' : 'http_error',
           errorMessage: (d.error as { message?: string })?.message || null,
         }))
+        notePlacesRefusal(status)
       }
     } catch (e) {
       const msg = String(e)
@@ -457,12 +824,85 @@ async function searchPlacesUncached(
   }
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
-  const qNorm = normalizeVN(query.toLowerCase())
-  const isFood = type === 'restaurant' || type === 'cafe' || /nha hang|quan an|an gi|an ngon|mon an|thuc don|\bcafe\b|ca phe|coffee|quan nhau|bun|pho|com/.test(qNorm)
-  const isSpa = type === 'spa' || /\bspa\b|massage|lam dep|tham my|nail|cham soc da|goi dau/.test(qNorm)
-  const isEntertainment = type === 'cinema' || type === 'bar' || type === 'gym' || /rap chieu|cinema|xem phim|ve phim|karaoke|cong vien|khu vui choi|giai tri|bowling|billiard|\bgym\b|fitness|\bbar\b|\bpub\b|ve vao cong/.test(qNorm)
-  if (isFood || isSpa || isEntertainment) {
+  // One classifier, one answer - see `placeDomainFor`, which also records the two
+  // measured defects that made it a function rather than three inline regexes.
+  const placeDomain = placeDomainFor(query, type)
+  const isFood = placeDomain === 'food'
+  const isSpa = placeDomain === 'spa'
+  const isEntertainment = placeDomain === 'entertainment'
+  /**
+   * The resolved place domain, carried on the result.
+   *
+   * 🔑 It is resolved ONCE, above, from the query text and the caller's `type`,
+   * and re-deriving it downstream would be a second classifier that could
+   * disagree with the one that actually chose the enrichment. One classifier,
+   * one answer, carried as data.
+   *
+   * A place query that matches none of the three (a generic "địa điểm ở Quận 1")
+   * stays `place` — a real place with no domain-specific enrichment, not a
+   * miscategorised restaurant.
+   */
+  if (result && typeof result === 'object') {
+    (result as Record<string, unknown>)._tappy_place_domain = placeDomain
+  }
+
+  /**
+   * 🚨🚨 THE RETRIEVAL VERDICT, STAMPED HERE AND NOWHERE ELSE.
+   *
+   * Computed from the provider's own rows BEFORE any enrichment runs, so nothing added
+   * below can turn "found nothing" into something that reads like a find. That ordering is
+   * the guarantee, not a convention: the Serper calls in the block underneath fetch price and
+   * order SNIPPETS, and snippets are full of venue names. Asked for "spa tốt Hà Nội" the
+   * provider returned zero rows, the snippets arrived anyway, and the reply named four spas
+   * with addresses and prices that had never been retrieved.
+   *
+   * DOMAIN-AGNOSTIC BY CONSTRUCTION. It is one line on the shared result of `searchPlaces`,
+   * which every place query flows through — food, cafe, spa, entertainment and the generic
+   * `place` alike — so there is no per-domain branch to keep in sync, and a sixth domain
+   * inherits it for free.
+   */
+  const placeRows = (result && typeof result === 'object')
+    ? (result as { results?: unknown }).results
+    : undefined
+  const placeSearchEmpty = !Array.isArray(placeRows) || placeRows.length === 0
+  if (result && typeof result === 'object') {
+    (result as Record<string, unknown>).place_search_status = placeSearchEmpty ? 'empty' : 'has_results'
+    if (placeSearchEmpty) {
+      // Said in the result itself, because the model reads this and the gate downstream is
+      // defence-in-depth rather than the first line of defence. An honest empty answer is
+      // still a useful one — offering to widen the search is fine; naming a venue is not.
+      (result as Record<string, unknown>).no_results_instruction = messages.places.noResultsInstruction(lang)
+    }
+  }
+
+  /**
+   * 🚨 ENRICHMENT IS SKIPPED ENTIRELY ON AN EMPTY RETRIEVAL.
+   *
+   * These snippets exist to price and to order FROM the rows above. With no rows there is
+   * nothing to price and nothing to order, and handing the model a list of venue-bearing
+   * search snippets next to an empty result set is precisely how the fabricated spa prices
+   * ("99.000 - 399.000 VND", "massage từ 490.000đ/buổi") got authored. Skipping also keeps
+   * `snippetPrices` empty downstream, so the A5 money guard has nothing to license either.
+   */
+  if (!placeSearchEmpty && (isFood || isSpa || isEntertainment)) {
     try {
+      /**
+       * 🚨 A BILLED CALL ON EVERY PLACE TURN THAT RETURNED NOTHING.
+       *
+       * MEASURED across 17 live place turns: this TikTok query ran 17 times and
+       * produced 0 attributed links and 0 discovery links. It is one Serper
+       * request per turn, every turn, for a result the product almost never got.
+       *
+       * The capability is NOT removed - `attributeTikTok`, `review_actions` and
+       * the `tiktok_verified` rung all stay exactly as they are, and the search
+       * still runs whenever the user actually asks about reviews or TikTok. What
+       * is removed is paying for it on turns where nobody asked.
+       *
+       * Deliberately checks the USER'S words, not the domain: "quan cafe view
+       * dep" is not a request for video reviews, and "review quan nay" is.
+       */
+      const wantsReviewContent = /tiktok|review|danh gia|đánh giá|vlog|video|clip|feedback|nhan xet|nhận xét/i
+        .test(normalizeVN(query.toLowerCase()) + ' ' + query.toLowerCase())
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
       const [priceResults, orderResults, tiktokResults] = await Promise.all([
         serperSearch(query + ' ' + (location || '') + ' ' + suffix),
@@ -471,21 +911,70 @@ async function searchPlacesUncached(
         // the order-link search above: a real provider query, whose results are then VALIDATED —
         // nothing here is constructed from the place name, so a place with no coverage simply
         // ends up without a link.
-        serperSearch(query + ' ' + (location || '') + ' review site:tiktok.com'),
+        wantsReviewContent ? serperSearch(query + ' ' + (location || '') + ' review site:tiktok.com') : Promise.resolve(null),
       ])
       if (result && typeof result === 'object') {
         const extra: Record<string, unknown> = {}
         if (priceResults && priceResults.length > 0) {
-          extra.price_search_results = priceResults
+          /**
+           * 🚨 THIS SEARCH IS ABOUT THE AREA, NOT ABOUT ANY RESTAURANT.
+           *
+           * The query above is `<what the user asked> + <location> + "gia menu
+           * thuc don"` — ONE search for the whole batch, exactly like the TikTok
+           * query below it. Its results are listicles about a district. Measured
+           * 2026-09-09 for "bún bò ở Quận 1": the top result was
+           * "Danh sách quán bún bò Quận 1 ngon", and the reply turned it into
+           * "Bún Bò Huế Đông Ba — Giá tham khảo khoảng 25.000–50.000 đồng/phần".
+           *
+           * Both existing provenance axes were satisfied and every guard passed:
+           * the price WAS REVIEW_SUPPORTED and it DID come from a retrieved
+           * snippet. What nothing recorded was who the snippet was ABOUT.
+           *
+           * So each snippet is attributed with the same audited matcher the
+           * TikTok path uses — a snippet is entity-level only when its own text
+           * names exactly ONE place from `results`. Naming two or more is an
+           * area fact (a listicle), not a fact about either. `evidence_scope`
+           * travels with the data so the guard and the model can both see it.
+           */
+          const placeRows = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
+          const names = Array.isArray(placeRows) ? placeRows.map(r => (r.name as string) || '').filter(Boolean) : []
+          const tokens = placeTokensFor(names)
+          const scoped = priceResults.map(r => {
+            const about = placeNamedBy(r.title, r.snippet, tokens)
+            return { ...r, evidence_scope: about ? 'entity' : 'area', ...(about ? { evidence_about: about } : {}) }
+          })
+          extra.price_search_results = scoped
           extra.price_note = messages.places.priceNote(lang)
           // A5.1: grade the evidence WITH the data. Snippet prices are search-text
           // (REVIEW-level), never a structured/authoritative price — the model reads
           // this and must qualify accordingly (evidence policy block), never FACT.
-          extra.price_evidence = { evidence_type: classifyEvidence('search_snippet'), source_type: 'search_snippet' }
+          // A5.2: and they are AREA-level unless a snippet named one place.
+          extra.price_evidence = {
+            evidence_type: classifyEvidence('search_snippet'),
+            source_type: 'search_snippet',
+            evidence_scope: scoped.some(r => r.evidence_scope === 'entity') ? 'entity' : 'area',
+          }
         }
         if (isFood) {
+          /**
+           * 🚨 A DIRECT ORDERING PAGE IS EVIDENCE FOR THE VENUE IT NAMES, AND
+           * FOR NO OTHER. Measured 2026-09-09 on "bún bò ở Quận 1": the single
+           * direct ShopeeFood link this search returned was
+           * "Bún bò Na - Bún Bò Huế - Nguyễn Cảnh Chân", which is not one of the
+           * six restaurants that were shown. Handing it to the batch would say
+           * "these places deliver" on the strength of a page about a seventh —
+           * the same defect `attributeTikTok` exists to stop, in a new costume.
+           */
           const directOrder = (orderResults || []).filter(r => isDirectFoodOrderLink(r.link))
-          if (directOrder.length > 0) extra.order_search_results = directOrder
+          if (directOrder.length > 0) {
+            const orderRows = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
+            const orderNames = Array.isArray(orderRows) ? orderRows.map(r => (r.name as string) || '').filter(Boolean) : []
+            const orderTokens = placeTokensFor(orderNames)
+            extra.order_search_results = directOrder.map(r => {
+              const about = placeNamedBy(r.title, r.snippet, orderTokens)
+              return { ...r, evidence_scope: about ? 'entity' : 'area', ...(about ? { evidence_about: about } : {}) }
+            })
+          }
           // Inject per-place search links using the exact restaurant name on each platform
           const places = (result as Record<string, unknown>).results as Array<Record<string, unknown>> | undefined
           if (Array.isArray(places)) {

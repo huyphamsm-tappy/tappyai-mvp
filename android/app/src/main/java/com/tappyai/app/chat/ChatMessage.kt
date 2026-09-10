@@ -16,6 +16,9 @@ data class ChatMessage(
     // Structured cards parsed out of an assistant reply (web parity — see [ChatResponseParser]).
     val plan: TappyPlan? = null,
     val ctaButtons: List<CtaButton> = emptyList(),
+    // D1 — the shopping DECISION for this turn, when the reply carried one. Null on every other
+    // turn. Android used to strip this block and render nothing, losing the whole decision.
+    val shopping: ShoppingDecisionView? = null,
     // Positional render list (text + inline photo galleries in stream order — web formatMessage
     // parity, see [ReplySegment]). Empty for user/error/restored messages → render [text] directly.
     val segments: List<ReplySegment> = emptyList(),

@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import ChatInterface from '@/components/ChatInterface'
 import { CATEGORIES } from '@/lib/utils'
+import { TappyMascot } from '@/components/TappyMascot'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 
 interface Conversation {
@@ -31,9 +32,25 @@ export default function ChatConversation({ conversation }: { conversation: Conve
     } catch (e) { console.error('Save failed:', e) }
   }, [conversation.id])
 
+  // V3 §9 — Chat joins the V3 ground. `v3-theme` supplies the palette and `dark` switches the
+  // thread's existing, already-designed dark treatment on, so the conversation reads as part of
+  // the same product instead of a light page reached from a dark one. No behaviour changes: the
+  // marker contract, the action boundary and the honesty rule are untouched.
   return (
-    <div className="flex flex-col h-dvh bg-white dark:bg-gray-950">
-      <Header showBack backHref="/" title={catInfo ? `${catInfo.emoji} ${t(`tag.${catInfo.id}`)}` : conversation.title} />
+    <div className="v3-theme dark flex flex-col h-dvh">
+      {/* The saved-conversation header carries the same approved pose as the live
+        * one — the two are the same surface and must not disagree. See the note
+        * in src/app/chat/page.tsx. */}
+      <Header
+        showBack
+        backHref="/"
+        title={catInfo ? (
+          <span className="inline-flex items-center justify-center gap-2">
+            <TappyMascot pose={catInfo.id} size={24} alt="" />
+            {t(`tag.${catInfo.id}`)}
+          </span>
+        ) : conversation.title}
+      />
       <div className="flex-1 overflow-hidden">
         <ChatInterface
           initialCategory={conversation.category}

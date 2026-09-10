@@ -177,8 +177,23 @@ const guarded = (name: string) => /refuseAnonymousSocialWrite\s*\(/.test(code(na
  * anonymous-capable tools actually use, and does not contain the lower-case substring. The first
  * version of this guard reported `translate` and `scan` as uncapped when both are capped at 30/day
  * per IP — a false alarm that would have sent someone to "fix" working code.
+ *
+ * 🚨 AND IT HAPPENED AGAIN, for the same reason. P1-5 moved the three public LLM endpoints onto
+ * `publicRateLimit(` / `publicDailyRateLimit(` — the shared-store wrappers — and this guard, which
+ * only knew two spellings, reported `translate`, `scan` and `viet-content` as having "no rate
+ * limit at all" moments after they were given a STRONGER one. A guard that enumerates spellings
+ * has to be extended whenever a spelling is added; that is the cost of it being a source scan.
+ *
+ * The names, and what each means:
+ *   rateLimit / dailyRateLimit              in-process, per serverless instance
+ *   publicRateLimit / publicDailyRateLimit  shared store when configured, in-process otherwise
+ *   distributedRateLimit                    shared store, fail-closed (admin routes)
+ *
+ * This guard asks only "is there a cap at all". Which KIND the three public LLM endpoints must use
+ * is pinned separately, in security/__tests__/publicRateLimit.test.ts.
  */
-const capped = (name: string) => /\b(daily)?[Rr]ateLimit\(/.test(code(name))
+const capped = (name: string) =>
+  /\b(?:public|distributed)?(?:[Dd]aily)?[Rr]ateLimit\(/.test(code(name))
 
 describe('U02 — the guard can see the whole surface', () => {
   it('finds a realistic number of mutating routes', () => {

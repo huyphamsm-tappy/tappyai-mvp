@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "_readme": [
+    "CANONICAL STRUCTURED-CONTENT FIXTURES — one file, three consumers.",
+    "",
+    "The server embeds structured blocks in the assistant TEXT stream as bracketed markers.",
+    "Web, Android and iOS each re-implement the decode+strip independently, and they have already",
+    "drifted twice in production (raw [CTA_BUTTONS] JSON on Android; raw [TAPPY_SHOPPING] JSON on",
+    "iOS). This file is the shared conformance suite that turns 'keep three parsers in sync by hand'",
+    "into a test that fails when they drift.",
+    "",
+    "CONSUMERS (all three MUST pass every case):",
+    "  Web      src/lib/structuredContent/markerFixtures.test.ts",
+    "  Android  android/app/src/test/java/com/tappyai/app/chat/ChatResponseFixtureConformanceTest.kt",
+    "  iOS      ios/TappyAITests/ContentParserFixtureConformanceTests.swift",
+    "",
+    "RULES A PARSER MUST SATISFY (V3_PLATFORM_PARITY.md §4.2):",
+    "  1. Strip is unconditional and independent of decode — a block that cannot be decoded is",
+    "     still a block the user must never read.",
+    "  2. Four shapes per marker: closed, bare, unterminated, orphan tag.",
+    "  3. Never end-anchor a bare block — another marker may follow it.",
+    "  4. Never use greedy {[\\s\\S]*} — it swallows trailing prose to the last brace.",
+    "  5. Stripping must not delete unrelated content.",
+    "  6. Adding a marker server-side requires all three clients updated in the same change.",
+    "",
+    "FIELD SEMANTICS:",
+    "  input                    the raw assistant content as the client receives it",
+    "  expectVisibleContains    substrings the user MUST still read",
+    "  expectVisibleNotContains substrings that must NEVER reach the user (marker names AND payload)",
+    "  expectCtaLabels          decoded CTA button labels, in order ([] = none decoded)",
+    "  expectFollowups          decoded follow-up chips, in order",
+    "  expectPlanPresent        whether a plan decoded into its model",
+    "",
+    "Adding a marker server-side? Add its cases here FIRST, watch all three fail, then fix all three."
+  ],
+  "cases": [
+    {
+      "id": "cta-closed",
+      "description": "Normal complete CTA block. Baseline: all three already pass this.",
+      "input": "Quán này ngon lắm.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Xem bản đồ\",\"type\":\"maps\",\"url\":\"https://maps.example/a\",\"primary\":true}]}[/CTA_BUTTONS]",
+      "expectVisibleContains": ["Quán này ngon lắm."],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "\"buttons\"", "maps.example"],
+      "expectCtaLabels": ["Xem bản đồ"],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "cta-bare-then-followups",
+      "description": "D2 — THE PRODUCTION LEAK SHAPE. The model omits the closing tag and emits [FOLLOWUPS] after the CTA block. An end-anchored bare pattern cannot match, so the buttons are lost; on a parser whose safety net strips only the TAG, the raw JSON is then rendered as message body. Android leaked exactly this on 2026-08-27.",
+      "input": "Mình tìm ốp lưng cho bạn nhé.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Shopee\",\"type\":\"search\",\"url\":\"https://shopee.example/q\",\"primary\":true},{\"label\":\"Lazada\",\"type\":\"search\",\"url\":\"https://lazada.example/q\",\"primary\":false}]}\n[FOLLOWUPS]Ốp nào chống sốc tốt?|Có ốp trong suốt không?|Giá rẻ hơn ở đâu?",
+      "expectVisibleContains": ["Mình tìm ốp lưng cho bạn nhé."],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "FOLLOWUPS", "\"buttons\"", "shopee.example", "lazada.example"],
+      "expectCtaLabels": ["Shopee", "Lazada"],
+      "expectFollowups": ["Ốp nào chống sốc tốt?", "Có ốp trong suốt không?", "Giá rẻ hơn ở đâu?"],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "cta-bare-then-prose",
+      "description": "D2 (second half) — prose AFTER a bare CTA block must survive. A greedy or end-anchored strip deletes it; iOS's residue pattern deleted everything to end-of-message.",
+      "input": "Đây là gợi ý.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Gọi\",\"type\":\"call\",\"url\":\"tel:0900000000\",\"primary\":true}]}\nChúc bạn ngon miệng nhé!",
+      "expectVisibleContains": ["Đây là gợi ý.", "Chúc bạn ngon miệng nhé!"],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "\"buttons\"", "tel:0900000000"],
+      "expectCtaLabels": ["Gọi"],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "cta-brace-in-label",
+      "description": "A closing brace inside a JSON string must not end the scan early. Rule 4 — brace matching must honour strings and escapes.",
+      "input": "Thử chỗ này.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Giảm giá {50%}\",\"type\":\"search\",\"url\":\"https://x.example/s\",\"primary\":true}]}\nCòn câu hỏi gì không?",
+      "expectVisibleContains": ["Thử chỗ này.", "Còn câu hỏi gì không?"],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "\"buttons\"", "x.example"],
+      "expectCtaLabels": ["Giảm giá {50%}"],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "cta-unterminated",
+      "description": "A block still arriving mid-stream: braces do not balance. Nothing decodes, and nothing leaks.",
+      "input": "Đang tìm giúp bạn.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Shopee\",\"type\":\"sea",
+      "expectVisibleContains": ["Đang tìm giúp bạn."],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "\"buttons\"", "Shopee"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "cta-orphan-tags",
+      "description": "A lone opening or closing tag whose partner never arrived.",
+      "input": "Gợi ý xong rồi.\n[/CTA_BUTTONS]",
+      "expectVisibleContains": ["Gợi ý xong rồi."],
+      "expectVisibleNotContains": ["CTA_BUTTONS"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "shopping-full",
+      "description": "D1 — the shopping decision block. Web decodes it into a decision card; Android and iOS currently discard it. In ALL cases it must be stripped from the visible text, never rendered as JSON. The server emits it BEFORE the prose.",
+      "input": "[TAPPY_SHOPPING]{\"entities\":[{\"name\":\"MacBook Air M1\",\"matchesRequest\":\"khop\",\"offers\":[{\"seller\":\"CellphoneS\",\"price\":18990000}]}]}[/TAPPY_SHOPPING]\n\nMình nghiêng về **MacBook Air M1** nhé.",
+      "expectVisibleContains": ["Mình nghiêng về **MacBook Air M1** nhé."],
+      "expectVisibleNotContains": ["TAPPY_SHOPPING", "\"entities\"", "matchesRequest", "CellphoneS", "18990000"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "shopping-unterminated",
+      "description": "A shopping block truncated mid-JSON (finishReason length). Must not leak.",
+      "input": "[TAPPY_SHOPPING]{\"entities\":[{\"name\":\"MacBook Air",
+      "expectVisibleContains": [],
+      "expectVisibleNotContains": ["TAPPY_SHOPPING", "\"entities\"", "MacBook Air"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "plan-closed",
+      "description": "A complete plan decodes into its model and leaves no trace in the text.",
+      "input": "Đây là kế hoạch tối nay.\n[TAPPY_PLAN]{\"days\":[{\"title\":\"Tối nay\",\"items\":[{\"time\":\"19:00\",\"name\":\"Ăn tối\"}]}]}[/TAPPY_PLAN]",
+      "expectVisibleContains": ["Đây là kế hoạch tối nay."],
+      "expectVisibleNotContains": ["TAPPY_PLAN", "\"days\"", "Ăn tối"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": true
+    },
+    {
+      "id": "plan-truncated",
+      "description": "A planning turn runs at maxTokens and stops mid-JSON. Nothing decodes; nothing leaks. This is a normal outcome, not a corrupt stream.",
+      "input": "Đây là kế hoạch.\n[TAPPY_PLAN]{\"days\":[{\"title\":\"Ngày 1\",\"items\":[{\"time\":\"08:00\",\"na",
+      "expectVisibleContains": ["Đây là kế hoạch."],
+      "expectVisibleNotContains": ["TAPPY_PLAN", "\"days\"", "Ngày 1"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "all-markers-in-order",
+      "description": "A full production reply carrying every marker. Prose survives, every block is consumed, and the CTA is in the BARE form with followups trailing — the combination that broke Android.",
+      "input": "[TAPPY_SHOPPING]{\"entities\":[{\"name\":\"Air M1\",\"matchesRequest\":\"khop\"}]}[/TAPPY_SHOPPING]\n\nMình nghiêng về **Air M1** nhé.\n[TAPPY_PLAN]{\"days\":[{\"title\":\"Hôm nay\",\"items\":[{\"time\":\"10:00\",\"name\":\"Ghé xem máy\"}]}]}[/TAPPY_PLAN]\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Xem giá\",\"type\":\"search\",\"url\":\"https://p.example/x\",\"primary\":true}]}\n[FOLLOWUPS]Có bản 16GB không?|Bảo hành thế nào?",
+      "expectVisibleContains": ["Mình nghiêng về **Air M1** nhé."],
+      "expectVisibleNotContains": ["TAPPY_SHOPPING", "TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "\"buttons\"", "\"days\"", "\"entities\"", "p.example", "Ghé xem máy"],
+      "expectCtaLabels": ["Xem giá"],
+      "expectFollowups": ["Có bản 16GB không?", "Bảo hành thế nào?"],
+      "expectPlanPresent": true
+    },
+    {
+      "id": "no-markers",
+      "description": "Ordinary prose is returned untouched. Guards against an over-eager strip.",
+      "input": "Quán này ngon lắm, bạn thử nhé! Giá khoảng 200k một người.",
+      "expectVisibleContains": ["Quán này ngon lắm, bạn thử nhé! Giá khoảng 200k một người."],
+      "expectVisibleNotContains": ["CTA_BUTTONS", "TAPPY_PLAN"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    },
+    {
+      "id": "prose-with-braces",
+      "description": "Prose containing braces and a JSON-looking fragment, but no marker. Nothing may be stripped.",
+      "input": "Công thức là {bột: 200g, đường: 50g} nhé bạn.",
+      "expectVisibleContains": ["Công thức là {bột: 200g, đường: 50g} nhé bạn."],
+      "expectVisibleNotContains": ["CTA_BUTTONS"],
+      "expectCtaLabels": [],
+      "expectFollowups": [],
+      "expectPlanPresent": false
+    }
+  ]
+}

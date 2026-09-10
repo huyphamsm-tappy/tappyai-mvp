@@ -1,0 +1,277 @@
+// @vitest-environment jsdom
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { render, screen, cleanup, fireEvent, waitFor, within } from '@testing-library/react'
+import type { ComponentProps } from 'react'
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
+  usePathname: () => '/profile',
+  useSearchParams: () => new URLSearchParams(),
+}))
+
+vi.mock('@/components/NotificationProvider', () => ({
+  useNotifications: () => ({ notifications: [], unreadCount: 0, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
+}))
+
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: (query: string) => ({
+    matches: false, media: query,
+    addEventListener: vi.fn(), removeEventListener: vi.fn(),
+    addListener: vi.fn(), removeListener: vi.fn(), dispatchEvent: vi.fn(),
+  }),
+})
+
+import ProfileView from './ProfileView'
+
+// ── V3 Web · Profile / Me ───────────────────────────────────────────────────
+//
+// 🚨 THE REFERENCE IS THE VISUAL TARGET; THE SCHEMA DECIDES WHAT MAY BE SAID.
+//
+// The design shows a cover photo, an @handle, a location line, a 1.250-point balance with a
+// progress bar to "Silver", story-ring highlights, an activity feed and a friends list. Audited:
+// there is no cover column, no username column, no location column, no points/rewards/tier table
+// anywhere in the codebase, no story or highlight model, and `user_follows` is directional.
+//
+// Those absences are the hard part of this screen, because every one of them is easy to fake and
+// looks better faked. This file pins them out. The rest of it proves the REAL data — follower and
+// following counts (trigger-maintained columns), likes received, the gated content endpoints, and
+// the existing QR capability — is actually rendered.
+
+const REVIEWS = [
+  {
+    id: 'r1', place_name: 'Cà phê Đà Lạt', body: 'ngon', photos: ['https://cdn/x.jpg'],
+    thumbnail: null, content_type: 'video', created_at: '2026-09-01T00:00:00Z',
+    rating: 5, like_count: 1248, comment_count: 12, view_count: 12400,
+  },
+  {
+    id: 'r2', place_name: 'Bún bò Huế', body: 'ok', photos: null,
+    thumbnail: 'https://cdn/y.jpg', content_type: 'photo', created_at: '2026-08-30T00:00:00Z',
+    rating: 4, like_count: 3, comment_count: 0, view_count: 999,
+  },
+]
+
+const FAVORITES = [
+  { id: 'f1', place_id: 'p1', place_name: 'Nhà hàng A', place_address: '12 Lê Lợi, Q1', created_at: '2026-08-01T00:00:00Z' },
+]
+
+const BASE = {
+  userId: 'u1',
+  userInfo: { full_name: 'Huy Pham', avatar_url: null, email: 'huy@example.com' },
+  firstName: 'Huy',
+  conversationCount: 7,
+  bio: 'Yêu du lịch',
+  joinedAt: '2024-05-12T00:00:00Z',
+  followerCount: 1248,
+  followingCount: 56,
+  isPremium: false,
+  stats: { posts: 2, videos: 1, likes: 1251, savedReviews: 4, savedPlaces: 1, conversations: 7 },
+  following: [{ id: 'u2', name: 'Mai Anh', avatarUrl: null }],
+}
+
+let fetchMock: ReturnType<typeof vi.fn>
+
+beforeEach(() => {
+  fetchMock = vi.fn(async (url: string) => {
+    if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS }) }
+    if (url === '/api/reviews/saved') return { ok: true, json: async () => ({ reviews: [] }) }
+    if (url === '/api/favorites') return { ok: true, json: async () => ({ favorites: FAVORITES }) }
+    throw new Error(`unexpected fetch: ${url}`)
+  })
+  vi.stubGlobal('fetch', fetchMock)
+})
+
+afterEach(() => { cleanup(); vi.unstubAllGlobals() })
+
+type HubProps = ComponentProps<typeof ProfileView>
+// Typed against the component, not inferred from BASE — the fixture's non-null values would
+// otherwise narrow `followerCount` to `number` and reject the null case these tests exist for.
+const renderHub = (over: Partial<HubProps> = {}) => render(<ProfileView {...(BASE as HubProps)} {...over} />)
+
+describe('identity comes from the profile row and nothing else', () => {
+  it('shows the name, the bio and the join date the server sent', async () => {
+    const { container } = renderHub()
+    expect(screen.getAllByText('Huy Pham').length).toBeGreaterThan(0)
+    expect(screen.getByText('Yêu du lịch')).toBeTruthy()
+    expect(within(container.querySelector('[data-profile-info]') as HTMLElement).getByText('huy@example.com')).toBeTruthy()
+  })
+
+  it('renders the real follower / following / likes statistics', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(within(hero).getByText('1,248')).toBeTruthy()
+    expect(within(hero).getByText('56')).toBeTruthy()
+    expect(within(hero).getByText('1,251')).toBeTruthy()
+  })
+
+  it('renders NO statistic the server did not send', () => {
+    const { container } = renderHub({ followerCount: null, followingCount: null })
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(hero.querySelectorAll('[data-stat]').length, 'only Likes survives — no zeroed follower row').toBe(1)
+  })
+
+  it('lights the Premium badge only on a real active subscription', () => {
+    // 🔑 SCOPED TO THE HERO. The V3 shell carries its own "TappyAI Premium" upsell block and a
+    // "Wallet / Tappy Points" nav row; a whole-document match would be testing the shell's copy,
+    // not this page's claim about the account.
+    const { container } = renderHub()
+    const hero = () => container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(hero().textContent).not.toContain('Premium')
+    cleanup()
+    const premium = renderHub({ isPremium: true })
+    expect((premium.container.querySelector('[data-profile-hero]') as HTMLElement).textContent).toContain('Premium')
+  })
+})
+
+describe('the mockup fields with no column behind them are absent', () => {
+  it('renders no @handle — there is no username column on profiles', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(hero.textContent ?? '', 'a handle minted from the email is still invented').not.toMatch(/@\w/)
+  })
+
+  it('renders no location line — profiles has no city or country column', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    for (const place of ['Hà Nội', 'Việt Nam', 'Vietnam']) {
+      expect(hero.textContent ?? '').not.toContain(place)
+    }
+  })
+
+  it('offers no cover-photo upload — nothing can store one', () => {
+    const { container } = renderHub()
+    expect(container.textContent ?? '').not.toMatch(/ảnh bìa|cover photo/i)
+  })
+
+  it('shows no points, tier or progress bar — no such table exists', () => {
+    // Scoped to the regions this page authors: the hero and the right sidebar. The shell's
+    // pre-existing "Wallet / Tappy Points" nav row is not this screen's claim to answer for.
+    const { container } = renderHub()
+    const mine = [
+      container.querySelector('[data-profile-hero]'),
+      container.querySelector('[data-profile-info]'),
+      container.querySelector('[data-profile-stats]'),
+      container.querySelector('[data-profile-following]'),
+      container.querySelector('[data-profile-qr]'),
+    ].map((el) => el?.textContent ?? '').join(' ')
+    for (const claim of ['Points', 'Silver', 'Gold', 'điểm để lên hạng']) {
+      expect(mine, `"${claim}" has no model anywhere in this codebase`).not.toContain(claim)
+    }
+    expect(container.querySelector('progress')).toBeNull()
+    expect(container.querySelector('[data-profile-stats] [role="progressbar"]')).toBeNull()
+  })
+
+  it('shows no highlights / story rings — there is no collection model', () => {
+    const { container } = renderHub()
+    expect(container.textContent ?? '').not.toMatch(/khoảnh khắc|highlight/i)
+  })
+
+  it('shows no activity feed — the only per-user log is analytics telemetry', () => {
+    const { container } = renderHub()
+    expect(container.textContent ?? '').not.toMatch(/hoạt động gần đây|recent activity/i)
+  })
+
+  it('calls the follow list Following, never Bạn bè — user_follows is directional', () => {
+    const { container } = renderHub()
+    const card = container.querySelector('[data-profile-following]') as HTMLElement
+    expect(card).toBeTruthy()
+    expect(card.textContent ?? '').not.toMatch(/bạn bè|friends/i)
+    expect(within(card).getByText('Mai Anh')).toBeTruthy()
+    // No Follow button: every row here is already followed, so offering one would be a no-op
+    // control that misdescribes the relationship.
+    expect(card.querySelector('button')).toBeNull()
+  })
+})
+
+describe('content comes from the gated endpoints, and only from them', () => {
+  it('loads posts from /api/reviews/mine', async () => {
+    renderHub()
+    await waitFor(() => expect(document.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(fetchMock).toHaveBeenCalledWith('/api/reviews/mine')
+  })
+
+  it('never reads the reviews table directly — the safety gate lives in those routes', async () => {
+    renderHub()
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled())
+    for (const [url] of fetchMock.mock.calls) {
+      expect(['/api/reviews/mine', '/api/reviews/saved', '/api/favorites']).toContain(url)
+    }
+  })
+
+  it('renders real engagement counts, and the play badge only on a real video', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    const video = container.querySelector('[data-review="r1"]') as HTMLElement
+    const photo = container.querySelector('[data-review="r2"]') as HTMLElement
+    expect(video.textContent).toContain('12K')   // view_count 12400, video
+    expect(video.textContent).toContain('1.2K')  // like_count 1248
+    // r2 is content_type 'photo' — its view_count exists but must not be dressed as plays.
+    expect(photo.textContent).not.toContain('999')
+    expect(photo.textContent).toContain('3')     // like_count
+  })
+
+  it('each post links to the real review route', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(container.querySelector('[data-review="r1"]')!.getAttribute('href')).toBe('/reviews/r1')
+  })
+
+  it('switches tabs and loads saved places from /api/favorites', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Places' }))
+    await waitFor(() => expect(container.querySelector('[data-place="f1"]')).toBeTruthy())
+    expect(fetchMock).toHaveBeenCalledWith('/api/favorites')
+    expect(container.querySelector('[data-place="f1"]')!.textContent).toContain('Nhà hàng A')
+  })
+
+  it('an empty dataset gets an empty state, never filler cards', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Saved' }))
+    await waitFor(() => expect(screen.getByText("You haven't saved any posts yet.")).toBeTruthy())
+    expect(container.querySelectorAll('[data-review]').length).toBe(0)
+  })
+
+  it('a failed load says so instead of rendering an empty success', async () => {
+    fetchMock.mockImplementation(async () => ({ ok: false, json: async () => ({}) }))
+    const { container } = renderHub()
+    await waitFor(() => expect(screen.getByText(/didn't load/)).toBeTruthy())
+    expect(container.querySelectorAll('[data-review]').length).toBe(0)
+  })
+
+  it('offers exactly three tabs — one per gated endpoint', () => {
+    const { container } = renderHub()
+    const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
+    expect(tabs).toEqual(['Posts', 'Saved', 'Places'])
+    // No "Liked" tab: review_likes has no gated list endpoint, and reading it directly would
+    // bypass publishableFilter() and stripUnservableMedia.
+    expect(tabs).not.toContain('Liked')
+  })
+})
+
+describe('the hub stays an account hub, not a replacement for other products', () => {
+  it('keeps every row of the shared account inventory reachable', () => {
+    const { container } = renderHub()
+    const hrefs = [...container.querySelectorAll('.v3-panel li a[href]')].map((a) => a.getAttribute('href'))
+    // The routes the SHARED inventory owns (ProfileRows). The Inbox lives in the shell's own
+    // Account group, not in this list — asserting it here would test the wrong component.
+    for (const route of ['/planner', '/profile/settings', '/profile/history', '/profile/favorites', '/profile/price-watches']) {
+      expect(hrefs, `${route} must stay reachable from Profile`).toContain(route)
+    }
+  })
+
+  it('reuses the existing QR capability rather than drawing a QR of its own', () => {
+    const { container } = renderHub()
+    expect(container.querySelector('[data-profile-qr]')).toBeTruthy()
+    // The real component renders a button that builds the code on demand; there is no inline
+    // <svg> QR baked into this page.
+    expect(container.querySelector('[data-profile-qr] svg[data-qr]')).toBeNull()
+  })
+
+  it('links profile editing at the one real edit route', () => {
+    const { container } = renderHub()
+    const edits = [...container.querySelectorAll('a[href="/profile/edit"]')]
+    expect(edits.length).toBeGreaterThan(0)
+  })
+})

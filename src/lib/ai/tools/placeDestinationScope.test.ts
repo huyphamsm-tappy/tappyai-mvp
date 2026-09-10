@@ -243,7 +243,10 @@ describe('BUG-011 · 5 — same-city keeps the nearby behaviour', () => {
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    // 1500, not the 2000 this suite first pinned: the measurement behind the flat radius found
+    // the larger values timing out everywhere, not only in the dense metros. What BUG-011 owns
+    // here is the CENTRE — the caller's own GPS — and that is unchanged.
+    expect(c.radius).toBe(1500)
     expect(rows(r)[0]).toHaveProperty('distance_km')
   })
 })
@@ -257,7 +260,7 @@ describe('BUG-011 · 6 — no location supplied leaves "near me" untouched', () 
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    expect(c.radius).toBe(1500)   // the shared nearby radius; see BUG-011 · 5 above
   })
 
   it('does not filter results when no destination was named', async () => {

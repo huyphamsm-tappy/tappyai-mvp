@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@700;900&family=Cinzel:wght@400;500;600&display=swap');
+/* Inter 300 is loaded for the V3 surface: the family was imported at 400-700, so the
+   lightest thing any heading could be was Regular and every title read heavy. This is
+   the SAME family, one more weight — not a second webfont. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@700;900&family=Cinzel:wght@400;500;600&display=swap');
 
 :root {
   --primary: #007AFF;
@@ -253,6 +256,23 @@
 
 @media (prefers-reduced-motion: reduce) {
   [class*="tappy-motion-"] { animation: none !important; }
+
+  /* P4-09. The mascot motion above was already handled; the chat's own two INFINITE loops were
+     not, and they are the ones a user sits and watches. `typing-dot` pulses for as long as the
+     model is thinking and `streaming-cursor` blinks for the whole of a long reply — for someone
+     with vestibular sensitivity that is the most punishing motion in the product.
+     Both are disabled rather than removed: the dots stay visible at full scale so the "Tappy is
+     thinking" signal survives, and the cursor becomes a steady bar instead of a blinking one.
+     Nothing about what the interface COMMUNICATES changes — only that it stops moving. */
+  .typing-dot { animation: none !important; transform: scale(1); opacity: 1; }
+  .streaming-cursor::after { animation: none !important; opacity: 1; }
+  .animate-pop-in { animation: none !important; }
+
+  /* Tailwind's animation utilities and the config's own keyframes (fade-in, slide-up, pulse-dot,
+     shake, heart-pop) — a blanket stop so a future `animate-*` call site is covered by default
+     rather than by remembering to add a line here. Opacity-only transitions are left alone; they
+     do not move anything. */
+  [class*="animate-"] { animation: none !important; }
 }
 .message-content { line-height: 1.6; }
 .message-content ul { list-style-type: disc; }
@@ -356,3 +376,708 @@
 .pl-safe { padding-left: env(safe-area-inset-left); }
 .pr-safe { padding-right: env(safe-area-inset-right); }
 .min-h-screen-safe { min-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)); }
+
+/* ------------------------------------------------------------------ */
+/* V3 WEB THEME — the consumer app's V3 surface.                        */
+/*                                                                      */
+/* SCOPED, NEVER GLOBAL, for the same reason `.admin-theme` above is:   */
+/* it is a class on the V3 shell subtree, so every route not yet        */
+/* migrated keeps the light `:root` palette and nothing regresses while */
+/* the redesign lands surface by surface.                               */
+/*                                                                      */
+/* ── LAYOUT GRID ─────────────────────────────────────────────────────*/
+/* One set of numbers the whole surface aligns to. Before this, the     */
+/* sidebar width, the header height and the content width were literals */
+/* re-typed at each call site, so pages quietly disagreed about the     */
+/* grid and nothing lined up across routes. Change a number here and    */
+/* every V3 page moves together.                                        */
+/*                                                                      */
+/* ── LIGHT AND DARK ──────────────────────────────────────────────────*/
+/* This block used to declare "a theme, not a theme mode" and force     */
+/* dark. The approved header carries a Light/Dark control, so the       */
+/* surface has to answer to it.                                         */
+/*                                                                      */
+/* 🔑 It reuses the app's EXISTING mechanism rather than growing a      */
+/* second one: the `dark` class on <html>, persisted under localStorage */
+/* `theme`, which `Header.tsx` has always used and Tailwind is already  */
+/* configured for (`darkMode: 'class'`). `.v3-theme` is light; `.dark   */
+/* .v3-theme` is dark. No provider, no context, no new storage key.     */
+/*                                                                      */
+/* ── THE ACCENT IS TWO TOKENS, NOT ONE ───────────────────────────────*/
+/* 🚨 `--v3-accent` was doing two contradictory jobs: interactive TEXT  */
+/* on a dark ground (which wants a LIGHT blue) and a FILL under white   */
+/* text (which wants a DARK one). One value cannot satisfy both, and    */
+/* the shipped one did not: white on #3391FF measures 3.17:1, so every  */
+/* filled button on the surface — send, "Chat ngay", "Lấy deal", the    */
+/* Premium upsell — was below AA while the palette comment claimed the  */
+/* accent passed. Split into `--v3-accent` (text/icon) and              */
+/* `--v3-accent-fill` (+ `--v3-on-accent` for the text on it).          */
+/*                                                                      */
+/* ── MEASURED CONTRAST ───────────────────────────────────────────────*/
+/* Worst case across that mode's three grounds; computed, not judged.   */
+/*                                                                      */
+/*   DARK   (grounds #0A0F1C / #111827 / #161F32)                       */
+/*     fg 14.9 · secondary 6.5 · muted 4.8 · accent 5.2 ·               */
+/*     amber 7.7 · emerald 8.6 · rose 6.1 · white-on-fill 5.07          */
+/*                                                                      */
+/*   LIGHT  (grounds #F5F7FA / #FFFFFF / #EEF1F6)                       */
+/*     fg 15.7 · secondary 6.7 · muted 4.6 · accent 4.6 ·               */
+/*     amber 5.0 · emerald 5.7 · rose 6.6 · white-on-fill 5.19          */
+/*                                                                      */
+/* All ≥ 4.5:1, the AA threshold for normal text. Two earlier tokens    */
+/* did NOT clear it and were caught only by measuring — #6B7280 muted   */
+/* at 3.4-4.0, and the accent fill above. MEASURE THESE. Do not judge   */
+/* them by eye, and do not list only the ones that pass.                */
+/*                                                                      */
+/* `--v3-violet` is 3.9:1 on the dark elevated surface — an ICON tint   */
+/* only (AA for graphics is 3:1); it must never carry text.             */
+/* ------------------------------------------------------------------ */
+.v3-theme {
+  /* ── Layout grid ── */
+  /* Measured off the approved full-page reference: its sidebar's right edge sits at
+     208/1536 of the frame and its header's baseline at 70/1536-scale. 240px was a round
+     number picked before there was a reference to check it against, and at that width the
+     rail reads as an admin nav rather than the product's. */
+  --v3-sidebar-w: 208px;
+  --v3-header-h: 68px;
+  /* 🚨 WIDENED, and this is the "overly narrow centered dashboard" fix. At 1160 the
+     container was centred inside a 1500px main column, which threw ~170px away on EACH
+     side and pushed Home's left edge to x≈425 on a 1720 viewport. The approved reference
+     gives Home substantially more of the row. 1440 + 40 puts the left edge near x≈284 and
+     lets the hero run about 1360 wide.
+
+     🚨 The reference's two measurements cannot both hold: content starting at x=354 implies
+     a 146px gutter after a 208px sidebar, but a 1078px hero would then end at 1432 and leave
+     288px on the right — not a centred grid. Optimised for the stated intent (more usable
+     width, left edge further left) rather than reproducing one number and missing the point. */
+  /* 🚨 1440 was an OVERCORRECTION. 1160 left the content stranded in a centred puddle, so
+     I widened it — and then treated the extra width as the win, which produced a 1360px hero
+     at 1720 and simply traded one imbalance for another. The reference's hero is about 71% of
+     the main column with real margin either side; 1240 lands near that instead of filling
+     whatever space happens to exist. More width is not the goal; balance is. */
+  --v3-content-max: 1240px;
+  --v3-gutter: 40px;
+  --v3-gap: 16px;
+  --v3-radius: 16px;
+
+  /* ── Light palette (default; `.dark .v3-theme` below overrides) ── */
+  --v3-page: #F5F7FA;
+  --v3-panel: #FFFFFF;
+  --v3-panel-elevated: #EEF1F6;
+  --v3-border: #E3E8EF;
+  --v3-border-strong: #CBD3DF;
+  --v3-fg: #111827;
+  --v3-fg-secondary: #4B5563;
+  --v3-fg-muted: #646E7E;
+  --v3-accent: #0069DB;
+  --v3-accent-fill: #0069DB;
+  --v3-on-accent: #FFFFFF;
+  --v3-accent-soft: rgba(0, 105, 219, 0.10);
+  /* 🚨 THE SHELL GETS ITS OWN SURFACE, and this is why: the sidebar and header were painted
+     with `--v3-panel`, which is the CARD colour. In dark theme that is #111827 — measurably
+     navy (blue bias +18 by B minus the average of R and G). Sitting beside a blue skyline it
+     read as a blue chrome around a blue photo, and the white type had nothing to separate from.
+
+     The cards were neutralised earlier via `.v3-home`, but that scope covers the CONTENT
+     wrapper only — the shell sits outside it, so the fix never reached the sidebar or the
+     header. Splitting the token is what makes the two independently correct.
+
+     Light theme keeps the panel colour: the complaint was about the dark render, and a
+     near-black rail in a light UI would be a different bug. */
+  --v3-shell: var(--v3-panel);
+  --v3-shell-header: var(--v3-panel);
+  --v3-violet: #6D28D9;
+  /* The violet FILL, split from the tint for exactly the reason `--v3-accent` was:
+     `--v3-violet` is an icon tint at 3.9:1 on dark and must never sit under white
+     text. The reference's send button and card badge are a filled violet, measured
+     off the approved screenshot at #402BAE mean / #4529C1 peak. White on this value
+     is 7.1:1 — the tint would have been 4.2:1. Same value in both themes: it reads
+     on the white card and on the dark one, and the reference only shows dark. */
+  --v3-violet-fill: #6D28D9;
+  --v3-on-violet: #FFFFFF;
+  --v3-amber: #A25007;
+  --v3-emerald: #046C4E;
+  --v3-rose: #A81133;
+
+  background-color: var(--v3-page);
+  color: var(--v3-fg);
+}
+
+.dark .v3-theme {
+  --v3-page: #0A0F1C;
+  --v3-panel: #111827;
+  --v3-panel-elevated: #161F32;
+  --v3-border: #1F2937;
+  --v3-border-strong: #2B3648;
+  --v3-fg: #F3F4F6;
+  /* 🚨 THE ROOT CAUSE OF "grey UI text", found by auditing scope rather than by patching
+     elements. Home brightens its text — but only INSIDE `.v3-panel` / `.v3-tile`. Everything
+     that is not in a card falls through to these two values: the sidebar's nav labels and
+     group headings, the top bar's tab labels and subtitle, and the section headings. That is
+     exactly the list of things that read as faded, and it is one token pair, not twenty
+     components.
+
+     Raised from #9CA3AF / #828A9B. Measured against every ground they actually sit on
+     (#111827 sidebar-header, #0E0F12 card, #16181D tile, #0A0A0D AI surface):
+       secondary  6.99-7.79  ->  11.54-12.86
+       muted      5.12-5.70  ->   8.21-9.15
+     Hierarchy deliberately preserved: white->secondary is a 1.54x step and
+     secondary->muted 1.41x, so primary still reads as primary. This is BRIGHTER, not FLATTER.
+
+     ⚠️ SHARED. This is the V3 dark text hierarchy, so Deals, Marketplace, Profile and the
+     chat routes get the same lift. That is the token doing its job — it is explicitly the
+     shared hierarchy, not a Home-only value — but it is a change outside Home and is called
+     out here rather than left to be discovered. */
+  --v3-fg-secondary: #DCE2EC;
+  --v3-fg-muted: #B8C0CD;
+  --v3-accent: #3391FF;
+  --v3-accent-fill: #0A6BDB;
+  --v3-on-accent: #FFFFFF;
+  --v3-accent-soft: rgba(51, 145, 255, 0.14);
+  /* Near-black and near-neutral. Blue bias drops from +18 (#111827) to +4, so it reads as
+     black rather than navy while keeping a trace of warmth off pure #000. The header is one
+     step lighter than the rail — a subtle separation rather than a hard edge. */
+  --v3-shell: #08090D;
+  --v3-shell-header: #0B0C11;
+  --v3-violet: #8B5CF6;
+  --v3-violet-fill: #6D28D9;
+  --v3-on-violet: #FFFFFF;
+  --v3-amber: #F59E0B;
+  --v3-emerald: #34D399;
+  --v3-rose: #FB7185;
+}
+
+/* ── SCENIC MODE ──────────────────────────────────────────────────────────
+   Opt-in, and Home is the only page that opts in. `V3Shell` takes a `scenic`
+   prop the same way it takes `brandTagline`, so no other destination can
+   inherit this by default.
+
+   The surface normally paints `--v3-page` as a solid colour. Under scenic mode
+   it steps back and lets `HomeBackground` — the project's existing, already
+   designed Home background layer — show through, and the chrome becomes
+   translucent instead of opaque.
+
+   🚨 The point is that the artwork stays VISIBLE. The panels sit at ~78-84%
+   with a modest blur: enough that text keeps its contrast, not so much that the
+   photograph turns into a grey field. The blur is small on purpose — a heavy
+   `backdrop-filter` reads as frosted glass and erases the skyline behind it,
+   which is the failure this mode exists to avoid.
+
+   Mobile: `HomeBackground` hides itself below `md`, so on a phone these rules
+   composite over the ordinary page colour and simply look like the normal
+   surface. Nothing to special-case. */
+/* ── THE AI SURFACE ───────────────────────────────────────────────────────
+   Home's assistant card is a NEAR-BLACK translucent surface, not the navy
+   `--v3-panel` the other cards use. `--v3-panel` is #111827 — visibly blue, and
+   over a blue skyline it read as one more blue rectangle on a blue photograph
+   instead of as the product's own surface.
+
+   🔑 It is dark in BOTH themes on purpose: this is the AI surface's identity,
+   not a dark-mode variant. That means the text inside it cannot use the page's
+   tokens — in light theme `--v3-fg` is #111827, which would be black text on a
+   black card. So the card REDEFINES the tokens for its own subtree, and every
+   descendant (greeting, composer, chips, labels) inherits the dark values with
+   no per-element overrides and no `dark:` variants at the call sites.
+
+   Not flat #000: at 8/10/16 with 74% alpha the scene still moves underneath it,
+   which is what keeps it from looking like a hole punched in the page. */
+/* ── HOME'S SURFACE FAMILY ────────────────────────────────────────────────
+   🚨 THE "BLUE DASHBOARD" FIX, AND IT IS ONE RULE RATHER THAN TWENTY.
+
+   Every card on Home took `--v3-panel` (#111827). That value is visibly NAVY,
+   and over a blue skyline the whole page read as blue cards on a blue photo with
+   blue borders — the exact thing the approved reference is not. The hero was
+   fixed first and in isolation, which only made the mismatch louder: one black
+   card sitting in a field of navy ones.
+
+   So the surface tokens are redefined ONCE, on Home's content wrapper, and every
+   descendant inherits: panels, tiles, chips, borders. Charcoal, neutral, no hue.
+   Scoped to `.v3-home` — Deals, Marketplace, Profile and Explore are untouched,
+   which is why this is not a change to `.v3-theme` itself.
+
+   The accents stay: blue and violet still carry icons, links and the send button.
+   Colour belongs to the ACCENTS, not to the surfaces. */
+/* 🚨 DARK ONLY, AND THAT IS A FIX. These four overrides used to apply in BOTH themes,
+   which was correct while Home was permanently a dark scenic surface — the page ignored
+   the theme, so the charcoal was always right. Home follows the theme now, and an
+   unconditional override meant a user on Light got a white page carrying black cards and
+   a black composer. Charcoal is the dark-theme treatment; in light theme Home uses the
+   same panel tokens every other V3 page uses. */
+.dark .v3-home {
+  --v3-panel: #0E0F12;
+  --v3-panel-elevated: #16181D;
+  --v3-border: #23262D;
+  --v3-border-strong: #31353E;
+}
+
+/* 🚨 THE TEXT COLOURS BELONG TO THE SURFACES, NOT TO THE PAGE. They were first set on
+   `.v3-home` itself, which also captured the section headings — and those sit on the
+   PHOTOGRAPH, not on a card. In dark theme that passed; in light theme it put white
+   headings on a bright sky and they nearly vanished. Only elements actually on a dark
+   surface get the dark-surface text. */
+.dark .v3-home .v3-panel,
+.dark .v3-home .v3-tile {
+  --v3-fg: #FFFFFF;
+  /* One step above the base: these grounds (#0E0F12 / #16181D) are darker than the
+     sidebar's, so the same values would read dimmer here than they do there. */
+  --v3-fg-secondary: #D2D9E4;
+  --v3-fg-muted: #B2BAC8;
+}
+
+/* Scenic makes panels translucent so the scene shows through. On Home the BASE has to
+   stay neutral or the photograph tints it straight back to navy — which is what
+   "the human eye should perceive the card as BLACK" means in practice. Higher alpha
+   than the generic scenic panel, and the backdrop is desaturated rather than saturated. */
+@media (min-width: 768px) {
+  .v3-theme.v3-scenic .v3-home .v3-panel {
+    background-color: rgba(14, 15, 18, 0.86);
+    backdrop-filter: blur(16px) saturate(0.75);
+    -webkit-backdrop-filter: blur(16px) saturate(0.75);
+  }
+  .v3-theme.v3-scenic .v3-home .v3-tile {
+    background-color: rgba(18, 20, 24, 0.84);
+    backdrop-filter: blur(12px) saturate(0.75);
+    -webkit-backdrop-filter: blur(12px) saturate(0.75);
+  }
+}
+
+@supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+  .v3-theme.v3-scenic .v3-home .v3-panel { background-color: #0E0F12; }
+  .v3-theme.v3-scenic .v3-home .v3-tile { background-color: #16181D; }
+}
+
+/* 🚨 Selector is `.v3-panel.v3-ai-surface`, not `.v3-ai-surface`. At equal
+   specificity source order decides, and in the COMPILED stylesheet `.v3-panel`
+   lands after this block — so the plain class lost, silently, and the card
+   rendered navy while the rule sat right there looking correct. Two classes
+   beat one regardless of where either ends up in the output. */
+.v3-panel.v3-ai-surface {
+  /* 🚨 IT WAS READING BLUE, AND `saturate()` WAS THE CULPRIT. The fill was already
+     near-black (8,10,16) — but at 74% alpha a blue skyline shows through, and
+     `saturate(1.15)` on the backdrop then INTENSIFIED exactly that blue before
+     compositing. The card was tinting itself with the background it sits on.
+
+     Now: a neutral near-black at a higher alpha, and the backdrop is DESATURATED
+     rather than saturated, so what little scene comes through arrives as
+     luminance instead of colour. Still translucent — the scene must move under
+     it — but it reads black, not navy. */
+  background-color: rgba(10, 10, 13, 0.88);
+  border-color: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(18px) saturate(0.72);
+  -webkit-backdrop-filter: blur(18px) saturate(0.72);
+
+  /* Text on a black surface can afford to be BRIGHTER and LIGHTER at once — the
+     previous values were mid-greys chosen against the navy panel, and on black
+     they read washed out. Brightened one step each; the weights stay light. */
+  --v3-fg: #FFFFFF;
+  --v3-fg-secondary: #D6DCE7;
+  --v3-fg-muted: #B6BECB;
+  --v3-panel-elevated: rgba(255, 255, 255, 0.055);
+  --v3-border: rgba(255, 255, 255, 0.10);
+  --v3-border-strong: rgba(255, 255, 255, 0.20);
+  --v3-accent: #5AA6FF;
+}
+
+/* The composer placeholder was the browser's default grey — nearly invisible on
+   black. It is muted ON PURPOSE, but it has to be readable muted. */
+.v3-ai-surface input::placeholder {
+  color: var(--v3-fg-muted);
+  opacity: 1;
+}
+
+/* Chips inside the hero: brighter text, quieter border. They were reading as
+   grey pills; they should read as soft-white suggestions. */
+.v3-ai-surface .v3-chip {
+  color: #E6EAF2;
+  border-color: rgba(255, 255, 255, 0.18);
+  background-color: rgba(255, 255, 255, 0.045);
+}
+
+/* 🚨 GATED TO THE BREAKPOINT THAT ACTUALLY HAS A SCENE.
+   `HomeBackground` renders `hidden md:block` — below 768px there is no image at
+   all. Ungated, these rules stripped the page colour on a phone and left the
+   browser canvas showing through, with white section headings and their dark
+   halos stranded on it. Scenic mode may only engage where the scene exists. */
+@media (min-width: 768px) {
+
+  .v3-theme.v3-scenic {
+    background-color: transparent;
+  }
+
+  /* 🚨 THE SURFACE GOING TRANSPARENT IS NOT ENOUGH. `body` paints an opaque
+     `bg-white` / `dark:bg-gray-950` from the base layer, and `HomeBackground` is a
+     fixed layer at `-z-10` — so the document's own background sat on top of the
+     photograph and the scene was invisible even though the image had loaded,
+     painted, and measured 1436×950. It was found by forcing the layer's z-index
+     forward: the image appeared instantly, which proved it was covered rather
+     than broken.
+
+     Scoped with `:has()` so ONLY a document actually containing a scenic surface
+     is affected — Deals, Profile and every other page keep their opaque body.
+     Where `:has()` is unsupported the rule is dropped and the background simply
+     stays hidden, which is exactly how Home looked before this change: a safe
+     degradation, not a broken one. */
+  html:has(.v3-scenic),
+  body:has(.v3-scenic) {
+    background-color: transparent;
+  }
+
+  .v3-theme.v3-scenic .v3-panel {
+    background-color: color-mix(in srgb, var(--v3-panel) 84%, transparent);
+    backdrop-filter: blur(10px) saturate(1.08);
+    -webkit-backdrop-filter: blur(10px) saturate(1.08);
+  }
+
+  .v3-theme.v3-scenic .v3-tile {
+    background-color: color-mix(in srgb, var(--v3-panel-elevated) 78%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+
+  /* Scenic mode makes `.v3-panel` translucent; the AI surface has already chosen
+     its own alpha, so it must not be overridden by that rule. */
+  .v3-theme.v3-scenic .v3-panel.v3-ai-surface {
+    /* 🚨 The FILTER has to be restated here, not just the colour. Scenic's
+       `.v3-theme.v3-scenic .v3-panel` is three classes deep and outranks the
+       two-class `.v3-panel.v3-ai-surface`, so the hero kept scenic's
+       `saturate(1.08)` — still intensifying exactly the blue this card was
+       being blackened to escape. Measured as `blur(10px) saturate(1.08)` on
+       the rendered element while the rule below said otherwise. */
+    background-color: rgba(10, 10, 13, 0.88);
+    backdrop-filter: blur(18px) saturate(0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(0.72);
+  }
+
+  @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+    .v3-theme.v3-scenic .v3-panel.v3-ai-surface { background-color: rgb(10, 12, 18); }
+  }
+
+  /* Section headings sit OUTSIDE the panels, directly on the photograph, so they
+     get no panel to carry their contrast. A soft halo keeps them legible over any
+     part of the image without darkening the image itself — the alternative was a
+     heavier overlay, which is the thing this mode exists to avoid.
+
+     The halo is theme-matched: light text needs a dark shadow, dark text needs a
+     light one. Panels handle their own headings, so this deliberately targets only
+     the ones the scenic layer exposes. */
+  .v3-theme.v3-scenic [data-scenic-heading] {
+    text-shadow: 0 1px 10px rgba(255, 255, 255, 0.55);
+  }
+  .dark .v3-theme.v3-scenic [data-scenic-heading] {
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Chrome is more transparent than content: the sidebar and header frame the
+     scene rather than covering it. */
+  /* 🚨 OPAQUE. This is why the shell still RENDERED blue after its token was neutralised:
+     the token was #08090D, but the surface was painted at 82% alpha over a blue skyline and
+     its backdrop was `saturate(1.05)` — so 18% of the photograph came through and got its
+     blue boosted on the way. The computed background read `srgb(0.031 0.035 0.051 / 0.82)`,
+     and I reported the neutral part while the alpha was doing the damage.
+     A token is not a render. Measuring the declaration proves nothing about the pixel. */
+  .v3-theme.v3-scenic .v3-scenic-chrome {
+    background-color: var(--v3-shell) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  /* `color-mix` is well supported but not universal. Without it the declarations
+     above are dropped and the panels would render fully transparent over a photo,
+     which is unreadable — so restate the opaque colour as the floor. */
+  @supports not (background-color: color-mix(in srgb, red 50%, transparent)) {
+    .v3-theme.v3-scenic .v3-panel { background-color: var(--v3-panel); }
+    .v3-theme.v3-scenic .v3-tile { background-color: var(--v3-panel-elevated); }
+    .v3-theme.v3-scenic .v3-scenic-chrome { background-color: var(--v3-shell) !important; }
+  }
+}
+/* ── end scenic (md and up) ────────────────────────────────────────────── */
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HOME · AI AMBIENT SURFACE
+   ══════════════════════════════════════════════════════════════════════════
+
+   🚨 THIS REPLACES THE CITYSCAPE, AND THAT IS THE POINT OF THE REDESIGN.
+
+   Home rendered a full-bleed photograph of Hanoi behind everything. It is a
+   beautiful asset and it was making a claim about the product: a page whose
+   dominant visual is a travel photo reads as a travel site with a search box on
+   it, whichever words are in the panels. The scene is gone from Home and what
+   replaces it is LIGHT, not imagery — two wide, very low-opacity radial fields
+   that pool behind the hero and fall off to near-black.
+
+   🚨 THE SCENIC SUBSYSTEM IS NOT DELETED. `HomeBackground`, `backgroundManager`
+   and `backgrounds.config.ts` are untouched and still work; Home simply stops
+   mounting them, and `V3Shell`'s `scenic` prop stops being passed. Anything that
+   wants the photograph back turns it on again in one line.
+
+   🚨 IT ALSO REMOVES THE TOP-LEFT JUNCTION ARTIFACT. Scenic mode made `html` and
+   `body` transparent so a fixed image could show through, which left the sidebar,
+   the header and the content each painting their own surface over a shared hole —
+   the seam where those three met is the corner that read as a cut-out. With the
+   page opaque again the three surfaces meet as one flat 90° junction. */
+/* 🔑 A REAL ELEMENT, NOT A ::before ON THE WRAPPER. The scenic system learned this the hard
+   way: `body` paints an opaque colour, so a `z-index:-1` layer sits BEHIND the document and is
+   invisible however correct it looks in the inspector. This renders as the first child of the
+   content column at z-index 0, with the sections above it at z-index 1 — no transparent html,
+   no `:has()`, nothing for the sidebar/header/content junction to fall through. */
+.v3-ai-ambience {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(90rem 44rem at 62% -14%, rgba(0, 122, 255, 0.16), transparent 62%),
+    radial-gradient(64rem 40rem at 8% -6%, rgba(124, 92, 246, 0.13), transparent 60%),
+    radial-gradient(70rem 36rem at 96% 34%, rgba(0, 122, 255, 0.07), transparent 66%);
+}
+
+/* Light theme gets the same composition at a fraction of the strength: the point
+   is a hint of depth behind the hero, not a blue wash over white cards. */
+/* 🚨 LIGHT IS NOT "DARK WITH THE BACKGROUND REMOVED". At 0.09/0.07 over pure white the
+   ambience was effectively invisible, so the light hero lost the lighting that gives the
+   dark one its depth and read as a flat white page. It is strengthened here AND given a
+   cool ground to sit on — an off-white page tinted a few points toward blue, which is what
+   lets a low-contrast glow register at all. Still no hard edges and no visible banding. */
+:root:not(.dark) .v3-ai-ambience {
+  background:
+    radial-gradient(90rem 46rem at 62% -16%, rgba(0, 122, 255, 0.17), transparent 64%),
+    radial-gradient(62rem 40rem at 6% -8%, rgba(124, 92, 246, 0.13), transparent 62%),
+    radial-gradient(70rem 38rem at 98% 30%, rgba(0, 122, 255, 0.08), transparent 66%),
+    /* A cool wash across the whole field. Pure white gives a low-contrast glow nothing to
+       register against; a few points toward blue is what makes the light hero read as lit
+       rather than blank. */
+    linear-gradient(180deg, rgba(0, 90, 200, 0.05), rgba(0, 90, 200, 0.02) 40%, transparent 70%);
+}
+
+:root:not(.dark) .v3-ai-composer {
+  /* An opaque white field against that tinted ground: the input is the one thing on the page
+     that should read as lit from within, in both themes. */
+  background: #FFFFFF;
+  box-shadow:
+    0 0 0 1px rgba(0, 122, 255, 0.06),
+    0 16px 40px -22px rgba(0, 82, 204, 0.35);
+}
+
+/* The hero's own pool of light — a single soft field behind the composer so the
+   input reads as the lit centre of the page rather than one more card. */
+.v3-ai-hero {
+  position: relative;
+  isolation: isolate;
+}
+/* 🚨 DEPTH WAS LOST IN THE CALM-DOWN PASS, AND THIS PUTS IT BACK WITHOUT THE NOISE.
+   Removing the orbit and the particles was right; the side effect was that the hero
+   flattened into plain dark, which reads as a SaaS dashboard rather than a premium AI
+   surface. What returns is LIGHT only — a wide blue pool under the composer, a violet
+   secondary offset behind the character, and nothing with an edge. No ring, no
+   particles, no stars. */
+.v3-ai-hero::before {
+  content: '';
+  position: absolute;
+  inset: -22% -12% -34%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(62% 66% at 42% 46%, rgba(0, 122, 255, 0.20), transparent 72%),
+    radial-gradient(38% 54% at 82% 26%, rgba(124, 92, 246, 0.16), transparent 70%);
+}
+:root:not(.dark) .v3-ai-hero::before {
+  background:
+    radial-gradient(62% 66% at 42% 46%, rgba(0, 122, 255, 0.13), transparent 72%),
+    radial-gradient(38% 54% at 82% 26%, rgba(124, 92, 246, 0.10), transparent 70%);
+}
+
+/* ── Capability cards ───────────────────────────────────────────────────────
+   🚨 THIRD AND FINAL SHAPE, AND THE TWO WRONG ONES ARE WORTH NAMING. First: six
+   `v3-tile` cards with icon, bold title and a description — a dashboard module
+   grid. Then bare pills, which read as tags. Then soft tiles, which still read
+   as horizontal nav rows because a label on a flat bar is a menu item.
+
+   What the approved mockup actually shows is IMAGE-LED: a scene, a scrim, a
+   title and one short line. That is what makes them read as places the agent can
+   take you rather than as buttons. The discipline is HEIGHT — 104px against the
+   recommendation strip's 210px, so they stay a bridge between the hero and the
+   recommendations and never compete with either. */
+.v3-cap-card {
+  border: 1px solid var(--v3-border);
+  background: var(--v3-panel-elevated);
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.v3-cap-card:hover .v3-cap-arrow {
+  background: var(--v3-accent-fill);
+  color: var(--v3-on-accent);
+}
+.v3-cap-card:hover {
+  border-color: color-mix(in srgb, var(--v3-accent) 50%, var(--v3-border));
+  transform: translateY(-2px);
+}
+/* A short fade from the art into the card's own surface, so the scene and the
+   text below it read as one object rather than as a picture with a bar under it.
+   `--v3-panel-elevated` is the card ground, so the fade lands exactly on it. */
+.v3-cap-fade {
+  background: linear-gradient(to bottom, transparent, var(--v3-panel-elevated));
+}
+
+/* The one card with no scene behind it. Same silhouette, no scrim, page colours. */
+.v3-cap-card-plain {
+  background: color-mix(in srgb, var(--v3-panel) 70%, transparent);
+}
+:root:not(.dark) .v3-cap-card-plain {
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+/* ── Recommendation art ─────────────────────────────────────────────────────
+   🚨 THE HERO WON ON SIZE AND LOST ON SATURATION. Full-colour artwork starting at
+   the fold was the highest-contrast thing on a near-black page, so the eye went
+   there first and the composer — the actual product — came second. This pulls the
+   art back a step so the strip reads as RESULTS FROM Tappy rather than as a feed
+   competing with him. Content is untouched; only intensity is. */
+/* 🚨 RETUNED FOR PHOTOGRAPHY. These values (0.82 / 0.88) were set against the dark authored
+   VECTOR scenes, where heavy damping was what kept a flat illustration from shouting over the
+   hero. Real photographs carry their own depth and read as muddy under the same treatment —
+   the approved mockup's imagery is bright and saturated. This is now a light touch: enough to
+   keep the strip below the composer in the visual order, not enough to grey the picture out. */
+.v3-home [data-home-section='for-you'] img {
+  filter: saturate(0.96) brightness(0.95);
+  transition: filter 200ms ease, transform 500ms ease;
+}
+.v3-home [data-home-section='for-you'] a:hover img {
+  filter: saturate(1) brightness(1) contrast(1);
+}
+:root:not(.dark) .v3-home [data-home-section='for-you'] img {
+  /* On white the photograph needs no damping at all beyond a whisper. */
+  filter: saturate(0.98) brightness(0.99);
+}
+
+/* The AI composer. Larger than a search field on purpose — this is the primary
+   action of the product, so it gets the height, the ring and the focus state. */
+.v3-ai-composer {
+  border: 1px solid color-mix(in srgb, var(--v3-accent) 26%, var(--v3-border));
+  background: color-mix(in srgb, var(--v3-panel) 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 0 1px rgba(0, 122, 255, 0.08),
+    0 1px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 64px -28px rgba(0, 122, 255, 0.75);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.v3-ai-composer:focus-within {
+  border-color: color-mix(in srgb, var(--v3-accent) 62%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--v3-accent) 18%, transparent),
+    0 22px 56px -22px rgba(0, 122, 255, 0.7);
+}
+
+
+
+/* The one content container. Every V3 page puts its content in this, so the
+   left edge of Home's hero, Deals' grid and Profile's rows all land on the
+   same vertical line, and none of them invents its own width. */
+.v3-container {
+  width: 100%;
+  max-width: var(--v3-content-max);
+  margin-inline: auto;
+  padding-inline: var(--v3-gutter);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   HOME · THE AI CANVAS
+   ══════════════════════════════════════════════════════════════════════════
+
+   🚨 A FIXED CAP IS THE THING THAT WAS WRONG, AND RAISING IT DID NOT FIX IT.
+   This was 1240px, then 1480px. Both produced the same composition on the
+   owner's 27-inch monitor: sidebar, a centred island, and two obvious empty
+   regions either side of it. 1480 inside the ~1712px left after the sidebar
+   still stranded 118px on each edge, which is exactly wide enough to read as
+   dead space rather than as margin.
+
+   The canvas is FLUID now. Width is whatever remains after the sidebar, minus
+   gutters that scale with the viewport — so the composition expands with the
+   screen instead of pinning to a number and letting the screen grow around it.
+   At 1920 that is roughly 1570px of content against 72px gutters: margin, not
+   emptiness. The cap that remains is a sanity stop for ultrawide displays,
+   far beyond any acceptance width.
+
+   🚨 THE GUTTER IS THE ONLY HORIZONTAL CONSTRAINT. Every section — hero,
+   composer, capabilities, recommendations, tools — inherits this one width, so
+   none of them can become an island inside the canvas. There is no second
+   container anywhere in Home. */
+.v3-container-wide {
+  max-width: 2040px;
+  --v3-gutter: clamp(20px, 3.4vw, 72px);
+}
+
+/* The panel IS the visual language of this surface: one card shape, one
+   hairline, one header rhythm. Everything on the V3 grid is one of these,
+   which is what stops a dense page reading as a pile of unrelated widgets. */
+.v3-panel {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 16px;
+}
+.v3-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--v3-border);
+}
+.v3-panel-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--v3-fg);
+}
+/* The small tinted glyph tile each panel header carries. Colour identifies the
+   panel at a glance; the title beside it always says the same thing in words,
+   so the tint is never the only carrier of meaning. */
+.v3-panel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.v3-seeall {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--v3-accent);
+}
+.v3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--v3-border-strong);
+  background-color: var(--v3-panel-elevated);
+  color: var(--v3-fg-secondary);
+  font-size: 12.5px;
+  /* 400, not 500: at chip size the extra weight was doing nothing but making the
+     row look dense. The chips are suggestions, not commands. */
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  transition: color 150ms, background-color 150ms, border-color 150ms;
+}
+.v3-chip:hover { color: var(--v3-fg); border-color: var(--v3-accent); }
+.v3-chip-active {
+  background-color: var(--v3-accent);
+  border-color: var(--v3-accent);
+  color: #fff;
+}
+.v3-tile {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  border-radius: 12px;
+  transition: border-color 150ms, transform 150ms;
+}
+.v3-tile:hover { border-color: var(--v3-border-strong); transform: translateY(-1px); }
+.v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
+.v3-scroll-x::-webkit-scrollbar { display: none; }

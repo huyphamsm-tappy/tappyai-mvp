@@ -82,10 +82,22 @@ describe('safeFlushPoint — what may be released early', () => {
   })
 
   it('a number without a currency is not a money claim, and must not stall the stream', () => {
-    // "4.6⭐ (57 đánh giá)" is a rating, not a price — the guard would never touch it.
-    const text = 'Quán này 4.6⭐ với 57 đánh giá Google Maps. '
+    // 🔑 THE INTENT IS UNCHANGED — a bare number must not be mistaken for a price.
+    // The fixture changed: it used to be "Quán này 4.6⭐ với 57 đánh giá Google
+    // Maps.", which really does hold no money claim, but IS a rating and a review
+    // count. `guardPlaceClaimsInText` can remove exactly that sentence, so
+    // releasing it early was the streaming leak this boundary now closes.
+    // A number that no guard can act on still streams immediately.
+    const text = 'Quán mở cửa từ 6h sáng đến 22h. '
     expect(extractMoneyClaims(text)).toHaveLength(0)
     expect(safeFlushPoint(text)).toBeGreaterThan(0)
+  })
+
+  it('a rating or review count DOES stall the stream, because the guard can remove it', () => {
+    // The old fixture, kept as the case it actually is now.
+    const text = 'Quán này 4.6⭐ với 57 đánh giá Google Maps. '
+    expect(extractMoneyClaims(text)).toHaveLength(0)
+    expect(safeFlushPoint(text)).toBe(0)
   })
 })
 

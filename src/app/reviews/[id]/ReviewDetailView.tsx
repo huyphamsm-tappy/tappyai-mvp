@@ -281,10 +281,25 @@ export default function ReviewDetailView({
           <p className="text-gray-400 text-sm mb-3 leading-snug">
             {t('reviewDetail.ctaPrompt')} <span className="font-semibold text-white">{review.place_name}</span>?
           </p>
+          {/* P4-12 — the bridge now CARRIES the place (DD-004).
+              This CTA already existed and already said "Ask Tappy", but it linked to a bare
+              /chat: the user arrived in an empty thread and had to retype the place they had
+              just been reading about. That is the discovery dead-end the audit named (IA-5),
+              and it is fixed by adding context to the href — nothing about Explore's identity,
+              styling or behaviour changes (OD-2).
+              The prompt names the place and asks about it; it does not decide what the user
+              wants, because this text appears as if they typed it. */}
           <Link
-            href="/chat"
-            className="inline-flex items-center gap-2 text-white text-sm font-bold px-5 py-2.5 rounded-full"
-            style={{ background: 'linear-gradient(135deg, #ff6b35 0%, #e91e8c 100%)' }}
+            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}`}
+            /* V3: the bridge is the one thing this pass touches on Explore, so it is the one
+               thing that speaks the product's colour. The orange/pink gradient here predated the
+               design system and was the only place on the surface using it. Explore's own
+               identity — the feed, the dark stage, like/comment/share — is untouched (OD-2). */
+            /* Same 44px floor and focus ring as the feed's copy of this control
+               (cross-screen invariant 5). It is the same affordance on the same
+               surface; two different sizes for it would be an accident. */
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+            style={{ background: 'var(--v3-accent-fill)' }}
           >
             🤖 {t('reviewDetail.askTappy')}
           </Link>

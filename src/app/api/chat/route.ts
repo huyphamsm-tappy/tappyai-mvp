@@ -23,6 +23,7 @@ import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refine
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
@@ -30,15 +31,19 @@ import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructio
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
-import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
+import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
+import { normalizePwLang } from '@/lib/priceWatch/messages'
+import { runAiWriteAction } from '@/lib/ai/actions/runAction'
+import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
+import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
 import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 
@@ -46,6 +51,19 @@ export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
+
+  // ── P1-3: deliver whatever the previous request buffered ───────────────────
+  //
+  // Events are recorded synchronously into a module-level buffer and delivered at the START of a
+  // LATER request, where the network call overlaps work the handler was already going to await.
+  // Never awaited: awaiting it would put Cloud Logging's latency in front of the user's reply,
+  // which is the exact cost this design exists to avoid. It cannot reject.
+  //
+  // Chat is where this call belongs. Before P1-3 the only flush sites were TTS and the three media
+  // uploads — all low-traffic — so a chat-dominant workload would record usage events into a
+  // 200-entry buffer and overflow it long before anything drained. Recording without flushing here
+  // would have produced a cost pipeline that silently measured a small, biased sample.
+  void flushPending(req)
 
   // Flood guard: cap requests per client IP (applies to anonymous and
   // authenticated callers alike, before any expensive LLM/tool work). The
@@ -541,13 +559,78 @@ export async function POST(req: Request) {
    * removed from the model's view exactly as applyBudgetFilter already does, and
    * every surviving record keeps its own link, photo and enrichment fields.
    */
+  /**
+   * The Pick, in the shape the recommendation adapter reads.
+   *
+   * 🚨 THE DECISION USED TO STOP HERE. `placeRecommendations` looked for the
+   * chosen name on `result._tappy_ranking`, and that block is built INSIDE the
+   * object returned to the model - never on the result this adapter receives. So
+   * every canonical recommendation came back `recommended: false`, and the card
+   * layer had no pick to render even though the engine had made one.
+   *
+   * Same source and same caps as `buildPickPayload`, so the model's text and the
+   * rendered card can never describe different choices.
+   */
+  const pickContext = (pick: ReturnType<typeof derivePick> | null) => {
+    if (!pick) return undefined
+    const leadsOn = pick.runnerUp?.leadsOn
+    return {
+      name: pick.candidate.name,
+      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail })),
+      tradeOff: leadsOn ? { attribute: leadsOn.key, evidence: leadsOn.detail } : null,
+    }
+  }
+
+  /**
+   * The explicit shopping constraints this CONVERSATION carries.
+   *
+   * Folded from every user turn, not just the last one: a "cheaper options?"
+   * follow-up names no product, and one that forgot the subject came back
+   * with laptop screens and a mouse. The budget falls back to the last turn that
+   * stated one for the same reason.
+   */
+  const shoppingConstraints = deriveShoppingConstraints(
+    messages,
+    budget ?? budgetFromHistory(messages, extractBudget),
+  )
+
   const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
     const r = result as Record<string, unknown>
-    const candidates = toolName === 'search_places' ? normalizePlaces(r)
+    const allCandidates = toolName === 'search_places' ? normalizePlaces(r)
       : toolName === 'get_hotel_prices' ? normalizeHotels(r)
         : normalizeShopping(r)
-    if (candidates.length < 2) return { result, pick: null }
+
+    /**
+     * 🚨 VALIDATE, THEN RANK — IN THAT ORDER, AND ONLY FOR SHOPPING.
+     *
+     * Ranking answers "which of these fits best". It has no way to say "this is
+     * not the thing you asked for", so a 399k laptop SCREEN scored brilliantly on
+     * the price term and became recommendation #1 on the "cheaper?" turn. Measured,
+     * with a laptop chassis at #3 and a mouse alongside.
+     *
+     * The rejected rows are removed from the array the MODEL reads as well, not
+     * just from the ranking — otherwise the prose can still cite a product the
+     * card refuses to show. See `shoppingConstraints.ts` for the four rules and
+     * for what they deliberately do NOT do.
+     */
+    let candidates = allCandidates
+    if (toolName === 'search_products' && allCandidates.length > 0) {
+      const { kept, rejected } = validateShoppingCandidates(allCandidates, shoppingConstraints)
+      if (rejected.length > 0) {
+        const rejectedRaw = new Set(rejected.map(x => x.candidate.raw))
+        for (const key of ['shopping_results', 'search_results']) {
+          if (Array.isArray(r[key])) r[key] = (r[key] as unknown[]).filter(row => !rejectedRaw.has(row))
+        }
+        // Fail closed, and say why. Nothing is relaxed here and nothing is put
+        // back: the model is told the constraint could not be met so it can offer
+        // to widen it, which is the user's call to make, not ours.
+        if (kept.length === 0) r._tappy_constraint_unmet = unmetConstraintPayload(shoppingConstraints, rejected)
+      }
+      candidates = kept
+    }
+
+    if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
 
@@ -727,8 +810,17 @@ export async function POST(req: Request) {
   // question is asked exactly once and never on a non-trip turn.
   const tripContext = resolveTripContext(messages)
 
+  // Which client is asking. Only the web chat renders the decision as a card, so
+  // only the web reply is told to stop repeating what the card shows. A client
+  // that sends no header - Android, iOS, anything older - keeps today's prose.
+  const rendersDecisionCard = req.headers.get('x-tappy-surface') === 'web'
+  // The stream filter reads this to decide whether the per-place photo/link block
+  // still belongs in the text: with a card, it is the same content twice.
+  enrichment.setRendersDecisionCard(rendersDecisionCard)
+
   const consultativeBlock = [
     isDecisionDomain ? buildRankingInstructionBlock() : '',
+    isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
@@ -892,7 +984,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({
           query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
           location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
-          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction']).optional()
+          // 'mall' exists because without it the model had no way to say "shopping
+          // centre" and picked 'attraction' instead - measured on "Trung tam mua sam
+          // lon Sai Gon", which then searched tourist attractions and produced a reply
+          // that told the user its own results were wrong.
+          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction', 'mall']).optional()
         }),
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
@@ -902,6 +998,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // order it reads is already the order that fits this user.
           const { result, pick } = rankForModel('search_places', filtered)
           if (pick) turnPick = pick
+          // Unified recommendation architecture — canonical entities and their
+          // recommendations are built on EVERY place turn, whether or not the
+          // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
+          // keeps the data layer exercised (and its tests honest) while the
+          // emission flag stays off; the collector holds them until the stream
+          // filter has photos to fold in.
+          enrichment.setPlacesRecommendations(placeRecommendations(result, location, pickContext(pick)))
+          // The map destination the provider itself returned for this search.
+          const mapsUrl = (result as Record<string, unknown>).google_maps_search
+            ?? (result as Record<string, unknown>).search_url
+          enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
           return forModel('search_places', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -920,8 +1027,30 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
-          if (!pick) return forModel('search_products', result)
-          const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
+          enrichment.setPlacesRecommendations(productRecommendations(result))
+          /**
+           * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
+           *
+           * This used to `return` here when `derivePick` declined, before
+           * evidence, synthesis or the marker were built - so a turn that ranked
+           * 31 laptops and shortlisted 6 of them reached the user as unstructured
+           * prose with no card at all. Measured on localhost three times running:
+           * every live shopping turn produced `_tappy_total_found` (proving the
+           * ranker HAD ranked) and no `_tappy_ranking`, no `_tappy_synthesis` and
+           * no `[TAPPY_SHOPPING]` marker.
+           *
+           * `derivePick` declining is not "nothing to show". It means no option
+           * won by enough to crown one - a tie, or a need too vague to decide
+           * FOR. The ranker's order is still the answer to "which of these should
+           * I look at first", and `buildShoppingSynthesis` already accepts a null
+           * pick and returns `recommendation: null`, which the card renders as a
+           * shortlist without a winner.
+           *
+           * What stays gated on a real Pick: `_tappy_ranking`, the ADR-024
+           * evidence freeze (it is built FROM the pick), and `recommended: true`
+           * on any entity. Nothing here manufactures a winner.
+           */
+          const evidenceBlock = pick ? await freezeShoppingEvidence(result, pick, shortlistedCandidates) : ''
           // Phase 4 — the grounded, GROUPED decision the model verbalises instead
           // of dumping rows: entities (one per configuration) with their offers,
           // a recommendation from the same Pick, and how each group compares to
@@ -940,7 +1069,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
           return forModel('search_products', {
             ...(result as Record<string, unknown>),
-            _tappy_ranking: buildPickPayload(pick),
+            ...(pick ? { _tappy_ranking: buildPickPayload(pick) } : {}),
             // The exact figures, plus what the evidence does NOT establish. The
             // rows above carry the same numbers, but silently: a listing with no
             // `ram_gb` simply has no key, and that silence is what production
@@ -989,6 +1118,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
+          enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -1011,35 +1141,27 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
             search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
           }),
-          execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: pw.needLogin(pwLang) }
-            try {
-              // authedUserId is already verified above via getRequestUser (cookie or
-              // Bearer JWT) — use the admin client for this write instead of a fresh
-              // cookie-based createClient(), which would silently find no session for
-              // a Bearer-authenticated (native) request.
-              const supabaseW = createAdminClient()
-              const { count } = await supabaseW
-                .from('price_watches')
-                .select('id', { count: 'exact', head: true })
-                .eq('user_id', authedUserId)
-                .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: pw.limitReached(pwLang) }
-              const { data, error } = await supabaseW
-                .from('price_watches')
-                .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
-                .select('id')
-                .single()
-              if (error) {
-                console.error('[chat/save_price_watch] insert failed:', error.code ?? error.message)
-                return { error: pw.saveError(pwLang) }
-              }
-              return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
-            } catch (e) {
-              // W2/C44 — String(e) put a raw exception into a tool result the model then reads out.
-              console.error('[chat/save_price_watch] failed:', e instanceof Error ? e.message : e)
-              return { error: pw.saveError(pwLang) }
-            }
+          // ── P0-2: the ONE AI write, routed through the action boundary ────
+          //
+          // The permission, argument, scope, execute and audit steps used to live inline here and
+          // were correct only because this particular function was written carefully. They now run
+          // in `runAiWriteAction`, so the next write tool inherits them instead of copying them.
+          //
+          // NOTHING THE MODEL OR THE CLIENTS SEE HAS CHANGED: same parameters, same limit, same
+          // messages, same returned object. `authedUserId` is passed as the ACTOR — resolved from
+          // the verified session far above — and the model has no way to name an owner.
+          execute: async (rawArgs) => {
+            const outcome = await runAiWriteAction({
+              tool: 'save_price_watch',
+              actor: { userId: authedUserId },
+              rawArgs,
+              policy: savePriceWatchPolicy(pwLang),
+              req,
+            })
+            // The tool result shape is part of the model-facing contract: `{ ok, id, … }` on
+            // success, `{ error }` on refusal. A denial reason is never handed to the model — it
+            // gets the user-facing sentence and nothing about why the boundary said no.
+            return outcome.ok ? outcome.result : { error: outcome.message }
           }
         }),
       } : {}),
@@ -1124,7 +1246,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Declared out here because the resolver closure fills them while the usage
   // record — emitted after the last byte leaves — reads them. Diagnostic only.
   type PhotoStepAgg = { n: number; totalMs: number; maxMs: number; hits: number; timeouts: number }
-  const photoSteps: Partial<Record<'website' | 'places_detail' | 'places_media' | 'serper', PhotoStepAgg>> = {}
+  const photoSteps: Partial<Record<'website' | 'places_media' | 'serper', PhotoStepAgg>> = {}
   let photoPlacesSelected = 0
   let photoPlacesEnriched = 0
   let photoTotalMs = 0
@@ -1148,7 +1270,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const placeStart = Date.now()
       try {
         const urls = await resolvePlacePhotos(
-          { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
+          { place_id: p.place_id, name: p.name, website_uri: p.website_uri, photo_names: p.photo_names },
           3,
           (t) => {
             const s = (photoSteps[t.step] ??= { n: 0, totalMs: 0, maxMs: 0, hits: 0, timeouts: 0 })
@@ -1187,7 +1309,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // transform is a byte-identical pass-through; it changes nothing on the wire.
   const logUsage = (ttuaMs: number | null) => {
     const a = usageAcct
-    console.log(JSON.stringify({
+    const now = Date.now()
+
+    // ── P1-3: the cost record, built ONCE ────────────────────────────────────
+    //
+    // This object is both the structured event and the shared half of the console line. Building
+    // it once is the point: the two used to be one literal, and the moment a field was added to
+    // only one of them the reconciliation the event type promises ("mirrors the console line
+    // field-for-field") would quietly stop being true.
+    //
+    // Typed as UsageEvent, so a field that is not on the allow-listed vocabulary does not compile.
+    const usageEvent: UsageEvent = {
       type: 'tappyai_usage',
       intent,
       finishReason: a?.finishReason ?? 'unknown',
@@ -1202,20 +1334,35 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // Total: t0 → final byte to the client (T10). Wider than the model-finish it
       // used to mark — on a buffered turn it now also covers the enrichment tail
       // the user waits through. modelFinishMs keeps the old T9 value.
-      elapsedMs: Date.now() - startTime,
+      elapsedMs: now - startTime,
       preModelMs,
       ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
-      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? Date.now()) - firstTokenAt,
       // T9 generation complete; T7 first content the client can SEE (== ttft on a
       // live turn, the whole-reply emit on a buffered one); postModelMs is the
       // enrichment/emit tail between T9 and the final byte.
       modelFinishMs: modelFinishAt === null ? null : modelFinishAt - startTime,
       ttuaMs,
-      postModelMs: modelFinishAt === null ? null : Date.now() - modelFinishAt,
+      postModelMs: modelFinishAt === null ? null : now - modelFinishAt,
+      toolMs: toolMs > 0 ? toolMs : null,
+      providerId: AI.providerId(),
+      modelRole: role,
+    }
+
+    // Buffered for delivery by a LATER request's flushPending (see the top of this handler).
+    // recordEvent is an array push that cannot throw — an observability failure must never be
+    // able to break the reply it is observing.
+    recordEvent(usageEvent)
+
+    console.log(JSON.stringify({
+      ...usageEvent,
+      // ── Console-only diagnostics ─────────────────────────────────────────
+      // Deliberately NOT on the event. The allow-listed vocabulary is a privacy surface, and each
+      // of these is either derivable from the fields above or too fine-grained to justify a
+      // permanent field: keep the cost record small and the diagnostics where they already were.
+      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? now) - firstTokenAt,
       // Splits the tool-turn gap: firstStepFinishMs closes the tool-planning step,
       // toolMs is the summed tool execute() time.
       firstStepFinishMs,
-      toolMs: toolMs > 0 ? toolMs : null,
       // ── Photo-enrichment tail (Phase 2) ──────────────────────────────────
       // postModelMs says the tail is ~1.5s; these say where inside it. null on
       // turns that resolved no photos, so "no enrichment ran" stays distinct
@@ -1229,8 +1376,6 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // timeout. A step that runs every turn and contributes nothing is the
       // clearest possible signal, and only this breakdown can show it.
       photoSteps: photoPlacesSelected > 0 ? photoSteps : null,
-      providerId: AI.providerId(),
-      modelRole: role,
       retryCount: 'unknown',
       worthExtract,
       forcedTool,

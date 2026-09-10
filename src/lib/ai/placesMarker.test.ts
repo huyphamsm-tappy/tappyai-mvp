@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { renderPlacesMarker, PLACES_MARKER_OPEN, PLACES_MARKER_CLOSE } from './streamEnrichment'
+import { placesGroundedInProse } from './streamEnrichment'
 import { splitToolResult } from './toolResultSplit'
 
 // ── [TAPPY_PLACES] — the shared place contract ───────────────────────────────
@@ -84,61 +84,46 @@ describe('splitToolResult — place facts ride along without leaving the model p
   })
 })
 
-describe('renderPlacesMarker — the [TAPPY_PLACES] block', () => {
+/**
+ * 🔄 THIS SUITE FOLLOWED THE SERIALIZER OUT OF THIS MODULE.
+ *
+ * It used to assert a second `[TAPPY_PLACES]` payload (`{ v: 1, places: [...] }`) rendered
+ * here. `lib/recommendation/marker.ts` owns that wire contract — it has the client parser,
+ * the persistence policy and the three-platform fixture governance — so the serializer is
+ * there and only there, and its shape is asserted by `recommendation/marker.test.ts`.
+ *
+ * What was NOT duplicated, and is what this file now pins, is WHICH places may reach a card
+ * at all: the provider must have ranked against the user's words, and the reply must already
+ * name the place. Those two conditions were the reason this suite existed.
+ */
+describe('placesGroundedInProse — which places may reach a durable card', () => {
   const { enrichment } = carve([TONKIN, ROOFTOP])
 
-  it('serializes exactly the contract shape', () => {
-    const marker = renderPlacesMarker(enrichment, PROSE)
-    expect(marker.startsWith('\n\n' + PLACES_MARKER_OPEN)).toBe(true)
-    expect(marker.endsWith(PLACES_MARKER_CLOSE)).toBe(true)
-
-    const json = marker.slice(marker.indexOf(PLACES_MARKER_OPEN) + PLACES_MARKER_OPEN.length, marker.lastIndexOf(PLACES_MARKER_CLOSE))
-    const payload = JSON.parse(json)
-    expect(payload.v).toBe(1)
-    expect(Array.isArray(payload.places)).toBe(true)
-    expect(payload.places).toHaveLength(2)
+  it('keeps the places the reply names, in the reply\'s own order', () => {
+    const carded = placesGroundedInProse(enrichment, PROSE)
+    expect(carded.map(p => p.name)).toEqual(['Tonkin Specialty Coffee', '1991 Rooftop Coffee'])
   })
 
-  it('states each place with its own values and no invented ones', () => {
-    const payload = JSON.parse(
-      renderPlacesMarker(enrichment, PROSE).replace(/^\n\n/, '').replace(PLACES_MARKER_OPEN, '').replace(PLACES_MARKER_CLOSE, ''),
-    )
-    const [first, second] = payload.places
-
-    expect(first).toEqual({
-      placeId: 'p-tonkin',
-      name: 'Tonkin Specialty Coffee',
-      rank: 1,
-      photo: 'https://img.example/tonkin.jpg',
-      address: '91 Lý Tự Trọng, Bến Thành, Quận 1',
-      rating: 4.8,
-      reviewCount: 4676,
-    })
+  it('returns the rows untouched — no field is added, renamed or invented here', () => {
+    const [first] = placesGroundedInProse(enrichment, PROSE)
+    // Identity, not a copy: whatever the tool stated is exactly what the serializer receives.
+    expect(first).toBe(enrichment[0])
+    expect(first.place_id).toBe('p-tonkin')
+    expect(first.rating).toBe(4.8)
+    expect(first.review_count).toBe(4676)
     // The OSM row states different facts — and no rating key at all, rather than a null one.
-    expect(second.name).toBe('1991 Rooftop Coffee')
-    expect(second.rank).toBe(2)
+    const second = placesGroundedInProse(enrichment, PROSE)[1]
     expect(second.hours).toBe('07:30-22:00')
-    expect(second.distanceKm).toBe(1.2)
+    expect(second.distance_km).toBe(1.2)
     expect(second.attributes).toEqual(['coffee_shop', 'cake'])
-    expect('rating' in second).toBe(false)
-    expect('reviewCount' in second).toBe(false)
-    expect('placeId' in second).toBe(false)
-  })
-
-  it('never carries actions — [CTA_BUTTONS] stays the only action channel', () => {
-    const marker = renderPlacesMarker(enrichment, PROSE)
-    expect(marker).not.toContain('actions')
-    expect(marker).not.toContain('maps_link')
-    expect(marker).not.toContain('order_links')
-    expect(marker).not.toContain('openNow')
+    expect(second.rating).toBeUndefined()
+    expect(second.review_count).toBeUndefined()
+    expect(second.place_id).toBeUndefined()
   })
 
   it('ranks by where the reply names them, not by tool order', () => {
     const reversed = 'Trước hết **1991 Rooftop Coffee**, sau đó **Tonkin Specialty Coffee**.'
-    const payload = JSON.parse(
-      renderPlacesMarker(enrichment, reversed).replace(/^\n\n/, '').replace(PLACES_MARKER_OPEN, '').replace(PLACES_MARKER_CLOSE, ''),
-    )
-    expect(payload.places.map((p: { name: string }) => p.name)).toEqual([
+    expect(placesGroundedInProse(enrichment, reversed).map(p => p.name)).toEqual([
       '1991 Rooftop Coffee',
       'Tonkin Specialty Coffee',
     ])
@@ -146,18 +131,16 @@ describe('renderPlacesMarker — the [TAPPY_PLACES] block', () => {
 
   it('omits a place the reply never named', () => {
     const onlyOne = 'Mình gợi ý **Tonkin Specialty Coffee** nhé.'
-    const payload = JSON.parse(
-      renderPlacesMarker(enrichment, onlyOne).replace(/^\n\n/, '').replace(PLACES_MARKER_OPEN, '').replace(PLACES_MARKER_CLOSE, ''),
-    )
-    expect(payload.places).toHaveLength(1)
-    expect(payload.places[0].name).toBe('Tonkin Specialty Coffee')
+    const carded = placesGroundedInProse(enrichment, onlyOne)
+    expect(carded).toHaveLength(1)
+    expect(carded[0].name).toBe('Tonkin Specialty Coffee')
   })
 
-  it('emits nothing when there are no places, no names, or no prose', () => {
-    expect(renderPlacesMarker([], PROSE)).toBe('')
-    expect(renderPlacesMarker(enrichment, '')).toBe('')
-    expect(renderPlacesMarker([{ name: '   ' }], PROSE)).toBe('')
-    // Named nowhere in the reply → no block at all, rather than an empty one.
-    expect(renderPlacesMarker(enrichment, 'Không nhắc tên quán nào cả.')).toBe('')
+  it('grounds nothing when there are no places, no names, or no prose', () => {
+    expect(placesGroundedInProse([], PROSE)).toEqual([])
+    expect(placesGroundedInProse(enrichment, '')).toEqual([])
+    expect(placesGroundedInProse([{ name: '   ' }], PROSE)).toEqual([])
+    // Named nowhere in the reply → nothing earns a card, and the caller emits no block at all.
+    expect(placesGroundedInProse(enrichment, 'Không nhắc tên quán nào cả.')).toEqual([])
   })
 })

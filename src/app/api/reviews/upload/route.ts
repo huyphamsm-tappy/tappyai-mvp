@@ -5,11 +5,13 @@ import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { MAX_PHOTO_SIZE_MB } from '@/lib/config/product'
 
 // SQL required in Supabase:
 // ALTER TABLE public.reviews ADD COLUMN IF NOT EXISTS photos text[] DEFAULT '{}';
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5 MB
+// Shared with the composer, which shows this number to the user — see the note in product.ts.
+const MAX_FILE_SIZE = MAX_PHOTO_SIZE_MB * 1024 * 1024
 const MAX_UPLOADS_PER_DAY = 10
 
 const rlStore = new Map<string, { date: string; count: number }>()

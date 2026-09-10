@@ -46,11 +46,53 @@ export const SHOW_APP_CONNECTIONS = false
 /** Scam Shield — URL/Website/QR risk checker. Mirrors Android
  * `SHOW_SCAM_SHIELD` gate — flip BOTH together. */
 export const SHOW_SCAM_SHIELD = true
+/**
+ * Marketplace — HIDDEN, NOT DELETED.
+ *
+ * 🚨 The V3 shell advertised Marketplace in the sidebar AND the top tab bar, and
+ * the destination behind both was `MarketplaceReserved` — a "Sắp có" page. That
+ * is a feature the product does not have, presented in the navigation as one it
+ * does, on a build that has not shipped yet. Hidden until it is built.
+ *
+ * Same shape as `SHOW_APP_CONNECTIONS`: the page, its component and its test all
+ * stay exactly where they are, and flipping this one boolean back to `true`
+ * restores every entry point at once. Nothing about Marketplace was deleted or
+ * refactored, so a later phase picks it up from here rather than rebuilding it.
+ *
+ * NOT exported through `GET /api/config`: Marketplace has no native counterpart,
+ * so there is no gate on Android or iOS for this to mirror, and adding a field
+ * to a contract both clients read would be a change they neither need nor expect.
+ */
+export const SHOW_MARKETPLACE = false
+/**
+ * Wallet / Tappy Points - HIDDEN, NOT DELETED.
+ *
+ * 🚨 THE ROW PROMISED A FEATURE THAT DOES NOT EXIST YET, AND IT DID NOT EVEN GO THERE.
+ * The V3 sidebar carried "Wallet / Tappy Points" under the account group, and its href was
+ * `/subscription` - the pricing page. There is no wallet route, no wallet API and no wallet or
+ * points table anywhere in this repository, so the row named a product surface the app has never
+ * had and then landed the user somewhere else. That is the same class of claim `SHOW_MARKETPLACE`
+ * was added for.
+ *
+ * Same shape as the flags above: nothing is deleted. The row, its label and its icon stay in
+ * `V3Shell`, and flipping this one boolean restores it when a wallet is actually built - at which
+ * point its `href` should point at the wallet, not at the subscription page.
+ *
+ * NOT exported through `GET /api/config`: there is no Android or iOS wallet gate to mirror.
+ */
+export const SHOW_WALLET = false
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 
 // ── Upload limits (enforced by /api/upload/video token + composer UX) ───────
 export const MAX_PHOTOS_PER_REVIEW = 6
+/** Maximum size of ONE photo, in binary megabytes. Enforced by `POST /api/reviews/upload`.
+ *
+ * 🚨 It lives here because the composer now TELLS the user this number, and a limit the UI
+ * advertises must be the one the server applies. It was a private literal in the route, which is
+ * exactly how a picker comes to accept a file the upload then rejects. The route reads this too,
+ * so there is one number and no second place to update. */
+export const MAX_PHOTO_SIZE_MB = 5
 /** Maximum video file size, in BINARY megabytes: every layer multiplies this by 1024 * 1024, so
  * 150 means 157,286,400 bytes. The ceiling is inclusive — a file of exactly that many bytes is
  * accepted and one byte more is not. Raised 50 → 150 once five-minute clips were allowed, since a
@@ -146,3 +188,67 @@ export async function countTodayUserMessages(supabase: SupabaseClient, userId: s
     return sum + msgs.filter((m: { role: string }) => m.role === 'user').length
   }, 0)
 }
+
+// ── Unified Recommendation Data Architecture (rev 2) ─────────────────────────
+//
+// Two staged flags. Both default OFF, and both gate BEHAVIOUR, not code: the
+// pipeline builds canonical entities and recommendations either way, so the data
+// layer is exercised and tested on every turn while what reaches a client stays
+// exactly what reaches it today.
+
+/**
+ * Emit the `[TAPPY_PLACES]` marker into the assistant text.
+ *
+ * 🚨 OFF UNTIL ALL THREE CLIENTS CAN STRIP IT. Rule 6 of
+ * `shared/structured-content/marker-fixtures.json`: adding a marker server-side
+ * requires web, Android and iOS updated in the same change. Android and iOS are
+ * outside this task's scope, and a marker they cannot strip renders as raw JSON
+ * in the chat — which is exactly the defect that suite was created to catch,
+ * twice, in production.
+ *
+ * 🚨 A SECOND BLOCKER, INDEPENDENT OF THE CLIENTS. A marker is permanent
+ * storage, and Google Places terms forbid storing Places content (see
+ * `mayPersist` in lib/recommendation/marker.ts). While Google is the place
+ * source, the persisted payload for a place is limited to exempt identifiers and
+ * our own derived values.
+ */
+export const EMIT_TAPPY_PLACES = false
+
+/**
+ * Send the turn's place decision to the WEB client as a message ANNOTATION.
+ *
+ * 🚨 THIS IS NOT `EMIT_TAPPY_PLACES` WITH A DIFFERENT NAME, AND IT DOES NOT
+ * LIFT EITHER OF THAT FLAG'S BLOCKERS - it renders them inapplicable:
+ *
+ *   1. A MARKER IS A SHARED CONTRACT. `[TAPPY_PLACES]` lives in the message
+ *      TEXT, so a client that has never been told to strip it renders raw JSON.
+ *      An annotation is a separate frame on the data stream (`8:`). Android
+ *      reads only `0:` frames (`RealChatRepository`) and iOS maps every unknown
+ *      prefix to `.unknown` (`StreamingClient`), so both ignore it by
+ *      construction - there is nothing for them to fail to strip.
+ *
+ *   2. A MARKER IS STORAGE. It is frozen into the text and saved with the
+ *      conversation, which Google Places terms forbid for Places content. An
+ *      annotation is never persisted: the chat saves `{role, content}` only, so
+ *      the decision lives for the session and is gone on reload. That is the
+ *      "use it for the request, do not store it" shape the terms require, and it
+ *      is why the card can carry the name, rating and hours that the persisted
+ *      projection has to drop.
+ *
+ * The trade-off is honest and is the reason both flags exist rather than one:
+ * a reloaded conversation shows the prose without the card. Making it durable
+ * needs the marker, and the marker needs Android, iOS and a provider whose terms
+ * allow storage - which is exactly what `EMIT_TAPPY_PLACES` is waiting for.
+ */
+export const EMIT_PLACES_ANNOTATION = true
+
+/**
+ * Let the SERVER author `[CTA_BUTTONS]` from the deterministic action list,
+ * instead of the model writing URLs from prompt templates.
+ *
+ * Same wire format, same three parsers, same fixtures — only the author changes.
+ * OFF until the prompt rule that tells the model to stop emitting its own block
+ * ships with it, because two blocks in one reply means the first one wins and
+ * the choice of which is arbitrary.
+ */
+export const SERVER_AUTHORED_CTA = false

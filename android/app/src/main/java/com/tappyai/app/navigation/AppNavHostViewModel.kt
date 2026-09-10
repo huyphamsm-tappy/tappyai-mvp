@@ -3,6 +3,7 @@ package com.tappyai.app.navigation
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.deeplink.DeepLinkParser
@@ -40,6 +41,8 @@ class AppNavHostViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val onboardingRepository: OnboardingRepository,
     private val groupDeepLinkParser: GroupDeepLinkParser,
+    private val webLinkDeepLinkParser: WebLinkDeepLinkParser,
+    private val pendingShellDestination: PendingShellDestination,
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
@@ -100,7 +103,33 @@ class AppNavHostViewModel @Inject constructor(
                 }
             }
         } else {
-            groupDeepLinkParser.parse(uri.toString())?.let { _deepLinkTarget.value = it }
+            // P4-14. The chain, not a single parser: a notification carries the WEB entity URL
+            // (`emitNotification` puts `entityUrl` in `data.url`), while a shared link uses the
+            // custom `tappyai://` scheme. Both are external entry points and both should resolve
+            // through the same list — which is exactly what `TappyNotificationRouting` already
+            // does on its side. Before this, an https notification link matched nothing and a tap
+            // simply opened the app wherever it was.
+            //
+            // Order is not significant: the two parsers accept disjoint schemes. A parser that
+            // throws on a malformed link is contained, because a bad link in a payload the app did
+            // not write must not become a crash on tap.
+            val link = uri.toString()
+            val appRoute = listOf(groupDeepLinkParser, webLinkDeepLinkParser)
+                .firstNotNullOfOrNull { parser -> runCatching { parser.parse(link) }.getOrNull() }
+
+            if (appRoute != null) {
+                _deepLinkTarget.value = appRoute
+            } else {
+                // No app-wide route matched. The link may still name a destination INSIDE the
+                // post-auth shell, whose vocabulary is deliberately private to it. Navigate to the
+                // shell — a route that already exists — and hand the nested destination across for
+                // the shell to consume itself, rather than promoting its tabs into the global
+                // vocabulary for the sake of one entry point.
+                ShellDeepLink.destinationFor(link, BuildConfig.WEB_APP_URL)?.let { shellRoute ->
+                    pendingShellDestination.set(shellRoute)
+                    _deepLinkTarget.value = AppRoute.HomeShell
+                }
+            }
         }
     }
 }

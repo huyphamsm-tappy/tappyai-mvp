@@ -536,6 +536,8 @@ class ChatViewModel @Inject constructor(
                         ctaButtons = parsed.ctaButtons,
                         segments = parsed.segments,
                         followups = followups,
+                        // D1 — the decision the block carries, which Android used to discard.
+                        shopping = parsed.shopping,
                     )
                 }
                 persistConversation()

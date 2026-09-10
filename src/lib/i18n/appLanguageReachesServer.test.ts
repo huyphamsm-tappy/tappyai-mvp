@@ -40,10 +40,6 @@ const OWN_CONTENT_CALLERS = [
     what: 'the booking flow POSTs a review through the same endpoint',
   },
   {
-    file: 'src/app/profile/posts/page.tsx',
-    what: "the author's own posts page renders the notice per held post",
-  },
-  {
     file: 'src/app/reviews/ProfileTab.tsx',
     what: 'the profile tab does the same when the viewer is the author',
   },
@@ -62,7 +58,10 @@ describe('every client that can receive a safety notice asks for a language', ()
   it('a language switch re-fetches, so the notice does not keep its first wording', () => {
     // Without `locale` in the dependency array the page would fetch once in Vietnamese and then
     // sit there in Vietnamese while every other string on the page turned English.
-    for (const file of ['src/app/profile/posts/page.tsx', 'src/app/reviews/ProfileTab.tsx']) {
+    // 🚨 `/profile/posts` was in this list until My Reviews was removed. Its ONE
+    // remaining reader is the profile grid, which shows the author their own
+    // posts — held ones included — and is where the notice now lives alone.
+    for (const file of ['src/app/reviews/ProfileTab.tsx']) {
       const source = read(file)
       expect(source).toMatch(/\}, \[[^\]]*locale[^\]]*\]\)/)
     }

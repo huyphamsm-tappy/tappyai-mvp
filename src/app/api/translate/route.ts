@@ -1,6 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
-import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -23,7 +24,10 @@ export async function POST(req: NextRequest) {
   // B04 — resolved once per request; the `error` codes below are unchanged machine contract and
   // only the human sentence follows the caller's language.
   const locale = requestLocale(req)
-  if (!dailyRateLimit(`translate:${clientIp(req)}`, DAILY_LIMIT).ok) {
+  // P1-5: shared across instances when a store is configured (production is), in-process
+  // otherwise. This endpoint calls a model WITHOUT requiring an account, so the cap was the only
+  // thing standing between a script and our Anthropic bill — and it counted per lambda.
+  if (!(await publicDailyRateLimit(`translate:${clientIp(req)}`, DAILY_LIMIT)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('translate.dailyLimit', locale, { n: DAILY_LIMIT }) }, { status: 429 })
   }
 

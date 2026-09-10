@@ -54,6 +54,9 @@ struct ParsedContent: Equatable, Sendable {
     let plan: TappyPlan?
     let followups: [String]
     let images: [ParsedImage]
+    /// D1 — the decoded shopping decision, or nil when the turn carried none.
+    /// Defaulted so existing call sites that build a ParsedContent keep compiling unchanged.
+    var shopping: ShoppingDecisionView? = nil
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

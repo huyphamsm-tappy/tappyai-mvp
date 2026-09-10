@@ -71,6 +71,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
@@ -239,6 +240,36 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                 }
                             }
                             message.plan?.let { plan -> TripPlanCard(plan) }
+                            // D1 — the shopping DECISION. Rendered only once generation is done,
+                            // like every other structured block: a half-arrived decision is not a
+                            // decision, and showing one mid-stream is how partial JSON reached
+                            // users in the first place.
+                            message.shopping?.let { view ->
+                                if (!isResponding) {
+                                    ShoppingDecisionCard(view)
+                                    // Comparison (DD-005), derived from the SAME payload the card
+                                    // above renders — no extra request, nothing inferred. Opens in
+                                    // a bottom sheet: a four-column grid is unreadable inline on a
+                                    // phone, so the container differs while the data does not.
+                                    val labels = comparisonLabels()
+                                    val comparison = remember(view) { shoppingComparisonFrom(view, labels) }
+                                    if (comparison != null) {
+                                        var showComparison by rememberSaveable(message.id) { mutableStateOf(false) }
+                                        TappyButton(
+                                            text = stringResource(R.string.comparison_open, comparison.entities.size),
+                                            onClick = { showComparison = true },
+                                            variant = TappyButtonVariant.Secondary,
+                                            size = TappyButtonSize.Small,
+                                        )
+                                        if (showComparison) {
+                                            ShoppingComparisonSheet(
+                                                comparison = comparison,
+                                                onDismiss = { showComparison = false },
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                             if (!isResponding && !message.isError) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     MessageActionBar(

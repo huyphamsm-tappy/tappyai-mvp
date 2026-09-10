@@ -24,15 +24,7 @@ export const vi: Record<string, string> = {
   'favorites.placesHeading': 'Địa điểm yêu thích',
   'favorites.savedAt': 'Đã lưu {date}',
 
-  // ── /profile/posts ─────────────────────────────────────────────────────────
-  'posts.title': 'Bài viết của tôi',
-  'posts.count': '{n} bài',
-  'posts.empty': 'Bạn chưa có bài viết nào',
-  'posts.firstCta': 'Đăng bài đầu tiên',
-  'posts.deleteConfirm': 'Xoá bài viết này?',
-  'posts.photoPost': 'Bài ảnh',
-  'posts.hidden': '🔒 Đang ẩn',
-  'posts.visible': '👁 Đang hiện',
+  // ── (the /profile/posts keys lived here until My Reviews was removed) ──────
 
   // ── /profile/price-watches ─────────────────────────────────────────────────
   'watch.title': '🎯 Theo dõi giá',
@@ -59,9 +51,6 @@ export const vi: Record<string, string> = {
   'music.externalLink': 'Liên kết ngoài',
   'favorites.savedPostsHeading': 'Bài viết đã lưu',
   'favorites.postFallback': 'Bài viết',
-  'posts.show': 'Hiện bài này',
-  'posts.hide': 'Ẩn bài này',
-  'posts.delete': 'Xoá bài này',
   'watch.pendingCheck': 'Tappy sẽ kiểm tra giá trong vài giờ tới ⏳',
   'watch.cancelAria': 'Hủy theo dõi',
   'watch.notifiedHeading': 'Đã thông báo ({n})',
@@ -91,14 +80,6 @@ export const en: Record<string, string> = {
   'favorites.placesHeading': 'Favourite places',
   'favorites.savedAt': 'Saved {date}',
 
-  'posts.title': 'My posts',
-  'posts.count': '{n} posts',
-  'posts.empty': "You haven't posted anything yet",
-  'posts.firstCta': 'Post your first',
-  'posts.deleteConfirm': 'Delete this post?',
-  'posts.photoPost': 'Photo post',
-  'posts.hidden': '🔒 Hidden',
-  'posts.visible': '👁 Visible',
 
   'watch.title': '🎯 Price watch',
   'watch.subtitle': 'Tappy tells you when the price drops to what you wanted',
@@ -126,9 +107,6 @@ export const en: Record<string, string> = {
   'music.externalLink': 'External link',
   'favorites.savedPostsHeading': 'Saved posts',
   'favorites.postFallback': 'Post',
-  'posts.show': 'Show this post',
-  'posts.hide': 'Hide this post',
-  'posts.delete': 'Delete this post',
   'watch.pendingCheck': 'Tappy will check the price within a few hours ⏳',
   'watch.cancelAria': 'Stop watching',
   'watch.notifiedHeading': 'Notified ({n})',

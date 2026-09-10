@@ -135,3 +135,73 @@ describe('detectTravelIntent — the guard trigger must catch a bare route', () 
     expect(detectTravelIntent('tư vấn mua tai nghe bluetooth')).toBe(false)
   })
 })
+
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚨 RESIDUAL 1 — THE USER'S BUDGET, HANDED BACK AS THE HOTEL'S PRICE.
+//
+// MEASURED on "Khách sạn đẹp ở Đà Nẵng gần biển khoảng 2 triệu": get_hotel_prices
+// returned rows of title/link/snippet with NO price field of any kind, and the
+// reply said "Giá tham khảo trong tầm 2 triệu VND/đêm". Every number in that
+// sentence came from the question. The old exemption marked it VERIFIED because
+// echoing the user is normally exactly right.
+//
+// The amount is not the problem — the FRAMING is. A budget said back as a budget
+// stays; the same number attributed as the property's price does not.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('🚨 a stated budget may be a constraint, never the property price', () => {
+  const USER = 'Khách sạn đẹp ở Đà Nẵng gần biển khoảng 2 triệu'
+
+  it('🚨 removes the measured sentence', () => {
+    const text = 'Mình chọn DA NANG BAY HOTEL, khách sạn 3 sao giáp biển. Giá tham khảo trong tầm 2 triệu VND/đêm, nhưng có thể khác tùy loại phòng.'
+    const out = guardTravelClaimsInText(text, NO_FARES, USER)
+    expect(out.redacted).toBeGreaterThan(0)
+    expect(out.text).not.toContain('Giá tham khảo')
+    expect(out.text).toContain('DA NANG BAY HOTEL')
+  })
+
+  it('removes the other attributed phrasings', () => {
+    for (const claim of [
+      'Khách sạn này có giá khoảng 2 triệu.',
+      'Giá phòng khoảng 2 triệu.',
+      'Phòng có giá 2 triệu/đêm.',
+    ]) {
+      const out = guardTravelClaimsInText('Mình gợi ý San San Hotel. ' + claim, NO_FARES, USER)
+      expect(out.text, claim).toContain('San San Hotel')
+      expect(out.text, claim).not.toContain('2 triệu')
+    }
+  })
+
+  it('🚨 KEEPS the budget when it is framed as the budget', () => {
+    // This is the phrasing the product WANTS — the constraint, restated.
+    for (const ok of [
+      'Bạn đang nhắm ngân sách khoảng 2 triệu/đêm; dữ liệu mình có chưa cung cấp giá phòng cụ thể.',
+      'Mình tìm khách sạn ở Đà Nẵng trong tầm 2 triệu cho bạn nhé.',
+      'Với ngân sách 2 triệu, đây là các lựa chọn gần biển.',
+    ]) {
+      const out = guardTravelClaimsInText(ok, NO_FARES, USER)
+      expect(out.text, ok).toBe(ok)
+      expect(out.redacted, ok).toBe(0)
+    }
+  })
+
+  it('a sentence that makes no price attribution keeps the number', () => {
+    const ok = 'Mình hiểu bạn muốn khoảng 2 triệu.'
+    expect(guardTravelClaimsInText(ok, NO_FARES, USER).text).toBe(ok)
+  })
+
+  it('🚨 with a LIVE fare, an attributed price is untouched — the guard is inert', () => {
+    // Nothing about the previous behaviour changes once real evidence exists.
+    const text = 'Giá phòng khoảng 2 triệu/đêm.'
+    const out = guardTravelClaimsInText(text, [2_000_000], USER)
+    expect(out.text).toBe(text)
+    expect(out.redacted).toBe(0)
+  })
+
+  it('an amount the user never said is still removed, framing regardless', () => {
+    const text = 'Mình gợi ý khách sạn này. Với ngân sách 7 triệu thì rất ổn.'
+    const out = guardTravelClaimsInText(text, NO_FARES, USER)
+    expect(out.text).not.toContain('7 triệu')
+  })
+})

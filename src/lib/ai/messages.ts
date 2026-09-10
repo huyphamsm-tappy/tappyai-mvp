@@ -30,7 +30,30 @@ export const messages = {
     fetchError: (lang: Lang) => isVi(lang) ? 'Khong the tai tin tuc' : "Couldn't load news",
   },
   places: {
-    seeMap: (lang: Lang) => isVi(lang) ? 'Xem ban do' : 'See map',
+    /**
+     * 🚨 NO LOCATION, AND NO RIGHT TO GUESS ONE.
+     *
+     * `searchPlacesOSM` used to open with `const loc = location || 'Ha Noi'`, so
+     * "Quan cafe view dep" with no location and no GPS silently became a Hanoi
+     * search - and the reply recommended Hanoi cafes without ever saying Hanoi
+     * was assumed. This is what the tool says instead, and it is an INSTRUCTION
+     * to ask, never a result to describe.
+     */
+    /**
+     * 🚨 THE COORDINATES SILENTLY STAYED IN HANOI.
+     *
+     * A city with no entry in the preset table is geocoded through Nominatim,
+     * and the `catch` around it left `lat`/`lon` at their initialisers - Hanoi's.
+     * So an unresolvable or slow-to-resolve city searched HANOI while the result
+     * still reported the user's city, which is the same fabrication as the
+     * default-city bug wearing different clothes.
+     */
+    locationUnresolved: (lang: Lang, place: string) => isVi(lang)
+      ? `KHONG XAC DINH DUOC TOA DO cua "${place}". KHONG tim o thanh pho khac va KHONG noi da tim o "${place}". Hay noi that la chua tra cuu duoc khu vuc nay va hoi user noi ro hon (vd ten tinh/thanh pho).`
+      : `COULD NOT RESOLVE "${place}" to coordinates. Do NOT search a different city and do NOT claim "${place}" was searched. Say plainly that the area could not be looked up and ask the user to be more specific.`,
+    locationRequired: (lang: Lang) => isVi(lang)
+      ? 'CHUA CO KHU VUC. User khong noi khu vuc va khong co vi tri thiet bi. TUYET DOI KHONG tu chon mot thanh pho nao (Ha Noi, TP HCM, Quy Nhon...), KHONG noi "khong tim thay o <thanh pho>". Hay hoi NGAN GON user muon tim o khu vuc nao.'
+      : 'NO AREA GIVEN. The user named no area and there is no device location. Do NOT pick a city yourself and do NOT say "no results in <city>". Ask the user briefly which area they mean.',
     noOsmData: (lang: Lang, url: string) => isVi(lang) ? `OSM khong co du lieu. Tim them: ${url}` : `No OSM data available. Search more: ${url}`,
     osmSourceNote: (lang: Lang, url: string) => isVi(lang) ? `Du lieu tu OpenStreetMap. Xem them: ${url}` : `Data from OpenStreetMap. See more: ${url}`,
     searchOnMaps: (lang: Lang, url: string) => isVi(lang) ? `Tim kiem tren Google Maps: ${url}` : `Search on Google Maps: ${url}`,
@@ -44,6 +67,14 @@ export const messages = {
     priceNote: (lang: Lang) => isVi(lang)
       ? 'Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.'
       : 'Prices are for reference from current search results (menu/service/ticket...) and may vary by branch, time, or change over time.',
+    /**
+     * Carried on a place result that retrieved NOTHING, so the model is told in the result
+     * itself rather than left to infer it. The stream gate enforces the same rule afterwards;
+     * this is what lets the reply be honest in the first place instead of merely censored.
+     */
+    noResultsInstruction: (lang: Lang) => isVi(lang)
+      ? 'KHONG tim thay dia diem nao cho yeu cau nay. TUYET DOI KHONG duoc neu ten bat ky dia diem, dia chi hay gia nao — khong co du lieu nao de dua vao. Hay noi thang la chua tim thay, va co the goi y mo rong khu vuc hoac doi tu khoa.'
+      : 'NO places were found for this request. Do NOT name any venue, address or price — there is no data behind them. Say plainly that nothing was found, and you may suggest widening the area or changing the keywords.',
   },
   shopping: {
     priceDisclaimer: (lang: Lang) => isVi(lang)

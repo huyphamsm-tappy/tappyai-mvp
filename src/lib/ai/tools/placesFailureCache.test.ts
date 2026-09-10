@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { searchPlaces } from './food'
+import { searchPlaces, __resetPlacesBreaker } from './food'
 import { placesCacheKey } from './cacheKeys'
 import { getCache } from './common'
 
@@ -38,7 +38,14 @@ function stubFetch(googleStatus: number | 'timeout') {
 }
 
 describe('a failed Google call is never cached as a successful answer', () => {
-  beforeEach(() => { process.env.GOOGLE_PLACES_API_KEY = 'test-key-not-real' })
+  beforeEach(() => {
+    process.env.GOOGLE_PLACES_API_KEY = 'test-key-not-real'
+    // Test ISOLATION, not the contract: the availability breaker is module state, so a 403 armed
+    // by one case here would otherwise decide the next case's outcome. The immediate-retry test
+    // below does not depend on this — it passes on production behaviour alone, with the breaker
+    // left exactly as the first 429 leaves it.
+    __resetPlacesBreaker()
+  })
   afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers() })
 
   it('429 quota exhaustion leaves no cache entry, and the next call retries Google', async () => {

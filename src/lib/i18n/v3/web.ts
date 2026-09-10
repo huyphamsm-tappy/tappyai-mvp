@@ -1,0 +1,942 @@
+// V3 Web surface — the shell (sidebar, top bar, footer) and the Home panel grid.
+//
+// Same contract as the other wave dictionaries: flat namespaced maps, merged by useTranslation.
+//
+// These live here rather than inline because `webHardcodedUiStrings` ratchets the number of
+// hardcoded Vietnamese lines on the Web surface and only lets it go DOWN. The redesign added 82 in
+// its first draft and the guard caught it — which is the guard working, not getting in the way: an
+// English session would otherwise have read a Vietnamese dashboard.
+
+export const vi: Record<string, string> = {
+  // ── Shell ───────────────────────────────────────────────────────────────
+  // 🚨 SHARED. Read by Explore's own sidebar (src/app/reviews/page.tsx) as well as the
+  // V3 shell, so changing it edits Deals, Marketplace, Profile AND Explore. It briefly
+  // carried the Home reference's wording and silently changed all of them. The Home-only
+  // wording is the next key down and reaches the shell as a PROP.
+  'v3.brand.tagline': 'Your Personal AI Agent',
+  // Home only — the approved wordmark reference reads "Personal AI Agent", no "Your".
+  // Passed explicitly by HomeV3; no other page opts in, so none can inherit it.
+  'v3.brand.taglineHome': 'Personal AI Agent',
+  'v3.home.title': 'Trang chủ',
+  'v3.home.subtitle': 'Hỏi Tappy bất cứ điều gì',
+  'v3.page.title': 'TappyAI',
+  'v3.page.subtitle': 'One Agent. One Conversation. Everyday Life.',
+  'v3.nav.main': 'Trang chính',
+  'v3.nav.community': 'Cộng đồng',
+  'v3.nav.commerce': 'Thương mại',
+  'v3.nav.tools': 'Công cụ & tiện ích',
+  'v3.nav.account': 'Tài khoản',
+  'v3.nav.settings': 'Cài đặt & khác',
+  'v3.nav.ariaMain': 'Điều hướng chính',
+  'v3.nav.ariaTabs': 'Khu vực chính',
+  'v3.nav.home': 'Home – AI Agent',
+  'v3.nav.explore': 'Explore (Video)',
+  'v3.nav.search': 'Search',
+  'v3.nav.post': 'Post / Upload',
+  'v3.nav.following': 'Following / Friends',
+  'v3.nav.saved': 'Saved',
+  'v3.nav.myReviews': 'My Reviews',
+  'v3.nav.history': 'History',
+  'v3.nav.deals': 'Deals / Groupon',
+  'v3.nav.marketplace': 'Marketplace',
+  'v3.nav.smartTools': 'Smart Tools',
+  'v3.nav.planner': 'AI Planner (My Plans)',
+  'v3.nav.scamShield': 'Scam Shield',
+  'v3.nav.inbox': 'Inbox',
+  'v3.nav.profile': 'Profile / Me',
+  'v3.nav.qr': 'QR Profile',
+  'v3.nav.wallet': 'Wallet / Tappy Points',
+  'v3.nav.language': 'Language',
+  'v3.nav.help': 'Help Center',
+  'v3.nav.feedback': 'Feedback',
+  'v3.nav.login': 'Đăng nhập',
+  'v3.nav.logout': 'Logout',
+  'v3.tab.aiAgent': 'AI Agent',
+  'v3.tag.new': 'Mới',
+  'v3.tag.comingSoon': 'Sắp có',
+  'v3.premium.title': 'TappyAI Premium',
+  'v3.premium.desc': 'Trải nghiệm không giới hạn',
+  'v3.premium.cta': 'Nâng cấp ngay',
+  'v3.top.notifications': 'Thông báo',
+  'v3.theme.toDark': 'Chuyển sang giao diện tối',
+  'v3.theme.toLight': 'Chuyển sang giao diện sáng',
+  'v3.top.guest': 'Khách',
+  'v3.top.plan': 'Premium',
+  'v3.top.post': 'Post / Upload',
+
+  // ── Footer capability strip ─────────────────────────────────────────────
+  'v3.footer.aiCore': 'AI Core',
+  'v3.footer.aiCoreDesc': 'Nền tảng AI đa mô hình',
+  'v3.footer.community': 'Community',
+  'v3.footer.communityDesc': 'Kết nối & chia sẻ',
+  'v3.footer.commerce': 'Commerce',
+  'v3.footer.commerceDesc': 'Deals & Groupon',
+  'v3.footer.utilities': 'Utilities',
+  'v3.footer.utilitiesDesc': 'Tiện ích thông minh',
+  'v3.footer.security': 'Security',
+  'v3.footer.securityDesc': 'An toàn & bảo mật',
+  'v3.footer.platforms': 'Multi-Platform · Web · iOS · Android',
+
+  // ── Panels ──────────────────────────────────────────────────────────────
+  'v3.panel.aiAgent': 'AI Agent – Home',
+  'v3.panel.explore': 'Explore – Video Feed',
+  'v3.panel.inbox': 'Inbox – Messages & Notifications',
+  'v3.panel.deals': 'Deals / Groupon',
+  'v3.panel.marketplace': 'Marketplace',
+  'v3.panel.scamShield': 'Scam Shield',
+  'v3.panel.planner': 'AI Planner (My Plans)',
+  'v3.panel.post': 'Post / Upload',
+  'v3.panel.smartTools': 'Công cụ',
+  // ── Smart Tools page (/tools) ───────────────────────────────────────────
+  // The TITLE reuses `v3.nav.smartTools` — the shell row, the tab and the page must not
+  // call one destination three things. Only these two lines are new.
+  'v3.tools.subtitle': 'Công cụ thông minh',
+  'v3.tools.blurb': 'Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày',
+  'v3.tools.authHint': 'Cần đăng nhập',
+  'v3.tools.daily': 'Hằng ngày',
+  'v3.tools.discover': 'Khám phá',
+  'v3.tools.fun': 'Giải trí',
+  'v3.panel.saved': 'Saved',
+  'v3.panel.history': 'History',
+  'v3.panel.continue': 'Tiếp tục',
+  'v3.panel.capabilities': 'AI Capabilities',
+  'v3.panel.profile': 'Profile (Me)',
+  'v3.panel.notifications': 'Notifications',
+  'v3.action.seeAll': 'Xem tất cả',
+  'v3.action.open': 'Mở',
+  'v3.action.view': 'Xem',
+  'v3.action.openAll': 'Mở tất cả',
+  'v3.action.settings': 'Cài đặt',
+  'v3.action.viewProfile': 'Xem profile',
+
+  // ── AI Agent panel ──────────────────────────────────────────────────────
+  'v3.home.greetUser': 'Hi {name}!',
+  'v3.home.greetGuest': 'Chào bạn!',
+  'v3.home.greetSub': 'TappyAI có thể giúp gì cho bạn hôm nay?',
+  'v3.home.askPlaceholder': 'Bạn muốn tìm gì, hỏi gì, làm gì?',
+  'v3.home.askAria': 'Hỏi TappyAI',
+  // ── Home · AI-first hero ────────────────────────────────────────────────
+  // The eyebrow, the headline question and the two-line promise. Together they say what the
+  // product IS before the user has to work it out from a grid of cards.
+  'v3.home.eyebrow': 'Trợ lý AI cá nhân của bạn',
+  'v3.home.askHeadline': 'Bạn muốn làm gì hôm nay?',
+  'v3.home.askSub': 'Nói cho Tappy biết bạn cần gì. Tappy sẽ giúp bạn tìm, lên kế hoạch và thực hiện.',
+  'v3.home.askHint': 'Ví dụ: tìm quán cà phê gần đây, lên kế hoạch du lịch, chia hóa đơn…',
+  'v3.home.tryAsking': 'Thử hỏi Tappy',
+  'v3.home.mascotSays': 'Mình giúp nhé?',
+  // The capability strip. These are the FIVE real categories in `CATEGORIES` (src/lib/utils),
+  // the same vocabulary the composer and the suggestion cards already send to /chat.
+  'v3.home.canHelpTitle': 'Tappy có thể giúp bạn',
+  'v3.home.capFood': 'Món ngon quanh bạn',
+  'v3.home.capShopping': 'Săn deal thông minh',
+  'v3.home.capTravel': 'Lên kế hoạch dễ dàng',
+  'v3.home.capEntertainment': 'Phim, sự kiện, trải nghiệm',
+  'v3.home.capSpa': 'Thư giãn, chăm sóc bản thân',
+  'v3.home.capMoreDesc': 'Xem tất cả công cụ',
+  'v3.home.capMore': 'Khám phá thêm',
+  // Header search — a command entry point, not a second composer.
+  'v3.top.searchPlaceholder': 'Hỏi TappyAI bất cứ điều gì…',
+  'v3.top.searchAria': 'Hỏi TappyAI',
+  'v3.top.askAction': 'Hỏi Tappy',
+  // Sidebar groups, renamed so the rail says what each block IS.
+  'v3.nav.groupAgent': 'AI Agent',
+  'v3.nav.groupCapabilities': 'Khả năng',
+  'v3.home.voiceAria': 'Nhập bằng giọng nói',
+  'v3.home.sendAria': 'Gửi',
+  // The hero card names itself in the reference: "AI AGENT – HOME", en dash, uppercased
+  // by CSS. `v3.tab.aiAgent` ("AI Agent") is the TAB's label and is not this string.
+  'v3.home.cardLabel': 'AI Agent – Home',
+  'v3.home.quickTitle': 'Gợi ý nhanh',
+  'v3.home.forYouTitle': 'Gợi ý dành cho bạn',
+  'v3.home.forYouSub': 'Được cá nhân hóa bởi Tappy AI',
+  'v3.home.toolsSub': 'Để Tappy giúp bạn nhanh hơn',
+  'v3.chip.cafe': 'Quán cafe view đẹp',
+  'v3.chip.plan': 'Lên kế hoạch du lịch',
+  'v3.chip.translate': 'Dịch đoạn văn này',
+  'v3.chip.split': 'Chia hóa đơn 4 người',
+  'v3.chip.scam': 'Kiểm tra link lừa đảo',
+
+  // ── Explore panel ───────────────────────────────────────────────────────
+  'v3.explore.forYou': 'Dành cho bạn',
+  'v3.explore.following': 'Đang theo dõi',
+  'v3.explore.food': 'Ẩm thực',
+  'v3.explore.travel': 'Du lịch',
+  'v3.explore.lifestyle': 'Đời sống',
+  'v3.explore.shopping': 'Mua sắm',
+  'v3.cat.entertainment': 'Giải trí',
+  'v3.cat.spa': 'Thư giãn',
+  'v3.explore.empty': 'Chưa có video nào để hiển thị.',
+
+  // ── Explore, the destination (Page 3, desktop) ──────────────────────────
+  // 🚨 There is no topic taxonomy here on purpose. `reviews` has no category
+  // column, so the filter row carries the three sorts the feed endpoint really
+  // accepts — `forYou` and `following` above, plus `latest`.
+  'v3.explore.title': 'Khám phá',
+  'v3.explore.subtitle': 'Video ngắn về những trải nghiệm thú vị quanh bạn',
+  'v3.explore.searchPlaceholder': 'Tìm video, địa điểm, món ăn, trải nghiệm...',
+  'v3.explore.latest': 'Mới nhất',
+  'v3.explore.prev': 'Video trước',
+  'v3.explore.next': 'Video tiếp theo',
+  'v3.explore.navHint': 'Dùng phím mũi tên hoặc kéo ngang để xem video tiếp theo',
+  'v3.explore.playThis': 'Phát video này',
+  'v3.explore.togglePlay': 'Phát / tạm dừng',
+  'v3.explore.viewAuthor': 'Xem trang cá nhân của {name}',
+  'v3.explore.askAboutVideo': 'Hỏi Tappy về video này',
+  'v3.explore.like': 'Thích',
+  'v3.explore.comment': 'Bình luận',
+  'v3.explore.share': 'Chia sẻ',
+  'v3.explore.save': 'Lưu',
+  'v3.explore.originalSound': 'Âm thanh gốc',
+  // The low-content state, stated rather than implied by empty slots.
+  'v3.explore.growing': 'Explore sẽ có thêm video khi cộng đồng đăng tải',
+
+  // ── Hộp thư, the destination (Page 6) ───────────────────────────────────
+  // 🚨 THE SUBTITLE SAYS "THÔNG BÁO VÀ HOẠT ĐỘNG", NOT "TIN NHẮN".
+  // The mockup's subtitle promised messages, and this product has NO user-to-user
+  // messaging — no DM route, no conversation-between-users API. Naming messages in
+  // the one line that describes the page would advertise a feature that does not
+  // exist, on the screen a user opens expecting to find it.
+  'v3.inbox.title': 'Hộp thư',
+  'v3.inbox.subtitle': 'Thông báo và hoạt động của bạn',
+  'v3.inbox.unread': '{count} chưa đọc',
+  'v3.inbox.markAllRead': 'Đánh dấu đã đọc',
+  'v3.inbox.settings': 'Cài đặt thông báo',
+  'v3.inbox.settingsClose': 'Đóng cài đặt thông báo',
+  'v3.inbox.catSocial': 'Xã hội',
+  'v3.inbox.catDeal': 'Ưu đãi',
+  'v3.inbox.catExplore': 'Khám phá',
+  'v3.inbox.catSystem': 'Hệ thống',
+  // 🪤 NOT `v3.inbox.empty` — that key already exists further down for the Home inbox
+  // panel, and a second entry with the same name in one object literal silently wins,
+  // changing a screen this pass never touched.
+  'v3.inbox.emptyAll': 'Chưa có thông báo nào.',
+  'v3.inbox.emptyFiltered': 'Không có thông báo nào trong mục này.',
+  'v3.inbox.error': 'Không tải được thông báo. Vui lòng thử lại.',
+  'v3.inbox.countMore': '+{n}',
+
+  // ── Inbox panel ─────────────────────────────────────────────────────────
+  'v3.inbox.all': 'Tất cả',
+  'v3.inbox.messages': 'Tin nhắn',
+  'v3.inbox.announcements': 'Thông báo',
+  'v3.inbox.activity': 'Hoạt động',
+  'v3.inbox.empty': 'Chưa có thông báo mới.',
+
+  // ── Messaging (Inbox · Tin nhắn tab) ─────────────────────────────────────
+  // 🚨 SOCIAL MESSAGING, NOT NOTIFICATIONS AND NOT THE AI ASSISTANT. `v3.inbox.*`
+  // above belongs to the notification centre; these belong to conversations
+  // between people. The two tabs share a page and nothing else.
+  'v3.msg.new': 'Tin nhắn mới',
+  'v3.msg.search': 'Tìm kiếm tin nhắn, tên hoặc nhóm...',
+  'v3.msg.empty': 'Chưa có cuộc trò chuyện nào',
+  'v3.msg.emptyHint': 'Kết nối với bạn bè và bắt đầu trò chuyện ngay hôm nay.',
+  'v3.msg.pickThread': 'Chọn một cuộc trò chuyện để bắt đầu',
+  'v3.msg.noMessages': 'Chưa có tin nhắn nào. Hãy gửi lời chào!',
+  'v3.msg.composer': 'Nhập tin nhắn...',
+  'v3.msg.send': 'Gửi',
+  'v3.msg.back': 'Quay lại',
+  'v3.msg.unknownUser': 'Người dùng',
+  'v3.msg.unnamedGroup': 'Nhóm',
+  'v3.msg.groupMembers': '{n} thành viên',
+  'v3.msg.findPeople': 'Tìm tên bạn bè...',
+  'v3.msg.searchHint': 'Nhập ít nhất 2 ký tự để tìm.',
+  'v3.msg.noResults': 'Không tìm thấy người dùng nào.',
+  'v3.msg.startChat': 'Bắt đầu trò chuyện',
+  'v3.msg.startChatN': 'Bắt đầu trò chuyện ({n})',
+  'v3.msg.groupName': 'Tên nhóm (không bắt buộc)',
+  'v3.msg.signIn': 'Đăng nhập để nhắn tin',
+  'v3.msg.error': 'Không tải được tin nhắn. Vui lòng thử lại.',
+  'v3.msg.sendError': 'Không gửi được tin nhắn.',
+  'v3.msg.close': 'Đóng',
+
+  // ── Friends / Social ─────────────────────────────────────────────────────
+  // 🚨 "Theo dõi", NEVER "Bạn bè". `user_follows` is DIRECTIONAL: following someone is not a
+  // friendship, and no friendship model exists. Every label below is either the real direction of
+  // an edge or an action the backend actually performs. The reference design showed friend
+  // requests, mutual-friend counts, people-you-may-know and contact sync; none of those exist, so
+  // none of them are named here — a string is the first place an invented feature appears.
+  'v3.social.title': 'Following / Followers',
+  'v3.social.tagline': 'Kết nối thật. Trải nghiệm nhiều hơn cùng TappyAI.',
+  'v3.social.heroFind': 'Kết nối bạn bè',
+  'v3.social.heroFindDesc': 'Tìm và theo dõi những người bạn biết',
+  'v3.social.heroExplore': 'Khám phá cộng đồng',
+  'v3.social.heroExploreDesc': 'Xem nội dung cộng đồng đang chia sẻ',
+  'v3.social.tabFollowing': 'Đang theo dõi',
+  'v3.social.tabFollowers': 'Người theo dõi',
+  'v3.social.searchTitle': 'Tìm bạn',
+  // Only what the endpoint always supports. Exact email/phone matching also works, but only when
+  // the service role is configured — so it is not promised here.
+  'v3.social.searchPlaceholder': 'Tìm theo tên...',
+  'v3.social.searchHint': 'Nhập ít nhất 2 ký tự để tìm.',
+  'v3.social.searchEmpty': 'Không tìm thấy người dùng nào.',
+  'v3.social.quickTitle': 'Kết nối nhanh',
+  'v3.social.quickFind': 'Tìm bạn bè',
+  'v3.social.quickFindDesc': 'Tìm theo tên trên TappyAI',
+  'v3.social.quickFollowers': 'Xem người theo dõi',
+  'v3.social.quickFollowersDesc': 'Những người theo dõi bạn',
+  'v3.social.quickFollowing': 'Xem đang theo dõi',
+  'v3.social.quickFollowingDesc': 'Những người bạn đang theo dõi',
+  'v3.social.statsTitle': 'Kết nối của bạn',
+  'v3.social.emptyFollowing': 'Bạn chưa theo dõi ai.',
+  'v3.social.emptyFollowers': 'Chưa có người theo dõi.',
+  'v3.social.error': 'Không tải được danh sách. Vui lòng thử lại.',
+  'v3.social.follow': 'Theo dõi',
+  'v3.social.following': 'Đang theo dõi',
+  'v3.social.followsYou': 'Theo dõi bạn',
+  'v3.social.followerCount': '{n} người theo dõi',
+  'v3.social.viewProfile': 'Xem trang cá nhân',
+  'v3.social.signIn': 'Đăng nhập để kết nối với mọi người',
+
+  // ── History ──────────────────────────────────────────────────────────────
+  // 🚨 FIVE CATEGORIES WERE DRAWN; FOUR ARE BACKED BY DATA AND ONLY THOSE ARE NAMED HERE.
+  // There is no key for recent searches, because nothing in this product stores a search. A
+  // string is where an invented feature appears first — the tab gets built to fill the label.
+  'v3.history.title': 'HISTORY',
+  'v3.history.tagline': 'Xem lại những gì bạn đã khám phá trên TappyAI.',
+  'v3.history.all': 'Tất cả',
+  'v3.history.ai': 'Đã hỏi AI',
+  'v3.history.aiDesc': 'Các câu hỏi và cuộc trò chuyện với TappyAI.',
+  'v3.history.video': 'Đã xem video',
+  'v3.history.videoDesc': 'Những video bạn đã xem gần đây.',
+  'v3.history.links': 'Đã kiểm tra link',
+  'v3.history.linksDesc': 'Các đường link bạn đã kiểm tra qua Scam Shield.',
+  'v3.history.plans': 'Kế hoạch của bạn',
+  'v3.history.plansDesc': 'Kế hoạch được đọc từ chính các cuộc trò chuyện của bạn.',
+  'v3.history.plansOpen': 'Mở AI Planner',
+  'v3.history.empty': 'Chưa có lịch sử',
+  'v3.history.emptyHint': 'Những gì bạn khám phá trên TappyAI sẽ xuất hiện ở đây.',
+  'v3.history.emptyAction': 'Bắt đầu khám phá',
+  'v3.history.periodTitle': 'Thời gian',
+  'v3.history.period7': '7 ngày qua',
+  'v3.history.period30': '30 ngày qua',
+  'v3.history.periodAll': 'Tất cả',
+  'v3.history.statsTitle': 'Thống kê nhanh',
+  'v3.history.discoverTitle': 'Khám phá nhiều hơn',
+  'v3.history.discoverBody': 'Xem lại lịch sử để tiếp tục những trải nghiệm thú vị cùng TappyAI.',
+  'v3.history.discoverCta': 'Khám phá ngay',
+  'v3.history.seeAll': 'Xem tất cả',
+  'v3.history.messageCount': '{n} tin nhắn',
+  'v3.history.clearLinks': 'Xóa lịch sử kiểm tra link',
+
+  // ── QR Profile ───────────────────────────────────────────────────────────
+  // 🚨 NO @HANDLE KEY. `profiles` has no `username` column, so the screen shows the
+  // display name and nothing under it. An invented handle on a share surface is a
+  // claim someone else could act on.
+  'v3.qr.title': 'Chia sẻ hồ sơ',
+  'v3.qr.scanHint': 'Quét mã QR để xem hồ sơ TappyAI của tôi',
+  'v3.qr.saveHint': 'Bạn có thể lưu hoặc chia sẻ mã QR này.',
+  'v3.qr.share': 'Chia sẻ profile',
+  'v3.qr.download': 'Tải mã QR',
+  'v3.qr.copied': 'Đã sao chép liên kết',
+  'v3.qr.failed': 'Không tạo được mã QR. Vui lòng thử lại.',
+  'v3.qr.back': 'Quay lại',
+
+  // ── Deals panel ─────────────────────────────────────────────────────────
+  'v3.deals.all': 'Tất cả',
+  'v3.deals.food': 'Ăn uống',
+  'v3.deals.travel': 'Du lịch',
+  'v3.deals.beauty': 'Làm đẹp',
+  'v3.deals.empty': 'Chưa có ưu đãi nào để hiển thị.',
+  'v3.deals.get': 'Lấy deal',
+
+  // ── Deals, the destination (Page 4) ─────────────────────────────────────
+  // 🚨 The hero describes what TAPPY does, never what a deal costs. There is no
+  // price, discount or comparison data behind this page, so nothing here may
+  // promise a better price — only that the assistant can help you think it over.
+  'v3.deals.pageSubtitle': 'Khám phá ưu đãi từ các sàn thương mại điện tử',
+  'v3.deals.heroTitle': 'Hỏi Tappy trước khi mua',
+  'v3.deals.heroBody': 'Chưa chắc nên chọn gì? Hỏi Tappy để được tư vấn, so sánh thông tin và gợi ý lựa chọn phù hợp.',
+  'v3.deals.heroCta': 'Hỏi Tappy ngay',
+  'v3.deals.sourcesLabel': 'Các nền tảng Tappy đang tổng hợp',
+  'v3.deals.bySource': 'Khám phá deal theo sàn',
+  'v3.deals.bySourceHint': 'Chọn nền tảng để xem ưu đãi từ nguồn đó',
+  'v3.deals.allSources': 'Tất cả nền tảng',
+
+  // ── Marketplace — reserved, never fabricated ────────────────────────────
+  'v3.marketplace.title': 'Sắp có',
+  'v3.marketplace.body': 'Marketplace chưa mở. Khi sẵn sàng, bạn sẽ mua sắm ngay trong Tappy — hiện chưa có sản phẩm nào để hiển thị.',
+
+  // ── Scam Shield panel ───────────────────────────────────────────────────
+  'v3.scam.title': 'Kiểm tra link / website',
+  'v3.scam.cta': 'Kiểm tra ngay',
+  'v3.scam.historyTitle': 'Lịch sử kiểm tra',
+  'v3.scam.empty': 'Chưa có lượt kiểm tra nào.',
+  'v3.scam.tagline': 'Bảo vệ bạn khỏi các liên kết và website đáng ngờ',
+  // 🚨 Says the quiet part out loud, and must keep saying it: this list lives in ONE browser.
+  // Nothing syncs it, no account owns it, and a visitor who assumes otherwise would read an empty
+  // history on their phone as "I never checked that link".
+  'v3.scam.historyLocal': 'Lịch sử chỉ được lưu trên thiết bị này.',
+  'v3.scam.historyClear': 'Xóa lịch sử',
+  'v3.scam.historyAll': 'Xem tất cả',
+  'v3.scam.historyLess': 'Thu gọn',
+  'v3.scam.recheck': 'Kiểm tra lại',
+
+  // ── Planner (/planner) ──────────────────────────────────────────────────
+  //
+  // 🚨 `v3.planner.work` IS GONE, AND ITS ABSENCE IS THE POINT. It read "Công việc" and sat
+  // beside "Du lịch" as if plans came in three kinds. They come in TWO — `TappyPlan.type` is
+  // 'trip' | 'evening', written by `detectPlanningIntent` and the planning prompt — and nothing
+  // in this product can emit a work plan or a personal one. A chip for a kind with no producer
+  // is a control the user can press to be told, always, that they have nothing.
+  //
+  // 'v3.planner.travel' is kept for 'trip' because that is the word the user reads in Vietnamese
+  // for the thing Tappy plans; 'v3.planner.evening' is its counterpart for 'evening'.
+  'v3.planner.title': 'AI Planner',
+  'v3.planner.subtitle': 'Những kế hoạch Tappy đã lập cùng bạn',
+  'v3.planner.all': 'Tất cả',
+  'v3.planner.travel': 'Chuyến đi',
+  'v3.planner.evening': 'Tối nay',
+  'v3.planner.count': '{n} kế hoạch',
+  'v3.planner.empty': 'Chưa có kế hoạch nào. Hỏi Tappy để lập kế hoạch đầu tiên.',
+  'v3.planner.emptyFiltered': 'Không có kế hoạch nào thuộc mục này.',
+  'v3.planner.cta': 'Lập kế hoạch',
+  'v3.planner.prompt': 'Lên kế hoạch du lịch cuối tuần',
+  // A plan's facts, each rendered only when the payload actually carries it.
+  'v3.planner.days': '{n} ngày',
+  'v3.planner.stops': '{n} điểm dừng',
+  'v3.planner.people': '{n} người',
+  // 🚨 The timestamp is the THREAD's, not the plan's — there is no per-plan date anywhere in the
+  // contract. The label says so, so the number cannot be misread as a travel date.
+  'v3.planner.lastActivity': 'Cập nhật {when}',
+  'v3.planner.open': 'Mở trong cuộc trò chuyện',
+  'v3.planner.expand': 'Xem lịch trình',
+  'v3.planner.collapse': 'Thu gọn',
+  'v3.planner.more': 'và {n} điểm nữa',
+  'v3.planner.map': 'Bản đồ',
+  // Shown once under the list: this surface reads the user's own recent threads, and saying so is
+  // cheaper than letting someone wonder where an older plan went.
+  'v3.planner.scope': 'Kế hoạch được lấy từ các cuộc trò chuyện gần đây của bạn.',
+
+  // ── Post / Upload panel ─────────────────────────────────────────────────
+  'v3.post.drop': 'Kéo thả video hoặc nhấn để chọn',
+  'v3.post.photo': 'Ảnh',
+  'v3.post.video': 'Video',
+  'v3.post.clip': 'Clip ngắn',
+  'v3.post.live': 'Livestream',
+
+  // ── Smart tools ─────────────────────────────────────────────────────────
+  'v3.tool.suggest': 'Gợi ý',
+  // The ONE key this redesign added: every other tool already had a description and this
+  // one did not, so the card had nothing to say. Wording taken from the destination's own
+  // `recommendations.subtitle`, not invented for the tile.
+  'v3.tool.suggestDesc': 'Địa điểm hợp gu, cá nhân hóa theo bạn',
+  'v3.tool.fortune': 'Bói',
+  'v3.tool.fortuneDesc': 'Xem tử vi hôm nay theo cung hoàng đạo',
+  'v3.tool.scan': 'Quét',
+  'v3.tool.scanDesc': 'Chụp giấy tờ, hóa đơn trích xuất nội dung',
+  'v3.tool.together': 'Nhóm ăn',
+  'v3.tool.togetherDesc': 'Chọn địa điểm ăn uống phù hợp nhóm bạn',
+  'v3.tool.currency': 'Tỷ giá',
+  'v3.tool.currencyDesc': 'Quy đổi tiền tệ VND, USD, EUR, JPY…',
+  'v3.tool.split': 'Chia bill',
+  'v3.tool.splitDesc': 'Chia đều hóa đơn theo người / món',
+  'v3.tool.translate': 'Dịch',
+  'v3.tool.translateDesc': 'Dịch nhanh hơn 100 ngôn ngữ',
+  'v3.tool.safety': 'An toàn',
+  'v3.tool.safetyDesc': 'Kiểm tra link, website mã QR an toàn',
+  'v3.tool.music': 'Nhạc',
+  'v3.tool.musicDesc': 'Nghe & chọn nhạc nền cho review của bạn',
+  'v3.tool.captions': 'Viết',
+  'v3.tool.captionsDesc': 'Tạo caption cho FB, TikTok, Instagram',
+
+  // ── Library panels ──────────────────────────────────────────────────────
+  'v3.saved.places': 'Địa điểm',
+  'v3.saved.videos': 'Video',
+  'v3.saved.deals': 'Deals',
+  'v3.saved.products': 'Sản phẩm',
+  'v3.saved.posts': 'Bài viết',
+  'v3.history.search': 'Tìm kiếm gần đây',
+  'v3.history.asked': 'Đã hỏi AI',
+  'v3.history.watched': 'Đã xem video',
+  'v3.history.booked': 'Đã đặt lịch / kế hoạch',
+  'v3.history.checked': 'Đã kiểm tra link',
+
+  // ── AI capabilities ─────────────────────────────────────────────────────
+  'v3.cap.consultant': 'AI Consultant',
+  'v3.cap.consultantDesc': 'Tư vấn chuyên sâu mọi lĩnh vực',
+  'v3.cap.search': 'AI Search',
+  'v3.cap.searchDesc': 'Tìm thông tin chính xác',
+  'v3.cap.recommend': 'AI Recommend',
+  'v3.cap.recommendDesc': 'Gợi ý cá nhân hóa theo nhu cầu',
+  'v3.cap.planner': 'AI Planner',
+  'v3.cap.plannerDesc': 'Lập kế hoạch tự động',
+  'v3.cap.summary': 'AI Summary',
+  'v3.cap.summaryDesc': 'Tóm tắt nội dung nhanh chóng',
+  'v3.cap.translate': 'AI Translate',
+  'v3.cap.translateDesc': 'Dịch thuật thông minh đa ngôn ngữ',
+
+  // ── Profile / notifications panels ──────────────────────────────────────
+  'v3.profile.you': 'Bạn',
+  // ── Profile / Me (V3 hub) ───────────────────────────────────────────────
+  //
+  // 🚨 NO KEY HERE HAS NO DATA BEHIND IT. The reference showed an @handle, a location, a points
+  // balance and a "Silver tier" progress bar; none of the four has a column, a table or an API,
+  // so none has a string. Adding the copy first is how a fake feature gets built.
+  'v3.profile.breadcrumb': 'Hồ sơ / Tôi',
+  'v3.profile.editProfile': 'Chỉnh sửa hồ sơ',
+  'v3.profile.premium': 'Premium',
+  'v3.profile.statFollowing': 'Đang theo dõi',
+  'v3.profile.statFollowers': 'Người theo dõi',
+  'v3.profile.statLikes': 'Lượt thích',
+  // Tabs — one per dataset that has a real, safety-gated endpoint behind it.
+  'v3.profile.tabPosts': 'Bài viết',
+  'v3.profile.tabSaved': 'Đã lưu',
+  'v3.profile.tabPlaces': 'Địa điểm',
+  'v3.profile.emptyPosts': 'Bạn chưa đăng bài viết nào.',
+  'v3.profile.emptySaved': 'Bạn chưa lưu bài viết nào.',
+  'v3.profile.emptyPlaces': 'Bạn chưa lưu địa điểm nào.',
+  'v3.profile.loadFailed': 'Không tải được nội dung. Thử lại sau nhé.',
+  'v3.profile.postAction': 'Đăng bài mới',
+  // Right sidebar.
+  'v3.profile.infoTitle': 'Thông tin cá nhân',
+  'v3.profile.infoEdit': 'Chỉnh sửa',
+  'v3.profile.infoName': 'Họ và tên',
+  'v3.profile.infoEmail': 'Email',
+  'v3.profile.infoJoined': 'Ngày tham gia',
+  'v3.profile.statsTitle': 'Thành tích',
+  'v3.profile.statPosts': 'Bài viết',
+  'v3.profile.statVideos': 'Video',
+  'v3.profile.statSavedPosts': 'Bài viết đã lưu',
+  'v3.profile.statSavedPlaces': 'Địa điểm đã lưu',
+  'v3.profile.statConversations': 'Cuộc trò chuyện',
+  // 🚨 "Đang theo dõi", NOT "Bạn bè". `user_follows` is directional; calling a one-way follow a
+  // friendship is a claim about a relationship the data does not describe.
+  'v3.profile.followingTitle': 'Đang theo dõi',
+  'v3.profile.followingEmpty': 'Bạn chưa theo dõi ai.',
+  'v3.profile.qrTitle': 'QR Profile',
+  'v3.profile.qrHint': 'Chia sẻ hồ sơ của bạn',
+  'v3.notifications.body': 'Quản lý thông báo đẩy, email và nhắc lịch trong phần cài đặt.',
+}
+
+export const en: Record<string, string> = {
+  // ── Shell ───────────────────────────────────────────────────────────────
+  // 🚨 SHARED. Read by Explore's own sidebar (src/app/reviews/page.tsx) as well as the
+  // V3 shell, so changing it edits Deals, Marketplace, Profile AND Explore. It briefly
+  // carried the Home reference's wording and silently changed all of them. The Home-only
+  // wording is the next key down and reaches the shell as a PROP.
+  'v3.brand.tagline': 'Your Personal AI Agent',
+  // Home only — the approved wordmark reference reads "Personal AI Agent", no "Your".
+  // Passed explicitly by HomeV3; no other page opts in, so none can inherit it.
+  'v3.brand.taglineHome': 'Personal AI Agent',
+  'v3.home.title': 'Home',
+  'v3.home.subtitle': 'Ask Tappy anything',
+  'v3.page.title': 'TappyAI',
+  'v3.page.subtitle': 'One Agent. One Conversation. Everyday Life.',
+  'v3.nav.main': 'Main',
+  'v3.nav.community': 'Community',
+  'v3.nav.commerce': 'Commerce',
+  'v3.nav.tools': 'Tools & utilities',
+  'v3.nav.account': 'Account',
+  'v3.nav.settings': 'Settings & more',
+  'v3.nav.ariaMain': 'Main navigation',
+  'v3.nav.ariaTabs': 'Primary sections',
+  'v3.nav.home': 'Home – AI Agent',
+  'v3.nav.explore': 'Explore (Video)',
+  'v3.nav.search': 'Search',
+  'v3.nav.post': 'Post / Upload',
+  'v3.nav.following': 'Following / Friends',
+  'v3.nav.saved': 'Saved',
+  'v3.nav.myReviews': 'My Reviews',
+  'v3.nav.history': 'History',
+  'v3.nav.deals': 'Deals / Groupon',
+  'v3.nav.marketplace': 'Marketplace',
+  'v3.nav.smartTools': 'Smart Tools',
+  'v3.nav.planner': 'AI Planner (My Plans)',
+  'v3.nav.scamShield': 'Scam Shield',
+  'v3.nav.inbox': 'Inbox',
+  'v3.nav.profile': 'Profile / Me',
+  'v3.nav.qr': 'QR Profile',
+  'v3.nav.wallet': 'Wallet / Tappy Points',
+  'v3.nav.language': 'Language',
+  'v3.nav.help': 'Help Center',
+  'v3.nav.feedback': 'Feedback',
+  'v3.nav.login': 'Log in',
+  'v3.nav.logout': 'Logout',
+  'v3.tab.aiAgent': 'AI Agent',
+  'v3.tag.new': 'New',
+  'v3.tag.comingSoon': 'Coming soon',
+  'v3.premium.title': 'TappyAI Premium',
+  'v3.premium.desc': 'The unlimited experience',
+  'v3.premium.cta': 'Upgrade now',
+  'v3.top.notifications': 'Notifications',
+  'v3.theme.toDark': 'Switch to dark theme',
+  'v3.theme.toLight': 'Switch to light theme',
+  'v3.top.guest': 'Guest',
+  'v3.top.plan': 'Premium',
+  'v3.top.post': 'Post / Upload',
+
+  // ── Footer capability strip ─────────────────────────────────────────────
+  'v3.footer.aiCore': 'AI Core',
+  'v3.footer.aiCoreDesc': 'Multi-model AI platform',
+  'v3.footer.community': 'Community',
+  'v3.footer.communityDesc': 'Connect & share',
+  'v3.footer.commerce': 'Commerce',
+  'v3.footer.commerceDesc': 'Deals & Groupon',
+  'v3.footer.utilities': 'Utilities',
+  'v3.footer.utilitiesDesc': 'Smart everyday tools',
+  'v3.footer.security': 'Security',
+  'v3.footer.securityDesc': 'Safe & private',
+  'v3.footer.platforms': 'Multi-Platform · Web · iOS · Android',
+
+  // ── Panels ──────────────────────────────────────────────────────────────
+  'v3.panel.aiAgent': 'AI Agent – Home',
+  'v3.panel.explore': 'Explore – Video Feed',
+  'v3.panel.inbox': 'Inbox – Messages & Notifications',
+  'v3.panel.deals': 'Deals / Groupon',
+  'v3.panel.marketplace': 'Marketplace',
+  'v3.panel.scamShield': 'Scam Shield',
+  'v3.panel.planner': 'AI Planner (My Plans)',
+  'v3.panel.post': 'Post / Upload',
+  'v3.panel.smartTools': 'Tools',
+  // ── Smart Tools page (/tools) ───────────────────────────────────────────
+  'v3.tools.subtitle': 'Smart tools',
+  'v3.tools.blurb': 'Useful utilities, built to help you every day',
+  'v3.tools.authHint': 'Sign-in required',
+  'v3.tools.daily': 'Everyday',
+  'v3.tools.discover': 'Discover',
+  'v3.tools.fun': 'Fun',
+  'v3.panel.saved': 'Saved',
+  'v3.panel.history': 'History',
+  'v3.panel.continue': 'Continue',
+  'v3.panel.capabilities': 'AI Capabilities',
+  'v3.panel.profile': 'Profile (Me)',
+  'v3.panel.notifications': 'Notifications',
+  'v3.action.seeAll': 'See all',
+  'v3.action.open': 'Open',
+  'v3.action.view': 'View',
+  'v3.action.openAll': 'Open all',
+  'v3.action.settings': 'Settings',
+  'v3.action.viewProfile': 'View profile',
+
+  // ── AI Agent panel ──────────────────────────────────────────────────────
+  'v3.home.greetUser': 'Hi {name}!',
+  'v3.home.greetGuest': 'Hello!',
+  'v3.home.greetSub': 'What can TappyAI help you with today?',
+  'v3.home.askPlaceholder': 'What do you want to find, ask or do?',
+  'v3.home.askAria': 'Ask TappyAI',
+  // ── Home · AI-first hero ────────────────────────────────────────────────
+  'v3.home.eyebrow': 'Your personal AI agent',
+  'v3.home.askHeadline': 'What would you like to do today?',
+  'v3.home.askSub': 'Tell Tappy what you need. Tappy will find it, plan it and help you do it.',
+  'v3.home.askHint': 'For example: find a cafe nearby, plan a trip, split a bill…',
+  'v3.home.tryAsking': 'Try asking Tappy',
+  'v3.home.mascotSays': 'Need a hand?',
+  'v3.home.canHelpTitle': 'Tappy can help with',
+  'v3.home.capFood': 'Great food near you',
+  'v3.home.capShopping': 'Smarter deal hunting',
+  'v3.home.capTravel': 'Trips planned the easy way',
+  'v3.home.capEntertainment': 'Films, events, experiences',
+  'v3.home.capSpa': 'Unwind and take care of you',
+  'v3.home.capMoreDesc': 'See every tool',
+  'v3.home.capMore': 'Explore more',
+  'v3.top.searchPlaceholder': 'Ask TappyAI anything…',
+  'v3.top.searchAria': 'Ask TappyAI',
+  'v3.top.askAction': 'Ask Tappy',
+  'v3.nav.groupAgent': 'AI Agent',
+  'v3.nav.groupCapabilities': 'Capabilities',
+  'v3.home.voiceAria': 'Speak your message',
+  'v3.home.sendAria': 'Send',
+  'v3.home.cardLabel': 'AI Agent – Home',
+  'v3.home.quickTitle': 'Quick suggestions',
+  'v3.home.forYouTitle': 'Suggested for you',
+  'v3.home.forYouSub': 'Personalised by Tappy AI',
+  'v3.home.toolsSub': 'So Tappy can help you faster',
+  'v3.chip.cafe': 'Cafés with a view',
+  'v3.chip.plan': 'Plan a trip',
+  'v3.chip.translate': 'Translate this text',
+  'v3.chip.split': 'Split a bill 4 ways',
+  'v3.chip.scam': 'Check a suspicious link',
+
+  // ── Explore panel ───────────────────────────────────────────────────────
+  'v3.explore.forYou': 'For You',
+  'v3.explore.following': 'Following',
+  'v3.explore.food': 'Food',
+  'v3.explore.travel': 'Travel',
+  'v3.explore.lifestyle': 'Lifestyle',
+  'v3.explore.shopping': 'Shopping',
+  'v3.cat.entertainment': 'Entertainment',
+  'v3.cat.spa': 'Wellness',
+  'v3.explore.empty': 'No videos to show yet.',
+
+  // ── Explore, the destination (Page 3, desktop) ──────────────────────────
+  'v3.explore.title': 'Explore',
+  'v3.explore.subtitle': 'Short videos of interesting things around you',
+  'v3.explore.searchPlaceholder': 'Search videos, places, food, experiences…',
+  'v3.explore.latest': 'Latest',
+  'v3.explore.prev': 'Previous video',
+  'v3.explore.next': 'Next video',
+  'v3.explore.navHint': 'Use the arrow keys or drag sideways for the next video',
+  'v3.explore.playThis': 'Play this video',
+  'v3.explore.togglePlay': 'Play / pause',
+  'v3.explore.viewAuthor': 'View {name}’s profile',
+  'v3.explore.askAboutVideo': 'Ask Tappy about this video',
+  'v3.explore.like': 'Like',
+  'v3.explore.comment': 'Comment',
+  'v3.explore.share': 'Share',
+  'v3.explore.save': 'Save',
+  'v3.explore.originalSound': 'Original sound',
+  'v3.explore.growing': 'More videos will appear here as people post them',
+
+  // ── Hộp thư, the destination (Page 6) ───────────────────────────────────
+  'v3.inbox.title': 'Inbox',
+  'v3.inbox.subtitle': 'Your notifications and activity',
+  'v3.inbox.unread': '{count} unread',
+  'v3.inbox.markAllRead': 'Mark all read',
+  'v3.inbox.settings': 'Notification settings',
+  'v3.inbox.settingsClose': 'Close notification settings',
+  'v3.inbox.catSocial': 'Social',
+  'v3.inbox.catDeal': 'Offers',
+  'v3.inbox.catExplore': 'Explore',
+  'v3.inbox.catSystem': 'System',
+  'v3.inbox.emptyAll': 'No notifications yet.',
+  'v3.inbox.emptyFiltered': 'Nothing in this category.',
+  'v3.inbox.error': 'Could not load notifications. Please try again.',
+  'v3.inbox.countMore': '+{n}',
+
+  // ── Inbox panel ─────────────────────────────────────────────────────────
+  'v3.inbox.all': 'All',
+  'v3.inbox.messages': 'Messages',
+  'v3.inbox.announcements': 'Announcements',
+  'v3.inbox.activity': 'Activity',
+  'v3.inbox.empty': 'No new notifications.',
+
+  // ── Messaging (Inbox · Messages tab) — see the note in the Vietnamese block ──
+  'v3.msg.new': 'New message',
+  'v3.msg.search': 'Search messages, names or groups...',
+  'v3.msg.empty': 'No conversations yet',
+  'v3.msg.emptyHint': 'Connect with friends and start a conversation today.',
+  'v3.msg.pickThread': 'Choose a conversation to start',
+  'v3.msg.noMessages': 'No messages yet. Say hello!',
+  'v3.msg.composer': 'Type a message...',
+  'v3.msg.send': 'Send',
+  'v3.msg.back': 'Back',
+  'v3.msg.unknownUser': 'User',
+  'v3.msg.unnamedGroup': 'Group',
+  'v3.msg.groupMembers': '{n} members',
+  'v3.msg.findPeople': 'Search for people...',
+  'v3.msg.searchHint': 'Type at least 2 characters to search.',
+  'v3.msg.noResults': 'No users found.',
+  'v3.msg.startChat': 'Start chat',
+  'v3.msg.startChatN': 'Start chat ({n})',
+  'v3.msg.groupName': 'Group name (optional)',
+  'v3.msg.signIn': 'Sign in to send messages',
+  'v3.msg.error': 'Could not load messages. Please try again.',
+  'v3.msg.sendError': 'Message could not be sent.',
+  'v3.msg.close': 'Close',
+
+  // ── Friends / Social — see the note in the Vietnamese block above ─────────
+  'v3.social.title': 'Following / Followers',
+  'v3.social.tagline': 'Real connections. More to experience with TappyAI.',
+  'v3.social.heroFind': 'Connect with people',
+  'v3.social.heroFindDesc': 'Find and follow people you know',
+  'v3.social.heroExplore': 'Explore the community',
+  'v3.social.heroExploreDesc': 'See what the community is sharing',
+  'v3.social.tabFollowing': 'Following',
+  'v3.social.tabFollowers': 'Followers',
+  'v3.social.searchTitle': 'Find people',
+  'v3.social.searchPlaceholder': 'Search by name...',
+  'v3.social.searchHint': 'Type at least 2 characters to search.',
+  'v3.social.searchEmpty': 'No users found.',
+  'v3.social.quickTitle': 'Quick actions',
+  'v3.social.quickFind': 'Find people',
+  'v3.social.quickFindDesc': 'Search by name on TappyAI',
+  'v3.social.quickFollowers': 'View followers',
+  'v3.social.quickFollowersDesc': 'People who follow you',
+  'v3.social.quickFollowing': 'View following',
+  'v3.social.quickFollowingDesc': 'People you follow',
+  'v3.social.statsTitle': 'Your connections',
+  'v3.social.emptyFollowing': 'You are not following anyone yet.',
+  'v3.social.emptyFollowers': 'No followers yet.',
+  'v3.social.error': 'Could not load the list. Please try again.',
+  'v3.social.follow': 'Follow',
+  'v3.social.following': 'Following',
+  'v3.social.followsYou': 'Follows you',
+  'v3.social.followerCount': '{n} followers',
+  'v3.social.viewProfile': 'View profile',
+  'v3.social.signIn': 'Sign in to connect with people',
+
+  // ── History — see the note in the Vietnamese block above ─────────────────
+  'v3.history.title': 'HISTORY',
+  'v3.history.tagline': 'Look back at what you have explored on TappyAI.',
+  'v3.history.all': 'All',
+  'v3.history.ai': 'Asked AI',
+  'v3.history.aiDesc': 'Your questions and conversations with TappyAI.',
+  'v3.history.video': 'Watched videos',
+  'v3.history.videoDesc': 'Videos you have watched recently.',
+  'v3.history.links': 'Checked links',
+  'v3.history.linksDesc': 'Links you have checked with Scam Shield.',
+  'v3.history.plans': 'Your plans',
+  'v3.history.plansDesc': 'Plans read from your own conversations.',
+  'v3.history.plansOpen': 'Open AI Planner',
+  'v3.history.empty': 'No history yet',
+  'v3.history.emptyHint': 'What you explore on TappyAI will show up here.',
+  'v3.history.emptyAction': 'Start exploring',
+  'v3.history.periodTitle': 'Time range',
+  'v3.history.period7': 'Last 7 days',
+  'v3.history.period30': 'Last 30 days',
+  'v3.history.periodAll': 'All time',
+  'v3.history.statsTitle': 'Quick stats',
+  'v3.history.discoverTitle': 'Explore more',
+  'v3.history.discoverBody': 'Revisit your history to pick up where you left off with TappyAI.',
+  'v3.history.discoverCta': 'Explore now',
+  'v3.history.seeAll': 'See all',
+  'v3.history.messageCount': '{n} messages',
+  'v3.history.clearLinks': 'Clear link-check history',
+
+  // ── QR Profile — see the note in the Vietnamese block above ──────────────
+  'v3.qr.title': 'Share profile',
+  'v3.qr.scanHint': 'Scan this QR code to view my TappyAI profile',
+  'v3.qr.saveHint': 'You can save or share this QR code.',
+  'v3.qr.share': 'Share profile',
+  'v3.qr.download': 'Download QR',
+  'v3.qr.copied': 'Link copied',
+  'v3.qr.failed': 'Could not create the QR code. Please try again.',
+  'v3.qr.back': 'Back',
+
+  // ── Deals panel ─────────────────────────────────────────────────────────
+  'v3.deals.all': 'All',
+  'v3.deals.food': 'Food',
+  'v3.deals.travel': 'Travel',
+  'v3.deals.beauty': 'Beauty',
+  'v3.deals.empty': 'No offers to show yet.',
+  'v3.deals.get': 'Get deal',
+
+  // ── Deals, the destination (Page 4) ─────────────────────────────────────
+  'v3.deals.pageSubtitle': 'Offers from the e-commerce platforms Tappy follows',
+  'v3.deals.heroTitle': 'Ask Tappy before you buy',
+  'v3.deals.heroBody': 'Not sure what to pick? Ask Tappy to talk it through, compare what is known and suggest what suits you.',
+  'v3.deals.heroCta': 'Ask Tappy now',
+  'v3.deals.sourcesLabel': 'Platforms Tappy brings together',
+  'v3.deals.bySource': 'Browse by platform',
+  'v3.deals.bySourceHint': 'Pick a platform to see the offers from that source',
+  'v3.deals.allSources': 'All platforms',
+
+  // ── Marketplace — reserved, never fabricated ────────────────────────────
+  'v3.marketplace.title': 'Coming soon',
+  'v3.marketplace.body': 'Marketplace is not open yet. When it is, you will shop inside Tappy — there are no products to show for now.',
+
+  // ── Scam Shield panel ───────────────────────────────────────────────────
+  'v3.scam.title': 'Check a link / website',
+  'v3.scam.cta': 'Check now',
+  'v3.scam.historyTitle': 'Check history',
+  'v3.scam.empty': 'No checks yet.',
+  'v3.scam.tagline': 'Protects you from suspicious links and websites',
+  // 🚨 Says the quiet part out loud, and must keep saying it: this list lives in ONE browser.
+  // Nothing syncs it, no account owns it, and a visitor who assumes otherwise would read an empty
+  // history on their phone as "I never checked that link".
+  'v3.scam.historyLocal': 'History is stored on this device only.',
+  'v3.scam.historyClear': 'Clear history',
+  'v3.scam.historyAll': 'See all',
+  'v3.scam.historyLess': 'Show less',
+  'v3.scam.recheck': 'Check again',
+
+  // ── Planner (/planner) — see the note on the Vietnamese side ────────────
+  'v3.planner.title': 'AI Planner',
+  'v3.planner.subtitle': 'The plans Tappy has made with you',
+  'v3.planner.all': 'All',
+  'v3.planner.travel': 'Trips',
+  'v3.planner.evening': 'Evenings',
+  'v3.planner.count': '{n} plans',
+  'v3.planner.empty': 'No plans yet. Ask Tappy to make your first one.',
+  'v3.planner.emptyFiltered': 'No plans of this kind.',
+  'v3.planner.cta': 'Make a plan',
+  'v3.planner.prompt': 'Plan a weekend trip',
+  'v3.planner.days': '{n} days',
+  'v3.planner.stops': '{n} stops',
+  'v3.planner.people': '{n} people',
+  'v3.planner.lastActivity': 'Updated {when}',
+  'v3.planner.open': 'Open in the conversation',
+  'v3.planner.expand': 'View itinerary',
+  'v3.planner.collapse': 'Collapse',
+  'v3.planner.more': 'and {n} more stops',
+  'v3.planner.map': 'Map',
+  'v3.planner.scope': 'Plans are read from your recent conversations.',
+
+  // ── Post / Upload panel ─────────────────────────────────────────────────
+  'v3.post.drop': 'Drop a video here, or tap to choose',
+  'v3.post.photo': 'Photo',
+  'v3.post.video': 'Video',
+  'v3.post.clip': 'Short clip',
+  'v3.post.live': 'Livestream',
+
+  // ── Smart tools ─────────────────────────────────────────────────────────
+  'v3.tool.suggest': 'Suggestions',
+  'v3.tool.suggestDesc': 'Personalised places for your taste',
+  'v3.tool.fortune': 'Fortune Today',
+  'v3.tool.fortuneDesc': "Today's reading for your sign",
+  'v3.tool.scan': 'Scan Documents',
+  'v3.tool.scanDesc': 'Photograph a document or receipt and extract it',
+  'v3.tool.together': 'Tappy Together',
+  'v3.tool.togetherDesc': 'Find somewhere that suits the whole group',
+  'v3.tool.currency': 'Currency Converter',
+  'v3.tool.currencyDesc': 'Convert VND, USD, EUR, JPY and more',
+  'v3.tool.split': 'Split the Bill',
+  'v3.tool.splitDesc': 'Split a bill evenly, by person or by item',
+  'v3.tool.translate': 'Translate',
+  'v3.tool.translateDesc': 'Fast translation in 100+ languages',
+  'v3.tool.safety': 'Safety Check',
+  'v3.tool.safetyDesc': 'Check a link, website or QR code is safe',
+  'v3.tool.music': 'Music Library',
+  'v3.tool.musicDesc': 'Find a soundtrack for your review',
+  'v3.tool.captions': 'Social Captions',
+  'v3.tool.captionsDesc': 'Write captions for FB, TikTok and Instagram',
+
+  // ── Library panels ──────────────────────────────────────────────────────
+  'v3.saved.places': 'Places',
+  'v3.saved.videos': 'Videos',
+  'v3.saved.deals': 'Deals',
+  'v3.saved.products': 'Products',
+  'v3.saved.posts': 'Posts',
+  'v3.history.search': 'Recent searches',
+  'v3.history.asked': 'Asked Tappy',
+  'v3.history.watched': 'Watched',
+  'v3.history.booked': 'Booked / planned',
+  'v3.history.checked': 'Links checked',
+
+  // ── AI capabilities ─────────────────────────────────────────────────────
+  'v3.cap.consultant': 'AI Consultant',
+  'v3.cap.consultantDesc': 'In-depth advice on anything',
+  'v3.cap.search': 'AI Search',
+  'v3.cap.searchDesc': 'Find accurate information',
+  'v3.cap.recommend': 'AI Recommend',
+  'v3.cap.recommendDesc': 'Suggestions shaped to what you asked',
+  'v3.cap.planner': 'AI Planner',
+  'v3.cap.plannerDesc': 'Build a plan automatically',
+  'v3.cap.summary': 'AI Summary',
+  'v3.cap.summaryDesc': 'Summarise long content quickly',
+  'v3.cap.translate': 'AI Translate',
+  'v3.cap.translateDesc': 'Smart translation across languages',
+
+  // ── Profile / notifications panels ──────────────────────────────────────
+  'v3.profile.you': 'You',
+  // ── Profile / Me (V3 hub) ───────────────────────────────────────────────
+  'v3.profile.breadcrumb': 'Profile / Me',
+  'v3.profile.editProfile': 'Edit profile',
+  'v3.profile.premium': 'Premium',
+  'v3.profile.statFollowing': 'Following',
+  'v3.profile.statFollowers': 'Followers',
+  'v3.profile.statLikes': 'Likes',
+  'v3.profile.tabPosts': 'Posts',
+  'v3.profile.tabSaved': 'Saved',
+  'v3.profile.tabPlaces': 'Places',
+  'v3.profile.emptyPosts': "You haven't posted anything yet.",
+  'v3.profile.emptySaved': "You haven't saved any posts yet.",
+  'v3.profile.emptyPlaces': "You haven't saved any places yet.",
+  'v3.profile.loadFailed': "That didn't load. Please try again later.",
+  'v3.profile.postAction': 'New post',
+  'v3.profile.infoTitle': 'Personal information',
+  'v3.profile.infoEdit': 'Edit',
+  'v3.profile.infoName': 'Full name',
+  'v3.profile.infoEmail': 'Email',
+  'v3.profile.infoJoined': 'Joined',
+  'v3.profile.statsTitle': 'Activity',
+  'v3.profile.statPosts': 'Posts',
+  'v3.profile.statVideos': 'Videos',
+  'v3.profile.statSavedPosts': 'Saved posts',
+  'v3.profile.statSavedPlaces': 'Saved places',
+  'v3.profile.statConversations': 'Conversations',
+  'v3.profile.followingTitle': 'Following',
+  'v3.profile.followingEmpty': "You aren't following anyone yet.",
+  'v3.profile.qrTitle': 'QR Profile',
+  'v3.profile.qrHint': 'Share your profile',
+  'v3.notifications.body': 'Manage push, email and reminders in settings.',
+}

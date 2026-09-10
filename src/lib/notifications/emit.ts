@@ -27,6 +27,19 @@ export type NotificationType =
    * without consulting a second column.
    */
   | 'marketing'
+  /**
+   * A private message arrived (Phase 6 — Messenger → Inbox).
+   *
+   * 🚨 SHIPPED BEHIND A FLAG THAT IS OFF. `MESSAGE_NOTIFICATIONS_ENABLED`
+   * defaults to false, so no row of this type is ever minted until Phase 4
+   * turns it on — and it may only be turned on once Web, Android AND iOS handle
+   * the type. Adding an unhandled member to this shared native-facing contract
+   * is exactly what the flag exists to prevent.
+   *
+   * 🚨 The row carries a sender name, a thread id and a deep link. It NEVER
+   * carries the message body — see src/lib/messaging/messageNotifications.ts.
+   */
+  | 'message'
 
 /**
  * The coarse grouping. `'marketing'` was added for V2.2-2 (contract M-4).
