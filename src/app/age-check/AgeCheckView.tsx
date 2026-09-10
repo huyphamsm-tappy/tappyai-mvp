@@ -120,8 +120,8 @@ function AgeCheckInner() {
 
   if (!state) {
     return (
-      <div className="min-h-dvh flex items-center justify-center bg-white dark:bg-gray-950">
-        <Loader2 className="animate-spin text-primary-400" size={32} />
+      <div className="min-h-dvh flex items-center justify-center bg-[#080A12]">
+        <Loader2 className="animate-spin text-indigo-400" size={32} />
       </div>
     )
   }
@@ -130,106 +130,135 @@ function AgeCheckInner() {
   const showForm = !blocked || correcting
 
   return (
-    <div className="min-h-dvh bg-white dark:bg-gray-950 flex flex-col px-6 pt-12 pb-8">
-      <Image
-        src="/branding/otter-logo.png"
-        alt="TappyAI"
-        width={32}
-        height={32}
-        className="h-8 w-8 rounded-[22%] object-cover mb-8"
-      />
+    // ── A POST-AUTHENTICATION ONBOARDING STEP, NOT A LANDING PAGE ────────────
+    //
+    // Nobody reaches this screen without a session — `page.tsx` redirects a
+    // signed-out or anonymous visitor to /login before the view mounts — so it
+    // is dressed as account setup rather than as a public front door: one
+    // centred card, no navigation, no marketing, nothing to explore. The dark
+    // treatment is fixed rather than theme-reactive because this is a single
+    // focused step in a flow, not a surface the user returns to and configures.
+    <div className="relative min-h-dvh overflow-hidden bg-[#080A12] flex items-center justify-center px-4 py-10 sm:px-6">
+      {/* Ambient glow. Decorative only — aria-hidden, pointer-events-none, and
+          behind every interactive element. */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -top-32 -left-24 h-80 w-80 rounded-full bg-blue-600/20 blur-[110px]" />
+        <div className="absolute -bottom-40 -right-20 h-96 w-96 rounded-full bg-violet-600/20 blur-[130px]" />
+        <div className="absolute left-1/2 top-1/3 h-64 w-64 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-[100px]" />
+      </div>
 
-      <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-2">
-        {blocked && !correcting
-          ? t('age.blocked.title')
-          : correcting
-            ? t('age.correct.title')
-            : t('age.ask.title')}
-      </h1>
-      <p className="text-content-secondary text-sm mb-6">
-        {blocked && !correcting
-          ? t('age.blocked.desc')
-          : correcting
-            ? t('age.correct.desc')
-            : t('age.ask.desc')}
-      </p>
+      <div className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-2xl shadow-black/40 backdrop-blur-xl sm:p-8">
+        {/* The official otter lockup, used as a file. Never redrawn in CSS or
+            spelled out in text. */}
+        <Image
+          src="/branding/otter-logo.png"
+          alt="TappyAI"
+          width={56}
+          height={56}
+          priority
+          className="h-14 w-14 rounded-[22%] object-cover mb-7 ring-1 ring-white/15"
+        />
 
-      {showForm && (
+        <h1 className="text-[26px] leading-tight font-black text-white mb-2.5 sm:text-[28px]">
+          {blocked && !correcting
+            ? t('age.blocked.title')
+            : correcting
+              ? t('age.correct.title')
+              : t('age.ask.title')}
+        </h1>
+        <p className="text-[15px] leading-relaxed text-white/60 mb-7">
+          {blocked && !correcting
+            ? t('age.blocked.desc')
+            : correcting
+              ? t('age.correct.desc')
+              : t('age.ask.desc')}
+        </p>
+
+        {showForm && (
         <>
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            {([
-              [t('age.field.day'), day, setDay, 2, 'DD'],
-              [t('age.field.month'), month, setMonth, 2, 'MM'],
-              [t('age.field.year'), year, setYear, 4, 'YYYY'],
-            ] as const).map(([label, value, setValue, maxLen, placeholder]) => (
-              <label key={placeholder} className="flex flex-col gap-1.5">
-                <span className="text-xs font-medium text-content-secondary">{label}</span>
-                <input
-                  // `inputMode` rather than type="number": a number input on
-                  // mobile allows a spinner, an exponent and a minus sign, none
-                  // of which are part of a date.
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  maxLength={maxLen}
-                  value={value}
-                  placeholder={placeholder}
-                  onChange={(e) => setValue(e.target.value.replace(/\D/g, '').slice(0, maxLen))}
-                  className="px-4 py-3 rounded-2xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
-                />
-              </label>
-            ))}
-          </div>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {([
+                [t('age.field.day'), day, setDay, 2, 'DD'],
+                [t('age.field.month'), month, setMonth, 2, 'MM'],
+                [t('age.field.year'), year, setYear, 4, 'YYYY'],
+              ] as const).map(([label, value, setValue, maxLen, placeholder]) => (
+                <label key={placeholder} className="flex flex-col gap-1.5">
+                  <span className="text-xs font-medium text-white/50">{label}</span>
+                  <input
+                    // `inputMode` rather than type="number": a number input on
+                    // mobile allows a spinner, an exponent and a minus sign, none
+                    // of which are part of a date.
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={maxLen}
+                    value={value}
+                    placeholder={placeholder}
+                    onChange={(e) => setValue(e.target.value.replace(/\D/g, '').slice(0, maxLen))}
+                    className="px-4 py-3 rounded-2xl bg-white/[0.06] border border-white/10 text-center text-base tabular-nums text-white placeholder-white/25 focus:outline-none focus:border-indigo-400/50 focus:ring-2 focus:ring-indigo-500/30 transition-colors"
+                  />
+                </label>
+              ))}
+            </div>
 
-          {error && <p className="text-sm text-red-500 mb-4">{error}</p>}
+            {error && <p role="alert" className="text-sm text-red-400 mb-4">{error}</p>}
 
-          <button
-            onClick={submit}
-            disabled={saving}
-            className="w-full py-3 rounded-2xl bg-interactive hover:bg-interactive-hover disabled:opacity-60 text-white font-semibold flex items-center justify-center gap-2 transition-all"
-          >
-            {saving
-              ? <><Loader2 size={18} className="animate-spin" /> {t('age.submitting')}</>
-              : (correcting ? t('age.correct.submit') : t('age.submit'))}
-          </button>
-
-          <p className="mt-4 flex items-start gap-2 text-xs text-content-secondary">
-            <ShieldCheck size={14} className="mt-0.5 shrink-0" />
-            {t('age.ask.privacy')}
-          </p>
-        </>
-      )}
-
-      {blocked && !correcting && (
-        <div className="flex flex-col gap-3">
-          {state.canCorrectAge ? (
             <button
-              onClick={() => { setError(null); setCorrecting(true) }}
-              className="w-full py-3 rounded-2xl border-2 border-gray-100 dark:border-gray-800 text-sm font-semibold text-gray-700 dark:text-gray-200"
+              onClick={submit}
+              disabled={saving}
+              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold flex items-center justify-center gap-2 shadow-lg shadow-indigo-900/40 transition-all"
             >
-              {t('age.blocked.correctCta')}
+              {saving
+                ? <><Loader2 size={18} className="animate-spin" /> {t('age.submitting')}</>
+                : (correcting ? t('age.correct.submit') : t('age.submit'))}
             </button>
-          ) : (
-            <p className="text-sm text-content-secondary">
-              {/* The copy says "contact support". Without the address that is a
-                  dead end: this user cannot correct their own date of birth any
-                  more, so the ONLY remaining remedy is the audited
-                  `admin_set_user_date_of_birth()`, invoked by a keyholder on their
-                  behalf, and support is how they ask for it. Reads the ONE support
-                  address rather than repeating a second literal. */}
-              {t('age.blocked.exhausted')}{' '}
-              <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium underline">
-                {SUPPORT_EMAIL}
-              </a>
-            </p>
-          )}
-          <button
-            onClick={signOut}
-            className="w-full py-3 text-center text-sm text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
-          >
-            {t('age.blocked.signOut')}
-          </button>
-        </div>
-      )}
+
+            {/* The reassurance is a titled block rather than one long line: this
+                screen asks for the single most sensitive field the product
+                stores, and the promise about it should be as readable as the
+                question. Scope only — what it is used for and where it will not
+                appear. */}
+            <div className="mt-6 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <ShieldCheck size={16} className="mt-0.5 shrink-0 text-emerald-400" />
+              <div>
+                <p className="text-[13px] font-semibold text-white/85">{t('age.ask.privacyTitle')}</p>
+                <p className="mt-1 text-[13px] leading-relaxed text-white/55">{t('age.ask.privacy')}</p>
+              </div>
+            </div>
+          </>
+        )}
+
+        {blocked && !correcting && (
+          <div className="flex flex-col gap-3">
+            {state.canCorrectAge ? (
+              <button
+                onClick={() => { setError(null); setCorrecting(true) }}
+                className="w-full py-3.5 rounded-2xl border border-white/15 bg-white/[0.04] hover:bg-white/[0.08] text-sm font-semibold text-white/85 transition-colors"
+              >
+                {t('age.blocked.correctCta')}
+              </button>
+            ) : (
+              <p className="text-sm leading-relaxed text-white/55">
+                {/* The copy says "contact support". Without the address that is a
+                    dead end: this user cannot correct their own date of birth any
+                    more, so the ONLY remaining remedy is the audited
+                    `admin_set_user_date_of_birth()`, invoked by a keyholder on their
+                    behalf, and support is how they ask for it. Reads the ONE support
+                    address rather than repeating a second literal. */}
+                {t('age.blocked.exhausted')}{' '}
+                <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-indigo-300 underline">
+                  {SUPPORT_EMAIL}
+                </a>
+              </p>
+            )}
+            <button
+              onClick={signOut}
+              className="w-full py-3 text-center text-sm text-white/40 hover:text-white/70 transition-colors"
+            >
+              {t('age.blocked.signOut')}
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

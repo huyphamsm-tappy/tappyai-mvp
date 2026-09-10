@@ -85,6 +85,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f4Desc': 'AI agent cá nhân, mọi lúc, mọi nơi.',
     'login.signinTitle': 'Đăng nhập TappyAI',
     'login.signinSubtitle': 'Chọn cách phù hợp nhất để tiếp tục',
+    // ONE message for every email/password refusal — wrong address, wrong
+    // password, no such account. Forwarding the provider's own text would turn
+    // the form into an account-enumeration oracle, so it never is.
+    'login.errorSignInFailed': 'Email hoặc mật khẩu không đúng.',
     'login.continueGuest': 'Tiếp tục với tư cách Khách',
     'login.trustLine': 'Dữ liệu của bạn được an toàn. Chúng tôi không bao giờ đăng gì nếu chưa được phép.',
     'login.statUsers': 'Người dùng hài lòng',
@@ -336,6 +340,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f4Desc': 'Your personal AI agent, anytime, anywhere.',
     'login.signinTitle': 'Sign in to TappyAI',
     'login.signinSubtitle': 'Choose the best way to continue',
+    'login.errorSignInFailed': 'That email or password is not correct.',
     'login.continueGuest': 'Continue as Guest',
     'login.trustLine': 'Your data is safe with us. We never post without your permission.',
     'login.statUsers': 'Happy Users',

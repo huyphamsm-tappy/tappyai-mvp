@@ -6,9 +6,14 @@
 
 export const vi: Record<string, string> = {
   // ── Asking (status: unknown) ───────────────────────────────────────────────
-  'age.ask.title': 'Bạn sinh ngày nào?',
-  'age.ask.desc': 'TappyAI dành cho người từ 18 tuổi trở lên. Chúng tôi cần ngày sinh của bạn để tiếp tục.',
-  'age.ask.privacy': 'Ngày sinh của bạn được giữ riêng tư. Nó không hiển thị trên trang cá nhân và không được chia sẻ với người dùng khác.',
+  // The purpose is stated in the headline itself. This screen asks for one
+  // sensitive field, so it says exactly what the field is for and nothing else
+  // — no advertising, analytics, personalisation or recommendation framing,
+  // which would turn a required eligibility check into data collection.
+  'age.ask.title': 'Xác nhận bạn đủ 18 tuổi',
+  'age.ask.desc': 'TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng.',
+  'age.ask.privacyTitle': 'Ngày sinh của bạn được giữ riêng tư',
+  'age.ask.privacy': 'Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn.',
   'age.field.day': 'Ngày',
   'age.field.month': 'Tháng',
   'age.field.year': 'Năm',
@@ -52,9 +57,10 @@ export const vi: Record<string, string> = {
 }
 
 export const en: Record<string, string> = {
-  'age.ask.title': 'What is your date of birth?',
-  'age.ask.desc': 'TappyAI is for people aged 18 and over. We need your date of birth to continue.',
-  'age.ask.privacy': 'Your date of birth is kept private. It is never shown on your profile and is never shared with other users.',
+  'age.ask.title': 'Confirm you are 18 or over',
+  'age.ask.desc': 'TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it.',
+  'age.ask.privacyTitle': 'Your date of birth is kept private',
+  'age.ask.privacy': 'We use this only to confirm you are 18 or over, and we never show your date of birth on your profile.',
   'age.field.day': 'Day',
   'age.field.month': 'Month',
   'age.field.year': 'Year',

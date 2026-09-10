@@ -53,10 +53,25 @@ export default function RegisterPage() {
     // (is_first_login=true) with method 'email'.
 
     // Nếu Supabase đã trả session ngay (email confirmation tắt) → một tài khoản
-    // vừa tạo luôn chưa onboarded, nên đưa thẳng vào onboarding (thay vì "/",
+    // vừa tạo luôn chưa onboarded, nên đích đến là onboarding (thay vì "/",
     // vốn bỏ qua bước seed sở thích/thành phố — giống các flow OAuth khác).
+    //
+    // 🔑 QUA /age-check, KHÔNG ĐI THẲNG ONBOARDING (owner decision 2026-09-10).
+    //    Nhánh này bỏ qua hoàn toàn phần kiểm tra tuổi: nó là con đường DUY NHẤT
+    //    vào sản phẩm mà không đi qua `/auth/callback`, nơi `getAgeEligibility`
+    //    vốn quyết định điểm đến. Hiện tại nhánh này không chạy trên production
+    //    vì Supabase đang bật "Confirm email" — nhưng nó sẽ chạy ngay khi thiết
+    //    lập đó bị tắt, và khi ấy thứ tự màn hình sẽ sai một cách âm thầm.
+    //
+    //    `/age-check` tự nó là điểm quyết định: guard phía server ở đó đọc cùng
+    //    một `getAgeEligibility()` rồi chuyển tiếp thẳng tới `next` nếu đã đủ
+    //    tuổi, nên KHÔNG có logic tuổi nào bị nhân bản ở đây và người dùng đã
+    //    xác minh không bao giờ nhìn thấy màn hình này.
+    //
+    //    Đây là thứ tự màn hình, không phải hàng rào bảo mật: mọi product API
+    //    vẫn tự từ chối caller chưa đủ điều kiện.
     if (data.session) {
-      router.push('/onboarding')
+      router.push(`/age-check?next=${encodeURIComponent('/onboarding')}`)
       router.refresh()
       return
     }
