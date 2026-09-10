@@ -116,7 +116,22 @@ describe('the detector reports and never rewrites', () => {
     // starts depending on anything but the early-send flag, this fails — which
     // is the moment "we noticed a fabricated name" could turn into "we silently
     // edited the user's reply".
-    expect(filter).toMatch(/const outText = earlyShoppingMarkerSent \? prose : finalText/)
+    //
+    // Asserted through the ternary's two branches rather than one literal byte string. The
+    // property is "delivery state alone decides", not "the expression never changes shape": the
+    // early branch must drop EXACTLY what the early send already delivered (the shopping marker)
+    // and keep everything else, or a turn that searched both places and products would silently
+    // lose its place cards. A literal match cannot tell those two apart.
+    const outTernary = filter.match(/const outText = (.*)/)?.[1]
+    expect(outTernary).toBeDefined()
+    expect(outTernary).toMatch(/^earlyShoppingMarkerSent \?/)
+    const [earlyBranch, lateBranch] = outTernary!.replace(/^earlyShoppingMarkerSent \?/, '').split(':')
+    // Early branch: everything `finalText` carries EXCEPT the marker that already shipped.
+    expect(earlyBranch).toContain('${prose}')
+    expect(earlyBranch).toContain('${placesSuffix}')
+    expect(earlyBranch).not.toContain('markerSuffix')
+    // Late branch: the detector's input, unchanged.
+    expect(lateBranch.trim()).toBe('finalText')
     // The second split obeys the same rule: `send` subtracts what was already streamed, and its
     // only inputs are `flushedText` (delivery state) and `outText`. If a detector result ever
     // appears in this expression, this fails — which is the moment "we noticed a fabricated name"
@@ -125,11 +140,21 @@ describe('the detector reports and never rewrites', () => {
   })
 
   it('the detector still reads the reply WITH the decision in it', () => {
-    // `finalText` — what ungroundedNamesIn analyses — must keep carrying the
-    // marker even though the marker may already have shipped separately.
-    expect(filter).toMatch(/const finalText = `\$\{prose\}\$\{markerSuffix\}`/)
+    // `finalText` — what ungroundedNamesIn analyses — must keep carrying EVERY structured marker,
+    // even though a marker may already have shipped separately.
+    //
+    // Asserted through the composition's inputs rather than one literal source line: there is now
+    // more than one marker ([TAPPY_SHOPPING], [TAPPY_PLACES]) and there may be more. A literal
+    // match would need rewriting for each — and, worse, would still pass if a future marker reached
+    // the user WITHOUT being folded in here, which is the exact failure this test exists to catch.
+    // Naming each suffix fails on that instead.
+    const composed = filter.match(/const finalText = `([^`]*)`/)?.[1]
+    expect(composed).toBeDefined()
+    expect(composed).toContain('${prose}')
+    expect(composed).toContain('${markerSuffix}')
+    expect(composed).toContain('${placesSuffix}')
     const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
-    expect(filter.indexOf('const finalText = `${prose}${markerSuffix}`')).toBeLessThan(detectAt)
+    expect(filter.indexOf('const finalText = `')).toBeLessThan(detectAt)
   })
 
   // REMOVED ON INTEGRATION: this asserted how `/api/chat` CONSUMES the detector's finding, and

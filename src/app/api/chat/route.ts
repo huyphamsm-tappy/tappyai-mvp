@@ -40,6 +40,7 @@ import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantCo
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
+import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 
 export const maxDuration = 60
 
@@ -814,6 +815,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     llmCalls: number | null; toolCalls: number
   } | null = null
 
+  /**
+   * This turn's Google Places allowance.
+   *
+   * `maxSteps` above is why one is needed: the model may take up to eight tool steps, and each may
+   * call `search_places` with different words. Different words are a different cache key, so the
+   * cache cannot collapse them — measured, one Food consultation spent SEVEN SearchText calls
+   * against a 100/day project quota.
+   *
+   * A planning turn asks genuinely different questions (eat / see / stay) and gets three; every
+   * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
+   * collector, so one conversation can never spend another's allowance.
+   */
+  const placesBudget = createPlacesBudget(planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
@@ -881,7 +896,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }),
         execute: async ({ query, location, type }) => {
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
-          const r = await searchPlaces(query, location, type, lang, userLocation)
+          const r = await searchPlaces(query, location, type, lang, userLocation, placesBudget)
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.

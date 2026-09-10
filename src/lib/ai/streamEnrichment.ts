@@ -30,6 +30,21 @@ type PlaceLike = {
   address?: string
   /** Backend-validated TikTok review/video URL, or absent when the provider found none. */
   tiktok_review_url?: string
+  // Structured place facts carried alongside the localized `google_rating` sentence, so the
+  // [TAPPY_PLACES] block can state them as values instead of a client parsing them back out of
+  // prose. Provider-dependent, hence all optional (Google: rating/review count; OSM: hours,
+  // distance, cuisine).
+  rating?: number
+  review_count?: number
+  /**
+   * Whether the provider ranked this place against the query TEXT (Google Places textSearch) or
+   * only by category and radius (the OpenStreetMap fallback). Gates [TAPPY_PLACES] — see
+   * renderPlacesMarker. Carried from the tool result by toolResultSplit.
+   */
+  text_ranked?: boolean
+  distance_km?: number
+  hours?: string
+  attributes?: string[]
 }
 // get_hotel_prices / search_products' primary content — 'title' stands in for 'name'.
 type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: string[] }
@@ -88,6 +103,79 @@ function hasDomainNearName(placeName: string, domain: string, lowerText: string,
 const normName = (n: string) => normalizeVN(n.toLowerCase())
 
 const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) || p.photo_url)
+
+export const PLACES_MARKER_OPEN = '[TAPPY_PLACES]'
+export const PLACES_MARKER_CLOSE = '[/TAPPY_PLACES]'
+
+/**
+ * The `[TAPPY_PLACES]` block for the places THIS reply named, or '' when there are none.
+ *
+ * Scoped to what the prose actually mentions, and ranked by where it mentions them, so the block
+ * can never advertise a place the reader was not shown or contradict the order they read. It is
+ * built from the provider's own values only: a field the tool did not state is left out, never
+ * defaulted. Photos come from each place's own entry — the association the collector already made,
+ * never a positional guess.
+ *
+ * One shape for food, spa and entertainment venues: the pipeline resolves all three through
+ * `searchPlaces`, so they are the same object, and no subtype is invented. Actions are absent by
+ * design — `[CTA_BUTTONS]` is the single action channel.
+ */
+export function renderPlacesMarker(places: PlaceLike[], prose: string): string {
+  if (!places || places.length === 0 || !prose.trim()) return ''
+
+  // ── The card is only as good as the ranking behind it ──────────────────────
+  //
+  // A place may appear here only if the provider ranked it against the user's WORDS. Google Places
+  // textSearch does. The OpenStreetMap fallback does not: it is handed a category and a radius, so
+  // for "bún bò" it returns whatever restaurants are nearby. Measured on 2026-09-08, with Google
+  // returning 403, that produced a Western restaurant, a French restaurant and a steakhouse — all
+  // real, all nearby, none of them an answer.
+  //
+  // Those rows still reach the model and can inform its prose, where it is free to say what it
+  // actually knows about them. What they must not do is become a numbered "Tappy recommends"
+  // rail, which asserts a relevance nothing established. Prose-only beats a confidently wrong card.
+  const ranked = places.filter(p => p.text_ranked === true)
+  if (ranked.length === 0) return ''
+  places = ranked
+
+  // Same alignment guard injectPlaceEnrichment uses: normalizeVN must stay index-aligned for
+  // offsets to mean anything. When it does not, fall back to the source order rather than mis-rank.
+  const norm = normalizeVN(prose.toLowerCase())
+  const aligned = norm.length === prose.length
+  const headers: Header[] = aligned ? proseHeaders(norm) : []
+
+  const named = places
+    .map((place, index) => {
+      const name = (place.name ?? '').trim()
+      const at = aligned && name ? findPlaceOffset(name, norm, headers) : -1
+      return { place, name, at, index }
+    })
+    .filter(entry => entry.name !== '' && (!aligned || entry.at !== -1))
+    .sort((a, b) => (aligned ? a.at - b.at : a.index - b.index))
+
+  if (named.length === 0) return ''
+
+  const payload = {
+    v: 1 as const,
+    places: named.map(({ place, name }, i) => {
+      const photo = place.photo_urls?.[0] ?? place.photo_url
+      const attributes = place.attributes?.filter(a => a.trim() !== '')
+      return {
+        ...(place.place_id ? { placeId: place.place_id } : {}),
+        name,
+        rank: i + 1,
+        ...(photo ? { photo } : {}),
+        ...(place.address ? { address: place.address } : {}),
+        ...(typeof place.rating === 'number' ? { rating: place.rating } : {}),
+        ...(typeof place.review_count === 'number' ? { reviewCount: place.review_count } : {}),
+        ...(typeof place.distance_km === 'number' ? { distanceKm: place.distance_km } : {}),
+        ...(place.hours ? { hours: place.hours } : {}),
+        ...(attributes && attributes.length > 0 ? { attributes } : {}),
+      }
+    }),
+  }
+  return `\n\n${PLACES_MARKER_OPEN}${JSON.stringify(payload)}${PLACES_MARKER_CLOSE}`
+}
 
 // ── System-owned enrichment placement ────────────────────────────────────────
 // Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images
@@ -974,7 +1062,18 @@ export function applyPlaceEnrichmentStreamFilter(
     // early send must not change it. Splitting delivery is allowed to change
     // WHEN the user sees the decision; it is not allowed to change what the
     // guards analysed or which candidates the turn recorded as presented.
-    const finalText = `${prose}${markerSuffix}`
+    // The places block rides the SAME channel as the shopping decision, for the same reason: text
+    // is the only thing that survives reload, so a structured card must live in the message. It is
+    // therefore part of `finalText` too — the detectors read exactly what the user receives, and
+    // "detector in == user out" still holds with two markers as it did with one.
+    //
+    // It cannot widen what the turn counts as presented: renderPlacesMarker only emits places the
+    // prose ALREADY names (it drops any place `findPlaceOffset` cannot locate in the prose), so
+    // every name it carries is a name `seenIn` would have matched from the prose alone.
+    //
+    // Appended after the shopping suffix so the existing marker order is untouched.
+    const placesSuffix = renderPlacesMarker(places, prose)
+    const finalText = `${prose}${markerSuffix}${placesSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -991,7 +1090,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // What still needs sending. When the decision already went out after the
     // tool result, only the prose is left — re-sending the marker here would
     // put a second copy in the message text and render a duplicate card.
-    const outText = earlyShoppingMarkerSent ? prose : finalText
+    // The SHOPPING marker is the only thing the early send delivered, so it is the only thing
+    // subtracted here. `placesSuffix` has not been sent by anyone and must still ride out, or a
+    // turn that searched both places and products would lose its place cards entirely.
+    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}` : finalText
     // A5-P1: whatever was already released early must not be sent a second time. The released
     // prefix is money-free whole sentences taken from before any place tool, so neither the guard
     // (which only removes sentences carrying a money claim) nor the photo injector (which writes

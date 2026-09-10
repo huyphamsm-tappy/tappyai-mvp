@@ -8,6 +8,8 @@ import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace } from '@/lib/ai/consultative/reviewAction'
 import { messages, isVi } from '@/lib/ai/messages'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
+import { withSingleFlight } from './common'
+import type { PlacesBudget } from './placesBudget'
 import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnamCities'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 
@@ -321,14 +323,15 @@ function isDirectFoodOrderLink(link: string): boolean {
   }
 }
 
-export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
+/**
+ * The retrieval itself. Reached only through [searchPlaces], which owns the cache, the retrieval
+ * budget and in-flight deduplication.
+ */
+async function searchPlacesUncached(
+  query: string, location?: string, type?: string, lang = 'vi',
+  locationBias?: { lat: number; lng: number } | null,
+): Promise<{ result: unknown; googleOk: boolean }> {
   const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
-  const cached = getCache(cacheKey)
-  if (cached) {
-    console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
-    return cached
-  }
-
   const key = process.env.GOOGLE_PLACES_API_KEY
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
   // fallback can never disagree about which city this search is for.
@@ -339,6 +342,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     destination: destination?.query ?? null, remoteDestination,
   }))
   let result: unknown = null
+  /**
+   * True only when Google returned usable, in-scope rows. It is what decides whether the answer is
+   * worth caching: an OSM fallback answers a different (weaker) question, and a 403/429/timeout
+   * answers none at all.
+   */
+  let googleOk = false
   if (key) {
     try {
       const sq = location ? query + ' ' + location : query
@@ -386,6 +395,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           belongsToDestination(destination, null, r.formattedAddress as string | undefined))
         : []
       if (inScope.length) {
+        googleOk = true
         const placesData = inScope.slice(0, 8)
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
@@ -413,18 +423,38 @@ export async function searchPlaces(query: string, location?: string, type?: stri
             name: (r.displayName as { text?: string })?.text || '',
             address: r.formattedAddress,
             google_rating: r.rating ? messages.places.googleRating(lang, r.rating as number, r.userRatingCount as number | undefined) : null,
+            // The same two numbers the sentence above states, kept STRUCTURED as well. The
+            // localized string is what the model reads and cites, and it stays exactly as it was;
+            // these are what a client can render as a rating without parsing "4,7 sao (123 đánh
+            // giá)" back into numbers. Only ever the provider's own values — absent stays absent.
+            ...(typeof r.rating === 'number' ? { rating: r.rating } : {}),
+            ...(typeof r.userRatingCount === 'number' ? { review_count: r.userRatingCount } : {}),
             maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
             ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
           }))
         }
       } else {
-        console.log(JSON.stringify({ type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: (resp as Response).status, errorMessage: (d.error as { message?: string })?.message || null }))
+        const status = (resp as Response).status
+        console.log(JSON.stringify({
+          type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: status,
+          // Named so quota exhaustion is distinguishable from a key problem at a glance.
+          outcome: status === 429 ? 'quota_exhausted' : status === 403 ? 'permission_denied' : 'http_error',
+          errorMessage: (d.error as { message?: string })?.message || null,
+        }))
       }
     } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
+      const msg = String(e)
+      console.log(JSON.stringify({
+        type: 'tappyai_places_debug',
+        outcome: msg.includes('timeout') ? 'timeout' : 'exception',
+        error: msg,
+      }))
     }
   }
-  if (!result) result = await searchPlacesOSM(query, location, type, locationBias, lang)
+  if (!result) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'osm_fallback_used' }))
+    result = await searchPlacesOSM(query, location, type, locationBias, lang)
+  }
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   const qNorm = normalizeVN(query.toLowerCase())
@@ -580,6 +610,65 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     }
   }
 
-  setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
-  return result
+  return { result, googleOk }
+}
+
+/**
+ * Places retrieval, with the three protections that stand between one conversation and the whole
+ * project's daily SearchText quota.
+ *
+ * 1. CACHE — unchanged: same normalized key, 30 minutes.
+ * 2. SINGLE-FLIGHT — concurrent callers on one key share one upstream request.
+ * 3. BUDGET — a turn may retrieve a bounded number of distinct intents; see [PlacesBudget].
+ *
+ * Only a GOOGLE answer is cached. An OSM fallback is a weaker answer to a different question, and
+ * caching it under the Google key meant a single 403 poisoned that query for thirty minutes — so
+ * the first request after quota recovered still got the fallback. Failures are never cached at all.
+ */
+export async function searchPlaces(
+  query: string, location?: string, type?: string, lang = 'vi',
+  locationBias?: { lat: number; lng: number } | null,
+  budget?: PlacesBudget,
+) {
+  const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
+  const cached = getCache(cacheKey)
+  if (cached) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit', cacheKey }))
+    return cached
+  }
+
+  return withSingleFlight(cacheKey, async () => {
+    // A flight that finished while this one waited has already filled the cache.
+    const fresh = getCache(cacheKey)
+    if (fresh) {
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit_after_join', cacheKey }))
+      return fresh
+    }
+
+    if (budget) {
+      const verdict = budget.claim(type, location)
+      if (!verdict.allowed) {
+        console.log(JSON.stringify({
+          type: 'tappyai_places_budget', step: 'blocked', reason: verdict.reason,
+          used: budget.used, limit: budget.limit, placeType: type ?? null,
+        }))
+        // No search, and nothing invented to stand in for one. The turn answers from its prose and
+        // from whatever it already retrieved — a thinner answer, never a fabricated one.
+        return {
+          source: 'budget', count: 0, results: [],
+          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
+        }
+      }
+    }
+
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_attempt', placeType: type ?? null }))
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias)
+    if (googleOk) {
+      setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))
+    } else {
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'not_cached', reason: 'no_google_result' }))
+    }
+    return result
+  })
 }

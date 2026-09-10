@@ -223,12 +223,18 @@ describe('the rendered wording matches what the evidence supports', () => {
     // `finalText` — the detector's input — is still built from it, so the link
     // is still inside what gets analysed. Both halves are asserted: a fold that
     // no longer reached `finalText` would leave the link unanalysed.
+    // The compose step is located by its assignment, not by the exact list of marker suffixes —
+    // that list grows ([TAPPY_SHOPPING], [TAPPY_PLACES], …) and pinning it here would make this
+    // test fail for reasons that have nothing to do with TikTok attribution. What matters, and is
+    // still asserted, is the ORDER: fold → compose → detect, and that the composed string is built
+    // from `prose` so the folded link is inside what the detector analyses.
     const foldAt = filter.indexOf('const prose = (scaffoldStripped && batchTikTok')
-    const composeAt = filter.indexOf('const finalText = `${prose}${markerSuffix}`')
+    const composeAt = filter.indexOf('const finalText = `')
     const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
     expect(foldAt).toBeGreaterThan(-1)
     expect(composeAt).toBeGreaterThan(foldAt)
     expect(detectAt).toBeGreaterThan(composeAt)
+    expect(filter.match(/const finalText = `([^`]*)`/)?.[1]).toContain('${prose}')
   })
 
   it('re-validates the URL at the render boundary', () => {
