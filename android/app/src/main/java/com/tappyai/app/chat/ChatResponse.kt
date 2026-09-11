@@ -97,6 +97,13 @@ data class ParsedAssistantReply(
     val segments: List<ReplySegment>,
     /** D1 — the decoded shopping decision, or null when the turn carried none. */
     val shopping: ShoppingDecisionView? = null,
+    /**
+     * The DURABLE place cards carried by `[TAPPY_PLACES]`, best first. Empty on every turn that
+     * carried none — which today is every turn, because the server emits the block only when
+     * `EMIT_TAPPY_PLACES` is on. Parsing it now is what lets that flag be flipped without the raw
+     * JSON reaching a user, which is how the same block leaked twice before.
+     */
+    val places: List<PersistedPlace> = emptyList(),
 )
 
 /**
@@ -204,6 +211,16 @@ object ChatResponseParser {
     // orphan strip rather than swallowing the rest of the reply.
     private val SHOPPING_PARTIAL_RE = Regex("""\[TAPPY_SHOPPING\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val SHOPPING_STRIP_RE = Regex("""\[/?TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
+    // The DURABLE place block. Same three layers every other marker needs, for the same reason:
+    // a closed block, an UNTERMINATED one at the tail of a streaming snapshot, and any orphan tag
+    // left behind by either. The bare form is located by BRACE MATCHING rather than an end anchor
+    // because the server composes prose + places + CTA — `[CTA_BUTTONS]` really does follow this
+    // block, and an end-anchored pattern would swallow it (shared fixture `places-then-cta`, and
+    // the production leak rule 3 was written for).
+    private val PLACES_RE = Regex("""\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]""", RegexOption.IGNORE_CASE)
+    private const val PLACES_MARKER = "[TAPPY_PLACES]"
+    private val PLACES_PARTIAL_RE = Regex("""\[TAPPY_PLACES\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val PLACES_STRIP_RE = Regex("""\[/?TAPPY_PLACES\]""", RegexOption.IGNORE_CASE)
     // Markdown image `![alt](url)` — TappyMarkdown drops images, so they render via segments
     // (mirrors the web formatMessage grouping place photos into a horizontal strip).
     private val IMAGE_RE = Regex("""!\[[^\]]*\]\((https?://[^\s)]+)\)""")
@@ -288,13 +305,47 @@ object ChatResponseParser {
         text = SHOPPING_RE.replace(text, "")
         text = SHOPPING_PARTIAL_RE.replace(text, "")
 
+        // 5. The durable place cards.
+        //
+        // Decode and strip stay independent, in that order, like every step above: a block we
+        // cannot understand is still a block the user must not read. A payload whose `items` is
+        // missing or empty decodes to no places rather than to an empty card — the same answer
+        // web's `parsePlacesMarker` gives, so a turn cannot show a card on one platform and a
+        // blank frame on the other.
+        var placesPayload: String? = null
+        val placesTagMatch = PLACES_RE.find(text)
+        if (placesTagMatch != null) {
+            placesPayload = placesTagMatch.groupValues[1]
+            text = PLACES_RE.replace(text, "")
+        } else {
+            val span = findMarkerJson(text, PLACES_MARKER)
+            if (span != null) {
+                placesPayload = span.json
+                text = text.substring(0, span.start) + text.substring(span.end)
+            }
+        }
+        // Any FURTHER block is stripped without rendering: only the first carries the turn's
+        // decision, and a leftover second block would otherwise show as raw JSON.
+        var extraPlaces = findMarkerJson(text, PLACES_MARKER)
+        while (extraPlaces != null) {
+            text = text.substring(0, extraPlaces.start) + text.substring(extraPlaces.end)
+            extraPlaces = findMarkerJson(text, PLACES_MARKER)
+        }
+        // Whatever brace matching declined: a block whose payload never finished arriving.
+        text = PLACES_PARTIAL_RE.replace(text, "").trimEnd()
+
+        val places = placesPayload?.let { body ->
+            runCatching { json.decodeFromString<PlacesMarkerPayload>(body.trim()).items }.getOrNull()
+        } ?: emptyList()
+
         // Safety net: strip any orphan markers so implementation details never show. Every marker
         // the server owns is listed here — an entry missing from this line is a marker that leaks
         // the moment its block arrives in any shape the steps above did not match.
         text = PLAN_STRIP_RE.replace(text, "")
         text = CTA_STRIP_RE.replace(text, "")
         text = FOLLOWUPS_STRIP_RE.replace(text, "")
-        text = SHOPPING_STRIP_RE.replace(text, "").trim()
+        text = SHOPPING_STRIP_RE.replace(text, "")
+        text = PLACES_STRIP_RE.replace(text, "").trim()
 
         // 4. Positional segmentation — each run of image lines becomes an inline gallery at its
         // position (web formatMessage), and the clean text keeps its pre-segments shape for
@@ -307,6 +358,7 @@ object ChatResponseParser {
             followups = followups,
             segments = segment(text),
             shopping = shopping,
+            places = places,
         )
     }
 

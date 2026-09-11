@@ -125,6 +125,9 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     // Keyed on the language the RESOURCES resolved to, so switching language reloads the welcome
     // prompts in the new one instead of leaving the old language's prompts on screen. See
     // [ChatViewModel.loadDynamicPrompts] — this used to run once in the ViewModel's init.
+    // The composer chip and the decision card must ask for a price watch in the SAME words, or
+    // the model sees two different requests for one feature. Read once, used by both.
+    val pricePrefill = stringResource(R.string.chat_chip_price_watch_prefill)
     val promptsInEnglish = booleanResource(R.bool.resources_are_english)
     LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }
 
@@ -223,7 +226,10 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                             // galleries in stream order (web parity: formatMessage renders each run
                             // of image lines as a strip AT ITS POSITION, inside the bubble — a
                             // recommendation's photos belong to its block, never appended after the
-                            // whole text). Restored/error messages have no segments → plain text.
+                            // whole text). A RESTORED turn now has segments too — the stored content
+                            // is the raw reply and the restore path parses it, so reopening a chat
+                            // rebuilds the galleries and cards instead of showing flat prose. Error
+                            // bubbles still have none, and fall back to plain text.
                             val segments = message.segments.ifEmpty {
                                 if (message.text.isNotBlank()) listOf(ReplySegment.Text(message.text)) else emptyList()
                             }
@@ -240,13 +246,34 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                 }
                             }
                             message.plan?.let { plan -> TripPlanCard(plan) }
+                            // The place decision. Rendered only once generation is done, like every
+                            // other structured block: a half-arrived card is not a card, and showing
+                            // one mid-stream is how partial JSON reached users before.
+                            //
+                            // 🔑 LIVE FIRST, DURABLE AS THE FALLBACK — and never both, or the turn
+                            // would show the same places twice. The live annotation is the richer
+                            // projection and is present for the session that produced the turn; it
+                            // is never persisted, so a reopened conversation has only the durable
+                            // block, which is exactly what that block exists for.
+                            if (!isResponding) {
+                                val cards = message.livePlaces?.items?.map { it.toCardView() }
+                                    ?: message.places.mapNotNull { it.toCardView() }
+                                PlaceCards(cards)
+                            }
                             // D1 — the shopping DECISION. Rendered only once generation is done,
                             // like every other structured block: a half-arrived decision is not a
                             // decision, and showing one mid-stream is how partial JSON reached
                             // users in the first place.
                             message.shopping?.let { view ->
                                 if (!isResponding) {
-                                    ShoppingDecisionCard(view)
+                                    ShoppingDecisionCard(
+                                        view = view,
+                                        // Same prefill the composer chip uses, so the two entry
+                                        // points cannot phrase the request differently.
+                                        onPriceWatch = { name ->
+                                            viewModel.onInputChange(pricePrefill + name)
+                                        },
+                                    )
                                     // Comparison (DD-005), derived from the SAME payload the card
                                     // above renders — no extra request, nothing inferred. Opens in
                                     // a bottom sheet: a four-column grid is unreadable inline on a

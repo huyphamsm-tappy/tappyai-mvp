@@ -52,6 +52,19 @@ import com.tappyai.core.designsystem.theme.TappySpacing
 fun ShoppingDecisionCard(
     view: ShoppingDecisionView,
     modifier: Modifier = Modifier,
+    /**
+     * Start a price watch for the recommended product.
+     *
+     * 🚨 WEB HAS THIS BUTTON AND ANDROID DID NOT. On web the card offers "theo dõi giá" on the
+     * product it just recommended; the phone user had to know the feature existed, leave the
+     * answer and type the product name again. It PREFILLS the composer with the same phrasing the
+     * composer chip already uses — the user still presses send — so the request goes through the
+     * shipped `save_price_watch` tool with its permission, argument and audit steps. No second
+     * write path, and nothing is saved by pressing a button on a card.
+     *
+     * Optional: a host that has no composer (previews, tests) omits it and no button renders.
+     */
+    onPriceWatch: ((String) -> Unit)? = null,
 ) {
     val entities = view.entities
     if (entities.isEmpty()) return
@@ -71,6 +84,22 @@ fun ShoppingDecisionCard(
                 text = stringResource(R.string.shopping_decision_options_title),
                 style = MaterialTheme.typography.titleSmall,
                 color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+
+        // The watch action belongs to the product the card recommends — offering it for a
+        // configuration the server did not pick would be watching a price nobody suggested.
+        val watchName = recommended?.config?.takeIf { it.isNotBlank() }
+        if (onPriceWatch != null && watchName != null) {
+            Text(
+                text = stringResource(R.string.shopping_decision_price_watch),
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .padding(top = TappySpacing.md)
+                    .clip(TappyShapes.chip)
+                    .clickable { onPriceWatch(watchName) }
+                    .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
             )
         }
 

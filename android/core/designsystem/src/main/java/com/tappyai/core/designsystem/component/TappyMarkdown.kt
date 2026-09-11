@@ -255,11 +255,62 @@ private fun buildInlineAnnotated(
                     append(c); i++
                 }
             }
+            // A BARE url — `https://vnexpress.net/...` written straight into the prose.
+            //
+            // 🚨 WEB LINKIFIES THESE AND ANDROID DID NOT, WHICH LOST THE SOURCE. `formatMessage`
+            // has two link passes: markdown links first, then a second for any remaining
+            // `https?://...`. Android only had the markdown pass, so a news or web-search answer
+            // that cited its source as a plain URL — which the model does whenever it is not
+            // handed a label — rendered as untappable grey text. The facts were on screen; the way
+            // to check them was not, and there is no other route to that page from the reply.
+            (c == 'h' || c == 'H') && text.startsWith("http", i, ignoreCase = true) -> {
+                val url = bareUrlAt(text, i)
+                if (url == null) {
+                    append(c); i++
+                } else {
+                    withLink(
+                        LinkAnnotation.Url(
+                            url = url,
+                            styles = TextLinkStyles(
+                                style = SpanStyle(
+                                    color = linkColor,
+                                    textDecoration = TextDecoration.Underline,
+                                ),
+                            ),
+                        ),
+                    ) {
+                        append(url)
+                    }
+                    i += url.length
+                }
+            }
             else -> {
                 append(c); i++
             }
         }
     }
+}
+
+/**
+ * The bare URL starting at [start], or null when this is not one.
+ *
+ * Web's boundary is `[^\s<]+`, and this matches it — with one deliberate improvement: sentence
+ * punctuation that ends the sentence rather than the address is left OUT of the link. Web keeps it,
+ * so `…theo vnexpress.net/abc.` links to a URL with a trailing dot. Same link, one fewer 404, and
+ * the character still renders as text either way.
+ */
+private fun bareUrlAt(text: String, start: Int): String? {
+    val scheme = when {
+        text.startsWith("https://", start, ignoreCase = true) -> 8
+        text.startsWith("http://", start, ignoreCase = true) -> 7
+        else -> return null
+    }
+    var end = start + scheme
+    while (end < text.length && !text[end].isWhitespace() && text[end] != '<' && text[end] != ')') end++
+    // Nothing after the scheme is not an address, it is the word "https://" on its own.
+    if (end <= start + scheme) return null
+    while (end > start + scheme && text[end - 1] in ".,;:!?") end--
+    return text.substring(start, end)
 }
 
 // ---------------------------------------------------------------------------------------------

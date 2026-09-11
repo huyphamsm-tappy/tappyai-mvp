@@ -37,7 +37,7 @@ class RealChatRepository @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ChatRepository {
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<String> = callbackFlow {
+    override fun streamReply(messages: List<ChatMessage>): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -87,7 +87,7 @@ class RealChatRepository @Inject constructor(
 
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
-                    parseTextDelta(line)?.let { trySend(it) }
+                    ChatStreamFrames.parse(line)?.let { trySend(it) }
                 }
                 close()
             } catch (e: IOException) {
@@ -193,25 +193,6 @@ class RealChatRepository @Inject constructor(
                 ChatException.AiError(stringProvider.get(R.string.chat_error_ai_service_down))
             else ->
                 ChatException.ServerError(code, message)
-        }
-    }
-
-    /**
-     * Extracts a text delta from one line of the Vercel AI SDK data stream.
-     *
-     * Stream lines are `{partType}:{jsonPayload}`. Part type `0` carries text deltas whose
-     * payload is a JSON-encoded string (e.g. `0:"Hello "`). All other part types — tool
-     * calls (`2`), annotations (`a`), step finish (`e`), done (`d`) — are skipped.
-     * An optional `data: ` SSE wrapper is stripped defensively in case the stream format
-     * ever changes to full SSE.
-     */
-    private fun parseTextDelta(line: String): String? {
-        val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
-        if (!stripped.startsWith("0:")) return null
-        return try {
-            json.decodeFromString<String>(stripped.removePrefix("0:"))
-        } catch (_: Exception) {
-            null
         }
     }
 

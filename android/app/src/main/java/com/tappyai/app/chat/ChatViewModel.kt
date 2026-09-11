@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
+import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.MessageLanguage
@@ -228,10 +229,27 @@ class ChatViewModel @Inject constructor(
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
                         _messages.value = result.data.map { stored ->
+                            val isUser = stored.role == "user"
+                            // 🚨 A REOPENED CONVERSATION USED TO LOSE EVERY STRUCTURED CARD.
+                            // The stored content is the raw reply, markers and all, so the plan,
+                            // the CTA buttons, the shopping decision and the inline photo galleries
+                            // are all still in there — they just were never decoded on this path.
+                            // The message was built with `text = stored.content`, which both showed
+                            // the raw marker text and rendered no cards. Running the SAME parser
+                            // the live path runs is what makes a restored turn identical to the
+                            // turn the user originally received, which is what web and iOS do.
+                            val parsed = if (isUser) null else ChatResponseParser.parse(stored.content)
                             ChatMessage(
                                 id = nextId++,
-                                role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                text = stored.content,
+                                role = if (isUser) TappyChatRole.User else TappyChatRole.Assistant,
+                                text = parsed?.text ?: stored.content,
+                                plan = parsed?.plan,
+                                ctaButtons = parsed?.ctaButtons ?: emptyList(),
+                                followups = parsed?.followups ?: emptyList(),
+                                shopping = parsed?.shopping,
+                                places = parsed?.places ?: emptyList(),
+                                segments = parsed?.segments ?: emptyList(),
+                                raw = if (isUser) "" else stored.content,
                             )
                         }
                     }
@@ -512,7 +530,16 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token ->
+                // The turn's LIVE place decision, if the stream carried one. It arrives on its own
+                // `8:` frame, usually before the prose finishes, and is held here until the message
+                // is built — it is never appended to the text, which is why it cannot leak into the
+                // reply, into TTS, or into what gets persisted.
+                var livePlaces: PlacesLiveView? = null
+                chatRepository.streamReply(history).collect { event ->
+                    val token = when (event) {
+                        is ChatStreamEvent.Text -> event.delta
+                        is ChatStreamEvent.Places -> { livePlaces = event.view; return@collect }
+                    }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
                     // RETAINED — the UI segments it live, so each recommendation's photos render
@@ -538,6 +565,11 @@ class ChatViewModel @Inject constructor(
                         followups = followups,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
+                        places = parsed.places,
+                        livePlaces = livePlaces,
+                        // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
+                        // a card, so the unstripped reply is carried alongside it.
+                        raw = reply.toString(),
                     )
                 }
                 persistConversation()
@@ -647,7 +679,12 @@ class ChatViewModel @Inject constructor(
     private suspend fun persistConversation() {
         val stored = _messages.value
             .filterNot { it.isError }
-            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.text) }
+            // 🚨 `raw`, NOT `text`. `text` has had every structured block decoded and REMOVED, so
+            // saving it threw away the plan, the CTA buttons and the shopping decision — the
+            // reopened conversation could never show them again because the data was gone from
+            // storage, not merely undecoded. Web and iOS both save the unstripped content for this
+            // exact reason. `ifBlank` covers user turns, which have no raw form and need none.
+            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.raw.ifBlank { it.text }) }
         if (stored.isEmpty()) return
 
         // Same title rule as the web: first message's text, capped at 50 chars.

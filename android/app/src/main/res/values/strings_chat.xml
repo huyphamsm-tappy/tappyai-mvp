@@ -157,4 +157,33 @@
     <string name="confirm_booking_consequence">Tappy will open the booking page for %1$s. You review the details before anything is sent.</string>
     <string name="confirm_booking_confirm">Continue to booking</string>
     <string name="confirm_this_place">this place</string>
+    <!-- Durable place card ([TAPPY_PLACES]). Labels mirror web's w5/placeDecision catalogue,
+         which is where the same strings are defined for the browser. -->
+    <string name="place_card_recommended">Tappy&#8217;s pick</string>
+    <string name="place_card_popular">Popular</string>
+    <string name="place_card_rating_count">%1$d reviews</string>
+    <string name="place_card_open_now">open now</string>
+    <string name="place_card_closed_now">closed now</string>
+    <string name="place_card_away">%1$s km away</string>
+    <string name="place_card_trade_off">Trade-off</string>
+    <string name="place_action_maps">View map</string>
+    <string name="place_action_directions">Directions</string>
+    <string name="place_action_website">Website</string>
+    <string name="place_action_order">Order</string>
+    <string name="place_action_delivery">Order delivery</string>
+    <string name="place_action_booking">Book a room</string>
+    <string name="place_action_reservation">Reserve</string>
+    <string name="place_action_ticket">Buy tickets</string>
+    <string name="place_action_call">Call</string>
+    <string name="place_action_review">See reviews</string>
+    <string name="place_action_social">Social page</string>
+    <string name="place_action_open">Open</string>
+    <string name="place_action_search_on">Search on %1$s</string>
+    <string name="place_action_search_generic">Search</string>
+    <string name="place_card_stars">%1$d-star hotel</string>
+    <string name="place_card_reference_price">Reference price</string>
+    <string name="shopping_decision_price_watch">Track this price</string>
+    <string name="place_card_flag_wifi">Wi-Fi</string>
+    <string name="place_card_flag_outdoor">Outdoor seating</string>
+    <string name="place_card_flag_vegetarian">Vegetarian options</string>
 </resources>

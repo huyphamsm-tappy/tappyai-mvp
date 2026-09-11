@@ -154,4 +154,33 @@
     <string name="confirm_booking_consequence">Tappy sẽ mở trang đặt chỗ của %1$s. Bạn xem lại thông tin rồi mới gửi yêu cầu.</string>
     <string name="confirm_booking_confirm">Tiếp tục đặt chỗ</string>
     <string name="confirm_this_place">chỗ này</string>
+    <!-- Durable place card ([TAPPY_PLACES]). Labels mirror web's w5/placeDecision catalogue,
+         which is where the same strings are defined for the browser. -->
+    <string name="place_card_recommended">Tappy gợi ý</string>
+    <string name="place_card_popular">Phổ biến</string>
+    <string name="place_card_rating_count">%1$d đánh giá</string>
+    <string name="place_card_open_now">đang mở</string>
+    <string name="place_card_closed_now">đang đóng</string>
+    <string name="place_card_away">cách bạn %1$s km</string>
+    <string name="place_card_trade_off">Đánh đổi</string>
+    <string name="place_action_maps">Xem bản đồ</string>
+    <string name="place_action_directions">Chỉ đường</string>
+    <string name="place_action_website">Trang web</string>
+    <string name="place_action_order">Đặt món</string>
+    <string name="place_action_delivery">Đặt giao hàng</string>
+    <string name="place_action_booking">Đặt phòng</string>
+    <string name="place_action_reservation">Đặt chỗ</string>
+    <string name="place_action_ticket">Mua vé</string>
+    <string name="place_action_call">Gọi</string>
+    <string name="place_action_review">Xem review</string>
+    <string name="place_action_social">Trang mạng xã hội</string>
+    <string name="place_action_open">Mở</string>
+    <string name="place_action_search_on">Tìm trên %1$s</string>
+    <string name="place_action_search_generic">Tìm kiếm</string>
+    <string name="place_card_stars">Khách sạn %1$d sao</string>
+    <string name="place_card_reference_price">Giá tham khảo</string>
+    <string name="shopping_decision_price_watch">Theo dõi giá</string>
+    <string name="place_card_flag_wifi">Có Wi-Fi</string>
+    <string name="place_card_flag_outdoor">Chỗ ngồi ngoài trời</string>
+    <string name="place_card_flag_vegetarian">Có món chay</string>
 </resources>

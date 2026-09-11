@@ -108,6 +108,21 @@ class ChatResponseFixtureConformanceTest {
             if ((parsed.plan != null) != expectPlan) {
                 failures += "[$id] plan presence: expected $expectPlan but was ${parsed.plan != null}"
             }
+
+            // The DURABLE place block. Count first, then the names IN ORDER — rank order is part
+            // of the contract, not a rendering preference, so a parser that decodes the right
+            // places in the wrong order is still drift.
+            val expectPlaces = c["expectPlacesCount"]?.jsonPrimitive?.content?.toInt() ?: 0
+            if (parsed.places.size != expectPlaces) {
+                failures += "[$id] places count: expected $expectPlaces but was ${parsed.places.size} — $description"
+            }
+            val expectedNames = strings(c, "expectPlaceNames")
+            if (expectedNames.isNotEmpty()) {
+                val actualNames = parsed.places.map { it.name ?: "" }
+                if (actualNames != expectedNames) {
+                    failures += "[$id] place names: expected $expectedNames but was $actualNames"
+                }
+            }
         }
 
         if (failures.isNotEmpty()) {
