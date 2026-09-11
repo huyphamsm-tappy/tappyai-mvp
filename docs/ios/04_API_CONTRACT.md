@@ -51,7 +51,7 @@
 - **Auth:** required (Bearer ok). CRUD for conversation records. GET list, POST create, PUT rename, DELETE remove. (Fields in 02-chat.)
 
 ### 2.3 `GET/POST /api/memory` — "Tappy knows"
-- **Auth:** required. GET returns stored memory items; POST writes/updates. Backs the tappy-knows profile page. Note `user_memory.user_id` is `text`.
+- **Auth:** required. GET returns stored memory items; POST writes/updates. Backs the tappy-knows profile page. Note `user_memory.user_id` is `text` in production **until `20260911b_user_memory_auth_fk.sql` is applied**, which converts it to `uuid` and adds the missing `auth.users` FK. **No client impact either way** — the column is never part of a request or response body (no iOS or Android model carries a `user_id`), and PostgREST renders a UUID as the same JSON string.
 
 ### 2.4 `GET /api/reviews/feed` — video feed
 - **Auth:** optional (enriches `liked_by_me`/`saved_by_me` if authed). **Runtime: edge.**

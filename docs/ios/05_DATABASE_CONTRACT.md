@@ -165,9 +165,13 @@ Typed + inferred personalization. **PK = `user_id`** (1:1). Note repo history sh
 
 ### `user_memory`  (base `supabase-schema.sql`; extended)
 AI long-term memory. **Note `user_id` is `text` in prod** (not uuid) and `updated_at` is `timestamp without time zone`.
-- **Cols (live):** `id PK`, `user_id text` (UNIQUE per base), `location_base text`, `preferences jsonb`, `budget jsonb`, `history jsonb`, `updated_at`, `companions text` + `timing text` + `personality text` (`add_memory_columns.sql`), `behavior_summary text` (`add_tracking_integrations.sql`). Base also declares `bookmarks/recent_searches/custom_facts jsonb`.
-- **RLS:** `Users can manage own memory` FOR ALL `auth.uid()=user_id`.
-- Index: `user_id` (morning-brief cron lookup).
+
+> ⚠️ **This shape is a defect, and `20260911b_user_memory_auth_fk.sql` repairs it (not yet applied to production).** `supabase-schema.sql:88` has always declared the column `uuid references auth.users on delete cascade not null unique`, but it is a `create table if not exists` and the live table already existed — created out of band, as `text`, before that file was the baseline — so the declaration has been a silent no-op. The consequence: with no FK, deleting an Auth user (which in this product is a **manual** operator action — `/delete-account` only sends a support email) leaves that user's private memory behind, unreachable by every product path. That has already happened once. The migration converts the column to `uuid` and adds `REFERENCES auth.users(id) ON DELETE CASCADE`; the type change is unavoidable, because PostgreSQL cannot build a FK from `text` to a `uuid` key ("Key columns are of incompatible types"). **No client impact** — no iOS or Android model carries `user_id` at all.
+
+- **Cols (live):** `id PK`, `user_id text` (UNIQUE per base), `location_base text`, `discovery_city text` (`20260911_user_memory_discovery_city.sql`), `preferences jsonb`, `budget jsonb`, `history jsonb`, `updated_at`, `companions text` + `timing text` + `personality text` (`add_memory_columns.sql`), `behavior_summary text` (`add_tracking_integrations.sql`). Base also declares `bookmarks/recent_searches/custom_facts jsonb`.
+- **RLS:** `Users can manage own memory` FOR ALL, owner-only. Stored as `(auth.uid())::text = user_id` while the column is `text` — the uncast form does not parse against a text column ("operator does not exist: uuid = text"). The FK migration recreates it as the direct `auth.uid() = user_id`; **same predicate, no authorization change**.
+- **FK:** none today → `auth.users(id) ON DELETE CASCADE` after `20260911b`.
+- Index: `user_id` (morning-brief cron lookup), plus the UNIQUE that `memoryService.updateMemory`'s `onConflict: 'user_id'` upsert resolves against.
 
 ### `user_events`  (⚠️ two conflicting `CREATE TABLE IF NOT EXISTS` — reconciled)
 Append-only behavioral log. Defined in **both** `add_tracking_integrations.sql` (no place_id/review_id) and `20260627_user_memory.sql` (with place_id/review_id uuid). Whichever applied first wins → `add_gatea_db_hardening.sql` **guarantees `place_id uuid` + `review_id uuid` exist** regardless of order.
