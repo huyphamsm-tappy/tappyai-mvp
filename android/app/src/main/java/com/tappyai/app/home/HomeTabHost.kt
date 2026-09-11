@@ -49,6 +49,8 @@ fun HomeTabHost(
     onOpenConversation: (String) -> Unit,
 ) {
     val navController = rememberNavController()
+    ReportNestedScreen(HomeTab.Home, navController)
+
     NavHost(navController = navController, startDestination = HomeTabRoute.Landing) {
         composable<HomeTabRoute.Landing> {
             HomeScreen(

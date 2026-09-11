@@ -26,6 +26,8 @@ import com.tappyai.app.reviews.ui.ReviewDetailScreen
 import com.tappyai.app.reviews.ui.ReviewProfileScreen
 import com.tappyai.app.saved.SavedScreen
 import com.tappyai.app.servicedetail.ServiceDetailScreen
+import com.tappyai.app.home.HomeTab
+import com.tappyai.app.home.ReportNestedScreen
 
 /**
  * The Profile tab's content. Hosts its own nested NavHost (Hub → Settings → Notifications; Hub →
@@ -49,6 +51,8 @@ fun ProfileTab(
     onSignIn: () -> Unit,
 ) {
     val navController = rememberNavController()
+    ReportNestedScreen(HomeTab.Profile, navController)
+
     NavHost(navController = navController, startDestination = ProfileRoute.Hub) {
         composable<ProfileRoute.Hub> {
             ProfileScreen(

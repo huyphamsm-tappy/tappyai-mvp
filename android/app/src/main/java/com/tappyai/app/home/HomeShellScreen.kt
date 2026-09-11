@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
@@ -76,6 +79,11 @@ fun HomeShellScreen(
         backStackEntry?.destination?.hasRoute(tab.route::class) == true
     } ?: HomeTab.Home
 
+    // Which tabs are currently showing a nested screen. See [ReportNestedScreen]: each tab's own
+    // host writes its entry, and a tab with no entry is simply not nested.
+    val nestedByTab = remember { mutableStateMapOf<HomeTab, Boolean>() }
+    val showsOwnHeader = nestedByTab[currentTab] == true
+
     val isExpanded = currentWindowWidthClass() == TappyWindowWidthClass.Expanded
     // Read as a raw inset rather than the experimental WindowInsets.isImeVisible, so this does
     // not depend on opt-in API. Non-zero bottom == the keyboard is taking screen space.
@@ -101,7 +109,10 @@ fun HomeShellScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(),
-            topBar = { TappyAppBar(title = currentTab.title()) },
+            // The shell titles a TAB. A nested screen already draws its own header with a back
+            // arrow and its real name, so the shell steps out of the way rather than stacking a
+            // second — and wrong — title above it.
+            topBar = { if (!showsOwnHeader) TappyAppBar(title = currentTab.title()) },
             bottomBar = {
                 // Collapsed while the IME is up. The bar would be BEHIND the keyboard anyway
                 // (measured: bar at y=1360..1467, IME top at y=928), but Scaffold still reserves
@@ -126,6 +137,9 @@ fun HomeShellScreen(
                     TappyLoadingIndicator()
                 }
             } else {
+                CompositionLocalProvider(
+                    LocalNestedScreenReporter provides { tab, nested -> nestedByTab[tab] = nested },
+                ) {
                 NavHost(
                     navController = navController,
                     startDestination = HomeRoute.Home,
@@ -160,6 +174,7 @@ fun HomeShellScreen(
                             onSignIn = onSignIn,
                         )
                     }
+                }
                 }
             }
         }

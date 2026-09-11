@@ -10,6 +10,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.tappyai.app.music.SoundSheet
 import com.tappyai.app.reviews.data.ReviewFeedType
+import com.tappyai.app.home.HomeTab
+import com.tappyai.app.home.ReportNestedScreen
 
 /** Nav-result key: a screen asks the feed to switch tab (see the Inbox digest banner). */
 private const val FEED_TYPE_RESULT = "reviews_feed_type"
@@ -22,6 +24,8 @@ fun ReviewsNavHost(
     onEditProfile: () -> Unit = {},
 ) {
     val navController = rememberNavController()
+
+    ReportNestedScreen(HomeTab.Explore, navController, landingOwnsHeader = true)
 
     NavHost(navController = navController, startDestination = ReviewsRoute.Feed) {
         composable<ReviewsRoute.Feed> { entry ->
