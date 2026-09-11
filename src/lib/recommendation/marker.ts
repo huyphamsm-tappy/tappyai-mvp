@@ -1,4 +1,5 @@
 import type { Recommendation } from './recommendation'
+import { UNKNOWN } from '@/lib/ai/consultative/decisionEvidence'
 import type { SourceId } from '@/lib/ai/consultative/evidenceProvenance'
 
 // ── [TAPPY_PLACES] — the durable channel ─────────────────────────────────────
@@ -81,6 +82,22 @@ const GUARDED: Array<[keyof PersistedRecommendation, string]> = [
 ]
 
 /**
+ * A string the entity actually KNOWS.
+ *
+ * 🚨 `UNKNOWN` IS A STRING ('KHONG CO DU LIEU'), NOT `undefined`. An entity records a field the
+ * source never stated as that sentinel, so a plain `typeof v === 'string'` test passes it through
+ * and the marker persists it as though it were the place's real address — permanently, since a
+ * marker frozen into a chat message is storage. A client rendering the payload faithfully then
+ * prints the words KHONG CO DU LIEU where a street should be.
+ *
+ * `liveView.ts` already guards its own projection this way, and for the same reason; this is that
+ * rule applied to the durable one, so the two projections agree about what "absent" means. It
+ * removes a fabricated-looking value — it adds nothing and changes no field's meaning.
+ */
+const persistStr = (v: unknown): string | undefined =>
+  (typeof v === 'string' && v !== UNKNOWN && v.trim().length > 0 ? v : undefined)
+
+/**
  * Project one Recommendation into its persistable form.
  *
  * Everything the application computed itself — rank, match, reasons, and the
@@ -106,11 +123,11 @@ export function toPersisted(r: Recommendation): PersistedRecommendation {
   }
 
   const candidate: Partial<PersistedRecommendation> = {
-    name: e.identity.name || undefined,
-    address: typeof e.location.address === 'string' ? e.location.address : undefined,
+    name: persistStr(e.identity.name),
+    address: persistStr(e.location.address),
     rating: typeof e.quality.rating.value === 'number' ? e.quality.rating.value : undefined,
     ratingCount: typeof e.quality.ratingCount.value === 'number' ? e.quality.ratingCount.value : undefined,
-    openingHours: typeof e.availability.openingHours.value === 'string' ? e.availability.openingHours.value : undefined,
+    openingHours: persistStr(e.availability.openingHours.value),
     phone: e.attributes.phone,
   }
   // Assigned through a mutable alias rather than a cast: `Partial` already has

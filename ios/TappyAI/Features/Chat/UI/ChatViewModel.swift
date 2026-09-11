@@ -388,6 +388,11 @@ final class ChatViewModel: AppObservableObject {
                         }
                         self.activeTool = nil
 
+                    case .places(let view):
+                        // Held on the message, never appended to `content` — so it cannot leak into
+                        // the reply, into TTS or into what gets persisted.
+                        self.messages[assistantIndex].livePlaces = view
+
                     case .stepEnd:
                         self.activeTool = nil
 

@@ -32,9 +32,18 @@ const has = (p: string) => existsSync(resolve(root, p))
  * understand strings containing `//`), which is fine: it is only used to narrow a
  * must-not-appear check, where a false negative costs nothing and a false positive would make
  * the guard unusable.
+ *
+ * 🚨 THE NEWLINE NORMALISATION IS LOAD-BEARING, NOT TIDINESS. These files are checked out with
+ * CRLF endings on Windows, and in a JavaScript regex `.` does not match a carriage return while
+ * a `$` without the `m` flag only matches the very end of the string — so the line-comment
+ * pattern matched NOTHING on a CRLF line and this function silently returned the source
+ * unchanged. The must-not-appear check below was therefore scanning full documentation on all
+ * three platforms, and fired on the very comment that records the rule it enforces. Normalising
+ * first makes the guard do what it always claimed to do: read CODE.
  */
 function stripComments(src: string): string {
   return src
+    .replace(/\r\n?/g, '\n')
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .split('\n')
     .map(line => line.replace(/(^|\s)\/\/.*$/, '$1'))

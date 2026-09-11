@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
 import { render, cleanup, act } from '@testing-library/react'
 
 vi.mock('next/navigation', () => ({
@@ -23,6 +23,7 @@ vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () =
 import { Post, type Review } from './feedShared'
 // Aliased: `vi` is already vitest's mocking utility in this file.
 import { en as enCopy, vi as viCopy } from '@/lib/i18n/w2/reviews'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // V3 Web · Explore (`/reviews`) — the ONE approved change to this surface.
 //
@@ -36,6 +37,10 @@ import { en as enCopy, vi as viCopy } from '@/lib/i18n/w2/reviews'
 // Rule 2 is the one a refactor would quietly lose: a share-only post has no `place_name`, and a
 // bridge built from it would open a thread about an empty string. That reads as a working button.
 
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const BASE = {

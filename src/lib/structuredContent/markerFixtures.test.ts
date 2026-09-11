@@ -6,6 +6,7 @@ import { parsePlan, parseCTA, parseFollowups } from '@/components/ChatInterface'
 // Phase 1 owns this module. It is imported read-only here so the chain under test is the SAME
 // chain ChatInterface runs (see ChatInterface.tsx ~L1300-1306), not a subset of it.
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
+import { parsePlacesMarker } from '@/lib/recommendation/marker'
 
 /**
  * P4-02 — SHARED STRUCTURED-CONTENT CONFORMANCE (Web side).
@@ -35,12 +36,15 @@ const FIXTURES = JSON.parse(readFileSync(FIXTURES_PATH, 'utf8')) as {
     expectCtaLabels: string[]
     expectFollowups: string[]
     expectPlanPresent: boolean
+    /** Durable places decoded from [TAPPY_PLACES]. Absent on a case that carries none. */
+    expectPlacesCount?: number
+    expectPlaceNames?: string[]
   }>
 }
 
 /**
  * The full client parse chain, in the exact order `ChatInterface` runs it
- * (ChatInterface.tsx ~L1300-1306): plan → CTA → followups → shopping.
+ * (ChatInterface.tsx ~L1300-1306): plan → CTA → followups → shopping → places.
  * Both the streaming body and the settled body run this identical chain.
  */
 function parseAll(content: string) {
@@ -48,12 +52,14 @@ function parseAll(content: string) {
   const cta = parseCTA(plan.text)
   const followups = parseFollowups(cta.text)
   const shopping = parseShoppingMarker(followups.text)
+  const places = parsePlacesMarker(shopping.text)
   return {
-    visible: shopping.text,
+    visible: places.text,
     ctaLabels: cta.buttons.map(b => b.label),
     followups: followups.followups,
     planPresent: plan.plan !== null,
     shoppingPresent: shopping.view !== null,
+    placeNames: (places.payload?.items ?? []).map(i => i.name ?? ''),
   }
 }
 
@@ -92,6 +98,14 @@ describe('structured-content fixtures — Web (reference implementation)', () =>
 
       it('plan presence matches', () => {
         expect(parsed().planPresent, `${c.id}: plan presence`).toBe(c.expectPlanPresent)
+      })
+
+      it('durable places decode into their model, in order', () => {
+        const { placeNames } = parsed()
+        expect(placeNames.length, `${c.id}: places count`).toBe(c.expectPlacesCount ?? 0)
+        if (c.expectPlaceNames) {
+          expect(placeNames, `${c.id}: place names, in rank order`).toEqual(c.expectPlaceNames)
+        }
       })
     })
   }

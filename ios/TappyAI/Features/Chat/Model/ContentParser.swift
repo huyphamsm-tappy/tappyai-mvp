@@ -19,7 +19,12 @@ enum ContentParser {
         // independent: `stripMarkerResidue` below runs regardless, because a block we cannot
         // understand is still a block the user must not read.
         let shopping = decodeShoppingDecision(textAfterFollowups)
-        let clean = stripMarkerResidue(textAfterFollowups)
+        // The DURABLE place cards. Last in the chain, matching Web and Android, and MUTATING like
+        // parseCTA rather than left to the residue pass: the server composes prose + places + CTA,
+        // so an end-anchored removal here would take the rest of the reply with it (rule 3/4 of the
+        // shared fixture contract, and the shape `[CTA_BUTTONS]` leaked through once already).
+        let (textAfterPlaces, places) = parsePlaces(textAfterFollowups)
+        let clean = stripMarkerResidue(textAfterPlaces)
         let images = extractImages(clean)
         let text = stripImages(clean)
         return ParsedContent(
@@ -28,7 +33,8 @@ enum ContentParser {
             plan: plan,
             followups: followups,
             images: images,
-            shopping: shopping
+            shopping: shopping,
+            places: places
         )
     }
 
@@ -56,6 +62,55 @@ enum ContentParser {
         else { return nil }
 
         return view
+    }
+
+    // MARK: - Durable place cards ([TAPPY_PLACES])
+
+    /// Pulls the durable place block out of the reply and returns the text WITHOUT it.
+    ///
+    /// Closed form first, then the bare form located by BRACE MATCHING — the same two-step every
+    /// other structured marker uses here, for the same reason: the block's POSITION is not fixed,
+    /// and `[CTA_BUTTONS]` really does follow it in production.
+    ///
+    /// 🔑 DECODE AND STRIP STAY INDEPENDENT. A payload that cannot be decoded still has its block
+    /// removed, because a block we cannot understand is still a block the user must not read. A
+    /// payload whose `items` is missing or empty yields NO places rather than an empty card, which
+    /// is the answer Web's `parsePlacesMarker` gives — a turn cannot show a card on one platform
+    /// and a blank frame on another.
+    static func parsePlaces(_ content: String) -> (text: String, places: [PersistedPlace]) {
+        let withTag = try? NSRegularExpression(
+            pattern: #"\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]"#,
+            options: .caseInsensitive
+        )
+        let range = NSRange(content.startIndex..., in: content)
+
+        var text: String
+        var jsonStr: String?
+
+        if let r = withTag, let m = r.firstMatch(in: content, range: range),
+           let jsonRange = Range(m.range(at: 1), in: content) {
+            jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespacesAndNewlines)
+            text = r.stringByReplacingMatches(in: content, range: range, withTemplate: "")
+        } else if let span = findMarkerJson(content, "[TAPPY_PLACES]") {
+            jsonStr = span.json.trimmingCharacters(in: .whitespacesAndNewlines)
+            text = String(content[content.startIndex..<span.start]) + String(content[span.end...])
+        } else {
+            return (content, [])
+        }
+
+        // Any FURTHER block is stripped without rendering: only the first carries the turn's
+        // decision, and a leftover second block would otherwise show as raw JSON.
+        while let extra = findMarkerJson(text, "[TAPPY_PLACES]") {
+            text = String(text[text.startIndex..<extra.start]) + String(text[extra.end...])
+        }
+
+        guard let body = jsonStr,
+              let data = body.data(using: .utf8),
+              let payload = try? JSONDecoder().decode(PlacesMarkerPayload.self, from: data),
+              !payload.items.isEmpty
+        else { return (text, []) }
+
+        return (text, payload.items)
     }
 
     // MARK: - CTA Buttons
@@ -222,7 +277,7 @@ enum ContentParser {
     /// what produced this bug: `[TAPPY_SHOPPING]` was added server-side and taught to the web
     /// only, and iOS rendered its JSON as message body. When the server gains a marker, it is
     /// added here.
-    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING"]
+    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES"]
 
     /// Removes every marker block the decode steps did not consume.
     ///
