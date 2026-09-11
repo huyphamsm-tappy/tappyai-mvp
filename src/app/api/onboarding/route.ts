@@ -31,8 +31,12 @@ export async function POST(req: Request) {
       preferences[interest] = ['quan tâm']
     }
 
+    // The onboarding city is a DESTINATION / DISCOVERY INTEREST (a place the
+    // user wants to explore), not where they live — so it is stored as
+    // `discovery_city`, never `location_base`. See
+    // 20260911_user_memory_discovery_city.sql for the semantic split.
     await updateMemory(user.id, {
-      location_base: city || null,
+      discovery_city: city || null,
       preferences,
     })
 

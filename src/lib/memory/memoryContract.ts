@@ -49,7 +49,7 @@ export const MEMORY_LIMITS = {
 /** Every column a memory write may touch. Ownership, identity and timestamps
  *  are deliberately absent — those are the server's to set, never the data's. */
 export const MEMORY_FIELDS = [
-  'location_base', 'companions', 'timing', 'personality', 'behavior_summary',
+  'location_base', 'discovery_city', 'companions', 'timing', 'personality', 'behavior_summary',
   'preferences', 'budget', 'history',
 ] as const
 
@@ -57,6 +57,9 @@ export type MemoryField = (typeof MEMORY_FIELDS)[number]
 
 export interface ValidatedMemoryPatch {
   location_base?: string | null
+  /** Destination / discovery interest — a place the user wants to explore, NOT
+   *  where they live. Distinct from location_base and never inferred from it. */
+  discovery_city?: string | null
   companions?: string | null
   timing?: string | null
   personality?: string | null
@@ -135,6 +138,7 @@ export function sanitizeMemoryPatch(candidate: unknown): ValidatedMemoryPatch {
   const out: ValidatedMemoryPatch = {}
 
   if ('location_base' in candidate) out.location_base = textField(candidate.location_base, L.maxTextChars)
+  if ('discovery_city' in candidate) out.discovery_city = textField(candidate.discovery_city, L.maxTextChars)
   if ('companions' in candidate) out.companions = textField(candidate.companions, L.maxTextChars)
   if ('timing' in candidate) out.timing = textField(candidate.timing, L.maxTextChars)
   if ('personality' in candidate) out.personality = textField(candidate.personality, L.maxTextChars)
