@@ -121,6 +121,11 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'Để gợi ý địa điểm sát thực tế hơn với bạn.',
     'onboarding.otherCity': 'Hoặc nhập thành phố khác...',
     'onboarding.start': '🚀 Bắt đầu khám phá',
+    'onboarding.stepInterests': 'Bước 1/2',
+    'onboarding.stepLocation': 'Bước 2/2',
+    'onboarding.tagline': 'Người bạn AI cho ngày vui hơn',
+    'onboarding.mascotBubble': 'Chọn những chủ đề bạn yêu thích nhé! 💙',
+    'onboarding.mascotCaption': 'Khám phá thế giới cùng TappyAI',
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
@@ -373,6 +378,11 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'So we can suggest places that fit you better.',
     'onboarding.otherCity': 'Or type another city...',
     'onboarding.start': '🚀 Start exploring',
+    'onboarding.stepInterests': 'Step 1 of 2',
+    'onboarding.stepLocation': 'Step 2 of 2',
+    'onboarding.tagline': 'Your AI friend for a happier you',
+    'onboarding.mascotBubble': 'Pick the topics you love! 💙',
+    'onboarding.mascotCaption': 'Explore the world with TappyAI',
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',
