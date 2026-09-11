@@ -24,6 +24,7 @@ import { __clearToolCache } from './common'
 
 let overpassCalls: string[]
 
+// Quy Nhơn, matching the geocode stub below and the GPS the tests pass.
 const OSM_ROWS = {
   elements: [
     { type: 'node', lat: 13.78, lon: 109.22, tags: { name: 'Quán A', 'addr:street': 'Phố A' } },
@@ -31,7 +32,22 @@ const OSM_ROWS = {
   ],
 }
 
-function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok') {
+/**
+ * 🚨 THE ROWS AND THE REQUESTED CITY MUST AGREE, or BUG-011's output guard
+ * rejects them — correctly. `belongsToDestination` (food.ts, D3) drops any row
+ * whose coordinates fall outside the destination the caller named, so a fixture
+ * that asks for Hà Nội and answers with Quy Nhơn coordinates now returns zero
+ * rows. That is the guard doing its job on a fixture that was never
+ * geographically coherent; the fixture moves, the guard stays.
+ */
+const HANOI_ROWS = {
+  elements: [
+    { type: 'node', lat: 21.0285, lon: 105.8542, tags: { name: 'Quán A', 'addr:street': 'Phố A' } },
+    { type: 'node', lat: 21.03, lon: 105.86, tags: { name: 'Quán B', 'addr:street': 'Phố B' } },
+  ],
+}
+
+function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok', rows: unknown = OSM_ROWS) {
   vi.stubGlobal('fetch', vi.fn(async (input: unknown) => {
     const url = typeof input === 'string' ? input : String((input as { url?: string })?.url ?? input)
     if (url.includes('nominatim')) {
@@ -41,7 +57,7 @@ function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok') {
     }
     if (url.includes('overpass') || url.includes('maps.mail.ru')) {
       overpassCalls.push(url)
-      return new Response(JSON.stringify(OSM_ROWS), { status: 200 })
+      return new Response(JSON.stringify(rows), { status: 200 })
     }
     return new Response('{}', { status: 200 })
   }))
@@ -92,7 +108,7 @@ describe('🚨 FACE 1 — no area given: ask, never assume a city', () => {
   })
 
   it('an explicitly named city still searches, exactly as before', async () => {
-    stub()
+    stub('ok', HANOI_ROWS)
     const r = await searchPlacesOSM('cafe', 'Ha Noi', 'cafe') as PlaceResult
     expect(r.location_required).toBeUndefined()
     expect(r.location).toBe('Ha Noi')

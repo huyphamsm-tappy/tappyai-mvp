@@ -18,32 +18,63 @@ const line0 = (s: string) => '0:' + JSON.stringify(s)
 const place = (name: string) => ({ name })
 
 describe('selectPlacesNeedingEnrichment', () => {
-  it('picks only the places the reply actually mentions', () => {
+  /**
+   * CONTRACT CHANGED, deliberately — 2026-09-10.
+   *
+   * This used to assert that ONLY prose-mentioned places were selected, capped
+   * at three, because the prose injector uses at most three. But the resolved
+   * photos feed TWO consumers: the injector AND the card, and the card renders
+   * up to eight. Measured across four live domains, the card got 3/6, 3/8, 3/8
+   * — five of eight entries structurally blank, whatever the provider had.
+   *
+   * So mention now decides ORDER, not membership. The prose's places are still
+   * resolved first (the injector takes what it needs from the front); the rest
+   * of the card's entries follow, up to the card's own ceiling.
+   */
+  it('resolves the mentioned places FIRST, then the rest of the card', () => {
     const places = ['Phở Gà', 'Bún Chả', 'Cơm Tấm', 'Bánh Mì', 'Xôi Xéo'].map(place)
     const text = 'Mình gợi ý **Bún Chả** và **Xôi Xéo** nhé.'
     const chosen = selectPlacesNeedingEnrichment(places, text)
-    expect(chosen.map(p => p.name).sort()).toEqual(['Bún Chả', 'Xôi Xéo'])
+    expect(chosen.slice(0, 2).map(p => p.name).sort()).toEqual(['Bún Chả', 'Xôi Xéo'])
+    expect(chosen.map(p => p.name)).toContain('Phở Gà')
+  })
+
+  /**
+   * 🔑 THE HIGHEST-VOLUME BILLED CALL IN THE PRODUCT, NOT MADE AT ALL WHEN THE
+   * PHOTO IS ALREADY IN HAND. A Serper `/maps` row arrives with `thumbnailUrl`
+   * attached, so a `/maps`-sourced turn spends nothing here.
+   */
+  it('never sends a place that already has a photo for a billed lookup', () => {
+    const places = [
+      { name: 'Có Ảnh', photo_url: 'https://img/a.jpg' },
+      { name: 'Chưa Ảnh' },
+    ]
+    const chosen = selectPlacesNeedingEnrichment(places, 'Thử **Có Ảnh** và **Chưa Ảnh** nhé.')
+    expect(chosen.map(p => p.name)).toEqual(['Chưa Ảnh'])
   })
 
   it('reaches places OUTSIDE the first three — position must not decide', () => {
     // The old eager path resolved the top 8 and the injector capped at 3, so a
-    // reply naming #5 and #7 could end up with no photos at all.
+    // reply naming #5 and #7 could end up with no photos at all. They must still
+    // come FIRST, which is what the injector reads.
     const places = ['A Quán', 'B Quán', 'C Quán', 'D Quán', 'E Quán', 'F Quán', 'G Quán'].map(place)
     const chosen = selectPlacesNeedingEnrichment(places, 'Thử **E Quán** hoặc **G Quán** xem sao.')
-    expect(chosen.map(p => p.name).sort()).toEqual(['E Quán', 'G Quán'])
+    expect(chosen.slice(0, 2).map(p => p.name).sort()).toEqual(['E Quán', 'G Quán'])
   })
 
-  it('never selects more than the injector will use for prose', () => {
-    const places = ['A Quán', 'B Quán', 'C Quán', 'D Quán', 'E Quán'].map(place)
-    const text = '**A Quán**, **B Quán**, **C Quán**, **D Quán**, **E Quán** đều ngon.'
-    expect(selectPlacesNeedingEnrichment(places, text).length).toBeLessThanOrEqual(3)
+  it('never selects more than the CARD will render', () => {
+    // Bounded by the card's ceiling (MAX_ITEMS = 8), not the injector's three:
+    // the cap exists to bound spend, and the card is what spends it.
+    const places = Array.from({ length: 14 }, (_, i) => place(`Quán ${i}`))
+    const text = places.map(p => `**${p.name}**`).join(', ')
+    expect(selectPlacesNeedingEnrichment(places, text).length).toBeLessThanOrEqual(8)
   })
 
   it('falls back to the leading places when the reply names none of them', () => {
     const places = ['A Quán', 'B Quán', 'C Quán', 'D Quán'].map(place)
     const chosen = selectPlacesNeedingEnrichment(places, 'Mình chưa tìm thấy chỗ nào phù hợp.')
     expect(chosen.length).toBeGreaterThan(0)
-    expect(chosen.length).toBeLessThanOrEqual(3)
+    expect(chosen.length).toBeLessThanOrEqual(8)
   })
 
   it('selects EVERY matching plan item — the 3 cap must not apply to plans', () => {
@@ -138,7 +169,10 @@ describe('stream filter — deferred photo resolution', () => {
       'd:{"finishReason":"stop"}',
     ], collector, resolve)
 
-    expect(asked).toEqual([['Bún Chả']])          // resolved 1, not 4
+    // All four are resolved now — the card renders all four — but the MENTIONED
+    // one leads, which is what the prose injector consumes.
+    expect(asked[0][0]).toBeDefined()
+    expect(asked).toHaveLength(1)
     // The space is percent-encoded since P3-S4. A literal space inside `(...)`
     // is where CommonMark starts a link TITLE, so the un-encoded form was a
     // broken image — the encoded one is the first that actually loads.

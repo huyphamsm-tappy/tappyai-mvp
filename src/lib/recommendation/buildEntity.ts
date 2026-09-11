@@ -53,6 +53,12 @@ export interface PlaceRow extends ActionSource {
   photo_urls?: string[]
   photo_names?: string[]
   price_search_results?: unknown[]
+  /** Serper `/maps` — the provider's own band, verbatim ("1-100.000 ₫"). */
+  price_range_text?: string
+  /** Serper `/maps` — the full published week, for the card's hours detail. */
+  opening_hours_week?: Record<string, string>
+  /** Serper `/maps` — OTA links the provider itself attached to this venue. */
+  booking_links?: string[]
 }
 
 /**
@@ -62,8 +68,16 @@ export interface PlaceRow extends ActionSource {
  * happen to be present — the two branches overlap on name and address, so a
  * shape-sniffing heuristic would mislabel exactly the rows that matter.
  */
+export const SERPER_PLACES_SOURCE = 'Serper Maps' as const
+
 export function sourceOf(envelope: { source?: unknown }): SourceId {
-  return envelope?.source === 'OpenStreetMap' ? 'osm' : 'google_places'
+  if (envelope?.source === 'OpenStreetMap') return 'osm'
+  // Named explicitly rather than sniffed: `/maps` rows and Google Places rows
+  // overlap on nearly every field, so a shape heuristic would mislabel exactly
+  // the rows whose provenance matters — and `open_now` means different things on
+  // the two (asserted vs derived).
+  if (envelope?.source === SERPER_PLACES_SOURCE) return 'serper_places'
+  return 'google_places'
 }
 
 /**
@@ -165,6 +179,19 @@ export function buildPlaceEntity(
   if (row.tappy_rating) provenance['quality.tappyRating'] = 'tappy_reviews'
   if (typeof row.distance_km === 'number') provenance['location.distanceKm'] = 'computed'
   if (priceSignal) provenance['pricing.priceSignal'] = 'serper_search'
+  if (row.price_range_text) provenance['pricing.priceRangeText'] = source
+  /**
+   * 🚨 `open_now` FROM A SERPER ROW IS OURS, NOT THE PROVIDER'S.
+   *
+   * Google Places asserts `currentOpeningHours.openNow` itself, so on that source
+   * the value is the provider's. Serper `/maps` publishes only a weekly SCHEDULE —
+   * `serperPlaceToRow` derives "open now" from it against Vietnam local time. That
+   * derivation is an inference we performed, and recording it as `computed` is what
+   * stops anything downstream presenting it with provider authority.
+   */
+  if (typeof row.open_now === 'boolean') {
+    provenance['availability.openNow'] = source === 'serper_places' ? 'computed' : source
+  }
 
   const stars = typeof row.stars === 'string' ? Number(row.stars) : row.stars
 
@@ -200,6 +227,11 @@ export function buildPlaceEntity(
       priceSignal: priceSignal
         ? provenancedClaim('price_search_results', 'search_snippet', 'serper_search')
         : unknownClaim<string>(),
+      // The provider's own band. `structured_provider` ⇒ FACT, unlike the snippet
+      // price above it — different sources, different strength, same object.
+      priceRangeText: row.price_range_text
+        ? provenancedClaim(row.price_range_text, 'structured_provider', source)
+        : unknownClaim<string>(),
     },
     availability: {
       openingHours: provenancedClaim(row.opening_hours ?? null, 'structured_provider', source),
@@ -212,9 +244,17 @@ export function buildPlaceEntity(
     },
     actions: buildActions(row, domain, opts.location),
     provenance,
-    ext: domain === 'food'
-      ? { ...(row.cuisine ? { cuisine: row.cuisine.split(',').map(c => c.trim()).filter(Boolean) } : {}) }
-      : {},
+    // The published WEEK is domain-independent — a cinema's hours matter as much
+    // as a restaurant's — so it sits beside the per-domain extension rather than
+    // inside the food branch. Carried whole because the card shows the whole week.
+    ext: {
+      ...(domain === 'food' && row.cuisine
+        ? { cuisine: row.cuisine.split(',').map(c => c.trim()).filter(Boolean) }
+        : {}),
+      ...(row.opening_hours_week && Object.keys(row.opening_hours_week).length > 0
+        ? { openingHoursWeek: row.opening_hours_week }
+        : {}),
+    },
   }
 }
 
@@ -278,6 +318,7 @@ export function buildProductEntity(row: ProductRow): CanonicalEntity {
       priceRange: null,
       priceLevel: null,
       priceSignal: unknownClaim<string>(),
+      priceRangeText: unknownClaim<string>(),
     },
     availability: { openingHours: unknownClaim<string>(), openNow: null },
     attributes: {},
@@ -299,6 +340,15 @@ export interface StayRow extends ActionSource {
   lat?: number
   lng?: number
   distance_km?: number
+  // Serper `/maps` gives hotels the same structured fields it gives restaurants.
+  // They used to have nowhere to go on a stay, so they were dropped at the door.
+  rating_value?: number
+  rating_count?: number
+  phone?: string
+  opening_hours?: string
+  opening_hours_week?: Record<string, string>
+  price_range_text?: string
+  place_types?: string[]
 }
 
 export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agodaLink?: string } = {}): CanonicalEntity {
@@ -308,10 +358,28 @@ export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agod
   const stars = typeof row.stars === 'string' ? Number(row.stars) : row.stars
   const withLinks: ActionSource = { ...row, name, booking_link: opts.bookingLink, agoda_link: opts.agodaLink }
 
+  /**
+   * 🚨 A STAY'S PROVENANCE DEPENDS ON WHERE THE ROW CAME FROM.
+   *
+   * A `search_results` snippet is a web page title — `serper_search`, and that is
+   * what every stay used to be. A `/maps` row is a structured provider record and
+   * carries `serper_places`, the same strength a restaurant's rating carries.
+   * Labelling both `serper_search` would understate real structured data;
+   * labelling both `serper_places` would let a page title inherit authority.
+   * The distinguishing signal is the one the provider itself supplies: a
+   * structured record has a rating or coordinates, a page title has neither.
+   */
+  const structured = typeof row.rating_value === 'number' || typeof row.lat === 'number'
+  const staySource: SourceId = structured ? 'serper_places' : 'serper_search'
+
   const provenance: Record<string, SourceId> = {}
-  if (name) provenance['identity.name'] = 'serper_search'
-  if (row.photo_url) provenance['images.primary'] = 'serper_images'
-  if (typeof row.lat === 'number') provenance['location.coordinates'] = 'osm'
+  if (name) provenance['identity.name'] = staySource
+  if (row.photo_url) provenance['images.primary'] = structured ? 'serper_places' : 'serper_images'
+  if (typeof row.lat === 'number') provenance['location.coordinates'] = staySource
+  if (typeof row.rating_value === 'number') provenance['quality.rating'] = staySource
+  if (row.phone) provenance['attributes.phone'] = staySource
+  if (row.opening_hours) provenance['availability.openingHours'] = staySource
+  if (row.price_range_text) provenance['pricing.priceRangeText'] = staySource
 
   return {
     v: 1,
@@ -326,10 +394,13 @@ export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agod
       distanceKm: typeof row.distance_km === 'number' ? row.distance_km : null,
     },
     quality: {
-      // 🚨 Booking/Agoda guest ratings are visible in the snippets and are NOT
-      // extracted today. Claiming one here would be inventing it.
-      rating: unknownClaim<number>(),
-      ratingCount: unknownClaim<number>(),
+      // 🔑 A REAL GUEST RATING, WHEN THE PROVIDER GAVE ONE. Booking/Agoda scores
+      // inside a web SNIPPET are still not extracted — claiming one from prose
+      // would be inventing it, and that comment stood for the snippet path. A
+      // `/maps` record states `rating`/`ratingCount` as its own fields, so a
+      // hotel is no longer the one place kind forced to render without a score.
+      rating: provenancedClaim(row.rating_value ?? null, 'structured_provider', staySource),
+      ratingCount: provenancedClaim(row.rating_count ?? null, 'structured_provider', staySource),
       tappyRating: null,
       stars: Number.isFinite(stars) ? (stars as number) : null,
     },
@@ -338,12 +409,26 @@ export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agod
       priceRange: null,
       priceLevel: null,
       priceSignal: unknownClaim<string>(),
+      priceRangeText: row.price_range_text
+        ? provenancedClaim(row.price_range_text, 'structured_provider', staySource)
+        : unknownClaim<string>(),
     },
-    availability: { openingHours: unknownClaim<string>(), openNow: null },
-    attributes: {},
+    availability: {
+      openingHours: provenancedClaim(row.opening_hours ?? null, 'structured_provider', staySource),
+      openNow: null,
+    },
+    attributes: {
+      ...(row.phone ? { phone: row.phone } : {}),
+      ...(row.place_types && row.place_types.length > 0 ? { categories: row.place_types } : {}),
+    },
     reviews: { actions: [], availability: 'none' },
     actions: buildActions(withLinks, 'travel'),
     provenance,
-    ext: { ...(Number.isFinite(stars) ? { stars: stars as number } : {}) },
+    ext: {
+      ...(Number.isFinite(stars) ? { stars: stars as number } : {}),
+      ...(row.opening_hours_week && Object.keys(row.opening_hours_week).length > 0
+        ? { openingHoursWeek: row.opening_hours_week }
+        : {}),
+    },
   }
 }

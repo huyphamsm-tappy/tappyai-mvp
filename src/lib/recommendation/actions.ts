@@ -181,6 +181,11 @@ export interface ActionSource {
   agoda_link?: string
   order_links?: { name: string; url: string }[]
   platform_links?: { name: string; url: string }[]
+  /**
+   * Entity-scoped ordering evidence, moved here from the result envelope by
+   * `withEntityScopedEvidence`. Area-scoped items are never attached.
+   */
+  order_search_results?: readonly { link?: string; title?: string; snippet?: string }[]
   review_actions?: readonly ReviewAction[]
   tiktok_review_url?: string
   has_tiktok_review?: boolean
@@ -208,6 +213,24 @@ export function buildActions(
   // Recomputed here when the row did not carry them, so an entity built outside
   // the food enrichment path still gets the same links the same way. Never
   // hand-assembled: one builder, one set of templates.
+  /**
+   * 🔑 A REAL ORDER PAGE FOR *THIS* VENUE OUTRANKS A SEARCH FOR IT.
+   *
+   * `order_search_results` is a Serper search whose every item was scored by
+   * `placeNamedBy`; only items whose own text names exactly ONE place from the
+   * result set are tagged `evidence_scope: 'entity'`, and only those are attached
+   * to a row (see `withEntityScopedEvidence`). Such an item IS this venue's page
+   * on ShopeeFood/GrabFood/Baemin, so it is a DIRECT destination.
+   *
+   * 🚨 An `area` item never reaches here. A listicle saying "ShopeeFood has lots
+   * of bún bò places" is not evidence that THIS restaurant delivers, and turning
+   * one into an order button is the claim `isOrderingClaim` exists to stop in
+   * prose. Same rule, same evidence, different surface.
+   */
+  for (const ev of src.order_search_results ?? []) {
+    if (!ev?.link || !namesTheVenue(ev.link)) continue
+    out.push(action('order', ev.link, domain, { urlKind: 'direct', attributed: true }))
+  }
   const orderLinks = src.order_links ?? (domain === 'food' && name ? buildFoodOrderLinks(name, src.address, location) : [])
   for (const l of orderLinks) {
     if (!namesTheVenue(l.url)) continue

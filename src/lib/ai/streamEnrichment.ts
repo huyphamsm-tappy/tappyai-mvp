@@ -12,6 +12,7 @@ import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '@/lib/config/product'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
+import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
@@ -54,6 +55,19 @@ type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: strin
  * pre-B7-A tests keep running with no network at all.
  */
 export type PhotoResolver = (places: PlaceLike[]) => Promise<Map<string, string[]>>
+
+/**
+ * Finds TikTok reviews for the entities that will actually render.
+ *
+ * Separate from `PhotoResolver` because it runs at a different moment for a
+ * different reason: photos are resolved for whatever the reply named, TikTok is
+ * resolved for whatever SURVIVED ADMISSION — the card's own list. Injected like
+ * the photo resolver so the filter stays testable without a network.
+ */
+export type TikTokResolver = (
+  names: readonly string[],
+  location: string | undefined,
+) => Promise<{ perPlace: Map<string, string>; batch: string | null }>
 
 function decodeSafe(s: string): string {
   try { return decodeURIComponent(s) } catch { return s }
@@ -375,8 +389,28 @@ const hasTikTok = (p: PlaceLike) => isValidTikTokContentUrl(p.tiktok_review_url)
  * a [TAPPY_PLAN] reply enriches every place matching a plan ITEM (6-10 is normal
  * and must not be capped), while ordinary prose enriches at most 3.
  */
+/**
+ * How many places may be sent for a BILLED photo lookup.
+ *
+ * 🚨 THIS USED TO BE THE ONLY RULE, AND IT COST FIVE OF EIGHT CARDS THEIR IMAGE.
+ * The card renders up to `MAX_ITEMS` (8) entities; this capped photo resolution
+ * at 3, chosen by which places the PROSE happened to name. Measured across four
+ * domains: 3/6, 3/8, 3/8 — the shortfall was structural, not provider coverage.
+ *
+ * 🔑 THE CAP NOW APPLIES ONLY TO PLACES THAT STILL NEED A PAID LOOKUP. Serper
+ * `/maps` returns `thumbnailUrl` WITH the place record, so a `/maps`-sourced turn
+ * arrives with photos already attached and spends nothing here. What remains is
+ * the genuine gap — an OSM row, or a `/maps` row the provider gave no thumbnail
+ * for — and those are worth the call precisely because nothing else will fill
+ * them. Raised to the card's own ceiling so the two stop disagreeing.
+ */
+const PHOTO_ENRICHMENT_LIMIT = 8
+
 export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: string): PlaceLike[] {
-  const named = places.filter(p => p.name)
+  // A place that already HAS a photo is not a candidate for a billed lookup —
+  // this is the single highest-volume Serper call in the product, and paying for
+  // an image we were handed for free is pure waste.
+  const named = places.filter(p => p.name && !hasPhoto(p))
   if (named.length === 0) return []
 
   if (fullText.includes('[TAPPY_PLAN]')) {
@@ -389,12 +423,18 @@ export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: str
   const normRaw = normalizeVN(text.toLowerCase())
   // Same alignment guard the injector uses; without it offsets are meaningless,
   // so fall back to the leading places rather than guessing.
-  if (normRaw.length !== text.length) return named.slice(0, 3)
+  if (normRaw.length !== text.length) return named.slice(0, PHOTO_ENRICHMENT_LIMIT)
   const dedupText = normRaw.slice(0, earliestMarker(text))
   const headers = proseHeaders(dedupText)
   const rivals = named.map(p => (p.name as string) || '').filter(Boolean)
   const mentioned = named.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
-  return (mentioned.length > 0 ? mentioned : named).slice(0, 3)
+  /**
+   * Prose-named places first, then everything else that still lacks an image —
+   * the card shows them all, so "the model did not mention it" is not a reason
+   * for a card entry to be blank. Bounded by PHOTO_ENRICHMENT_LIMIT.
+   */
+  const rest = named.filter(p => !mentioned.includes(p))
+  return [...mentioned, ...rest].slice(0, PHOTO_ENRICHMENT_LIMIT)
 }
 
 /** Place names referenced by a [TAPPY_PLAN] block's items. */
@@ -663,6 +703,67 @@ function relatedVideoLabel(lang: string): string {
  * is by trimmed lowercase name because that is the only identity both sides
  * carry here; a place whose photos never resolved simply keeps none.
  */
+/**
+ * Attach validated, attributed TikTok reviews to the recommendations.
+ *
+ * 🚨 THE ACTION IS BUILT HERE, NOT RE-DERIVED FROM THE ROW. `buildPlaceEntity`
+ * ran at tool time, before any TikTok lookup existed, so the entity's action list
+ * cannot already contain this. Appending one `review` action carrying the
+ * validated URL is the smallest change that reaches the card — `liveActions`
+ * already renders `review`, and `attributed: true` is what tells the label it may
+ * say "review" rather than "search".
+ *
+ * A name with no attributed URL is left exactly as it was: no action, no
+ * placeholder. That is what "no coverage" has to look like.
+ */
+function withTikTokReviews(recs: Recommendation[], perPlace: Map<string, string>): Recommendation[] {
+  if (perPlace.size === 0) return recs
+  const byName = new Map([...perPlace].map(([k, v]) => [k.trim().toLowerCase(), v]))
+  /**
+   * 🚨 ONE VIDEO CANNOT BE TWO VENUES' REVIEW.
+   *
+   * `attributeTikTok` already claims each URL for at most one place, so a
+   * duplicate should be impossible — this is defence in depth against a future
+   * caller that builds the map some other way. Showing the same clip under two
+   * restaurants would be the cross-venue misattribution the whole attribution
+   * layer exists to prevent, arriving one layer later.
+   */
+  const claimed = new Set<string>()
+  return recs.map(r => {
+    const url = byName.get(r.entity.identity.name.trim().toLowerCase())
+    if (!url || claimed.has(url)) return r
+    // One URL, one button — the same rule `dedupe` enforces in actions.ts.
+    if (r.entity.actions.some(a => a.url === url)) return r
+    claimed.add(url)
+    const action = {
+      kind: 'review' as const,
+      urlKind: 'direct' as const,
+      url,
+      labelKey: 'v3.action.reviewOn',
+      platform: 'TikTok',
+      priority: 0,
+      attributed: true,
+    }
+    return {
+      ...r,
+      entity: {
+        ...r.entity,
+        actions: [...r.entity.actions, action],
+        reviews: { ...r.entity.reviews, actions: [...r.entity.reviews.actions, action] },
+      },
+      /**
+       * 🚨 BOTH LISTS, OR THE CARD NEVER SEES IT. `contextualActions` is a COPY
+       * of `entity.actions` taken when the recommendation was built, and it is
+       * the one `toLive` actually projects. Updating only the entity left the
+       * action provably present and invisible — caught by this file's own
+       * end-to-end test, which is precisely why the chain is tested end to end
+       * rather than hop by hop.
+       */
+      contextualActions: [...r.contextualActions, action],
+    }
+  })
+}
+
 function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Recommendation[] {
   const byName = new Map(resolved.map(p => [(p.name || '').trim().toLowerCase(), p]))
   return recs.map(r => {
@@ -714,6 +815,13 @@ export function applyPlaceEnrichmentStreamFilter(
    * 50.000đ/tô" on a follow-up that searched nothing).
    */
   placeIntent = false,
+  /**
+   * Finds TikTok reviews for the entities that survived admission. Optional, so
+   * every existing caller and test keeps today's behaviour untouched.
+   */
+  resolveTikTok?: TikTokResolver,
+  /** The city the search was about, passed straight into the TikTok query. */
+  tiktokLocation?: string,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -1029,8 +1137,35 @@ export function applyPlaceEnrichmentStreamFilter(
      * collector, and nothing has been sent yet — this is the one point where both
      * halves of the answer are known.
      */
-    const placesView = (EMIT_PLACES_ANNOTATION && collector?.placesRecommendations?.length)
-      ? buildPlacesLiveView(withResolvedPhotos(collector.placesRecommendations, places), { mapsSearchUrl: collector.placesMapsUrl })
+    /**
+     * 🔑 TIKTOK IS RESOLVED HERE — AFTER ADMISSION, BEFORE THE CARD IS BUILT.
+     *
+     * `collector.placesRecommendations` is the post-eligibility, post-dedupe set,
+     * and `MAX_ITEMS` is what the card will actually show. Asking about anything
+     * beyond that spends a query on a venue nobody will see, which is the cost
+     * mistake the old area query made in a different way.
+     *
+     * One batched request for the whole card (see `buildTikTokQuery`), so this
+     * costs exactly what V1/V2's single area search cost — and unlike that
+     * search, it names the venues, which is why it returns attributable results.
+     */
+    let recsForCard = collector?.placesRecommendations ?? []
+    if (resolveTikTok && recsForCard.length > 0) {
+      try {
+        const cardNames = recsForCard
+          .slice(0, TIKTOK_CARD_CEILING)
+          .map(r => r.entity.identity.name)
+          .filter(Boolean)
+        const found = await resolveTikTok(cardNames, tiktokLocation)
+        recsForCard = withTikTokReviews(recsForCard, found.perPlace)
+        if (found.batch && !collector?.batchTikTokUrl) collector?.setBatchTikTokUrl(found.batch)
+      } catch {
+        // A TikTok lookup must never cost the recommendation.
+      }
+    }
+
+    const placesView = (EMIT_PLACES_ANNOTATION && recsForCard.length)
+      ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), { mapsSearchUrl: collector?.placesMapsUrl })
       : null
 
     /**

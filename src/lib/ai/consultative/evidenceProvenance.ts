@@ -78,6 +78,21 @@ export type SourceId =
   | 'serper_shopping'
   | 'serper_search'
   | 'serper_images'
+  /**
+   * Serper `/maps` — STRUCTURED place records, not web pages.
+   *
+   * 🔑 DELIBERATELY DISTINCT FROM `serper_search`, and the distinction is the
+   * whole reason this id exists. `serper_search` is `/search`: organic web
+   * results whose numbers live in prose, which is why anything sourced from it
+   * is REVIEW_SUPPORTED at best. `/maps` returns the provider's OWN fields —
+   * `rating: 4.4`, `ratingCount: 589`, `phoneNumber`, `openingHours` — in the
+   * same shape and with the same authority as `serper_shopping`'s listings.
+   *
+   * Collapsing the two would either downgrade real structured data to snippet
+   * strength, or (far worse) let a snippet inherit structured authority. They
+   * are different products from one vendor and must stay separately attributable.
+   */
+  | 'serper_places'
   | 'travelpayouts'
   | 'tappy_reviews'
   | 'official_website'

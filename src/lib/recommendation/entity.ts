@@ -72,6 +72,23 @@ export interface EntityPricing {
   priceLevel: number | null
   /** A price seen in a search snippet. Always REVIEW_SUPPORTED — must be qualified. */
   priceSignal: ProvenancedClaim<string>
+  /**
+   * The provider's OWN price band, as a display string ("1-100.000 ₫").
+   *
+   * 🚨 A STRING, AND DELIBERATELY NOT PARSED INTO `priceRange`. Serper `/maps`
+   * publishes Google's band verbatim, and its low end is frequently `1` — the
+   * documented "contact for price" placeholder that `MIN_PLAUSIBLE_PRICE_VND`
+   * exists to reject. Parsing it would hand the ranker a 1 VND price and make a
+   * placeholder the cheapest option on the card.
+   *
+   * 🔑 AND NOT `priceSignal` EITHER. That field means "a number seen in search
+   * prose", permanently REVIEW_SUPPORTED. This is a structured provider field
+   * and carries FACT strength — merging the two would either understate this or,
+   * far worse, let a snippet inherit provider authority.
+   *
+   * Displayed, never compared: nothing ranks or does arithmetic on it.
+   */
+  priceRangeText: ProvenancedClaim<string>
 }
 
 export interface EntityAvailability {

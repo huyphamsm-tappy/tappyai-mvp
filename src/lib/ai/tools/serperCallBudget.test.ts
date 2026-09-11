@@ -171,24 +171,32 @@ describe('🚨 a failure is never cached — cost must not buy silence', () => {
   })
 })
 
-describe('🚨 conditional enrichment — the capability is kept, the tax is not', () => {
-  it('an ordinary place query does NOT buy a TikTok search', async () => {
+/**
+ * CONTRACT CHANGED, deliberately — 2026-09-10.
+ *
+ * These used to assert a `wantsReviewContent` gate INSIDE `searchPlaces`: an
+ * ordinary query bought no TikTok search, a query saying "review" bought one.
+ * The gated search was the AREA query — `"<user query> <location> review
+ * site:tiktok.com"` — and re-measuring it against the live provider showed why
+ * it yielded nothing: it returns eight valid TikTok posts that are listicles
+ * ("13 Quán Bún Bò Ngon Nhất Sài Gòn") and videos about other venues, so
+ * `attributeTikTok` refuses every one. The gate was rationing a query that could
+ * not succeed.
+ *
+ * The search therefore MOVED rather than shrank. It now runs once per turn from
+ * `tiktokEnrichment`, naming the venues that survived admission — measured 3 of
+ * 4 attributed for one credit. `searchPlaces` buys no TikTok search at all, at
+ * any phrasing, which is what these tests now hold.
+ */
+describe('🚨 TikTok retrieval has left the tool — the tool buys none, ever', () => {
+  it.each([
+    ['an ordinary place query', 'quan cafe view dep gate-probe-off'],
+    ['a query that asks for reviews', 'review quan cafe gate-probe-on'],
+    ['the Vietnamese phrasing', 'đánh giá quán cafe gate-vi'],
+  ])('%s buys no TikTok search inside searchPlaces', async (_label, q) => {
     const { searchPlaces } = await import('./food')
-    await searchPlaces('quan cafe view dep gate-probe-off', 'Ha Noi', 'cafe')
-    const bodies = queries.join(' ')
-    expect(bodies).not.toContain('site:tiktok.com')
-  })
-
-  it('🚨 a query that ASKS for reviews still buys it', async () => {
-    const { searchPlaces } = await import('./food')
-    await searchPlaces('review quan cafe gate-probe-on', 'Ha Noi', 'cafe')
-    expect(queries.join(' ')).toContain('site:tiktok.com')
-  })
-
-  it('the Vietnamese phrasings open the gate as well', async () => {
-    const { searchPlaces } = await import('./food')
-    await searchPlaces('đánh giá quán cafe gate-vi', 'Ha Noi', 'cafe')
-    expect(queries.join(' ')).toContain('site:tiktok.com')
+    await searchPlaces(q, 'Ha Noi', 'cafe')
+    expect(queries.join(' ')).not.toContain('site:tiktok.com')
   })
 })
 

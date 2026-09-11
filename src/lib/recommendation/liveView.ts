@@ -82,6 +82,16 @@ export interface LivePlace {
   priceLevel?: number
   /** A price seen in a search snippet. Weak evidence — the UI must label it as reference. */
   priceSignal?: string
+  /**
+   * The provider's OWN price band ("1-100.000 ₫"), from Serper `/maps`.
+   *
+   * Distinct from `priceSignal` all the way to the card: this is a structured
+   * provider field and may be shown as a plain fact, where a snippet price must
+   * always be hedged as a reference.
+   */
+  priceRangeText?: string
+  /** The full published week, when the provider gave one. */
+  openingHoursWeek?: Record<string, string>
   distanceKm?: number
   /** Provider categories, verbatim. Real values only — never a guessed cuisine. */
   categories?: string[]
@@ -231,6 +241,10 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
   const address = str(e.location.address as unknown)
   const hours = str(e.availability.openingHours.value as unknown)
   const priceSignal = str(e.pricing.priceSignal.value as unknown)
+  const priceRangeText = str(e.pricing.priceRangeText?.value as unknown)
+  const hoursWeek = e.ext && typeof e.ext === 'object'
+    ? (e.ext as { openingHoursWeek?: Record<string, string> }).openingHoursWeek
+    : undefined
   const image = e.images.primary && isHttpUrl(e.images.primary.url) ? e.images.primary.url : undefined
   const categories = e.attributes.categories?.filter(c => typeof c === 'string' && c.length > 0)
   // Only amenities the provider stated. `EntityAttributes` is sparse by design:
@@ -256,6 +270,8 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
     ...(str(e.attributes.phone) ? { phone: e.attributes.phone } : {}),
     ...(e.pricing.priceLevel !== null && e.pricing.priceLevel !== undefined ? { priceLevel: e.pricing.priceLevel } : {}),
     ...(priceSignal ? { priceSignal } : {}),
+    ...(priceRangeText ? { priceRangeText } : {}),
+    ...(hoursWeek && Object.keys(hoursWeek).length > 0 ? { openingHoursWeek: hoursWeek } : {}),
     ...(e.location.distanceKm !== null && e.location.distanceKm !== undefined ? { distanceKm: e.location.distanceKm } : {}),
     ...(categories && categories.length > 0 ? { categories } : {}),
     ...(flags.length > 0 ? { flags } : {}),

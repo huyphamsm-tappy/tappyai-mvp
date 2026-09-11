@@ -12,9 +12,11 @@ import { detectFoodConstraints, osmFilterFor, unmetConstraintNote } from '@/lib/
 import { rowServesDish } from '@/lib/ai/foodDish'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
 import { osmCategoryFor, osmUnionFor, placeDomainFor } from './osmCategory'
-import { cityForName, cityInText } from './vietnamCities'
+import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnamCities'
 import { usableOverpass } from './overpassResponse'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
+import { serperPlaces, serperPlaceToRow } from './serperPlaces'
+import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 
 export async function getNews(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
@@ -73,6 +75,64 @@ function haversineKmLocal(lat1: number, lon1: number, lat2: number, lon2: number
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
+/**
+ * Where a place search is allowed to look — BUG-011.
+ *
+ * ============================================================================
+ * THE DEFECT THIS EXISTS TO CLOSE
+ * ============================================================================
+ * Production, verified: the user asked about **Quy Nhơn** while standing in Ho Chi Minh City, and
+ * the reply recommended "Công viên bờ sông Sài Gòn (~0.9km)". Nothing hallucinated it — the OSM
+ * search had replaced the requested destination with the caller's GPS and returned a real Saigon
+ * park, with a real distance measured from the user. The ranker then scored it 0.91 on proximity
+ * and promoted it to the recommendation.
+ *
+ * THE RULE: a destination the caller NAMED is never silently replaced by their current position.
+ * GPS answers "near me"; it does not answer "in Quy Nhơn".
+ *
+ * `remote` is decided with `isSameCity` — the repository's existing, measured answer to "is this
+ * the same place" (25 km, see vietnamCities.ts). Using the SAME predicate for the search centre
+ * (D1) and the output guard (D3) keeps them in lockstep: the guard can never reject a result that
+ * the centre choice would legitimately have produced.
+ *
+ * Resolution reads the ORIGINAL `location` argument, never `searchPlacesOSM`'s `'Ha Noi'` default —
+ * resolving the default would make every location-less "near me" search look like a Hanoi trip.
+ */
+export function resolveSearchScope(
+  location: string | undefined,
+  locationBias: { lat: number; lng: number } | null | undefined,
+): { destination: VietnamCity | null; remote: boolean } {
+  // Exact alias first, then a phrase match, mirroring how weatherPlaceResolution orders the two.
+  const destination = location ? (cityForName(location) ?? cityInText(location)) : null
+  const remote = !!destination && !!locationBias
+    && !isSameCity(destination.coords, [locationBias.lat, locationBias.lng])
+  return { destination, remote }
+}
+
+/**
+ * Does a result belong to the requested destination? BUG-011 output guard (D3).
+ *
+ * Deliberately asymmetric, and that asymmetry is the whole design:
+ *   • coordinates present   → keep only what is within CITY_MATCH_RADIUS_KM of the destination.
+ *   • address resolves to a DIFFERENT known city → reject.
+ *   • nothing resolvable    → KEEP.
+ *
+ * The last line is the one that matters. "I cannot tell which city this is" must never become
+ * "this is the wrong city": inventing a classification would quietly drop legitimate places whose
+ * OSM tags happen to carry no address, which is most of them.
+ */
+export function belongsToDestination(
+  destination: VietnamCity | null,
+  coords: readonly [number, number] | null,
+  address: string | null | undefined,
+): boolean {
+  if (!destination) return true
+  if (coords) return isSameCity(destination.coords, coords)
+  const addressCity = cityInText(address)
+  if (!addressCity) return true
+  return addressCity.query === destination.query
+}
+
 export async function searchPlacesOSM(query: string, location?: string, type?: string, locationBias?: { lat: number; lng: number } | null, lang = 'vi') {
   /**
    * 🚨 THE DEFAULT CITY WAS A FABRICATION.
@@ -116,12 +176,19 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
      * `includes()` scan did neither reliably.
      */
     const city = cityForName(loc) ?? cityInText(loc)
+    // ── BUG-011 (D1): a NAMED destination outranks the caller's GPS ───────────
+    // `remote` is true only when the caller named a city we know AND they are not in it. Every
+    // other shape — no location, an unresolvable location, or a location that IS the city they
+    // are standing in — leaves the branches below exactly as they shipped.
+    const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
     let lat: number
     let lon: number
     let searchRadius: number
     // Did we actually establish WHERE to search, or only assume it?
     let located = false
-    if (locationBias) {
+    /** True when the centre IS the user's position. Gates `distance_km` below (D2). */
+    let centeredOnUser = false
+    if (locationBias && !remoteDestination) {
       // Real device GPS → search around the user's ACTUAL position with a tight
       // "right here, right now" radius (MFS 3.7 Nearby). Skip geocoding a city string;
       // the precise coords are what "gần đây" actually means.
@@ -138,6 +205,16 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
        * metros on the same measurement; the GPS branch simply never got it, and
        * every GPS-biased query in HCMC came back empty as a result.
        */
+      searchRadius = 1500
+      centeredOnUser = true
+    } else if (remoteDestination && destination) {
+      // The user is asking about somewhere else. Centre on the destination and drop the GPS
+      // entirely — a bias toward where they happen to be standing is what produced a Saigon park
+      // for a Quy Nhơn question. Only the centre moves: the radius is the same 1500 every other
+      // branch settled on, so the measured Overpass budget is untouched.
+      located = true
+      lat = destination.coords[0]
+      lon = destination.coords[1]
       searchRadius = 1500
     } else {
       located = !!city
@@ -284,7 +361,20 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     }
     if (!overpassData) return { note: messages.places.searchOnMaps(lang, googleMapsUrl), google_maps_search: googleMapsUrl, results: [] }
     type El = { tags?: Record<string, string>; lat?: number; lon?: number; center?: { lat: number; lon: number } }
-    const baseResults = ((overpassData.elements || []) as El[]).slice(0, 10).map(el => {
+    // ── BUG-011 (D3): geographic output guard ────────────────────────────────
+    // Applied BEFORE the slice, so dropping an out-of-scope row lets an in-scope one take its
+    // place instead of shortening the list. Inert when no destination resolved, and a no-op on a
+    // nearby search (a 2km radius around the user is trivially inside their own city).
+    const inScope = ((overpassData.elements || []) as El[]).filter(el => {
+      const la = el.lat ?? el.center?.lat
+      const lo = el.lon ?? el.center?.lon
+      return belongsToDestination(
+        destination,
+        typeof la === 'number' && typeof lo === 'number' ? [la, lo] : null,
+        null,
+      )
+    })
+    const baseResults = inScope.slice(0, 10).map(el => {
       const tags = el.tags || {}
       const elat = el.lat ?? el.center?.lat
       const elon = el.lon ?? el.center?.lon
@@ -332,7 +422,14 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
         // OSM-sourced entity with no position of its own.
         ...((elat && elon) ? { lat: elat, lng: elon } : {}),
         // Distance from the user, only when we have both their GPS and the place's coords.
-        ...((locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
+        //
+        // BUG-011 (D2): and ONLY when the search was actually centred on the user. On a remote
+        // destination search this used to emit a GPS-relative number that promptBuilder renders as
+        // "cách bạn ~0.9km" — the exact sentence that shipped a Saigon park as a Quy Nhơn
+        // recommendation. There is no correct distance to report for a place the user is not near,
+        // so the field is omitted; the prompt only mentions distance when the field exists, and
+        // the ranker only scores it when present, so both degrade to silence rather than to a lie.
+        ...((centeredOnUser && locationBias && elat && elon) ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, elat, elon) * 10) / 10 } : {}),
       }
     }).filter(r => r.name)
     // B7-A: no eager photo lookup here either — this branch used to fire one
@@ -487,6 +584,74 @@ export function __resetPlacesBreaker(): void {
   placesUnavailableUntil = 0
 }
 
+/**
+ * Serper `/maps` — the PRIMARY structured place source for Vietnam.
+ *
+ * 🚨 WHY IT SITS ABOVE OSM AND BELOW GOOGLE. Google Places is the richest source
+ * when the key works; in this product's environment it 403s and every turn fell
+ * to OSM, which has no rating, no review count and no price at all. Measured
+ * 2026-09-10, `/maps` answers the same question with rating, ratingCount,
+ * priceLevel, phone, a published week of hours, website, category and a
+ * thumbnail — for FEWER credits than the `/search` + `/images` combination it
+ * replaces. OSM stays underneath as the genuine no-results fallback, because
+ * `/places` was measured returning zero rows for a narrow query.
+ *
+ * The BUG-011 contract is enforced here exactly as on the other two branches:
+ * the search is centred with `ll` (the only targeting that works — a `location`
+ * string returned zero rows), out-of-scope rows are rejected by coordinates
+ * BEFORE the slice, and `distance_km` exists only when the centre was the user.
+ */
+async function searchPlacesSerper(
+  query: string,
+  location: string | undefined,
+  lang: string,
+  locationBias: { lat: number; lng: number } | null | undefined,
+  scope: { destination: VietnamCity | null; remote: boolean },
+): Promise<Record<string, unknown> | null> {
+  const { destination, remote } = scope
+  const centeredOnUser = !!locationBias && !remote
+  const centre = centeredOnUser
+    ? { lat: locationBias!.lat, lng: locationBias!.lng }
+    : destination
+      ? { lat: destination.coords[0], lng: destination.coords[1] }
+      : locationBias
+        ? { lat: locationBias.lat, lng: locationBias.lng }
+        : null
+
+  const sq = location ? query + ' ' + location : query
+  const records = await serperPlaces(sq, centre)
+  if (!records || records.length === 0) return null
+
+  const rows = records
+    .map(rec => serperPlaceToRow(rec, {
+      ratingText: (r, c) => messages.places.googleRating(lang, r, c),
+      userAt: centeredOnUser ? locationBias : null,
+      distanceKm: haversineKmLocal,
+    }))
+    // BUG-011 (D3), applied BEFORE the slice so an out-of-scope row does not
+    // consume a result slot. Every `/maps` row carries coordinates, so the
+    // judgement here is exact rather than address-shaped.
+    .filter(r => belongsToDestination(
+      destination,
+      typeof r.lat === 'number' && typeof r.lng === 'number' ? [r.lat as number, r.lng as number] : null,
+      typeof r.address === 'string' ? r.address : undefined,
+    ))
+
+  if (rows.length === 0) return null
+  console.log(JSON.stringify({
+    type: 'tappyai_places_debug', provider: 'serper_maps',
+    returned: records.length, inScope: rows.length,
+    destination: destination?.query ?? null, centeredOnUser,
+  }))
+  return {
+    source: SERPER_PLACES_SOURCE,
+    count: rows.length,
+    location: location ?? '',
+    results: rows.slice(0, 10),
+    google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
+  }
+}
+
 export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
   const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
   const cached = getCache(cacheKey)
@@ -496,7 +661,14 @@ export async function searchPlaces(query: string, location?: string, type?: stri
   }
 
   const key = process.env.GOOGLE_PLACES_API_KEY
-  console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type }))
+  // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
+  // fallback can never disagree about which city this search is for.
+  const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
+  console.log(JSON.stringify({
+    type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type,
+    // Operational only — a city name we resolved, never user text.
+    destination: destination?.query ?? null, remoteDestination,
+  }))
   let result: unknown = null
   if (key && googlePlacesLikelyAvailable()) {
     try {
@@ -506,7 +678,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
       const includedType = type ? (typeMap[type] || type) : undefined
       const bodyObj: Record<string, unknown> = { textQuery: sq, languageCode: lang, regionCode: 'VN' }
       if (includedType) bodyObj.includedType = includedType
-      if (locationBias) {
+      // BUG-011 (D1): the bias is dropped for a remote destination. `textQuery` already carries
+      // the city name, and `locationBias` is only a SOFT hint — Google is free to honour it, which
+      // is how a "công viên Quy Nhơn" query could still surface Saigon parks for a caller in
+      // Saigon. Nearby searches are untouched: without a resolved remote destination the bias is
+      // applied exactly as before.
+      if (locationBias && !remoteDestination) {
         bodyObj.locationBias = {
           circle: { center: { latitude: locationBias.lat, longitude: locationBias.lng }, radius: 5000.0 }
         }
@@ -560,11 +737,27 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
-      if ((resp as Response).ok && d.places?.length) {
-        const placesData = (d.places as Record<string, unknown>[]).slice(0, 8)
+      // ── BUG-011 (D3): geographic output guard, address-based ───────────────
+      // The field mask does not request coordinates, so scope is judged from `formattedAddress`
+      // via the same city resolver the rest of the repo uses. Reject only when the address
+      // resolves to a DIFFERENT known city; an address that resolves to nothing is KEPT, because
+      // "unrecognised" must never be treated as "wrong".
+      //
+      // Filtered BEFORE the slice, so an out-of-scope row does not consume one of the 8 places.
+      // If nothing survives, `result` stays null and the OSM fallback below runs — now correctly
+      // centred on the destination — instead of returning an empty set for a real city.
+      const inScope = ((resp as Response).ok && Array.isArray(d.places))
+        ? (d.places as Record<string, unknown>[]).filter(r =>
+          belongsToDestination(destination, null, r.formattedAddress as string | undefined))
+        : []
+      if (inScope.length) {
+        const placesData = inScope.slice(0, 8)
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
-          placesCount: d.places.length,
+          // Both numbers: what the provider returned, and what survived the destination guard.
+          // A large gap is the signal that a search was being pulled out of scope.
+          placesCount: (d.places as unknown[]).length,
+          inScopeCount: inScope.length,
           topName: ((placesData[0]?.displayName as { text?: string })?.text) || null,
         }))
 
@@ -611,7 +804,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
               ...(coords ? { lat: coords.lat, lng: coords.lng } : {}),
               ...(types ? { place_types: types } : {}),
               ...(photoNames ? { photo_names: photoNames } : {}),
-              ...(coords && locationBias
+              // BUG-011 (D2), mirrored on the Google branch. `distance_km` means ONE thing:
+              // how far from YOU. This branch gained the field after 3fade82 was written, so
+              // it never inherited the gate — and on a remote destination it would have
+              // measured a Da Nang hotel from the user's Saigon GPS and reported ~600km as if
+              // it were a proximity signal. Absent beats measured-from-the-wrong-origin.
+              ...(coords && locationBias && !remoteDestination
                 ? { distance_km: Math.round(haversineKmLocal(locationBias.lat, locationBias.lng, coords.lat, coords.lng) * 10) / 10 }
                 : {}),
             }
@@ -624,6 +822,16 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     } catch (e) {
       console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
     }
+  }
+  /**
+   * 🔑 SERPER `/maps` BEFORE OSM, AND BOTH AFTER GOOGLE.
+   *
+   * A place turn now degrades through three real providers instead of two, and
+   * each step down loses information rather than gaining a fabrication. OSM is
+   * reached only when the two structured sources genuinely returned nothing.
+   */
+  if (!result) {
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination })
   }
   if (!result) result = await searchPlacesOSM(query, location, type, locationBias, lang)
 
@@ -691,31 +899,56 @@ export async function searchPlaces(query: string, location?: string, type?: stri
   if (!placeSearchEmpty && (isFood || isSpa || isEntertainment)) {
     try {
       /**
-       * 🚨 A BILLED CALL ON EVERY PLACE TURN THAT RETURNED NOTHING.
+       * 🚨 THE AREA-TARGETED TIKTOK SEARCH IS GONE FROM HERE, AND SO IS THE GATE
+       * THAT TRIED TO MAKE IT AFFORDABLE.
        *
-       * MEASURED across 17 live place turns: this TikTok query ran 17 times and
-       * produced 0 attributed links and 0 discovery links. It is one Serper
-       * request per turn, every turn, for a result the product almost never got.
+       * What used to run: `"<user query> <location> review site:tiktok.com"` —
+       * one search about a DISTRICT, whose results `attributeTikTok` then tried
+       * to tie to a specific venue. It produced 0 attributed links across 17 live
+       * turns, and the response was a `wantsReviewContent` gate that stopped
+       * paying for it.
        *
-       * The capability is NOT removed - `attributeTikTok`, `review_actions` and
-       * the `tiktok_verified` rung all stay exactly as they are, and the search
-       * still runs whenever the user actually asks about reviews or TikTok. What
-       * is removed is paying for it on turns where nobody asked.
+       * 🔑 THE MEASUREMENT WAS RIGHT AND THE DIAGNOSIS WAS WRONG. Re-measured
+       * 2026-09-10, that same area query returns EIGHT valid TikTok posts —
+       * "13 Quán Bún Bò Ngon Nhất Sài Gòn", "Top 5 Quán Bún Bò", a review of a
+       * different restaurant. Retrieval always worked; an area question simply
+       * cannot yield entity evidence, and the attributor was right to refuse it.
        *
-       * Deliberately checks the USER'S words, not the domain: "quan cafe view
-       * dep" is not a request for video reviews, and "review quan nay" is.
+       * So the search moved rather than shrank. `tiktokEnrichment` asks about the
+       * venues that SURVIVED ADMISSION, batched into one request — the same
+       * single search per turn this used to cost, now attributable. See
+       * `lib/links/tiktokEnrichment.ts` for the measured comparison.
        */
-      const wantsReviewContent = /tiktok|review|danh gia|đánh giá|vlog|video|clip|feedback|nhan xet|nhận xét/i
+      /**
+       * 🚨 THE PRICE SNIPPET SEARCH RAN ON EVERY FOOD/SPA/ENTERTAINMENT TURN,
+       * AND MOST TURNS DID NOT ASK ABOUT PRICE.
+       *
+       * It is one billed `/search` per turn whose entire yield is AREA-level
+       * prose the guards then refuse to attach to any venue — measured
+       * 2026-09-10: 18 items retrieved across three domains, 18 of them `area`,
+       * 0 reaching an entity. Meanwhile Serper `/maps` now carries the
+       * provider's OWN band (`priceLevel`, "1-100.000 ₫") on the row itself, at
+       * no extra call, entity-attributed by construction.
+       *
+       * So the snippet search stops being the default and becomes what the
+       * TikTok gate already is: paid for when the user actually asked. A price
+       * question still gets the deeper search; "quán bún bò ngon" gets the band
+       * that came free with the place record.
+       *
+       * Deliberately reads the USER'S words, not the domain — same reasoning,
+       * same shape as `wantsReviewContent` below.
+       */
+      const wantsPriceDetail = /gia|giá|bao nhieu|bao nhiêu|re |rẻ |dat |đắt |chi phi|chi phí|menu|thuc don|thực đơn|bang gia|bảng giá|budget|price|cost|combo|khuyen mai|khuyến mãi/i
         .test(normalizeVN(query.toLowerCase()) + ' ' + query.toLowerCase())
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
       const [priceResults, orderResults, tiktokResults] = await Promise.all([
-        serperSearch(query + ' ' + (location || '') + ' ' + suffix),
+        wantsPriceDetail ? serperSearch(query + ' ' + (location || '') + ' ' + suffix) : Promise.resolve(null),
         isFood ? serperSearch(query + ' ' + (location || '') + ' (site:shopeefood.vn OR site:food.grab.com OR site:baemin.vn)') : Promise.resolve(null),
         // TikTok review discovery (consultative only, product decision 2026-08-16). Same shape as
         // the order-link search above: a real provider query, whose results are then VALIDATED —
         // nothing here is constructed from the place name, so a place with no coverage simply
         // ends up without a link.
-        wantsReviewContent ? serperSearch(query + ' ' + (location || '') + ' review site:tiktok.com') : Promise.resolve(null),
+        Promise.resolve(null),
       ])
       if (result && typeof result === 'object') {
         const extra: Record<string, unknown> = {}
