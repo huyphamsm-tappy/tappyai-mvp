@@ -230,17 +230,28 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Share
 
-    func shareText(_ text: String) {
-        let stripped = TTSManager.stripMarkdown(text)
-        let av = UIActivityViewController(activityItems: [stripped], applicationActivities: nil)
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let root = scene.windows.first?.rootViewController else { return }
-        if let popover = av.popoverPresentationController {
-            popover.sourceView = root.view
-            popover.sourceRect = CGRect(x: root.view.bounds.midX, y: root.view.bounds.midY, width: 0, height: 0)
-            popover.permittedArrowDirections = []
+    /// The artifact the TappyAI share sheet is showing, or nil. Set by `share(messageIndex:)`.
+    @AppPublished var shareArtifact: ShareArtifact? = nil
+
+    /// Share one assistant turn as the branded brochure (web parity: one canonical artifact
+    /// + the TappyAI share sheet). Sources in priority order: the structured recommendation
+    /// (`8:` annotation) → the plan → the prose. The system sheet stays reachable as "More apps".
+    func share(messageIndex: Int, lang: String) {
+        guard messages.indices.contains(messageIndex) else { return }
+        let msg = messages[messageIndex]
+        let subject = messages[..<messageIndex].last(where: { $0.isUser })?.content
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .prefix(80).description
+        let title = (subject?.isEmpty == false) ? subject! : "TappyAI"
+        let parsed = ContentParser.parse(msg.content)
+        if let view = msg.placesView, !view.items.isEmpty {
+            shareArtifact = ShareArtifactBuilder.buildPlacesArtifact(view, title: title, lang: lang)
+        } else if let plan = parsed.plan, !plan.days.isEmpty {
+            shareArtifact = ShareArtifactBuilder.buildPlanArtifact(plan, title: title, lang: lang)
+        } else {
+            shareArtifact = ShareArtifactBuilder.buildProseArtifact(subject: title, prose: parsed.text)
         }
-        root.present(av, animated: true)
     }
 
     // MARK: - Feedback (like/dislike/report)
@@ -387,6 +398,12 @@ final class ChatViewModel: AppObservableObject {
                             }
                         }
                         self.activeTool = nil
+
+                    case .annotation(let data):
+                        // Share parity: the structured places of this turn (never persisted).
+                        if let view = PlacesLiveViewParser.parse(annotationPayload: data) {
+                            self.messages[assistantIndex].placesView = view
+                        }
 
                     case .stepEnd:
                         self.activeTool = nil

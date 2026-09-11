@@ -17,7 +17,9 @@
 import { describe, it, expect } from 'vitest'
 import {
   SHARE_TARGETS,
+  TEXT_HANDOFF_MAX,
   buildShareUrl,
+  buildTextShareUrl,
   isShareableUrl,
   shareTarget,
   type ShareTargetId,
@@ -29,17 +31,41 @@ const REVIEW = `${SITE}/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d`
 
 // ------------------------------------------------------------ the target set
 describe('SHARE_TARGETS', () => {
+  // The eight approved product targets (Facebook/Messenger, Zalo, Viber, LINE,
+  // Email, Tappy Inbox, Save, Copy) plus the pre-existing TikTok (Reviews) and
+  // the system sheet as the optional last resort.
   it('offers exactly the product-required targets, in order', () => {
     expect(SHARE_TARGETS.map((t) => t.id)).toEqual([
       'facebook',
-      'tiktok',
       'zalo',
+      'viber',
+      'line',
+      'tiktok',
+      'email',
+      'inbox',
+      'save',
       'copy',
       'native',
     ])
   })
 
-  it.each(['facebook', 'tiktok', 'zalo', 'copy', 'native'] as ShareTargetId[])(
+  it('classifies each target by what it actually does', () => {
+    const kinds = Object.fromEntries(SHARE_TARGETS.map((t) => [t.id, t.kind]))
+    expect(kinds).toEqual({
+      facebook: 'url-handoff',
+      zalo: 'url-handoff',
+      viber: 'text-handoff',
+      line: 'text-handoff',
+      tiktok: 'clipboard',
+      email: 'text-handoff',
+      inbox: 'inbox',
+      save: 'save',
+      copy: 'clipboard',
+      native: 'native',
+    })
+  })
+
+  it.each(['facebook', 'zalo', 'viber', 'line', 'tiktok', 'email', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
     '%s has a localization key rather than a hardcoded label',
     (id) => {
       const target = shareTarget(id)
@@ -72,9 +98,12 @@ describe('buildShareUrl', () => {
     expect(buildShareUrl('tiktok', REVIEW)).toBeNull()
   })
 
-  it.each(['copy', 'native'] as ShareTargetId[])('returns null for %s — not a URL handoff', (id) => {
-    expect(buildShareUrl(id, REVIEW)).toBeNull()
-  })
+  it.each(['viber', 'line', 'email', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
+    'returns null for %s — not a URL handoff',
+    (id) => {
+      expect(buildShareUrl(id, REVIEW)).toBeNull()
+    }
+  )
 
   it('produces https handoff URLs', () => {
     for (const id of ['facebook', 'zalo'] as ShareTargetId[]) {
@@ -94,6 +123,51 @@ describe('buildShareUrl', () => {
   ])('refuses to build a handoff for %s', (bad) => {
     expect(buildShareUrl('facebook', bad, env)).toBeNull()
     expect(buildShareUrl('zalo', bad, env)).toBeNull()
+  })
+})
+
+// ------------------------------------------------------- text handoffs
+describe('buildTextShareUrl — the brochure travels INSIDE the URL', () => {
+  const subject = 'TappyAI gợi ý: bún bò'
+  const text = 'TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n   Bản đồ: https://maps.google.com/?cid=1\n\nGợi ý bởi TappyAI · www.tappyai.com'
+
+  it('email: mailto with subject and the full body, round-trippable', () => {
+    const out = buildTextShareUrl('email', subject, text)!
+    expect(out.startsWith('mailto:?subject=')).toBe(true)
+    const u = new URL(out)
+    expect(u.searchParams.get('subject')).toBe(subject)
+    expect(u.searchParams.get('body')).toBe(text)
+  })
+
+  it('viber: viber://forward?text= with the body, round-trippable', () => {
+    const out = buildTextShareUrl('viber', subject, text)!
+    expect(out.startsWith('viber://forward?text=')).toBe(true)
+    expect(decodeURIComponent(out.slice('viber://forward?text='.length))).toBe(text)
+  })
+
+  it('line: https://line.me/R/share?text= with the body, round-trippable', () => {
+    const out = buildTextShareUrl('line', subject, text)!
+    expect(out.startsWith('https://line.me/R/share?text=')).toBe(true)
+    expect(new URL(out).searchParams.get('text')).toBe(text)
+  })
+
+  // No fabricated endpoints: Zalo/Messenger/TikTok have no text handoff, and
+  // the non-handoff targets never produce a URL.
+  it.each(['facebook', 'zalo', 'tiktok', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
+    'returns null for %s',
+    (id) => {
+      expect(buildTextShareUrl(id, subject, text)).toBeNull()
+    }
+  )
+
+  it('returns null for an empty body', () => {
+    expect(buildTextShareUrl('email', subject, '   ')).toBeNull()
+  })
+
+  it('bounds the body at TEXT_HANDOFF_MAX characters', () => {
+    const long = 'a'.repeat(TEXT_HANDOFF_MAX + 500)
+    const out = buildTextShareUrl('line', subject, long)!
+    expect(new URL(out).searchParams.get('text')!.length).toBe(TEXT_HANDOFF_MAX)
   })
 })
 

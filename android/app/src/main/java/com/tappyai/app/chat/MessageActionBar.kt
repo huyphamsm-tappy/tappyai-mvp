@@ -3,7 +3,6 @@ package com.tappyai.app.chat
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -41,7 +40,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.MessageFeedback
+import com.tappyai.app.share.PlacesLiveView
+import com.tappyai.app.share.ShareArtifact
+import com.tappyai.app.share.ShareArtifactBuilder
+import com.tappyai.app.share.TappyShareSheet
 import com.tappyai.core.designsystem.theme.TappySpacing
+import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -67,11 +71,17 @@ fun MessageActionBar(
     onToggleFeedback: (MessageFeedback) -> Unit,
     onReport: () -> Unit,
     onRegenerate: () -> Unit,
+    // Share sources for this turn, in priority order: the structured recommendation (the `8:`
+    // annotation), then a plan, then the prose. Same precedence as the web MessageActionBar.
+    placesView: PlacesLiveView? = null,
+    plan: TappyPlan? = null,
+    shareSubject: String? = null,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var copyState by remember { mutableStateOf(false) }
     var showMore by remember { mutableStateOf(false) }
+    var shareArtifact by remember { mutableStateOf<ShareArtifact?>(null) }
 
     val liked = feedback == MessageFeedback.Like
     val disliked = feedback == MessageFeedback.Dislike
@@ -86,7 +96,6 @@ fun MessageActionBar(
 
     val copyLabel = stringResource(R.string.chat_action_copy)
     val shareLabel = stringResource(R.string.chat_action_share)
-    val shareChooserTitle = stringResource(R.string.chat_share_chooser_title)
     val likeLabel = stringResource(R.string.chat_action_like)
     val dislikeLabel = stringResource(R.string.chat_action_dislike)
     val readAloudLabel = stringResource(R.string.chat_action_read_aloud)
@@ -115,22 +124,24 @@ fun MessageActionBar(
             )
         }
 
-        // Share — plain text only (markdown stripped), no URL, matching the web's navigator.share()
-        // call (`{ text, title: 'TappyAI' }`, no `url` field).
+        // Share — the branded brochure (web parity: one canonical artifact + TappyShareSheet).
+        // The system chooser is still reachable from the sheet as "More apps".
         IconButton(
             onClick = {
-                val plain = stripMarkdown(text)
-                val intent = Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, plain)
-                    putExtra(Intent.EXTRA_TITLE, "TappyAI")
+                val lang = Locale.getDefault().language
+                val subject = shareSubject?.takeIf { it.isNotBlank() } ?: "TappyAI"
+                shareArtifact = when {
+                    placesView != null && placesView.items.isNotEmpty() ->
+                        ShareArtifactBuilder.buildPlacesArtifact(placesView, subject, lang)
+                    plan != null -> ShareArtifactBuilder.buildPlanArtifact(plan, lang)
+                    else -> ShareArtifactBuilder.buildProseArtifact(subject, text)
                 }
-                context.startActivity(Intent.createChooser(intent, shareChooserTitle))
             },
             modifier = Modifier.size(32.dp),
         ) {
             Icon(Icons.Filled.Share, contentDescription = shareLabel, modifier = iconSize, tint = tint)
         }
+        shareArtifact?.let { a -> TappyShareSheet(artifact = a, onDismiss = { shareArtifact = null }) }
 
         // Like — toggle/switch semantics live in the ViewModel, matching the web's handleLike.
         IconButton(

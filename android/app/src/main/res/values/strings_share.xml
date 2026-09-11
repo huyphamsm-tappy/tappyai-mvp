@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TappyAI share sheet (recommendations & plans). Mirrors src/lib/i18n/share.ts on the web.
+     Every feedback string describes what ACTUALLY happened — nothing here says "sent" or
+     "delivered", because this client never knows that. -->
+<resources>
+    <string name="share_title">Share with friends</string>
+    <string name="share_preview_from">recommendation</string>
+    <string name="share_facebook">Facebook / Messenger</string>
+    <string name="share_zalo">Zalo</string>
+    <string name="share_viber">Viber</string>
+    <string name="share_line">LINE</string>
+    <string name="share_tiktok">TikTok</string>
+    <string name="share_email">Email</string>
+    <string name="share_inbox">TappyAI Inbox</string>
+    <string name="share_save">Save to device</string>
+    <string name="share_copy_content">Copy content</string>
+    <string name="share_more">More apps</string>
+    <string name="share_more_places">and %1$d more places</string>
+
+    <string name="share_opened_with_text">Opened %1$s with the recommendation — pick who to send it to</string>
+    <string name="share_app_not_opened">%1$s isn\'t installed. The recommendation is copied — paste it anywhere</string>
+    <string name="share_copied_and_opened">Copied the recommendation and opened %1$s — paste it there</string>
+    <string name="share_email_opened">Email opened with the recommendation</string>
+    <string name="share_copied_content">Recommendation copied</string>
+    <string name="share_copy_failed">Couldn\'t copy</string>
+    <string name="share_saved_image">Image saved to Pictures/TappyAI</string>
+    <string name="share_saved_text">Saved as text to Downloads/TappyAI</string>
+    <string name="share_save_failed">Couldn\'t save</string>
+    <string name="share_inbox_opened">Copied — opening your TappyAI Inbox, paste it into a message</string>
+</resources>

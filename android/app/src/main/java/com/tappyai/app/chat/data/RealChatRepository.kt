@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
+import com.tappyai.app.share.PlacesLiveView
+import com.tappyai.app.share.PlacesLiveViewParser
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -37,7 +39,14 @@ class RealChatRepository @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : ChatRepository {
 
+    // The one `8:` places annotation of the most recent turn. Held only until the ViewModel
+    // takes it for the share artifact; nothing writes it to disk.
+    @Volatile private var latestPlacesView: PlacesLiveView? = null
+
+    override fun takeLatestPlacesView(): PlacesLiveView? = latestPlacesView.also { latestPlacesView = null }
+
     override fun streamReply(messages: List<ChatMessage>): Flow<String> = callbackFlow {
+        latestPlacesView = null
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -88,6 +97,7 @@ class RealChatRepository @Inject constructor(
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
                     parseTextDelta(line)?.let { trySend(it) }
+                    PlacesLiveViewParser.fromStreamLine(line, json)?.let { latestPlacesView = it }
                 }
                 close()
             } catch (e: IOException) {

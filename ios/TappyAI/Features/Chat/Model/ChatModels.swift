@@ -8,6 +8,10 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     var content: String
     var status: MessageStatus
     var toolInvocations: [ToolInvocation]
+    /// The structured recommendation this turn streamed (the `8:` annotation), used ONLY to
+    /// build the share artifact. In memory for the session; never persisted — Places data is
+    /// live-only, and `persistConversation` sends `content` alone.
+    var placesView: PlacesLiveView? = nil
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
          status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = []) {

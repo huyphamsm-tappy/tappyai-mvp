@@ -1,6 +1,7 @@
 package com.tappyai.app.chat
 
 import android.net.Uri
+import com.tappyai.app.share.PlacesLiveView
 import com.tappyai.core.designsystem.component.TappyChatRole
 
 /** One message in a conversation. [isError] flags backend error responses so the UI can
@@ -22,6 +23,10 @@ data class ChatMessage(
     // Positional render list (text + inline photo galleries in stream order — web formatMessage
     // parity, see [ReplySegment]). Empty for user/error/restored messages → render [text] directly.
     val segments: List<ReplySegment> = emptyList(),
+    // The structured recommendation this turn streamed (the `8:` annotation), used ONLY to build
+    // the share artifact. In memory for the session; NOT part of [StoredChatMessage] — Places
+    // data is live-only and is never persisted.
+    val placesView: PlacesLiveView? = null,
     val isError: Boolean = false,
     val imageUri: Uri? = null,
 )

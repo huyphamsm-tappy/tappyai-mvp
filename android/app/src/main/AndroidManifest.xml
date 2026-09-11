@@ -32,6 +32,12 @@
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="mailto" />
         </intent>
+        <!-- Share sheet direct handoff (share/TappyShare.packageFor): ACTION_SEND + setPackage to
+             exactly these four apps. Must stay identical to TappyShare.queriedPackages. -->
+        <package android:name="com.zing.zalo" />
+        <package android:name="com.viber.voip" />
+        <package android:name="com.facebook.orca" />
+        <package android:name="jp.naver.line.android" />
     </queries>
 
     <application
@@ -135,6 +141,18 @@
                     android:host="group" />
             </intent-filter>
         </activity>
+
+        <!-- Share sheet: exposes ONLY the rendered share card (cache/share/) to the receiving
+             app via a content:// URI, so an image can travel with the brochure text. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

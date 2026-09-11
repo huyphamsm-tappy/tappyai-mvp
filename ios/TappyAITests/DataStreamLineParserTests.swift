@@ -28,6 +28,13 @@ final class DataStreamLineParserTests: XCTestCase {
         } else { XCTFail("expected toolCall") }
     }
 
+    func testAnnotationFrameCarriesPayload() {
+        // `8:[…]` is where the `tappy.places.v1` recommendation rides (share parity with web/Android).
+        if case let .annotation(data)? = DataStreamLineParser.parse(line: "8:[{\"kind\":\"tappy.places.v1\"}]") {
+            XCTAssertFalse(data.isEmpty)
+        } else { XCTFail("expected annotation") }
+    }
+
     func testUnknownPrefixIsPreserved() {
         if case let .unknown(prefix, _)? = DataStreamLineParser.parse(line: "z:{}") {
             XCTAssertEqual(prefix, "z")

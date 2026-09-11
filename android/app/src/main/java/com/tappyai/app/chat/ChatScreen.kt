@@ -283,6 +283,9 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                         onToggleFeedback = { type -> viewModel.onToggleFeedback(message.id, type) },
                                         onReport = { viewModel.onReportMessage(message.id) },
                                         onRegenerate = viewModel::onRegenerate,
+                                        placesView = message.placesView,
+                                        plan = message.plan,
+                                        shareSubject = shareSubjectFor(messages, message),
                                     )
                                 }
                             }
@@ -1083,6 +1086,18 @@ private fun rememberCursorBlink(): Boolean {
         }
     }
     return on
+}
+
+/**
+ * The share subject for an assistant turn is the user's question that produced it (≤80 chars),
+ * exactly like the web ChatInterface passes `subject` — so the brochure header reads
+ * "TappyAI gợi ý: <what was asked>". Null when there is no preceding user turn.
+ */
+private fun shareSubjectFor(messages: List<ChatMessage>, message: ChatMessage): String? {
+    val idx = messages.indexOfFirst { it.id == message.id }
+    if (idx <= 0) return null
+    val prev = messages.subList(0, idx).lastOrNull { it.role == TappyChatRole.User } ?: return null
+    return prev.text.trim().replace(Regex("\\s+"), " ").take(80).ifBlank { null }
 }
 
 /** Pre-first-token dots — web `pulseDot`: 6px circles, scale 0↔1 over 1.4s, staggered 0.2s/0.4s. */

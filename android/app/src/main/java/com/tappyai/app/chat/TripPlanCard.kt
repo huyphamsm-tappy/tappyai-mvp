@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +42,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
+import com.tappyai.app.share.ShareArtifactBuilder
+import com.tappyai.app.share.TappyShareSheet
+import java.util.Locale
 import com.tappyai.core.designsystem.theme.TappySpacing
 import androidx.compose.ui.res.stringResource
 
@@ -56,16 +60,13 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier) {
     var activeDay by remember(plan) { mutableIntStateOf(0) }
     val currentDay = plan.days.getOrNull(activeDay) ?: plan.days.firstOrNull()
 
-    val shareText = plan.shareText?.takeIf { it.isNotBlank() }
-        ?: stringResource(R.string.chat_plan_share_text, plan.title)
-    val share = {
-        val send = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, shareText)
-            putExtra(Intent.EXTRA_SUBJECT, plan.title)
-        }
-        runCatching { context.startActivity(Intent.createChooser(send, null)) }
-        Unit
+    // Share = the deterministic plan brochure via the TappyAI share sheet (web parity). The
+    // model's `share_text` may only contribute an intro line — see ShareArtifactBuilder.planBrochure.
+    var shareOpen by remember(plan) { mutableStateOf(false) }
+    val share = { shareOpen = true }
+    if (shareOpen) {
+        val artifact = remember(plan) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language) }
+        TappyShareSheet(artifact = artifact, onDismiss = { shareOpen = false })
     }
 
     Column(

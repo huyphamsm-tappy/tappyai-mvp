@@ -1485,6 +1485,19 @@ export default function ChatInterface({
                             onTTSSpeedChange={tts.changeSpeed}
                             onTTSStop={tts.stop}
                             onRegenerate={isLastMessage ? reload : undefined}
+                            // The recommendation itself — card and/or plan — is what Share
+                            // shares. The subject is the user's own question for this turn,
+                            // so the brochure header reads "TappyAI gợi ý: <what they asked>".
+                            share={{
+                              placeView,
+                              plan,
+                              subject: (() => {
+                                const prev = messages[msgIdx - 1]
+                                return prev && prev.role === 'user' && typeof prev.content === 'string'
+                                  ? prev.content.trim().slice(0, 80)
+                                  : undefined
+                              })(),
+                            }}
                           />
                         </div>
                       )}

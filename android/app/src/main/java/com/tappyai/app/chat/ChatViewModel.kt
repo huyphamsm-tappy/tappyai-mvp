@@ -538,6 +538,8 @@ class ChatViewModel @Inject constructor(
                         followups = followups,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
+                        // Share parity: the structured places of this turn (never persisted).
+                        placesView = chatRepository.takeLatestPlacesView(),
                     )
                 }
                 persistConversation()

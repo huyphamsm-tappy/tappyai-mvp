@@ -46,7 +46,7 @@ struct ChatView: View {
                         onRetry: { vm.retry() },
                         onFollowup: { vm.sendQuickPrompt($0) },
                         onCopy: { UIPasteboard.general.string = $0 },
-                        onShare: { vm.shareText($0) },
+                        onShare: { vm.share(messageIndex: $0, lang: localization.language.rawValue) },
                         onLogin: { vm.stashPendingChat(); router.switchTo(.profile) },
                         onLike: { vm.likeFeedback(messageIndex: $0, isActive: $1) },
                         onDislike: { vm.dislikeFeedback(messageIndex: $0, isActive: $1) },
@@ -127,6 +127,12 @@ struct ChatView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $vm.shareArtifact) { artifact in
+            TappyShareSheet(artifact: artifact, lang: localization.language.rawValue) {
+                vm.shareArtifact = nil
+            }
+            .presentationDetents([.large])
+        }
         .sheet(isPresented: $vm.showOnboarding) {
             OnboardingSheet { prefs in
                 vm.completeOnboarding(prefs: prefs)

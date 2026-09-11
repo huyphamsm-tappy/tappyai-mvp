@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { linkifySafe } from './linkify'
 import Image from 'next/image'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
@@ -166,7 +167,8 @@ export default function ThreadView({
                     ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }
                     : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg)' }}
                 >
-                  <span className="whitespace-pre-wrap break-words">{message.body}</span>
+                  {/* Safe https links only — see linkify.tsx. Everything else stays text. */}
+                  <span className="whitespace-pre-wrap break-words">{linkifySafe(message.body)}</span>
                 </div>
               </div>
             )

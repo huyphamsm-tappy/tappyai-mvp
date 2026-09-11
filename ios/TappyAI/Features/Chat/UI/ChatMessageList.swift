@@ -16,7 +16,8 @@ struct ChatMessageList: View {
     let onRetry: () -> Void
     let onFollowup: (String) -> Void
     let onCopy: (String) -> Void
-    let onShare: (String) -> Void
+    /// Share by message INDEX (not text): the share artifact needs the turn's structured data.
+    let onShare: (Int) -> Void
     let onLogin: () -> Void
     let onLike: (Int, Bool) -> Void
     let onDislike: (Int, Bool) -> Void
@@ -66,7 +67,7 @@ struct ChatMessageList: View {
                                 onRegenerate: isLast ? onRegenerate : nil,
                                 onFollowup: onFollowup,
                                 onCopy: { onCopy(parsed.text) },
-                                onShare: { onShare(parsed.text) },
+                                onShare: { onShare(index) },
                                 onLike: { onLike(index, $0) },
                                 onDislike: { onDislike(index, $0) },
                                 onReport: { onReport(index) },

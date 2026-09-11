@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { MapPin, Share2, ExternalLink, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import ShareMenu from '@/components/share/ShareMenu'
+import { buildPlanArtifact } from '@/lib/share/shareArtifact'
 
 export interface PlanItem {
   time: string
@@ -50,25 +52,19 @@ function categoryColor(cat: string) {
 export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
   const { t } = useTranslation()
   const [activeDay, setActiveDay] = useState(0)
-  const [shareState, setShareState] = useState<'idle' | 'copied'>('idle')
+  const [shareOpen, setShareOpen] = useState(false)
+  const { locale } = useTranslation()
 
-  const handleShare = async () => {
-    const shareText =
-      plan.share_text ||
-      t('tripPlan.shareFallback', { title: plan.title })
-
-    try {
-      if (typeof navigator !== 'undefined' && navigator.share) {
-        await navigator.share({ title: plan.title, text: shareText })
-      } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText)
-        setShareState('copied')
-        setTimeout(() => setShareState('idle'), 2500)
-      }
-    } catch {
-      // user cancelled
-    }
-  }
+  /**
+   * Share opens the TappyAI share menu with the plan's canonical artifact.
+   *
+   * 🚨 THIS USED TO SHARE `plan.share_text` — a model-authored caption — via the
+   * OS sheet. The brochure is now built deterministically from `days[].items[]`
+   * (times, places, prices, addresses, Maps/booking links); `share_text` may
+   * contribute one introductory line and nothing structural.
+   */
+  const handleShare = () => setShareOpen(true)
+  const artifact = buildPlanArtifact(plan, locale === 'en' ? 'en' : 'vi')
 
   const currentDay = plan.days[activeDay] ?? plan.days[0]
 
@@ -91,7 +87,7 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
             className="flex-shrink-0 flex items-center gap-1 bg-white/20 hover:bg-white/30 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all active:scale-95"
           >
             <Share2 size={11} />
-            {shareState === 'copied' ? t('tripPlan.shared') : t('tripPlan.share')}
+            {t('tripPlan.share')}
           </button>
         </div>
       </div>
@@ -231,15 +227,10 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           onClick={handleShare}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white text-sm font-semibold transition-all"
         >
-          {shareState === 'copied' ? (
-            t('tripPlan.shareCopied')
-          ) : (
-            <>
-              <Share2 size={14} />
-              {t('tripPlan.shareItinerary')}
-            </>
-          )}
+          <Share2 size={14} />
+          {t('tripPlan.shareItinerary')}
         </button>
+        <ShareMenu artifact={artifact} open={shareOpen} onClose={() => setShareOpen(false)} />
         <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1.5">
           {t('tripPlan.shareHint')}
         </p>

@@ -2,6 +2,7 @@ package com.tappyai.app.chat.data
 
 import com.tappyai.app.chat.ChatCategory
 import com.tappyai.app.chat.ChatMessage
+import com.tappyai.app.share.PlacesLiveView
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -18,4 +19,12 @@ import kotlinx.coroutines.flow.Flow
 interface ChatRepository {
     fun streamReply(messages: List<ChatMessage>): Flow<String>
     fun getFollowups(category: ChatCategory): List<String>
+
+    /**
+     * The `tappy.places.v1` annotation (`8:` frame) the LAST [streamReply] carried, or null,
+     * and clears it. Side channel so the `Flow<String>` text contract is untouched; the only
+     * consumer is the share artifact, and the value is in-memory only — never persisted
+     * (Places data is live-only). Implementations that do not read annotations keep the default.
+     */
+    fun takeLatestPlacesView(): PlacesLiveView? = null
 }

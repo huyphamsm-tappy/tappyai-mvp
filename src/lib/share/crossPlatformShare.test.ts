@@ -31,10 +31,52 @@ const PLATFORMS: Array<[string, string]> = [
 ]
 
 describe('every client declares the same share targets', () => {
-  it.each(PLATFORMS)('%s declares all five targets', (_name, src) => {
+  it.each(PLATFORMS)('%s declares all ten targets', (_name, src) => {
     for (const target of SHARE_TARGETS) {
       expect(src.toLowerCase()).toContain(target.id)
     }
+  })
+
+  // The order is the product order; it is the same list on all three.
+  it('android and ios list the targets in the web order', () => {
+    const ids = SHARE_TARGETS.map((t) => t.id)
+    const kt = androidSrc.match(/val targets: List<Target> = listOf\(([\s\S]*?)\)/)![1]
+    expect(kt.match(/Target\.([A-Z]+)/g)!.map((m) => m.slice('Target.'.length).toLowerCase())).toEqual(ids)
+    const swift = iosSrc.match(/static let targets: \[Target\] = \[([^\]]*)\]/)![1]
+    expect(swift.split(',').map((s) => s.trim().replace(/^\./, ''))).toEqual(ids)
+  })
+
+  // The text handoffs are the SAME documented endpoints everywhere.
+  it.each(PLATFORMS)('%s builds the same text handoffs (mailto / viber forward / line share)', (_name, src) => {
+    expect(src).toContain('mailto:?subject=')
+    expect(src).toContain('viber://forward?text=')
+    expect(src).toContain('https://line.me/R/share?text=')
+  })
+
+  it.each(PLATFORMS)('%s bounds text handoffs at 4000 like the web', (_name, src) => {
+    expect(src).toMatch(/(TEXT_HANDOFF_MAX|textHandoffMax)[^\n]*4000/)
+  })
+
+  // Direct app handoff is a claim about specific apps; the claimed set is
+  // declared where the OS can check it (manifest <queries> / LSApplicationQueriesSchemes).
+  it('android declares exactly the packages it targets', () => {
+    const manifest = readFileSync(join(root, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8')
+    const declared = [...manifest.matchAll(/<package android:name="([^"]+)"/g)].map((m) => m[1]).sort()
+    expect(declared).toEqual(['com.facebook.orca', 'com.viber.voip', 'com.zing.zalo', 'jp.naver.line.android'])
+    for (const pkg of declared) expect(androidSrc).toContain(pkg)
+  })
+
+  it('ios declares exactly the schemes it queries', () => {
+    const plist = readFileSync(join(root, 'ios', 'TappyAI', 'Resources', 'Info.plist'), 'utf8')
+    const block = plist.match(/<key>LSApplicationQueriesSchemes<\/key>\s*<array>([\s\S]*?)<\/array>/)![1]
+    const declared = [...block.matchAll(/<string>([^<]+)<\/string>/g)].map((m) => m[1]).sort()
+    expect(declared).toEqual(['fb-messenger', 'line', 'viber', 'zalo'])
+    for (const scheme of declared) expect(iosSrc).toContain(`"${scheme}"`)
+  })
+
+  // The Inbox is the web Messenger on every platform — no second messenger.
+  it.each(PLATFORMS)('%s points the Tappy Inbox at the web Messenger', (_name, src) => {
+    expect(src).toContain('/profile/notifications?tab=messages')
   })
 
   it.each(PLATFORMS)('%s builds a Facebook handoff', (_name, src) => {
@@ -82,8 +124,68 @@ describe('every client enforces the same URL guard', () => {
   })
 })
 
+describe('every client prints the same brochure', () => {
+  // The web table in shareArtifact.ts is the source; Android carries it in ShareArtifact.kt,
+  // iOS in the String Catalog (`share.brochure.*`). Same input must give the same text.
+  const LABELS: Record<string, [string, string]> = {
+    recommends: ['TappyAI gợi ý', 'TappyAI recommends'],
+    plan: ['Kế hoạch từ TappyAI', 'A plan from TappyAI'],
+    reviews: ['đánh giá', 'reviews'],
+    why: ['Vì sao', 'Why'],
+    maps: ['Bản đồ', 'Maps'],
+    website: ['Website', 'Website'],
+    review: ['Review', 'Review'],
+    order: ['Đặt món', 'Order'],
+    booking: ['Đặt phòng', 'Book'],
+    ticket: ['Mua vé', 'Tickets'],
+    reservation: ['Đặt chỗ', 'Reserve'],
+    more: ['và {n} địa điểm khác', 'and {n} more'],
+    footer: ['Gợi ý bởi TappyAI · {url}', 'Recommended by TappyAI · {url}'],
+    people: ['{n} người', '{n} people'],
+    budget: ['Ngân sách', 'Budget'],
+  }
+  const webSrc = readFileSync(join(root, 'src', 'lib', 'share', 'shareArtifact.ts'), 'utf8')
+  const androidArtifact = readFileSync(
+    join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'ShareArtifact.kt'),
+    'utf8'
+  )
+  const catalog = JSON.parse(readFileSync(join(root, 'ios', 'TappyAI', 'Resources', 'Localizable.xcstrings'), 'utf8')) as {
+    strings: Record<string, { localizations?: Record<string, { stringUnit?: { value?: string } }> }>
+  }
+
+  it.each(Object.entries(LABELS))('label %s is identical on web, Android and iOS', (key, [vi, en]) => {
+    expect(webSrc).toContain(`${key}: '${vi}'`)
+    expect(webSrc).toContain(`${key}: '${en}'`)
+    expect(androidArtifact).toContain(`${key} = "${vi}"`)
+    expect(androidArtifact).toContain(`${key} = "${en}"`)
+    const entry = catalog.strings[`share.brochure.${key}`]
+    expect(entry?.localizations?.vi?.stringUnit?.value).toBe(vi)
+    expect(entry?.localizations?.en?.stringUnit?.value).toBe(en)
+  })
+})
+
 describe('no client claims it published anything', () => {
   it.each(PLATFORMS)('%s never says posted/published', (_name, src) => {
     expect(src).not.toMatch(/posted successfully|published successfully/i)
+  })
+
+  // The user-facing strings on all three platforms: opened / copied / saved — never sent.
+  it('no platform has a share string that claims delivery', () => {
+    const files = [
+      join(root, 'src', 'lib', 'i18n', 'share.ts'),
+      join(root, 'android', 'app', 'src', 'main', 'res', 'values', 'strings_share.xml'),
+      join(root, 'android', 'app', 'src', 'main', 'res', 'values-vi', 'strings_share.xml'),
+    ]
+    const catalog = JSON.parse(readFileSync(join(root, 'ios', 'TappyAI', 'Resources', 'Localizable.xcstrings'), 'utf8')) as {
+      strings: Record<string, { localizations?: Record<string, { stringUnit?: { value?: string } }> }>
+    }
+    const iosShare = Object.entries(catalog.strings)
+      .filter(([k]) => k.startsWith('share.'))
+      .flatMap(([, v]) => Object.values(v.localizations ?? {}).map((l) => l.stringUnit?.value ?? ''))
+      .join('\n')
+    // Values only — the comments explaining the rule naturally quote the forbidden words.
+    const stripComments = (s: string) => s.replace(/<!--[\s\S]*?-->/g, '').replace(/^\s*\/\/.*$/gm, '')
+    const all = files.map((f) => stripComments(readFileSync(f, 'utf8'))).join('\n') + '\n' + iosShare
+    expect(all).not.toMatch(/sent successfully|delivered|shared successfully|đã gửi thành công|gửi thành công|đã chia sẻ thành công/i)
   })
 })
