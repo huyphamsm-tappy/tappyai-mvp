@@ -1079,5 +1079,127 @@
   transition: border-color 150ms, transform 150ms;
 }
 .v3-tile:hover { border-color: var(--v3-border-strong); transform: translateY(-1px); }
+
+/* ── Smart Tools (/tools) — the feature-tile skin ─────────────────────────
+   Built against the owner's Smart Tools reference: one dark frame, three
+   labelled groups, and LARGE tinted tiles with the tool's glyph in a solid
+   badge, the mascot on the right and a chevron in the corner. The tiles are
+   feature tiles, not `.v3-tile` buttons, so they get their own class rather
+   than a pile of overrides on the shared one.
+
+   🔑 COLOUR LIVES HERE, NOT IN THE COMPONENT. Each tile names a HUE
+   (`data-hue`) and this sheet resolves it per theme: saturated gradients
+   under white text in dark, soft tints under the normal `--v3-fg` in light.
+   The reference is dark-only; the product is not, so both are authored.
+
+   🚨 Only PAINT is in this class. Padding, min-height and the grid stay as
+   Tailwind utilities in `ToolsView.tsx` — this sheet sits AFTER
+   `@tailwind utilities`, so anything set here would silently beat them.
+
+   🚨 The bottom scrim is a CONTRAST device, not decoration: the description
+   sits on the lower-left of a gradient whose brightest stop is the top-left
+   corner, and the darkening keeps white copy at ≥4.5:1 on the amber and
+   olive tiles, which the raw gradient alone does not. */
+.v3-tools-frame {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 24px;
+}
+.v3-toolcard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 18px;
+  border: 1px solid var(--tc-border);
+  color: var(--tc-fg);
+  /* Top layer is a soft sheen behind the mascot's corner — the reference's "light behind
+     the character" — then the contrast scrim, then the hue gradient itself. */
+  background-image:
+    radial-gradient(110% 85% at 88% 8%, var(--tc-sheen), transparent 55%),
+    linear-gradient(to top, var(--tc-scrim), transparent 58%),
+    linear-gradient(135deg, var(--tc-a) 0%, var(--tc-b) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 10px 24px -14px rgba(0, 0, 0, 0.45);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.v3-toolcard:hover {
+  transform: translateY(-2px);
+  border-color: var(--tc-border-hover);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 20px 40px -18px var(--tc-glow);
+}
+.v3-toolcard:active { transform: translateY(0) scale(0.99); }
+.v3-toolcard:focus-visible {
+  outline: 2px solid var(--v3-accent);
+  outline-offset: 3px;
+}
+.v3-toolcard-badge {
+  background-color: var(--tc-badge);
+  color: var(--tc-badge-fg, #ffffff);
+  box-shadow: 0 8px 18px -8px var(--tc-glow);
+}
+.v3-toolcard-title { color: var(--tc-fg); }
+.v3-toolcard-desc { color: var(--tc-fg-muted); }
+.v3-toolcard-chevron {
+  color: var(--tc-fg);
+  transition: transform 160ms ease;
+}
+.v3-toolcard:hover .v3-toolcard-chevron { transform: translateX(3px); }
+/* The mascot is atmosphere: it never intercepts the click and never sits above the copy. */
+.v3-toolcard-mascot {
+  pointer-events: none;
+  filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.35));
+}
+@media (prefers-reduced-motion: reduce) {
+  .v3-toolcard, .v3-toolcard-chevron { transition: none; }
+  .v3-toolcard:hover { transform: none; }
+  .v3-toolcard:hover .v3-toolcard-chevron { transform: none; }
+}
+
+/* Light theme — soft tints, default foreground, no scrim. Badges stay saturated
+   so the glyph reads; each badge/glyph pair is ≥3:1 (graphics AA). */
+.v3-toolcard {
+  --tc-fg: var(--v3-fg);
+  --tc-fg-muted: var(--v3-fg-secondary);
+  --tc-scrim: transparent;
+  --tc-sheen: rgba(255, 255, 255, 0.45);
+  --tc-border: rgba(15, 23, 42, 0.08);
+  --tc-border-hover: rgba(15, 23, 42, 0.18);
+}
+.v3-toolcard[data-hue="blue"]    { --tc-a: #E3EEFF; --tc-b: #BFD5FF; --tc-badge: #2563EB; --tc-glow: rgba(37, 99, 235, 0.45); }
+.v3-toolcard[data-hue="indigo"]  { --tc-a: #E8E4FF; --tc-b: #CCC4FA; --tc-badge: #5B4FD9; --tc-glow: rgba(91, 79, 217, 0.45); }
+.v3-toolcard[data-hue="emerald"] { --tc-a: #DAF6EC; --tc-b: #B3E9D4; --tc-badge: #0E8F6A; --tc-glow: rgba(14, 143, 106, 0.45); }
+.v3-toolcard[data-hue="amber"]   { --tc-a: #FFEFD8; --tc-b: #FBD9A8; --tc-badge: #C2620A; --tc-glow: rgba(194, 98, 10, 0.45); }
+.v3-toolcard[data-hue="olive"]   { --tc-a: #F5F0D3; --tc-b: #E4DCA5; --tc-badge: #8F6D0C; --tc-glow: rgba(143, 109, 12, 0.45); }
+.v3-toolcard[data-hue="rose"]    { --tc-a: #FFE2E9; --tc-b: #FBC2CF; --tc-badge: #C92F58; --tc-glow: rgba(201, 47, 88, 0.45); }
+.v3-toolcard[data-hue="cobalt"]  { --tc-a: #E2E6FF; --tc-b: #C4CCFF; --tc-badge: #4353D6; --tc-glow: rgba(67, 83, 214, 0.45); }
+.v3-toolcard[data-hue="violet"]  { --tc-a: #EEE5FF; --tc-b: #D7C5FF; --tc-badge: #7442D6; --tc-glow: rgba(116, 66, 214, 0.45); }
+.v3-toolcard[data-hue="pink"]    { --tc-a: #FFDFEE; --tc-b: #FFBCD6; --tc-badge: #D63A75; --tc-glow: rgba(214, 58, 117, 0.45); }
+/* No hue registered — a neutral tile rather than a broken one. */
+.v3-toolcard:not([data-hue])     { --tc-a: var(--v3-panel-elevated); --tc-b: var(--v3-panel-elevated); --tc-badge: var(--v3-accent-fill); --tc-glow: var(--v3-accent-soft); }
+
+/* Dark theme — the reference: rich gradients, white copy, a soft glow on hover. */
+.dark .v3-toolcard {
+  --tc-fg: #FFFFFF;
+  --tc-fg-muted: rgba(255, 255, 255, 0.82);
+  --tc-scrim: rgba(0, 0, 0, 0.32);
+  --tc-sheen: rgba(255, 255, 255, 0.13);
+  --tc-border: rgba(255, 255, 255, 0.10);
+  --tc-border-hover: rgba(255, 255, 255, 0.24);
+}
+.dark .v3-toolcard[data-hue="blue"]    { --tc-a: #2563E6; --tc-b: #0A1D52; --tc-badge: #3B82F6; }
+.dark .v3-toolcard[data-hue="indigo"]  { --tc-a: #5B46DD; --tc-b: #16163E; --tc-badge: #7C6CF6; }
+.dark .v3-toolcard[data-hue="emerald"] { --tc-a: #0F8F6C; --tc-b: #062B2C; --tc-badge: #14B58A; }
+.dark .v3-toolcard[data-hue="amber"]   { --tc-a: #B9661C; --tc-b: #35200F; --tc-badge: #F59E0B; --tc-badge-fg: #1F1200; }
+.dark .v3-toolcard[data-hue="olive"]   { --tc-a: #7F7229; --tc-b: #202018; --tc-badge: #E4B93B; --tc-badge-fg: #1F1A05; }
+.dark .v3-toolcard[data-hue="rose"]    { --tc-a: #AD385C; --tc-b: #371424; --tc-badge: #F0648B; }
+.dark .v3-toolcard[data-hue="cobalt"]  { --tc-a: #3B4DDA; --tc-b: #101843; --tc-badge: #7B6BFF; }
+.dark .v3-toolcard[data-hue="violet"]  { --tc-a: #6C40E3; --tc-b: #1D1444; --tc-badge: #A07CFF; }
+.dark .v3-toolcard[data-hue="pink"]    { --tc-a: #CF3A76; --tc-b: #46152F; --tc-badge: #FF5C8A; }
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }

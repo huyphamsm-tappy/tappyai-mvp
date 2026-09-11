@@ -147,15 +147,50 @@ describe('accessibility basics', () => {
   })
 })
 
+describe('the redesign adds a skin, not data', () => {
+  it('the header CTA is a real link to the assistant, not a button that does nothing', () => {
+    const { container } = renderTools()
+    const cta = container.querySelector('[data-tools-cta]') as HTMLElement
+    expect(cta, 'the CTA must render').toBeTruthy()
+    expect(cta.tagName).toBe('A')
+    expect(cta.getAttribute('href')).toBe('/')
+    expect(cta.textContent).toContain('Do more with TappyAI')
+  })
+
+  it('every mascot is decorative — hidden from assistive tech, inert to the pointer, inside the card link', () => {
+    const { container } = renderTools()
+    const mascots = [...container.querySelectorAll('.v3-toolcard-mascot')] as HTMLElement[]
+    expect(mascots.length, 'the fixture assumes at least one tool carries a mascot').toBeGreaterThan(0)
+    for (const m of mascots) {
+      expect(m.getAttribute('aria-hidden')).toBe('true')
+      expect(m.closest('[data-tool]'), 'a mascot belongs to exactly one card').toBeTruthy()
+      const img = m.querySelector('img')
+      // `TappyMascot` renders `alt=""` for a decorative pose; the wrapper is hidden regardless.
+      if (img) expect(img.getAttribute('alt') ?? '').toBe('')
+    }
+  })
+
+  it('a card without a registered skin still renders as a tool', () => {
+    // Every registered tool has a skin today; the guarantee is structural — `data-hue` is
+    // optional in the markup and the stylesheet has a `:not([data-hue])` neutral fallback.
+    const { container } = renderTools()
+    for (const card of toolCards(container)) {
+      expect(card.classList.contains('v3-toolcard')).toBe(true)
+    }
+  })
+})
+
 describe('responsive structure', () => {
   it('steps its columns rather than forcing one row or one column', () => {
     const { container } = renderTools()
     const grid = container.querySelector('[data-tool-group] .grid')!
     const cls = grid.className
-    // Two up on the narrowest phone, never ten across on a desktop.
-    expect(cls).toContain('grid-cols-2')
+    // One feature tile per row on the narrowest phone (two-up measured 125px wide inside the
+    // frame at 375px), two from `sm`, and never ten across on a desktop.
+    expect(cls).toMatch(/(^|\s)grid-cols-1(\s|$)/)
+    expect(cls).toContain('sm:grid-cols-2')
     expect(cls).toMatch(/md:grid-cols-\d/)
-    expect(cls).not.toMatch(/grid-cols-(1|[6-9]|1\d)\b/)
+    expect(cls).not.toMatch(/grid-cols-([5-9]|1\d)\b/)
   })
 
   it('no card sets a fixed pixel width that could overflow a 360px viewport', () => {

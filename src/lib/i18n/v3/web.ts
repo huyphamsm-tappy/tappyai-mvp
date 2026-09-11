@@ -92,6 +92,8 @@ export const vi: Record<string, string> = {
   // call one destination three things. Only these two lines are new.
   'v3.tools.subtitle': 'Công cụ thông minh',
   'v3.tools.blurb': 'Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày',
+  // The header's compact CTA — it opens the assistant on Home, the one place that "does more".
+  'v3.tools.cta': 'Làm nhiều hơn cùng TappyAI',
   'v3.tools.authHint': 'Cần đăng nhập',
   'v3.tools.daily': 'Hằng ngày',
   'v3.tools.discover': 'Khám phá',
@@ -590,6 +592,7 @@ export const en: Record<string, string> = {
   // ── Smart Tools page (/tools) ───────────────────────────────────────────
   'v3.tools.subtitle': 'Smart tools',
   'v3.tools.blurb': 'Useful utilities, built to help you every day',
+  'v3.tools.cta': 'Do more with TappyAI',
   'v3.tools.authHint': 'Sign-in required',
   'v3.tools.daily': 'Everyday',
   'v3.tools.discover': 'Discover',
