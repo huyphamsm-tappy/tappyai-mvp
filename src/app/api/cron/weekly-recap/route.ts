@@ -58,7 +58,11 @@ export async function GET(req: Request) {
       activeUserIds.map(async (uid) => {
         const mem = memoryByUser.get(uid)
         const convoCount = countByUser.get(uid) ?? 0
-        const location = mem?.location_base || 'TP.HCM'
+        // The weekly recap is about what the user wanted to EXPLORE, so it leads
+        // with discovery_city (their destination interest). location_base
+        // (residence) is only a fallback for the phrasing, and the default keeps
+        // the copy non-empty; neither is presented as "where you live".
+        const location = mem?.discovery_city || mem?.location_base || 'TP.HCM'
         const recentTopics = (mem?.history ?? []).slice(-5)
         const foodPrefs = mem?.preferences?.food?.slice(0, 3) ?? []
         const companions = mem?.companions ?? null

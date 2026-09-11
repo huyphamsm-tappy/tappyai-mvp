@@ -1125,6 +1125,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             // have no session and RLS would silently drop the write.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
+              discovery_city: extracted.discovery_city ?? existingMemory?.discovery_city ?? null,
               companions: extracted.companions ?? existingMemory?.companions ?? null,
               timing: extracted.timing ?? existingMemory?.timing ?? null,
               personality: extracted.personality ?? existingMemory?.personality ?? null,

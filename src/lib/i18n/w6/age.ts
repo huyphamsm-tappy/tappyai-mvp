@@ -5,10 +5,35 @@
 // not read a sentence written for a user who has been refused.
 
 export const vi: Record<string, string> = {
-  // ── Asking (status: unknown) ───────────────────────────────────────────────
-  'age.ask.title': 'Bạn sinh ngày nào?',
-  'age.ask.desc': 'TappyAI dành cho người từ 18 tuổi trở lên. Chúng tôi cần ngày sinh của bạn để tiếp tục.',
-  'age.ask.privacy': 'Ngày sinh của bạn được giữ riêng tư. Nó không hiển thị trên trang cá nhân và không được chia sẻ với người dùng khác.',
+  // ── Page chrome (the onboarding composition around the card) ──────────────
+  'age.brand.tagline': 'Trải nghiệm tốt hơn, cùng nhau.',
+  'age.intro.eyebrow': 'CỘNG ĐỒNG TAPPYAI',
+  'age.intro.titleLead': 'Những trải nghiệm tốt đẹp hơn,',
+  'age.intro.titleAccent': 'cùng nhau',
+  'age.intro.desc': 'TappyAI là nền tảng dành cho người từ 18 tuổi trở lên, nơi bạn có thể khám phá, trò chuyện, mua sắm và chia sẻ những điều thú vị.',
+  'age.feature.discover.title': 'Khám phá',
+  'age.feature.discover.desc': 'Những gợi ý phù hợp với bạn',
+  'age.feature.shop.title': 'Mua sắm',
+  'age.feature.shop.desc': 'Sản phẩm chính hãng, đáng tin cậy',
+  'age.feature.together.title': 'Cùng nhau',
+  'age.feature.together.desc': 'Xây dựng cộng đồng tích cực',
+  'age.mascot.bubble': 'Cùng bạn khám phá thế giới thú vị hơn!',
+  'age.trust.privacy.title': 'An toàn & riêng tư',
+  'age.trust.privacy.desc': 'Thông tin của bạn luôn được bảo vệ.',
+  'age.trust.ageOnly.title': 'Chỉ xác nhận độ tuổi',
+  'age.trust.ageOnly.desc': 'Chúng tôi chỉ sử dụng ngày sinh để xác nhận bạn đủ 18 tuổi.',
+  'age.trust.better.title': 'Trải nghiệm tốt hơn',
+  'age.trust.better.desc': 'Cùng xây dựng cộng đồng lành mạnh và tích cực.',
+  'age.footer.tagline': 'TappyAI — Trải nghiệm tốt hơn, cùng nhau.',
+  // ── Asking (status: unknown) ──────────────────────────────────────────────
+  // The purpose is stated in the headline itself. This screen asks for one
+  // sensitive field, so it says exactly what the field is for and nothing else
+  // — no advertising, analytics, personalisation or recommendation framing,
+  // which would turn a required eligibility check into data collection.
+  'age.ask.title': 'Xác nhận bạn đủ 18 tuổi',
+  'age.ask.desc': 'TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng.',
+  'age.ask.privacyTitle': 'Ngày sinh của bạn được giữ riêng tư',
+  'age.ask.privacy': 'Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn.',
   'age.field.day': 'Ngày',
   'age.field.month': 'Tháng',
   'age.field.year': 'Năm',
@@ -52,9 +77,29 @@ export const vi: Record<string, string> = {
 }
 
 export const en: Record<string, string> = {
-  'age.ask.title': 'What is your date of birth?',
-  'age.ask.desc': 'TappyAI is for people aged 18 and over. We need your date of birth to continue.',
-  'age.ask.privacy': 'Your date of birth is kept private. It is never shown on your profile and is never shared with other users.',
+  'age.brand.tagline': 'Better experiences, together.',
+  'age.intro.eyebrow': 'THE TAPPYAI COMMUNITY',
+  'age.intro.titleLead': 'Better experiences,',
+  'age.intro.titleAccent': 'together',
+  'age.intro.desc': 'TappyAI is a platform for people aged 18 and over — a place to explore, chat, shop and share the things you enjoy.',
+  'age.feature.discover.title': 'Explore',
+  'age.feature.discover.desc': 'Suggestions that suit you',
+  'age.feature.shop.title': 'Shop',
+  'age.feature.shop.desc': 'Genuine products you can trust',
+  'age.feature.together.title': 'Together',
+  'age.feature.together.desc': 'Building a positive community',
+  'age.mascot.bubble': 'Let us explore a more interesting world together!',
+  'age.trust.privacy.title': 'Safe & private',
+  'age.trust.privacy.desc': 'Your information is always protected.',
+  'age.trust.ageOnly.title': 'Age confirmation only',
+  'age.trust.ageOnly.desc': 'We use your date of birth only to confirm you are 18 or over.',
+  'age.trust.better.title': 'A better experience',
+  'age.trust.better.desc': 'Building a healthy, positive community together.',
+  'age.footer.tagline': 'TappyAI — better experiences, together.',
+  'age.ask.title': 'Confirm you are 18 or over',
+  'age.ask.desc': 'TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it.',
+  'age.ask.privacyTitle': 'Your date of birth is kept private',
+  'age.ask.privacy': 'We use this only to confirm you are 18 or over, and we never show your date of birth on your profile.',
   'age.field.day': 'Day',
   'age.field.month': 'Month',
   'age.field.year': 'Year',
