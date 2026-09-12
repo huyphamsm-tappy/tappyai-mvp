@@ -6,6 +6,12 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // 🚨 `src/modules` renders UI too (the Music Module's components) and was never scanned, so
+    // any utility used ONLY there was silently dropped from the build — `max-h-[80vh]` on the
+    // picker sheet, `pr-9` on its search field and `accent-primary-500` on the selection panel
+    // were all missing from the compiled CSS while the source read as if they applied. Measured
+    // against the dev stylesheet (2026-09-12); the Music Library redesign is what surfaced it.
+    './src/modules/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     // Ordered breakpoints incl. xs(480) + 3xl(1920)/4xl(2560) per docs/UI_GUIDELINES.md §3.

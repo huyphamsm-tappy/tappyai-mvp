@@ -1201,5 +1201,157 @@
 .dark .v3-toolcard[data-hue="violet"]  { --tc-a: #6C40E3; --tc-b: #1D1444; --tc-badge: #A07CFF; }
 .dark .v3-toolcard[data-hue="pink"]    { --tc-a: #CF3A76; --tc-b: #46152F; --tc-badge: #FF5C8A; }
 
+/* ── Music Library (/music) — the destination skin ────────────────────────
+   Built against the owner's Music Library reference: one dark frame, a
+   centred title bar, a wide search, a blue→violet hero with the mascot on
+   the right, chip filters, and image-led track tiles with a play badge.
+
+   🔑 PAINT ONLY, TOKENS FIRST. Layout stays as Tailwind utilities in
+   `src/app/music/page.tsx` and the module's card/grid; this sheet resolves
+   colour per theme. The page sits on `.v3-theme`, so light mode gets the
+   V3 light tokens and dark mode the reference's navy — the Music Module's
+   own components are untouched except for the opt-in `appearance="v3"`.
+
+   🚨 Only PAINT is in these classes: this sheet sits after
+   `@tailwind utilities`, so a padding or a size set here would silently
+   beat the utility on the element. */
+.v3-music-frame {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 24px;
+}
+.dark .v3-music-frame {
+  /* A shade bluer than the panel token so the frame reads as the reference's navy
+     rather than the generic dark card. */
+  background-color: #0B1224;
+  border-color: rgba(76, 121, 255, 0.22);
+}
+.v3-music-search {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  color: var(--v3-fg);
+  transition: border-color 150ms;
+}
+.v3-music-search::placeholder { color: var(--v3-fg-muted); opacity: 1; }
+.v3-music-search:focus { border-color: var(--v3-accent); }
+.dark .v3-music-search {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+
+/* The hero: brand blue to violet, the reference's light coming from behind the
+   character on the right. The scrim under the copy is a contrast device — white
+   on the raw gradient's bright stop measures under AA. */
+.v3-music-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(90% 120% at 78% 30%, rgba(167, 139, 250, 0.45), transparent 60%),
+    linear-gradient(to right, rgba(6, 12, 40, 0.55), transparent 55%),
+    linear-gradient(120deg, #1D4ED8 0%, #4338CA 55%, #6D28D9 100%);
+  box-shadow: 0 24px 60px -30px rgba(67, 56, 202, 0.8);
+}
+.v3-music-hero-muted { color: rgba(255, 255, 255, 0.86); }
+.v3-music-hero-accent { color: #BFDBFE; }
+.v3-music-hero-cta {
+  background-color: #FFFFFF;
+  color: #1D4ED8;
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+  transition: transform 150ms, box-shadow 150ms;
+}
+.v3-music-hero-cta:hover { transform: translateY(-1px); box-shadow: 0 14px 28px -12px rgba(0, 0, 0, 0.7); }
+.v3-music-hero-pill {
+  background-color: rgba(9, 14, 40, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.92);
+}
+/* The equaliser bars behind the character — decorative, drawn in CSS so there is
+   no asset to load and nothing to announce. */
+.v3-music-hero-bars {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 42%;
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.10) 0 6px,
+    transparent 6px 14px
+  );
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+.v3-music-hero-note {
+  position: absolute;
+  color: rgba(255, 255, 255, 0.55);
+  filter: drop-shadow(0 0 10px rgba(191, 219, 254, 0.7));
+}
+
+.v3-music-chip {
+  font-size: 13.5px;
+  font-weight: 500;
+  padding: 9px 16px;
+}
+
+/* Section heading + its trailing action. */
+.v3-music-section-title { color: var(--v3-fg); }
+.v3-music-seeall {
+  color: var(--v3-accent);
+  font-weight: 600;
+  transition: color 150ms;
+}
+.v3-music-seeall:hover { color: var(--v3-fg); }
+
+/* Track tile: artwork with a play badge, then two lines of text. The tile itself
+   has no box — the artwork is the card, as in the reference. */
+.v3-music-card { border-radius: 16px; }
+.v3-music-card-art {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.6);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.v3-music-card:hover .v3-music-card-art,
+.v3-music-card:focus-visible .v3-music-card-art {
+  transform: translateY(-2px);
+  border-color: var(--v3-border-strong);
+  box-shadow: 0 20px 36px -18px rgba(37, 99, 235, 0.55);
+}
+.v3-music-card:active .v3-music-card-art { transform: translateY(0) scale(0.99); }
+.v3-music-card-scrim {
+  /* The scrim earns its weight only over a real picture, where the play badge needs
+     separating from bright artwork. Over the drawn fallback it was a dark smudge on a
+     light tile in light theme (owner UAT 2026-09-12) — so the default is faint and the
+     strong stop applies only when an <img> precedes it. Dark keeps the strong stop
+     throughout: the fallback tile is already dark there. */
+  --mc-scrim: rgba(15, 23, 42, 0.18);
+  background-image: linear-gradient(to top, var(--mc-scrim), transparent 45%);
+  border-radius: inherit;
+}
+.v3-music-card-art img + .v3-music-card-scrim,
+.dark .v3-music-card-scrim { --mc-scrim: rgba(0, 0, 0, 0.45); }
+.v3-music-card-play {
+  background-color: rgba(10, 14, 30, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #FFFFFF;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background-color 150ms, transform 150ms;
+}
+.v3-music-card:hover .v3-music-card-play { background-color: var(--v3-accent-fill); border-color: transparent; transform: scale(1.06); }
+.v3-music-card[data-previewing] .v3-music-card-play { background-color: var(--v3-accent-fill); border-color: transparent; }
+.v3-music-card-live {
+  background-color: var(--v3-accent-fill);
+  color: var(--v3-on-accent);
+}
+.v3-music-card-title { color: var(--v3-fg); }
+.v3-music-card-meta { color: var(--v3-fg-muted); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-music-card-art, .v3-music-card-play, .v3-music-hero-cta { transition: none; }
+  .v3-music-card:hover .v3-music-card-art, .v3-music-card:hover .v3-music-card-play, .v3-music-hero-cta:hover { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }

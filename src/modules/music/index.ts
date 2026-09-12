@@ -30,5 +30,5 @@ export { useMusic, useMusicTrack, useMusicSearch, useMusicCategories } from './h
 
 export {
   MusicThumbnail, MusicDuration, MusicBadge, MusicRow, MusicPickerSheet,
-  MusicSearchInput, MusicCategoryTabs, MusicTrackList,
+  MusicSearchInput, MusicCategoryTabs, MusicTrackList, MusicTrackCard, MusicTrackGrid,
 } from './components'
