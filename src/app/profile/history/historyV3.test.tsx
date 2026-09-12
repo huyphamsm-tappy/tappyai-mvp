@@ -32,11 +32,16 @@ import { HISTORY_STORAGE_KEY } from '@/lib/scam-shield/history'
 
 // ── V3 Web · History ────────────────────────────────────────────────────────
 //
-// 🚨 THE REFERENCE DREW FIVE CATEGORIES AND FOUR EXIST. Most of this file pins
-// the difference: there is no recent-search section, because nothing in this
+// 🚨 THE REFERENCE DREW SIX MODULES AND FIVE EXIST. Most of this file pins the
+// difference: there is no recent-search section, because nothing in this
 // product stores a search, and `user_events` — which is full of rows — is
 // ANALYTICS and stays analytics. A history page is a claim about what someone
 // did; every row on it has to come from a record of them doing it.
+//
+// The 2026-09-12 reskin (framed surface, hero, pill tabs, activity modules,
+// rail) changed paint and composition. Every rule above survived it, and the
+// tests below are the proof: the same data still renders the same rows, links,
+// counts and refusals.
 
 const me = { full_name: 'Huy', avatar_url: null, email: 'h@x.com' }
 
@@ -50,14 +55,20 @@ const video = (over: Record<string, unknown> = {}) => ({
   contentType: 'video', watchedAt: new Date().toISOString(), ...over,
 })
 
+const booking = (over: Record<string, unknown> = {}) => ({
+  id: 'b1', serviceName: 'Spa Sen Việt', status: 'confirmed', date: '2026-09-20', time: '10:00',
+  createdAt: new Date().toISOString(), ...over,
+})
+
 const daysAgo = (n: number) => new Date(Date.now() - n * 86_400_000).toISOString()
 
-const renderHistory = (over: { conversations?: unknown[]; videos?: unknown[] } = {}) =>
+const renderHistory = (over: { conversations?: unknown[]; videos?: unknown[]; bookings?: unknown[] } = {}) =>
   render(
     <HistoryView
       userInfo={me}
       conversations={(over.conversations ?? []) as never}
       videos={(over.videos ?? []) as never}
+      bookings={(over.bookings ?? []) as never}
     />,
   )
 
@@ -184,8 +195,16 @@ describe('quick stats are counts of what is on screen', () => {
     const stats = statsPanel()
     expect(within(stats).getByText('2')).toBeTruthy()
     expect(within(stats).getByText('3')).toBeTruthy()
-    // Link checks are genuinely zero here, and zero is shown because it was counted.
-    expect(within(stats).getByText('0')).toBeTruthy()
+    // Bookings and link checks are genuinely zero here, and each zero is shown
+    // because it was counted — two rows, two zeros, no row omitted or guessed.
+    expect(within(stats).getAllByText('0')).toHaveLength(2)
+    // Four rows: one per category that has a count. Plans has none, so no row.
+    expect(within(stats).getAllByRole('listitem')).toHaveLength(4)
+  })
+
+  it('carries no activity sentence, chart or invented total', () => {
+    const { container } = renderHistory({ conversations: [conv()] })
+    expect(container.querySelector('svg[class*="chart"], canvas, [data-history-chart]')).toBeNull()
   })
 })
 
@@ -260,5 +279,120 @@ describe('i18n', () => {
     const code = readFileSync('src/app/profile/history/HistoryView.tsx', 'utf8')
       .replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
     expect(code.split('\n').filter(l => /[À-ỹ]/.test(l))).toEqual([])
+  })
+})
+
+// ── The reskin's own behaviour ─────────────────────────────────────────────
+
+describe('bookings come from the bookings table the profile page already lists', () => {
+  it('renders the module with a real count, the service name, the existing status wording and the real destination', () => {
+    renderHistory({ bookings: [booking(), booking({ id: 'b2', serviceName: 'Nhà hàng Cô Ba', status: 'pending', time: null })] })
+    const card = section('bookings')!
+    expect(card).toBeTruthy()
+    expect(within(card).getByText('2')).toBeTruthy()
+    expect(within(card).getByText('Spa Sen Việt')).toBeTruthy()
+    // The bookings page's own three-state vocabulary, not a new one.
+    expect(within(card).getByText(/đã xác nhận|confirmed/i)).toBeTruthy()
+    expect(within(card).getByText(/đang xử lý|pending/i)).toBeTruthy()
+    // Every link in the module points at the page that owns bookings.
+    for (const a of within(card).getAllByRole('link')) expect(a.getAttribute('href')).toBe('/profile/bookings')
+  })
+
+  it('renders no bookings module, tab or count when there are none', () => {
+    renderHistory({ conversations: [conv()] })
+    expect(section('bookings')).toBeNull()
+    expect(screen.queryByRole('button', { name: /đã đặt lịch|bookings/i })).toBeNull()
+  })
+
+  it('is filtered by the same time range as everything else', () => {
+    renderHistory({ conversations: [conv()], bookings: [booking({ createdAt: daysAgo(40) })] })
+    expect(section('bookings')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /30 ngày qua|last 30 days/i }))
+    expect(section('bookings')).toBeNull()
+  })
+})
+
+describe('"see all" is the tab, never a second list', () => {
+  it('previews three rows and expands through the existing category filter', () => {
+    renderHistory({ conversations: [conv(), conv({ id: 'c2' }), conv({ id: 'c3' }), conv({ id: 'c4', title: 'Thứ tư' })] })
+    const card = section('ai')!
+    expect(card.querySelectorAll('[data-testid^="delete-"]')).toHaveLength(3)
+    expect(screen.queryByText('Thứ tư')).toBeNull()
+    fireEvent.click(within(card).getByRole('button', { name: /xem tất cả|see all/i }))
+    // The tab is now active and the same card shows the rest.
+    expect(screen.getByRole('button', { name: /^(đã hỏi ai|asked ai)$/i }).getAttribute('aria-pressed')).toBe('true')
+    expect(section('ai')!.querySelectorAll('[data-testid^="delete-"]')).toHaveLength(4)
+    expect(screen.getByText('Thứ tư')).toBeTruthy()
+    // Only that category stays on screen.
+    expect(section('plans')).toBeNull()
+  })
+
+  it('offers no "see all" on a module that already shows everything', () => {
+    renderHistory({ conversations: [conv(), conv({ id: 'c2' })] })
+    expect(within(section('ai')!).queryByRole('button', { name: /xem tất cả|see all/i })).toBeNull()
+  })
+
+  it('renders each action ONCE — no hidden duplicate for another breakpoint', () => {
+    renderHistory({ conversations: [conv()] })
+    expect(within(section('plans')!).getAllByRole('link')).toHaveLength(1)
+  })
+})
+
+describe('the rail', () => {
+  it('links the Premium card to the subscription route the sidebar already uses, with the plan’s own benefit lines', () => {
+    renderHistory({ conversations: [conv()] })
+    // The shell's pinned sidebar upsell also says "TappyAI Premium"; aim at the rail card itself.
+    const premium = document.querySelector('[aria-labelledby="history-premium-title"]') as HTMLElement
+    expect(premium).toBeTruthy()
+    expect(within(premium).getByRole('link').getAttribute('href')).toBe('/subscription')
+    // Real `sub.pro.*` copy, not a benefit list written for the mockup.
+    expect(within(premium).getByText(/lưu lịch sử không giới hạn|unlimited history/i)).toBeTruthy()
+    expect(within(premium).getByText(/ai nhớ sở thích|remembers your preferences/i)).toBeTruthy()
+    expect(within(premium).getByText(/tin nhắn không giới hạn|unlimited messages/i)).toBeTruthy()
+    // No invented ones.
+    expect(premium.textContent ?? '').not.toMatch(/đồng bộ trên mọi thiết bị|sync across|truy cập tính năng sớm|early access/i)
+  })
+
+  it('shows the Premium card even when history is empty — it is a destination, not history', () => {
+    renderHistory()
+    expect(document.querySelector('[aria-labelledby="history-premium-title"]')).toBeTruthy()
+  })
+})
+
+describe('navigation targets are unchanged by the skin', () => {
+  it('conversations → /chat/:id, videos → /reviews/:id, links → /scam-shield, plans → /planner', () => {
+    localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify([{ url: 'https://example.com/', level: 'SAFE', checkedAt: Date.now() }]))
+    renderHistory({ conversations: [conv({ id: 'abc' })], videos: [video({ reviewId: 'r7' })] })
+    expect(within(section('ai')!).getByRole('link').getAttribute('href')).toBe('/chat/abc')
+    expect(within(section('video')!).getByRole('link').getAttribute('href')).toBe('/reviews/r7')
+    for (const a of within(section('links')!).getAllByRole('link')) expect(a.getAttribute('href')).toBe('/scam-shield')
+    expect(within(section('plans')!).getByRole('link').getAttribute('href')).toBe('/planner')
+  })
+
+  it('tabs carry the category as a pressed state and never a route', () => {
+    renderHistory({ conversations: [conv()], videos: [video()] })
+    const tab = screen.getByRole('button', { name: /^(đã xem video|watched videos)$/i })
+    expect(tab.tagName).toBe('BUTTON')
+    fireEvent.click(tab)
+    expect(tab.getAttribute('aria-pressed')).toBe('true')
+    expect(section('ai')).toBeNull()
+    expect(section('video')).toBeTruthy()
+  })
+})
+
+describe('the hero', () => {
+  it('names the page once, as a heading, in the current locale', () => {
+    renderHistory({ conversations: [conv()] })
+    // The shell keeps its quiet page-identity h1; the hero's is the one the reference draws large.
+    const h1 = document.getElementById('history-hero-title')!
+    expect(h1.tagName).toBe('H1')
+    expect(h1.textContent).toMatch(/lịch sử hoạt động|activity history/i)
+    // The tagline appears in the shell subtitle too; the hero carries its own copy.
+    expect(h1.closest('section')!.textContent).toMatch(/xem lại những gì bạn đã khám phá|look back at what you have explored/i)
+  })
+
+  it('offers no history search box — nothing in the product can search a history', () => {
+    const { container } = renderHistory({ conversations: [conv()], videos: [video()] })
+    expect(container.querySelector('[data-history-main] input')).toBeNull()
   })
 })

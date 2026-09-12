@@ -1480,5 +1480,182 @@
   .v3-social-card:hover, .v3-social-hero-tile:hover { transform: none; }
 }
 
+/* ── History (/profile/history) — the destination skin ─────────────────────
+   Same family as /tools, /music and /social: one framed surface, a compact
+   hero, pill tabs with a blue→violet active state, and one rounded "activity
+   module" per category with a hue-tinted glyph tile. Paint only — layout and
+   every number stay in `HistoryView.tsx`.
+
+   🚨 The page's DATA did not grow with its skin. Every card is still a list
+   the server returned (or the device store holds); the tile colours name a
+   category, they never stand in for a metric. */
+.v3-history-frame {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 24px;
+}
+.dark .v3-history-frame {
+  background-color: #0B1224;
+  border-color: rgba(76, 121, 255, 0.22);
+}
+/* On a phone the shell's 40px gutters already cost 80px of a 375px screen; a
+   framed surface inside them left the modules 261px wide. The frame steps back
+   below `sm` and the modules sit on the page directly. */
+@media (max-width: 639px) {
+  .v3-history-frame, .dark .v3-history-frame { background-color: transparent; border-color: transparent; padding: 0; }
+}
+/* Hero: a quiet panel with a soft atmospheric wash, not the full gradient the
+   Social hero uses — history content has to stay visible above the fold. */
+.v3-history-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+  background-image: radial-gradient(70% 120% at 0% 0%, var(--v3-accent-soft), transparent 60%);
+}
+.dark .v3-history-hero {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+  background-image:
+    radial-gradient(60% 140% at 0% 0%, rgba(99, 102, 241, 0.32), transparent 60%),
+    radial-gradient(40% 120% at 100% 100%, rgba(59, 130, 246, 0.14), transparent 60%);
+}
+/* The hero glyph and the primary CTA share the brand gradient. */
+.v3-history-brand {
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, #4F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 14px 30px -14px rgba(79, 107, 255, 0.75);
+}
+/* Tabs are the shared chip, sized up; the active one takes the brand gradient. */
+.v3-history-tab {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 16px;
+  min-height: 44px;
+}
+.v3-history-tab:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-history-tab-active {
+  color: #FFFFFF;
+  border-color: transparent;
+  background-image: linear-gradient(135deg, #4F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 10px 24px -12px rgba(79, 107, 255, 0.8);
+}
+.v3-history-tab-active:hover { color: #FFFFFF; border-color: transparent; }
+/* One activity module per category. */
+.v3-history-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.dark .v3-history-card {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 60%);
+}
+.v3-history-card:hover { border-color: var(--v3-border-strong); box-shadow: 0 18px 40px -28px rgba(37, 99, 235, 0.5); }
+/* The glyph tile: a hue per category, white glyph on a saturated gradient in
+   dark, a soft tint under a saturated glyph in light. */
+.v3-history-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 18px;
+  color: var(--hg-fg);
+  background-image: linear-gradient(135deg, var(--hg-a) 0%, var(--hg-b) 100%);
+  box-shadow: 0 12px 26px -14px var(--hg-glow);
+}
+.v3-history-glyph[data-hue="blue"]    { --hg-a: #DBEAFE; --hg-b: #BFD5FF; --hg-fg: #1D4ED8; --hg-glow: rgba(37, 99, 235, 0.5); }
+.v3-history-glyph[data-hue="indigo"]  { --hg-a: #E4E0FF; --hg-b: #CCC4FA; --hg-fg: #4F46E5; --hg-glow: rgba(79, 70, 229, 0.5); }
+.v3-history-glyph[data-hue="violet"]  { --hg-a: #EDE0FF; --hg-b: #D6C2FA; --hg-fg: #6D28D9; --hg-glow: rgba(109, 40, 217, 0.5); }
+.v3-history-glyph[data-hue="amber"]   { --hg-a: #FFEFD8; --hg-b: #FBD9A8; --hg-fg: #B45309; --hg-glow: rgba(180, 83, 9, 0.5); }
+.v3-history-glyph[data-hue="emerald"] { --hg-a: #DAF6EC; --hg-b: #B3E9D4; --hg-fg: #047857; --hg-glow: rgba(4, 120, 87, 0.5); }
+.dark .v3-history-glyph { --hg-fg: #FFFFFF; }
+.dark .v3-history-glyph[data-hue="blue"]    { --hg-a: #3B82F6; --hg-b: #1D3FA8; }
+.dark .v3-history-glyph[data-hue="indigo"]  { --hg-a: #6366F1; --hg-b: #3730A3; }
+.dark .v3-history-glyph[data-hue="violet"]  { --hg-a: #8B5CF6; --hg-b: #5B21B6; }
+.dark .v3-history-glyph[data-hue="amber"]   { --hg-a: #D97706; --hg-b: #78350F; }
+.dark .v3-history-glyph[data-hue="emerald"] { --hg-a: #10B981; --hg-b: #065F46; }
+/* Count pill beside a module title. */
+.v3-history-count {
+  background-color: var(--v3-accent-soft);
+  color: var(--v3-accent);
+}
+/* A preview row inside a module: hover lifts the surface, focus is visible. */
+.v3-history-row {
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background-color: var(--v3-panel);
+  transition: background-color 150ms, border-color 150ms;
+}
+.dark .v3-history-row { background-color: rgba(255, 255, 255, 0.03); }
+.v3-history-row:hover { border-color: var(--v3-border-strong); }
+.dark .v3-history-row:hover { background-color: rgba(255, 255, 255, 0.06); }
+.v3-history-row:focus-visible, .v3-history-row:focus-within { border-color: var(--v3-accent); }
+/* "Xem tất cả →": the arrow slides on hover. */
+.v3-history-seeall { color: var(--v3-accent); }
+.v3-history-seeall svg { transition: transform 150ms; }
+.v3-history-seeall:hover svg { transform: translateX(3px); }
+.v3-history-seeall:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; border-radius: 8px; }
+/* Right-rail cards. */
+.v3-history-rail-card {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  border-radius: 20px;
+}
+.dark .v3-history-rail-card {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+/* The time-range control: a segmented row, one segment lit. */
+.v3-history-segment {
+  color: var(--v3-fg-secondary);
+  border: 1px solid transparent;
+  transition: background-color 150ms, color 150ms;
+}
+.v3-history-segment:hover { color: var(--v3-fg); }
+.v3-history-segment[aria-pressed="true"] { background-color: var(--v3-accent-soft); color: var(--v3-accent); border-color: var(--v3-accent); }
+.v3-history-segment:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+/* Premium card: the brand wash, deeper than the hero's. */
+.v3-history-premium {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 20px;
+  border: 1px solid rgba(109, 40, 217, 0.25);
+  background-image:
+    radial-gradient(80% 90% at 100% 0%, rgba(139, 92, 246, 0.22), transparent 60%),
+    linear-gradient(160deg, var(--v3-panel-elevated), var(--v3-panel));
+}
+.dark .v3-history-premium {
+  border-color: rgba(139, 92, 246, 0.35);
+  background-image:
+    radial-gradient(80% 90% at 100% 0%, rgba(139, 92, 246, 0.35), transparent 60%),
+    linear-gradient(160deg, #1B1440 0%, #0F1230 100%);
+}
+.v3-history-premium-item {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+}
+.dark .v3-history-premium-item { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.10); }
+.v3-history-cta {
+  transition: filter 150ms, transform 120ms;
+}
+.v3-history-cta:hover { filter: brightness(1.08); }
+.v3-history-cta:active { transform: scale(0.98); }
+.v3-history-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+.v3-history-cta svg { transition: transform 150ms; }
+.v3-history-cta:hover svg { transform: translateX(3px); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-history-card, .v3-history-row, .v3-history-segment, .v3-history-cta, .v3-history-seeall svg, .v3-history-cta svg { transition: none; }
+  .v3-history-seeall:hover svg, .v3-history-cta:hover svg, .v3-history-cta:active { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }

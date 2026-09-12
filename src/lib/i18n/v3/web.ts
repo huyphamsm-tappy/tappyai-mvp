@@ -289,10 +289,10 @@ export const vi: Record<string, string> = {
   'v3.social.signIn': 'Đăng nhập để kết nối với mọi người',
 
   // ── History ──────────────────────────────────────────────────────────────
-  // 🚨 FIVE CATEGORIES WERE DRAWN; FOUR ARE BACKED BY DATA AND ONLY THOSE ARE NAMED HERE.
+  // 🚨 THE REFERENCE DREW SIX MODULES; FIVE ARE BACKED BY DATA AND ONLY THOSE ARE NAMED HERE.
   // There is no key for recent searches, because nothing in this product stores a search. A
   // string is where an invented feature appears first — the tab gets built to fill the label.
-  'v3.history.title': 'HISTORY',
+  'v3.history.title': 'Lịch sử hoạt động',
   'v3.history.tagline': 'Xem lại những gì bạn đã khám phá trên TappyAI.',
   'v3.history.all': 'Tất cả',
   'v3.history.ai': 'Đã hỏi AI',
@@ -304,17 +304,20 @@ export const vi: Record<string, string> = {
   'v3.history.plans': 'Kế hoạch của bạn',
   'v3.history.plansDesc': 'Kế hoạch được đọc từ chính các cuộc trò chuyện của bạn.',
   'v3.history.plansOpen': 'Mở AI Planner',
+  'v3.history.bookings': 'Đã đặt lịch',
+  'v3.history.bookingsDesc': 'Các lịch hẹn bạn đã đặt qua TappyAI.',
   'v3.history.empty': 'Chưa có lịch sử',
   'v3.history.emptyHint': 'Những gì bạn khám phá trên TappyAI sẽ xuất hiện ở đây.',
   'v3.history.emptyAction': 'Bắt đầu khám phá',
-  'v3.history.periodTitle': 'Thời gian',
+  'v3.history.periodTitle': 'Thời gian hoạt động',
   'v3.history.period7': '7 ngày qua',
   'v3.history.period30': '30 ngày qua',
   'v3.history.periodAll': 'Tất cả',
   'v3.history.statsTitle': 'Thống kê nhanh',
-  'v3.history.discoverTitle': 'Khám phá nhiều hơn',
-  'v3.history.discoverBody': 'Xem lại lịch sử để tiếp tục những trải nghiệm thú vị cùng TappyAI.',
-  'v3.history.discoverCta': 'Khám phá ngay',
+  // Premium rail card. The route and the benefit lines are the subscription page's own
+  // (`/subscription`, `sub.pro.*`); only the framing copy is new.
+  'v3.history.premiumTitle': 'Khám phá nhiều hơn với TappyAI Premium',
+  'v3.history.premiumBody': 'Lưu lịch sử đầy đủ và trải nghiệm nhiều tính năng cao cấp khác.',
   'v3.history.seeAll': 'Xem tất cả',
   'v3.history.messageCount': '{n} tin nhắn',
   'v3.history.clearLinks': 'Xóa lịch sử kiểm tra link',
@@ -758,7 +761,7 @@ export const en: Record<string, string> = {
   'v3.social.signIn': 'Sign in to connect with people',
 
   // ── History — see the note in the Vietnamese block above ─────────────────
-  'v3.history.title': 'HISTORY',
+  'v3.history.title': 'Activity history',
   'v3.history.tagline': 'Look back at what you have explored on TappyAI.',
   'v3.history.all': 'All',
   'v3.history.ai': 'Asked AI',
@@ -770,17 +773,18 @@ export const en: Record<string, string> = {
   'v3.history.plans': 'Your plans',
   'v3.history.plansDesc': 'Plans read from your own conversations.',
   'v3.history.plansOpen': 'Open AI Planner',
+  'v3.history.bookings': 'Bookings',
+  'v3.history.bookingsDesc': 'Appointments you booked through TappyAI.',
   'v3.history.empty': 'No history yet',
   'v3.history.emptyHint': 'What you explore on TappyAI will show up here.',
   'v3.history.emptyAction': 'Start exploring',
-  'v3.history.periodTitle': 'Time range',
+  'v3.history.periodTitle': 'Activity time range',
   'v3.history.period7': 'Last 7 days',
   'v3.history.period30': 'Last 30 days',
   'v3.history.periodAll': 'All time',
   'v3.history.statsTitle': 'Quick stats',
-  'v3.history.discoverTitle': 'Explore more',
-  'v3.history.discoverBody': 'Revisit your history to pick up where you left off with TappyAI.',
-  'v3.history.discoverCta': 'Explore now',
+  'v3.history.premiumTitle': 'Explore more with TappyAI Premium',
+  'v3.history.premiumBody': 'Keep your full history and unlock more premium features.',
   'v3.history.seeAll': 'See all',
   'v3.history.messageCount': '{n} messages',
   'v3.history.clearLinks': 'Clear link-check history',

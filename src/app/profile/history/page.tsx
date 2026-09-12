@@ -5,15 +5,16 @@ import HistoryView from './HistoryView'
 // ── V3 Web · History ────────────────────────────────────────────────────────
 //
 // 🚨 EVERY CATEGORY ON THIS PAGE IS READ FROM A TABLE THE USER ALREADY OWNS.
-// No new table, no new API, no new write path. The reference design drew five
-// categories; four of them exist:
+// No new table, no new API, no new write path. The reference design drew six
+// modules; five of them exist:
 //
 //   Đã hỏi AI        `conversations`         (this page already read it)
 //   Đã xem video     `review_interactions`   owner-scoped watch records
 //   Đã kiểm tra link `tappy_scam_history`    device-local, read in the client
+//   Đã đặt lịch      `bookings`              the same rows `/profile/bookings` lists
 //   Kế hoạch         derived by the Planner from `conversations`
 //
-// 🚨 AND THE FIFTH — "Tìm kiếm gần đây" — IS NOT BUILT. Nothing in this product
+// 🚨 AND THE SIXTH — "Tìm kiếm gần đây" — IS NOT BUILT. Nothing in this product
 // stores a search: there is no `search_history` table, no recent-search key in
 // any client store, and no endpoint that records a query. A tab labelled with it
 // would have to invent its own contents.
@@ -28,6 +29,8 @@ import HistoryView from './HistoryView'
 const CONVERSATION_LIMIT = 50
 /** One row per review the user has watched; the newest are the ones worth listing. */
 const WATCH_LIMIT = 50
+/** Bookings are rare; the newest few are what a history page lists, the rest live at /profile/bookings. */
+const BOOKING_LIMIT = 20
 
 interface WatchRow {
   review_id: string
@@ -40,6 +43,15 @@ interface ReviewRow {
   place_name: string | null
   thumbnail: string | null
   content_type: string | null
+}
+
+interface BookingRow {
+  id: string
+  service_name: string | null
+  status: string | null
+  date: string | null
+  time: string | null
+  created_at: string
 }
 
 export default async function ProfileHistoryPage() {
@@ -57,7 +69,7 @@ export default async function ProfileHistoryPage() {
   // the RLS policies on each table (`conversations.user_id = auth.uid()`,
   // `review_interactions` "Users manage own interactions"). History is private
   // data and the filter is not left to one layer.
-  const [convRes, watchRes] = await Promise.all([
+  const [convRes, watchRes, bookingRes] = await Promise.all([
     supabase
       .from('conversations')
       .select('id, title, category, updated_at, messages')
@@ -70,6 +82,14 @@ export default async function ProfileHistoryPage() {
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(WATCH_LIMIT),
+    // The bookings page reads `*`; History needs the identity fields only — no
+    // customer name or phone crosses to this client.
+    supabase
+      .from('bookings')
+      .select('id, service_name, status, date, time, created_at')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(BOOKING_LIMIT),
   ])
 
   const watches = (watchRes.data ?? []) as WatchRow[]
@@ -122,6 +142,14 @@ export default async function ProfileHistoryPage() {
           }
         })
         .filter((v): v is NonNullable<typeof v> => v !== null)}
+      bookings={((bookingRes.data ?? []) as BookingRow[]).map(b => ({
+        id: b.id,
+        serviceName: b.service_name ?? '',
+        status: b.status ?? 'pending',
+        date: b.date,
+        time: b.time,
+        createdAt: b.created_at,
+      }))}
     />
   )
 }

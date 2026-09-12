@@ -28,7 +28,9 @@ export default function DeleteConversationButton({ id }: { id: string }) {
       onClick={handleDelete}
       disabled={loading}
       aria-label={t('history.delete')}
-      className="p-2 -mr-1 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex-shrink-0 disabled:opacity-50"
+      // 40×40 so the target meets the touch floor beside a 56px row; the 32px box it had
+      // sat under a thumb.
+      className="flex h-10 w-10 -mr-1 items-center justify-center rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex-shrink-0 disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
     >
       {loading ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
     </button>
