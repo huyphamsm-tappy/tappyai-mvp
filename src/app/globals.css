@@ -2366,5 +2366,223 @@
   .v3-tr-cta:hover:not(:disabled) svg:last-child, .v3-tr-btn:active:not(:disabled), .v3-tr-cta:active:not(:disabled) { transform: none; }
 }
 
+/* ── Currency converter (/currency) — the destination skin ─────────────────
+   Legacy chrome kept (own back-bar + `BottomNav`); this block paints the hero
+   (CSS globe, orbit, currency-symbol chips, Tappy), the amount card with its
+   presets, the From / swap / To row, the gradient result card and the rate
+   line. Paint only — the rates request, `crossRate`, `formatAmount` and
+   `formatRate` are untouched, and every number on screen is theirs.
+
+   🚨 The result gradient is blue → violet → gold, the reference's; it carries
+   no meaning about the rate's direction. The status pill says "hourly", which
+   is what `/api/rates` actually does. */
+.v3-fx-page {
+  background-image: radial-gradient(60% 40% at 50% 100%, rgba(79, 70, 229, 0.10), transparent 70%);
+}
+.dark .v3-fx-page {
+  background-image:
+    radial-gradient(70% 45% at 50% 110%, rgba(99, 102, 241, 0.20), transparent 70%),
+    radial-gradient(40% 30% at 10% 0%, rgba(59, 130, 246, 0.10), transparent 70%);
+}
+.v3-fx-topbar {
+  background-color: color-mix(in srgb, var(--v3-shell-header) 88%, transparent);
+  border-bottom: 1px solid var(--v3-border);
+  color: var(--v3-fg);
+}
+.v3-fx-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 78% 30%, rgba(59, 130, 246, 0.45), transparent 60%),
+    radial-gradient(50% 70% at 15% 100%, rgba(109, 40, 217, 0.35), transparent 60%),
+    linear-gradient(160deg, #0A1233 0%, #0F1A4D 55%, #14124A 100%);
+  box-shadow: 0 30px 70px -40px rgba(47, 107, 255, 0.9);
+}
+.v3-fx-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-fx-brand {
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, #2F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 14px 30px -14px rgba(47, 107, 255, 0.8);
+}
+.v3-fx-stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1.5px 1.5px at 30% 12%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 70% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 94% 18%, rgba(255, 255, 255, 0.8), transparent 55%);
+}
+.v3-fx-globe {
+  position: absolute; border-radius: 9999px; pointer-events: none;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  background-image:
+    radial-gradient(circle at 40% 35%, rgba(96, 165, 250, 0.40), rgba(37, 99, 235, 0.15) 60%, transparent 75%),
+    repeating-linear-gradient(90deg, rgba(147, 197, 253, 0.12) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(0deg, rgba(147, 197, 253, 0.12) 0 1px, transparent 1px 30px);
+  box-shadow: 0 0 70px 12px rgba(59, 130, 246, 0.28);
+}
+.v3-fx-orbit {
+  position: absolute; border-radius: 9999px; pointer-events: none;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  transform: rotate(-14deg) scaleY(0.4);
+}
+/* Currency-symbol coins around the globe. Illustration. */
+.v3-fx-coin {
+  position: absolute; pointer-events: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 9999px;
+  font-size: 18px; font-weight: 800; color: #FFFFFF;
+  background-image: radial-gradient(circle at 35% 30%, var(--fc-a), var(--fc-b));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.8);
+}
+.v3-fx-coin[data-tone="blue"]   { --fc-a: #60A5FA; --fc-b: #1D4ED8; }
+.v3-fx-coin[data-tone="violet"] { --fc-a: #A78BFA; --fc-b: #5B21B6; }
+.v3-fx-coin[data-tone="gold"]   { --fc-a: #FCD34D; --fc-b: #B45309; }
+/* Truthful chips under the hero copy. */
+.v3-fx-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 12px; padding: 8px 12px;
+  font-size: 13px; font-weight: 600; color: #FFFFFF;
+  background-color: rgba(8, 12, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.v3-fx-chip-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 9999px;
+  background-color: var(--fc-soft); color: var(--fc-fg);
+}
+.v3-fx-chip[data-tone="violet"]  { --fc-soft: rgba(167, 139, 250, 0.22); --fc-fg: #C4B5FD; }
+.v3-fx-chip[data-tone="emerald"] { --fc-soft: rgba(52, 211, 153, 0.22);  --fc-fg: #6EE7B7; }
+.v3-fx-chip[data-tone="blue"]    { --fc-soft: rgba(96, 165, 250, 0.22);  --fc-fg: #93C5FD; }
+/* Cards. */
+.v3-fx-card {
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+}
+.dark .v3-fx-card { background-color: #0B1224; border-color: rgba(76, 121, 255, 0.22); }
+.v3-fx-label { color: var(--v3-fg-muted); }
+/* The amount field: icon tile | input | currency code. */
+.v3-fx-field {
+  display: flex; align-items: stretch; overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--v3-border-strong);
+  background-color: var(--v3-panel-elevated);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.v3-fx-field:focus-within { border-color: var(--v3-accent); box-shadow: 0 0 0 3px var(--v3-accent-soft); }
+.dark .v3-fx-field { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.12); }
+.v3-fx-field-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 56px; color: var(--v3-accent);
+  border-right: 1px solid var(--v3-border);
+}
+.dark .v3-fx-field-icon { border-right-color: rgba(255, 255, 255, 0.10); }
+.v3-fx-input {
+  min-width: 0; flex: 1; background: transparent; border: 0; outline: none;
+  color: var(--v3-fg); font-weight: 800; letter-spacing: -0.01em;
+}
+.v3-fx-input::placeholder { color: var(--v3-fg-muted); opacity: 0.7; font-weight: 600; }
+.v3-fx-field-code {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  padding: 0 18px; font-weight: 800; color: var(--v3-fg);
+  border-left: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+}
+.dark .v3-fx-field-code { border-left-color: rgba(255, 255, 255, 0.10); background-color: rgba(255, 255, 255, 0.03); }
+/* Preset amounts: quiet pills, the active one lit. */
+.v3-fx-preset {
+  border-radius: 14px;
+  border: 1px solid var(--v3-border-strong);
+  background-color: var(--v3-panel-elevated);
+  color: var(--v3-fg-secondary);
+  font-weight: 600;
+  transition: border-color 150ms, background-color 150ms, color 150ms, transform 120ms;
+}
+.dark .v3-fx-preset { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.12); }
+.v3-fx-preset:hover { border-color: var(--v3-accent); color: var(--v3-fg); }
+.v3-fx-preset:active { transform: scale(0.98); }
+.v3-fx-preset:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-fx-preset[aria-pressed="true"] { background-color: var(--v3-accent-fill); border-color: transparent; color: var(--v3-on-accent); }
+/* Currency selects: native <select> dressed as a V3 field, flag on the left. */
+.v3-fx-select-wrap {
+  position: relative; display: flex; align-items: center;
+  border-radius: 16px;
+  border: 1px solid var(--v3-border-strong);
+  background-color: var(--v3-panel-elevated);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.v3-fx-select-wrap:hover { border-color: var(--v3-accent); }
+.v3-fx-select-wrap:focus-within { border-color: var(--v3-accent); box-shadow: 0 0 0 3px var(--v3-accent-soft); }
+.dark .v3-fx-select-wrap { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.12); }
+.v3-fx-select {
+  appearance: none; -webkit-appearance: none;
+  width: 100%; min-height: 56px; background: transparent; border: 0; outline: none;
+  padding: 0 44px 0 58px; color: var(--v3-fg); font-weight: 600; font-size: 15px;
+  cursor: pointer;
+}
+.v3-fx-select option { color: #111827; background-color: #FFFFFF; }
+.dark .v3-fx-select option { color: #F3F4F6; background-color: #0E1530; }
+.v3-fx-select-flag { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 22px; line-height: 1; pointer-events: none; }
+.v3-fx-select-caret { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--v3-fg-muted); pointer-events: none; }
+/* Swap: a circular outlined control with a soft glow. */
+.v3-fx-swap {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 56px; height: 56px; border-radius: 9999px;
+  border: 2px solid var(--v3-accent);
+  background-color: var(--v3-accent-soft);
+  color: var(--v3-accent);
+  box-shadow: 0 0 24px rgba(51, 145, 255, 0.35);
+  transition: transform 180ms ease, background-color 150ms, box-shadow 150ms;
+}
+.v3-fx-swap:hover { background-color: var(--v3-accent-fill); color: var(--v3-on-accent); transform: rotate(180deg); box-shadow: 0 0 32px rgba(51, 145, 255, 0.5); }
+.v3-fx-swap:active { transform: rotate(180deg) scale(0.96); }
+.v3-fx-swap:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 3px; }
+/* The result: blue → violet → gold, the reference's own gradient; white type. */
+.v3-fx-result {
+  position: relative; overflow: hidden; isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 90% 90%, rgba(251, 191, 36, 0.65), transparent 60%),
+    linear-gradient(120deg, #1D4ED8 0%, #4338CA 45%, #7C3AED 70%, #F59E0B 100%);
+  box-shadow: 0 30px 70px -40px rgba(67, 56, 202, 0.9);
+}
+.v3-fx-result-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-fx-result-rule { border-top: 1px solid rgba(255, 255, 255, 0.28); }
+.v3-fx-status {
+  display: inline-flex; align-items: center; gap: 8px;
+  border-radius: 9999px; padding: 8px 14px;
+  font-size: 12.5px; font-weight: 600; color: #FFFFFF;
+  background-color: rgba(8, 12, 40, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+.v3-fx-status-dot { width: 8px; height: 8px; border-radius: 9999px; background-color: #34D399; box-shadow: 0 0 10px rgba(52, 211, 153, 0.9); }
+.v3-fx-status[data-fallback="true"] .v3-fx-status-dot { background-color: #FBBF24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.9); }
+/* Loading shimmer inside the result. */
+@keyframes v3-fx-shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.v3-fx-shimmer {
+  border-radius: 10px;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0.10) 100%);
+  background-size: 200% 100%;
+  animation: v3-fx-shimmer 1.6s linear infinite;
+}
+.v3-fx-note { color: var(--v3-fg-muted); }
+@keyframes v3-fx-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.v3-fx-mascot { animation: v3-fx-float 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-fx-mascot, .v3-fx-shimmer { animation: none; }
+  .v3-fx-swap, .v3-fx-preset, .v3-fx-field, .v3-fx-select-wrap { transition: none; }
+  .v3-fx-swap:hover, .v3-fx-swap:active, .v3-fx-preset:active { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }
