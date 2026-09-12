@@ -3,11 +3,11 @@
 import Link from 'next/link'
 import type { ComponentProps } from 'react'
 import type Header from '@/components/Header'
-import { ChevronRight, LayoutGrid, Lightbulb, Lock } from 'lucide-react'
+import { LayoutGrid, Lightbulb } from 'lucide-react'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
-import { TappyMascot, type TappyPose } from '@/components/TappyMascot'
+import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { smartToolGroups, type SmartTool } from '@/lib/tools/registry'
+import { smartToolGroups } from '@/lib/tools/registry'
 
 // ── V3 Web · Smart Tools (/tools) ───────────────────────────────────────────
 //
@@ -33,31 +33,9 @@ import { smartToolGroups, type SmartTool } from '@/lib/tools/registry'
 // large title, the existing description, the mascot on the right and a chevron in the corner.
 //
 // 🔑 THE REGISTRY IS STILL THE ONLY DATA. Identity, purpose, route, group order and the glyph
-// all come from `smartToolGroups()`. What this file adds is a SKIN — a hue and a mascot pose
-// keyed by tool id — which is presentation, not a second list: a tool without a skin still
-// renders (neutral tile, no mascot), and a skin without a tool renders nothing.
-//
-// 🔑 THE MASCOT IS THE OWNER'S EXISTING 18-POSE LIBRARY (`/public/tappy/<pose>.png` through
-// `TappyMascot`). Poses are MAPPED, not drawn — code's half of the contract in
-// `public/tappy/README.md` — and the component's own fallback covers a missing file. It is
-// decorative on every tile: `aria-hidden`, `pointer-events: none`, and the copy always starts
-// below it, so the two never overlap at any width.
-
-/** Presentation only. `hue` resolves in `globals.css` (`.v3-toolcard[data-hue]`), per theme. */
-type ToolSkin = { hue: string; pose?: TappyPose }
-
-const SKINS: Record<string, ToolSkin> = {
-  scan: { hue: 'blue', pose: 'searching' },
-  translate: { hue: 'indigo', pose: 'speaking' },
-  currency: { hue: 'emerald', pose: 'deals' },
-  split: { hue: 'amber', pose: 'welcome' },
-  safety: { hue: 'blue', pose: 'recommendation' },
-  suggest: { hue: 'olive', pose: 'travel' },
-  together: { hue: 'rose', pose: 'food' },
-  music: { hue: 'cobalt', pose: 'aitools' },
-  fortune: { hue: 'violet', pose: 'thinking' },
-  captions: { hue: 'pink', pose: 'phone' },
-}
+// all come from `smartToolGroups()`. The tile itself — hue, badge, mascot pose, type ramp — is
+// `SmartToolCard` (`src/components/v3/SmartToolCard.tsx`), the SAME component Home's "Công cụ"
+// rail renders in its `compact` size, so a tool looks like one product wherever it appears.
 
 export default function ToolsView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
   const { t } = useTranslation()
@@ -153,7 +131,7 @@ export default function ToolsView({ user }: { user: ComponentProps<typeof Header
                     overflows the page horizontally at any step. */}
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 md:gap-4 xl:grid-cols-4 xl:gap-5">
                   {group.tools.map((tool) => (
-                    <ToolCard key={tool.id} tool={tool} skin={SKINS[tool.id]} />
+                    <SmartToolCard key={tool.id} tool={tool} />
                   ))}
                 </div>
               </section>
@@ -164,82 +142,5 @@ export default function ToolsView({ user }: { user: ComponentProps<typeof Header
         <V3Footer />
       </div>
     </V3Shell>
-  )
-}
-
-/**
- * One tool: identity, purpose, and a way in.
- *
- * 🚨 A LINK, NOT A DIV WITH AN onClick. It is real navigation to a real route, so it is an
- * anchor — keyboard-reachable, focusable and announceable without any extra wiring. The whole
- * tile is the target. The glyph and the mascot are `aria-hidden`; the accessible name is the
- * tool's own label, and the description is read with it rather than being decoration only
- * sighted users get.
- *
- * 🚨 THE SIGN-IN HINT IS TEXT AND AN ICON, NOT A COLOUR. `/group/new` redirects a signed-out
- * visitor to /login, and a card that only dimmed would tell a colour-blind user nothing. The
- * card still navigates — the route's own server-side check decides, exactly as it does today.
- *
- * 🚨 THE COPY NEVER RUNS UNDER THE MASCOT. From `md` up the mascot is anchored top-right,
- * beside the badge, and the badge row is at least as tall as the mascot's box — so the title
- * AND the description start under its feet and run the full width. The first cut reserved a
- * right-hand column for the title instead; that fit `scan` and broke on `split` at 218px
- * and on "Currency Converter" at every width. The one-column phone tile is wide enough to keep
- * the mascot, so it renders at every width.
- */
-function ToolCard({ tool, skin }: { tool: SmartTool; skin?: ToolSkin }) {
-  const { t } = useTranslation()
-  const Icon = tool.icon
-
-  return (
-    <Link
-      href={tool.href}
-      data-tool={tool.id}
-      data-hue={skin?.hue}
-      className="v3-toolcard group min-h-[180px] p-4 md:min-h-[192px] md:p-5 xl:min-h-[200px]"
-    >
-      {/* The badge row is at least as tall as the mascot's box (mascot inset + height, minus the
-          tile padding and the text block's own top gap), so the copy ALWAYS starts under the
-          mascot's feet — including on the auth-gated card, whose extra hint line would otherwise
-          push it up. base: 8 + 88 − 16 − 20 = 60 · md: 8 + 88 − 20 − 20 = 56 · xl: 12 + 100 −
-          20 − 20 = 72, plus 4px so the title's own line box clears too. Measured, not eyeballed. */}
-      <span className="block min-h-[64px] xl:min-h-[76px]">
-        <span className="v3-toolcard-badge flex h-12 w-12 items-center justify-center rounded-[14px] md:h-[52px] md:w-[52px]" aria-hidden="true">
-          <Icon size={22} strokeWidth={2.25} />
-        </span>
-      </span>
-
-      {/* Full-width copy under the mascot; only the chevron's corner is kept clear. */}
-      <span className="relative z-10 mt-auto block pt-5">
-        <span className="v3-toolcard-title block pr-7 text-[18px] font-bold leading-tight tracking-[-0.01em] md:text-[19px] xl:text-[20px]">
-          {t(tool.labelKey)}
-        </span>
-        <span className="v3-toolcard-desc mt-1.5 block pr-7 text-[13px] leading-snug md:text-[13.5px] md:leading-snug">
-          {t(tool.descKey)}
-        </span>
-        {tool.auth && (
-          <span className="v3-toolcard-desc mt-2 inline-flex items-center gap-1 text-[11px] font-medium">
-            <Lock size={11} aria-hidden="true" />
-            {t('v3.tools.authHint')}
-          </span>
-        )}
-      </span>
-
-      <ChevronRight
-        size={20}
-        strokeWidth={2.5}
-        aria-hidden="true"
-        className="v3-toolcard-chevron absolute bottom-4 right-4 z-10 md:bottom-5 md:right-5"
-      />
-
-      {skin?.pose && (
-        <span
-          className="v3-toolcard-mascot absolute right-2 top-2 block xl:right-3 xl:top-3"
-          aria-hidden="true"
-        >
-          <TappyMascot pose={skin.pose} size={100} className="h-auto w-[88px] xl:w-[100px]" />
-        </span>
-      )}
-    </Link>
   )
 }

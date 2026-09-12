@@ -258,6 +258,20 @@ describe('no tool was dropped when Home stopped being a dashboard', () => {
     expect(container.querySelector('#smart-tools'), 'the Home anchor must exist').toBeTruthy()
   })
 
+  it('paints them with the SAME tile /tools uses — one registry, one visual language', () => {
+    // Owner sync (2026-09-12): the redesigned /tools tile and Home's rail used to be two paint
+    // jobs over one registry. Both now render `SmartToolCard`; Home takes the `compact` size.
+    // Pinned on the class and the variant marker, which only that component emits.
+    const { container } = renderHome()
+    const cards = [...container.querySelectorAll('[data-home-section="tools"] [data-tool]')]
+    expect(cards.length).toBeGreaterThan(0)
+    for (const card of cards) {
+      expect(card.classList.contains('v3-toolcard'), `${card.getAttribute('data-tool')} is not the shared tile`).toBe(true)
+      expect(card.getAttribute('data-variant')).toBe('compact')
+      expect(card.getAttribute('data-hue'), 'every curated tool has a skin').toBeTruthy()
+    }
+  })
+
   it('presents them as one row, not labelled groups', () => {
     // Was `.grid === 3` (three named groups from the older written spec), then briefly asserted
     // ten tiles. The approved reference shows a single row of five; the count lives in the test

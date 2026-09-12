@@ -7,6 +7,7 @@ import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
+import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
@@ -700,29 +701,14 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               rendered nowhere, so a tile showed a one-word label and left the user to guess what
               the tool actually did. Two up at 360px rather than three, because a description
               needs the width; nothing here scrolls the page sideways at any step. */}
+          {/* 🔑 SAME TILE AS /tools, SMALLER. `SmartToolCard` in its `compact` size — the hue,
+              badge, mascot, type ramp, chevron and hover of the redesigned catalogue, scaled for a
+              five-up preview rail. The five and their order still come from `homeSmartTools()`;
+              nothing here is a second list. (Owner sync request, 2026-09-12.) */}
           <div className="mt-3">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-              {homeSmartTools().map(({ id, href, icon: Icon, labelKey, descKey, tone }) => (
-                    <Link
-                      key={id}
-                      href={href}
-                      data-tool={id}
-                      className="v3-tile flex min-h-[104px] flex-col gap-2 p-3.5 focus-visible:outline-none focus-visible:ring-2 active:scale-[0.99]"
-                    >
-                      <span
-                        className="flex h-10 w-10 items-center justify-center rounded-xl"
-                        style={{ background: 'rgba(255,255,255,0.055)', color: tone }}
-                        aria-hidden="true"
-                      >
-                        <Icon size={18} />
-                      </span>
-                      <span className="block text-[12.5px] font-medium leading-tight" style={{ color: 'var(--v3-fg)' }}>
-                        {t(labelKey)}
-                      </span>
-                      <span className="block text-[11px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
-                        {t(descKey)}
-                      </span>
-                    </Link>
+              {homeSmartTools().map((tool) => (
+                <SmartToolCard key={tool.id} tool={tool} variant="compact" />
               ))}
             </div>
           </div>
