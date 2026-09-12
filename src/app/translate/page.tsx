@@ -3,9 +3,13 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Volume2, VolumeX, Copy, Check, ChevronDown, Mic, MicOff } from 'lucide-react'
+import {
+  Volume2, VolumeX, Copy, Check, ChevronDown, Mic, MicOff, Globe, Languages, FileText, Sparkles,
+  ArrowRight, Info, Zap, Users, X, Loader2, AlertCircle, type LucideIcon,
+} from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { inputLocaleFor } from '@/lib/voice/config'
+import TappyPresence from '@/components/v3/TappyPresence'
 
 const LANGUAGES = [
   { code: 'vi', name: 'Tiếng Việt', tts: 'vi-VN' },
@@ -38,6 +42,20 @@ const LANGUAGES = [
   { code: 'el', name: 'Ελληνικά', tts: 'el-GR' },
   { code: 'he', name: 'עברית', tts: 'he-IL' },
   { code: 'uk', name: 'Українська', tts: 'uk-UA' },
+]
+
+/** The route's `too_long` guard is 2000; the textarea's maxLength and the counter say the same number. */
+const MAX_CHARS = 2000
+
+/**
+ * Three supporting claims, each one true of the code above: the request is a single round trip,
+ * `LANGUAGES` holds the targets, and the route requires no account while the result card reads aloud.
+ * The reference's "accurate" tile is a quality claim no model can promise, so it is not a tile.
+ */
+const FEATURES: { titleKey: string; descKey: string; icon: LucideIcon; tone: 'blue' | 'green' | 'violet' }[] = [
+  { titleKey: 'translate.featFast', descKey: 'translate.featFastDesc', icon: Zap, tone: 'blue' },
+  { titleKey: 'translate.featLangs', descKey: 'translate.featLangsDesc', icon: Languages, tone: 'green' },
+  { titleKey: 'translate.featEasy', descKey: 'translate.featEasyDesc', icon: Users, tone: 'violet' },
 ]
 
 export default function TranslatePage() {
@@ -169,153 +187,252 @@ export default function TranslatePage() {
     })
   }, [translation])
 
+  const langCount = String(LANGUAGES.length)
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+    // `v3-theme` brings the shared tokens to a page that keeps its legacy header and bottom nav.
+    <div className="v3-theme v3-tr-page flex min-h-dvh flex-col">
       <Header title={t('translate.headerTitle')} />
 
-      <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-5 pb-24 space-y-4">
-        {/* Hero banner */}
-        <div className="rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 p-5 text-white shadow-lg">
-          <div className="text-3xl mb-2">🌐</div>
-          <h2 className="text-xl font-bold leading-tight">{t('translate.heroTitle')}</h2>
-          <p className="text-white/70 text-sm mt-1">{t('translate.heroSubtitle')}</p>
-        </div>
-
-        {/* Input */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-          <div className="px-4 pt-3 pb-1">
-            <p className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-2">{t('translate.inputLabel')}</p>
-            <textarea
-              ref={textareaRef}
-              value={inputText}
-              onChange={e => setInputText(e.target.value)}
-              placeholder={t('translate.inputPlaceholder')}
-              rows={5}
-              maxLength={2000}
-              className="w-full resize-none bg-transparent text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 text-sm leading-relaxed outline-none"
-            />
-          </div>
-          <div className="flex items-center justify-between px-4 py-2 border-t border-gray-100 dark:border-gray-800">
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={isListening ? stopVoice : startVoice}
-                aria-label={isListening ? t('voice.stopListening') : t('voice.micHint')}
-                title={isListening ? t('voice.stopListening') : t('voice.micHint')}
-                className={`flex items-center gap-1.5 text-xs transition-colors ${
-                  isListening
-                    ? 'text-violet-600 dark:text-violet-400'
-                    : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
-                }`}
-              >
-                {isListening ? <MicOff size={15} /> : <Mic size={15} />}
-                {isListening ? t('voice.listening') : t('voice.micHint')}
-              </button>
-              <span className="text-xs text-gray-400">{inputText.length}/2000</span>
+      <main className="mx-auto w-full max-w-4xl flex-1 px-4 pb-24 pt-5 sm:px-6 sm:pt-7" data-tr-main>
+        {/* ── Hero ── */}
+        <section className="v3-tr-hero" aria-labelledby="tr-hero-title" data-tr-hero>
+          <div className="v3-tr-stars" aria-hidden="true" />
+          <div className="flex flex-col gap-6 px-5 py-6 sm:px-8 sm:py-8 md:flex-row md:items-center lg:gap-8">
+            <div className="min-w-0 flex-1">
+              <span className="v3-tr-eyebrow inline-flex min-h-[36px] items-center gap-2 rounded-full px-4 text-[13px] font-medium">
+                <Globe size={15} aria-hidden="true" />
+                {t('translate.heroEyebrow')}
+              </span>
+              <h1 id="tr-hero-title" className="mt-4 text-[30px] font-extrabold leading-[1.08] tracking-[-0.02em] sm:text-[40px] lg:text-[46px]">
+                {t('translate.heroTitle1')}
+                <br />
+                <span className="v3-tr-hero-accent">{t('translate.heroTitle2')}</span>
+              </h1>
+              {/* Both lines are the code's numbers: 30 targets, no account, read-aloud on the result. */}
+              <p className="v3-tr-hero-muted mt-4 max-w-[46ch] text-[14.5px] leading-relaxed sm:text-[16px]">
+                {t('translate.heroBody', { n: langCount })}
+              </p>
+              <p className="v3-tr-hero-dim mt-1 text-[13.5px] sm:text-[15px]">{t('translate.heroSubtitle')}</p>
             </div>
+
+            {/* The scene: globe, orbit, greeting bubbles and Tappy waving (the owner's `welcome`
+                pose). Illustration — nothing here is a translation of the user's text. */}
+            <div className="relative mx-auto h-[230px] w-full max-w-[360px] flex-shrink-0 sm:h-[270px] md:w-[46%] md:max-w-[440px]" aria-hidden="true" data-tr-scene>
+              <span className="v3-tr-globe" style={{ width: '68%', height: '68%', right: '-2%', top: '2%', aspectRatio: '1' }} />
+              <span className="v3-tr-orbit" style={{ width: '118%', height: '118%', left: '-9%', top: '-8%' }} />
+              <span className="v3-tr-bubble" data-tone="blue" style={{ left: '6%', top: '8%' }}>Hello</span>
+              {/* The greetings are fixed-language samples; the Vietnamese one is the name of the
+                  language the way LANGUAGES spells it — no UI copy is authored here. */}
+              <span className="v3-tr-bubble" data-tone="violet" style={{ right: '0%', top: '16%' }} lang="vi">{LANGUAGES[0].name}</span>
+              <span className="v3-tr-bubble" data-tone="slate" style={{ left: '0%', top: '50%' }} lang="ja">こんにちは</span>
+              <span className="v3-tr-bubble" data-tone="slate" style={{ right: '2%', top: '58%' }} lang="ko">안녕하세요</span>
+              <div className="v3-tr-mascot absolute inset-x-0 bottom-0 flex justify-center">
+                <TappyPresence pose="welcome" size={230} aura="calm" className="max-w-[210px] sm:max-w-[250px]" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Source text ── */}
+        <section className="v3-tr-card mt-5 p-4 sm:mt-6 sm:p-5" aria-labelledby="tr-source-title" data-tr-source>
+          <div className="flex items-center gap-3">
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }} aria-hidden="true">
+              <FileText size={17} />
+            </span>
+            <h2 id="tr-source-title" className="v3-tr-card-title flex-1 text-[12.5px] font-bold uppercase">{t('translate.inputLabel')}</h2>
+            {/* The counter and the textarea share MAX_CHARS, which is the route's own limit. */}
+            <span className="text-[12.5px] tabular-nums" style={{ color: 'var(--v3-fg-muted)' }} aria-live="polite" data-tr-counter>
+              {inputText.length}/{MAX_CHARS}
+            </span>
+          </div>
+          <textarea
+            ref={textareaRef}
+            id="tr-source"
+            value={inputText}
+            onChange={e => setInputText(e.target.value)}
+            placeholder={t('translate.inputPlaceholder')}
+            rows={5}
+            maxLength={MAX_CHARS}
+            aria-label={t('translate.inputLabel')}
+            className="v3-tr-textarea mt-3 w-full resize-none rounded-2xl px-4 py-3.5 text-[15px] leading-relaxed sm:text-[16px]"
+          />
+          {/* Source language is detected by the model — there is no source selector, and the page says so. */}
+          <p className="mt-2 text-[12px]" style={{ color: 'var(--v3-fg-muted)' }} data-tr-source-auto>{t('translate.sourceAuto')}</p>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={isListening ? stopVoice : startVoice}
+              aria-pressed={isListening}
+              aria-label={isListening ? t('voice.stopListening') : t('voice.micHint')}
+              title={isListening ? t('voice.stopListening') : t('voice.micHint')}
+              className="v3-tr-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold"
+              data-tr-voice
+            >
+              {isListening ? <MicOff size={16} aria-hidden="true" /> : <Mic size={16} aria-hidden="true" />}
+              {isListening ? t('voice.listening') : t('voice.micHint')}
+            </button>
             {inputText.trim() && (
               <button
+                type="button"
                 onClick={() => { setInputText(''); setTranslation(''); setError(''); textareaRef.current?.focus() }}
-                className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="v3-tr-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold"
               >
+                <X size={15} aria-hidden="true" />
                 {t('translate.clear')}
               </button>
             )}
           </div>
           {voiceError && (
-            <p role="status" className="px-4 pb-2 text-xs text-amber-600 dark:text-amber-400">{voiceError}</p>
+            <p role="status" className="mt-3 flex items-start gap-2 rounded-xl px-3 py-2 text-[13px]" style={{ background: 'rgba(245,158,11,0.12)', color: 'var(--v3-amber)' }}>
+              <AlertCircle size={15} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+              {voiceError}
+            </p>
           )}
-        </div>
+        </section>
 
-        {/* Language picker */}
-        <div className="relative">
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-xs font-semibold text-content-secondary uppercase tracking-wider">{t('translate.targetLangLabel')}</p>
-          </div>
+        {/* ── Target language ── */}
+        <section className="relative mt-5" data-tr-target>
+          <p id="tr-target-label" className="v3-tr-card-title mb-2 flex items-center gap-2 text-[12.5px] font-bold uppercase">
+            <Languages size={15} aria-hidden="true" />
+            {t('translate.targetLangLabel')}
+          </p>
           <button
+            type="button"
             onClick={() => setShowLangPicker(v => !v)}
-            className="w-full flex items-center justify-between bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl px-4 py-3.5 shadow-sm hover:border-violet-400 dark:hover:border-violet-500 transition-colors"
+            aria-haspopup="listbox"
+            aria-expanded={showLangPicker}
+            aria-labelledby="tr-target-label"
+            className="v3-tr-select flex min-h-[56px] w-full items-center gap-3 rounded-2xl px-4 text-left"
           >
-            <span className="font-medium text-gray-900 dark:text-white">{selectedLang.name}</span>
-            <ChevronDown size={18} className={`text-gray-400 transition-transform ${showLangPicker ? 'rotate-180' : ''}`} />
+            <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }} aria-hidden="true">
+              <Globe size={17} />
+            </span>
+            <span className="min-w-0 flex-1 truncate text-[16px] font-semibold">{selectedLang.name}</span>
+            <ChevronDown size={18} className={`flex-shrink-0 transition-transform ${showLangPicker ? 'rotate-180' : ''}`} style={{ color: 'var(--v3-fg-muted)' }} aria-hidden="true" />
           </button>
 
           {showLangPicker && (
-            <div className="absolute left-0 right-0 top-full mt-1 z-20 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-xl overflow-hidden max-h-72 overflow-y-auto">
+            <ul
+              role="listbox"
+              aria-label={t('translate.langPickerLabel')}
+              className="v3-tr-menu absolute left-0 right-0 top-full z-20 mt-2 max-h-72 overflow-y-auto rounded-2xl p-1.5"
+            >
               {LANGUAGES.map(lang => (
-                <button
-                  key={lang.code}
-                  onClick={() => { setTargetLang(lang.code); setShowLangPicker(false) }}
-                  className={`w-full text-left px-4 py-3 text-sm transition-colors ${
-                    lang.code === targetLang
-                      ? 'bg-violet-50 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 font-semibold'
-                      : 'text-gray-800 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800'
-                  }`}
-                >
-                  {lang.name}
-                </button>
+                <li key={lang.code}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={lang.code === targetLang}
+                    onClick={() => { setTargetLang(lang.code); setShowLangPicker(false) }}
+                    className="v3-tr-option flex min-h-[44px] w-full items-center rounded-xl px-3.5 text-left text-[14px]"
+                  >
+                    {lang.name}
+                  </button>
+                </li>
               ))}
-            </div>
+            </ul>
           )}
-        </div>
+        </section>
 
-        {/* Translate button */}
+        {/* ── Translate ── */}
         <button
+          type="button"
           onClick={translate}
           disabled={loading || !inputText.trim()}
-          className="w-full py-3 rounded-2xl bg-gradient-to-r from-violet-500 to-indigo-600 text-white font-bold text-base shadow-md hover:shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+          className="v3-tr-cta mt-5 flex min-h-[60px] w-full items-center justify-center gap-3 rounded-2xl px-6 text-[17px] font-bold disabled:cursor-not-allowed disabled:opacity-50"
+          data-tr-submit
         >
           {loading ? (
-            <span className="flex items-center justify-center gap-2">
-              <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            <>
+              <Loader2 size={20} className="animate-spin" aria-hidden="true" />
               {t('translate.translating')}
-            </span>
-          ) : t('translate.translateNow')}
+            </>
+          ) : (
+            <>
+              <Sparkles size={20} aria-hidden="true" />
+              {t('translate.translateNow')}
+              <ArrowRight size={20} aria-hidden="true" />
+            </>
+          )}
         </button>
 
-        {/* Error */}
+        {/* The limit line: DAILY_LIMIT and the no-account fact, from the existing key. */}
+        <p className="v3-tr-note mt-4 flex items-center justify-center gap-2 px-4 text-center text-[13px]" data-tr-tip>
+          <Info size={15} className="flex-shrink-0" aria-hidden="true" />
+          {t('translate.footerTip')}
+        </p>
+
+        {/* ── Error ── */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-4">
-            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+          <div
+            role="alert"
+            className="mt-5 flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-[14px]"
+            style={{ background: 'rgba(248,113,113,0.10)', borderColor: 'var(--v3-rose)', color: 'var(--v3-rose)' }}
+          >
+            <AlertCircle size={18} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+            <span>{error}</span>
           </div>
         )}
 
-        {/* Result */}
+        {/* ── Loading: the result slot shimmers, no percentage is invented ── */}
+        {loading && (
+          <section className="v3-tr-card v3-tr-result mt-5 p-4 sm:p-5" aria-busy="true" aria-label={t('translate.translating')} data-tr-loading>
+            <div className="v3-tr-shimmer h-4 w-1/3" />
+            <div className="v3-tr-shimmer mt-4 h-4 w-full" />
+            <div className="v3-tr-shimmer mt-2 h-4 w-11/12" />
+            <div className="v3-tr-shimmer mt-2 h-4 w-3/4" />
+          </section>
+        )}
+
+        {/* ── Result ── */}
         {translation && (
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-            <div className="px-4 pt-3 pb-1">
-              <div className="flex items-center justify-between mb-2">
-                <p className="text-xs font-semibold text-violet-500 uppercase tracking-wider">{t('translate.resultLabel', { lang: selectedLang.name })}</p>
-              </div>
-              <p className="text-gray-900 dark:text-white text-base leading-relaxed whitespace-pre-wrap">{translation}</p>
+          <section className="v3-tr-card v3-tr-result mt-5 p-4 sm:p-5" aria-labelledby="tr-result-title" aria-live="polite" data-tr-result>
+            <div className="flex items-center gap-3">
+              <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }} aria-hidden="true">
+                <Languages size={17} />
+              </span>
+              <h2 id="tr-result-title" className="v3-tr-card-title text-[12.5px] font-bold uppercase" style={{ color: 'var(--v3-accent)' }}>
+                {t('translate.resultLabel', { lang: selectedLang.name })}
+              </h2>
             </div>
-            <div className="flex items-center gap-2 px-4 py-3 border-t border-gray-100 dark:border-gray-800">
+            <p className="mt-3 whitespace-pre-wrap text-[16px] leading-relaxed sm:text-[17px]" style={{ color: 'var(--v3-fg)' }} lang={selectedLang.code}>{translation}</p>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <button
+                type="button"
                 onClick={() => speak(translation, selectedLang.tts)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium transition-colors ${
-                  speaking
-                    ? 'bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-violet-50 dark:hover:bg-violet-900/30 hover:text-violet-700'
-                }`}
+                aria-pressed={speaking}
+                className="v3-tr-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold"
+                data-tr-speak
               >
-                {speaking ? <VolumeX size={15} /> : <Volume2 size={15} />}
+                {speaking ? <VolumeX size={16} aria-hidden="true" /> : <Volume2 size={16} aria-hidden="true" />}
                 {speaking ? t('translate.stopSpeaking') : t('translate.readAloud')}
               </button>
               <button
+                type="button"
                 onClick={copy}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-green-50 dark:hover:bg-green-900/30 hover:text-green-700 text-sm font-medium transition-colors"
+                className="v3-tr-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold"
+                data-tr-copy
               >
-                {copied ? <Check size={15} /> : <Copy size={15} />}
+                {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
                 {copied ? t('translate.copied') : t('translate.copy')}
               </button>
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Tip */}
-        <p className="text-center text-xs text-gray-400 dark:text-gray-600 px-4">
-          {t('translate.footerTip')}
-        </p>
+        {/* ── Three true things about this tool ── */}
+        <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3" data-tr-features>
+          {FEATURES.map(f => (
+            <li key={f.titleKey} className="v3-tr-feat" data-tone={f.tone}>
+              <span className="v3-tr-feat-icon" aria-hidden="true"><f.icon size={24} /></span>
+              <span className="min-w-0">
+                <span className="v3-tr-feat-title block text-[15px] font-bold leading-tight">{t(f.titleKey, { n: langCount })}</span>
+                <span className="v3-tr-feat-desc mt-0.5 block text-[12.5px] leading-snug">{t(f.descKey)}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
       </main>
 
       <BottomNav />
