@@ -374,6 +374,23 @@ export const vi: Record<string, string> = {
   'v3.scam.historyAll': 'Xem tất cả',
   'v3.scam.historyLess': 'Thu gọn',
   'v3.scam.recheck': 'Kiểm tra lại',
+  // 2026-09-12 reskin. Hero copy and four capability tiles — each tile names something the
+  // engine really does (blocklist / Web Risk, sub-second check, SSL + redirect chain, official
+  // brand directory). The reference's "Bảo vệ dữ liệu" is not one of them, so it has no key.
+  'v3.scam.heroEyebrow': 'Duyệt web an toàn hơn',
+  'v3.scam.heroTitle1': 'Kiểm tra an toàn',
+  'v3.scam.heroTitle2': 'trước khi truy cập',
+  'v3.scam.heroBody': 'Tappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.',
+  'v3.scam.featDetect': 'Phát hiện lừa đảo',
+  'v3.scam.featDetectDesc': 'Danh sách đen & Web Risk',
+  'v3.scam.featFast': 'Kiểm tra nhanh',
+  'v3.scam.featFastDesc': 'Chỉ vài giây',
+  'v3.scam.featHttps': 'HTTPS & chuyển hướng',
+  'v3.scam.featHttpsDesc': 'Chứng chỉ, chuỗi redirect',
+  'v3.scam.featBrand': 'Thương hiệu chính thức',
+  'v3.scam.featBrandDesc': 'Đối chiếu danh bạ chính chủ',
+  'v3.scam.tabUrl': 'Kiểm tra URL',
+  'v3.scam.historyLink': 'Lịch sử kiểm tra',
 
   // ── Planner (/planner) ──────────────────────────────────────────────────
   //
@@ -842,6 +859,20 @@ export const en: Record<string, string> = {
   'v3.scam.historyAll': 'See all',
   'v3.scam.historyLess': 'Show less',
   'v3.scam.recheck': 'Check again',
+  'v3.scam.heroEyebrow': 'Browse more safely',
+  'v3.scam.heroTitle1': 'Check it is safe',
+  'v3.scam.heroTitle2': 'before you open it',
+  'v3.scam.heroBody': 'Tappy helps you spot suspicious and fraudulent links and websites — check first, open later.',
+  'v3.scam.featDetect': 'Scam detection',
+  'v3.scam.featDetectDesc': 'Blocklists & Web Risk',
+  'v3.scam.featFast': 'Fast check',
+  'v3.scam.featFastDesc': 'Just a few seconds',
+  'v3.scam.featHttps': 'HTTPS & redirects',
+  'v3.scam.featHttpsDesc': 'Certificate, redirect chain',
+  'v3.scam.featBrand': 'Official brands',
+  'v3.scam.featBrandDesc': 'Matched against the official directory',
+  'v3.scam.tabUrl': 'Check a URL',
+  'v3.scam.historyLink': 'Check history',
 
   // ── Planner (/planner) — see the note on the Vietnamese side ────────────
   'v3.planner.title': 'AI Planner',
