@@ -40,6 +40,15 @@ data class PlanItem(
     @SerialName("maps_link") val mapsLink: String? = null,
     @SerialName("booking_link") val bookingLink: String? = null,
     @SerialName("place_id") val placeId: String? = null,
+    /**
+     * A photo for THIS item's place, written into the plan JSON by the server
+     * (`streamEnrichment.ts::injectPlanPhotos`) after it matches the reply's places against the
+     * plan's item names — so the association is the server's, not a positional guess here.
+     * Android declared no such field, so `ignoreUnknownKeys` silently dropped it and the web
+     * showed a thumbnail per item while Android showed none. Optional: plans generated before the
+     * server started injecting photos, and items whose place had no photo, simply omit it.
+     */
+    @SerialName("photo_url") val photoUrl: String? = null,
 )
 
 /** The CTA button kinds the model emits, mirroring the web's `CTAButton['type']` union. */
@@ -228,6 +237,20 @@ object ChatResponseParser {
     private val IMAGE_RUN_RE = Regex("""(?:!\[[^\]]*\]\(https?://[^\s)]+\)[ \t]*\n?)+""")
     // A PARTIAL trailing image markdown in a streaming snapshot (`![alt` or `![alt](https://part…`).
     private val PARTIAL_IMAGE_RE = Regex("""!\[[^\]]*(?:\]\([^\s)]*)?$""")
+    // A line that is ONLY an image — the shape the server's inline enrichment splices in.
+    private val IMAGE_ONLY_LINE_RE = Regex("""!\[[^\]]*\]\(https?://[^\s)]+\)""")
+    // A line that is ONLY markdown links joined by "·" — the injected order-link row.
+    private val LINK_ROW_RE =
+        Regex("""\[[^\]]+\]\(https?://[^\s)]+\)(?:\s*·\s*\[[^\]]+\]\(https?://[^\s)]+\))*""")
+    // Three or more newlines left behind once lines are removed.
+    private val BLANK_RUN_RE = Regex("\n{3,}")
+    private const val LF = "\n"
+    // The heading of the server's trailing fallback block ("📸 _Hình ảnh & link review:_" /
+    // "📸 _Images & review links:_"), and the bare bold product headings under it. Once the photo
+    // and link lines beneath them are removed, these are all that would be left: a label with
+    // nothing under it, and a column of names the card already lists.
+    private const val PHOTO_BLOCK_MARK = "📸"
+    private val BOLD_ONLY_LINE_RE = Regex("""\*\*[^*]+\*\*""")
 
     fun parse(content: String): ParsedAssistantReply {
         var text = content
@@ -347,20 +370,66 @@ object ChatResponseParser {
         text = SHOPPING_STRIP_RE.replace(text, "")
         text = PLACES_STRIP_RE.replace(text, "").trim()
 
-        // 4. Positional segmentation — each run of image lines becomes an inline gallery at its
+        // 6. Renderer precedence — SHOPPING ONLY.
+        //
+        // The server writes its own presentation INTO the prose on a shopping turn: a product photo
+        // per line and a merchant link row ("[Shopee](…) · [Lazada](…)") next to each product it
+        // recognises. That is the pre-V3 presentation, and when the `[TAPPY_SHOPPING]` block ALSO
+        // arrives the reply carries both — the same image once inline and once in the card, the same
+        // seller twice, one as a raw link and one as a real offer row. The card wins: it is the only
+        // one of the two that carries price, match verdict and reasons, so the inline copies are
+        // dropped here rather than left for the screen to draw underneath it.
+        //
+        // Gated on the SAME condition the card uses — at least one entity with a real product name —
+        // so a payload that renders nothing never takes the prose's content away with it.
+        //
+        // 🚨 PLACES ARE DELIBERATELY NOT GATED HERE. A place turn keeps its inline photo as a
+        // gallery segment next to the place card (ChatStreamWireReplayTest pins it, and Pixel_8
+        // verified it); the durable/live place projections are the server's decision and this
+        // parser adds no presentation rule of its own on top of them.
+        val shoppingCardWillRender = shopping?.entities?.any { it.displayName != null } == true
+        val presented = if (shoppingCardWillRender) stripInjectedEnrichment(text) else text
+
+        // 7. Positional segmentation — each run of image lines becomes an inline gallery at its
         // position (web formatMessage), and the clean text keeps its pre-segments shape for
         // copy/share/TTS/persistence.
         return ParsedAssistantReply(
-            text = IMAGE_RE.replace(text, "").trim(),
-            streamText = text,
+            text = IMAGE_RE.replace(presented, "").trim(),
+            streamText = presented,
             plan = plan,
             ctaButtons = buttons,
             followups = followups,
-            segments = segment(text),
+            segments = segment(presented),
             shopping = shopping,
             places = places,
         )
     }
+
+    /**
+     * Removes the server's inline product enrichment: the spliced photo lines and the merchant
+     * link rows beside them.
+     *
+     * Only these shapes are removed, and only as WHOLE lines:
+     *   · a line that is nothing but an `![…](http…)` image,
+     *   · a line that is nothing but markdown links joined by "·" (the order-link row),
+     *   · the "📸 …" heading of the trailing fallback block, and a bare bold-only heading line.
+     * A sentence that merely contains a link keeps it, because that is the model writing prose,
+     * not the enrichment writing UI.
+     */
+    internal fun stripInjectedEnrichment(text: String): String =
+        text.lineSequence()
+            .filterNot { line ->
+                val trimmed = line.trim()
+                trimmed.isNotEmpty() && (
+                    IMAGE_ONLY_LINE_RE.matches(trimmed) ||
+                        LINK_ROW_RE.matches(trimmed) ||
+                        trimmed.startsWith(PHOTO_BLOCK_MARK) ||
+                        BOLD_ONLY_LINE_RE.matches(trimmed)
+                    )
+            }
+            .joinToString(LF)
+            .replace(BLANK_RUN_RE, LF + LF)
+            .trim()
 
     /**
      * Splits [text] into ordered [ReplySegment]s: markdown between image runs, and each run of

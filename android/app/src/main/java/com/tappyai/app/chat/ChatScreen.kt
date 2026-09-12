@@ -65,6 +65,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
@@ -85,7 +86,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -108,7 +111,15 @@ import java.util.Locale
 import kotlin.math.ceil
 
 @Composable
-fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
+fun ChatScreen(
+    viewModel: ChatViewModel = hiltViewModel(),
+    /**
+     * Reports whether the chat is currently IMMERSIVE — the full-screen listening UI owns the whole
+     * viewport, so the shell that hosts this screen hides its own chrome (app bar, bottom nav)
+     * while it is up. Always reset to false when this screen leaves composition.
+     */
+    onImmersiveChanged: (Boolean) -> Unit = {},
+) {
     // Lifecycle-aware: an AI reply streams a token at a time, and plain collectAsState() keeps
     // recomposing this (invisible) tree on every token while the app is backgrounded. Pausing at
     // STOPPED stops that churn; the ViewModel's own stream is unaffected either way.
@@ -121,6 +132,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
     val dynamicPrompts by viewModel.dynamicPrompts.collectAsStateWithLifecycle()
     val reportedMessageIds by viewModel.reportedMessageIds.collectAsStateWithLifecycle()
     val isListening by viewModel.isListening.collectAsStateWithLifecycle()
+    val voiceLevel by viewModel.voiceLevel.collectAsStateWithLifecycle()
 
     // Keyed on the language the RESOURCES resolved to, so switching language reloads the welcome
     // prompts in the new one instead of leaving the old language's prompts on screen. See
@@ -145,6 +157,25 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             Toast.makeText(ttsToastContext, message, Toast.LENGTH_LONG).show()
             viewModel.clearTtsError()
         }
+    }
+
+    // The listening screen replaces the whole chat while the mic is open. The shell is told so it
+    // can drop its chrome, and told again — unconditionally — when this screen goes away, so a
+    // navigation mid-listen cannot leave the shell stuck in immersive mode. Placed after the
+    // effects above so a voice turn neither reloads the prompts nor drops a pending TTS toast.
+    LaunchedEffect(isListening) { onImmersiveChanged(isListening) }
+    DisposableEffect(Unit) { onDispose { onImmersiveChanged(false) } }
+    if (isListening) {
+        VoiceListeningScreen(
+            transcript = viewModel.input,
+            voiceLevel = voiceLevel,
+            onCancel = viewModel::cancelVoiceInput,
+            onSend = {
+                viewModel.stopVoiceInput()
+                viewModel.onSend()
+            },
+        )
+        return
     }
 
     val listState = rememberLazyListState()
@@ -255,9 +286,16 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                             // projection and is present for the session that produced the turn; it
                             // is never persisted, so a reopened conversation has only the durable
                             // block, which is exactly what that block exists for.
+                            //
+                            // On a plan turn either projection can repeat venues the itinerary
+                            // above already presents; those are dropped (TravelPlaceFilter) so one
+                            // venue is one card. The projections themselves are untouched.
                             if (!isResponding) {
-                                val cards = message.livePlaces?.items?.map { it.toCardView() }
-                                    ?: message.places.mapNotNull { it.toCardView() }
+                                val cards = message.livePlaces?.items
+                                    ?.let { livePlacesOutsideItinerary(message.plan, it) }
+                                    ?.map { it.toCardView() }
+                                    ?: placesOutsideItinerary(message.plan, message.places)
+                                        .mapNotNull { it.toCardView() }
                                 PlaceCards(cards)
                             }
                             // D1 — the shopping DECISION. Rendered only once generation is done,
@@ -387,7 +425,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
         // SpeechRecognizer drives live transcript + auto-send.
         val audioPermission = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
-        ) { granted -> if (granted) viewModel.startVoiceInput() }
+        ) { granted -> if (granted) viewModel.startVoiceInput(deferAutoSend = true) }
 
         viewModel.pendingImageUri?.let { uri ->
             PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
@@ -414,7 +452,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
                     == PackageManager.PERMISSION_GRANTED
                 ) {
-                    viewModel.startVoiceInput()
+                    viewModel.startVoiceInput(deferAutoSend = true)
                 } else {
                     audioPermission.launch(Manifest.permission.RECORD_AUDIO)
                 }
@@ -688,9 +726,31 @@ private fun ChatComposer(
             // (ChatInterface: "Camera button hidden for MVP"). The staged-image plumbing
             // (pendingImageUri → preview → vision send) stays dormant like the web's hidden
             // file input, so re-enabling is a one-button change on both platforms.
+            // ── Vietnamese IME composition ───────────────────────────────────────────
+            // The value lives HERE as a TextFieldValue, not as the ViewModel's String.
+            //
+            // A String-valued field cannot hold an IME composing region: Compose rebuilds its
+            // internal TextFieldValue from the String it is handed, collapsing the selection and
+            // dropping the composition, so every keystroke that round-trips through hoisted state
+            // cancels what the keyboard was assembling. ASCII survives because each key commits on
+            // its own. Telex does not — "q-u-a-n-s" must stay composing across five keystrokes to
+            // become "quán", so the tone mark never lands.
+            //
+            // Committed text is still pushed straight to the ViewModel, so send, voice, prefill and
+            // persistence all keep reading exactly what they read before.
+            var field by remember { mutableStateOf(TextFieldValue(input)) }
+            // Only an EXTERNAL change resets the field — a voice transcript, a prefill, or the clear
+            // after send. Comparing text (not the whole value) is what keeps this from stamping on
+            // the user's own cursor and composing region while they type.
+            if (field.text != input) {
+                field = TextFieldValue(text = input, selection = TextRange(input.length))
+            }
             TappyTextField(
-                value = input,
-                onValueChange = onInputChange,
+                value = field,
+                onValueChange = {
+                    field = it
+                    onInputChange(it.text)
+                },
                 placeholder = stringResource(R.string.chat_composer_placeholder),
                 singleLine = false,
                 maxLines = 6,

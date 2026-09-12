@@ -99,4 +99,27 @@ class AppLanguageInterceptorTest {
         }
         assertEquals("fr", request.header("Accept-Language"))
     }
+
+    @Test
+    fun `switching the app language changes the NEXT request, not the next process start`() {
+        // ADR-027, and the reason the header moved off `Locale.getDefault()`: that value is the
+        // PROCESS default, which lags behind `AppCompatDelegate.setApplicationLocales` — measured
+        // on 2026-09-09, the PATCH that syncs a switch to English still went out as `vi` while the
+        // app locale was already `en`. So what is pinned here is that the provider is consulted on
+        // every call. One client, one interceptor, a value that changes underneath it.
+        var tag = "vi"
+        val capture = Capture()
+        val client = OkHttpClient.Builder()
+            .addInterceptor(AppLanguageInterceptor(AppLanguageProvider { tag }, baseUrl))
+            .addInterceptor(capture)
+            .build()
+        fun call(): String? {
+            client.newCall(Request.Builder().url("${baseUrl}api/profile").build()).execute().close()
+            return capture.request?.header("Accept-Language")
+        }
+
+        assertEquals("vi", call())
+        tag = "en"
+        assertEquals("en", call())
+    }
 }

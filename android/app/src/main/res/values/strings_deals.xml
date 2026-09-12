@@ -20,4 +20,22 @@
          commercial-nature disclosure under the list. The web bolds the middle clause; this is one
          plain paragraph, so the three parts are joined into the same sentence. -->
     <string name="deals_disclosure">These are offers from e-commerce platforms and partners — Tappy curates them for you, not paid advertising. Prices and offers are as published by each platform and may change — please double-check before you buy.</string>
+
+    <!-- V3 Deals (ported from A 77b0bb7) -->
+    <string name="deals_ask_about">Ask Tappy</string>
+    <string name="deals_ask_deal_prefill">Tappy tư vấn giúp mình về ưu đãi trên %1$s nhé?</string>
+    <string name="deals_ask_general_prefill">Mình đang muốn mua sắm, Tappy tư vấn giúp mình nhé?</string>
+    <string name="deals_daily_note">Tappy refreshes the best offers every day</string>
+    <string name="deals_featured_title">Featured today</string>
+    <string name="deals_filter_all">All</string>
+    <string name="deals_filter_empty">No deals in this category right now.</string>
+    <string name="deals_get">Get deal</string>
+    <string name="deals_hero_body">Not sure what to pick? Ask Tappy for advice, comparisons and a suggestion that fits.</string>
+    <string name="deals_hero_cta">Ask Tappy now</string>
+    <string name="deals_hero_platforms_label">PLATFORMS TAPPY IS TRACKING</string>
+    <string name="deals_hero_title">Ask Tappy before you buy</string>
+    <string name="deals_platforms_subtitle">Pick a platform to see its offers</string>
+    <string name="deals_platforms_title">Explore deals by platform</string>
+    <string name="deals_v3_subtitle">Smart daily offers</string>
+    <string name="deals_v3_title">Tappy Deals</string>
 </resources>

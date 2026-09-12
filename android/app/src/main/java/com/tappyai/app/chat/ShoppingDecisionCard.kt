@@ -66,7 +66,12 @@ fun ShoppingDecisionCard(
      */
     onPriceWatch: ((String) -> Unit)? = null,
 ) {
-    val entities = view.entities
+    // PRODUCT IDENTITY RULE. Only an entity with a real product name (the listing title the server
+    // read, `ShoppingEntityView.name`) may be shown — `config` is a spec line ("chip ? · RAM ?"),
+    // and rendering it as the title showed the user a configuration as if it were a product. An
+    // entity without a name is not rendered at all rather than falling back to its key, its
+    // config or a seller; a payload with no named entity renders no card.
+    val entities = view.entities.filter { it.displayName != null }
     if (entities.isEmpty()) return
 
     val recommended = entities.firstOrNull { it.recommended }
@@ -89,7 +94,7 @@ fun ShoppingDecisionCard(
 
         // The watch action belongs to the product the card recommends — offering it for a
         // configuration the server did not pick would be watching a price nobody suggested.
-        val watchName = recommended?.config?.takeIf { it.isNotBlank() }
+        val watchName = recommended?.displayName
         if (onPriceWatch != null && watchName != null) {
             Text(
                 text = stringResource(R.string.shopping_decision_price_watch),
@@ -138,7 +143,7 @@ private fun RecommendedEntity(
             entity.image?.let { url ->
                 TappyImage(
                     url = url,
-                    contentDescription = null, // decorative — the config name carries the meaning
+                    contentDescription = null, // decorative — the product name carries the meaning
                     modifier = Modifier
                         .size(72.dp)
                         .clip(TappyShapes.card),
@@ -157,7 +162,8 @@ private fun RecommendedEntity(
                     modifier = Modifier.padding(top = TappySpacing.xs),
                 ) {
                     Text(
-                        text = entity.config,
+                        // The product's own name — never the config line (see ShoppingDecisionCard).
+                        text = entity.displayName.orEmpty(),
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.SemiBold,
                         color = colors.onSurface,
@@ -166,6 +172,17 @@ private fun RecommendedEntity(
                         modifier = Modifier.weight(1f, fill = false),
                     )
                     MatchBadge(entity.matchesRequest)
+                }
+                // The stated configuration, as the SECONDARY line it is. Empty when nothing was stated.
+                entity.config.takeIf { it.isNotBlank() }?.let { config ->
+                    Text(
+                        text = config,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = colors.onSurfaceVariant,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(top = TappySpacing.xs),
+                    )
                 }
                 Text(
                     text = priceRange(entity.priceLow, entity.priceHigh),
@@ -220,7 +237,7 @@ private fun AlternativeEntity(entity: ShoppingEntityView) {
             verticalAlignment = Alignment.Top,
         ) {
             Text(
-                text = entity.config,
+                text = entity.displayName.orEmpty(),
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Medium,
                 color = colors.onSurface,
@@ -229,6 +246,16 @@ private fun AlternativeEntity(entity: ShoppingEntityView) {
                 modifier = Modifier.weight(1f),
             )
             MatchBadge(entity.matchesRequest)
+        }
+        entity.config.takeIf { it.isNotBlank() }?.let { config ->
+            Text(
+                text = config,
+                style = MaterialTheme.typography.bodySmall,
+                color = colors.onSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.padding(top = TappySpacing.xs),
+            )
         }
         Text(
             text = priceRange(entity.priceLow, entity.priceHigh),

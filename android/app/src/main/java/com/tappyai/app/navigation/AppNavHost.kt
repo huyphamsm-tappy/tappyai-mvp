@@ -176,7 +176,13 @@ fun AppNavHost(
             // stay on the back stack — backing out of Login has to return the guest to their
             // app exactly as they left it. The automatic auth transitions above still clear the
             // stack, so a completed sign-in lands correctly and Login does not linger.
-            HomeShellScreen(onSignIn = { navController.navigate(AuthRoute.Login) })
+            HomeShellScreen(
+                onSignIn = { navController.navigate(AuthRoute.Login) },
+                // The Home header hosts the app's light/dark toggle; both values come straight
+                // from MainActivity, so the header reflects and drives the one global theme.
+                isDarkTheme = isDarkTheme,
+                onToggleDarkTheme = onToggleDarkTheme,
+            )
         }
         // Post-login onboarding wizard; on finish it replaces itself with the shell so Back can't
         // return to it (mirrors the web's router.replace to the destination).

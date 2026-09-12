@@ -77,4 +77,39 @@
     <string name="home_tab_placeholder_message">The %1$s experience is coming soon.</string>
 
     <string name="home_section_tools_group">Tools</string>
+
+    <!-- V3 (ported from A 77b0bb7): Home mockup + video rail -->
+    <string name="home_v3_ask_action">Ask TappyAI</string>
+    <string name="home_v3_ask_placeholder">What do you want to ask or do?</string>
+    <string name="home_v3_banner_subtitle">Deals \u2022 Experiences \u2022 A better everyday</string>
+    <string name="home_v3_banner_title">Discover more with TappyAI</string>
+    <string name="home_v3_brand_ai">AI</string>
+    <string name="home_v3_brand_tappy">Tappy</string>
+    <string name="home_v3_categories_title">What are you in the mood for?</string>
+    <string name="home_v3_deals_see_all">See all</string>
+    <string name="home_v3_deals_subtitle">Offers picked from Tappy partners</string>
+    <string name="home_v3_deals_title">Deals today</string>
+    <string name="home_v3_greeting_generic">Hi there! \uD83D\uDC4B</string>
+    <string name="home_v3_greeting_named">Hi %1$s! \uD83D\uDC4B</string>
+    <string name="home_v3_hero_tagline">What can TappyAI help you with today?</string>
+    <string name="home_v3_notifications">Notifications</string>
+    <string name="home_v3_quick_cafe">Cafes with a view</string>
+    <string name="home_v3_quick_cafe_prompt">Find me a cafe with a great view nearby</string>
+    <string name="home_v3_quick_caption">Write a caption with AI</string>
+    <string name="home_v3_quick_plan">Plan my weekend</string>
+    <string name="home_v3_quick_plan_prompt">Help me plan this weekend</string>
+    <string name="home_v3_quick_splitbill">Split a bill 4 ways</string>
+    <string name="home_v3_quick_title">Quick suggestions</string>
+    <string name="home_v3_quick_translate">Translate this text</string>
+    <string name="home_v3_quick_travel">Travel spot ideas</string>
+    <string name="home_v3_recs_title">Picked for you</string>
+    <string name="home_v3_search">Search</string>
+    <string name="home_v3_secondary_title">Tools &amp; extras</string>
+    <string name="home_v3_smart_tools_title">Smart Tools</string>
+    <string name="home_v3_theme_to_dark">Turn on dark mode</string>
+    <string name="home_v3_theme_to_light">Turn off dark mode</string>
+    <string name="home_videos_likes">%1$s likes</string>
+    <string name="home_videos_see_more">See more</string>
+    <string name="home_videos_subtitle">Real experiences from the Tappy community</string>
+    <string name="home_videos_title">Videos picked for you</string>
 </resources>

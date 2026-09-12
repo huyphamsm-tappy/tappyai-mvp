@@ -77,4 +77,39 @@
     <string name="home_tab_placeholder_message">Trải nghiệm %1$s sẽ sớm ra mắt.</string>
 
     <string name="home_section_tools_group">Công cụ</string>
+
+    <!-- V3 (ported from A 77b0bb7): Home mockup + video rail -->
+    <string name="home_v3_ask_action">Hỏi TappyAI</string>
+    <string name="home_v3_ask_placeholder">Bạn muốn hỏi gì, đi gì?</string>
+    <string name="home_v3_banner_subtitle">Ưu đãi \u2022 Trải nghiệm \u2022 Cuộc sống tốt đẹp hơn</string>
+    <string name="home_v3_banner_title">Khám phá thêm cùng TappyAI</string>
+    <string name="home_v3_brand_ai">AI</string>
+    <string name="home_v3_brand_tappy">Tappy</string>
+    <string name="home_v3_categories_title">Hôm nay bạn muốn gì?</string>
+    <string name="home_v3_deals_see_all">Xem tất cả</string>
+    <string name="home_v3_deals_subtitle">Ưu đãi chọn lọc từ đối tác của Tappy</string>
+    <string name="home_v3_deals_title">Ưu đãi hôm nay</string>
+    <string name="home_v3_greeting_generic">Xin chào! \uD83D\uDC4B</string>
+    <string name="home_v3_greeting_named">Hi %1$s! \uD83D\uDC4B</string>
+    <string name="home_v3_hero_tagline">TappyAI có thể giúp gì cho bạn hôm nay?</string>
+    <string name="home_v3_notifications">Thông báo</string>
+    <string name="home_v3_quick_cafe">Quán cafe view đẹp</string>
+    <string name="home_v3_quick_cafe_prompt">Gợi ý giúp mình quán cafe view đẹp gần đây</string>
+    <string name="home_v3_quick_caption">Viết caption bằng AI</string>
+    <string name="home_v3_quick_plan">Lên kế hoạch cuối tuần</string>
+    <string name="home_v3_quick_plan_prompt">Giúp mình lên kế hoạch cuối tuần này</string>
+    <string name="home_v3_quick_splitbill">Chia hóa đơn 4 người</string>
+    <string name="home_v3_quick_title">Gợi ý nhanh</string>
+    <string name="home_v3_quick_translate">Dịch đoạn văn này</string>
+    <string name="home_v3_quick_travel">Gợi ý địa điểm du lịch</string>
+    <string name="home_v3_recs_title">Gợi ý dành cho bạn</string>
+    <string name="home_v3_search">Tìm kiếm</string>
+    <string name="home_v3_secondary_title">Công cụ &amp; tiện ích</string>
+    <string name="home_v3_smart_tools_title">Smart Tools</string>
+    <string name="home_v3_theme_to_dark">Bật chế độ tối</string>
+    <string name="home_v3_theme_to_light">Tắt chế độ tối</string>
+    <string name="home_videos_likes">%1$s lượt thích</string>
+    <string name="home_videos_see_more">Xem thêm</string>
+    <string name="home_videos_subtitle">Khám phá trải nghiệm thực tế từ cộng đồng Tappy</string>
+    <string name="home_videos_title">Video gợi ý cho bạn</string>
 </resources>

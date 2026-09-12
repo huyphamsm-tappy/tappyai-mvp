@@ -111,33 +111,46 @@ class ChatAnswerParityTest {
 
     // ── 2. The price-watch action ───────────────────────────────────────────
 
-    /** Mirrors the card's rule: the action belongs to the product the server recommended. */
+    /**
+     * Mirrors the card's rule: the action belongs to the product the server recommended, and it
+     * is named by the product's IDENTITY — [ShoppingEntityView.displayName], the listing title —
+     * never by `config`, which is a spec line ("chip ? · RAM ?") and would put a configuration
+     * into the composer as if it were a product. A blank name is no identity, so no watch.
+     */
     private fun watchName(view: ShoppingDecisionView): String? =
-        view.entities.firstOrNull { it.recommended }?.config?.takeIf { it.isNotBlank() }
+        view.entities.firstOrNull { it.recommended }?.displayName
 
-    private fun entity(config: String, recommended: Boolean) =
-        ShoppingEntityView(key = config, config = config, recommended = recommended)
+    private fun entity(name: String, recommended: Boolean, config: String = "M-series · 16GB") =
+        ShoppingEntityView(key = name, config = config, recommended = recommended, name = name)
 
     @Test
     fun `the watch is offered for the recommended product, not for an alternative`() {
         val view = ShoppingDecisionView(
-            entities = listOf(entity("Air M1 8GB", false), entity("Air M2 16GB", true)),
+            entities = listOf(entity("MacBook Air M1 8GB", false), entity("MacBook Air M2 16GB", true)),
         )
-        assertEquals("Air M2 16GB", watchName(view))
+        assertEquals("MacBook Air M2 16GB", watchName(view))
     }
 
     @Test
     fun `no recommendation means no watch button — never a watch on a product nobody suggested`() {
-        val view = ShoppingDecisionView(entities = listOf(entity("Air M1 8GB", false)))
+        val view = ShoppingDecisionView(entities = listOf(entity("MacBook Air M1 8GB", false)))
         assertNull(watchName(view))
-        assertNull(watchName(ShoppingDecisionView(entities = listOf(entity("   ", true)))))
+    }
+
+    @Test
+    fun `a recommended product without a real name gets no watch — a config line is not a product`() {
+        // Blank name: no identity, so no prefill, even though the config is populated.
+        assertNull(watchName(ShoppingDecisionView(entities = listOf(entity("   ", true, config = "chip ? · RAM ?")))))
+        // Absent name (an older payload): same answer. `config` must never stand in for it.
+        val legacy = ShoppingEntityView(key = "uncertain:0", config = "chip ? · RAM ?", recommended = true)
+        assertNull(watchName(ShoppingDecisionView(entities = listOf(legacy))))
     }
 
     @Test
     fun `the card exposes the action and the screen wires it to the composer`() {
         val card = source("android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionCard.kt")
         assertTrue("the card must offer the action", card.contains("onPriceWatch: ((String) -> Unit)?"))
-        assertTrue("guarded on the recommended product", card.contains("recommended?.config?.takeIf"))
+        assertTrue("guarded on the recommended product's identity", card.contains("recommended?.displayName"))
 
         val screen = source("android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt")
         assertTrue(

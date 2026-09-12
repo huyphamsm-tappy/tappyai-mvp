@@ -174,6 +174,31 @@ class ChatViewModel @Inject constructor(
 
     private var speechRecognizer: SpeechRecognizer? = null
     private val _isListening = MutableStateFlow(false)
+
+    /**
+     * How loud the microphone is right now, 0..1.
+     *
+     * [SpeechRecognizer] already delivers this through `onRmsChanged` on every voice turn; the
+     * callback was simply empty, so the value was measured and thrown away. Surfacing it drives a
+     * waveform that moves with the user's actual voice instead of an animation pretending to.
+     * NOT a new audio pipeline — no recorder, no buffer, no permission beyond the RECORD_AUDIO the
+     * mic already asks for.
+     */
+    private val _voiceLevel = MutableStateFlow(0f)
+    val voiceLevel: StateFlow<Float> = _voiceLevel.asStateFlow()
+
+    /**
+     * True while the full-screen listening UI owns the turn.
+     *
+     * The inline composer mic auto-sends the moment recognition finishes — web parity, and it stays
+     * exactly that way. The listening screen shows an explicit "Gửi", and a button that sends a
+     * message the app already sent is not a button. So the auto-send is deferred for that entry
+     * point only, and the recognised text waits in [input] until the user taps send or cancel.
+     */
+    private var deferVoiceAutoSend = false
+
+    /** The draft as it was when listening started, so a cancelled voice turn restores it. */
+    private var voiceInputBase: String? = null
     /** True while the in-app voice recogniser is actively listening — drives the mic recording
      *  animation (mirrors the web chat's `isListening`). */
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
@@ -312,17 +337,25 @@ class ChatViewModel @Inject constructor(
      * a live partial transcript flows into the input as the user speaks, and on a final result the
      * recognised text is appended and the message is AUTO-SENT — the same behaviour as web (no extra
      * manual tap). Toggling while already listening stops it. RECORD_AUDIO is requested by the screen.
+     *
+     * [deferAutoSend] is the full-screen listening UI's entry point: recognition still runs the
+     * same way, but the final text waits in [input] for an explicit send (see [deferVoiceAutoSend]).
      */
-    fun startVoiceInput() {
+    fun startVoiceInput(deferAutoSend: Boolean = false) {
         if (_isListening.value) { stopVoiceInput(); return }
         if (!SpeechRecognizer.isRecognitionAvailable(context)) return
+        deferVoiceAutoSend = deferAutoSend
         val base = input
+        voiceInputBase = base
         val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
         speechRecognizer = recognizer
         recognizer.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) { _isListening.value = true }
             override fun onBeginningOfSpeech() {}
-            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onRmsChanged(rmsdB: Float) {
+                // SpeechRecognizer reports roughly -2..10 dB; fold that onto 0..1 for the waveform.
+                _voiceLevel.value = ((rmsdB + 2f) / 12f).coerceIn(0f, 1f)
+            }
             override fun onBufferReceived(buffer: ByteArray?) {}
             override fun onEndOfSpeech() { _isListening.value = false }
             override fun onError(error: Int) {
@@ -340,7 +373,9 @@ class ChatViewModel @Inject constructor(
                 val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
                 if (!text.isNullOrBlank()) {
                     input = if (base.isBlank()) text else "$base $text"
-                    onSend() // web parity: auto-send once recognition completes
+                    // Web parity: auto-send once recognition completes — unless the full-screen
+                    // listening UI owns this turn, in which case its own send button does.
+                    if (!deferVoiceAutoSend) onSend()
                 }
             }
             override fun onEvent(eventType: Int, params: Bundle?) {}
@@ -359,6 +394,20 @@ class ChatViewModel @Inject constructor(
         speechRecognizer?.let { runCatching { it.stopListening() }; runCatching { it.destroy() } }
         speechRecognizer = null
         _isListening.value = false
+        _voiceLevel.value = 0f
+        deferVoiceAutoSend = false
+    }
+
+    /**
+     * The listening screen's cancel: stops recognition AND restores the draft to what it was
+     * before listening began, so a half-recognised sentence does not stay in the composer as if
+     * the user had typed it.
+     */
+    fun cancelVoiceInput() {
+        val base = voiceInputBase
+        stopVoiceInput()
+        if (base != null) input = base
+        voiceInputBase = null
     }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }

@@ -43,7 +43,12 @@ data class ShoppingEntityView(
     /** A representative product photo, if any offer carried one. */
     val image: String? = null,
     val offers: List<ShoppingOfferView> = emptyList(),
-)
+    /** The product's own name (the listing title), when the server projected it. LAST so the
+     *  positional call sites that predate it keep compiling; the card reads [displayName]. */
+    val name: String? = null,
+) {
+    val displayName: String? get() = name?.trim()?.takeIf { it.isNotEmpty() }
+}
 
 /** Why the server recommends what it recommends. A recommendation without reasons is not shown. */
 @Serializable

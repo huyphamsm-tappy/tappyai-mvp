@@ -8,13 +8,22 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
+import com.tappyai.core.datastore.PreferencesDataSource
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+/**
+ * The user's explicit light/dark choice. Absent until they pick a side, which is what keeps
+ * "follow the system" the default. Stored through the shared [PreferencesDataSource] — whose own
+ * contract names "theme choice" as an intended use — so no second storage mechanism exists.
+ */
+private const val PREF_DARK_THEME = "dark_theme"
 
 /**
  * Phase 1B: hosts the real [AppNavHost] instead of directly rendering the Design System
@@ -42,19 +51,40 @@ class MainActivity : AppCompatActivity() {
      */
     private val navHostViewModel: AppNavHostViewModel by viewModels()
 
+    /** The app's existing key-value settings store; see [PREF_DARK_THEME]. */
+    @Inject lateinit var languageManager: com.tappyai.app.language.LanguageManager
+
+    @Inject
+    lateinit var preferences: PreferencesDataSource
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // TappyAI is Vietnamese-first, but with no explicit choice AppCompat falls back to the
+        // DEVICE locale — so an `en-US` handset got an English UI even though 1118 of 1119 strings
+        // are translated. Applied from the Activity, not Application.onCreate: on API 33+ AppCompat
+        // delegates to the framework LocaleManager and a call made before any Activity exists does
+        // not persist (verified — `cmd locale get-app-locales` stayed empty).
+        languageManager.applyDefaultIfUnset()
         enableEdgeToEdge()
         handleIntent(intent)
 
         setContent {
-            var darkTheme by rememberSaveable { mutableStateOf<Boolean?>(null) }
-            val isDark = darkTheme ?: isSystemInDarkTheme()
+            // Same shape as before — a nullable override in front of the system setting — but the
+            // override now lives in DataStore instead of `rememberSaveable`, so an explicit choice
+            // survives a full app restart rather than only a process death. Null until the store
+            // has been read, and null forever if the user never picks a side: both mean "follow
+            // the system". This stays the ONE place the app resolves light/dark; everything below,
+            // Home V3 included, reads the resolved value rather than asking the system again.
+            val storedDark by preferences.getBoolean(PREF_DARK_THEME)
+                .collectAsStateWithLifecycle(initialValue = null)
+            val isDark = storedDark ?: isSystemInDarkTheme()
 
             TappyAITheme(darkTheme = isDark) {
                 AppNavHost(
                     isDarkTheme = isDark,
-                    onToggleDarkTheme = { darkTheme = !isDark },
+                    onToggleDarkTheme = {
+                        lifecycleScope.launch { preferences.setBoolean(PREF_DARK_THEME, !isDark) }
+                    },
                     viewModel = navHostViewModel,
                 )
             }

@@ -186,4 +186,14 @@
     <string name="place_card_flag_wifi">Wi-Fi</string>
     <string name="place_card_flag_outdoor">Outdoor seating</string>
     <string name="place_card_flag_vegetarian">Vegetarian options</string>
+
+    <!-- V3 (ported from A 77b0bb7): voice listening screen -->
+    <string name="voice_listening_cancel">Hủy</string>
+    <string name="voice_listening_hint_example">“Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này”</string>
+    <string name="voice_listening_hint_label">Thử nói:</string>
+    <string name="voice_listening_pill">Đang nghe…</string>
+    <string name="voice_listening_send">Gửi</string>
+    <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
+    <string name="voice_listening_title_accent">lắng nghe…</string>
+    <string name="voice_listening_title_lead">Tôi đang</string>
 </resources>
