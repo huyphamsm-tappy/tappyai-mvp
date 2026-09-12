@@ -74,6 +74,7 @@
     <string name="chat_error_generic_with_code">Something went wrong (code %1$d)</string>
     <string name="chat_error_message_too_long">Message is too long. Please try again with shorter content.</string>
     <string name="chat_error_ai_service_down">The AI service is temporarily having issues. Please try again later.</string>
+    <string name="chat_error_login_required">Sign in to keep chatting with Tappy.</string>
 
     <string name="chat_followup_food_1">Find another place</string>
     <string name="chat_followup_food_2">See menu prices</string>

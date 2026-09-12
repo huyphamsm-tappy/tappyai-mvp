@@ -73,6 +73,7 @@
     <string name="chat_error_generic_with_code">Có lỗi xảy ra (mã %1$d)</string>
     <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
     <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
     <string name="chat_followup_food_1">Tìm quán khác</string>
     <string name="chat_followup_food_2">Xem giá menu</string>
