@@ -1657,5 +1657,166 @@
   .v3-history-seeall:hover svg, .v3-history-cta:hover svg, .v3-history-cta:active { transform: none; }
 }
 
+/* ── Profile / Me (/profile) — the destination skin ────────────────────────
+   Same family as /tools, /music, /social and /profile/history: one framed
+   surface, a hero, pill tabs with the blue→violet active state, rounded media
+   cards and stacked rail cards. Paint only — layout, every number and every
+   omission stay in `ProfileView.tsx`.
+
+   🚨 The page's DATA did not grow with its skin. The hero banner is a
+   GRADIENT because `profiles` has no cover column; nothing here styles a
+   handle, a location, a points balance, a highlight ring or an activity row. */
+.v3-profile-frame {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 24px;
+}
+.dark .v3-profile-frame {
+  background-color: #0B1224;
+  border-color: rgba(76, 121, 255, 0.22);
+}
+@media (max-width: 639px) {
+  .v3-profile-frame, .dark .v3-profile-frame { background-color: transparent; border-color: transparent; padding: 0; }
+}
+/* The hero card. */
+.v3-profile-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 22px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+}
+.dark .v3-profile-hero {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+/* The banner: decoration this sheet draws, never a photograph attributed to the user. */
+.v3-profile-banner {
+  background-image:
+    radial-gradient(70% 140% at 85% 10%, rgba(167, 139, 250, 0.55), transparent 60%),
+    radial-gradient(60% 120% at 10% 90%, rgba(59, 130, 246, 0.45), transparent 60%),
+    linear-gradient(120deg, #1E3A8A 0%, #3730A3 55%, #6D28D9 100%);
+}
+/* Brand gradient: hero avatar ring, active tab, primary CTA. */
+.v3-profile-brand {
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, #4F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 14px 30px -14px rgba(79, 107, 255, 0.75);
+}
+/* The avatar sits on a panel-coloured plate with a brand ring. */
+.v3-profile-avatar-ring {
+  border-radius: 9999px;
+  padding: 3px;
+  background-image: linear-gradient(135deg, #4F6BFF 0%, #6D28D9 100%);
+}
+.v3-profile-avatar-plate {
+  border-radius: 9999px;
+  padding: 3px;
+  background-color: var(--v3-panel);
+}
+.dark .v3-profile-avatar-plate { background-color: #0B1224; }
+/* The small camera badge: the existing change-photo action, surfaced on the avatar. */
+.v3-profile-avatar-edit {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg);
+  transition: background-color 150ms, transform 120ms;
+}
+.dark .v3-profile-avatar-edit { background-color: #161F32; }
+.v3-profile-avatar-edit:hover { background-color: var(--v3-accent-soft); }
+.v3-profile-avatar-edit:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-profile-premium {
+  background-color: rgba(139, 92, 246, 0.16);
+  color: var(--v3-violet);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+}
+/* Actions: one primary (brand), the rest quiet outline buttons. */
+.v3-profile-btn {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg-secondary);
+  transition: border-color 150ms, background-color 150ms, transform 120ms;
+}
+.dark .v3-profile-btn { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12); }
+.v3-profile-btn:hover { border-color: var(--v3-accent); color: var(--v3-fg); }
+.v3-profile-btn:active { transform: scale(0.98); }
+.v3-profile-btn:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-profile-cta { transition: filter 150ms, transform 120ms; }
+.v3-profile-cta:hover { filter: brightness(1.08); }
+.v3-profile-cta:active { transform: scale(0.98); }
+.v3-profile-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+/* Tabs are the shared chip, sized up; the active one takes the brand gradient. */
+.v3-profile-tab {
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 16px;
+  min-height: 44px;
+}
+.v3-profile-tab:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-profile-tab.v3-chip-active {
+  color: #FFFFFF;
+  border-color: transparent;
+  background-color: transparent;
+  background-image: linear-gradient(135deg, #4F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 10px 24px -12px rgba(79, 107, 255, 0.8);
+}
+/* Grid / list switch: a segmented pair. */
+.v3-profile-seg {
+  color: var(--v3-fg-secondary);
+  border: 1px solid transparent;
+  transition: background-color 150ms, color 150ms;
+}
+.v3-profile-seg:hover { color: var(--v3-fg); }
+.v3-profile-seg[aria-pressed="true"] { background-color: var(--v3-accent-soft); color: var(--v3-accent); border-color: var(--v3-accent); }
+.v3-profile-seg:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+/* Content surface and media cards. */
+.v3-profile-card {
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+}
+.dark .v3-profile-card {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+.v3-profile-media {
+  border-radius: 16px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+}
+.dark .v3-profile-media { background-color: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.08); }
+.v3-profile-media:hover { transform: translateY(-2px); border-color: var(--v3-border-strong); box-shadow: 0 18px 36px -20px rgba(37, 99, 235, 0.45); }
+.v3-profile-media:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-profile-row {
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background-color: var(--v3-panel);
+  transition: background-color 150ms, border-color 150ms;
+}
+.dark .v3-profile-row { background-color: rgba(255, 255, 255, 0.03); }
+.v3-profile-row:hover { border-color: var(--v3-border-strong); }
+.dark .v3-profile-row:hover { background-color: rgba(255, 255, 255, 0.06); }
+.v3-profile-row:focus-visible, .v3-profile-row:focus-within { border-color: var(--v3-accent); }
+/* Right-rail cards. */
+.v3-profile-rail-card {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+  border-radius: 20px;
+}
+.dark .v3-profile-rail-card {
+  background-color: rgba(255, 255, 255, 0.035);
+  border-color: rgba(255, 255, 255, 0.10);
+}
+.v3-profile-seeall { color: var(--v3-accent); }
+.v3-profile-seeall svg { transition: transform 150ms; }
+.v3-profile-seeall:hover svg { transform: translateX(3px); }
+.v3-profile-seeall:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-profile-media, .v3-profile-row, .v3-profile-seg, .v3-profile-btn, .v3-profile-cta, .v3-profile-avatar-edit, .v3-profile-seeall svg { transition: none; }
+  .v3-profile-media:hover, .v3-profile-seeall:hover svg, .v3-profile-btn:active, .v3-profile-cta:active { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }

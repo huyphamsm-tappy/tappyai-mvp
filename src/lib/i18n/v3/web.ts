@@ -509,6 +509,13 @@ export const vi: Record<string, string> = {
   'v3.profile.followingEmpty': 'Bạn chưa theo dõi ai.',
   'v3.profile.qrTitle': 'QR Profile',
   'v3.profile.qrHint': 'Chia sẻ hồ sơ của bạn',
+  // 2026-09-12 reskin: presentation-only additions. The view switch re-arranges rows the page
+  // already loaded; the two links point at pages that already exist.
+  'v3.profile.viewGrid': 'Lưới',
+  'v3.profile.viewList': 'Danh sách',
+  'v3.profile.qrOpen': 'Mở trang QR',
+  'v3.profile.seeAll': 'Xem tất cả',
+  'v3.profile.contentTitle': 'Nội dung của bạn',
   'v3.notifications.body': 'Quản lý thông báo đẩy, email và nhắc lịch trong phần cài đặt.',
 }
 
@@ -945,5 +952,10 @@ export const en: Record<string, string> = {
   'v3.profile.followingEmpty': "You aren't following anyone yet.",
   'v3.profile.qrTitle': 'QR Profile',
   'v3.profile.qrHint': 'Share your profile',
+  'v3.profile.viewGrid': 'Grid',
+  'v3.profile.viewList': 'List',
+  'v3.profile.qrOpen': 'Open QR page',
+  'v3.profile.seeAll': 'See all',
+  'v3.profile.contentTitle': 'Your content',
   'v3.notifications.body': 'Manage push, email and reminders in settings.',
 }

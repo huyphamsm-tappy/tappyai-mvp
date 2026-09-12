@@ -275,3 +275,130 @@ describe('the hub stays an account hub, not a replacement for other products', (
     expect(edits.length).toBeGreaterThan(0)
   })
 })
+
+// ── The 2026-09-12 reskin's own behaviour ───────────────────────────────────
+//
+// Framed surface, dominant hero, pill tabs, a grid/list switch and stacked rail cards. Every
+// rule above survived the skin; these pin what the skin added and what it deliberately did not.
+
+describe('the hero after the reskin', () => {
+  it('names the user once as the page heading and surfaces the existing change-photo action on the avatar', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    const h1 = hero.querySelector('h1')!
+    expect(h1.textContent).toBe('Huy Pham')
+    // The camera badge is a LINK to the one route that owns the avatar picker and upload.
+    const badge = within(hero).getByRole('link', { name: /change profile photo|đổi ảnh đại diện/i })
+    expect(badge.getAttribute('href')).toBe('/profile/edit')
+  })
+
+  it('keeps the banner a gradient — no image inside it, no cover control', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(hero.querySelector('.v3-profile-banner img')).toBeNull()
+    expect(hero.querySelector('.v3-profile-banner')!.getAttribute('style')).toBeNull()
+    expect(hero.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
+  })
+
+  it('renders the edit action and the existing QR/share button in each of the two breakpoint layers', () => {
+    const { container } = renderHub()
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    // Two layers (>=sm row, <sm row) are authored; CSS shows one. Each layer holds exactly one edit link.
+    const edits = [...hero.querySelectorAll('a[href="/profile/edit"]')].filter(a => (a.textContent ?? '').trim().length > 0)
+    expect(edits).toHaveLength(2)
+    expect(within(hero).getAllByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toHaveLength(2)
+  })
+})
+
+describe('the grid / list switch is presentation over the rows already loaded', () => {
+  it('re-arranges the same posts without a second fetch, and keeps every link', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    const calls = fetchMock.mock.calls.length
+    fireEvent.click(container.querySelector('[data-profile-view="list"]') as HTMLElement)
+    // Same rows, same routes, still real badges — nothing was re-fetched.
+    expect(fetchMock.mock.calls.length).toBe(calls)
+    expect(container.querySelectorAll('[data-review]')).toHaveLength(2)
+    expect(container.querySelector('[data-review="r1"]')!.getAttribute('href')).toBe('/reviews/r1')
+    expect(container.querySelector('[data-review="r1"]')!.textContent).toContain('12K')
+    expect((container.querySelector('[data-profile-view="list"]') as HTMLElement).getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(container.querySelector('[data-profile-view="grid"]') as HTMLElement)
+    expect(container.querySelectorAll('[data-review]')).toHaveLength(2)
+    expect(fetchMock.mock.calls.length).toBe(calls)
+  })
+
+  it('is not offered on the Places tab — those rows have no media to grid', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(container.querySelector('[data-profile-view="grid"]')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Places' }))
+    await waitFor(() => expect(container.querySelector('[data-place="f1"]')).toBeTruthy())
+    expect(container.querySelector('[data-profile-view="grid"]')).toBeNull()
+  })
+
+  it('the switch buttons are not tabs — the tab contract stays three chips', () => {
+    const { container } = renderHub()
+    for (const b of container.querySelectorAll('[data-profile-view]')) expect(b.classList.contains('v3-chip')).toBe(false)
+    expect(container.querySelectorAll('[data-profile-content] .v3-chip')).toHaveLength(3)
+  })
+})
+
+describe('the rail after the reskin', () => {
+  it('links onward only to pages that exist: edit, the Following/Followers page, the QR page', () => {
+    const { container } = renderHub()
+    const info = container.querySelector('[data-profile-info]') as HTMLElement
+    expect(within(info).getByRole('link').getAttribute('href')).toBe('/profile/edit')
+    const following = container.querySelector('[data-profile-following]') as HTMLElement
+    const links = [...following.querySelectorAll('a')].map(a => a.getAttribute('href'))
+    expect(links).toContain('/social')
+    expect(links).toContain('/users/u2')
+    const qr = container.querySelector('[data-profile-qr]') as HTMLElement
+    expect(within(qr).getByRole('link').getAttribute('href')).toBe('/profile/qr')
+    expect(within(qr).getByRole('button', { name: /mã qr trang cá nhân của tôi/i })).toBeTruthy()
+  })
+
+  it('draws no download control of its own — the download lives on /profile/qr', () => {
+    const { container } = renderHub()
+    const qr = container.querySelector('[data-profile-qr]') as HTMLElement
+    expect(qr.textContent ?? '').not.toMatch(/tải|download/i)
+  })
+
+  it('rail cards are not .v3-panel, so the account-row inventory selector stays exact', () => {
+    const { container } = renderHub()
+    for (const id of ['info', 'stats', 'following', 'qr']) {
+      expect(container.querySelector(`[data-profile-${id}]`)!.classList.contains('v3-panel')).toBe(false)
+    }
+    const inventory = [...container.querySelectorAll('.v3-panel li a[href]')].map(a => a.getAttribute('href'))
+    expect(inventory).not.toContain('/users/u2')
+    expect(inventory).not.toContain('/social')
+  })
+
+  it('shows the six real counts with icons and nothing gamified', () => {
+    const { container } = renderHub()
+    const stats = container.querySelector('[data-profile-stats]') as HTMLElement
+    expect(stats.querySelectorAll('dd')).toHaveLength(6)
+    expect(within(stats).getByText('1,251')).toBeTruthy()
+    expect(stats.textContent ?? '').not.toMatch(/points|điểm|deals|chia sẻ|share/i)
+  })
+})
+
+describe('the frame stays truthful', () => {
+  it('has no load-more, no highlights, no activity, no handle, no location, no phone', () => {
+    const { container } = renderHub()
+    const main = container.querySelector('[data-profile-main]') as HTMLElement
+    const rail = container.querySelector('[data-profile-rail]') as HTMLElement
+    const mine = (main.textContent ?? '') + ' ' + (rail.textContent ?? '')
+    expect(mine).not.toMatch(/xem thêm bài viết|load more|khoảnh khắc|highlight|hoạt động gần đây|recent activity|số điện thoại|phone|tên người dùng|username/i)
+    // The owner's own email sits in the info card; a HANDLE would sit in the hero, and there is none.
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    expect(hero.textContent ?? '').not.toMatch(/@\w/)
+  })
+
+  it('authors no upgrade CTA of its own while Pro is gated (SHOW_PRO_UPGRADE is false)', () => {
+    const { container } = renderHub()
+    const main = container.querySelector('[data-profile-main]') as HTMLElement
+    const rail = container.querySelector('[data-profile-rail]') as HTMLElement
+    // The shell's pinned upsell is not this page's claim; the page itself renders none.
+    expect((main.textContent ?? '') + (rail.textContent ?? '')).not.toMatch(/nâng cấp ngay|upgrade now/i)
+  })
+})
