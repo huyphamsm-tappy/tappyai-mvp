@@ -28,6 +28,8 @@ const h = vi.hoisted(() => {
     reviewQueries: [] as Array<{ filters: Array<[string, unknown]> }>,
     streamOptions: null as Record<string, unknown> | null,
     placeCalls: [] as Array<{ query: string; location: string | undefined }>,
+    /** What the mocked provider returns. Each row object is preserved by reference. */
+    providerRows: [] as Array<Record<string, unknown>>,
   }
   const builder = (table: string): any => {
     const q = { filters: [] as Array<[string, unknown]> }
@@ -78,7 +80,12 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
     ...real,
     searchPlaces: async (query: string, location?: string) => {
       h.state.placeCalls.push({ query, location })
-      return { source: 'test', count: 0, location: location ?? '', results: [], place_search_status: 'empty' }
+      const rows = h.state.providerRows
+      return {
+        source: 'test', count: rows.length, location: location ?? '', results: rows,
+        google_maps_search: 'https://maps.google.com/maps?q=test',
+        place_search_status: rows.length ? 'has_results' : 'empty',
+      }
     },
   }
 })
@@ -114,7 +121,33 @@ beforeEach(() => {
   h.state.reviewQueries = []
   h.state.streamOptions = null
   h.state.placeCalls = []
+  h.state.providerRows = []
 })
+
+// ── Venue fixtures for the narrowing tests ─────────────────────────────────
+const venue = (name: string, address: string, extra: Record<string, unknown> = {}) => ({
+  name, address, rating: 4.4, user_ratings_total: 200, phone: '028 1234 5678',
+  opening_hours: 'Mo-Su 08:00-22:00', website_uri: 'https://example.test', maps_link: 'https://maps.google.com/?q=x', ...extra,
+})
+const GOC_HUE_ROW = venue('GÓC HUẾ - Nguyễn Thái Bình', '155 Nguyễn Thái Bình, Phường Nguyễn Thái Bình, Quận 1, Thành phố Hồ Chí Minh')
+const NEIGHBOURS = [
+  venue('Bún Bò Huế Đông Ba', '110A Nguyễn Du, Quận 1, TP.HCM'),
+  venue('Cơm Tấm Cali', '32 Nguyễn Thái Bình, Quận 1, TP.HCM'),
+  venue('Quán Huế Ngon', '5 Lê Thị Hồng Gấm, Quận 1, TP.HCM'),
+  venue('Phở Hòa Pasteur', '260C Pasteur, Quận 3, TP.HCM'),
+  venue('Nhà hàng Ngon 138', '138 Nam Kỳ Khởi Nghĩa, Quận 1, TP.HCM'),
+  venue('Bún Chả Hà Nội', '10 Calmette, Quận 1, TP.HCM'),
+  venue('Huế Xưa Quán', '44 Ký Con, Quận 1, TP.HCM'),
+]
+const GOC_HUE_REVIEW = {
+  id: REVIEW,
+  place_name: 'GÓC HUẾ - Nguyễn Thái Bình',
+  place_address: '155 Nguyễn Thái Bình, Quận 1, TP.HCM',
+  body: 'Bún bò chuẩn vị Huế',
+  hashtags: ['hue'],
+}
+const toolResult = async (args: { query: string; location?: string }) =>
+  (await runPlaceTool(args)) as Record<string, unknown>
 
 describe('TEST 2 · the server resolves the clip from the reviewId, not from the client', () => {
   it('reads the reviews row for exactly that id and puts ITS name and address in the prompt', async () => {
@@ -221,5 +254,105 @@ describe('TEST 7 · a missing or invalid review never breaks the turn', () => {
     const res = await post({ messages: [{ role: 'user', content: QUESTION }], context: { kind: 'explore_clip', reviewId: REVIEW } })
     expect(res.status).toBe(200)
     expect(system()).not.toContain('source=explore_clip')
+  })
+})
+
+// ══════════════════════════════════════════════════════════════════════════════
+// ONE venue, not a neighbourhood — the Explore-only narrowing, through the route.
+// ══════════════════════════════════════════════════════════════════════════════
+
+describe('TEST A · generic discovery unchanged — 10 rows stay 10 rows', () => {
+  it('no context → every provider row reaches the recommendation flow, no marker, no block', async () => {
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW, venue('Bún Bò Huế Nam Giao', '1 Lê Lai, Quận 1, TP.HCM'), venue('Bún Bò Gánh', '2 Lê Lai, Quận 1, TP.HCM')]
+    await post({ messages: [{ role: 'user', content: 'Quán bún bò ngon ở TP.HCM' }] })
+    const out = await toolResult({ query: 'quán bún bò ngon', location: 'TP.HCM' })
+    expect((out.results as unknown[]).length).toBe(10)
+    expect('_tappy_clip_target' in out).toBe(false)
+    expect(system()).not.toContain('source=explore_clip')
+    expect(h.state.reviewQueries).toHaveLength(0)
+  })
+})
+
+describe('TEST B · generic SPECIFIC-place question unchanged — no Explore branch', () => {
+  it('no context → the rows are not narrowed even though one matches the name', async () => {
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
+    await post({ messages: [{ role: 'user', content: 'GÓC HUẾ Nguyễn Thái Bình có gì?' }] })
+    const out = await toolResult({ query: 'GÓC HUẾ Nguyễn Thái Bình' })
+    expect((out.results as unknown[]).length).toBe(8)
+    expect('_tappy_clip_target' in out).toBe(false)
+    expect(h.state.placeCalls[0].location).toBeUndefined()
+  })
+})
+
+describe('TEST C · exact Explore target → ONE row, marker resolved', () => {
+  it("eight rows in, the clip's venue out — the same object, every field intact", async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS.slice(0, 4), GOC_HUE_ROW, ...NEIGHBOURS.slice(4)]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    const out = await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    expect(out._tappy_clip_target).toBe('resolved')
+    // The model's view is the existing `splitToolResult` slimming (capability booleans added,
+    // enrichment URLs carved) — the same treatment every generic row gets. What matters here:
+    // ONE row, and it is the clip's, with every provider fact still on it (TEST I; the
+    // by-reference guarantee is pinned in exploreClipTarget.test.ts).
+    const rows = out.results as Array<Record<string, unknown>>
+    expect(rows).toHaveLength(1)
+    expect(rows[0]).toMatchObject(GOC_HUE_ROW)
+    expect(out.count).toBe(1)
+    expect(out.place_search_status).toBe('has_results')
+    // The clip address still supplied the search location (P0), and the prompt now says ONE place.
+    expect(h.state.placeCalls[0].location).toBe('155 Nguyễn Thái Bình, Quận 1, TP.HCM')
+    expect(system()).toMatch(/Tra loi ve DUNG MOT dia diem nay/)
+  })
+})
+
+describe('TEST D · name/address mismatch → unresolved, nothing chosen, nothing recommended', () => {
+  it('only strangers → zero rows, Explore instruction, no first-result pick', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    const out = await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    expect(out._tappy_clip_target).toBe('unresolved')
+    expect(out.results).toEqual([])
+    expect(out.place_search_status).toBe('empty')
+    expect(String(out.no_results_instruction)).toMatch(/KHONG XAC MINH DUOC/)
+    expect(String(out.no_results_instruction)).toMatch(/KHONG gioi thieu quan khac/)
+    expect('_tappy_ranking' in out).toBe(false)
+    // The Maps link the provider returned is kept, so the model can hand it over.
+    expect(out.google_maps_search).toBe('https://maps.google.com/maps?q=test')
+  })
+})
+
+describe('TEST E · two branches → ambiguous, ONLY the two, no ranking pick', () => {
+  it('keeps the branches and drops the strangers', async () => {
+    const a = venue('GÓC HUẾ - Nguyễn Thái Bình', '155 Nguyễn Thái Bình, Quận 1, TP.HCM')
+    const b = venue('GÓC HUẾ - Ân Dương', '12 Ân Dương, Quận 7, TP.HCM')
+    h.state.reviewRow = { ...GOC_HUE_REVIEW, place_name: 'GÓC HUẾ', place_address: '' }
+    h.state.providerRows = [NEIGHBOURS[0], a, NEIGHBOURS[1], b, NEIGHBOURS[2]]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    const out = await toolResult({ query: 'GÓC HUẾ' })
+    expect(out._tappy_clip_target).toBe('ambiguous')
+    const rows = out.results as Array<Record<string, unknown>>
+    expect(rows.map(r => r.name)).toEqual([a.name, b.name])
+    expect(rows[0]).toMatchObject(a)
+    expect(rows[1]).toMatchObject(b)
+    expect('_tappy_ranking' in out).toBe(false)
+    expect('_tappy_shortlist' in out).toBe(false)
+    expect(String(out.no_results_instruction)).toMatch(/NHIEU DIA DIEM CUNG TEN/)
+  })
+})
+
+describe('TEST F · Explore + explicit request for alternatives → NO narrowing', () => {
+  it('the discovery flow keeps every row and the clip context still stands', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
+    await post({
+      messages: [{ role: 'user', content: 'Có quán nào tương tự gần đây không?' }],
+      context: { kind: 'explore_clip', reviewId: REVIEW },
+    })
+    expect(system()).toContain('source=explore_clip')
+    const out = await toolResult({ query: 'bún bò Huế' })
+    expect((out.results as unknown[]).length).toBe(8)
+    expect('_tappy_clip_target' in out).toBe(false)
   })
 })

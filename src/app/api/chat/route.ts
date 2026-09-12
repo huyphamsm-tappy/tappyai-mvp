@@ -15,6 +15,7 @@ import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/t
 import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
+import { applyClipTarget, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
@@ -1003,11 +1004,30 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // location the model DID name still wins; this only fills a blank.
           const location = modelLocation ?? exploreClipLocationHint(clipContext)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
-          const r = await searchPlaces(query, location, type, lang, userLocation)
+          let r: unknown = await searchPlaces(query, location, type, lang, userLocation)
+          // Explore clip: "this place" is ONE venue. The tool just returned the
+          // 8-10 places around the address — as it must for discovery — so the
+          // rows are narrowed HERE, deterministically, to the one(s) that carry
+          // the clip's name, before ranking or cards ever see them. Skipped when
+          // the user asked for more/other/similar places, and absent entirely on
+          // every turn without a clip (see `exploreClipTarget.ts`).
+          let clipTarget: ClipTargetStatus | null = null
+          if (clipContext && !asksForAlternatives(lastText)) {
+            const narrowed = applyClipTarget(r, clipContext, lang)
+            r = narrowed.result
+            clipTarget = narrowed.status
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_target', status: clipTarget, kept: narrowed.result.count }))
+          }
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.
-          const { result, pick } = rankForModel('search_places', filtered)
+          //
+          // An AMBIGUOUS clip target is not ranked: a Pick would tell the model to
+          // argue for one branch when the honest move is to ask which branch. A
+          // resolved target ranks as normal — one candidate yields no Pick anyway.
+          const { result, pick } = clipTarget === 'ambiguous'
+            ? { result: filtered, pick: null }
+            : rankForModel('search_places', filtered)
           if (pick) turnPick = pick
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
