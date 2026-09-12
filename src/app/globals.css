@@ -1818,5 +1818,197 @@
   .v3-profile-media:hover, .v3-profile-seeall:hover svg, .v3-profile-btn:active, .v3-profile-cta:active { transform: none; }
 }
 
+/* ── Xem bói (/boi) — the cosmic destination skin ─────────────────────────
+   The fortune hub keeps its legacy chrome (`Header` back-bar + `BottomNav`)
+   and its three routes; this block only paints the hero and the three feature
+   cards. The surfaces are deliberately dark in BOTH themes — they are artwork
+   panels, like the Music/Social heroes — while the page ground follows the
+   theme. Every motif is CSS: gradients, dot-fields and bordered shapes. No
+   image asset, no particle script.
+
+   🚨 Nothing here implies a capability: the chips on each card name readings
+   the sub-pages already render, and the card is the same <Link> it always was. */
+.v3-boi-page {
+  background-image:
+    radial-gradient(60% 40% at 50% 100%, rgba(79, 70, 229, 0.10), transparent 70%);
+}
+.dark .v3-boi-page {
+  background-image:
+    radial-gradient(70% 45% at 50% 110%, rgba(99, 102, 241, 0.22), transparent 70%),
+    radial-gradient(40% 30% at 10% 0%, rgba(59, 130, 246, 0.10), transparent 70%);
+}
+/* A star-field painted with three offset dot layers. Static — stars do not move. */
+.v3-boi-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(1px 1px at 12% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 28% 68%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1.5px 1.5px at 44% 18%, rgba(255, 255, 255, 0.85), transparent 55%),
+    radial-gradient(1px 1px at 61% 74%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 73% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 86% 58%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 93% 14%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 52% 88%, rgba(255, 255, 255, 0.6), transparent 55%);
+  opacity: 0.8;
+}
+.v3-boi-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 28px;
+  border: 1px solid rgba(139, 132, 255, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 80% 15%, rgba(139, 92, 246, 0.55), transparent 60%),
+    radial-gradient(60% 70% at 15% 100%, rgba(37, 99, 235, 0.45), transparent 60%),
+    linear-gradient(160deg, #0B1030 0%, #16114A 55%, #1E1B5E 100%);
+  box-shadow: 0 30px 70px -40px rgba(99, 102, 241, 0.9);
+}
+.v3-boi-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-boi-hero-accent { color: #C4B5FD; }
+.v3-boi-eyebrow {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFFFFF;
+}
+/* The hero's three tarot cards: bordered, rotated plates with a soft sheen. */
+.v3-boi-tarot {
+  position: absolute;
+  border-radius: 14px;
+  border: 1px solid rgba(251, 191, 36, 0.55);
+  background-image:
+    radial-gradient(60% 50% at 50% 30%, rgba(167, 139, 250, 0.35), transparent 70%),
+    linear-gradient(160deg, #1B1740 0%, #0E0C2C 100%);
+  box-shadow: 0 24px 40px -20px rgba(0, 0, 0, 0.8), inset 0 0 0 6px rgba(15, 12, 45, 0.9), inset 0 0 0 7px rgba(251, 191, 36, 0.35);
+  color: rgba(251, 191, 36, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Orbit rings behind the cards. */
+.v3-boi-ring {
+  position: absolute;
+  border-radius: 9999px;
+  border: 1px solid rgba(196, 181, 253, 0.28);
+  pointer-events: none;
+}
+.v3-boi-planet {
+  position: absolute;
+  border-radius: 9999px;
+  background-image: radial-gradient(circle at 35% 35%, #6D6AF6 0%, #2E2A8A 55%, #14123F 100%);
+  box-shadow: 0 0 40px 6px rgba(99, 102, 241, 0.35);
+  pointer-events: none;
+}
+/* One feature card. `data-hue` picks the identity; the motif on the right is a
+   bordered shape per hue, shown from `md` up. */
+.v3-boi-card {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid var(--bc-border);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 120% at 100% 50%, var(--bc-glow), transparent 60%),
+    linear-gradient(120deg, var(--bc-a) 0%, var(--bc-b) 100%);
+  box-shadow: 0 24px 50px -32px var(--bc-shadow);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.v3-boi-card:hover { transform: translateY(-2px); border-color: var(--bc-border-hover); box-shadow: 0 30px 60px -30px var(--bc-shadow); }
+.v3-boi-card:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+.v3-boi-card[data-hue="violet"] { --bc-a: #14113A; --bc-b: #2A1B5E; --bc-glow: rgba(139, 92, 246, 0.45); --bc-border: rgba(167, 139, 250, 0.35); --bc-border-hover: rgba(196, 181, 253, 0.7); --bc-shadow: rgba(109, 40, 217, 0.7); --bc-tile-a: #7C3AED; --bc-tile-b: #4C1D95; --bc-motif: rgba(196, 181, 253, 0.35); }
+.v3-boi-card[data-hue="amber"]  { --bc-a: #1A1230; --bc-b: #3A2318; --bc-glow: rgba(245, 158, 11, 0.40); --bc-border: rgba(251, 191, 36, 0.35); --bc-border-hover: rgba(252, 211, 77, 0.7); --bc-shadow: rgba(180, 83, 9, 0.6); --bc-tile-a: #DC2626; --bc-tile-b: #7F1D1D; --bc-motif: rgba(251, 191, 36, 0.35); }
+.v3-boi-card[data-hue="blue"]   { --bc-a: #0B1633; --bc-b: #0E2A4F; --bc-glow: rgba(56, 189, 248, 0.35); --bc-border: rgba(96, 165, 250, 0.35); --bc-border-hover: rgba(147, 197, 253, 0.7); --bc-shadow: rgba(37, 99, 235, 0.6); --bc-tile-a: #0EA5E9; --bc-tile-b: #1E3A8A; --bc-motif: rgba(147, 197, 253, 0.35); }
+.v3-boi-card-desc { color: rgba(226, 232, 255, 0.82); }
+/* The glyph tile. */
+.v3-boi-tile {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 22px;
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, var(--bc-tile-a) 0%, var(--bc-tile-b) 100%);
+  box-shadow: 0 16px 30px -16px var(--bc-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+/* Reading chips: named readings the sub-page renders; decorative here, not controls. */
+.v3-boi-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: rgba(226, 232, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  white-space: nowrap;
+}
+/* The arrow: a circular outline button that slides on hover. */
+.v3-boi-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background-color: rgba(255, 255, 255, 0.06);
+  color: #FFFFFF;
+  transition: background-color 150ms, transform 150ms;
+}
+.v3-boi-card:hover .v3-boi-arrow { background-color: rgba(255, 255, 255, 0.14); transform: translateX(3px); }
+/* Motifs. Violet: a tarot plate; amber: concentric rings (a coin / medallion);
+   blue: a zodiac wheel with a dashed inner ring. All decorative, `md` and up. */
+.v3-boi-motif {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.9;
+}
+.v3-boi-motif-plate {
+  width: 120px; height: 170px; border-radius: 14px;
+  border: 1px solid var(--bc-motif);
+  box-shadow: inset 0 0 0 8px transparent, inset 0 0 0 9px var(--bc-motif);
+  transform: rotate(12deg);
+  display: flex; align-items: center; justify-content: center; color: var(--bc-motif);
+}
+.v3-boi-motif-rings {
+  width: 200px; height: 200px; border-radius: 9999px;
+  border: 1px solid var(--bc-motif);
+  /* Thin concentric rings — a medallion, not a disc. */
+  background-image: repeating-radial-gradient(circle at 50% 50%, transparent 0 26px, var(--bc-motif) 26px 27px);
+  display: flex; align-items: center; justify-content: center; color: var(--bc-motif);
+}
+.v3-boi-motif-wheel {
+  width: 210px; height: 210px; border-radius: 9999px;
+  border: 1px solid var(--bc-motif);
+  background-image:
+    repeating-conic-gradient(from 0deg, var(--bc-motif) 0deg 0.6deg, transparent 0.6deg 30deg);
+  -webkit-mask: radial-gradient(circle, transparent 58%, #000 59%, #000 100%);
+  mask: radial-gradient(circle, transparent 58%, #000 59%, #000 100%);
+}
+.v3-boi-motif-wheel-inner {
+  position: absolute; inset: 18%; border-radius: 9999px;
+  border: 1px dashed var(--bc-motif);
+  display: flex; align-items: center; justify-content: center; color: var(--bc-motif);
+}
+/* The disclaimer: a quiet glass strip. */
+.v3-boi-note {
+  border-radius: 18px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+  color: var(--v3-fg-secondary);
+}
+.dark .v3-boi-note { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.10); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-boi-card, .v3-boi-arrow { transition: none; }
+  .v3-boi-card:hover, .v3-boi-card:hover .v3-boi-arrow { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }
