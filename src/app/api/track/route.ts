@@ -18,12 +18,24 @@ const KNOWN_TYPES = new Set([
   'place_click', 'review_view', 'deal_click', 'feature_use',
   'review_search', 'review_like', 'review_share', 'review_post',
   'hide', 'not_interested', 'report',
+  // Explore → the Ask-Tappy-about-this-place CTA. Phase `click` from the three CTAs, phase
+  // `target` from the chat route with the resolved/ambiguous/unresolved verdict.
+  'ask_tappy_place',
 ])
 const REBUILD_SIGNALS = new Set(['chat_search', 'review_search', 'hide', 'not_interested', 'report'])
 
 const MAX_BATCH = 100          // §8A.3 payload cap
 const MAX_EVENT_BYTES = 8_192  // §8A.3 per-event size cap
 const PII_RE = /[\w.+-]+@[\w-]+\.[\w-]{2,}|\+?\d[\d\s().-]{7,}\d/ // email / phone (§8A.3 PII reject)
+/**
+ * Row identifiers are not phone numbers. A UUID whose hex happens to run
+ * digit-heavy (`…-4271-8803-99504723…`) matches the phone half of PII_RE, and
+ * ~25% of random UUIDs do — so `review_like`/`place_save`/`ask_tappy_place`
+ * events carrying a `review_id` were being dropped silently, one in four.
+ * Masked before the PII test; the rule itself is unchanged.
+ */
+const UUID_RE = /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi
+const hasPii = (metadata: unknown) => PII_RE.test(JSON.stringify(metadata ?? {}).replace(UUID_RE, 'uuid'))
 
 interface IncomingEvent {
   event_id?: string
@@ -72,7 +84,7 @@ export async function POST(req: NextRequest) {
     .slice(0, MAX_BATCH)
     .filter((e) => typeof e.event_type === 'string' && e.event_type.length > 0)
     .filter((e) => JSON.stringify(e).length <= MAX_EVENT_BYTES)
-    .filter((e) => !PII_RE.test(JSON.stringify(e.metadata ?? {})))
+    .filter((e) => !hasPii(e.metadata))
     .filter((e) => user || e.anon_id) // must have an identity
     .map((e) => ({
       event_id: e.event_id || randomUUID(),

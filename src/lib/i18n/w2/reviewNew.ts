@@ -62,6 +62,8 @@ export const vi: Record<string, string> = {
   // Place
   'reviewNew.addPlace': 'Thêm địa điểm',
   'reviewNew.placePlaceholder': 'Tên quán, nhà hàng, địa điểm...',
+  'reviewNew.areaPlaceholder': 'Khu vực (quận, thành phố) — không bắt buộc',
+  'reviewNew.areaSuggested': 'Gợi ý từ nội dung clip — bạn có thể sửa hoặc xóa',
 
   // Rating
   'reviewNew.addRating': 'Thêm đánh giá sao',
@@ -140,6 +142,8 @@ export const en: Record<string, string> = {
   // Place
   'reviewNew.addPlace': 'Add location',
   'reviewNew.placePlaceholder': 'Cafe, restaurant, or place name...',
+  'reviewNew.areaPlaceholder': 'Area (district, city) — optional',
+  'reviewNew.areaSuggested': 'Suggested from the clip — edit or clear it',
 
   // Rating
   'reviewNew.addRating': 'Add star rating',

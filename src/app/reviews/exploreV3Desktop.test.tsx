@@ -45,6 +45,9 @@ vi.mock('@/modules/music', () => ({
   getPreviewUrl: () => null,
 }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
+/** The analytics batcher, recorded rather than flushed — the desktop CTA emits `ask_tappy_place`. */
+const trackMock = vi.fn()
+vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -94,7 +97,7 @@ const players = () => screen.queryAllByTestId('player')
 const posters = () => screen.queryAllByTestId('poster')
 const cards = () => document.querySelectorAll('[data-explore-card]')
 
-beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear() })
+beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear() })
 afterEach(cleanup)
 
 describe('five visible, ONE playing', () => {
@@ -360,6 +363,36 @@ describe('it uses the mechanisms that already exist', () => {
     render(<ExploreV3Desktop />)
     await waitFor(() => expect(cards().length).toBe(1))
     expect(cards()[0].querySelector('a[href^="/chat?q="]'), 'no subject, no bridge').toBeNull()
+  })
+
+  it('measures the bridge: ONE ask_tappy_place click with source_surface explore_desktop', async () => {
+    mockFeed([clip('review-9', { place_name: 'GÓC HUẾ', place_address: '155 Nguyễn Thái Bình, Quận 1' })])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(1))
+    const bridge = cards()[0].querySelector<HTMLAnchorElement>('a[href^="/chat?q="]')!
+    expect(trackMock, 'rendering is not a click').not.toHaveBeenCalled()
+    bridge.addEventListener('click', e => e.preventDefault())
+    fireEvent.click(bridge)
+    expect(trackMock).toHaveBeenCalledTimes(1)
+    expect(trackMock).toHaveBeenCalledWith('ask_tappy_place', {
+      phase: 'click', review_id: 'review-9', source_surface: 'explore_desktop', clip_target_status: 'unknown', has_address: true,
+    })
+    // Ids and enums only — the place name and caption stay out of the payload.
+    const payload = JSON.stringify(trackMock.mock.calls[0][1])
+    for (const leak of ['GÓC HUẾ', 'Nguyễn Thái Bình', 'caption review-9']) expect(payload, leak).not.toContain(leak)
+  })
+
+  it('the click on the bridge does not also select or toggle the card', async () => {
+    mockFeed([clip('a', { place_name: 'GÓC HUẾ' }), clip('b', { place_name: 'Cô Ba' })])
+    render(<ExploreV3Desktop />)
+    await waitFor(() => expect(cards().length).toBe(2))
+    const before = Array.from(cards()).map(c => c.getAttribute('data-active'))
+    const bridge = cards()[1].querySelector<HTMLAnchorElement>('a[href^="/chat?q="]')!
+    bridge.addEventListener('click', e => e.preventDefault())
+    fireEvent.click(bridge)
+    expect(trackMock.mock.calls[0][1]).toMatchObject({ review_id: 'b', source_surface: 'explore_desktop', has_address: false })
+    expect(Array.from(cards()).map(c => c.getAttribute('data-active'))).toEqual(before)
+    expect(pauseToggle).not.toHaveBeenCalled()
   })
 })
 

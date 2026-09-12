@@ -30,6 +30,8 @@ const h = vi.hoisted(() => {
     placeCalls: [] as Array<{ query: string; location: string | undefined }>,
     /** What the mocked provider returns. Each row object is preserved by reference. */
     providerRows: [] as Array<Record<string, unknown>>,
+    /** Every `upsert` the route issued, by table — the `ask_tappy_place` metric row lands here. */
+    upserts: [] as Array<{ table: string; rows: unknown; opts: unknown }>,
   }
   const builder = (table: string): any => {
     const q = { filters: [] as Array<[string, unknown]> }
@@ -43,7 +45,7 @@ const h = vi.hoisted(() => {
         return Promise.resolve({ data: null, error: null })
       },
       insert: () => Promise.resolve({ data: null, error: null }),
-      upsert: () => Promise.resolve({ data: null, error: null }),
+      upsert: (rows: unknown, opts: unknown) => { state.upserts.push({ table, rows, opts }); return Promise.resolve({ data: null, error: null }) },
       then: (r: any) => r({ data: [], error: null }),
     }
     return b
@@ -122,6 +124,7 @@ beforeEach(() => {
   h.state.streamOptions = null
   h.state.placeCalls = []
   h.state.providerRows = []
+  h.state.upserts = []
 })
 
 // ── Venue fixtures for the narrowing tests ─────────────────────────────────
@@ -354,5 +357,120 @@ describe('TEST F · Explore + explicit request for alternatives → NO narrowing
     const out = await toolResult({ query: 'bún bò Huế' })
     expect((out.results as unknown[]).length).toBe(8)
     expect('_tappy_clip_target' in out).toBe(false)
+  })
+})
+
+// ── `ask_tappy_place` · phase `target` — the server writes the verdict it reached ──
+//
+// The click is measured on the client (phase `click`, via /api/track, guests
+// included). The verdict can only be known here, after Places answered, so the
+// route writes ONE row to the same table with the same taxonomy, joined by
+// review_id. Nothing sensitive rides along: no caption, no name, no user text.
+
+const metricRows = () => h.state.upserts
+  .filter(u => u.table === 'user_events')
+  .map(u => u.rows as Record<string, unknown>)
+  .filter(r => r.event_type === 'ask_tappy_place')
+
+describe('TEST K · ask_tappy_place phase target — resolved / ambiguous / unresolved', () => {
+  it('resolved: one row, status resolved, the signed-in user, has_address true', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS.slice(0, 4), GOC_HUE_ROW, ...NEIGHBOURS.slice(4)]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    const rows = metricRows()
+    expect(rows).toHaveLength(1)
+    expect(rows[0]).toMatchObject({
+      event_type: 'ask_tappy_place',
+      user_id: 'u1',
+      anon_id: null,
+      is_unknown_event: false,
+      platform: 'web',
+      metadata: { phase: 'target', review_id: REVIEW, source_surface: 'chat_server', clip_target_status: 'resolved', has_address: true },
+    })
+    expect(typeof rows[0].event_id).toBe('string')
+    // Same idempotent write contract as /api/track.
+    expect(h.state.upserts.find(u => u.table === 'user_events')!.opts).toEqual({ onConflict: 'event_id', ignoreDuplicates: true })
+  })
+
+  it('ambiguous: status ambiguous, has_address false when the row had none', async () => {
+    const a = venue('GÓC HUẾ - Nguyễn Thái Bình', '155 Nguyễn Thái Bình, Quận 1, TP.HCM')
+    const b = venue('GÓC HUẾ - Ân Dương', '12 Ân Dương, Quận 7, TP.HCM')
+    h.state.reviewRow = { ...GOC_HUE_REVIEW, place_name: 'GÓC HUẾ', place_address: '' }
+    h.state.providerRows = [NEIGHBOURS[0], a, NEIGHBOURS[1], b, NEIGHBOURS[2]]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    await toolResult({ query: 'GÓC HUẾ' })
+    expect(metricRows().map(r => r.metadata)).toEqual([
+      { phase: 'target', review_id: REVIEW, source_surface: 'chat_server', clip_target_status: 'ambiguous', has_address: false },
+    ])
+  })
+
+  it('unresolved: status unresolved — the failure is measured, not hidden', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    expect(metricRows().map(r => (r.metadata as Record<string, unknown>).clip_target_status)).toEqual(['unresolved'])
+  })
+
+  it('carries no caption, place name, address text or user question — ids and enums only', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
+    await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    const payload = JSON.stringify(metricRows()[0].metadata)
+    for (const leak of ['GÓC HUẾ', 'Nguyễn Thái Bình', String(GOC_HUE_REVIEW.body), 'Cho mình biết']) {
+      expect(payload, leak).not.toContain(leak)
+    }
+    expect(Object.keys(metricRows()[0].metadata as object).sort()).toEqual(['clip_target_status', 'has_address', 'phase', 'review_id', 'source_surface'])
+  })
+})
+
+describe('TEST L · no metric row when there is nothing to measure', () => {
+  it('generic chat (no explore context) writes no ask_tappy_place row', async () => {
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
+    await post({ messages: [{ role: 'user', content: QUESTION }] })
+    await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+    expect(metricRows()).toEqual([])
+  })
+
+  it('Explore + a request for alternatives (no narrowing) writes no verdict row', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
+    await post({ messages: [{ role: 'user', content: 'Có quán nào tương tự gần đây không?' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+    await toolResult({ query: 'bún bò Huế' })
+    expect(metricRows()).toEqual([])
+  })
+
+  it('the analytics write cannot fail the turn — a rejected upsert leaves the tool result intact', async () => {
+    h.state.reviewRow = GOC_HUE_REVIEW
+    h.state.providerRows = [...NEIGHBOURS.slice(0, 4), GOC_HUE_ROW, ...NEIGHBOURS.slice(4)]
+    const original = h.client.from
+    h.client.from = ((t: string) => {
+      const b = original(t)
+      if (t === 'user_events') b.upsert = () => Promise.reject(new Error('analytics down'))
+      return b
+    }) as typeof original
+    try {
+      await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+      const out = await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+      expect(out._tappy_clip_target).toBe('resolved')
+      expect((out.results as unknown[]).length).toBe(1)
+    } finally {
+      h.client.from = original
+    }
+    // …and a client that cannot even be built (sync throw) is swallowed the same way.
+    h.client.from = ((t: string) => {
+      if (t === 'user_events') throw new Error('no service key')
+      return original(t)
+    }) as typeof original
+    try {
+      await post({ messages: [{ role: 'user', content: 'Cho mình biết thêm về GÓC HUẾ - Nguyễn Thái Bình' }], context: { kind: 'explore_clip', reviewId: REVIEW } })
+      const out = await toolResult({ query: 'GÓC HUẾ - Nguyễn Thái Bình' })
+      expect(out._tappy_clip_target).toBe('resolved')
+      expect((out.results as unknown[]).length).toBe(1)
+    } finally {
+      h.client.from = original
+    }
   })
 })

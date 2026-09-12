@@ -25,6 +25,7 @@ type KnownEventType =
   | 'hide'
   | 'not_interested'
   | 'report'
+  | 'ask_tappy_place'
 
 export type EventType = KnownEventType | (string & {})
 

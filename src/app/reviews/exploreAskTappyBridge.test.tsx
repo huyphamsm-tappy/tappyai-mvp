@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, vi } from 'vitest'
-import { render, cleanup, act } from '@testing-library/react'
+import { render, cleanup, act, fireEvent } from '@testing-library/react'
 
 vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn(), refresh: vi.fn() }),
@@ -19,6 +19,9 @@ vi.mock('@/modules/music', () => ({
   getPreviewUrl: () => null,
 }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
+// The analytics batcher: recorded, not sent. What this file asserts is the EVENT the CTA emits.
+const trackMock = vi.fn()
+vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))
 
 import { Post, type Review } from './feedShared'
 // Aliased: `vi` is already vitest's mocking utility in this file.
@@ -36,7 +39,7 @@ import { en as enCopy, vi as viCopy } from '@/lib/i18n/w2/reviews'
 // Rule 2 is the one a refactor would quietly lose: a share-only post has no `place_name`, and a
 // bridge built from it would open a thread about an empty string. That reads as a working button.
 
-afterEach(cleanup)
+afterEach(() => { cleanup(); trackMock.mockClear() })
 
 const BASE = {
   id: 'r1',
@@ -207,5 +210,59 @@ describe('offline', () => {
 
     expect(bridge(container), 'the bridge must return without a reload').toBeTruthy()
     expect(container.querySelector('[data-testid="ask-tappy-offline"]')).toBeNull()
+  })
+})
+
+// ── `ask_tappy_place` · phase `click` — the feed CTA is measured ───────────
+//
+// Until now nobody could say how often the bridge is pressed or what it resolves
+// to. The click is the client half (this event, guests included via anon_id); the
+// verdict is the server half (`/api/chat`, phase `target`), joined by review_id.
+
+describe('ask_tappy_place — the feed CTA emits the click event', () => {
+  /** Press the bridge without letting jsdom try to navigate. */
+  const press = (a: HTMLAnchorElement) => {
+    a.addEventListener('click', e => e.preventDefault())
+    fireEvent.click(a)
+  }
+
+  it('emits exactly one ask_tappy_place with source_surface feed, the review id, and no verdict yet', () => {
+    const { container } = renderPost({ id: 'review-123', place_address: '155 Nguyễn Thái Bình, Quận 1' } as Partial<Review>)
+    expect(trackMock, 'rendering is not a click').not.toHaveBeenCalled()
+    press(bridge(container)!)
+    expect(trackMock).toHaveBeenCalledTimes(1)
+    expect(trackMock).toHaveBeenCalledWith('ask_tappy_place', {
+      phase: 'click', review_id: 'review-123', source_surface: 'feed', clip_target_status: 'unknown', has_address: true,
+    })
+  })
+
+  it('records has_address=false for a row with no usable address (the composer wrote "")', () => {
+    const { container } = renderPost({ place_address: '   ' } as Partial<Review>)
+    press(bridge(container)!)
+    expect(trackMock.mock.calls[0][1]).toMatchObject({ has_address: false })
+  })
+
+  it('carries no place name, caption or user text — ids and enums only', () => {
+    const { container } = renderPost({ place_address: 'Quận 1, TP.HCM' } as Partial<Review>)
+    press(bridge(container)!)
+    const payload = JSON.stringify(trackMock.mock.calls[0][1])
+    for (const leak of ['Bún bò Huế Cô Ba', 'Ngon bá cháy', 'Quận 1', 'Huy']) expect(payload, leak).not.toContain(leak)
+    expect(Object.keys(trackMock.mock.calls[0][1]).sort()).toEqual(['clip_target_status', 'has_address', 'phase', 'review_id', 'source_surface'])
+  })
+
+  it('still stops the click from reaching the feed gesture layer underneath', () => {
+    // A React ancestor, the way the feed's own gesture layer is wired — a native listener on the
+    // root would fire regardless, since React delegates from the root itself.
+    const onParent = vi.fn()
+    const noop = () => {}
+    const { container } = render(
+      <div onClick={onParent}>
+        <Post r={BASE} me="u2" feedType="for-you" onFeedTypeChange={noop} renderVideo={false}
+          onLike={noop} onLikeDouble={noop} onSave={noop} onComment={noop} onShare={noop} onDelete={noop} onSoundTap={noop} />
+      </div>,
+    )
+    press(bridge(container)!)
+    expect(trackMock).toHaveBeenCalledTimes(1)
+    expect(onParent, 'stopPropagation was there before the analytics and must survive it').not.toHaveBeenCalled()
   })
 })

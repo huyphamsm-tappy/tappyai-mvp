@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { clipVenueFromLevel01, type ClipVenueResolution } from '@/lib/explore/clipVenueEvidence'
 
 // ── "Hỏi Tappy về chỗ này" — what the clip says the place is ────────────────
 //
@@ -36,6 +37,14 @@ export interface ExploreClipContext {
   placeAddress: string | null
   caption: string | null
   hashtags: string[]
+  /**
+   * The same facts as venue EVIDENCE, in the domain vocabulary a future
+   * Clip-Understanding source will also speak (`lib/explore/clipVenueEvidence.ts`).
+   * Level 0/1 today: a typed name is a `candidate`, never `resolved` — Places
+   * verification (`applyClipTarget`) is what promotes it. Additive; the prompt
+   * block and the location hint keep reading the flat fields.
+   */
+  venue: ClipVenueResolution
 }
 
 /**
@@ -89,12 +98,16 @@ export async function loadExploreClipContext(
       ? (row.hashtags as unknown[]).filter((h): h is string => typeof h === 'string' && h.trim().length > 0)
           .map(h => h.trim().slice(0, 40)).slice(0, MAX_HASHTAGS)
       : []
+    const id = String(row.id ?? reviewId)
+    const placeAddress = clip(row.place_address, MAX_ADDRESS_CHARS)
+    const caption = clip(row.body, MAX_CAPTION_CHARS)
     return {
-      reviewId: String(row.id ?? reviewId),
+      reviewId: id,
       placeName,
-      placeAddress: clip(row.place_address, MAX_ADDRESS_CHARS),
-      caption: clip(row.body, MAX_CAPTION_CHARS),
+      placeAddress,
+      caption,
       hashtags,
+      venue: clipVenueFromLevel01({ reviewId: id, placeName, placeAddress, caption, hashtags }),
     }
   } catch {
     return null

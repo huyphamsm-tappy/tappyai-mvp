@@ -314,6 +314,25 @@ export default function NewReviewPage() {
 
   /* ai suggestions */
   const [aiHashtags, setAiHashtags] = useState<string[]>([])
+  /**
+   * The AREA the existing content processor read off the caption/poster ("khu vuc neu ro").
+   *
+   * 🔑 EVIDENCE, NOT IDENTITY. `POST /api/explore/process` has always returned `location`
+   * alongside `hashtags`, and this composer kept the tags and threw the area away — so every
+   * clip was stored with `place_address: ''` and the Ask-Tappy CTA had nothing to search
+   * with. The suggestion now pre-fills an editable field the poster sees before publishing;
+   * whatever they leave there is stored as `place_address`, exactly as if they had typed it.
+   * Nothing here names a venue, mints a place id or marks anything verified — Places does
+   * that later, on the reader's question.
+   */
+  const [placeArea, setPlaceArea] = useState('')
+  const [areaFromAi, setAreaFromAi] = useState(false)
+  const suggestArea = (ai: { location?: unknown }) => {
+    if (typeof ai.location !== 'string') return
+    const area = ai.location.replace(/\s+/g, ' ').trim().slice(0, 100)
+    // Never overwrite something the poster typed themselves.
+    if (area && !placeArea.trim()) { setPlaceArea(area); setAreaFromAi(true) }
+  }
 
   /* music */
   const [music, setMusic] = useState<MusicSelection | null>(null)
@@ -333,6 +352,7 @@ export default function NewReviewPage() {
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
     setUploadStep(''); setUploadProgress(0); setAiHashtags([])
+    if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
   }
 
   /* ─── Photo upload ─── */
@@ -463,7 +483,8 @@ export default function NewReviewPage() {
           const ai = await aiRes.json()
           if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
           if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
-          vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0 })
+          suggestArea(ai)
+          vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
         } else {
           vfail('ai-process', tAi, new Error(`HTTP ${aiRes.status}`), { note: 'non-blocking' })
         }
@@ -503,6 +524,7 @@ export default function NewReviewPage() {
         const ai = await aiRes.json()
         if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
         if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+        suggestArea(ai)
       }
     } catch { /* non-blocking */ }
   }
@@ -517,6 +539,7 @@ export default function NewReviewPage() {
    */
   const handleUrlChange = (val: string) => {
     setSource_url(val); setUrlMeta(null); setAiHashtags([]); setUrlUnsupported(false)
+    if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
     if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
     const trimmed = val.trim()
     if (!trimmed) { lastResolvedUrlRef.current = ''; return }
@@ -596,7 +619,9 @@ export default function NewReviewPage() {
       const payload: Record<string, unknown> = {
         placeId,
         placeName: placeName.trim() || 'Chia sẻ',
-        placeAddress: '',
+        // The area the poster left in the field — typed or accepted from the clip suggestion.
+        // Stored as evidence for the reader's Ask-Tappy question; never a verified venue.
+        placeAddress: placeArea.trim(),
         rating: rating || 0,
         body: body.trim(),
       }
@@ -1093,6 +1118,19 @@ export default function NewReviewPage() {
             <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)}
               placeholder={t('reviewNew.placePlaceholder')} autoFocus maxLength={100}
               className="mt-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
+          )}
+          {/* The area, shown whenever the place sheet is open or the clip suggested one — the
+              poster sees exactly what will be stored and can edit or clear it. */}
+          {(showPlaceInput || placeArea) && (
+            <div className="mt-2">
+              <input type="text" value={placeArea} data-testid="review-place-area"
+                onChange={e => { setPlaceArea(e.target.value); setAreaFromAi(false) }}
+                placeholder={t('reviewNew.areaPlaceholder')} maxLength={100}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
+              {areaFromAi && placeArea && (
+                <p className="mt-1 text-[11px] text-gray-400" data-testid="review-place-area-hint">{t('reviewNew.areaSuggested')}</p>
+              )}
+            </div>
           )}
         </div>
 

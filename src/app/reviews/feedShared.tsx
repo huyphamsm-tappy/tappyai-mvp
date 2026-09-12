@@ -19,6 +19,8 @@ import {
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
+import { track } from '@/lib/tracking/tracker'
+import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import ReviewMusicDisc from './ReviewMusicDisc'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -602,7 +604,13 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
             {online ? (
               <Link
                 href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}&ctx=${encodeURIComponent(r.id)}`}
-                onClick={e => e.stopPropagation()}
+                onClick={e => {
+                  e.stopPropagation()
+                  // Measured (2026-09-12): the click, by surface. The verdict arrives from the
+                  // chat route as phase `target` on the same event, joined by review_id.
+                  const ev = askTappyPlaceEvent({ phase: 'click', reviewId: r.id, surface: 'feed', hasAddress: !!r.place_address?.trim() })
+                  track(ev.event_type, ev.metadata)
+                }}
                 /* min-h-[44px] is not decoration. Cross-screen invariant 5 puts the floor at
                    44x44, and this control sits on a surface where every neighbouring tap
                    scrolls the feed — an undersized target here mis-fires into a swipe.

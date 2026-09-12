@@ -16,6 +16,7 @@ import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
 import { applyClipTarget, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
+import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
@@ -148,6 +149,8 @@ export async function POST(req: Request) {
   // `lib/ai/exploreClipContext.ts` for why one string was not enough.
   const clipRef = readExploreClipContext(rawBody)
   let clipContext: ExploreClipContext | null = null
+  /** Who pressed the button, for the `ask_tappy_place` metric row. Null for a guest. */
+  let clipUserId: string | null = null
 
   const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
@@ -296,6 +299,7 @@ export async function POST(req: Request) {
     // guests included (the anon-key client sees exactly what the public feed
     // sees). Null on any miss; the turn then runs as plain chat.
     if (clipRef) clipContext = await loadExploreClipContext(supabase, clipRef.reviewId)
+    if (clipContext) clipUserId = user?.id ?? null
     // Anonymous sessions qualify: a Supabase anonymous identity is a real
     // auth.uid() on the `authenticated` role, which is exactly what the RPCs
     // key on. Guests are the majority web path and the one that fabricated.
@@ -1017,6 +1021,33 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             r = narrowed.result
             clipTarget = narrowed.status
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_target', status: clipTarget, kept: narrowed.result.count }))
+            // The Places verdict, in the clip-evidence vocabulary — the one place the
+            // candidate can become `resolved`. Today it feeds the product metric below
+            // and nothing else; a future persisted result would be written from here.
+            const venue = withPlacesVerification(clipContext.venue, {
+              status: narrowed.status,
+              results: narrowed.result.results as Record<string, unknown>[],
+              provider: typeof narrowed.result.source === 'string' ? narrowed.result.source : null,
+            })
+            // `ask_tappy_place` · phase `target`: what the CTA actually resolved to. The
+            // click itself is tracked on the client (phase `click`); this row is the
+            // server's answer, joined by review_id. Same taxonomy and same table as
+            // `/api/track`; fire-and-forget, and nothing here may fail the turn.
+            try {
+              void createAdminClient()
+                .from('user_events')
+                .upsert({
+                  event_id: randomUUID(),
+                  schema_version: 1,
+                  user_id: clipUserId,
+                  anon_id: null,
+                  ...askTappyPlaceEvent({ phase: 'target', reviewId: clipContext.reviewId, surface: 'chat_server', status: clipTargetMetric(venue), hasAddress: !!clipContext.placeAddress }),
+                  is_unknown_event: false,
+                  platform: 'web',
+                  created_at: new Date().toISOString(),
+                }, { onConflict: 'event_id', ignoreDuplicates: true })
+                .then(() => undefined, () => undefined)
+            } catch { /* analytics only */ }
           }
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           // Deterministic ranking runs BEFORE the model sees the result, so the

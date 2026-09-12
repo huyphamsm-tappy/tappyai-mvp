@@ -12,6 +12,8 @@ import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { track } from '@/lib/tracking/tracker'
+import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
 
@@ -291,6 +293,10 @@ export default function ReviewDetailView({
               wants, because this text appears as if they typed it. */}
           <Link
             href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}&ctx=${encodeURIComponent(review.id)}`}
+            onClick={() => {
+              const ev = askTappyPlaceEvent({ phase: 'click', reviewId: review.id, surface: 'review_detail', hasAddress: !!review.place_address?.trim() })
+              track(ev.event_type, ev.metadata)
+            }}
             /* V3: the bridge is the one thing this pass touches on Explore, so it is the one
                thing that speaks the product's colour. The orange/pink gradient here predated the
                design system and was the only place on the surface using it. Explore's own

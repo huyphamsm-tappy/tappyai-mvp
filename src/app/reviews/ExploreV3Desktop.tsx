@@ -12,6 +12,8 @@ import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoP
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isShareOnlyName, type Review } from './feedShared'
+import { track } from '@/lib/tracking/tracker'
+import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import { cn } from '@/lib/utils'
 
 // ── V3 Web · Page 3 — EXPLORE (desktop) ─────────────────────────────────────
@@ -740,7 +742,11 @@ function ExploreCard({
         {subject && (
           <Link
             href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}&ctx=${encodeURIComponent(r.id)}`}
-            onClick={e => e.stopPropagation()}
+            onClick={e => {
+              e.stopPropagation()
+              const ev = askTappyPlaceEvent({ phase: 'click', reviewId: r.id, surface: 'explore_desktop', hasAddress: !!r.place_address?.trim() })
+              track(ev.event_type, ev.metadata)
+            }}
             className="relative z-10 mt-2.5 inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2"
             style={{ background: 'var(--v3-accent-fill)' }}
           >
