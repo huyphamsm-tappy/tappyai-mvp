@@ -78,9 +78,21 @@ interface CTAButton {
   primary: boolean
 }
 
+/**
+ * Where the opening question came from, when it did not come from the keyboard.
+ *
+ * Today one kind: Explore's "Ask Tappy about this place" names the review it sits on. It is a
+ * REFERENCE — the route reads the place name/address/caption from the `reviews` row itself,
+ * under the caller's RLS — so nothing here can dictate a venue fact. Sent with every request of
+ * this thread (follow-ups are about the same clip); absent from every thread that did not
+ * start on the button, so ordinary chat payloads are byte-identical to before.
+ */
+export type ChatContext = { kind: 'explore_clip'; reviewId: string }
+
 interface ChatInterfaceProps {
   initialMessage?: string
   initialCategory?: string
+  initialContext?: ChatContext
   conversationId?: string
   savedMessages?: Array<{ role: 'user' | 'assistant'; content: string }>
   onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void | Promise<void>
@@ -668,6 +680,7 @@ function TappyAvatar({ category, active, searching, error: isError, listening }:
 export default function ChatInterface({
   initialMessage,
   initialCategory = 'general',
+  initialContext,
   conversationId,
   savedMessages,
   onSave,
@@ -823,6 +836,7 @@ export default function ChatInterface({
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
       ...((responseStyle.tone || responseStyle.length) ? { responseStyle } : {}),
       ...(evidenceKey ? { decisionEvidenceId: evidenceKey } : {}),
+      ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {
       // Latest key wins — see the note on setEvidenceKey.

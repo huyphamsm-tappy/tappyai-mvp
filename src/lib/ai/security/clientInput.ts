@@ -296,3 +296,32 @@ export function readDecisionEvidenceId(body: unknown): string | null {
   const raw = body.decisionEvidenceId
   return typeof raw === 'string' && UUID_RE.test(raw) ? raw : null
 }
+
+/**
+ * The one client context this route understands: "the user pressed Ask Tappy on
+ * an Explore clip". A REFERENCE to a review, nothing more.
+ */
+export type ExploreClipRef = { kind: 'explore_clip'; reviewId: string }
+
+/**
+ * Read the Explore-clip context, or null.
+ *
+ * Same asymmetry as `readDecisionEvidenceId`, for the same reason: the client
+ * may say WHICH review it is looking at, and only that. `place_name`,
+ * `place_address` and the caption are read server-side from the `reviews` row
+ * under the caller's own RLS — a body that also carries `placeName: "some other
+ * venue"` contributes exactly the id and loses everything else, by construction
+ * (the returned object is assembled from two allowlisted fields, never spread).
+ *
+ * Shape only; never rejects the request. An unknown `kind`, a non-object, a
+ * non-UUID id all read as "no context", and the turn proceeds as the plain chat
+ * it would have been without the button. Refusing would turn a stale Explore tab
+ * into an error screen for something the user cannot see.
+ */
+export function readExploreClipContext(body: unknown): ExploreClipRef | null {
+  if (!isRecord(body)) return null
+  const raw = body.context
+  if (!isRecord(raw) || raw.kind !== 'explore_clip') return null
+  const id = raw.reviewId
+  return typeof id === 'string' && UUID_RE.test(id) ? { kind: 'explore_clip', reviewId: id } : null
+}

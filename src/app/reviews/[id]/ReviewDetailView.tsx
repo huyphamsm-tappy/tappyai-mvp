@@ -290,7 +290,7 @@ export default function ReviewDetailView({
               The prompt names the place and asks about it; it does not decide what the user
               wants, because this text appears as if they typed it. */}
           <Link
-            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}`}
+            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: review.place_name }))}&ctx=${encodeURIComponent(review.id)}`}
             /* V3: the bridge is the one thing this pass touches on Explore, so it is the one
                thing that speaks the product's colour. The orange/pink gradient here predated the
                design system and was the only place on the surface using it. Explore's own

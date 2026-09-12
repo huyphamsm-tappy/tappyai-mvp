@@ -15,6 +15,10 @@ function ChatPageContent() {
   const { t } = useTranslation()
   const query = searchParams.get('q') || ''
   const category = searchParams.get('category') || 'general'
+  // Explore's Ask-Tappy bridge names the review it came from (`ctx=<reviewId>`), so the
+  // route can read what the clip is about instead of meeting a bare place name. The
+  // visible question is unchanged — this only says where it came from.
+  const exploreReviewId = searchParams.get('ctx') || undefined
   const catInfo = CATEGORIES.find(c => c.id === category)
 
   const handleSave = useCallback(async (
@@ -61,7 +65,12 @@ function ChatPageContent() {
         ) : 'TappyAI'}
       />
       <div className="flex-1 overflow-hidden">
-        <ChatInterface initialMessage={query} initialCategory={category} onSave={handleSave} />
+        <ChatInterface
+          initialMessage={query}
+          initialCategory={category}
+          initialContext={exploreReviewId ? { kind: 'explore_clip', reviewId: exploreReviewId } : undefined}
+          onSave={handleSave}
+        />
       </div>
       <div className="h-16" />
       <BottomNav />

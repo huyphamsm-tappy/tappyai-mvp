@@ -13,7 +13,8 @@ import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/clientInput'
+import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
+import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
@@ -140,6 +141,12 @@ export async function POST(req: Request) {
     rawUserLocation && typeof rawUserLocation.lat === 'number' && typeof rawUserLocation.lng === 'number'
       ? { lat: rawUserLocation.lat, lng: rawUserLocation.lng, address: rawUserLocation.address || '' }
       : null
+
+  // "Hỏi Tappy về chỗ này" (Explore). Shape-only read of a review REFERENCE; the
+  // facts are loaded server-side below, under the caller's own RLS. See
+  // `lib/ai/exploreClipContext.ts` for why one string was not enough.
+  const clipRef = readExploreClipContext(rawBody)
+  let clipContext: ExploreClipContext | null = null
 
   const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
@@ -284,6 +291,10 @@ export async function POST(req: Request) {
 
   try {
     const { user, supabase } = await getRequestUser(req)
+    // The clip the user is asking about, read through THIS caller's client —
+    // guests included (the anon-key client sees exactly what the public feed
+    // sees). Null on any miss; the turn then runs as plain chat.
+    if (clipRef) clipContext = await loadExploreClipContext(supabase, clipRef.reviewId)
     // Anonymous sessions qualify: a Supabase anonymous identity is a real
     // auth.uid() on the `authenticated` role, which is exactly what the RPCs
     // key on. Guests are the majority web path and the one that fabricated.
@@ -799,7 +810,10 @@ export async function POST(req: Request) {
   // nothing to search for, and the previous turn already produced the result the
   // user is agreeing to. Cheaper AND the right behaviour — a confirmation must
   // never restart a search.
-  const noToolTurn = intent === 'chitchat' || decisionStage === 'confirmation'
+  // A clip question is a place question by construction — the button exists only
+  // on an item with a place — so it is never a no-tool turn even when the short
+  // bridge text alone would have read as chitchat.
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation')
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
@@ -821,6 +835,10 @@ export async function POST(req: Request) {
   enrichment.setRendersDecisionCard(rendersDecisionCard)
 
   const consultativeBlock = [
+    // Explore clip → "this place" is the clip's place. Fenced row values plus the
+    // rule that a clip address stands in for the missing GPS/city. Absent on
+    // every turn that did not come from the button, so generic chat is unchanged.
+    clipContext ? buildExploreClipBlock(clipContext, lang) : '',
     isDecisionDomain ? buildRankingInstructionBlock() : '',
     isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
@@ -978,8 +996,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // that told the user its own results were wrong.
           type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction', 'mall']).optional()
         }),
-        execute: async ({ query, location, type }) => {
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
+        execute: async ({ query, location: modelLocation, type }) => {
+          // Explore clip: when the model names no area, the clip's own address is
+          // the area — the author wrote it, and `searchPlaces` already knows how to
+          // read a city out of free text and how to refuse when it cannot. A
+          // location the model DID name still wins; this only fills a blank.
+          const location = modelLocation ?? exploreClipLocationHint(clipContext)
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
           const r = await searchPlaces(query, location, type, lang, userLocation)
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           // Deterministic ranking runs BEFORE the model sees the result, so the

@@ -89,6 +89,21 @@ describe('Explore → Chat bridge (the one thing V3 adds to Explore)', () => {
     expect(decodeURIComponent(href!)).toContain('Bún bò Huế Cô Ba')
   })
 
+  it('names the review it came from, on the SAME route, and keeps the visible question', () => {
+    // Audit 2026-09-12: with only the prompt, the route met a bare place name and — no GPS, no
+    // city — the place search honestly asked "khu vực nào?". `ctx=<review id>` lets the route
+    // read THIS row's own place name/address/caption. The question the user sees is unchanged,
+    // and there is no second endpoint: still `/chat?q=`.
+    const { container } = renderPost({ id: 'review-123', place_address: 'Quận 1, TP.HCM' } as Partial<Review>)
+    const href = bridge(container)!.getAttribute('href')!
+    const url = new URL(href, 'http://localhost')
+    expect(url.pathname).toBe('/chat')
+    expect(url.searchParams.get('q')).toContain('Bún bò Huế Cô Ba')
+    expect(url.searchParams.get('ctx')).toBe('review-123')
+    // The address is NOT in the URL: the client says which review, the server reads the facts.
+    expect(decodeURIComponent(href)).not.toContain('Quận 1')
+  })
+
   it('does not decide what the user wants', () => {
     // The prompt arrives in the thread as if the user typed it, so it may name the subject and
     // ask about it — it may not assert an intent the user never expressed.

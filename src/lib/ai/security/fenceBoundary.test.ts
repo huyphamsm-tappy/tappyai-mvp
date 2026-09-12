@@ -21,6 +21,8 @@ const PRODUCERS: Array<[string, string]> = [
   ['stored preferences + GPS label', 'src/lib/ai/promptBuilder.ts'],
   ['calendar events', 'src/lib/integrations/googleCalendar.ts'],
   ['client preferences', 'src/app/api/chat/route.ts'],
+  // The Explore clip's own place name / address / caption — typed by whoever posted it.
+  ['explore clip row', 'src/lib/ai/exploreClipContext.ts'],
 ]
 
 describe('the fence is the single implementation', () => {

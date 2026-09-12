@@ -739,7 +739,7 @@ function ExploreCard({
             user supposedly wants; with no subject there is no button. */}
         {subject && (
           <Link
-            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}`}
+            href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}&ctx=${encodeURIComponent(r.id)}`}
             onClick={e => e.stopPropagation()}
             className="relative z-10 mt-2.5 inline-flex min-h-[34px] items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2"
             style={{ background: 'var(--v3-accent-fill)' }}

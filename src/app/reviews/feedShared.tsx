@@ -591,10 +591,17 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 🚨 It shares this `isShareOnlyName` guard with the place line for
                 a reason: no place, no subject. A bridge built from an empty name
                 would look like a working button and open a thread about nothing.
-                Same rule as Home's "Dành cho bạn" — no source, no affordance. */}
+                Same rule as Home's "Dành cho bạn" — no source, no affordance.
+
+                🔑 `ctx=<review id>` NAMES THE CLIP (audit 2026-09-12). The prompt
+                alone reached the route as a bare name, so with no GPS the place
+                search honestly asked "khu vực nào?" — to someone looking at the
+                place. The id lets the route read this row's own place name,
+                address and caption under the caller's RLS; the visible question
+                is exactly what it was. */}
             {online ? (
               <Link
-                href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}`}
+                href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}&ctx=${encodeURIComponent(r.id)}`}
                 onClick={e => e.stopPropagation()}
                 /* min-h-[44px] is not decoration. Cross-screen invariant 5 puts the floor at
                    44x44, and this control sits on a surface where every neighbouring tap
