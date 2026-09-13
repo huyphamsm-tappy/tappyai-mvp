@@ -1,0 +1,26 @@
+import { CCP_ADAPTERS } from '@/lib/config/product'
+import type { ProviderAdapter } from './types'
+import { dmxAdapter } from './dmx'
+import { tripcomAdapter } from './tripcom'
+import { pasgoAdapter } from './pasgo'
+import { cgvAdapter } from './cgv'
+import { klookAdapter } from './klook'
+import type { CommerceRequest } from '../domain/types'
+
+export type { ProviderAdapter, DirectLinkBuild, DiscoveryHint } from './types'
+
+// Exactly the five MVP adapters (owner decision D10). Adding one is a reviewed
+// change here AND a registry entry with a dated depth profile; the adapter
+// test asserts both lists agree.
+export const MVP_ADAPTERS: readonly ProviderAdapter[] = [dmxAdapter, tripcomAdapter, pasgoAdapter, cgvAdapter, klookAdapter]
+
+/** Adapters whose product flag is on and that can serve the request. */
+export type AdapterFlags = Record<keyof typeof CCP_ADAPTERS, boolean>
+
+export function adaptersFor(request: CommerceRequest, flags: AdapterFlags = CCP_ADAPTERS): ProviderAdapter[] {
+  return MVP_ADAPTERS.filter(a => flags[a.entry.enabledFlag] === true && a.supports(request))
+}
+
+export function adapterById(providerId: string): ProviderAdapter | null {
+  return MVP_ADAPTERS.find(a => a.providerId === providerId) ?? null
+}
