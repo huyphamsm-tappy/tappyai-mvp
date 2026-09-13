@@ -3280,5 +3280,240 @@
   .v3-group-pick:active, .v3-group-cta:active:not(:disabled) { transform: none; }
 }
 
+/* ── AI Planner (/planner) — the destination skin ──────────────────────────
+   Lives inside `V3Shell`; this block paints the hero (Tappy `delivery` pose —
+   the scooter — with a route, pins, a plane and a ticket), three feature tiles,
+   the list header, the plan card and its opened itinerary, the side CTA card
+   and the empty state. Paint only — `derivePlans`, the `/chat?q=` CTA, the
+   `/chat/<id>` link, the filter chips and the in-place itinerary are the
+   page's own.
+
+   🚨 The card thumbnail is `plan.coverUrl` (a real stop photo) or a glyph. No
+   destination artwork is drawn here. */
+.v3-planner-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 78% 30%, rgba(37, 99, 235, 0.45), transparent 60%),
+    radial-gradient(50% 70% at 12% 100%, rgba(14, 165, 233, 0.28), transparent 60%),
+    linear-gradient(160deg, #060B1F 0%, #0B1A45 55%, #0E1D58 100%);
+  box-shadow: 0 30px 70px -40px rgba(37, 99, 235, 0.9);
+}
+.v3-planner-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-planner-hero-accent {
+  background-image: linear-gradient(90deg, #38BDF8 0%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v3-planner-eyebrow {
+  background-color: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #BAE6FD;
+  letter-spacing: 0.08em;
+}
+.v3-planner-stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1.5px 1.5px at 30% 12%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 70% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 94% 18%, rgba(255, 255, 255, 0.8), transparent 55%);
+}
+/* Feature tiles under the hero row. */
+.v3-planner-feat {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 42px; padding: 6px 14px 6px 8px; border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+@media (min-width: 640px) { .v3-planner-feat { min-height: 60px; padding: 8px 14px 8px 10px; } }
+.v3-planner-feat-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 10px; color: #FFFFFF;
+  background-image: linear-gradient(135deg, var(--pf-a), var(--pf-b));
+  box-shadow: 0 10px 20px -12px var(--pf-a);
+}
+.v3-planner-feat[data-tone="blue"]   { --pf-a: #3B82F6; --pf-b: #1D4ED8; }
+.v3-planner-feat[data-tone="cyan"]   { --pf-a: #22D3EE; --pf-b: #0284C7; }
+.v3-planner-feat[data-tone="orange"] { --pf-a: #FBBF24; --pf-b: #EA580C; }
+.v3-planner-feat-title { color: #FFFFFF; }
+.v3-planner-feat-desc { color: rgba(226, 232, 255, 0.72); }
+/* The scene: a road drawn in SVG, the scooter on it, pins, a plane, a ticket. */
+.v3-planner-bloom {
+  position: absolute; pointer-events: none; border-radius: 9999px;
+  background-image: radial-gradient(circle at 50% 55%, rgba(56, 189, 248, 0.30) 0%, rgba(37, 99, 235, 0.16) 40%, transparent 72%);
+  filter: blur(6px);
+}
+.v3-planner-road { position: absolute; pointer-events: none; overflow: visible; }
+.v3-planner-mascot { position: absolute; pointer-events: none; z-index: 3; filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.55)); }
+.v3-planner-mascot img { width: 100%; height: auto; display: block; }
+.v3-planner-orb {
+  position: absolute; pointer-events: none; z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 9999px; color: #FFFFFF;
+  background-image: radial-gradient(circle at 35% 30%, var(--po-a), var(--po-b));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.8), 0 0 28px -6px var(--po-a);
+}
+.v3-planner-orb[data-tone="blue"]   { --po-a: #60A5FA; --po-b: #1D4ED8; }
+.v3-planner-orb[data-tone="orange"] { --po-a: #FBBF24; --po-b: #EA580C; }
+.v3-planner-orb[data-tone="rose"]   { --po-a: #FB7185; --po-b: #BE123C; }
+/* A ticket stub: two rounded notches cut with a radial mask. */
+.v3-planner-ticket {
+  position: absolute; pointer-events: none; z-index: 2;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 10px;
+  font-size: 11px; font-weight: 800; letter-spacing: 0.08em; color: #0B1A45;
+  background-image: linear-gradient(135deg, #EAF2FF 0%, #BFD8FF 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 16px 30px -16px rgba(0, 0, 0, 0.8);
+}
+.v3-planner-spark {
+  position: absolute; pointer-events: none; z-index: 2; color: #FDE68A;
+  filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.8));
+}
+.v3-planner-bubble {
+  position: absolute; pointer-events: none; z-index: 4;
+  border-radius: 14px; padding: 8px 12px;
+  font-size: 13px; font-weight: 700; line-height: 1.3; color: #FFFFFF;
+  background-color: rgba(9, 18, 46, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.9), 0 0 24px -6px rgba(56, 189, 248, 0.5);
+}
+.v3-planner-bubble::after {
+  content: ''; position: absolute; bottom: -7px; left: 18px;
+  width: 12px; height: 12px; transform: rotate(45deg);
+  background-color: rgba(9, 18, 46, 0.92);
+  border-right: 1px solid rgba(56, 189, 248, 0.55);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.55);
+}
+@keyframes v3-planner-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.v3-planner-float { animation: v3-planner-float 6s ease-in-out infinite; }
+.v3-planner-float[data-delay="1"] { animation-delay: -2s; }
+.v3-planner-float[data-delay="2"] { animation-delay: -4s; }
+/* List header. */
+.v3-planner-list-title { color: var(--v3-fg); }
+.v3-planner-count {
+  display: inline-flex; align-items: center;
+  min-height: 28px; padding: 0 10px; border-radius: 9999px;
+  font-size: 12.5px; font-weight: 700;
+  color: var(--v3-accent); background-color: var(--v3-accent-soft);
+}
+/* Primary CTA: blue → cyan with glow. */
+.v3-planner-cta {
+  color: #FFFFFF;
+  background-image: linear-gradient(90deg, #2F7BFF 0%, #38BDF8 100%);
+  box-shadow: 0 18px 40px -18px rgba(47, 123, 255, 0.9);
+  transition: filter 150ms, transform 120ms, box-shadow 150ms;
+}
+.v3-planner-cta:hover { filter: brightness(1.06); box-shadow: 0 22px 46px -18px rgba(47, 123, 255, 1); }
+.v3-planner-cta:active { transform: scale(0.99); }
+.v3-planner-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+/* Plan card. */
+.v3-planner-card {
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.dark .v3-planner-card { background-color: #0B1224; border-color: rgba(76, 121, 255, 0.22); }
+.v3-planner-card:hover { border-color: color-mix(in srgb, var(--v3-accent) 55%, transparent); box-shadow: 0 24px 50px -36px rgba(47, 123, 255, 0.7); }
+.v3-planner-thumb {
+  flex-shrink: 0; overflow: hidden; border-radius: 16px;
+  width: 100%; height: 96px;
+  background-color: var(--v3-panel-elevated);
+}
+@media (min-width: 640px) { .v3-planner-thumb { width: 120px; height: 120px; } }
+.v3-planner-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.v3-planner-thumb-glyph {
+  display: flex; align-items: center; justify-content: center; width: 100%; height: 100%;
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, #2F7BFF 0%, #38BDF8 100%);
+}
+.v3-planner-title { color: var(--v3-fg); }
+.v3-planner-kind {
+  display: inline-flex; align-items: center; flex-shrink: 0;
+  min-height: 26px; padding: 0 10px; border-radius: 9999px;
+  font-size: 11.5px; font-weight: 700;
+  color: var(--v3-accent); background-color: var(--v3-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--v3-accent) 35%, transparent);
+}
+.v3-planner-fact {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; font-weight: 600; color: var(--v3-fg-secondary);
+}
+.v3-planner-fact-icon { color: var(--v3-accent); display: inline-flex; }
+.v3-planner-stops { color: var(--v3-fg-muted); }
+.v3-planner-card-foot { border-top: 1px solid var(--v3-border); }
+.v3-planner-updated { color: var(--v3-fg-muted); }
+/* Secondary pill (View itinerary) and the accent text link (Open in the conversation). */
+.v3-planner-btn {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg);
+  transition: border-color 150ms, background-color 150ms, transform 120ms;
+}
+.dark .v3-planner-btn { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); }
+.v3-planner-btn:hover { border-color: var(--v3-accent); }
+.v3-planner-btn:active { transform: scale(0.98); }
+.v3-planner-btn:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-planner-btn svg:last-child { transition: transform 150ms; }
+.v3-planner-btn[aria-expanded="true"] svg:last-child { transform: rotate(180deg); }
+.v3-planner-link { color: var(--v3-accent); }
+.v3-planner-link:hover { text-decoration: underline; }
+.v3-planner-link:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; border-radius: 8px; }
+/* The opened itinerary. */
+.v3-planner-itin { border-top: 1px solid var(--v3-border); background-color: var(--v3-panel-elevated); }
+.dark .v3-planner-itin { background-color: rgba(255, 255, 255, 0.03); }
+.v3-planner-itin-tabs { border-bottom: 1px solid var(--v3-border); }
+.v3-planner-itin li + li { border-top: 1px solid var(--v3-border); }
+.v3-planner-itin-time { color: var(--v3-fg-muted); }
+.v3-planner-itin-name { color: var(--v3-fg); }
+.v3-planner-itin-price { color: var(--v3-accent); }
+.v3-planner-itin-desc { color: var(--v3-fg-secondary); }
+/* Side card: brand panel with the CTA. */
+.v3-planner-side {
+  position: relative; overflow: hidden; isolation: isolate;
+  border-radius: 20px; color: #FFFFFF;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  background-image:
+    radial-gradient(60% 80% at 100% 0%, rgba(56, 189, 248, 0.35), transparent 60%),
+    linear-gradient(160deg, #0B1A45 0%, #123A8A 100%);
+  box-shadow: 0 30px 60px -40px rgba(37, 99, 235, 0.9);
+}
+.v3-planner-side-muted { color: rgba(226, 232, 255, 0.82); }
+.v3-planner-side-cta {
+  color: #FFFFFF;
+  background-image: linear-gradient(90deg, #2F7BFF 0%, #38BDF8 100%);
+  box-shadow: 0 16px 34px -16px rgba(47, 123, 255, 0.9);
+  transition: filter 150ms, transform 120ms;
+}
+.v3-planner-side-cta:hover { filter: brightness(1.06); }
+.v3-planner-side-cta:active { transform: scale(0.99); }
+.v3-planner-side-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+/* Empty state: a composed card with the scooter. */
+.v3-planner-empty {
+  border-radius: 24px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+  background-image: radial-gradient(60% 80% at 50% 0%, var(--v3-accent-soft), transparent 70%);
+}
+.dark .v3-planner-empty { background-color: #0B1224; border-color: rgba(76, 121, 255, 0.22); }
+.v3-planner-empty-title { color: var(--v3-fg); }
+.v3-planner-empty-text { color: var(--v3-fg-muted); }
+.v3-planner-note { color: var(--v3-fg-muted); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-planner-float { animation: none; }
+  .v3-planner-cta, .v3-planner-card, .v3-planner-btn, .v3-planner-btn svg:last-child, .v3-planner-side-cta { transition: none; }
+  .v3-planner-cta:active, .v3-planner-btn:active, .v3-planner-side-cta:active { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }

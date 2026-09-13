@@ -427,6 +427,21 @@ export const vi: Record<string, string> = {
   // Shown once under the list: this surface reads the user's own recent threads, and saying so is
   // cheaper than letting someone wonder where an older plan went.
   'v3.planner.scope': 'Kế hoạch được lấy từ các cuộc trò chuyện gần đây của bạn.',
+  'v3.planner.heroTitle1': 'Kế hoạch của bạn,',
+  'v3.planner.heroTitle2': 'hành trình',
+  'v3.planner.heroTitle3': 'tuyệt vời hơn',
+  'v3.planner.heroBody': 'Hỏi Tappy trong cuộc trò chuyện, nhận lịch trình từng ngày và xem lại mọi kế hoạch ở đây.',
+  'v3.planner.bubble': 'Đi thôi!',
+  'v3.planner.featPlan': 'Lập kế hoạch trong chat',
+  'v3.planner.featPlanDesc': 'Nói ý tưởng, Tappy dựng thành hành trình',
+  'v3.planner.featItinerary': 'Lịch trình từng ngày',
+  'v3.planner.featItineraryDesc': 'Điểm dừng, giờ, giá ước tính, bản đồ',
+  'v3.planner.featSource': 'Xem lại ngay tại đây',
+  'v3.planner.featSourceDesc': 'Lấy từ các cuộc trò chuyện gần đây',
+  'v3.planner.listTitle': 'Kế hoạch của bạn',
+  'v3.planner.sideTitle': 'Biến ý tưởng thành hành trình',
+  'v3.planner.sideBody': 'Lên kế hoạch chuyến đi tiếp theo với TappyAI',
+  'v3.planner.emptyTitle': 'Chuyến đi tiếp theo của bạn bắt đầu từ đây',
 
   // ── Post / Upload panel ─────────────────────────────────────────────────
   'v3.post.drop': 'Kéo thả video hoặc nhấn để chọn',
@@ -895,6 +910,21 @@ export const en: Record<string, string> = {
   'v3.planner.more': 'and {n} more stops',
   'v3.planner.map': 'Map',
   'v3.planner.scope': 'Plans are read from your recent conversations.',
+  'v3.planner.heroTitle1': 'Your plans,',
+  'v3.planner.heroTitle2': 'your journey',
+  'v3.planner.heroTitle3': 'made better',
+  'v3.planner.heroBody': 'Ask Tappy in a conversation, get a day-by-day itinerary, and find every plan again right here.',
+  'v3.planner.bubble': 'Let’s go!',
+  'v3.planner.featPlan': 'Plan in the chat',
+  'v3.planner.featPlanDesc': 'Say the idea, Tappy shapes it into a trip',
+  'v3.planner.featItinerary': 'Day-by-day itinerary',
+  'v3.planner.featItineraryDesc': 'Stops, times, estimated prices, maps',
+  'v3.planner.featSource': 'Find them again here',
+  'v3.planner.featSourceDesc': 'Read from your recent conversations',
+  'v3.planner.listTitle': 'Your plans',
+  'v3.planner.sideTitle': 'Turn an idea into a journey',
+  'v3.planner.sideBody': 'Plan your next trip with TappyAI',
+  'v3.planner.emptyTitle': 'Your next trip starts here',
 
   // ── Post / Upload panel ─────────────────────────────────────────────────
   'v3.post.drop': 'Drop a video here, or tap to choose',
