@@ -5,9 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {
   Search, Bell, ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark, Sparkles,
-  Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff, X,
-  UserRound,
+  Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff,
+  UserRound, Mouse, SlidersHorizontal, Utensils, Flame, ArrowRight,
 } from 'lucide-react'
+import V3Shell from '@/components/v3/V3Shell'
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { createClient } from '@/lib/supabase/client'
@@ -17,16 +18,24 @@ import { isShareOnlyName, ago, type Review } from './feedShared'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 
-// ── V3 Web · EXPLORE — the approved spatial stage (≥ 768px) ─────────────────
+// ── V3 Web · EXPLORE — the approved three-column composition (≥ 768px) ─────
 //
-// Built to the approved reference, element for element: a full-viewport dark
-// stage with its own top bar, five clips in one perspective space with the
+// Inside `V3Shell` — its sidebar, bottom bar and footer untouched — with the
+// page's own top bar in the shell's header slot, MAIN is the cinematic stage and,
+// from `xl`, a RIGHT COLUMN of real discovery data beside it (below it on
+// narrower screens; never hidden). Five clips in one perspective space with the
 // active clip largest and nearest, a lit floor beneath it, editorial copy top
-// right, position + progress line bottom left, the SCROLL • SWIPE • EXPLORE
-// hint bottom centre and a thumbnail navigator bottom right. The active card
-// carries the creator header (avatar · name · time · Follow · overflow), the
-// title and location block, the action rail with real counts and the playback
-// strip.
+// left, position + progress line bottom left, the SCROLL • SWIPE • EXPLORE hint
+// bottom centre and a thumbnail navigator bottom right. The active card carries
+// the creator header (avatar · name · time · Follow · overflow), the compact
+// icon+count action rail, and — in its bottom zone over a gradient — the caption,
+// the location and the playback strip.
+//
+// 🚨 THE RIGHT COLUMN IS REAL DATA OR NOTHING: `/api/recommendations` (ranked
+// places from real reviews), the last day's most-liked places (the phone feed's
+// own query), the chat CTA, and creators from the loaded feed the viewer does not
+// follow yet. The reference's ratings, photos and discussion counts have no
+// source here and are not drawn.
 //
 // 🚨 ONE SOURCE OF TRUTH. `active` is the only index. The mounted player, the
 // overlay, the Ask-Tappy link (and so the `ctx=<reviewId>` the chat keeps), the
@@ -102,15 +111,18 @@ const mmss = (s: number) => {
 
 // ── The spatial model ───────────────────────────────────────────────────────
 //
-// Measured off the approved reference (1536 × 1024): the active card is 0.307 of
-// the viewport wide and 1.555 times as tall as it is wide; the neighbours' centres
+// Measured off the approved reference (1536 × 1024): the active card is 1.555 times
+// as tall as it is wide (see `widthShare` for its width); the neighbours' centres
 // sit ±0.82 card-widths from the middle, the far pair ±1.3, and each step back is
 // smaller and turned further away. Each row is indexed by |distance|: 0 = active,
 // 1 = neighbour, 2 = far, 3 = the slot a card leaves from / arrives at. A drag
 // interpolates between the rows, so the space turns with the finger.
 interface Geometry { x: number[]; z: number[]; rot: number[]; sc: number[]; op: number[]; widthShare: number; heightShare: number }
 const GEOMETRY: Record<'desktop' | 'tablet', Geometry> = {
-  desktop: { x: [0, 0.82, 1.3, 1.6], z: [0, -140, -300, -460], rot: [0, 24, 38, 44], sc: [1, 0.86, 0.72, 0.6], op: [1, 0.96, 0.86, 0], widthShare: 0.307, heightShare: 0.78 },
+  // Measured off the approved reference's MAIN region (the stage between the sidebar and the
+  // right column, ~1040px wide at 1536): the active card is ~0.4 of it; the neighbours' centres
+  // sit ±0.77 card-widths out, turned ~32°, the far pair ±1.14, turned ~45°.
+  desktop: { x: [0, 0.77, 1.14, 1.45], z: [0, -120, -260, -420], rot: [0, 32, 45, 50], sc: [1, 0.76, 0.6, 0.5], op: [1, 0.96, 0.86, 0], widthShare: 0.4, heightShare: 0.78 },
   tablet: { x: [0, 0.7, 1.12, 1.4], z: [0, -180, -360, -500], rot: [0, 24, 36, 42], sc: [1, 0.8, 0.62, 0.5], op: [1, 0.9, 0.7, 0], widthShare: 0.5, heightShare: 0.7 },
 }
 
@@ -154,7 +166,7 @@ export default function ExploreStage() {
   const [sort, setSort] = useState<FeedSort>('for-you')
   const [search, setSearch] = useState('')
   const [submitted, setSubmitted] = useState('')
-  const [searchOpen, setSearchOpen] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
 
   // 🚨 The one index. See the note at the top.
   const [active, setActive] = useState(0)
@@ -208,7 +220,7 @@ export default function ExploreStage() {
       if (el instanceof HTMLInputElement || el instanceof HTMLTextAreaElement) return
       if (e.key === 'ArrowRight') { e.preventDefault(); step(1) }
       if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1) }
-      if (e.key === 'Escape') setSearchOpen(false)
+      if (e.key === 'Escape') setFiltersOpen(false)
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
@@ -241,17 +253,19 @@ export default function ExploreStage() {
   }, [loading, error, count])
   // Before the first measurement (and in environments with no layout) a nominal stage
   // keeps the cards drawn; the observer corrects it on the next frame.
-  const stageW = box.w || 1440
+  const stageW = box.w || 1040
   const stageH = box.h || 900
-  const mode: 'desktop' | 'tablet' = stageW >= 1000 ? 'desktop' : 'tablet'
+  // The stage is the MAIN column (932px at 1440 beside the sidebar and the right column);
+  // five drawn fits from ~700px up, below that three drawn with a deep cue.
+  const mode: 'desktop' | 'tablet' = stageW >= 700 ? 'desktop' : 'tablet'
   const g = GEOMETRY[mode]
   // The reference's proportions: width share of the viewport, capped by the height
   // share so a short window cannot push the card past the fold.
   const cardW = Math.floor(Math.min(stageW * g.widthShare, (stageH * g.heightShare) / 1.555))
   const cardH = Math.floor(cardW * 1.555)
-  // Cards are centred at 40% of the stage (the reference's 45% of the viewport once the
+  // Cards are centred at 44% of the stage (the reference's 45% of the viewport once the
   // top bar is counted); the floor sits just under the active card's bottom edge.
-  const floorTop = Math.round(stageH * 0.40 + cardH / 2 - 26)
+  const floorTop = Math.round(stageH * 0.44 + cardH / 2 - 26)
 
   // ── Drag: the space turns with the pointer, then settles on the nearest clip ──
   const [drag, setDrag] = useState(0)
@@ -364,186 +378,334 @@ export default function ExploreStage() {
     { href: '/music', key: 'v3.explore.navMusic', current: false },
   ]
 
-  return (
-    // Always the dark media treatment — see the note at the top.
-    <div className="v3-theme dark v3-xp" data-explore-stage-page>
-      {/* ── Top bar: logo · Explore / Ask Tappy / Plan / Music · search / bell / avatar ── */}
-      <header className="v3-xp-bar">
-        <Link href="/" className="v3-xp-logo justify-self-start" aria-label="TappyAI">Tappy</Link>
-        <nav className="v3-xp-nav" aria-label={t('v3.explore.title')}>
-          {navLinks.map(l => (
-            <Link key={l.href} href={l.href} aria-current={l.current ? 'page' : undefined}>{t(l.key)}</Link>
-          ))}
-        </nav>
-        <div className="v3-xp-tools">
-          <button type="button" className="v3-xp-tool" onClick={() => setSearchOpen(v => !v)} aria-expanded={searchOpen} aria-label={t('v3.explore.navSearch')} data-xp-search-toggle>
-            <Search size={21} aria-hidden="true" />
-          </button>
-          <Link href="/profile/notifications" className="v3-xp-tool" aria-label={t('v3.explore.navInbox')}>
-            <Bell size={21} aria-hidden="true" />
-            {unreadCount > 0 && <span className="v3-xp-badge" aria-hidden="true" data-xp-unread />}
-          </Link>
-          {me
-            ? <Link href="/profile" aria-label={t('v3.explore.navProfile')} className="ml-2">
-                {me.avatarUrl
-                  // eslint-disable-next-line @next/next/no-img-element -- the session's own avatar URL, any host
-                  ? <img src={me.avatarUrl} alt="" className="v3-xp-avatar" />
-                  : <span className="v3-xp-avatar-empty"><UserRound size={20} aria-hidden="true" /></span>}
-              </Link>
-            : <Link href={`/login?returnTo=${encodeURIComponent('/reviews')}`} aria-label={t('v3.explore.signIn')} className="ml-2">
-                <span className="v3-xp-avatar-empty"><UserRound size={20} aria-hidden="true" /></span>
-              </Link>}
-        </div>
-      </header>
-
-      {/* The EXISTING search (`/api/reviews/feed?search=`) and the REAL sorts, behind the
-          search glyph the reference puts in the top bar. */}
-      {searchOpen && (
-        <div className="v3-xp-search" data-xp-search>
-          <form className="relative" onSubmit={e => { e.preventDefault(); setSubmitted(search) }} role="search">
-            <Search size={17} aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-white/60" />
-            <input
-              autoFocus
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              placeholder={t('v3.explore.searchPlaceholder')}
-              aria-label={t('v3.explore.searchPlaceholder')}
-            />
-          </form>
-          <div className="mt-3 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-[12px] text-white/50">{t('v3.explore.filters')}</span>
-            {SORTS.map(s => {
-              const on = sort === s.id && !submitted
-              return (
-                <button key={s.id} type="button" className="v3-xp-chip" aria-pressed={on} onClick={() => { setSubmitted(''); setSearch(''); setSort(s.id) }}>
-                  {t(s.labelKey)}
-                </button>
-              )
-            })}
-            <button type="button" className="v3-xp-tool ml-auto h-8 w-8" onClick={() => setSearchOpen(false)} aria-label={t('v3.explore.closeSearch')}>
-              <X size={16} aria-hidden="true" />
-            </button>
-          </div>
+  // ── The page's own top bar, rendered in the shell's header slot ──────────
+  // Real navigation only: routes that exist, the unread count the provider already keeps,
+  // the session's own avatar. The search field is the existing feed search; the glyph
+  // beside it opens the real sort filters.
+  const topBar = (
+    <header className="v3-xp-bar" data-xp-bar>
+      <Link href="/" className="v3-xp-logo" aria-label="TappyAI">Tappy</Link>
+      <nav className="v3-xp-nav" aria-label={t('v3.explore.title')}>
+        {navLinks.map(l => (
+          <Link key={l.href} href={l.href} aria-current={l.current ? 'page' : undefined}>{t(l.key)}</Link>
+        ))}
+      </nav>
+      <div className="v3-xp-tools">
+        <form className="v3-xp-field" onSubmit={e => { e.preventDefault(); setSubmitted(search) }} role="search" data-xp-search>
+          <Search size={16} aria-hidden="true" className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/55" />
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder={t('v3.explore.searchField')}
+            aria-label={t('v3.explore.searchField')}
+          />
+        </form>
+        <button type="button" className="v3-xp-tool" onClick={() => setFiltersOpen(v => !v)} aria-expanded={filtersOpen} aria-label={t('v3.explore.filters')} data-xp-filter-toggle>
+          <SlidersHorizontal size={20} aria-hidden="true" />
+        </button>
+        <Link href="/profile/notifications" className="v3-xp-tool" aria-label={t('v3.explore.navInbox')}>
+          <Bell size={20} aria-hidden="true" />
+          {unreadCount > 0 && <span className="v3-xp-badge" aria-hidden="true" data-xp-unread />}
+        </Link>
+        {me
+          ? <Link href="/profile" aria-label={t('v3.explore.navProfile')} className="ml-1">
+              {me.avatarUrl
+                // eslint-disable-next-line @next/next/no-img-element -- the session's own avatar URL, any host
+                ? <img src={me.avatarUrl} alt="" className="v3-xp-avatar" />
+                : <span className="v3-xp-avatar-empty"><UserRound size={18} aria-hidden="true" /></span>}
+            </Link>
+          : <Link href={`/login?returnTo=${encodeURIComponent('/reviews')}`} aria-label={t('v3.explore.signIn')} className="ml-1">
+              <span className="v3-xp-avatar-empty"><UserRound size={18} aria-hidden="true" /></span>
+            </Link>}
+      </div>
+      {filtersOpen && (
+        <div className="v3-xp-filters" data-xp-filters>
+          <span className="text-[12px] text-white/50">{t('v3.explore.filters')}</span>
+          {SORTS.map(s => {
+            const on = sort === s.id && !submitted
+            return (
+              <button key={s.id} type="button" className="v3-xp-chip" aria-pressed={on} onClick={() => { setSubmitted(''); setSearch(''); setSort(s.id); setFiltersOpen(false) }}>
+                {t(s.labelKey)}
+              </button>
+            )
+          })}
         </div>
       )}
+    </header>
+  )
 
-      {/* ── The stage ─────────────────────────────────────────────────────── */}
-      <div
-        ref={stageRef}
-        className="v3-xp-stage"
-        data-explore-stage
-        data-mode={mode}
-        data-dragging={dragging ? 'true' : 'false'}
-        data-active-index={active}
-        data-active-review-id={activeReview?.id ?? ''}
-        onWheel={onWheel}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onClickCapture={onClickCapture}
-      >
-        {/* Ambient light from the active clip's own poster. Decorative. */}
-        <div
-          className="v3-xp-ambient"
-          aria-hidden="true"
-          data-empty={activeReview?.thumbnail ? 'false' : 'true'}
-          style={activeReview?.thumbnail ? { backgroundImage: `url("${activeReview.thumbnail}")` } : undefined}
-        />
+  return (
+    <V3Shell title={t('v3.explore.title')} subtitle={t('v3.explore.subtitle')} activeTab="/reviews" header={topBar} flush>
+      {/* Always the dark media treatment — see the note at the top. */}
+      <div className="v3-theme dark v3-xp" data-explore-stage-page>
+        <div className="v3-xp-grid">
+          {/* ── MAIN: the stage ─────────────────────────────────────────── */}
+          <div
+            ref={stageRef}
+            className="v3-xp-stage"
+            data-explore-stage
+            data-mode={mode}
+            data-dragging={dragging ? 'true' : 'false'}
+            data-active-index={active}
+            data-active-review-id={activeReview?.id ?? ''}
+            onWheel={onWheel}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={endDrag}
+            onPointerCancel={endDrag}
+            onClickCapture={onClickCapture}
+          >
+            {/* Ambient light from the active clip's own poster. Decorative. */}
+            <div
+              className="v3-xp-ambient"
+              aria-hidden="true"
+              data-empty={activeReview?.thumbnail ? 'false' : 'true'}
+              style={activeReview?.thumbnail ? { backgroundImage: `url("${activeReview.thumbnail}")` } : undefined}
+            />
 
-        {/* Editorial copy — the approved composition's line, top right. */}
-        <div className="v3-xp-editorial" aria-hidden="true" data-xp-editorial>
-          <p>{t('v3.explore.editorial1')}</p>
-          <p>{t('v3.explore.editorial2')}</p>
-          <p>{t('v3.explore.editorial3')}</p>
-        </div>
-
-        {loading && (
-          <div className="v3-xp-state"><Loader2 size={26} className="animate-spin" /></div>
-        )}
-        {!loading && error && (
-          <div className="v3-xp-state"><AlertCircle size={34} className="opacity-60" aria-hidden="true" /><p className="text-[13px]">{t('reviews.feedLoadError')}</p></div>
-        )}
-        {!loading && !error && count === 0 && (
-          <div className="v3-xp-state"><PlayCircle size={34} className="opacity-50" aria-hidden="true" /><p className="text-[13px]">{t('v3.explore.empty')}</p></div>
-        )}
-
-        {!loading && !error && count > 0 && (
-          <>
-            {/* The lit floor: pool of light, the platform ellipse, its bright rim. */}
-            <div className="v3-xp-floor" data-layer="pool" aria-hidden="true" style={{ top: floorTop - 90, width: cardW * 3.6, height: 260 }} />
-            <div className="v3-xp-floor" data-layer="platform" aria-hidden="true" style={{ top: floorTop - 6, width: cardW * 2.4, height: 96 }} />
-            <div className="v3-xp-floor" data-layer="rim" aria-hidden="true" style={{ top: floorTop + 52, width: cardW * 3.0, height: 60 }} />
-
-            <div className="v3-xp-space">
-              {drawn.map(({ r, index, d }) => {
-                const { transform, opacity } = slotTransform(d - drag, g, cardW)
-                const role = slotRole(d)
-                return (
-                  <StageCard
-                    key={r.id}
-                    review={r}
-                    role={role}
-                    me={me}
-                    style={{ width: cardW, height: cardH, transform, opacity, zIndex: 10 - Math.abs(d), top: '40%' }}
-                    onSelect={() => setActive(index)}
-                    onLike={() => void toggle(r, 'like')}
-                    onSave={() => void toggle(r, 'save')}
-                    onFollow={() => void follow(r)}
-                    onRemoved={() => remove(r.id)}
-                    subject={askSubject(r)}
-                    t={t}
-                  />
-                )
-              })}
+            {/* Editorial copy — the approved composition's line, top left of the main region. */}
+            <div className="v3-xp-editorial" aria-hidden="true" data-xp-editorial>
+              <p>{t('v3.explore.editorial1')}</p>
+              <p>{t('v3.explore.editorial2')}</p>
+              <p>{t('v3.explore.editorial3')}</p>
             </div>
 
-            {count > 1 && (
+            {loading && (
+              <div className="v3-xp-state"><Loader2 size={26} className="animate-spin" /></div>
+            )}
+            {!loading && error && (
+              <div className="v3-xp-state"><AlertCircle size={34} className="opacity-60" aria-hidden="true" /><p className="text-[13px]">{t('reviews.feedLoadError')}</p></div>
+            )}
+            {!loading && !error && count === 0 && (
+              <div className="v3-xp-state"><PlayCircle size={34} className="opacity-50" aria-hidden="true" /><p className="text-[13px]">{t('v3.explore.empty')}</p></div>
+            )}
+
+            {!loading && !error && count > 0 && (
               <>
-                <button type="button" className="v3-xp-nav-btn left-5" onClick={() => step(-1)} disabled={active === 0} aria-label={t('v3.explore.prev')} data-stage-prev>
-                  <ChevronLeft size={20} aria-hidden="true" />
-                </button>
-                <button type="button" className="v3-xp-nav-btn right-5" onClick={() => step(1)} disabled={active === count - 1} aria-label={t('v3.explore.next')} data-stage-next>
-                  <ChevronRight size={20} aria-hidden="true" />
-                </button>
+                {/* The lit floor: pool of light, the platform ellipse, its bright rim. */}
+                <div className="v3-xp-floor" data-layer="pool" aria-hidden="true" style={{ top: floorTop - 90, width: cardW * 3.6, height: 260 }} />
+                <div className="v3-xp-floor" data-layer="platform" aria-hidden="true" style={{ top: floorTop - 6, width: cardW * 2.4, height: 96 }} />
+                <div className="v3-xp-floor" data-layer="rim" aria-hidden="true" style={{ top: floorTop + 52, width: cardW * 3.0, height: 60 }} />
+
+                <div className="v3-xp-space">
+                  {drawn.map(({ r, index, d }) => {
+                    const { transform, opacity } = slotTransform(d - drag, g, cardW)
+                    const role = slotRole(d)
+                    return (
+                      <StageCard
+                        key={r.id}
+                        review={r}
+                        role={role}
+                        me={me}
+                        style={{ width: cardW, height: cardH, transform, opacity, zIndex: 10 - Math.abs(d), top: '44%' }}
+                        onSelect={() => setActive(index)}
+                        onLike={() => void toggle(r, 'like')}
+                        onSave={() => void toggle(r, 'save')}
+                        onFollow={() => void follow(r)}
+                        onRemoved={() => remove(r.id)}
+                        subject={askSubject(r)}
+                        t={t}
+                      />
+                    )
+                  })}
+                </div>
+
+                {count > 1 && (
+                  <>
+                    <button type="button" className="v3-xp-nav-btn left-4" onClick={() => step(-1)} disabled={active === 0} aria-label={t('v3.explore.prev')} data-stage-prev>
+                      <ChevronLeft size={20} aria-hidden="true" />
+                    </button>
+                    <button type="button" className="v3-xp-nav-btn right-4" onClick={() => step(1)} disabled={active === count - 1} aria-label={t('v3.explore.next')} data-stage-next>
+                      <ChevronRight size={20} aria-hidden="true" />
+                    </button>
+                  </>
+                )}
+
+                {/* Position + progress line, bottom left. */}
+                <div className="v3-xp-pos" data-xp-pos>
+                  <span className="v3-xp-pos-num" data-stage-pos aria-live="polite">{active + 1} / {count}</span>
+                  <div className="v3-xp-line" aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} data-xp-line /></div>
+                </div>
+
+                {/* The scroll cue and the hint, bottom centre. */}
+                <div className="v3-xp-hint" aria-hidden="true" data-xp-hint>
+                  <Mouse size={22} strokeWidth={1.5} />
+                  <span>{t('v3.explore.scrollHint')}</span>
+                </div>
+
+                {/* Thumbnail navigator, bottom right: the clips' own posters. */}
+                {count > 1 && (
+                  <div className="v3-xp-thumbs" role="tablist" aria-label={t('v3.explore.thumbs')} data-xp-thumbs>
+                    {rows.slice(0, 8).map((r, i) => (
+                      <button
+                        key={r.id}
+                        type="button"
+                        role="tab"
+                        className="v3-xp-thumb"
+                        aria-current={i === active ? 'true' : undefined}
+                        aria-selected={i === active}
+                        aria-label={t('v3.explore.goTo', { n: String(i + 1) })}
+                        onClick={() => setActive(i)}
+                      >
+                        {r.thumbnail
+                          // eslint-disable-next-line @next/next/no-img-element -- feed poster, any host
+                          ? <img src={r.thumbnail} alt="" loading="lazy" />
+                          : <span className="v3-xp-thumb-empty" aria-hidden="true">{i + 1}</span>}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </>
             )}
+          </div>
 
-            {/* Position + progress line, bottom left. */}
-            <div className="v3-xp-pos" data-xp-pos>
-              <span className="v3-xp-pos-num" data-stage-pos aria-live="polite">{active + 1} / {count}</span>
-              <div className="v3-xp-line" aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} data-xp-line /></div>
-            </div>
-
-            {/* The hint, bottom centre. */}
-            <p className="v3-xp-hint" aria-hidden="true" data-xp-hint>{t('v3.explore.scrollHint')}</p>
-
-            {/* Thumbnail navigator, bottom right: the clips' own posters. */}
-            {count > 1 && (
-              <div className="v3-xp-thumbs" role="tablist" aria-label={t('v3.explore.thumbs')} data-xp-thumbs>
-                {rows.slice(0, 8).map((r, i) => (
-                  <button
-                    key={r.id}
-                    type="button"
-                    role="tab"
-                    className="v3-xp-thumb"
-                    aria-current={i === active ? 'true' : undefined}
-                    aria-selected={i === active}
-                    aria-label={t('v3.explore.goTo', { n: String(i + 1) })}
-                    onClick={() => setActive(i)}
-                  >
-                    {r.thumbnail
-                      // eslint-disable-next-line @next/next/no-img-element -- feed poster, any host
-                      ? <img src={r.thumbnail} alt="" loading="lazy" />
-                      : <span className="v3-xp-thumb-empty" aria-hidden="true">{i + 1}</span>}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        )}
+          {/* ── RIGHT COLUMN: real discovery data ───────────────────────── */}
+          <RightColumn rows={rows} me={me} onFollow={r => void follow(r)} t={t} />
+        </div>
       </div>
-    </div>
+    </V3Shell>
+  )
+}
+
+/* ── The right column ──────────────────────────────────────────────────────
+ *
+ * Four panels, each drawn only when its REAL source has something to show:
+ *   · Suggested for you — `/api/recommendations` (ranked places from real reviews; the
+ *     `/recommendations` page's own endpoint). Signed-out visitors get a 401 and no panel.
+ *   · Trending today — the last day's most-liked places, the phone feed's own query
+ *     (`review_likes` joined to `reviews.place_name`).
+ *   · The chat CTA — the app's one entry into Tappy.
+ *   · You may like — creators of the clips on stage the viewer does not follow yet, with the
+ *     real follow endpoint. There is no "suggested users" API; the feed is the honest source.
+ * Nothing here has a rating, a photo or a discussion count, so none is drawn.
+ */
+type Rec = { placeId: string; placeName: string }
+type Hot = { place_name: string; count: number }
+
+function RightColumn({ rows, me, onFollow, t }: {
+  rows: Review[]
+  me: Me
+  onFollow: (r: Review) => void
+  t: (key: string, vars?: Record<string, string>) => string
+}) {
+  const [recs, setRecs] = useState<Rec[]>([])
+  const [hot, setHot] = useState<Hot[]>([])
+
+  useEffect(() => {
+    let alive = true
+    fetch('/api/recommendations', { credentials: 'include' })
+      .then(r => (r.ok ? r.json() : null))
+      .then(d => { if (alive && d && Array.isArray(d.recommendations)) setRecs(d.recommendations.filter((x: Rec) => x.placeName?.trim()).slice(0, 3)) })
+      .catch(() => {})
+    return () => { alive = false }
+  }, [])
+
+  useEffect(() => {
+    let alive = true
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    ;(async () => {
+      try {
+        const { data } = await createClient()
+          .from('review_likes')
+          .select('reviews!inner(place_name)')
+          .gte('created_at', since)
+          .limit(200)
+        const counts = new Map<string, number>()
+        for (const row of (data || []) as Array<{ reviews?: { place_name?: string | null } | null }>) {
+          const name = row.reviews?.place_name
+          if (name && !isShareOnlyName(name)) counts.set(name, (counts.get(name) || 0) + 1)
+        }
+        if (alive) setHot(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([place_name, count]) => ({ place_name, count })))
+      } catch {
+        // Best-effort: the panel simply does not render.
+      }
+    })()
+    return () => { alive = false }
+  }, [])
+
+  // Creators on stage the viewer could follow: unique, not me, not followed, with a real profile.
+  const people = useMemo(() => {
+    const seen = new Set<string>()
+    const out: Review[] = []
+    for (const r of rows) {
+      if (!r.profiles?.full_name?.trim() || r.is_following || (me && me.id === r.user_id) || seen.has(r.user_id)) continue
+      seen.add(r.user_id)
+      out.push(r)
+      if (out.length === 3) break
+    }
+    return out
+  }, [rows, me])
+
+  return (
+    <aside className="v3-xp-right" aria-label={t('v3.explore.recTitle')} data-xp-right>
+      {recs.length > 0 && (
+        <section className="v3-xp-panel" data-xp-recs>
+          <div className="flex items-center justify-between">
+            <h2 className="v3-xp-panel-title">{t('v3.explore.recTitle')}</h2>
+            <Link href="/recommendations" className="v3-xp-panel-link">{t('v3.explore.seeAll')}</Link>
+          </div>
+          <div className="mt-1">
+            {recs.map(r => (
+              <div key={r.placeId} className="v3-xp-rec">
+                <span className="v3-xp-rec-glyph" aria-hidden="true"><Utensils size={18} /></span>
+                <div className="min-w-0 flex-1">
+                  <p className="v3-xp-rec-name truncate">{r.placeName}</p>
+                  <Link href={`/chat?q=${encodeURIComponent(t('recommendations.askPrompt', { place: r.placeName }))}`} className="v3-xp-rec-sub inline-flex items-center gap-1 hover:underline">
+                    {t('v3.explore.recAsk')} <ArrowRight size={12} aria-hidden="true" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {hot.length > 0 && (
+        <section className="v3-xp-panel" data-xp-trends>
+          <h2 className="v3-xp-panel-title flex items-center gap-2"><Flame size={16} className="text-orange-400" aria-hidden="true" />{t('v3.explore.trendTitle')}</h2>
+          <ol className="mt-1">
+            {hot.map((h, i) => (
+              <li key={h.place_name} className="v3-xp-trend">
+                <span className="v3-xp-trend-n" aria-hidden="true">{i + 1}</span>
+                <span className="min-w-0">
+                  <span className="v3-xp-rec-name block truncate">{h.place_name}</span>
+                  <span className="v3-xp-rec-sub block">{t('reviews.hotCount', { n: String(h.count) })}</span>
+                </span>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
+
+      <section className="v3-xp-cta" data-xp-cta>
+        <p className="text-[15px] font-bold leading-snug">{t('v3.explore.ctaTitle')}</p>
+        <Link href="/chat" className="v3-xp-cta-btn mt-4">
+          {t('v3.explore.ctaButton')} <ArrowRight size={14} aria-hidden="true" />
+        </Link>
+      </section>
+
+      {people.length > 0 && (
+        <section className="v3-xp-panel" data-xp-people>
+          <div className="flex items-center justify-between">
+            <h2 className="v3-xp-panel-title">{t('v3.explore.peopleTitle')}</h2>
+            <Link href="/social" className="v3-xp-panel-link">{t('v3.explore.seeAll')}</Link>
+          </div>
+          <div className="mt-1">
+            {people.map(r => (
+              <div key={r.user_id} className="v3-xp-person">
+                <Link href={`/users/${r.user_id}`} className="flex min-w-0 items-center gap-3">
+                  <Avatar src={r.profiles?.avatar_url ?? null} broken={false} onBroken={() => {}} name={r.profiles!.full_name!} size={36} />
+                  <span className="v3-xp-person-name truncate">{r.profiles!.full_name}</span>
+                </Link>
+                <button type="button" className="v3-xp-person-follow" onClick={() => onFollow(r)} data-xp-person-follow>
+                  {t('reviews.follow')}
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+    </aside>
   )
 }
 
@@ -573,13 +735,14 @@ function StageCard({
   const active = role === 'active'
   const [avatarBroken, setAvatarBroken] = useState(false)
   const [menu, setMenu] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   // The player expresses pause through `PlaybackSession.onUserPauseToggle()`;
   // the session owns that intent, so autoplay cannot undo a deliberate pause.
   const playerRef = useRef<VideoPlayerHandle>(null)
   const cardRef = useRef<HTMLElement>(null)
   const [userPaused, setUserPaused] = useState(false)
-  useEffect(() => { if (!active) { setUserPaused(false); setMenu(false) } }, [active])
+  useEffect(() => { if (!active) { setUserPaused(false); setMenu(false); setExpanded(false) } }, [active])
 
   // ── The playback strip reads the player's own <video>: time and duration ──
   // Presentation only. It subscribes to the element `VideoPlayer` mounted and never
@@ -622,6 +785,7 @@ function StageCard({
   const place = isShareOnlyName(r.place_name) ? null : r.place_name
   const address = (r.place_address ?? '').trim() || null
   const when = ago(r.created_at, t)
+  const longCaption = caption.length > 120
 
   return (
     <article
@@ -671,20 +835,19 @@ function StageCard({
       {active ? (
         <>
           {/* ── Creator header: avatar · name · time · Follow · overflow ─────── */}
-          <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-3 p-4">
+          <div className="absolute inset-x-0 top-0 z-10 flex items-center gap-3 p-3.5">
             {author ? (
-              <Link href={`/users/${r.user_id}`} onClick={e => e.stopPropagation()} aria-label={t('v3.explore.viewAuthor', { name: author })} className="relative z-10 flex min-w-0 items-center gap-3 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
-                <Avatar src={avatar} broken={avatarBroken} onBroken={() => setAvatarBroken(true)} name={author} size={40} />
+              <Link href={`/users/${r.user_id}`} onClick={e => e.stopPropagation()} aria-label={t('v3.explore.viewAuthor', { name: author })} className="relative z-10 flex min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+                <Avatar src={avatar} broken={avatarBroken} onBroken={() => setAvatarBroken(true)} name={author} size={38} />
                 <span className="min-w-0">
-                  <span className="v3-xp-creator block truncate text-[15px] font-semibold leading-tight">{author}</span>
-                  <span className="v3-xp-creator-time block text-[12.5px] leading-tight">{when}</span>
+                  <span className="v3-xp-creator block truncate text-[14.5px] font-semibold leading-tight">{author}</span>
+                  <span className="v3-xp-creator-time block text-[12px] leading-tight">{when}</span>
                 </span>
               </Link>
             ) : (
-              <span className="v3-xp-creator-time text-[12.5px]">{when}</span>
+              <span className="v3-xp-creator-time text-[12px]">{when}</span>
             )}
-            <span className="ml-auto flex items-center gap-2">
-              {/* Follow — the feed's rule: someone else's post, not yet followed, signed in or sent to sign in. */}
+            <span className="ml-auto flex items-center gap-1.5">
               {!isMe && !r.is_following && (
                 <button type="button" className="v3-xp-follow relative z-10" onClick={e => { e.stopPropagation(); onFollow() }} data-xp-follow>
                   {t('reviews.follow')}
@@ -693,7 +856,6 @@ function StageCard({
               {!isMe && r.is_following && (
                 <span className="v3-xp-follow" data-on="true" data-xp-following>{t('reviews.following')}</span>
               )}
-              {/* Overflow — only the owner has actions here (delete / hide), as on the phone feed. */}
               {isMe && (
                 <span className="relative">
                   <button type="button" className="v3-xp-more relative z-10" onClick={e => { e.stopPropagation(); setMenu(v => !v) }} aria-haspopup="menu" aria-expanded={menu} aria-label={t('v3.explore.more')} data-xp-more>
@@ -725,71 +887,72 @@ function StageCard({
             </span>
           </div>
 
-          {/* ── Title + location: the clip's caption as the headline, the place beneath ── */}
-          <div className="pointer-events-none absolute inset-x-0 z-10 px-5" style={{ top: '17%' }} data-xp-title-block>
-            {caption && (
-              <h2 className="v3-xp-title font-bold leading-[1.12] tracking-[-0.015em]" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: 'clamp(22px, 9.2cqw, 44px)' }}>
-                {caption}
-              </h2>
-            )}
-            {place && (
-              <div className="mt-4 flex items-start gap-2">
-                <MapPin size={18} className="mt-0.5 flex-shrink-0 text-white" aria-hidden="true" />
-                <span className="min-w-0">
-                  <span className="v3-xp-place block truncate text-[15px] font-semibold leading-tight">{place}</span>
-                  {address && <span className="v3-xp-place-addr block truncate text-[13px] leading-tight">{address}</span>}
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* ── Action rail: like · comment · share · save, with the feed's real counts ── */}
+          {/* ── Compact action rail: icon + real count, at the card's right edge ── */}
           <div className="v3-xp-rail">
             <button type="button" className="v3-xp-rail-btn" data-kind="like" data-on={!!r.liked_by_me} onClick={e => { e.stopPropagation(); onLike() }} aria-label={t('v3.explore.like')} aria-pressed={!!r.liked_by_me} data-xp-like>
-              <Heart size={26} fill={r.liked_by_me ? 'currentColor' : 'none'} aria-hidden="true" />
+              <Heart size={24} fill={r.liked_by_me ? 'currentColor' : 'none'} aria-hidden="true" />
               <span data-xp-like-count>{shortCount(r.like_count)}</span>
             </button>
             <Link href={`/reviews/${r.id}`} onClick={e => e.stopPropagation()} className="v3-xp-rail-btn" aria-label={t('v3.explore.comment')} data-xp-comment>
-              <MessageCircle size={26} aria-hidden="true" />
+              <MessageCircle size={24} aria-hidden="true" />
               <span data-xp-comment-count>{shortCount(r.comment_count)}</span>
             </Link>
             <Link href={`/reviews/${r.id}`} onClick={e => e.stopPropagation()} className="v3-xp-rail-btn" aria-label={t('v3.explore.share')} data-xp-share>
-              <Share2 size={26} aria-hidden="true" />
-              <span>{t('v3.explore.share')}</span>
+              <Share2 size={24} aria-hidden="true" />
             </Link>
             <button type="button" className="v3-xp-rail-btn" data-kind="save" data-on={!!r.saved_by_me} onClick={e => { e.stopPropagation(); onSave() }} aria-label={t('v3.explore.save')} aria-pressed={!!r.saved_by_me} data-xp-save>
-              <Bookmark size={26} fill={r.saved_by_me ? 'currentColor' : 'none'} aria-hidden="true" />
-              <span>{t('v3.explore.save')}</span>
+              <Bookmark size={24} fill={r.saved_by_me ? 'currentColor' : 'none'} aria-hidden="true" />
             </button>
           </div>
 
-          {/* ── Bottom: Ask Tappy, then the playback strip ─────────────────── */}
-          <div className="v3-xp-play">
-            {subject && (
-              <Link
-                href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}&ctx=${encodeURIComponent(r.id)}`}
-                onClick={e => {
-                  e.stopPropagation()
-                  const ev = askTappyPlaceEvent({ phase: 'click', reviewId: r.id, surface: 'explore_desktop', hasAddress: !!r.place_address?.trim() })
-                  track(ev.event_type, ev.metadata)
-                }}
-                className="v3-xp-ask relative z-10 mb-4"
-                data-stage-ask
-              >
-                <Sparkles size={14} aria-hidden="true" />
-                {t('v3.explore.askAboutVideo')}
-              </Link>
-            )}
+          {/* ── Bottom zone: caption, location, Ask Tappy, then the playback strip ── */}
+          <div className="v3-xp-bottom">
+            <div className="pr-12" data-xp-caption-block>
+              {caption && (
+                <p className="v3-xp-caption text-[15.5px] font-semibold leading-snug" style={expanded ? undefined : { display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }} data-xp-caption>
+                  {caption}
+                </p>
+              )}
+              {caption && longCaption && !expanded && (
+                <button type="button" className="v3-xp-caption-more relative z-10 mt-0.5 text-[12.5px]" onClick={e => { e.stopPropagation(); setExpanded(true) }} data-xp-caption-more>
+                  {t('v3.explore.readMore')}
+                </button>
+              )}
+              {place && (
+                <p className="mt-2 flex items-start gap-1.5 text-[13px] leading-snug" data-xp-location>
+                  <MapPin size={15} className="mt-0.5 flex-shrink-0 text-white" aria-hidden="true" />
+                  <span className="min-w-0">
+                    <span className="v3-xp-place font-semibold">{place}</span>
+                    {address && <span className="v3-xp-place-addr"> · {address}</span>}
+                  </span>
+                </p>
+              )}
+              {subject && (
+                <Link
+                  href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject }))}&ctx=${encodeURIComponent(r.id)}`}
+                  onClick={e => {
+                    e.stopPropagation()
+                    const ev = askTappyPlaceEvent({ phase: 'click', reviewId: r.id, surface: 'explore_desktop', hasAddress: !!r.place_address?.trim() })
+                    track(ev.event_type, ev.metadata)
+                  }}
+                  className="v3-xp-ask relative z-10 mt-2.5"
+                  data-stage-ask
+                >
+                  <Sparkles size={13} aria-hidden="true" />
+                  {t('v3.explore.askAboutVideo')}
+                </Link>
+              )}
+            </div>
             {clock && (
-              <div data-xp-playback>
+              <div className="mt-3" data-xp-playback>
                 <div className="v3-xp-track"><span style={{ width: `${Math.min(100, (clock.t / clock.d) * 100)}%` }} /></div>
-                <div className="mt-2 flex items-center gap-3">
+                <div className="mt-1.5 flex items-center gap-2.5">
                   <button type="button" className="v3-xp-play-btn relative z-10" onClick={e => { e.stopPropagation(); togglePause() }} aria-label={t('v3.explore.togglePlay')} data-xp-pause>
-                    {userPaused ? <Play size={18} className="fill-white" aria-hidden="true" /> : <Pause size={18} className="fill-white" aria-hidden="true" />}
+                    {userPaused ? <Play size={17} className="fill-white" aria-hidden="true" /> : <Pause size={17} className="fill-white" aria-hidden="true" />}
                   </button>
                   <span className="v3-xp-time" data-xp-time>{mmss(clock.t)} / {mmss(clock.d)}</span>
                   <button type="button" className="v3-xp-play-btn relative z-10 ml-auto" onClick={e => { e.stopPropagation(); fullscreen() }} aria-label={t('v3.explore.fullscreen')} data-xp-fullscreen>
-                    <Maximize2 size={17} aria-hidden="true" />
+                    <Maximize2 size={16} aria-hidden="true" />
                   </button>
                 </div>
               </div>
@@ -797,29 +960,34 @@ function StageCard({
           </div>
         </>
       ) : (
-        /* Side card: the creator line and the caption, read at a glance. */
-        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-4">
-          {author && (
-            <div className="flex items-center gap-2">
-              <Avatar src={avatar} broken={avatarBroken} onBroken={() => setAvatarBroken(true)} name={author} size={28} />
-              <span className="min-w-0">
-                <span className="v3-xp-side-name block truncate text-[12.5px] font-semibold leading-tight">{author}</span>
-                <span className="v3-xp-side-time block text-[10.5px] leading-tight">{when}</span>
-              </span>
-            </div>
-          )}
-          {caption && (
-            <p className="v3-xp-side-title mt-6 text-[22px] font-bold leading-[1.15] tracking-[-0.01em]" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-              {caption}
-            </p>
-          )}
-          {place && (
-            <p className="v3-xp-side-place mt-3 flex items-start gap-1.5 text-[12px] leading-snug">
-              <MapPin size={13} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
-              <span className="min-w-0"><span className="block truncate font-semibold">{place}</span>{address && <span className="block truncate opacity-80">{address}</span>}</span>
-            </p>
-          )}
-        </div>
+        /* Side card: the creator line, the caption, the place and the like count — read at a glance. */
+        <>
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-4">
+            {author && (
+              <div className="flex items-center gap-2">
+                <Avatar src={avatar} broken={avatarBroken} onBroken={() => setAvatarBroken(true)} name={author} size={28} />
+                <span className="min-w-0">
+                  <span className="v3-xp-side-name block truncate text-[12.5px] font-semibold leading-tight">{author}</span>
+                  <span className="v3-xp-side-time block text-[10.5px] leading-tight">{when}</span>
+                </span>
+              </div>
+            )}
+            {caption && (
+              <p className="v3-xp-side-title mt-5 text-[20px] font-bold leading-[1.15] tracking-[-0.01em]" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {caption}
+              </p>
+            )}
+            {place && (
+              <p className="v3-xp-side-place mt-3 flex items-start gap-1.5 text-[12px] leading-snug">
+                <MapPin size={13} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+                <span className="min-w-0"><span className="block truncate font-semibold">{place}</span>{address && <span className="block truncate opacity-80">{address}</span>}</span>
+              </p>
+            )}
+          </div>
+          <p className="v3-xp-side-likes pointer-events-none absolute bottom-4 left-4 z-10 flex items-center gap-1.5 text-[12.5px] font-semibold">
+            <Heart size={15} aria-hidden="true" />{shortCount(r.like_count)}
+          </p>
+        </>
       )}
     </article>
   )

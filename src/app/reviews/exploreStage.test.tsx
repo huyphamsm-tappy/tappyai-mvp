@@ -34,11 +34,26 @@ const trackMock = vi.fn()
 vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))
 /** Who is signed in, per test. */
 let sessionUser: { id: string; user_metadata?: Record<string, unknown> } | null = null
+/** What the last 24h of `review_likes` (joined to the review's place) returns, per test. */
+let hotRows: Array<{ reviews: { place_name: string | null } | null }> = []
 vi.mock('@/lib/supabase/client', () => ({
-  createClient: () => ({ auth: { getUser: async () => ({ data: { user: sessionUser } }) } }),
+  createClient: () => {
+    const q = {
+      select: () => q, gte: () => q, limit: async () => ({ data: hotRows, error: null }),
+    }
+    return {
+      auth: {
+        getUser: async () => ({ data: { user: sessionUser } }),
+        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: vi.fn() } } }),
+      },
+      from: (table: string) => { if (table !== 'review_likes') throw new Error(`unexpected table ${table}`); return q },
+    }
+  },
 }))
 let unread = 0
-vi.mock('@/components/NotificationProvider', () => ({ useNotifications: () => ({ unreadCount: unread }) }))
+vi.mock('@/components/NotificationProvider', () => ({
+  useNotifications: () => ({ notifications: [], unreadCount: unread, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
+}))
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -64,6 +79,11 @@ import ExploreStage, { slotTransform, slotRole, shortCount } from './ExploreStag
 // than the feed's own columns, no topic taxonomy, no subject the clip did not supply, Follow
 // and the overflow menu under the feed's own rules — and the reference's editorial line as
 // the only static text.
+//
+// The third is COMPOSITION: the stage lives INSIDE `V3Shell` — the real left sidebar and
+// the app's own bottom bar stay — with a page-owned top bar in place of the standard header,
+// and a RIGHT COLUMN that draws only from real sources (`/api/recommendations`, the last
+// 24h of `review_likes`, creators already on the feed) and omits any panel with no data.
 
 const clip = (id: string, over: Record<string, unknown> = {}) => ({
   id, user_id: 'u1', place_name: 'Chia sẻ', place_address: null, rating: 0,
@@ -98,7 +118,7 @@ const activeId = () => stage().getAttribute('data-active-review-id')
 const ask = () => document.querySelector<HTMLAnchorElement>('[data-stage-ask]')
 const untilCards = () => waitFor(() => expect(cards().length).toBeGreaterThan(0))
 
-beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0 })
+beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0; hotRows = [] })
 afterEach(cleanup)
 
 describe('several visible, ONE playing', () => {
@@ -277,8 +297,9 @@ describe('the approved composition is on screen', () => {
     const nav = Array.from(document.querySelectorAll('.v3-xp-nav a')).map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')])
     expect(nav).toEqual([['Explore', '/reviews', 'page'], ['Ask Tappy', '/chat', null], ['Plan', '/planner', null], ['Music', '/music', null]])
     expect(document.querySelector('.v3-xp-logo')!.getAttribute('href')).toBe('/')
-    expect(document.querySelector('[data-xp-search-toggle]')).toBeTruthy()
-    expect(document.querySelector('a[href="/profile/notifications"]')).toBeTruthy()
+    expect(document.querySelector('[data-xp-search] input')!.getAttribute('placeholder')).toBe('Find places, dishes, experiences…')
+    expect(document.querySelector('[data-xp-filter-toggle]')).toBeTruthy()
+    expect(document.querySelector('[data-xp-bar] a[href="/profile/notifications"]')).toBeTruthy()
     // Signed out: the avatar slot is a way to sign in, not an invented person.
     expect(document.querySelector(`a[href="/login?returnTo=${encodeURIComponent('/reviews')}"]`)).toBeTruthy()
     expect(document.querySelector('[data-xp-unread]')).toBeNull()
@@ -307,7 +328,7 @@ describe('the approved composition is on screen', () => {
     expect(thumbs[0].querySelector('img')!.getAttribute('src')).toBe('https://example.com/a.jpg')
   })
 
-  it('the active card carries creator · time · Follow, the title and location block, and the rail with real counts', async () => {
+  it('the active card carries creator · time · Follow, the caption + location in the bottom zone, and the compact rail with real counts', async () => {
     mockFeed([clip('a', { body: 'Chill vibes in District 1', place_name: 'The Rooftop', place_address: 'District 1, Ho Chi Minh City', like_count: 1234, comment_count: 128 }), clip('b')])
     render(<ExploreStage />)
     await untilCards()
@@ -316,9 +337,18 @@ describe('the approved composition is on screen', () => {
     // The feed's own relative-time format (`ago`): "2d" in English.
     expect(card.querySelector('.v3-xp-creator-time')!.textContent).toBe('2d')
     expect(card.querySelector('[data-xp-follow]')!.textContent).toBe('Follow')
-    expect(card.querySelector('h2')!.textContent).toBe('Chill vibes in District 1')
-    expect(card.querySelector('[data-xp-title-block]')!.textContent).toContain('The Rooftop')
-    expect(card.querySelector('[data-xp-title-block]')!.textContent).toContain('District 1, Ho Chi Minh City')
+    // The caption sits in the bottom gradient zone — not as a headline mid-card — clamped to 3 lines.
+    expect(card.querySelector('h2')).toBeNull()
+    const caption = card.querySelector('.v3-xp-bottom [data-xp-caption-block] [data-xp-caption]') as HTMLElement
+    expect(caption.textContent).toBe('Chill vibes in District 1')
+    expect(caption.style.webkitLineClamp).toBe('3')
+    expect(card.querySelector('[data-xp-caption-more]')).toBeNull()
+    expect(card.querySelector('[data-xp-location]')!.textContent).toBe('The Rooftop · District 1, Ho Chi Minh City')
+    // The rail is icon + count only — no text labels on the buttons.
+    expect(card.querySelector('[data-xp-like]')!.textContent).toBe('1.2k')
+    expect(card.querySelector('[data-xp-comment]')!.textContent).toBe('128')
+    expect(card.querySelector('[data-xp-share]')!.textContent).toBe('')
+    expect(card.querySelector('[data-xp-save]')!.textContent).toBe('')
     expect(card.querySelector('[data-xp-like-count]')!.textContent).toBe('1.2k')
     expect(card.querySelector('[data-xp-comment-count]')!.textContent).toBe('128')
     expect(card.querySelector('[data-xp-comment]')!.getAttribute('href')).toBe('/reviews/a')
@@ -327,6 +357,118 @@ describe('the approved composition is on screen', () => {
     // A share-only clip never prints its sentinel as a place.
     expect(cards()[1].textContent).not.toContain('Chia sẻ')
   })
+
+  it('a long caption is clamped with a "Read more" that expands it in place; location is omitted when there is none', async () => {
+    const long = 'Bún bò '.repeat(30).trim()
+    mockFeed([clip('a', { body: long, place_name: 'Chia sẻ', place_address: null })])
+    render(<ExploreStage />)
+    await untilCards()
+    const card = cards()[0]
+    expect(card.querySelector('[data-xp-location]')).toBeNull()
+    const caption = card.querySelector('[data-xp-caption]') as HTMLElement
+    expect(caption.style.webkitLineClamp).toBe('3')
+    const more = card.querySelector('[data-xp-caption-more]')!
+    expect(more.textContent).toBe('Read more')
+    fireEvent.click(more)
+    expect(caption.style.webkitLineClamp).toBe('')
+    expect(card.querySelector('[data-xp-caption-more]')).toBeNull()
+    // Expanding text is not selecting a clip and not pausing it.
+    expect(pauseToggle).not.toHaveBeenCalled()
+  })
+})
+
+describe('the three-column composition: shell sidebar · stage · right column', () => {
+  it('renders inside the REAL V3Shell — its sidebar and bottom bar — with the page-owned bar as the only header', async () => {
+    mockFeed(five())
+    render(<ExploreStage />)
+    await untilCards()
+    const aside = document.querySelector('aside.sticky')!
+    expect(aside).toBeTruthy()
+    expect(aside.querySelector('a[href="/reviews"]')).toBeTruthy()
+    const headers = document.querySelectorAll('header')
+    expect(headers).toHaveLength(1)
+    expect(headers[0].hasAttribute('data-xp-bar')).toBe(true)
+    // The stage grid is the shell's main column, run flush (no container padding).
+    const main = document.querySelector('main')!
+    expect(main.className).toBe('min-w-0')
+    expect(main.querySelector('.v3-xp-grid > [data-explore-stage]')).toBeTruthy()
+    expect(main.querySelector('.v3-xp-grid > [data-xp-right]')).toBeTruthy()
+    // Mobile navigation is the app's own bar, untouched.
+    expect(document.querySelector('nav a[href="/reviews"]')).toBeTruthy()
+  })
+
+  it('sizes the cards from the main column — 40% of its width, capped by 78% of its height', async () => {
+    mockFeed(five())
+    render(<ExploreStage />)
+    await untilCards()
+    // No layout in jsdom: the nominal 1040×900 column applies until ResizeObserver corrects it.
+    const active = cards().find(c => c.getAttribute('data-role') === 'active')!
+    expect(active.style.width).toBe('416px')
+    expect(active.style.height).toBe('646px')
+    expect(stage().getAttribute('data-mode')).toBe('desktop')
+  })
+
+  it('right column: suggestions come from /api/recommendations and each one hands off to Chat', async () => {
+    mockFeed(five(), url => url === '/api/recommendations'
+      ? Promise.resolve({ ok: true, json: async () => ({ recommendations: [
+          { placeId: 'p1', placeName: 'Cơm tấm Ba Ghiền', score: 3 },
+          { placeId: 'p2', placeName: '   ', score: 2 },
+          { placeId: 'p3', placeName: 'The Workshop', score: 1 },
+          { placeId: 'p4', placeName: 'Bánh mì Huỳnh Hoa', score: 1 },
+          { placeId: 'p5', placeName: 'Phở Lệ', score: 1 },
+        ] }) })
+      : undefined)
+    render(<ExploreStage />)
+    await waitFor(() => expect(document.querySelector('[data-xp-recs]')).toBeTruthy())
+    const names = Array.from(document.querySelectorAll('[data-xp-recs] .v3-xp-rec-name')).map(e => e.textContent)
+    expect(names).toEqual(['Cơm tấm Ba Ghiền', 'The Workshop', 'Bánh mì Huỳnh Hoa'])
+    expect(document.querySelector('[data-xp-recs] a[href="/recommendations"]')).toBeTruthy()
+    const ask = document.querySelector('[data-xp-recs] a[href^="/chat?q="]')!
+    expect(decodeURIComponent(ask.getAttribute('href')!)).toContain('Cơm tấm Ba Ghiền')
+  })
+
+  it('right column: trending places are the last 24h of real likes grouped by place, most liked first', async () => {
+    hotRows = [
+      { reviews: { place_name: 'Phở Lệ' } }, { reviews: { place_name: 'The Workshop' } }, { reviews: { place_name: 'Phở Lệ' } },
+      { reviews: { place_name: 'Chia sẻ' } }, { reviews: null }, { reviews: { place_name: null } },
+    ]
+    mockFeed(five())
+    render(<ExploreStage />)
+    await waitFor(() => expect(document.querySelector('[data-xp-trends]')).toBeTruthy())
+    const rows = Array.from(document.querySelectorAll('[data-xp-trends] .v3-xp-trend')).map(e => e.textContent)
+    expect(rows).toEqual(['1Phở Lệ2 likes', '2The Workshop1 likes'])
+  })
+
+  it('right column: creators to follow come from the feed itself — not me, not already followed, no duplicates', async () => {
+    sessionUser = { id: 'me-1' }
+    mockFeed([
+      clip('a', { user_id: 'u1', profiles: { full_name: 'Huy', avatar_url: null } }),
+      clip('b', { user_id: 'u1', profiles: { full_name: 'Huy', avatar_url: null } }),
+      clip('c', { user_id: 'me-1', profiles: { full_name: 'Me', avatar_url: null } }),
+      clip('d', { user_id: 'u2', profiles: { full_name: 'Lan', avatar_url: null }, is_following: true }),
+      clip('e', { user_id: 'u3', profiles: { full_name: 'Quang', avatar_url: null } }),
+      clip('f', { user_id: 'u4', profiles: null }),
+    ])
+    render(<ExploreStage />)
+    await untilCards()
+    await waitFor(() => expect(document.querySelectorAll('[data-xp-people] .v3-xp-person')).toHaveLength(2))
+    const names = Array.from(document.querySelectorAll('[data-xp-people] .v3-xp-person-name')).map(e => e.textContent)
+    expect(names).toEqual(['Huy', 'Quang'])
+    fireEvent.click(document.querySelector('[data-xp-person-follow]')!)
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/users/u1/follow', expect.objectContaining({ method: 'POST' })))
+  })
+
+  it('right column: with nothing real to show, only the Ask-Tappy call to action remains — no placeholders', async () => {
+    mockFeed([clip('a', { profiles: null }), clip('b', { profiles: null })])
+    render(<ExploreStage />)
+    await untilCards()
+    const right = document.querySelector('[data-xp-right]')!
+    expect(right.querySelector('[data-xp-recs]')).toBeNull()
+    expect(right.querySelector('[data-xp-trends]')).toBeNull()
+    expect(right.querySelector('[data-xp-people]')).toBeNull()
+    expect(right.querySelector('[data-xp-cta] a[href="/chat"]')!.textContent?.trim()).toBe('Ask Tappy now')
+    expect(right.querySelectorAll('section')).toHaveLength(1)
+  })
 })
 
 describe('nothing on a card is invented', () => {
@@ -334,7 +476,7 @@ describe('nothing on a card is invented', () => {
     mockFeed([clip('a', { place_name: 'Chia sẻ', body: '' })])
     render(<ExploreStage />)
     await untilCards()
-    expect(cards()[0].querySelector('[data-xp-title-block]')!.textContent).toBe('')
+    expect(cards()[0].querySelector('[data-xp-caption-block]')!.textContent).toBe('')
     expect(ask()).toBeNull()
   })
   it('renders no creator link when the feed sent no profile', async () => {
@@ -406,16 +548,20 @@ describe('Follow and the overflow menu follow the feed’s own rules', () => {
 })
 
 describe('it uses the mechanisms that already exist', () => {
-  it('reads the existing feed endpoint; the sorts live behind the search glyph and still hit it', async () => {
+  it('reads the existing feed endpoint; the sorts live behind the filter glyph and still hit it', async () => {
     mockFeed(five())
     render(<ExploreStage />)
     await untilCards()
     expect(lastUrl).toBe('/api/reviews/feed?page=0&limit=20')
-    fireEvent.click(document.querySelector('[data-xp-search-toggle]')!)
+    expect(document.querySelector('[data-xp-filters]')).toBeNull()
+    fireEvent.click(document.querySelector('[data-xp-filter-toggle]')!)
     const chips = Array.from(document.querySelectorAll('.v3-xp-chip')).map(c => c.textContent)
     expect(chips).toEqual(['For You', 'Following', 'Latest'])
     fireEvent.click(screen.getByRole('button', { name: 'Latest' }))
     await waitFor(() => expect(lastUrl).toBe('/api/reviews/feed?page=0&limit=20&sort=latest'))
+    // Picking a sort closes the popover; it opens again from the same glyph.
+    expect(document.querySelector('[data-xp-filters]')).toBeNull()
+    fireEvent.click(document.querySelector('[data-xp-filter-toggle]')!)
     fireEvent.click(screen.getByRole('button', { name: 'Following' }))
     await waitFor(() => expect(lastUrl).toBe('/api/reviews/feed?page=0&limit=20&following=true'))
   })
@@ -423,8 +569,7 @@ describe('it uses the mechanisms that already exist', () => {
     mockFeed(five())
     render(<ExploreStage />)
     await untilCards()
-    fireEvent.click(document.querySelector('[data-xp-search-toggle]')!)
-    const input = document.querySelector('.v3-xp-search input') as HTMLInputElement
+    const input = document.querySelector('[data-xp-search] input') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'bún bò' } })
     fireEvent.submit(input.closest('form')!)
     await waitFor(() => expect(lastUrl).toBe(`/api/reviews/feed?search=${encodeURIComponent('bún bò')}&limit=20`))
@@ -513,10 +658,18 @@ describe('the page wiring', () => {
   it('the stage is CSS 3D with no new dependency, always dark, and reduced motion turns its transitions off', () => {
     const css = readFileSync('src/app/globals.css', 'utf8')
     expect(css).toMatch(/\.v3-xp-stage \{[^}]*perspective: 1600px/)
+    // Three columns from 1280px: the right column is a real 300px track, and below that it
+    // stacks under the stage rather than disappearing.
+    expect(css).toMatch(/\.v3-xp-grid \{[^}]*grid-template-columns: minmax\(0, 1fr\);/)
+    expect(css).toMatch(/@media \(min-width: 1280px\) \{\s*\.v3-xp-grid \{[^}]*grid-template-columns: minmax\(0, 1fr\) 300px/)
+    expect(css).not.toMatch(/\.v3-xp-right \{[^}]*display: none/)
+    expect(css).toMatch(/\.v3-xp-stage \{[^}]*height: calc\(100dvh - var\(--v3-header-h\)\)/)
     expect(css).toMatch(/\.v3-xp-space \{[^}]*transform-style: preserve-3d/)
     expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.v3-xp-card[^}]*transition: none/)
     const src = readFileSync('src/app/reviews/ExploreStage.tsx', 'utf8')
     expect(src).toContain('className="v3-theme dark v3-xp"')
+    // Inside the shell, as a page-owned header replacing the standard one — not a second chrome.
+    expect(src).toMatch(/<V3Shell [^>]*header=\{topBar\} flush>/)
     const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
     for (const dep of ['framer-motion', 'motion', 'swiper', 'embla-carousel', 'three', 'gsap', '@react-spring/web']) {
       expect(pkg.dependencies?.[dep] ?? pkg.devDependencies?.[dep]).toBeUndefined()

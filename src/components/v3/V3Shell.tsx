@@ -314,10 +314,17 @@ export interface V3ShellProps {
   /** Widen the content canvas from 1240px to 1480px. Home only — see the note at `<main>`. */
   wide?: boolean
   user?: { name?: string | null; avatarUrl?: string | null; plan?: string | null } | null
+  /** A page-owned top bar rendered IN PLACE of the standard header row. The sidebar, the
+   *  mobile bottom bar and the content column are unchanged. Explore is the caller: its
+   *  approved composition carries its own top navigation. Opt-in; nothing else uses it. */
+  header?: ReactNode
+  /** Let the content column run edge to edge (no container width, no gutters, no top padding).
+   *  Explore is the caller: its stage is an environment, not a column of cards. Opt-in. */
+  flush?: boolean
   children: ReactNode
 }
 
-export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, children }: V3ShellProps) {
+export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = false, scenic = false, wide = false, activeTab = '/', user, header, flush = false, children }: V3ShellProps) {
   const pathname = usePathname()
   const { t } = useTranslation()
   // Presentation only: delivery, consent and push identity are untouched — this reads a count the
@@ -498,6 +505,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
         <div className="min-w-0 flex-1">
           {/* The background was a hardcoded `rgba(10,15,28,0.85)` — the dark page colour written
               as a literal, so it stayed dark when the palette went light. It reads the token now. */}
+          {header ?? (
           <header
             className={cn('sticky top-0 z-30 border-b backdrop-blur', scenic && 'v3-scenic-chrome')}
             style={{
@@ -687,6 +695,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
               </div>
             </div>
           </header>
+          )}
 
           {/* Same container as the header, so the page's left edge lines up with the title
               above it instead of each choosing its own padding. */}
@@ -695,7 +704,7 @@ export default function V3Shell({ title, subtitle, brandTagline, wordmarkOnly = 
               the token would silently re-lay-out all of them. Home asks for the wider canvas
               because its hero is an environment rather than a column of cards, and it is the
               only caller. */}
-          <main className={cn('v3-container pb-24 pt-5 lg:pb-10', wide && 'v3-container-wide')}>{children}</main>
+          <main className={cn(flush ? 'min-w-0' : 'v3-container pb-24 pt-5 lg:pb-10', !flush && wide && 'v3-container-wide')}>{children}</main>
         </div>
       </div>
 

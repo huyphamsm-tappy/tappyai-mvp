@@ -209,6 +209,15 @@ export const vi: Record<string, string> = {
   'v3.explore.fullscreen': 'Toàn màn hình',
   'v3.explore.filters': 'Bộ lọc',
   'v3.explore.closeSearch': 'Đóng tìm kiếm',
+  'v3.explore.recTitle': 'Gợi ý cho bạn',
+  'v3.explore.recAsk': 'Hỏi Tappy',
+  'v3.explore.trendTitle': 'Xu hướng hôm nay',
+  'v3.explore.ctaTitle': 'Cùng Tappy khám phá nhiều hơn mỗi ngày',
+  'v3.explore.ctaButton': 'Hỏi Tappy ngay',
+  'v3.explore.peopleTitle': 'Bạn có thể thích',
+  'v3.explore.seeAll': 'Xem tất cả',
+  'v3.explore.searchField': 'Tìm địa điểm, món ăn, trải nghiệm…',
+  'v3.explore.readMore': 'Xem thêm',
 
   // ── Hộp thư, the destination (Page 6) ───────────────────────────────────
   // 🚨 THE SUBTITLE SAYS "THÔNG BÁO VÀ HOẠT ĐỘNG", NOT "TIN NHẮN".
@@ -756,6 +765,15 @@ export const en: Record<string, string> = {
   'v3.explore.fullscreen': 'Full screen',
   'v3.explore.filters': 'Filters',
   'v3.explore.closeSearch': 'Close search',
+  'v3.explore.recTitle': 'Suggested for you',
+  'v3.explore.recAsk': 'Ask Tappy',
+  'v3.explore.trendTitle': 'Trending today',
+  'v3.explore.ctaTitle': 'Discover more with Tappy every day',
+  'v3.explore.ctaButton': 'Ask Tappy now',
+  'v3.explore.peopleTitle': 'You may like',
+  'v3.explore.seeAll': 'See all',
+  'v3.explore.searchField': 'Find places, dishes, experiences…',
+  'v3.explore.readMore': 'Read more',
 
   // ── Hộp thư, the destination (Page 6) ───────────────────────────────────
   'v3.inbox.title': 'Inbox',
