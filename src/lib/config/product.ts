@@ -144,7 +144,9 @@ export const AUTH_PROVIDERS = [
 // CCP is built as an isolated module (src/lib/ccp) and is OFF by default until
 // each phase clears the release gate (IMPLEMENTED → TESTED → PRODUCTION
 // VERIFIED → OWNER APPROVED). Nothing outside src/lib/ccp changes behaviour
-// while CCP_ENABLED is false. Flip flags HERE only; natives read /api/config.
+// while CCP_ENABLED is false. Flip flags HERE only. These flags are server-side: nothing exposes
+// them through /api/config, and Phase 6 (13 Sep 2026) wires CCP into the SERVER-owned action
+// channel only (row attachment → recommendation/actions → web live view), so no client reads them.
 /** Master switch for CCP-resolved commerce links. */
 export const CCP_ENABLED = false
 /** D7: ACCESSTRADE feed fields (title/price/image) are NEVER displayed until the

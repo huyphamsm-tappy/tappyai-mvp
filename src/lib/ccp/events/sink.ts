@@ -6,11 +6,13 @@ import type { CommerceDomain, FreshnessType, LinkKind, TransactionDepth, Validat
 // structured entries), never to public.user_events — those rows feed the AI
 // behaviour rollup and commerce activity must not become a model signal.
 //
-// The committed tree at the CCP base (77b0bb7) does not contain
-// src/lib/observability/events.ts (it exists only untracked in the owner's
-// checkout), so this module carries the same discipline locally: a typed
-// union, a severity map, an allow-listed field set, and a writer that can be
-// swapped for the shared sink once it is committed (see `setCommerceEventWriter`).
+// This module is CCP's own typed sink: a union, a severity map, an allow-listed
+// field set, and a swappable writer. On the canonical tree the writer is
+// installed by `events/observabilityBridge.ts` (owner decision P6-C), which
+// translates the six events into the six commerce members of the shared
+// `ObservabilityEvent` union in src/lib/observability/events.ts. The default
+// writer (one JSON line to the server log) remains the fallback when nothing
+// installed the bridge — a unit test, a script.
 
 export type CommerceEvent =
   | {
@@ -85,12 +87,17 @@ export function setCommerceEventWriter(w: CommerceEventWriter | null): void {
   writer = w ?? (entry => { console.log(JSON.stringify(entry)) })
 }
 
+// Opaque identifiers the platform generates itself (UUIDs, sha256 prefixes). A UUID whose last
+// group happens to be all digits ("…-446655440000") would otherwise trip the phone-number shape
+// in PII_RE and the event would lose its correlation key. These are never user-entered.
+const OPAQUE_ID_FIELDS = new Set(['requestId', 'linkId', 'actorHash', 'sessionHash'])
+
 /** Strip unknown fields and refuse values that look like PII or a raw URL. */
 export function sanitizeCommerceEvent(event: CommerceEvent): Record<string, unknown> {
   const out: Record<string, unknown> = {}
   for (const [k, v] of Object.entries(event)) {
     if (!COMMERCE_EVENT_FIELDS.has(k)) continue
-    if (typeof v === 'string' && PII_RE.test(v)) continue
+    if (typeof v === 'string' && !OPAQUE_ID_FIELDS.has(k) && PII_RE.test(v)) continue
     if (Array.isArray(v) && v.some(x => typeof x === 'string' && PII_RE.test(x))) continue
     out[k] = v
   }

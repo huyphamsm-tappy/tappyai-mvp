@@ -66,8 +66,13 @@ export function labelFor(a: Action, lang: string, placeName?: string): string {
   const search = a.urlKind === 'search' ? searchDict(lang)[a.kind] : undefined
   const base = search ?? dict(lang)[a.kind]
   const withPlatform = a.platform && search ? `${base} ${a.platform}` : a.platform ? `${base} — ${a.platform}` : base
-  return placeName ? `${withPlatform} — ${placeName}` : withPlatform
+  // A commerce handoff states its login boundary in the label (CGV before the seat map, Klook
+  // before checkout) so the promise matches what the merchant will ask for after the tap.
+  const withBoundary = a.commerce?.loginRequired ? `${withPlatform} (${LOGIN_NOTE[lang] ?? LOGIN_NOTE.vi})` : withPlatform
+  return placeName ? `${withBoundary} — ${placeName}` : withBoundary
 }
+
+const LOGIN_NOTE: Record<string, string> = { vi: 'cần đăng nhập', en: 'login required' }
 
 export interface CtaButton { label: string; type: string; url: string; primary: boolean }
 
@@ -81,6 +86,19 @@ const MAX_BUTTONS = 6
  * actions, so the button set mirrors the decision the ranker already made rather
  * than whichever venues the model happened to mention last.
  */
+/**
+ * The legacy `type` a commerce handoff renders with. A DIRECT merchant page is
+ * never `search` — the table above maps `purchase` to `search` because every
+ * pre-CCP purchase action was a marketplace search; a CCP product page is a
+ * destination, so it takes `website` (opens the URL) like a shop's own site.
+ * Booking/reservation/ticket keep the booking affordance. No new type value is
+ * introduced (owner decision P6-A: the three-client contract is unchanged).
+ */
+export function ctaTypeFor(a: Pick<Action, 'kind' | 'urlKind' | 'commerce'>): string {
+  if (a.commerce && a.urlKind === 'direct' && a.kind === 'purchase') return 'website'
+  return CTA_TYPE[a.kind]
+}
+
 export function buildCtaButtons(recs: Recommendation[], lang: string): CtaButton[] {
   const out: CtaButton[] = []
   const seen = new Set<string>()
@@ -96,7 +114,7 @@ export function buildCtaButtons(recs: Recommendation[], lang: string): CtaButton
       seen.add(a.url)
       out.push({
         label: labelFor(a, lang, top.length > 1 ? r.entity.identity.name : undefined),
-        type: CTA_TYPE[a.kind],
+        type: ctaTypeFor(a),
         url: a.url,
         primary: out.length === 0,
       })

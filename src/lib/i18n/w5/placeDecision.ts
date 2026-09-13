@@ -49,6 +49,19 @@ export const vi: Record<string, string> = {
   'v3.action.orderSearch': 'Tìm trên {platform}',
   'v3.action.call': 'Gọi',
   'v3.action.social': 'Trang mạng xã hội',
+  // Commerce handoff (CCP): the merchant is named, and a login boundary is stated before the tap.
+  'v3.action.purchaseOn': 'Mua trên {platform}',
+  'v3.action.purchaseLoginOn': 'Mua trên {platform} · cần đăng nhập',
+  'v3.action.bookingOn': 'Đặt phòng trên {platform}',
+  'v3.action.bookingLoginOn': 'Đặt phòng trên {platform} · cần đăng nhập',
+  'v3.action.reservationOn': 'Đặt bàn trên {platform}',
+  'v3.action.reservationLoginOn': 'Đặt bàn trên {platform} · cần đăng nhập',
+  'v3.action.ticketOn': 'Mua vé trên {platform}',
+  'v3.action.ticketLoginOn': 'Mua vé trên {platform} · cần đăng nhập',
+  'v3.action.orderOn': 'Đặt món trên {platform}',
+  'v3.action.orderLoginOn': 'Đặt món trên {platform} · cần đăng nhập',
+  'v3.action.deliveryOn': 'Đặt giao hàng trên {platform}',
+  'v3.action.deliveryLoginOn': 'Đặt giao hàng trên {platform} · cần đăng nhập',
 }
 
 export const en: Record<string, string> = {
@@ -93,4 +106,17 @@ export const en: Record<string, string> = {
   'v3.action.orderSearch': 'Search on {platform}',
   'v3.action.call': 'Call',
   'v3.action.social': 'Social page',
+  // Commerce handoff (CCP): the merchant is named, and a login boundary is stated before the tap.
+  'v3.action.purchaseOn': 'Buy on {platform}',
+  'v3.action.purchaseLoginOn': 'Buy on {platform} · login required',
+  'v3.action.bookingOn': 'Book on {platform}',
+  'v3.action.bookingLoginOn': 'Book on {platform} · login required',
+  'v3.action.reservationOn': 'Reserve on {platform}',
+  'v3.action.reservationLoginOn': 'Reserve on {platform} · login required',
+  'v3.action.ticketOn': 'Buy tickets on {platform}',
+  'v3.action.ticketLoginOn': 'Buy tickets on {platform} · login required',
+  'v3.action.orderOn': 'Order on {platform}',
+  'v3.action.orderLoginOn': 'Order on {platform} · login required',
+  'v3.action.deliveryOn': 'Order delivery on {platform}',
+  'v3.action.deliveryLoginOn': 'Order delivery on {platform} · login required',
 }

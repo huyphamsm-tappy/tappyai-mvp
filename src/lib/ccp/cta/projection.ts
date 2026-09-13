@@ -1,17 +1,50 @@
-import type { CommerceLink, LinkKind, TransactionDepth } from '../domain/types'
+import type { CommerceLink, IntentType, LinkKind, TransactionDepth } from '../domain/types'
 
-// ── CTA projection (owner decision D8) ───────────────────────────────────────
+// ── Commerce Link → the canonical action vocabulary ─────────────────────────
+// On the canonical tree the application's ONE action list is
+// src/lib/recommendation/actions.ts (`Action{kind,urlKind,url,labelKey,…}`),
+// and the `[CTA_BUTTONS]` wire format is produced from it by
+// src/lib/recommendation/cta.ts. CCP therefore does not author buttons; it
+// hands the action layer two facts it cannot derive on its own — which KIND of
+// action an intent is, and whether a link kind is a destination or a search —
+// and the action layer does the rest (labels, priority, dedupe, channels).
+//
+// `projectToCta` below is the D8 shape from the 77b0bb7-era design. It is kept
+// for the native-client contract discussion (Phase 7) and for its tests; the
+// canonical web path does not call it.
+
+/** The subset of `ActionKind` a commerce intent maps to. Same spelling as actions.ts, by contract. */
+export type CommerceActionKind = 'purchase' | 'booking' | 'reservation' | 'ticket' | 'order' | 'delivery'
+
+/** What a user DOES when they follow a link for this intent. */
+export function actionKindFor(intentType: IntentType): CommerceActionKind {
+  switch (intentType) {
+    case 'buy_product': return 'purchase'
+    case 'buy_spa_voucher': return 'purchase'
+    case 'book_hotel': return 'booking'
+    case 'book_flight': return 'booking'
+    case 'book_transport': return 'booking'
+    case 'reserve_table': return 'reservation'
+    case 'order_delivery': return 'delivery'
+    case 'buy_ticket': return 'ticket'
+    case 'book_activity': return 'ticket'
+  }
+}
+
+/**
+ * The honesty field. Only a SEARCH_HANDOFF opens a results page; every other
+ * kind lands on the subject itself (detail, configured, checkout) — tracked or
+ * not, because a validated wrapper resolves to the same destination (D4).
+ */
+export function urlKindFor(kind: LinkKind): 'direct' | 'search' {
+  return kind === 'SEARCH_HANDOFF' ? 'search' : 'direct'
+}
+
+// ── Legacy CTA projection (owner decision D8) ────────────────────────────────
 // The existing [CTA_BUTTONS] contract (web ChatInterface.tsx, Android
 // ChatCtaButtons.kt, iOS) carries `{label,type,url,primary}` with type ∈
 // maps|call|zalo|website|booking|search|internal_booking. `internal_booking`
 // is a fake in-app booking and is NOT used by CCP.
-//
-// This projection is the SERVER-SIDE shape a Commerce Link takes on its way to
-// a client. It keeps the legacy four fields so today's clients render it
-// unchanged (type 'booking' for merchant flows, 'website' for detail pages)
-// and adds the commerce fields D8 requires. Clients that do not know the extra
-// fields ignore them; the three-client extension is Phase 6 and needs the
-// owner's go on the seam.
 
 export interface CommerceCta {
   label: string

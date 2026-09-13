@@ -61,4 +61,11 @@ export interface ProviderRegistryEntry {
   /** MVP adapters implement the contract; handoff-only entries carry facts for the ladder but no adapter. */
   tier: 'mvp' | 'handoff_only'
   notes: readonly string[]
+  /**
+   * How the tool layer may LOOK FOR this merchant's pages when a tool result carries no
+   * owned URL: a "site:" scope for a web search plus the kind of subject the scope is
+   * about. Registry DATA, so the query is composed outside CCP without spelling a host.
+   * Absent = no discovery (handoff-only providers; CGV film pages have no film tool yet).
+   */
+  discovery?: { site: string; subjectKind: 'product' | 'hotel' | 'restaurant' | 'activity' | 'film' }
 }

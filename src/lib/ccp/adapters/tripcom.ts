@@ -29,6 +29,13 @@ export const tripcomAdapter: ProviderAdapter = {
     if (u && /\/hotels\/detail\/?$/.test(u.pathname)) {
       hotelId = hotelId ?? u.searchParams.get('hotelId')
       cityId = u.searchParams.get('cityId')
+    } else if (u) {
+      // Search engines index Trip.com's SEO path ("/hotels/<city>-hotel-detail-<id>/<slug>/"),
+      // which is what a discovery query returns. Only the numeric id is taken from it — the
+      // emitted link is always rebuilt on the VERIFIED "/hotels/detail/?hotelId=" grammar, so an
+      // unexpected SEO shape can only fail to match, never produce a different destination.
+      const m = u.pathname.match(/-hotel-detail-(\d{1,12})(?:\/|$)/)
+      if (m) hotelId = hotelId ?? m[1]
     }
     if (!hotelId || !/^\d{1,12}$/.test(hotelId)) return null
     const canonical = `https://vn.trip.com/hotels/detail/?hotelId=${q(hotelId)}${cityId && /^\d{1,12}$/.test(cityId) ? `&cityId=${q(cityId)}` : ''}&locale=vi-VN`

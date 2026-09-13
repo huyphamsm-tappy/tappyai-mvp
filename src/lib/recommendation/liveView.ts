@@ -51,6 +51,8 @@ export interface LiveAction {
   labelKey: string
   platform?: string
   attributed?: boolean
+  /** CCP facts for a commerce handoff (label boundary + handoff event). Absent on every other action. */
+  commerce?: Action['commerce']
 }
 
 /** One place, with only the fields its entity actually knows. */
@@ -217,6 +219,7 @@ function liveActions(actions: readonly Action[], limit: number): LiveAction[] {
         labelKey: a.labelKey,
         ...(a.platform ? { platform: a.platform } : {}),
         ...(a.attributed !== undefined ? { attributed: a.attributed } : {}),
+        ...(a.commerce ? { commerce: a.commerce } : {}),
       })
     }
   }

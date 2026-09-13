@@ -72,11 +72,24 @@ export interface ResolvedLabel {
  * URL is attributed content; otherwise it says it is a place to go looking.
  */
 export function resolveActionLabel(
-  action: Pick<Action, 'kind' | 'urlKind' | 'url' | 'platform' | 'attributed'>,
+  action: Pick<Action, 'kind' | 'urlKind' | 'url' | 'platform' | 'attributed' | 'commerce'>,
 ): ResolvedLabel {
   const platform = platformOf(action)
   const withPlatform = (key: string, fallback: string): ResolvedLabel =>
     platform ? { key, params: { platform } } : { key: fallback }
+  // 🔑 A COMMERCE LINK NAMES ITS MERCHANT AND ITS LOGIN BOUNDARY. "Đặt phòng" on
+  // a Trip.com page the platform verified is a promise the URL keeps; "Mua vé
+  // trên CGV · cần đăng nhập" says, before the tap, that CGV asks for a login
+  // before the seat map (authRequiredAt = before_selection). A search handoff
+  // is still labelled as a search — the branch below never runs for one.
+  if (action.commerce && action.urlKind === 'direct') {
+    const key = COMMERCE_LABEL[action.kind]
+    if (key) {
+      return action.commerce.loginRequired
+        ? withPlatform(`${key}LoginOn`, key)
+        : withPlatform(`${key}On`, key)
+    }
+  }
 
   if (action.kind === 'review') {
     // Attribution, not the host, decides this. A TikTok video the pipeline tied
@@ -115,9 +128,23 @@ export function resolveActionLabel(
   }
 }
 
+/**
+ * Kinds a commerce intent can map to (see src/lib/ccp/cta/projection.ts
+ * `actionKindFor`) and the base key each renders with. "${key}On" takes the
+ * merchant; "${key}LoginOn" additionally states the login boundary.
+ */
+const COMMERCE_LABEL: Partial<Record<Action['kind'], string>> = {
+  purchase: 'v3.action.purchase',
+  booking: 'v3.action.booking',
+  reservation: 'v3.action.reservation',
+  ticket: 'v3.action.ticket',
+  order: 'v3.action.order',
+  delivery: 'v3.action.delivery',
+}
+
 /** Convenience for a component: the finished string. */
 export function actionLabel(
-  action: Pick<Action, 'kind' | 'urlKind' | 'url' | 'platform' | 'attributed'>,
+  action: Pick<Action, 'kind' | 'urlKind' | 'url' | 'platform' | 'attributed' | 'commerce'>,
   t: (key: string, vars?: Record<string, string>) => string,
 ): string {
   const { key, params } = resolveActionLabel(action)

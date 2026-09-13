@@ -121,3 +121,18 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
     expect(MVP_ADAPTERS).toHaveLength(5)
   })
 })
+
+// ── Phase 6: discovery returns Trip.com's SEO path; only the id is taken, the emitted grammar is the verified one ──
+describe('tripcom — SEO path hint (Phase 6 discovery)', () => {
+  const req = { domain: 'travel', intentType: 'book_hotel', subject: 'Mường Thanh' } as const
+  it('extracts hotelId from /hotels/<city>-hotel-detail-<id>/… and rebuilds the verified detail URL', () => {
+    const offer = tripcomAdapter.toOffer(req, { url: 'https://vn.trip.com/hotels/da-nang-hotel-detail-10569789/muong-thanh-luxury/' })
+    expect(offer?.subjectRef).toBe('10569789')
+    expect(offer?.canonicalUrl).toBe('https://vn.trip.com/hotels/detail/?hotelId=10569789&locale=vi-VN')
+  })
+  it('refuses a non-detail path, a non-numeric id and a look-alike host', () => {
+    expect(tripcomAdapter.toOffer(req, { url: 'https://vn.trip.com/hotels/list?city=da-nang' })).toBeNull()
+    expect(tripcomAdapter.toOffer(req, { url: 'https://vn.trip.com/hotels/da-nang-hotel-detail-abc/x/' })).toBeNull()
+    expect(tripcomAdapter.toOffer(req, { url: 'https://vn.trip.com.evil.example/hotels/da-nang-hotel-detail-10569789/x/' })).toBeNull()
+  })
+})

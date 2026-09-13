@@ -30,9 +30,13 @@
 // the model has no legitimate use for them, and three ~90-character resource names per place is
 // exactly the paid-context waste this split exists to prevent.
 import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capabilities'
+import type { CommerceLinkRow } from '@/lib/ccp'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
-export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names'] as const
+// `commerce_links` is the CCP row attachment (owner decision P6-B): Commerce Links the platform
+// resolved for the row. Carved for the same reason as `order_links` — the model must never see a
+// merchant URL — and replaced in its view by the `has_direct_handoff` capability.
+export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names', 'commerce_links'] as const
 
 export interface PlatformLink { name: string; url: string }
 
@@ -43,6 +47,8 @@ export interface PlaceEnrichment {
   photo_urls?: string[]
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
+  /** CCP row attachment, carried through so `buildActions` (via the entity builders) can read it. */
+  commerce_links?: CommerceLinkRow[]
   tiktok_review_url?: string
   /** Google photo resource names ("places/…/photos/…") — the input to the late photo resolver. */
   photo_names?: string[]
@@ -142,6 +148,7 @@ const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_produc
 const hasEnrichment = (p: PlaceEnrichment) =>
   !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0) ||
     (p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0) ||
+    (p.commerce_links && p.commerce_links.length > 0) ||
     p.tiktok_review_url || (p.photo_names && p.photo_names.length > 0))
 
 const hasPhoto = (p: PlaceEnrichment) => !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0))
@@ -195,7 +202,7 @@ export function splitToolResult(
   const enrichment: PlaceEnrichment[] = []
   const slimItems = items.map((item) => {
     if (!isRecord(item)) return item
-    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, ...rest } = item as PlaceEnrichment & Record<string, unknown>
+    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, commerce_links, ...rest } = item as PlaceEnrichment & Record<string, unknown>
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
@@ -221,6 +228,7 @@ export function splitToolResult(
     const cuisine = str('cuisine')
     const carved: PlaceEnrichment = {
       name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, place_id, website_uri,
+      commerce_links: Array.isArray(commerce_links) && commerce_links.length > 0 ? commerce_links : undefined,
       address: str('address'),
       rating: num('rating'),
       review_count: num('review_count'),

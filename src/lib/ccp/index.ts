@@ -15,8 +15,12 @@ export { PROVIDER_REGISTRY, getProvider, providersFor } from './registry'
 export { resolveDeepLink } from './resolver/resolve'
 export { rankLinks } from './ranking/score'
 export { RANKING_WEIGHTS, RANKING_VERSION } from './ranking/weights'
-export { projectToCta, type CommerceCta } from './cta/projection'
+export { projectToCta, actionKindFor, urlKindFor, type CommerceCta } from './cta/projection'
 export { emitCommerceEvent, setCommerceEventWriter } from './events/sink'
+export { installCommerceObservability } from './events/observabilityBridge'
+export { discoveryScopesFor, providerOwning, type DiscoveryScope } from './discovery'
+export { COMMERCE_LINKS_KEY, projectCommerceLinkRow, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from './row'
+export type { DiscoveryHint } from './adapters'
 
 // ── Orchestrator (Plan §2 core flow) ─────────────────────────────────────────
 // AI intent → CommerceRequest → provider discovery → realtime/freshness →

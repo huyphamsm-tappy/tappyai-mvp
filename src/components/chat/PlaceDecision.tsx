@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
+import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
 import type { LivePlace, PlaceFlag, PlacesLiveView } from '@/lib/recommendation/liveView'
 
 // ── The place decision, as the approved Food composition renders it ─────────
@@ -255,6 +256,8 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
                   href={a.url}
                   target={isCall ? undefined : '_blank'}
                   rel={isCall ? undefined : 'noopener noreferrer'}
+                  // A commerce handoff reports its opaque ids on the way out (CCP event 6); every other action is untouched.
+                  onClick={a.commerce ? () => reportCommerceHandoff(a) : undefined}
                   className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   {isCall && <Phone size={12} aria-hidden="true" />}

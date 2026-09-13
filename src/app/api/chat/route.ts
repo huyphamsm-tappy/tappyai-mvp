@@ -32,6 +32,7 @@ import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
+import { attachCommerceLinks } from '@/lib/ai/tools/commerce'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
@@ -814,6 +815,10 @@ export async function POST(req: Request) {
   // only the web reply is told to stop repeating what the card shows. A client
   // that sends no header - Android, iOS, anything older - keeps today's prose.
   const rendersDecisionCard = req.headers.get('x-tappy-surface') === 'web'
+  // CommerceContext for the CCP seam: the surface header is the only platform signal the route
+  // has, and the response language is what the merchant page should open in. No user identifier.
+  const commercePlatform: 'web' | 'android' | 'ios' | undefined = rendersDecisionCard ? 'web' : undefined
+  const commerceLocale: 'vi' | 'en' | undefined = lang === 'en' ? 'en' : lang === 'vi' ? 'vi' : undefined
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
@@ -998,6 +1003,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // order it reads is already the order that fits this user.
           const { result, pick } = rankForModel('search_places', filtered)
           if (pick) turnPick = pick
+          // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
+          // `commerce_links`, read by buildActions below and carved from the model by forModel.
+          // Identity-preserving and a no-op while CCP_ENABLED is false.
+          await attachCommerceLinks('search_places', result, { location, platform: commercePlatform, locale: commerceLocale })
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
           // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
@@ -1027,6 +1036,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale })
           enrichment.setPlacesRecommendations(productRecommendations(result))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -1118,6 +1128,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }

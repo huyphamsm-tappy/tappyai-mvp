@@ -3,6 +3,7 @@ import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace, type ReviewAction } from '@/lib/ai/consultative/reviewAction'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { actionKindFor, urlKindFor, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp'
 
 // ── ONE ACTION LIST, ONE AUTHORITY ───────────────────────────────────────────
 //
@@ -20,6 +21,14 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 // `buildSpaLinks`, `buildEntertainmentLinks` and `reviewActionsForPlace` stay
 // the source of truth for what a link should be; this module only gives their
 // output one shape and one ordering.
+//
+// 🔑 COMMERCE LINKS (CCP, owner decisions P6-A/B, 13 Sep 2026). A row may carry
+// `commerce_links` — Commerce Links the Commerce Capability Platform resolved,
+// validated and ranked (src/lib/ccp). They enter this list as ordinary Actions:
+// same shape, same channels, same dedupe. What makes them different is carried
+// as DATA on the action (`commerce`): the merchant, how deep the URL lands, and
+// whether the merchant asks for a login before the step can be completed. The
+// label resolver reads that data; nothing here writes button copy.
 
 export type ActionKind =
   | 'maps' | 'directions' | 'website' | 'order' | 'delivery' | 'booking'
@@ -48,6 +57,28 @@ export interface Action {
   priority: number
   /** Only meaningful for `review`: true when the URL is attributed content rather than a search. */
   attributed?: boolean
+  /**
+   * Present only on an action the Commerce Capability Platform resolved. Facts a
+   * label or a handoff event needs; never a second URL and never prose.
+   */
+  commerce?: CommerceActionFacts
+}
+
+/** The CCP facts an Action carries. A projection of `CommerceLinkRow`, kept scalar for the wire. */
+export interface CommerceActionFacts {
+  linkId: string
+  requestId: string
+  providerId: string
+  /** L0–L5 the URL lands at for a guest. */
+  depth: number
+  guestDepth: number
+  authRequiredAt: CommerceLinkRow['authRequiredAt']
+  /** True when the merchant asks for a login BEFORE the landed step can be completed (CGV, Klook). */
+  loginRequired: boolean
+  freshnessType: CommerceLinkRow['freshness']['freshnessType']
+  /** Session-bound URLs expire (PasGo hold, Trip.com stay); null = stable. */
+  expiresAt: string | null
+  tracked: boolean
 }
 
 /**
@@ -184,6 +215,66 @@ export interface ActionSource {
   review_actions?: readonly ReviewAction[]
   tiktok_review_url?: string
   has_tiktok_review?: boolean
+  /** CCP row attachment — see src/lib/ccp/row.ts. Structural; a persisted row is re-checked. */
+  commerce_links?: readonly CommerceLinkRow[]
+}
+
+/**
+ * 🚨 A COMMERCE LINK OUTRANKS EVERY TABLE ENTRY — by construction, not by table.
+ *
+ * The per-domain PRIORITY table orders KINDS ("on a food turn, ordering before
+ * maps"). A CCP link is not a kind; it is a verified merchant destination that
+ * the platform resolved for THIS subject — deeper than any search handoff of the
+ * same kind and the one action the turn exists to offer (P6-A: "→ commerce
+ * handoff"). It therefore sorts before index 0 rather than being slotted into a
+ * table that has no row for "the real one". Two commerce links keep CCP's own
+ * ranking order (they arrive ranked; the array index is the tie-break).
+ */
+const COMMERCE_PRIORITY = -1
+
+/**
+ * Normalised destination identity: scheme-insensitive host, path without a
+ * trailing slash, sorted query — so a row's own `link` and a Commerce Link's
+ * `destinationUrl` to the same page are recognised as one destination even when
+ * the commerce URL is a tracking wrapper.
+ */
+function destinationKey(url: string | undefined): string | null {
+  if (!url) return null
+  try {
+    const u = new URL(url)
+    const params = [...u.searchParams.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => `${k}=${v}`).join('&')
+    return `${u.hostname.toLowerCase().replace(/^www\./, '')}${u.pathname.replace(/\/+$/, '') || '/'}?${params}`
+  } catch { return null }
+}
+
+/** Commerce Links → Actions. Invalid or unsafe rows drop out; nothing is repaired. */
+function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: string): Action[] {
+  if (!Array.isArray(rows) || rows.length === 0) return []
+  const out: Action[] = []
+  rows.forEach((row, index) => {
+    if (!isCommerceLinkRow(row)) return
+    const kind = actionKindFor(row.intentType)
+    const a = action(kind, row.url, domain, { urlKind: urlKindFor(row.kind), platform: row.merchantName })
+    if (!a) return
+    out.push({
+      ...a,
+      // Ranked order from CCP is preserved; a fraction keeps every commerce action ahead of index 0.
+      priority: COMMERCE_PRIORITY + index / 100,
+      commerce: {
+        linkId: row.linkId,
+        requestId: row.requestId,
+        providerId: row.providerId,
+        depth: row.depth,
+        guestDepth: row.guestDepth,
+        authRequiredAt: row.authRequiredAt,
+        loginRequired: requiresMerchantLogin(row.authRequiredAt),
+        freshnessType: row.freshness.freshnessType,
+        expiresAt: row.expiresAt,
+        tracked: row.tracked,
+      },
+    })
+  })
+  return out
 }
 
 /** Maps a `ReviewAction.kind` onto whether the URL is content or a place to look. */
@@ -203,6 +294,17 @@ export function buildActions(
 ): Action[] {
   const out: (Action | null)[] = []
   const name = (src.name || '').trim()
+
+  // ── Commerce Links — first, so they claim their destination in the dedupe ──
+  // A row whose own `link` IS the merchant page the Commerce Link resolves to
+  // (a DMX product found by Google Shopping) would otherwise show twice: once
+  // as the platform's verified handoff and once as a bare "view product".
+  const commerce = commerceActions(src.commerce_links, domain)
+  out.push(...commerce)
+  const commerceDestinations = new Set(
+    (src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => destinationKey(r.destinationUrl)).filter((k): k is string => !!k),
+  )
+  const rowLink = commerceDestinations.has(destinationKey(src.link) ?? '') ? undefined : src.link
 
   // ── Ordering / delivery — food only, and only from the shipped builder ─────
   // Recomputed here when the row did not carry them, so an entity built outside
@@ -240,7 +342,7 @@ export function buildActions(
   // The link's HOST decides what it is, because that is the only honest source:
   // an OTA's own hotel page is a booking, anything else is just the venue's
   // website. Nothing is guessed from the domain alone.
-  out.push(action(rowLinkKind(src.link, domain), src.link, domain, { urlKind: 'direct' }))
+  out.push(action(rowLinkKind(rowLink, domain), rowLink, domain, { urlKind: 'direct' }))
 
   // ── Universal ─────────────────────────────────────────────────────────────
   out.push(action('maps', src.maps_link, domain, { urlKind: 'direct' }))

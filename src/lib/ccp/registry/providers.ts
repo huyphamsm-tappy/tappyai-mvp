@@ -51,6 +51,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     enabledFlag: 'CCP_ADAPTER_DMX',
     tier: 'mvp',
     notes: ['Affiliate approval only affects tracking, not depth.', 'Variant and quantity are page-only.'],
+    discovery: { site: 'dienmayxanh.com', subjectKind: 'product' },
   },
   {
     providerId: 'tripcom',
@@ -89,6 +90,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     enabledFlag: 'CCP_ADAPTER_TRIPCOM',
     tier: 'mvp',
     notes: ['Deep Link tool / API only (owner decision D4).'],
+    discovery: { site: 'vn.trip.com/hotels', subjectKind: 'hotel' },
   },
   {
     providerId: 'pasgo',
@@ -117,6 +119,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     enabledFlag: 'CCP_ADAPTER_PASGO',
     tier: 'mvp',
     notes: ['No affiliate programme in use; direct deep link (Plan §9: affiliate optional).', 'Reservation URL expires with the 5-minute hold.'],
+    discovery: { site: 'pasgo.vn/nha-hang', subjectKind: 'restaurant' },
   },
   {
     providerId: 'cgv',
@@ -185,6 +188,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     enabledFlag: 'CCP_ADAPTER_KLOOK',
     tier: 'mvp',
     notes: ['One adapter serves Entertainment (attractions) and Spa (Spa category).', 'Package, date and quantity are page-only.'],
+    discovery: { site: 'klook.com/vi/activity', subjectKind: 'activity' },
   },
 
   // ── Handoff-only entries (owner decision D10) ─────────────────────────────

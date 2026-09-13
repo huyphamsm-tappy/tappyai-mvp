@@ -97,6 +97,7 @@ export function resolveDeepLink(
   const link: CommerceLink = {
     linkId: linkId(url, opts.actorHash ?? request.context?.actorHash),
     url,
+    directUrl: build.url,
     kind,
     providerId: adapter.providerId,
     merchantId: offer.merchantId,

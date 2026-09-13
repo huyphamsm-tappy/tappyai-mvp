@@ -264,7 +264,10 @@ export interface LinkValidation {
 
 export interface CommerceLink {
   linkId: string
+  /** The URL handed to the user — a tracking wrapper when one was validated, else the direct URL. */
   url: string
+  /** The merchant URL the handoff lands on (what a wrapper must echo). Equals `url` when untracked. */
+  directUrl: string
   kind: LinkKind
   providerId: string
   merchantId: string

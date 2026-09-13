@@ -31,6 +31,8 @@ export interface CapabilitySource {
   maps_link?: string
   place_id?: string
   booking_link?: string
+  /** CCP row attachment (P6-B). Presence is the capability; the URLs stay carved. */
+  commerce_links?: readonly unknown[]
   link?: string
   opening_hours?: string
   phone?: string
@@ -61,6 +63,12 @@ export interface Capabilities {
    * Omitted    — nothing at all.
    */
   has_reviews?: 'verified' | 'search'
+  /**
+   * The Commerce Capability Platform resolved a verified merchant handoff for
+   * this row — the app will render it as a button. The model may say a direct
+   * booking/purchase is possible; it never sees, and must never write, the URL.
+   */
+  has_direct_handoff?: true
 }
 
 const some = <T>(a: T[] | undefined) => Array.isArray(a) && a.length > 0
@@ -95,6 +103,7 @@ export function capabilitiesOf(src: CapabilitySource): Capabilities {
   // search is a place to look. Collapsing them here would let the model say
   // "here's the review" about a search page — the exact claim the review ladder
   // was built to prevent.
+  if (Array.isArray(src.commerce_links) && src.commerce_links.length > 0) caps.has_direct_handoff = true
   if (src.has_tiktok_review && src.tiktok_review_url) caps.has_reviews = 'verified'
   else if (src.maps_link || src.website_uri || src.place_id) caps.has_reviews = 'search'
 
