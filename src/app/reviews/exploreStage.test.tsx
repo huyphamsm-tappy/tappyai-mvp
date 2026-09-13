@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
-import { render, screen, cleanup, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, cleanup, waitFor, fireEvent, act } from '@testing-library/react'
 import { readFileSync, existsSync } from 'node:fs'
 
 vi.mock('next/navigation', () => ({
@@ -10,7 +10,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 /** The real player mounts media. Here it is a MARKER that forwards the one method the
- *  card calls, so the tests can count the thing that matters: how many players exist. */
+ *  card calls and renders a bare <video> so the playback strip has something to read. */
 const pauseToggle = vi.fn()
 vi.mock('@/components/explore/VideoPlayer', async () => {
   const { forwardRef, useImperativeHandle } = await import('react')
@@ -18,7 +18,7 @@ vi.mock('@/components/explore/VideoPlayer', async () => {
     __esModule: true,
     default: forwardRef(function MockPlayer({ url, active }: { url: string; active?: boolean }, ref: React.Ref<unknown>) {
       useImperativeHandle(ref, () => ({ onUserPauseToggle: pauseToggle }), [])
-      return <div data-testid="player" data-url={url} data-active={String(!!active)} />
+      return <div data-testid="player" data-url={url} data-active={String(!!active)}><video data-testid="video" /></div>
     }),
     isFeedAudioUnlocked: () => true,
   }
@@ -32,6 +32,13 @@ vi.mock('@/modules/music', () => ({ useMusicTrack: () => ({ track: null }), getP
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
 const trackMock = vi.fn()
 vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))
+/** Who is signed in, per test. */
+let sessionUser: { id: string; user_metadata?: Record<string, unknown> } | null = null
+vi.mock('@/lib/supabase/client', () => ({
+  createClient: () => ({ auth: { getUser: async () => ({ data: { user: sessionUser } }) } }),
+}))
+let unread = 0
+vi.mock('@/components/NotificationProvider', () => ({ useNotifications: () => ({ unreadCount: unread }) }))
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -42,26 +49,26 @@ Object.defineProperty(window, 'matchMedia', {
   }),
 })
 
-import ExploreStage, { slotTransform, slotRole } from './ExploreStage'
+import ExploreStage, { slotTransform, slotRole, shortCount } from './ExploreStage'
 
-// ── V3 Web · EXPLORE — the spatial stage ────────────────────────────────────
+// ── V3 Web · EXPLORE — the approved spatial stage ───────────────────────────
 //
 // 🚨🚨 THE RULE THIS FILE EXISTS FOR: **SEVERAL VISIBLE, ONE PLAYING, ONE INDEX.**
 //
 // The stage draws up to five clips in one perspective space and mounts the player on the
 // active one only — every other card is a poster, so there is exactly one <video>. The
-// active index is the single source of truth: the player, the overlay, the Ask-Tappy `ctx`
-// and the position readout all derive from it, and the tests below read all of them from
-// the same `data-active-review-id`.
+// active index is the single source of truth: the player, the overlay, the Ask-Tappy `ctx`,
+// the position readout, the progress line and the highlighted thumbnail all derive from it.
 //
-// The second thing pinned is data honesty, carried over from the previous desktop surface:
-// no invented clips, no engagement figures, no topic taxonomy, no subject that the clip did
-// not supply.
+// The second thing pinned is data honesty: no invented clips, no engagement figures other
+// than the feed's own columns, no topic taxonomy, no subject the clip did not supply, Follow
+// and the overflow menu under the feed's own rules — and the reference's editorial line as
+// the only static text.
 
 const clip = (id: string, over: Record<string, unknown> = {}) => ({
   id, user_id: 'u1', place_name: 'Chia sẻ', place_address: null, rating: 0,
   body: `caption ${id}`, photos: null, like_count: 0, comment_count: 0, save_count: 0,
-  created_at: new Date().toISOString(), liked_by_me: false, saved_by_me: false,
+  created_at: new Date(Date.now() - 2 * 24 * 3600 * 1000).toISOString(), liked_by_me: false, saved_by_me: false,
   profiles: { full_name: 'Huy', avatar_url: null },
   content_type: 'video', media_url: `https://example.com/${id}.mp4`,
   thumbnail: `https://example.com/${id}.jpg`, source_type: 'upload', hashtags: ['#pho'],
@@ -71,12 +78,16 @@ const five = () => ['a', 'b', 'c', 'd', 'e'].map(id => clip(id))
 const seven = () => ['a', 'b', 'c', 'd', 'e', 'f', 'g'].map(id => clip(id))
 
 let lastUrl = ''
-function mockFeed(rows: unknown[]) {
+let fetchMock: ReturnType<typeof vi.fn>
+function mockFeed(rows: unknown[], extra?: (url: string, init?: RequestInit) => Promise<unknown> | undefined) {
   lastUrl = ''
-  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+  fetchMock = vi.fn(async (url: string, init?: RequestInit) => {
+    const handled = extra?.(String(url), init)
+    if (handled) return handled
     lastUrl = String(url)
     return { ok: true, status: 200, json: async () => ({ reviews: rows, page: 0, limit: 20, hasMore: false }) }
-  }))
+  })
+  vi.stubGlobal('fetch', fetchMock)
 }
 
 const players = () => screen.queryAllByTestId('player')
@@ -85,17 +96,18 @@ const cards = () => Array.from(document.querySelectorAll<HTMLElement>('[data-exp
 const stage = () => document.querySelector<HTMLElement>('[data-explore-stage]')!
 const activeId = () => stage().getAttribute('data-active-review-id')
 const ask = () => document.querySelector<HTMLAnchorElement>('[data-stage-ask]')
-const untilStage = () => waitFor(() => expect(stage()).toBeTruthy())
+const untilCards = () => waitFor(() => expect(cards().length).toBeGreaterThan(0))
 
-beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear() })
+beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0 })
 afterEach(cleanup)
 
 describe('several visible, ONE playing', () => {
   it('mounts exactly one player for a feed of five, and posters for the rest that are drawn', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     expect(players()).toHaveLength(1)
+    expect(document.querySelectorAll('video')).toHaveLength(1)
     expect(posters().length).toBeGreaterThanOrEqual(2)
     expect(players()[0].getAttribute('data-url')).toBe('https://example.com/a.mp4')
   })
@@ -103,7 +115,7 @@ describe('several visible, ONE playing', () => {
   it('never renders a player and a poster on the same card', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     for (const card of cards()) {
       const hasPlayer = !!card.querySelector('[data-testid="player"]')
       const hasPoster = !!card.querySelector('[data-testid="poster"]')
@@ -111,19 +123,10 @@ describe('several visible, ONE playing', () => {
     }
   })
 
-  it('marks exactly one card active and starts on the first clip', async () => {
-    mockFeed(five())
-    render(<ExploreStage />)
-    await untilStage()
-    expect(cards().filter(c => c.dataset.active === 'true')).toHaveLength(1)
-    expect(stage().getAttribute('data-active-index')).toBe('0')
-    expect(activeId()).toBe('a')
-  })
-
   it('MOVES the single player when a neighbour is selected — it does not add one', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     const near = cards().find(c => c.dataset.role === 'near')!
     fireEvent.click(near.querySelector('button')!)
     await waitFor(() => expect(activeId()).toBe('b'))
@@ -135,48 +138,57 @@ describe('several visible, ONE playing', () => {
   it('draws the active clip, its neighbours and the far pair — no more than seven cards ever', async () => {
     mockFeed(seven())
     render(<ExploreStage />)
-    await untilStage()
-    // At index 0 only the forward side exists: active + 3.
+    await untilCards()
     expect(cards().map(c => c.dataset.role)).toEqual(['active', 'near', 'far', 'hidden'])
     fireEvent.keyDown(window, { key: 'ArrowRight' })
     fireEvent.keyDown(window, { key: 'ArrowRight' })
     fireEvent.keyDown(window, { key: 'ArrowRight' })
     await waitFor(() => expect(activeId()).toBe('d'))
     expect(cards().map(c => c.dataset.role)).toEqual(['hidden', 'far', 'near', 'active', 'near', 'far', 'hidden'])
-    expect(cards().length).toBeLessThanOrEqual(7)
     expect(players()).toHaveLength(1)
   })
 })
 
 describe('the active index is the single source of truth', () => {
-  it('player url, Ask-Tappy ctx and the readout all follow the same review, and move together', async () => {
+  it('player, Ask-Tappy ctx, readout, progress line and thumbnail all follow one review, and move together', async () => {
     mockFeed(five().map(r => ({ ...r, place_name: `Quán ${r.id}` })))
     render(<ExploreStage />)
-    await untilStage()
-    const check = (id: string, pos: string) => {
+    await untilCards()
+    const check = (id: string, pos: string, pct: string) => {
       expect(activeId()).toBe(id)
       expect(players()[0].getAttribute('data-url')).toBe(`https://example.com/${id}.mp4`)
       expect(ask()!.getAttribute('href')).toContain(`ctx=${id}`)
       expect(ask()!.getAttribute('href')).toContain(encodeURIComponent(`Quán ${id}`))
       expect(document.querySelector('[data-stage-pos]')!.textContent).toBe(pos)
+      expect((document.querySelector('[data-xp-line]') as HTMLElement).style.width).toBe(pct)
+      const current = document.querySelectorAll('[data-xp-thumbs] [aria-current="true"]')
+      expect(current).toHaveLength(1)
+      expect(current[0].getAttribute('aria-label')).toBe(`Go to video ${pos.split(' / ')[0]}`)
       expect(document.querySelectorAll('[data-stage-ask]')).toHaveLength(1)
     }
-    check('a', '1 / 5')
+    check('a', '1 / 5', '20%')
     fireEvent.click(document.querySelector('[data-stage-next]')!)
-    await waitFor(() => check('b', '2 / 5'))
+    await waitFor(() => check('b', '2 / 5', '40%'))
     fireEvent.keyDown(window, { key: 'ArrowRight' })
-    await waitFor(() => check('c', '3 / 5'))
+    await waitFor(() => check('c', '3 / 5', '60%'))
     fireEvent.keyDown(window, { key: 'ArrowLeft' })
-    await waitFor(() => check('b', '2 / 5'))
+    await waitFor(() => check('b', '2 / 5', '40%'))
+    // The thumbnail navigator jumps straight to a clip.
+    fireEvent.click(document.querySelectorAll('[data-xp-thumbs] button')[4])
+    await waitFor(() => check('e', '5 / 5', '100%'))
   })
 
-  it('prev is disabled on the first clip and next on the last', async () => {
-    mockFeed(five().slice(0, 2))
+  it('a vertical wheel turns the space one clip at a time; prev/next disable at the ends', async () => {
+    mockFeed(five().slice(0, 3))
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     expect((document.querySelector('[data-stage-prev]') as HTMLButtonElement).disabled).toBe(true)
-    fireEvent.click(document.querySelector('[data-stage-next]')!)
+    fireEvent.wheel(stage(), { deltaY: 120 })
     await waitFor(() => expect(activeId()).toBe('b'))
+    fireEvent.wheel(stage(), { deltaY: 120 }) // inside the throttle window: ignored
+    expect(activeId()).toBe('b')
+    fireEvent.click(document.querySelector('[data-stage-next]')!)
+    await waitFor(() => expect(activeId()).toBe('c'))
     expect((document.querySelector('[data-stage-next]') as HTMLButtonElement).disabled).toBe(true)
   })
 })
@@ -187,7 +199,6 @@ describe('the space turns with the pointer', () => {
     fireEvent.pointerDown(el, { pointerId: 1, button: 0, clientX: 500, clientY: 300 })
     fireEvent.pointerMove(el, { pointerId: 1, clientX: 500 + dx / 2, clientY: 300 })
     fireEvent.pointerMove(el, { pointerId: 1, clientX: 500 + dx, clientY: 300 })
-    // The release carries the same coordinates the last move did.
     vi.spyOn(Date, 'now').mockReturnValue(Date.now() + dt)
     fireEvent.pointerUp(el, { pointerId: 1, clientX: 500 + dx, clientY: 300 })
     vi.restoreAllMocks()
@@ -196,7 +207,7 @@ describe('the space turns with the pointer', () => {
   it('a leftward swipe advances one clip; a rightward one goes back; the player follows', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     swipe(-160)
     await waitFor(() => expect(activeId()).toBe('b'))
     expect(players()).toHaveLength(1)
@@ -207,7 +218,7 @@ describe('the space turns with the pointer', () => {
   it('mid-drag the active card has already moved, and the stage says it is dragging', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     const el = stage()
     const before = cards()[0].style.transform
     fireEvent.pointerDown(el, { pointerId: 2, button: 0, clientX: 500, clientY: 300 })
@@ -221,7 +232,7 @@ describe('the space turns with the pointer', () => {
   it('a tiny movement is a click, not a swipe', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     swipe(-3)
     await new Promise(r => setTimeout(r, 20))
     expect(activeId()).toBe('a')
@@ -229,83 +240,180 @@ describe('the space turns with the pointer', () => {
 })
 
 describe('the spatial model (pure)', () => {
-  const g = { x: [0, 0.82, 1.46, 1.8], z: [0, -230, -460, -640], rot: [0, 18, 28, 34], sc: [1, 0.8, 0.64, 0.52], op: [1, 0.78, 0.46, 0], divisor: 3.2 }
+  const g = { x: [0, 0.82, 1.3, 1.6], z: [0, -140, -300, -460], rot: [0, 24, 38, 44], sc: [1, 0.86, 0.72, 0.6], op: [1, 0.96, 0.86, 0], widthShare: 0.307, heightShare: 0.78 }
   it('the active clip is nearest, largest, fully opaque and unturned', () => {
-    expect(slotTransform(0, g, 300)).toEqual({ transform: 'translate3d(calc(-50% + 0.0px), -50%, 0.0px) rotateY(0.00deg) scale(1.000)', opacity: 1 })
+    expect(slotTransform(0, g, 442)).toEqual({ transform: 'translate3d(calc(-50% + 0.0px), -50%, 0.0px) rotateY(0.00deg) scale(1.000)', opacity: 1 })
   })
-  it('neighbours sit behind, smaller and turned away, mirrored left and right', () => {
-    const right = slotTransform(1, g, 300)
-    const left = slotTransform(-1, g, 300)
-    expect(right.transform).toBe('translate3d(calc(-50% + 246.0px), -50%, -230.0px) rotateY(-18.00deg) scale(0.800)')
-    expect(left.transform).toBe('translate3d(calc(-50% + -246.0px), -50%, -230.0px) rotateY(18.00deg) scale(0.800)')
-    expect(right.opacity).toBe(0.78)
+  it('neighbours sit ±0.82 widths out, behind, smaller and turned away, mirrored left and right', () => {
+    const right = slotTransform(1, g, 442)
+    const left = slotTransform(-1, g, 442)
+    expect(right.transform).toBe('translate3d(calc(-50% + 362.4px), -50%, -140.0px) rotateY(-24.00deg) scale(0.860)')
+    expect(left.transform).toBe('translate3d(calc(-50% + -362.4px), -50%, -140.0px) rotateY(24.00deg) scale(0.860)')
+    expect(right.opacity).toBe(0.96)
   })
-  it('the far pair is deeper and dimmer; beyond it a card is invisible', () => {
-    expect(slotTransform(2, g, 300).opacity).toBe(0.46)
-    expect(slotTransform(3, g, 300).opacity).toBe(0)
-    expect(slotTransform(9, g, 300).opacity).toBe(0)
+  it('the far pair is deeper and further turned; beyond it a card is invisible', () => {
+    expect(slotTransform(2, g, 442).transform).toContain('rotateY(-38.00deg) scale(0.720)')
+    expect(slotTransform(3, g, 442).opacity).toBe(0)
+    expect(slotTransform(9, g, 442).opacity).toBe(0)
   })
   it('a drag interpolates between slots, so the space moves continuously', () => {
-    const half = slotTransform(0.5, g, 300)
-    expect(half.transform).toBe('translate3d(calc(-50% + 123.0px), -50%, -115.0px) rotateY(-9.00deg) scale(0.900)')
-    expect(half.opacity).toBeCloseTo(0.89)
+    const half = slotTransform(0.5, g, 442)
+    expect(half.transform).toBe('translate3d(calc(-50% + 181.2px), -50%, -70.0px) rotateY(-12.00deg) scale(0.930)')
+    expect(half.opacity).toBeCloseTo(0.98)
   })
   it('roles come from the integer distance only', () => {
     expect([0, 1, -1, 2, -2, 3, 8].map(slotRole)).toEqual(['active', 'near', 'near', 'far', 'far', 'hidden', 'hidden'])
   })
+  it('counts are the feed’s numbers, shortened the way the reference shows them', () => {
+    expect([0, 7, 999, 1234, 9950, 12800, 2400000].map(shortCount)).toEqual(['0', '7', '999', '1.2k', '9.9k', '13k', '2.4M'])
+  })
 })
 
-describe('it shows the videos that exist, and only those', () => {
-  it('leaves out rows with no playable clip', async () => {
-    mockFeed([clip('a'), clip('b', { content_type: 'photo', media_url: null }), clip('c', { media_url: null })])
+describe('the approved composition is on screen', () => {
+  it('top bar: logo, Explore / Ask Tappy / Plan / Music with Explore current, search, notifications, profile', async () => {
+    mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
-    expect(cards()).toHaveLength(1)
-    expect(document.querySelector('[data-stage-pos]')!.textContent).toBe('1 / 1')
+    await untilCards()
+    const nav = Array.from(document.querySelectorAll('.v3-xp-nav a')).map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')])
+    expect(nav).toEqual([['Explore', '/reviews', 'page'], ['Ask Tappy', '/chat', null], ['Plan', '/planner', null], ['Music', '/music', null]])
+    expect(document.querySelector('.v3-xp-logo')!.getAttribute('href')).toBe('/')
+    expect(document.querySelector('[data-xp-search-toggle]')).toBeTruthy()
+    expect(document.querySelector('a[href="/profile/notifications"]')).toBeTruthy()
+    // Signed out: the avatar slot is a way to sign in, not an invented person.
+    expect(document.querySelector(`a[href="/login?returnTo=${encodeURIComponent('/reviews')}"]`)).toBeTruthy()
+    expect(document.querySelector('[data-xp-unread]')).toBeNull()
   })
-  it('does NOT invent clips: two clips draw two cards', async () => {
-    mockFeed(five().slice(0, 2))
+
+  it('the bell carries the real unread badge, the avatar the signed-in session', async () => {
+    unread = 3
+    sessionUser = { id: 'me-1', user_metadata: { avatar_url: 'https://cdn.example/me.jpg' } }
+    mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
-    expect(cards()).toHaveLength(2)
-    expect(document.querySelectorAll('.v3-stage-dot')).toHaveLength(2)
+    await untilCards()
+    expect(document.querySelector('[data-xp-unread]')).toBeTruthy()
+    await waitFor(() => expect(document.querySelector('a[href="/profile"] img')?.getAttribute('src')).toBe('https://cdn.example/me.jpg'))
   })
-  it('says so when there is nothing to play', async () => {
-    mockFeed([])
+
+  it('editorial copy, position + progress line, the hint and the thumbnail navigator are all there', async () => {
+    mockFeed(five())
     render(<ExploreStage />)
-    await waitFor(() => expect(screen.getByText('No videos to show yet.')).toBeTruthy())
-    expect(document.querySelector('[data-explore-stage]')).toBeNull()
+    await untilCards()
+    expect(document.querySelector('[data-xp-editorial]')!.textContent).toBe('Real places.Real people.A more vibrant you.')
+    expect(document.querySelector('[data-stage-pos]')!.textContent).toBe('1 / 5')
+    expect(document.querySelector('[data-xp-line]')).toBeTruthy()
+    expect(document.querySelector('[data-xp-hint]')!.textContent).toMatch(/SCROLL\s+•\s+SWIPE\s+•\s+EXPLORE/)
+    const thumbs = document.querySelectorAll('[data-xp-thumbs] button')
+    expect(thumbs).toHaveLength(5)
+    expect(thumbs[0].querySelector('img')!.getAttribute('src')).toBe('https://example.com/a.jpg')
+  })
+
+  it('the active card carries creator · time · Follow, the title and location block, and the rail with real counts', async () => {
+    mockFeed([clip('a', { body: 'Chill vibes in District 1', place_name: 'The Rooftop', place_address: 'District 1, Ho Chi Minh City', like_count: 1234, comment_count: 128 }), clip('b')])
+    render(<ExploreStage />)
+    await untilCards()
+    const card = cards()[0]
+    expect(card.querySelector('a[href="/users/u1"]')!.textContent).toContain('Huy')
+    // The feed's own relative-time format (`ago`): "2d" in English.
+    expect(card.querySelector('.v3-xp-creator-time')!.textContent).toBe('2d')
+    expect(card.querySelector('[data-xp-follow]')!.textContent).toBe('Follow')
+    expect(card.querySelector('h2')!.textContent).toBe('Chill vibes in District 1')
+    expect(card.querySelector('[data-xp-title-block]')!.textContent).toContain('The Rooftop')
+    expect(card.querySelector('[data-xp-title-block]')!.textContent).toContain('District 1, Ho Chi Minh City')
+    expect(card.querySelector('[data-xp-like-count]')!.textContent).toBe('1.2k')
+    expect(card.querySelector('[data-xp-comment-count]')!.textContent).toBe('128')
+    expect(card.querySelector('[data-xp-comment]')!.getAttribute('href')).toBe('/reviews/a')
+    expect(card.querySelector('[data-xp-share]')!.getAttribute('href')).toBe('/reviews/a')
+    expect(card.querySelector('[data-xp-save]')).toBeTruthy()
+    // A share-only clip never prints its sentinel as a place.
+    expect(cards()[1].textContent).not.toContain('Chia sẻ')
   })
 })
 
 describe('nothing on a card is invented', () => {
-  it('prints no engagement figures', async () => {
-    mockFeed([clip('a', { like_count: 1234, comment_count: 56, view_count: 9999 })])
+  it('a share-only clip draws no place and no Ask-Tappy bridge without a caption', async () => {
+    mockFeed([clip('a', { place_name: 'Chia sẻ', body: '' })])
     render(<ExploreStage />)
-    await untilStage()
-    expect(cards()[0].textContent).not.toMatch(/1234|56|9999|1\.2K/)
+    await untilCards()
+    expect(cards()[0].querySelector('[data-xp-title-block]')!.textContent).toBe('')
+    expect(ask()).toBeNull()
   })
-  it('renders no creator block when the feed sent no profile', async () => {
+  it('renders no creator link when the feed sent no profile', async () => {
     mockFeed([clip('a', { profiles: null })])
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     expect(document.querySelector('a[href^="/users/"]')).toBeNull()
   })
-  it('offers the filters the endpoint really supports, not the mockup taxonomy', async () => {
-    mockFeed(five())
+  it('does NOT invent clips: two clips draw two cards and two thumbnails', async () => {
+    mockFeed(five().slice(0, 2))
     render(<ExploreStage />)
-    await untilStage()
-    const chips = Array.from(document.querySelectorAll('.v3-stage-chip')).map(c => c.textContent)
-    expect(chips).toEqual(['For You', 'Following', 'Latest'])
+    await untilCards()
+    expect(cards()).toHaveLength(2)
+    expect(document.querySelectorAll('[data-xp-thumbs] button')).toHaveLength(2)
+  })
+  it('leaves out rows with no playable clip, and says so when nothing is left', async () => {
+    mockFeed([clip('a'), clip('b', { content_type: 'photo', media_url: null })])
+    render(<ExploreStage />)
+    await untilCards()
+    expect(cards()).toHaveLength(1)
+    cleanup()
+    mockFeed([])
+    render(<ExploreStage />)
+    await waitFor(() => expect(screen.getByText('No videos to show yet.')).toBeTruthy())
+    expect(document.querySelectorAll('[data-explore-card]')).toHaveLength(0)
+  })
+})
+
+describe('Follow and the overflow menu follow the feed’s own rules', () => {
+  it('Follow appears on someone else’s unfollowed post and posts to the existing endpoint', async () => {
+    sessionUser = { id: 'me-1' }
+    mockFeed([clip('a', { user_id: 'u1' })], (url, init) => {
+      if (url === '/api/users/u1/follow' && init?.method === 'POST') return Promise.resolve({ ok: true, json: async () => ({ following: true }) })
+      return undefined
+    })
+    render(<ExploreStage />)
+    await untilCards()
+    await waitFor(() => expect(document.querySelector('[data-xp-follow]')).toBeTruthy())
+    fireEvent.click(document.querySelector('[data-xp-follow]')!)
+    await waitFor(() => expect(document.querySelector('[data-xp-following]')).toBeTruthy())
+    expect(fetchMock).toHaveBeenCalledWith('/api/users/u1/follow', { method: 'POST' })
+    expect(document.querySelector('[data-xp-more]')).toBeNull()
+  })
+
+  it('an already-followed creator shows Following, not a button', async () => {
+    mockFeed([clip('a', { is_following: true })])
+    render(<ExploreStage />)
+    await untilCards()
+    expect(document.querySelector('[data-xp-follow]')).toBeNull()
+    expect(document.querySelector('[data-xp-following]')!.textContent).toBe('Following')
+  })
+
+  it('the overflow menu exists only on your own post, with the real delete and hide actions', async () => {
+    sessionUser = { id: 'u1' }
+    mockFeed([clip('a', { user_id: 'u1' }), clip('b', { user_id: 'other' })])
+    render(<ExploreStage />)
+    await untilCards()
+    await waitFor(() => expect(document.querySelector('[data-xp-more]')).toBeTruthy())
+    expect(document.querySelector('[data-xp-follow]')).toBeNull()
+    fireEvent.click(document.querySelector('[data-xp-more]')!)
+    const items = Array.from(document.querySelectorAll('[role="menuitem"]')).map(b => b.textContent!.trim())
+    expect(items).toEqual(['Delete post', 'Hide post'])
+    // Move to the other person's clip: no menu, a Follow instead.
+    fireEvent.click(document.querySelector('[data-stage-next]')!)
+    await waitFor(() => expect(activeId()).toBe('b'))
+    expect(document.querySelector('[data-xp-more]')).toBeNull()
+    expect(document.querySelector('[data-xp-follow]')).toBeTruthy()
   })
 })
 
 describe('it uses the mechanisms that already exist', () => {
-  it('reads the existing feed endpoint, and its existing sorts', async () => {
+  it('reads the existing feed endpoint; the sorts live behind the search glyph and still hit it', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     expect(lastUrl).toBe('/api/reviews/feed?page=0&limit=20')
+    fireEvent.click(document.querySelector('[data-xp-search-toggle]')!)
+    const chips = Array.from(document.querySelectorAll('.v3-xp-chip')).map(c => c.textContent)
+    expect(chips).toEqual(['For You', 'Following', 'Latest'])
     fireEvent.click(screen.getByRole('button', { name: 'Latest' }))
     await waitFor(() => expect(lastUrl).toBe('/api/reviews/feed?page=0&limit=20&sort=latest'))
     fireEvent.click(screen.getByRole('button', { name: 'Following' }))
@@ -314,8 +422,9 @@ describe('it uses the mechanisms that already exist', () => {
   it('searches through the same endpoint rather than a new one', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
-    const input = document.querySelector('.v3-stage-search') as HTMLInputElement
+    await untilCards()
+    fireEvent.click(document.querySelector('[data-xp-search-toggle]')!)
+    const input = document.querySelector('.v3-xp-search input') as HTMLInputElement
     fireEvent.change(input, { target: { value: 'bún bò' } })
     fireEvent.submit(input.closest('form')!)
     await waitFor(() => expect(lastUrl).toBe(`/api/reviews/feed?search=${encodeURIComponent('bún bò')}&limit=20`))
@@ -323,65 +432,69 @@ describe('it uses the mechanisms that already exist', () => {
   it('hands off to Chat through the existing bridge, carrying the ACTIVE clip and what it IS', async () => {
     mockFeed([clip('a', { place_name: 'Bún bò Cô Ba' }), clip('b')])
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     const href = ask()!.getAttribute('href')!
     expect(href.startsWith('/chat?q=')).toBe(true)
     expect(href).toContain('ctx=a')
     expect(decodeURIComponent(href)).toContain('Bún bò Cô Ba')
     expect(decodeURIComponent(href)).not.toMatch(/muốn|want/i)
   })
-  it('has no bridge at all when the clip has neither a place nor a caption', async () => {
-    mockFeed([clip('a', { place_name: 'Chia sẻ', body: '' })])
-    render(<ExploreStage />)
-    await untilStage()
-    expect(ask()).toBeNull()
-  })
-  it('measures the bridge: ONE ask_tappy_place click with source_surface explore_desktop', async () => {
+  it('measures the bridge: ONE ask_tappy_place click with source_surface explore_desktop, and no pause', async () => {
     mockFeed([clip('a', { place_name: 'Quán A', place_address: '1 Lê Lợi' })])
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     fireEvent.click(ask()!)
     expect(trackMock).toHaveBeenCalledTimes(1)
     const [type, meta] = trackMock.mock.calls[0] as [string, Record<string, unknown>]
     expect(type).toBe('ask_tappy_place')
     expect(meta).toMatchObject({ phase: 'click', review_id: 'a', source_surface: 'explore_desktop', has_address: true })
+    expect(pauseToggle).not.toHaveBeenCalled()
   })
-  it('the click on the bridge does not also pause the card', async () => {
-    mockFeed([clip('a', { place_name: 'Quán A' })])
+  it('like and save call the existing endpoints, optimistically, and the like count follows', async () => {
+    mockFeed([clip('a', { like_count: 10 })], (url, init) => {
+      if (url === '/api/reviews/a/like' && init?.method === 'POST') return Promise.resolve({ ok: true, status: 200, json: async () => ({ liked: true }) })
+      if (url === '/api/reviews/a/save' && init?.method === 'POST') return Promise.resolve({ ok: true, status: 200, json: async () => ({ saved: true }) })
+      return undefined
+    })
     render(<ExploreStage />)
-    await untilStage()
-    fireEvent.click(ask()!)
+    await untilCards()
+    fireEvent.click(document.querySelector('[data-xp-like]')!)
+    await waitFor(() => expect(document.querySelector('[data-xp-like-count]')!.textContent).toBe('11'))
+    expect(document.querySelector('[data-xp-like]')!.getAttribute('aria-pressed')).toBe('true')
+    fireEvent.click(document.querySelector('[data-xp-save]')!)
+    await waitFor(() => expect(document.querySelector('[data-xp-save]')!.getAttribute('aria-pressed')).toBe('true'))
     expect(pauseToggle).not.toHaveBeenCalled()
   })
 })
 
-describe('the author is a way into the profile that already exists', () => {
-  it('links the creator block to /users/[id] on the active card, and the click does not pause', async () => {
+describe('the playing clip can be paused, from the frame and from the playback strip', () => {
+  it('the frame tells the session the user toggled pause instead of re-selecting', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
-    const link = document.querySelector('a[href="/users/u1"]')!
-    expect(link).toBeTruthy()
-    fireEvent.click(link)
-    expect(pauseToggle).not.toHaveBeenCalled()
-  })
-})
-
-describe('the playing clip can be paused', () => {
-  it('tells the session the user toggled pause, instead of re-selecting the card', async () => {
-    mockFeed(five())
-    render(<ExploreStage />)
-    await untilStage()
-    const frame = cards()[0].querySelector('button')!
-    fireEvent.click(frame)
+    await untilCards()
+    fireEvent.click(cards()[0].querySelector('button')!)
     expect(pauseToggle).toHaveBeenCalledTimes(1)
     expect(activeId()).toBe('a')
-    expect(document.querySelector('.fill-white')).toBeTruthy()
+    expect(document.querySelector('.fill-white.text-white')).toBeTruthy()
+  })
+  it('the strip reads the player’s own <video> and pauses through the same session call', async () => {
+    Object.defineProperty(HTMLMediaElement.prototype, 'duration', { configurable: true, get: () => 30 })
+    Object.defineProperty(HTMLMediaElement.prototype, 'currentTime', { configurable: true, get: () => 12, set: () => {} })
+    mockFeed(five())
+    render(<ExploreStage />)
+    await untilCards()
+    const video = document.querySelector('video')!
+    await act(async () => { video.dispatchEvent(new Event('loadedmetadata')) })
+    await waitFor(() => expect(document.querySelector('[data-xp-time]')!.textContent).toBe('00:12 / 00:30'))
+    expect((document.querySelector('.v3-xp-track > span') as HTMLElement).style.width).toBe('40%')
+    fireEvent.click(document.querySelector('[data-xp-pause]')!)
+    expect(pauseToggle).toHaveBeenCalledTimes(1)
+    expect(document.querySelector('[data-xp-fullscreen]')).toBeTruthy()
   })
   it('selects an inactive card rather than pausing it', async () => {
     mockFeed(five())
     render(<ExploreStage />)
-    await untilStage()
+    await untilCards()
     fireEvent.click(cards()[2].querySelector('button')!)
     await waitFor(() => expect(activeId()).toBe('c'))
     expect(pauseToggle).not.toHaveBeenCalled()
@@ -397,11 +510,13 @@ describe('the page wiring', () => {
     expect(page).not.toContain('ExploreV3Desktop')
     expect(existsSync('src/app/reviews/ExploreV3Desktop.tsx')).toBe(false)
   })
-  it('the stage is CSS 3D with no new dependency, and reduced motion turns its transitions off', () => {
+  it('the stage is CSS 3D with no new dependency, always dark, and reduced motion turns its transitions off', () => {
     const css = readFileSync('src/app/globals.css', 'utf8')
-    expect(css).toMatch(/\.v3-stage \{[^}]*perspective: 1500px/)
-    expect(css).toMatch(/\.v3-stage-space \{[^}]*transform-style: preserve-3d/)
-    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.v3-stage-card[^}]*transition: none/)
+    expect(css).toMatch(/\.v3-xp-stage \{[^}]*perspective: 1600px/)
+    expect(css).toMatch(/\.v3-xp-space \{[^}]*transform-style: preserve-3d/)
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{\s*\.v3-xp-card[^}]*transition: none/)
+    const src = readFileSync('src/app/reviews/ExploreStage.tsx', 'utf8')
+    expect(src).toContain('className="v3-theme dark v3-xp"')
     const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
     for (const dep of ['framer-motion', 'motion', 'swiper', 'embla-carousel', 'three', 'gsap', '@react-spring/web']) {
       expect(pkg.dependencies?.[dep] ?? pkg.devDependencies?.[dep]).toBeUndefined()
