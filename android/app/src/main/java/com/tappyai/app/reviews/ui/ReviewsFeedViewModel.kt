@@ -1,7 +1,9 @@
 package com.tappyai.app.reviews.ui
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewErrorMessages
@@ -39,13 +41,28 @@ data class ReviewsFeedUiState(
     val currentUserId: String? = null,
 )
 
+/**
+ * Where the pager's rows come from. [Explore] is the discovery feed (the tabs' sort/following);
+ * [Profile] is one profile's clips — the signed-in user's own posts when [Profile.userId] is null,
+ * otherwise that author's — the same calls the profile grids make, so the pager pages exactly the
+ * grid, in the grid's order, and never a discovery row.
+ */
+sealed interface ReviewsFeedSource {
+    data object Explore : ReviewsFeedSource
+    data class Profile(val userId: String?) : ReviewsFeedSource
+}
+
 @HiltViewModel
 class ReviewsFeedViewModel @Inject constructor(
     private val repository: ReviewsRepository,
     private val authRepository: AuthRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    // The Feed destination has no arguments; ProfileClips carries the profile. Read once.
+    val source: ReviewsFeedSource = sourceFrom(savedStateHandle)
 
     private val _uiState = MutableStateFlow(ReviewsFeedUiState(currentUserId = authRepository.currentUserId()))
     val uiState: StateFlow<ReviewsFeedUiState> = _uiState.asStateFlow()
@@ -75,13 +92,14 @@ class ReviewsFeedViewModel @Inject constructor(
         val type = _uiState.value.feedType
         _uiState.update { it.copy(isInitialLoading = true, error = null, endReached = false) }
         loadJob = viewModelScope.launch {
-            when (val result = repository.getFeed(page = 0, limit = PAGE_SIZE, sort = sortFor(type), following = followingFor(type))) {
+            when (val result = loadPage(0, type)) {
                 is NetworkResult.Success -> _uiState.update {
                     it.copy(
                         reviews = result.data,
                         isInitialLoading = false,
                         error = null,
-                        endReached = result.data.size < PAGE_SIZE,
+                        // A profile's own-posts list is one unpaged call; the others page by size.
+                        endReached = source.isMine || result.data.size < PAGE_SIZE,
                     )
                 }
                 is NetworkResult.Error -> {
@@ -109,7 +127,7 @@ class ReviewsFeedViewModel @Inject constructor(
         val type = _uiState.value.feedType
         _uiState.update { it.copy(isLoadingMore = true) }
         viewModelScope.launch {
-            when (val result = repository.getFeed(page = page + 1, limit = PAGE_SIZE, sort = sortFor(type), following = followingFor(type))) {
+            when (val result = loadPage(page + 1, type)) {
                 is NetworkResult.Success -> {
                     page += 1
                     // De-dupe by id: the feed has no cursor, so a row inserted between page
@@ -201,11 +219,67 @@ class ReviewsFeedViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Follows / unfollows the AUTHOR of [review] without leaving the clip — the rail's "+" badge.
+     * The same `POST /api/users/{id}/follow` toggle the profile screen uses (server flips the
+     * row and returns `following`). Optimistic: every loaded row by that author flips at once,
+     * the server's answer is written back, a failure reverts. A no-op for the viewer's own posts
+     * (the server refuses `follow_self` anyway) and while a toggle for that author is in flight.
+     */
+    fun toggleFollow(review: Review) {
+        val authorId = review.userId
+        if (authorId == _uiState.value.currentUserId || authorId in followInFlight) return
+        val target = !review.isFollowingAuthor
+        followInFlight += authorId
+        _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, target)) }
+        viewModelScope.launch {
+            when (val result = repository.toggleFollow(authorId)) {
+                is NetworkResult.Success ->
+                    _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, result.data)) }
+                is NetworkResult.Error -> {
+                    logger.e(TAG, "Follow toggle failed: ${result.error}")
+                    _uiState.update { s -> s.copy(reviews = s.reviews.withFollowState(authorId, !target)) }
+                }
+            }
+            followInFlight -= authorId
+        }
+    }
+
+    private val followInFlight = mutableSetOf<String>()
+
+    /**
+     * The comment sheet's result: the server's comment count for ONE review, written into the feed
+     * row so the rail shows it after the sheet closes (web: `addComment` in reviews/page.tsx). Only
+     * that row changes; nothing is reloaded.
+     */
+    fun setCommentCount(reviewId: String, count: Int) {
+        _uiState.update { state -> state.copy(reviews = state.reviews.withCommentCount(reviewId, count)) }
+    }
+
     private inline fun updateReview(id: String, crossinline transform: (Review) -> Review) {
         _uiState.update { state ->
             state.copy(reviews = state.reviews.map { if (it.id == id) transform(it) else it })
         }
     }
+
+    /**
+     * One page of rows for [source]. Explore: the discovery feed with the tab's sort/following.
+     * Profile: the grid's own call — `getMine()` for the signed-in user (unpaged, hidden/held posts
+     * included, exactly what the Self Profile grid shows) or `getFeed(userId=…, latest)` for an
+     * author (what the Author Profile grid shows). A profile source never touches the discovery
+     * feed, so the pager cannot pick up another author's clip.
+     */
+    private suspend fun loadPage(pageIndex: Int, type: ReviewFeedType): NetworkResult<List<Review>> = when (val s = source) {
+        ReviewsFeedSource.Explore ->
+            repository.getFeed(page = pageIndex, limit = PAGE_SIZE, sort = sortFor(type), following = followingFor(type))
+        is ReviewsFeedSource.Profile -> when (val userId = s.userId) {
+            null -> if (pageIndex == 0) repository.getMine() else NetworkResult.Success(emptyList())
+            else -> repository.getFeed(page = pageIndex, limit = PAGE_SIZE, sort = "latest", userId = userId)
+        }
+    }
+
+    private val ReviewsFeedSource.isMine: Boolean
+        get() = this is ReviewsFeedSource.Profile && userId == null
 
     // Exact sort/following params the web sends per tab: For You → trending ranking; Following →
     // followed-authors, latest order; Latest → plain reverse-chronological.
@@ -266,3 +340,26 @@ class ReviewsFeedViewModel @Inject constructor(
         const val MIN_WATCH_SECONDS = 3.0
     }
 }
+
+/**
+ * The pager's source from the destination's arguments: `ReviewsRoute.ProfileClips` carries
+ * `startReviewId` (+ nullable `userId`); the Feed destination carries nothing → Explore.
+ */
+internal fun sourceFrom(savedStateHandle: SavedStateHandle): ReviewsFeedSource =
+    if (savedStateHandle.contains("startReviewId")) {
+        ReviewsFeedSource.Profile(userId = savedStateHandle.toRoute<ReviewsRoute.ProfileClips>().userId)
+    } else {
+        ReviewsFeedSource.Explore
+    }
+
+/** The pager page a profile opens on: the tapped clip's row, or the first row when it is gone. */
+internal fun initialPageFor(reviews: List<Review>, startReviewId: String): Int =
+    reviews.indexOfFirst { it.id == startReviewId }.coerceAtLeast(0)
+
+/** [toggleFollow]'s row transform: every row by [authorId] gets [following]; other rows are the same object. */
+internal fun List<Review>.withFollowState(authorId: String, following: Boolean): List<Review> =
+    map { if (it.userId == authorId && it.isFollowingAuthor != following) it.copy(isFollowingAuthor = following) else it }
+
+/** [setCommentCount]'s row transform: the row with [reviewId] gets [count]; every other row is the same object. */
+internal fun List<Review>.withCommentCount(reviewId: String, count: Int): List<Review> =
+    map { if (it.id == reviewId && it.commentCount != count) it.copy(commentCount = count) else it }

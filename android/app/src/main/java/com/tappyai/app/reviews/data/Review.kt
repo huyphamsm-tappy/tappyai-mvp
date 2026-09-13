@@ -36,6 +36,10 @@ data class Review(
      * unconditionally wherever it appears.
      */
     val moderation: ReviewModeration? = null,
+    /** Times the clip was watched ≥3s (server `view_count`), or null when the row has none. */
+    val viewCount: Int? = null,
+    /** Whether the viewer follows this post's author (feed row `is_following`); false when signed out. */
+    val isFollowingAuthor: Boolean = false,
 )
 
 /**

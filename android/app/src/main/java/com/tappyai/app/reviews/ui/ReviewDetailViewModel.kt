@@ -150,8 +150,16 @@ class ReviewDetailViewModel @Inject constructor(
         _uiState.update { it.copy(isPostingComment = true) }
         viewModelScope.launch {
             when (val result = repository.postComment(reviewId, trimmed, parentId)) {
+                // The review's count becomes the server's `count` (as delete already does) — the
+                // feed rail reads it back through the comment sheet's dismiss, and the web's
+                // CommentDrawer does the same with `onAdded(id, count)`.
                 is NetworkResult.Success -> _uiState.update {
-                    it.copy(comments = it.comments + result.data, isPostingComment = false, replyingTo = null)
+                    it.copy(
+                        comments = it.comments + result.data.comment,
+                        review = it.review?.copy(commentCount = result.data.count),
+                        isPostingComment = false,
+                        replyingTo = null,
+                    )
                 }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Post comment failed: ${result.error}")

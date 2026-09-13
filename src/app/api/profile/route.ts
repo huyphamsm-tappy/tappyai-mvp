@@ -4,6 +4,7 @@ import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 // GET /api/profile
 export async function GET(req: NextRequest) {
@@ -71,7 +72,21 @@ export async function PATCH(req: NextRequest) {
     if (bio !== undefined) metaUpdates.bio = bio
 
     if (Object.keys(metaUpdates).length > 0) {
-      await supabase.auth.updateUser({ data: metaUpdates })
+      const { error: metaError } = await supabase.auth.updateUser({ data: metaUpdates })
+      // A native client authenticates with a bearer token, and the request-scoped client built
+      // for it holds no session — `auth.updateUser` then fails with "Auth session missing" and
+      // the bio was silently never stored (Android Edit Profile, 2026-09-12: PATCH 200, bio gone
+      // on the next GET). The name still landed because it also lives in `profiles`. The admin
+      // client writes the same metadata for the SAME user id, which `getRequestUser` verified.
+      if (metaError) {
+        const { error: adminError } = await createAdminClient().auth.admin.updateUserById(user.id, {
+          user_metadata: { ...(user.user_metadata ?? {}), ...metaUpdates },
+        })
+        if (adminError) {
+          console.error('[profile] metadata update failed:', adminError.message)
+          return NextResponse.json({ error: 'save_failed', message: serverMessage('server.saveFailed', requestLocale(req)) }, { status: 500 })
+        }
+      }
     }
 
     return NextResponse.json({ ok: true })

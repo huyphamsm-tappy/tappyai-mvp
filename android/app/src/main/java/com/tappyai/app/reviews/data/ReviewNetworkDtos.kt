@@ -52,9 +52,15 @@ data class ReviewDto(
     @SerialName("source_url") val sourceUrl: String? = null,
     val hashtags: List<String>? = null,
     @SerialName("watch_time_avg") val watchTimeAvg: Double? = null,
+    /** On the wire from every reviews endpoint (`EXPLORE_SELECT`); the self-profile grid prints it
+     *  under the play badge (V3 mockup 05_17_48). Null when the row predates the column. */
+    @SerialName("view_count") val viewCount: Int? = null,
     val score: Double? = null,
     val music: MusicDto? = null,
     @SerialName("is_hidden") val isHidden: Boolean? = false,
+    /** Whether the viewer follows this row's author — the feed route computes it per row for a
+     *  signed-in viewer (`is_following`); absent/false when signed out. */
+    @SerialName("is_following") val isFollowing: Boolean = false,
     /**
      * Present ONLY on the author's own profile feed — the server attaches it when the requesting
      * identity is the author, and strips the raw lifecycle columns for everyone. So a row that
@@ -351,8 +357,10 @@ fun ReviewDto.toDomain(): Review = Review(
     hashtags = hashtags,
     watchTimeAvg = watchTimeAvg,
     score = score,
+    viewCount = viewCount,
     music = music?.toDomain(),
     isHidden = isHidden ?: false,
+    isFollowingAuthor = isFollowing,
     moderation = moderation?.toDomain(),
 )
 
@@ -390,6 +398,16 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     parentCommentId = parentCommentId,
     reactions = reactions,
     myReaction = myReaction,
+)
+
+/**
+ * The 2xx body carries `{ comment, count }`; `comment` is present on success. A missing comment is
+ * a contract violation, raised here so `safeApiCall` turns it into a typed error — and `count` is
+ * carried through instead of dropped, so the feed rail can show the server's number.
+ */
+fun PostCommentResponseDto.toPosted(): PostedComment = PostedComment(
+    comment = (comment ?: error("comments endpoint returned no comment")).toDomain(),
+    count = count,
 )
 
 fun UserSearchResultDto.toDomain(): UserSearchResult = UserSearchResult(

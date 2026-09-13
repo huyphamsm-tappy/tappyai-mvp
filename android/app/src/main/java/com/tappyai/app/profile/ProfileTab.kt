@@ -158,7 +158,9 @@ fun ProfileTab(
             val route = entry.toRoute<ProfileRoute.AuthorProfile>()
             ReviewProfileScreen(
                 userId = route.userId,
-                onReviewClick = { review -> navController.navigate(ProfileRoute.ReviewDetail(review.id)) },
+                // The screen now hands up the review id (Explore's author profile went V3 on
+                // 2026-09-13 and shares this composable); this graph still opens its own detail.
+                onReviewClick = { reviewId -> navController.navigate(ProfileRoute.ReviewDetail(reviewId)) },
                 onBack = { navController.popBackStack() },
             )
         }

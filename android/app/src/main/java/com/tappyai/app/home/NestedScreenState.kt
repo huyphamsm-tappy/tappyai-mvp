@@ -27,6 +27,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 val LocalNestedScreenReporter = staticCompositionLocalOf<(HomeTab, Boolean) -> Unit> { { _, _ -> } }
 
 /**
+ * The raw "past the landing" report, independent of [ReportNestedScreen]'s `landingOwnsHeader`:
+ * true only when something is pushed above the tab's start destination. Explore reads as
+ * "nested" at its landing on purpose (it owns its header), so the shell needs THIS to know when
+ * the immersive feed itself is showing (reference design 2026-09-13: no top inset, dock over it).
+ */
+val LocalPastLandingReporter = staticCompositionLocalOf<(HomeTab, Boolean) -> Unit> { { _, _ -> } }
+
+/**
  * Reports, for [tab], whether [navController] has navigated past its start destination.
  *
  * Call it from a tab's nested host, next to its `rememberNavController()`. `previousBackStackEntry`
@@ -48,7 +56,10 @@ fun ReportNestedScreen(
 ) {
     val entry by navController.currentBackStackEntryAsState()
     val report = LocalNestedScreenReporter.current
+    val reportPastLanding = LocalPastLandingReporter.current
     LaunchedEffect(entry, landingOwnsHeader) {
-        report(tab, landingOwnsHeader || navController.previousBackStackEntry != null)
+        val pastLanding = navController.previousBackStackEntry != null
+        report(tab, landingOwnsHeader || pastLanding)
+        reportPastLanding(tab, pastLanding)
     }
 }

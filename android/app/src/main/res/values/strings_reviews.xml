@@ -139,4 +139,38 @@
     <string name="reviews_post_error_too_long">Content is too long. Please shorten it.</string>
     <string name="reviews_post_error_rate_limited">You\'ve posted too many times today. Try again tomorrow!</string>
     <string name="reviews_post_error_generic">Couldn\'t post. Please try again.</string>
+
+    <!-- Explore → My Profile (V3 self profile, mockup 05_17_48) -->
+    <string name="reviews_self_profile_open">My profile</string>
+    <string name="reviews_self_profile_title">My profile</string>
+    <string name="reviews_self_stat_following">Following</string>
+    <string name="reviews_self_stat_followers">Followers</string>
+    <string name="reviews_self_premium">Premium</string>
+    <string name="reviews_self_edit_profile">Edit profile</string>
+    <string name="reviews_self_share_link">Share profile link</string>
+    <string name="reviews_self_new_post">New post</string>
+    <string name="reviews_self_tab_posts">Posts</string>
+    <string name="reviews_self_empty_title">No posts yet</string>
+    <string name="reviews_self_empty_message">Clips you post will show up here.</string>
+    <string name="reviews_self_share_text">My TappyAI profile: %1$s</string>
+    <!-- Explore → My Profile → Edit Profile (V3) -->
+    <string name="reviews_self_edit_title">Edit profile</string>
+    <string name="reviews_self_edit_save">Save</string>
+    <string name="reviews_self_edit_saved">Profile saved</string>
+    <string name="reviews_self_edit_change_avatar">Change profile photo</string>
+    <string name="reviews_self_edit_name_label">Display name</string>
+    <string name="reviews_self_edit_name_placeholder">Your name</string>
+    <string name="reviews_self_edit_name_required">Display name can\'t be empty.</string>
+    <string name="reviews_self_edit_bio_label">Bio</string>
+    <string name="reviews_self_edit_bio_placeholder">Tell people about yourself</string>
+    <string name="reviews_self_edit_scope_note">Your @handle comes from your display name. Website and location aren\'t available yet.</string>
+    <!-- Explore immersive feed (reference design "TappyAI — Immersive AI Discovery", 2026-09-13) -->
+    <string name="reviews_feed_tagline">Discover something better</string>
+    <string name="reviews_ask_tappy">Ask Tappy</string>
+    <string name="reviews_ask_tappy_prefill">Tell me more about %1$s</string>
+    <string name="reviews_action_more">More</string>
+    <string name="reviews_action_unsave">Unsave</string>
+    <string name="reviews_sound_original">Original sound - %1$s</string>
+    <string name="reviews_sound_attached">Attached sound</string>
+    <string name="reviews_creator_open_profile">Open the profile of %1$s</string>
 </resources>

@@ -42,11 +42,12 @@ interface ReviewsRepository {
 
     suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>>
 
-    /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain).
-     *  [parentId] replies to another comment (one-level thread); null posts a top-level comment.
-     *  The backend enforces 1–300 chars and rate-limits (10/min); a validation or rate-limit
-     *  failure surfaces as a typed [NetworkResult.Error]. */
-    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<ReviewComment>
+    /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain)
+     *  together with the review's updated comment count — see [PostedComment]. [parentId] replies
+     *  to another comment (one-level thread); null posts a top-level comment. The backend enforces
+     *  1–300 chars and rate-limits (10/min); a validation or rate-limit failure surfaces as a typed
+     *  [NetworkResult.Error]. */
+    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<PostedComment>
 
     /** Deletes one of the caller's own comments; returns the review's updated comment count. */
     suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int>

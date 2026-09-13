@@ -69,12 +69,11 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>> =
         safeApiCall { api.getComments(reviewId).comments.map { it.toDomain() } }
 
-    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<ReviewComment> =
+    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<PostedComment> =
         safeApiCall {
-            // The backend returns { comment, count } on 2xx; comment is present on success. Guard
-            // the nullable DTO field defensively — a null here becomes a typed error via safeApiCall.
-            (api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).comment
-                ?: error("comments endpoint returned no comment")).toDomain()
+            // The backend returns { comment, count } on 2xx; the mapper guards the nullable comment
+            // (a null becomes a typed error via safeApiCall) and keeps the count.
+            api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).toPosted()
         }
 
     override suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int> =

@@ -3,6 +3,8 @@ package com.tappyai.app.reviews.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
+import com.tappyai.app.account.data.AccountRepository
+import com.tappyai.app.membership.data.MembershipRepository
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewProfile
@@ -15,21 +17,29 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * The signed-in user's own profile inside Explore — mirrors the web reviews ProfileTab. Loads
- * identity/stats from GET /api/users/{me} (Following/Followers/Posts) and the user's own posts from
- * GET /api/reviews/mine (including hidden), rendered as a 3-column grid. The web's Saved/Liked tabs
- * query Supabase directly (no Android API), so per the owner's decision those tabs are omitted here
- * — no new backend was added. [userId] backs the "Share profile" link.
+ * The signed-in user's own profile inside Explore — the V3 self profile (mockup 05_17_48) over
+ * the same three real sources it always had plus one: identity/stats from GET /api/users/{me},
+ * the user's own posts from GET /api/reviews/mine (hidden ones included), and now the membership
+ * status from GET /api/subscription for the "Premium" badge. The web's Saved/Liked tabs query
+ * Supabase directly (no Android API), so per the owner's decision those tabs are omitted here —
+ * no new backend was added. [userId] backs the "share profile link" action.
+ *
+ * [isPro] is null until the membership row answers, and stays null when it cannot (signed out, or
+ * the request failed) — the badge is drawn only for a real `true`, never assumed either way.
  */
 data class SelfProfileUiState(
     val profile: ReviewProfile? = null,
     val posts: List<Review> = emptyList(),
     val userId: String? = null,
+    val isPro: Boolean? = null,
+    /** The bio from `GET /api/profile` (auth metadata — the users row has none); null while unknown. */
+    val bio: String? = null,
     val isLoading: Boolean = true,
     val error: String? = null,
 )
@@ -37,6 +47,8 @@ data class SelfProfileUiState(
 @HiltViewModel
 class SelfProfileViewModel @Inject constructor(
     private val repository: ReviewsRepository,
+    private val membershipRepository: MembershipRepository,
+    private val accountRepository: AccountRepository,
     private val authRepository: AuthRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
@@ -56,8 +68,15 @@ class SelfProfileViewModel @Inject constructor(
         }
         _uiState.update { it.copy(isLoading = true, error = null, userId = userId) }
         viewModelScope.launch {
+            // Membership is a badge, not the page: fetched alongside, never able to fail the load.
+            val membership = async { membershipRepository.getStatus() }
+            // The bio lives in auth metadata and only `GET /api/profile` returns it; like the
+            // membership row it decorates the page and never fails the load.
+            val account = async { accountRepository.getProfile() }
             val profileResult = repository.getUserProfile(userId)
             val postsResult = repository.getMine()
+            val isPro = (membership.await() as? NetworkResult.Success)?.data?.isPro
+            val bio = (account.await() as? NetworkResult.Success)?.data?.bio
 
             val profile = (profileResult as? NetworkResult.Success)?.data
             val posts = (postsResult as? NetworkResult.Success)?.data
@@ -79,6 +98,8 @@ class SelfProfileViewModel @Inject constructor(
                 it.copy(
                     profile = profile ?: ReviewProfile(null, null),
                     posts = posts ?: emptyList(),
+                    isPro = isPro,
+                    bio = bio,
                     isLoading = false,
                     error = null,
                 )
