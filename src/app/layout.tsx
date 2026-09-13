@@ -75,12 +75,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             what lets the class it adds differ from the server's markup without
             a hydration warning.
 
-            The no-stored-value branch mirrors the hook's own fallback to the OS
-            preference. If it did not, a dark-OS visitor with no saved choice
-            would still get the flash this is here to remove. */}
+            The no-stored-value branch mirrors the hook's own fallback: V3 is dark
+            unless the person chose Light (`useThemeMode.DEFAULT_IS_DARK`). If it did
+            not, a first-time visitor would get the flash this is here to remove. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: "try{var s=localStorage.getItem('theme');var d=s==='dark'||(s!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.classList.toggle('dark',d)}catch(e){}",
+            __html: "try{var s=localStorage.getItem('theme');var d=s!=='light';document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}",
           }}
         />
         {/* C29 — attaches the chosen UI language to every request this app makes to its own API.

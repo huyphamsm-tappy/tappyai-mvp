@@ -1,14 +1,18 @@
 'use client'
 
 import { usePushNotifications } from '@/hooks/usePushNotifications'
+import { useNotificationPreference } from '@/lib/notifications/preference'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Bell, BellOff, Loader2 } from 'lucide-react'
 
 export default function DealNotifyButton() {
   const { t } = useTranslation()
   const { permission, subscribed, loading, subscribe } = usePushNotifications()
+  const { enabled, mounted } = useNotificationPreference()
 
   if (permission === 'unsupported') return null
+  // A person who switched Tappy notifications off is not nudged to turn push on.
+  if (mounted && !enabled) return null
 
   if (subscribed) {
     return (

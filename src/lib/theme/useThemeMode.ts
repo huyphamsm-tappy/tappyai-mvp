@@ -9,7 +9,9 @@ import { useCallback, useEffect, useState } from 'react'
 // instead of copying it:
 //
 //   • the choice lives in `localStorage.theme` as 'dark' | 'light'
-//   • with nothing stored, the OS preference decides
+//   • with nothing stored, V3 is DARK (2026-09-13) — the OS preference no longer
+//     decides; a stored choice always wins, in either direction, and is never
+//     overwritten by the default on a later load
 //   • the result is the `dark` class on <html>, which is what Tailwind is
 //     configured for (`darkMode: 'class'`) and what `.dark .v3-theme` keys off
 //
@@ -34,19 +36,25 @@ export interface ThemeMode {
   toggle: () => void
 }
 
-/** Reads the stored choice, falling back to the OS preference. Client only. */
+/**
+ * Reads the stored choice; with none, the V3 default. Client only.
+ *
+ * 🚨 THE DEFAULT IS A FALLBACK, NOT A RESET. Only `resolveInitial` consults it, and only
+ * when nothing is stored — a person who chose Light keeps Light on every later load and
+ * login. Storage is never written here; `toggle` is the one writer.
+ */
+export const DEFAULT_IS_DARK = true
+
 function resolveInitial(): boolean {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved === 'dark') return true
     if (saved === 'light') return false
   } catch {
-    // Private mode / blocked storage: fall through to the OS preference. A
-    // theme is a convenience; it must never throw the surface that uses it.
+    // Private mode / blocked storage: fall through to the default. A theme is a
+    // convenience; it must never throw the surface that uses it.
   }
-  return typeof window !== 'undefined'
-    && typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-color-scheme: dark)').matches
+  return DEFAULT_IS_DARK
 }
 
 function apply(isDark: boolean) {

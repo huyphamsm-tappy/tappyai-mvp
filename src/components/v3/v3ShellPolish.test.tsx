@@ -144,42 +144,44 @@ describe('the Light/Dark control', () => {
   })
 
   it('actually switches the class the whole palette keys off', () => {
+    // 2026-09-13: with nothing stored V3 starts DARK; the toggle still moves the class both ways.
     renderShell()
-    expect(document.documentElement.classList.contains('dark')).toBe(false)
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
     fireEvent.click(themeControl())
-    expect(document.documentElement.classList.contains('dark'), 'the toggle must move `dark` on <html>').toBe(true)
+    expect(document.documentElement.classList.contains('dark'), 'the toggle must move `dark` on <html>').toBe(false)
     fireEvent.click(themeControl())
-    expect(document.documentElement.classList.contains('dark')).toBe(false)
+    expect(document.documentElement.classList.contains('dark')).toBe(true)
   })
 
   it('persists under the key the rest of the app already uses', () => {
     // Not a new storage key and not a new theme system — `Header.tsx` has always used `theme`.
     renderShell()
     fireEvent.click(themeControl())
-    expect(localStorage.getItem('theme')).toBe('dark')
-    fireEvent.click(themeControl())
     expect(localStorage.getItem('theme')).toBe('light')
+    fireEvent.click(themeControl())
+    expect(localStorage.getItem('theme')).toBe('dark')
   })
 
-  it('adopts a stored choice over the OS preference', () => {
-    localStorage.setItem('theme', 'dark')
-    matchMedia(false) // OS says light; the stored choice must win
+  it('adopts a stored choice over the default and over the OS preference — Light stays Light', () => {
+    localStorage.setItem('theme', 'light')
+    matchMedia(true) // OS says dark, and the default is dark; the stored choice must win
     renderShell()
-    expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(document.documentElement.classList.contains('dark')).toBe(false)
   })
 
-  it('falls back to the OS preference when nothing is stored', () => {
-    matchMedia(true)
+  it('is dark when nothing is stored, whatever the OS prefers (V3 default, 2026-09-13)', () => {
+    matchMedia(false) // OS says light; nothing stored → still dark
     renderShell()
     expect(document.documentElement.classList.contains('dark')).toBe(true)
+    expect(localStorage.getItem('theme'), 'the default is not written back as a choice').toBeNull()
   })
 
   it('reports its state to assistive technology', () => {
     renderShell()
     const btn = themeControl()
-    expect(btn.getAttribute('aria-pressed')).toBe('false')
+    expect(btn.getAttribute('aria-pressed')).toBe('true')
     fireEvent.click(btn)
-    expect(themeControl().getAttribute('aria-pressed')).toBe('true')
+    expect(themeControl().getAttribute('aria-pressed')).toBe('false')
   })
 })
 

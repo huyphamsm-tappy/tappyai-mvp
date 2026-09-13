@@ -4,13 +4,17 @@ import { usePushNotifications } from '@/hooks/usePushNotifications'
 import { Bell, BellOff, Loader2 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import MarketingConsentSettings from './MarketingConsentSettings'
+import { useNotificationPreference } from '@/lib/notifications/preference'
 
 export default function NotificationSettings() {
   const { permission, subscribed, loading, error, subscribe, unsubscribe } = usePushNotifications()
   const { t } = useTranslation()
+  const preference = useNotificationPreference()
 
   if (permission === 'unsupported') {
     return (
+      <div className="space-y-4">
+      <TappyNotificationsSwitch {...preference} />
       <div className="card p-5">
         <div className="flex items-start gap-3">
           <BellOff size={20} className="text-gray-400 mt-0.5 flex-shrink-0" />
@@ -22,11 +26,14 @@ export default function NotificationSettings() {
           </div>
         </div>
       </div>
+      </div>
     )
   }
 
   if (permission === 'denied') {
     return (
+      <div className="space-y-4">
+      <TappyNotificationsSwitch {...preference} />
       <div className="card p-5">
         <div className="flex items-start gap-3">
           <BellOff size={20} className="text-amber-500 mt-0.5 flex-shrink-0" />
@@ -39,11 +46,16 @@ export default function NotificationSettings() {
           </div>
         </div>
       </div>
+      </div>
     )
   }
 
   return (
     <div className="space-y-4">
+      {/* The Tappy preference: ON by default, OFF until switched back. It never touches the
+          device permission or the push subscription below. */}
+      <TappyNotificationsSwitch {...preference} />
+
       {/* Main toggle card */}
       <div className="card p-5">
         <div className="flex items-center justify-between gap-4">
@@ -126,6 +138,58 @@ export default function NotificationSettings() {
         turning push off and on again.
       */}
       <MarketingConsentSettings />
+    </div>
+  )
+}
+
+/**
+ * The master switch. Presentation only: the value comes from `useNotificationPreference`, which
+ * is the same reader the badge, the chime and the deal prompt use — one preference, one key.
+ * Rendered before `mounted` in its default (ON) state so server and client markup agree; the
+ * control is inert until the stored value is known.
+ */
+function TappyNotificationsSwitch({ enabled, mounted, setEnabled }: ReturnType<typeof useNotificationPreference>) {
+  const { t } = useTranslation()
+  return (
+    <div className="card p-5" data-tappy-notifications>
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-start gap-3">
+          <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 flex items-center justify-center flex-shrink-0">
+            {enabled ? <Bell size={18} className="text-indigo-500" /> : <BellOff size={18} className="text-gray-400" />}
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-900 dark:text-white">{t('notifications.master.title')}</p>
+            <p className="text-xs text-content-secondary mt-0.5">
+              {enabled ? t('notifications.master.on') : t('notifications.master.off')}
+            </p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setEnabled(!enabled)}
+          disabled={!mounted}
+          className={`
+            relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent
+            transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2
+            disabled:opacity-50 disabled:cursor-not-allowed
+            ${enabled ? 'bg-indigo-500' : 'bg-gray-200 dark:bg-gray-700'}
+          `}
+          role="switch"
+          aria-checked={enabled}
+          aria-label={t('notifications.master.toggleAria')}
+          data-tappy-notifications-switch
+        >
+          <span
+            className={`
+              pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0
+              transition duration-200 ease-in-out
+              ${enabled ? 'translate-x-5' : 'translate-x-0'}
+            `}
+          />
+        </button>
+      </div>
+      <p className="mt-3 text-xs text-gray-400 dark:text-gray-500">{t('notifications.master.note')}</p>
     </div>
   )
 }
