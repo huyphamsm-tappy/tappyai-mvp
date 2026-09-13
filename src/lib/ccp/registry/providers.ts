@@ -127,6 +127,16 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tier: 'mvp',
     notes: ['No affiliate programme in use; direct deep link (Plan §9: affiliate optional).', 'Reservation URL expires with the 5-minute hold.'],
     discovery: { site: 'pasgo.vn/nha-hang', subjectKind: 'restaurant' },
+    // Verified read-only 13 Sep 2026 (owner-like UAT R1 + Phase 8): a bookable restaurant page
+    // carries the reservation widget (`name="sfAdult"`) and PasGo's own booking redirect
+    // (`linkChuyenHuongBooking = …/dat-cho-ngay/<id>?returnUrl=/nha-hang/<slug>-<id>`); a venue
+    // that left the programme shows "đã dừng đặt chỗ trên hệ thống PasGo", and one it does not
+    // serve shows "Chưa hỗ trợ đặt bàn qua PasGo" on the form.
+    bookability: {
+      requires: ['linkChuyenHuongBooking', 'name="sfAdult"'],
+      refuses: ['đã dừng đặt chỗ', 'Chưa hỗ trợ đặt bàn qua PasGo'],
+      maxBytes: 450_000,
+    },
   },
   {
     providerId: 'cgv',
@@ -313,7 +323,9 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     rights: LINK_ONLY_RIGHTS,
     enabledFlag: 'CCP_HANDOFF_ONLY',
     tier: 'handoff_only',
-    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.'],
+    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.', 'Phase 8: restaurant pages (food.grab.com/vn/vi/restaurant/…) pass through as DETAIL_HANDOFF when discovered; landing not re-verified (host blocked in the verification browser).'],
+    handoffPassthrough: true,
+    discovery: { site: 'food.grab.com/vn', subjectKind: 'restaurant' },
   },
   {
     providerId: 'shopeefood',
@@ -339,6 +351,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     rights: LINK_ONLY_RIGHTS,
     enabledFlag: 'CCP_HANDOFF_ONLY',
     tier: 'handoff_only',
-    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.'],
+    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.', 'Phase 8 (verified 13 Sep, read-only): shopeefood.vn has NO URL search grammar — /tim-kiem?q= lands on the city listing with the query dropped; the search is client-side. The deepest link is the restaurant page shopeefood.vn/<city>/<slug> (L3), which passes through when discovered.'],
+    handoffPassthrough: true,
+    discovery: { site: 'shopeefood.vn', subjectKind: 'restaurant' },
   },
 ]

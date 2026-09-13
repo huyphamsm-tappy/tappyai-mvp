@@ -38,6 +38,7 @@ export const tripcomAdapter: ProviderAdapter = {
       if (m) hotelId = hotelId ?? m[1]
     }
     if (!hotelId || !/^\d{1,12}$/.test(hotelId)) return null
+    if (hint.verified?.bookable === false) return null
     const canonical = `https://vn.trip.com/hotels/detail/?hotelId=${q(hotelId)}${cityId && /^\d{1,12}$/.test(cityId) ? `&cityId=${q(cityId)}` : ''}&locale=vi-VN`
     return baseOffer(entry, request, hotelId, canonical, hint.title ?? request.subject, now)
   },

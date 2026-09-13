@@ -76,4 +76,18 @@ export interface ProviderRegistryEntry {
    * Absent = no discovery (handoff-only providers; CGV film pages have no film tool yet).
    */
   discovery?: { site: string; subjectKind: 'product' | 'hotel' | 'restaurant' | 'activity' | 'film' }
+  /**
+   * Handoff-only providers with this flag get a generic PASSTHROUGH adapter: a
+   * discovered page on an allow-listed host is emitted as a DETAIL_HANDOFF at
+   * the registry's own depth profile, with no grammar of its own (Phase 8: the
+   * food-delivery platforms' restaurant pages). Never for MVP adapters.
+   */
+  handoffPassthrough?: true
+  /**
+   * How a READ-ONLY look at this merchant's subject page tells whether the subject can be booked
+   * through the merchant right now. `requires`: every pattern must appear (the booking widget);
+   * `refuses`: any pattern means the merchant itself says no. Applied by the tool layer's
+   * verifier (safeGetText, this host only); CCP never fetches. Absent = not verifiable.
+   */
+  bookability?: { requires: readonly string[]; refuses: readonly string[]; maxBytes: number }
 }

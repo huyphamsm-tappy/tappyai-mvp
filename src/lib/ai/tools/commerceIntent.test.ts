@@ -49,8 +49,8 @@ describe('entertainmentCapabilityOf', () => {
 })
 
 describe('parseReservationSpec — values from the sentence only', () => {
-  it('"cho 2 người lúc 19h" → 2 adults, 19:00, today (date declared assumed)', () => {
-    expect(parseReservationSpec('Tôi muốn đặt bàn cho 2 người lúc 19h.', NOW)).toEqual({ adults: 2, time: '19:00', date: '2026-09-13', assumed: ['date'] })
+  it('"cho 2 người lúc 19h" → 2 adults, 19:00, NO date (never assumed — Phase 8 P1-3)', () => {
+    expect(parseReservationSpec('Tôi muốn đặt bàn cho 2 người lúc 19h.', NOW)).toEqual({ adults: 2, time: '19:00', date: null, assumed: ['date'] })
   })
   it('understands 19:30, 7h tối, 7pm, 12h trưa, and explicit / relative dates', () => {
     expect(parseReservationSpec('4 người 19:30 tối nay', NOW)).toEqual({ adults: 4, time: '19:30', date: '2026-09-13', assumed: [] })

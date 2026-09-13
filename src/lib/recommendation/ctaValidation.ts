@@ -1,6 +1,8 @@
 import { actionLabel } from './actionLabel'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
+// The registry module only (providers + domain types): this file is client-bundled.
+import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
@@ -71,10 +73,42 @@ export function validateModelCtaButton(
   }
 }
 
-/** Every button, validated. Order and count are preserved — nothing is dropped. */
+/** Hotel OTAs: a hotel search there is an honest "Tìm phòng"; a TICKET promise there is not. */
+const HOTEL_OTA_HOST = /(^|\.)(booking\.com|agoda\.[a-z.]+|traveloka\.[a-z.]+)$/i
+
+const hostOf = (url: string): string => {
+  try { return new URL(url).hostname.toLowerCase().replace(/^www\./, '') } catch { return '' }
+}
+
+/** Hosts the Commerce Capability Platform owns the handoff for (registry allow-lists, exact). */
+const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => h.toLowerCase())))
+
+/**
+ * CCP Phase 8 (owner-like UAT R1, P1-7 / P2-4): two model-authored buttons that no relabelling
+ * can make honest, so they are DROPPED rather than downgraded.
+ *
+ *   · A ticket promise on a hotel OTA ("🎫 Tìm vé trên Booking.com" for a theme park): Booking
+ *     and Agoda sell rooms; "search for tickets there" sends the user to a hotel search.
+ *   · A front-door / search link on a merchant host the Commerce Capability Platform owns
+ *     (cgv.vn, pasgo.vn, klook.com, dienmayxanh.com, trip.com — the registry allow-lists).
+ *     The application is the only URL authority for those merchants: their verified handoff
+ *     arrives on the card as a Commerce Link when one exists, and when none does the honest
+ *     state is no button — not a homepage the model typed from memory. A DIRECT entity page
+ *     on such a host (one the tool result carried) is left alone.
+ */
+export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
+  const host = hostOf(btn.url)
+  if (!host) return false
+  const kind = promisedKind(btn.label) ?? (btn.type === 'ticket' ? 'ticket' : null)
+  if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
+  if (CCP_MERCHANT_HOSTS.has(host) && !isDirectEntityUrl(btn.url)) return true
+  return false
+}
+
+/** Every button, validated. Order is preserved; only a button that cannot be made honest is dropped. */
 export function validateModelCtaButtons(
   buttons: readonly ModelCtaButton[],
   t: (key: string, vars?: Record<string, string>) => string,
 ): ModelCtaButton[] {
-  return buttons.map(b => validateModelCtaButton(b, t))
+  return buttons.filter(b => !isMisleadingModelCta(b)).map(b => validateModelCtaButton(b, t))
 }

@@ -6,6 +6,7 @@ import { formatVndRange, type PriceLocale } from '@/lib/format/vndPrice'
 import type { SynthesisView, SynthesisEntityView, SynthesisOfferView } from '@/lib/ai/consultative/synthesisView'
 import MatchBadge from '@/components/chat/structured/MatchBadge'
 import OfferRow, { offerDestination, offerActionLabel } from '@/components/chat/structured/OfferRow'
+import CommerceHandoff from '@/components/chat/structured/CommerceHandoff'
 import { reasonList } from '@/lib/recommendation/reasonText'
 
 // ── Phase 9: render the DECISION, not the catalogue ─────────────────────────
@@ -146,16 +147,19 @@ function ProductRow({ e, showMatch }: { e: SynthesisEntityView; showMatch: boole
           <Rating o={offer} />
         </div>
         <Specs e={e} />
-        {offer?.url && (
-          <a
-            href={offer.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-1.5 inline-block text-xs font-medium text-primary-600 hover:underline dark:text-primary-400"
-          >
-            {dest ? offerActionLabel(dest, t) : t('shoppingDecision.view')}
-          </a>
-        )}
+        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
+          {e.commerce && <CommerceHandoff c={e.commerce} size="sm" />}
+          {offer?.url && (
+            <a
+              href={offer.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-xs font-medium text-primary-600 hover:underline dark:text-primary-400"
+            >
+              {dest ? offerActionLabel(dest, t) : t('shoppingDecision.view')}
+            </a>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -252,6 +256,11 @@ export default function ShoppingDecision({
               )}
             </div>
           </div>
+          {recommended.commerce && (
+            <div className="border-t border-primary-100 px-3 py-2 dark:border-primary-900/40">
+              <CommerceHandoff c={recommended.commerce} size="md" />
+            </div>
+          )}
           <div className="divide-y divide-gray-100 border-t border-primary-100 px-3 dark:divide-gray-800 dark:border-primary-900/40">
             {recOffer && <OfferRow o={recOffer} />}
             {restOffers.map((o, i) => <OfferRow key={i} o={o} />)}

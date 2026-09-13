@@ -69,10 +69,10 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
 
   it('PasGo: reservation URL carries party size, date (DD/MM/YYYY) and time; hold expiry set', () => {
     const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'Chả Cá Hàng Sơn', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2, children: 0 } }
-    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815' }, now)!
+    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
     expect(offer.subjectRef).toBe('4815')
     const b = pasgoAdapter.buildDirectLink(offer, req.configuration, now)!
-    expect(b.url).toBe('https://pasgo.vn/dat-cho-ngay/4815?sfAdult=2&sfChild=0&sfDateFrom=13%2F09%2F2026&sfTimeFrom=19%3A00')
+    expect(b.url).toBe('https://pasgo.vn/dat-cho-ngay/4815?returnUrl=%2Fnha-hang%2Fcha-ca-hang-son-huynh-thuc-khang-4815&sfAdult=2&sfChild=0&sfDateFrom=13%2F09%2F2026&sfTimeFrom=19%3A00')
     expect(new URL(b.url).searchParams.get('sfDateFrom')).toBe('13/09/2026')
     expect(b.depth).toBe(5)
     expect(b.expiresAt).toBe(new Date(now.getTime() + 5 * 60_000).toISOString())

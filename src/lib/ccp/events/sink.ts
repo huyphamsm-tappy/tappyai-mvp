@@ -91,7 +91,7 @@ export function setCommerceEventWriter(w: CommerceEventWriter | null): void {
 // Opaque identifiers the platform generates itself (UUIDs, sha256 prefixes). A UUID whose last
 // group happens to be all digits ("…-446655440000") would otherwise trip the phone-number shape
 // in PII_RE and the event would lose its correlation key. These are never user-entered.
-const OPAQUE_ID_FIELDS = new Set(['requestId', 'linkId', 'actorHash', 'sessionHash'])
+const OPAQUE_ID_FIELDS = new Set(['requestId', 'linkId', 'actorHash', 'sessionHash', 'rankingVersion'])
 
 /** Strip unknown fields and refuse values that look like PII or a raw URL. */
 export function sanitizeCommerceEvent(event: CommerceEvent): Record<string, unknown> {

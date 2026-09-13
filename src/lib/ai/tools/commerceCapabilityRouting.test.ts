@@ -20,6 +20,8 @@ import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 const NOW = new Date('2026-09-13T08:00:00Z')
 const links = (row: Record<string, unknown>) => (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []
 const pasgoSearch = async () => [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }]
+/** Phase 8: the PasGo page is read before a reservation link is offered — this one carries the widget. */
+const pasgoBookablePage = async () => '<input name="sfAdult"> var linkChuyenHuongBooking = "/dat-cho-ngay/1234?returnUrl=/nha-hang/nha-hang-qua-ngon-1234";'
 const foodRow = () => ({
   name: 'Quá Ngon', address: '306 Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1',
   order_links: [
@@ -88,8 +90,10 @@ describe('CommerceRequest carries a capability that must agree with its intent',
     expect(!bad.ok && bad.issues.join(' ')).toMatch(/capability food_delivery does not match intent reserve_table/)
   })
 
-  it('adaptersFor is capability-aware: a delivery request has NO adapter (PasGo excluded), a reservation request has PasGo', () => {
-    expect(adaptersFor({ domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'x' })).toEqual([])
+  it('adaptersFor is capability-aware: a delivery request gets only the delivery platforms (PasGo excluded), a reservation request has PasGo', () => {
+    // Phase 8: GrabFood / ShopeeFood are handoff-only passthrough adapters (L3 restaurant pages, no grammar).
+    expect(adaptersFor({ domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'x' }).map(a => a.providerId)).toEqual(['grabfood', 'shopeefood'])
+    expect(adaptersFor({ domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'x' }).map(a => a.providerId)).not.toContain('pasgo')
     expect(adaptersFor({ domain: 'food_drink', intentType: 'reserve_table', capability: 'table_reservation', subject: 'x' }).map(a => a.providerId)).toEqual(['pasgo'])
   })
 
@@ -99,7 +103,8 @@ describe('CommerceRequest carries a capability that must agree with its intent',
       { enabled: true, now: NOW, hints: [{ url: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234' }] },
     )
     expect('links' in r && r.links).toEqual([])
-    expect('providersQueried' in r && r.providersQueried).toEqual([])
+    // The delivery platforms are asked (and find nothing in a PasGo page); PasGo itself is never asked.
+    expect('providersQueried' in r && r.providersQueried).not.toContain('pasgo')
     expect(INTENT_CAPABILITY.order_delivery).toBe('food_delivery')
   })
 })
@@ -118,13 +123,13 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
   it('B · reservation intent → PasGo PRIMARY with the sentence\'s party/time/date, L5 hold grammar, leads the actions', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h.' })
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.' })
     const [l] = links(row)
     expect(l).toMatchObject({ providerId: 'pasgo', capability: 'table_reservation', primary: true, kind: 'CHECKOUT_HANDOFF', depth: 5, guestDepth: 5, authRequiredAt: 'none' })
     const u = new URL(l.destinationUrl)
     expect(u.pathname).toBe('/dat-cho-ngay/1234')
-    expect(Object.fromEntries(u.searchParams)).toEqual({ sfAdult: '2', sfChild: '0', sfDateFrom: '13/09/2026', sfTimeFrom: '19:00' })
-    expect(l.assumedParams).toEqual(['date'])
+    expect(Object.fromEntries(u.searchParams)).toEqual({ returnUrl: '/nha-hang/nha-hang-qua-ngon-1234', sfAdult: '2', sfChild: '0', sfDateFrom: '13/09/2026', sfTimeFrom: '19:00' })
+    expect(l.assumedParams).toEqual([]) // Phase 8: the date is the user's ("tối nay"); nothing assumed
     expect(l.expiresAt).toBe(new Date(NOW.getTime() + 5 * 60_000).toISOString())
     const rec = placeRecommendations(result, 'Quận 3')[0]
     expect(rec.entity.actions[0]).toMatchObject({ kind: 'reservation', urlKind: 'direct', platform: 'PasGo' })
@@ -138,7 +143,7 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
   it('C · discovery intent → PasGo attached as SECONDARY: offered, but order links and maps lead', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Tìm nhà hàng Nhật gần tôi' })
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Tìm nhà hàng Nhật gần tôi' })
     const [l] = links(row)
     expect(l).toMatchObject({ providerId: 'pasgo', primary: false, depth: 3 })
     const rec = placeRecommendations(result, 'Quận 3')[0]
@@ -150,15 +155,15 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
 
   it('the two intents cannot collapse: the same row, two sentences, two different leading actions and no cross-talk', async () => {
     const delivery = foodRow(), reservation = foodRow()
-    await attachCommerceLinks('search_places', { results: [delivery], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Đặt 2 phần phở giao đến nhà' })
-    await attachCommerceLinks('search_places', { results: [reservation], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Đặt bàn nhà hàng Nhật cho 2 người lúc 19h' })
+    await attachCommerceLinks('search_places', { results: [delivery], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Đặt 2 phần phở giao đến nhà' })
+    await attachCommerceLinks('search_places', { results: [reservation], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Đặt bàn nhà hàng Nhật cho 2 người lúc 19h ngày mai' })
     expect(links(delivery)).toEqual([])
     expect(links(reservation).map(l => l.capability)).toEqual(['table_reservation'])
   })
 
   it('a reservation intent without party/time falls back to the restaurant page (L3) — nothing is guessed', async () => {
     const row = foodRow()
-    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, userText: 'đặt bàn nhà hàng này' })
+    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'đặt bàn nhà hàng này' })
     expect(links(row)[0]).toMatchObject({ primary: true, depth: 3, kind: 'DETAIL_HANDOFF' })
     expect(new URL(links(row)[0].destinationUrl).search).toBe('')
   })

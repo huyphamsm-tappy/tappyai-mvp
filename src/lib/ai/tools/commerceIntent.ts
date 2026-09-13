@@ -8,8 +8,8 @@
 //
 // Deterministic and conservative: a phrase has to be unambiguous to move the
 // capability away from discovery, and a reservation configuration is produced
-// only from values that are actually in the text (a missing date defaults to
-// today and is DECLARED as assumed). Nothing here is a merchant URL or a
+// only from values that are actually in the text (a missing date is never
+// assumed — the merchant page asks for it). Nothing here is a merchant URL or a
 // product decision — it is the routing key the seam hands to CCP.
 
 export type FoodCapability = 'food_delivery' | 'table_reservation' | 'restaurant_discovery'
@@ -19,10 +19,30 @@ export interface ReservationSpec {
   adults: number
   /** HH:MM, 24 h. */
   time: string
-  /** YYYY-MM-DD in Asia/Ho_Chi_Minh. */
-  date: string
-  /** Fields not stated by the user and filled with a declared default. */
+  /**
+   * YYYY-MM-DD in Asia/Ho_Chi_Minh, or null when the user did not state a date.
+   * Phase 8 (owner-like UAT R1, P1-3): a date is never assumed. Without one the
+   * seam emits the restaurant page, where the merchant's own widget asks for it.
+   */
+  date: string | null
+  /** Fields the user did not state (today: only ever 'date'). Kept for the label / prose. */
   assumed: string[]
+}
+
+/**
+ * The conversation window the seam reads (Phase 8, P1-2). Tappy often answers a
+ * commerce request with a clarifying question; the user's reply ("Nhà hàng Nhật
+ * ở Quận 1") carries neither the intent words nor the party/time of the first
+ * message. Intent and configuration are therefore read from the last few USER
+ * turns, most recent first: the newest message that carries a signal wins, so a
+ * later "giao tận nhà" overrides an earlier "đặt bàn", and party/time stated
+ * two turns ago still count.
+ */
+export const INTENT_WINDOW_TURNS = 3
+export type UserTurns = string | readonly string[] | undefined
+function turns(input: UserTurns): string[] {
+  const list = Array.isArray(input) ? [...input] : typeof input === 'string' ? [input] : []
+  return list.map(t => (t ?? '').normalize('NFC')).filter(t => t.trim()).slice(-INTENT_WINDOW_TURNS)
 }
 
 // `\b` is ASCII-only in JS even with the u flag, so it never matches next to đ / ặ / ỗ; word
@@ -45,21 +65,21 @@ const CINEMA = phrase([
   'cinema', 'movie', 'suất\\s*chiếu', 'suat\\s*chieu', 'phim',
 ])
 
-/** Food & Drink: which capability the sentence asks for. */
-export function foodCapabilityOf(text: string | undefined): FoodCapability {
-  const t = (text ?? '').normalize('NFC')
-  if (!t.trim()) return 'restaurant_discovery'
-  const reservation = RESERVATION.test(t)
-  const delivery = DELIVERY.test(t)
-  // A reservation phrase wins over a generic "đặt" — "đặt bàn" is never a delivery.
-  if (reservation) return 'table_reservation'
-  if (delivery) return 'food_delivery'
+/** Food & Drink: which capability the conversation asks for — newest signal wins. */
+export function foodCapabilityOf(input: UserTurns): FoodCapability {
+  for (const t of turns(input).reverse()) {
+    const reservation = RESERVATION.test(t)
+    const delivery = DELIVERY.test(t)
+    // A reservation phrase wins over a generic "đặt" within one message — "đặt bàn" is never a delivery.
+    if (reservation) return 'table_reservation'
+    if (delivery) return 'food_delivery'
+  }
   return 'restaurant_discovery'
 }
 
-/** Entertainment: a film/cinema sentence asks for cinema_ticket; anything else is an activity. */
-export function entertainmentCapabilityOf(text: string | undefined): EntertainmentCapability {
-  return CINEMA.test((text ?? '').normalize('NFC')) ? 'cinema_ticket' : 'activity_booking'
+/** Entertainment: a film/cinema sentence in the window asks for cinema_ticket; anything else is an activity. */
+export function entertainmentCapabilityOf(input: UserTurns): EntertainmentCapability {
+  return turns(input).some(t => CINEMA.test(t)) ? 'cinema_ticket' : 'activity_booking'
 }
 
 const VN_OFFSET_MS = 7 * 3_600_000
@@ -78,8 +98,10 @@ function addDays(iso: string, n: number): string {
  * "7h" with no period marker is ambiguous and yields null; "19h", "19:00",
  * "7h tối", "7pm" are accepted.
  */
-export function parseReservationSpec(text: string | undefined, now: Date = new Date()): ReservationSpec | null {
-  const t = (text ?? '').normalize('NFC').toLowerCase()
+export function parseReservationSpec(input: UserTurns, now: Date = new Date()): ReservationSpec | null {
+  // Newest turn last, so a later statement of party/time/date is the one found last… but every
+  // regex below takes the FIRST match in the joined text; join newest-first so recency wins.
+  const t = turns(input).reverse().join(' \n ').toLowerCase()
   if (!t.trim()) return null
 
   const party = t.match(/(\d{1,2})\s*(người|nguoi|khách|khach|people|persons?|pax|guests?)(?![\p{L}])/u)
@@ -104,7 +126,7 @@ export function parseReservationSpec(text: string | undefined, now: Date = new D
 
   const today = vnDate(now)
   const assumed: string[] = []
-  let date: string
+  let date: string | null
   const explicit = t.match(/(?<!\d)(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?(?!\d)/)
   if (explicit) {
     const dd = Number(explicit[1]), mm = Number(explicit[2])
@@ -119,7 +141,8 @@ export function parseReservationSpec(text: string | undefined, now: Date = new D
   } else if (/(?<![\p{L}])(?:hôm\s*nay|hom\s*nay|tối\s*nay|toi\s*nay|trưa\s*nay|trua\s*nay|chiều\s*nay|chieu\s*nay|tonight|today)(?![\p{L}])/u.test(t)) {
     date = today
   } else {
-    date = today
+    // No date stated → none assumed (P1-3). The seam then emits the restaurant page (L3).
+    date = null
     assumed.push('date')
   }
   return { adults, time, date, assumed }

@@ -32,11 +32,22 @@ export const pasgoAdapter: ProviderAdapter = {
       if (m) { slug = m[1]; id = id ?? m[2] }
     }
     if (!id || !/^\d{1,10}$/.test(id)) return null
-    const canonical = slug ? `https://pasgo.vn/nha-hang/${slug}-${id}` : `https://pasgo.vn/dat-cho-ngay/${id}`
-    return baseOffer(entry, request, id, canonical, hint.title ?? request.subject, now)
+    // Phase 8 (owner-like UAT R1, P0-1): the reservation route needs the restaurant PAGE path as
+    // `returnUrl`, so an offer without a slug cannot be booked — it is not an offer.
+    if (!slug) return null
+    // P1-1: the merchant said this venue does not take PasGo reservations ("đã dừng đặt chỗ",
+    // "Chưa hỗ trợ đặt bàn qua PasGo"). No link at all — a page that cannot book is not a handoff.
+    if (hint.verified?.bookable === false) return null
+    const offer = baseOffer(entry, request, id, `https://pasgo.vn/nha-hang/${slug}-${id}`, hint.title ?? request.subject, now)
+    offer.bookable = hint.verified?.bookable ?? null
+    return offer
   },
   buildDirectLink(offer: Offer, configuration: Configuration | undefined, now = new Date()): DirectLinkBuild | null {
-    if (!configuration || configuration.kind !== 'reservation') {
+    // The hold grammar is emitted ONLY when the tool layer verified, on the merchant page, that
+    // this venue accepts PasGo reservations (the page carries the reservation widget and the
+    // booking redirect). Unknown → the restaurant page, where the merchant's own widget decides.
+    const canHold = offer.bookable === true
+    if (!configuration || configuration.kind !== 'reservation' || !canHold) {
       return {
         url: offer.canonicalUrl,
         depth: 3,
@@ -45,10 +56,20 @@ export const pasgoAdapter: ProviderAdapter = {
         paramsDropped: [],
         expiresAt: null,
         grammar: 'verified',
-        limitations: ['Chọn số khách, ngày và giờ trên trang nhà hàng rồi bấm "Đặt chỗ ngay".'],
+        limitations: [
+          'Chọn số khách, ngày và giờ trên trang nhà hàng rồi bấm "Đặt chỗ ngay".',
+          ...(offer.bookable === null ? ['Chưa xác minh được nhà hàng này còn nhận đặt chỗ qua PasGo — kiểm tra trên trang.'] : []),
+        ],
       }
     }
+    // Verified 13 Sep 2026 (read-only, Rakuen Hotpot 3875): /dat-cho-ngay/<id>?returnUrl=/nha-hang/<slug>-<id>
+    // + sfAdult/sfChild/sfDateFrom/sfTimeFrom opens the guest form with "2 người lớn, 0 trẻ em —
+    // Chủ nhật, ngày 20/09/2026 19:00" prefilled and a 5-minute countdown. Without returnUrl the
+    // same route is PasGo's 404 (owner-like UAT R1, P0-1). returnUrl is PasGo's own fixed route
+    // pattern — the restaurant page path — as its page script (linkChuyenHuongBooking) builds it.
+    const pagePath = new URL(offer.canonicalUrl).pathname
     const params = new URLSearchParams()
+    params.set('returnUrl', pagePath)
     params.set('sfAdult', String(configuration.adults))
     params.set('sfChild', String(configuration.children ?? 0))
     params.set('sfDateFrom', isoToDmySlash(configuration.date))

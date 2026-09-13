@@ -41,6 +41,16 @@ export interface DiscoveryHint {
   feedItem?: FeedItem
   /** D7 gate: only when the written data-rights confirmation is on file. */
   feedDisplayEnabled?: boolean
+  /**
+   * What a READ-ONLY look at the merchant page established (Phase 8, owner-like
+   * UAT R1 P1-1). Performed by the tool layer (safeGetText, allow-listed host),
+   * never by CCP. `bookable: false` means the merchant itself says this subject
+   * cannot be booked through it right now ("đã dừng đặt chỗ", "Chưa hỗ trợ đặt
+   * bàn") — the adapter must then emit NO transactional link. `null` = unknown
+   * (fetch failed or the page carries no signal): only the detail page may be
+   * emitted, never the hold/checkout grammar.
+   */
+  verified?: { bookable: boolean | null; checkedAt: string; source: 'merchant_page' }
 }
 
 export interface ProviderAdapter {

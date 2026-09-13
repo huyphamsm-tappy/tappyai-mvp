@@ -1,4 +1,5 @@
 import { provenancedClaim, type SourceId } from '@/lib/ai/consultative/evidenceProvenance'
+import { cleanOtaTitle } from '@/lib/links/otaTitle'
 import { buildActions, type ActionSource } from './actions'
 import { capabilitiesOf } from './capabilities'
 import {
@@ -303,8 +304,11 @@ export interface StayRow extends ActionSource {
 
 export function buildStayEntity(row: StayRow, opts: { bookingLink?: string; agodaLink?: string } = {}): CanonicalEntity {
   // Snippet titles read "Hotel Name - City - Booking.com"; the name is the part
-  // before the first " - ", the same rule the stream filter already applies.
-  const name = (row.name || String(row.title ?? '').split(' - ')[0] || '').trim()
+  // before the first " - ", the same rule the stream filter already applies — and,
+  // since CCP Phase 8 (owner-like UAT R1, P2-11), without the OTA decorations Google
+  // serves in whatever locale it chose ("Book Oc Tien Sa Hotel Danang i Da Nang på
+  // Agoda.com" → "Oc Tien Sa Hotel Danang"). The raw title stays on the row.
+  const name = (row.name || cleanOtaTitle(String(row.title ?? '')) || String(row.title ?? '').split(' - ')[0] || '').trim()
   const stars = typeof row.stars === 'string' ? Number(row.stars) : row.stars
   const withLinks: ActionSource = { ...row, name, booking_link: opts.bookingLink, agoda_link: opts.agodaLink }
 

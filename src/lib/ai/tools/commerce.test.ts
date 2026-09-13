@@ -25,6 +25,10 @@ function searchStub(table: Record<string, SearchRow[]>) {
 }
 
 const links = (row: Record<string, unknown>) => (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []
+/** A PasGo restaurant page that carries the reservation widget (Phase 8 read-only verification). */
+const pasgoBookablePage = async () => '<input name="sfAdult"> var linkChuyenHuongBooking = "/dat-cho-ngay/1234?returnUrl=/nha-hang/x-1234";'
+/** The page could not be read: bookability unknown → detail page only. */
+const pageUnavailable = async () => null
 
 beforeEach(() => { setCommerceEventWriter(() => undefined) })
 afterEach(() => { setCommerceEventWriter(null) })
@@ -91,7 +95,8 @@ describe('Trip.com — hotel rows discovered by a scoped search, dates preserved
     const result = { search_results: [row], booking_link: 'https://www.booking.com/searchresults.html?ss=Da+Nang' }
     await attachCommerceLinks('get_hotel_prices', result, { enabled: true, search, now: NOW, location: 'Đà Nẵng', checkIn: '2026-10-10', checkOut: '2026-10-12' })
     expect(calls).toHaveLength(1)
-    expect(calls[0]).toContain('"Mường Thanh Luxury Đà Nẵng"')
+    // Phase 8: the OTA title is reduced to the hotel name; the city is appended unquoted.
+    expect(calls[0]).toContain('"Mường Thanh Luxury" Đà Nẵng')
     expect(calls[0]).toContain('site:vn.trip.com/hotels')
     const [l] = links(row)
     expect(l).toMatchObject({ providerId: 'tripcom', intentType: 'book_hotel', depth: 4, guestDepth: 5, authRequiredAt: 'none', kind: 'DIRECT_DEEP_LINK' })
@@ -130,7 +135,7 @@ describe('PasGo — food place discovered by name (reservation)', () => {
     const { search, calls } = searchStub({ 'site:pasgo.vn/nha-hang': [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }] })
     const row = { name: 'Quá Ngon', address: '1 Lê Lợi', website_uri: 'https://quangon.example' }
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, search, now: NOW, location: 'Quận 1' })
+    await attachCommerceLinks('search_places', result, { enabled: true, search, now: NOW, location: 'Quận 1', fetchText: pageUnavailable })
     expect(calls[0]).toContain('site:pasgo.vn/nha-hang')
     expect(calls[0]).toContain('Quận 1')
     const [l] = links(row)
@@ -238,7 +243,7 @@ describe('end to end through the canonical recommendation architecture', () => {
     const place = { name: 'Quá Ngon', address: '1 Lê Lợi', maps_link: 'https://maps.google.com/?cid=1' }
     const places = { results: [place], _tappy_place_domain: 'food', source: 'Google Maps' }
     // Owner correction: a reservation leads only when the user asked for one (capability routing).
-    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW, userText: 'đặt bàn nhà hàng này' })
+    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW, userText: 'đặt bàn nhà hàng này', fetchText: pasgoBookablePage })
     const rec = placeRecommendations(places, 'Quận 1')[0]
     expect(rec.entity.actions[0]).toMatchObject({ kind: 'reservation', urlKind: 'direct', platform: 'PasGo' })
   })

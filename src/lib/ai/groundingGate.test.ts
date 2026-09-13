@@ -120,15 +120,18 @@ describe('the gate disables itself when there is nothing to check against', () =
 
 describe('an honest answer replaces an empty one', () => {
   const out = suppressUngroundedVenues('**Maison Sen Buffet** tuyệt vời.', TOOL_NAMES, 'vi')
-  it('says nothing was found rather than leaving a promise unfulfilled', () => {
-    expect(out.text).toContain('Mình chưa tìm thấy')
+  // CCP Phase 8 (P2-5): the tool DID return venues (TOOL_NAMES) — the prose just named others.
+  // "Found nothing" would contradict the card under it; the honest line points at the card.
+  it('points at the card rather than claiming nothing was found when the tool returned venues', () => {
+    expect(out.text).toContain('thẻ bên dưới')
+    expect(out.text).not.toContain('Mình chưa tìm thấy')
   })
   it('invents no substitute venue', () => {
     for (const n of TOOL_NAMES) expect(out.text).not.toContain(n)
   })
   it('answers in English for an English turn', () => {
     const en = suppressUngroundedVenues('**Fake Place** great.', TOOL_NAMES, 'en')
-    expect(en.text).toContain("couldn't find")
+    expect(en.text).toContain('on the card below')
   })
   it('does NOT add the line when a real venue still stands', () => {
     const r = suppressUngroundedVenues('**Cây Si** ngon.\n\n**Fake Place** tuyệt.', TOOL_NAMES, 'vi')

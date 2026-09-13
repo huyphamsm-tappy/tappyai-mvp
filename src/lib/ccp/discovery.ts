@@ -24,12 +24,17 @@ export interface DiscoveryScope {
 export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentType, flags: Record<string, boolean> = CCP_ADAPTERS): DiscoveryScope[] {
   const out: DiscoveryScope[] = []
   for (const e of PROVIDER_REGISTRY) {
-    if (e.tier !== 'mvp' || !e.discovery) continue
+    if (!e.discovery || (e.tier !== 'mvp' && e.handoffPassthrough !== true)) continue
     if (flags[e.enabledFlag] !== true) continue
     if (!e.domains.includes(domain) || !e.intents.includes(intentType)) continue
     out.push({ providerId: e.providerId, merchantName: e.merchantName, site: e.discovery.site, subjectKind: e.discovery.subjectKind })
   }
   return out
+}
+
+/** The merchant-page bookability signals a provider declares, if any. */
+export function bookabilitySignalsFor(providerId: string): ProviderRegistryEntry['bookability'] | null {
+  return PROVIDER_REGISTRY.find(e => e.providerId === providerId)?.bookability ?? null
 }
 
 /**

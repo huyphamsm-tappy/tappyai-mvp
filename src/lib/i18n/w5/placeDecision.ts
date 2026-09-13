@@ -62,6 +62,13 @@ export const vi: Record<string, string> = {
   'v3.action.orderLoginOn': 'Đặt món trên {platform} · cần đăng nhập',
   'v3.action.deliveryOn': 'Đặt giao hàng trên {platform}',
   'v3.action.deliveryLoginOn': 'Đặt giao hàng trên {platform} · cần đăng nhập',
+  // The merchant takes the order only inside its app: the web page shows the restaurant, the app orders.
+  'v3.action.purchaseAppOn': 'Xem trên {platform} · mua trong ứng dụng',
+  'v3.action.bookingAppOn': 'Xem trên {platform} · đặt trong ứng dụng',
+  'v3.action.reservationAppOn': 'Xem trên {platform} · đặt trong ứng dụng',
+  'v3.action.ticketAppOn': 'Xem trên {platform} · mua vé trong ứng dụng',
+  'v3.action.orderAppOn': 'Xem trên {platform} · đặt món trong ứng dụng',
+  'v3.action.deliveryAppOn': 'Xem trên {platform} · đặt giao trong ứng dụng',
 }
 
 export const en: Record<string, string> = {
@@ -119,4 +126,11 @@ export const en: Record<string, string> = {
   'v3.action.orderLoginOn': 'Order on {platform} · login required',
   'v3.action.deliveryOn': 'Order delivery on {platform}',
   'v3.action.deliveryLoginOn': 'Order delivery on {platform} · login required',
+  // The merchant takes the order only inside its app: the web page shows the restaurant, the app orders.
+  'v3.action.purchaseAppOn': 'View on {platform} · buy in the app',
+  'v3.action.bookingAppOn': 'View on {platform} · book in the app',
+  'v3.action.reservationAppOn': 'View on {platform} · reserve in the app',
+  'v3.action.ticketAppOn': 'View on {platform} · tickets in the app',
+  'v3.action.orderAppOn': 'View on {platform} · order in the app',
+  'v3.action.deliveryAppOn': 'View on {platform} · order in the app',
 }

@@ -13,7 +13,7 @@ describe('CTA projection (D8)', () => {
 
   it('keeps the legacy four fields and adds the commerce block; never uses internal_booking', () => {
     const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'x', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2 } }
-    const offer = pasgoAdapter.toOffer(req, { subjectRef: '4815' }, now)!
+    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
     const r = resolveDeepLink(pasgoAdapter, req, offer, req.configuration, { now })
     if (!r.ok) throw new Error('resolve failed')
     const cta = projectToCta(r.link)

@@ -85,6 +85,10 @@ export function resolveActionLabel(
   if (action.commerce && action.urlKind === 'direct') {
     const key = COMMERCE_LABEL[action.kind]
     if (key) {
+      // Phase 8 (P1-4): a ShopeeFood restaurant page shows the menu on the web but takes the order
+      // only in the app — "Đặt món trên ShopeeFood" would promise a web checkout the page cannot
+      // keep, so the label states the app boundary instead.
+      if (action.commerce.authRequiredAt === 'app_only') return withPlatform(`${key}AppOn`, key)
       return action.commerce.loginRequired
         ? withPlatform(`${key}LoginOn`, key)
         : withPlatform(`${key}On`, key)

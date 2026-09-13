@@ -281,6 +281,13 @@ export interface RightsFlags {
 }
 
 export interface Offer {
+  /**
+   * Phase 8: what the merchant page said about booking THIS subject when the tool layer looked
+   * (read-only). true = booking widget present; false = merchant says no (such offers are not
+   * created); null = not checked / no signal. Adapters must not emit a hold/checkout grammar
+   * unless this is true.
+   */
+  bookable?: boolean | null
   providerId: string
   merchantId: string
   merchantName: string

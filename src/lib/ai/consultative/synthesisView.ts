@@ -2,6 +2,8 @@ import { UNKNOWN, CONDITION_KEY } from './normalizedEvidence'
 import type { Entity } from './entityModel'
 import type { ShoppingSynthesis, EntitySummary, ConfigMatch } from './synthesis'
 import { buildSynthesisPayload, entityName } from './synthesis'
+// Types + the row guard only (src/lib/ccp/row has no server-only import); this module is client-bundled.
+import { COMMERCE_LINKS_KEY, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp/row'
 
 // ── Universal Plan — Phase 9: SYNTHESIS → CLIENT DISPLAY VIEW ────────────────
 //
@@ -42,6 +44,33 @@ export interface SynthesisOfferView {
   ratingCount?: number | null
 }
 
+/**
+ * The Commerce Capability Platform's verified handoff for an entity (CCP Phase 8, owner-like UAT
+ * R1 P1-5). The row-level `commerce_links` attachment (src/lib/ccp/row.ts) reaches the canonical
+ * Action list for the live view; the Shopping card renders from THIS marker instead, so without
+ * a projection here a resolved Điện Máy Xanh product page stayed invisible behind Google
+ * Shopping redirects. This is that projection — the same facts the canonical Action carries
+ * (`CommerceActionFacts`), scalar for the wire, and nothing the resolver did not produce:
+ * no price (the merchant page shows its own), no second URL, no prose.
+ */
+export interface SynthesisCommerceView {
+  linkId: string
+  requestId: string
+  providerId: string
+  merchantName: string
+  url: string
+  /** L0–L5 the URL lands at for a guest, and where the merchant asks for a login. */
+  depth: number
+  guestDepth: number
+  authRequiredAt: CommerceLinkRow['authRequiredAt']
+  loginRequired: boolean
+  freshnessType: CommerceLinkRow['freshness']['freshnessType']
+  expiresAt: string | null
+  tracked: boolean
+  capability?: CommerceLinkRow['capability']
+  primary: boolean
+}
+
 /** One stated specification. `value` is the listing's own figure, never derived. */
 export interface SynthesisSpecView {
   key: 'chip' | 'ram' | 'storage' | 'size'
@@ -80,6 +109,12 @@ export interface SynthesisEntityView {
   /** A representative product photo for this entity, if any offer carried one. */
   image: string | null
   offers: SynthesisOfferView[]
+  /**
+   * The verified merchant handoff CCP resolved for this entity, when one exists. Optional for the
+   * same reason as every field above (a marker outlives its writer) and because most entities
+   * have none — then the card keeps its offer links exactly as before.
+   */
+  commerce?: SynthesisCommerceView
 }
 
 /** A grounded reason, carrying both the engine's English and the data to say it. */
@@ -122,6 +157,44 @@ export interface SynthesisView {
 /** UNKNOWN → null; everything else through unchanged. */
 function nn<T>(v: T | typeof UNKNOWN): T | null {
   return v === UNKNOWN ? null : (v as T)
+}
+
+/**
+ * The entity's Commerce Link, read from the first offer whose row carries a valid attachment.
+ * The seam attaches at most one link per provider per row and marks the requested capability
+ * as primary; a primary link is preferred, else the first valid one. Nothing is repaired.
+ */
+function entityCommerce(e: Entity): SynthesisCommerceView | undefined {
+  let first: CommerceLinkRow | null = null
+  for (const o of e.offers) {
+    const rows = (o.evidence.raw as Record<string, unknown>)[COMMERCE_LINKS_KEY]
+    if (!Array.isArray(rows)) continue
+    for (const r of rows) {
+      if (!isCommerceLinkRow(r)) continue
+      if (r.primary !== false) return projectCommerce(r)
+      first = first ?? r
+    }
+  }
+  return first ? projectCommerce(first) : undefined
+}
+
+function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
+  return {
+    linkId: r.linkId,
+    requestId: r.requestId,
+    providerId: r.providerId,
+    merchantName: r.merchantName,
+    url: r.url,
+    depth: r.depth,
+    guestDepth: r.guestDepth,
+    authRequiredAt: r.authRequiredAt,
+    loginRequired: requiresMerchantLogin(r.authRequiredAt),
+    freshnessType: r.freshness.freshnessType,
+    expiresAt: r.expiresAt,
+    tracked: r.tracked,
+    ...(r.capability ? { capability: r.capability } : {}),
+    primary: r.primary !== false,
+  }
 }
 
 /** A representative product photo for an entity, from the first offer that carried one. */
@@ -200,6 +273,7 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
     if (id.storageGb !== UNKNOWN) specs.push({ key: 'storage', value: id.storageGb })
     if (id.size !== UNKNOWN) specs.push({ key: 'size', value: id.size })
     const conditionLabel = id.condition === UNKNOWN ? null : String(id.condition)
+    const commerce = entityCommerce(e)
     return {
       key: e.entityKey,
       name: entityName(e),
@@ -220,6 +294,7 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
         rating: nn(o.evidence.signals.rating),
         ratingCount: nn(o.evidence.signals.reviewCount),
       })),
+      ...(commerce ? { commerce } : {}),
     }
   })
 

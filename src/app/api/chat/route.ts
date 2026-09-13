@@ -192,6 +192,12 @@ export async function POST(req: Request) {
   const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
+  // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
+  // from the last few USER turns, so a reply to Tappy's clarifying question keeps them. Text only.
+  const recentUserTexts: string[] = userMessages.slice(-3).map((m: { content?: unknown }) => {
+    const c = m.content
+    return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : ''
+  })
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
@@ -1006,7 +1012,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
-          await attachCommerceLinks('search_places', result, { location, platform: commercePlatform, locale: commerceLocale, userText: lastText })
+          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
           // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
@@ -1036,7 +1042,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText })
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(productRecommendations(result))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -1128,7 +1134,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
-          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText })
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
