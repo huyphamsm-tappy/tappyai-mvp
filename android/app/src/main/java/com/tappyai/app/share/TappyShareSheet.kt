@@ -105,8 +105,12 @@ fun TappyShareSheet(
     fun handle(t: TappyShare.Target) {
         val imageUri = bitmap?.let { ShareDelivery.imageUriFor(context, it) }
         val r = when (t) {
-            TappyShare.Target.ZALO, TappyShare.Target.VIBER, TappyShare.Target.LINE, TappyShare.Target.FACEBOOK ->
+            // Direct handoff: the brochure lands inside the app's own compose UI.
+            TappyShare.Target.MESSENGER, TappyShare.Target.ZALO, TappyShare.Target.WHATSAPP,
+            TappyShare.Target.TELEGRAM, TappyShare.Target.VIBER, TappyShare.Target.LINE ->
                 ShareDelivery.toApp(context, t, artifact, imageUri, lang)
+            // Facebook is the sharer dialog with the brand url, brochure on the clipboard — same as web.
+            TappyShare.Target.FACEBOOK -> ShareDelivery.toDialog(context, t, artifact)
             TappyShare.Target.TIKTOK -> ShareDelivery.copy(context, artifact.text).let { ShareDelivery.Result.NotInstalledCopied(t) }
             TappyShare.Target.EMAIL -> ShareDelivery.toEmail(context, artifact, lang)
             TappyShare.Target.INBOX -> ShareDelivery.toInbox(context, artifact, lang)
@@ -168,13 +172,11 @@ fun TappyShareSheet(
                 }
             }
 
-            val apps = listOf(
-                TappyShare.Target.FACEBOOK, TappyShare.Target.ZALO, TappyShare.Target.VIBER,
-                TappyShare.Target.LINE, TappyShare.Target.TIKTOK, TappyShare.Target.EMAIL,
-            )
+            // The messaging apps, in the contract's order; the actions follow as rows.
+            val apps = TappyShare.targets.takeWhile { it != TappyShare.Target.INBOX }
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
-                modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp),
+                modifier = Modifier.fillMaxWidth().heightIn(max = 360.dp),
                 horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
                 verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
             ) {
@@ -191,7 +193,10 @@ fun TappyShareSheet(
 
 private fun labelRes(t: TappyShare.Target): Int = when (t) {
     TappyShare.Target.FACEBOOK -> R.string.share_facebook
+    TappyShare.Target.MESSENGER -> R.string.share_messenger
     TappyShare.Target.ZALO -> R.string.share_zalo
+    TappyShare.Target.WHATSAPP -> R.string.share_whatsapp
+    TappyShare.Target.TELEGRAM -> R.string.share_telegram
     TappyShare.Target.VIBER -> R.string.share_viber
     TappyShare.Target.LINE -> R.string.share_line
     TappyShare.Target.TIKTOK -> R.string.share_tiktok
@@ -204,7 +209,10 @@ private fun labelRes(t: TappyShare.Target): Int = when (t) {
 
 private fun tint(t: TappyShare.Target): Color = when (t) {
     TappyShare.Target.FACEBOOK -> Color(0xFF1877F2)
+    TappyShare.Target.MESSENGER -> Color(0xFF0084FF)
     TappyShare.Target.ZALO -> Color(0xFF0068FF)
+    TappyShare.Target.WHATSAPP -> Color(0xFF25D366)
+    TappyShare.Target.TELEGRAM -> Color(0xFF26A5E4)
     TappyShare.Target.VIBER -> Color(0xFF7360F2)
     TappyShare.Target.LINE -> Color(0xFF06C755)
     TappyShare.Target.TIKTOK -> Color(0xFF010101)

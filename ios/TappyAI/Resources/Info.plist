@@ -55,9 +55,11 @@
 	     not listed here, so this must stay identical to TappyShare.queriedSchemes. -->
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>zalo</string>
-		<string>viber</string>
 		<string>fb-messenger</string>
+		<string>zalo</string>
+		<string>whatsapp</string>
+		<string>tg</string>
+		<string>viber</string>
 		<string>line</string>
 	</array>
 	<key>CFBundleURLTypes</key>

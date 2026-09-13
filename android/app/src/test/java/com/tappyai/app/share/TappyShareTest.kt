@@ -20,7 +20,10 @@ class TappyShareTest {
     @Test
     fun `offers the same targets in the same order as web`() {
         assertEquals(
-            listOf("facebook", "zalo", "viber", "line", "tiktok", "email", "inbox", "save", "copy", "native"),
+            listOf(
+                "facebook", "messenger", "zalo", "whatsapp", "telegram", "viber", "line", "tiktok", "email",
+                "inbox", "save", "copy", "native",
+            ),
             TappyShare.targets.map { it.id }
         )
     }
@@ -37,12 +40,15 @@ class TappyShareTest {
 
     @Test
     fun `only messaging apps have a package`() {
+        assertEquals("com.facebook.orca", TappyShare.packageFor(TappyShare.Target.MESSENGER))
         assertEquals("com.zing.zalo", TappyShare.packageFor(TappyShare.Target.ZALO))
+        assertEquals("com.whatsapp", TappyShare.packageFor(TappyShare.Target.WHATSAPP))
+        assertEquals("org.telegram.messenger", TappyShare.packageFor(TappyShare.Target.TELEGRAM))
         assertEquals("com.viber.voip", TappyShare.packageFor(TappyShare.Target.VIBER))
-        assertEquals("com.facebook.orca", TappyShare.packageFor(TappyShare.Target.FACEBOOK))
         assertEquals("jp.naver.line.android", TappyShare.packageFor(TappyShare.Target.LINE))
-        for (t in listOf(TappyShare.Target.TIKTOK, TappyShare.Target.EMAIL, TappyShare.Target.INBOX,
-            TappyShare.Target.SAVE, TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
+        // Facebook is the sharer dialog, not an app handoff — Messenger is the app.
+        for (t in listOf(TappyShare.Target.FACEBOOK, TappyShare.Target.TIKTOK, TappyShare.Target.EMAIL,
+            TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
             assertNull(t.id, TappyShare.packageFor(t))
         }
     }
@@ -60,6 +66,14 @@ class TappyShareTest {
         assertTrue(out!!.contains("zalo.me"))
     }
 
+    /** Messenger's own share deep link — a scheme, so the caller copies first. */
+    @Test
+    fun `messenger receives its share deep link with the canonical url encoded`() {
+        val out = TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, review)
+        assertEquals("fb-messenger://share?link=" + java.net.URLEncoder.encode(review, "UTF-8"), out)
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, "https://www.tappyai.com/reviews/x?token=secret"))
+    }
+
     /** No public web endpoint exists; saying so is the feature. */
     @Test
     fun `tiktok has no url handoff`() {
@@ -68,14 +82,15 @@ class TappyShareTest {
 
     @Test
     fun `non url targets are not url handoffs`() {
-        for (t in listOf(TappyShare.Target.VIBER, TappyShare.Target.LINE, TappyShare.Target.EMAIL,
-            TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
+        for (t in listOf(TappyShare.Target.WHATSAPP, TappyShare.Target.TELEGRAM, TappyShare.Target.VIBER,
+            TappyShare.Target.LINE, TappyShare.Target.EMAIL, TappyShare.Target.INBOX, TappyShare.Target.SAVE,
+            TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
             assertNull(t.id, TappyShare.buildShareUrl(t, review))
         }
     }
 
     @Test
-    fun `text handoff carries the brochure, encoded, for email viber and line only`() {
+    fun `text handoff carries the brochure, encoded, for email viber line whatsapp and telegram only`() {
         val text = "TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n\nGợi ý bởi TappyAI · www.tappyai.com"
         val mail = TappyShare.buildTextShareUrl(TappyShare.Target.EMAIL, "TappyAI gợi ý", text)!!
         assertTrue(mail.startsWith("mailto:?subject="))
@@ -87,11 +102,32 @@ class TappyShareTest {
         val line = TappyShare.buildTextShareUrl(TappyShare.Target.LINE, "s", text)!!
         assertTrue(line.startsWith("https://line.me/R/share?text="))
         assertEquals(text, java.net.URLDecoder.decode(line.removePrefix("https://line.me/R/share?text="), "UTF-8"))
-        for (t in listOf(TappyShare.Target.FACEBOOK, TappyShare.Target.ZALO, TappyShare.Target.TIKTOK,
-            TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
+        val wa = TappyShare.buildTextShareUrl(TappyShare.Target.WHATSAPP, "s", text)!!
+        assertTrue(wa.startsWith("https://wa.me/?text="))
+        assertEquals(text, java.net.URLDecoder.decode(wa.removePrefix("https://wa.me/?text="), "UTF-8"))
+        for (t in listOf(TappyShare.Target.FACEBOOK, TappyShare.Target.MESSENGER, TappyShare.Target.ZALO,
+            TappyShare.Target.TIKTOK, TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY,
+            TappyShare.Target.NATIVE)) {
             assertNull(t.id, TappyShare.buildTextShareUrl(t, "s", text))
         }
         assertNull(TappyShare.buildTextShareUrl(TappyShare.Target.EMAIL, "s", "   "))
+        assertNull(TappyShare.buildTextShareUrl(TappyShare.Target.WHATSAPP, "s", "   "))
+    }
+
+    /** Telegram takes the link and the text apart; a bare link goes once, as the url. */
+    @Test
+    fun `telegram carries the link and the brochure separately`() {
+        val text = "TappyAI gợi ý: bún bò\n\n1. Quán A"
+        val both = TappyShare.buildTextShareUrl(TappyShare.Target.TELEGRAM, "s", text, review)!!
+        assertTrue(both.startsWith("https://t.me/share/url?url="))
+        val query = both.removePrefix("https://t.me/share/url?url=")
+        val url = query.substringBefore("&text=")
+        assertEquals(review, java.net.URLDecoder.decode(url, "UTF-8"))
+        assertEquals(text, java.net.URLDecoder.decode(query.substringAfter("&text="), "UTF-8"))
+
+        val linkOnly = TappyShare.buildTextShareUrl(TappyShare.Target.TELEGRAM, "s", review)!!
+        assertEquals("https://t.me/share/url?url=" + java.net.URLEncoder.encode(review, "UTF-8").replace("+", "%20"), linkOnly)
+        assertFalse(linkOnly.contains("&text="))
     }
 
     @Test

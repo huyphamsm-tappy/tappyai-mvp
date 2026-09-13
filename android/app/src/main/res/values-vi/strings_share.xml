@@ -2,8 +2,11 @@
 <resources>
     <string name="share_title">Chia sẻ với bạn bè</string>
     <string name="share_preview_from">gợi ý</string>
-    <string name="share_facebook">Facebook / Messenger</string>
+    <string name="share_facebook">Facebook</string>
+    <string name="share_messenger">Messenger</string>
     <string name="share_zalo">Zalo</string>
+    <string name="share_whatsapp">WhatsApp</string>
+    <string name="share_telegram">Telegram</string>
     <string name="share_viber">Viber</string>
     <string name="share_line">LINE</string>
     <string name="share_tiktok">TikTok</string>

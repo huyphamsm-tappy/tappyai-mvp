@@ -77,11 +77,15 @@ describe('the iOS string catalogue is at EN/VI parity', () => {
       // different English form would be a different NUMBER, not a translation.
       'onboarding.budget.50to100',
       'onboarding.budget.100to200',
-      // Share targets are PRODUCT NAMES (Zalo, Viber, LINE, TikTok, Facebook / Messenger) and
-      // "Email" is the everyday Vietnamese word too; the brochure's "Website"/"Review" labels
-      // are pinned byte-identical to the web builder on purpose (crossPlatformShare.test.ts).
+      // Share targets are PRODUCT NAMES (Facebook, Messenger, Zalo, WhatsApp, Telegram, Viber,
+      // LINE, TikTok) and "Email" is the everyday Vietnamese word too; the brochure's
+      // "Website"/"Review" labels are pinned byte-identical to the web builder on purpose
+      // (crossPlatformShare.test.ts).
       'share.facebook',
+      'share.messenger',
       'share.zalo',
+      'share.whatsapp',
+      'share.telegram',
       'share.viber',
       'share.line',
       'share.tiktok',

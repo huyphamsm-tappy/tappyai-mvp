@@ -17,7 +17,6 @@
 import { describe, it, expect } from 'vitest'
 import {
   SHARE_TARGETS,
-  WEB_ONLY_SHARE_TARGETS,
   WEB_SHARE_TARGETS,
   TEXT_HANDOFF_MAX,
   buildShareUrl,
@@ -34,29 +33,26 @@ const REVIEW = `${SITE}/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d`
 
 // ------------------------------------------------------------ the target set
 describe('SHARE_TARGETS', () => {
-  // The eight approved product targets (Facebook/Messenger, Zalo, Viber, LINE,
-  // Email, Tappy Inbox, Save, Copy) plus the pre-existing TikTok (Reviews) and
-  // the system sheet as the optional last resort.
+  // The messaging apps first (Facebook, Messenger, Zalo, WhatsApp, Telegram,
+  // Viber, LINE, the pre-existing TikTok from Reviews, Email), then the actions
+  // (Tappy Inbox, Save, Copy) and the system sheet as the optional last resort.
+  const PRODUCT_ORDER: ShareTargetId[] = [
+    'facebook', 'messenger', 'zalo', 'whatsapp', 'telegram', 'viber', 'line', 'tiktok', 'email',
+    'inbox', 'save', 'copy', 'native',
+  ]
+
   it('offers exactly the product-required targets, in order', () => {
-    expect(SHARE_TARGETS.map((t) => t.id)).toEqual([
-      'facebook',
-      'zalo',
-      'viber',
-      'line',
-      'tiktok',
-      'email',
-      'inbox',
-      'save',
-      'copy',
-      'native',
-    ])
+    expect(SHARE_TARGETS.map((t) => t.id)).toEqual(PRODUCT_ORDER)
   })
 
   it('classifies each target by what it actually does', () => {
     const kinds = Object.fromEntries(SHARE_TARGETS.map((t) => [t.id, t.kind]))
     expect(kinds).toEqual({
       facebook: 'url-handoff',
+      messenger: 'url-handoff',
       zalo: 'url-handoff',
+      whatsapp: 'text-handoff',
+      telegram: 'text-handoff',
       viber: 'text-handoff',
       line: 'text-handoff',
       tiktok: 'clipboard',
@@ -68,13 +64,14 @@ describe('SHARE_TARGETS', () => {
     })
   })
 
-  it.each(['facebook', 'zalo', 'viber', 'line', 'tiktok', 'email', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
-    '%s has a localization key rather than a hardcoded label',
-    (id) => {
-      const target = shareTarget(id)
-      expect(target.labelKey).toMatch(/^share\./)
-    }
-  )
+  it.each(PRODUCT_ORDER)('%s has a localization key rather than a hardcoded label', (id) => {
+    const target = shareTarget(id)
+    expect(target.labelKey).toMatch(/^share\./)
+  })
+
+  it.each(['messenger', 'whatsapp', 'telegram'] as ShareTargetId[])('%s is labelled by its own key', (id) => {
+    expect(shareTarget(id).labelKey).toBe(`share.${id}`)
+  })
 
   // TikTok is the social app, never the commerce partner.
   it('labels TikTok as TikTok, never TikTok Shop', () => {
@@ -84,25 +81,10 @@ describe('SHARE_TARGETS', () => {
 })
 
 // ------------------------------------------------ the web menu's destinations
-describe('WEB_SHARE_TARGETS — the web menu adds Messenger, WhatsApp and Telegram', () => {
-  it('keeps the cross-platform contract untouched and adds exactly three web-only destinations', () => {
-    expect(WEB_ONLY_SHARE_TARGETS.map((t) => t.id)).toEqual(['messenger', 'whatsapp', 'telegram'])
-    for (const t of WEB_ONLY_SHARE_TARGETS) expect(SHARE_TARGETS.find((x) => x.id === t.id)).toBeUndefined()
-  })
-
-  it('lists the messaging apps first, then the actions, with nothing missing and nothing twice', () => {
-    expect(WEB_SHARE_TARGETS.map((t) => t.id)).toEqual([
-      'facebook', 'messenger', 'zalo', 'whatsapp', 'telegram', 'viber', 'line', 'tiktok', 'email',
-      'inbox', 'save', 'copy', 'native',
-    ])
-    expect(new Set(WEB_SHARE_TARGETS.map((t) => t.id)).size).toBe(SHARE_TARGETS.length + WEB_ONLY_SHARE_TARGETS.length)
-  })
-
-  it('classifies the three by what they really do', () => {
-    expect(shareTarget('messenger').kind).toBe('url-handoff')
-    expect(shareTarget('whatsapp').kind).toBe('text-handoff')
-    expect(shareTarget('telegram').kind).toBe('text-handoff')
-    for (const id of ['messenger', 'whatsapp', 'telegram'] as ShareTargetId[]) expect(shareTarget(id).labelKey).toBe(`share.${id}`)
+describe('WEB_SHARE_TARGETS — the web menu shows the cross-platform contract, nothing web-only', () => {
+  it('is the same list as SHARE_TARGETS', () => {
+    expect(WEB_SHARE_TARGETS).toBe(SHARE_TARGETS)
+    expect(new Set(WEB_SHARE_TARGETS.map((t) => t.id)).size).toBe(SHARE_TARGETS.length)
   })
 
   // Messenger has only an app scheme. Offering it where nothing can open it would be a dead tile.

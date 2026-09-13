@@ -11,9 +11,8 @@
 // storage object, no API path, no private route.
 
 export type ShareTargetId =
-  | 'facebook' | 'zalo' | 'viber' | 'line' | 'tiktok'
+  | 'facebook' | 'messenger' | 'zalo' | 'whatsapp' | 'telegram' | 'viber' | 'line' | 'tiktok'
   | 'email' | 'inbox' | 'save' | 'copy' | 'native'
-  | 'messenger' | 'whatsapp' | 'telegram'
 
 /**
  * How a target consumes the artifact.
@@ -41,18 +40,35 @@ export interface ShareTarget {
 }
 
 /**
- * The product-required target set, in display order.
+ * The product-required target set, in display order: the messaging apps first,
+ * then the actions. This list is the contract the Android and iOS clients
+ * mirror (crossPlatformShare.test.ts) — same ids, same order, on all three.
+ *
+ * Each app target is a documented public entry point of the platform itself:
+ *
+ *  - Facebook   the sharer dialog with the BRAND url.
+ *  - Messenger  `fb-messenger://share?link=` — Messenger's own share deep link.
+ *               There is no web equivalent without a Facebook App ID (the
+ *               send dialog requires one, and this project has none), so the
+ *               web menu offers it only where the scheme can be opened — see
+ *               `canOpenMessenger`. It is never faked on desktop.
+ *  - Zalo       the share plugin with the BRAND url.
+ *  - WhatsApp   `https://wa.me/?text=` — WhatsApp's "click to chat", which
+ *               opens the app on a phone and WhatsApp Web on a desktop.
+ *  - Telegram   `https://t.me/share/url?url=&text=` — Telegram's share widget
+ *               endpoint, app or web alike.
+ *  - Viber      `viber://forward?text=`.
+ *  - LINE       `https://line.me/R/share?text=`.
  *
  * TikTok is the social app. It is deliberately NOT the commerce partner that
  * appears in Deals, and must never be labelled "TikTok Shop".
  */
 export const SHARE_TARGETS: readonly ShareTarget[] = [
-  // `facebook` is the id the cross-platform parity test pins and the existing
-  // sharer handoff serves. It is LABELLED "Facebook / Messenger" because that is
-  // the one destination the product asks for; Messenger's own web send-dialog
-  // needs a Facebook App ID this project does not have, so both land here.
   { id: 'facebook', labelKey: 'share.facebook', kind: 'url-handoff', color: '#1877F2' },
+  { id: 'messenger', labelKey: 'share.messenger', kind: 'url-handoff', color: '#0084FF' },
   { id: 'zalo', labelKey: 'share.zalo', kind: 'url-handoff', color: '#0068FF' },
+  { id: 'whatsapp', labelKey: 'share.whatsapp', kind: 'text-handoff', color: '#25D366' },
+  { id: 'telegram', labelKey: 'share.telegram', kind: 'text-handoff', color: '#26A5E4' },
   { id: 'viber', labelKey: 'share.viber', kind: 'text-handoff', color: '#7360F2' },
   { id: 'line', labelKey: 'share.line', kind: 'text-handoff', color: '#06C755' },
   // TikTok publishes no share endpoint: honestly a clipboard target, shown with the apps.
@@ -64,39 +80,8 @@ export const SHARE_TARGETS: readonly ShareTarget[] = [
   { id: 'native', labelKey: 'share.more', kind: 'native' },
 ] as const
 
-/**
- * Destinations the WEB menu offers beyond the cross-platform set above. Each is
- * a documented public entry point of the platform itself:
- *
- *  - Messenger  `fb-messenger://share?link=` — Messenger's own share deep link.
- *               There is no web equivalent without a Facebook App ID (the
- *               send dialog requires one, and this project has none), so the
- *               menu offers it only where the scheme can be opened — see
- *               `canOpenMessenger`. It is never faked on desktop.
- *  - WhatsApp   `https://wa.me/?text=` — WhatsApp's "click to chat", which
- *               opens the app on a phone and WhatsApp Web on a desktop.
- *  - Telegram   `https://t.me/share/url?url=&text=` — Telegram's share widget
- *               endpoint, app or web alike.
- *
- * Kept apart from `SHARE_TARGETS` because that list is the contract the
- * Android and iOS clients mirror (crossPlatformShare.test.ts); these three are
- * web-only until the native clients declare them too.
- */
-export const WEB_ONLY_SHARE_TARGETS: readonly ShareTarget[] = [
-  { id: 'messenger', labelKey: 'share.messenger', kind: 'url-handoff', color: '#0084FF' },
-  { id: 'whatsapp', labelKey: 'share.whatsapp', kind: 'text-handoff', color: '#25D366' },
-  { id: 'telegram', labelKey: 'share.telegram', kind: 'text-handoff', color: '#26A5E4' },
-] as const
-
-const byId = (id: ShareTargetId): ShareTarget =>
-  [...SHARE_TARGETS, ...WEB_ONLY_SHARE_TARGETS].find((t) => t.id === id)!
-
-/** Everything the web menu shows, in display order: the messaging apps first, then the actions. */
-export const WEB_SHARE_TARGETS: readonly ShareTarget[] = [
-  byId('facebook'), byId('messenger'), byId('zalo'), byId('whatsapp'), byId('telegram'),
-  byId('viber'), byId('line'), byId('tiktok'), byId('email'),
-  byId('inbox'), byId('save'), byId('copy'), byId('native'),
-]
+/** Everything the web menu shows — the same contract, nothing web-only. */
+export const WEB_SHARE_TARGETS: readonly ShareTarget[] = SHARE_TARGETS
 
 /**
  * Messenger's share scheme only resolves where the Messenger APP can be

@@ -20,7 +20,10 @@ enum TappyShare {
 
     enum Target: String, CaseIterable, Identifiable {
         case facebook
+        case messenger
         case zalo
+        case whatsapp
+        case telegram
         case viber
         case line
         case tiktok
@@ -34,26 +37,28 @@ enum TappyShare {
     }
 
     /// Display order, identical to web and Android.
-    static let targets: [Target] = [.facebook, .zalo, .viber, .line, .tiktok, .email, .inbox, .save, .copy, .native]
+    static let targets: [Target] = [.facebook, .messenger, .zalo, .whatsapp, .telegram, .viber, .line, .tiktok, .email, .inbox, .save, .copy, .native]
 
     /// The URL scheme that tells whether a messaging app is installed (`canOpenURL`), or nil.
     ///
     /// Must stay identical to `LSApplicationQueriesSchemes` in Info.plist — iOS answers
     /// `false` for any scheme not declared there, and the sheet would then wrongly say
-    /// "not installed". Facebook maps to Messenger because a recommendation is a message
-    /// to a person, not a wall post.
+    /// "not installed". Facebook has no scheme: it is the sharer dialog with the brand
+    /// url, the same as on the web; Messenger is the app a recommendation is sent to.
     static func appScheme(_ target: Target) -> String? {
         switch target {
+        case .messenger: return "fb-messenger"
         case .zalo: return "zalo"
+        case .whatsapp: return "whatsapp"
+        case .telegram: return "tg"
         case .viber: return "viber"
-        case .facebook: return "fb-messenger"
         case .line: return "line"
-        case .tiktok, .email, .inbox, .save, .copy, .native: return nil
+        case .facebook, .tiktok, .email, .inbox, .save, .copy, .native: return nil
         }
     }
 
     /// Every scheme this app may query — Info.plist `LSApplicationQueriesSchemes` must list exactly these.
-    static let queriedSchemes: [String] = ["zalo", "viber", "fb-messenger", "line"]
+    static let queriedSchemes: [String] = ["fb-messenger", "zalo", "whatsapp", "tg", "viber", "line"]
 
     private static let canonicalHosts = ["tappyai.com", "www.tappyai.com", "tappyai.vn", "www.tappyai.vn"]
     private static let privatePrefixes = ["/api", "/chat", "/admin", "/auth", "/login"]
@@ -98,7 +103,10 @@ enum TappyShare {
             return "https://www.facebook.com/sharer/sharer.php?u=\(encoded)"
         case .zalo:
             return "https://sp.zalo.me/plugins/share?url=\(encoded)"
-        case .tiktok, .viber, .line, .email, .inbox, .save, .copy, .native:
+        case .messenger:
+            // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
+            return "fb-messenger://share?link=\(encoded)"
+        case .tiktok, .whatsapp, .telegram, .viber, .line, .email, .inbox, .save, .copy, .native:
             return nil
         }
     }
@@ -109,10 +117,13 @@ enum TappyShare {
     /// The URL that opens a target WITH THE BROCHURE TEXT in it, or nil.
     ///
     /// Mirrors the web `buildTextShareUrl`: `mailto:` (Mail), `viber://forward?text=`
-    /// (Viber's documented forward endpoint) and `https://line.me/R/share?text=` (LINE's
-    /// documented share endpoint, a universal link into the app). Zalo and Messenger
-    /// document no text endpoint, so they are nil here and the sheet copies + opens.
-    static func buildTextShareURL(_ target: Target, subject: String, text: String) -> String? {
+    /// (Viber's documented forward endpoint), `https://line.me/R/share?text=` (LINE's
+    /// documented share endpoint, a universal link into the app), `https://wa.me/?text=`
+    /// (WhatsApp "click to chat") and `https://t.me/share/url?url=&text=` (Telegram's
+    /// share widget — `url` is the canonical link it receives apart from the text).
+    /// Zalo and Messenger document no text endpoint, so they are nil here and the
+    /// sheet copies + opens.
+    static func buildTextShareURL(_ target: Target, subject: String, text: String, url: String = "") -> String? {
         let body = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !body.isEmpty else { return nil }
         let clipped = body.count > textHandoffMax ? String(body.prefix(textHandoffMax)) : body
@@ -124,7 +135,16 @@ enum TappyShare {
         case .email: return "mailto:?subject=\(subj)&body=\(enc)"
         case .viber: return "viber://forward?text=\(enc)"
         case .line: return "https://line.me/R/share?text=\(enc)"
-        case .facebook, .zalo, .tiktok, .inbox, .save, .copy, .native: return nil
+        case .whatsapp: return "https://wa.me/?text=\(enc)"
+        case .telegram:
+            // When the text IS the link (a review), it goes once, as the url.
+            let trimmedURL = url.trimmingCharacters(in: .whitespacesAndNewlines)
+            let link = trimmedURL.isEmpty ? clipped : trimmedURL
+            guard let encodedLink = link.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else { return nil }
+            return clipped == link
+                ? "https://t.me/share/url?url=\(encodedLink)"
+                : "https://t.me/share/url?url=\(encodedLink)&text=\(enc)"
+        case .facebook, .messenger, .zalo, .tiktok, .inbox, .save, .copy, .native: return nil
         }
     }
 

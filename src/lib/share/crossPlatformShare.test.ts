@@ -31,7 +31,7 @@ const PLATFORMS: Array<[string, string]> = [
 ]
 
 describe('every client declares the same share targets', () => {
-  it.each(PLATFORMS)('%s declares all ten targets', (_name, src) => {
+  it.each(PLATFORMS)('%s declares all thirteen targets', (_name, src) => {
     for (const target of SHARE_TARGETS) {
       expect(src.toLowerCase()).toContain(target.id)
     }
@@ -47,10 +47,17 @@ describe('every client declares the same share targets', () => {
   })
 
   // The text handoffs are the SAME documented endpoints everywhere.
-  it.each(PLATFORMS)('%s builds the same text handoffs (mailto / viber forward / line share)', (_name, src) => {
+  it.each(PLATFORMS)('%s builds the same text handoffs (mailto / viber forward / line share / wa.me / t.me)', (_name, src) => {
     expect(src).toContain('mailto:?subject=')
     expect(src).toContain('viber://forward?text=')
     expect(src).toContain('https://line.me/R/share?text=')
+    expect(src).toContain('https://wa.me/?text=')
+    expect(src).toContain('https://t.me/share/url?url=')
+  })
+
+  // Messenger's only entry point is its own share scheme, on every platform.
+  it.each(PLATFORMS)('%s hands Messenger its share deep link', (_name, src) => {
+    expect(src).toContain('fb-messenger://share?link=')
   })
 
   it.each(PLATFORMS)('%s bounds text handoffs at 4000 like the web', (_name, src) => {
@@ -62,7 +69,9 @@ describe('every client declares the same share targets', () => {
   it('android declares exactly the packages it targets', () => {
     const manifest = readFileSync(join(root, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8')
     const declared = [...manifest.matchAll(/<package android:name="([^"]+)"/g)].map((m) => m[1]).sort()
-    expect(declared).toEqual(['com.facebook.orca', 'com.viber.voip', 'com.zing.zalo', 'jp.naver.line.android'])
+    expect(declared).toEqual([
+      'com.facebook.orca', 'com.viber.voip', 'com.whatsapp', 'com.zing.zalo', 'jp.naver.line.android', 'org.telegram.messenger',
+    ])
     for (const pkg of declared) expect(androidSrc).toContain(pkg)
   })
 
@@ -70,7 +79,7 @@ describe('every client declares the same share targets', () => {
     const plist = readFileSync(join(root, 'ios', 'TappyAI', 'Resources', 'Info.plist'), 'utf8')
     const block = plist.match(/<key>LSApplicationQueriesSchemes<\/key>\s*<array>([\s\S]*?)<\/array>/)![1]
     const declared = [...block.matchAll(/<string>([^<]+)<\/string>/g)].map((m) => m[1]).sort()
-    expect(declared).toEqual(['fb-messenger', 'line', 'viber', 'zalo'])
+    expect(declared).toEqual(['fb-messenger', 'line', 'tg', 'viber', 'whatsapp', 'zalo'])
     for (const scheme of declared) expect(iosSrc).toContain(`"${scheme}"`)
   })
 

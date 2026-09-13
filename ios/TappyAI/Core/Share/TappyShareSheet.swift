@@ -11,10 +11,13 @@ import UIKit
 /// What is genuinely direct on iOS:
 ///   · Viber — `viber://forward?text=` (documented) opens Viber with the brochure in it.
 ///   · LINE — `https://line.me/R/share?text=` (documented) opens LINE with the brochure in it.
+///   · WhatsApp — `https://wa.me/?text=` (documented) opens WhatsApp with the brochure in it.
+///   · Telegram — `https://t.me/share/url?url=&text=` (documented) opens Telegram with it.
 ///   · Mail — `mailto:` with subject + body.
 ///   · More apps — `UIActivityViewController` with text (+ image when rendered).
 /// Zalo and Messenger document no text endpoint. For those the brochure is COPIED and the
 /// app is opened (Messenger with the brand link), and the label says "Copy & open".
+/// Facebook is the sharer dialog with the brand link, brochure on the clipboard — as on web.
 struct TappyShareSheet: View {
     let artifact: ShareArtifact
     let lang: String
@@ -30,7 +33,8 @@ struct TappyShareSheet: View {
                     preview
 
                     LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: Spacing.sm), count: 3), spacing: Spacing.sm) {
-                        ForEach([TappyShare.Target.facebook, .zalo, .viber, .line, .tiktok, .email]) { t in
+                        // The messaging apps, in the contract's order; the actions follow as rows.
+                        ForEach(Array(TappyShare.targets.prefix { $0 != .inbox })) { t in
                             tile(t)
                         }
                     }
@@ -144,7 +148,10 @@ struct TappyShareSheet: View {
     private func label(_ t: TappyShare.Target) -> String {
         switch t {
         case .facebook: return String(localized: "share.facebook")
+        case .messenger: return String(localized: "share.messenger")
         case .zalo: return String(localized: "share.zalo")
+        case .whatsapp: return String(localized: "share.whatsapp")
+        case .telegram: return String(localized: "share.telegram")
         case .viber: return String(localized: "share.viber")
         case .line: return String(localized: "share.line")
         case .tiktok: return String(localized: "share.tiktok")
@@ -159,7 +166,10 @@ struct TappyShareSheet: View {
     private func tint(_ t: TappyShare.Target) -> Color {
         switch t {
         case .facebook: return Color(hex: 0x1877F2)
+        case .messenger: return Color(hex: 0x0084FF)
         case .zalo: return Color(hex: 0x0068FF)
+        case .whatsapp: return Color(hex: 0x25D366)
+        case .telegram: return Color(hex: 0x26A5E4)
         case .viber: return Color(hex: 0x7360F2)
         case .line: return Color(hex: 0x06C755)
         case .tiktok: return Color(hex: 0x010101)
@@ -173,9 +183,10 @@ struct TappyShareSheet: View {
     private func handle(_ t: TappyShare.Target) {
         let body = ShareArtifactBuilder.inboxBody(artifact, lang: lang)
         switch t {
-        case .viber, .line:
+        case .viber, .line, .whatsapp, .telegram:
             // Documented text endpoints: the brochure travels inside the URL.
-            if let s = TappyShare.buildTextShareURL(t, subject: artifact.subject, text: body), let url = URL(string: s), canOpen(t) {
+            if let s = TappyShare.buildTextShareURL(t, subject: artifact.subject, text: body, url: artifact.url),
+               let url = URL(string: s), canOpen(t) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.openedWithText"), label(t))
             } else {
@@ -192,13 +203,20 @@ struct TappyShareSheet: View {
                 feedback = String(format: String(localized: "share.appNotOpened"), label(t))
             }
 
-        case .facebook:
+        case .messenger:
+            // Messenger's own share deep link carries the brand url; the brochure is copied first.
             copy(body)
-            if let link = artifact.url.addingPercentEncoding(withAllowedCharacters: .alphanumerics),
-               let url = URL(string: "fb-messenger://share?link=\(link)"), canOpen(t) {
+            if let s = TappyShare.buildShareURL(.messenger, canonicalURL: artifact.url), let url = URL(string: s), canOpen(t) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.copiedAndOpened"), label(t))
-            } else if let s = TappyShare.buildShareURL(.facebook, canonicalURL: artifact.url), let url = URL(string: s) {
+            } else {
+                feedback = String(format: String(localized: "share.appNotOpened"), label(t))
+            }
+
+        case .facebook:
+            // The sharer dialog with the brand url, brochure on the clipboard — same as web.
+            copy(body)
+            if let s = TappyShare.buildShareURL(.facebook, canonicalURL: artifact.url), let url = URL(string: s) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.copiedAndOpened"), label(t))
             } else {

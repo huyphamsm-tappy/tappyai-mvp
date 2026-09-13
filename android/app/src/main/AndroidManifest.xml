@@ -33,10 +33,12 @@
             <data android:scheme="mailto" />
         </intent>
         <!-- Share sheet direct handoff (share/TappyShare.packageFor): ACTION_SEND + setPackage to
-             exactly these four apps. Must stay identical to TappyShare.queriedPackages. -->
-        <package android:name="com.zing.zalo" />
-        <package android:name="com.viber.voip" />
+             exactly these six apps. Must stay identical to TappyShare.queriedPackages. -->
         <package android:name="com.facebook.orca" />
+        <package android:name="com.zing.zalo" />
+        <package android:name="com.whatsapp" />
+        <package android:name="org.telegram.messenger" />
+        <package android:name="com.viber.voip" />
         <package android:name="jp.naver.line.android" />
     </queries>
 

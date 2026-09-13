@@ -105,30 +105,65 @@ final class ShareArtifactTests: XCTestCase {
 
     func testTargetsMatchWebOrder() {
         XCTAssertEqual(TappyShare.targets.map(\.rawValue),
-                       ["facebook", "zalo", "viber", "line", "tiktok", "email", "inbox", "save", "copy", "native"])
+                       ["facebook", "messenger", "zalo", "whatsapp", "telegram", "viber", "line", "tiktok", "email",
+                        "inbox", "save", "copy", "native"])
     }
 
     func testQueriedSchemesAreExactlyTheMappedOnes() {
         let mapped = TappyShare.targets.compactMap(TappyShare.appScheme)
         XCTAssertEqual(mapped.sorted(), TappyShare.queriedSchemes.sorted())
+        // Facebook is the sharer dialog, not an app handoff — Messenger is the app.
+        XCTAssertNil(TappyShare.appScheme(.facebook))
+        XCTAssertEqual(TappyShare.appScheme(.messenger), "fb-messenger")
+        XCTAssertEqual(TappyShare.appScheme(.whatsapp), "whatsapp")
+        XCTAssertEqual(TappyShare.appScheme(.telegram), "tg")
     }
 
-    func testTextHandoffOnlyForEmailViberLine() {
+    func testTextHandoffOnlyForEmailViberLineWhatsAppTelegram() {
         let text = "TappyAI gợi ý: bún bò\n\n1. Quán A\n\nGợi ý bởi TappyAI · www.tappyai.com"
         XCTAssertTrue(TappyShare.buildTextShareURL(.email, subject: "s", text: text)!.hasPrefix("mailto:?subject="))
         XCTAssertTrue(TappyShare.buildTextShareURL(.viber, subject: "s", text: text)!.hasPrefix("viber://forward?text="))
         let line = TappyShare.buildTextShareURL(.line, subject: "s", text: text)!
         XCTAssertTrue(line.hasPrefix("https://line.me/R/share?text="))
         XCTAssertEqual(line.replacingOccurrences(of: "https://line.me/R/share?text=", with: "").removingPercentEncoding, text)
-        for t in [TappyShare.Target.facebook, .zalo, .tiktok, .inbox, .save, .copy, .native] {
+        let wa = TappyShare.buildTextShareURL(.whatsapp, subject: "s", text: text)!
+        XCTAssertTrue(wa.hasPrefix("https://wa.me/?text="))
+        XCTAssertEqual(wa.replacingOccurrences(of: "https://wa.me/?text=", with: "").removingPercentEncoding, text)
+        for t in [TappyShare.Target.facebook, .messenger, .zalo, .tiktok, .inbox, .save, .copy, .native] {
             XCTAssertNil(TappyShare.buildTextShareURL(t, subject: "s", text: text), t.rawValue)
         }
         XCTAssertNil(TappyShare.buildTextShareURL(.email, subject: "s", text: "  "))
+        XCTAssertNil(TappyShare.buildTextShareURL(.whatsapp, subject: "s", text: "  "))
+    }
+
+    /// Telegram takes the link and the text apart; a bare link goes once, as the url.
+    func testTelegramCarriesLinkAndTextSeparately() {
+        let review = TappyShare.reviewURL("abc")
+        let text = "TappyAI gợi ý: bún bò\n\n1. Quán A"
+        let both = TappyShare.buildTextShareURL(.telegram, subject: "s", text: text, url: review)!
+        XCTAssertTrue(both.hasPrefix("https://t.me/share/url?url="))
+        let query = both.replacingOccurrences(of: "https://t.me/share/url?url=", with: "")
+        let parts = query.components(separatedBy: "&text=")
+        XCTAssertEqual(parts.count, 2)
+        XCTAssertEqual(parts[0].removingPercentEncoding, review)
+        XCTAssertEqual(parts[1].removingPercentEncoding, text)
+
+        let linkOnly = TappyShare.buildTextShareURL(.telegram, subject: "s", text: review)!
+        XCTAssertFalse(linkOnly.contains("&text="))
+        XCTAssertEqual(linkOnly.replacingOccurrences(of: "https://t.me/share/url?url=", with: "").removingPercentEncoding, review)
+    }
+
+    func testMessengerShareURLIsItsDeepLink() {
+        let review = TappyShare.reviewURL("abc")
+        let out = TappyShare.buildShareURL(.messenger, canonicalURL: review)!
+        XCTAssertTrue(out.hasPrefix("fb-messenger://share?link="))
+        XCTAssertEqual(out.replacingOccurrences(of: "fb-messenger://share?link=", with: "").removingPercentEncoding, review)
+        XCTAssertNil(TappyShare.buildShareURL(.messenger, canonicalURL: "https://www.tappyai.com/reviews/x?token=secret"))
     }
 
     func testNonURLTargetsHaveNoShareURL() {
         let review = TappyShare.reviewURL("abc")
-        for t in [TappyShare.Target.viber, .line, .tiktok, .email, .inbox, .save, .copy, .native] {
+        for t in [TappyShare.Target.whatsapp, .telegram, .viber, .line, .tiktok, .email, .inbox, .save, .copy, .native] {
             XCTAssertNil(TappyShare.buildShareURL(t, canonicalURL: review), t.rawValue)
         }
         XCTAssertNotNil(TappyShare.buildShareURL(.facebook, canonicalURL: review))

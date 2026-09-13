@@ -12,9 +12,10 @@ package com.tappyai.app.share
  * these networks, so nothing here may report that a post was made.
  *
  * 🔑 WHAT ANDROID CAN DO THAT THE WEB CANNOT: hand the brochure TEXT (and an
- * image) straight to a specific app with `ACTION_SEND` + `setPackage`. A Zalo,
- * Viber, Messenger or LINE that is installed receives the recommendation itself,
- * not a brand link — that is a genuine direct integration, and [packageFor]
+ * image) straight to a specific app with `ACTION_SEND` + `setPackage`. A
+ * Messenger, Zalo, WhatsApp, Telegram, Viber or LINE that is installed receives
+ * the recommendation itself, not a brand link — that is a genuine direct
+ * integration, and [packageFor]
  * names the packages. Declared in the manifest `<queries>` so the resolution is
  * honest on Android 11+. An app that is NOT installed throws
  * `ActivityNotFoundException`, and the caller copies + says so; it never
@@ -27,7 +28,10 @@ object TappyShare {
 
     enum class Target(val id: String) {
         FACEBOOK("facebook"),
+        MESSENGER("messenger"),
         ZALO("zalo"),
+        WHATSAPP("whatsapp"),
+        TELEGRAM("telegram"),
         VIBER("viber"),
         LINE("line"),
         TIKTOK("tiktok"),
@@ -41,7 +45,10 @@ object TappyShare {
     /** Display order, identical to web. */
     val targets: List<Target> = listOf(
         Target.FACEBOOK,
+        Target.MESSENGER,
         Target.ZALO,
+        Target.WHATSAPP,
+        Target.TELEGRAM,
         Target.VIBER,
         Target.LINE,
         Target.TIKTOK,
@@ -55,19 +62,24 @@ object TappyShare {
     /**
      * The installed app that receives an `ACTION_SEND` for this target, or null.
      *
-     * Facebook maps to Messenger because the product's target is "Facebook /
-     * Messenger" and a recommendation is a message to a person, not a wall post.
+     * Facebook has no package here: it is the sharer dialog with the brand url
+     * ([buildShareUrl]), the same as on the web. Messenger is the app that
+     * receives a recommendation as a message to a person.
      */
     fun packageFor(target: Target): String? = when (target) {
+        Target.MESSENGER -> "com.facebook.orca"
         Target.ZALO -> "com.zing.zalo"
+        Target.WHATSAPP -> "com.whatsapp"
+        Target.TELEGRAM -> "org.telegram.messenger"
         Target.VIBER -> "com.viber.voip"
-        Target.FACEBOOK -> "com.facebook.orca"
         Target.LINE -> "jp.naver.line.android"
         else -> null
     }
 
     /** Every package this app may resolve — the manifest `<queries>` must list exactly these. */
-    val queriedPackages: List<String> = listOf("com.zing.zalo", "com.viber.voip", "com.facebook.orca", "jp.naver.line.android")
+    val queriedPackages: List<String> = listOf(
+        "com.facebook.orca", "com.zing.zalo", "com.whatsapp", "org.telegram.messenger", "com.viber.voip", "jp.naver.line.android",
+    )
 
     private val canonicalHost = Regex("^(www\\.)?tappyai\\.(com|vn)$", RegexOption.IGNORE_CASE)
     private val nonShareablePath = Regex("^/(api|chat|admin|auth|login)(/|$)", RegexOption.IGNORE_CASE)
@@ -105,7 +117,9 @@ object TappyShare {
         return when (target) {
             Target.FACEBOOK -> "https://www.facebook.com/sharer/sharer.php?u=$encoded"
             Target.ZALO -> "https://sp.zalo.me/plugins/share?url=$encoded"
-            Target.VIBER, Target.LINE, Target.EMAIL, Target.INBOX,
+            // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
+            Target.MESSENGER -> "fb-messenger://share?link=$encoded"
+            Target.WHATSAPP, Target.TELEGRAM, Target.VIBER, Target.LINE, Target.EMAIL, Target.INBOX,
             Target.SAVE, Target.COPY, Target.NATIVE, Target.TIKTOK -> null
         }
     }
@@ -118,8 +132,9 @@ object TappyShare {
      *
      * Mirrors the web `buildTextShareUrl`. On Android these are the fallbacks for
      * when the app package is not installed; the primary path is [packageFor].
+     * `url` is the canonical link Telegram receives separately from the text.
      */
-    fun buildTextShareUrl(target: Target, subject: String, text: String): String? {
+    fun buildTextShareUrl(target: Target, subject: String, text: String, url: String = ""): String? {
         val body = text.trim()
         if (body.isEmpty()) return null
         val clipped = if (body.length > TEXT_HANDOFF_MAX) body.take(TEXT_HANDOFF_MAX) else body
@@ -128,6 +143,16 @@ object TappyShare {
             Target.EMAIL -> "mailto:?subject=${java.net.URLEncoder.encode(subject, "UTF-8").replace("+", "%20")}&body=$enc"
             Target.VIBER -> "viber://forward?text=$enc"
             Target.LINE -> "https://line.me/R/share?text=$enc"
+            // WhatsApp "click to chat" (faq.whatsapp.com/5913398998672934): the text is the message.
+            Target.WHATSAPP -> "https://wa.me/?text=$enc"
+            // Telegram share widget (core.telegram.org/widgets/share): a link plus an optional text.
+            // When the text IS the link (a review), it goes once, as the url.
+            Target.TELEGRAM -> {
+                val link = url.trim().ifEmpty { clipped }
+                val encodedLink = java.net.URLEncoder.encode(link, "UTF-8").replace("+", "%20")
+                if (clipped == link) "https://t.me/share/url?url=$encodedLink"
+                else "https://t.me/share/url?url=$encodedLink&text=$enc"
+            }
             else -> null
         }
     }

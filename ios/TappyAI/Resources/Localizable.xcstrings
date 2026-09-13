@@ -12826,13 +12826,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Facebook / Messenger"
+            "value": "Facebook"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Facebook / Messenger"
+            "value": "Facebook"
           }
         }
       }
@@ -12884,6 +12884,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "LINE"
+          }
+        }
+      }
+    },
+    "share.messenger": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messenger"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messenger"
           }
         }
       }
@@ -13007,6 +13024,23 @@
         }
       }
     },
+    "share.telegram": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telegram"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telegram"
+          }
+        }
+      }
+    },
     "share.tiktok": {
       "extractionState": "manual",
       "localizations": {
@@ -13054,6 +13088,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Viber"
+          }
+        }
+      }
+    },
+    "share.whatsapp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WhatsApp"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "WhatsApp"
           }
         }
       }
