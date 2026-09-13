@@ -3,10 +3,12 @@
 import { useState, useRef, useCallback } from 'react'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Camera, ImagePlus, ScanText, Copy, Check, Download, Share2, X, FileText } from 'lucide-react'
+import {
+  Camera, ImagePlus, ScanText, Copy, Check, Download, Share2, X, FileText, Images, Languages,
+  Sun, Scan, Focus, Lightbulb, AlertCircle, Sparkles, type LucideIcon,
+} from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { TappyMascot } from '@/components/TappyMascot'
-import { getTappyPose } from '@/lib/TappyMascotState'
+import TappyPresence from '@/components/v3/TappyPresence'
 
 // Resize image to max 2048px before sending to API (reduces payload, faster OCR)
 async function resizeImage(file: File, maxPx = 2048, quality = 0.85): Promise<{ base64: string; mimeType: string }> {
@@ -54,6 +56,38 @@ function downloadTxt(text: string, filename: string) {
   a.click()
   URL.revokeObjectURL(a.href)
 }
+
+/** The route's `DAILY_SCAN_LIMIT`; the tips card quotes the same number. */
+const DAILY_LIMIT = 20
+
+/**
+ * Three chips, each one true of the code on this page: two file inputs (camera + gallery), the
+ * Vietnamese/English claim the tips already made, and the .TXT/.DOCX export on the result card.
+ * The reference's "fast" and "only you can see it" chips are speed and privacy promises the
+ * request cannot make, so they are not chips.
+ */
+const CAPABILITIES: { key: string; icon: LucideIcon; tone: 'blue' | 'cyan' | 'orange' }[] = [
+  { key: 'scan.capCapture', icon: Camera, tone: 'blue' },
+  { key: 'scan.capLangs', icon: Languages, tone: 'cyan' },
+  { key: 'scan.capExport', icon: FileText, tone: 'orange' },
+]
+
+/**
+ * What `resizeImage` can decode through an `<img>` in every browser. HEIC and PDF are absent
+ * because the page cannot read them — listing them would promise an upload that fails.
+ */
+const FORMATS: { label: string; tone: 'blue' | 'green' | 'violet' }[] = [
+  { label: 'JPG', tone: 'blue' },
+  { label: 'PNG', tone: 'green' },
+  { label: 'WEBP', tone: 'violet' },
+]
+
+const TIPS: { titleKey: string; descKey: string; icon: LucideIcon }[] = [
+  { titleKey: 'scan.tipLightTitle', descKey: 'scan.tipLightDesc', icon: Sun },
+  { titleKey: 'scan.tipAngleTitle', descKey: 'scan.tipAngleDesc', icon: Scan },
+  { titleKey: 'scan.tipSharpTitle', descKey: 'scan.tipSharpDesc', icon: Focus },
+  { titleKey: 'scan.tipLangTitle', descKey: 'scan.tipLangDesc', icon: Languages },
+]
 
 export default function ScanPage() {
   const { t } = useTranslation()
@@ -130,155 +164,201 @@ export default function ScanPage() {
   const filename = file ? file.name.replace(/\.[^.]+$/, '') : t('scan.defaultFilename')
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex flex-col">
+    // `v3-theme` brings the shared tokens to a page that keeps its legacy header and bottom nav.
+    <div className="v3-theme v3-scan-page flex min-h-dvh flex-col">
       <Header title={t('scan.headerTitle')} showBack />
 
-      <main className="flex-1 max-w-2xl mx-auto w-full px-4 pt-5 pb-24 space-y-4">
-        {/* Hero */}
-        <div className="rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 p-5 text-white shadow-lg">
-          <div className="w-12 h-12 mb-2 rounded-xl overflow-hidden select-none">
-            <TappyMascot pose={getTappyPose({ category: 'aitools' })} size={48} eager animated />
-          </div>
-          <h2 className="text-xl font-bold leading-tight">{t('scan.heroTitle')}</h2>
-          <p className="text-white/70 text-sm mt-1">{t('scan.heroSubtitle')}</p>
-        </div>
+      <main className="mx-auto w-full max-w-5xl flex-1 space-y-5 px-4 pb-24 pt-5 sm:px-6 sm:pt-7" data-scan-main>
+        {/* ── Hero ── */}
+        <section className="v3-scan-hero" aria-labelledby="scan-hero-title" data-scan-hero>
+          <div className="v3-scan-stars" aria-hidden="true" />
+          <div className="flex flex-col gap-5 px-5 py-6 sm:px-8 sm:py-8 md:flex-row md:items-center md:gap-6 lg:gap-8">
+            <div className="min-w-0 flex-1">
+              <span className="v3-scan-eyebrow inline-flex min-h-[36px] items-center gap-2 rounded-full px-4 text-[13px] font-semibold">
+                <FileText size={15} aria-hidden="true" />
+                {t('scan.heroEyebrow')}
+              </span>
+              <h1 id="scan-hero-title" className="mt-4 text-[30px] font-extrabold leading-[1.08] tracking-[-0.02em] sm:text-[40px] lg:text-[46px]">
+                {t('scan.heroTitle1')}{' '}
+                <span className="v3-scan-hero-accent">{t('scan.heroTitle2')}</span>
+              </h1>
+              {/* The body describes the real flow: pick, then tap scan — the request is not automatic. */}
+              <p className="v3-scan-hero-muted mt-4 max-w-[48ch] text-[14.5px] leading-relaxed sm:text-[16px]">
+                {t('scan.heroBody')}
+              </p>
+              <ul className="mt-5 flex flex-wrap gap-2" data-scan-caps>
+                {CAPABILITIES.map(c => (
+                  <li key={c.key} className="v3-scan-cap" data-tone={c.tone}>
+                    <span className="v3-scan-cap-icon" aria-hidden="true"><c.icon size={14} /></span>
+                    {t(c.key)}
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-        {/* Image picker */}
+            {/* The scene: Tappy reading (the owner's `reading` pose — the otter with the open
+                book), two document cards, sparks, and a speech bubble. Illustration only. */}
+            <div className="relative mx-auto h-[250px] w-full max-w-[360px] flex-shrink-0 sm:h-[290px] md:h-[330px] md:w-[44%] md:max-w-[430px]" data-scan-scene>
+              <span className="v3-scan-doc" aria-hidden="true" style={{ width: '22%', right: '8%', top: '30%', transform: 'rotate(10deg)' }}>
+                <i /><i /><i />
+              </span>
+              <span className="v3-scan-doc" aria-hidden="true" style={{ width: '16%', right: '0%', top: '62%', transform: 'rotate(-8deg)' }}>
+                <i /><i /><i />
+              </span>
+              <span className="v3-scan-spark" aria-hidden="true" style={{ left: '4%', top: '54%' }}><Sparkles size={22} /></span>
+              <span className="v3-scan-spark" aria-hidden="true" data-tone="blue" style={{ right: '10%', top: '18%' }}><Sparkles size={16} /></span>
+              <p className="v3-scan-bubble" style={{ right: '0%', top: '0%' }} data-scan-bubble>
+                {t('scan.bubble1')}
+                <br />
+                <em>{t('scan.bubble2')}</em>
+              </p>
+              <div className="v3-scan-mascot absolute inset-x-0 bottom-0 flex justify-center md:justify-start md:pl-2">
+                <TappyPresence pose="reading" size={300} aura="calm" className="max-h-[210px] max-w-[210px] sm:max-h-[250px] sm:max-w-[250px] md:max-h-[264px] md:max-w-[264px] lg:max-h-none lg:max-w-none" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Pick an image / preview ── */}
         {!preview ? (
-          <div className="grid grid-cols-2 gap-3">
-            {/* Camera */}
-            <button
-              onClick={() => cameraRef.current?.click()}
-              className="flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-2 border-dashed border-teal-300 dark:border-teal-700 rounded-2xl p-6 hover:border-teal-400 hover:bg-teal-50/50 dark:hover:bg-teal-900/20 transition-all"
-            >
-              <Camera size={32} className="text-teal-500" />
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('scan.takePhoto')}</span>
-              <span className="text-xs text-gray-400">{t('scan.useCamera')}</span>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2" data-scan-actions>
+            <button type="button" className="v3-scan-action" data-tone="blue" onClick={() => cameraRef.current?.click()} data-scan-camera>
+              <span className="v3-scan-frame" aria-hidden="true">
+                <i />
+                <span className="v3-scan-orb"><Camera size={36} /></span>
+              </span>
+              <span className="v3-scan-action-title mt-4 block text-[20px] font-extrabold leading-tight sm:text-[22px]">{t('scan.cameraTitle')}</span>
+              <span className="v3-scan-action-desc mt-1.5 block text-[14px]">{t('scan.cameraDesc')}</span>
+              <span className="v3-scan-action-cta mt-6"><Camera size={20} aria-hidden="true" />{t('scan.cameraCta')}</span>
             </button>
-            {/* Gallery */}
-            <button
-              onClick={() => galleryRef.current?.click()}
-              className="flex flex-col items-center gap-3 bg-white dark:bg-gray-900 border-2 border-dashed border-cyan-300 dark:border-cyan-700 rounded-2xl p-6 hover:border-cyan-400 hover:bg-cyan-50/50 dark:hover:bg-cyan-900/20 transition-all"
-            >
-              <ImagePlus size={32} className="text-cyan-500" />
-              <span className="text-sm font-semibold text-gray-700 dark:text-gray-200">{t('scan.pickImage')}</span>
-              <span className="text-xs text-gray-400">{t('scan.fromGallery')}</span>
+            <button type="button" className="v3-scan-action" data-tone="orange" onClick={() => galleryRef.current?.click()} data-scan-gallery>
+              <span className="v3-scan-frame" aria-hidden="true">
+                <i />
+                <span className="v3-scan-orb"><ImagePlus size={36} /></span>
+              </span>
+              <span className="v3-scan-action-title mt-4 block text-[20px] font-extrabold leading-tight sm:text-[22px]">{t('scan.galleryTitle')}</span>
+              <span className="v3-scan-action-desc mt-1.5 block text-[14px]">{t('scan.galleryDesc')}</span>
+              <span className="v3-scan-action-cta mt-6"><Images size={20} aria-hidden="true" />{t('scan.galleryCta')}</span>
             </button>
             <input ref={cameraRef} type="file" accept="image/*" capture="environment" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
             <input ref={galleryRef} type="file" accept="image/*" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
           </div>
         ) : (
-          <div className="relative rounded-2xl overflow-hidden bg-black shadow-lg">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={preview} alt={t('scan.previewAlt')} className="w-full max-h-72 object-contain" />
+          <section className="v3-scan-card p-4 sm:p-5" aria-labelledby="scan-preview-title" data-scan-preview>
+            <div className="flex items-center gap-3">
+              <span className="v3-scan-icon-soft h-9 w-9 rounded-xl" aria-hidden="true"><ImagePlus size={18} /></span>
+              <h2 id="scan-preview-title" className="v3-scan-card-title flex-1 text-[12.5px] font-bold uppercase">{t('scan.previewLabel')}</h2>
+            </div>
+            <div className="v3-scan-preview mt-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={preview} alt={t('scan.previewAlt')} className="mx-auto max-h-80 w-full object-contain" />
+              <button type="button" onClick={clearImage} className="v3-scan-clear" aria-label={t('scan.clearImage')} data-scan-clear>
+                <X size={18} aria-hidden="true" />
+              </button>
+            </div>
             <button
-              onClick={clearImage}
-              className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/60 flex items-center justify-center text-white hover:bg-black/80 transition-colors"
+              type="button"
+              onClick={scan}
+              disabled={loading}
+              className="v3-scan-cta mt-4 flex min-h-[60px] w-full items-center justify-center gap-3 rounded-2xl px-6 text-[17px] font-bold disabled:cursor-not-allowed disabled:opacity-50"
+              data-scan-submit
             >
-              <X size={16} />
+              {loading ? (
+                <>
+                  <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" aria-hidden="true" />
+                  {t('scan.scanning')}
+                </>
+              ) : (
+                <>
+                  <ScanText size={22} aria-hidden="true" />
+                  {t('scan.scanButton')}
+                </>
+              )}
             </button>
-          </div>
+          </section>
         )}
 
-        {/* Scan button */}
-        {preview && (
-          <button
-            onClick={scan}
-            disabled={loading}
-            className="w-full py-3 rounded-2xl bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-bold text-base shadow-md hover:shadow-lg active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-                {t('scan.scanning')}
-              </>
-            ) : (
-              <>
-                <ScanText size={20} />
-                {t('scan.scanButton')}
-              </>
-            )}
-          </button>
-        )}
-
-        {/* Error */}
+        {/* ── Error ── */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-2xl p-4">
-            <p className="text-red-700 dark:text-red-400 text-sm">{error}</p>
+          <div className="v3-scan-error text-[14px]" role="alert" data-scan-error>
+            <AlertCircle size={18} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+            <p>{error}</p>
           </div>
         )}
 
-        {/* Result */}
+        {/* ── Result ── */}
         {result && (
-          <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 shadow-sm overflow-hidden">
-            <div className="px-4 pt-4 pb-2">
-              <p className="text-xs font-semibold text-teal-500 uppercase tracking-wider mb-3">{t('scan.resultLabel')}</p>
-              <p className="text-gray-900 dark:text-white text-sm leading-relaxed whitespace-pre-wrap">{result}</p>
+          <section className="v3-scan-card v3-scan-result p-4 sm:p-5" aria-labelledby="scan-result-title" aria-live="polite" data-scan-result>
+            <div className="flex items-center gap-3">
+              <span className="v3-scan-icon-soft h-9 w-9 rounded-xl" aria-hidden="true"><ScanText size={18} /></span>
+              <h2 id="scan-result-title" className="v3-scan-card-title text-[12.5px] font-bold uppercase" style={{ color: 'var(--v3-accent)' }}>
+                {t('scan.resultLabel')}
+              </h2>
             </div>
+            <p className="v3-scan-result-text mt-3 whitespace-pre-wrap text-[15px] leading-relaxed sm:text-[16px]">{result}</p>
 
-            {/* Export actions */}
-            <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3">
-              <p className="text-xs text-gray-400 mb-2 font-medium">{t('scan.exportLabel')}</p>
-              <div className="flex flex-wrap gap-2">
-                {/* Copy */}
-                <button
-                  onClick={copy}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-                    copied
-                      ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700'
-                  }`}
-                >
-                  {copied ? <Check size={14} /> : <Copy size={14} />}
-                  {copied ? t('scan.copied') : t('scan.copy')}
-                </button>
-
-                {/* .txt */}
-                <button
-                  onClick={() => downloadTxt(result, `${filename}.txt`)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700 text-sm font-medium transition-colors"
-                >
-                  <FileText size={14} />
-                  .TXT
-                </button>
-
-                {/* .docx */}
-                <button
-                  onClick={() => downloadDocx(result, `${filename}.docx`)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:text-blue-700 text-sm font-medium transition-colors"
-                >
-                  <Download size={14} />
-                  .DOCX
-                </button>
-
-                {/* Share */}
-                <button
-                  onClick={share}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-colors ${
-                    shared
-                      ? 'bg-teal-100 dark:bg-teal-900/40 text-teal-700 dark:text-teal-300'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-teal-50 dark:hover:bg-teal-900/30 hover:text-teal-700'
-                  }`}
-                >
-                  <Share2 size={14} />
-                  {shared ? t('scan.sharedDone') : t('scan.share')}
-                </button>
-              </div>
+            <p className="v3-scan-card-title mt-5 text-[12px] font-bold uppercase">{t('scan.exportLabel')}</p>
+            <div className="mt-2 flex flex-wrap gap-2" data-scan-export>
+              <button type="button" onClick={copy} data-done={copied} className="v3-scan-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold">
+                {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
+                {copied ? t('scan.copied') : t('scan.copy')}
+              </button>
+              <button type="button" onClick={() => downloadTxt(result, `${filename}.txt`)} className="v3-scan-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold">
+                <FileText size={16} aria-hidden="true" />
+                .TXT
+              </button>
+              <button type="button" onClick={() => downloadDocx(result, `${filename}.docx`)} className="v3-scan-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold">
+                <Download size={16} aria-hidden="true" />
+                .DOCX
+              </button>
+              <button type="button" onClick={share} data-done={shared} className="v3-scan-btn inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 text-[13.5px] font-semibold">
+                <Share2 size={16} aria-hidden="true" />
+                {shared ? t('scan.sharedDone') : t('scan.share')}
+              </button>
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Tips */}
-        {!result && !loading && (
-          <div className="bg-amber-50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/40 rounded-2xl p-4">
-            <p className="text-xs font-semibold text-amber-700 dark:text-amber-400 mb-2">{t('scan.tipsTitle')}</p>
-            <ul className="text-xs text-amber-600 dark:text-amber-500 space-y-1">
-              <li>• {t('scan.tipFlat')}</li>
-              <li>• {t('scan.tipLighting')}</li>
-              <li>• {t('scan.tipPrint')}</li>
-              <li>• {t('scan.tipLimit', { n: '20' })}</li>
-            </ul>
+        {/* ── Supported formats ── */}
+        <section className="v3-scan-card flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:p-5" aria-labelledby="scan-formats-title" data-scan-formats>
+          <div className="flex min-w-0 flex-1 items-center gap-3">
+            <span className="v3-scan-icon-soft" aria-hidden="true"><FileText size={22} /></span>
+            <div className="min-w-0">
+              <h2 id="scan-formats-title" className="text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>{t('scan.formatsTitle')}</h2>
+              <p className="v3-scan-note mt-0.5 text-[13px]">{t('scan.formatsDesc')}</p>
+            </div>
           </div>
+          <ul className="flex flex-wrap gap-2">
+            {FORMATS.map(f => (
+              <li key={f.label} className="v3-scan-fmt" data-tone={f.tone}>
+                <span className="v3-scan-fmt-badge" aria-hidden="true">{f.label}</span>
+                {f.label}
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* ── Tips ── */}
+        {!result && !loading && (
+          <section className="v3-scan-card p-4 sm:p-5" aria-labelledby="scan-tips-title" data-scan-tips>
+            <div className="flex items-center gap-3">
+              <span className="v3-scan-icon-soft h-9 w-9 rounded-xl" aria-hidden="true" style={{ color: '#F59E0B', backgroundColor: 'rgba(245, 158, 11, 0.14)' }}><Lightbulb size={18} /></span>
+              <h2 id="scan-tips-title" className="text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>{t('scan.tipsTitle')}</h2>
+            </div>
+            <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {TIPS.map(tip => (
+                <li key={tip.titleKey} className="v3-scan-tip">
+                  <span className="v3-scan-tip-icon" aria-hidden="true"><tip.icon size={20} /></span>
+                  <span className="min-w-0">
+                    <span className="v3-scan-tip-title block text-[14.5px] font-bold leading-tight">{t(tip.titleKey)}</span>
+                    <span className="v3-scan-tip-desc mt-1 block text-[13px] leading-snug">{t(tip.descKey)}</span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {/* The route's daily cap, quoted from DAILY_LIMIT — the only limit the page enforces. */}
+            <p className="v3-scan-note mt-4 text-[13px]" data-scan-limit>{t('scan.tipLimit', { n: String(DAILY_LIMIT) })}</p>
+          </section>
         )}
       </main>
 

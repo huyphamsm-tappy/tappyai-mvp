@@ -2819,5 +2819,267 @@
   .v3-sb-seg:active { transform: none; }
 }
 
+/* ── Document scanner (/scan) — the destination skin ───────────────────────
+   Legacy chrome kept (`Header` + `BottomNav`); this block paints the hero
+   (Tappy `reading` pose, CSS document cards, a speech bubble), the two action
+   cards, the preview / result cards, the formats strip and the tips card.
+   Paint only — the two file inputs, `resizeImage`, the `/api/scan` request,
+   the export actions and every error string are the page's own.
+
+   🚨 The formats strip lists what `resizeImage` can decode through an `<img>`
+   in every browser (JPG, PNG, WEBP). HEIC and PDF are not on it because the
+   page cannot read them; the mockup's chips were not copied. */
+.v3-scan-page {
+  background-image: radial-gradient(60% 40% at 50% 100%, rgba(0, 105, 219, 0.08), transparent 70%);
+}
+.dark .v3-scan-page {
+  background-image:
+    radial-gradient(70% 45% at 50% 110%, rgba(37, 99, 235, 0.18), transparent 70%),
+    radial-gradient(40% 30% at 10% 0%, rgba(14, 165, 233, 0.10), transparent 70%);
+}
+.v3-scan-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 78% 30%, rgba(37, 99, 235, 0.45), transparent 60%),
+    radial-gradient(50% 70% at 12% 100%, rgba(14, 165, 233, 0.28), transparent 60%),
+    linear-gradient(160deg, #060B1F 0%, #0B1A45 55%, #0E1D58 100%);
+  box-shadow: 0 30px 70px -40px rgba(37, 99, 235, 0.9);
+}
+.v3-scan-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-scan-hero-accent {
+  background-image: linear-gradient(90deg, #38BDF8 0%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v3-scan-eyebrow {
+  background-color: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #BAE6FD;
+}
+.v3-scan-stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1.5px 1.5px at 30% 12%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 70% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 94% 18%, rgba(255, 255, 255, 0.8), transparent 55%);
+}
+/* Capability chips inside the hero. Each one names something the page does. */
+.v3-scan-cap {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 40px; padding: 0 14px 0 8px; border-radius: 9999px;
+  font-size: 13px; font-weight: 600; color: #E0F2FE;
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+.v3-scan-cap-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 9999px; color: #FFFFFF;
+  background-image: linear-gradient(135deg, var(--sc-a), var(--sc-b));
+}
+.v3-scan-cap[data-tone="blue"]   { --sc-a: #3B82F6; --sc-b: #1D4ED8; }
+.v3-scan-cap[data-tone="cyan"]   { --sc-a: #22D3EE; --sc-b: #0284C7; }
+.v3-scan-cap[data-tone="orange"] { --sc-a: #FB923C; --sc-b: #EA580C; }
+/* Illustration document cards floating beside Tappy. */
+.v3-scan-doc {
+  position: absolute; pointer-events: none;
+  border-radius: 12px; padding: 12px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+  background-image: linear-gradient(160deg, #EAF2FF 0%, #C7DBFF 100%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 18px 32px -16px rgba(0, 0, 0, 0.8), 0 0 40px -6px rgba(96, 165, 250, 0.45);
+}
+.v3-scan-doc i { display: block; height: 5px; border-radius: 3px; background-color: rgba(59, 130, 246, 0.45); }
+.v3-scan-doc i:nth-child(1) { width: 78%; }
+.v3-scan-doc i:nth-child(2) { width: 56%; }
+.v3-scan-doc i:nth-child(3) { width: 66%; }
+.v3-scan-spark {
+  position: absolute; pointer-events: none; color: #FDE68A;
+  filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.8));
+}
+.v3-scan-spark[data-tone="blue"] { color: #BAE6FD; filter: drop-shadow(0 0 8px rgba(186, 230, 253, 0.8)); }
+/* Tappy's speech bubble: dark panel, cyan hairline, tail toward the character. */
+.v3-scan-bubble {
+  position: absolute; pointer-events: none; z-index: 2;
+  max-width: 190px; border-radius: 16px; padding: 10px 14px;
+  font-size: 13px; font-weight: 600; line-height: 1.35; color: #FFFFFF;
+  background-color: rgba(9, 18, 46, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.9), 0 0 24px -6px rgba(56, 189, 248, 0.5);
+}
+.v3-scan-bubble::after {
+  content: ''; position: absolute; bottom: -7px; left: 22px;
+  width: 12px; height: 12px; transform: rotate(45deg);
+  background-color: rgba(9, 18, 46, 0.92);
+  border-right: 1px solid rgba(56, 189, 248, 0.55);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.55);
+}
+.v3-scan-bubble em { font-style: normal; color: #FDBA74; }
+@keyframes v3-scan-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.v3-scan-mascot { animation: v3-scan-float 6s ease-in-out infinite; }
+/* The two action cards. Each card IS the button — the whole surface fires the
+   existing input click; the pill at the bottom is a styled span, not a nested
+   control. */
+.v3-scan-action {
+  position: relative; overflow: hidden; isolation: isolate;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  width: 100%; border-radius: 24px; padding: 28px 20px 22px;
+  border: 1px solid var(--sa-border);
+  background-color: var(--v3-panel);
+  background-image: radial-gradient(80% 60% at 50% 0%, var(--sa-glow), transparent 70%);
+  box-shadow: 0 24px 50px -34px var(--sa-shadow);
+  transition: transform 150ms, box-shadow 150ms, border-color 150ms;
+}
+.dark .v3-scan-action { background-color: #0B1224; }
+.v3-scan-action:hover { transform: translateY(-2px); border-color: var(--sa-a); box-shadow: 0 30px 60px -32px var(--sa-shadow); }
+.v3-scan-action:active { transform: translateY(0) scale(0.99); }
+.v3-scan-action:focus-visible { outline: 2px solid var(--sa-a); outline-offset: 3px; }
+.v3-scan-action[data-tone="blue"] {
+  --sa-a: #2F7BFF; --sa-b: #0B5FE0;
+  --sa-border: rgba(47, 123, 255, 0.35);
+  --sa-glow: rgba(47, 123, 255, 0.16);
+  --sa-shadow: rgba(47, 123, 255, 0.7);
+}
+.v3-scan-action[data-tone="orange"] {
+  --sa-a: #FB923C; --sa-b: #EA580C;
+  --sa-border: rgba(251, 146, 60, 0.40);
+  --sa-glow: rgba(251, 146, 60, 0.16);
+  --sa-shadow: rgba(234, 88, 12, 0.7);
+}
+/* Corner brackets around the icon: the viewfinder motif. */
+.v3-scan-frame {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 148px; height: 112px;
+}
+.v3-scan-frame::before, .v3-scan-frame::after,
+.v3-scan-frame > i::before, .v3-scan-frame > i::after {
+  content: ''; position: absolute; width: 18px; height: 18px;
+  border: 2.5px solid var(--sa-a); opacity: 0.85;
+}
+.v3-scan-frame::before { left: 0; top: 0; border-right: 0; border-bottom: 0; border-top-left-radius: 6px; }
+.v3-scan-frame::after { right: 0; top: 0; border-left: 0; border-bottom: 0; border-top-right-radius: 6px; }
+.v3-scan-frame > i { position: absolute; inset: 0; pointer-events: none; }
+.v3-scan-frame > i::before { left: 0; bottom: 0; border-right: 0; border-top: 0; border-bottom-left-radius: 6px; }
+.v3-scan-frame > i::after { right: 0; bottom: 0; border-left: 0; border-top: 0; border-bottom-right-radius: 6px; }
+.v3-scan-orb {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 84px; height: 84px; border-radius: 9999px; color: #FFFFFF;
+  background-image: radial-gradient(circle at 35% 30%, var(--sa-a), var(--sa-b));
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--sa-a) 14%, transparent), 0 18px 34px -14px var(--sa-b);
+}
+.v3-scan-action-title { color: var(--v3-fg); }
+.v3-scan-action-desc { color: var(--v3-fg-muted); }
+.v3-scan-action-cta {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 56px; width: 100%; border-radius: 16px;
+  font-size: 16px; font-weight: 700; color: #FFFFFF;
+  background-image: linear-gradient(90deg, var(--sa-a) 0%, var(--sa-b) 100%);
+  box-shadow: 0 16px 34px -16px var(--sa-b);
+  transition: filter 150ms;
+}
+.v3-scan-action:hover .v3-scan-action-cta { filter: brightness(1.06); }
+/* Cards: preview, result, formats, tips. */
+.v3-scan-card {
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+}
+.dark .v3-scan-card { background-color: #0B1224; border-color: rgba(76, 121, 255, 0.22); }
+.v3-scan-card-title { color: var(--v3-fg-secondary); letter-spacing: 0.08em; }
+.v3-scan-preview {
+  position: relative; overflow: hidden; border-radius: 16px;
+  background-color: #04070F;
+  border: 1px solid rgba(96, 165, 250, 0.25);
+}
+.v3-scan-clear {
+  position: absolute; top: 10px; right: 10px;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 9999px; color: #FFFFFF;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: background-color 120ms;
+}
+.v3-scan-clear:hover { background-color: rgba(0, 0, 0, 0.85); }
+.v3-scan-clear:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+/* The primary CTA (scan): brand gradient with glow. */
+.v3-scan-cta {
+  color: #FFFFFF;
+  background-image: linear-gradient(90deg, #0EA5E9 0%, #2F6BFF 100%);
+  box-shadow: 0 18px 40px -18px rgba(47, 107, 255, 0.9);
+  transition: filter 150ms, transform 120ms, box-shadow 150ms;
+}
+.v3-scan-cta:hover:not(:disabled) { filter: brightness(1.06); box-shadow: 0 22px 46px -18px rgba(47, 107, 255, 1); }
+.v3-scan-cta:active:not(:disabled) { transform: scale(0.99); }
+.v3-scan-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+.v3-scan-error {
+  border-radius: 16px; padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+  color: #B91C1C;
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+.dark .v3-scan-error { color: #FCA5A5; }
+.v3-scan-result { border-left: 3px solid var(--v3-accent); }
+.v3-scan-result-text { color: var(--v3-fg); }
+/* Secondary pill actions on the result (copy, .txt, .docx, share). */
+.v3-scan-btn {
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg-secondary);
+  transition: border-color 150ms, background-color 150ms, color 150ms, transform 120ms;
+}
+.dark .v3-scan-btn { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.12); }
+.v3-scan-btn:hover { border-color: var(--v3-accent); color: var(--v3-fg); }
+.v3-scan-btn:active { transform: scale(0.98); }
+.v3-scan-btn:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-scan-btn[data-done="true"] { border-color: var(--v3-accent); color: var(--v3-accent); background-color: var(--v3-accent-soft); }
+/* Format chips. */
+.v3-scan-fmt {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 0 16px 0 10px; border-radius: 14px;
+  font-size: 14px; font-weight: 700; color: var(--sf-a);
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border);
+}
+.dark .v3-scan-fmt { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.10); }
+.v3-scan-fmt-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 26px; padding: 0 6px; border-radius: 6px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.04em; color: #FFFFFF;
+  background-image: linear-gradient(135deg, var(--sf-a), var(--sf-b));
+}
+.v3-scan-fmt[data-tone="blue"]   { --sf-a: #3B82F6; --sf-b: #1D4ED8; }
+.v3-scan-fmt[data-tone="green"]  { --sf-a: #10B981; --sf-b: #047857; }
+.v3-scan-fmt[data-tone="violet"] { --sf-a: #8B5CF6; --sf-b: #6D28D9; }
+.v3-scan-icon-soft {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: 14px;
+  color: var(--v3-accent); background-color: var(--v3-accent-soft);
+}
+/* Tip tiles. */
+.v3-scan-tip { display: flex; align-items: flex-start; gap: 12px; }
+.v3-scan-tip-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 44px; height: 44px; border-radius: 12px;
+  color: var(--v3-accent); background-color: var(--v3-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--v3-accent) 30%, transparent);
+}
+.v3-scan-tip-title { color: var(--v3-accent); }
+.v3-scan-tip-desc { color: var(--v3-fg-muted); }
+.v3-scan-note { color: var(--v3-fg-muted); }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scan-mascot { animation: none; }
+  .v3-scan-action, .v3-scan-action-cta, .v3-scan-cta, .v3-scan-btn, .v3-scan-clear { transition: none; }
+  .v3-scan-action:hover, .v3-scan-action:active, .v3-scan-cta:active:not(:disabled), .v3-scan-btn:active { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }
