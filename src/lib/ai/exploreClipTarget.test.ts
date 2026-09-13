@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   narrowToClipTarget, applyClipTarget, nameMatches, addressAgreement, asksForAlternatives,
-  identityTokens, splitBrand,
+  identityTokens, splitBrand, applyClipAlternatives, requestedAlternatives, DEFAULT_ALTERNATIVES,
 } from './exploreClipTarget'
 
 // ── ONE venue from many rows — deterministic, name-first, address-checked ────
@@ -230,5 +230,56 @@ describe('applyClipTarget — a new result object, envelope kept, venue set repl
   it('tolerates a non-object or row-less result', () => {
     expect(applyClipTarget(null, { placeName: 'X', placeAddress: null }, 'vi').status).toBe('unresolved')
     expect(applyClipTarget({ location_required: true, results: [] }, { placeName: 'X', placeAddress: null }, 'vi').status).toBe('unresolved')
+  })
+})
+
+describe('"gần đây" / "ngon hơn" ALONE are not an escape (2026-09-13)', () => {
+  it.each(['gần đây', 'Có gần đây không?', 'gần đây có gì chơi?', 'ngon hơn', 'Quán này ngon hơn không?', 'ngon hơn không?'])(
+    'stays on the venue: %s', (t) => expect(asksForAlternatives(t)).toBe(false),
+  )
+})
+
+describe('applyClipAlternatives — the explicit-alternatives turn is deterministic too', () => {
+  const CLIP = { placeName: 'GÓC HUẾ - Nguyễn Thái Bình', placeAddress: '155 Nguyễn Thái Bình, Quận 1, TP.HCM' }
+  const envelope = () => ({
+    source: 'serper_places', count: 8, location: 'Quận 1, TP.HCM',
+    google_maps_search: 'https://maps.google.com/maps?q=GOC+HUE', place_search_status: 'has_results',
+    results: [STRANGERS[0], GOC_HUE, ...STRANGERS.slice(1)],
+  })
+
+  it('reads the number the user asked for, defaulting to three and capping at eight', () => {
+    expect(requestedAlternatives('gợi ý thêm 3 quán')).toBe(3)
+    expect(requestedAlternatives('cho mình 5 chỗ khác')).toBe(5)
+    expect(requestedAlternatives('recommend 2 places')).toBe(2)
+    expect(requestedAlternatives('gợi ý thêm quán khác')).toBe(DEFAULT_ALTERNATIVES)
+    expect(requestedAlternatives('gợi ý 9 quán')).toBe(8)
+  })
+
+  it('drops the target from its own alternatives, caps the list, keeps provider order and the envelope', () => {
+    const { result, requested, kept } = applyClipAlternatives(envelope(), CLIP, 'vi', 'gợi ý thêm 3 quán')
+    expect(requested).toBe(3)
+    expect(kept).toBe(3)
+    expect(result.results).toEqual(STRANGERS.slice(0, 3))
+    expect(result.count).toBe(3)
+    expect(result.source).toBe('serper_places')
+    expect(result.google_maps_search).toBe('https://maps.google.com/maps?q=GOC+HUE')
+    expect(result._tappy_clip_alternatives).toEqual({ of: CLIP.placeName, requested: 3 })
+    expect(String(result.alternatives_instruction)).toContain(CLIP.placeName)
+    expect(String(result.alternatives_instruction)).toMatch(/LUA CHON THAY THE/)
+    expect(applyClipAlternatives(envelope(), CLIP, 'en', 'other places').result.alternatives_instruction).toMatch(/ALTERNATIVES/)
+  })
+
+  it('never marks the turn as a target verdict, and never mutates the input', () => {
+    const input = envelope()
+    const before = JSON.stringify(input)
+    const { result } = applyClipAlternatives(input, CLIP, 'vi', 'gợi ý thêm quán khác')
+    expect('_tappy_clip_target' in result).toBe(false)
+    expect(JSON.stringify(input)).toBe(before)
+  })
+
+  it('a provider with fewer rows than asked yields what it has; no rows yields none', () => {
+    expect(applyClipAlternatives({ results: [GOC_HUE, STRANGERS[0]] }, CLIP, 'vi', 'gợi ý thêm 5 quán').kept).toBe(1)
+    expect(applyClipAlternatives({ results: [] }, CLIP, 'vi', 'gợi ý thêm').result.results).toEqual([])
+    expect(applyClipAlternatives(null, CLIP, 'vi', 'gợi ý thêm').result.results).toEqual([])
   })
 })

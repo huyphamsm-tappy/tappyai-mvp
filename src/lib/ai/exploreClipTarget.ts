@@ -284,3 +284,62 @@ export function applyClipTarget(
   else delete next.no_results_instruction
   return { result: next, status: outcome.status }
 }
+
+// ── Explicit alternatives: "gợi ý thêm 3 quán" ──────────────────────────────
+//
+// The ONLY way out of the target is a request the detector above accepts. Even
+// then the clip's venue stays the subject of the thread: the next question
+// ("giờ mở cửa?") narrows to it again, because the context rides with every
+// request. What this pass does is make the alternatives turn deterministic too:
+//
+//   • the target itself is not offered as an "alternative" to itself
+//   • the list is capped at the number the user asked for (default 3, at most 8)
+//   • the tool result tells the model these are alternatives TO the clip's venue,
+//     so the reply frames them that way instead of quietly moving on
+//
+// Pure, like the rest of the module. Rows are kept in provider order — ranking
+// still runs on what survives.
+
+/** Default and ceiling for how many alternatives one turn offers. */
+export const DEFAULT_ALTERNATIVES = 3
+const MAX_ALTERNATIVES = 8
+
+/** The count the user named ("3 quán", "5 chỗ", "two places"), or the default. */
+export function requestedAlternatives(text: string): number {
+  const m = norm(text).match(/\b([1-9])\s*(?:quan|cho|dia diem|noi|lua chon|option|place|spot|restaurant|suggestion)/)
+  const n = m ? Number(m[1]) : DEFAULT_ALTERNATIVES
+  return Math.min(Math.max(n, 1), MAX_ALTERNATIVES)
+}
+
+function alternativesInstruction(lang: string, placeName: string, n: number): string {
+  return lang !== 'en'
+    ? `USER XIN GOI Y THEM quan KHAC ngoai "${placeName}" (quan trong clip). Cac ket qua nay la LUA CHON THAY THE, hay trinh bay ro la "quan khac ngoai ${placeName}", toi da ${n} quan, KHONG bia them. "${placeName}" van la quan dang noi toi trong cuoc tro chuyen.`
+    : `THE USER ASKED FOR OTHER places besides "${placeName}" (the clip's venue). These results are ALTERNATIVES — present them explicitly as "other places besides ${placeName}", at most ${n}, and do not invent more. "${placeName}" remains the venue this conversation is about.`
+}
+
+/**
+ * The alternatives turn: a NEW result with the target removed, the list capped,
+ * and the framing instruction attached. `count` follows the surviving rows.
+ */
+export function applyClipAlternatives(
+  result: unknown,
+  clip: ClipTargetSubject,
+  lang: string,
+  lastText: string,
+): { result: Record<string, unknown>; requested: number; kept: number } {
+  const r = (result && typeof result === 'object') ? (result as Record<string, unknown>) : {}
+  const rows = Array.isArray(r.results) ? (r.results as unknown[]) : []
+  const requested = requestedAlternatives(lastText)
+  const kept = rows
+    .filter((row): row is Record<string, unknown> => !!row && typeof row === 'object')
+    .filter(row => !nameMatches(clip.placeName, row.name))
+    .slice(0, requested)
+  const next: Record<string, unknown> = {
+    ...r,
+    results: kept,
+    count: kept.length,
+    _tappy_clip_alternatives: { of: clip.placeName, requested },
+    alternatives_instruction: alternativesInstruction(lang, clip.placeName, requested),
+  }
+  return { result: next, requested, kept: kept.length }
+}

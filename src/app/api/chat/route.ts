@@ -15,7 +15,7 @@ import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/t
 import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
-import { applyClipTarget, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
+import { applyClipTarget, applyClipAlternatives, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
 import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -1048,6 +1048,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
                 }, { onConflict: 'event_id', ignoreDuplicates: true })
                 .then(() => undefined, () => undefined)
             } catch { /* analytics only */ }
+          } else if (clipContext) {
+            // The user asked for OTHER places. Still Explore-scoped and still
+            // deterministic: the target is not listed as an alternative to itself,
+            // the list is capped at what was asked for, and the result says these
+            // are alternatives TO the clip's venue — which stays the subject, since
+            // the next turn narrows to it again (see `exploreClipTarget.ts`).
+            const alt = applyClipAlternatives(r, clipContext, lang, lastText)
+            r = alt.result
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_alternatives', requested: alt.requested, kept: alt.kept }))
           }
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           // Deterministic ranking runs BEFORE the model sees the result, so the

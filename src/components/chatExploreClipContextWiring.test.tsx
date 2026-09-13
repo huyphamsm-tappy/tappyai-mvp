@@ -79,3 +79,84 @@ describe('the page → prop contract (source-pinned)', () => {
     expect(page).toContain("searchParams.get('q')")
   })
 })
+
+// ── The thread survives its own navigation ──────────────────────────────────
+//
+// After the first reply the page saves the thread and moves to `/chat/<id>`, which
+// rebuilds the chat from the saved row. The reference has to be IN the row for the
+// next request to carry it. Two halves: `ChatInterface` puts it on the first saved
+// message; `ChatConversation` reads it back and hands it in as `initialContext`.
+
+import ChatConversation from '@/app/chat/[id]/ChatConversation'
+
+const lastOpts = () => captured[captured.length - 1] as Record<string, unknown> & { onFinish?: (m: unknown) => Promise<void> }
+
+describe('save: the clip reference is written on the first saved message', () => {
+  it('onSave receives { role, content, context } on message 0 when the thread has a context', async () => {
+    const onSave = vi.fn()
+    render(<ChatInterface initialContext={{ kind: 'explore_clip', reviewId: REVIEW }} onSave={onSave} />)
+    await lastOpts().onFinish!({ id: 'a1', role: 'assistant', content: 'Góc Huế ở 155 Nguyễn Thái Bình.' })
+    expect(onSave).toHaveBeenCalledTimes(1)
+    const [saved] = onSave.mock.calls[0]
+    expect(saved[0]).toEqual({ role: 'assistant', content: 'Góc Huế ở 155 Nguyễn Thái Bình.', context: { kind: 'explore_clip', reviewId: REVIEW } })
+  })
+
+  it('a thread without a context saves exactly { role, content } — the row is unchanged for ordinary chat', async () => {
+    const onSave = vi.fn()
+    render(<ChatInterface onSave={onSave} />)
+    await lastOpts().onFinish!({ id: 'a1', role: 'assistant', content: 'Chào bạn!' })
+    const [saved] = onSave.mock.calls[0]
+    expect(saved).toEqual([{ role: 'assistant', content: 'Chào bạn!' }])
+    expect(Object.keys(saved[0])).toEqual(['role', 'content'])
+  })
+})
+
+describe('restore: /chat/<id> hands the saved reference back as initialContext', () => {
+  const conversation = (messages: Array<Record<string, unknown>>) => ({
+    id: 'c1', title: 'Góc Huế', category: 'food', messages,
+  }) as unknown as Parameters<typeof ChatConversation>[0]['conversation']
+
+  it('a saved thread that started on the Explore button sends body.context on its follow-ups', () => {
+    render(<ChatConversation conversation={conversation([
+      { role: 'user', content: 'Cho mình biết thêm về Góc Huế', context: { kind: 'explore_clip', reviewId: REVIEW } },
+      { role: 'assistant', content: 'Góc Huế ở 155 Nguyễn Thái Bình.' },
+    ])} />)
+    expect(lastBody().context).toEqual({ kind: 'explore_clip', reviewId: REVIEW })
+  })
+
+  it('a saved ordinary thread sends no context key at all', () => {
+    render(<ChatConversation conversation={conversation([
+      { role: 'user', content: 'Chào Tappy' },
+      { role: 'assistant', content: 'Chào bạn!' },
+    ])} />)
+    expect('context' in lastBody()).toBe(false)
+  })
+
+  it('a malformed saved reference is ignored rather than trusted', () => {
+    render(<ChatConversation conversation={conversation([
+      { role: 'user', content: 'x', context: { kind: 'explore_clip', reviewId: 'not-a-uuid' } },
+    ])} />)
+    expect('context' in lastBody()).toBe(false)
+  })
+
+  it('ChatConversation re-saves the reference on every PUT, so it is never lost on a later turn', async () => {
+    const calls: Array<{ method?: string; body: unknown }> = []
+    vi.stubGlobal('fetch', vi.fn(async (_url: string, init?: RequestInit) => {
+      calls.push({ method: init?.method, body: JSON.parse(String(init?.body)) })
+      return { ok: true, json: async () => ({}) }
+    }))
+    try {
+      render(<ChatConversation conversation={conversation([
+        { role: 'user', content: 'Cho mình biết thêm về Góc Huế', context: { kind: 'explore_clip', reviewId: REVIEW } },
+      ])} />)
+      await lastOpts().onFinish!({ id: 'a2', role: 'assistant', content: 'Mở 7h–21h.' })
+      const put = calls.find(c => c.method === 'PUT')!
+      expect(put).toBeTruthy()
+      const body = put.body as { id: string; messages: Array<Record<string, unknown>> }
+      expect(body.id).toBe('c1')
+      expect(body.messages[0].context).toEqual({ kind: 'explore_clip', reviewId: REVIEW })
+    } finally {
+      vi.unstubAllGlobals()
+    }
+  })
+})

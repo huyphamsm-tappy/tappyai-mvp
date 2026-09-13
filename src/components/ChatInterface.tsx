@@ -31,6 +31,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
+import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -95,7 +96,7 @@ interface ChatInterfaceProps {
   initialContext?: ChatContext
   conversationId?: string
   savedMessages?: Array<{ role: 'user' | 'assistant'; content: string }>
-  onSave?: (messages: Array<{ role: string; content: string }>, title: string) => void | Promise<void>
+  onSave?: (messages: SavedMessage[], title: string) => void | Promise<void>
 }
 
 const CTA_MARKER = '[CTA_BUTTONS]'
@@ -854,7 +855,10 @@ export default function ChatInterface({
       track('chat_response_received', { feature: category })
       if (onSave) {
         savePendingRef.current = true
-        const p = Promise.resolve(onSave(all.map(m => ({ role: m.role, content: m.content })), all[0]?.content?.slice(0, 50) || 'Chat'))
+        // The clip reference rides on the first saved message so `/chat/<id>` can hand it back
+        // as `initialContext` — see `lib/chat/savedContext.ts`. Threads without one save exactly
+        // the `{ role, content }` list they always did.
+        const p = Promise.resolve(onSave(attachSavedContext(all, initialContext), all[0]?.content?.slice(0, 50) || 'Chat'))
         savePromiseRef.current = p
         // try/finally so a rejected save can't leave savePendingRef stuck true
         // (which would strand the CTA-click await path).

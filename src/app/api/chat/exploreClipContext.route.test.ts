@@ -345,8 +345,13 @@ describe('TEST E · two branches → ambiguous, ONLY the two, no ranking pick', 
   })
 })
 
-describe('TEST F · Explore + explicit request for alternatives → NO narrowing', () => {
-  it('the discovery flow keeps every row and the clip context still stands', async () => {
+describe('TEST F · Explore + explicit request for alternatives → NO narrowing to the target', () => {
+  // 2026-09-13: an alternatives turn is deterministic too. It is not narrowed to the
+  // target (that is what "alternatives" means), but the target is not offered as an
+  // alternative to itself, the list is capped at the number asked for (default 3), and
+  // the result says these are alternatives TO the clip's venue. The clip context still
+  // stands — the next turn narrows to the venue again.
+  it('drops the target, caps at the default of three, and frames them as alternatives', async () => {
     h.state.reviewRow = GOC_HUE_REVIEW
     h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
     await post({
@@ -355,8 +360,12 @@ describe('TEST F · Explore + explicit request for alternatives → NO narrowing
     })
     expect(system()).toContain('source=explore_clip')
     const out = await toolResult({ query: 'bún bò Huế' })
-    expect((out.results as unknown[]).length).toBe(8)
+    const rows = out.results as Array<Record<string, unknown>>
+    expect(rows.length).toBe(3)
+    expect(rows.map(r => r.name)).not.toContain(GOC_HUE_ROW.name)
     expect('_tappy_clip_target' in out).toBe(false)
+    expect(out._tappy_clip_alternatives).toEqual({ of: GOC_HUE_REVIEW.place_name, requested: 3 })
+    expect(String(out.alternatives_instruction)).toContain(GOC_HUE_REVIEW.place_name)
   })
 })
 
