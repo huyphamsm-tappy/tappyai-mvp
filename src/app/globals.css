@@ -3081,5 +3081,204 @@
   .v3-scan-action:hover, .v3-scan-action:active, .v3-scan-cta:active:not(:disabled), .v3-scan-btn:active { transform: none; }
 }
 
+/* ── Create group (/group/new) — the destination skin ──────────────────────
+   Legacy chrome kept (`Header` + `BottomNav`); this block paints the hero
+   (three Tappy poses — `thinking`, `searching`, `food` — plus floating
+   icon bubbles and a speech bubble), the three feature tiles, the name card
+   with its counter and quick picks, and the gradient CTA. Paint only — the
+   form, `handleSubmit`, the `/api/group` request, `maxLength` and the error
+   strings are the page's own.
+
+   🚨 The three mascots are the owner's PNGs, untouched: no redraw, no
+   recolour, no box behind a transparent character. The bloom sits BEHIND
+   them and is aria-hidden. */
+.v3-group-page {
+  background-image: radial-gradient(60% 40% at 50% 100%, rgba(0, 105, 219, 0.08), transparent 70%);
+}
+.dark .v3-group-page {
+  background-image:
+    radial-gradient(70% 45% at 50% 110%, rgba(37, 99, 235, 0.18), transparent 70%),
+    radial-gradient(40% 30% at 10% 0%, rgba(14, 165, 233, 0.10), transparent 70%);
+}
+.v3-group-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 24px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(70% 90% at 78% 30%, rgba(37, 99, 235, 0.45), transparent 60%),
+    radial-gradient(50% 70% at 12% 100%, rgba(14, 165, 233, 0.28), transparent 60%),
+    linear-gradient(160deg, #060B1F 0%, #0B1A45 55%, #0E1D58 100%);
+  box-shadow: 0 30px 70px -40px rgba(37, 99, 235, 0.9);
+}
+.v3-group-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-group-hero-accent {
+  background-image: linear-gradient(90deg, #38BDF8 0%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v3-group-eyebrow {
+  background-color: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #BAE6FD;
+}
+.v3-group-stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1.5px 1.5px at 30% 12%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 70% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 94% 18%, rgba(255, 255, 255, 0.8), transparent 55%);
+}
+/* Feature tiles inside the hero: icon + title + one-line description. */
+.v3-group-feat {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 42px; padding: 6px 14px 6px 8px; border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+@media (min-width: 640px) { .v3-group-feat { min-height: 60px; padding: 8px 14px 8px 10px; } }
+.v3-group-feat-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 34px; height: 34px; border-radius: 10px; color: #FFFFFF;
+  background-image: linear-gradient(135deg, var(--gf-a), var(--gf-b));
+  box-shadow: 0 10px 20px -12px var(--gf-a);
+}
+.v3-group-feat[data-tone="blue"]   { --gf-a: #3B82F6; --gf-b: #1D4ED8; }
+.v3-group-feat[data-tone="cyan"]   { --gf-a: #22D3EE; --gf-b: #0284C7; }
+.v3-group-feat[data-tone="orange"] { --gf-a: #FBBF24; --gf-b: #EA580C; }
+.v3-group-feat-title { color: #FFFFFF; }
+.v3-group-feat-desc { color: rgba(226, 232, 255, 0.72); }
+/* The scene: a shared bloom behind the trio, three absolutely placed poses. */
+.v3-group-bloom {
+  position: absolute; pointer-events: none; border-radius: 9999px;
+  background-image: radial-gradient(circle at 50% 55%, rgba(56, 189, 248, 0.30) 0%, rgba(37, 99, 235, 0.16) 40%, transparent 72%);
+  filter: blur(6px);
+}
+.v3-group-mascot { position: absolute; pointer-events: none; }
+.v3-group-mascot img { width: 100%; height: auto; display: block; }
+.v3-group-mascot[data-role="food"] { z-index: 3; filter: drop-shadow(0 22px 30px rgba(0, 0, 0, 0.55)); }
+.v3-group-mascot[data-role="searching"] { z-index: 2; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5)); }
+.v3-group-mascot[data-role="thinking"] { z-index: 1; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, 0.5)); }
+/* Floating icon bubbles: utensils, pin, friends. Illustration. */
+.v3-group-orb {
+  position: absolute; pointer-events: none; z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 46px; height: 46px; border-radius: 9999px; color: #FFFFFF;
+  background-image: radial-gradient(circle at 35% 30%, var(--go-a), var(--go-b));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 14px 26px -14px rgba(0, 0, 0, 0.8), 0 0 28px -6px var(--go-a);
+}
+.v3-group-orb::after {
+  content: ''; position: absolute; bottom: -5px; left: 50%; margin-left: -5px;
+  width: 10px; height: 10px; transform: rotate(45deg);
+  background-color: var(--go-b);
+}
+.v3-group-orb[data-tone="blue"]   { --go-a: #60A5FA; --go-b: #1D4ED8; }
+.v3-group-orb[data-tone="cyan"]   { --go-a: #38BDF8; --go-b: #0369A1; }
+.v3-group-orb[data-tone="rose"]   { --go-a: #FB7185; --go-b: #BE123C; }
+.v3-group-spark {
+  position: absolute; pointer-events: none; z-index: 2; color: #FDE68A;
+  filter: drop-shadow(0 0 8px rgba(253, 230, 138, 0.8));
+}
+/* Tappy's speech bubble: dark panel, cyan hairline, tail toward the trio. */
+.v3-group-bubble {
+  position: absolute; pointer-events: none; z-index: 4;
+  max-width: 170px; border-radius: 16px; padding: 10px 14px;
+  font-size: 13px; font-weight: 700; line-height: 1.35; color: #FFFFFF; text-align: center;
+  background-color: rgba(9, 18, 46, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.55);
+  box-shadow: 0 18px 36px -16px rgba(0, 0, 0, 0.9), 0 0 24px -6px rgba(56, 189, 248, 0.5);
+}
+.v3-group-bubble::after {
+  content: ''; position: absolute; bottom: -7px; left: 26px;
+  width: 12px; height: 12px; transform: rotate(45deg);
+  background-color: rgba(9, 18, 46, 0.92);
+  border-right: 1px solid rgba(56, 189, 248, 0.55);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.55);
+}
+@keyframes v3-group-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.v3-group-float { animation: v3-group-float 6s ease-in-out infinite; }
+.v3-group-float[data-delay="1"] { animation-delay: -2s; }
+.v3-group-float[data-delay="2"] { animation-delay: -4s; }
+/* The name card. */
+.v3-group-card {
+  border-radius: 24px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel);
+  box-shadow: 0 30px 60px -40px rgba(37, 99, 235, 0.6);
+}
+.dark .v3-group-card { background-color: #0B1224; border-color: rgba(76, 121, 255, 0.22); }
+.v3-group-card-title { color: var(--v3-fg); }
+.v3-group-card-sub { color: var(--v3-fg-muted); }
+.v3-group-card-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 56px; height: 56px; border-radius: 18px; color: #FFFFFF;
+  background-image: linear-gradient(135deg, #2F7BFF 0%, #F97316 100%);
+  box-shadow: 0 16px 30px -14px rgba(47, 123, 255, 0.8);
+}
+.v3-group-field {
+  display: flex; align-items: center; gap: 10px;
+  min-height: 60px; padding: 0 16px; border-radius: 18px;
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.dark .v3-group-field { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(96, 165, 250, 0.35); }
+.v3-group-field:focus-within { border-color: var(--v3-accent); box-shadow: 0 0 0 3px var(--v3-accent-soft); }
+.v3-group-field-icon { color: var(--v3-fg-muted); flex-shrink: 0; }
+.v3-group-input {
+  flex: 1; min-width: 0; background: transparent; border: 0; outline: none;
+  color: var(--v3-fg); font-size: 16px;
+}
+.v3-group-input::placeholder { color: var(--v3-fg-muted); opacity: 1; }
+.v3-group-counter { color: var(--v3-fg-muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.v3-group-counter[data-full="true"] { color: #F97316; }
+.v3-group-quick-label { color: var(--v3-fg-secondary); }
+/* Quick-pick chips: static presets that fill the field. */
+.v3-group-pick {
+  display: inline-flex; align-items: center;
+  min-height: 40px; padding: 0 16px; border-radius: 9999px;
+  font-size: 13.5px; font-weight: 600; color: var(--v3-fg-secondary);
+  background-color: var(--v3-panel-elevated);
+  border: 1px solid var(--v3-border-strong);
+  transition: border-color 150ms, color 150ms, background-color 150ms, transform 120ms;
+}
+.dark .v3-group-pick { background-color: rgba(255, 255, 255, 0.04); border-color: rgba(255, 255, 255, 0.14); }
+.v3-group-pick:hover { border-color: var(--v3-accent); color: var(--v3-fg); }
+.v3-group-pick:active { transform: scale(0.97); }
+.v3-group-pick:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-group-pick[aria-pressed="true"] { border-color: var(--v3-accent); color: var(--v3-accent); background-color: var(--v3-accent-soft); }
+/* The primary CTA: blue → orange, the page's food accent. */
+.v3-group-cta {
+  color: #FFFFFF;
+  background-image: linear-gradient(90deg, #2F7BFF 0%, #38BDF8 45%, #F97316 100%);
+  box-shadow: 0 18px 40px -18px rgba(47, 123, 255, 0.9);
+  transition: filter 150ms, transform 120ms, box-shadow 150ms, opacity 150ms;
+}
+.v3-group-cta:hover:not(:disabled) { filter: brightness(1.06); box-shadow: 0 22px 46px -18px rgba(249, 115, 22, 0.8); }
+.v3-group-cta:active:not(:disabled) { transform: scale(0.99); }
+.v3-group-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 3px; }
+.v3-group-cta:disabled { cursor: not-allowed; opacity: 0.45; filter: saturate(0.6); }
+.v3-group-error {
+  border-radius: 16px; padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 10px;
+  color: #B91C1C;
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+.dark .v3-group-error { color: #FCA5A5; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-group-float { animation: none; }
+  .v3-group-field, .v3-group-pick, .v3-group-cta { transition: none; }
+  .v3-group-pick:active, .v3-group-cta:active:not(:disabled) { transform: none; }
+}
+
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }
