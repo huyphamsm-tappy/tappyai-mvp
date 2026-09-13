@@ -76,3 +76,23 @@ describe('bridge translation', () => {
     expect(seen[0].type).toBe('commerce_handoff')
   })
 })
+
+describe('verification echo (CCP_EVENT_LOG=1)', () => {
+  it('prints the translated, URL-free event as one JSON line only when asked; never by default', () => {
+    const seen: ObservabilityEvent[] = []
+    const lines: string[] = []
+    const orig = console.log
+    console.log = (s: string) => { lines.push(String(s)) }
+    try {
+      installCommerceObservability(e => seen.push(e), { CCP_EVENT_LOG: '1' } as unknown as NodeJS.ProcessEnv)
+      emitCommerceEvent({ type: 'commerce_handoff', linkId: 'a'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000' })
+      __resetCommerceObservability()
+      installCommerceObservability(e => seen.push(e), {} as unknown as NodeJS.ProcessEnv)
+      emitCommerceEvent({ type: 'commerce_handoff', linkId: 'b'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000' })
+    } finally { console.log = orig }
+    expect(seen).toHaveLength(2)
+    expect(lines).toHaveLength(1)
+    expect(JSON.parse(lines[0])).toMatchObject({ component: 'ccp', type: 'commerce_handoff', linkId: 'a'.repeat(24) })
+    expect(lines[0]).not.toMatch(/https?:\/\//)
+  })
+})

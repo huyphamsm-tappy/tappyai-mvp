@@ -111,12 +111,19 @@ let installed = false
  * `record` seam exists for tests. Safe to call at module load from the tool
  * layer — installing a writer performs no I/O.
  */
-export function installCommerceObservability(record: (e: ObservabilityEvent) => void = recordEvent): void {
+export function installCommerceObservability(record: (e: ObservabilityEvent) => void = recordEvent, env: NodeJS.ProcessEnv = process.env): void {
   if (installed && record === recordEvent) return
   installed = true
+  // Verification aid: with CCP_EVENT_LOG=1 the TRANSLATED event (already scalar, allow-listed,
+  // URL-free) is also printed as one JSON line, so an owner verifying locally without Cloud
+  // Logging configured can see the six events arrive. Off by default; never a second sink.
+  const echo = env.CCP_EVENT_LOG === '1'
   setCommerceEventWriter(entry => {
     const ev = toObservabilityEvent(entry)
-    if (ev) record(ev)
+    if (!ev) return
+    record(ev)
+    // eslint-disable-next-line no-console
+    if (echo) console.log(JSON.stringify({ component: 'ccp', ...ev }))
   })
 }
 

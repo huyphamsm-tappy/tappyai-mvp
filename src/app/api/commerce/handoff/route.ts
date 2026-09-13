@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
 import { emitCommerceEvent, installCommerceObservability } from '@/lib/ccp'
+import { parseHandoffBody, type HandoffBody } from '@/lib/ccp/handoffBody'
 import { flushPending } from '@/lib/observability'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { CCP_ENABLED } from '@/lib/config/product'
@@ -25,22 +26,7 @@ installCommerceObservability()
 
 export const dynamic = 'force-dynamic'
 
-const LINK_ID = /^[a-f0-9]{24}$/
-const REQUEST_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
-const PLATFORMS = new Set(['web', 'android', 'ios'])
 const MAX_BODY_BYTES = 512
-
-export interface HandoffBody { linkId: string; requestId: string; platform?: 'web' | 'android' | 'ios' }
-
-/** Pure: the body a client may send, or null. Exported for the route test. */
-export function parseHandoffBody(raw: unknown): HandoffBody | null {
-  if (!raw || typeof raw !== 'object') return null
-  const b = raw as Record<string, unknown>
-  if (typeof b.linkId !== 'string' || !LINK_ID.test(b.linkId)) return null
-  if (typeof b.requestId !== 'string' || !REQUEST_ID.test(b.requestId)) return null
-  const platform = typeof b.platform === 'string' && PLATFORMS.has(b.platform) ? (b.platform as HandoffBody['platform']) : undefined
-  return { linkId: b.linkId, requestId: b.requestId, ...(platform ? { platform } : {}) }
-}
 
 export async function POST(req: Request) {
   void flushPending(req)

@@ -11,7 +11,8 @@ vi.mock('@/lib/config/product', async (importOriginal) => {
   return { ...actual, get CCP_ENABLED() { return flags.CCP_ENABLED } }
 })
 
-import { POST, parseHandoffBody } from './route'
+import { POST } from './route'
+import { parseHandoffBody } from '@/lib/ccp/handoffBody'
 import { setCommerceEventWriter } from '@/lib/ccp'
 
 const LINK = 'a'.repeat(24)
