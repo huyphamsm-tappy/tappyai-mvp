@@ -320,16 +320,101 @@ describe('the approved composition is on screen', () => {
     await waitFor(() => expect(document.querySelector('a[href="/profile"] img')?.getAttribute('src')).toBe('https://cdn.example/me.jpg'))
   })
 
-  it('position + progress line, the hint and the thumbnail navigator are all there', async () => {
+  it('position + progress line, the Post CTA and the thumbnail navigator are all there', async () => {
     mockFeed(five())
     render(<ExploreStage />)
     await untilCards()
     expect(document.querySelector('[data-stage-pos]')!.textContent).toBe('1 / 5')
     expect(document.querySelector('[data-xp-line]')).toBeTruthy()
-    expect(document.querySelector('[data-xp-hint]')!.textContent).toMatch(/SCROLL\s+•\s+SWIPE\s+•\s+EXPLORE/)
+    expect(document.querySelector('[data-xp-post]')).toBeTruthy()
     const thumbs = document.querySelectorAll('[data-xp-thumbs] button')
     expect(thumbs).toHaveLength(5)
     expect(thumbs[0].querySelector('img')!.getAttribute('src')).toBe('https://example.com/a.jpg')
+  })
+
+  describe('the Post CTA, bottom centre', () => {
+    it('is a real link labelled "Post" with the create icon, inside the stage — and the old scroll hint is gone', async () => {
+      mockFeed(five())
+      render(<ExploreStage />)
+      await untilCards()
+      const cta = stage().querySelector('a[data-xp-post]') as HTMLAnchorElement
+      expect(cta).toBeTruthy()
+      expect(cta.textContent).toBe('Post')
+      expect(cta.getAttribute('aria-label')).toBe('Post')
+      expect(cta.classList.contains('v3-xp-post')).toBe(true)
+      // The icon is the shell's own "create" glyph (lucide Plus), decorative beside the label.
+      const icon = cta.querySelector('svg.lucide-plus')
+      expect(icon).toBeTruthy()
+      expect(icon!.getAttribute('aria-hidden')).toBe('true')
+      // Not a second hint, not both: the mouse / SCROLL • SWIPE • EXPLORE cue no longer exists.
+      expect(document.querySelector('[data-xp-hint]')).toBeNull()
+      expect(document.querySelector('.v3-xp-hint')).toBeNull()
+      expect(document.querySelector('svg.lucide-mouse')).toBeNull()
+      expect(document.body.textContent).not.toMatch(/SCROLL\s+•\s+SWIPE|CUỘN\s+•\s+VUỐT/)
+      // No tagline was added around it.
+      expect(document.body.textContent).not.toMatch(/Chia sẻ khoảnh khắc/)
+    })
+
+    it('opens the ONE canonical Post / Upload flow — the same route as the shell — with no second poster', async () => {
+      mockFeed(five())
+      render(<ExploreStage />)
+      await untilCards()
+      const cta = stage().querySelector('a[data-xp-post]')!
+      expect(cta.getAttribute('href')).toBe('/reviews/new')
+      // The shell's own sidebar row still points there, unchanged.
+      const sidebar = document.querySelector('aside.sticky a[href="/reviews/new"]')
+      expect(sidebar).toBeTruthy()
+      // And there is exactly one such destination inside the stage — no duplicate flow.
+      expect(stage().querySelectorAll('a[href="/reviews/new"]')).toHaveLength(1)
+      expect(stage().querySelector('[data-xp-post]')!.tagName).toBe('A')
+    })
+
+    it('renders with a single clip too — the CTA does not depend on the navigator', async () => {
+      mockFeed([five()[0]])
+      render(<ExploreStage />)
+      await untilCards()
+      expect(stage().querySelector('a[data-xp-post][href="/reviews/new"]')).toBeTruthy()
+      expect(document.querySelector('[data-xp-thumbs]')).toBeNull()
+    })
+
+    it('is stage-positioned at bottom centre as a compact pill, hover lifts it and press scales it, reduced motion stills it', () => {
+      const css = readFileSync('src/app/globals.css', 'utf8')
+      const block = css.match(/\.v3-xp-post \{([^}]*)\}/)![1]
+      // Belongs to the stage: absolute inside the positioned stage, never fixed to the viewport.
+      expect(block).toMatch(/position: absolute/)
+      expect(block).not.toMatch(/position: fixed/)
+      expect(block).toMatch(/left: 50%/)
+      expect(block).toMatch(/bottom: 26px/)
+      expect(block).toMatch(/transform: translateX\(-50%\)/)
+      // Compact pill in the approved envelope: ~205–220 × 58–64, fully rounded.
+      expect(block).toMatch(/min-width: 212px/)
+      expect(block).toMatch(/height: 60px/)
+      expect(block).toMatch(/border-radius: 9999px/)
+      expect(block).toMatch(/gap: 11px/)
+      expect(block).toMatch(/font-size: 17px/)
+      expect(block).toMatch(/font-weight: 600/)
+      // Blue → blue-violet from the V3 fill tokens, white text, translucent border, restrained glow.
+      expect(block).toMatch(/linear-gradient\([^)]*var\(--v3-accent-fill\)[\s\S]*var\(--v3-violet-fill\)/)
+      expect(block).toMatch(/color: var\(--v3-on-accent\)/)
+      expect(block).toMatch(/border: 1px solid color-mix\(in srgb, var\(--v3-accent\)/)
+      expect(block).toMatch(/box-shadow:[\s\S]*var\(--v3-accent\)[\s\S]*var\(--v3-violet\)/)
+      expect(block).toMatch(/transition: transform 190ms ease-out/)
+      // Hover: 2px lift, brighter, more glow. Active: 0.98 scale. Focus: visible ring.
+      expect(css).toMatch(/\.v3-xp-post:hover \{[^}]*translateY\(-2px\)/)
+      expect(css).toMatch(/\.v3-xp-post:hover \{[^}]*brightness\(1\.08\)/)
+      expect(css).toMatch(/\.v3-xp-post:active \{[^}]*scale\(0\.98\)/)
+      expect(css).toMatch(/\.v3-xp-post:focus-visible \{[^}]*outline: 2px solid/)
+      // No idle pulse: the stage's ambient light and lit floor are the only animation.
+      expect(css).not.toMatch(/\.v3-xp-post[^{]*\{[^}]*animation:/)
+      // Below 1280 (1024 and tablet): a notch smaller (~200 × 56), still centred; the tablet
+      // block only tightens the bottom offset. Reduced motion turns it all off.
+      expect(css).toMatch(/@media \(max-width: 1279px\) \{\s*\.v3-xp-post \{[^}]*min-width: 200px; height: 56px/)
+      expect(css).toMatch(/@media \(max-width: 1023px\) \{[\s\S]*?\.v3-xp-post \{ bottom: 20px; \}/)
+      expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.v3-xp-post \{ transition: none; \}/)
+      expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{[\s\S]*?\.v3-xp-post:hover, \.v3-xp-post:active \{ transform: translateX\(-50%\); \}/)
+      // The old hint's rules are gone with it.
+      expect(css).not.toMatch(/\.v3-xp-hint/)
+    })
   })
 
   it('the active card carries creator · time · Follow, the caption + location in the bottom zone, and the compact rail with real counts', async () => {

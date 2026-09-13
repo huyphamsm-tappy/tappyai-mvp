@@ -6,7 +6,7 @@ import Image from 'next/image'
 import {
   Search, Bell, ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark, Sparkles,
   Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff,
-  UserRound, Mouse, SlidersHorizontal, Utensils, Flame, ArrowRight,
+  UserRound, Plus, SlidersHorizontal, Utensils, Flame, ArrowRight,
 } from 'lucide-react'
 import V3Shell from '@/components/v3/V3Shell'
 import VideoPlayer, { type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
@@ -25,7 +25,8 @@ import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 // from `xl`, a RIGHT COLUMN of real discovery data beside it (below it on
 // narrower screens; never hidden). Five clips in one perspective space with the
 // active clip largest and nearest, a lit floor beneath it, position + progress
-// line bottom left, the SCROLL • SWIPE • EXPLORE hint bottom centre and a
+// line bottom left, the "Post" CTA bottom centre (the shell's own Post / Upload
+// destination, `/reviews/new` — it replaced the decorative scroll hint) and a
 // thumbnail navigator bottom right. The active card carries
 // the creator header (avatar · name · time · Follow · overflow), the compact
 // icon+count action rail, and — in its bottom zone over a gradient — the caption,
@@ -524,11 +525,15 @@ export default function ExploreStage() {
                   <div className="v3-xp-line" aria-hidden="true"><span style={{ width: `${((active + 1) / count) * 100}%` }} data-xp-line /></div>
                 </div>
 
-                {/* The scroll cue and the hint, bottom centre. */}
-                <div className="v3-xp-hint" aria-hidden="true" data-xp-hint>
-                  <Mouse size={22} strokeWidth={1.5} />
-                  <span>{t('v3.explore.scrollHint')}</span>
-                </div>
+                {/* The Post CTA, bottom centre, in the open floor below the active card.
+                    The SAME destination as the shell's Post / Upload (`/reviews/new`) — a
+                    second entry into the one posting flow, never a second flow. Like the
+                    thumbnails, a plain click reaches it; only the click that ends a drag is
+                    swallowed by the stage. */}
+                <Link href="/reviews/new" className="v3-xp-post" data-xp-post aria-label={t('v3.explore.post')}>
+                  <Plus size={21} strokeWidth={2.25} aria-hidden="true" />
+                  <span>{t('v3.explore.post')}</span>
+                </Link>
 
                 {/* Thumbnail navigator, bottom right: the clips' own posters. */}
                 {count > 1 && (
