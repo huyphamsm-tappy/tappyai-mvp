@@ -43,6 +43,7 @@ const INTENTIONAL_ANON = new Map([
   ['music_increment_play', 'public play counter — 20260711_music_ugc_combined.sql:37'],
   ['music_saved_count', 'public aggregate read — 20260706b_add_music_count_fns.sql:9'],
   ['music_followed_count', 'public aggregate read — 20260706b_add_music_count_fns.sql:14'],
+  ['plan_share_public', 'public read of one published plan snapshot by capability id — 20260913_plan_shares.sql'],
 ])
 
 /**

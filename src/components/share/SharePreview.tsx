@@ -1,10 +1,12 @@
 'use client'
 
 import { useState } from 'react'
-import { Star, MapPin, ChevronDown, ChevronUp } from 'lucide-react'
+import { Star, MapPin, ChevronDown, ChevronUp, CalendarDays, Users, Wallet, Route, Image as ImageIcon } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { ShareArtifact } from '@/lib/share/shareArtifact'
 import { BRAND } from '@/lib/share/openGraph'
+import { brochureOf, type PlanShareSnapshot } from '@/lib/plans/share/planShare'
+import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
 
 // ── WHAT THE RECIPIENT WILL SEE, SHOWN BEFORE IT IS SENT ─────────────────────
 //
@@ -18,10 +20,29 @@ import { BRAND } from '@/lib/share/openGraph'
 const PREVIEW_PLACES = 3
 
 export default function SharePreview({ artifact }: { artifact: ShareArtifact }) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [showAll, setShowAll] = useState(false)
   const shown = artifact.places.slice(0, PREVIEW_PLACES)
   const more = artifact.places.length - shown.length
+
+  // A plan previews as the brochure it will become — the same snapshot the
+  // page renders from, so nothing shows here that the recipient will not see.
+  if (artifact.kind === 'plan' && artifact.plan) {
+    return (
+      <PlanMiniBrochure snapshot={artifact.plan} url={artifact.url} lang={locale === 'en' ? 'en' : 'vi'}>
+        {/* The text channels (Email, Viber, LINE, Copy…) carry the brochure TEXT; it stays inspectable. */}
+        <button type="button" onClick={() => setShowAll(v => !v)} className="inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: '#8FB8FF' }} aria-expanded={showAll}>
+          {showAll ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          {t('share.previewHint')}
+        </button>
+        {showAll && (
+          <pre data-testid="share-preview-text" className="max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-lg p-2 text-[11px] leading-snug" style={{ background: 'rgba(255,255,255,0.05)', color: '#F4F6FB', border: '1px solid rgba(255,255,255,0.1)' }}>
+            {artifact.text}
+          </pre>
+        )}
+      </PlanMiniBrochure>
+    )
+  }
 
   return (
     <div
@@ -93,6 +114,74 @@ export default function SharePreview({ artifact }: { artifact: ShareArtifact }) 
             {artifact.text}
           </pre>
         )}
+      </div>
+    </div>
+  )
+}
+
+const PREVIEW_DAYS = 3
+const PREVIEW_STOPS_PER_DAY = 3
+
+/**
+ * The mini brochure: the same composition as /plan/<shareId>, at card size.
+ *
+ * Hero from the plan's own first photo (branded fallback when there is none),
+ * the eyebrow, title and real counts, the first days as "time · name" lines,
+ * the link it will carry, and the attribution. Every value is a snapshot
+ * field or a count of them — the page can only show more of the same.
+ */
+function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanShareSnapshot; url: string; lang: 'vi' | 'en'; children?: React.ReactNode }) {
+  const s = planBrochureStrings(lang)
+  const { hero, dayCount, stopCount } = brochureOf(snapshot)
+  const days = snapshot.days.slice(0, PREVIEW_DAYS)
+  const moreDays = snapshot.days.length - days.length
+  const link = url.replace(/^https?:\/\//, '')
+
+  return (
+    <div data-testid="share-preview" data-plan-preview className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--v3-border, #e5e7eb)', background: '#0B1220', color: '#F4F6FB' }}>
+      <div className="relative h-32 w-full overflow-hidden" data-plan-preview-hero data-has-photo={hero ? 'true' : 'false'}>
+        {hero
+          // eslint-disable-next-line @next/next/no-img-element -- allow-listed CDN photo from the plan itself
+          ? <img src={hero} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+          : <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(51,145,255,0.35), rgba(139,92,246,0.35)), #0B1220' }} aria-hidden="true"><ImageIcon size={22} className="opacity-60" /></div>}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(7,10,18,0.05) 0%, rgba(7,10,18,0.85) 100%)' }} aria-hidden="true" />
+        <div className="absolute left-3 top-2.5 flex items-center gap-1.5">
+          {/* eslint-disable-next-line @next/next/no-img-element -- local SVG, no pipeline needed */}
+          <img src="/logo.svg" alt="" aria-hidden="true" width={18} height={18} className="rounded" />
+          <span className="text-[11px] font-bold tracking-[0.18em]">TAPPY</span>
+        </div>
+        <div className="absolute bottom-2.5 left-3 right-3">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: '#8FB8FF' }}>{s.eyebrow}</p>
+          <p className="mt-0.5 truncate text-base font-extrabold leading-tight" data-plan-preview-title>{snapshot.title}</p>
+        </div>
+      </div>
+
+      <div className="space-y-2 px-3 py-2.5">
+        <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium" style={{ color: 'rgba(244,246,251,0.8)' }} data-plan-preview-meta>
+          <li className="inline-flex items-center gap-1"><CalendarDays size={11} aria-hidden="true" />{fill(s.days, dayCount)}</li>
+          <li className="inline-flex items-center gap-1"><Route size={11} aria-hidden="true" />{fill(s.stops, stopCount)}</li>
+          {snapshot.people && <li className="inline-flex items-center gap-1"><Users size={11} aria-hidden="true" />{fill(s.people, snapshot.people)}</li>}
+          {snapshot.budget_total && <li className="inline-flex items-center gap-1"><Wallet size={11} aria-hidden="true" />{snapshot.budget_total}</li>}
+        </ul>
+
+        <ol className="space-y-1.5">
+          {days.map((d, i) => (
+            <li key={i} data-plan-preview-day>
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em]" style={{ color: '#8FB8FF' }}>{d.label}</p>
+              <p className="truncate text-[11px]" style={{ color: 'rgba(244,246,251,0.85)' }}>
+                {d.items.slice(0, PREVIEW_STOPS_PER_DAY).map(it => [it.time, it.name].filter(Boolean).join(' ')).join(' · ')}
+                {d.items.length > PREVIEW_STOPS_PER_DAY ? ` · +${d.items.length - PREVIEW_STOPS_PER_DAY}` : ''}
+              </p>
+            </li>
+          ))}
+        </ol>
+        {moreDays > 0 && <p className="text-[11px]" style={{ color: 'rgba(244,246,251,0.6)' }}>+{fill(s.days, moreDays)}</p>}
+
+        <div className="flex items-center justify-between gap-2 border-t pt-2 text-[10.5px]" style={{ borderColor: 'rgba(255,255,255,0.1)', color: 'rgba(244,246,251,0.6)' }}>
+          <span>{s.madeBy} <strong style={{ color: '#F4F6FB' }}>TAPPY</strong></span>
+          <span className="truncate" data-plan-preview-link>{link}</span>
+        </div>
+        {children}
       </div>
     </div>
   )

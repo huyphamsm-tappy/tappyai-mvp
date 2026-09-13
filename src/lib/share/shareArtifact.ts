@@ -2,6 +2,7 @@ import type { LivePlace, PlacesLiveView } from '@/lib/recommendation/liveView'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { BRAND, absoluteUrl } from './openGraph'
+import { toPlanShareSnapshot, type PlanShareSnapshot } from '@/lib/plans/share/planShare'
 
 // ── THE ONE CANONICAL TAPPYAI SHARE ARTIFACT ─────────────────────────────────
 //
@@ -43,7 +44,11 @@ export interface ShareArtifact {
   subject: string
   /** The canonical branded brochure. Everything else is derived from this. */
   text: string
-  /** The brand entry point — admitted by `isShareableUrl`, never a private route. */
+  /**
+   * The brand entry point for a recommendation, or a plan's own published page
+   * (`/plan/<shareId>`) once the share menu has minted it. Either way admitted by
+   * `isShareableUrl`, never a private route.
+   */
   url: string
   /** Optional rendered card. Absent whenever rendering is unavailable or failed. */
   image?: Blob
@@ -53,6 +58,10 @@ export interface ShareArtifact {
   title: string
   /** The whitelisted entities, for the preview to render. */
   places: SharedPlace[]
+  /** For a plan: the whitelisted snapshot — what the page shows and what the preview draws. */
+  plan?: PlanShareSnapshot
+  /** The language the brochure text was written in, so it can be rebuilt with a new url. */
+  lang?: ShareLang
 }
 
 /**
@@ -318,11 +327,32 @@ export function buildPlacesArtifact(
   return { kind: 'places', title, subject, text: placesBrochure(title, places, lang, url), url, places }
 }
 
-/** The artifact for a [TAPPY_PLAN]. */
-export function buildPlanArtifact(plan: TappyPlan, lang: ShareLang = 'vi', env?: NodeJS.ProcessEnv): ShareArtifact {
-  const url = brandUrl(env)
+/**
+ * The artifact for a [TAPPY_PLAN].
+ *
+ * Starts on the brand url. The share menu then publishes the plan
+ * (`POST /api/plans/share`) and, when that succeeds, `withPlanShareUrl` moves
+ * the artifact onto the plan's own page so every handoff carries a link that
+ * opens THIS plan. The snapshot rides along for the mini-brochure preview —
+ * the same whitelist the page renders from, so the preview cannot show a field
+ * the page will not.
+ */
+export function buildPlanArtifact(plan: TappyPlan, lang: ShareLang = 'vi', env?: NodeJS.ProcessEnv, shareUrl?: string): ShareArtifact {
+  const url = shareUrl ?? brandUrl(env)
   const subject = `${L[lang].plan}: ${plan.title}`
-  return { kind: 'plan', title: plan.title, subject, text: planBrochure(plan, lang, url), url, places: [] }
+  const snapshot = toPlanShareSnapshot(plan) ?? undefined
+  return { kind: 'plan', title: plan.title, subject, text: planBrochure(plan, lang, url), url, places: [], plan: snapshot, lang }
+}
+
+/**
+ * The same plan artifact, re-pointed at its published page: the url and the
+ * brochure's footer line move together, and nothing else in the text changes.
+ */
+export function withPlanShareUrl(a: ShareArtifact, shareUrl: string): ShareArtifact {
+  if (a.kind !== 'plan') return a
+  const lines = a.text.split('\n')
+  lines[lines.length - 1] = footer(a.lang ?? 'vi', shareUrl)
+  return { ...a, url: shareUrl, text: lines.join('\n') }
 }
 
 /**
