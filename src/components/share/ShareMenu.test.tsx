@@ -106,6 +106,34 @@ describe('ShareMenu — targets', () => {
     expect(screen.queryByTestId('share-target-messenger')).toBeNull()
   })
 
+  // Regression: a review with no venue is stored with place_name "Chia sẻ" (the composer's
+  // share-only sentinel). The entry points used to pass it straight in as the title.
+  it('a review titled through reviewShareTitle never previews the sentinel — place, caption, or brand', async () => {
+    const { reviewShareTitle } = await import('@/lib/share/reviewShareTitle')
+    const url = 'https://www.tappyai.com/reviews/abc'
+    const subject = () => screen.getByTestId('share-preview').textContent ?? ''
+
+    render(<ShareMenu url={url} title={reviewShareTitle({ place_name: 'The Rooftop', body: 'view đẹp' })} open onClose={() => {}} />)
+    expect(subject()).toContain('The Rooftop')
+    cleanup()
+
+    render(<ShareMenu url={url} title={reviewShareTitle({ place_name: null, body: 'Mì lòng heo nóng hổi' })} open onClose={() => {}} />)
+    expect(subject()).toContain('Mì lòng heo nóng hổi')
+    cleanup()
+
+    render(<ShareMenu url={url} title={reviewShareTitle({ place_name: 'Chia sẻ', body: 'Mì lòng heo nóng hổi' })} open onClose={() => {}} />)
+    expect(subject()).toContain('Mì lòng heo nóng hổi')
+    expect(subject()).not.toContain('Chia sẻ')
+    cleanup()
+
+    render(<ShareMenu url={url} title={reviewShareTitle({ place_name: 'Chia sẻ', body: '' })} open onClose={() => {}} />)
+    expect(subject()).toContain('TappyAI')
+    expect(subject()).not.toContain('Chia sẻ')
+    // …and what leaves is still the canonical review URL.
+    fireEvent.click(screen.getByTestId('share-target-copy'))
+    await waitFor(() => expect(writeText).toHaveBeenCalledWith(url))
+  })
+
   it('renders the branded preview from the artifact', () => {
     render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
     expect(screen.getByTestId('share-preview')).toBeTruthy()

@@ -26,6 +26,7 @@ import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
+import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -43,9 +44,10 @@ export interface Review {
 
 // A "share-only" post (clip/photo posted without adding a place) carries a
 // sentinel place_name, so it must not show a 📍 chip or count as a hot place.
-// Includes the legacy no-diacritic value written by older builds.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-export const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// Includes the legacy no-diacritic value written by older builds. The set
+// itself lives in lib/share/reviewShareTitle.ts, which also keeps the sentinel
+// out of the share title; this is the feed's name for the same check.
+export const isShareOnlyName = isShareOnlyPlaceName
 
 export function ago(d: string, t: (key: string, vars?: Record<string, string>) => string) {
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
@@ -280,7 +282,8 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
   return (
     <ShareMenu
       url={absoluteUrl(`/reviews/${review.id}`)}
-      title={review.place_name}
+      // The place when there is one, else the caption, else the brand — never the sentinel.
+      title={reviewShareTitle(review)}
       open
       onClose={onClose}
     />
