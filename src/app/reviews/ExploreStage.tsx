@@ -24,9 +24,9 @@ import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 // page's own top bar in the shell's header slot, MAIN is the cinematic stage and,
 // from `xl`, a RIGHT COLUMN of real discovery data beside it (below it on
 // narrower screens; never hidden). Five clips in one perspective space with the
-// active clip largest and nearest, a lit floor beneath it, editorial copy top
-// left, position + progress line bottom left, the SCROLL • SWIPE • EXPLORE hint
-// bottom centre and a thumbnail navigator bottom right. The active card carries
+// active clip largest and nearest, a lit floor beneath it, position + progress
+// line bottom left, the SCROLL • SWIPE • EXPLORE hint bottom centre and a
+// thumbnail navigator bottom right. The active card carries
 // the creator header (avatar · name · time · Follow · overflow), the compact
 // icon+count action rail, and — in its bottom zone over a gradient — the caption,
 // the location and the playback strip.
@@ -61,9 +61,10 @@ import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 // repository has no motion library and this does not add one. Reduced motion
 // turns the transitions off in `globals.css`.
 //
-// 🚨 The reference's editorial line ("Real places. Real people. A more vibrant
-// you.") is the ONLY static content here, and it is part of the approved
-// composition. Everything else on screen is feed data.
+// 🚨 NOTHING ON THE STAGE IS STATIC COPY. The reference's editorial line and a
+// second "Tappy" wordmark used to sit top left of the main region; both were
+// redundant beside the shell's own branding and were removed. Everything on
+// screen is feed data, controls, or the shell.
 
 /** Distances from the active clip that are drawn. Beyond ±2 a card exists only as
  *  the slot the next one animates in from. */
@@ -384,7 +385,10 @@ export default function ExploreStage() {
   // beside it opens the real sort filters.
   const topBar = (
     <header className="v3-xp-bar" data-xp-bar>
-      <Link href="/" className="v3-xp-logo" aria-label="TappyAI">Tappy</Link>
+      {/* The wordmark only where the shell's sidebar — which carries the brand — is
+          hidden (below `lg`, the sidebar's own breakpoint). Beside the sidebar a second
+          "Tappy" is redundant. */}
+      <Link href="/" className="v3-xp-logo lg:hidden" aria-label="TappyAI">Tappy</Link>
       <nav className="v3-xp-nav" aria-label={t('v3.explore.title')}>
         {navLinks.map(l => (
           <Link key={l.href} href={l.href} aria-current={l.current ? 'page' : undefined}>{t(l.key)}</Link>
@@ -462,13 +466,6 @@ export default function ExploreStage() {
               data-empty={activeReview?.thumbnail ? 'false' : 'true'}
               style={activeReview?.thumbnail ? { backgroundImage: `url("${activeReview.thumbnail}")` } : undefined}
             />
-
-            {/* Editorial copy — the approved composition's line, top left of the main region. */}
-            <div className="v3-xp-editorial" aria-hidden="true" data-xp-editorial>
-              <p>{t('v3.explore.editorial1')}</p>
-              <p>{t('v3.explore.editorial2')}</p>
-              <p>{t('v3.explore.editorial3')}</p>
-            </div>
 
             {loading && (
               <div className="v3-xp-state"><Loader2 size={26} className="animate-spin" /></div>

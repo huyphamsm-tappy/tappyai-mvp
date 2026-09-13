@@ -3550,6 +3550,8 @@
   background-color: color-mix(in srgb, #05070E 88%, transparent); backdrop-filter: blur(12px);
 }
 .v3-xp-logo { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: #FFFFFF; }
+/* From lg the shell's sidebar carries the brand and the bar's wordmark is gone: two columns. */
+@media (min-width: 1024px) { .v3-xp-bar { grid-template-columns: minmax(0, 1fr) auto; } }
 .v3-xp-nav { display: flex; align-items: center; justify-content: center; gap: 4px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .v3-xp-nav::-webkit-scrollbar { display: none; }
 .v3-xp-nav a {
@@ -3764,11 +3766,6 @@
 .v3-xp-nav-btn:hover { background-color: rgba(255, 255, 255, 0.12); }
 .v3-xp-nav-btn:disabled { opacity: 0.25; cursor: default; }
 .v3-xp-nav-btn:focus-visible { outline: 2px solid #7DD3FC; outline-offset: 2px; }
-/* Editorial copy, top left of the main region. Presentation content from the approved composition. */
-.v3-xp-editorial { position: absolute; left: 28px; top: 28px; z-index: 5; pointer-events: none; }
-.v3-xp-editorial p { font-size: 22px; line-height: 1.35; font-weight: 400; color: rgba(255, 255, 255, 0.82); }
-.v3-xp-editorial p:last-child { color: rgba(255, 255, 255, 0.7); }
-.v3-xp-editorial em { font-style: normal; color: #7DD3FC; }
 /* Bottom row: position + progress line (left), hint (centre), thumbnails (right). */
 .v3-xp-pos { position: absolute; left: 28px; bottom: 30px; z-index: 5; width: 220px; }
 .v3-xp-pos-num { font-size: 14px; font-weight: 500; color: rgba(255, 255, 255, 0.85); font-variant-numeric: tabular-nums; }
@@ -3859,7 +3856,6 @@
   .v3-xp-nav a { padding: 0 11px; font-size: 13px; min-height: 34px; }
   .v3-xp-field { display: none; }
   .v3-xp-stage { height: calc(100dvh - 64px); min-height: 560px; }
-  .v3-xp-editorial { display: none; }
   .v3-xp-pos { left: 16px; bottom: 20px; width: 140px; }
   .v3-xp-hint { bottom: 18px; font-size: 11px; letter-spacing: 0.22em; }
   .v3-xp-thumbs { right: 12px; bottom: 16px; padding: 6px; gap: 4px; }

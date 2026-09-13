@@ -65,6 +65,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 import ExploreStage, { slotTransform, slotRole, shortCount } from './ExploreStage'
+import { vi as viCopy, en as enCopy } from '@/lib/i18n/v3/web'
 
 // ── V3 Web · EXPLORE — the approved spatial stage ───────────────────────────
 //
@@ -77,8 +78,9 @@ import ExploreStage, { slotTransform, slotRole, shortCount } from './ExploreStag
 //
 // The second thing pinned is data honesty: no invented clips, no engagement figures other
 // than the feed's own columns, no topic taxonomy, no subject the clip did not supply, Follow
-// and the overflow menu under the feed's own rules — and the reference's editorial line as
-// the only static text.
+// and the overflow menu under the feed's own rules — and no static copy on the stage at all
+// (the editorial line and the stage-level "Tappy" wordmark were redundant beside the shell's
+// branding and are pinned OUT below).
 //
 // The third is COMPOSITION: the stage lives INSIDE `V3Shell` — the real left sidebar and
 // the app's own bottom bar stay — with a page-owned top bar in place of the standard header,
@@ -296,7 +298,10 @@ describe('the approved composition is on screen', () => {
     await untilCards()
     const nav = Array.from(document.querySelectorAll('.v3-xp-nav a')).map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')])
     expect(nav).toEqual([['Explore', '/reviews', 'page'], ['Ask Tappy', '/chat', null], ['Plan', '/planner', null], ['Music', '/music', null]])
-    expect(document.querySelector('.v3-xp-logo')!.getAttribute('href')).toBe('/')
+    // The wordmark exists only for the widths where the shell's sidebar (the brand) is hidden.
+    const logo = document.querySelector('.v3-xp-logo')!
+    expect(logo.getAttribute('href')).toBe('/')
+    expect(logo.className).toContain('lg:hidden')
     expect(document.querySelector('[data-xp-search] input')!.getAttribute('placeholder')).toBe('Find places, dishes, experiences…')
     expect(document.querySelector('[data-xp-filter-toggle]')).toBeTruthy()
     expect(document.querySelector('[data-xp-bar] a[href="/profile/notifications"]')).toBeTruthy()
@@ -315,11 +320,10 @@ describe('the approved composition is on screen', () => {
     await waitFor(() => expect(document.querySelector('a[href="/profile"] img')?.getAttribute('src')).toBe('https://cdn.example/me.jpg'))
   })
 
-  it('editorial copy, position + progress line, the hint and the thumbnail navigator are all there', async () => {
+  it('position + progress line, the hint and the thumbnail navigator are all there', async () => {
     mockFeed(five())
     render(<ExploreStage />)
     await untilCards()
-    expect(document.querySelector('[data-xp-editorial]')!.textContent).toBe('Real places.Real people.A more vibrant you.')
     expect(document.querySelector('[data-stage-pos]')!.textContent).toBe('1 / 5')
     expect(document.querySelector('[data-xp-line]')).toBeTruthy()
     expect(document.querySelector('[data-xp-hint]')!.textContent).toMatch(/SCROLL\s+•\s+SWIPE\s+•\s+EXPLORE/)
@@ -374,6 +378,37 @@ describe('the approved composition is on screen', () => {
     expect(card.querySelector('[data-xp-caption-more]')).toBeNull()
     // Expanding text is not selecting a clip and not pausing it.
     expect(pauseToggle).not.toHaveBeenCalled()
+  })
+})
+
+describe('no redundant branding on the stage', () => {
+  it('the editorial tagline and the stage-level "Tappy" are gone; the shell keeps its brand, the stage its content', async () => {
+    mockFeed(five())
+    render(<ExploreStage />)
+    await untilCards()
+    const stageEl = stage()
+    expect(document.querySelector('[data-xp-editorial]')).toBeNull()
+    for (const line of ['Real places.', 'Real people.', 'A more vibrant you.', 'Địa điểm thật.', 'Con người thật.', 'Một bạn sống động hơn.']) {
+      expect(document.body.textContent).not.toContain(line)
+    }
+    // The stage itself carries no "Tappy" wordmark — only the Ask-Tappy bridge on the active card.
+    for (const node of Array.from(stageEl.querySelectorAll('a, p, span, div'))) {
+      if (node.children.length === 0) expect(node.textContent?.trim()).not.toBe('Tappy')
+    }
+    // The keys are gone from both dictionaries, not just unused.
+    expect(Object.keys(viCopy).filter(k => k.startsWith('v3.explore.editorial'))).toEqual([])
+    expect(Object.keys(enCopy).filter(k => k.startsWith('v3.explore.editorial'))).toEqual([])
+    // What stays: the shell's sidebar brand, the top navigation, the right column, the stage, the player.
+    expect(document.querySelector('aside.sticky')!.textContent).toContain('Tappy')
+    expect(document.querySelectorAll('.v3-xp-nav a')).toHaveLength(4)
+    expect(document.querySelector('[data-xp-right]')).toBeTruthy()
+    expect(cards().find(c => c.getAttribute('data-role') === 'active')).toBeTruthy()
+    expect(players()).toHaveLength(1)
+    // Nothing reserves the space the copy used to take.
+    expect(readFileSync('src/app/globals.css', 'utf8')).not.toContain('v3-xp-editorial')
+    const src = readFileSync('src/app/reviews/ExploreStage.tsx', 'utf8')
+    expect(src).not.toContain('data-xp-editorial')
+    expect(src).not.toContain('v3.explore.editorial')
   })
 })
 
