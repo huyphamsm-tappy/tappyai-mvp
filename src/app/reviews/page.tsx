@@ -18,7 +18,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import LinkPoster from '@/components/LinkPoster'
 import { ProfileTab, ClipViewer } from './ProfileTab'
-import ExploreV3Desktop from './ExploreV3Desktop'
+import ExploreStage from './ExploreStage'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
 import { CATEGORY_STYLE, mapDtoToInbox, groupNotifs, notifSection, isSocialGroup, notificationBrandMark, NOTIF_COLOR, type InboxNotif, type GroupedNotif } from '@/lib/notifications/inbox'
@@ -1327,20 +1327,21 @@ function ReviewsPageInner() {
 //
 // `fallback={null}`, not the old Home skeleton: this route is a black full-screen feed, and the
 // skeleton it used to inherit drew a light Home header, hero and category grid over it.
-/** The breakpoint that separates the two Explore surfaces. Matches Tailwind `lg`. */
-const DESKTOP_QUERY = '(min-width: 1024px)'
+/** The breakpoint that separates the two Explore surfaces. Matches Tailwind `md`: tablets and
+ *  desktops get the spatial stage; phones keep the full-screen vertical feed below. */
+const DESKTOP_QUERY = '(min-width: 768px)'
 
 /**
  * 🚨 EXACTLY ONE EXPLORE SURFACE IS MOUNTED, AND IT IS A JS DECISION ON PURPOSE.
  *
- * V3 gives desktop its own Explore (`ExploreV3Desktop`): the approved global shell,
- * a five-card horizontal video feed, one clip playing. The surface below is the
- * existing mobile feed and is UNTOUCHED by that work.
+ * V3 gives tablets and desktops their own Explore (`ExploreStage`): the approved
+ * global shell and a spatial stage of clips, one clip playing. The surface below is
+ * the existing phone feed and is UNTOUCHED by that work.
  *
  * The obvious way to do this would be `hidden lg:block` / `lg:hidden`, and it would
  * be wrong here. `display:none` hides an element; it does not unmount it. Both feeds
- * would mount, both would create <video> elements, and the desktop page's entire
- * contract — five visible, ONE playing — would be decided by whichever hidden player
+ * would mount, both would create <video> elements, and the stage's entire
+ * contract — several visible, ONE playing — would be decided by whichever hidden player
  * happened to autoplay. So the choice is made in JS and only the winner renders.
  *
  * `null` on the first paint is deliberate: the media query cannot be read during SSR,
@@ -1369,7 +1370,7 @@ export default function ReviewsPage() {
   }, [])
 
   if (isDesktop === null) return null
-  if (isDesktop) return <ExploreV3Desktop />
+  if (isDesktop) return <ExploreStage />
 
   return (
     <Suspense fallback={null}>

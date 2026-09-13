@@ -28,7 +28,7 @@ import { CATEGORY_STYLE,
 // the three things. The notification LIST existed only inside `InboxTab` in `/reviews`, reachable
 // through that page's bottom bar.
 //
-// 🚨 AND THAT MADE THE LIST DESKTOP-UNREACHABLE. `/reviews` now renders `ExploreV3Desktop` above
+// 🚨 AND THAT MADE THE LIST DESKTOP-UNREACHABLE. `/reviews` now renders `ExploreStage` above
 // 1024px, which has no bottom bar, and the desktop sidebar inside `/reviews` never had an inbox
 // row. So on desktop there was no path to any notification at all. Turning THIS route into the
 // real inbox fixes that with no navigation change whatsoever — the links already point here.
