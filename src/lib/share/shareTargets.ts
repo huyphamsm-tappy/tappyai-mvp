@@ -13,6 +13,7 @@
 export type ShareTargetId =
   | 'facebook' | 'zalo' | 'viber' | 'line' | 'tiktok'
   | 'email' | 'inbox' | 'save' | 'copy' | 'native'
+  | 'messenger' | 'whatsapp' | 'telegram'
 
 /**
  * How a target consumes the artifact.
@@ -35,7 +36,7 @@ export interface ShareTarget {
   /** i18n key — never a literal label, so vi/en both work. */
   labelKey: string
   kind: ShareTargetKind
-  /** Brand tint for the icon chip; the design system's blue/orange elsewhere. */
+  /** Brand colour for a surface with no mark to show; the web tile shows the real mark (shareBrands.ts). */
   color?: string
 }
 
@@ -63,8 +64,52 @@ export const SHARE_TARGETS: readonly ShareTarget[] = [
   { id: 'native', labelKey: 'share.more', kind: 'native' },
 ] as const
 
+/**
+ * Destinations the WEB menu offers beyond the cross-platform set above. Each is
+ * a documented public entry point of the platform itself:
+ *
+ *  - Messenger  `fb-messenger://share?link=` — Messenger's own share deep link.
+ *               There is no web equivalent without a Facebook App ID (the
+ *               send dialog requires one, and this project has none), so the
+ *               menu offers it only where the scheme can be opened — see
+ *               `canOpenMessenger`. It is never faked on desktop.
+ *  - WhatsApp   `https://wa.me/?text=` — WhatsApp's "click to chat", which
+ *               opens the app on a phone and WhatsApp Web on a desktop.
+ *  - Telegram   `https://t.me/share/url?url=&text=` — Telegram's share widget
+ *               endpoint, app or web alike.
+ *
+ * Kept apart from `SHARE_TARGETS` because that list is the contract the
+ * Android and iOS clients mirror (crossPlatformShare.test.ts); these three are
+ * web-only until the native clients declare them too.
+ */
+export const WEB_ONLY_SHARE_TARGETS: readonly ShareTarget[] = [
+  { id: 'messenger', labelKey: 'share.messenger', kind: 'url-handoff', color: '#0084FF' },
+  { id: 'whatsapp', labelKey: 'share.whatsapp', kind: 'text-handoff', color: '#25D366' },
+  { id: 'telegram', labelKey: 'share.telegram', kind: 'text-handoff', color: '#26A5E4' },
+] as const
+
+const byId = (id: ShareTargetId): ShareTarget =>
+  [...SHARE_TARGETS, ...WEB_ONLY_SHARE_TARGETS].find((t) => t.id === id)!
+
+/** Everything the web menu shows, in display order: the messaging apps first, then the actions. */
+export const WEB_SHARE_TARGETS: readonly ShareTarget[] = [
+  byId('facebook'), byId('messenger'), byId('zalo'), byId('whatsapp'), byId('telegram'),
+  byId('viber'), byId('line'), byId('tiktok'), byId('email'),
+  byId('inbox'), byId('save'), byId('copy'), byId('native'),
+]
+
+/**
+ * Messenger's share scheme only resolves where the Messenger APP can be
+ * installed. On a desktop browser nothing handles `fb-messenger://`, so the
+ * menu leaves the tile out rather than opening a dead link (the Facebook
+ * sharer, which is offered everywhere, carries a "Send in Messenger" option).
+ */
+export function canOpenMessenger(userAgent: string | undefined): boolean {
+  return /android|iphone|ipad|ipod/i.test(userAgent ?? '')
+}
+
 export function shareTarget(id: ShareTargetId): ShareTarget {
-  const found = SHARE_TARGETS.find((t) => t.id === id)
+  const found = WEB_SHARE_TARGETS.find((t) => t.id === id)
   if (!found) throw new Error(`Unknown share target: ${id}`)
   return found
 }
@@ -145,12 +190,18 @@ export function buildShareUrl(
       return `https://www.facebook.com/sharer/sharer.php?u=${encoded}`
     case 'zalo':
       return `https://sp.zalo.me/plugins/share?url=${encoded}`
+    // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
+    // A custom scheme, so the caller copies first — nothing reports whether the app opened.
+    case 'messenger':
+      return `fb-messenger://share?link=${encoded}`
     // TikTok: no public web share endpoint exists. Saying so is the feature.
     // Text, inbox, save, clipboard and native are not url handoffs at all.
     case 'tiktok':
     case 'viber':
     case 'line':
     case 'email':
+    case 'whatsapp':
+    case 'telegram':
     case 'inbox':
     case 'save':
     case 'copy':
@@ -178,7 +229,7 @@ export const TEXT_HANDOFF_MAX = 4000
  * Null for every other target, and null when `text` is empty — an empty
  * brochure is not a share.
  */
-export function buildTextShareUrl(id: ShareTargetId, subject: string, text: string): string | null {
+export function buildTextShareUrl(id: ShareTargetId, subject: string, text: string, url = ''): string | null {
   const body = (text ?? '').trim()
   if (!body) return null
   const clipped = body.length > TEXT_HANDOFF_MAX ? body.slice(0, TEXT_HANDOFF_MAX) : body
@@ -190,6 +241,16 @@ export function buildTextShareUrl(id: ShareTargetId, subject: string, text: stri
       return `viber://forward?text=${enc}`
     case 'line':
       return `https://line.me/R/share?text=${enc}`
+    // WhatsApp "click to chat" (faq.whatsapp.com/5913398998672934): the text is the message.
+    case 'whatsapp':
+      return `https://wa.me/?text=${enc}`
+    // Telegram share widget (core.telegram.org/widgets/share): a link plus an optional text.
+    // When the text IS the link (a review), it goes once, as the url.
+    case 'telegram': {
+      const link = (url ?? '').trim() || clipped
+      const withText = clipped !== link
+      return `https://t.me/share/url?url=${encodeURIComponent(link)}${withText ? `&text=${enc}` : ''}`
+    }
     default:
       return null
   }

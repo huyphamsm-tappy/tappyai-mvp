@@ -17,9 +17,12 @@
 import { describe, it, expect } from 'vitest'
 import {
   SHARE_TARGETS,
+  WEB_ONLY_SHARE_TARGETS,
+  WEB_SHARE_TARGETS,
   TEXT_HANDOFF_MAX,
   buildShareUrl,
   buildTextShareUrl,
+  canOpenMessenger,
   isShareableUrl,
   shareTarget,
   type ShareTargetId,
@@ -80,8 +83,50 @@ describe('SHARE_TARGETS', () => {
   })
 })
 
+// ------------------------------------------------ the web menu's destinations
+describe('WEB_SHARE_TARGETS — the web menu adds Messenger, WhatsApp and Telegram', () => {
+  it('keeps the cross-platform contract untouched and adds exactly three web-only destinations', () => {
+    expect(WEB_ONLY_SHARE_TARGETS.map((t) => t.id)).toEqual(['messenger', 'whatsapp', 'telegram'])
+    for (const t of WEB_ONLY_SHARE_TARGETS) expect(SHARE_TARGETS.find((x) => x.id === t.id)).toBeUndefined()
+  })
+
+  it('lists the messaging apps first, then the actions, with nothing missing and nothing twice', () => {
+    expect(WEB_SHARE_TARGETS.map((t) => t.id)).toEqual([
+      'facebook', 'messenger', 'zalo', 'whatsapp', 'telegram', 'viber', 'line', 'tiktok', 'email',
+      'inbox', 'save', 'copy', 'native',
+    ])
+    expect(new Set(WEB_SHARE_TARGETS.map((t) => t.id)).size).toBe(SHARE_TARGETS.length + WEB_ONLY_SHARE_TARGETS.length)
+  })
+
+  it('classifies the three by what they really do', () => {
+    expect(shareTarget('messenger').kind).toBe('url-handoff')
+    expect(shareTarget('whatsapp').kind).toBe('text-handoff')
+    expect(shareTarget('telegram').kind).toBe('text-handoff')
+    for (const id of ['messenger', 'whatsapp', 'telegram'] as ShareTargetId[]) expect(shareTarget(id).labelKey).toBe(`share.${id}`)
+  })
+
+  // Messenger has only an app scheme. Offering it where nothing can open it would be a dead tile.
+  it('Messenger is offered on phones and tablets, not on a desktop browser', () => {
+    expect(canOpenMessenger('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36')).toBe(false)
+    expect(canOpenMessenger('Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 Safari/605.1.15')).toBe(false)
+    expect(canOpenMessenger(undefined)).toBe(false)
+  })
+})
+
 // ------------------------------------------------------- URL construction
 describe('buildShareUrl', () => {
+  it('sends Messenger its own share deep link with the canonical URL, encoded', () => {
+    expect(buildShareUrl('messenger', REVIEW)).toBe(`fb-messenger://share?link=${encodeURIComponent(REVIEW)}`)
+    expect(buildShareUrl('messenger', `${SITE}/reviews/x?token=secret123`, env)).toBeNull()
+  })
+
+  it.each(['whatsapp', 'telegram'] as ShareTargetId[])('returns null for %s — it carries text, not a bare url', (id) => {
+    expect(buildShareUrl(id, REVIEW)).toBeNull()
+  })
+
   it('sends Facebook the canonical URL, encoded', () => {
     const out = buildShareUrl('facebook', REVIEW)
     expect(out).toBe(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(REVIEW)}`)
@@ -159,6 +204,30 @@ describe('buildTextShareUrl — the brochure travels INSIDE the URL', () => {
       expect(buildTextShareUrl(id, subject, text)).toBeNull()
     }
   )
+
+  it('whatsapp: wa.me click-to-chat with the body as the message, round-trippable', () => {
+    const body = 'Bún bò Cô Ba — 123 Lê Lợi\nhttps://www.tappyai.com'
+    const out = buildTextShareUrl('whatsapp', 'subj', body)!
+    expect(out.startsWith('https://wa.me/?text=')).toBe(true)
+    expect(new URL(out).searchParams.get('text')).toBe(body)
+  })
+
+  it('telegram: t.me/share/url with the link AND the body when they differ', () => {
+    const out = buildTextShareUrl('telegram', 'subj', 'Bún bò Cô Ba — 123 Lê Lợi', 'https://www.tappyai.com')!
+    const u = new URL(out)
+    expect(u.origin + u.pathname).toBe('https://t.me/share/url')
+    expect(u.searchParams.get('url')).toBe('https://www.tappyai.com')
+    expect(u.searchParams.get('text')).toBe('Bún bò Cô Ba — 123 Lê Lợi')
+  })
+
+  it('telegram: when the text IS the link (a review), the link goes once, as the url', () => {
+    const out = buildTextShareUrl('telegram', 'Review', REVIEW, REVIEW)!
+    const u = new URL(out)
+    expect(u.searchParams.get('url')).toBe(REVIEW)
+    expect(u.searchParams.has('text')).toBe(false)
+    // …and with no url given, the text is still the link.
+    expect(new URL(buildTextShareUrl('telegram', 'Review', REVIEW)!).searchParams.get('url')).toBe(REVIEW)
+  })
 
   it('returns null for an empty body', () => {
     expect(buildTextShareUrl('email', subject, '   ')).toBeNull()

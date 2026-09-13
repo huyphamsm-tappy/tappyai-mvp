@@ -11,7 +11,11 @@
 
 export const vi = {
   'share.title': 'Chia sẻ',
-  'share.facebook': 'Facebook / Messenger',
+  // Product names, one per destination — each tile shows the platform's own mark.
+  'share.facebook': 'Facebook',
+  'share.messenger': 'Messenger',
+  'share.whatsapp': 'WhatsApp',
+  'share.telegram': 'Telegram',
   'share.tiktok': 'TikTok',
   'share.zalo': 'Zalo',
   'share.copyLink': 'Sao chép liên kết',
@@ -59,12 +63,15 @@ export const vi = {
 
 export const en = {
   'share.title': 'Share',
-  'share.facebook': 'Facebook / Messenger',
+  'share.facebook': 'Facebook',
+  'share.messenger': 'Messenger',
+  'share.whatsapp': 'WhatsApp',
+  'share.telegram': 'Telegram',
   'share.tiktok': 'TikTok',
   'share.zalo': 'Zalo',
   'share.copyLink': 'Copy link',
   'share.copied': 'Copied',
-  'share.more': 'More apps',
+  'share.more': 'Other apps',
   'share.open': 'Open',
   'share.opened': 'Opened {app}',
   'share.unavailable': 'Sharing is unavailable',

@@ -25,15 +25,24 @@
 //  - Tappy Inbox is the ONE target that can report delivery, because the
 //    existing messaging endpoint returns 2xx. It reuses NewMessageSheet and
 //    POST /api/messaging/threads/{id}/messages — nothing new.
-//  - "More apps" only renders when navigator.share exists.
+//  - WhatsApp and Telegram carry the text through their documented web
+//    endpoints (wa.me, t.me/share). Messenger has only an app deep link, so
+//    its tile exists only where the app can — never a dead tile on a desktop.
+//  - "Other apps" (the system sheet) only renders when navigator.share exists.
 //  - image rendering is never a prerequisite: Save falls back to a text file.
+//
+// 🔑 EVERY PLATFORM TILE SHOWS THE PLATFORM'S OWN MARK (lib/share/shareBrands.ts)
+// — never a coloured initial, never a generic glyph standing in for a brand.
+// The neutral glyphs are reserved for the ACTIONS (Email, Inbox, Save, Copy,
+// Other apps), so a real mark can never be mistaken for a generic one.
 
 import { useEffect, useState } from 'react'
 import { Copy, Check, Share2, X, Mail, Inbox, Download } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
-  SHARE_TARGETS, buildShareUrl, buildTextShareUrl, isShareableUrl, type ShareTargetId,
+  WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canOpenMessenger, isShareableUrl, type ShareTargetId,
 } from '@/lib/share/shareTargets'
+import { shareBrandMark } from '@/lib/share/shareBrands'
 import { inboxBody, type ShareArtifact } from '@/lib/share/shareArtifact'
 import { renderArtifactImage } from '@/lib/share/renderCardImage'
 import NewMessageSheet from '@/components/messaging/NewMessageSheet'
@@ -64,6 +73,7 @@ export default function ShareMenu({
   const { t } = useTranslation()
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [canNativeShare, setCanNativeShare] = useState(false)
+  const [messengerApp, setMessengerApp] = useState(false)
   const [inboxOpen, setInboxOpen] = useState(false)
   const [busy, setBusy] = useState<ShareTargetId | null>(null)
 
@@ -74,6 +84,7 @@ export default function ShareMenu({
 
   useEffect(() => {
     setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function')
+    setMessengerApp(typeof navigator !== 'undefined' && canOpenMessenger(navigator.userAgent))
   }, [])
 
   useEffect(() => {
@@ -128,8 +139,10 @@ export default function ShareMenu({
         }
         case 'email':
         case 'line':
+        case 'whatsapp':
+        case 'telegram':
         case 'viber': {
-          const handoff = buildTextShareUrl(id, a.subject, inboxBody(a))
+          const handoff = buildTextShareUrl(id, a.subject, inboxBody(a), a.url)
           if (!handoff) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           // Viber is a custom scheme: nothing tells the page whether the app
           // exists. Copy first so the user is never left with nothing.
@@ -171,6 +184,7 @@ export default function ShareMenu({
         }
         case 'facebook':
         case 'zalo':
+        case 'messenger':
         case 'tiktok': {
           if (!shareable) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           const handoff = buildShareUrl(id, a.url)
@@ -178,6 +192,14 @@ export default function ShareMenu({
             // TikTok lands here by design — copy and tell the user what to do.
             const ok = await copyText(a.text)
             setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.tiktokHint') : t('share.copyFailed') })
+            return
+          }
+          if (id === 'messenger') {
+            // A custom scheme, like Viber: the page never learns whether the app
+            // opened, so the content is copied first and the result says so.
+            const copied = await copyText(a.text)
+            window.open(handoff, '_blank', 'noopener,noreferrer')
+            setFeedback({ kind: copied ? 'ok' : 'error', text: copied ? t('share.copiedAndOpened', { app: appName(id) }) : t('share.appNotOpened', { app: appName(id) }) })
             return
           }
           // The dialog can only carry the brand url; the brochure travels on the clipboard.
@@ -216,7 +238,10 @@ export default function ShareMenu({
     }
   }
 
-  const apps = SHARE_TARGETS.filter(x => x.kind === 'url-handoff' || x.kind === 'text-handoff' || x.id === 'tiktok')
+  // The messaging apps, each behind its own real mark. Messenger only where its
+  // scheme can resolve — see canOpenMessenger.
+  const apps = WEB_SHARE_TARGETS.filter(x =>
+    (x.kind === 'url-handoff' || x.kind === 'text-handoff' || x.id === 'tiktok') && (x.id !== 'messenger' || messengerApp))
   const buttonLabel = (id: ShareTargetId, kind: string) =>
     kind === 'url-handoff' && textIsMoreThanUrl && id !== 'tiktok' ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
 
@@ -254,13 +279,19 @@ export default function ShareMenu({
                 title={buttonLabel(target.id, target.kind)}
                 className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary active:scale-95 transition disabled:opacity-60"
               >
-                <span
-                  className="flex items-center justify-center w-9 h-9 rounded-full text-white text-sm font-bold"
-                  style={{ background: target.color ?? '#6b7280' }}
-                  aria-hidden="true"
-                >
-                  {target.id === 'email' ? <Mail size={16} /> : appName(target.id).slice(0, 1)}
-                </span>
+                {(() => {
+                  const mark = shareBrandMark(target.id)
+                  return mark
+                    // The platform's own mark, as published: fixed square box, aspect
+                    // ratio preserved, never recolored, no container that would make
+                    // every platform look alike. Decorative — the label names it.
+                    // eslint-disable-next-line @next/next/no-img-element -- local SVG, fixed box, no pipeline needed
+                    ? <img src={mark.logo} alt="" width={40} height={40} draggable={false} decoding="async" className="h-10 w-10 select-none object-contain" data-share-brand={mark.id} />
+                    // An ACTION, not a brand: a neutral glyph in a neutral chip.
+                    : <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-200" aria-hidden="true" data-share-glyph={target.id}>
+                        <Mail size={18} />
+                      </span>
+                })()}
                 <span className="text-[11px] leading-tight text-center text-gray-700 dark:text-gray-200">
                   {buttonLabel(target.id, target.kind)}
                 </span>

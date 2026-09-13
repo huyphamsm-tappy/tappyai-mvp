@@ -56,8 +56,10 @@ beforeEach(() => {
   vi.stubEnv('NEXT_PUBLIC_SITE_URL', 'https://www.tappyai.com')
 })
 
+const DESKTOP_UA = navigator.userAgent
 afterEach(() => {
   cleanup()
+  Object.defineProperty(navigator, 'userAgent', { value: DESKTOP_UA, configurable: true })
   vi.unstubAllGlobals()
   vi.unstubAllEnvs()
   delete (navigator as unknown as { share?: unknown }).share
@@ -96,6 +98,14 @@ describe('ShareMenu — targets', () => {
     expect(screen.getByTestId('share-target-copy').textContent).toContain('share.copyLink')
   })
 
+  it('WhatsApp and Telegram are offered everywhere; Messenger only where its app scheme can open', () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    expect(screen.getByTestId('share-target-whatsapp')).toBeTruthy()
+    expect(screen.getByTestId('share-target-telegram')).toBeTruthy()
+    // jsdom's user agent is a desktop one: no Messenger tile, no dead link.
+    expect(screen.queryByTestId('share-target-messenger')).toBeNull()
+  })
+
   it('renders the branded preview from the artifact', () => {
     render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
     expect(screen.getByTestId('share-preview')).toBeTruthy()
@@ -103,7 +113,108 @@ describe('ShareMenu — targets', () => {
   })
 })
 
+// ── The marks ────────────────────────────────────────────────────────────────
+//
+// A platform tile shows the platform's OWN mark — the SVG on record in
+// lib/share/shareBrands.ts — never a coloured initial, never a lucide glyph
+// standing in for a brand. The neutral glyph is reserved for actions.
+describe('ShareMenu — every platform tile carries the real platform mark', () => {
+  const PLATFORMS = ['facebook', 'zalo', 'whatsapp', 'telegram', 'viber', 'line', 'tiktok'] as const
+
+  it.each(PLATFORMS)('%s: the tile shows /brands/share/%s.svg and nothing generic', (id) => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    const tile = screen.getByTestId(`share-target-${id}`)
+    const img = tile.querySelector('img[data-share-brand]') as HTMLImageElement
+    expect(img).toBeTruthy()
+    expect(img.getAttribute('data-share-brand')).toBe(id)
+    expect(img.getAttribute('src')).toBe(`/brands/share/${id}.svg`)
+    // Decorative: the label beneath names the platform.
+    expect(img.getAttribute('alt')).toBe('')
+    // Same box for every mark, aspect ratio preserved — nothing stretched.
+    expect(img.getAttribute('width')).toBe('40')
+    expect(img.getAttribute('height')).toBe('40')
+    expect(img.className).toContain('object-contain')
+    // No generic substitute anywhere on the tile: no lucide svg, no initial, no emoji.
+    expect(tile.querySelector('svg')).toBeNull()
+    expect(tile.querySelector('[data-share-glyph]')).toBeNull()
+    expect(tile.textContent).not.toMatch(/^[A-Z]$/)
+    expect(tile.textContent).not.toMatch(/\p{Extended_Pictographic}/u)
+  })
+
+  it('Messenger, where offered, shows its own mark too', () => {
+    Object.defineProperty(navigator, 'userAgent', { value: 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Mobile/15E148', configurable: true })
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    const img = screen.getByTestId('share-target-messenger').querySelector('img[data-share-brand="messenger"]')!
+    expect(img.getAttribute('src')).toBe('/brands/share/messenger.svg')
+  })
+
+  it('Email is an action, not a brand: a neutral glyph, no platform mark', () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    const tile = screen.getByTestId('share-target-email')
+    expect(tile.querySelector('img')).toBeNull()
+    expect(tile.querySelector('[data-share-glyph="email"] svg')).toBeTruthy()
+  })
+
+  it('no tile in the menu is a coloured initial any more', () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    const tiles = Array.from(document.querySelectorAll('[data-testid^="share-target-"]'))
+    expect(tiles.length).toBeGreaterThan(8)
+    for (const tile of tiles) {
+      for (const span of Array.from(tile.querySelectorAll('span'))) {
+        const text = span.textContent?.trim() ?? ''
+        expect(text.length === 1 && /[A-Z]/.test(text)).toBe(false)
+      }
+    }
+  })
+})
+
 describe('ShareMenu — what each target really does', () => {
+  it('WhatsApp: opens wa.me click-to-chat with the brochure as the message, reports "opened with text"', async () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    fireEvent.click(screen.getByTestId('share-target-whatsapp'))
+    await waitFor(() => expect(status()).toBe('share.openedWithText:{"app":"share.whatsapp"}'))
+    const url = open.mock.calls[0][0] as string
+    expect(url.startsWith('https://wa.me/?text=')).toBe(true)
+    expect(new URL(url).searchParams.get('text')).toBe(inboxBody(artifact))
+    expect(writeText).not.toHaveBeenCalled()
+  })
+
+  it('Telegram: opens t.me/share/url with the brand url and the brochure text', async () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    fireEvent.click(screen.getByTestId('share-target-telegram'))
+    await waitFor(() => expect(status()).toBe('share.openedWithText:{"app":"share.telegram"}'))
+    const u = new URL(open.mock.calls[0][0] as string)
+    expect(u.origin + u.pathname).toBe('https://t.me/share/url')
+    expect(u.searchParams.get('url')).toBe(artifact.url)
+    expect(u.searchParams.get('text')).toBe(inboxBody(artifact))
+  })
+
+  it('Telegram for a review link: the canonical link as the url, the same caption the other text handoffs carry', async () => {
+    render(<ShareMenu url="https://www.tappyai.com/reviews/abc" title="Review" open onClose={() => {}} />)
+    fireEvent.click(screen.getByTestId('share-target-telegram'))
+    await waitFor(() => expect(open).toHaveBeenCalled())
+    const u = new URL(open.mock.calls[0][0] as string)
+    expect(u.searchParams.get('url')).toBe('https://www.tappyai.com/reviews/abc')
+    expect(u.searchParams.get('text')).toContain('Review')
+  })
+
+  it('Messenger (phone): copies first, opens fb-messenger://share?link= with the canonical url, says copied & opened', async () => {
+    Object.defineProperty(navigator, 'userAgent', { value: 'Mozilla/5.0 (Linux; Android 14) Mobile Safari/537.36', configurable: true })
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    fireEvent.click(screen.getByTestId('share-target-messenger'))
+    await waitFor(() => expect(status()).toBe('share.copiedAndOpened:{"app":"share.messenger"}'))
+    expect(writeText).toHaveBeenCalledWith(artifact.text)
+    expect(open.mock.calls[0][0]).toBe(`fb-messenger://share?link=${encodeURIComponent(artifact.url)}`)
+  })
+
+  it('Messenger (desktop): no tile, so no fake action — nothing opens, nothing is copied', () => {
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    expect(screen.queryByTestId('share-target-messenger')).toBeNull()
+    expect(open).not.toHaveBeenCalled()
+    expect(writeText).not.toHaveBeenCalled()
+  })
+
+
   it('Copy puts the FULL brochure (header … footer) on the clipboard', async () => {
     render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
     fireEvent.click(screen.getByTestId('share-target-copy'))
