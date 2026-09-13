@@ -5,7 +5,7 @@ import { tripcomAdapter } from './tripcom'
 import { pasgoAdapter } from './pasgo'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
-import type { CommerceRequest } from '../domain/types'
+import { INTENT_CAPABILITY, type CommerceRequest } from '../domain/types'
 
 export type { ProviderAdapter, DirectLinkBuild, DiscoveryHint } from './types'
 
@@ -18,7 +18,11 @@ export const MVP_ADAPTERS: readonly ProviderAdapter[] = [dmxAdapter, tripcomAdap
 export type AdapterFlags = Record<keyof typeof CCP_ADAPTERS, boolean>
 
 export function adaptersFor(request: CommerceRequest, flags: AdapterFlags = CCP_ADAPTERS): ProviderAdapter[] {
-  return MVP_ADAPTERS.filter(a => flags[a.entry.enabledFlag] === true && a.supports(request))
+  // Capability-aware (owner correction): an adapter is a candidate only when its registry entry
+  // declares the capability the request asks for. `supports` (domain + intent) is kept as the
+  // adapter's own, narrower check; the registry declaration is the one ranking is allowed to compare.
+  const capability = request.capability ?? INTENT_CAPABILITY[request.intentType]
+  return MVP_ADAPTERS.filter(a => flags[a.entry.enabledFlag] === true && a.entry.commerce.includes(capability) && a.supports(request))
 }
 
 export function adapterById(providerId: string): ProviderAdapter | null {

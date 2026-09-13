@@ -3,7 +3,7 @@ import { handoffBodyFor, reportCommerceHandoff, COMMERCE_HANDOFF_PATH } from './
 
 // ── The client-side handoff beacon carries opaque ids only ───────────────────
 
-const commerce = { linkId: 'a'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom', depth: 4, guestDepth: 5, authRequiredAt: 'none' as const, loginRequired: false, freshnessType: 'static' as const, expiresAt: null, tracked: false }
+const commerce = { linkId: 'a'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom', depth: 4, guestDepth: 5, authRequiredAt: 'none' as const, loginRequired: false, freshnessType: 'static' as const, expiresAt: null, tracked: false, primary: true }
 
 describe('handoffBodyFor', () => {
   it('is null for a non-commerce action and {linkId, requestId, platform} for a commerce one — never a URL', () => {

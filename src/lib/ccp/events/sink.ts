@@ -20,6 +20,7 @@ export type CommerceEvent =
       requestId: string
       domain: CommerceDomain
       intentType: string
+      capability?: string
       configurationKeys: string[]
       actorHash?: string
       sessionHash?: string
@@ -65,7 +66,7 @@ export const COMMERCE_EVENT_SEVERITY: Record<CommerceEventType, 'INFO' | 'WARNIN
 /** Every key an event may carry. Anything else is dropped before writing — the
  * guard against a future field quietly carrying a name, an e-mail or a URL. */
 export const COMMERCE_EVENT_FIELDS = new Set([
-  'type', 'requestId', 'domain', 'intentType', 'configurationKeys', 'actorHash', 'sessionHash', 'platform',
+  'type', 'requestId', 'domain', 'intentType', 'capability', 'configurationKeys', 'actorHash', 'sessionHash', 'platform',
   'providerId', 'offersCount', 'freshnessType', 'latencyMs', 'errorCode',
   'merchantId', 'score', 'rankingVersion', 'features',
   'linkId', 'kind', 'depth', 'guestDepth', 'authenticatedDepth', 'authRequiredAt', 'paramsPreserved', 'paramsDropped',

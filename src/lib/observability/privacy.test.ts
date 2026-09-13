@@ -52,7 +52,7 @@ const SAMPLES: Record<ObservabilityEvent['type'], ObservabilityEvent> = {
   // CCP commerce events (D5 / P6-C), every optional field populated. Ids are opaque hashes/UUIDs;
   // `linkDigest` is a truncated sha256 of the URL — the URL itself never appears.
   commerce_request: {
-    type: 'commerce_request', requestId: '550e8400-e29b-41d4-a716-446655440000', domain: 'travel', intentType: 'book_hotel',
+    type: 'commerce_request', requestId: '550e8400-e29b-41d4-a716-446655440000', domain: 'travel', intentType: 'book_hotel', capability: 'hotel_booking',
     configurationFields: 'checkIn,checkOut,adults', actorHash: 'a'.repeat(32), sessionHash: 'b'.repeat(32), platform: 'web',
   },
   commerce_provider_search: {

@@ -23,6 +23,7 @@ function row(over: Partial<CommerceLinkRow> = {}): CommerceLinkRow {
     merchantName: 'Trip.com',
     domain: 'travel',
     intentType: 'book_hotel',
+    capability: 'hotel_booking',
     depth: 4,
     guestDepth: 5,
     authRequiredAt: 'none',
@@ -47,7 +48,7 @@ describe('buildActions with commerce_links', () => {
     expect(actions[0].commerce).toEqual({
       linkId: 'a'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom',
       depth: 4, guestDepth: 5, authRequiredAt: 'none', loginRequired: false, freshnessType: 'static',
-      expiresAt: '2026-10-09T17:00:00.000Z', tracked: false,
+      expiresAt: '2026-10-09T17:00:00.000Z', tracked: false, capability: 'hotel_booking', primary: true,
     })
     // The legacy Booking.com search handoff is still offered, after it.
     expect(actions[1]).toMatchObject({ kind: 'booking', urlKind: 'search', platform: 'Booking.com' })

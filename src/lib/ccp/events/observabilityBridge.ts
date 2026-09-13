@@ -35,6 +35,7 @@ export function toObservabilityEvent(entry: Entry): ObservabilityEvent | null {
         requestId: str(entry.requestId) ?? '',
         domain: str(entry.domain) ?? '',
         intentType: str(entry.intentType) ?? '',
+        ...(str(entry.capability) ? { capability: str(entry.capability) } : {}),
         configurationFields: joined(entry.configurationKeys),
         ...(str(entry.actorHash) ? { actorHash: str(entry.actorHash) } : {}),
         ...(str(entry.sessionHash) ? { sessionHash: str(entry.sessionHash) } : {}),

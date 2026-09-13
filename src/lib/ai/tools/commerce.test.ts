@@ -237,7 +237,8 @@ describe('end to end through the canonical recommendation architecture', () => {
 
     const place = { name: 'Quá Ngon', address: '1 Lê Lợi', maps_link: 'https://maps.google.com/?cid=1' }
     const places = { results: [place], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW })
+    // Owner correction: a reservation leads only when the user asked for one (capability routing).
+    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW, userText: 'đặt bàn nhà hàng này' })
     const rec = placeRecommendations(places, 'Quận 1')[0]
     expect(rec.entity.actions[0]).toMatchObject({ kind: 'reservation', urlKind: 'direct', platform: 'PasGo' })
   })

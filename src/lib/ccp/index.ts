@@ -11,7 +11,8 @@ import { isExpired } from './domain/freshness'
 
 export type * from './domain/types'
 export { parseCommerceRequest, CommerceRequestSchema } from './domain/request'
-export { PROVIDER_REGISTRY, getProvider, providersFor } from './registry'
+export { PROVIDER_REGISTRY, getProvider, providersFor, providersForCapability, supportsCapability, depthProfileForCapability } from './registry'
+export { COMMERCE_CAPABILITIES, INTENT_CAPABILITY, DOMAIN_CAPABILITIES, capabilityForIntent } from './domain/types'
 export { resolveDeepLink } from './resolver/resolve'
 export { rankLinks } from './ranking/score'
 export { RANKING_WEIGHTS, RANKING_VERSION } from './ranking/weights'
@@ -57,6 +58,7 @@ export function resolveCommerce(input: unknown, opts: ResolveCommerceOptions = {
       requestId,
       domain: request.domain,
       intentType: request.intentType,
+      capability: request.capability,
       configurationKeys: request.configuration ? Object.keys(request.configuration).filter(k => k !== 'kind') : [],
       actorHash: request.context?.actorHash,
       sessionHash: request.context?.sessionHash,

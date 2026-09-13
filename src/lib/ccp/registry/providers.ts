@@ -30,6 +30,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['buy_product'],
     allowedHosts: ['www.dienmayxanh.com', 'dienmayxanh.com'],
     capabilities: ['search', 'details', 'pricing', 'configure', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    // Verified: product page → "Mua ngay" → /cart without login (L5 guest). Discovery/detail via feed or search hit.
+    commerce: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
     depth: {
       buy_product: {
         guestDepth: 5,
@@ -61,6 +63,8 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['book_hotel'],
     allowedHosts: ['vn.trip.com', 'www.trip.com'],
     capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    // Verified: hotel detail with stay → room "Đặt" → guest form (L5 guest).
+    commerce: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'commerce_handoff'],
     depth: {
       book_hotel: {
         guestDepth: 5,
@@ -100,6 +104,9 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['reserve_table'],
     allowedHosts: ['pasgo.vn', 'www.pasgo.vn'],
     capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary'],
+    // Owner correction 13 Sep 2026: PasGo is a TABLE RESERVATION provider — never food_order / food_delivery.
+    // availability: the reservation form reports an unserved time slot on the page (audit) — declared as verified.
+    commerce: ['restaurant_discovery', 'restaurant_detail', 'table_reservation', 'availability', 'commerce_handoff'],
     depth: {
       reserve_table: {
         guestDepth: 5,
@@ -129,6 +136,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['buy_ticket'],
     allowedHosts: ['www.cgv.vn', 'cgv.vn'],
     capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary'],
+    commerce: ['cinema_ticket', 'commerce_handoff'],
     depth: {
       buy_ticket: {
         guestDepth: 4,
@@ -159,6 +167,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['book_activity', 'buy_spa_voucher'],
     allowedHosts: ['www.klook.com', 'klook.com'],
     capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    commerce: ['activity_booking', 'spa_voucher', 'commerce_handoff'],
     depth: {
       book_activity: {
         guestDepth: 4,
@@ -200,6 +209,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['buy_product'],
     allowedHosts: ['cellphones.com.vn', 'www.cellphones.com.vn'],
     capabilities: ['transactionBoundary', 'tracking'],
+    commerce: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
     depth: {
       buy_product: {
         guestDepth: 4,
@@ -226,6 +236,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['book_transport'],
     allowedHosts: ['vexere.com', 'www.vexere.com'],
     capabilities: ['transactionBoundary', 'tracking'],
+    commerce: ['transport_booking', 'commerce_handoff'],
     depth: {
       book_transport: {
         guestDepth: 4,
@@ -252,6 +263,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     intents: ['book_hotel'],
     allowedHosts: ['www.booking.com', 'booking.com'],
     capabilities: ['transactionBoundary'],
+    commerce: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'commerce_handoff'],
     depth: {
       book_hotel: {
         guestDepth: 4,
@@ -269,5 +281,64 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     enabledFlag: 'CCP_HANDOFF_ONLY',
     tier: 'handoff_only',
     notes: ['CJ affiliate path restricted and not activated; handoff only (D10).', 'NO_PRICE_COMPARISON is contractual.'],
+  },
+  // ── Food delivery platforms — handoff-only FACTS (owner correction 13 Sep 2026) ──
+  // GrabFood and ShopeeFood are the food_order / food_delivery providers. They are
+  // NOT CCP adapters (owner decision D10: exactly five) and generate no Commerce
+  // Link; the legacy order links (src/lib/platformLinks/food.ts, L2 search pages)
+  // keep serving them. They are in the registry so the capability model can say
+  // what the audit verified: delivery in Vietnam has NO guest checkout — L3
+  // restaurant page, then a login (GrabFood) or the app (ShopeeFood).
+  {
+    providerId: 'grabfood',
+    merchantId: 'grabfood',
+    merchantName: 'GrabFood',
+    domains: ['food_drink'],
+    intents: ['order_delivery'],
+    allowedHosts: ['food.grab.com'],
+    capabilities: ['transactionBoundary'],
+    commerce: ['restaurant_discovery', 'restaurant_detail', 'food_order', 'food_delivery', 'commerce_handoff'],
+    depth: {
+      order_delivery: {
+        guestDepth: 3,
+        authenticatedDepth: null,
+        bestPossibleDepth: 3,
+        authRequiredAt: 'before_checkout',
+        verifiedOn: '2026-09-11',
+        evidence: AUDIT,
+        reason: 'Trang tìm kiếm (L2) và trang nhà hàng (L3, 11 Sep) mở được; giỏ hàng web có nhưng thanh toán yêu cầu đăng nhập Grab (OTP điện thoại); luồng đặt món thiên về ứng dụng. Không có guest checkout.',
+      },
+    },
+    freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'restaurant page URLs' } },
+    rights: LINK_ONLY_RIGHTS,
+    enabledFlag: 'CCP_HANDOFF_ONLY',
+    tier: 'handoff_only',
+    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.'],
+  },
+  {
+    providerId: 'shopeefood',
+    merchantId: 'shopeefood',
+    merchantName: 'ShopeeFood',
+    domains: ['food_drink'],
+    intents: ['order_delivery'],
+    allowedHosts: ['shopeefood.vn', 'www.shopeefood.vn'],
+    capabilities: ['transactionBoundary'],
+    commerce: ['restaurant_discovery', 'restaurant_detail', 'food_order', 'food_delivery', 'commerce_handoff'],
+    depth: {
+      order_delivery: {
+        guestDepth: 3,
+        authenticatedDepth: null,
+        bestPossibleDepth: 3,
+        authRequiredAt: 'app_only',
+        verifiedOn: VERIFIED,
+        evidence: AUDIT,
+        reason: 'Trang nhà hàng shopeefood.vn/<city>/<restaurant> (L3) mở được; đặt món chuyển sang ứng dụng Shopee và yêu cầu đăng nhập (xác minh 13 Sep).',
+      },
+    },
+    freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'restaurant page URLs' } },
+    rights: LINK_ONLY_RIGHTS,
+    enabledFlag: 'CCP_HANDOFF_ONLY',
+    tier: 'handoff_only',
+    notes: ['Legacy order link = search page (L2); no adapter (D10).', 'Depth is for food_delivery only — never a statement about Food & Drink as a domain.'],
   },
 ]

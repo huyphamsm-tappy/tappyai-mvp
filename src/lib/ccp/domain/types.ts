@@ -35,6 +35,69 @@ export const DOMAIN_INTENTS: Record<CommerceDomain, readonly IntentType[]> = {
   spa: ['buy_spa_voucher'],
 }
 
+// ── Capabilities (owner correction, 13 Sep 2026) ─────────────────────────────
+// DOMAIN ≠ PROVIDER ≠ TRANSACTION TYPE. A domain contains several commerce
+// capabilities; a provider declares the ones it actually supports; an intent
+// asks for exactly one transactional capability; transaction depth belongs to
+// the (provider, capability) pair. Food & Drink is the case that made this
+// explicit: PasGo serves table_reservation at guest L5, GrabFood/ShopeeFood
+// serve food_order/food_delivery at guest L3 (+ app/login boundary), and
+// neither is a substitute for the other.
+export const COMMERCE_CAPABILITIES = [
+  // food & drink
+  'restaurant_discovery',
+  'restaurant_detail',
+  'menu',
+  'availability',
+  'food_order',
+  'food_delivery',
+  'table_reservation',
+  // shopping
+  'product_discovery',
+  'product_detail',
+  'product_purchase',
+  // travel
+  'hotel_discovery',
+  'hotel_detail',
+  'hotel_booking',
+  'flight_booking',
+  'transport_booking',
+  // entertainment
+  'cinema_ticket',
+  'activity_booking',
+  // spa
+  'spa_voucher',
+  // cross-domain: the provider hands the user to a merchant flow
+  'commerce_handoff',
+] as const
+export type CommerceCapability = (typeof COMMERCE_CAPABILITIES)[number]
+
+/** The ONE transactional capability an intent asks for. Ranking compares only providers that declare it. */
+export const INTENT_CAPABILITY: Record<IntentType, CommerceCapability> = {
+  buy_product: 'product_purchase',
+  book_hotel: 'hotel_booking',
+  book_flight: 'flight_booking',
+  book_transport: 'transport_booking',
+  reserve_table: 'table_reservation',
+  order_delivery: 'food_delivery',
+  buy_ticket: 'cinema_ticket',
+  book_activity: 'activity_booking',
+  buy_spa_voucher: 'spa_voucher',
+}
+
+/** Which capabilities a domain contains (discovery/detail/menu included — not every one is transactional). */
+export const DOMAIN_CAPABILITIES: Record<CommerceDomain, readonly CommerceCapability[]> = {
+  food_drink: ['restaurant_discovery', 'restaurant_detail', 'menu', 'availability', 'food_order', 'food_delivery', 'table_reservation', 'commerce_handoff'],
+  shopping: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
+  travel: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'flight_booking', 'transport_booking', 'commerce_handoff'],
+  entertainment: ['cinema_ticket', 'activity_booking', 'commerce_handoff'],
+  spa: ['spa_voucher', 'commerce_handoff'],
+}
+
+export function capabilityForIntent(intent: IntentType): CommerceCapability {
+  return INTENT_CAPABILITY[intent]
+}
+
 // ── Transaction depth ────────────────────────────────────────────────────────
 // L0 homepage · L1 landing · L2 search/results · L3 detail · L4 configured /
 // selected · L5 final pre-payment / pre-confirmation step. L5 NEVER means
@@ -178,6 +241,12 @@ export interface CommerceContext {
 export interface CommerceRequest {
   domain: CommerceDomain
   intentType: IntentType
+  /**
+   * The transactional capability requested. Optional for callers that predate
+   * the capability model — the parser fills it from the intent; when present it
+   * must agree with the intent (a request cannot ask PasGo for delivery).
+   */
+  capability?: CommerceCapability
   /** Free-text subject (product name, hotel name, dish, film title…). */
   subject: string
   configuration?: Configuration

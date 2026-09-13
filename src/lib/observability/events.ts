@@ -224,6 +224,8 @@ export interface CommerceRequestEvent {
   domain: string
   /** Closed vocabulary (INTENT_TYPES), e.g. 'book_hotel'. */
   intentType: string
+  /** Closed vocabulary (COMMERCE_CAPABILITIES), e.g. 'table_reservation' — the capability ranking compared on. */
+  capability?: string
   /** Comma-joined configuration FIELD NAMES (checkIn,checkOut,adults) — never values. */
   configurationFields: string
   actorHash?: string
@@ -383,7 +385,7 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   'stage', 'status', 'language', 'operation', 'provider', 'kind', 'reason', 'identitySource',
   'providerId', 'role', 'route', 'code', 'scope', 'dropped',
   // CCP commerce events (D5 / P6-C). Field NAMES only; no value here is ever a URL or a person.
-  'requestId', 'domain', 'intentType', 'configurationFields', 'actorHash', 'sessionHash', 'platform',
+  'requestId', 'domain', 'intentType', 'capability', 'configurationFields', 'actorHash', 'sessionHash', 'platform',
   'offersCount', 'freshnessType', 'latencyMs', 'errorCode',
   'merchantId', 'score', 'rankingVersion',
   'linkId', 'depth', 'guestDepth', 'authenticatedDepth', 'authRequiredAt', 'paramsPreserved', 'paramsDropped',

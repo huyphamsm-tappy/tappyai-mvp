@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { COMMERCE_DOMAINS, DOMAIN_INTENTS, INTENT_TYPES, type CommerceRequest } from './types'
+import { COMMERCE_CAPABILITIES, COMMERCE_DOMAINS, DOMAIN_INTENTS, INTENT_CAPABILITY, INTENT_TYPES, type CommerceRequest } from './types'
 
 // Request validation — the only place a caller's input is trusted. Everything
 // downstream (adapters, resolver) assumes a request that passed this schema, so
@@ -68,6 +68,7 @@ export const CommerceRequestSchema = z
   .object({
     domain: z.enum(COMMERCE_DOMAINS),
     intentType: z.enum(INTENT_TYPES),
+    capability: z.enum(COMMERCE_CAPABILITIES).optional(),
     subject: z.string().trim().min(1).max(200),
     configuration: configurationSchema.optional(),
     constraints: z
@@ -95,6 +96,9 @@ export const CommerceRequestSchema = z
   })
   // Cross-field rules that a discriminated union cannot carry per member.
   .superRefine((r, ctx) => {
+    if (r.capability && r.capability !== INTENT_CAPABILITY[r.intentType]) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: `capability ${r.capability} does not match intent ${r.intentType} (expects ${INTENT_CAPABILITY[r.intentType]})`, path: ['capability'] })
+    }
     const c = r.configuration
     if (c?.kind === 'hotel' && !(c.checkOut > c.checkIn)) {
       ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'checkOut must be after checkIn', path: ['configuration', 'checkOut'] })
@@ -112,5 +116,6 @@ export function parseCommerceRequest(input: unknown): { ok: true; request: Comme
   if (!parsed.success) {
     return { ok: false, issues: parsed.error.issues.map(i => `${i.path.join('.') || '(root)'}: ${i.message}`) }
   }
-  return { ok: true, request: parsed.data as CommerceRequest }
+  // Normalise: every validated request carries its capability, filled from the intent when absent.
+  return { ok: true, request: { ...(parsed.data as CommerceRequest), capability: parsed.data.capability ?? INTENT_CAPABILITY[parsed.data.intentType] } }
 }

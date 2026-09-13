@@ -7,10 +7,12 @@ import {
   type CommerceDomain,
   type CommerceLinkRow,
   type CommerceRequest,
+  capabilityForIntent,
   type DiscoveryHint,
   type IntentType,
 } from '@/lib/ccp'
 import { discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
+import { entertainmentCapabilityOf, foodCapabilityOf, parseReservationSpec } from './commerceIntent'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
 //
@@ -45,6 +47,13 @@ export interface CommerceAttachContext {
   checkOut?: string
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'
+  /**
+   * The user's latest message. Owner correction 13 Sep 2026: the WORDS decide the
+   * capability ("giao tận nhà" → food_delivery, "đặt bàn cho 2 lúc 19h" →
+   * table_reservation, "vé xem phim" → cinema_ticket). Without it a food turn is
+   * treated as restaurant_discovery and any reservation link is secondary.
+   */
+  userText?: string
   /** Rows considered per tool call — the shortlist size. */
   maxRows?: number
   // ── seams (tests) ──
@@ -54,11 +63,16 @@ export interface CommerceAttachContext {
   now?: Date
 }
 
-/** The domain the place classifier resolved, as the row set carries it. */
-const PLACE_DOMAIN_INTENTS: Record<string, { domain: CommerceDomain; intents: IntentType[] }> = {
-  food: { domain: 'food_drink', intents: ['reserve_table'] },
-  entertainment: { domain: 'entertainment', intents: ['book_activity', 'buy_ticket'] },
-  spa: { domain: 'spa', intents: ['buy_spa_voucher'] },
+/** One CCP request the plan will issue: an intent, and whether it is what the user ASKED for. */
+interface PlannedIntent {
+  intentType: IntentType
+  /**
+   * True when the intent's capability is the one the user requested — its links may lead the
+   * action list. False for a capability the row also supports but the user did not ask for
+   * (a PasGo reservation on a discovery turn): resolved, offered, never ranked first.
+   */
+  primary: boolean
+  configurationFor(subject: string): { configuration: CommerceRequest['configuration']; assumed: string[] } | null
 }
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
@@ -72,23 +86,56 @@ const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
 
 interface Plan {
   domain: CommerceDomain
-  intents: IntentType[]
+  intents: PlannedIntent[]
   /** Which carved list key the rows live under — only `results` / `search_results` are carved by toolResultSplit. */
   listKey: 'results' | 'search_results'
   subjectOf(row: Row): string | undefined
   knownUrlsOf(row: Row): string[]
-  configurationFor(subject: string): { configuration: CommerceRequest['configuration']; assumed: string[] } | null
 }
 
-function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext): Plan | null {
+const noConfiguration = () => null
+
+/**
+ * Food & Drink is a domain with several capabilities (owner correction). The
+ * plan for a place turn depends on what the sentence asked for:
+ *   food_delivery         → order_delivery. No CCP adapter serves it (GrabFood /
+ *                           ShopeeFood are handoff-only facts; the legacy order
+ *                           links already on the row are the handoff). PasGo is
+ *                           NOT requested — a reservation flow must never answer
+ *                           a delivery request.
+ *   table_reservation     → reserve_table as PRIMARY, with the party/date/time
+ *                           the sentence states (PasGo L5 hold grammar).
+ *   restaurant_discovery  → reserve_table as SECONDARY (offered, not leading).
+ */
+function foodIntents(ctx: CommerceAttachContext, now: Date): PlannedIntent[] {
+  const capability = foodCapabilityOf(ctx.userText)
+  if (capability === 'food_delivery') return [{ intentType: 'order_delivery', primary: true, configurationFor: noConfiguration }]
+  const spec = capability === 'table_reservation' ? parseReservationSpec(ctx.userText, now) : null
+  return [{
+    intentType: 'reserve_table',
+    primary: capability === 'table_reservation',
+    configurationFor: subject => spec
+      ? { configuration: { kind: 'reservation', restaurantRef: slug(subject), date: spec.date, time: spec.time, adults: spec.adults }, assumed: spec.assumed }
+      : null,
+  }]
+}
+
+function entertainmentIntents(ctx: CommerceAttachContext): PlannedIntent[] {
+  const cinema = entertainmentCapabilityOf(ctx.userText) === 'cinema_ticket'
+  return [
+    { intentType: 'buy_ticket', primary: cinema, configurationFor: noConfiguration },
+    { intentType: 'book_activity', primary: !cinema, configurationFor: noConfiguration },
+  ]
+}
+
+function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext, now: Date): Plan | null {
   if (toolName === 'search_products') {
     return {
       domain: 'shopping',
-      intents: ['buy_product'],
+      intents: [{ intentType: 'buy_product', primary: true, configurationFor: noConfiguration }],
       listKey: 'search_results',
       subjectOf: row => str(row.title),
       knownUrlsOf: row => [str(row.link)].filter((u): u is string => !!u),
-      configurationFor: () => null,
     }
   }
   if (toolName === 'get_hotel_prices') {
@@ -96,23 +143,31 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext)
     const dated = !!checkIn && !!checkOut && ISO_DATE.test(checkIn) && ISO_DATE.test(checkOut) && checkOut > checkIn
     return {
       domain: 'travel',
-      intents: ['book_hotel'],
+      intents: [{
+        intentType: 'book_hotel',
+        primary: true,
+        configurationFor: subject => dated
+          ? {
+            // 🚨 `adults` is a DEFAULT, not a fact from the conversation — recorded on the row as
+            // assumed so a label can say so; the merchant page lets the user change it.
+            configuration: { kind: 'hotel', propertyRef: slug(subject), checkIn: checkIn!, checkOut: checkOut!, adults: DEFAULT_ADULTS },
+            assumed: ['adults'],
+          }
+          : null,
+      }],
       listKey: 'search_results',
       // "Hotel Name - City - Booking.com" → "Hotel Name" (same rule the entity builder applies).
       subjectOf: row => str(String(row.name ?? row.title ?? '').split(' - ')[0]),
       knownUrlsOf: row => [str(row.link)].filter((u): u is string => !!u),
-      configurationFor: subject => dated
-        ? {
-          // 🚨 `adults` is a DEFAULT, not a fact from the conversation — recorded on the row as
-          // assumed so a label can say so; the merchant page lets the user change it.
-          configuration: { kind: 'hotel', propertyRef: slug(subject), checkIn: checkIn!, checkOut: checkOut!, adults: DEFAULT_ADULTS },
-          assumed: ['adults'],
-        }
-        : null,
     }
   }
   const stated = str(r._tappy_place_domain)
-  const di = stated ? PLACE_DOMAIN_INTENTS[stated] : undefined
+  const domainIntents: Record<string, { domain: CommerceDomain; intents: PlannedIntent[] }> = {
+    food: { domain: 'food_drink', intents: foodIntents(ctx, now) },
+    entertainment: { domain: 'entertainment', intents: entertainmentIntents(ctx) },
+    spa: { domain: 'spa', intents: [{ intentType: 'buy_spa_voucher', primary: true, configurationFor: noConfiguration }] },
+  }
+  const di = stated ? domainIntents[stated] : undefined
   if (!di) return null
   return {
     domain: di.domain,
@@ -120,7 +175,6 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext)
     listKey: 'results',
     subjectOf: row => str(row.name),
     knownUrlsOf: row => [str(row.website_uri)].filter((u): u is string => !!u),
-    configurationFor: () => null,
   }
 }
 
@@ -142,7 +196,8 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
   if (!enabled || !isRecord(result)) return result
   try {
     const r = result
-    const plan = planFor(toolName, r, ctx)
+    const now = ctx.now ?? new Date()
+    const plan = planFor(toolName, r, ctx, now)
     if (!plan) return result
     const list = r[plan.listKey]
     if (!Array.isArray(list)) return result
@@ -155,7 +210,6 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     const targets = candidateRows(rows, r, ctx.maxRows ?? 3)
     if (targets.length === 0) return result
     const resolve = ctx.resolve ?? resolveCommerce
-    const now = ctx.now ?? new Date()
 
     const subjects: DiscoverySubject[] = []
     targets.forEach((row, i) => {
@@ -163,7 +217,8 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
       if (subject) subjects.push({ id: String(i), subject, locality: ctx.location, knownUrls: plan.knownUrlsOf(row) })
     })
 
-    for (const intentType of plan.intents) {
+    for (const { intentType, primary, configurationFor } of plan.intents) {
+      const capability = capabilityForIntent(intentType)
       // Discovery is one budgeted pass per intent; the search seam lets tests count it.
       let discovered: DiscoveredHint[] = []
       try {
@@ -178,10 +233,11 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
           ...discovered.filter(d => d.subjectId === s.id).map(d => ({ url: d.url, title: d.title ?? s.subject })),
         ]
         if (hints.length === 0) continue
-        const cfg = plan.configurationFor(s.subject)
+        const cfg = configurationFor(s.subject)
         const request: CommerceRequest = {
           domain: plan.domain,
           intentType,
+          capability,
           subject: s.subject.slice(0, 200),
           ...(cfg ? { configuration: cfg.configuration } : {}),
           ...(ctx.location ? { constraints: { city: ctx.location.slice(0, 80) } } : {}),
@@ -189,7 +245,7 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
         }
         const out = resolve(request, { hints, now, enabled: true })
         if (!('links' in out) || out.links.length === 0) continue
-        const projected = out.links.slice(0, MAX_LINKS_PER_ROW).map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? []))
+        const projected = out.links.slice(0, MAX_LINKS_PER_ROW).map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
         const existing = Array.isArray(row[COMMERCE_LINKS_KEY]) ? (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) : []
         row[COMMERCE_LINKS_KEY] = [...existing, ...projected]
       }

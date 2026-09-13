@@ -1,6 +1,6 @@
 import { PROVIDER_REGISTRY } from './providers'
 import type { ProviderRegistryEntry } from './types'
-import type { CommerceDomain, IntentType, TransactionDepthProfile } from '../domain/types'
+import { INTENT_CAPABILITY, type CommerceCapability, type CommerceDomain, type IntentType, type TransactionDepthProfile } from '../domain/types'
 
 export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig } from './types'
 export { PROVIDER_REGISTRY } from './providers'
@@ -17,6 +17,26 @@ export function providersFor(domain: CommerceDomain, intent: IntentType): Provid
 
 export function depthProfileFor(entry: ProviderRegistryEntry, intent: IntentType): TransactionDepthProfile | null {
   return entry.depth[intent] ?? null
+}
+
+/** Does this provider declare the capability (verified, not inferred from its domain)? */
+export function supportsCapability(entry: ProviderRegistryEntry, capability: CommerceCapability): boolean {
+  return entry.commerce.includes(capability)
+}
+
+/** Providers declaring a capability within a domain — MVP adapters and handoff-only facts alike. */
+export function providersForCapability(domain: CommerceDomain, capability: CommerceCapability): ProviderRegistryEntry[] {
+  return PROVIDER_REGISTRY.filter(p => p.domains.includes(domain) && p.commerce.includes(capability))
+}
+
+/**
+ * Depth for a (provider, capability) pair. Depth is stored per intent and every
+ * transactional capability maps to exactly one intent, so this is a lookup,
+ * never an aggregate over the domain — "Food & Drink = L5" cannot be expressed.
+ */
+export function depthProfileForCapability(entry: ProviderRegistryEntry, capability: CommerceCapability): TransactionDepthProfile | null {
+  const intent = (Object.keys(INTENT_CAPABILITY) as IntentType[]).find(i => INTENT_CAPABILITY[i] === capability && entry.intents.includes(i))
+  return intent ? entry.depth[intent] ?? null : null
 }
 
 /** Exact-match host allow-list. No wildcard: a resolved URL may only point at a host the audit saw. */
@@ -47,6 +67,14 @@ export function validateRegistry(entries: readonly ProviderRegistryEntry[] = PRO
       if (!/^https:\/\//.test(d.evidence)) problems.push(`${e.providerId}/${intent}: evidence must be an https URL`)
     }
     if (e.tier === 'mvp' && !e.capabilities.includes('resolveDeepLink')) problems.push(`${e.providerId}: mvp tier must resolve deep links`)
+    // Capability model: every intent the provider serves must be backed by the declared capability,
+    // and a provider that hands users to a merchant flow declares commerce_handoff.
+    if (!Array.isArray(e.commerce) || e.commerce.length === 0) problems.push(`${e.providerId}: no commerce capabilities declared`)
+    for (const intent of e.intents) {
+      const cap = INTENT_CAPABILITY[intent]
+      if (!e.commerce.includes(cap)) problems.push(`${e.providerId}: serves ${intent} but does not declare ${cap}`)
+    }
+    if (!e.commerce.includes('commerce_handoff')) problems.push(`${e.providerId}: a registry provider hands off to a merchant and must declare commerce_handoff`)
     if (e.tracking) {
       if (!/^\d{10,25}$/.test(e.tracking.campaignId)) problems.push(`${e.providerId}: campaignId not numeric`)
       if (e.tracking.safeWrapper !== 'deep_link') problems.push(`${e.providerId}: only the deep_link wrapper is verified safe`)

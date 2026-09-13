@@ -1,4 +1,4 @@
-import type { CommerceDomain, FreshnessType, IntentType, RightsFlags, TransactionDepthProfile } from '../domain/types'
+import type { CommerceCapability, CommerceDomain, FreshnessType, IntentType, RightsFlags, TransactionDepthProfile } from '../domain/types'
 
 // The provider registry is DATA about providers: what they can do, how deep
 // they go, how fresh their data is, what rights apply and which tracking
@@ -46,7 +46,15 @@ export interface ProviderRegistryEntry {
   intents: readonly IntentType[]
   /** Hosts a resolved URL for this provider may point at. Exact host or `*.` suffix. */
   allowedHosts: readonly string[]
+  /** TECHNICAL capabilities the adapter implements (search, resolveDeepLink, tracking…). */
   capabilities: readonly ProviderCapability[]
+  /**
+   * COMMERCE capabilities the merchant actually offers a user, as verified.
+   * Owner correction 13 Sep 2026: this is what routing and ranking match on —
+   * a provider is a candidate for a request only when it declares the
+   * request's capability. Not to be inferred from the domain.
+   */
+  commerce: readonly CommerceCapability[]
   /** One profile per supported intent. */
   depth: Partial<Record<IntentType, TransactionDepthProfile>>
   freshness: {

@@ -79,6 +79,10 @@ export interface CommerceActionFacts {
   /** Session-bound URLs expire (PasGo hold, Trip.com stay); null = stable. */
   expiresAt: string | null
   tracked: boolean
+  /** The capability the link serves — what ranking compared on. */
+  capability?: CommerceLinkRow['capability']
+  /** Whether that capability is the one the user asked for this turn. */
+  primary: boolean
 }
 
 /**
@@ -229,6 +233,12 @@ export interface ActionSource {
  * handoff"). It therefore sorts before index 0 rather than being slotted into a
  * table that has no row for "the real one". Two commerce links keep CCP's own
  * ranking order (they arrive ranked; the array index is the tie-break).
+ *
+ * 🔑 …BUT ONLY FOR THE CAPABILITY THE USER ASKED FOR (owner correction, 13 Sep
+ * 2026). A PasGo reservation link on a "find me a restaurant" or "deliver to
+ * my door" turn is a capability the user did not request: it is still offered,
+ * with the domain table's priority for its kind (after order links and maps),
+ * never in front of them. "Deeper" is not "more relevant".
  */
 const COMMERCE_PRIORITY = -1
 
@@ -256,10 +266,12 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
     const kind = actionKindFor(row.intentType)
     const a = action(kind, row.url, domain, { urlKind: urlKindFor(row.kind), platform: row.merchantName })
     if (!a) return
+    const primary = row.primary !== false
     out.push({
       ...a,
-      // Ranked order from CCP is preserved; a fraction keeps every commerce action ahead of index 0.
-      priority: COMMERCE_PRIORITY + index / 100,
+      // Ranked order from CCP is preserved; a fraction keeps every PRIMARY commerce action ahead of
+      // index 0. A secondary one keeps the table priority of its kind.
+      priority: primary ? COMMERCE_PRIORITY + index / 100 : a.priority,
       commerce: {
         linkId: row.linkId,
         requestId: row.requestId,
@@ -271,6 +283,8 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
         freshnessType: row.freshness.freshnessType,
         expiresAt: row.expiresAt,
         tracked: row.tracked,
+        ...(row.capability ? { capability: row.capability } : {}),
+        primary,
       },
     })
   })

@@ -1,4 +1,4 @@
-import type { AuthRequiredAt, CommerceDomain, CommerceLink, FreshnessType, IntentType, LinkKind, TransactionDepth } from './domain/types'
+import { INTENT_CAPABILITY, type AuthRequiredAt, type CommerceCapability, type CommerceDomain, type CommerceLink, type FreshnessType, type IntentType, type LinkKind, type TransactionDepth } from './domain/types'
 
 // ── The row-level attachment (owner decision P6-B, 13 Sep 2026) ─────────────
 // A resolved Commerce Link travels on the tool-result ROW under `commerce_links`,
@@ -24,6 +24,15 @@ export interface CommerceLinkRow {
   merchantName: string
   domain: CommerceDomain
   intentType: IntentType
+  /** The capability this link serves (owner correction: depth and ranking are per capability). */
+  capability: CommerceCapability
+  /**
+   * True when this capability is the one the user asked for on this turn. A link for a
+   * capability the row also supports but the user did not request (a reservation on a
+   * "find me a restaurant" turn) is attached with primary=false and never leads the actions.
+   * Absent on rows persisted before this field existed → treated as primary.
+   */
+  primary?: boolean
   depth: TransactionDepth
   guestDepth: TransactionDepth
   authRequiredAt: AuthRequiredAt
@@ -43,7 +52,7 @@ export interface CommerceLinkRow {
   tracked: boolean
 }
 
-export function projectCommerceLinkRow(link: CommerceLink, requestId: string, intentType: IntentType, assumedParams: string[] = []): CommerceLinkRow {
+export function projectCommerceLinkRow(link: CommerceLink, requestId: string, intentType: IntentType, assumedParams: string[] = [], opts: { primary?: boolean } = {}): CommerceLinkRow {
   return {
     linkId: link.linkId,
     requestId,
@@ -54,6 +63,8 @@ export function projectCommerceLinkRow(link: CommerceLink, requestId: string, in
     merchantName: link.merchantName,
     domain: link.domain,
     intentType,
+    capability: INTENT_CAPABILITY[intentType],
+    primary: opts.primary ?? true,
     depth: link.depth,
     guestDepth: link.depthProfile.guestDepth,
     authRequiredAt: link.authRequiredAt,
