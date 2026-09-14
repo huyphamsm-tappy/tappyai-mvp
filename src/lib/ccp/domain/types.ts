@@ -40,7 +40,7 @@ export const DOMAIN_INTENTS: Record<CommerceDomain, readonly IntentType[]> = {
 // capabilities; a provider declares the ones it actually supports; an intent
 // asks for exactly one transactional capability; transaction depth belongs to
 // the (provider, capability) pair. Food & Drink is the case that made this
-// explicit: PasGo serves table_reservation at guest L5, GrabFood/ShopeeFood
+// explicit: table_reservation (NOT_REQUIRED / FUTURE since 14 Sep 2026), GrabFood/ShopeeFood
 // serve food_order/food_delivery at guest L3 (+ app/login boundary), and
 // neither is a substitute for the other.
 export const COMMERCE_CAPABILITIES = [
@@ -244,7 +244,7 @@ export interface CommerceRequest {
   /**
    * The transactional capability requested. Optional for callers that predate
    * the capability model — the parser fills it from the intent; when present it
-   * must agree with the intent (a request cannot ask PasGo for delivery).
+   * must agree with the intent (a request cannot ask a reservation provider for delivery).
    */
   capability?: CommerceCapability
   /** Free-text subject (product name, hotel name, dish, film title…). */

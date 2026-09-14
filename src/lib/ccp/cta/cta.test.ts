@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, it, expect } from 'vitest'
 import { projectToCta } from './projection'
 import { resolveDeepLink } from '../resolver/resolve'
-import { pasgoAdapter } from '../adapters/pasgo'
+import { tripcomAdapter } from '../adapters/tripcom'
 import { cgvAdapter } from '../adapters/cgv'
 import type { CommerceRequest } from '../domain/types'
 
@@ -12,14 +12,14 @@ describe('CTA projection (D8)', () => {
   afterEach(() => { delete process.env.ACCESSTRADE_PUBLISHER_ID })
 
   it('keeps the legacy four fields and adds the commerce block; never uses internal_booking', () => {
-    const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'x', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2 } }
-    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
-    const r = resolveDeepLink(pasgoAdapter, req, offer, req.configuration, { now })
+    const req: CommerceRequest = { domain: 'travel', intentType: 'book_hotel', subject: 'x', configuration: { kind: 'hotel', propertyRef: '10569789', checkIn: '2026-10-10', checkOut: '2026-10-12', adults: 2 } }
+    const offer = tripcomAdapter.toOffer(req, { subjectRef: '10569789' }, now)!
+    const r = resolveDeepLink(tripcomAdapter, req, offer, req.configuration, { now })
     if (!r.ok) throw new Error('resolve failed')
     const cta = projectToCta(r.link)
-    expect(cta).toMatchObject({ label: 'Đặt bàn tại PasGo', type: 'booking', url: r.link.url, primary: true })
+    expect(cta).toMatchObject({ label: 'Đặt tại Trip.com', type: 'booking', url: r.link.url, primary: true })
     expect(cta.type).not.toBe('internal_booking')
-    expect(cta.commerce).toMatchObject({ provider: 'pasgo', merchant: 'pasgo', linkKind: 'CHECKOUT_HANDOFF', depth: 5, guestDepth: 5, authRequiredAt: 'none', handoff: 'guest', tracked: false })
+    expect(cta.commerce).toMatchObject({ provider: 'tripcom', merchant: 'tripcom', linkKind: 'DIRECT_DEEP_LINK', depth: 4, guestDepth: 5, authRequiredAt: 'none', handoff: 'guest' })
     expect(cta.commerce.expiresAt).toBe(r.link.expiresAt)
   })
 

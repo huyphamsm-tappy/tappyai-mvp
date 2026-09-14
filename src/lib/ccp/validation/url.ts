@@ -61,7 +61,7 @@ export function q(value: string | number): string {
   return encodeURIComponent(String(value))
 }
 
-/** YYYY-MM-DD → DD/MM/YYYY (PasGo) — validated input only. */
+/** YYYY-MM-DD → DD/MM/YYYY — validated input only (kept for date-carrying grammars). */
 export function isoToDmySlash(iso: string): string {
   const [y, m, d] = iso.split('-')
   return `${d}/${m}/${y}`

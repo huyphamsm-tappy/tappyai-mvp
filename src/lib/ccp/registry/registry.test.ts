@@ -10,9 +10,9 @@ describe('provider registry', () => {
 
   it('contains the five MVP adapters (D10) plus the three shopping marketplaces (14 Sep 2026), and they agree with the adapter list', () => {
     const mvp = PROVIDER_REGISTRY.filter(p => p.tier === 'mvp').map(p => p.providerId).sort()
-    expect(mvp).toEqual(['cgv', 'dmx', 'klook', 'lazada', 'pasgo', 'shopee', 'tiktokshop', 'tripcom'])
+    expect(mvp).toEqual(['cgv', 'dmx', 'klook', 'lazada', 'shopee', 'tiktokshop', 'tripcom'])
     expect(ADAPTERS.map(a => a.providerId).sort()).toEqual(mvp)
-    expect(MVP_ADAPTERS.map(a => a.providerId).sort()).toEqual(['cgv', 'dmx', 'klook', 'pasgo', 'tripcom'])
+    expect(MVP_ADAPTERS.map(a => a.providerId).sort()).toEqual(['cgv', 'dmx', 'klook', 'tripcom'])
   })
 
   it('Shopee and TikTok Shop are first-class shopping providers with the verified boundaries (owner decision 14 Sep 2026)', () => {
@@ -39,7 +39,8 @@ describe('provider registry', () => {
   it('transcribes the audited depth profiles verbatim', () => {
     expect(getProvider('dmx')!.depth.buy_product).toMatchObject({ guestDepth: 5, authenticatedDepth: 5, authRequiredAt: 'at_order' })
     expect(getProvider('tripcom')!.depth.book_hotel).toMatchObject({ guestDepth: 5, authRequiredAt: 'none' })
-    expect(getProvider('pasgo')!.depth.reserve_table).toMatchObject({ guestDepth: 5, authRequiredAt: 'none' })
+    // PasGo removed from active scope (owner decision 14 Sep 2026): no provider declares table_reservation.
+    expect(getProvider('pasgo')).toBeNull()
     expect(getProvider('cgv')!.depth.buy_ticket).toMatchObject({ guestDepth: 4, authenticatedDepth: 5, authRequiredAt: 'before_selection' })
     expect(getProvider('klook')!.depth.book_activity).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_checkout' })
     expect(getProvider('klook')!.depth.buy_spa_voucher).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_checkout' })

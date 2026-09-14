@@ -11,7 +11,9 @@ describe('discovery scopes come from the registry', () => {
     expect(discoveryScopesFor('travel', 'book_hotel').map(s => s.providerId)).toEqual(['tripcom'])
     // Shopping (14 Sep 2026): the retailers and the three marketplaces are all discoverable; CellphoneS via passthrough.
     expect(discoveryScopesFor('shopping', 'buy_product').map(s => s.providerId)).toEqual(['dmx', 'shopee', 'tiktokshop', 'lazada', 'cellphones'])
-    expect(discoveryScopesFor('food_drink', 'reserve_table').map(s => s.providerId)).toEqual(['pasgo'])
+    // table_reservation has no active provider (owner decision 14 Sep 2026); delivery has the two platforms.
+    expect(discoveryScopesFor('food_drink', 'reserve_table')).toEqual([])
+    expect(discoveryScopesFor('food_drink', 'order_delivery').map(s => s.providerId)).toEqual(['grabfood', 'shopeefood'])
     expect(discoveryScopesFor('entertainment', 'book_activity').map(s => s.providerId)).toEqual(['klook'])
     expect(discoveryScopesFor('spa', 'buy_spa_voucher').map(s => s.providerId)).toEqual(['klook'])
     // CGV has no film tool to discover from: film pages are only used when a row already carries one.
@@ -26,7 +28,9 @@ describe('discovery scopes come from the registry', () => {
   it('providerOwning is an exact-host, https-only match against the allow-lists', () => {
     expect(providerOwning('https://vn.trip.com/hotels/detail/?hotelId=1')).toBe('tripcom')
     expect(providerOwning('https://www.dienmayxanh.com/tu-lanh/x')).toBe('dmx')
-    expect(providerOwning('https://pasgo.vn/nha-hang/x-1')).toBe('pasgo')
+    // PasGo removed from active scope (owner decision 14 Sep 2026): its host is owned by no provider.
+    expect(providerOwning('https://pasgo.vn/nha-hang/x-1')).toBeNull()
+    expect(providerOwning('https://shopeefood.vn/ho-chi-minh/pho-24')).toBe('shopeefood')
     expect(providerOwning('http://vn.trip.com/')).toBeNull()
     expect(providerOwning('https://vn.trip.com.attacker.example/')).toBeNull()
     expect(providerOwning('https://evil.vn.trip.com/')).toBeNull()

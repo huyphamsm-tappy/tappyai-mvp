@@ -2,7 +2,6 @@ import { CCP_ADAPTERS } from '@/lib/config/product'
 import type { ProviderAdapter } from './types'
 import { dmxAdapter } from './dmx'
 import { tripcomAdapter } from './tripcom'
-import { pasgoAdapter } from './pasgo'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
 import { PASSTHROUGH_ADAPTERS } from './handoff'
@@ -16,7 +15,8 @@ export { MARKETPLACE_ADAPTERS, isMarketplaceAdapter, marketplaceSearchTemplates,
 // decision 14 Sep 2026: Shopee and TikTok Shop mandatory, Lazada desired). Adding one is a
 // reviewed change here AND a registry entry with a dated depth profile; the adapter test
 // asserts both lists agree.
-export const MVP_ADAPTERS: readonly ProviderAdapter[] = [dmxAdapter, tripcomAdapter, pasgoAdapter, cgvAdapter, klookAdapter]
+// PasGo removed from active scope (owner decision 14 Sep 2026) — four MVP adapters remain.
+export const MVP_ADAPTERS: readonly ProviderAdapter[] = [dmxAdapter, tripcomAdapter, cgvAdapter, klookAdapter]
 /** Every adapter-backed provider: MVP core + marketplaces. Registry entries with tier 'mvp'. */
 export const ADAPTERS: readonly ProviderAdapter[] = [...MVP_ADAPTERS, ...MARKETPLACE_ADAPTERS]
 

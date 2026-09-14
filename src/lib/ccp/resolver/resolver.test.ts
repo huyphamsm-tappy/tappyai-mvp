@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, it, expect } from 'vitest'
 import type { CommerceRequest } from '../domain/types'
 import { deriveKind, resolveDeepLink } from './resolve'
 import { tripcomAdapter } from '../adapters/tripcom'
-import { pasgoAdapter } from '../adapters/pasgo'
 import { dmxAdapter } from '../adapters/dmx'
 import type { DiscoveryHint } from '../adapters/types'
 import { cgvAdapter } from '../adapters/cgv'
@@ -85,21 +84,11 @@ describe('Deep Link Resolver — the six steps', () => {
   })
 
   it('refuses an unsafe direct URL outright (adapter bug or registry drift cannot reach the user)', () => {
-    const evil: ProviderAdapter = { ...pasgoAdapter, buildDirectLink: () => ({ url: 'https://evil.example/x', depth: 5, paramsPreserved: [], paramsPageOnly: [], paramsDropped: [], expiresAt: null, grammar: 'verified', limitations: [] }) }
-    const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'x' }
-    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
+    const evil: ProviderAdapter = { ...cgvAdapter, buildDirectLink: () => ({ url: 'https://evil.example/x', depth: 3, paramsPreserved: [], paramsPageOnly: [], paramsDropped: [], expiresAt: null, grammar: 'verified', limitations: [] }) }
+    const req: CommerceRequest = { domain: 'entertainment', intentType: 'buy_ticket', subject: 'x' }
+    const offer = cgvAdapter.toOffer(req, { subjectRef: 'hope-vung-tu-dia' }, now)!
     const r = resolveDeepLink(evil, req, offer, undefined, { now })
     expect(r).toMatchObject({ ok: false, reason: 'unsafe_direct_url' })
-  })
-
-  it('PasGo: CHECKOUT_HANDOFF at L5 with the 5-minute expiry; no tracking (affiliate optional)', () => {
-    const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'x', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2 } }
-    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
-    const r = resolveDeepLink(pasgoAdapter, req, offer, req.configuration, { now })
-    expect(r.ok && r.link.kind).toBe('CHECKOUT_HANDOFF')
-    expect(r.ok && r.link.depth).toBe(5)
-    expect(r.ok && r.link.expiresAt).toBe(new Date(now.getTime() + 300_000).toISOString())
-    expect(r.ok && r.wrapper).toBe('unavailable')
   })
 
   it('CGV and Klook: guest L4 boundary is carried, never claimed as L5', () => {
@@ -138,11 +127,10 @@ describe('orchestrator + ranking + fallback', () => {
     expect('providersFailed' in r && r.providersFailed[0]).toMatchObject({ code: 'disabled' })
   })
 
-  it('resolves the five MVP examples end to end when enabled', () => {
+  it('resolves the MVP examples end to end when enabled (PasGo removed 14 Sep 2026)', () => {
     const cases: Array<[CommerceRequest, DiscoveryHint, string, number]> = [
       [{ domain: 'shopping', intentType: 'buy_product', subject: 'iPhone 15' }, { url: 'https://www.dienmayxanh.com/dien-thoai/iphone-15-256gb' }, 'dmx', 3],
       [hotelReq, { subjectRef: '10569789' }, 'tripcom', 4],
-      [{ domain: 'food_drink', intentType: 'reserve_table', subject: 'x', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2 } }, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: '2026-09-13T00:00:00.000Z', source: 'merchant_page' } }, 'pasgo', 5],
       [{ domain: 'entertainment', intentType: 'buy_ticket', subject: 'HOPE', configuration: { kind: 'cinema', filmRef: 'hope-vung-tu-dia' } }, { subjectRef: 'hope-vung-tu-dia' }, 'cgv', 3],
       [{ domain: 'spa', intentType: 'buy_spa_voucher', subject: 'Ha Spa', configuration: { kind: 'spa', activityRef: '43345' } }, { subjectRef: '43345' }, 'klook', 3],
     ]

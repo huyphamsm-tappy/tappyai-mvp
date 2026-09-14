@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { attachCommerceLinks } from './commerce'
-import { verifyMerchantPage, discoverBySubject } from './commerceDiscovery'
-import { foodCapabilityOf, parseReservationSpec } from './commerceIntent'
-import { COMMERCE_LINKS_KEY, resolveCommerce, type CommerceLinkRow } from '@/lib/ccp'
+import { discoverBySubject } from './commerceDiscovery'
+import { foodCapabilityOf } from './commerceIntent'
+import { COMMERCE_LINKS_KEY, providerOwning, resolveCommerce, type CommerceLinkRow } from '@/lib/ccp'
 import { adaptersFor } from '@/lib/ccp/adapters'
 import { buildActions } from '@/lib/recommendation/actions'
 import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
@@ -23,12 +23,6 @@ const NOW = new Date('2026-09-13T08:00:00Z')
 const links = (row: Record<string, unknown>) => (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []
 const t = (key: string, vars?: Record<string, string>) => vars ? `${key}:${vars.platform}` : key
 
-/** A PasGo restaurant page that carries the reservation widget (read-only verification, 13 Sep 2026). */
-const PASGO_BOOKABLE = '<html><input name="sfAdult"><script>var linkChuyenHuongBooking = "https://pasgo.vn/dat-cho-ngay/3875?returnUrl=/nha-hang/rakuen-hotpot-le-van-sy-3875";</script></html>'
-/** A venue that left the programme (Jaspas 1257/1255, seen live). */
-const PASGO_STOPPED = '<html><p>Nhà hàng đã dừng đặt chỗ trên hệ thống PasGo</p></html>'
-/** A venue PasGo lists but does not serve (Saigon Fusion 2098, seen live). */
-const PASGO_UNSUPPORTED = '<html><input name="sfAdult"><div>Chưa hỗ trợ đặt bàn qua PasGo</div></html>'
 
 function stub(table: Record<string, Array<{ title: string; link: string; snippet: string }>>) {
   const calls: string[] = []
@@ -39,7 +33,6 @@ function stub(table: Record<string, Array<{ title: string; link: string; snippet
   })
   return { search, calls }
 }
-const pasgoHit = { 'site:pasgo.vn/nha-hang': [{ title: 'Rakuen Hotpot', link: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875', snippet: '' }] }
 
 // ── A · food_delivery can never select PasGo ─────────────────────────────────
 describe('A · food_delivery → PasGo is impossible', () => {
@@ -54,8 +47,8 @@ describe('A · food_delivery → PasGo is impossible', () => {
   it('the seam, on a delivery sentence, attaches no PasGo link even when the row itself points at pasgo.vn', async () => {
     const row = { name: 'Phở Hòa', address: '260C Pasteur', website_uri: 'https://pasgo.vn/nha-hang/pho-hoa-999', maps_link: 'https://maps.google.com/?cid=1' }
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    const { search, calls } = stub({ ...pasgoHit })
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, fetchText: async () => PASGO_BOOKABLE, userTexts: ['Tôi muốn đặt đồ ăn giao tận nhà.', 'Phở ở Quận 3'] })
+    const { search, calls } = stub({ 'site:pasgo.vn': [{ title: 'Phở Hòa', link: 'https://pasgo.vn/nha-hang/pho-hoa-999', snippet: '' }] })
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, userTexts: ['Tôi muốn đặt đồ ăn giao tận nhà.', 'Phở ở Quận 3'] })
     expect(links(row).map(l => l.providerId)).not.toContain('pasgo')
     expect(calls.some(q => q.includes('pasgo'))).toBe(false)
   })
@@ -95,28 +88,27 @@ describe('A · food_delivery → PasGo is impossible', () => {
   })
 })
 
-// ── B · reservation configuration survives a clarification turn ──────────────
-describe('B · party / time / date survive the clarifying turn', () => {
+// ── B · a reservation sentence: the capability is recognised and DECLINED ───────────────
+// Owner decision 14 Sep 2026: table_reservation is NOT an active capability (PasGo removed).
+// The words are still read across turns so a reservation request is never mistaken for a
+// delivery request — and it yields no commerce request, no provider, no link, no CTA.
+describe('B · table_reservation is recognised across turns and yields no commerce request', () => {
   const turns = ['Tìm nhà hàng phù hợp và đặt bàn cho 2 người lúc 19:00 tối nay.', 'Nhà hàng Nhật ở Quận 3']
-  it('the capability and the spec are read across the last three user turns, newest first', () => {
+  it('the capability survives the clarifying turn; the reply alone is discovery', () => {
     expect(foodCapabilityOf(turns)).toBe('table_reservation')
-    expect(parseReservationSpec(turns, NOW)).toEqual({ adults: 2, time: '19:00', date: '2026-09-13', assumed: [] })
-    // The reply alone carries none of it — that is exactly why the window exists.
     expect(foodCapabilityOf(turns[1])).toBe('restaurant_discovery')
-    expect(parseReservationSpec(turns[1], NOW)).toBeNull()
   })
 
-  it('the seam emits the PRIMARY hold link with the party/time/date from two turns ago', async () => {
-    const row = { name: 'Rakuen Hotpot', address: 'Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1' }
+  it('the seam issues NO request, runs NO search and attaches NO link for a reservation sentence', async () => {
+    const row = { name: 'Rakuen Hotpot', address: 'Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1', website_uri: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875' }
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    const { search } = stub(pasgoHit)
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, fetchText: async () => PASGO_BOOKABLE, location: 'Quận 3', userText: turns[1], userTexts: turns })
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', capability: 'table_reservation', primary: true, depth: 5 })
-    const u = new URL(l.destinationUrl)
-    expect(u.pathname).toBe('/dat-cho-ngay/3875')
-    expect(Object.fromEntries(u.searchParams)).toEqual({ returnUrl: '/nha-hang/rakuen-hotpot-le-van-sy-3875', sfAdult: '2', sfChild: '0', sfDateFrom: '13/09/2026', sfTimeFrom: '19:00' })
-    expect(l.assumedParams).toEqual([])
+    const { search, calls } = stub({ 'site:pasgo.vn': [{ title: 'Rakuen Hotpot', link: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875', snippet: '' }] })
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, location: 'Quận 3', userText: turns[1], userTexts: turns })
+    expect(links(row)).toEqual([])
+    expect(calls).toEqual([])
+    const rec = placeRecommendations(result, 'Quận 3')[0]
+    expect(rec.entity.actions.some(a => a.commerce)).toBe(false)
+    expect(rec.entity.actions.some(a => a.kind === 'reservation')).toBe(false)
   })
 
   it('a newer delivery sentence overrides an older reservation one (newest signal wins)', () => {
@@ -124,68 +116,18 @@ describe('B · party / time / date survive the clarifying turn', () => {
   })
 })
 
-// ── C · PasGo: the current valid grammar, or a truthful unavailable state ─────
-describe('C · PasGo — verified grammar or truthful unavailability', () => {
-  const rowResult = () => {
-    const row = { name: 'Rakuen Hotpot', maps_link: 'https://maps.google.com/?cid=1' }
-    return { row, result: { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' } }
-  }
-  const ask = (result: unknown, fetchText: () => Promise<string | null>, text = 'Đặt bàn cho 2 người lúc 19h tối nay') =>
-    attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: stub(pasgoHit).search, fetchText, userTexts: [text] })
-
-  it('the verifier reads the registry signals: widget + redirect → bookable; refusal text → not bookable; no page → unknown', async () => {
-    const url = 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875'
-    expect((await verifyMerchantPage(url, { fetchText: async () => PASGO_BOOKABLE, now: NOW })).bookable).toBe(true)
-    expect((await verifyMerchantPage(url, { fetchText: async () => PASGO_STOPPED, now: NOW })).bookable).toBe(false)
-    expect((await verifyMerchantPage(url, { fetchText: async () => PASGO_UNSUPPORTED, now: NOW })).bookable).toBe(false)
-    expect((await verifyMerchantPage(url, { fetchText: async () => null, now: NOW })).bookable).toBeNull()
-    // A URL the registry does not own is never fetched.
-    const fetchText = vi.fn(async () => PASGO_BOOKABLE)
-    expect((await verifyMerchantPage('https://evil.example/nha-hang/x-1', { fetchText, now: NOW })).bookable).toBeNull()
-    expect(fetchText).not.toHaveBeenCalled()
+// ── C · no reservation provider can be selected, whatever the hint ───────────
+describe('C · table_reservation has no active provider', () => {
+  it('adaptersFor / resolveCommerce return nothing for reserve_table, even with a merchant page as a hint', () => {
+    const req = { domain: 'food_drink', intentType: 'reserve_table', capability: 'table_reservation', subject: 'Rakuen Hotpot', configuration: { kind: 'reservation', restaurantRef: '3875', date: '2026-09-13', time: '19:00', adults: 2 } } as const
+    expect(adaptersFor(req)).toEqual([])
+    const r = resolveCommerce(req, { enabled: true, now: NOW, hints: [{ url: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875' }] })
+    expect('links' in r ? r.links : []).toEqual([])
+    expect('providersQueried' in r ? r.providersQueried : []).toEqual([])
   })
 
-  it('bookable + full configuration → the hold URL carries returnUrl (the restaurant page path) and the sf params', async () => {
-    const { row, result } = rowResult()
-    await ask(result, async () => PASGO_BOOKABLE)
-    const [l] = links(row)
-    expect(l.destinationUrl).toBe('https://pasgo.vn/dat-cho-ngay/3875?returnUrl=%2Fnha-hang%2Frakuen-hotpot-le-van-sy-3875&sfAdult=2&sfChild=0&sfDateFrom=13%2F09%2F2026&sfTimeFrom=19%3A00')
-    expect(l.expiresAt).toBe(new Date(NOW.getTime() + 5 * 60_000).toISOString())
-  })
-
-  it('a venue that left the programme gets NO link — nothing is fabricated', async () => {
-    const { row, result } = rowResult()
-    await ask(result, async () => PASGO_STOPPED)
-    expect(links(row)).toEqual([])
-    const { row: row2, result: result2 } = rowResult()
-    await ask(result2, async () => PASGO_UNSUPPORTED)
-    expect(links(row2)).toEqual([])
-  })
-
-  it('a page that could not be read → the restaurant page (L3) with the limitation stated, never the hold grammar', async () => {
-    const { row, result } = rowResult()
-    await ask(result, async () => null)
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', depth: 3, primary: true })
-    expect(l.destinationUrl).toBe('https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875')
-    expect(l.limitations.join(' ')).toMatch(/Chưa xác minh/)
-  })
-
-  it('no date in the conversation → the restaurant page (L3), even when the venue is bookable: a date is never assumed', async () => {
-    const { row, result } = rowResult()
-    await ask(result, async () => PASGO_BOOKABLE, 'Đặt bàn cho 2 người lúc 19h')
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', depth: 3, primary: true })
-    expect(l.destinationUrl).not.toContain('dat-cho-ngay')
-  })
-
-  it('at most three merchant pages are read per turn', async () => {
-    const rows = Array.from({ length: 5 }, (_, i) => ({ name: `Quán ${i}`, maps_link: `https://maps.google.com/?cid=${i}` }))
-    const result = { results: rows, _tappy_place_domain: 'food', source: 'Google Maps' }
-    const fetchText = vi.fn(async () => PASGO_BOOKABLE)
-    const search = async () => [{ title: 'x', link: 'https://pasgo.vn/nha-hang/quan-1234', snippet: '' }]
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, fetchText, maxRows: 5, userTexts: ['đặt bàn 2 người 19h tối nay'] })
-    expect(fetchText.mock.calls.length).toBeLessThanOrEqual(3)
+  it('a pasgo.vn URL is not owned by any provider and never resolves', () => {
+    expect(providerOwning('https://pasgo.vn/dat-cho-ngay/3875?sfAdult=2')).toBeNull()
   })
 })
 
@@ -366,22 +308,20 @@ describe('G · spa + city → Klook Spa package (L4 guest, login before checkout
 
 // ── H · duplicate action prevention ──────────────────────────────────────────
 describe('H · one handoff per provider per row, on every turn', () => {
-  it('two PasGo hits for one venue → one PasGo link; a second turn on the cached result does not stack', async () => {
-    const row = { name: 'Rakuen Hotpot', website_uri: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875', maps_link: 'https://maps.google.com/?cid=1' }
-    const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
+  it('two Shopee hits for one product → one Shopee link; a second turn on the cached result does not stack', async () => {
+    const row = { title: 'iPhone 16 Pro 128GB', link: 'https://www.google.com/search?q=iphone&prds=1', price_vnd: 25990000, source: 'Shopee' }
+    const result = { search_results: [row], source: 'Google Shopping (Serper)' }
     const search = async () => [
-      { title: 'Rakuen Hotpot', link: 'https://pasgo.vn/nha-hang/rakuen-hotpot-le-van-sy-3875', snippet: '' },
-      { title: 'Rakuen Hotpot (2)', link: 'https://pasgo.vn/nha-hang/rakuen-hotpot-3875', snippet: '' },
+      { title: 'iPhone 16 Pro 128GB Chính Hãng VN/A | Shopee', link: 'https://shopee.vn/iPhone-16-Pro-128GB-i.288286284.24185993819', snippet: '' },
+      { title: 'iPhone 16 Pro 128GB | Shopee', link: 'https://shopee.vn/Dien-thoai-iPhone-16-Pro-128GB-i.88201679.29660904371', snippet: '' },
     ]
-    const ctx = { enabled: true, now: NOW, search, fetchText: async () => PASGO_BOOKABLE, userTexts: ['đặt bàn 2 người 19h tối nay'] }
-    await attachCommerceLinks('search_places', result, ctx)
-    expect(links(row).filter(l => l.providerId === 'pasgo')).toHaveLength(1)
-    await attachCommerceLinks('search_places', result, ctx)
-    expect(links(row).filter(l => l.providerId === 'pasgo')).toHaveLength(1)
-    // The canonical action list shows exactly one reservation action for the row.
-    const actions = buildActions(row as never, 'food', 'Quận 3')
-    expect(actions.filter(a => a.kind === 'reservation')).toHaveLength(1)
-    expect(actions[0].commerce?.providerId).toBe('pasgo')
+    const ctx = { enabled: true, now: NOW, search, userTexts: ['Tìm iPhone 16 Pro để mua'] }
+    await attachCommerceLinks('search_products', result, ctx)
+    expect(links(row).filter(l => l.providerId === 'shopee')).toHaveLength(1)
+    await attachCommerceLinks('search_products', result, ctx)
+    expect(links(row).filter(l => l.providerId === 'shopee')).toHaveLength(1)
+    const actions = buildActions(row as never, 'shopping')
+    expect(actions.filter(a => a.commerce?.providerId === 'shopee')).toHaveLength(1)
   })
 
   it('synthetic listing rows from a previous turn are replaced, not accumulated', async () => {
@@ -402,7 +342,7 @@ describe('I · no misleading CTA reaches the user', () => {
   it('a model-typed front door on a CCP merchant host is dropped; a direct entity page on that host is kept', () => {
     const home = { label: '🎬 Xem lịch chiếu CGV', type: 'ticket', url: 'https://www.cgv.vn/' }
     const page = { label: '🎬 CGV Vincom Đồng Khởi', type: 'website', url: 'https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi/' }
-    const pasgoSearch = { label: '🍽️ Đặt bàn trên PasGo', type: 'reservation', url: 'https://pasgo.vn/tim-kiem?q=nha+hang+nhat' }
+    const pasgoSearch = { label: '🎫 Mua vé trên Klook', type: 'ticket', url: 'https://www.klook.com/vi/search?query=ba+na+hills' }
     expect(isMisleadingModelCta(home)).toBe(true)
     expect(isMisleadingModelCta(pasgoSearch)).toBe(true)
     expect(isMisleadingModelCta(page)).toBe(false)

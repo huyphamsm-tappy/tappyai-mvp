@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { attachCommerceLinks } from './commerce'
 import {
   COMMERCE_LINKS_KEY, setCommerceEventWriter, resolveCommerce, parseCommerceRequest, PROVIDER_REGISTRY, getProvider,
@@ -19,9 +19,8 @@ import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 
 const NOW = new Date('2026-09-13T08:00:00Z')
 const links = (row: Record<string, unknown>) => (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []
+/** A search that would find a PasGo page — a reservation sentence must never even run it (owner decision 14 Sep 2026). */
 const pasgoSearch = async () => [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }]
-/** Phase 8: the PasGo page is read before a reservation link is offered — this one carries the widget. */
-const pasgoBookablePage = async () => '<input name="sfAdult"> var linkChuyenHuongBooking = "/dat-cho-ngay/1234?returnUrl=/nha-hang/nha-hang-qua-ngon-1234";'
 const foodRow = () => ({
   name: 'Quá Ngon', address: '306 Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1',
   order_links: [
@@ -38,11 +37,8 @@ describe('capability model in the registry', () => {
     expect(validateRegistry()).toEqual([])
   })
 
-  it('PasGo declares table_reservation and NOT food_order / food_delivery; GrabFood/ShopeeFood the reverse', () => {
-    const pasgo = getProvider('pasgo')!
-    expect(supportsCapability(pasgo, 'table_reservation')).toBe(true)
-    expect(supportsCapability(pasgo, 'food_delivery')).toBe(false)
-    expect(supportsCapability(pasgo, 'food_order')).toBe(false)
+  it('table_reservation has NO active provider (owner decision 14 Sep 2026); GrabFood/ShopeeFood declare food_order / food_delivery only', () => {
+    expect(getProvider('pasgo')).toBeNull()
     for (const id of ['grabfood', 'shopeefood']) {
       const p = getProvider(id)!
       expect(supportsCapability(p, 'food_delivery'), id).toBe(true)
@@ -50,22 +46,14 @@ describe('capability model in the registry', () => {
       expect(supportsCapability(p, 'table_reservation'), id).toBe(false)
       expect(p.tier, id).toBe('handoff_only')
     }
-    expect(providersForCapability('food_drink', 'table_reservation').map(p => p.providerId)).toEqual(['pasgo'])
+    expect(providersForCapability('food_drink', 'table_reservation')).toEqual([])
     expect(providersForCapability('food_drink', 'food_delivery').map(p => p.providerId).sort()).toEqual(['grabfood', 'shopeefood'])
   })
 
   it('depth is per (provider, capability) — never "Food & Drink = L5"', () => {
-    expect(depthProfileForCapability(getProvider('pasgo')!, 'table_reservation')).toMatchObject({ guestDepth: 5, authRequiredAt: 'none' })
-    expect(depthProfileForCapability(getProvider('pasgo')!, 'food_delivery')).toBeNull()
     expect(depthProfileForCapability(getProvider('grabfood')!, 'food_delivery')).toMatchObject({ guestDepth: 3, authRequiredAt: 'before_checkout' })
     expect(depthProfileForCapability(getProvider('shopeefood')!, 'food_delivery')).toMatchObject({ guestDepth: 3, authRequiredAt: 'app_only' })
-    // The other domains, as the owner listed them.
-    expect(depthProfileForCapability(getProvider('tripcom')!, 'hotel_booking')).toMatchObject({ guestDepth: 5 })
-    expect(depthProfileForCapability(getProvider('dmx')!, 'product_purchase')).toMatchObject({ guestDepth: 5 })
-    expect(depthProfileForCapability(getProvider('cgv')!, 'cinema_ticket')).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_selection' })
-    expect(depthProfileForCapability(getProvider('klook')!, 'activity_booking')).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_checkout' })
-    expect(depthProfileForCapability(getProvider('klook')!, 'spa_voucher')).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_checkout' })
-    expect(depthProfileForCapability(getProvider('cellphones')!, 'product_purchase')).toMatchObject({ guestDepth: 4, authRequiredAt: 'before_checkout' })
+    expect(depthProfileForCapability(getProvider('grabfood')!, 'table_reservation')).toBeNull()
   })
 
   it('every declared capability belongs to the provider\'s domains, and no capability was invented', () => {
@@ -90,11 +78,9 @@ describe('CommerceRequest carries a capability that must agree with its intent',
     expect(!bad.ok && bad.issues.join(' ')).toMatch(/capability food_delivery does not match intent reserve_table/)
   })
 
-  it('adaptersFor is capability-aware: a delivery request gets only the delivery platforms (PasGo excluded), a reservation request has PasGo', () => {
-    // Phase 8: GrabFood / ShopeeFood are handoff-only passthrough adapters (L3 restaurant pages, no grammar).
+  it('adaptersFor is capability-aware: a delivery request gets only the delivery platforms; a reservation request has NO adapter at all', () => {
     expect(adaptersFor({ domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'x' }).map(a => a.providerId)).toEqual(['grabfood', 'shopeefood'])
-    expect(adaptersFor({ domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'x' }).map(a => a.providerId)).not.toContain('pasgo')
-    expect(adaptersFor({ domain: 'food_drink', intentType: 'reserve_table', capability: 'table_reservation', subject: 'x' }).map(a => a.providerId)).toEqual(['pasgo'])
+    expect(adaptersFor({ domain: 'food_drink', intentType: 'reserve_table', capability: 'table_reservation', subject: 'x' })).toEqual([])
   })
 
   it('resolveCommerce for food_delivery never returns PasGo, even with a PasGo page as a hint', () => {
@@ -120,53 +106,38 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
     expect(rec.entity.actions.some(a => a.commerce)).toBe(false)
   })
 
-  it('B · reservation intent → PasGo PRIMARY with the sentence\'s party/time/date, L5 hold grammar, leads the actions', async () => {
+  it('B · reservation intent → NO commerce request, no provider, no link; the venue actions stand (owner decision 14 Sep 2026)', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.' })
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', capability: 'table_reservation', primary: true, kind: 'CHECKOUT_HANDOFF', depth: 5, guestDepth: 5, authRequiredAt: 'none' })
-    const u = new URL(l.destinationUrl)
-    expect(u.pathname).toBe('/dat-cho-ngay/1234')
-    expect(Object.fromEntries(u.searchParams)).toEqual({ returnUrl: '/nha-hang/nha-hang-qua-ngon-1234', sfAdult: '2', sfChild: '0', sfDateFrom: '13/09/2026', sfTimeFrom: '19:00' })
-    expect(l.assumedParams).toEqual([]) // Phase 8: the date is the user's ("tối nay"); nothing assumed
-    expect(l.expiresAt).toBe(new Date(NOW.getTime() + 5 * 60_000).toISOString())
+    const search = vi.fn(pasgoSearch)
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.' })
+    expect(links(row)).toEqual([])
+    expect(search).not.toHaveBeenCalled()
     const rec = placeRecommendations(result, 'Quận 3')[0]
-    expect(rec.entity.actions[0]).toMatchObject({ kind: 'reservation', urlKind: 'direct', platform: 'PasGo' })
-    expect(rec.entity.actions[0].commerce).toMatchObject({ capability: 'table_reservation', primary: true, loginRequired: false })
-    // The order links are still offered, after it.
-    expect(rec.entity.actions.some(a => a.kind === 'order')).toBe(true)
-    const view = buildPlacesLiveView([rec], {})
-    expect(view?.items[0].actions[0].platform).toBe('PasGo')
+    expect(rec.entity.actions.some(a => a.commerce)).toBe(false)
+    expect(rec.entity.actions.some(a => a.kind === 'reservation')).toBe(false)
   })
 
-  it('C · discovery intent → PasGo attached as SECONDARY: offered, but order links and maps lead', async () => {
+  it('C · discovery intent → no commerce request; order links and maps lead', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Tìm nhà hàng Nhật gần tôi' })
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', primary: false, depth: 3 })
-    const rec = placeRecommendations(result, 'Quận 3')[0]
-    const kinds = rec.entity.actions.map(a => a.kind)
+    const search = vi.fn(pasgoSearch)
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, userText: 'Tìm nhà hàng Nhật gần tôi' })
+    expect(links(row)).toEqual([])
+    expect(search).not.toHaveBeenCalled()
+    const kinds = placeRecommendations(result, 'Quận 3')[0].entity.actions.map(a => a.kind)
     expect(kinds.slice(0, 2)).toEqual(['order', 'order'])
-    expect(kinds.indexOf('reservation')).toBeGreaterThan(kinds.indexOf('maps'))
-    expect(rec.entity.actions.find(a => a.kind === 'reservation')?.commerce?.primary).toBe(false)
   })
 
-  it('the two intents cannot collapse: the same row, two sentences, two different leading actions and no cross-talk', async () => {
+  it('the two intents cannot collapse: a reservation sentence never yields a delivery link, and a delivery sentence never a reservation', async () => {
     const delivery = foodRow(), reservation = foodRow()
-    await attachCommerceLinks('search_places', { results: [delivery], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Đặt 2 phần phở giao đến nhà' })
-    await attachCommerceLinks('search_places', { results: [reservation], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'Đặt bàn nhà hàng Nhật cho 2 người lúc 19h ngày mai' })
-    expect(links(delivery)).toEqual([])
-    expect(links(reservation).map(l => l.capability)).toEqual(['table_reservation'])
+    const shopeefood = async () => [{ title: 'Quá Ngon - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/qua-ngon-le-van-sy', snippet: '' }]
+    await attachCommerceLinks('search_places', { results: [delivery], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: shopeefood, userText: 'Đặt 2 phần phở giao đến nhà' })
+    await attachCommerceLinks('search_places', { results: [reservation], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: shopeefood, userText: 'Đặt bàn nhà hàng Nhật cho 2 người lúc 19h ngày mai' })
+    expect(links(delivery).map(l => l.capability)).toEqual(['food_delivery'])
+    expect(links(reservation)).toEqual([])
   })
 
-  it('a reservation intent without party/time falls back to the restaurant page (L3) — nothing is guessed', async () => {
-    const row = foodRow()
-    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: pasgoSearch, fetchText: pasgoBookablePage, userText: 'đặt bàn nhà hàng này' })
-    expect(links(row)[0]).toMatchObject({ primary: true, depth: 3, kind: 'DETAIL_HANDOFF' })
-    expect(new URL(links(row)[0].destinationUrl).search).toBe('')
-  })
 })
 
 describe('the seam routes by the user\'s words (Entertainment)', () => {

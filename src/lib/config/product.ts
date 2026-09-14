@@ -161,7 +161,6 @@ export const CCP_AFFILIATE_WRAPPING_ENABLED = true
 export const CCP_ADAPTERS = {
   CCP_ADAPTER_DMX: true,
   CCP_ADAPTER_TRIPCOM: true,
-  CCP_ADAPTER_PASGO: true,
   CCP_ADAPTER_CGV: true,
   CCP_ADAPTER_KLOOK: true,
   /** Shopping marketplaces (owner decision 14 Sep 2026: Shopee and TikTok Shop are mandatory first-class providers; Lazada desired). */

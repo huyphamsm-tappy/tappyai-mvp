@@ -94,10 +94,10 @@ const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.som
  *
  *   · A ticket promise on a hotel OTA ("🎫 Tìm vé trên Booking.com" for a theme park): Booking
  *     and Agoda sell rooms; "search for tickets there" sends the user to a hotel search.
- *   · On a merchant host the Commerce Capability Platform owns (cgv.vn, pasgo.vn, klook.com,
+ *   · On a merchant host the Commerce Capability Platform owns (cgv.vn, klook.com,
  *     dienmayxanh.com, trip.com, shopee.vn, tiktok — the registry allow-lists): a bare FRONT DOOR
- *     (cgv.vn/), or a search page carrying a transaction PROMISE ("Đặt bàn trên PasGo" →
- *     pasgo.vn/tim-kiem). The application is the only URL authority for those merchants: their
+ *     (cgv.vn/), or a search page carrying a transaction PROMISE ("Mua ngay" on a search
+ *     page). The application is the only URL authority for those merchants: their
  *     verified handoff arrives on the card as a Commerce Link when one exists. A DIRECT entity
  *     page on such a host is left alone, and so is an honest search link — the marketplaces'
  *     registry search grammars in particular (owner decision 14 Sep 2026), which the

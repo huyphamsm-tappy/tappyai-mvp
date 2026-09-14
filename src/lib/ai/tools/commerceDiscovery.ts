@@ -1,6 +1,5 @@
-import { discoveryScopesFor, providerOwning, bookabilitySignalsFor, type DiscoveryScope } from '@/lib/ccp'
+import { discoveryScopesFor, providerOwning, type DiscoveryScope } from '@/lib/ccp'
 import type { CommerceDomain, IntentType } from '@/lib/ccp'
-import { safeGetText } from '@/lib/security/safeFetch'
 import { serperSearch } from './common'
 
 // ── Commerce discovery — finding a merchant's page for a subject ─────────────
@@ -21,27 +20,18 @@ import { serperSearch } from './common'
 //     Cung"), so a venue-name query finds nothing while "spa massage Hồ Chí Minh
 //     site:klook.com/vi/activity" finds five. `discoverBySubject` phrases the
 //     query from what the USER asked for plus the city.
-//   · MERCHANT-PAGE verification (P1-1). PasGo indexes venues that have left its
-//     reservation programme; the hold URL for them is a 404. `verifyMerchantPage`
-//     performs one bounded, SSRF-guarded, read-only GET of the merchant page on
-//     its allow-listed host and reports what the page says, using the signals the
-//     registry declares (merchant knowledge stays in CCP). Nothing is submitted.
 //
 // 🚨 BUDGET. Serper is billed per request. Discovery runs at most
 // MAX_QUERIES_PER_TURN searches per tool call, only for subjects that do not
 // already carry an owned URL, and only while CCP is enabled (the caller gates).
-// Page verification is capped at MAX_VERIFY_PER_TURN and 5 s each.
 // `serperSearch` memoises non-empty results for its own TTL; nothing here adds
 // a longer-lived cache (owner rule: no permanent caching).
 
 export const MAX_QUERIES_PER_TURN = 3
-export const MAX_VERIFY_PER_TURN = 3
 // Four hints per provider (14 Sep 2026): TikTok Shop keyword pages precede the product page in the index.
 const MAX_LINKS_PER_SCOPE = 4
-const VERIFY_TIMEOUT_MS = 5_000
 
 export type SearchFn = (query: string) => Promise<Array<{ title: string; link: string; snippet: string }> | null>
-export type FetchTextFn = (url: string, maxBytes: number) => Promise<string | null>
 
 export interface DiscoverySubject {
   /** Stable key the caller uses to attach results back to its row. */
@@ -167,42 +157,4 @@ export async function discoverBySubject(
   if (scopes.length === 0 || !name) return []
   const tasks = scopes.map(scope => ({ subjectId: 'subject', scopes: [scope], query: `${name}${locality ? ` ${locality.trim()}` : ''} site:${scope.site}` }))
   return runSearches(tasks, search, opts.perScope ?? 3)
-}
-
-export interface MerchantPageVerdict {
-  bookable: boolean | null
-  checkedAt: string
-  source: 'merchant_page'
-}
-
-async function defaultFetchText(url: string, maxBytes: number): Promise<string | null> {
-  const controller = new AbortController()
-  const timer = setTimeout(() => controller.abort(), VERIFY_TIMEOUT_MS)
-  try {
-    const res = await safeGetText(url, controller.signal, { maxBytes, maxRedirects: 3 })
-    return res.text
-  } catch {
-    return null
-  } finally {
-    clearTimeout(timer)
-  }
-}
-
-/**
- * What the merchant page says about booking this subject, per the signals the
- * provider's registry entry declares. `bookable: null` when the provider declares
- * none, the URL is not the provider's, or the fetch failed — never a guess.
- */
-export async function verifyMerchantPage(url: string, opts: { fetchText?: FetchTextFn; now?: Date } = {}): Promise<MerchantPageVerdict> {
-  const checkedAt = (opts.now ?? new Date()).toISOString()
-  const providerId = providerOwning(url)
-  const signals = providerId ? bookabilitySignalsFor(providerId) : null
-  if (!signals) return { bookable: null, checkedAt, source: 'merchant_page' }
-  const text = await (opts.fetchText ?? defaultFetchText)(url, signals.maxBytes)
-  if (typeof text !== 'string' || !text) return { bookable: null, checkedAt, source: 'merchant_page' }
-  const norm = text.normalize('NFC')
-  if (signals.refuses.some(s => norm.includes(s.normalize('NFC')))) return { bookable: false, checkedAt, source: 'merchant_page' }
-  if (signals.requires.every(s => norm.includes(s.normalize('NFC')))) return { bookable: true, checkedAt, source: 'merchant_page' }
-  // Page loaded but shows no booking widget: the merchant does not offer booking here.
-  return { bookable: false, checkedAt, source: 'merchant_page' }
 }

@@ -112,17 +112,16 @@ describe('Internal UAT — six capability-level flows', () => {
     record({ domain: 'Food & Drink', capability: 'food_delivery', userIntent: 'Tôi muốn đặt món ăn giao tận nhà.', providerSelected: 'GrabFood / ShopeeFood (legacy order links; no CCP adapter)', dataSource: 'platformLinks/food.ts search URLs (L2); registry facts grabfood/shopeefood', freshness: null, configuration: null, linkKind: 'SEARCH_HANDOFF (legacy)', transactionDepth: `search L2 → restaurant L3 · guest L${grab.guestDepth} (registry)`, authRequirement: `GrabFood ${grab.authRequiredAt} · ShopeeFood app_only`, handoff: lead ? label(lead) : null, expected: 'food_order/food_delivery → GrabFood/ShopeeFood, NOT PasGo, no false L5', actual: `lead action ${lead?.kind} ${lead?.platform} (${lead?.urlKind}); CCP links on row: 0`, verdict: 'PASS', assertions: a })
   })
 
-  // Phase 8: the PasGo page is read before a reservation is offered; this fixture page carries the widget.
-  const pasgoBookablePage = async () => '<input name="sfAdult"> var linkChuyenHuongBooking = "/dat-cho-ngay/1234?returnUrl=/nha-hang/nha-hang-qua-ngon-1234";'
-
-  it('2 · Food & Drink / table_reservation — "Tôi muốn đặt bàn cho 2 người lúc 19h tối nay."', async () => {
+  it('2 · Food & Drink / table_reservation — "Tôi muốn đặt bàn cho 2 người lúc 19h tối nay." (NOT an active capability, owner decision 14 Sep 2026)', async () => {
     const row: Row = { name: 'Quá Ngon', address: '306 Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1', order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/tim-kiem?q=Qu%C3%A1%20Ngon' }] }
     const result: Row = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, location: 'Quận 3', userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.', fetchText: pasgoBookablePage, search: async () => [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }] })
-    const { l, lead, a } = assertFlow({ tool: 'search_places', result, row, domain: 'food_drink', capability: 'table_reservation', provider: 'pasgo', leadKind: 'reservation', expectDepth: 5, expectGuest: 5, expectAuth: 'none', expectLogin: false, expectLeadCommerce: true })
-    // Phase 8 (P0-1): the hold route needs the restaurant page as returnUrl (verified read-only 13 Sep 2026); the date is the one the user stated.
-    expect(cfgOf(l)).toEqual({ returnUrl: '/nha-hang/nha-hang-qua-ngon-1234', sfAdult: '2', sfChild: '0', sfDateFrom: '13/09/2026', sfTimeFrom: '19:00' })
-    record({ domain: 'Food & Drink', capability: 'table_reservation', userIntent: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.', providerSelected: 'pasgo', dataSource: l!.freshness.source + ' + discovery hit (fixture)', freshness: l!.freshness, configuration: cfgOf(l), linkKind: l!.kind, transactionDepth: depthText(l), authRequirement: l!.authRequiredAt, handoff: label(lead), expected: 'table_reservation → PasGo, restaurant/date/time/party config, L5 guest, no login claimed', actual: `${l!.destinationUrl} · assumed ${l!.assumedParams.join(',') || 'none'} · expires ${l!.expiresAt}`, verdict: 'PASS', assertions: a })
+    let searched = 0
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, location: 'Quận 3', userText: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.', search: async () => { searched++; return [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }] } })
+    expect(links(row)).toEqual([])
+    expect(searched).toBe(0)
+    const rec = placeRecommendations(result, 'Quận 3')[0]
+    expect(rec.entity.actions.some(a => a.commerce || a.kind === 'reservation')).toBe(false)
+    record({ domain: 'Food & Drink', capability: 'table_reservation', userIntent: 'Tôi muốn đặt bàn cho 2 người lúc 19h tối nay.', providerSelected: null, dataSource: 'none — capability NOT_REQUIRED / FUTURE (PasGo removed 14 Sep 2026)', freshness: null, configuration: null, linkKind: null, transactionDepth: null, authRequirement: null, handoff: null, expected: 'no provider, no link, no fabricated CTA; venue results stand', actual: 'CCP links on row: 0; searches: 0; no reservation action', verdict: 'PASS', assertions: { 'no commerce link': true, 'no discovery search': true, 'no reservation action': true } })
   })
 
   it('3 · Shopping / product_purchase — "Tìm iPhone phù hợp cho tôi."', async () => {

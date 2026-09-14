@@ -218,50 +218,11 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     notes: ['Deep Link tool / API only (owner decision D4).'],
     discovery: { site: 'vn.trip.com/hotels', subjectKind: 'hotel' },
   },
-  {
-    providerId: 'pasgo',
-    merchantId: 'pasgo',
-    merchantName: 'PasGo',
-    domains: ['food_drink'],
-    intents: ['reserve_table'],
-    allowedHosts: ['pasgo.vn', 'www.pasgo.vn'],
-    capabilities: ['search', 'details', 'configure', 'resolveDeepLink', 'transactionBoundary'],
-    // Owner correction 13 Sep 2026: PasGo is a TABLE RESERVATION provider — never food_order / food_delivery.
-    // availability: the reservation form reports an unserved time slot on the page (audit) — declared as verified.
-    commerce: ['restaurant_discovery', 'restaurant_detail', 'table_reservation', 'availability', 'commerce_handoff'],
-    depth: {
-      reserve_table: {
-        guestDepth: 5,
-        authenticatedDepth: 5,
-        bestPossibleDepth: 5,
-        authRequiredAt: 'none',
-        verifiedOn: VERIFIED,
-        evidence: AUDIT,
-        reason: 'Form đặt chỗ (tên/SĐT/email/ghi chú) mở trực tiếp, giữ chỗ 5 phút, không cần đăng nhập.',
-      },
-    },
-    freshness: {
-      identity: { freshnessType: 'near_realtime', ttlMs: 7 * DAY, note: 'restaurant pages; slot validity is checked on page' },
-      availability: { freshnessType: 'realtime', ttlMs: 0, note: 'unavailable time slots are rejected on the merchant page' },
-    },
-    rights: LINK_ONLY_RIGHTS,
-    enabledFlag: 'CCP_ADAPTER_PASGO',
-    tier: 'mvp',
-    notes: ['No affiliate programme in use; direct deep link (Plan §9: affiliate optional).', 'Reservation URL expires with the 5-minute hold.'],
-    discovery: { site: 'pasgo.vn/nha-hang', subjectKind: 'restaurant' },
-    // Measured read-only 13 Sep 2026 (owner-like UAT R1 + Phase 8 live probe) on four restaurant
-    // pages: the reservation WIDGET (`<select name="sfAdult">`, ~465 KB into a ~540 KB page) is
-    // rendered only on a bookable venue (Rakuen Hotpot 3875: yes; Jaspas 1255/1257, Saigon Fusion
-    // 2098, Hotpot Story 3064: no). PasGo's `linkChuyenHuongBooking` script variable appears on
-    // EVERY restaurant page, bookable or not, so it is deliberately not a signal. A venue that
-    // left the programme shows "đã dừng đặt chỗ trên hệ thống PasGo"; one PasGo lists but does
-    // not serve shows "Chưa hỗ trợ đặt bàn qua PasGo". The byte cap covers the whole page.
-    bookability: {
-      requires: ['name="sfAdult"'],
-      refuses: ['đã dừng đặt chỗ', 'Chưa hỗ trợ đặt bàn qua PasGo'],
-      maxBytes: 1_000_000,
-    },
-  },
+  // PasGo (table_reservation) was REMOVED from active scope by owner decision on 14 Sep 2026: the
+  // reservation flow was too complex and operationally unreliable for the current product stage.
+  // table_reservation stays in the capability vocabulary as NOT_REQUIRED / FUTURE; no provider
+  // declares it, so no request can select one. Historical evidence: Transaction Depth Audit,
+  // Phase 8 Remediation report.
   {
     providerId: 'cgv',
     merchantId: 'cgv',

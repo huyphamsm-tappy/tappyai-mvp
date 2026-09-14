@@ -65,7 +65,7 @@ export interface ProviderRegistryEntry {
   rights: RightsFlags
   tracking?: TrackingConfig
   /** Product-policy flag name in src/lib/config/product.ts gating this adapter. */
-  enabledFlag: 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_PASGO' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK' | 'CCP_ADAPTER_SHOPEE' | 'CCP_ADAPTER_TIKTOKSHOP' | 'CCP_ADAPTER_LAZADA' | 'CCP_HANDOFF_ONLY'
+  enabledFlag: 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK' | 'CCP_ADAPTER_SHOPEE' | 'CCP_ADAPTER_TIKTOKSHOP' | 'CCP_ADAPTER_LAZADA' | 'CCP_HANDOFF_ONLY'
   /** MVP adapters implement the contract; handoff-only entries carry facts for the ladder but no adapter. */
   tier: 'mvp' | 'handoff_only'
   /**
@@ -89,11 +89,4 @@ export interface ProviderRegistryEntry {
    * food-delivery platforms' restaurant pages). Never for MVP adapters.
    */
   handoffPassthrough?: true
-  /**
-   * How a READ-ONLY look at this merchant's subject page tells whether the subject can be booked
-   * through the merchant right now. `requires`: every pattern must appear (the booking widget);
-   * `refuses`: any pattern means the merchant itself says no. Applied by the tool layer's
-   * verifier (safeGetText, this host only); CCP never fetches. Absent = not verifiable.
-   */
-  bookability?: { requires: readonly string[]; refuses: readonly string[]; maxBytes: number }
 }

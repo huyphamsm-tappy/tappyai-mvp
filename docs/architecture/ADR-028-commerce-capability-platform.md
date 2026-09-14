@@ -61,3 +61,16 @@ Klook absent).
   sink with the same discipline and a writer seam for the shared sink once committed.
 - Every phase completes only as IMPLEMENTED → TESTED → PRODUCTION VERIFIED → OWNER
   APPROVED (Release Gate).
+
+## Addendum (14 Sep 2026) — PasGo / table_reservation removed from active scope
+
+Owner decision: the PasGo table-reservation flow (merchant-page verification, hold grammar
+with `returnUrl` + `sfAdult/sfChild/sfDateFrom/sfTimeFrom`, 5-minute hold) was too complex and
+operationally unreliable for the current product stage. PasGo is removed from the active
+registry and its adapter deleted; `table_reservation` stays in the capability vocabulary as
+NOT_REQUIRED / FUTURE with no provider declaring it, so no request can select one. A
+reservation sentence yields no commerce request (no link, no CTA); Food & Drink's active
+capabilities are restaurant_discovery, restaurant_detail, food_order and food_delivery
+(GrabFood, ShopeeFood). No replacement provider is added. Historical evidence stays in the
+Transaction Depth Audit and the Phase 8 report. The removal touched no other domain — the
+architecture test the owner asked for (provider removal without redesign) passed.

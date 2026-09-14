@@ -57,7 +57,7 @@ describe('CCP module boundary', () => {
     }
     // The registry allow-lists are the authority; the literal set below is the reviewed transcription
     // (five MVP merchants + the three shopping marketplaces, 14 Sep 2026).
-    const allowed = new Set(['www.dienmayxanh.com', 'vn.trip.com', 'pasgo.vn', 'www.cgv.vn', 'www.klook.com', 'shopee.vn', 'shop.tiktok.com', 'www.tiktok.com', 'www.lazada.vn'])
+    const allowed = new Set(['www.dienmayxanh.com', 'vn.trip.com', 'www.cgv.vn', 'www.klook.com', 'shopee.vn', 'shop.tiktok.com', 'www.tiktok.com', 'www.lazada.vn'])
     expect([...hosts].filter(h => !allowed.has(h))).toEqual([])
     const registryHosts = new Set(PROVIDER_REGISTRY.flatMap(e => [...e.allowedHosts]))
     expect([...hosts].filter(h => !registryHosts.has(h))).toEqual([])

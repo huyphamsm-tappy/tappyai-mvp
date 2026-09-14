@@ -85,22 +85,15 @@ run('CCP production-verification evidence', () => {
     expect(links(row)[0]).toBeTruthy()
   })
 
-  it('B · PasGo — "restaurant for 2 at 19:00" (chat path: no reservation configuration is built)', async () => {
+  it('B · table_reservation — declined (owner decision 14 Sep 2026: PasGo removed, capability NOT_REQUIRED / FUTURE)', async () => {
     const row: Row = { name: 'Quá Ngon', address: '306 Lê Văn Sỹ', maps_link: 'https://maps.google.com/?cid=1' }
     const result: Row = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
     await attachCommerceLinks('search_places', result, {
-      enabled: true, now: NOW, location: 'Quận 3', platform: 'web', locale: 'vi',
+      enabled: true, now: NOW, location: 'Quận 3', platform: 'web', locale: 'vi', userText: 'đặt bàn cho 2 người lúc 19h tối nay',
       search: async () => [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-le-van-sy-1234', snippet: '' }],
     })
-    evidence.pasgo_chat = summarise(row, 'search_places', result)
-    // The L5 hold grammar, as the adapter builds it WHEN a configuration exists (not reachable from chat today).
-    const configured = resolveCommerce(
-      { domain: 'food_drink', intentType: 'reserve_table', subject: 'Quá Ngon', configuration: { kind: 'reservation', restaurantRef: '1234', date: '2026-09-20', time: '19:00', adults: 2 } },
-      { enabled: true, now: NOW, hints: [{ url: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-le-van-sy-1234' }] },
-    )
-    const l = 'links' in configured ? configured.links[0] : null
-    evidence.pasgo_configured = l ? { url: l.url, params: Object.fromEntries(new URL(l.url).searchParams.entries()), kind: l.kind, depth: l.depth, guestDepth: l.depthProfile.guestDepth, authRequiredAt: l.authRequiredAt, expiresAt: l.expiresAt, limitations: l.limitations } : null
-    expect(l?.depth).toBe(5)
+    evidence.reservation_declined = summarise(row, 'search_places', result)
+    expect(links(row)).toEqual([])
   })
 
   it('C · Klook Entertainment — "VinWonders activity"', async () => {

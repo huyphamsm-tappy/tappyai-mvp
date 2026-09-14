@@ -2,11 +2,11 @@
 // Runs attachCommerceLinks with the REAL discovery search and REAL merchant-page
 // verification for one venue row, prints the resolved links, and GETs each
 // destination read-only to report its HTTP status. Nothing is submitted.
-//   npx tsx --env-file=.env.local scripts/ccp-live-probe.ts <scenario>
+//   npx tsx --env-file=.env.local scripts/ccp-live-probe.ts hotel|spa|activity|delivery
 import { attachCommerceLinks } from '../src/lib/ai/tools/commerce'
 import { COMMERCE_LINKS_KEY, type CommerceLinkRow } from '../src/lib/ccp'
 
-const scenario = process.argv[2] ?? 'reservation'
+const scenario = process.argv[2] ?? 'hotel'
 const NOW = new Date()
 
 async function status(url: string): Promise<string> {
@@ -23,13 +23,7 @@ async function main() {
   let toolName: 'search_places' | 'search_products' | 'get_hotel_prices' = 'search_places'
   let result: Record<string, unknown>
   let ctx: Record<string, unknown>
-  if (scenario === 'reservation') {
-    result = { results: [{ name: 'Rakuen Hotpot', address: '306 Lê Văn Sỹ, Quận 3' }, { name: 'Nhà Hàng Jaspas', address: 'Quận 3' }], _tappy_place_domain: 'food', source: 'probe' }
-    ctx = { location: 'Quận 3, TP.HCM', userTexts: ['Tìm nhà hàng phù hợp và đặt bàn cho 2 người lúc 19:00.', 'Lẩu ở Quận 3, TP.HCM, tối nay'] }
-  } else if (scenario === 'reservation-nodate') {
-    result = { results: [{ name: 'Rakuen Hotpot', address: '306 Lê Văn Sỹ, Quận 3' }], _tappy_place_domain: 'food', source: 'probe' }
-    ctx = { location: 'Quận 3, TP.HCM', userTexts: ['Tìm nhà hàng phù hợp và đặt bàn cho 2 người lúc 19:00.', 'Lẩu ở Quận 3, TP.HCM'] }
-  } else if (scenario === 'hotel') {
+  if (scenario === 'hotel') {
     toolName = 'get_hotel_prices'
     result = { search_results: [
       { title: 'Book Oc Tien Sa Hotel Danang i Da Nang på Agoda.com', link: 'https://www.agoda.com/vi-vn/oc-tien-sa-hotel/hotel/da-nang-vn.html', snippet: '' },
@@ -37,6 +31,9 @@ async function main() {
       { title: 'Mường Thanh Luxury Đà Nẵng - Đà Nẵng - Booking.com', link: 'https://www.booking.com/hotel/vn/muong-thanh-luxury-da-nang.vi.html', snippet: '' },
     ] }
     ctx = { location: 'Đà Nẵng', checkIn: '2026-10-10', checkOut: '2026-10-12', userTexts: ['Tìm khách sạn ở Đà Nẵng cho 2 người, check-in 10/10/2026, check-out 12/10/2026.'] }
+  } else if (scenario === 'delivery') {
+    result = { results: [{ name: 'Phở 24 Nguyễn Tri Phương', address: 'Quận 10' }], _tappy_place_domain: 'food', source: 'probe' }
+    ctx = { location: 'Quận 10, TP.HCM', userTexts: ['Tôi muốn đặt đồ ăn giao tận nhà.'] }
   } else if (scenario === 'spa') {
     result = { results: [{ name: 'Tiệm Massage Hán Cung', address: 'Quận 1' }], _tappy_place_domain: 'spa', source: 'probe' }
     ctx = { location: 'TP.HCM', query: 'spa', userTexts: ['Tìm spa ở TP.HCM.'] }

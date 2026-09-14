@@ -8,7 +8,7 @@ import { buildFoodOrderLinks } from './food'
 
 describe('ownership comes from the CCP registry', () => {
   it('the five MVP merchants are owned; handoff-only and legacy platforms are not', () => {
-    expect(commerceOwnedHosts()).toEqual(expect.arrayContaining(['www.dienmayxanh.com', 'vn.trip.com', 'pasgo.vn', 'www.cgv.vn', 'www.klook.com']))
+    expect(commerceOwnedHosts()).toEqual(expect.arrayContaining(['www.dienmayxanh.com', 'vn.trip.com', 'www.cgv.vn', 'www.klook.com']))
     expect(isCommerceOwnedLink('https://vn.trip.com/hotels/detail/?hotelId=1')).toBe(true)
     // Booking.com is a registry entry (handoff-only), NOT an MVP adapter — the legacy search link stays legacy.
     expect(isCommerceOwnedLink('https://www.booking.com/searchresults.html?ss=x')).toBe(false)

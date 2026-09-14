@@ -25,10 +25,7 @@ function searchStub(table: Record<string, SearchRow[]>) {
 }
 
 const links = (row: Record<string, unknown>) => (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []
-/** A PasGo restaurant page that carries the reservation widget (Phase 8 read-only verification). */
-const pasgoBookablePage = async () => '<input name="sfAdult"> var linkChuyenHuongBooking = "/dat-cho-ngay/1234?returnUrl=/nha-hang/x-1234";'
-/** The page could not be read: bookability unknown → detail page only. */
-const pageUnavailable = async () => null
+
 
 beforeEach(() => { setCommerceEventWriter(() => undefined) })
 afterEach(() => { setCommerceEventWriter(null) })
@@ -134,21 +131,6 @@ describe('Trip.com — hotel rows discovered by a scoped search, dates preserved
   })
 })
 
-describe('PasGo — food place discovered by name (reservation)', () => {
-  it('attaches the restaurant page (L3, guest L5 verified) when the conversation holds no date/time/party', async () => {
-    const { search, calls } = searchStub({ 'site:pasgo.vn/nha-hang': [{ title: 'Nhà hàng Quá Ngon', link: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234', snippet: '' }] })
-    const row = { name: 'Quá Ngon', address: '1 Lê Lợi', website_uri: 'https://quangon.example' }
-    const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
-    await attachCommerceLinks('search_places', result, { enabled: true, search, now: NOW, location: 'Quận 1', fetchText: pageUnavailable })
-    expect(calls[0]).toContain('site:pasgo.vn/nha-hang')
-    expect(calls[0]).toContain('Quận 1')
-    const [l] = links(row)
-    expect(l).toMatchObject({ providerId: 'pasgo', intentType: 'reserve_table', depth: 3, guestDepth: 5, authRequiredAt: 'none' })
-    expect(l.destinationUrl).toBe('https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234')
-    expect(l.expiresAt).toBeNull()
-  })
-})
-
 describe('CGV / Klook — the authentication boundary travels with the link', () => {
   it('CGV film page on a row resolves to L3 with authRequiredAt=before_selection; no seat/session URL is fabricated', async () => {
     const row = { name: 'CGV Vincom Đồng Khởi', website_uri: 'https://www.cgv.vn/default/inside-out-2.html' }
@@ -230,7 +212,7 @@ describe('end to end through the canonical recommendation architecture', () => {
   it('hotel and place rows flow the same way (stay + place entities)', async () => {
     const { search } = searchStub({
       'site:vn.trip.com/hotels': [{ title: 'x', link: 'https://vn.trip.com/hotels/detail/?hotelId=10569789', snippet: '' }],
-      'site:pasgo.vn/nha-hang': [{ title: 'x', link: 'https://pasgo.vn/nha-hang/qua-ngon-1234', snippet: '' }],
+      'site:shopeefood.vn': [{ title: 'Quá Ngon - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/qua-ngon-le-loi', snippet: '' }],
     })
     const hotel = { title: 'Mường Thanh - Đà Nẵng - Booking.com', link: 'https://www.booking.com/hotel/vn/muong-thanh.html' }
     const hotels = { search_results: [hotel], booking_link: 'https://www.booking.com/searchresults.html?ss=x' }
@@ -246,10 +228,11 @@ describe('end to end through the canonical recommendation architecture', () => {
 
     const place = { name: 'Quá Ngon', address: '1 Lê Lợi', maps_link: 'https://maps.google.com/?cid=1' }
     const places = { results: [place], _tappy_place_domain: 'food', source: 'Google Maps' }
-    // Owner correction: a reservation leads only when the user asked for one (capability routing).
-    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW, userText: 'đặt bàn nhà hàng này', fetchText: pasgoBookablePage })
+    // Owner decision 14 Sep 2026: table reservation is not an active capability; the food path CCP serves is delivery.
+    await attachCommerceLinks('search_places', places, { enabled: true, search, now: NOW, userText: 'giao tận nhà cho tôi' })
     const rec = placeRecommendations(places, 'Quận 1')[0]
-    expect(rec.entity.actions[0]).toMatchObject({ kind: 'reservation', urlKind: 'direct', platform: 'PasGo' })
+    expect(rec.entity.actions[0]).toMatchObject({ kind: 'delivery', urlKind: 'direct', platform: 'ShopeeFood' })
+    expect(rec.entity.actions[0].commerce?.providerId).toBe('shopeefood')
   })
 })
 

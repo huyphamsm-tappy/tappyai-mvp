@@ -36,7 +36,7 @@ export interface CommerceLinkRow {
   depth: TransactionDepth
   guestDepth: TransactionDepth
   authRequiredAt: AuthRequiredAt
-  /** Session-bound URLs (PasGo hold, Trip.com stay) expire; null = stable. */
+  /** Session-bound URLs (a dated stay, a hold) expire; null = stable. */
   expiresAt: string | null
   freshness: {
     source: string

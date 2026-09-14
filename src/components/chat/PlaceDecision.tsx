@@ -104,7 +104,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
   // CCP Phase 8 (owner-like UAT R1, P2-2): the commerce handoff the user ASKED for — the
   // action the canonical list already ranks first (priority −1) — leads the card too. The
   // presentation used to put maps first and file the reservation among "others", which is
-  // how a verified PasGo hold rendered after two search links.
+  // how a verified reservation hold once rendered after two search links.
   const lead = p.actions.find(a => a.commerce?.primary === true)
   // Then maps, then ordering; anything else becomes a secondary button. Every entry already
   // has a real destination (liveView drops the rest), so nothing here can render a dead button.

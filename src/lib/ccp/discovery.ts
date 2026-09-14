@@ -34,11 +34,6 @@ export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentTyp
   return out
 }
 
-/** The merchant-page bookability signals a provider declares, if any. */
-export function bookabilitySignalsFor(providerId: string): ProviderRegistryEntry['bookability'] | null {
-  return PROVIDER_REGISTRY.find(e => e.providerId === providerId)?.bookability ?? null
-}
-
 /**
  * Which registered provider owns this URL, by EXACT host match against the
  * registry allow-lists (the same rule `isAllowedHost` applies to emitted links).

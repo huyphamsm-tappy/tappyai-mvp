@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest'
 import type { CommerceRequest } from '../domain/types'
 import { dmxAdapter } from './dmx'
 import { tripcomAdapter } from './tripcom'
-import { pasgoAdapter } from './pasgo'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
 import { adaptersFor, ADAPTERS, MVP_ADAPTERS } from './index'
@@ -67,17 +66,6 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
     expect(tripcomAdapter.toOffer(req, { subjectRef: 'not-a-number' }, now)).toBeNull()
   })
 
-  it('PasGo: reservation URL carries party size, date (DD/MM/YYYY) and time; hold expiry set', () => {
-    const req: CommerceRequest = { domain: 'food_drink', intentType: 'reserve_table', subject: 'Chả Cá Hàng Sơn', configuration: { kind: 'reservation', restaurantRef: '4815', date: '2026-09-13', time: '19:00', adults: 2, children: 0 } }
-    const offer = pasgoAdapter.toOffer(req, { url: 'https://pasgo.vn/nha-hang/cha-ca-hang-son-huynh-thuc-khang-4815', verified: { bookable: true, checkedAt: now.toISOString(), source: 'merchant_page' } }, now)!
-    expect(offer.subjectRef).toBe('4815')
-    const b = pasgoAdapter.buildDirectLink(offer, req.configuration, now)!
-    expect(b.url).toBe('https://pasgo.vn/dat-cho-ngay/4815?returnUrl=%2Fnha-hang%2Fcha-ca-hang-son-huynh-thuc-khang-4815&sfAdult=2&sfChild=0&sfDateFrom=13%2F09%2F2026&sfTimeFrom=19%3A00')
-    expect(new URL(b.url).searchParams.get('sfDateFrom')).toBe('13/09/2026')
-    expect(b.depth).toBe(5)
-    expect(b.expiresAt).toBe(new Date(now.getTime() + 5 * 60_000).toISOString())
-  })
-
   it('CGV: film page is the verified link; a session URL is built ONLY from caller-supplied ids and labelled observed', () => {
     const base: CommerceRequest = { domain: 'entertainment', intentType: 'buy_ticket', subject: 'HOPE Vùng Tử Địa', configuration: { kind: 'cinema', filmRef: 'hope-vung-tu-dia', date: '2026-09-13', showtime: '21:00' } }
     const offer = cgvAdapter.toOffer(base, { url: 'https://www.cgv.vn/default/hope-vung-tu-dia.html' }, now)!
@@ -116,11 +104,11 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
   it('adaptersFor honours per-adapter flags and intent support', () => {
     const req: CommerceRequest = { domain: 'spa', intentType: 'buy_spa_voucher', subject: 'x' }
     expect(adaptersFor(req).map(a => a.providerId)).toEqual(['klook'])
-    const flags = { CCP_ADAPTER_DMX: true, CCP_ADAPTER_TRIPCOM: true, CCP_ADAPTER_PASGO: true, CCP_ADAPTER_CGV: true, CCP_ADAPTER_KLOOK: false, CCP_ADAPTER_SHOPEE: true, CCP_ADAPTER_TIKTOKSHOP: true, CCP_ADAPTER_LAZADA: true, CCP_HANDOFF_ONLY: true } as const
+    const flags = { CCP_ADAPTER_DMX: true, CCP_ADAPTER_TRIPCOM: true, CCP_ADAPTER_CGV: true, CCP_ADAPTER_KLOOK: false, CCP_ADAPTER_SHOPEE: true, CCP_ADAPTER_TIKTOKSHOP: true, CCP_ADAPTER_LAZADA: true, CCP_HANDOFF_ONLY: true } as const
     expect(adaptersFor(req, flags)).toEqual([])
-    expect(MVP_ADAPTERS).toHaveLength(5)
+    expect(MVP_ADAPTERS).toHaveLength(4) // PasGo removed from scope (14 Sep 2026)
     // Owner decision 14 Sep 2026: the three shopping marketplaces are adapter-backed too.
-    expect(ADAPTERS.map(a => a.providerId)).toEqual(['dmx', 'tripcom', 'pasgo', 'cgv', 'klook', 'shopee', 'tiktokshop', 'lazada'])
+    expect(ADAPTERS.map(a => a.providerId)).toEqual(['dmx', 'tripcom', 'cgv', 'klook', 'shopee', 'tiktokshop', 'lazada'])
   })
 })
 

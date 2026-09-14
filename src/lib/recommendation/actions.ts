@@ -76,7 +76,7 @@ export interface CommerceActionFacts {
   /** True when the merchant asks for a login BEFORE the landed step can be completed (CGV, Klook). */
   loginRequired: boolean
   freshnessType: CommerceLinkRow['freshness']['freshnessType']
-  /** Session-bound URLs expire (PasGo hold, Trip.com stay); null = stable. */
+  /** Session-bound URLs expire (a dated stay, a hold); null = stable. */
   expiresAt: string | null
   tracked: boolean
   /** The capability the link serves — what ranking compared on. */
@@ -235,7 +235,7 @@ export interface ActionSource {
  * ranking order (they arrive ranked; the array index is the tie-break).
  *
  * 🔑 …BUT ONLY FOR THE CAPABILITY THE USER ASKED FOR (owner correction, 13 Sep
- * 2026). A PasGo reservation link on a "find me a restaurant" or "deliver to
+ * 2026). A reservation link on a "find me a restaurant" or "deliver to
  * my door" turn is a capability the user did not request: it is still offered,
  * with the domain table's priority for its kind (after order links and maps),
  * never in front of them. "Deeper" is not "more relevant".
