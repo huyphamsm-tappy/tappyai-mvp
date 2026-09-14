@@ -9,10 +9,12 @@ struct ChatView: View {
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
         let service = ChatService(api: deps.api, streaming: deps.streaming)
+        let session = deps.session
         _vm = AppStateObject(wrappedValue: ChatViewModel(
-            service: service, session: deps.session,
+            service: service, session: session,
             category: category, conversationId: conversationId,
-            savedMessages: savedMessages
+            savedMessages: savedMessages,
+            planShare: PlanShareService(api: deps.api, isAuthenticated: { session.state.isAuthenticated })
         ))
     }
 
@@ -128,7 +130,7 @@ struct ChatView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $vm.shareArtifact) { artifact in
-            TappyShareSheet(artifact: artifact, lang: localization.language.rawValue) {
+            TappyShareSheet(artifact: artifact, lang: localization.language.rawValue, planShare: vm.planShare) {
                 vm.shareArtifact = nil
             }
             .presentationDetents([.large])

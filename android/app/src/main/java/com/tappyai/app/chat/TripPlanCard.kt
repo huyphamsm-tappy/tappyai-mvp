@@ -55,17 +55,18 @@ import androidx.compose.ui.res.stringResource
  * cost breakdown, and a share footer. Structure, sections and copy mirror the web one-for-one.
  */
 @Composable
-fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier) {
+fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: String? = null) {
     val context = LocalContext.current
     var activeDay by remember(plan) { mutableIntStateOf(0) }
     val currentDay = plan.days.getOrNull(activeDay) ?: plan.days.firstOrNull()
 
-    // Share = the deterministic plan brochure via the TappyAI share sheet (web parity). The
-    // model's `share_text` may only contribute an intro line — see ShareArtifactBuilder.planBrochure.
+    // Share = the plan's PUBLISHED page. The sheet publishes the plan (POST /api/plans/share)
+    // and every target then carries the canonical `/plan/<shareId>` — the same brochure a web
+    // share opens. The artifact starts as the text brochure; the sheet swaps in the link.
     var shareOpen by remember(plan) { mutableStateOf(false) }
     val share = { shareOpen = true }
     if (shareOpen) {
-        val artifact = remember(plan) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language) }
+        val artifact = remember(plan, planJson) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language, planJson) }
         TappyShareSheet(artifact = artifact, onDismiss = { shareOpen = false })
     }
 

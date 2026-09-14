@@ -75,6 +75,8 @@ fun MessageActionBar(
     // annotation), then a plan, then the prose. Same precedence as the web MessageActionBar.
     placesView: PlacesLiveView? = null,
     plan: TappyPlan? = null,
+    // The plan block verbatim — what a plan share publishes. Null when the turn has no plan.
+    planJson: String? = null,
     shareSubject: String? = null,
 ) {
     val context = LocalContext.current
@@ -133,7 +135,7 @@ fun MessageActionBar(
                 shareArtifact = when {
                     placesView != null && placesView.items.isNotEmpty() ->
                         ShareArtifactBuilder.buildPlacesArtifact(placesView, subject, lang)
-                    plan != null -> ShareArtifactBuilder.buildPlanArtifact(plan, lang)
+                    plan != null -> ShareArtifactBuilder.buildPlanArtifact(plan, lang, planJson)
                     else -> ShareArtifactBuilder.buildProseArtifact(subject, text)
                 }
             },

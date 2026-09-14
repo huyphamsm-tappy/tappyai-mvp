@@ -92,6 +92,14 @@ data class ParsedAssistantReply(
     val text: String,
     val streamText: String,
     val plan: TappyPlan?,
+    /**
+     * The `[TAPPY_PLAN]` block VERBATIM (the JSON between the tags), present exactly when [plan]
+     * is. This is what a plan SHARE sends to `POST /api/plans/share`: the real payload the model
+     * emitted, including fields [TappyPlan] does not model (`photo_url`, written server-side by
+     * the enrichment step). Re-encoding the decoded model would drop them and the recipient's
+     * brochure would lose its photos. The server whitelists it again before anything is stored.
+     */
+    val planJson: String? = null,
     val ctaButtons: List<CtaButton>,
     val followups: List<String>,
     val segments: List<ReplySegment>,
@@ -303,6 +311,7 @@ object ChatResponseParser {
             text = IMAGE_RE.replace(text, "").trim(),
             streamText = text,
             plan = plan,
+            planJson = if (plan != null) planMatch?.groupValues?.get(1)?.trim() else null,
             ctaButtons = buttons,
             followups = followups,
             segments = segment(text),

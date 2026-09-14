@@ -24,9 +24,20 @@ data class ShareArtifact(
     val title: String,
     val subject: String,
     val text: String,
-    /** The brand entry point — the only URL the share guard admits for a recommendation. */
+    /**
+     * The brand entry point for a recommendation, or — once the share sheet has published a
+     * plan — the plan's own canonical page `https://www.tappyai.com/plan/<shareId>`.
+     */
     val url: String,
     val places: List<SharedPlace>,
+    /**
+     * For a plan: the `[TAPPY_PLAN]` block verbatim, the payload `POST /api/plans/share` takes.
+     * Null for a recommendation, and null for a plan that arrived without its block (a restored
+     * message), which then cannot be published and says so.
+     */
+    val planJson: String? = null,
+    /** True once [url] is the plan's published page rather than the brand entry point. */
+    val isPlanLink: Boolean = false,
 ) {
     enum class Kind { PLACES, PLAN }
 }
@@ -231,12 +242,32 @@ object ShareArtifactBuilder {
         )
     }
 
-    fun buildPlanArtifact(plan: TappyPlan, lang: String): ShareArtifact {
+    fun buildPlanArtifact(plan: TappyPlan, lang: String, planJson: String? = null): ShareArtifact {
         val url = TappyShare.CANONICAL_ORIGIN
         val l = labels(lang)
         return ShareArtifact(
             kind = ShareArtifact.Kind.PLAN, title = plan.title, subject = "${l.plan}: ${plan.title}",
-            text = planBrochure(plan, lang, url), url = url, places = emptyList(),
+            text = planBrochure(plan, lang, url), url = url, places = emptyList(), planJson = planJson,
+        )
+    }
+
+    /**
+     * The plan artifact once the server has published it: the canonical page is the payload.
+     *
+     * 🔑 THE LINK IS THE BROCHURE. `/plan/<shareId>` renders the real Tappy Plan brochure with
+     * the plan's own photos and dynamic OG metadata, so every platform gets the URL — its own
+     * preview machinery does the rest — plus one human line naming the plan. Nothing here
+     * re-describes the itinerary: that would be a second brochure, and it would drift.
+     *
+     * Same text on every channel (ACTION_SEND, mailto, the system sheet, the Inbox) and the
+     * exact URL on the url handoffs (Facebook sharer, Zalo plugin, Messenger) and on Copy.
+     */
+    fun planLinkArtifact(base: ShareArtifact, canonicalUrl: String): ShareArtifact {
+        require(base.kind == ShareArtifact.Kind.PLAN) { "planLinkArtifact needs a plan artifact" }
+        return base.copy(
+            url = canonicalUrl,
+            text = "${base.subject}\n$canonicalUrl",
+            isPlanLink = true,
         )
     }
 

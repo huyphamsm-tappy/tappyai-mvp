@@ -106,6 +106,32 @@ describe('every client declares the same share targets', () => {
   })
 })
 
+describe('every client shares a plan through the ONE published page', () => {
+  // The web mints the id (POST /api/plans/share) and every client — web included — turns THAT
+  // id into `https://www.tappyai.com/plan/<id>`. No client mints, hashes or guesses an id.
+  it.each(PLATFORMS)('%s builds the plan url from the server id, with the web id format', (_name, src) => {
+    expect(src).toContain('/api/plans/share')
+    expect(src).toContain('[A-Za-z0-9]{12}')
+    expect(src).toMatch(/\/plan\//)
+  })
+
+  it.each(PLATFORMS)('%s never mints a share id of its own', (_name, src) => {
+    expect(src).not.toMatch(/SecureRandom|getRandomValues|UUID\.randomUUID|sha256|SHA256|CryptoKit|MessageDigest/)
+  })
+
+  it('android and ios post the plan block verbatim as { plan } and refuse guests before the request', () => {
+    const androidRepo = readFileSync(join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'PlanShareRepository.kt'), 'utf8')
+    const iosService = readFileSync(join(root, 'ios', 'TappyAI', 'Core', 'Share', 'PlanShareService.swift'), 'utf8')
+    for (const src of [androidRepo, iosService]) {
+      expect(src).toContain('/api/plans/share')
+      expect(src).toMatch(/SignInRequired|signInRequired/)
+      expect(src).toMatch(/isAnonymous|isAuthenticated/)
+    }
+    expect(androidRepo).toContain('JsonObject')
+    expect(iosService).toContain('["plan": plan]')
+  })
+})
+
 describe('every client uses the same canonical origin', () => {
   it.each(PLATFORMS)('%s pins https://www.tappyai.com', (_name, src) => {
     expect(src).toContain('https://www.tappyai.com')

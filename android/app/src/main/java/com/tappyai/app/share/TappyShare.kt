@@ -160,6 +160,22 @@ object TappyShare {
     /** Canonical public URL for a review. */
     fun reviewUrl(reviewId: String): String = "$CANONICAL_ORIGIN/reviews/$reviewId"
 
+    /**
+     * The share id the server mints for a plan: 12 URL-safe characters (web `PLAN_SHARE_ID_RE`).
+     * Anything else in a response is not an id and yields no link — never a guessed one.
+     */
+    val PLAN_SHARE_ID_RE = Regex("^[A-Za-z0-9]{12}$")
+
+    /**
+     * Canonical public URL for a PUBLISHED plan, or null when [shareId] is not a server id.
+     *
+     * 🚨 THE SERVER OWNS THE IDENTITY. This client never mints, hashes or guesses an id; it
+     * turns the id `POST /api/plans/share` answered with into the same `/plan/<id>` the web
+     * client builds — the one page that renders the Tappy Plan brochure.
+     */
+    fun planShareUrl(shareId: String?): String? =
+        shareId?.takeIf { PLAN_SHARE_ID_RE.matches(it) }?.let { "$CANONICAL_ORIGIN/plan/$it" }
+
     /** The web Inbox — the only Tappy Messenger there is. Mobile opens it rather than cloning it. */
     const val INBOX_URL: String = "$CANONICAL_ORIGIN/profile/notifications?tab=messages"
 }

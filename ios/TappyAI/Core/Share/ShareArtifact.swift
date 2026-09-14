@@ -20,9 +20,15 @@ struct ShareArtifact: Identifiable, Equatable, Sendable {
     let title: String
     let subject: String
     let text: String
-    /// The brand entry point — the only URL the share guard admits for a recommendation.
+    /// The brand entry point for a recommendation, or — once the share sheet has published a
+    /// plan — the plan's own canonical page `https://www.tappyai.com/plan/<shareId>`.
     let url: String
     let places: [SharedPlace]
+    /// For a plan: the `[TAPPY_PLAN]` block verbatim, the payload `POST /api/plans/share` takes.
+    /// Nil for a recommendation, and nil for a plan whose block is not available.
+    var planJSON: String? = nil
+    /// True once `url` is the plan's published page rather than the brand entry point.
+    var isPlanLink: Bool = false
 
     var id: String { subject + "\u{1F}" + String(text.hashValue) }
 }
@@ -234,11 +240,26 @@ enum ShareArtifactBuilder {
                              text: placesBrochure(title: title, places: places, lang: lang, url: url), url: url, places: places)
     }
 
-    static func buildPlanArtifact(_ plan: TappyPlan, title: String, lang: String) -> ShareArtifact {
+    static func buildPlanArtifact(_ plan: TappyPlan, title: String, lang: String, planJSON: String? = nil) -> ShareArtifact {
         let url = TappyShare.canonicalOrigin
         let l = labels(lang)
         return ShareArtifact(kind: .plan, title: title, subject: "\(l.plan): \(title)",
-                             text: planBrochure(plan, title: title, lang: lang, url: url), url: url, places: [])
+                             text: planBrochure(plan, title: title, lang: lang, url: url), url: url, places: [],
+                             planJSON: planJSON)
+    }
+
+    /// The plan artifact once the server has published it: the canonical page is the payload.
+    ///
+    /// 🔑 THE LINK IS THE BROCHURE. `/plan/<shareId>` renders the real Tappy Plan brochure with the
+    /// plan's own photos and dynamic OG metadata, so every platform gets the URL — its own preview
+    /// machinery does the rest — plus one human line naming the plan. Nothing here re-describes
+    /// the itinerary: that would be a second brochure, and it would drift. Same text on every
+    /// text channel, the exact URL on the url handoffs and on Copy.
+    static func planLinkArtifact(_ base: ShareArtifact, canonicalURL: String) -> ShareArtifact {
+        precondition(base.kind == .plan, "planLinkArtifact needs a plan artifact")
+        return ShareArtifact(kind: .plan, title: base.title, subject: base.subject,
+                             text: "\(base.subject)\n\(canonicalURL)", url: canonicalURL, places: [],
+                             planJSON: base.planJSON, isPlanLink: true)
     }
 
     /// Prose → share text (same rules as the web `proseForShare`): emphasis and headings go, a

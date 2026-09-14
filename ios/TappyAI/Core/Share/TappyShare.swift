@@ -153,6 +153,19 @@ enum TappyShare {
         "\(canonicalOrigin)/reviews/\(reviewId)"
     }
 
+    /// The share id the server mints for a plan: 12 URL-safe characters (web `PLAN_SHARE_ID_RE`).
+    static let planShareIdPattern = "^[A-Za-z0-9]{12}$"
+
+    /// Canonical public URL for a PUBLISHED plan, or nil when `shareId` is not a server id.
+    ///
+    /// 🚨 THE SERVER OWNS THE IDENTITY. This client never mints, hashes or guesses an id; it turns
+    /// the id `POST /api/plans/share` answered with into the same `/plan/<id>` the web client
+    /// builds — the one page that renders the Tappy Plan brochure. Anything else yields no link.
+    static func planShareURL(_ shareId: String?) -> String? {
+        guard let shareId, shareId.range(of: planShareIdPattern, options: .regularExpression) != nil else { return nil }
+        return "\(canonicalOrigin)/plan/\(shareId)"
+    }
+
     /// Canonical public URL for a group-dining room.
     ///
     /// A group is USELESS without this: the whole mechanism is "create a room, send the link,

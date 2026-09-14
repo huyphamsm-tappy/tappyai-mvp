@@ -12,7 +12,7 @@ import Foundation
 enum ContentParser {
 
     static func parse(_ content: String) -> ParsedContent {
-        let (textAfterPlan, plan) = parsePlan(content)
+        let (textAfterPlan, plan, planJSON) = parsePlanBlock(content)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
         // D1 — decode the shopping decision instead of discarding it. Decode and strip stay
@@ -28,7 +28,8 @@ enum ContentParser {
             plan: plan,
             followups: followups,
             images: images,
-            shopping: shopping
+            shopping: shopping,
+            planJSON: planJSON
         )
     }
 
@@ -166,24 +167,30 @@ enum ContentParser {
     // MARK: - Trip Plan
 
     static func parsePlan(_ content: String) -> (text: String, plan: TappyPlan?) {
+        let (text, plan, _) = parsePlanBlock(content)
+        return (text, plan)
+    }
+
+    /// `parsePlan`, plus the block itself — kept verbatim for the share (see `ParsedContent.planJSON`).
+    static func parsePlanBlock(_ content: String) -> (text: String, plan: TappyPlan?, planJSON: String?) {
         guard let regex = try? NSRegularExpression(pattern: #"\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]"#, options: .caseInsensitive) else {
-            return (content, nil)
+            return (content, nil, nil)
         }
         let range = NSRange(content.startIndex..., in: content)
         guard let m = regex.firstMatch(in: content, range: range),
               let jsonRange = Range(m.range(at: 1), in: content) else {
-            return (content, nil)
+            return (content, nil, nil)
         }
 
         let text = regex.stringByReplacingMatches(in: content, range: range, withTemplate: "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespaces)
+        let jsonStr = String(content[jsonRange]).trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard let data = jsonStr.data(using: .utf8),
               let plan = try? JSONDecoder().decode(TappyPlan.self, from: data),
               !plan.days.isEmpty else {
-            return (text, nil)
+            return (text, nil, nil)
         }
-        return (text, plan)
+        return (text, plan, jsonStr)
     }
 
     // MARK: - Follow-up suggestions

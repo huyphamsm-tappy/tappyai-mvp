@@ -30,4 +30,16 @@
     <string name="share_saved_text">Saved as text to Downloads/TappyAI</string>
     <string name="share_save_failed">Couldn\'t save</string>
     <string name="share_inbox_opened">Copied — opening your TappyAI Inbox, paste it into a message</string>
+
+    <!-- A plan shares its PUBLISHED page (/plan/<shareId>), minted by POST /api/plans/share.
+         These say what is happening to that link — never that anything was sent. -->
+    <string name="share_plan_preparing">Preparing your plan to share…</string>
+    <string name="share_copy_link">Copy link</string>
+    <string name="share_copied_link">Plan link copied</string>
+    <string name="share_plan_sign_in">Sign in to create a plan link</string>
+    <string name="share_plan_offline">No connection — the plan link couldn\'t be created</string>
+    <string name="share_plan_not_shareable">This plan can\'t be shared as a link</string>
+    <string name="share_plan_no_payload">This plan can\'t be shared from here — ask Tappy for it again</string>
+    <string name="share_plan_failed">Couldn\'t create the plan link</string>
+    <string name="share_plan_retry">Try again</string>
 </resources>

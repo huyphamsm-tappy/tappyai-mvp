@@ -21,10 +21,50 @@ import UIKit
 struct TappyShareSheet: View {
     let artifact: ShareArtifact
     let lang: String
+    /// Publishes a plan (`POST /api/plans/share`). Only consulted for a `.plan` artifact.
+    var planShare: PlanSharing? = nil
     let onDismiss: () -> Void
 
     @State private var image: UIImage? = nil
     @State private var feedback: String? = nil
+
+    // ── A PLAN SHARES ITS PUBLISHED PAGE, NEVER THE TEXT ─────────────────────────────────
+    //
+    // The sheet publishes the plan block when it appears and, once the server answers with the
+    // id, every target delivers the canonical `/plan/<shareId>` — the same Tappy Plan brochure a
+    // web share opens. Until then the targets wait behind "preparing"; if publishing fails the
+    // sheet says why and offers a retry. It never quietly sends the text brochure instead: that
+    // would tell the recipient a page exists when it does not.
+    enum PlanLinkState: Equatable {
+        case idle, preparing
+        case ready(url: String)
+        case failed(PlanShareOutcome)
+    }
+    @State private var planLink: PlanLinkState = .idle
+
+    private var isPlan: Bool { artifact.kind == .plan }
+    /// What actually leaves: the link artifact for a published plan, the artifact as built otherwise.
+    private var delivered: ShareArtifact {
+        if case .ready(let url) = planLink, isPlan { return ShareArtifactBuilder.planLinkArtifact(artifact, canonicalURL: url) }
+        return artifact
+    }
+    private var targetsEnabled: Bool {
+        if !isPlan { return true }
+        if case .ready = planLink { return true }
+        return false
+    }
+
+    @MainActor
+    private func publishPlan() async {
+        guard isPlan else { return }
+        guard let planShare, let block = artifact.planJSON, !block.isEmpty else {
+            planLink = .failed(.noPlanPayload)
+            return
+        }
+        planLink = .preparing
+        let outcome = await planShare.publish(planJSON: block)
+        if case .link(_, let url) = outcome { planLink = .ready(url: url) } else { planLink = .failed(outcome) }
+    }
 
     var body: some View {
         NavigationStack {
@@ -39,8 +79,11 @@ struct TappyShareSheet: View {
                         }
                     }
 
+                    if isPlan { planLinkStatus }
+
                     row(.inbox, system: "tray.and.arrow.down")
-                    row(.save, system: "square.and.arrow.down")
+                    // A published plan lives on its page; there is nothing to save to the device.
+                    if !delivered.isPlanLink { row(.save, system: "square.and.arrow.down") }
                     row(.copy, system: "doc.on.doc")
                     row(.native, system: "square.and.arrow.up")
 
@@ -67,6 +110,7 @@ struct TappyShareSheet: View {
             // Rendered with the built-in ImageRenderer; a nil image never blocks any target.
             image = ShareCardRenderer.render(artifact)
         }
+        .task(id: artifact.planJSON) { await publishPlan() }
     }
 
     // MARK: - Preview
@@ -145,6 +189,46 @@ struct TappyShareSheet: View {
         .buttonStyle(.plain)
     }
 
+    /// The plan link's state, said plainly: preparing keeps the targets waiting; a failure names
+    /// its reason and offers a retry (sign-in has its own line and no retry — it would fail again).
+    @ViewBuilder
+    private var planLinkStatus: some View {
+        switch planLink {
+        case .idle, .preparing:
+            HStack(spacing: Spacing.xs) {
+                ProgressView().controlSize(.small)
+                Text(String(localized: "share.planPreparing")).font(TappyFont.footnote).foregroundStyle(TappyColor.textSecondary)
+            }
+            .accessibilityIdentifier("share-plan-preparing")
+        case .ready(let url):
+            Text(url.replacingOccurrences(of: "https://", with: ""))
+                .font(TappyFont.footnote).foregroundStyle(TappyColor.accent).lineLimit(1)
+                .accessibilityIdentifier("share-plan-link")
+        case .failed(let outcome):
+            let (key, retryable) = Self.failureCopy(outcome)
+            VStack(alignment: .leading, spacing: Spacing.xxs) {
+                Text(String(localized: String.LocalizationValue(key))).font(TappyFont.footnote).foregroundStyle(TappyColor.warning)
+                if retryable {
+                    Button(String(localized: "share.planRetry")) { Task { await publishPlan() } }
+                        .font(TappyFont.footnote.weight(.semibold))
+                        .accessibilityIdentifier("share-plan-retry")
+                }
+            }
+            .accessibilityIdentifier("share-plan-failed")
+        }
+    }
+
+    /// The catalogue key for a failed publish, and whether trying again could change the answer.
+    static func failureCopy(_ outcome: PlanShareOutcome) -> (key: String, retryable: Bool) {
+        switch outcome {
+        case .signInRequired: return ("share.planSignIn", false)
+        case .offline: return ("share.planOffline", true)
+        case .notShareable: return ("share.planNotShareable", false)
+        case .noPlanPayload: return ("share.planNoPayload", false)
+        case .failed, .link: return ("share.planFailed", true)
+        }
+    }
+
     private func label(_ t: TappyShare.Target) -> String {
         switch t {
         case .facebook: return String(localized: "share.facebook")
@@ -158,7 +242,7 @@ struct TappyShareSheet: View {
         case .email: return String(localized: "share.email")
         case .inbox: return String(localized: "share.inbox")
         case .save: return String(localized: "share.save")
-        case .copy: return String(localized: "share.copyContent")
+        case .copy: return delivered.isPlanLink ? String(localized: "share.copyLink") : String(localized: "share.copyContent")
         case .native: return String(localized: "share.more")
         }
     }
@@ -181,11 +265,14 @@ struct TappyShareSheet: View {
     // MARK: - Delivery
 
     private func handle(_ t: TappyShare.Target) {
-        let body = ShareArtifactBuilder.inboxBody(artifact, lang: lang)
+        guard targetsEnabled else { return }
+        // The link artifact for a published plan — its url is the plan's page, its text names it.
+        let a = delivered
+        let body = ShareArtifactBuilder.inboxBody(a, lang: lang)
         switch t {
         case .viber, .line, .whatsapp, .telegram:
             // Documented text endpoints: the brochure travels inside the URL.
-            if let s = TappyShare.buildTextShareURL(t, subject: artifact.subject, text: body, url: artifact.url),
+            if let s = TappyShare.buildTextShareURL(t, subject: a.subject, text: body, url: a.url),
                let url = URL(string: s), canOpen(t) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.openedWithText"), label(t))
@@ -206,7 +293,7 @@ struct TappyShareSheet: View {
         case .messenger:
             // Messenger's own share deep link carries the brand url; the brochure is copied first.
             copy(body)
-            if let s = TappyShare.buildShareURL(.messenger, canonicalURL: artifact.url), let url = URL(string: s), canOpen(t) {
+            if let s = TappyShare.buildShareURL(.messenger, canonicalURL: a.url), let url = URL(string: s), canOpen(t) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.copiedAndOpened"), label(t))
             } else {
@@ -216,7 +303,7 @@ struct TappyShareSheet: View {
         case .facebook:
             // The sharer dialog with the brand url, brochure on the clipboard — same as web.
             copy(body)
-            if let s = TappyShare.buildShareURL(.facebook, canonicalURL: artifact.url), let url = URL(string: s) {
+            if let s = TappyShare.buildShareURL(.facebook, canonicalURL: a.url), let url = URL(string: s) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.copiedAndOpened"), label(t))
             } else {
@@ -229,7 +316,7 @@ struct TappyShareSheet: View {
             feedback = String(format: String(localized: "share.appNotOpened"), label(t))
 
         case .email:
-            if let s = TappyShare.buildTextShareURL(.email, subject: artifact.subject, text: body), let url = URL(string: s) {
+            if let s = TappyShare.buildTextShareURL(.email, subject: a.subject, text: body), let url = URL(string: s) {
                 UIApplication.shared.open(url) { ok in
                     if ok { feedback = String(localized: "share.emailOpened") }
                     else { copy(body); feedback = String(localized: "share.copiedContent") }
@@ -251,17 +338,19 @@ struct TappyShareSheet: View {
                 UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
                 feedback = String(localized: "share.savedImage")
             } else {
-                present(items: [artifact.text])
+                present(items: [a.text])
                 feedback = String(localized: "share.saveText")
             }
 
         case .copy:
-            copy(artifact.text)
-            feedback = String(localized: "share.copiedContent")
+            // Copy link for a published plan — the exact canonical URL, nothing around it.
+            copy(a.isPlanLink ? a.url : a.text)
+            feedback = a.isPlanLink ? String(localized: "share.copiedLink") : String(localized: "share.copiedContent")
 
         case .native:
-            var items: [Any] = [artifact.text]
-            if let image { items.append(image) }
+            // A published plan is a LINK: the page carries the photos, so no rendered card rides along.
+            var items: [Any] = [a.text]
+            if let image, !a.isPlanLink { items.append(image) }
             present(items: items)
         }
     }

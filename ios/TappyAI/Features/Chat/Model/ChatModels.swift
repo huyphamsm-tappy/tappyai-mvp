@@ -61,6 +61,11 @@ struct ParsedContent: Equatable, Sendable {
     /// D1 — the decoded shopping decision, or nil when the turn carried none.
     /// Defaulted so existing call sites that build a ParsedContent keep compiling unchanged.
     var shopping: ShoppingDecisionView? = nil
+    /// The `[TAPPY_PLAN]` block VERBATIM (the JSON between the tags), present exactly when `plan`
+    /// is. A plan SHARE sends this to `POST /api/plans/share` — the real payload the model emitted,
+    /// including fields `TappyPlan` does not model (the wire `label`/`items`/`photo_url`), so the
+    /// recipient's brochure is the whole plan. The server whitelists it before storing anything.
+    var planJSON: String? = nil
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

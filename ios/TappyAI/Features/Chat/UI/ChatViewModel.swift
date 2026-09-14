@@ -69,10 +69,15 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Init
 
+    /// Publishes a plan for sharing (`POST /api/plans/share`). Nil only in tests that never share.
+    let planShare: PlanSharing?
+
     init(service: ChatService, session: SessionStore, category: String = "general",
-         conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
+         conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
+         planShare: PlanSharing? = nil) {
         self.service = service
         self.session = session
+        self.planShare = planShare
         self.category = category
         self.conversationId = conversationId
         wireReadAloudLanguage()
@@ -248,7 +253,8 @@ final class ChatViewModel: AppObservableObject {
         if let view = msg.placesView, !view.items.isEmpty {
             shareArtifact = ShareArtifactBuilder.buildPlacesArtifact(view, title: title, lang: lang)
         } else if let plan = parsed.plan, !plan.days.isEmpty {
-            shareArtifact = ShareArtifactBuilder.buildPlanArtifact(plan, title: title, lang: lang)
+            // The block rides along: the share sheet publishes it and delivers the plan's page.
+            shareArtifact = ShareArtifactBuilder.buildPlanArtifact(plan, title: title, lang: lang, planJSON: parsed.planJSON)
         } else {
             shareArtifact = ShareArtifactBuilder.buildProseArtifact(subject: title, prose: parsed.text)
         }

@@ -27,4 +27,14 @@
     <string name="share_saved_text">Đã lưu văn bản vào Downloads/TappyAI</string>
     <string name="share_save_failed">Không lưu được</string>
     <string name="share_inbox_opened">Đã sao chép — đang mở Hộp thư TappyAI, dán vào tin nhắn nhé</string>
+
+    <string name="share_plan_preparing">Đang tạo kế hoạch chia sẻ…</string>
+    <string name="share_copy_link">Sao chép liên kết</string>
+    <string name="share_copied_link">Đã sao chép liên kết kế hoạch</string>
+    <string name="share_plan_sign_in">Đăng nhập để tạo liên kết kế hoạch</string>
+    <string name="share_plan_offline">Mất kết nối — chưa tạo được liên kết kế hoạch</string>
+    <string name="share_plan_not_shareable">Kế hoạch này không chia sẻ được bằng liên kết</string>
+    <string name="share_plan_no_payload">Không chia sẻ được kế hoạch này từ đây — hãy hỏi Tappy lại</string>
+    <string name="share_plan_failed">Chưa tạo được liên kết kế hoạch</string>
+    <string name="share_plan_retry">Thử lại</string>
 </resources>

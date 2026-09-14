@@ -239,7 +239,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                     }
                                 }
                             }
-                            message.plan?.let { plan -> TripPlanCard(plan) }
+                            message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
                             // D1 — the shopping DECISION. Rendered only once generation is done,
                             // like every other structured block: a half-arrived decision is not a
                             // decision, and showing one mid-stream is how partial JSON reached
@@ -285,6 +285,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                         onRegenerate = viewModel::onRegenerate,
                                         placesView = message.placesView,
                                         plan = message.plan,
+                                        planJson = message.planJson,
                                         shareSubject = shareSubjectFor(messages, message),
                                     )
                                 }

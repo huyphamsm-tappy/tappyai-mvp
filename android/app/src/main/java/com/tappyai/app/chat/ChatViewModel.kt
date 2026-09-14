@@ -533,6 +533,7 @@ class ChatViewModel @Inject constructor(
                         role = TappyChatRole.Assistant,
                         text = parsed.text,
                         plan = parsed.plan,
+                        planJson = parsed.planJson,
                         ctaButtons = parsed.ctaButtons,
                         segments = parsed.segments,
                         followups = followups,

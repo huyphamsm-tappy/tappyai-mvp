@@ -16,6 +16,8 @@ data class ChatMessage(
     val followups: List<String> = emptyList(),
     // Structured cards parsed out of an assistant reply (web parity — see [ChatResponseParser]).
     val plan: TappyPlan? = null,
+    // The plan block verbatim — the payload a plan share publishes (see ParsedAssistantReply.planJson).
+    val planJson: String? = null,
     val ctaButtons: List<CtaButton> = emptyList(),
     // D1 — the shopping DECISION for this turn, when the reply carried one. Null on every other
     // turn. Android used to strip this block and render nothing, losing the whole decision.

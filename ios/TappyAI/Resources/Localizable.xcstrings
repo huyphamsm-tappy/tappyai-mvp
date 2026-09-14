@@ -12769,6 +12769,23 @@
         }
       }
     },
+    "share.copiedLink": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plan link copied"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã sao chép liên kết kế hoạch"
+          }
+        }
+      }
+    },
     "share.copyContent": {
       "extractionState": "manual",
       "localizations": {
@@ -12782,6 +12799,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sao chép nội dung"
+          }
+        }
+      }
+    },
+    "share.copyLink": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sao chép liên kết"
           }
         }
       }
@@ -12952,6 +12986,125 @@
           "stringUnit": {
             "state": "translated",
             "value": "Đã mở %@ kèm gợi ý — chọn người để gửi"
+          }
+        }
+      }
+    },
+    "share.planFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't create the plan link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa tạo được liên kết kế hoạch"
+          }
+        }
+      }
+    },
+    "share.planNoPayload": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This plan can't be shared from here — ask Tappy for it again"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không chia sẻ được kế hoạch này từ đây — hãy hỏi Tappy lại"
+          }
+        }
+      }
+    },
+    "share.planNotShareable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This plan can't be shared as a link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kế hoạch này không chia sẻ được bằng liên kết"
+          }
+        }
+      }
+    },
+    "share.planOffline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No connection — the plan link couldn't be created"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mất kết nối — chưa tạo được liên kết kế hoạch"
+          }
+        }
+      }
+    },
+    "share.planPreparing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preparing your plan to share…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tạo kế hoạch chia sẻ…"
+          }
+        }
+      }
+    },
+    "share.planRetry": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thử lại"
+          }
+        }
+      }
+    },
+    "share.planSignIn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to create a plan link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập để tạo liên kết kế hoạch"
           }
         }
       }
