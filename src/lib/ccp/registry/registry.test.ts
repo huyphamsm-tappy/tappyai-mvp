@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { PROVIDER_REGISTRY, getProvider, isAllowedHost, providersFor, validateRegistry } from './index'
-import { MVP_ADAPTERS } from '../adapters'
+import { ADAPTERS, MVP_ADAPTERS } from '../adapters'
 import { validateWeights } from '../ranking/weights'
 
 describe('provider registry', () => {
@@ -8,10 +8,32 @@ describe('provider registry', () => {
     expect(validateRegistry()).toEqual([])
   })
 
-  it('contains exactly the five MVP adapters (owner decision D10) and they agree with the adapter list', () => {
+  it('contains the five MVP adapters (D10) plus the three shopping marketplaces (14 Sep 2026), and they agree with the adapter list', () => {
     const mvp = PROVIDER_REGISTRY.filter(p => p.tier === 'mvp').map(p => p.providerId).sort()
-    expect(mvp).toEqual(['cgv', 'dmx', 'klook', 'pasgo', 'tripcom'])
-    expect(MVP_ADAPTERS.map(a => a.providerId).sort()).toEqual(mvp)
+    expect(mvp).toEqual(['cgv', 'dmx', 'klook', 'lazada', 'pasgo', 'shopee', 'tiktokshop', 'tripcom'])
+    expect(ADAPTERS.map(a => a.providerId).sort()).toEqual(mvp)
+    expect(MVP_ADAPTERS.map(a => a.providerId).sort()).toEqual(['cgv', 'dmx', 'klook', 'pasgo', 'tripcom'])
+  })
+
+  it('Shopee and TikTok Shop are first-class shopping providers with the verified boundaries (owner decision 14 Sep 2026)', () => {
+    for (const id of ['shopee', 'tiktokshop']) {
+      const p = getProvider(id)!
+      expect(p.tier).toBe('mvp')
+      expect(p.segment).toBe('marketplace')
+      expect(p.domains).toEqual(['shopping'])
+      expect(p.commerce).toEqual(['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'])
+    }
+    // Web guests meet Shopee's login wall before the detail; TikTok Shop shows the detail and asks for the account at checkout.
+    expect(getProvider('shopee')!.depth.buy_product).toMatchObject({ guestDepth: 2, authenticatedDepth: 5, authRequiredAt: 'before_selection' })
+    expect(getProvider('tiktokshop')!.depth.buy_product).toMatchObject({ guestDepth: 3, authenticatedDepth: 5, authRequiredAt: 'before_checkout' })
+    // Shopee marketplace and ShopeeFood are different providers with disjoint capabilities.
+    const shopee = getProvider('shopee')!, shopeefood = getProvider('shopeefood')!
+    expect(shopee.allowedHosts.some(h => shopeefood.allowedHosts.includes(h))).toBe(false)
+    const transactional = (p: typeof shopee) => p.commerce.filter(c => c !== 'commerce_handoff')
+    expect(transactional(shopee).some(c => transactional(shopeefood).includes(c))).toBe(false)
+    // Affiliate is a monetisation layer, not a prerequisite: Shopee's campaign is pending and it is still a provider.
+    expect(getProvider('shopee')!.tracking?.approval).toBe('pending')
+    expect(getProvider('tiktokshop')!.tracking?.approval).toBe('approved')
   })
 
   it('transcribes the audited depth profiles verbatim', () => {

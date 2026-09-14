@@ -9,7 +9,8 @@ const hotelScopes = () => discoveryScopesFor('travel', 'book_hotel')
 describe('discovery scopes come from the registry', () => {
   it('names one scope per enabled MVP adapter for the domain/intent, and none for handoff-only or unknown intents', () => {
     expect(discoveryScopesFor('travel', 'book_hotel').map(s => s.providerId)).toEqual(['tripcom'])
-    expect(discoveryScopesFor('shopping', 'buy_product').map(s => s.providerId)).toEqual(['dmx'])
+    // Shopping (14 Sep 2026): the retailers and the three marketplaces are all discoverable; CellphoneS via passthrough.
+    expect(discoveryScopesFor('shopping', 'buy_product').map(s => s.providerId)).toEqual(['dmx', 'shopee', 'tiktokshop', 'lazada', 'cellphones'])
     expect(discoveryScopesFor('food_drink', 'reserve_table').map(s => s.providerId)).toEqual(['pasgo'])
     expect(discoveryScopesFor('entertainment', 'book_activity').map(s => s.providerId)).toEqual(['klook'])
     expect(discoveryScopesFor('spa', 'buy_spa_voucher').map(s => s.providerId)).toEqual(['klook'])
@@ -56,8 +57,13 @@ describe('discoverCommerceHints', () => {
       { id: 'a', subject: 'Tủ lạnh', knownUrls: ['https://www.dienmayxanh.com/tu-lanh/x'] },
       { id: 'b', subject: 'Máy giặt', knownUrls: ['https://shopee.vn/x'] },
     ], { search })
-    expect(search).toHaveBeenCalledTimes(1)
-    expect(search.mock.calls[0][0]).toContain('"Máy giặt"')
+    // One combined query per subject (14 Sep 2026); the scope a subject already owns is left out of it.
+    expect(search).toHaveBeenCalledTimes(2)
+    expect(search.mock.calls[0][0]).toContain('"Tủ lạnh"')
+    expect(search.mock.calls[0][0]).not.toContain('site:dienmayxanh.com')
+    expect(search.mock.calls[1][0]).toContain('"Máy giặt"')
+    expect(search.mock.calls[1][0]).not.toContain('site:shopee.vn')
+    expect(search.mock.calls[1][0]).toContain('site:dienmayxanh.com')
     expect(hints).toEqual([])
   })
 

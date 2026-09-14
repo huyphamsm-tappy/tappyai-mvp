@@ -18,9 +18,12 @@ import type { SynthesisCommerceView } from '@/lib/ai/consultative/synthesisView'
 
 export default function CommerceHandoff({ c, size }: { c: SynthesisCommerceView; size: 'sm' | 'md' }) {
   const { t } = useTranslation()
-  const action = { kind: 'purchase' as const, urlKind: 'direct' as const, url: c.url, platform: c.merchantName, commerce: c }
+  const search = c.kind === 'SEARCH_HANDOFF'
+  const action = { kind: 'purchase' as const, urlKind: search ? ('search' as const) : ('direct' as const), url: c.url, platform: c.merchantName, commerce: c }
   const label = actionLabel(action, t)
-  const cls = size === 'md'
+  const cls = search
+    ? 'inline-flex items-center gap-1 text-xs font-medium text-gray-600 hover:underline dark:text-gray-300'
+    : size === 'md'
     ? 'inline-flex min-h-[36px] items-center gap-1.5 rounded-xl border border-primary-300 bg-primary-50 px-3 text-sm font-semibold text-primary-800 transition-colors hover:bg-primary-100 dark:border-primary-700 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/40'
     : 'inline-flex items-center gap-1 text-xs font-semibold text-primary-700 hover:underline dark:text-primary-300'
   return (
@@ -29,7 +32,7 @@ export default function CommerceHandoff({ c, size }: { c: SynthesisCommerceView;
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => reportCommerceHandoff(action)}
-      data-testid="commerce-handoff"
+      data-testid={search ? 'commerce-search' : 'commerce-handoff'}
       data-provider={c.providerId}
       className={cls}
     >

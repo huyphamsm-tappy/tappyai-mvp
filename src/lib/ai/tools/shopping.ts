@@ -3,17 +3,17 @@ import { filterShoppingResults } from './shoppingValidity'
 import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
+import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
 
 export async function searchProducts(query: string, lang = 'vi') {
   const cacheKey = productsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  const links = [
-    { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
-    { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
-    { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
-  ]
+  // The marketplaces' own SEARCH pages, from the CCP registry (owner decision 14 Sep 2026): the
+  // model may cite them as "xem thêm lựa chọn"; verified product handoffs ride the rows as
+  // `commerce_links` when the platform is enabled.
+  const links = buildShoppingLinks(query)
 
   let result: unknown
 

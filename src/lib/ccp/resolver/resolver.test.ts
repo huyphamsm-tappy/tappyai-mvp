@@ -150,7 +150,14 @@ describe('orchestrator + ranking + fallback', () => {
       const r = resolveCommerce(req, { now, hints: [hint], enabled: true })
       expect('links' in r, provider).toBe(true)
       if (!('links' in r)) continue
-      expect(r.links, provider).toHaveLength(1)
+      // Shopping requests also carry the marketplaces' honest SEARCH fallbacks (14 Sep 2026); the
+      // verified detail link ranks first, the L2 search links follow.
+      if (req.domain === 'shopping') {
+        expect(r.links.map(l => l.providerId).sort()).toEqual(['dmx', 'lazada', 'shopee'])
+        expect(r.links.slice(1).every(l => l.kind === 'SEARCH_HANDOFF' && l.depth === 2)).toBe(true)
+      } else {
+        expect(r.links, provider).toHaveLength(1)
+      }
       expect(r.links[0].providerId).toBe(provider)
       expect(r.links[0].depth).toBe(depth)
       expect(r.links[0].validation.status).not.toBe('failed')

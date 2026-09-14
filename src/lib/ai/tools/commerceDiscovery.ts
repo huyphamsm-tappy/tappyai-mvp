@@ -68,7 +68,7 @@ function scopesNeeded(scopes: DiscoveryScope[], knownUrls: string[]): DiscoveryS
 }
 
 async function runSearches(
-  tasks: Array<{ subjectId: string; scope: DiscoveryScope; query: string }>,
+  tasks: Array<{ subjectId: string; scopes: DiscoveryScope[]; query: string }>,
   search: SearchFn,
   perScope = MAX_LINKS_PER_SCOPE,
 ): Promise<DiscoveredHint[]> {
@@ -78,16 +78,27 @@ async function runSearches(
   }))
   tasks.forEach((t, i) => {
     const rows = results[i] ?? []
-    let taken = 0
+    const taken = new Map<string, number>()
+    const wanted = new Set(t.scopes.map(s => s.providerId))
     for (const r of rows) {
-      if (taken >= perScope) break
-      if (typeof r?.link !== 'string' || providerOwning(r.link) !== t.scope.providerId) continue
-      out.push({ subjectId: t.subjectId, providerId: t.scope.providerId, url: r.link, ...(typeof r.title === 'string' ? { title: r.title } : {}) })
-      taken++
+      if (typeof r?.link !== 'string') continue
+      const owner = providerOwning(r.link)
+      if (!owner || !wanted.has(owner)) continue
+      if ((taken.get(owner) ?? 0) >= perScope) continue
+      out.push({ subjectId: t.subjectId, providerId: owner, url: r.link, ...(typeof r.title === 'string' ? { title: r.title } : {}) })
+      taken.set(owner, (taken.get(owner) ?? 0) + 1)
     }
   })
   return out
 }
+
+/**
+ * One `site:` operand per scope, OR-ed when a domain has several (the shopping marketplaces
+ * and retailers, 14 Sep 2026): ONE search per subject finds every merchant's page for it,
+ * instead of one search per merchant — the budget stays at MAX_QUERIES_PER_TURN subjects.
+ */
+const siteOperand = (scopes: DiscoveryScope[]): string =>
+  scopes.length === 1 ? `site:${scopes[0].site}` : `(${scopes.map(s => `site:${s.site}`).join(' OR ')})`
 
 /**
  * Discover merchant pages for the given subjects (venue / hotel / product
@@ -105,17 +116,16 @@ export async function discoverCommerceHints(
   const scopes = opts.scopes ?? discoveryScopesFor(domain, intentType)
   if (scopes.length === 0 || subjects.length === 0) return []
   let budget = opts.maxQueries ?? MAX_QUERIES_PER_TURN
-  const tasks: Array<{ subjectId: string; scope: DiscoveryScope; query: string }> = []
+  const tasks: Array<{ subjectId: string; scopes: DiscoveryScope[]; query: string }> = []
   for (const subject of subjects) {
     const name = subject.subject.trim()
     if (!name) continue
-    for (const scope of scopesNeeded(scopes, subject.knownUrls ?? [])) {
-      if (budget <= 0) break
-      budget--
-      const locality = subject.locality?.trim()
-      tasks.push({ subjectId: subject.id, scope, query: `${quote(name)}${locality ? ` ${locality}` : ''} site:${scope.site}` })
-    }
+    const needed = scopesNeeded(scopes, subject.knownUrls ?? [])
+    if (needed.length === 0) continue
     if (budget <= 0) break
+    budget--
+    const locality = subject.locality?.trim()
+    tasks.push({ subjectId: subject.id, scopes: needed, query: `${quote(name)}${locality ? ` ${locality}` : ''} ${siteOperand(needed)}` })
   }
   return runSearches(tasks, search)
 }
@@ -138,7 +148,7 @@ export async function discoverBySubject(
   const scopes = opts.scopes ?? discoveryScopesFor(domain, intentType)
   const name = subject.replace(/["\n\r]/g, ' ').replace(/\s+/g, ' ').trim()
   if (scopes.length === 0 || !name) return []
-  const tasks = scopes.map(scope => ({ subjectId: 'subject', scope, query: `${name}${locality ? ` ${locality.trim()}` : ''} site:${scope.site}` }))
+  const tasks = scopes.map(scope => ({ subjectId: 'subject', scopes: [scope], query: `${name}${locality ? ` ${locality.trim()}` : ''} site:${scope.site}` }))
   return runSearches(tasks, search, opts.perScope ?? 3)
 }
 

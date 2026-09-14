@@ -65,9 +65,15 @@ export interface ProviderRegistryEntry {
   rights: RightsFlags
   tracking?: TrackingConfig
   /** Product-policy flag name in src/lib/config/product.ts gating this adapter. */
-  enabledFlag: 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_PASGO' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK' | 'CCP_HANDOFF_ONLY'
+  enabledFlag: 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_PASGO' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK' | 'CCP_ADAPTER_SHOPEE' | 'CCP_ADAPTER_TIKTOKSHOP' | 'CCP_ADAPTER_LAZADA' | 'CCP_HANDOFF_ONLY'
   /** MVP adapters implement the contract; handoff-only entries carry facts for the ladder but no adapter. */
   tier: 'mvp' | 'handoff_only'
+  /**
+   * Shopping segment (owner decision 14 Sep 2026): a MARKETPLACE lists many sellers' listings
+   * (Shopee, TikTok Shop, Lazada); a RETAILER sells its own catalogue (Điện Máy Xanh,
+   * CellphoneS). Presentation may group by it; routing and ranking never read it.
+   */
+  segment?: 'marketplace' | 'retail'
   notes: readonly string[]
   /**
    * How the tool layer may LOOK FOR this merchant's pages when a tool result carries no

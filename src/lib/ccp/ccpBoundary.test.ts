@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
+import { PROVIDER_REGISTRY } from './registry'
 
 // ── CCP boundary guard ───────────────────────────────────────────────────────
 // Mirrors the architecture-check rules from inside vitest so the required-suite
@@ -54,7 +55,11 @@ describe('CCP module boundary', () => {
       if (!f.rel.includes('/adapters/') || f.rel.endsWith('.test.ts')) continue
       for (const m of f.src.matchAll(/https:\/\/([a-z0-9.-]+)\//g)) hosts.add(m[1])
     }
-    const allowed = new Set(['www.dienmayxanh.com', 'vn.trip.com', 'pasgo.vn', 'www.cgv.vn', 'www.klook.com'])
+    // The registry allow-lists are the authority; the literal set below is the reviewed transcription
+    // (five MVP merchants + the three shopping marketplaces, 14 Sep 2026).
+    const allowed = new Set(['www.dienmayxanh.com', 'vn.trip.com', 'pasgo.vn', 'www.cgv.vn', 'www.klook.com', 'shopee.vn', 'shop.tiktok.com', 'www.tiktok.com', 'www.lazada.vn'])
     expect([...hosts].filter(h => !allowed.has(h))).toEqual([])
+    const registryHosts = new Set(PROVIDER_REGISTRY.flatMap(e => [...e.allowedHosts]))
+    expect([...hosts].filter(h => !registryHosts.has(h))).toEqual([])
   })
 })

@@ -5,7 +5,7 @@ import { buildTravelLinks } from './travel'
 import { buildSpaLinks } from './spa'
 import { buildEntertainmentLinks } from './entertainment'
 import { buildShoppingLinks } from './shopping'
-import { commerceOwnedHosts, withoutCommerceOwnedLinks } from './ccpShim'
+import { commerceOwnedHosts, marketplaceSearchPrefixes, withoutCommerceOwnedLinks } from './ccpShim'
 
 // ── Cross-client platform-link parity ────────────────────────────────────────
 //
@@ -73,8 +73,8 @@ describe('CCP-owned merchants are never linked by a legacy builder (D2)', () => 
   const hosts = commerceOwnedHosts()
   const hostRe = new RegExp(hosts.map(h => h.replace(/\./g, '\\.')).join('|'), 'i')
 
-  it('the registry names the five MVP merchants', () => {
-    expect(hosts.length).toBeGreaterThanOrEqual(5)
+  it('the registry names the five MVP merchants and the three marketplaces', () => {
+    expect(hosts.length).toBeGreaterThanOrEqual(8)
   })
 
   it('every backend builder output is unchanged by the CCP shim', () => {
@@ -88,8 +88,16 @@ describe('CCP-owned merchants are never linked by a legacy builder (D2)', () => 
     for (const links of outputs) expect(withoutCommerceOwnedLinks(links)).toEqual(links)
   })
 
-  it('the iOS Swift builders spell no CCP merchant host', () => {
-    const offending = swift.split(/\r?\n/).filter(l => hostRe.test(l)).map(l => l.trim())
+  it('the iOS Swift builders spell no CCP merchant host, except the registry search grammars the backend builder projects', () => {
+    const prefixes = marketplaceSearchPrefixes()
+    const offending = swift.split(/\r?\n/).filter(l => hostRe.test(l) && !prefixes.some(p => l.includes(p))).map(l => l.trim())
     expect(offending).toEqual([])
+  })
+
+  it('the shopping builders are registry projections: Shopee + Lazada search pages, no TikTok Shop search (none exists), no Tiki', () => {
+    const prefixes = marketplaceSearchPrefixes()
+    expect(buildShoppingLinks('áo thun').map(l => l.name)).toEqual(['Shopee', 'Lazada'])
+    expect(buildShoppingLinks('áo thun').every(l => prefixes.some(p => l.url.startsWith(p)))).toBe(true)
+    expect(prefixes.some(p => p.includes('tiktok'))).toBe(false)
   })
 })

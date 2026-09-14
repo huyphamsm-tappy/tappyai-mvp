@@ -225,13 +225,15 @@ describe('D · DMX CommerceLink → canonical Shopping Action → Shopping prese
     expect(resolveActionLabel({ kind: 'purchase', urlKind: 'direct', url: c.url, platform: c.merchantName, commerce: c })).toEqual({ key: 'v3.action.purchaseOn', params: { platform: 'Điện Máy Xanh' } })
   })
 
-  it('an entity with no Commerce Link keeps the fallback (no `commerce`), so Google Shopping rows still render their own honest offer', async () => {
+  it('an entity with no DETAIL Commerce Link keeps the fallback offer; only the marketplaces\' honest search links join it (never a fabricated product)', async () => {
     const google = googleRow()
     const result = { search_results: [google], source: 'Google Shopping (Serper)' }
     await attachCommerceLinks('search_products', result, { enabled: true, now: NOW, search: async () => [] })
     const view = buildSynthesisView(buildShoppingSynthesis([{ id: 'c0', name: google.title, raw: google } as unknown as Candidate], null, 'iPhone'))
-    expect(view.entities[0].commerce).toBeUndefined()
-    expect(view.entities[0].offers[0].url).toBe(google.link)
+    const e = view.entities[0]
+    expect(e.commerce).toBeUndefined() // no detail-level handoff
+    expect((e.commerceLinks ?? []).every(l => l.kind === 'SEARCH_HANDOFF' && l.depth === 2)).toBe(true)
+    expect(e.offers[0].url).toBe(google.link)
   })
 })
 

@@ -104,6 +104,8 @@ export function resolveActionLabel(
   }
 
   if (action.urlKind === 'search') {
+    // A CCP SEARCH_HANDOFF whose merchant asks for a login before the results (Shopee web) says so.
+    if (action.commerce?.loginRequired) return withPlatform('v3.action.searchLoginOn', 'v3.action.searchGeneric')
     switch (action.kind) {
       case 'booking': return withPlatform('v3.action.bookingSearch', 'v3.action.searchGeneric')
       case 'reservation': return withPlatform('v3.action.bookingSearch', 'v3.action.searchGeneric')

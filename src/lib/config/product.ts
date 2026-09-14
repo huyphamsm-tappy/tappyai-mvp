@@ -164,6 +164,10 @@ export const CCP_ADAPTERS = {
   CCP_ADAPTER_PASGO: true,
   CCP_ADAPTER_CGV: true,
   CCP_ADAPTER_KLOOK: true,
+  /** Shopping marketplaces (owner decision 14 Sep 2026: Shopee and TikTok Shop are mandatory first-class providers; Lazada desired). */
+  CCP_ADAPTER_SHOPEE: true,
+  CCP_ADAPTER_TIKTOKSHOP: true,
+  CCP_ADAPTER_LAZADA: true,
   /** Handoff-only registry entries (CellphoneS, Vexere, Booking.com) — facts, no adapter. */
   CCP_HANDOFF_ONLY: true,
 } as const

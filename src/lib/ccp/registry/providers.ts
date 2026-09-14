@@ -9,6 +9,11 @@ import type { RightsFlags } from '../domain/types'
 
 const AUDIT = 'https://claude.ai/code/artifact/5ce17dc6-1d40-454c-927e-fe3cf9291f7c'
 const VERIFIED = '2026-09-13'
+// Marketplace expansion (owner decision 14 Sep 2026): Shopee and TikTok Shop verified read-only in a
+// browser on 14 Sep 2026 — evidence recorded in the Shopping Marketplace Expansion report.
+const MARKETPLACE_VERIFIED = '2026-09-14'
+// Evidence page: the Shopping Marketplace Expansion record (§ Marketplace) on the CCP progress page.
+const MARKETPLACE_EVIDENCE = 'https://claude.ai/code/artifact/7a297ff7-7f09-46e3-a537-544325f066b1#marketplace'
 
 // Owner decision D7: no ACCESSTRADE feed field is displayed until the written
 // data-rights confirmation arrives. Rights are therefore OFF for every feed
@@ -52,8 +57,125 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tracking: { network: 'accesstrade', campaignId: '5751981382510607935', approval: 'pending', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_DMX',
     tier: 'mvp',
+    segment: 'retail',
     notes: ['Affiliate approval only affects tracking, not depth.', 'Variant and quantity are page-only.'],
     discovery: { site: 'dienmayxanh.com', subjectKind: 'product' },
+  },
+
+  // ── Shopping marketplaces (owner decision 14 Sep 2026: Shopee + TikTok Shop mandatory) ──
+  {
+    providerId: 'shopee',
+    merchantId: 'shopee',
+    merchantName: 'Shopee',
+    domains: ['shopping'],
+    intents: ['buy_product'],
+    allowedHosts: ['shopee.vn', 'www.shopee.vn'],
+    capabilities: ['search', 'details', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    // NOT ShopeeFood: this is the marketplace (shopee.vn); food delivery is the separate
+    // 'shopeefood' entry (shopeefood.vn) and the two never share a capability.
+    commerce: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
+    depth: {
+      buy_product: {
+        // Verified 14 Sep 2026 in an UNAUTHENTICATED browser: shopee.vn/search?keyword=… AND the
+        // product page …-i.<shopId>.<itemId> both show "Login Required" to a guest on the web.
+        // The URL carries the product identity; a guest sees the login wall before the detail.
+        // Authenticated view (owner session, read-only): variants, quantity, Add to Cart, Buy Now.
+        guestDepth: 2,
+        authenticatedDepth: 5,
+        bestPossibleDepth: 5,
+        authRequiredAt: 'before_selection',
+        verifiedOn: MARKETPLACE_VERIFIED,
+        evidence: MARKETPLACE_EVIDENCE,
+        reason: 'Web Shopee VN hiện "Login Required" cho khách chưa đăng nhập ở cả trang tìm kiếm lẫn trang sản phẩm; sau đăng nhập có chọn phân loại, số lượng, Mua ngay.',
+      },
+    },
+    freshness: {
+      identity: { freshnessType: 'static', ttlMs: null, note: 'product URL is stable; listing may be sold out (page-only)' },
+      price: { freshnessType: 'unknown', ttlMs: null, note: 'price read on the merchant page; no feed display (D7)' },
+      availability: { freshnessType: 'unknown', ttlMs: null, note: 'sold-out state is behind the login wall; not verified server-side' },
+    },
+    rights: FEED_RIGHTS_WCR,
+    tracking: { network: 'accesstrade', campaignId: '4751584435713464237', approval: 'pending', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    enabledFlag: 'CCP_ADAPTER_SHOPEE',
+    tier: 'mvp',
+    segment: 'marketplace',
+    notes: ['Shopee marketplace ≠ ShopeeFood.', 'Product grammar: /<slug>-i.<shopId>.<itemId>; search grammar: /search?keyword=<q> (login-walled for web guests).', 'Affiliate (Shopee Smartlink) pending → direct links.'],
+    discovery: { site: 'shopee.vn', subjectKind: 'product' },
+  },
+  {
+    providerId: 'tiktokshop',
+    merchantId: 'tiktokshop',
+    merchantName: 'TikTok Shop',
+    domains: ['shopping'],
+    intents: ['buy_product'],
+    // Product pages live on both hosts; the adapter accepts only product/keyword paths, never a
+    // video or profile URL, so the TikTok video host being listed here grants nothing else.
+    allowedHosts: ['shop.tiktok.com', 'www.tiktok.com'],
+    capabilities: ['search', 'details', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    commerce: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
+    depth: {
+      buy_product: {
+        // Verified 14 Sep 2026: shop.tiktok.com/vn/pdp/<slug>/<id> renders the product (title,
+        // seller, price, colour variants, quantity, "Buy now") in an authenticated browser; the
+        // guest browser profile met TikTok's CAPTCHA, so the guest view is index-verified only
+        // (the page is public and indexed with its og data). TikTok Shop web checkout needs a
+        // TikTok account — guest depth is the detail page.
+        guestDepth: 3,
+        authenticatedDepth: 5,
+        bestPossibleDepth: 5,
+        authRequiredAt: 'before_checkout',
+        verifiedOn: MARKETPLACE_VERIFIED,
+        evidence: MARKETPLACE_EVIDENCE,
+        reason: 'Trang sản phẩm TikTok Shop VN hiện phân loại, số lượng và "Buy now"; thanh toán cần tài khoản TikTok. Khách chưa đăng nhập: chưa xác minh được trên trình duyệt (CAPTCHA), chỉ xác minh qua chỉ mục tìm kiếm.',
+      },
+    },
+    freshness: {
+      identity: { freshnessType: 'static', ttlMs: null, note: 'product id is stable; listing may end (page-only)' },
+      price: { freshnessType: 'unknown', ttlMs: null, note: 'price read on the merchant page; feed display off (D7)' },
+    },
+    rights: FEED_RIGHTS_WCR,
+    // ACCESSTRADE TikTok Shop CPS is APPROVED (11 Sep 2026). Affiliate = monetisation layer only:
+    // the provider works on direct links; the wrapper is applied by the existing tracking module.
+    tracking: { network: 'accesstrade', campaignId: '6648523843406889655', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    enabledFlag: 'CCP_ADAPTER_TIKTOKSHOP',
+    tier: 'mvp',
+    segment: 'marketplace',
+    notes: ['Product grammar: shop.tiktok.com/vn/pdp/<slug>/<id> · www.tiktok.com/shop/vn/pdp/<id> · www.tiktok.com/view/product/<id>.', 'Keyword pages shop.tiktok.com/vn/k/<slug> are real listing pages but only when discovered — never composed (an arbitrary slug 404s; /shop/s/<q> is an empty app shell).', 'No feed data used (data rights pending).'],
+    discovery: { site: 'shop.tiktok.com/vn', subjectKind: 'product' },
+  },
+  {
+    providerId: 'lazada',
+    merchantId: 'lazada',
+    merchantName: 'Lazada',
+    domains: ['shopping'],
+    intents: ['buy_product'],
+    allowedHosts: ['www.lazada.vn', 'lazada.vn'],
+    capabilities: ['search', 'details', 'resolveDeepLink', 'transactionBoundary', 'tracking'],
+    commerce: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
+    depth: {
+      buy_product: {
+        // Verified 14 Sep 2026: /products/<slug>-i<id>.html renders to a guest (title, variants)
+        // behind a bot-check overlay in the automation profile; checkout needs a Lazada account.
+        guestDepth: 3,
+        authenticatedDepth: 5,
+        bestPossibleDepth: 5,
+        authRequiredAt: 'before_checkout',
+        verifiedOn: MARKETPLACE_VERIFIED,
+        evidence: MARKETPLACE_EVIDENCE,
+        reason: 'Trang sản phẩm Lazada hiện cho khách; thanh toán cần đăng nhập.',
+      },
+    },
+    freshness: {
+      identity: { freshnessType: 'static', ttlMs: null, note: 'product URL is stable' },
+      price: { freshnessType: 'unknown', ttlMs: null, note: 'price read on the merchant page' },
+    },
+    rights: FEED_RIGHTS_WCR,
+    tracking: { network: 'accesstrade', campaignId: '5087153089503673507', approval: 'pending', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    enabledFlag: 'CCP_ADAPTER_LAZADA',
+    tier: 'mvp',
+    segment: 'marketplace',
+    notes: ['Desired, subject to integration conditions (affiliate pending → direct links).', 'Product grammar: /products/<slug>-i<id>.html; search grammar: /catalog/?q=<q>.'],
+    discovery: { site: 'lazada.vn/products', subjectKind: 'product' },
   },
   {
     providerId: 'tripcom',
@@ -238,7 +360,10 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tracking: { network: 'accesstrade', campaignId: '6259155740535091857', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_HANDOFF_ONLY',
     tier: 'handoff_only',
-    notes: ['Not an MVP adapter (D10).'],
+    segment: 'retail',
+    notes: ['Not an MVP adapter (D10); active retailer via passthrough handoff (14 Sep 2026): a discovered product page is emitted at the verified depth.'],
+    handoffPassthrough: true,
+    discovery: { site: 'cellphones.com.vn', subjectKind: 'product' },
   },
   {
     providerId: 'vexere',

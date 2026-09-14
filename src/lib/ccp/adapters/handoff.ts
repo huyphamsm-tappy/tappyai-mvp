@@ -21,9 +21,10 @@ import { authLimitation, baseOffer, ownedUrl } from './shared'
 
 const MIN_PATH_SEGMENTS = 2
 
-function isSubjectPage(u: URL): boolean {
+function isSubjectPage(u: URL, kind: ProviderRegistryEntry['discovery'] extends infer D ? (D extends { subjectKind: infer K } ? K : never) : never): boolean {
   const segments = u.pathname.split('/').filter(Boolean)
-  if (segments.length < MIN_PATH_SEGMENTS) return false
+  // A retailer's product page is one segment ("/iphone-15.html"); a venue page is nested.
+  if (segments.length < (kind === 'product' ? 1 : MIN_PATH_SEGMENTS)) return false
   // Search / listing routes seen on the platforms; never a venue.
   if (/^(tim-kiem|search|s|food|fresh|deals?|khuyen-mai)$/i.test(segments[segments.length - 1])) return false
   return true
@@ -39,7 +40,7 @@ export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAda
     },
     toOffer(request, hint: DiscoveryHint, now = new Date()) {
       const u = ownedUrl(entry, hint)
-      if (!u || !isSubjectPage(u)) return null
+      if (!u || !isSubjectPage(u, entry.discovery?.subjectKind ?? 'restaurant')) return null
       if (hint.verified?.bookable === false) return null
       const canonical = `${u.origin}${u.pathname.replace(/\/+$/, '')}`
       const subjectRef = u.pathname.split('/').filter(Boolean).pop()!
@@ -49,16 +50,17 @@ export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAda
     },
     buildDirectLink(offer: Offer, _configuration: Configuration | undefined): DirectLinkBuild | null {
       const auth = authLimitation(offer.depthProfile, offer.merchantName)
+      const product = entry.discovery?.subjectKind === 'product'
       return {
         url: offer.canonicalUrl,
         depth: 3,
-        paramsPreserved: ['restaurantRef'],
-        paramsPageOnly: ['items', 'quantity', 'address'],
+        paramsPreserved: [product ? 'productRef' : 'restaurantRef'],
+        paramsPageOnly: product ? ['variant', 'quantity'] : ['items', 'quantity', 'address'],
         paramsDropped: [],
         expiresAt: null,
         // The page was discovered, not composed from a verified grammar.
         grammar: 'observed',
-        limitations: ['Chọn món và số lượng trên trang nhà hàng.', ...(auth ? [auth] : [])],
+        limitations: [product ? 'Chọn phiên bản và số lượng trên trang sản phẩm.' : 'Chọn món và số lượng trên trang nhà hàng.', ...(auth ? [auth] : [])],
       }
     },
   }

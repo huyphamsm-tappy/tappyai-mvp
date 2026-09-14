@@ -1,4 +1,5 @@
 import { providerOwning, PROVIDER_REGISTRY, isCommerceLinkRow, type CommerceLinkRow } from '@/lib/ccp'
+import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
 
 // ── Legacy platform links ↔ CCP (Phase 6 compatibility shim) ────────────────
 //
@@ -28,10 +29,26 @@ export function commerceOwnedHosts(): string[] {
   return PROVIDER_REGISTRY.filter(e => e.tier === 'mvp').flatMap(e => [...e.allowedHosts])
 }
 
-/** True when a CCP MVP provider owns this URL's host. */
+/** The marketplaces' declared SEARCH grammars, as URL prefixes (everything before the query value). */
+export function marketplaceSearchPrefixes(): string[] {
+  return marketplaceSearchTemplates().map(t => t.template.slice(0, t.template.indexOf('{q}')))
+}
+
+/**
+ * A legacy link that IS a registry search grammar instance (Shopee "/search?keyword=…",
+ * Lazada "/catalog/?q=…") is the platform's own L2 SEARCH_HANDOFF projected for the flag-off
+ * path — one authority, one grammar (owner decision 14 Sep 2026). Anything else on a CCP host
+ * is a second authority and is removed.
+ */
+export function isMarketplaceSearchLink(url: string): boolean {
+  return marketplaceSearchPrefixes().some(p => url.startsWith(p))
+}
+
+/** True when a CCP MVP provider owns this URL's host and the URL is not its declared search grammar. */
 export function isCommerceOwnedLink(url: string): boolean {
   const provider = providerOwning(url)
   if (!provider) return false
+  if (isMarketplaceSearchLink(url)) return false
   return PROVIDER_REGISTRY.some(e => e.providerId === provider && e.tier === 'mvp')
 }
 

@@ -69,6 +69,8 @@ export interface SynthesisCommerceView {
   tracked: boolean
   capability?: CommerceLinkRow['capability']
   primary: boolean
+  /** SEARCH_HANDOFF (L2, the merchant's search for the user's words) vs a detail / checkout handoff. */
+  kind: CommerceLinkRow['kind']
 }
 
 /** One stated specification. `value` is the listing's own figure, never derived. */
@@ -115,6 +117,12 @@ export interface SynthesisEntityView {
    * have none — then the card keeps its offer links exactly as before.
    */
   commerce?: SynthesisCommerceView
+  /**
+   * Every Commerce Link CCP attached to this entity, in CCP's ranking order (owner decision
+   * 14 Sep 2026: marketplaces and retailers side by side — "Mua trên Shopee", "Mua trên TikTok
+   * Shop", "Mua trên Điện Máy Xanh"). `commerce` is the first DETAIL-level one of these.
+   */
+  commerceLinks?: SynthesisCommerceView[]
 }
 
 /** A grounded reason, carrying both the engine's English and the data to say it. */
@@ -164,18 +172,24 @@ function nn<T>(v: T | typeof UNKNOWN): T | null {
  * The seam attaches at most one link per provider per row and marks the requested capability
  * as primary; a primary link is preferred, else the first valid one. Nothing is repaired.
  */
-function entityCommerce(e: Entity): SynthesisCommerceView | undefined {
-  let first: CommerceLinkRow | null = null
+function entityCommerceLinks(e: Entity): SynthesisCommerceView[] {
+  const out: SynthesisCommerceView[] = []
+  const seen = new Set<string>()
   for (const o of e.offers) {
     const rows = (o.evidence.raw as Record<string, unknown>)[COMMERCE_LINKS_KEY]
     if (!Array.isArray(rows)) continue
     for (const r of rows) {
-      if (!isCommerceLinkRow(r)) continue
-      if (r.primary !== false) return projectCommerce(r)
-      first = first ?? r
+      if (!isCommerceLinkRow(r) || seen.has(r.providerId)) continue
+      seen.add(r.providerId)
+      out.push(projectCommerce(r))
     }
   }
-  return first ? projectCommerce(first) : undefined
+  return out
+}
+
+/** The entity's leading handoff: the first DETAIL-level link (a search page is never "the" handoff). */
+function entityCommerce(links: SynthesisCommerceView[]): SynthesisCommerceView | undefined {
+  return links.find(l => l.kind !== 'SEARCH_HANDOFF' && l.primary) ?? links.find(l => l.kind !== 'SEARCH_HANDOFF')
 }
 
 function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
@@ -194,6 +208,7 @@ function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
     tracked: r.tracked,
     ...(r.capability ? { capability: r.capability } : {}),
     primary: r.primary !== false,
+    kind: r.kind,
   }
 }
 
@@ -273,7 +288,8 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
     if (id.storageGb !== UNKNOWN) specs.push({ key: 'storage', value: id.storageGb })
     if (id.size !== UNKNOWN) specs.push({ key: 'size', value: id.size })
     const conditionLabel = id.condition === UNKNOWN ? null : String(id.condition)
-    const commerce = entityCommerce(e)
+    const commerceLinks = entityCommerceLinks(e)
+    const commerce = entityCommerce(commerceLinks)
     return {
       key: e.entityKey,
       name: entityName(e),
@@ -295,6 +311,7 @@ export function buildSynthesisView(s: ShoppingSynthesis): SynthesisView {
         ratingCount: nn(o.evidence.signals.reviewCount),
       })),
       ...(commerce ? { commerce } : {}),
+      ...(commerceLinks.length > 0 ? { commerceLinks } : {}),
     }
   })
 

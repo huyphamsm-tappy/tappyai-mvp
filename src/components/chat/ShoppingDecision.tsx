@@ -3,7 +3,7 @@
 import { Star, Bell } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatVndRange, type PriceLocale } from '@/lib/format/vndPrice'
-import type { SynthesisView, SynthesisEntityView, SynthesisOfferView } from '@/lib/ai/consultative/synthesisView'
+import type { SynthesisView, SynthesisEntityView, SynthesisOfferView, SynthesisCommerceView } from '@/lib/ai/consultative/synthesisView'
 import MatchBadge from '@/components/chat/structured/MatchBadge'
 import OfferRow, { offerDestination, offerActionLabel } from '@/components/chat/structured/OfferRow'
 import CommerceHandoff from '@/components/chat/structured/CommerceHandoff'
@@ -47,6 +47,20 @@ import { reasonList } from '@/lib/recommendation/reasonText'
 //    that says exactly that, and crowns nobody: `recommended` stays reserved for
 //    a genuine deterministic Pick, and this component never computes one.
 // ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * The entity's handoffs, split the way the card shows them (owner decision 14 Sep 2026):
+ * DETAIL links (the merchant-named "buy on …" labels for Shopee, TikTok Shop, DMX) are the
+ * buttons; the marketplaces' SEARCH fallbacks are offered only when the entity has no detail
+ * link at all, as small text links labelled as searches. A stored marker from before
+ * `commerceLinks` existed still renders its single `commerce`.
+ */
+function handoffsOf(e: SynthesisEntityView): { detail: SynthesisCommerceView[]; search: SynthesisCommerceView[] } {
+  const all = e.commerceLinks ?? (e.commerce ? [e.commerce] : [])
+  const detail = all.filter(l => l.kind !== 'SEARCH_HANDOFF').slice(0, 5)
+  const search = detail.length > 0 ? [] : all.filter(l => l.kind === 'SEARCH_HANDOFF').slice(0, 2)
+  return { detail, search }
+}
 
 /** The offer a card speaks for: the recommended seller's, else the first. */
 function featuredOffer(e: SynthesisEntityView, seller?: string | null): SynthesisOfferView | null {
@@ -123,6 +137,7 @@ function ProductRow({ e, showMatch }: { e: SynthesisEntityView; showMatch: boole
   const { t, locale } = useTranslation()
   const offer = featuredOffer(e)
   const dest = offerDestination(offer?.url ?? null, offer?.seller ?? null)
+  const handoffs = handoffsOf(e)
   return (
     <div className="flex gap-2.5 rounded-xl border border-gray-200 p-2.5 dark:border-gray-700" data-testid="product-row">
       {e.image && (
@@ -148,8 +163,10 @@ function ProductRow({ e, showMatch }: { e: SynthesisEntityView; showMatch: boole
         </div>
         <Specs e={e} />
         <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1">
-          {e.commerce && <CommerceHandoff c={e.commerce} size="sm" />}
-          {offer?.url && (
+          {handoffs.detail.map(c => <CommerceHandoff key={c.linkId} c={c} size="sm" />)}
+          {handoffs.search.map(c => <CommerceHandoff key={c.linkId} c={c} size="sm" />)}
+          {/* A generic search offer is not shown beside a verified merchant handoff (owner decision 14 Sep 2026). */}
+          {offer?.url && handoffs.detail.length === 0 && (
             <a
               href={offer.url}
               target="_blank"
@@ -199,6 +216,7 @@ export default function ShoppingDecision({
   const showMatch = view.requested !== null
   const recOffer = recommended ? featuredOffer(recommended, rec?.seller) : null
   const restOffers = recommended ? recommended.offers.filter(o => o !== recOffer) : []
+  const recHandoffs = recommended ? handoffsOf(recommended) : { detail: [], search: [] }
   // The entity's own representative photo (from the marker) is authoritative; the
   // scraped `heroImage` from injected prose is only a fallback for older replies.
   const hero = recommended?.image ?? heroImage ?? null
@@ -256,15 +274,19 @@ export default function ShoppingDecision({
               )}
             </div>
           </div>
-          {recommended.commerce && (
-            <div className="border-t border-primary-100 px-3 py-2 dark:border-primary-900/40">
-              <CommerceHandoff c={recommended.commerce} size="md" />
+          {(recHandoffs.detail.length > 0 || recHandoffs.search.length > 0) && (
+            <div className="flex flex-wrap gap-2 border-t border-primary-100 px-3 py-2 dark:border-primary-900/40" data-testid="commerce-handoffs">
+              {recHandoffs.detail.map(c => <CommerceHandoff key={c.linkId} c={c} size="md" />)}
+              {recHandoffs.search.map(c => <CommerceHandoff key={c.linkId} c={c} size="sm" />)}
             </div>
           )}
-          <div className="divide-y divide-gray-100 border-t border-primary-100 px-3 dark:divide-gray-800 dark:border-primary-900/40">
-            {recOffer && <OfferRow o={recOffer} />}
-            {restOffers.map((o, i) => <OfferRow key={i} o={o} />)}
-          </div>
+          {/* Seller offer rows (a Google Shopping redirect each) are kept only while no verified merchant handoff exists. */}
+          {recHandoffs.detail.length === 0 && (
+            <div className="divide-y divide-gray-100 border-t border-primary-100 px-3 dark:divide-gray-800 dark:border-primary-900/40">
+              {recOffer && <OfferRow o={recOffer} />}
+              {restOffers.map((o, i) => <OfferRow key={i} o={o} />)}
+            </div>
+          )}
           {canWatch && (
             <div className="border-t border-primary-100 px-3 py-2 dark:border-primary-900/40">
               <button

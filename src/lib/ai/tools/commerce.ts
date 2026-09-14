@@ -12,6 +12,7 @@ import {
   type IntentType,
 } from '@/lib/ccp'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, stripTrailingCity } from '@/lib/links/otaTitle'
+import { productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, verifyMerchantPage, MAX_VERIFY_PER_TURN, type DiscoveredHint, type DiscoverySubject, type FetchTextFn, type SearchFn } from './commerceDiscovery'
 import { entertainmentCapabilityOf, foodCapabilityOf, parseReservationSpec, type UserTurns } from './commerceIntent'
 
@@ -103,6 +104,8 @@ interface PlannedIntent {
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const MAX_LINKS_PER_ROW = 2
+/** Shopping (14 Sep 2026): one handoff per provider — Shopee, TikTok Shop, Lazada, DMX, CellphoneS side by side. */
+const MAX_SHOPPING_LINKS_PER_ROW = 5
 const MAX_LINKS_PER_PROVIDER = 1
 const MAX_EXPERIENCE_ROWS = 2
 const DEFAULT_ADULTS = 2
@@ -122,6 +125,14 @@ interface Plan {
   knownUrlsOf(row: Row): string[]
   /** Rows that must not be resolved (or shown) because they contradict the request — wrong city. */
   rejects?(row: Row): string | null
+  /**
+   * Is a discovered page the SAME subject as the row (owner decision 14 Sep 2026, §8 product
+   * identity)? A hint that fails is dropped before it reaches CCP; the marketplace then offers its
+   * search page instead of a different product presented as the requested one.
+   */
+  sameSubject?(subject: string, hintTitle: string | undefined, known: boolean): boolean
+  /** Links kept per row (ranked); default MAX_LINKS_PER_ROW. */
+  maxLinks?: number
 }
 
 const noConfiguration = () => null
@@ -174,6 +185,9 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
       listKey: 'search_results',
       subjectOf: row => str(row.title),
       knownUrlsOf: row => [str(row.link)].filter((u): u is string => !!u),
+      // The row's own link IS the listing; a discovered page must name the same product.
+      sameSubject: (subject, title, known) => known || productIdentityMatch(subject, title) === 'match',
+      maxLinks: MAX_SHOPPING_LINKS_PER_ROW,
     }
   }
   if (toolName === 'get_hotel_prices') {
@@ -234,13 +248,13 @@ function candidateRows(rows: Row[], r: Row, max: number): Row[] {
   return (picked.length > 0 ? picked : rows).slice(0, max)
 }
 
-/** Keep CCP's ranking order, at most one link per provider, at most MAX_LINKS_PER_ROW overall (P2-1). */
-function dedupeLinks(existing: CommerceLinkRow[], incoming: CommerceLinkRow[]): CommerceLinkRow[] {
+/** Keep CCP's ranking order, at most one link per provider, at most `max` overall (P2-1). */
+function dedupeLinks(existing: CommerceLinkRow[], incoming: CommerceLinkRow[], max = MAX_LINKS_PER_ROW): CommerceLinkRow[] {
   const out = [...existing]
   const perProvider = new Map<string, number>()
   for (const l of out) perProvider.set(l.providerId, (perProvider.get(l.providerId) ?? 0) + 1)
   for (const l of incoming) {
-    if (out.length >= MAX_LINKS_PER_ROW) break
+    if (out.length >= max) break
     if ((perProvider.get(l.providerId) ?? 0) >= MAX_LINKS_PER_PROVIDER) continue
     out.push(l)
     perProvider.set(l.providerId, (perProvider.get(l.providerId) ?? 0) + 1)
@@ -315,7 +329,11 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
       for (const s of subjects) {
         const hints: DiscoveryHint[] = [
           ...(s.knownUrls ?? []).map(url => ({ url, title: s.subject })),
-          ...discovered.filter(d => d.subjectId === s.id).map(d => ({ url: d.url, title: d.title ?? s.subject })),
+          ...discovered
+            .filter(d => d.subjectId === s.id)
+            // §8: a discovered listing that names another product (a case, the Pro Max) is not a hint for this row.
+            .filter(d => !plan.sameSubject || plan.sameSubject(s.subject, d.title, false))
+            .map(d => ({ url: d.url, title: d.title ?? s.subject })),
         ].filter(h => !contradictsCity(h.url, requestedCity)) // P2-8: a Trip.com page in another city is not this hotel
         if (hints.length > 0) hintsOf.set(s.id, hints)
       }
@@ -345,15 +363,16 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
       let attachedAny = false
       for (const s of subjects) {
         const row = targets[Number(s.id)]
-        const hints = hintsOf.get(s.id)
-        if (!hints || hints.length === 0) continue
+        // A shopping row with no page at all still gets the marketplaces' search fallbacks (CCP emits them from the subject).
+        const hints = hintsOf.get(s.id) ?? (plan.domain === 'shopping' ? [] : undefined)
+        if (!hints) continue
         const cfg = configurationFor(s.subject)
         const request: CommerceRequest = { domain: plan.domain, intentType, capability, subject: s.subject.slice(0, 200), ...(cfg ? { configuration: cfg.configuration } : {}), ...constraints, context }
         const out = resolve(request, { hints, now, enabled: true })
         if (!('links' in out) || out.links.length === 0) continue
         const projected = out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
         const existing = Array.isArray(row[COMMERCE_LINKS_KEY]) ? (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) : []
-        row[COMMERCE_LINKS_KEY] = dedupeLinks(existing, projected)
+        row[COMMERCE_LINKS_KEY] = dedupeLinks(existing, projected, plan.maxLinks)
         attachedAny = true
       }
 

@@ -48,8 +48,8 @@ enum PlatformLinks {
     static func buildShoppingLinks(productName: String) -> [PlatformLink] {
         let q = productName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
+            // Mirrors src/lib/platformLinks/shopping.ts (CCP registry search grammars, 14 Sep 2026).
             PlatformLink(name: "Shopee", url: "https://shopee.vn/search?keyword=\(q)"),
-            PlatformLink(name: "Tiki", url: "https://tiki.vn/search?q=\(q)"),
             PlatformLink(name: "Lazada", url: "https://www.lazada.vn/catalog/?q=\(q)"),
         ]
     }

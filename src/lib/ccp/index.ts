@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { CCP_ENABLED } from '@/lib/config/product'
 import type { CommerceLink, CommerceRequest, CommerceResult, Offer, ProviderFailure } from './domain/types'
 import { parseCommerceRequest } from './domain/request'
-import { adaptersFor, type DiscoveryHint, type ProviderAdapter } from './adapters'
+import { adaptersFor, isMarketplaceAdapter, type DiscoveryHint, type ProviderAdapter } from './adapters'
 import { resolveDeepLink } from './resolver/resolve'
 import { rankLinks } from './ranking/score'
 import { RANKING_VERSION } from './ranking/weights'
@@ -88,6 +88,13 @@ export function resolveCommerce(input: unknown, opts: ResolveCommerceOptions = {
     for (const hint of hints) {
       const offer = adapter.toOffer(request, hint, now)
       if (offer) mine.push(offer)
+    }
+    // Marketplace fallback (owner decision 14 Sep 2026, §8 product identity): when no product page
+    // for the subject was discovered, the merchant's own search page for the user's words is an
+    // honest offer — labelled as a search, ranked below every detail link, never a fabricated SKU.
+    if (mine.length === 0 && isMarketplaceAdapter(adapter)) {
+      const search = adapter.searchOffer(request, now)
+      if (search) mine.push(search)
     }
     emitCommerceEvent({ type: 'provider_search', requestId, providerId: adapter.providerId, offersCount: mine.length, freshnessType: mine[0]?.freshness.freshnessType, latencyMs: Date.now() - started }, now)
     if (mine.length === 0) {

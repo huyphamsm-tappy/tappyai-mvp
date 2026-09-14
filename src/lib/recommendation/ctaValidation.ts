@@ -3,6 +3,7 @@ import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
 import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
+import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
@@ -42,6 +43,7 @@ const PROMISE_KINDS: ReadonlyArray<[RegExp, ActionKind]> = [
   [/(đặt phòng|dat phong|book (?:a )?(?:room|hotel)|reserve (?:a )?room)/iu, 'booking'],
   [/(đặt bàn|dat ban|đặt chỗ|dat cho|book (?:a )?table|reserve (?:a )?table)/iu, 'reservation'],
   [/(đặt món|dat mon|gọi món|goi mon|order now|đặt hàng|dat hang)/iu, 'order'],
+  [/(mua ngay|mua hàng|mua hang|buy now|purchase now)/iu, 'purchase'],
 ]
 
 /** The kind a label claims, or null when it promises nothing. */
@@ -81,7 +83,10 @@ const hostOf = (url: string): string => {
 }
 
 /** Hosts the Commerce Capability Platform owns the handoff for (registry allow-lists, exact). */
-const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => h.toLowerCase())))
+const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, ''))))
+/** The marketplaces' declared search grammars (URL prefixes) — honest L2 searches the registry itself projects. */
+const MARKETPLACE_SEARCH_PREFIXES = marketplaceSearchTemplates().map(t => t.template.slice(0, t.template.indexOf('{q}')))
+const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.some(p => url.startsWith(p))
 
 /**
  * CCP Phase 8 (owner-like UAT R1, P1-7 / P2-4): two model-authored buttons that no relabelling
@@ -89,20 +94,31 @@ const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts
  *
  *   · A ticket promise on a hotel OTA ("🎫 Tìm vé trên Booking.com" for a theme park): Booking
  *     and Agoda sell rooms; "search for tickets there" sends the user to a hotel search.
- *   · A front-door / search link on a merchant host the Commerce Capability Platform owns
- *     (cgv.vn, pasgo.vn, klook.com, dienmayxanh.com, trip.com — the registry allow-lists).
- *     The application is the only URL authority for those merchants: their verified handoff
- *     arrives on the card as a Commerce Link when one exists, and when none does the honest
- *     state is no button — not a homepage the model typed from memory. A DIRECT entity page
- *     on such a host (one the tool result carried) is left alone.
+ *   · On a merchant host the Commerce Capability Platform owns (cgv.vn, pasgo.vn, klook.com,
+ *     dienmayxanh.com, trip.com, shopee.vn, tiktok — the registry allow-lists): a bare FRONT DOOR
+ *     (cgv.vn/), or a search page carrying a transaction PROMISE ("Đặt bàn trên PasGo" →
+ *     pasgo.vn/tim-kiem). The application is the only URL authority for those merchants: their
+ *     verified handoff arrives on the card as a Commerce Link when one exists. A DIRECT entity
+ *     page on such a host is left alone, and so is an honest search link — the marketplaces'
+ *     registry search grammars in particular (owner decision 14 Sep 2026), which the
+ *     downgrade below labels as searches.
  */
 export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   const host = hostOf(btn.url)
   if (!host) return false
   const kind = promisedKind(btn.label) ?? (btn.type === 'ticket' ? 'ticket' : null)
   if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
-  if (CCP_MERCHANT_HOSTS.has(host) && !isDirectEntityUrl(btn.url)) return true
-  return false
+  if (!CCP_MERCHANT_HOSTS.has(host)) return false
+  // The marketplaces' registry search grammars are honest as searches (the downgrade below labels
+  // them so) — unless the label promises a transaction the page cannot make.
+  if (isMarketplaceSearchLink(btn.url)) return !!kind
+  let path = '/'
+  try { path = new URL(btn.url).pathname.replace(/\/+$/, '') || '/' } catch { return true /* unparseable on a CCP host */ }
+  // A front door: the root, or a one-word section like tiktok.com/shop — never a product slug.
+  const segments = path.split('/').filter(Boolean)
+  if (segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))) return true
+  if (isDirectEntityUrl(btn.url)) return false
+  return !!kind
 }
 
 /** Every button, validated. Order is preserved; only a button that cannot be made honest is dropped. */

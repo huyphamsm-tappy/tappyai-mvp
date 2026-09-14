@@ -5,7 +5,7 @@ import { tripcomAdapter } from './tripcom'
 import { pasgoAdapter } from './pasgo'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
-import { adaptersFor, MVP_ADAPTERS } from './index'
+import { adaptersFor, ADAPTERS, MVP_ADAPTERS } from './index'
 
 const now = new Date('2026-09-13T10:00:00+07:00')
 
@@ -116,9 +116,11 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
   it('adaptersFor honours per-adapter flags and intent support', () => {
     const req: CommerceRequest = { domain: 'spa', intentType: 'buy_spa_voucher', subject: 'x' }
     expect(adaptersFor(req).map(a => a.providerId)).toEqual(['klook'])
-    const flags = { CCP_ADAPTER_DMX: true, CCP_ADAPTER_TRIPCOM: true, CCP_ADAPTER_PASGO: true, CCP_ADAPTER_CGV: true, CCP_ADAPTER_KLOOK: false, CCP_HANDOFF_ONLY: true } as const
+    const flags = { CCP_ADAPTER_DMX: true, CCP_ADAPTER_TRIPCOM: true, CCP_ADAPTER_PASGO: true, CCP_ADAPTER_CGV: true, CCP_ADAPTER_KLOOK: false, CCP_ADAPTER_SHOPEE: true, CCP_ADAPTER_TIKTOKSHOP: true, CCP_ADAPTER_LAZADA: true, CCP_HANDOFF_ONLY: true } as const
     expect(adaptersFor(req, flags)).toEqual([])
     expect(MVP_ADAPTERS).toHaveLength(5)
+    // Owner decision 14 Sep 2026: the three shopping marketplaces are adapter-backed too.
+    expect(ADAPTERS.map(a => a.providerId)).toEqual(['dmx', 'tripcom', 'pasgo', 'cgv', 'klook', 'shopee', 'tiktokshop', 'lazada'])
   })
 })
 

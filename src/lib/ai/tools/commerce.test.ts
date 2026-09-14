@@ -71,8 +71,10 @@ describe('DMX — shopping row with the merchant page already on it (L5 guest)',
     // DMX identity is 'near_realtime' in the registry (feed-backed ids); never 'realtime' — CCP holds no price here.
     expect(l.freshness.freshnessType).toBe('near_realtime')
     expect(l.freshness.retrievedAt).toBe(NOW.toISOString())
-    // The row already carried a DMX URL → no query was spent looking for one.
-    expect(calls).toEqual([])
+    // The row already carried a DMX URL → the one query spent looks at the OTHER shopping scopes only.
+    expect(calls).toHaveLength(1)
+    expect(calls[0]).not.toContain('site:dienmayxanh.com')
+    expect(calls[0]).toContain('site:shopee.vn')
   })
 
   it('feed display stays off: no price or feed field is projected onto the row (D7)', async () => {
@@ -254,7 +256,11 @@ describe('idempotence on a memoised tool result', () => {
     const row = { title: 'Tủ lạnh', link: 'https://www.dienmayxanh.com/tu-lanh/samsung-rt31' }
     const result = { search_results: [row] }
     await attachCommerceLinks('search_products', result, { enabled: true, search: async () => [], now: NOW })
+    const first = links(row).length
     await attachCommerceLinks('search_products', result, { enabled: true, search: async () => [], now: NOW })
-    expect(links(row)).toHaveLength(1)
+    // One DMX detail link plus the marketplaces' search fallbacks — the same set on every turn, never stacked.
+    expect(links(row)).toHaveLength(first)
+    expect(links(row).filter(l => l.providerId === 'dmx')).toHaveLength(1)
+    expect(new Set(links(row).map(l => l.providerId)).size).toBe(first)
   })
 })
