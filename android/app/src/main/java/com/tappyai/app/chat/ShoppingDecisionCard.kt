@@ -6,6 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -65,6 +68,8 @@ fun ShoppingDecisionCard(
      * Optional: a host that has no composer (previews, tests) omits it and no button renders.
      */
     onPriceWatch: ((String) -> Unit)? = null,
+    /** Commerce handoff reporting (CCP event 6). Absent in previews and tests. */
+    commerce: CommerceActionCallbacks = CommerceActionCallbacks(),
 ) {
     // PRODUCT IDENTITY RULE. Only an entity with a real product name (the listing title the server
     // read, `ShoppingEntityView.name`) may be shown — `config` is a spec line ("chip ? · RAM ?"),
@@ -83,7 +88,7 @@ fun ShoppingDecisionCard(
 
     Column(modifier = modifier.fillMaxWidth()) {
         if (recommended != null) {
-            RecommendedEntity(entity = recommended, recommendation = rec, reasons = reasons)
+            RecommendedEntity(entity = recommended, recommendation = rec, reasons = reasons, commerce = commerce)
         } else {
             Text(
                 text = stringResource(R.string.shopping_decision_options_title),
@@ -118,7 +123,7 @@ fun ShoppingDecisionCard(
                 )
             }
             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-                others.forEach { AlternativeEntity(it) }
+                others.forEach { AlternativeEntity(it, commerce) }
             }
         }
     }
@@ -129,8 +134,10 @@ private fun RecommendedEntity(
     entity: ShoppingEntityView,
     recommendation: ShoppingRecommendationView?,
     reasons: List<ShoppingReason>,
+    commerce: CommerceActionCallbacks,
 ) {
     val colors = MaterialTheme.colorScheme
+    val handoffs = entity.commerceHandoffs
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -217,12 +224,54 @@ private fun RecommendedEntity(
             }
         }
 
-        entity.offers.forEach { OfferRow(it) }
+        // The merchant handoffs the Commerce Capability Platform resolved for this product (web
+        // parity, components/chat/ShoppingDecision.tsx): DETAIL links are the buttons, the
+        // marketplaces' searches only stand in when no detail link exists. Seller offer rows (a
+        // Google Shopping redirect each) are kept only while no verified merchant handoff exists.
+        CommerceHandoffRow(handoffs, commerce, emphasised = true)
+        if (handoffs.detail.isEmpty()) entity.offers.forEach { OfferRow(it) }
+    }
+}
+
+/**
+ * The Shopping card's commerce handoffs — the SAME action the live place card renders, through
+ * the same label resolver ("Mua trên Điện Máy Xanh", with the login boundary stated when the
+ * merchant has one) and the same handoff beacon (opaque ids only). Nothing here composes a URL.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun CommerceHandoffRow(handoffs: ShoppingCommerceHandoffs, commerce: CommerceActionCallbacks, emphasised: Boolean) {
+    if (handoffs.isEmpty) return
+    val context = LocalContext.current
+    val colors = MaterialTheme.colorScheme
+    val actions = (handoffs.detail + handoffs.search).map { it.asPlaceCardAction() }
+    LaunchedEffect(actions) { actions.forEach { a -> a.commerce?.let(commerce.onRendered) } }
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = TappySpacing.md),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
+    ) {
+        actions.forEach { action ->
+            val detail = action.urlKind == "direct"
+            Text(
+                text = actionLabel(action),
+                style = if (emphasised && detail) MaterialTheme.typography.labelLarge else MaterialTheme.typography.labelMedium,
+                fontWeight = if (detail) FontWeight.SemiBold else FontWeight.Medium,
+                color = if (detail) colors.primary else colors.onSurfaceVariant,
+                modifier = Modifier
+                    .clip(TappyShapes.chip)
+                    .then(if (detail) Modifier.border(1.dp, colors.primary.copy(alpha = 0.35f), TappyShapes.chip) else Modifier)
+                    .clickable { openPlaceAction(context, action, commerce) }
+                    .padding(horizontal = if (detail) TappySpacing.lg else TappySpacing.sm, vertical = TappySpacing.sm),
+            )
+        }
     }
 }
 
 @Composable
-private fun AlternativeEntity(entity: ShoppingEntityView) {
+private fun AlternativeEntity(entity: ShoppingEntityView, commerce: CommerceActionCallbacks) {
     val colors = MaterialTheme.colorScheme
     Column(
         modifier = Modifier
@@ -263,6 +312,7 @@ private fun AlternativeEntity(entity: ShoppingEntityView) {
             color = colors.onSurfaceVariant,
             modifier = Modifier.padding(top = TappySpacing.xs),
         )
+        CommerceHandoffRow(entity.commerceHandoffs, commerce, emphasised = false)
     }
 }
 

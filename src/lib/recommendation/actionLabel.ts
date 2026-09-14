@@ -1,4 +1,5 @@
 import type { Action } from './actions'
+import { w5vi, w5en } from '@/lib/i18n/w5'
 
 // ── A LABEL IS A PROMISE ABOUT WHERE A BUTTON GOES ──────────────────────────
 //
@@ -152,6 +153,19 @@ const COMMERCE_LABEL: Partial<Record<Action['kind'], string>> = {
   ticket: 'v3.action.ticket',
   order: 'v3.action.order',
   delivery: 'v3.action.delivery',
+}
+
+/**
+ * The `v3.action.*` dictionary as a translator, for code that runs OUTSIDE React (the stream's
+ * settle path validating the model's CTA block server-side). Same strings the web client renders.
+ */
+export function actionTranslator(lang: string): (key: string, vars?: Record<string, string>) => string {
+  const dict = lang === 'en' ? w5en : w5vi
+  return (key, vars) => {
+    let str = dict[key] ?? w5vi[key] ?? key
+    if (vars) for (const [k, v] of Object.entries(vars)) str = str.replace(`{${k}}`, v)
+    return str
+  }
 }
 
 /** Convenience for a component: the finished string. */

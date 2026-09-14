@@ -1,6 +1,7 @@
 import type { Recommendation, RecommendationReason } from './recommendation'
 import type { EntityDomain, EntityKind } from './entity'
 import type { Action } from './actions'
+import { resolveActionLabel } from './actionLabel'
 import { UNKNOWN } from '@/lib/ai/consultative/normalizedEvidence'
 
 // ── The TRANSIENT view of a place decision ───────────────────────────────────
@@ -48,7 +49,15 @@ export interface LiveAction {
   /** 'direct' vs 'search' — the honesty field, carried so labels cannot overpromise. */
   urlKind: Action['urlKind']
   url: string
+  /**
+   * The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, `v3.action.searchOn` …),
+   * decided once here by `resolveActionLabel` from (kind, urlKind, url, platform, attributed,
+   * commerce). Cross-platform CCP contract (14 Sep 2026): web re-resolves and gets the same key;
+   * Android and iOS render this key from their own dictionaries and never re-derive the
+   * decision — a native client has no label logic to drift.
+   */
   labelKey: string
+  /** The merchant the label names, when the key takes one (`{platform}`). */
   platform?: string
   attributed?: boolean
   /** CCP facts for a commerce handoff (label boundary + handoff event). Absent on every other action. */
@@ -212,12 +221,14 @@ function liveActions(actions: readonly Action[], limit: number): LiveAction[] {
       if (pass === 1 && kinds.has(a.kind)) continue
       seen.add(a.url)
       kinds.add(a.kind)
+      const label = resolveActionLabel(a)
+      const platform = label.params?.platform ?? a.platform
       out.push({
         kind: a.kind,
         urlKind: a.urlKind,
         url: a.url,
-        labelKey: a.labelKey,
-        ...(a.platform ? { platform: a.platform } : {}),
+        labelKey: label.key,
+        ...(platform ? { platform } : {}),
         ...(a.attributed !== undefined ? { attributed: a.attributed } : {}),
         ...(a.commerce ? { commerce: a.commerce } : {}),
       })

@@ -1,5 +1,6 @@
 package com.tappyai.app.chat
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -66,27 +68,32 @@ internal fun priceBand(level: Int?): String? =
  * rendering the raw key, which is what a missing dictionary entry looked like on web.
  */
 @Composable
-private fun actionLabel(action: PlaceCardAction): String {
-    val platform = action.platform
-    if (action.urlKind == "search" && !platform.isNullOrBlank()) {
-        return stringResource(R.string.place_action_search_on, platform)
-    }
-    return when (action.labelKey.substringAfterLast('.')) {
-        "maps" -> stringResource(R.string.place_action_maps)
-        "directions" -> stringResource(R.string.place_action_directions)
-        "website" -> stringResource(R.string.place_action_website)
-        "order", "orderSearch" -> stringResource(R.string.place_action_order)
-        "delivery" -> stringResource(R.string.place_action_delivery)
-        "booking", "bookingSearch" -> stringResource(R.string.place_action_booking)
-        "reservation" -> stringResource(R.string.place_action_reservation)
-        "ticket", "ticketSearch" -> stringResource(R.string.place_action_ticket)
-        "call" -> stringResource(R.string.place_action_call)
-        "review", "reviewOn", "reviewSearch", "reviewSearchGeneric" ->
-            stringResource(R.string.place_action_review)
-        "social" -> stringResource(R.string.place_action_social)
-        "searchGeneric", "searchOn" -> stringResource(R.string.place_action_search_generic)
-        else -> stringResource(R.string.place_action_open)
-    }
+internal fun actionLabel(action: PlaceCardAction): String {
+    // The key is RESOLVED on the server (cross-platform CCP contract): a commerce handoff arrives
+    // as `v3.action.purchaseLoginOn` + platform and renders "Mua trên TikTok Shop · cần đăng
+    // nhập" here from the same decision web renders. See CommerceActionLabel.kt.
+    val label = placeActionLabel(action.labelKey, action.urlKind, action.platform)
+    return if (label.platform != null) stringResource(label.resId, label.platform) else stringResource(label.resId)
+}
+
+/** Callbacks a commerce action reports through (CCP event 6). Absent in previews and tests. */
+data class CommerceActionCallbacks(
+    val onRendered: (LiveCommerceFacts) -> Unit = {},
+    val onHandoff: (LiveCommerceFacts, Boolean) -> Unit = { _, _ -> },
+)
+
+/**
+ * Opens the destination the server built and, for a commerce handoff, reports it.
+ *
+ * 🚨 THE URL IS OPENED VERBATIM. No rewrite, no fallback to a homepage, no other merchant: the
+ * action's URL is the one the Commerce Capability Platform validated, and a device with nothing
+ * able to open it reports a failed handoff rather than crashing a card the user can still read.
+ */
+internal fun openPlaceAction(context: Context, action: PlaceCardAction, callbacks: CommerceActionCallbacks) {
+    val opened = runCatching {
+        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action.url)))
+    }.isSuccess
+    action.commerce?.let { callbacks.onHandoff(it, opened) }
 }
 
 /**
@@ -96,21 +103,29 @@ private fun actionLabel(action: PlaceCardAction): String {
  * decoded, renders no frame at all rather than an empty card.
  */
 @Composable
-fun PlaceCards(places: List<PlaceCardView>, modifier: Modifier = Modifier) {
+fun PlaceCards(
+    places: List<PlaceCardView>,
+    modifier: Modifier = Modifier,
+    commerce: CommerceActionCallbacks = CommerceActionCallbacks(),
+) {
     if (places.isEmpty()) return
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
     ) {
-        places.forEach { place -> PlaceCard(place) }
+        places.forEach { place -> PlaceCard(place, commerce) }
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun PlaceCard(place: PlaceCardView) {
+private fun PlaceCard(place: PlaceCardView, commerce: CommerceActionCallbacks) {
     val context = LocalContext.current
     val name = place.name
+    // "commerce action rendered", once per card composition — the same distinction the web keeps.
+    LaunchedEffect(place.name, place.actions) {
+        place.actions.forEach { a -> a.commerce?.let(commerce.onRendered) }
+    }
 
     val popular = place.rank == 0 && (place.ratingCount ?: 0) >= POPULAR_MIN_RATINGS
     val band = priceBand(place.priceLevel)
@@ -291,13 +306,7 @@ private fun PlaceCard(place: PlaceCardView) {
                         modifier = Modifier
                             .clip(TappyShapes.chip)
                             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, TappyShapes.chip)
-                            .clickable {
-                                // A URL the server built. A device with nothing able to open it is
-                                // not worth a crash on a card the user can still read.
-                                runCatching {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(action.url)))
-                                }
-                            }
+                            .clickable { openPlaceAction(context, action, commerce) }
                             .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
                     )
                 }

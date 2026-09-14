@@ -54,25 +54,10 @@ private struct PlaceCardRow: View {
     /// catalogue. A key this app version has never seen falls back to a generic "Open" rather than
     /// rendering the raw key, which is what a missing dictionary entry looked like on web.
     private func label(for action: PersistedPlaceAction) -> String {
-        if action.urlKind == "search", let platform = action.platform, !platform.isEmpty {
-            return String(format: String(localized: "place.action.searchOn"), platform)
-        }
-        switch action.labelKey.split(separator: ".").last.map(String.init) ?? "" {
-        case "maps": return String(localized: "place.action.maps")
-        case "directions": return String(localized: "place.action.directions")
-        case "website": return String(localized: "place.action.website")
-        case "order", "orderSearch": return String(localized: "place.action.order")
-        case "delivery": return String(localized: "place.action.delivery")
-        case "booking", "bookingSearch": return String(localized: "place.action.booking")
-        case "reservation": return String(localized: "place.action.reservation")
-        case "ticket", "ticketSearch": return String(localized: "place.action.ticket")
-        case "call": return String(localized: "place.action.call")
-        case "review", "reviewOn", "reviewSearch", "reviewSearchGeneric":
-            return String(localized: "place.action.review")
-        case "social": return String(localized: "place.action.social")
-        case "searchGeneric", "searchOn": return String(localized: "place.action.searchGeneric")
-        default: return String(localized: "place.action.open")
-        }
+        // The key is RESOLVED on the server (cross-platform CCP contract): a commerce handoff
+        // arrives as `v3.action.purchaseLoginOn` + platform and renders "Mua trên TikTok Shop · cần
+        // đăng nhập" here from the same decision web renders. See CommerceActionLabel.swift.
+        placeActionLabel(labelKey: action.labelKey, urlKind: action.urlKind, platform: action.platform).text
     }
 
     private var popular: Bool {
@@ -206,6 +191,11 @@ private struct PlaceCardRow: View {
                 FlowActions(actions: usableActions, label: label)
                     .padding(.horizontal, Spacing.sm)
                     .padding(.bottom, Spacing.sm)
+                    .onAppear {
+                        // "commerce action rendered", once per card appearance — the distinction web keeps.
+                        let sink = DIContainer.shared.resolve(CommerceEventSink.self)
+                        for a in usableActions { if let c = a.commerce { CommerceHandoffReporter.rendered(c, sink: sink) } }
+                    }
             }
         }
         .background(TappyColor.surface)
@@ -215,6 +205,29 @@ private struct PlaceCardRow: View {
                 .stroke(TappyColor.border, lineWidth: 1)
         )
         .accessibilityElement(children: .combine)
+    }
+}
+
+/// Opens the destination the server built and, for a commerce handoff, reports it (CCP event 6).
+///
+/// 🚨 THE URL IS OPENED VERBATIM. No rewrite, no fallback to a homepage, no other merchant: the
+/// action's URL is the one the Commerce Capability Platform validated. A device with nothing able
+/// to open it reports a failed handoff rather than an error on a card the user can still read.
+func openPlaceAction(_ action: PersistedPlaceAction) {
+    guard let url = URL(string: action.url) else {
+        if let c = action.commerce {
+            CommerceHandoffReporter.tapped(c, opened: false, transport: DIContainer.shared.resolve(CommerceHandoffTransport.self), sink: DIContainer.shared.resolve(CommerceEventSink.self))
+        }
+        return
+    }
+    if let c = action.commerce {
+        let transport = DIContainer.shared.resolve(CommerceHandoffTransport.self)
+        let sink = DIContainer.shared.resolve(CommerceEventSink.self)
+        UIApplication.shared.open(url, options: [:]) { opened in
+            CommerceHandoffReporter.tapped(c, opened: opened, transport: transport, sink: sink)
+        }
+    } else {
+        UIApplication.shared.open(url)
     }
 }
 
@@ -229,11 +242,7 @@ private struct FlowActions: View {
                 HStack(spacing: Spacing.xs) {
                     ForEach(row) { action in
                         Button {
-                            // A URL the server built. A device with nothing able to open it is not
-                            // worth an error on a card the user can still read.
-                            if let url = URL(string: action.url) {
-                                UIApplication.shared.open(url)
-                            }
+                            openPlaceAction(action)
                         } label: {
                             Text(label(action))
                                 .font(.system(size: 13, weight: .medium))

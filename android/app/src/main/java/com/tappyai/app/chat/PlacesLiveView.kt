@@ -25,14 +25,79 @@ import kotlinx.serialization.Serializable
  * Nothing here is re-derived on the client: every field is read straight from the annotation.
  */
 
+/**
+ * The Commerce Capability Platform's facts on an action it resolved (web `CommerceActionFacts`,
+ * src/lib/recommendation/actions.ts). Present only on a commerce handoff; absent on every other
+ * action. Nothing here is re-derived: the merchant, the depth the URL lands at, the login boundary
+ * and the opaque ids the handoff beacon reports are all the server's.
+ *
+ * 🚨 THE URL IS NOT HERE, AND THE MODEL NEVER WROTE IT. The action's `url` is the one CCP validated
+ * (host allow-list, grammar, tracking) — the card opens it verbatim and reports [linkId] +
+ * [requestId], never the URL.
+ */
+@Serializable
+data class LiveCommerceFacts(
+    val linkId: String = "",
+    val requestId: String = "",
+    val providerId: String = "",
+    /** L0–L5 the URL lands at for a guest. */
+    val depth: Int = 0,
+    val guestDepth: Int = 0,
+    val authRequiredAt: String = "",
+    /** True when the merchant asks for a login BEFORE the landed step can be completed. */
+    val loginRequired: Boolean = false,
+    /** `guest` · `merchant_login` · `app` — what the user meets after the tap. */
+    val handoff: String? = null,
+    val authenticatedDepth: Int? = null,
+    val freshnessType: String = "",
+    val expiresAt: String? = null,
+    val tracked: Boolean = false,
+    val capability: String? = null,
+    val primary: Boolean = true,
+    /** Observed price / availability / schedule facts when a source stated them; never inferred. */
+    val facts: LiveCommerceObservedFacts? = null,
+)
+
+@Serializable
+data class LiveCommerceObservedFacts(
+    val source: String = "",
+    val retrievedAt: String = "",
+    val expiresAt: String? = null,
+    val freshnessType: String = "",
+    val price: LiveCommercePrice? = null,
+    val availability: String? = null,
+    val inventory: Int? = null,
+    val schedule: LiveCommerceSchedule? = null,
+)
+
+@Serializable
+data class LiveCommercePrice(
+    val listPrice: Double? = null,
+    val salePrice: Double? = null,
+    val currency: String = "VND",
+)
+
+@Serializable
+data class LiveCommerceSchedule(
+    val date: String = "",
+    val time: String? = null,
+)
+
 @Serializable
 data class LivePlaceAction(
     val kind: String = "",
     val urlKind: String = "",
     val url: String = "",
+    /**
+     * The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, …), decided by the
+     * server's one label resolver. This client renders it from its own dictionary
+     * ([placeActionLabel]) and never re-derives the decision.
+     */
     val labelKey: String = "",
     val platform: String? = null,
     val attributed: Boolean? = null,
+    /** CCP facts for a commerce handoff. Null on every other action. */
+    val commerce: LiveCommerceFacts? = null,
 )
 
 @Serializable
@@ -139,6 +204,8 @@ data class PlaceCardAction(
     val url: String,
     val labelKey: String,
     val platform: String? = null,
+    /** The commerce facts, carried through untouched so a tap can report the handoff. */
+    val commerce: LiveCommerceFacts? = null,
 )
 
 /** The LIVE projection → the card. Nothing is dropped that the card can show. */
@@ -159,7 +226,7 @@ fun LivePlace.toCardView(): PlaceCardView = PlaceCardView(
     flags = flags,
     reasons = reasons.map { it.evidence }.filter { it.isNotBlank() },
     tradeOff = tradeOff?.evidence?.takeIf { it.isNotBlank() },
-    actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform) },
+    actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform, it.commerce) },
 )
 
 /**

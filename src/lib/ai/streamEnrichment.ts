@@ -13,7 +13,8 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
-import { unlinkMislabelledMerchantLinks } from '@/lib/recommendation/ctaValidation'
+import { unlinkMislabelledMerchantLinks, validateModelCtaBlock } from '@/lib/recommendation/ctaValidation'
+import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
@@ -912,7 +913,8 @@ export function applyPlaceEnrichmentStreamFilter(
    * prose hygiene that unmakes a mislabelled or front-door merchant link runs at settle time —
    * a live-streamed "[Ticketbox.vn](https://ticketbox.vn/)" was measured getting through.
    */
-  const commerceHandoffIntent = !!requestedProviderOf(userText) || entertainmentCapabilityOf(userText) === 'event_ticket'
+  const requestedProviderId = requestedProviderOf(userText)
+  const commerceHandoffIntent = !!requestedProviderId || entertainmentCapabilityOf(userText) === 'event_ticket'
   if (commerceHandoffIntent) bufferMode = true
   /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
@@ -1262,7 +1264,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").
     const systemPlaced = new Set<string>(systemLinkUrls)
     for (const p of places) for (const l of [...(p.order_links ?? []), ...(p.platform_links ?? [])]) systemPlaced.add(l.url)
-    const scaffoldStripped = unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced)
+    // The model's own [CTA_BUTTONS] block is validated HERE for every client (cross-platform CCP,
+    // 14 Sep 2026): another registry merchant's button under a named-merchant request, a merchant
+    // front door, a mislabelled destination — dropped; a promise on a results page — relabelled.
+    const scaffoldStripped = validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId)
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`

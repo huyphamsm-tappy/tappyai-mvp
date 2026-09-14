@@ -140,6 +140,10 @@ fun ChatScreen(
     // The composer chip and the decision card must ask for a price watch in the SAME words, or
     // the model sees two different requests for one feature. Read once, used by both.
     val pricePrefill = stringResource(R.string.chat_chip_price_watch_prefill)
+    // Commerce actions (CCP) report their render and their tap through the ViewModel's reporter.
+    val commerceCallbacks = remember(viewModel) {
+        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff)
+    }
     val promptsInEnglish = booleanResource(R.bool.resources_are_english)
     LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }
 
@@ -296,7 +300,7 @@ fun ChatScreen(
                                     ?.map { it.toCardView() }
                                     ?: placesOutsideItinerary(message.plan, message.places)
                                         .mapNotNull { it.toCardView() }
-                                PlaceCards(cards)
+                                PlaceCards(cards, commerce = commerceCallbacks)
                             }
                             // D1 — the shopping DECISION. Rendered only once generation is done,
                             // like every other structured block: a half-arrived decision is not a
@@ -311,6 +315,7 @@ fun ChatScreen(
                                         onPriceWatch = { name ->
                                             viewModel.onInputChange(pricePrefill + name)
                                         },
+                                        commerce = commerceCallbacks,
                                     )
                                     // Comparison (DD-005), derived from the SAME payload the card
                                     // above renders — no extra request, nothing inferred. Opens in

@@ -17,6 +17,7 @@ import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
+import com.tappyai.app.chat.data.CommerceHandoffReporter
 import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
@@ -53,6 +54,7 @@ class ChatViewModel @Inject constructor(
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
+    private val commerceHandoffReporter: CommerceHandoffReporter,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -561,6 +563,13 @@ class ChatViewModel @Inject constructor(
     /** Removes a favorite place by id. Returns true on success. */
     suspend fun removeFavorite(placeId: String): Boolean =
         mapsRepository.removeFavorite(placeId) is NetworkResult.Success
+
+    /**
+     * A Commerce Link was drawn / followed (CCP event 6, web `reportCommerceHandoff`). The card has
+     * already fired the merchant intent; this only reports the opaque ids and the analytics event.
+     */
+    fun onCommerceActionRendered(commerce: LiveCommerceFacts) = commerceHandoffReporter.rendered(commerce)
+    fun onCommerceHandoff(commerce: LiveCommerceFacts, opened: Boolean) = commerceHandoffReporter.tapped(commerce, opened)
 
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }

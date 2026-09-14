@@ -4,6 +4,7 @@ import type { ShoppingSynthesis, EntitySummary, ConfigMatch } from './synthesis'
 import { buildSynthesisPayload, entityName } from './synthesis'
 // Types + the row guard only (src/lib/ccp/row has no server-only import); this module is client-bundled.
 import { COMMERCE_LINKS_KEY, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp/row'
+import { resolveActionLabel } from '@/lib/recommendation/actionLabel'
 
 // ── Universal Plan — Phase 9: SYNTHESIS → CLIENT DISPLAY VIEW ────────────────
 //
@@ -71,6 +72,19 @@ export interface SynthesisCommerceView {
   primary: boolean
   /** SEARCH_HANDOFF (L2, the merchant's search for the user's words) vs a detail / checkout handoff. */
   kind: CommerceLinkRow['kind']
+  /**
+   * The RESOLVED label key (cross-platform CCP contract, 14 Sep 2026) — the same decision the live
+   * place view carries (`LiveAction.labelKey`), so the Shopping card on every client renders
+   * "Mua trên TikTok Shop · cần đăng nhập" from one resolver. Optional: a marker written before
+   * the field existed still renders (web re-resolves; native falls back to the search/open label).
+   */
+  labelKey?: string
+  /** What the user meets after the tap (guest flow, merchant login, the merchant's app). */
+  handoff?: CommerceLinkRow['handoff']
+  /** Deepest verified level after a merchant login; null = not verified. */
+  authenticatedDepth?: CommerceLinkRow['authenticatedDepth']
+  /** Observed facts (price / availability / schedule) when a source stated them; never inferred. */
+  facts?: CommerceLinkRow['facts']
 }
 
 /** One stated specification. `value` is the listing's own figure, never derived. */
@@ -193,7 +207,7 @@ function entityCommerce(links: SynthesisCommerceView[]): SynthesisCommerceView |
 }
 
 function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
-  return {
+  const view: SynthesisCommerceView = {
     linkId: r.linkId,
     requestId: r.requestId,
     providerId: r.providerId,
@@ -209,7 +223,15 @@ function projectCommerce(r: CommerceLinkRow): SynthesisCommerceView {
     ...(r.capability ? { capability: r.capability } : {}),
     primary: r.primary !== false,
     kind: r.kind,
+    ...(r.handoff ? { handoff: r.handoff } : {}),
+    ...(r.authenticatedDepth !== undefined ? { authenticatedDepth: r.authenticatedDepth } : {}),
+    ...(r.facts ? { facts: r.facts } : {}),
   }
+  // The Shopping card's handoff is a purchase action (components/chat/structured/CommerceHandoff):
+  // the label decision is made here, once, by the same resolver, and carried to every client.
+  const search = r.kind === 'SEARCH_HANDOFF'
+  view.labelKey = resolveActionLabel({ kind: 'purchase', urlKind: search ? 'search' : 'direct', url: r.url, platform: r.merchantName, commerce: view }).key
+  return view
 }
 
 /** A representative product photo for an entity, from the first offer that carried one. */

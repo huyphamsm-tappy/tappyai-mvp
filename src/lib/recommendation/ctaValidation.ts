@@ -160,10 +160,17 @@ const PROSE_LINK_RE = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g
  * must point at that merchant; otherwise the link is unmade and only the words remain. Nothing
  * else in the prose is touched (system-provided links point where their labels say).
  */
-export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: ReadonlySet<string>): string {
+export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: ReadonlySet<string>, requestedProviderId?: string | null): string {
   if (!text || text.indexOf('](http') === -1) return text
   // URLs the SYSTEM placed (injected order / platform links, CCP handoffs) are never judged here.
-  return text.replace(PROSE_LINK_RE, (whole, label: string, url: string) => (!systemUrls?.has(url) && (namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url)) ? label : whole))
+  return text.replace(PROSE_LINK_RE, (whole, label: string, url: string) => {
+    if (systemUrls?.has(url)) return whole
+    // A mislabelled destination, a registry front door, OR — when the user NAMED a merchant this
+    // turn — a link to ANY OTHER registry merchant (live UAT 14 Sep 2026: "… trên Trip.com" whose
+    // reply still linked "[Booking.com] hoặc [Agoda]"). The named merchant's own links stay.
+    const other = !!requestedProviderId && isOtherRegistryMerchant(url, requestedProviderId)
+    return other || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) ? label : whole
+  })
 }
 
 /** A registry merchant's front door (root or a bare section, locale segments ignored) — a button on it is dropped, a prose link to it is unmade. */
@@ -195,6 +202,71 @@ export function validateModelCtaButtons(
 }
 
 const MERCHANT_BY_HOST = new Map(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => [h.toLowerCase().replace(/^www\./, ''), e.providerId] as const)))
+
+// ── The model's [CTA_BUTTONS] block, validated ONCE on the server ─────────────
+//
+// 🚨 CROSS-PLATFORM CCP (14 Sep 2026): `validateModelCtaButtons` ran only in the web client
+// (`parseCTAValidated`). Android and iOS parse the same block and rendered it verbatim — so a
+// "🛒 Mua iPhone trên Shopee" button under a TikTok Shop request, dropped on web, would have opened
+// Shopee on a phone. The canonical layer is the URL authority for every client, so the block is
+// validated here, in the settle path of the stream, before the bytes leave the server; the web
+// client's own pass stays as defence in depth (it is idempotent on an already-validated block).
+//
+// The block is re-emitted in its CLOSED form, which all three parsers accept
+// (shared/structured-content/marker-fixtures.json `cta-closed`). A block whose JSON cannot be read
+// is left exactly as it was: the clients already strip an undecodable block, and rewriting bytes we
+// could not parse is how prose gets corrupted.
+const CTA_OPEN = '[CTA_BUTTONS]'
+const CTA_CLOSE = '[/CTA_BUTTONS]'
+
+/** Where the model's block sits inside the text, and its JSON, or null when there is none / it is unreadable. */
+function findModelCtaBlock(text: string): { start: number; end: number; json: string } | null {
+  const lower = text.toLowerCase()
+  const start = lower.indexOf(CTA_OPEN.toLowerCase())
+  if (start < 0) return null
+  const closeAt = lower.indexOf(CTA_CLOSE.toLowerCase(), start)
+  if (closeAt >= 0) return { start, end: closeAt + CTA_CLOSE.length, json: text.slice(start + CTA_OPEN.length, closeAt).trim() }
+  // Bare form: brace matching (strings and escapes honoured), never end-anchored, never greedy.
+  let open = start + CTA_OPEN.length
+  while (open < text.length && /\s/.test(text[open])) open++
+  if (text[open] !== '{') return null
+  let depth = 0, inString = false, escaped = false
+  for (let i = open; i < text.length; i++) {
+    const ch = text[i]
+    if (escaped) { escaped = false; continue }
+    if (inString) { if (ch === '\\') escaped = true; else if (ch === '"') inString = false; continue }
+    if (ch === '"') inString = true
+    else if (ch === '{') depth++
+    else if (ch === '}' && --depth === 0) return { start, end: i + 1, json: text.slice(open, i + 1) }
+  }
+  return null
+}
+
+/**
+ * Validate the model's `[CTA_BUTTONS]` block inside a reply, in place. Buttons that name another
+ * registry merchant than the one the user asked for, mislabelled destinations and merchant front
+ * doors are dropped; over-promises on results pages are relabelled — exactly the web client's rule
+ * set. Text without a readable block is returned unchanged.
+ */
+export function validateModelCtaBlock(
+  text: string,
+  t: (key: string, vars?: Record<string, string>) => string,
+  requestedProviderId?: string | null,
+): string {
+  if (!text || text.indexOf('[') === -1) return text
+  const block = findModelCtaBlock(text)
+  if (!block) return text
+  let parsed: unknown
+  try { parsed = JSON.parse(block.json) } catch { return text }
+  const raw = parsed && typeof parsed === 'object' ? (parsed as { buttons?: unknown }).buttons : undefined
+  if (!Array.isArray(raw)) return text
+  const buttons = raw.filter((b): b is ModelCtaButton => !!b && typeof b === 'object' && typeof (b as ModelCtaButton).url === 'string' && typeof (b as ModelCtaButton).label === 'string')
+  const kept = validateModelCtaButtons(buttons, t, requestedProviderId)
+  const before = text.slice(0, block.start).replace(/[ \t]+$/, '')
+  const after = text.slice(block.end)
+  if (kept.length === 0) return (before + after.replace(/^[ \t]*\n?/, '')).replace(/[ \t]+\n/g, '\n').trimEnd()
+  return `${before}${CTA_OPEN}${JSON.stringify({ buttons: kept })}${CTA_CLOSE}${after}`
+}
 function isOtherRegistryMerchant(url: string, requestedProviderId: string): boolean {
   const owner = MERCHANT_BY_HOST.get(hostOf(url))
   return !!owner && owner !== requestedProviderId

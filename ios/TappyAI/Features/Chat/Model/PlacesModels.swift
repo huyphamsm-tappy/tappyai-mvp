@@ -21,6 +21,59 @@ import Foundation
 // Nothing here re-derives anything: every field is read straight from the server's projection.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// MARK: - Commerce facts (CCP)
+
+/// The Commerce Capability Platform's facts on an action it resolved (web `CommerceActionFacts`,
+/// src/lib/recommendation/actions.ts; Android `LiveCommerceFacts`). Present only on a commerce
+/// handoff. Nothing here is re-derived: the merchant, the depth the URL lands at, the login
+/// boundary and the opaque ids the handoff beacon reports are all the server's.
+///
+/// 🚨 THE URL IS NOT HERE, AND THE MODEL NEVER WROTE IT. The action's `url` is the one CCP
+/// validated — the card opens it verbatim and reports `linkId` + `requestId`, never the URL.
+struct LiveCommerceFacts: Codable, Equatable, Sendable {
+    var linkId: String = ""
+    var requestId: String = ""
+    var providerId: String = ""
+    /// L0–L5 the URL lands at for a guest.
+    var depth: Int = 0
+    var guestDepth: Int = 0
+    var authRequiredAt: String = ""
+    /// True when the merchant asks for a login BEFORE the landed step can be completed.
+    var loginRequired: Bool = false
+    /// `guest` · `merchant_login` · `app` — what the user meets after the tap.
+    var handoff: String?
+    var authenticatedDepth: Int?
+    var freshnessType: String = ""
+    var expiresAt: String?
+    var tracked: Bool = false
+    var capability: String?
+    var primary: Bool = true
+    /// Observed price / availability / schedule facts when a source stated them; never inferred.
+    var facts: LiveCommerceObservedFacts?
+}
+
+struct LiveCommerceObservedFacts: Codable, Equatable, Sendable {
+    var source: String = ""
+    var retrievedAt: String = ""
+    var expiresAt: String?
+    var freshnessType: String = ""
+    var price: LiveCommercePrice?
+    var availability: String?
+    var inventory: Int?
+    var schedule: LiveCommerceSchedule?
+}
+
+struct LiveCommercePrice: Codable, Equatable, Sendable {
+    var listPrice: Double?
+    var salePrice: Double?
+    var currency: String = "VND"
+}
+
+struct LiveCommerceSchedule: Codable, Equatable, Sendable {
+    var date: String = ""
+    var time: String?
+}
+
 // MARK: - Durable: [TAPPY_PLACES]
 
 struct PersistedPlaceAction: Codable, Equatable, Sendable, Identifiable {
@@ -28,9 +81,14 @@ struct PersistedPlaceAction: Codable, Equatable, Sendable, Identifiable {
     /// `direct` vs `search` — the honesty field, so a label cannot overpromise.
     var urlKind: String = ""
     var url: String = ""
+    /// The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, …), decided by the
+    /// server's one label resolver and rendered here from the catalogue (`placeActionLabel`) —
+    /// never re-derived on the device.
     var labelKey: String = ""
     var platform: String?
     var attributed: Bool?
+    /// CCP facts for a commerce handoff (carried onto the card from the live view). Nil otherwise.
+    var commerce: LiveCommerceFacts?
 
     var id: String { "\(kind)-\(url)" }
 }
@@ -84,6 +142,8 @@ struct LivePlaceAction: Codable, Equatable, Sendable {
     var labelKey: String = ""
     var platform: String?
     var attributed: Bool?
+    /// CCP facts for a commerce handoff. Nil on every other action.
+    var commerce: LiveCommerceFacts?
 }
 
 struct LivePlaceReason: Codable, Equatable, Sendable {
@@ -191,7 +251,8 @@ extension LivePlace {
             actions: actions.map {
                 PersistedPlaceAction(
                     kind: $0.kind, urlKind: $0.urlKind, url: $0.url,
-                    labelKey: $0.labelKey, platform: $0.platform, attributed: $0.attributed
+                    labelKey: $0.labelKey, platform: $0.platform, attributed: $0.attributed,
+                    commerce: $0.commerce
                 )
             }
         )
@@ -254,7 +315,68 @@ extension PersistedPlaceAction {
             url: (try? c.decode(String.self, forKey: .url)) ?? "",
             labelKey: (try? c.decode(String.self, forKey: .labelKey)) ?? "",
             platform: try? c.decode(String.self, forKey: .platform),
-            attributed: try? c.decode(Bool.self, forKey: .attributed)
+            attributed: try? c.decode(Bool.self, forKey: .attributed),
+            commerce: try? c.decode(LiveCommerceFacts.self, forKey: .commerce)
+        )
+    }
+}
+
+extension LiveCommerceFacts {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            linkId: (try? c.decode(String.self, forKey: .linkId)) ?? "",
+            requestId: (try? c.decode(String.self, forKey: .requestId)) ?? "",
+            providerId: (try? c.decode(String.self, forKey: .providerId)) ?? "",
+            depth: (try? c.decode(Int.self, forKey: .depth)) ?? 0,
+            guestDepth: (try? c.decode(Int.self, forKey: .guestDepth)) ?? 0,
+            authRequiredAt: (try? c.decode(String.self, forKey: .authRequiredAt)) ?? "",
+            loginRequired: (try? c.decode(Bool.self, forKey: .loginRequired)) ?? false,
+            handoff: try? c.decode(String.self, forKey: .handoff),
+            authenticatedDepth: try? c.decode(Int.self, forKey: .authenticatedDepth),
+            freshnessType: (try? c.decode(String.self, forKey: .freshnessType)) ?? "",
+            expiresAt: try? c.decode(String.self, forKey: .expiresAt),
+            tracked: (try? c.decode(Bool.self, forKey: .tracked)) ?? false,
+            capability: try? c.decode(String.self, forKey: .capability),
+            primary: (try? c.decode(Bool.self, forKey: .primary)) ?? true,
+            facts: try? c.decode(LiveCommerceObservedFacts.self, forKey: .facts)
+        )
+    }
+}
+
+extension LiveCommerceObservedFacts {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            source: (try? c.decode(String.self, forKey: .source)) ?? "",
+            retrievedAt: (try? c.decode(String.self, forKey: .retrievedAt)) ?? "",
+            expiresAt: try? c.decode(String.self, forKey: .expiresAt),
+            freshnessType: (try? c.decode(String.self, forKey: .freshnessType)) ?? "",
+            price: try? c.decode(LiveCommercePrice.self, forKey: .price),
+            availability: try? c.decode(String.self, forKey: .availability),
+            inventory: try? c.decode(Int.self, forKey: .inventory),
+            schedule: try? c.decode(LiveCommerceSchedule.self, forKey: .schedule)
+        )
+    }
+}
+
+extension LiveCommercePrice {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            listPrice: try? c.decode(Double.self, forKey: .listPrice),
+            salePrice: try? c.decode(Double.self, forKey: .salePrice),
+            currency: (try? c.decode(String.self, forKey: .currency)) ?? "VND"
+        )
+    }
+}
+
+extension LiveCommerceSchedule {
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        self.init(
+            date: (try? c.decode(String.self, forKey: .date)) ?? "",
+            time: try? c.decode(String.self, forKey: .time)
         )
     }
 }
@@ -315,7 +437,8 @@ extension LivePlaceAction {
             url: (try? c.decode(String.self, forKey: .url)) ?? "",
             labelKey: (try? c.decode(String.self, forKey: .labelKey)) ?? "",
             platform: try? c.decode(String.self, forKey: .platform),
-            attributed: try? c.decode(Bool.self, forKey: .attributed)
+            attributed: try? c.decode(Bool.self, forKey: .attributed),
+            commerce: try? c.decode(LiveCommerceFacts.self, forKey: .commerce)
         )
     }
 }

@@ -158,3 +158,20 @@ describe('the batch preserves order and count', () => {
     expect(validateModelCtaButtons([{ label: '🎫 Ticketbox - Mua vé sự kiện', type: 'website', url: AGGREGATOR_HOMEPAGE, primary: true }], t)).toEqual([])
   })
 })
+
+describe('a named merchant unmakes prose links to OTHER registry merchants (live UAT 14 Sep 2026)', () => {
+  it('"… trên Trip.com": [Booking.com] and [Agoda] prose links are unmade; a Trip.com link stays', () => {
+    const text = 'Để đặt phòng, bạn có thể truy cập [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang) hoặc [Agoda](https://www.agoda.com/vi-vn/). Hoặc xem [Trip.com](https://vn.trip.com/hotels/detail/?hotelId=707332).'
+    const out = unlinkMislabelledMerchantLinks(text, undefined, 'tripcom')
+    expect(out).toBe('Để đặt phòng, bạn có thể truy cập Booking.com hoặc Agoda. Hoặc xem [Trip.com](https://vn.trip.com/hotels/detail/?hotelId=707332).')
+  })
+  it('without a named merchant, an honest OTA results-page link is left alone', () => {
+    const text = 'Xem [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang).'
+    expect(unlinkMislabelledMerchantLinks(text, undefined, null)).toBe(text)
+  })
+  it('a system-placed link to another merchant is never touched', () => {
+    const url = 'https://www.booking.com/searchresults.vi.html?ss=Da+Nang'
+    const text = `Xem [Booking.com](${url}).`
+    expect(unlinkMislabelledMerchantLinks(text, new Set([url]), 'tripcom')).toBe(text)
+  })
+})
