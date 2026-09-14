@@ -60,9 +60,6 @@ fun HomeTabHost(
                 onOpenConversation = onOpenConversation,
                 onOpenMusic = { navController.navigate(MusicRoute.Library) },
                 onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
-                onOpenTarot = { navController.navigate(FortuneRoute.Tarot) },
-                onOpenTuVi = { navController.navigate(FortuneRoute.TuVi) },
-                onOpenZodiac = { navController.navigate(FortuneRoute.Zodiac) },
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
                 onOpenDeals = { navController.navigate(DealsRoute.Main) },
@@ -72,6 +69,27 @@ fun HomeTabHost(
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenTappyTogether = { navController.navigate(HomeTabRoute.GroupDining) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
+                onOpenSmartTools = { navController.navigate(HomeTabRoute.SmartTools) },
+            )
+        }
+        // The catalogue page: the SAME destinations the landing's callbacks above navigate to,
+        // keyed by the registry id — one route table, read from two surfaces.
+        composable<HomeTabRoute.SmartTools> {
+            SmartToolsScreen(
+                onBack = { navController.popBackStack() },
+                onOpen = { id ->
+                    when (id) {
+                        SmartToolId.Scan -> navController.navigate(ScanRoute.Main)
+                        SmartToolId.Translate -> navController.navigate(TranslateRoute.Main)
+                        SmartToolId.Currency -> navController.navigate(CurrencyRoute.Main)
+                        SmartToolId.Split -> navController.navigate(SplitBillRoute.Main)
+                        SmartToolId.Safety -> navController.navigate(ScamShieldRoute.Main)
+                        SmartToolId.Together -> navController.navigate(HomeTabRoute.GroupDining)
+                        SmartToolId.Music -> navController.navigate(MusicRoute.Library)
+                        SmartToolId.Fortune -> navController.navigate(FortuneRoute.Hub)
+                        SmartToolId.Captions -> navController.navigate(VietWriterRoute.Main)
+                    }
+                },
             )
         }
         composable<HomeTabRoute.GroupDining> {

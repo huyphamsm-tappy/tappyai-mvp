@@ -39,8 +39,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.AutoAwesome
-import androidx.compose.material.icons.filled.Calculate
-import androidx.compose.material.icons.filled.CurrencyExchange
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.LocalOffer
@@ -48,10 +46,7 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.GppGood
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Translate
@@ -92,11 +87,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
 import com.tappyai.app.deals.Deal
+import com.tappyai.app.deals.PartnerMark
 import com.tappyai.app.deals.dealListKeys
 import com.tappyai.app.history.Conversation
 import com.tappyai.app.recommendations.Recommendation
@@ -134,9 +129,6 @@ fun HomeScreen(
     onOpenConversation: (String) -> Unit,
     onOpenMusic: () -> Unit,
     onOpenRecommendations: () -> Unit,
-    onOpenTarot: () -> Unit,
-    onOpenTuVi: () -> Unit,
-    onOpenZodiac: () -> Unit,
     onOpenTranslate: () -> Unit,
     onOpenCurrency: () -> Unit,
     onOpenDeals: () -> Unit,
@@ -146,6 +138,8 @@ fun HomeScreen(
     onOpenVietWriter: () -> Unit,
     onOpenTappyTogether: () -> Unit,
     onOpenSplitBill: () -> Unit,
+    /** The Smart Tools catalogue page (web `/tools`) — the section's "Xem tất cả". */
+    onOpenSmartTools: () -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val recentActivity by viewModel.recentActivityState.collectAsStateWithLifecycle()
@@ -209,11 +203,9 @@ fun HomeScreen(
                 // category-discovery surface on Home now, and the one that keeps "Spa & Beauty"
                 // reachable.
                 CategoryChipsSection(onOpenCategory = onOpenChatWithCategory)
-                FortuneSection(
-                    onOpenTarot = onOpenTarot,
-                    onOpenTuVi = onOpenTuVi,
-                    onOpenZodiac = onOpenZodiac,
-                )
+                // "Xem bói hôm nay" used to sit here (three emoji tiles). Removed 2026-09-14: the
+                // Fortune hub is a Smart Tools destination (`SmartToolId.Fortune` → the Smart
+                // Tools page → `FortuneRoute.Hub`), so the Home tiles duplicated it.
                 SuggestionsSection(onOpenChatWithPrefill = onOpenChatWithPrefill)
                 RecentActivitySection(state = recentActivity, onOpenConversation = onOpenConversation)
 
@@ -230,6 +222,7 @@ fun HomeScreen(
                     onOpenCurrency = onOpenCurrency,
                     onOpenMusic = onOpenMusic,
                     onOpenTappyTogether = onOpenTappyTogether,
+                    onOpenSmartTools = onOpenSmartTools,
                 )
             }
         }
@@ -253,6 +246,12 @@ private val Primary400 = Color(0xFF3391FF)
  * [userName] is the real display name from the existing account profile, or null when it is not
  * known (signed out, anonymous, or a failed load) — in which case the greeting falls back to a
  * generic form rather than inventing a name.
+ *
+ * 🔑 THE GREETING IS THE APPROVED V3 CONTRACT (web `HomeV3.tsx`: `v3.home.greetUser` = "Hi {name}!",
+ * `v3.home.greetGuest` = "Chào bạn!"), decided 2026-09-14 after the historical audit: the pre-V3
+ * time-of-day engine (`HomeGreeting.heroText`) is NOT this hero's source and must not be wired
+ * back in; the "time × day × five domains" system is the Suggested Prompts engine, a separate
+ * feature. Both platforms show the same static, name-personalised line.
  */
 @Composable
 private fun V3HeroSection(userName: String?) {
@@ -663,13 +662,21 @@ private fun V3SectionHeading(title: String, linkText: String, onLinkClick: () ->
 }
 
 /**
- * Smart Tools — the single home for what used to be three separate Home sections.
+ * Smart Tools — the single home for what used to be three separate Home sections, now in the
+ * web's own card ([SmartToolCard], compact) and with the web's way to the full catalogue.
  *
  * "Cong cu & tien ich" (Currency / Split bill / Translate), "Viet content" and "Quet tai lieu"
  * each had their own header and their own card style, which made three unrelated-looking groups
- * out of one family. This is one section over the SAME five destinations, reusing the existing
- * [FeatureTile] and the labels each tool already ships: no tool is recreated, no navigation
- * destination is added, and every callback is the one the shell already passes down.
+ * out of one family. This is one section over the SAME eight destinations and the SAME callbacks
+ * the shell already passes down: no tool is recreated, none is dropped, no navigation destination
+ * is added for them. What changed (2026-09-13, web parity): the tiles are the registry's cards —
+ * tinted gradient, glyph badge, mascot pose, title, description — and the header's "Xem tất cả"
+ * opens the Smart Tools page ([HomeTabRoute.SmartTools]), where the one registry tool not
+ * previewed here (Bói) lives with the rest, grouped as the web groups them.
+ *
+ * The eight previewed here are the eight this section always showed (the web's Home rail previews
+ * five — `home: true` — a narrower cut this section deliberately does not adopt, so nothing the
+ * Home surface offered is taken away). Their order is the registry's.
  *
  * Games is deliberately absent, as it already was. `GamesScreen` embeds SuperTux in a WebView and
  * that Emscripten/WASM build needs SharedArrayBuffer, which the Android WebView does not expose
@@ -687,74 +694,41 @@ private fun SmartToolsSection(
     onOpenCurrency: () -> Unit,
     onOpenMusic: () -> Unit,
     onOpenTappyTogether: () -> Unit,
+    onOpenSmartTools: () -> Unit,
 ) {
-    // Same FeatureTile, same 2-up grid, same labels and callbacks the tools already shipped with —
-    // the rows are just built from a list now so the count can grow past a hand-written grid. Music
-    // library and Tappy Together join here rather than each keeping a section of their own.
-    val tools = listOf(
-        SmartTool(R.string.home_scan_title, R.string.home_scan_card_title, GradBlueSky, onOpenScan) {
-            Icon(Icons.Filled.QrCodeScanner, null, tint = Color(0xFF0284C7), modifier = Modifier.size(20.dp))
-        },
-        // Scam Shield — the safety tool the canonical shell routes to (ScamShieldRoute.Main). It
-        // joins the same tile grid with the same icon and tint it already shipped with; a tool is
-        // never dropped from Home to make room for the V3 layout.
-        SmartTool(R.string.home_scam_shield_title, R.string.home_scam_shield_desc, GradEmeraldTeal, onOpenScamShield) {
-            Icon(Icons.Filled.GppGood, null, tint = Color(0xFF0D9488), modifier = Modifier.size(20.dp))
-        },
-        SmartTool(R.string.home_content_writer_title, R.string.home_content_writer_card_title, GradOrangeAmber, onOpenVietWriter) {
-            Icon(Icons.Outlined.EditNote, null, tint = Color(0xFFEA580C), modifier = Modifier.size(20.dp))
-        },
-        SmartTool(R.string.home_translate_title, R.string.home_translate_desc, GradPrimaryAccent, onOpenTranslate) {
-            Text("🌐", fontSize = 20.sp)
-        },
-        SmartTool(R.string.home_split_title, R.string.home_split_desc, GradVioletPurple, onOpenSplitBill) {
-            Icon(Icons.Filled.Calculate, null, tint = Color(0xFF7C3AED), modifier = Modifier.size(20.dp))
-        },
-        SmartTool(R.string.home_currency_title, R.string.home_currency_desc, GradEmeraldTeal, onOpenCurrency) {
-            Icon(Icons.Filled.CurrencyExchange, null, tint = Color(0xFF059669), modifier = Modifier.size(20.dp))
-        },
-        // Moved in from the old two-card Recommendations+Music row, keeping its icon and tint.
-        SmartTool(R.string.home_music_title, R.string.home_music_desc, GradPinkOrange, onOpenMusic) {
-            Icon(Icons.Filled.MusicNote, null, tint = Color(0xFFDB2777), modifier = Modifier.size(20.dp))
-        },
-        // Moved in from its standalone featured card, keeping the 👥 mark it already used.
-        SmartTool(R.string.home_together_title, R.string.home_together_desc, GradVioletPurple, onOpenTappyTogether) {
-            Text("👥", fontSize = 20.sp)
-        },
+    // The section's eight, as registry ids, resolved to the callbacks the shell already passes.
+    val previewed = setOf(
+        SmartToolId.Scan, SmartToolId.Translate, SmartToolId.Currency, SmartToolId.Split,
+        SmartToolId.Safety, SmartToolId.Together, SmartToolId.Music, SmartToolId.Captions,
     )
+    val tools = SMART_TOOLS.filter { it.id in previewed }
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-        SectionHeader(title = stringResource(R.string.home_v3_smart_tools_title), showSparkle = true)
-        tools.chunked(2).forEach { row ->
-            Row(
-                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
-                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-            ) {
-                row.forEach { tool ->
-                    FeatureTile(
-                        title = stringResource(tool.titleRes),
-                        description = stringResource(tool.descriptionRes),
-                        onClick = tool.onClick,
-                        iconGradient = tool.iconGradient,
-                        icon = tool.icon,
-                        modifier = Modifier.weight(1f).fillMaxHeight(),
-                    )
+        SectionHeader(
+            title = stringResource(R.string.home_v3_smart_tools_title),
+            showSparkle = true,
+            action = { SectionLink(text = stringResource(R.string.smart_tools_see_all), onClick = onOpenSmartTools) },
+        )
+        SmartToolGrid(
+            tools = tools,
+            variant = SmartToolCardVariant.Compact,
+            onOpen = { id ->
+                when (id) {
+                    SmartToolId.Scan -> onOpenScan()
+                    SmartToolId.Translate -> onOpenTranslate()
+                    SmartToolId.Currency -> onOpenCurrency()
+                    SmartToolId.Split -> onOpenSplitBill()
+                    SmartToolId.Safety -> onOpenScamShield()
+                    SmartToolId.Together -> onOpenTappyTogether()
+                    SmartToolId.Music -> onOpenMusic()
+                    SmartToolId.Captions -> onOpenVietWriter()
+                    // Not previewed on Home: reachable from the Smart Tools page.
+                    SmartToolId.Fortune -> onOpenSmartTools()
                 }
-                // Keeps an odd-count final row aligned with the 2-up grid above.
-                if (row.size == 1) Spacer(modifier = Modifier.weight(1f))
-            }
-        }
+            },
+        )
     }
 }
-
-/** One Smart Tools tile: an existing feature's own label, art and navigation callback. */
-private data class SmartTool(
-    @StringRes val titleRes: Int,
-    @StringRes val descriptionRes: Int,
-    val iconGradient: Brush,
-    val onClick: () -> Unit,
-    val icon: @Composable () -> Unit,
-)
 
 /**
  * "Uu dai hom nay" — the V3 slot for partner offers, over the SAME daily pool the Deals screen
@@ -864,22 +838,19 @@ private fun V3DealCard(deal: Deal, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
+                .height(64.dp)
                 .background(
                     Brush.linearGradient(
                         listOf(accent.copy(alpha = 0.5f), accent.copy(alpha = 0.12f)),
                     ),
                 ),
         ) {
-            Icon(
-                imageVector = Icons.Filled.LocalOffer,
-                contentDescription = null,
-                tint = Color.White.copy(alpha = 0.85f),
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 14.dp)
-                    .size(20.dp),
-            )
+            // The partner's mark — the web Deals card's BrandLogo (registry mark → the deal's own
+            // logo image → monogram), the SAME component the Deals screen draws. A generic offer
+            // glyph stood here before; a Shopee deal now carries Shopee's mark, as on the web.
+            Box(modifier = Modifier.align(Alignment.CenterStart).padding(start = 12.dp)) {
+                PartnerMark(deal = deal, size = 40.dp)
+            }
             // Only rendered when the feed actually carries a promotion — most deals have none.
             deal.discountLabel?.takeIf { it.isNotBlank() }?.let { discount ->
                 Text(
@@ -1020,16 +991,19 @@ private fun SuggestionsSection(onOpenChatWithPrefill: (String) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(title = stringResource(R.string.home_section_suggested))
         // 2-column grid of curated prompt cards (web HomeView Suggestions). UI parity only.
-        HOME_SUGGESTIONS.chunked(2).forEach { pair ->
+        // Art per card, the web's way: unique across the row while the pool allows it.
+        val art = remember { assignInspireArt(HOME_SUGGESTIONS.map { it.category }) }
+        HOME_SUGGESTIONS.chunked(2).forEachIndexed { rowIndex, pair ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min),
                 horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
             ) {
-                pair.forEach { suggestion ->
+                pair.forEachIndexed { column, suggestion ->
                     SuggestionCard(
                         suggestion = suggestion,
+                        art = art[rowIndex * 2 + column],
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight(),
@@ -1042,8 +1016,20 @@ private fun SuggestionsSection(onOpenChatWithPrefill: (String) -> Unit) {
     }
 }
 
+/**
+ * One "Gợi ý cho bạn" card — the web Home's for-you tile (`HomeV3.tsx`): the photograph on top
+ * (`object-cover`, 94px), the category as a small dark badge on the art, the prompt's emoji in a
+ * tinted badge top-right, then the prompt text. The art is [assignInspireArt]'s pick for this
+ * card — the web's own owner-approved photographs, never an emoji standing in for a picture.
+ * Content and behaviour are unchanged: the same prompt, the same category, the same prefill tap.
+ */
 @Composable
-private fun SuggestionCard(suggestion: HomeSuggestion, modifier: Modifier, onClick: (String) -> Unit) {
+private fun SuggestionCard(
+    suggestion: HomeSuggestion,
+    @DrawableRes art: Int,
+    modifier: Modifier,
+    onClick: (String) -> Unit,
+) {
     val text = stringResource(suggestion.textRes)
     TappyCard(
         modifier = modifier
@@ -1055,11 +1041,42 @@ private fun SuggestionCard(suggestion: HomeSuggestion, modifier: Modifier, onCli
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(64.dp) // web h-16
-                    .background(suggestionGradient(suggestion.category)),
-                contentAlignment = Alignment.Center,
+                    .height(94.dp), // web h-[94px]
             ) {
-                Text(text = suggestion.emoji, fontSize = 30.sp) // web text-3xl
+                Image(
+                    painter = painterResource(art),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+                // The category is a badge on the art (web); the value is the card's real category.
+                suggestionCategoryLabel(suggestion.category)?.let { labelRes ->
+                    Text(
+                        text = stringResource(labelRes).uppercase(),
+                        color = Color.White,
+                        fontSize = 9.5.sp,
+                        lineHeight = 12.sp,
+                        letterSpacing = 0.6.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(Alignment.BottomStart)
+                            .padding(start = 10.dp, bottom = 8.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color(0xA8080B12))
+                            .padding(horizontal = 8.dp, vertical = 3.dp),
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(10.dp)
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(suggestionGradient(suggestion.category)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(text = suggestion.emoji, fontSize = 15.sp)
+                }
             }
             Text(
                 text = text,
@@ -1072,6 +1089,17 @@ private fun SuggestionCard(suggestion: HomeSuggestion, modifier: Modifier, onCli
             )
         }
     }
+}
+
+/** The web's `CATEGORY_LABEL` for the badge on the art — the app's own category strings. */
+@StringRes
+private fun suggestionCategoryLabel(category: String): Int? = when (category) {
+    "food" -> R.string.home_category_food
+    "travel" -> R.string.home_category_travel
+    "shopping" -> R.string.home_category_shopping
+    "entertainment" -> R.string.home_category_entertainment
+    "spa" -> R.string.home_category_spa
+    else -> null
 }
 
 /** Category → light gradient, mirroring the web DEFAULT_GRADIENT tints for the suggestion header. */
@@ -1169,122 +1197,6 @@ private fun RecentConversationRow(conversation: Conversation, nowMillis: Long, o
         }
     }
 }
-
-private data class FortuneEntry(val emoji: String, val title: String, val description: String, val onClick: () -> Unit)
-
-@Composable
-private fun FortuneSection(
-    onOpenTarot: () -> Unit,
-    onOpenTuVi: () -> Unit,
-    onOpenZodiac: () -> Unit,
-) {
-    val entries = listOf(
-        FortuneEntry(
-            "🔮",
-            stringResource(R.string.home_fortune_tarot_title),
-            stringResource(R.string.home_fortune_tarot_description),
-            onOpenTarot,
-        ),
-        FortuneEntry(
-            "🧧",
-            stringResource(R.string.home_fortune_horoscope_title),
-            stringResource(R.string.home_fortune_horoscope_description),
-            onOpenTuVi,
-        ),
-        FortuneEntry(
-            "✨",
-            stringResource(R.string.home_fortune_zodiac_title),
-            stringResource(R.string.home_fortune_zodiac_description),
-            onOpenZodiac,
-        ),
-    )
-
-    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-        SectionHeader(title = stringResource(R.string.home_section_fortune))
-        // 3-column grid of emoji + label tiles, mirroring web HomeView's Fortune `grid-cols-3`
-        // (was a vertical list of description rows).
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-        ) {
-            entries.forEach { entry ->
-                TappyCard(
-                    modifier = Modifier
-                        .weight(1f)
-                        .clip(TappyShapes.card)
-                        .clickable(onClick = entry.onClick),
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = TappySpacing.xs),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
-                    ) {
-                        Text(text = entry.emoji, fontSize = 24.sp) // web text-2xl
-                        Text(
-                            text = entry.title,
-                            fontSize = 12.sp, // web text-xs
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            textAlign = TextAlign.Center,
-                            maxLines = 1,
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-/** A compact vertical grid tile (title + description) used by the 2-column Recommendations+Music
- *  and Tools grids. The leading emoji is embedded in the title string, matching the web labels. */
-@Composable
-private fun FeatureTile(
-    title: String,
-    description: String,
-    onClick: () -> Unit,
-    iconGradient: Brush,
-    modifier: Modifier = Modifier,
-    icon: @Composable () -> Unit,
-) {
-    TappyCard(
-        modifier = modifier
-            .clip(TappyShapes.card)
-            .clickable(onClick = onClick),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) { // web gap-3 = 12px
-            // Web: per-feature colored gradient icon chip — w-11 h-11 rounded-xl bg-gradient-to-br.
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(iconGradient),
-                contentAlignment = Alignment.Center,
-            ) { icon() }
-            Text(
-                text = title,
-                style = MaterialTheme.typography.titleSmall,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-// Web tailwind-100 gradient pairs + 600 icon tints for the Home feature-card icon chips.
-private fun featureGradient(a: Long, b: Long) = Brush.linearGradient(listOf(Color(a), Color(b)))
-private val GradEmeraldTeal = featureGradient(0xFFD1FAE5, 0xFFCCFBF1)
-private val GradVioletPurple = featureGradient(0xFFEDE9FE, 0xFFF3E8FF)
-private val GradBlueSky = featureGradient(0xFFDBEAFE, 0xFFE0F2FE)
-private val GradOrangeAmber = featureGradient(0xFFFFEDD5, 0xFFFEF3C7)
-private val GradPrimaryAccent = featureGradient(0xFFCCE3FF, 0xFFFFE9CC)
-private val GradPinkOrange = featureGradient(0xFFFCE7F3, 0xFFFFEDD5)
 
 /**
  * "Video goi y cho ban" — a horizontal rail over the SAME community feed Explore reads.

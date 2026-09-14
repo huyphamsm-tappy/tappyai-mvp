@@ -55,14 +55,6 @@
     <string name="home_games_title">🎮 Games</string>
     <string name="home_games_desc">Giải trí, thư giãn nhanh</string>
 
-    <string name="home_section_fortune">🔮 Xem bói hôm nay</string>
-    <string name="home_fortune_tarot_title">Tarot</string>
-    <string name="home_fortune_tarot_description">Khám phá thông điệp từ vũ trụ</string>
-    <string name="home_fortune_horoscope_title">Tử vi</string>
-    <string name="home_fortune_horoscope_description">Vận mệnh theo can chi năm sinh</string>
-    <string name="home_fortune_zodiac_title">Cung HĐ</string>
-    <string name="home_fortune_zodiac_description">Vận số theo ngày sinh</string>
-
     <string name="home_tab_home">Trang chủ</string>
     <string name="home_tab_chat">Chat</string>
     <string name="home_tab_explore">Khám phá</string>
@@ -89,7 +81,7 @@
     <string name="home_v3_deals_see_all">Xem tất cả</string>
     <string name="home_v3_deals_subtitle">Ưu đãi chọn lọc từ đối tác của Tappy</string>
     <string name="home_v3_deals_title">Ưu đãi hôm nay</string>
-    <string name="home_v3_greeting_generic">Xin chào! \uD83D\uDC4B</string>
+    <string name="home_v3_greeting_generic">Chào bạn! \uD83D\uDC4B</string>
     <string name="home_v3_greeting_named">Hi %1$s! \uD83D\uDC4B</string>
     <string name="home_v3_hero_tagline">TappyAI có thể giúp gì cho bạn hôm nay?</string>
     <string name="home_v3_notifications">Thông báo</string>
@@ -106,6 +98,33 @@
     <string name="home_v3_search">Tìm kiếm</string>
     <string name="home_v3_secondary_title">Công cụ &amp; tiện ích</string>
     <string name="home_v3_smart_tools_title">Smart Tools</string>
+    <string name="smart_tools_blurb">Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày</string>
+    <string name="smart_tools_search_hint">Tìm công cụ…</string>
+    <string name="smart_tools_search_empty">Không tìm thấy công cụ phù hợp</string>
+    <string name="smart_tools_see_all">Xem tất cả</string>
+    <string name="smart_tools_auth_hint">Cần đăng nhập</string>
+    <string name="smart_tools_cta">Làm nhiều hơn cùng TappyAI</string>
+    <string name="smart_tools_group_daily">Hằng ngày</string>
+    <string name="smart_tools_group_discover">Khám phá</string>
+    <string name="smart_tools_group_fun">Giải trí</string>
+    <string name="smart_tool_scan">Quét</string>
+    <string name="smart_tool_scan_desc">Chụp giấy tờ, hóa đơn trích xuất nội dung</string>
+    <string name="smart_tool_translate">Dịch</string>
+    <string name="smart_tool_translate_desc">Dịch nhanh hơn 100 ngôn ngữ</string>
+    <string name="smart_tool_currency">Tỷ giá</string>
+    <string name="smart_tool_currency_desc">Quy đổi tiền tệ VND, USD, EUR, JPY…</string>
+    <string name="smart_tool_split">Chia bill</string>
+    <string name="smart_tool_split_desc">Chia đều hóa đơn theo người / món</string>
+    <string name="smart_tool_safety">An toàn</string>
+    <string name="smart_tool_safety_desc">Kiểm tra link, website mã QR an toàn</string>
+    <string name="smart_tool_together">Nhóm ăn</string>
+    <string name="smart_tool_together_desc">Chọn địa điểm ăn uống phù hợp nhóm bạn</string>
+    <string name="smart_tool_music">Nhạc</string>
+    <string name="smart_tool_music_desc">Nghe &amp; chọn nhạc nền cho review của bạn</string>
+    <string name="smart_tool_fortune">Bói</string>
+    <string name="smart_tool_fortune_desc">Xem tử vi hôm nay theo cung hoàng đạo</string>
+    <string name="smart_tool_captions">Viết</string>
+    <string name="smart_tool_captions_desc">Tạo caption cho FB, TikTok, Instagram</string>
     <string name="home_v3_theme_to_dark">Bật chế độ tối</string>
     <string name="home_v3_theme_to_light">Tắt chế độ tối</string>
     <string name="home_videos_likes">%1$s lượt thích</string>

@@ -51,7 +51,9 @@ fun ProfileTab(
     onSignIn: () -> Unit,
 ) {
     val navController = rememberNavController()
-    ReportNestedScreen(HomeTab.Profile, navController)
+    // The V3 landing draws its own header ("Tôi" + blurb + mascot), so the shell's title bar
+    // steps aside at the landing exactly as it does for Explore; nested screens keep their own.
+    ReportNestedScreen(HomeTab.Profile, navController, landingOwnsHeader = true)
 
     NavHost(navController = navController, startDestination = ProfileRoute.Hub) {
         composable<ProfileRoute.Hub> {
@@ -68,6 +70,8 @@ fun ProfileTab(
                 onOpenPriceTracking = { navController.navigate(ProfileRoute.PriceTracking) },
                 onOpenAccount = { navController.navigate(ProfileRoute.AccountGraph) },
                 onOpenAppConnections = { navController.navigate(ProfileRoute.AppConnections) },
+                // The privacy card: the same destination Settings' "Chính sách bảo mật" opens.
+                onOpenPrivacy = { navController.navigate(ProfileRoute.Privacy) },
                 onSignIn = onSignIn,
             )
         }
