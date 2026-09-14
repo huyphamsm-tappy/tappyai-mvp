@@ -138,3 +138,55 @@ describe('the guard never writes, and never empties the reply', () => {
     expect(guardPlaceClaimsInText('   ', ev()).redacted).toBe(0)
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚨 MEASURED 2026-09-14 on the exact planning probe ("lập kế hoạch ăn chơi
+// nhảy múa tối nay cho 2 người, budget 5 triệu ở Sài Gòn"): the model wrote a
+// complete [TAPPY_PLAN] (`planEmitted: true`) and the client received prose.
+// `sentenceSpans` keeps the block whole as ONE span; this guard judged it as a
+// sentence, PHONE_RE matched the longitude inside `maps_link`, the block names
+// two venues so no entity phone could vouch for it, and the whole plan went.
+// ─────────────────────────────────────────────────────────────────────────────
+describe('🚨 a machine block is not a sentence — [TAPPY_PLAN] is never judged', () => {
+  const PLAN = '[TAPPY_PLAN]\n' + JSON.stringify({
+    type: 'evening', title: 'Tối ăn ngon + nhảy múa ở Sài Gòn', people: [2], budget_total: '5.000.000 VND',
+    days: [{ label: 'Tối nay', items: [
+      { time: '19:00', category: 'food', name: 'Nhà Hàng Jaspas', description: 'Nhà hàng có wifi, không gian thoải mái.', price: 'chưa có giá', maps_link: 'https://www.google.com/maps?q=10.778168,106.7037041' },
+      { time: '21:30', category: 'entertainment', name: 'Mimi Ultra Lounge', description: 'Bar lounge sôi động.', price: 'chưa có giá', address: '61 Nam Kỳ Khởi Nghĩa, Quận 1', maps_link: 'https://www.google.com/maps?q=10.7718973,106.7005703' },
+    ] }],
+    cost_breakdown: { 'Ăn tối (2 người)': 'chưa có giá', 'Bar': 'chưa có giá' },
+  }) + '\n[/TAPPY_PLAN]'
+  const evidence = ev({
+    placeNames: ['Nhà Hàng Jaspas', 'Mimi Ultra Lounge', 'Quán Bar No.5'],
+    phonesByEntity: new Map([['Quán Chill Skybar', ['+84 8 38272372']]]),
+    ratingsByEntity: new Map(), reviewCountsByEntity: new Map(),
+  })
+
+  it('keeps the whole plan — coordinates in maps_link are not a phone claim', () => {
+    const text = 'Tôi đã lên kế hoạch cho tối nay.\n\n' + PLAN + '\n\nMình chọn Nhà Hàng Jaspas trước, rồi Mimi Ultra Lounge.'
+    const out = guardPlaceClaimsInText(text, evidence, { scope: 'all' })
+    expect(out.redacted).toBe(0)
+    expect(out.text).toBe(text)
+    expect(out.text).toContain(PLAN)
+    expect(out.text).toContain('https://www.google.com/maps?q=10.778168,106.7037041')
+    expect(out.text).toContain('https://www.google.com/maps?q=10.7718973,106.7005703')
+    expect(out.text).toContain('Nhà Hàng Jaspas')
+    expect(out.text).toContain('Mimi Ultra Lounge')
+  })
+
+  it('still guards the prose outside the block exactly as before', () => {
+    const text = 'Gọi Nhà Hàng Jaspas: 0901 234 567.\n\n' + PLAN + '\n\nMimi Ultra Lounge cách bạn 12 km.'
+    const out = guardPlaceClaimsInText(text, evidence, { scope: 'all' })
+    expect(out.redacted).toBe(2)
+    expect(out.text).not.toContain('0901 234 567')
+    expect(out.text).not.toContain('12 km')
+    expect(out.text).toContain(PLAN)
+  })
+
+  it('the same protection covers the other machine blocks', () => {
+    const text = 'Mình chọn Nhà Hàng Jaspas.\n\n[CTA_BUTTONS]\n[{"label":"📞 Gọi - Jaspas","url":"tel:0901234567"}]\n[/CTA_BUTTONS]'
+    const out = guardPlaceClaimsInText(text, evidence, { scope: 'all' })
+    expect(out.redacted).toBe(0)
+    expect(out.text).toBe(text)
+  })
+})

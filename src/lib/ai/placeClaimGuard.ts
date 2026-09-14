@@ -23,7 +23,7 @@
 // m" is evidence for exactly those numbers. Anything tracing to neither is
 // removed with the whole sentence, and nothing is ever written.
 
-import { sentenceSpans } from './moneyGuard'
+import { protectedSpans, sentenceSpans } from './moneyGuard'
 import { placeTokensFor, textNamesPlace } from '@/lib/links/placeAttribution'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 
@@ -532,6 +532,23 @@ export function guardPlaceClaimsInText(
   const ratingPool = [...ratings, ...retrievedNumbers]
 
   const spans = sentenceSpans(text)
+  /**
+   * 🚨 A MACHINE BLOCK IS NOT A SENTENCE. `sentenceSpans` keeps every protected
+   * span — [TAPPY_PLAN]…[/TAPPY_PLAN], the CTA/followups markers, links — whole,
+   * as one span, so that no sentence can swallow it. This guard then judged that
+   * span as prose. Measured 2026-09-14 on the exact planning probe: the plan's
+   * `maps_link` carries the venue's coordinates, `PHONE_RE` matched the longitude
+   * ("106.7037041" → "06.7037041"), the block names two venues so no entity's
+   * phone could vouch for it, and the ENTIRE plan was deleted — the model had
+   * written it (`planEmitted: true`) and the client received prose. The same
+   * span is where the client reads the plan from, so the rules below never
+   * apply to it: a plan item's claims are grounded by the tool row it was built
+   * from, not by sentence-level provenance. Prose outside the block is judged
+   * exactly as before.
+   */
+  const machine = new Set<number>()
+  const prot = protectedSpans(text)
+  spans.forEach(([a, b], i) => { if (prot.some(([pa, pb]) => pa === a && pb === b)) machine.add(i) })
   const doomed = new Set<number>()
   /** Sentences kept in a trimmed form, with only the unsupported clause removed. */
   const trimmed = new Map<number, string>()
@@ -543,6 +560,7 @@ export function guardPlaceClaimsInText(
   const orphaned = new Set<number>()
 
   spans.forEach(([a, b], i) => {
+    if (machine.has(i)) return
     const s = text.slice(a, b)
 
     /**
@@ -743,7 +761,7 @@ export function guardPlaceClaimsInText(
   while (changed) {
     changed = false
     spans.forEach(([a, b], i) => {
-      if (doomed.has(i) || orphaned.has(i)) return
+      if (doomed.has(i) || orphaned.has(i) || machine.has(i)) return
       const sentence = trimmed.get(i) ?? text.slice(a, b)
       if (!ANAPHOR_RE.test(sentence)) return
       // A sentence that names the venue itself is not leaning on anything.
@@ -789,7 +807,7 @@ export function guardPlaceClaimsInText(
      * and no claim is kept to save it.
      */
     spans.forEach(([a, b], i) => {
-      if (doomed.has(i) || orphaned.has(i)) return
+      if (doomed.has(i) || orphaned.has(i) || machine.has(i)) return
       if (!/:\s*$/.test((trimmed.get(i) ?? text.slice(a, b)))) return
       const paragraphEnd = text.indexOf('\n\n', b)
       const limit = paragraphEnd === -1 ? text.length : paragraphEnd

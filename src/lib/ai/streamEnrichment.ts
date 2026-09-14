@@ -1,10 +1,11 @@
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
-import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { extractMoneyClaims, guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
+import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
@@ -1192,7 +1193,24 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
-    const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)
+    const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)
+    /**
+     * PLAN PRICE PROVENANCE. Every money guard below reads `proseOnly(text)`, so
+     * the [TAPPY_PLAN] block — the one structured payload the client renders as
+     * money — was never judged. Measured 2026-09-14 on OSM rows with no price
+     * field: 4 of 5 delivered plans carried "800,000 – 1,200,000 VND (estimated)"
+     * per item. Runs after `injectPlanPhotos` (same parse/re-serialize shape,
+     * so the photo fields it added are kept) and before the prose guards, which
+     * skip the block anyway. Evidence is the rows this turn retrieved plus the
+     * user's own numbers; nothing is fetched and nothing is computed.
+     */
+    const planEvidence = {
+      byEntity: planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity),
+      userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
+    }
+    const enriched = enrichedProse.includes('[TAPPY_PLAN]')
+      ? guardPlanPrices(enrichedProse, planEvidence, lang).text
+      : enrichedProse
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,

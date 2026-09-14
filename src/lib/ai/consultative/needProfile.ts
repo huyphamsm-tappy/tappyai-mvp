@@ -91,6 +91,13 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
+  // 🚨 MULTI-ACTIVITY OUTINGS — measured gap, 2026-09-14. "ăn chơi nhảy múa
+  // tối nay" names no venue noun the SUBJECTS lexicon knows, so an evening
+  // plan resolved to `domain: null` and lost the ranking-instruction block on
+  // exactly the turn that runs the most place searches. Nightlife and outing
+  // words are place-seeking by definition; a false positive still lands on
+  // `places`, which is where every one of them belongs.
+  [/\ban choi\b|\bnhay mua\b|\bnightlife\b|\bnight out\b|\bclub\b|\bpub\b|\bvui choi\b|\bdi choi\b|\bhen ho\b|\bdate night\b/, 'places'],
   // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
   // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
   // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú

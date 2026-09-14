@@ -1,5 +1,5 @@
 import { type Budget } from './budget'
-import { type DecisionStage } from './intent'
+import { type DecisionStage, type PlanActivity } from './intent'
 import { fenceUntrusted } from './security/fence'
 import { renderEvidencePolicyBlock } from './consultative/evidenceProvenance'
 
@@ -17,10 +17,37 @@ export interface UserPrefs {
 // English. Naming Vietnamese makes the guards unnecessary instead of load-bearing.
 const LANG_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
-export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): string {
-  const toolsNeeded = planType === 'trip'
-    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places (type=attraction) → tìm điểm tham quan, thắng cảnh, hoạt động thú vị ở điểm đến\n- get_weather → thời tiết nếu biết ngày đi`
-    : `- search_places (type=spa) → nếu user muốn spa\n- search_places (type=restaurant) → tìm nhà hàng cho tối\n- search_places (type=cinema hoặc bar) → tìm giải trí tùy nhu cầu`
+/** What a plan request carries besides its type — read by `buildPlanningBlock`. */
+export interface PlanningContext {
+  /** The whole envelope for the plan in VND, when the user stated one. */
+  totalBudget?: number | null
+  /** The activities the request names, in `search_places` `type` vocabulary. */
+  activities?: readonly PlanActivity[]
+}
+
+const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
+  restaurant: '- search_places (type=restaurant) → nhà hàng / quán ăn cho bữa chính',
+  cafe: '- search_places (type=cafe) → cafe / trà sữa / tráng miệng',
+  bar: '- search_places (type=bar) → bar / pub / club / lounge — nhảy múa, nhậu, nightlife',
+  cinema: '- search_places (type=cinema) → rạp phim',
+  spa: '- search_places (type=spa) → spa / massage',
+  attraction: '- search_places (type=attraction) → điểm tham quan, thắng cảnh, hoạt động',
+  hotel: '- get_hotel_prices → khách sạn phù hợp budget',
+}
+
+export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi', ctx: PlanningContext = {}): string {
+  // The searches are decided HERE from the activities the user named — one per
+  // activity, in parallel, and nothing else. A request that names none gets the
+  // plan type's sensible default; a request that names three gets three. The
+  // model never has to guess a tool per activity, and never runs every tool.
+  const named = ctx.activities && ctx.activities.length > 0 ? [...new Set(ctx.activities)] : null
+  const defaults: PlanActivity[] = planType === 'trip' ? ['hotel', 'restaurant', 'attraction'] : ['restaurant', 'bar']
+  const activities = named ?? defaults
+  const toolsNeeded = activities.map(a => PLAN_TOOL_LINES[a]).join('\n')
+    + (planType === 'trip' ? '\n- get_weather → thời tiết nếu biết ngày đi' : '')
+  const totalBudgetLine = ctx.totalBudget
+    ? `TỔNG NGÂN SÁCH của cả kế hoạch: ${ctx.totalBudget.toLocaleString('vi-VN')} VND (cho TẤT CẢ các bước cộng lại — KHÔNG phải mỗi bước). Khối "BUDGET FILTER" ở nơi khác trong prompt (nếu có) nói về từng lựa chọn; với KẾ HOẠCH thì con số này mới là ràng buộc.`
+    : `TỔNG NGÂN SÁCH: user chưa nêu — KHÔNG bịa. Ước tính tổng từ giá thực trong kết quả tool và nêu rõ đó là ước tính.`
 
   // langReminder is deliberately placed as the LAST line before the closing marker — the
   // spot the model reads immediately before generating [TAPPY_PLAN] content. The block's
@@ -34,26 +61,31 @@ export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): s
     ? `\n⚠️ NGON NGU: title, description, va share_text trong JSON, cung nhu cau tom tat/gia dinh viet sau block, PHAI viet bang ${langName} — KHONG dung tieng Viet. Cac ten field (title, people, budget_total, days, items...) GIU NGUYEN vi la ma may tinh, khong dich.\n`
     : ''
 
-  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC =====
-User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT.
+  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC, ƯU TIÊN CAO NHẤT =====
+User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT của lượt này. Một yêu cầu có thể gồm NHIỀU hoạt động (ăn + bar + phim...) — kế hoạch phải bao trọn TẤT CẢ hoạt động user nêu, KHÔNG dừng lại sau một hoạt động, KHÔNG bắt user chọn "lĩnh vực" trước.
+${totalBudgetLine}
 
-BƯỚC 1 - GỌI TOOL (bắt buộc, gọi song song nếu có thể):
+BƯỚC 1 - GỌI TOOL: gọi ĐÚNG các tìm kiếm dưới đây, SONG SONG trong cùng một bước, mỗi hoạt động một lần, KHÔNG gọi thêm tool khác, KHÔNG gọi trùng:
 ${toolsNeeded}
+(Không dùng search_products trừ khi user nói rõ muốn MUA món đồ gì.)
 
 BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format sau (không thêm text thừa trước block). Mọi giá trị text (title/description/price/share_text...) viết bằng NGÔN NGỮ của câu trả lời cho user — các mô tả trong ngoặc vuông dưới đây chỉ là HƯỚNG DẪN CẤU TRÚC, không phải văn mẫu để chép:
 
 [TAPPY_PLAN]
-{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng budget ước tính]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language]","price":"[giá ước tính]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá]"},"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
+{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng ngân sách dạng CHUỖI có đơn vị, vd 5.000.000 VND: đúng con số user nêu nếu có, nếu không thì tổng ước tính từ giá thực]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language: what it is + the real rating/hours/price signal from the tool when present]","price":"[CHUỖI: giá ước tính TỪ TOOL cho bước này, có đơn vị; nếu tool không có giá → ghi đúng 'chưa có giá' (hoặc tương đương trong ngôn ngữ trả lời)]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá dạng chuỗi có đơn vị, hoặc 'chưa có giá']"},"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
 [/TAPPY_PLAN]
 
 QUY TẮC BẮT BUỘC:
-1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực)
-2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri)
-3. budget_total phải chia rõ trong cost_breakdown
-4. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
-5. Sau [/TAPPY_PLAN], viết 1 câu ngắn tóm tắt và CTA_BUTTONS như thường
-6. KHÔNG đặt word limit cho reply này — kế hoạch cần đầy đủ
-7. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt (nói rõ số người/ngân sách bạn đang giả định, và mời user chỉnh lại nếu khác) — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
+1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực). Mỗi hoạt động user nêu → ít nhất MỘT bước trong kế hoạch, theo thứ tự hợp lý trong ${planType === 'trip' ? 'ngày' : 'buổi tối'}.
+2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri). booking_link chỉ khi tool có.
+3. NGÂN SÁCH LÀ TỔNG: budget_total là tổng cho cả kế hoạch. cost_breakdown liệt kê từng bước; TỔNG cost_breakdown PHẢI ≤ budget_total. Giá từng bước lấy từ kết quả tool (price_range / price_level / giá món / giá vé / giá phòng). KHÔNG bịa giá, KHÔNG "ước lượng cho tròn" để phép cộng khớp: bước nào tool không có giá → ghi "chưa có giá" và KHÔNG cộng vào tổng. Sau block, nêu tổng ước tính và phần còn dư so với ngân sách (hoặc nói rõ tổng đang ước tính vì thiếu giá).
+4. GIỜ GIẤC THẬT: nếu tool có opening_hours / open_now → dùng để xếp giờ và nhắc giờ mở/đóng. Nếu không có → giờ trong "time" chỉ là gợi ý sắp xếp, KHÔNG khẳng định quán mở/đóng lúc đó.
+5. THÔNG TIN QUYẾT ĐỊNH: mỗi bước ghi vào description điều giúp user quyết định — rating (google_rating), khoảng giá, khoảng cách (distance_km), giờ mở cửa, loại hình — CHỈ những trường thật sự có trong kết quả tool. Không có thì không nhắc.
+6. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
+7. Sau [/TAPPY_PLAN]: 2-4 câu — vì sao chọn các điểm này cho đúng yêu cầu (số người, ngân sách, hoạt động), tổng/còn dư, 1 phương án thay thế nếu có, rồi CTA_BUTTONS như thường.
+8. KHÔNG áp dụng giới hạn số từ cho reply này — kế hoạch cần đầy đủ. Các khối "WORD LIMIT" khác không áp dụng ở lượt này.
+9. KHÔNG HỎI LẠI KHI ĐÃ ĐỦ: đã có địa điểm/khu vực + thời điểm (hoặc "tối nay") + hoạt động là ĐỦ để lập kế hoạch. TUYỆT ĐỐI KHÔNG hỏi "bạn muốn ăn loại gì" hay hỏi sở thích thay vì lập kế hoạch. Chọn mặc định theo thứ tự: (1) điều user nói trong cuộc trò chuyện này, (2) sở thích/kiêng cữ/thói quen trong MEMORY và PREFERENCES ở trên (ví dụ món hay ăn, đi mấy người, hay đi tối), (3) lựa chọn phổ biến hợp lý tại địa phương. Nêu giả định bằng MỘT câu ngắn và mời user chỉnh. Chỉ hỏi ĐÚNG MỘT câu khi thiếu điều không thể mặc định (không biết thành phố/khu vực và không có GPS/memory) — và khi đó vẫn đưa kế hoạch sơ bộ nếu có thể.
+10. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
 ${langReminder}==========================================================`
 }
 
@@ -268,6 +300,8 @@ export function buildSystem(
    * consultative behaviour needs it gone. D3's own closing block is additive and sits after it.
    */
   pickBlock?: string,
+  /** Total budget + named activities of a planning turn; ignored when `planningIntent` is null. */
+  planning?: PlanningContext,
 ): SystemPrompt {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -306,7 +340,15 @@ LUAT 2: CAM HOAN TOAN de cap bat ky khach san thuong hieu quoc te hoac 4-5 sao n
 LUAT 3: Neu khong con option nao trong tam gia, hay noi ro (bang NGON NGU cua cau tra loi, KHONG chep mau co san) rang trong tam ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND chua tim duoc lua chon phu hop, va hoi user co muon nang ngan sach len khoang ${Math.round(budget.max * 1.2 / 1000) * 1000 >= 1000000 ? (Math.round(budget.max * 1.2 / 100000) / 10).toFixed(1) + ' trieu' : Math.round(budget.max * 1.2 / 1000) + 'k'} VND khong.
 ==========================================`
     : ''
-  const wordLimitBlock = isFirstReply
+  // 🚨 PLANNING TURNS CARRY NO WORD LIMIT — measured 2026-09-14. This block used
+  // to be emitted on every turn and sat AFTER the planning block in `dynamic`, so
+  // on a first reply "toi da 150 tu … cau cuoi phai la follow-up question" was the
+  // last length/shape instruction the model read: it wrote 150 words, skipped
+  // the mandatory [TAPPY_PLAN] JSON and closed with "bạn muốn ăn loại gì?". The
+  // planning block owns length and shape of a plan reply; the limit and the
+  // "end with a question" clause are absent on those turns, and unchanged on
+  // every other turn.
+  const wordLimitBlock = planningIntent ? '' : isFirstReply
     ? `\n\n===== WORD LIMIT - REPLY DAU TIEN =====\nDay la reply DAU TIEN trong conversation. GIOI HAN: toi da 150 tu (chi tinh van ban CHU hien thi cho user - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet nen khong lo vuot gioi han. Viet ngan, chon loc, de hieu. Cau cuoi phai la follow-up question.\n==========================================`
     : `\n\n===== WORD LIMIT - CO CONTEXT =====\nUser da tra loi follow-up. Duoc phep reply chi tiet hon, toi da 250 tu (chi tinh van ban CHU hien thi - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet. Nhung van phai ngan gon, khong viet bao cao. Cau cuoi van nen co follow-up question neu con thong tin can lam ro.\n==========================================`
   const locationBlock = locationIntent === 'offline'
@@ -389,7 +431,7 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
   // on every request instead costs ~4k tokens at the 0.1x cached rate. Both
   // blocks already self-guard ("no specific suggestion → no CTA block"), so a
   // weather answer is unaffected.
-  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent, lang) : ''
+  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent, lang, planning) : ''
   const cameraBlock = hasImage ? `
 
 ===== CAMERA AI MODE =====
@@ -479,7 +521,26 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   // `closingBlock` (D3) goes after it because its whole argument is that it must be the LAST
   // thing read before generating — that is what lets it win the slot the extra questions were
   // taking. Putting pickBlock last would silently disarm it.
-  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}${closingBlock}`
+  //
+  // 🚨 THE PLANNING BLOCK GOES LAST OF ALL — the same argument, one step further.
+  // A plan reply is the one shape where the decision blocks (budget, location,
+  // pick, closing) must serve the block, not replace it, so the planning
+  // contract is the final instruction the model reads, followed by a one-line
+  // pre-send check. Nothing else moves.
+  //
+  // Measurement note, 2026-09-14: with the contract in place the model wrote
+  // the block in 16 of 16 planning runs (`planEmitted` on the usage record),
+  // Vietnamese and English alike. Replies that reached the client without it
+  // had lost it downstream — `placeClaimGuard` judged the block as a sentence
+  // and deleted it — not in generation; see that guard. The pre-send check is
+  // stated twice, Vietnamese then English, because the language override at
+  // the top says "ENTIRE response in <lang>" and the block must be understood
+  // as machine-readable and language-neutral in every response language.
+  const planningClosing = planningIntent
+    ? `\n\nTRUOC KHI GUI - KIEM TRA KE HOACH: reply nay PHAI chua block [TAPPY_PLAN]…[/TAPPY_PLAN] HOAN CHINH (JSON hop le) voi MOI hoat dong user neu, roi moi den phan giai thich va CTA. Neu chua co block, viet block truoc khi gui. Cac khoi "CHOT"/"NGHIENG VE"/"Tappy's Pick" o tren chi dung de CHON dia diem cho tung buoc — khong thay the ke hoach.
+(The [TAPPY_PLAN] JSON block is machine-readable and required in every response language — the language override applies to its VALUES, never to the block itself.)`
+    : ''
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}${closingBlock}${planningBlock}${planningClosing}`
 
   return { shared, dynamic }
 }

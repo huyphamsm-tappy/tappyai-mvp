@@ -20,7 +20,7 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -41,7 +41,7 @@ import { serperSearch } from '@/lib/ai/tools/common'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
-import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
+import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -169,6 +169,12 @@ export async function POST(req: Request) {
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
+  // A plan's budget is the WHOLE envelope, and its searches are the activities
+  // the user named — both decided here, deterministically, so the planning block
+  // can state the total and list exactly the searches to run (see promptBuilder).
+  const planning = planningIntent
+    ? { totalBudget: extractPlanTotalBudget(lastText), activities: detectPlanActivities(lastText) }
+    : undefined
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
@@ -822,9 +828,13 @@ export async function POST(req: Request) {
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
+  // A planning turn runs the place searches the ranker orders, so it carries the
+  // ranking instruction even when the multi-activity wording resolved to no
+  // single domain — measured 2026-09-14: "ăn chơi nhảy múa" → `domain: null`.
   const isDecisionDomain = needProfile.domain === 'places'
     || needProfile.domain === 'hotel'
     || needProfile.domain === 'shopping'
+    || planningIntent !== null
 
   // The transport-mode stage is decided HERE, deterministically, not by the
   // model noticing it should ask. resolveTripContext folds the history, so the
@@ -877,6 +887,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const built = noToolTurn ? null : buildSystem(
     budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
     consultativeBlock || undefined,
+    planning,
   )
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
@@ -924,6 +935,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   /** Set once at onFinish: absolute ms of model generation complete (T9). */
   let modelFinishAt: number | null = null
+  /**
+   * Planning contract, measured: whether a turn that ran in planning mode
+   * actually produced the `[TAPPY_PLAN]` block. Null on non-planning turns.
+   * The route cannot safely force the block (one model call, streamed), so the
+   * gap is made visible instead of silent — see promptBuilder's planning rules.
+   */
+  let planEmitted: boolean | null = null
   /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
   let usageAcct: {
     finishReason: string
@@ -1264,6 +1282,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // client-emit transform (logUsage / timeClientEmit) so a buffered turn's
       // enrichment tail lands in the SAME record instead of being missed.
       modelFinishAt = Date.now()
+      if (planningIntent) planEmitted = /\[TAPPY_PLAN\][\s\S]*\[\/TAPPY_PLAN\]/.test(text)
       usageAcct = {
         finishReason,
         promptTokens: usage?.promptTokens ?? null,
@@ -1481,6 +1500,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       retryCount: 'unknown',
       worthExtract,
       forcedTool,
+      planningIntent,
+      planEmitted,
     }))
   }
   const timedBody = finalResponse.body
