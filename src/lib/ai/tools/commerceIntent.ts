@@ -1,3 +1,5 @@
+import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
+
 // ── Commerce intent → capability (owner correction, 13 Sep 2026) ────────────
 //
 // The user's words decide WHICH capability a turn asks for; the domain alone
@@ -113,4 +115,47 @@ export function filmTitleMatches(film: string, pageTitle: string | undefined): b
   const have = new Set(fold(pageTitle).split(/[^a-z0-9]+/))
   const hit = want.filter(w => have.has(w)).length
   return hit / want.length >= 0.6
+}
+
+// ── Requested merchant (Final local live UAT, 14 Sep 2026) ──────────────────
+// "Mua iPhone trên Shopee", "Tìm khách sạn … trên Agoda", "Tìm vé Vietjet …":
+// when the user NAMES a registry merchant, that merchant is the request — the
+// seam narrows the CCP request to it (`merchantAllowList`) and spends discovery
+// only on it. Measured in the UAT: "Mua iPhone trên TikTok Shop" came back with
+// Shopee buttons and no TikTok Shop link at all. Names are registry data; the
+// aliases below are the spellings users type, longest first so "ShopeeFood" is
+// never read as "Shopee" and "TikTok Shop" never as bare "TikTok" (a review
+// site). Nothing here is a URL.
+const MERCHANT_ALIASES: Record<string, readonly string[]> = {
+  shopeefood: ['shopeefood', 'shopee food'],
+  shopee: ['shopee'],
+  tiktokshop: ['tiktok shop', 'tiktokshop', 'tik tok shop', 'shop tiktok'],
+  lazada: ['lazada'],
+  dmx: ['điện máy xanh', 'dien may xanh', 'dienmayxanh', 'dmx'],
+  cellphones: ['cellphones', 'cellphone s', 'cellphones.com.vn'],
+  grabfood: ['grabfood', 'grab food'],
+  tripcom: ['trip.com', 'tripcom', 'trip com'],
+  booking: ['booking.com', 'booking'],
+  agoda: ['agoda'],
+  traveloka: ['traveloka'],
+  vexere: ['vexere', 'vé xe rẻ'],
+  vietnamairlines: ['vietnam airlines', 'vietnamairlines', 'vna'],
+  vietjet: ['vietjet', 'vietjet air', 'vietjetair'],
+  klook: ['klook'],
+  cgv: ['cgv'],
+  ticketbox: ['ticketbox', 'ticket box'],
+}
+const MERCHANT_PATTERNS: ReadonlyArray<{ providerId: string; re: RegExp }> = Object.entries(MERCHANT_ALIASES)
+  .filter(([id]) => PROVIDER_REGISTRY.some(p => p.providerId === id))
+  .flatMap(([id, names]) => names.map(n => ({ providerId: id, n })))
+  .sort((a, b) => b.n.length - a.n.length)
+  .map(({ providerId, n }) => ({ providerId, re: new RegExp(`${EDGE_L}${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*')}${EDGE_R}`, 'iu') }))
+
+/** The registry provider the user named in the window (newest turn wins), or null. */
+export function requestedProviderOf(input: UserTurns): string | null {
+  for (const t of turns(input).reverse()) {
+    const hit = MERCHANT_PATTERNS.find(m => m.re.test(t))
+    if (hit) return hit.providerId
+  }
+  return null
 }

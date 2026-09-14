@@ -78,15 +78,24 @@ export function otaCityKeyOf(url: string | undefined | null): string | null {
   try { u = new URL(url) } catch { return null }
   const host = u.hostname.replace(/^www\./, '')
   const path = u.pathname
+  // A slug the key table does not know ("tuy-hoa-phu-yen") is still the city the OTA filed the
+  // property under — returned as the slug itself, so a request for Hội An can refuse it (live UAT
+  // 14 Sep 2026: a Phú Yên hotel was offered for Hội An because the unknown slug read as "no city").
   if (/agoda\./.test(host)) {
     const m = path.match(/\/hotel\/([a-z-]+)-vn\.html/i)
-    return m ? cityKeyOf(m[1]) : null
+    return m ? cityKeyOf(m[1]) ?? m[1].toLowerCase() : null
   }
   if (/trip\.com$/.test(host)) {
     const m = path.match(/\/hotels\/([a-z-]+)-hotel-detail-\d+/i)
-    return m ? cityKeyOf(m[1]) : null
+    return m ? cityKeyOf(m[1]) ?? m[1].toLowerCase() : null
   }
   return null
+}
+
+/** Do two city keys / slugs name the same place? Equal keys, or one contained in the other ("hoi-an" in "hoi-an-quang-nam"). */
+export function sameCityKey(a: string | null | undefined, b: string | null | undefined): boolean {
+  if (!a || !b) return true // an unknown side never contradicts
+  return a === b || a.includes(b) || b.includes(a)
 }
 
 /**

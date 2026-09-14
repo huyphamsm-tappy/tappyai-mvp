@@ -108,8 +108,10 @@ export function resolveActionLabel(
   }
 
   if (action.urlKind === 'search') {
-    // A CCP SEARCH_HANDOFF whose merchant asks for a login before the results (Shopee web) says so.
-    if (action.commerce?.loginRequired) return withPlatform('v3.action.searchLoginOn', 'v3.action.searchGeneric')
+    // A CCP SEARCH_HANDOFF whose merchant asks for a login BEFORE THE RESULTS (Shopee web:
+    // before_selection) says so. A login at checkout (Lazada, TikTok Shop) is not a login to search —
+    // live UAT 14 Sep 2026 showed "Tìm trên Lazada · cần đăng nhập" on a public results page.
+    if (action.commerce && (action.commerce.authRequiredAt === 'before_selection' || action.commerce.authRequiredAt === 'before_configuration')) return withPlatform('v3.action.searchLoginOn', 'v3.action.searchGeneric')
     switch (action.kind) {
       case 'booking': return withPlatform('v3.action.bookingSearch', 'v3.action.searchGeneric')
       case 'reservation': return withPlatform('v3.action.bookingSearch', 'v3.action.searchGeneric')

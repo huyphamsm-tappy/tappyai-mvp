@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateModelCtaButton, validateModelCtaButtons, promisedKind } from './ctaValidation'
+import { validateModelCtaButton, validateModelCtaButtons, promisedKind, unlinkMislabelledMerchantLinks } from './ctaValidation'
 import { vi as viDict } from '@/lib/i18n/w5/placeDecision'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -146,6 +146,13 @@ describe('the batch preserves order and count', () => {
   })
   it('drops a model button on the Agoda front door even without a promise word: the front-door template is not a search grammar', () => {
     expect(validateModelCtaButtons([{ label: '🏨 Agoda - Phú Quốc', type: 'booking', url: 'https://www.agoda.com/vi-vn/', primary: false }], t)).toEqual([])
+  })
+  it('unlinks a prose link to a registry merchant front door (the button rule, applied to prose)', () => {
+    expect(unlinkMislabelledMerchantLinks('Xem thêm trên [Ticketbox](https://ticketbox.vn/) hoặc [sự kiện này](https://ticketbox.vn/chao-show2026-25472).')).toBe('Xem thêm trên Ticketbox hoặc [sự kiện này](https://ticketbox.vn/chao-show2026-25472).')
+  })
+  it('unlinks a prose link whose label names a registry merchant but whose URL is another site; other links stay', () => {
+    const prose = 'Xem tại [Điện Máy Xanh](https://www.dienmaycholon.vn) hoặc [Shopee](https://shopee.vn/search?keyword=iphone) và [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Lịch sự kiện](https://sodulich.hochiminhcity.gov.vn/).'
+    expect(unlinkMislabelledMerchantLinks(prose)).toBe('Xem tại Điện Máy Xanh hoặc [Shopee](https://shopee.vn/search?keyword=iphone) và [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Lịch sự kiện](https://sodulich.hochiminhcity.gov.vn/).')
   })
   it('drops a Ticketbox front door (CCP-owned): the verified event link arrives as a Commerce Link instead', () => {
     expect(validateModelCtaButtons([{ label: '🎫 Ticketbox - Mua vé sự kiện', type: 'website', url: AGGREGATOR_HOMEPAGE, primary: true }], t)).toEqual([])

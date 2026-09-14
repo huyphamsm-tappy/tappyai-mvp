@@ -4,6 +4,7 @@ import { ADAPTERS, adaptersFor, searchTemplates } from './adapters'
 import { PASSTHROUGH_ADAPTERS } from './adapters/handoff'
 import { validateRegistry } from './registry'
 import { checkCommerceUrl } from './validation/url'
+import { deriveKind } from './resolver/resolve'
 import { actionKindFor, urlKindFor } from './cta/projection'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -84,9 +85,10 @@ describe('Shopping — Shopee · TikTok Shop · Lazada · Điện Máy Xanh · C
     expect(links(r)[0].providerId).toBe('dmx')
   })
 
-  it('falls back to an honest search only where a composable grammar exists (Shopee, Lazada) — TikTok Shop composes nothing', () => {
+  it('falls back to an honest search only where a composable grammar exists (Shopee, Lazada, DMX, CellphoneS) — TikTok Shop composes nothing', () => {
     const none = resolveCommerce(req, { hints: [], now: NOW, enabled: true })
-    expect(links(none).map(l => [l.providerId, l.kind]).sort()).toEqual([['lazada', 'SEARCH_HANDOFF'], ['shopee', 'SEARCH_HANDOFF']])
+    expect(links(none).map(l => [l.providerId, l.kind]).sort()).toEqual([['cellphones', 'SEARCH_HANDOFF'], ['dmx', 'SEARCH_HANDOFF'], ['lazada', 'SEARCH_HANDOFF'], ['shopee', 'SEARCH_HANDOFF']])
+    expect(byProvider(none, 'dmx')!.directUrl).toBe('https://www.dienmayxanh.com/tim-kiem?key=iPhone%2016%20Pro%20Max%20256GB')
     expect(links(none).every(l => l.paramsDropped.includes('productRef'))).toBe(true)
   })
 })
@@ -177,7 +179,9 @@ describe('Travel — flights: Trip.com · Traveloka · Vietnam Airlines · Vietj
     const rt = resolveCommerce({ ...req, configuration: { ...flight, returnDate: '2026-10-15', cabin: 'business' } }, { hints: [], now: NOW, enabled: true })
     expect(byProvider(rt, 'tripcom')!.directUrl).toContain('rdate=2026-10-15&flighttype=rt&class=c')
     expect(byProvider(rt, 'tripcom')!.validation.status).toBe('grammar_unverified')
-    expect(byProvider(rt, 'traveloka')!.directUrl).toContain('dt=10-10-2026.15-10-2026&ps=2.0.0&sc=BUSINESS')
+    // Traveloka ignores a second date in `dt=` (live UAT 14 Sep 2026: "Một chiều"): the return leg is page-only, never claimed.
+    expect(byProvider(rt, 'traveloka')!.directUrl).toContain('dt=10-10-2026.null&ps=2.0.0&sc=BUSINESS')
+    expect(byProvider(rt, 'traveloka')!.paramsPageOnly).toEqual(['returnDate'])
   })
 
   it('the dated fare lists (intent carried) outrank the airline entry pages (intent dropped); Trip.com is tracked without changing that order', () => {
@@ -290,7 +294,25 @@ describe('cross-cutting guarantees', () => {
     }
   })
 
-  it('composable search templates exist only for merchants whose search page keeps the query (Shopee, Lazada, Booking.com, Ticketbox) or whose front door is the only page (Agoda, Vexere)', () => {
-    expect(searchTemplates().map(t => t.providerId).sort()).toEqual(['agoda', 'booking', 'lazada', 'shopee', 'ticketbox', 'vexere'])
+  it('composable search templates exist only for merchants whose search page keeps the query (Shopee, Lazada, DMX, CellphoneS, GrabFood, Booking.com, Ticketbox) or whose front door is the only page (Agoda, Vexere)', () => {
+    expect(searchTemplates().map(t => t.providerId).sort()).toEqual(['agoda', 'booking', 'cellphones', 'dmx', 'grabfood', 'lazada', 'shopee', 'ticketbox', 'vexere'])
+    // ShopeeFood and TikTok Shop have none (their search URLs drop the query / are app shells).
+    expect(searchTemplates().some(t => t.providerId === 'shopeefood' || t.providerId === 'tiktokshop')).toBe(false)
+  })
+
+  it('a tracked SEARCH page is still a search (live UAT 14 Sep 2026): CellphoneS catalogue search under an approved wrapper is SEARCH_HANDOFF with affiliate tracking on the link', () => {
+    const r = resolveCommerce({ domain: 'shopping', intentType: 'buy_product', subject: 'iPhone 16 Pro', constraints: { merchantAllowList: ['cellphones'] } }, { hints: [], now: NOW, enabled: true })
+    // (the wrapper itself needs the publisher id from the environment; the KIND must not depend on it)
+    expect(links(r).map(l => [l.providerId, l.kind])).toEqual([['cellphones', 'SEARCH_HANDOFF']])
+    expect(urlKindFor(links(r)[0].kind)).toBe('search')
+    expect(deriveKind(2, { mode: 'affiliate', network: 'accesstrade', campaignId: '1', subIds: {}, utm: {} }, false)).toBe('SEARCH_HANDOFF')
+  })
+
+  it('a NAMED merchant narrows the request to it (live UAT 14 Sep 2026): the allow-list yields only that merchant, never a silent fallback to another', () => {
+    const req: CommerceRequest = { domain: 'shopping', intentType: 'buy_product', subject: 'iPhone 16 Pro Max 256GB', constraints: { merchantAllowList: ['dienmayxanh'] } }
+    const r = resolveCommerce(req, { hints: [{ url: 'https://shopee.vn/iPhone-16-Pro-Max-256GB-i.88201679.29337485130' }], now: NOW, enabled: true })
+    expect(links(r).map(l => [l.providerId, l.kind])).toEqual([['dmx', 'SEARCH_HANDOFF']])
+    const tiktok = resolveCommerce({ ...req, constraints: { merchantAllowList: ['tiktokshop'] } }, { hints: [], now: NOW, enabled: true })
+    expect(links(tiktok)).toEqual([]) // no page, no grammar → nothing, honestly
   })
 })

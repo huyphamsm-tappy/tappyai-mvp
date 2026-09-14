@@ -7,8 +7,9 @@ enum PlatformLinks {
         else if let address, !address.isEmpty { parts.append(address) }
         let q = parts.joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
-            PlatformLink(name: "ShopeeFood", url: "https://shopeefood.vn/tim-kiem?q=\(q)"),
-            PlatformLink(name: "GrabFood", url: "https://food.grab.com/vn/en/s?searchKeyword=\(q)"),
+            // Registry grammar (CCP, 14 Sep 2026): GrabFood's results page keeps the query; ShopeeFood
+            // has no search page (its /tim-kiem drops the query), so it is not a search link here.
+            PlatformLink(name: "GrabFood", url: "https://food.grab.com/vn/vi/restaurants?search=\(q)"),
             PlatformLink(name: "BeFood", url: "https://be.com.vn/"),
         ]
     }

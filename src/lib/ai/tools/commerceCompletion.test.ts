@@ -148,6 +148,75 @@ describe('events on a web-search turn — event_links are a CCP projection', () 
   })
 })
 
+describe('events — the merchant page states the schedule (Final local live UAT, 14 Sep 2026)', () => {
+  const PAGE = (start: string, end: string) => `<html><head><script type="application/ld+json">{"@type":"Event","startDate":"${start}","endDate":"${end}"}</script></head></html>`
+  it('a past event (2023 page, no date in the index) is refused; an upcoming one carries facts.schedule from the merchant page; the read is bounded to registry hosts', async () => {
+    const search = vi.fn(async (q: string) => q.includes('site:ticketbox.vn')
+      ? [
+        { title: 'Chương trình âm nhạc thính phòng "Tuyển tập âm nhạc Pháp" | Ticketbox', link: 'https://ticketbox.vn/chuong-trinh-am-nhac-thinh-phong-tuyen-tap-am-nhac-phap-87737-87737', snippet: 'Nhà hát Thành phố' },
+        { title: 'Chào Show - The Sound of Vietnam | Ticketbox', link: 'https://ticketbox.vn/chao-show2026-25472', snippet: '' },
+      ]
+      : [])
+    const fetchText = vi.fn(async (url: string) => url.includes('87737') ? PAGE('2023-07-12T13:00:00Z', '2023-07-12T15:00:00Z') : PAGE('2026-09-15T12:00:00Z', '2026-09-30T14:00:00Z'))
+    const result: Row = { results: [] }
+    await attachCommerceLinks('web_search', result, { enabled: true, now: NOW, search, fetchText, query: 'sự kiện âm nhạc TP.HCM', location: 'TP.HCM', userTexts: ['Tìm sự kiện âm nhạc ở TP.HCM trên Ticketbox'] })
+    expect((result.event_links as Array<{ url: string }>).map(l => l.url)).toEqual(['https://ticketbox.vn/chao-show2026-25472'])
+    const facts = result._tappy_commerce as RouteHandoffFacts[]
+    expect(facts[0].schedule).toEqual({ date: '2026-09-15', time: '12:00' })
+    expect(fetchText).toHaveBeenCalledTimes(2)
+    expect(fetchText.mock.calls.every(c => c[0].startsWith('https://ticketbox.vn/'))).toBe(true)
+  })
+})
+
+describe('a NAMED merchant narrows the whole turn (Final local live UAT, 14 Sep 2026)', () => {
+  it('"… trên Agoda": Agoda rows get their link, Booking.com rows and the Booking.com "see more" links step aside, a wrong-city slug is refused', async () => {
+    const rows = [
+      { title: 'Golden Holiday Hotel - Hoi An - Booking.com', link: 'https://www.booking.com/hotel/vn/golden-holiday-hotel-spa.html', snippet: '' },
+      { title: 'Sunflower Hotel Phu Yen in Tuy Hòa', link: 'https://www.agoda.com/vi-vn/sunflower-hotel-phu-yen/hotel/tuy-hoa-phu-yen-vn.html', snippet: '' },
+      { title: 'Bed Station Hostel Hoi An', link: 'https://www.agoda.com/vi-vn/bed-station-hostel/hotel/hoi-an-vn.html', snippet: '' },
+    ]
+    const result: Row = { search_results: rows, booking_link: 'https://www.booking.com/searchresults.vi.html?ss=Hoi+An', agoda_link: 'https://www.agoda.com/vi-vn/' }
+    await attachCommerceLinks('get_hotel_prices', result, { enabled: true, now: NOW, search: noSearch, location: 'Hội An', checkIn: '2026-10-10', checkOut: '2026-10-12', userTexts: ['Tìm khách sạn ở Hội An trên Agoda từ 10 đến 12 tháng 10 cho 2 người'] })
+    const kept = result.search_results as Row[]
+    expect(kept.map(r => r.title)).toEqual(['Golden Holiday Hotel - Hoi An - Booking.com', 'Bed Station Hostel Hoi An']) // Phú Yên refused
+    expect(links(kept[0])).toEqual([]) // a Booking.com row gets no Booking.com link under an Agoda request
+    expect(links(kept[1]).map(l => [l.providerId, l.kind])).toEqual([['agoda', 'DIRECT_DEEP_LINK']])
+    expect(kept.every(r => r._tappy_requested_provider === 'agoda')).toBe(true)
+    expect(result.booking_link).toBeUndefined()
+    expect(result.agoda_link).toBe('https://www.agoda.com/vi-vn/')
+  })
+
+  it('"… qua ShopeeFood": the legacy GrabFood order link leaves the row; ShopeeFood\'s restaurant page is the handoff', async () => {
+    const search = vi.fn(async (q: string) => q.includes('site:shopeefood.vn') ? [{ title: 'Phở 24 - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/pho-24-nguyen-tri-phuong', snippet: '' }] : [])
+    const row = { name: 'Phở 24', address: 'Quận 1', order_links: [{ name: 'GrabFood', url: 'https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%2024' }, { name: 'BeFood', url: 'https://be.com.vn/' }] }
+    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search, location: 'Quận 1', userTexts: ['Đặt phở giao tận nhà qua ShopeeFood ở Quận 1'] })
+    expect((row.order_links as Array<{ name: string }>).map(l => l.name)).toEqual(['BeFood'])
+    expect(links(row).map(l => [l.providerId, l.kind, l.authRequiredAt])).toEqual([['shopeefood', 'DETAIL_HANDOFF', 'app_only']])
+  })
+
+  it('"… trên Klook" on an attraction turn (generic place domain, even with no venue rows) discovers Klook activities as their own rows', async () => {
+    const search = vi.fn(async (q: string) => q.includes('site:klook.com') ? [{ title: 'Vé Công Viên Nước Mikazuki tại Đà Nẵng - Klook', link: 'https://www.klook.com/vi/activity/69492-mikazuki-water-park-ticket-in-da-nang/', snippet: '' }] : [])
+    const result: Row = { results: [], _tappy_place_domain: 'place', place_search_status: 'empty' }
+    await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, location: 'Đà Nẵng', query: 'hoạt động vui chơi giải trí', userTexts: ['Tìm hoạt động vui chơi ở Đà Nẵng trên Klook'] })
+    const rows = result.results as Row[]
+    expect(rows.map(r => r.name)).toEqual(['Vé Công Viên Nước Mikazuki tại Đà Nẵng'])
+    expect(links(rows[0]).map(l => [l.providerId, l.kind, l.authRequiredAt])).toEqual([['klook', 'DETAIL_HANDOFF', 'before_checkout']])
+    expect(search.mock.calls.map(c => c[0])).toEqual(['hoạt động vui chơi giải trí Đà Nẵng site:klook.com/vi/activity'])
+  })
+
+  it('"… trên TikTok Shop": a discovered TikTok Shop page is the only link; a toy that names the product is never mapped to the product page', async () => {
+    const search = vi.fn(async (q: string) => q.includes('site:shop.tiktok.com')
+      ? [{ title: 'iPhone 16 Pro 128GB Chính hãng | TikTok Shop', link: 'https://shop.tiktok.com/vn/pdp/iphone-16-pro-128gb/1730877187765799516', snippet: '' }]
+      : [])
+    const phone = { title: 'iPhone 16 Pro 128GB Chính hãng VN/A', link: 'https://shop.example/x', source: 'Điện Thoại Hay' }
+    const toy = { title: 'iphone 16 pro cam vũ trụ, gấu bông xịn xò', link: 'https://shop.example/y', source: 'Shopee' }
+    await attachCommerceLinks('search_products', { search_results: [phone, toy] }, { enabled: true, now: NOW, search, userTexts: ['Mua iPhone 16 Pro trên TikTok Shop'] })
+    expect(links(phone).map(l => [l.providerId, l.kind])).toEqual([['tiktokshop', 'DETAIL_HANDOFF']])
+    expect(links(toy)).toEqual([])
+    expect(search.mock.calls.every(c => !/shopee\.vn|lazada|dienmayxanh|cellphones/.test(c[0]))).toBe(true)
+  })
+})
+
 describe('hotels — the OTA rows become subject links with the stay; no landing page ever lands on a row', () => {
   it('a Booking.com row carries its dated property link and the discovered Trip.com link; Agoda / Traveloka front doors are not attached', async () => {
     const search = vi.fn(async (q: string) => q.includes('site:vn.trip.com/hotels') ? [{ title: 'Muong Thanh Luxury Da Nang', link: 'https://vn.trip.com/hotels/da-nang-hotel-detail-10569789/muong-thanh-luxury/', snippet: '' }] : [])

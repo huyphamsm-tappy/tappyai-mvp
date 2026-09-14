@@ -40,7 +40,7 @@ describe('A · food_delivery → PasGo is impossible', () => {
     const req = { domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'Phở Hòa' } as const
     expect(adaptersFor(req).map(a => a.providerId)).not.toContain('pasgo')
     const out = resolveCommerce(req, { enabled: true, now: NOW, hints: [{ url: 'https://pasgo.vn/nha-hang/pho-hoa-999', verified: { bookable: true, checkedAt: NOW.toISOString(), source: 'merchant_page' } }] })
-    expect('links' in out ? out.links : []).toEqual([])
+    expect(('links' in out ? out.links : []).map(l => l.providerId)).toEqual(['grabfood']) // GrabFood's search fallback only; nothing from the PasGo page
     expect('providersQueried' in out ? out.providersQueried : []).not.toContain('pasgo')
   })
 
@@ -351,11 +351,15 @@ describe('I · no misleading CTA reaches the user', () => {
     expect(validateModelCtaButtons([home, page, pasgoSearch], t).map(b => b.url)).toEqual([page.url])
   })
 
-  it('a Ticketbox front door and a transaction promise on its search page are dropped (CCP-owned since the Completion Pass); a plain search button stays', () => {
+  it('a Ticketbox front door is dropped (CCP-owned since the Completion Pass); a promise on its search page is relabelled as a search; a plain search button stays', () => {
     expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/' }], t)).toEqual([])
-    expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/search?q=concert' }], t)).toEqual([])
+    const [relabelled] = validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/search?q=concert' }], t)
+    expect(relabelled).toMatchObject({ type: 'search', label: 'v3.action.ticketSearch:Ticketbox' })
     const plain = { label: '🎫 Ticketbox', type: 'search', url: 'https://ticketbox.vn/search?q=concert' }
     expect(validateModelCtaButtons([plain], t)).toEqual([plain])
+    // A system-handed fare list under a promise label is relabelled, never lost (live UAT: Traveloka round trip).
+    const [fare] = validateModelCtaButtons([{ label: '✈️ Đặt vé Traveloka', type: 'booking', url: 'https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=20-10-2026.25-10-2026&ps=1.0.0&sc=ECONOMY' }], t)
+    expect(fare).toMatchObject({ type: 'search', url: 'https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=20-10-2026.25-10-2026&ps=1.0.0&sc=ECONOMY' })
   })
 
   it('a commerce action whose merchant orders only in its app says so; one that needs a login says so; a guest one does not', () => {

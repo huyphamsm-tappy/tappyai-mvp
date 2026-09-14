@@ -490,7 +490,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
         authRequiredAt: 'none',
         verifiedOn: COMPLETION_VERIFIED,
         evidence: COMPLETION_EVIDENCE,
-        reason: 'Trang khách sạn Traveloka (L3) khi tìm thấy; trang tìm khách sạn theo ngày cần mã địa điểm riêng của Traveloka nên không tự ghép.',
+        reason: 'Trang khách sạn Traveloka (L3, theo chỉ mục — trang không hiện trong trình duyệt tự động ngày 14 Sep) khi tìm thấy; trang tìm khách sạn theo ngày cần mã địa điểm riêng của Traveloka nên không tự ghép.',
       },
     },
     linkStrategy: { book_flight: ['configured_search'], book_hotel: ['detail', 'handoff'] },
@@ -500,7 +500,7 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     // param-echo verified, so no tracking config is declared — direct links (monetisation only).
     enabledFlag: 'CCP_ADAPTER_TRAVELOKA',
     tier: 'mvp',
-    notes: ['Flights: fullsearch grammar verified 14 Sep 2026 (one-way; round trip carries the return date in the same field).', 'Hotels: property pages the hotel tool\'s OTA search returns pass through; landing fallback.'],
+    notes: ['Flights: fullsearch grammar verified 14 Sep 2026 (one-way). A second date in dt= is IGNORED by the merchant (renders "Một chiều", live UAT 14 Sep) — the return leg is page-only.', 'Hotels: property pages the hotel tool\'s OTA search returns pass through; landing fallback.'],
   },
   {
     providerId: 'vietnamairlines',

@@ -4,6 +4,27 @@ import { PROVIDER_REGISTRY } from '../registry'
 import type { ProviderRegistryEntry } from '../registry/types'
 import type { DirectLinkBuild, DiscoveryHint, ProviderAdapter } from './types'
 import { authLimitation, baseOffer, ownedUrl } from './shared'
+import type { SearchCapableAdapter } from './marketplace'
+import { q } from '../validation/url'
+
+// ── Composable SEARCH grammars of passthrough providers (Final local live UAT, 14 Sep 2026) ──
+// Verified read-only on 14 Sep 2026 (200, query in the page title):
+//   GrabFood    https://food.grab.com/vn/vi/restaurants?search=<q>   (the legacy /vn/en/s?searchKeyword= is 404)
+//   CellphoneS  https://cellphones.com.vn/catalogsearch/result?q=<q>
+// ShopeeFood has none: /tim-kiem?q= drops the query and lands on the city listing (verified in a
+// browser) — its restaurant pages are discovered, never searched. A user who names a merchant
+// with a grammar always has that merchant's path, even when no subject page was discovered.
+const PASSTHROUGH_SEARCH: Record<string, { template: string; depth: 2; limitation: string; pageOnly: string[]; dropped: string[] }> = {
+  grabfood: { template: 'https://food.grab.com/vn/vi/restaurants?search={q}', depth: 2, limitation: 'Trang tìm kiếm GrabFood cho quán này — chọn đúng quán trên trang; đặt món cần đăng nhập Grab.', pageOnly: ['items', 'quantity', 'address'], dropped: ['restaurantRef'] },
+  cellphones: { template: 'https://cellphones.com.vn/catalogsearch/result?q={q}', depth: 2, limitation: 'Trang tìm kiếm trên CellphoneS — bạn chọn đúng sản phẩm trên trang.', pageOnly: ['variant', 'quantity'], dropped: ['productRef'] },
+}
+const SEARCH_REF = 'search:'
+const searchBuilds = new WeakMap<Offer, string>()
+
+/** The passthrough providers' composable search templates (`{q}`), for the legacy builders and the prompt. */
+export function passthroughSearchTemplates(): Array<{ providerId: string; name: string; template: string }> {
+  return PROVIDER_REGISTRY.filter(e => PASSTHROUGH_SEARCH[e.providerId]).map(e => ({ providerId: e.providerId, name: e.merchantName, template: PASSTHROUGH_SEARCH[e.providerId].template }))
+}
 
 // ── Passthrough adapters for handoff-only providers (Phase 8) ────────────────
 //
@@ -30,10 +51,21 @@ function isSubjectPage(u: URL, kind: ProviderRegistryEntry['discovery'] extends 
   return true
 }
 
-export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAdapter {
+export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAdapter | SearchCapableAdapter {
+  const search = PASSTHROUGH_SEARCH[entry.providerId]
   return {
     providerId: entry.providerId,
     entry,
+    ...(search ? {
+      searchOffer(request: CommerceRequest, now: Date = new Date()): Offer | null {
+        const term = request.subject.replace(/\s+/g, ' ').trim()
+        if (!term) return null
+        const url = search.template.replace('{q}', q(term))
+        const offer = baseOffer(entry, request, `${SEARCH_REF}${term.slice(0, 120)}`, url, request.subject, now)
+        searchBuilds.set(offer, url)
+        return offer
+      },
+    } : {}),
     supports(request: CommerceRequest) {
       return entry.domains.includes(request.domain) && entry.intents.includes(request.intentType)
         && entry.commerce.includes(request.capability ?? INTENT_CAPABILITY[request.intentType])
@@ -50,6 +82,18 @@ export function passthroughAdapterFor(entry: ProviderRegistryEntry): ProviderAda
     },
     buildDirectLink(offer: Offer, _configuration: Configuration | undefined): DirectLinkBuild | null {
       const auth = authLimitation(offer.depthProfile, offer.merchantName)
+      if (search && offer.subjectRef.startsWith(SEARCH_REF)) {
+        return {
+          url: searchBuilds.get(offer) ?? offer.canonicalUrl,
+          depth: search.depth,
+          paramsPreserved: [],
+          paramsPageOnly: [...search.pageOnly],
+          paramsDropped: [...search.dropped],
+          expiresAt: null,
+          grammar: 'verified',
+          limitations: [search.limitation, ...(auth ? [auth] : [])],
+        }
+      }
       const product = entry.discovery?.subjectKind === 'product'
       return {
         url: offer.canonicalUrl,

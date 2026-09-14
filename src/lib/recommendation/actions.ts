@@ -220,6 +220,8 @@ export interface ActionSource {
   link?: string
   booking_link?: string
   agoda_link?: string
+  /** The registry provider the user NAMED this turn (stamped by the CCP seam); other merchants' legacy links step aside. */
+  _tappy_requested_provider?: string
   order_links?: { name: string; url: string }[]
   platform_links?: { name: string; url: string }[]
   review_actions?: readonly ReviewAction[]
@@ -332,7 +334,12 @@ export function buildActions(
   // applied. Same merchant, same subject → the row link is the duplicate, by provider.
   const commerceProviders = new Set((src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => r.providerId))
   const rowOwner = src.link ? providerOwning(src.link) : null
-  const rowLink = commerceDestinations.has(destinationKey(src.link) ?? '') || (rowOwner && commerceProviders.has(rowOwner)) ? undefined : src.link
+  // Live UAT 14 Sep 2026: "… trên Agoda" must not render a Booking.com row link or a Booking.com
+  // search beside the Agoda handoff. A legacy link on ANOTHER registry merchant steps aside when
+  // the user named one; links on no registry merchant (Maps, a website) are untouched.
+  const requestedProvider = typeof src._tappy_requested_provider === 'string' ? src._tappy_requested_provider : null
+  const otherMerchant = (url: string | undefined): boolean => { const o = url ? providerOwning(url) : null; return !!requestedProvider && !!o && o !== requestedProvider }
+  const rowLink = commerceDestinations.has(destinationKey(src.link) ?? '') || (rowOwner && commerceProviders.has(rowOwner)) || otherMerchant(src.link) ? undefined : src.link
 
   // ── Ordering / delivery — food only, and only from the shipped builder ─────
   // Recomputed here when the row did not carry them, so an entity built outside
@@ -360,8 +367,8 @@ export function buildActions(
   // the row (its property page beats its results page), and Agoda's link only when it is a real
   // search — Agoda's search URL drops the query (verified 14 Sep 2026), so the tool now hands a
   // front door, which is never a "Tìm phòng trên Agoda" on a hotel.
-  if (!commerceProviders.has('booking')) out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
-  if (!commerceProviders.has('agoda') && src.agoda_link && /[?&](q|textToSearch|city)=/.test(src.agoda_link)) out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
+  if (!commerceProviders.has('booking') && !otherMerchant(src.booking_link)) out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
+  if (!commerceProviders.has('agoda') && !otherMerchant(src.agoda_link) && src.agoda_link && /[?&](q|textToSearch|city)=/.test(src.agoda_link)) out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
 
   // ── The row's own link — and it is not a "product" outside shopping ───────
   //

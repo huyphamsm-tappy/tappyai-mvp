@@ -90,8 +90,9 @@ describe('CommerceRequest carries a capability that must agree with its intent',
       { domain: 'food_drink', intentType: 'order_delivery', capability: 'food_delivery', subject: 'Quá Ngon' },
       { enabled: true, now: NOW, hints: [{ url: 'https://pasgo.vn/nha-hang/nha-hang-qua-ngon-1234' }] },
     )
-    expect('links' in r && r.links).toEqual([])
-    // The delivery platforms are asked (and find nothing in a PasGo page); PasGo itself is never asked.
+    // The delivery platforms are asked and find nothing in a PasGo page; GrabFood's honest search
+    // page for the subject is the only link (14 Sep 2026). PasGo itself is never asked.
+    expect('links' in r && r.links.map(l => [l.providerId, l.kind])).toEqual([['grabfood', 'SEARCH_HANDOFF']])
     expect('providersQueried' in r && r.providersQueried).not.toContain('pasgo')
     expect(INTENT_CAPABILITY.order_delivery).toBe('food_delivery')
   })
@@ -146,10 +147,14 @@ describe('the seam routes by the user\'s words (Entertainment)', () => {
   it('a film sentence makes cinema_ticket primary; an attraction sentence makes activity_booking primary', async () => {
     const cinemaRow = { name: 'CGV Vincom Đồng Khởi', website_uri: 'https://www.cgv.vn/default/inside-out-2.html' }
     const klook = async () => [{ title: 'x', link: 'https://www.klook.com/vi/activity/2734-vinwonders/', snippet: '' }]
-    await attachCommerceLinks('search_places', { results: [cinemaRow], _tappy_place_domain: 'entertainment' }, { enabled: true, now: NOW, search: klook, userText: 'Tìm vé xem phim CGV tối nay.' })
+    await attachCommerceLinks('search_places', { results: [cinemaRow], _tappy_place_domain: 'entertainment' }, { enabled: true, now: NOW, search: klook, userText: 'Tìm vé xem phim tối nay.' })
     const cinema = links(cinemaRow)
     expect(cinema.find(l => l.providerId === 'cgv')?.primary).toBe(true)
     expect(cinema.find(l => l.providerId === 'klook')?.primary).toBe(false)
+    // A NAMED merchant narrows the request to it (live UAT 14 Sep 2026): "… CGV …" yields no Klook link.
+    const named = { name: 'CGV Vincom Đồng Khởi', website_uri: 'https://www.cgv.vn/default/inside-out-2.html' }
+    await attachCommerceLinks('search_places', { results: [named], _tappy_place_domain: 'entertainment' }, { enabled: true, now: NOW, search: klook, userText: 'Tìm vé xem phim CGV tối nay.' })
+    expect(links(named).map(l => l.providerId)).toEqual(['cgv'])
     const attractionRow = { name: 'VinWonders Nha Trang' }
     await attachCommerceLinks('search_places', { results: [attractionRow], _tappy_place_domain: 'entertainment' }, { enabled: true, now: NOW, search: klook, userText: 'Tìm hoạt động ở VinWonders' })
     expect(links(attractionRow).map(l => [l.providerId, l.primary])).toEqual([['klook', true]])

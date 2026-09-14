@@ -45,6 +45,9 @@ const ACCESSORY = new Set([
   'skin', 'film', 'protector', 'strap', 'day', 'deo', 'thay', 'linh', 'kien', 'mainboard', 'man', 'hinh', 'sim',
   // Storage / connectivity accessories sold "for" a phone (measured 14 Sep 2026: a USB pendrive "cho iPhone 15 Pro").
   'usb', 'pendrive', 'flash', 'otg', 'hub', 'dock', 'lens', 'tripod', 'gimbal', 'sticker', 'decal', 'gay', 'selfie',
+  // Not the product at all, though the listing names it (live UAT 14 Sep 2026: an "iphone 17 … gấu bông"
+  // plush toy and a "vít mở ốc iphone" screwdriver were matched to iPhone product pages).
+  'gau', 'bong', 'thu', 'moc', 'khoa', 'vit', 'tuavit', 'dochoi', 'poster', 'tranh', 'mohinh', 'figure', 'keychain',
 ])
 /**
  * "… cho iPhone 15 Pro" / "for iPhone 15 Pro" / "dành cho …" / "tương thích với …": the listing is an
@@ -101,9 +104,11 @@ export function productIdentityMatch(subject: string, candidateTitle: string | u
   const candSet = new Set(cand)
   const subjSet = new Set(subj)
 
-  // Accessory listing for a non-accessory subject → a different product.
+  // Accessory listing for a non-accessory subject → a different product; and the reverse: an
+  // accessory / toy / tool listing never maps to the bare product page it names.
   const subjectIsAccessory = subj.some(t => ACCESSORY.has(t))
   if (!subjectIsAccessory && cand.some(t => ACCESSORY.has(t))) return 'mismatch'
+  if (subjectIsAccessory && !subj.filter(t => ACCESSORY.has(t)).some(t => candSet.has(t))) return 'mismatch'
   // An item FOR the product ("… cho iPhone 15 Pro") is not the product, whatever else the title says.
   if (!subjectIsAccessory && FOR_PRODUCT.test(cand.join(' ')) && !FOR_PRODUCT.test(subj.join(' '))) return 'mismatch'
 
@@ -116,6 +121,10 @@ export function productIdentityMatch(subject: string, candidateTitle: string | u
   if (required.length === 0) return 'uncertain'
   const numeric = required.filter(t => /\d/.test(t))
   if (numeric.some(t => !candSet.has(t))) return 'mismatch'
+  // A two-digit MODEL NUMBER the candidate carries and the subject does not ("iPhone Air" vs an
+  // "iPhone 17" page, live UAT 14 Sep 2026) is another product; capacities (gb/tb) and single
+  // digits ("2 sim", "5g") are not model numbers.
+  if (cand.some(t => /^\d{2}$/.test(t) && !subjSet.has(t))) return 'mismatch'
   const found = required.filter(t => candSet.has(t)).length
   const ratio = found / required.length
   // A model number ("RT31", "128gb") found alongside half the words is the product; a category

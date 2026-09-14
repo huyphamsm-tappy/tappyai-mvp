@@ -154,7 +154,10 @@ describe('D · CellphoneS (retail, passthrough)', () => {
     expect(l.depthProfile.guestDepth).toBe(4)
     expect(l.directUrl).toBe('https://cellphones.com.vn/iphone-16-pro.html')
     const home = resolveCommerce(REQ, { enabled: true, now: NOW, hints: [{ url: 'https://cellphones.com.vn/' }] })
-    expect(('links' in home ? home.links : []).map(x => x.providerId)).not.toContain('cellphones')
+    // The front door yields no DETAIL; CellphoneS then offers its verified SEARCH page (14 Sep 2026).
+    const cps = ('links' in home ? home.links : []).filter(x => x.providerId === 'cellphones')
+    expect(cps.map(x => x.kind)).toEqual(['SEARCH_HANDOFF'])
+    expect(cps[0].directUrl).toMatch(/^https:\/\/cellphones\.com\.vn\/catalogsearch\/result\?q=/)
   })
 })
 
@@ -287,14 +290,16 @@ describe('§13 negative tests', () => {
     expect((e.commerceLinks ?? []).filter(c => c.kind !== 'SEARCH_HANDOFF').map(c => c.providerId)).toEqual(['shopee'])
   })
 
-  it('model-authored marketplace SEARCH buttons stay (downgraded to honest search labels); a bare merchant front door or a promise on a search page is dropped', () => {
+  it('model-authored marketplace SEARCH buttons stay (downgraded to honest search labels); a bare merchant front door is dropped; a promise on a registry search page is RELABELLED (live UAT 14 Sep 2026), never dropped', () => {
     const kept = validateModelCtaButtons([
       { label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=iphone+16' },
       { label: '📦 Lazada', type: 'search', url: 'https://www.lazada.vn/catalog/?q=iphone+16' },
       { label: '🎵 TikTok Shop', type: 'website', url: 'https://www.tiktok.com/shop' },
       { label: '🛒 Mua ngay trên Shopee', type: 'purchase', url: 'https://shopee.vn/search?keyword=iphone+16' },
     ], t)
-    expect(kept.map(b => b.url)).toEqual(['https://shopee.vn/search?keyword=iphone+16', 'https://www.lazada.vn/catalog/?q=iphone+16'])
+    expect(kept.map(b => b.url)).toEqual(['https://shopee.vn/search?keyword=iphone+16', 'https://www.lazada.vn/catalog/?q=iphone+16', 'https://shopee.vn/search?keyword=iphone+16'])
+    expect(kept[2]).toMatchObject({ type: 'search' })
+    expect(kept[2].label).not.toContain('Mua ngay')
   })
 })
 

@@ -3,7 +3,7 @@ import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
 import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
-import { searchTemplates } from '@/lib/ccp/adapters'
+import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
@@ -67,7 +67,8 @@ export function validateModelCtaButton(
 ): ModelCtaButton {
   const kind = promisedKind(btn.label)
   if (!kind) return btn
-  if (isDirectEntityUrl(btn.url)) return btn
+  // A registry RESULTS page (a dated fare list has a deep path and a query) is still a search.
+  if (isDirectEntityUrl(btn.url) && !isRegistryResultsPage(btn.url)) return btn
   return {
     ...btn,
     type: 'search',
@@ -90,6 +91,10 @@ const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts
 // model button on it ("🏨 Agoda - Phú Quốc" → agoda.com/vi-vn/, live UAT 14 Sep 2026) is dropped.
 const MARKETPLACE_SEARCH_PREFIXES = searchTemplates().filter(t => t.template.includes('{q}')).map(t => t.template.slice(0, t.template.indexOf('{q}')))
 const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.some(p => url.startsWith(p))
+/** A results page an adapter composes (dated fare lists, routes, OTA results) — honest as a search, relabelled never dropped. */
+const RESULTS_PAGE_PREFIXES = resultsPagePrefixes()
+const isRegistryResultsPage = (url: string) => RESULTS_PAGE_PREFIXES.some(p => url.startsWith(p))
+const isFlightResultsPage = (url: string) => /^https:\/\/(vn\.trip\.com\/flights\/|www\.traveloka\.com\/vi-vn\/flight\/)/i.test(url)
 
 /**
  * CCP Phase 8 (owner-like UAT R1, P1-7 / P2-4): two model-authored buttons that no relabelling
@@ -114,11 +119,17 @@ export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   // mislabelled destination, and no relabelling can make it honest.
   if (namesOtherMerchant(btn.label, host)) return true
   const kind = promisedKind(btn.label) ?? (btn.type === 'ticket' ? 'ticket' : null)
+  // A FLIGHT results page (Trip.com / Traveloka fare list) is judged before the hotel-OTA ticket
+  // rule — Traveloka is a "hotel OTA" host that sells flights: relabelled by the downgrade, never
+  // dropped. A ticket promise on a HOTEL results page (Booking.com "Tìm vé" for a theme park)
+  // stays dropped, as measured in Phase 8.
+  if (isFlightResultsPage(btn.url)) return false
   if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
+  // Any other registry results page (marketplace / OTA / event searches, routes) is honest as a
+  // search: relabelled by the downgrade, never dropped — the system may have handed the model
+  // that very URL (booking_links / event_links).
+  if (isMarketplaceSearchLink(btn.url) || isRegistryResultsPage(btn.url)) return false
   if (!CCP_MERCHANT_HOSTS.has(host)) return false
-  // The marketplaces' registry search grammars are honest as searches (the downgrade below labels
-  // them so) — unless the label promises a transaction the page cannot make.
-  if (isMarketplaceSearchLink(btn.url)) return !!kind
   let path = '/'
   try { path = new URL(btn.url).pathname.replace(/\/+$/, '') || '/' } catch { return true /* unparseable on a CCP host */ }
   // A front door: the root, or a one-word section like tiktok.com/shop — never a product slug.
@@ -135,15 +146,56 @@ const MERCHANTS_BY_NAME = PROVIDER_REGISTRY
   .sort((a, b) => b.name.length - a.name.length)
 
 /** Does the label name a registry merchant whose hosts do not include the URL's host? */
-function namesOtherMerchant(label: string, host: string): boolean {
+export function namesOtherMerchant(label: string, host: string): boolean {
   const named = MERCHANTS_BY_NAME.find(m => m.re.test(label))
   return !!named && !named.hosts.includes(host)
 }
 
-/** Every button, validated. Order is preserved; only a button that cannot be made honest is dropped. */
+const PROSE_LINK_RE = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g
+
+/**
+ * Prose hygiene for MODEL-authored markdown links (Final local live UAT, 14 Sep 2026): the reply
+ * to "Mua iPhone trên Điện Máy Xanh" carried "[Điện Máy Xanh](https://www.dienmaycholon.vn)" —
+ * a registry merchant's NAME on another retailer's site. A label that names a registry merchant
+ * must point at that merchant; otherwise the link is unmade and only the words remain. Nothing
+ * else in the prose is touched (system-provided links point where their labels say).
+ */
+export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: ReadonlySet<string>): string {
+  if (!text || text.indexOf('](http') === -1) return text
+  // URLs the SYSTEM placed (injected order / platform links, CCP handoffs) are never judged here.
+  return text.replace(PROSE_LINK_RE, (whole, label: string, url: string) => (!systemUrls?.has(url) && (namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url)) ? label : whole))
+}
+
+/** A registry merchant's front door (root or a bare section, locale segments ignored) — a button on it is dropped, a prose link to it is unmade. */
+export function isRegistryFrontDoor(url: string): boolean {
+  const host = hostOf(url)
+  if (!host || !CCP_MERCHANT_HOSTS.has(host)) return false
+  if (isMarketplaceSearchLink(url) || isRegistryResultsPage(url)) return false
+  let path = '/'
+  try { path = new URL(url).pathname.replace(/\/+$/, '') || '/' } catch { return false }
+  const segments = path.split('/').filter(Boolean).filter(s => !/^[a-z]{2}(?:-[a-z]{2})?$/i.test(s))
+  return segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))
+}
+
+/**
+ * Every button, validated. Order is preserved; only a button that cannot be made honest is dropped.
+ * `requestedProviderId` (the registry merchant the user NAMED this turn, live UAT 14 Sep 2026):
+ * a model button on ANOTHER registry merchant is dropped — "… trên Agoda" never renders a
+ * Booking.com search button. Buttons on no registry merchant (Maps, a website) are untouched.
+ */
 export function validateModelCtaButtons(
   buttons: readonly ModelCtaButton[],
   t: (key: string, vars?: Record<string, string>) => string,
+  requestedProviderId?: string | null,
 ): ModelCtaButton[] {
-  return buttons.filter(b => !isMisleadingModelCta(b)).map(b => validateModelCtaButton(b, t))
+  return buttons
+    .filter(b => !isMisleadingModelCta(b))
+    .filter(b => !requestedProviderId || !isOtherRegistryMerchant(b.url, requestedProviderId))
+    .map(b => validateModelCtaButton(b, t))
+}
+
+const MERCHANT_BY_HOST = new Map(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => [h.toLowerCase().replace(/^www\./, ''), e.providerId] as const)))
+function isOtherRegistryMerchant(url: string, requestedProviderId: string): boolean {
+  const owner = MERCHANT_BY_HOST.get(hostOf(url))
+  return !!owner && owner !== requestedProviderId
 }

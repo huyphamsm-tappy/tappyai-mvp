@@ -42,6 +42,8 @@ export interface DiscoverySubject {
   locality?: string
   /** URLs the row already carries (a Serper `link`, a `website_uri`). Owned ones skip the search. */
   knownUrls?: string[]
+  /** The row's full title, for identity checks that need more than the discovery subject. */
+  title?: string
 }
 
 export interface DiscoveredHint {
@@ -49,6 +51,8 @@ export interface DiscoveredHint {
   providerId: string
   url: string
   title?: string
+  /** The index snippet — what the listing itself states (a date, a venue); never a fact of ours. */
+  snippet?: string
 }
 
 const quote = (s: string) => `"${s.replace(/["\n\r]/g, ' ').trim()}"`
@@ -76,7 +80,7 @@ async function runSearches(
       const owner = providerOwning(r.link)
       if (!owner || !wanted.has(owner)) continue
       if ((taken.get(owner) ?? 0) >= perScope) continue
-      out.push({ subjectId: t.subjectId, providerId: owner, url: r.link, ...(typeof r.title === 'string' ? { title: r.title } : {}) })
+      out.push({ subjectId: t.subjectId, providerId: owner, url: r.link, ...(typeof r.title === 'string' ? { title: r.title } : {}), ...(typeof r.snippet === 'string' && r.snippet ? { snippet: r.snippet } : {}) })
       taken.set(owner, (taken.get(owner) ?? 0) + 1)
     }
   })

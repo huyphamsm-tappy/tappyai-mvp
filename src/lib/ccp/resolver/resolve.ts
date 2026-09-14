@@ -35,12 +35,14 @@ function linkId(url: string, actorHash?: string): string {
 
 /** Kind from the tracking axis first, then from the landing depth. */
 export function deriveKind(depth: number, tracking: TrackingInfo, carriesConfiguration: boolean): LinkKind {
+  // A results / landing page is a SEARCH even when the URL carries the user's dates and route
+  // (Completion Pass: Booking.com results, Trip.com / Traveloka fare lists, a dated Vexere route)
+  // and even when a tracking wrapper is applied (live UAT 14 Sep 2026: CellphoneS's tracked
+  // catalogue search must not become a "Mua trên CellphoneS" button): the subject is still
+  // chosen on the page, and the honesty field must say so. Tracking stays on `tracking`.
+  if (depth <= 2) return 'SEARCH_HANDOFF'
   if (tracking.mode === 'affiliate') return 'AFFILIATE_DEEP_LINK'
   if (tracking.mode === 'first_party') return 'TRACKED_DEEP_LINK'
-  // A results / landing page is a SEARCH even when the URL carries the user's dates and route
-  // (Completion Pass: Booking.com results, Trip.com / Traveloka fare lists, a dated Vexere route):
-  // the subject is still chosen on the page, and the honesty field must say so.
-  if (depth <= 2) return 'SEARCH_HANDOFF'
   if (depth >= 5) return 'CHECKOUT_HANDOFF'
   if (carriesConfiguration) return 'DIRECT_DEEP_LINK'
   if (depth === 4) return 'CONFIGURED_HANDOFF'

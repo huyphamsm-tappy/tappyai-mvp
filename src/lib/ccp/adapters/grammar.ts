@@ -46,6 +46,8 @@ export interface HandoffGrammar {
   detailDepth: TransactionDepth
   detailPageOnly: string[]
   detailLimitation: string
+  /** 'observed' when the detail page could not be rendered in a verification session (default 'verified'). */
+  detailGrammar?: 'verified' | 'observed'
   /** Legacy projection: a `{q}` search template when the merchant has a composable one, else its front door. */
   legacySearchTemplate?: string
 }
@@ -116,7 +118,7 @@ export function grammarAdapter(entry: ProviderRegistryEntry, grammar: HandoffGra
         paramsPageOnly: [...grammar.detailPageOnly],
         paramsDropped: [],
         expiresAt: null,
-        grammar: 'verified',
+        grammar: grammar.detailGrammar ?? 'verified',
         limitations: [grammar.detailLimitation, ...(auth ? [auth] : [])],
       }
     },
@@ -209,11 +211,13 @@ const traveloka: HandoffGrammar = {
       if (!/^[A-Z]{3}$/.test(o) || !/^[A-Z]{3}$/.test(d)) return null
       const adults = c.passengers ?? 1
       const cabin = c.cabin ? CABIN[c.cabin] : 'ECONOMY'
-      const url = `https://www.traveloka.com/vi-VN/flight/fullsearch?ap=${o}.${d}&dt=${DMY(c.departDate)}.${c.returnDate ? DMY(c.returnDate) : 'null'}&ps=${adults}.0.0&sc=${cabin}`
-      const preserved = ['originRef', 'destinationRef', 'departDate', ...(c.returnDate ? ['returnDate'] : []), ...(c.passengers ? ['passengers'] : []), ...(c.cabin ? ['cabin'] : [])]
-      // One-way economy verified 14 Sep 2026; the return date and other cabins use the same documented fields (observed).
-      const grammar = !c.returnDate && (!c.cabin || c.cabin === 'economy') ? 'verified' : 'observed'
-      return { url, depth: 2, preserved, pageOnly: [], dropped: [], expiresAt: isoDay(c.departDate), grammar, limitation: 'Kết quả chuyến bay theo ngày trên Traveloka; chọn chuyến và nhập thông tin hành khách trên trang.' }
+      // Final local live UAT (14 Sep 2026): `dt=<out>.<back>` renders "Một chiều" — Traveloka IGNORES
+      // the second date in this grammar. The return leg is therefore page-only, never claimed.
+      const url = `https://www.traveloka.com/vi-VN/flight/fullsearch?ap=${o}.${d}&dt=${DMY(c.departDate)}.null&ps=${adults}.0.0&sc=${cabin}`
+      const preserved = ['originRef', 'destinationRef', 'departDate', ...(c.passengers ? ['passengers'] : []), ...(c.cabin ? ['cabin'] : [])]
+      // One-way economy verified 14 Sep 2026; other cabins use the same documented field (observed).
+      const grammar = !c.cabin || c.cabin === 'economy' ? 'verified' : 'observed'
+      return { url, depth: 2, preserved, pageOnly: c.returnDate ? ['returnDate'] : [], dropped: [], expiresAt: isoDay(c.departDate), grammar, limitation: c.returnDate ? 'Kết quả chuyến đi theo ngày trên Traveloka; thêm ngày về và chọn chuyến, nhập thông tin hành khách trên trang.' : 'Kết quả chuyến bay theo ngày trên Traveloka; chọn chuyến và nhập thông tin hành khách trên trang.' }
     }
     if (request.intentType === 'book_hotel') {
       return { url: 'https://www.traveloka.com/vi-vn/hotel', depth: 1, preserved: [], pageOnly: [], dropped: ['propertyRef', 'checkIn', 'checkOut', 'adults', 'rooms', 'children'], expiresAt: null, grammar: 'verified', limitation: 'Trang khách sạn Traveloka — nhập điểm đến và ngày trên trang.' }
@@ -223,6 +227,9 @@ const traveloka: HandoffGrammar = {
   detailDepth: 3,
   detailPageOnly: ['checkIn', 'checkOut', 'adults', 'rooms'],
   detailLimitation: 'Chọn ngày và phòng trên trang khách sạn Traveloka.',
+  // Final local live UAT (14 Sep 2026): Traveloka property pages did not render in the automation
+  // browser (empty anti-bot shell; curl 403) — the index-discovered page is 'observed', not verified.
+  detailGrammar: 'observed',
 }
 
 /** Vexere spells Hồ Chí Minh City as "sai-gon"; the other city slugs follow the plain name. */

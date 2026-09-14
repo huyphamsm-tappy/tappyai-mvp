@@ -141,7 +141,7 @@ describe('orchestrator + ranking + fallback', () => {
       // Shopping requests also carry the marketplaces' honest SEARCH fallbacks (14 Sep 2026); the
       // verified detail link ranks first, the L2 search links follow.
       if (req.domain === 'shopping') {
-        expect(r.links.map(l => l.providerId).sort()).toEqual(['dmx', 'lazada', 'shopee'])
+        expect(r.links.map(l => l.providerId).sort()).toEqual(['cellphones', 'dmx', 'lazada', 'shopee'])
         expect(r.links.slice(1).every(l => l.kind === 'SEARCH_HANDOFF' && l.depth === 2)).toBe(true)
       } else if (req.domain === 'travel') {
         // Completion Pass: the OTA search / landing fallbacks follow the verified Trip.com link.

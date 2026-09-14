@@ -21,7 +21,9 @@ export function isSpecificOtaHotelPage(link: string): boolean {
     const path = u.pathname.toLowerCase()
     if (!(host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com'))) return false
     if (path.length <= 1) return false
-    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/') || path.includes('/country/') || path.includes('/maps/') || path.includes('/landmark/')) return false
+    // Listing pages are not a hotel: OTA "attractions" / "hotels-near-…" / area pages (live UAT
+    // 14 Sep 2026: "Hotels near Sun World Danang Wonders" rendered as a hotel with "Đặt phòng").
+    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/') || path.includes('/country/') || path.includes('/maps/') || path.includes('/landmark/') || path.includes('/attractions/') || path.includes('/hotels-near-') || path.includes('/area/') || path.includes('/district/') || path.includes('/neighborhood/')) return false
     return true
   } catch {
     return false

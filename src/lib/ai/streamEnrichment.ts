@@ -13,6 +13,8 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
+import { unlinkMislabelledMerchantLinks } from '@/lib/recommendation/ctaValidation'
+import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
@@ -847,6 +849,9 @@ export function applyPlaceEnrichmentStreamFilter(
    * door, not evidence about one cinema; `isDirectTicketUrl` draws that line.
    */
   const ticketablePlaces = new Set<string>()
+  /** Validated commerce links the system handed the model this turn (CCP route / event / film projections). */
+  const systemLinkUrls = new Set<string>()
+  const systemLinks: Array<{ name: string; url: string }> = []
   /**
    * Quality facts keyed by the venue they belong to.
    *
@@ -901,6 +906,14 @@ export function applyPlaceEnrichmentStreamFilter(
    */
   const ticketIntent = mentionsTickets(userText)
   if (ticketIntent) bufferMode = true
+  /**
+   * The same shape for a COMMERCE HANDOFF turn (Final local live UAT, 14 Sep 2026): a user who
+   * names a registry merchant or asks for events gets the platform's validated links, and the
+   * prose hygiene that unmakes a mislabelled or front-door merchant link runs at settle time —
+   * a live-streamed "[Ticketbox.vn](https://ticketbox.vn/)" was measured getting through.
+   */
+  const commerceHandoffIntent = !!requestedProviderOf(userText) || entertainmentCapabilityOf(userText) === 'event_ticket'
+  if (commerceHandoffIntent) bufferMode = true
   /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
    * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
@@ -1234,6 +1247,7 @@ export function applyPlaceEnrichmentStreamFilter(
         reviewCountsByEntity,
         phonesByEntity,
         ticketablePlaces,
+        systemLinkUrls,
       }, { scope: placeClaimScope }).text
       : foodGuarded
     // Last point before the bytes leave the server: drop any provider tool-use
@@ -1244,7 +1258,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(placeGuarded)
+    // A model link whose label names a registry merchant but whose URL is another site is unmade
+    // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").
+    const systemPlaced = new Set<string>(systemLinkUrls)
+    for (const p of places) for (const l of [...(p.order_links ?? []), ...(p.platform_links ?? [])]) systemPlaced.add(l.url)
+    const scaffoldStripped = unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced)
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`
@@ -1357,7 +1375,18 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose before anything is appended; without the flag, `prose` is untouched.
     const ctaOwnedProse = serverCta ? stripModelCta(prose) : prose
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
-    const finalText = `${ctaOwnedProse}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    /**
+     * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
+     * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
+     * tìm được link Traveloka" with no link). When NONE of the system's validated URLs made it into
+     * the prose, the system appends them itself, the way it injects order links under a venue:
+     * validated links, never the model's, never composed here.
+     */
+    const missingSystemLinks = systemLinks.filter(l => !prose.includes(l.url))
+    const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
+      ? `\n\n${lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:'} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      : ''
+    const finalText = `${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -1536,6 +1565,17 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
+            // platform validated for this turn, so the ticket guard can tell a system link from a claim.
+            if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
+              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; vexere_link?: string }
+              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
+                if (typeof l?.url !== 'string' || systemLinkUrls.has(l.url)) continue
+                systemLinkUrls.add(l.url)
+                systemLinks.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
+              }
+              if (typeof r.vexere_link === 'string' && !systemLinkUrls.has(r.vexere_link)) { systemLinkUrls.add(r.vexere_link); systemLinks.push({ name: 'Vexere', url: r.vexere_link }) }
+            }
             let newPlaces: PlaceLike[] = []
             if (toolName === 'search_places') {
               const results = res.result?.results

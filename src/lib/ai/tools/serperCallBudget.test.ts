@@ -213,8 +213,8 @@ describe('nothing downstream lost its data', () => {
     const rows = r.results ?? []
     expect(rows.length).toBeGreaterThan(0)
     const names = (rows[0].order_links ?? []).map(l => l.name)
-    expect(names).toContain('ShopeeFood')
-    expect(names).toContain('GrabFood')
+    expect(names).toContain('GrabFood') // ShopeeFood has no search page (14 Sep 2026); its restaurant pages are Commerce Links
+    expect(names).toContain('BeFood')
     process.env.SERPER_API_KEY = 'test-key-not-a-real-secret'
   })
 

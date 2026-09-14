@@ -38,17 +38,19 @@ describe('an order button must land somewhere that names the venue', () => {
   // The rule is about the destination, not the brand: BeFood support stays in the
   // builder and the data, and a venue-specific BeFood URL still shows.
 
-  it('drops a homepage-only order link, and keeps ShopeeFood and GrabFood', () => {
+  it('drops a homepage-only order link, and keeps GrabFood (ShopeeFood has no search page — live UAT 14 Sep 2026)', () => {
     const actions = buildActions({ ...FOOD_ROW, order_links: undefined }, 'food')
     const order = actions.filter(a => a.kind === 'order')
-    expect(order.map(a => a.platform)).toEqual(['ShopeeFood', 'GrabFood'])
+    expect(order.map(a => a.platform)).toEqual(['GrabFood'])
     expect(order.every(a => a.url.includes('B%C3%BAn') || a.url.includes('C%C3%B4'))).toBe(true)
     expect(actions.some(a => a.url === 'https://be.com.vn/')).toBe(false)
   })
 
   it('the builder still offers BeFood — this is visibility, not deletion', () => {
     expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1').map(l => l.name))
-      .toEqual(['ShopeeFood', 'GrabFood', 'BeFood'])
+      .toEqual(['GrabFood', 'BeFood'])
+    // The GrabFood grammar is the registry's verified one, never the 404 /vn/en/s?searchKeyword= form.
+    expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1')[0].url).toMatch(/^https:\/\/food\.grab\.com\/vn\/vi\/restaurants\?search=/)
   })
 
   it('shows BeFood when the row carries a venue-specific destination', () => {

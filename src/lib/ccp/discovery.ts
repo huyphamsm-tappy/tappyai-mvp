@@ -54,6 +54,22 @@ export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentTyp
 }
 
 /**
+ * The scope for ONE provider the user named (Final local live UAT, 14 Sep 2026). A provider that
+ * declares no discovery (the OTAs — their pages come from the hotel tool's own rows) still gets
+ * a scope when it is the request: `site:<its first allow-listed host>`, which is registry data.
+ * Null when the provider does not serve the domain + intent, or the adapter flag is off.
+ */
+export function discoveryScopeForProvider(providerId: string, domain: CommerceDomain, intentType: IntentType, flags: Record<string, boolean> = CCP_ADAPTERS): DiscoveryScope | null {
+  const kind = INTENT_SUBJECT_KIND[intentType]
+  const e = PROVIDER_REGISTRY.find(p => p.providerId === providerId)
+  if (!kind || !e || flags[e.enabledFlag] !== true) return null
+  if (e.tier !== 'mvp' && e.handoffPassthrough !== true) return null
+  if (!e.domains.includes(domain) || !e.intents.includes(intentType)) return null
+  const site = e.discovery?.subjectKind === kind ? e.discovery.site : e.allowedHosts[0]
+  return { providerId: e.providerId, merchantName: e.merchantName, site, subjectKind: kind, ...(e.segment ? { segment: e.segment } : {}) }
+}
+
+/**
  * Which registered provider owns this URL, by EXACT host match against the
  * registry allow-lists (the same rule `isAllowedHost` applies to emitted links).
  * `null` for anything else — including look-alike subdomains.

@@ -26,6 +26,7 @@ import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveV
 import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
+import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
@@ -189,9 +190,11 @@ export function parseCTA(content: string): { text: string; buttons: CTAButton[] 
 export function parseCTAValidated(
   content: string,
   t: (key: string, vars?: Record<string, string>) => string,
+  /** The user turn(s) this reply answers — a NAMED registry merchant keeps other merchants' buttons out. */
+  userTurns?: readonly string[],
 ): { text: string; buttons: CTAButton[] } {
   const { text, buttons } = parseCTA(content)
-  return { text, buttons: validateModelCtaButtons(buttons, t) as CTAButton[] }
+  return { text, buttons: validateModelCtaButtons(buttons, t, userTurns ? requestedProviderOf(userTurns) : null) as CTAButton[] }
 }
 
 // ── [TAPPY_PLAN] ────────────────────────────────────────────────────────────
@@ -1357,7 +1360,7 @@ export default function ChatInterface({
                 const { text: textAfterPlan, plan } = parsePlan(msg.content)
                 // Validated, not raw: a model-authored purchase promise backed by a
                 // homepage or a search page is downgraded to the honest search label.
-                const { text: textAfterCta, buttons: modelButtons } = parseCTAValidated(textAfterPlan, t)
+                const { text: textAfterCta, buttons: modelButtons } = parseCTAValidated(textAfterPlan, t, messages.slice(0, msgIdx).filter(m => m.role === 'user').slice(-3).map(m => m.content))
                 const { text: textAfterFollowups, followups } = parseFollowups(textAfterCta)
                 // Phase 9 — the shopping DECISION arrives as a persistent text
                 // marker (like [TAPPY_PLAN]), so it survives reload. Parse it out

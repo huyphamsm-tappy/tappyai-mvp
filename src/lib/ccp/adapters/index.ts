@@ -4,7 +4,8 @@ import { dmxAdapter } from './dmx'
 import { tripcomAdapter } from './tripcom'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
-import { PASSTHROUGH_ADAPTERS } from './handoff'
+import { PASSTHROUGH_ADAPTERS, passthroughSearchTemplates } from './handoff'
+import { DMX_SEARCH_TEMPLATE } from './dmx'
 import { MARKETPLACE_ADAPTERS, marketplaceSearchTemplates } from './marketplace'
 import { GRAMMAR_ADAPTERS, grammarSearchTemplates } from './grammar'
 import { INTENT_CAPABILITY, type CommerceRequest } from '../domain/types'
@@ -27,8 +28,28 @@ export const ADAPTERS: readonly ProviderAdapter[] = [...MVP_ADAPTERS, ...MARKETP
  * CTA templates (`{q}` placeholder). Registry-projected: a merchant without a composable search
  * page (TikTok Shop, Agoda, Vexere) is absent by fact.
  */
+/**
+ * URL prefixes of every RESULTS page an adapter composes (Final local live UAT, 14 Sep 2026): the
+ * `{q}` search templates plus the dated fare / route lists. A model button on one of these is an
+ * honest search that may only be RELABELLED, never dropped — the Traveloka round-trip fare list
+ * the system handed the model vanished because "Đặt vé Traveloka" was treated as a promise on
+ * an unknown CCP-host page.
+ */
+export function resultsPagePrefixes(): string[] {
+  // Front-door templates (Agoda, Vexere — no `{q}`) are NOT results pages: a button on them is a front door.
+  const templates = searchTemplates().filter(t => t.template.includes('{q}')).map(t => t.template.slice(0, t.template.indexOf('{q}')))
+  return [
+    ...templates,
+    'https://vn.trip.com/flights/showfarefirst?',
+    'https://www.traveloka.com/vi-VN/flight/fullsearch?',
+    'https://www.traveloka.com/vi-vn/flight/fullsearch?',
+    'https://www.booking.com/searchresults.',
+    'https://vexere.com/vi-VN/ve-xe-khach-tu-',
+  ]
+}
+
 export function searchTemplates(): Array<{ providerId: string; name: string; template: string }> {
-  return [...marketplaceSearchTemplates(), ...grammarSearchTemplates()]
+  return [...marketplaceSearchTemplates(), { providerId: 'dmx', name: dmxAdapter.entry.merchantName, template: DMX_SEARCH_TEMPLATE }, ...grammarSearchTemplates(), ...passthroughSearchTemplates()]
 }
 
 /** Adapters whose product flag is on and that can serve the request. */
