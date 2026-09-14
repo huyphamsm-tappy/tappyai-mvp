@@ -116,9 +116,13 @@ object TappyShare {
         val encoded = java.net.URLEncoder.encode(canonicalUrl, "UTF-8")
         return when (target) {
             Target.FACEBOOK -> "https://www.facebook.com/sharer/sharer.php?u=$encoded"
-            Target.ZALO -> "https://sp.zalo.me/plugins/share?url=$encoded"
             // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
             Target.MESSENGER -> "fb-messenger://share?link=$encoded"
+            // Zalo publishes no standalone web share URL: the former `sp.zalo.me` plugin url answers an
+            // EMPTY page (measured 2026-09-14), and Zalo's own SDK hands a link to the app with an
+            // ACTION_SEND intent — which is exactly [packageFor] + ShareDelivery.toApp here. Same
+            // honest null as TikTok when the app is absent: copy the link and say so.
+            Target.ZALO -> null
             Target.WHATSAPP, Target.TELEGRAM, Target.VIBER, Target.LINE, Target.EMAIL, Target.INBOX,
             Target.SAVE, Target.COPY, Target.NATIVE, Target.TIKTOK -> null
         }

@@ -3,6 +3,7 @@ import type { RequestLocale } from '@/lib/i18n/requestLocale'
 import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
 import { planShareUrl, type PlanBrochure as Brochure, type PlanShareItem } from '@/lib/plans/share/planShare'
 import { BRAND } from '@/lib/share/openGraph'
+import TappyLockup, { TappyWordmark } from '@/components/brand/TappyLockup'
 import PlanBrochureShare from './PlanBrochureShare'
 
 // ── The brochure — the approved composition, rendered from the snapshot ─────
@@ -39,10 +40,9 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
   return (
     <div className="v3-theme dark v3-pb" data-plan-brochure data-share-id={shareId}>
       <header className="v3-pb-bar" data-pb-bar>
+        {/* The shipped lockup — the app icon plus "Tappy" white / "AI" blue — not a text stand-in. */}
         <a href="/" className="v3-pb-brand" aria-label={BRAND.name}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- local SVG, no pipeline needed */}
-          <img src="/logo.svg" alt="" aria-hidden="true" width={26} height={26} className="v3-pb-brand-mark" />
-          <span>TAPPY</span>
+          <TappyLockup size={28} />
         </a>
         <PlanBrochureShare url={canonical} title={snapshot.title} label={s.share} />
       </header>
@@ -139,7 +139,7 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
         </div>
 
         <footer className="v3-pb-foot" data-pb-foot>
-          <p>{s.madeBy} <strong>TAPPY</strong></p>
+          <p>{s.madeBy} <TappyWordmark fontSize={14} /></p>
           <p className="v3-pb-foot-line">{s.madeByLine}</p>
         </footer>
       </main>

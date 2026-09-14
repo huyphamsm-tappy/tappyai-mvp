@@ -33,6 +33,9 @@ export interface PlanBrochureStrings {
   ogDescription: string
   linkPending: string
   linkSignIn: string
+  linkFailed: string
+  linkRetry: string
+  linkRequired: string
 }
 
 const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
@@ -61,6 +64,9 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     ogDescription: '{n} ngày · Kế hoạch từ TappyAI',
     linkPending: 'Đang tạo liên kết kế hoạch…',
     linkSignIn: 'Đăng nhập để tạo liên kết kế hoạch — hiện tại chia sẻ bằng văn bản',
+    linkFailed: 'Chưa tạo được liên kết kế hoạch — hiện tại chia sẻ bằng văn bản',
+    linkRetry: 'Thử lại',
+    linkRequired: 'Cần có liên kết kế hoạch để chia sẻ lên đây',
   },
   en: {
     eyebrow: 'Tappy Plan',
@@ -87,6 +93,9 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     ogDescription: '{n} days · A plan from TappyAI',
     linkPending: 'Creating the plan link…',
     linkSignIn: 'Sign in to create a plan link — sharing as text for now',
+    linkFailed: 'The plan link could not be created — sharing as text for now',
+    linkRetry: 'Retry',
+    linkRequired: 'This needs the plan link',
   },
 }
 

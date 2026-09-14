@@ -102,7 +102,10 @@ enum TappyShare {
         case .facebook:
             return "https://www.facebook.com/sharer/sharer.php?u=\(encoded)"
         case .zalo:
-            return "https://sp.zalo.me/plugins/share?url=\(encoded)"
+            // Zalo's iOS share extension, as Zalo's own web SDK opens it on an iPhone
+            // (`sp.zalo.me/plugins/sdk.js`, `shareOnMobile`). The former `sp.zalo.me`
+            // plugin url answered an EMPTY page (measured 2026-09-14).
+            return "zaloshareext://shareext?url=\(encoded)&type=8&version=1"
         case .messenger:
             // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
             return "fb-messenger://share?link=\(encoded)"

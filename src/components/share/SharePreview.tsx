@@ -7,6 +7,7 @@ import type { ShareArtifact } from '@/lib/share/shareArtifact'
 import { BRAND } from '@/lib/share/openGraph'
 import { brochureOf, type PlanShareSnapshot } from '@/lib/plans/share/planShare'
 import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
+import TappyLockup, { TappyWordmark } from '@/components/brand/TappyLockup'
 
 // ── WHAT THE RECIPIENT WILL SEE, SHOWN BEFORE IT IS SENT ─────────────────────
 //
@@ -14,7 +15,9 @@ import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
 // looking at. That is the guarantee: if a field is not in `SharedPlace`, it is
 // not on this preview, and it is not in the message. What you see is what leaves.
 //
-// Branding is the official mark (`/logo.svg`) plus `BRAND.name` — no new
+// Branding: the plan mini-brochure carries the shipped lockup (`TappyLockup` —
+// the app icon plus "Tappy" white / "AI" blue, as the sidebar renders it); the
+// recommendation strip keeps its `/logo.svg` + `BRAND.name` identity row. No new
 // wordmark, no mascot pose picked here (art is the owner's domain).
 
 const PREVIEW_PLACES = 3
@@ -30,15 +33,21 @@ export default function SharePreview({ artifact }: { artifact: ShareArtifact }) 
   if (artifact.kind === 'plan' && artifact.plan) {
     return (
       <PlanMiniBrochure snapshot={artifact.plan} url={artifact.url} lang={locale === 'en' ? 'en' : 'vi'}>
-        {/* The text channels (Email, Viber, LINE, Copy…) carry the brochure TEXT; it stays inspectable. */}
-        <button type="button" onClick={() => setShowAll(v => !v)} className="inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: '#8FB8FF' }} aria-expanded={showAll}>
-          {showAll ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-          {t('share.previewHint')}
-        </button>
-        {showAll && (
-          <pre data-testid="share-preview-text" className="max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-lg p-2 text-[11px] leading-snug" style={{ background: 'rgba(255,255,255,0.05)', color: '#F4F6FB', border: '1px solid rgba(255,255,255,0.1)' }}>
-            {artifact.text}
-          </pre>
+        {/* Published: the LINK is what leaves (the page is the brochure), and it is already on the
+            card, so there is no text block to inspect. Unpublished: the text channels carry the
+            brochure TEXT, and it stays inspectable so nobody is surprised by what was sent. */}
+        {!artifact.planLink && (
+          <>
+            <button type="button" onClick={() => setShowAll(v => !v)} className="inline-flex items-center gap-1 text-[11px] font-medium" style={{ color: '#8FB8FF' }} aria-expanded={showAll}>
+              {showAll ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+              {t('share.previewHint')}
+            </button>
+            {showAll && (
+              <pre data-testid="share-preview-text" className="max-h-48 overflow-auto whitespace-pre-wrap break-words rounded-lg p-2 text-[11px] leading-snug" style={{ background: 'rgba(255,255,255,0.05)', color: '#F4F6FB', border: '1px solid rgba(255,255,255,0.1)' }}>
+                {artifact.text}
+              </pre>
+            )}
+          </>
         )}
       </PlanMiniBrochure>
     )
@@ -178,7 +187,7 @@ function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanSha
         {moreDays > 0 && <p className="text-[11px]" style={{ color: 'rgba(244,246,251,0.6)' }}>+{fill(s.days, moreDays)}</p>}
 
         <div className="flex items-center justify-between gap-2 border-t pt-2 text-[10.5px]" style={{ borderColor: 'rgba(255,255,255,0.1)', color: 'rgba(244,246,251,0.6)' }}>
-          <span>{s.madeBy} <strong style={{ color: '#F4F6FB' }}>TAPPY</strong></span>
+          <span>{s.madeBy} <TappyWordmark fontSize={11} /></span>
           <span className="truncate" data-plan-preview-link>{link}</span>
         </div>
         {children}
@@ -187,14 +196,9 @@ function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanSha
   )
 }
 
+/** The shipped lockup at card size — the app icon plus "Tappy" white / "AI" blue, never a text stand-in. */
 function MiniBrand() {
-  return (
-    <div className="flex items-center gap-1.5">
-      {/* eslint-disable-next-line @next/next/no-img-element -- local SVG, no pipeline needed */}
-      <img src="/logo.svg" alt="" aria-hidden="true" width={18} height={18} className="rounded" />
-      <span className="text-[11px] font-bold tracking-[0.18em]">TAPPY</span>
-    </div>
-  )
+  return <TappyLockup size={20} />
 }
 
 function MiniTitle({ eyebrow, title }: { eyebrow: string; title: string }) {

@@ -184,11 +184,14 @@ class PlanShareTest {
     }
 
     @Test
-    fun `Facebook and Zalo dialogs receive the canonical plan url`() {
+    fun `Facebook and Messenger dialogs receive the canonical plan url, Zalo goes through its app package`() {
         val enc = java.net.URLEncoder.encode(canonical, "UTF-8")
         assertEquals("https://www.facebook.com/sharer/sharer.php?u=$enc", TappyShare.buildShareUrl(TappyShare.Target.FACEBOOK, link.url))
-        assertEquals("https://sp.zalo.me/plugins/share?url=$enc", TappyShare.buildShareUrl(TappyShare.Target.ZALO, link.url))
         assertEquals("fb-messenger://share?link=$enc", TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, link.url))
+        // No web URL for Zalo (the old sp.zalo.me one opened an empty page); ACTION_SEND to com.zing.zalo carries the link.
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.ZALO, link.url))
+        assertEquals("com.zing.zalo", TappyShare.packageFor(TappyShare.Target.ZALO))
+        assertTrue(ShareArtifactBuilder.inboxBody(link, "vi").contains(canonical))
     }
 
     @Test

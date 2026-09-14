@@ -92,8 +92,18 @@ describe('every client declares the same share targets', () => {
     expect(src).toContain('facebook.com/sharer/sharer.php?u=')
   })
 
-  it.each(PLATFORMS)('%s builds a Zalo handoff', (_name, src) => {
-    expect(src).toContain('sp.zalo.me/plugins/share?url=')
+  // 🚨 Zalo has no standalone web share URL. `sp.zalo.me/plugins/share?url=` answered an
+  // EMPTY page (2026-09-14), so no client may build it. Zalo's own SDK contract instead:
+  // Android hands the link to the app (ACTION_SEND to com.zing.zalo), iOS opens the
+  // share-extension scheme, the web does the same from a phone's browser and copies on desktop.
+  it('no client points Zalo at the empty sp.zalo.me page', () => {
+    const webSrc = readFileSync(join(__dirname, 'shareTargets.ts'), 'utf8')
+    for (const src of [androidSrc, iosSrc, webSrc]) expect(src).not.toContain('sp.zalo.me/plugins/share')
+    expect(androidSrc).toMatch(/Target\.ZALO -> null/)
+    expect(androidSrc).toContain('"com.zing.zalo"')
+    expect(iosSrc).toContain('zaloshareext://shareext?url=')
+    expect(webSrc).toContain('zaloshareext://shareext?url=')
+    expect(webSrc).toContain('intent://zaloapp.com/#Intent;action=android.intent.action.SEND')
   })
 
   // The same honest answer on every platform.
@@ -129,6 +139,23 @@ describe('every client shares a plan through the ONE published page', () => {
     }
     expect(androidRepo).toContain('JsonObject')
     expect(iosService).toContain('["plan": plan]')
+  })
+
+  // 🚨 A PUBLISHED PLAN IS A LINK on every client: what leaves is "<subject>\n<url>", Copy is the
+  // exact url, no rendered image rides along — the page and its OG card are the brochure.
+  it('web, android and ios all turn a published plan into the same link artifact', () => {
+    const webArtifact = readFileSync(join(__dirname, 'shareArtifact.ts'), 'utf8')
+    const androidArtifact = readFileSync(join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'ShareArtifact.kt'), 'utf8')
+    const iosArtifact = readFileSync(join(root, 'ios', 'TappyAI', 'Core', 'Share', 'ShareArtifact.swift'), 'utf8')
+    expect(webArtifact).toContain('text: `${a.subject}\\n${shareUrl}`')
+    expect(androidArtifact).toContain('text = "${base.subject}\\n$canonicalUrl"')
+    expect(iosArtifact).toContain('text: "\\(base.subject)\\n\\(canonicalURL)"')
+    const webMenu = readFileSync(join(root, 'src', 'components', 'share', 'ShareMenu.tsx'), 'utf8')
+    const androidSheet = readFileSync(join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'TappyShareSheet.kt'), 'utf8')
+    const iosSheet = readFileSync(join(root, 'ios', 'TappyAI', 'Core', 'Share', 'TappyShareSheet.swift'), 'utf8')
+    expect(webMenu).toContain('copyText(a.planLink ? a.url : a.text)')
+    expect(androidSheet).toContain('if (a.isPlanLink) a.url else a.text')
+    expect(iosSheet).toMatch(/isPlanLink \? a\.url : /)
   })
 })
 

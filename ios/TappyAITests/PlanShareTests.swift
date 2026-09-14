@@ -175,7 +175,8 @@ final class PlanShareTests: XCTestCase {
         let (_, link) = try linkArtifact()
         let enc = try XCTUnwrap(canonical.addingPercentEncoding(withAllowedCharacters: .alphanumerics))
         XCTAssertEqual(TappyShare.buildShareURL(.facebook, canonicalURL: link.url), "https://www.facebook.com/sharer/sharer.php?u=\(enc)")
-        XCTAssertEqual(TappyShare.buildShareURL(.zalo, canonicalURL: link.url), "https://sp.zalo.me/plugins/share?url=\(enc)")
+        // Zalo's own iOS share-extension scheme (from Zalo's web SDK); the old sp.zalo.me page was empty.
+        XCTAssertEqual(TappyShare.buildShareURL(.zalo, canonicalURL: link.url), "zaloshareext://shareext?url=\(enc)&type=8&version=1")
         XCTAssertEqual(TappyShare.buildShareURL(.messenger, canonicalURL: link.url), "fb-messenger://share?link=\(enc)")
     }
 

@@ -282,8 +282,10 @@ struct TappyShareSheet: View {
             }
 
         case .zalo:
+            // Zalo's share extension takes the url itself (see TappyShare.buildShareURL);
+            // the body is copied first as insurance, since a scheme never reports back.
             copy(body)
-            if let scheme = TappyShare.appScheme(t), let url = URL(string: "\(scheme)://"), canOpen(t) {
+            if let s = TappyShare.buildShareURL(.zalo, canonicalURL: a.url), let url = URL(string: s), canOpen(t) {
                 UIApplication.shared.open(url)
                 feedback = String(format: String(localized: "share.copiedAndOpened"), label(t))
             } else {

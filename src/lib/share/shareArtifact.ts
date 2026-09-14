@@ -62,6 +62,13 @@ export interface ShareArtifact {
   plan?: PlanShareSnapshot
   /** The language the brochure text was written in, so it can be rebuilt with a new url. */
   lang?: ShareLang
+  /**
+   * True once a plan has been PUBLISHED: `url` is its own `/plan/<shareId>` page
+   * and `text` is the one-line handoff (`subject` + url) — the page carries the
+   * itinerary, the photos and the social card, so the long text brochure is no
+   * longer what leaves. Same flag as Android `isPlanLink` / iOS `isPlanLink`.
+   */
+  planLink?: true
 }
 
 /**
@@ -331,9 +338,9 @@ export function buildPlacesArtifact(
  * The artifact for a [TAPPY_PLAN].
  *
  * Starts on the brand url. The share menu then publishes the plan
- * (`POST /api/plans/share`) and, when that succeeds, `withPlanShareUrl` moves
- * the artifact onto the plan's own page so every handoff carries a link that
- * opens THIS plan. The snapshot rides along for the mini-brochure preview —
+ * (`POST /api/plans/share`) and, when that succeeds, `planLinkArtifact` turns
+ * the artifact into the link to the plan's own page so every handoff carries a
+ * url that opens THIS plan. The snapshot rides along for the mini-brochure preview —
  * the same whitelist the page renders from, so the preview cannot show a field
  * the page will not.
  */
@@ -345,14 +352,22 @@ export function buildPlanArtifact(plan: TappyPlan, lang: ShareLang = 'vi', env?:
 }
 
 /**
- * The same plan artifact, re-pointed at its published page: the url and the
- * brochure's footer line move together, and nothing else in the text changes.
+ * The plan artifact once its page exists: a LINK, not a text brochure.
+ *
+ * 🚨 THE PUBLISHED PAGE IS THE SHARE. `/plan/<shareId>` carries the itinerary,
+ * the canonical photos and the social card, and every platform that unfurls a
+ * link draws its preview from that page. So what leaves is the subject line and
+ * the url — the same `"<subject>\n<url>"` Android (`planLinkArtifact`) and iOS
+ * build — never the multi-hundred-character itinerary with the link buried at
+ * the bottom, and never a rendered image standing in for the page.
+ *
+ * The long text brochure remains only for the UNPUBLISHED states (signed out,
+ * publish failed), where the menu says so out loud.
  */
-export function withPlanShareUrl(a: ShareArtifact, shareUrl: string): ShareArtifact {
+export function planLinkArtifact(a: ShareArtifact, shareUrl: string): ShareArtifact {
   if (a.kind !== 'plan') return a
-  const lines = a.text.split('\n')
-  lines[lines.length - 1] = footer(a.lang ?? 'vi', shareUrl)
-  return { ...a, url: shareUrl, text: lines.join('\n') }
+  const { image: _image, ...rest } = a
+  return { ...rest, url: shareUrl, text: `${a.subject}\n${shareUrl}`, planLink: true }
 }
 
 /**

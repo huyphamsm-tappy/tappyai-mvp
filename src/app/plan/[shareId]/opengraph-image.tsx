@@ -2,6 +2,7 @@ import { ImageResponse } from 'next/og'
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@/lib/share/openGraph'
 import { planOgCard, planOgContent } from './planOgCard'
 import { OG_FONT_FAMILY, ogFont } from './ogFont'
+import { ogMark } from './ogMark'
 
 // ── The social preview for /plan/<shareId> ──────────────────────────────────
 //
@@ -28,8 +29,8 @@ export const size = { width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT }
 export const contentType = 'image/png'
 
 export default async function Image({ params }: { params: { shareId: string } }) {
-  const [card, font] = await Promise.all([planOgContent(params.shareId), ogFont()])
-  return new ImageResponse(planOgCard(card, font ? OG_FONT_FAMILY : undefined), {
+  const [card, font, mark] = await Promise.all([planOgContent(params.shareId), ogFont(), ogMark()])
+  return new ImageResponse(planOgCard(card, font ? OG_FONT_FAMILY : undefined, mark), {
     ...size,
     ...(font ? { fonts: [{ name: OG_FONT_FAMILY, data: font, weight: 700, style: 'normal' as const }] } : {}),
   })

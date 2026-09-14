@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
+import { TAPPY_WORDMARK_BLUE, TAPPY_WORDMARK_WHITE } from '@/components/brand/TappyLockup'
 import { getPlanShare } from './getPlanShare'
 
 /** What the social card shows. Every field is real or null; the layout drops what is null. */
@@ -31,7 +32,7 @@ export async function planOgContent(shareId: string): Promise<PlanOgCard> {
 // The 1200×630 card, as Satori-compatible JSX: flex only, absolute positioning,
 // no CSS variables, no external stylesheet. Shared by opengraph-image and
 // twitter-image so the two can never drift.
-export function planOgCard(c: PlanOgCard, fontFamily = 'sans-serif'): ReactElement {
+export function planOgCard(c: PlanOgCard, fontFamily = 'sans-serif', mark: string | null = null): ReactElement {
   return (
     <div
       style={{
@@ -56,9 +57,17 @@ export function planOgCard(c: PlanOgCard, fontFamily = 'sans-serif'): ReactEleme
         {c.line && <div style={{ display: 'flex', marginTop: 20, fontSize: 30, color: 'rgba(255,255,255,0.88)' }}>{c.line}</div>}
       </div>
 
-      <div style={{ position: 'absolute', top: 44, left: 64, display: 'flex', alignItems: 'center' }}>
-        <div style={{ display: 'flex', width: 46, height: 46, borderRadius: 14, background: 'linear-gradient(135deg, #2F8FFF, #6A5CFF)', alignItems: 'center', justifyContent: 'center', fontSize: 26, fontWeight: 800 }}>T</div>
-        <div style={{ display: 'flex', marginLeft: 16, fontSize: 32, fontWeight: 800, letterSpacing: 2 }}>TAPPY</div>
+      {/* The shipped lockup (see TappyLockup): the app icon with its 22% radius, then
+          "Tappy" in white and "AI" in the brand blue. Never "TAPPY", never a drawn tile. */}
+      <div style={{ position: 'absolute', top: 44, left: 64, display: 'flex', alignItems: 'center' }} data-og-lockup>
+        {mark && (
+          // eslint-disable-next-line @next/next/no-img-element -- Satori markup, not the DOM
+          <img src={mark} alt="" width={52} height={52} style={{ width: 52, height: 52, borderRadius: 11, objectFit: 'cover' }} />
+        )}
+        <div style={{ display: 'flex', marginLeft: mark ? 16 : 0, fontSize: 34, fontWeight: 800, letterSpacing: -0.5 }}>
+          <span style={{ color: TAPPY_WORDMARK_WHITE }}>Tappy</span>
+          <span style={{ color: TAPPY_WORDMARK_BLUE }}>AI</span>
+        </div>
       </div>
     </div>
   )

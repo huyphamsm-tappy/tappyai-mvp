@@ -3932,8 +3932,8 @@
   background-color: rgba(7, 10, 18, 0.72); backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--pb-border);
 }
-.v3-pb-brand { display: inline-flex; align-items: center; gap: 10px; font-size: 20px; font-weight: 800; letter-spacing: 0.06em; color: var(--pb-fg); text-decoration: none; }
-.v3-pb-brand-mark { width: 26px; height: 26px; border-radius: 8px; }
+/* The shipped lockup (TappyLockup) sits here as-is: no letter-spacing, no uppercase. */
+.v3-pb-brand { display: inline-flex; align-items: center; color: var(--pb-fg); text-decoration: none; }
 .v3-pb-share {
   display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border-radius: 9999px;
   font-size: 13px; font-weight: 600; color: var(--pb-fg);
