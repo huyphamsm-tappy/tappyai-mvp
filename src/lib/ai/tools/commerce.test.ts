@@ -71,10 +71,12 @@ describe('DMX — shopping row with the merchant page already on it (L5 guest)',
     // DMX identity is 'near_realtime' in the registry (feed-backed ids); never 'realtime' — CCP holds no price here.
     expect(l.freshness.freshnessType).toBe('near_realtime')
     expect(l.freshness.retrievedAt).toBe(NOW.toISOString())
-    // The row already carried a DMX URL → the one query spent looks at the OTHER shopping scopes only.
-    expect(calls).toHaveLength(1)
-    expect(calls[0]).not.toContain('site:dienmayxanh.com')
-    expect(calls[0]).toContain('site:shopee.vn')
+    // The row already carried a DMX URL → the queries spent look at the OTHER shopping scopes only:
+    // each marketplace alone (Shopee, TikTok Shop, Lazada) and the remaining retailer.
+    expect(calls).toHaveLength(4)
+    expect(calls.some(q => q.includes('site:dienmayxanh.com'))).toBe(false)
+    expect(calls.some(q => q.includes('site:shopee.vn'))).toBe(true)
+    expect(calls.some(q => q.includes('site:shop.tiktok.com/vn'))).toBe(true)
   })
 
   it('feed display stays off: no price or feed field is projected onto the row (D7)', async () => {

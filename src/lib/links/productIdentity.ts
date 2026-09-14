@@ -14,6 +14,25 @@
 
 export type IdentityVerdict = 'match' | 'mismatch' | 'uncertain'
 
+/**
+ * A Google Shopping listing title minus its seller decoration ("iPhone 16 Pro - ChungBlackBerry",
+ * "iPhone 16 Pro | xoanstore.vn"): the product, as a discovery subject. Only a trailing segment that
+ * names the row's own seller (or looks like a shop/domain) is removed; nothing else is touched.
+ */
+export function cleanListingTitle(title: string, seller?: string | null): string {
+  const t = title.replace(/\s+/g, ' ').trim()
+  const parts = t.split(/\s+[-|–]\s+/)
+  if (parts.length < 2) return t
+  const last = parts[parts.length - 1]
+  const sellerNorm = (seller ?? '').toLowerCase().replace(/[^a-z0-9]/g, '')
+  const lastNorm = last.toLowerCase().replace(/[^a-z0-9]/g, '')
+  const looksLikeShop = /\.(vn|com|net|shop)$/i.test(last) || /\b(store|shop|mobile|official)\b/i.test(last)
+  if ((sellerNorm && lastNorm && (sellerNorm.includes(lastNorm) || lastNorm.includes(sellerNorm))) || looksLikeShop) {
+    return parts.slice(0, -1).join(' - ').trim() || t
+  }
+  return t
+}
+
 const STOP = new Set([
   'dien', 'thoai', 'chinh', 'hang', 'vn', 'a', 'vna', 'moi', 'cu', 'gia', 'tot', 're', 'san', 'pham', 'may', 'tinh',
   'smartphone', 'phone', 'the', 'and', 'for', 'with', 'new', 'sale', 'khuyen', 'mai', 'tra', 'gop', 'shop', 'store',
@@ -24,7 +43,14 @@ const ACCESSORY = new Set([
   'op', 'oplung', 'case', 'cover', 'cuong', 'cuongluc', 'kinh', 'dan', 'mieng', 'sac', 'cap', 'cable', 'charger', 'adapter',
   'bao', 'baoda', 'vi', 'tai', 'nghe', 'earbuds', 'headphone', 'pin', 'powerbank', 'gia', 'giado', 'holder', 'stand',
   'skin', 'film', 'protector', 'strap', 'day', 'deo', 'thay', 'linh', 'kien', 'mainboard', 'man', 'hinh', 'sim',
+  // Storage / connectivity accessories sold "for" a phone (measured 14 Sep 2026: a USB pendrive "cho iPhone 15 Pro").
+  'usb', 'pendrive', 'flash', 'otg', 'hub', 'dock', 'lens', 'tripod', 'gimbal', 'sticker', 'decal', 'gay', 'selfie',
 ])
+/**
+ * "… cho iPhone 15 Pro" / "for iPhone 15 Pro" / "dành cho …" / "tương thích với …": the listing is an
+ * item FOR the product — the product's own name appears, but as the target, not the subject.
+ */
+const FOR_PRODUCT = /(?:^|\s)(?:cho|danh cho|for|tuong thich voi|compatible with|phu hop voi)\s+(?:apple\s+)?(iphone|ipad|macbook|samsung|galaxy|xiaomi|oppo|sony|pixel)\b/
 
 function normalise(s: string): string[] {
   const t = s
@@ -42,6 +68,32 @@ function significant(tokens: string[]): string[] {
   return tokens.filter(t => t.length >= 2 && !STOP.has(t))
 }
 
+/** Category nouns a listing title leads with; the marketplace index is keyed by the model, not the category. */
+const CATEGORY_PREFIX = /^(?:điện thoại di động|điện thoại|smartphone|máy tính bảng|máy tính xách tay|laptop|tai nghe|tủ lạnh|máy giặt|máy lạnh|điều hòa|máy lọc nước|tivi|ti vi|đồng hồ thông minh|đồng hồ|loa|máy ảnh|bàn phím|chuột|máy sấy|nồi chiên|robot hút bụi)\s+/iu
+/** Apple product lines already name the brand; the leading "Apple" only dilutes a marketplace query. */
+const APPLE_LINE = /^apple\s+(?=(?:iphone|ipad|macbook|airpods|watch|imac|mac)\b)/iu
+
+/**
+ * The product CORE of a listing title, as a marketplace discovery subject (14 Sep 2026):
+ * "Điện thoại Apple iPhone 16 Pro Max 256GB Titan Đen" → "iPhone 16 Pro Max 256GB";
+ * "[Mới 100%] iPhone 16 Pro Max 256GB Quốc tế Mới Fullbox" → "iPhone 16 Pro Max 256GB".
+ * Measured: the decorated title returns other products on TikTok Shop, the core returns the
+ * product page. Colour, condition and seller words come after the last model / capacity token
+ * and are dropped; a title with no such token is used as it is (minus tags and category noun).
+ */
+export function discoverySubject(title: string, seller?: string | null): string {
+  let t = cleanListingTitle(title, seller)
+  t = t.replace(/^\s*(?:\[[^\]]*\]|\([^)]*\))\s*/g, '').trim()
+  t = t.replace(CATEGORY_PREFIX, '').replace(APPLE_LINE, '').trim()
+  const words = t.split(/\s+/)
+  let last = -1
+  words.forEach((w, i) => { if (/\d/.test(w)) last = i })
+  // Variant words right after the model number belong to the model ("iPhone 16 Pro", "S24 Ultra").
+  while (last >= 0 && last + 1 < words.length && VARIANT.has(words[last + 1].toLowerCase())) last++
+  if (last >= 1) t = words.slice(0, last + 1).join(' ')
+  return t.replace(/[\s,|–-]+$/g, '').trim() || cleanListingTitle(title, seller)
+}
+
 export function productIdentityMatch(subject: string, candidateTitle: string | undefined | null): IdentityVerdict {
   const subj = normalise(subject)
   const cand = normalise(candidateTitle ?? '')
@@ -52,6 +104,8 @@ export function productIdentityMatch(subject: string, candidateTitle: string | u
   // Accessory listing for a non-accessory subject → a different product.
   const subjectIsAccessory = subj.some(t => ACCESSORY.has(t))
   if (!subjectIsAccessory && cand.some(t => ACCESSORY.has(t))) return 'mismatch'
+  // An item FOR the product ("… cho iPhone 15 Pro") is not the product, whatever else the title says.
+  if (!subjectIsAccessory && FOR_PRODUCT.test(cand.join(' ')) && !FOR_PRODUCT.test(subj.join(' '))) return 'mismatch'
 
   // Variant words must agree both ways: "iPhone 16 Pro" ≠ "iPhone 16 Pro Max" ≠ "iPhone 16".
   for (const v of VARIANT) {

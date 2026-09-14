@@ -46,8 +46,8 @@ describe('discoverCommerceHints', () => {
     const hints = await discoverCommerceHints('travel', 'book_hotel', [{ id: 'r0', subject: 'Mường Thanh', locality: 'Đà Nẵng' }], { search })
     expect(search).toHaveBeenCalledTimes(1)
     expect(search.mock.calls[0][0]).toBe('"Mường Thanh" Đà Nẵng site:vn.trip.com/hotels')
-    // Two per scope, owned hosts only, in result order.
-    expect(hints.map(h => h.url)).toEqual(['https://vn.trip.com/hotels/da-nang-hotel-detail-1/x/', 'https://vn.trip.com/hotels/detail/?hotelId=3'])
+    // Up to four per provider (14 Sep 2026), owned hosts only, in result order.
+    expect(hints.map(h => h.url)).toEqual(['https://vn.trip.com/hotels/da-nang-hotel-detail-1/x/', 'https://vn.trip.com/hotels/detail/?hotelId=3', 'https://vn.trip.com/hotels/detail/?hotelId=4'])
     expect(hints.every(h => h.providerId === 'tripcom' && h.subjectId === 'r0')).toBe(true)
   })
 
@@ -57,13 +57,14 @@ describe('discoverCommerceHints', () => {
       { id: 'a', subject: 'Tủ lạnh', knownUrls: ['https://www.dienmayxanh.com/tu-lanh/x'] },
       { id: 'b', subject: 'Máy giặt', knownUrls: ['https://shopee.vn/x'] },
     ], { search })
-    // One combined query per subject (14 Sep 2026); the scope a subject already owns is left out of it.
-    expect(search).toHaveBeenCalledTimes(2)
-    expect(search.mock.calls[0][0]).toContain('"Tủ lạnh"')
-    expect(search.mock.calls[0][0]).not.toContain('site:dienmayxanh.com')
-    expect(search.mock.calls[1][0]).toContain('"Máy giặt"')
-    expect(search.mock.calls[1][0]).not.toContain('site:shopee.vn')
-    expect(search.mock.calls[1][0]).toContain('site:dienmayxanh.com')
+    // Query groups per subject (14 Sep 2026): each marketplace alone, retailers paired; the scope a subject
+    // already owns is left out. The default budget (3) is spent on the first subject's groups.
+    expect(search).toHaveBeenCalledTimes(3)
+    const qs = search.mock.calls.map(c => c[0])
+    expect(qs.every(q => q.includes('Tủ lạnh'))).toBe(true) // marketplace groups are unquoted, the retailer pair quoted
+    expect(qs.some(q => q.includes('site:dienmayxanh.com'))).toBe(false)
+    expect(qs.some(q => q.includes('site:shopee.vn'))).toBe(true)
+    expect(qs.some(q => q.includes('site:shop.tiktok.com/vn'))).toBe(true)
     expect(hints).toEqual([])
   })
 

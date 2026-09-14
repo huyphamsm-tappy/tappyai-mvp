@@ -12,7 +12,7 @@ import {
   type IntentType,
 } from '@/lib/ccp'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, stripTrailingCity } from '@/lib/links/otaTitle'
-import { productIdentityMatch } from '@/lib/links/productIdentity'
+import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, verifyMerchantPage, MAX_VERIFY_PER_TURN, type DiscoveredHint, type DiscoverySubject, type FetchTextFn, type SearchFn } from './commerceDiscovery'
 import { entertainmentCapabilityOf, foodCapabilityOf, parseReservationSpec, type UserTurns } from './commerceIntent'
 
@@ -106,6 +106,7 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const MAX_LINKS_PER_ROW = 2
 /** Shopping (14 Sep 2026): one handoff per provider — Shopee, TikTok Shop, Lazada, DMX, CellphoneS side by side. */
 const MAX_SHOPPING_LINKS_PER_ROW = 5
+const MAX_SHOPPING_QUERIES = 8
 const MAX_LINKS_PER_PROVIDER = 1
 const MAX_EXPERIENCE_ROWS = 2
 const DEFAULT_ADULTS = 2
@@ -133,6 +134,10 @@ interface Plan {
   sameSubject?(subject: string, hintTitle: string | undefined, known: boolean): boolean
   /** Links kept per row (ranked); default MAX_LINKS_PER_ROW. */
   maxLinks?: number
+  /** Discovery searches per tool call; default MAX_QUERIES_PER_TURN (one group per subject). */
+  maxQueries?: number
+  /** Rows resolved per tool call; default 3. */
+  maxRows?: number
 }
 
 const noConfiguration = () => null
@@ -183,11 +188,16 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
       domain: 'shopping',
       intents: [{ intentType: 'buy_product', primary: true, verifyPages: false, subjectDiscovery: false, configurationFor: noConfiguration }],
       listKey: 'search_results',
-      subjectOf: row => str(row.title),
+      // The listing's product core ("Điện thoại Apple iPhone 16 Pro Max 256GB Titan Đen" → "iPhone 16 Pro Max 256GB"):
+      // what the marketplaces index by, and what a discovered page must name.
+      subjectOf: row => { const t = str(row.title); return t ? discoverySubject(t, str(row.source)) : undefined },
       knownUrlsOf: row => [str(row.link)].filter((u): u is string => !!u),
       // The row's own link IS the listing; a discovered page must name the same product.
       sameSubject: (subject, title, known) => known || productIdentityMatch(subject, title) === 'match',
       maxLinks: MAX_SHOPPING_LINKS_PER_ROW,
+      // Each marketplace is its own query (see commerceDiscovery); two products per turn, four queries each.
+      maxQueries: MAX_SHOPPING_QUERIES,
+      maxRows: 2,
     }
   }
   if (toolName === 'get_hotel_prices') {
@@ -299,7 +309,7 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     const kept = plan.rejects ? list.filter(row => !(isRecord(row) && plan.rejects!(row))) : list
     r[plan.listKey] = kept
     const rows = kept.filter(isRecord)
-    const targets = candidateRows(rows, r, ctx.maxRows ?? 3)
+    const targets = candidateRows(rows, r, ctx.maxRows ?? plan.maxRows ?? 3)
     const resolve = ctx.resolve ?? resolveCommerce
     const requestedCity = cityKeyOf(ctx.location)
     let verifyBudget = MAX_VERIFY_PER_TURN
@@ -319,7 +329,7 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
       let discovered: DiscoveredHint[] = []
       if (subjects.length > 0) {
         try {
-          discovered = await discoverCommerceHints(plan.domain, intentType, subjects, { search: ctx.search })
+          discovered = await discoverCommerceHints(plan.domain, intentType, subjects, { search: ctx.search, ...(plan.maxQueries ? { maxQueries: plan.maxQueries } : {}) })
         } catch {
           discovered = []
         }

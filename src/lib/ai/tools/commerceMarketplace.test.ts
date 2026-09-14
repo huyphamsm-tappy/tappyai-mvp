@@ -213,9 +213,10 @@ describe('presentation — "Mua trên …" per provider, no generic search besid
     const result = { search_results: [row], source: 'Google Shopping (Serper)' }
     const { search, calls } = marketplaceSearch(ALL_HITS)
     await attachCommerceLinks('search_products', result, { enabled: true, now: NOW, search })
-    expect(calls).toHaveLength(1)
-    expect(calls[0]).toContain('(site:shopee.vn OR site:shop.tiktok.com/vn OR site:lazada.vn/products OR site:cellphones.com.vn)')
-    expect(calls[0]).not.toContain('site:dienmayxanh.com') // the row already owns DMX
+    // One query per marketplace (a shared OR crowds them out — measured 14 Sep 2026), one for the remaining retailer.
+    expect(calls).toHaveLength(4)
+    expect(calls).toEqual(expect.arrayContaining([expect.stringContaining('site:shopee.vn'), expect.stringContaining('site:shop.tiktok.com/vn'), expect.stringContaining('site:lazada.vn/products'), expect.stringContaining('site:cellphones.com.vn')]))
+    expect(calls.some(q => q.includes('site:dienmayxanh.com'))).toBe(false) // the row already owns DMX
     const ls = links(row)
     expect(ls.map(l => l.providerId)).toEqual(expect.arrayContaining(['dmx', 'shopee', 'tiktokshop']))
     expect(ls).toHaveLength(5) // one per provider (DMX, CellphoneS, Lazada, TikTok Shop, Shopee)

@@ -18,6 +18,8 @@ export interface DiscoveryScope {
   /** `site:` operand for a web search, e.g. "vn.trip.com/hotels". */
   site: string
   subjectKind: DiscoverySubjectKind
+  /** Shopping segment (marketplace / retail), when the registry declares one. */
+  segment?: ProviderRegistryEntry['segment']
 }
 
 /** Scopes for the adapters that are ON and can serve this domain + intent. */
@@ -27,7 +29,7 @@ export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentTyp
     if (!e.discovery || (e.tier !== 'mvp' && e.handoffPassthrough !== true)) continue
     if (flags[e.enabledFlag] !== true) continue
     if (!e.domains.includes(domain) || !e.intents.includes(intentType)) continue
-    out.push({ providerId: e.providerId, merchantName: e.merchantName, site: e.discovery.site, subjectKind: e.discovery.subjectKind })
+    out.push({ providerId: e.providerId, merchantName: e.merchantName, site: e.discovery.site, subjectKind: e.discovery.subjectKind, ...(e.segment ? { segment: e.segment } : {}) })
   }
   return out
 }

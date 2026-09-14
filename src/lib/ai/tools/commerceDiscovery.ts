@@ -36,7 +36,8 @@ import { serperSearch } from './common'
 
 export const MAX_QUERIES_PER_TURN = 3
 export const MAX_VERIFY_PER_TURN = 3
-const MAX_LINKS_PER_SCOPE = 2
+// Four hints per provider (14 Sep 2026): TikTok Shop keyword pages precede the product page in the index.
+const MAX_LINKS_PER_SCOPE = 4
 const VERIFY_TIMEOUT_MS = 5_000
 
 export type SearchFn = (query: string) => Promise<Array<{ title: string; link: string; snippet: string }> | null>
@@ -93,12 +94,21 @@ async function runSearches(
 }
 
 /**
- * One `site:` operand per scope, OR-ed when a domain has several (the shopping marketplaces
- * and retailers, 14 Sep 2026): ONE search per subject finds every merchant's page for it,
- * instead of one search per merchant — the budget stays at MAX_QUERIES_PER_TURN subjects.
+ * The `site:` operand for a query group. Measured 14 Sep 2026: an OR of four sites leaks
+ * non-scoped hosts and pushes the marketplace pages out; an OR of two holds. So a MARKETPLACE
+ * scope always gets its own query (Shopee dominates a shared one and TikTok Shop vanishes),
+ * and the remaining scopes are OR-ed in pairs.
  */
+const MAX_SITES_PER_QUERY = 2
 const siteOperand = (scopes: DiscoveryScope[]): string =>
   scopes.length === 1 ? `site:${scopes[0].site}` : `(${scopes.map(s => `site:${s.site}`).join(' OR ')})`
+
+function queryGroups(scopes: DiscoveryScope[]): DiscoveryScope[][] {
+  const groups: DiscoveryScope[][] = scopes.filter(s => s.segment === 'marketplace').map(s => [s])
+  const rest = scopes.filter(s => s.segment !== 'marketplace')
+  for (let i = 0; i < rest.length; i += MAX_SITES_PER_QUERY) groups.push(rest.slice(i, i + MAX_SITES_PER_QUERY))
+  return groups
+}
 
 /**
  * Discover merchant pages for the given subjects (venue / hotel / product
@@ -122,10 +132,17 @@ export async function discoverCommerceHints(
     if (!name) continue
     const needed = scopesNeeded(scopes, subject.knownUrls ?? [])
     if (needed.length === 0) continue
-    if (budget <= 0) break
-    budget--
     const locality = subject.locality?.trim()
-    tasks.push({ subjectId: subject.id, scopes: needed, query: `${quote(name)}${locality ? ` ${locality}` : ''} ${siteOperand(needed)}` })
+    for (const group of queryGroups(needed)) {
+      if (budget <= 0) break
+      budget--
+      // A marketplace listing title is long and seller-decorated ("… Chính hãng VN/A [Viettel Store]"), so an
+      // exact-phrase query finds nothing there (measured 14 Sep 2026: 0 rows quoted, the product unquoted);
+      // the tool layer's product-identity guard keeps the precision. Venue and hotel names stay quoted.
+      const term = group.every(s => s.segment === 'marketplace') ? name.replace(/["\n\r]/g, ' ').trim() : quote(name)
+      tasks.push({ subjectId: subject.id, scopes: group, query: `${term}${locality ? ` ${locality}` : ''} ${siteOperand(group)}` })
+    }
+    if (budget <= 0) break
   }
   return runSearches(tasks, search)
 }
