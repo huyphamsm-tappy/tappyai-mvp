@@ -310,24 +310,43 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
           discovered = []
         }
       }
-      let attachedAny = false
+      // Hints per subject: the row's own URL first, then discovery in its rank order.
+      const hintsOf = new Map<string, DiscoveryHint[]>()
       for (const s of subjects) {
-        const row = targets[Number(s.id)]
         const hints: DiscoveryHint[] = [
           ...(s.knownUrls ?? []).map(url => ({ url, title: s.subject })),
           ...discovered.filter(d => d.subjectId === s.id).map(d => ({ url: d.url, title: d.title ?? s.subject })),
         ].filter(h => !contradictsCity(h.url, requestedCity)) // P2-8: a Trip.com page in another city is not this hotel
-        if (hints.length === 0) continue
-        // P0-1: read the merchant page before offering a booking. A verified hint carries the
-        // verdict; an unverified one (budget exhausted / fetch failed) stays unknown and the
-        // adapter then emits the detail page only, never the hold grammar.
-        if (verifyPages) {
-          for (const h of hints) {
-            if (!h.url || verifyBudget <= 0) continue
+        if (hints.length > 0) hintsOf.set(s.id, hints)
+      }
+      // P0-1: read the merchant page before offering a booking. The read budget is spent
+      // ROUND-ROBIN — every venue's best hint before any venue's second — so one venue with
+      // two pages cannot leave the next venue unread (measured in the Phase 8 live probe). A
+      // verified hint carries the verdict; once a venue has one, its unread spare hints are
+      // dropped rather than offered as "unverified"; a venue with NO read at all keeps its
+      // hints unknown, and the adapter then emits the detail page only, never the hold grammar.
+      if (verifyPages) {
+        for (let pass = 0; verifyBudget > 0; pass++) {
+          let any = false
+          for (const hints of hintsOf.values()) {
+            const h = hints[pass]
+            if (!h?.url) continue
+            any = true
+            if (verifyBudget <= 0) break
             verifyBudget--
             h.verified = await verifyMerchantPage(h.url, { fetchText: ctx.fetchText, now })
           }
+          if (!any) break
         }
+        for (const [id, hints] of hintsOf) {
+          if (hints.some(h => h.verified)) hintsOf.set(id, hints.filter(h => h.verified))
+        }
+      }
+      let attachedAny = false
+      for (const s of subjects) {
+        const row = targets[Number(s.id)]
+        const hints = hintsOf.get(s.id)
+        if (!hints || hints.length === 0) continue
         const cfg = configurationFor(s.subject)
         const request: CommerceRequest = { domain: plan.domain, intentType, capability, subject: s.subject.slice(0, 200), ...(cfg ? { configuration: cfg.configuration } : {}), ...constraints, context }
         const out = resolve(request, { hints, now, enabled: true })
@@ -362,7 +381,13 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
             [COMMERCE_LINKS_KEY]: dedupeLinks([], out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, [], { primary: true }))),
           })
         }
-        if (added.length > 0) r[plan.listKey] = [...(r[plan.listKey] as unknown[]), ...added]
+        // Placed right after the ranker's #1, not appended: the card shows three rows and a
+        // spa turn has eight venues, so an appended package was never visible (Internal UAT
+        // R2, spa). The engine's lead stays the lead; the packages follow it.
+        if (added.length > 0) {
+          const current = r[plan.listKey] as unknown[]
+          r[plan.listKey] = [...current.slice(0, 1), ...added, ...current.slice(1)]
+        }
       }
     }
     return result

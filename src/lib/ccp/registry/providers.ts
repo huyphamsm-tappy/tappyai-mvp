@@ -127,15 +127,17 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     tier: 'mvp',
     notes: ['No affiliate programme in use; direct deep link (Plan §9: affiliate optional).', 'Reservation URL expires with the 5-minute hold.'],
     discovery: { site: 'pasgo.vn/nha-hang', subjectKind: 'restaurant' },
-    // Verified read-only 13 Sep 2026 (owner-like UAT R1 + Phase 8): a bookable restaurant page
-    // carries the reservation widget (`name="sfAdult"`) and PasGo's own booking redirect
-    // (`linkChuyenHuongBooking = …/dat-cho-ngay/<id>?returnUrl=/nha-hang/<slug>-<id>`); a venue
-    // that left the programme shows "đã dừng đặt chỗ trên hệ thống PasGo", and one it does not
-    // serve shows "Chưa hỗ trợ đặt bàn qua PasGo" on the form.
+    // Measured read-only 13 Sep 2026 (owner-like UAT R1 + Phase 8 live probe) on four restaurant
+    // pages: the reservation WIDGET (`<select name="sfAdult">`, ~465 KB into a ~540 KB page) is
+    // rendered only on a bookable venue (Rakuen Hotpot 3875: yes; Jaspas 1255/1257, Saigon Fusion
+    // 2098, Hotpot Story 3064: no). PasGo's `linkChuyenHuongBooking` script variable appears on
+    // EVERY restaurant page, bookable or not, so it is deliberately not a signal. A venue that
+    // left the programme shows "đã dừng đặt chỗ trên hệ thống PasGo"; one PasGo lists but does
+    // not serve shows "Chưa hỗ trợ đặt bàn qua PasGo". The byte cap covers the whole page.
     bookability: {
-      requires: ['linkChuyenHuongBooking', 'name="sfAdult"'],
+      requires: ['name="sfAdult"'],
       refuses: ['đã dừng đặt chỗ', 'Chưa hỗ trợ đặt bàn qua PasGo'],
-      maxBytes: 450_000,
+      maxBytes: 1_000_000,
     },
   },
   {
