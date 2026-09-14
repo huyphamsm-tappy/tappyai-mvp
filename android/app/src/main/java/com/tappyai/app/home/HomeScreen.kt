@@ -1,5 +1,6 @@
 package com.tappyai.app.home
 
+import androidx.compose.ui.draw.drawBehind
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -15,6 +16,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -30,6 +32,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,6 +42,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.automirrored.filled.Chat
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.LocalOffer
@@ -49,6 +53,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SportsEsports
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.outlined.CalendarMonth
@@ -83,6 +88,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -147,6 +154,20 @@ fun HomeScreen(
     val deals by viewModel.dealsState.collectAsStateWithLifecycle()
     val recommendations by viewModel.recommendationsState.collectAsStateWithLifecycle()
     val userName by viewModel.userName.collectAsStateWithLifecycle()
+    // The hero heading is the EXISTING time-of-day engine ([HomeGreeting] through
+    // [HomeViewModel.greeting]): 7 local-time slots × weekday/weekend × day-of-month rotation, the
+    // same text the web computes for the same day. Read on each composition (no timer), in the
+    // language the resolved resources chose — the pre-V3 contract, restored 2026-09-14 after the
+    // regression audit (the V3 rebuild had replaced it with a static line). The V3 name line rides
+    // above it — see [heroGreeting].
+    val engineGreeting = viewModel.greeting(booleanResource(R.bool.resources_are_english))
+    val resources = LocalContext.current.resources
+    val hero = heroGreeting(
+        engineGreeting,
+        userName,
+        named = { name -> resources.getString(R.string.home_v3_greeting_named, name) },
+        generic = { resources.getString(R.string.home_v3_greeting_generic) },
+    )
 
     // The whole Home surface renders in the V3 palette, in whichever appearance the system asks
     // for — see [V3HomeTheme] for why this is a scoped override rather than a theme change.
@@ -163,7 +184,7 @@ fun HomeScreen(
                     .widthIn(max = TappyContainers.content)
                     .fillMaxWidth()
                     .padding(TappySpacing.xl),
-                verticalArrangement = Arrangement.spacedBy(TappySpacing.xxxl),
+                verticalArrangement = Arrangement.spacedBy(28.dp),
             ) {
                 // ── PRIMARY AI BLOCK (master mockup 05_07_31) ─────────────────────────────
                 // Header (drawn by the shell) -> hero -> ask box -> quick suggestions. The pills
@@ -171,8 +192,8 @@ fun HomeScreen(
                 // below it; the mockup places them the same way.
                 // The mockup reads the greeting and the ask box as one block, so they get their
                 // own tighter spacing instead of the section rhythm the rest of the page uses.
-                Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-                    V3HeroSection(userName = userName)
+                Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.xxl)) {
+                    V3HeroSection(hero = hero)
                     V3AskBar(onClick = { onNavigateToTab(HomeTab.Chat) })
                 }
                 V3QuickSuggestionsSection(
@@ -237,80 +258,130 @@ private val HeroAccent300 = Color(0xFFFFBD66)
 private val Primary400 = Color(0xFF3391FF)
 
 /**
- * The V3 AI-agent hero, per the master mockup.
+ * The V3 welcome hero (front-page redesign 2026-09-14, from the owner's approved mockup).
  *
- * Deliberately has NO card, container or border: the mascot sits on the page background at the
- * upper right, bleeding past the content padding, over a soft radial glow with a few sparkle
- * accents. The greeting sits to its left.
+ *   Hi Huy! 👋                          ┌──────────┐   the welcome line is the anchor; under it the
+ *   Cơm trưa chưa?                      │  mascot  │   time-of-day engine's two lines, verbatim —
+ *   Hỏi Tappy trước khi Google nha 😄   │  + glow  │   Tappy greeting and keeping company, not a
+ *                                       └──────────┘   dashboard header
  *
- * [userName] is the real display name from the existing account profile, or null when it is not
- * known (signed out, anonymous, or a failed load) — in which case the greeting falls back to a
- * generic form rather than inventing a name.
- *
- * 🔑 THE GREETING IS THE APPROVED V3 CONTRACT (web `HomeV3.tsx`: `v3.home.greetUser` = "Hi {name}!",
- * `v3.home.greetGuest` = "Chào bạn!"), decided 2026-09-14 after the historical audit: the pre-V3
- * time-of-day engine (`HomeGreeting.heroText`) is NOT this hero's source and must not be wired
- * back in; the "time × day × five domains" system is the Suggested Prompts engine, a separate
- * feature. Both platforms show the same static, name-personalised line.
+ * No card, no border: the mascot sits on the page ground over a soft radial glow with a few
+ * sparkles, to the right of the copy and never over it. [hero] comes from [heroGreeting]: the V3
+ * welcome ("Hi {name}! 👋" for a known name, the guest line otherwise), then the engine's first
+ * line as the contextual title and its second as the supporting line — the dynamic heading
+ * restored 2026-09-14 (regression audit), in the mockup's hierarchy (welcome 28sp › title 20sp ›
+ * supporting 15sp) rather than as a 30sp headline.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun V3HeroSection(userName: String?) {
-    // Tall enough for the mascot's visible art and no taller: the previous 216dp left a band of
-    // dead space under the centred greeting, which pushed the ask bar far below where the mockup
-    // puts it. The mascot itself is unchanged.
-    Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
-        // Radial AI glow behind the mascot. A real radial gradient rather than a blurred
-        // circle: Modifier.blur clips to its own layer bounds, which drew the glow as a
-        // visible rectangle behind the mascot. Decorative only.
+private fun V3HeroSection(hero: HeroGreeting) {
+    // The copy column (welcome › title › supporting › status pills) sets the hero's height; the
+    // mascot is drawn over it in an unbounded 0dp-high slot, so a short greeting never leaves a
+    // dead band under the copy and a long one never collides with the mascot's feet.
+    Box(modifier = Modifier.fillMaxWidth().heightIn(min = 212.dp)) {
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = 44.dp, y = (-16).dp)
-                .size(268.dp)
-                .background(
-                    Brush.radialGradient(listOf(HomeV3.HeroGlow, Color.Transparent)),
-                ),
-        )
+                .height(0.dp)
+                .wrapContentHeight(unbounded = true, align = Alignment.Top),
+        ) {
+            Box(modifier = Modifier.size(250.dp).offset(x = 44.dp, y = (-18).dp)) {
+                // Radial AI glow behind the mascot. A real radial gradient rather than a blurred
+                // circle: Modifier.blur clips to its own layer bounds, which drew the glow as a
+                // visible rectangle.
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .offset(x = 20.dp, y = (-18).dp)
+                        .size(320.dp)
+                        .background(Brush.radialGradient(listOf(HomeV3.HeroGlow, Color.Transparent))),
+                )
+                Image(
+                    painter = painterResource(R.drawable.tappy_wave),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+        }
         // Sparkle accents, mirroring the mockup's particle cluster around the mascot.
-        Sparkle(size = 12.dp, alpha = 0.9f, x = 176.dp, y = 34.dp)
-        Sparkle(size = 8.dp, alpha = 0.7f, x = 150.dp, y = 96.dp)
-        Sparkle(size = 7.dp, alpha = 0.55f, x = 196.dp, y = 140.dp)
-        Image(
-            painter = painterResource(R.drawable.tappy_wave),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                // Bleeds past the page padding, as in the mockup.
-                .offset(x = 22.dp)
-                .size(212.dp),
-        )
+        Sparkle(size = 12.dp, alpha = 0.9f, x = 240.dp, y = 4.dp)
+        Sparkle(size = 8.dp, alpha = 0.7f, x = 232.dp, y = 168.dp)
+        Sparkle(size = 7.dp, alpha = 0.55f, x = 356.dp, y = 136.dp)
         Column(
             modifier = Modifier
-                .align(Alignment.CenterStart)
-                .fillMaxWidth(0.58f),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                .align(Alignment.TopStart)
+                .padding(top = 10.dp)
+                .fillMaxWidth(0.62f),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
         ) {
             Text(
-                text = userName
-                    ?.let { stringResource(R.string.home_v3_greeting_named, it) }
-                    ?: stringResource(R.string.home_v3_greeting_generic),
-                fontSize = 30.sp,
-                lineHeight = 36.sp,
+                text = hero.welcome,
+                fontSize = 36.sp,
+                lineHeight = 42.sp,
+                fontWeight = FontWeight.ExtraBold,
+                letterSpacing = (-0.5).sp,
+                color = HomeV3.OnSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = hero.title,
+                fontSize = 24.sp,
+                lineHeight = 29.sp,
                 fontWeight = FontWeight.Bold,
                 color = HomeV3.OnSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
-                text = stringResource(R.string.home_v3_hero_tagline),
-                fontSize = 15.sp,
+                // The engine's second line; the static tagline only if a template ever lacks one.
+                text = hero.supporting ?: stringResource(R.string.home_v3_hero_tagline),
+                fontSize = 16.sp,
                 lineHeight = 21.sp,
                 color = HomeV3.OnSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
+            // The two status pills under the copy (mockup): a live dot + "Luôn sẵn sàng", and the
+            // three-word promise. Visual reinforcement in the owner's approved wording, not a claim
+            // computed from anything. They wrap inside the copy column so they never run under the
+            // mascot.
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                modifier = Modifier.padding(top = TappySpacing.sm),
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(StatusGreen.copy(alpha = 0.16f))
+                        .padding(horizontal = 12.dp, vertical = 7.dp),
+                ) {
+                    Box(modifier = Modifier.size(7.dp).clip(CircleShape).background(StatusGreen))
+                    Text(text = stringResource(R.string.home_v3_status_ready), fontSize = 13.sp, lineHeight = 16.sp, fontWeight = FontWeight.Medium, color = StatusGreen)
+                }
+                Text(
+                    text = stringResource(R.string.home_v3_status_traits),
+                    fontSize = 13.sp,
+                    lineHeight = 16.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = HomeV3.OnSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(HomeV3.SurfaceVariant)
+                        .padding(horizontal = 12.dp, vertical = 7.dp),
+                )
+            }
         }
     }
 }
+
+private val StatusGreen = Color(0xFF34D399)
 
 /** One decorative sparkle dot in the hero's particle cluster. */
 @Composable
@@ -334,12 +405,16 @@ private fun BoxScope.Sparkle(size: androidx.compose.ui.unit.Dp, alpha: Float, x:
  */
 @Composable
 private fun V3AskBar(onClick: () -> Unit) {
+    val shape = RoundedCornerShape(34.dp)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(30.dp))
+            .height(72.dp)
+            // The soft blue/purple halo that makes this THE action on the page.
+            .shadow(elevation = 18.dp, shape = shape, ambientColor = HomeV3.Purple.copy(alpha = 0.55f), spotColor = HomeV3.Purple.copy(alpha = 0.55f))
+            .clip(shape)
             .background(HomeV3.Surface)
-            .border(1.dp, HomeV3.Outline, RoundedCornerShape(30.dp))
+            .border(1.dp, Brush.linearGradient(listOf(HomeV3.Purple.copy(alpha = 0.55f), HomeV3.Blue.copy(alpha = 0.45f))), shape)
             .clickable(onClickLabel = stringResource(R.string.home_v3_ask_action), onClick = onClick)
             .padding(start = TappySpacing.xxl, end = TappySpacing.md, top = TappySpacing.md, bottom = TappySpacing.md),
         horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
@@ -347,7 +422,7 @@ private fun V3AskBar(onClick: () -> Unit) {
     ) {
         Text(
             text = stringResource(R.string.home_v3_ask_placeholder),
-            fontSize = 16.sp,
+            fontSize = 17.sp,
             color = HomeV3.OnSurfaceVariant,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -379,8 +454,19 @@ private fun V3AskBar(onClick: () -> Unit) {
 private data class V3QuickAction(
     val icon: ImageVector,
     @StringRes val labelRes: Int,
+    /** The one-line blurb under the label — the mockup's, in the owner's approved wording. */
+    @StringRes val descRes: Int,
+    /** The icon tile's gradient — presentation only, one warm/cool hue per card as in the mockup. */
+    val tile: List<Color>,
     val onClick: () -> Unit,
 )
+
+private val QuickTileOrange = listOf(Color(0xFFFF8A4C), Color(0xFFFF5F6D))
+private val QuickTileBlue = listOf(Color(0xFF4F8CFF), Color(0xFF6A5CFF))
+private val QuickTileGreen = listOf(Color(0xFF34D399), Color(0xFF10B981))
+private val QuickTilePink = listOf(Color(0xFFFF6FB5), Color(0xFFD946EF))
+private val QuickTileViolet = listOf(Color(0xFF8B7BFF), Color(0xFF6D4AFF))
+private val QuickTileAmber = listOf(Color(0xFFFFA94D), Color(0xFFFF7A3D))
 
 /**
  * "Goi y nhanh" — six outlined pills in a 2x3 grid, as in the master mockup.
@@ -406,12 +492,12 @@ private fun V3QuickSuggestionsSection(
     val cafePrompt = stringResource(R.string.home_v3_quick_cafe_prompt)
     val planPrompt = stringResource(R.string.home_v3_quick_plan_prompt)
     val actions = listOf(
-        V3QuickAction(Icons.Outlined.LocalCafe, R.string.home_v3_quick_cafe) { onOpenChatWithPrefill(cafePrompt) },
-        V3QuickAction(Icons.Outlined.Translate, R.string.home_v3_quick_translate, onOpenTranslate),
-        V3QuickAction(Icons.Outlined.People, R.string.home_v3_quick_splitbill, onOpenSplitBill),
-        V3QuickAction(Icons.Outlined.EditNote, R.string.home_v3_quick_caption, onOpenVietWriter),
-        V3QuickAction(Icons.Outlined.Place, R.string.home_v3_quick_travel, onOpenRecommendations),
-        V3QuickAction(Icons.Outlined.CalendarMonth, R.string.home_v3_quick_plan) { onOpenChatWithPrefill(planPrompt) },
+        V3QuickAction(Icons.Outlined.LocalCafe, R.string.home_v3_quick_cafe, R.string.home_v3_quick_cafe_desc, QuickTileOrange) { onOpenChatWithPrefill(cafePrompt) },
+        V3QuickAction(Icons.Outlined.Translate, R.string.home_v3_quick_translate, R.string.home_v3_quick_translate_desc, QuickTileBlue, onOpenTranslate),
+        V3QuickAction(Icons.Outlined.People, R.string.home_v3_quick_splitbill, R.string.home_v3_quick_splitbill_desc, QuickTileGreen, onOpenSplitBill),
+        V3QuickAction(Icons.Outlined.EditNote, R.string.home_v3_quick_caption, R.string.home_v3_quick_caption_desc, QuickTilePink, onOpenVietWriter),
+        V3QuickAction(Icons.Outlined.Place, R.string.home_v3_quick_travel, R.string.home_v3_quick_travel_desc, QuickTileViolet, onOpenRecommendations),
+        V3QuickAction(Icons.Outlined.CalendarMonth, R.string.home_v3_quick_plan, R.string.home_v3_quick_plan_desc, QuickTileAmber) { onOpenChatWithPrefill(planPrompt) },
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
@@ -423,7 +509,7 @@ private fun V3QuickSuggestionsSection(
             onLinkClick = onOpenChat,
         )
         actions.chunked(2).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg), modifier = Modifier.height(IntrinsicSize.Min)) {
                 row.forEach { action ->
                     V3QuickPill(action = action, modifier = Modifier.weight(1f))
                 }
@@ -432,34 +518,62 @@ private fun V3QuickSuggestionsSection(
     }
 }
 
+/**
+ * One quick suggestion — front-page redesign: a compact gradient icon tile, the suggestion, and a
+ * chevron on a dark rounded surface. The label is the existing suggestion string; the mockup's
+ * one-line blurbs under each label have no authored copy, so none is drawn.
+ */
 @Composable
 private fun V3QuickPill(action: V3QuickAction, modifier: Modifier = Modifier) {
     val label = stringResource(action.labelRes)
+    val shape = RoundedCornerShape(20.dp)
     Row(
         modifier = modifier
-            .height(60.dp)
-            .clip(RoundedCornerShape(18.dp))
-            .border(1.dp, HomeV3.Outline, RoundedCornerShape(18.dp))
+            .fillMaxHeight()
+            .heightIn(min = 96.dp)
+            .clip(shape)
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline.copy(alpha = 0.7f), shape)
             .clickable(onClickLabel = label, onClick = action.onClick)
-            // Tighter than the usual pill inset: the longest label ("Len ke hoach cuoi tuan")
-            // needs the width to stay on one line, as every label does in the mockup.
-            .padding(horizontal = TappySpacing.md),
+            .padding(start = 10.dp, end = 6.dp, top = 12.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(Brush.linearGradient(action.tile)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(imageVector = action.icon, contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
+        }
+        // A 412dp phone gives each card ~110dp of text: the label may take two lines and the
+        // blurb two, which is what keeps the mockup's title-over-blurb hierarchy legible here.
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(
+                text = label,
+                fontSize = 14.sp,
+                lineHeight = 17.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = HomeV3.OnSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = stringResource(action.descRes),
+                fontSize = 11.5.sp,
+                lineHeight = 14.sp,
+                color = HomeV3.OnSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
         Icon(
-            imageVector = action.icon,
+            imageVector = Icons.Filled.ChevronRight,
             contentDescription = null,
-            tint = HomeV3.OnSurfaceVariant,
-            modifier = Modifier.size(21.dp),
-        )
-        Text(
-            text = label,
-            fontSize = 13.sp,
-            lineHeight = 17.sp,
-            color = HomeV3.OnSurface,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
+            tint = HomeV3.OnSurfaceVariant.copy(alpha = 0.7f),
+            modifier = Modifier.size(16.dp),
         )
     }
 }
@@ -595,47 +709,72 @@ private fun V3RecommendationCard(item: Recommendation, @DrawableRes art: Int, on
 @Composable
 private fun V3DiscoverBanner(onClick: () -> Unit) {
     val label = stringResource(R.string.home_v3_banner_title)
+    val shape = RoundedCornerShape(24.dp)
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
-            .background(
-                Brush.linearGradient(listOf(Color(0xFF3B2E8F), Color(0xFF1B2A6B), Color(0xFF16265C))),
-            )
-            .border(1.dp, HomeV3.Purple.copy(alpha = 0.28f), RoundedCornerShape(24.dp))
+            .shadow(elevation = 14.dp, shape = shape, ambientColor = HomeV3.Purple.copy(alpha = 0.45f), spotColor = HomeV3.Purple.copy(alpha = 0.45f))
+            .clip(shape)
+            .background(Brush.linearGradient(listOf(Color(0xFF5B3FE0), Color(0xFF3D4BE0), Color(0xFF2B62E8))))
+            .drawBehind {
+                // A soft light behind the arrow, the mockup's "glow in the corner".
+                drawCircle(
+                    Brush.radialGradient(listOf(Color.White.copy(alpha = 0.22f), Color.Transparent), center = Offset(size.width * 0.9f, size.height * 0.5f), radius = size.height * 1.1f),
+                    radius = size.height * 1.1f, center = Offset(size.width * 0.9f, size.height * 0.5f),
+                )
+            }
             .clickable(onClickLabel = label, onClick = onClick)
-            .padding(horizontal = TappySpacing.xxl, vertical = TappySpacing.xl),
+            .padding(horizontal = 18.dp, vertical = 22.dp),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(RoundedCornerShape(18.dp))
+                    .background(Color.White.copy(alpha = 0.16f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.WorkspacePremium,
+                    contentDescription = null,
+                    tint = Color(0xFFFFD166),
+                    modifier = Modifier.size(34.dp),
+                )
+            }
             Column(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
             ) {
                 Text(
                     text = label,
                     fontSize = 18.sp,
-                    lineHeight = 24.sp,
+                    lineHeight = 23.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     text = stringResource(R.string.home_v3_banner_subtitle),
                     fontSize = 13.sp,
-                    color = Color.White.copy(alpha = 0.72f),
+                    lineHeight = 17.sp,
+                    color = Color.White.copy(alpha = 0.78f),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .size(52.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.14f)),
+                    .background(Color.White.copy(alpha = 0.18f)),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(21.dp),
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }
@@ -652,12 +791,29 @@ private fun V3SectionHeading(title: String, linkText: String, onLinkClick: () ->
     ) {
         Text(
             text = title,
-            fontSize = 20.sp,
+            fontSize = 22.sp,
+            lineHeight = 26.sp,
             fontWeight = FontWeight.Bold,
             color = HomeV3.OnSurface,
             modifier = Modifier.weight(1f),
         )
-        SectionLink(text = linkText, onClick = onLinkClick)
+        V3SeeAll(text = linkText, onClick = onLinkClick)
+    }
+}
+
+/** "Xem tất cả ›" — the accent link with the mockup's trailing chevron. */
+@Composable
+private fun V3SeeAll(text: String, onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .clip(RoundedCornerShape(10.dp))
+            .clickable(onClickLabel = text, onClick = onClick)
+            .padding(horizontal = 6.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        Text(text = text, fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = HomeV3.Purple)
+        Icon(imageVector = Icons.Filled.ChevronRight, contentDescription = null, tint = HomeV3.Purple, modifier = Modifier.size(18.dp))
     }
 }
 
@@ -751,32 +907,34 @@ private fun V3DealsSection(state: UiState<List<Deal>>, onOpenDeals: () -> Unit) 
         ) {
             Box(
                 modifier = Modifier
-                    .size(36.dp)
-                    .clip(CircleShape)
-                    .background(Color(0xFFFF8A4C)),
+                    .size(52.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Brush.linearGradient(listOf(Color(0xFFFF9A5C), Color(0xFFFF6A3D)))),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Filled.LocalOffer,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(19.dp),
+                    modifier = Modifier.size(24.dp),
                 )
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = stringResource(R.string.home_v3_deals_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 21.sp,
+                    lineHeight = 25.sp,
+                    fontWeight = FontWeight.Bold,
                     color = HomeV3.OnSurface,
                 )
                 Text(
                     text = stringResource(R.string.home_v3_deals_subtitle),
-                    style = MaterialTheme.typography.bodySmall,
+                    fontSize = 13.sp,
+                    lineHeight = 17.sp,
                     color = HomeV3.OnSurfaceVariant,
                 )
             }
-            SectionLink(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)
+            V3SeeAll(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)
         }
 
         when (state) {
@@ -824,59 +982,77 @@ private fun V3DealsEmpty() {
     }
 }
 
+/**
+ * One offer, front-page redesign: an image area (the feed's `bannerImage` when a row carries one,
+ * else the category-tinted panel — never a stand-in photograph), the partner's mark, the
+ * promotion as the largest line when the feed states one, then the title and the source line.
+ * Same data, same destination as before (affiliate routing is a later task).
+ */
 @Composable
 private fun V3DealCard(deal: Deal, onClick: () -> Unit) {
     val accent = dealAccent(deal.category)
+    val shape = RoundedCornerShape(22.dp)
+    val banner = deal.bannerImage?.takeIf { it.isNotBlank() }
+    val discount = deal.discountLabel?.takeIf { it.isNotBlank() }
     Column(
         modifier = Modifier
-            .width(200.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .width(248.dp)
+            .clip(shape)
             .background(HomeV3.Surface)
-            .border(1.dp, HomeV3.Outline, RoundedCornerShape(20.dp))
+            .border(1.dp, HomeV3.Outline.copy(alpha = 0.8f), shape)
             .clickable(onClickLabel = deal.title, onClick = onClick),
     ) {
+        // With a photo or a promotion the band is tall and the mark sits in its corner; with
+        // neither (today's feed) the band is shorter and the mark IS the visual, not an empty box.
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
-                .background(
-                    Brush.linearGradient(
-                        listOf(accent.copy(alpha = 0.5f), accent.copy(alpha = 0.12f)),
-                    ),
-                ),
+                .height(if (banner != null || discount != null) 136.dp else 104.dp)
+                .background(Brush.linearGradient(listOf(accent.copy(alpha = 0.55f), accent.copy(alpha = 0.14f)))),
         ) {
+            // Real artwork only when the feed sends it; a load failure leaves the tinted panel.
+            banner?.let { image ->
+                TappyImage(
+                    url = image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+            // The bottom scrim keeps the promotion legible on any panel or photo.
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Brush.verticalGradient(0.35f to Color.Transparent, 1f to Color.Black.copy(alpha = 0.55f))),
+            )
             // The partner's mark — the web Deals card's BrandLogo (registry mark → the deal's own
-            // logo image → monogram), the SAME component the Deals screen draws. A generic offer
-            // glyph stood here before; a Shopee deal now carries Shopee's mark, as on the web.
-            Box(modifier = Modifier.align(Alignment.CenterStart).padding(start = 12.dp)) {
+            // logo image → monogram), the SAME component the Deals screen draws.
+            Box(modifier = Modifier.align(if (banner != null || discount != null) Alignment.TopStart else Alignment.CenterStart).padding(horizontal = 16.dp, vertical = 14.dp)) {
                 PartnerMark(deal = deal, size = 40.dp)
             }
             // Only rendered when the feed actually carries a promotion — most deals have none.
-            deal.discountLabel?.takeIf { it.isNotBlank() }?.let { discount ->
+            discount?.let { discount ->
                 Text(
                     text = discount,
-                    style = MaterialTheme.typography.labelSmall,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 22.sp,
+                    lineHeight = 26.sp,
+                    fontWeight = FontWeight.ExtraBold,
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(10.dp)
-                        .clip(RoundedCornerShape(999.dp))
-                        .background(Color.Black.copy(alpha = 0.55f))
-                        .padding(horizontal = 8.dp, vertical = 3.dp),
+                    modifier = Modifier.align(Alignment.BottomStart).padding(horizontal = 14.dp, vertical = 10.dp),
                 )
             }
         }
         Column(
-            modifier = Modifier.padding(TappySpacing.lg),
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 12.dp),
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
         ) {
             Text(
                 text = deal.title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                fontWeight = FontWeight.Bold,
                 color = HomeV3.OnSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
@@ -885,7 +1061,8 @@ private fun V3DealCard(deal: Deal, onClick: () -> Unit) {
                 // "{category} · via {partner}" — composed from the Deals screen's own `via` string
                 // so the two surfaces attribute a partner in exactly the same words.
                 text = deal.category + " · " + stringResource(R.string.deals_via_source, deal.partnerName),
-                style = MaterialTheme.typography.labelSmall,
+                fontSize = 12.sp,
+                lineHeight = 16.sp,
                 color = HomeV3.OnSurfaceVariant,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

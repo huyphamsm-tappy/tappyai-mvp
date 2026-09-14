@@ -105,6 +105,6 @@ class HomeImageParityTest {
         assertTrue("1. registry mark", mark.contains("if (hasBrandLogo(deal.partnerName)) {") && mark.contains("BrandLogo(partnerName = deal.partnerName, size = size, decorative = true)"))
         assertTrue("2. the deal's own image, with the monogram on a load failure", mark.contains("url = logo,") && mark.contains("onError = monogram,"))
         assertTrue("3. the monogram", mark.contains("deal.partnerName.trim().take(1).uppercase()"))
-        assertTrue("Home's Xem tất cả is unchanged", home.contains("SectionLink(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)"))
+        assertTrue("Home's Xem tất cả still opens the existing Deals surface (2026-09-14 redesign: the link gained a chevron, not a destination)", home.contains("V3SeeAll(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)"))
     }
 }

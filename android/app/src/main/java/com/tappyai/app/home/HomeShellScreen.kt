@@ -1,6 +1,7 @@
 package com.tappyai.app.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
@@ -22,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -211,7 +214,14 @@ fun HomeShellScreen(
                             selectedIndex = currentTab.ordinal,
                             onSelect = { index -> navController.selectTab(HomeTab.entries[index]) },
                         )
-                        isHomeTab -> V3HomeTheme { bar() }
+                        // Home wears the V3 palette and the mockup's hairline where the bar meets the
+                        // page; the bar itself (items, indices, onSelect) is the same component.
+                        isHomeTab -> V3HomeTheme {
+                            Column {
+                                HorizontalDivider(thickness = 1.dp, color = HomeV3.Outline)
+                                bar()
+                            }
+                        }
                         else -> bar()
                     }
                 }

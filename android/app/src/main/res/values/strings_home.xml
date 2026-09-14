@@ -91,6 +91,15 @@
     <string name="home_v3_quick_plan">Plan my weekend</string>
     <string name="home_v3_quick_plan_prompt">Help me plan this weekend</string>
     <string name="home_v3_quick_splitbill">Split a bill 4 ways</string>
+    <!-- Home V3 front page (owner mockup 2026-09-14): hero status pills + quick-suggestion blurbs -->
+    <string name="home_v3_status_ready">Always ready</string>
+    <string name="home_v3_status_traits">Fast · Accurate · Helpful</string>
+    <string name="home_v3_quick_cafe_desc">Hot spots for you</string>
+    <string name="home_v3_quick_translate_desc">Fast and accurate</string>
+    <string name="home_v3_quick_splitbill_desc">Quick and fair</string>
+    <string name="home_v3_quick_caption_desc">Creative, engaging</string>
+    <string name="home_v3_quick_travel_desc">Based on your taste</string>
+    <string name="home_v3_quick_plan_desc">A detailed itinerary</string>
     <string name="home_v3_quick_title">Quick suggestions</string>
     <string name="home_v3_quick_translate">Translate this text</string>
     <string name="home_v3_quick_travel">Travel spot ideas</string>

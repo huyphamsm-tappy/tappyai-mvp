@@ -91,6 +91,15 @@
     <string name="home_v3_quick_plan">Lên kế hoạch cuối tuần</string>
     <string name="home_v3_quick_plan_prompt">Giúp mình lên kế hoạch cuối tuần này</string>
     <string name="home_v3_quick_splitbill">Chia hóa đơn 4 người</string>
+    <!-- Home V3 front page (owner mockup 2026-09-14): hero status pills + quick-suggestion blurbs -->
+    <string name="home_v3_status_ready">Luôn sẵn sàng</string>
+    <string name="home_v3_status_traits">Nhanh · Chính xác · Hữu ích</string>
+    <string name="home_v3_quick_cafe_desc">Gợi ý địa điểm hot</string>
+    <string name="home_v3_quick_translate_desc">Nhanh và chính xác</string>
+    <string name="home_v3_quick_splitbill_desc">Tính nhanh, công bằng</string>
+    <string name="home_v3_quick_caption_desc">Sáng tạo, thu hút</string>
+    <string name="home_v3_quick_travel_desc">Theo sở thích của bạn</string>
+    <string name="home_v3_quick_plan_desc">Lịch trình chi tiết</string>
     <string name="home_v3_quick_title">Gợi ý nhanh</string>
     <string name="home_v3_quick_translate">Dịch đoạn văn này</string>
     <string name="home_v3_quick_travel">Gợi ý địa điểm du lịch</string>
