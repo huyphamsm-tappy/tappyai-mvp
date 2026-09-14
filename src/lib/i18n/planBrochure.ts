@@ -27,7 +27,6 @@ export interface PlanBrochureStrings {
   madeBy: string
   madeByLine: string
   share: string
-  noPhoto: string
   notFoundTitle: string
   notFoundBody: string
   notFoundCta: string
@@ -56,7 +55,6 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     madeBy: 'Được tạo bởi',
     madeByLine: 'Một chuyến đi, theo cách của bạn.',
     share: 'Chia sẻ',
-    noPhoto: 'Chưa có ảnh',
     notFoundTitle: 'Không tìm thấy kế hoạch này',
     notFoundBody: 'Liên kết có thể đã sai hoặc kế hoạch đã được gỡ.',
     notFoundCta: 'Về TappyAI',
@@ -83,7 +81,6 @@ const STRINGS: Record<RequestLocale, PlanBrochureStrings> = {
     madeBy: 'Created by',
     madeByLine: 'One trip, your way.',
     share: 'Share',
-    noPhoto: 'No photo yet',
     notFoundTitle: 'This plan could not be found',
     notFoundBody: 'The link may be wrong, or the plan has been taken down.',
     notFoundCta: 'Go to TappyAI',

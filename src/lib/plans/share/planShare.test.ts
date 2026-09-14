@@ -77,11 +77,27 @@ describe('toPlanShareSnapshot — the whitelist', () => {
   })
 
   it.each([
-    [PHOTO_A, true], [PHOTO_B, true], ['https://storage.googleapis.com/tappyai-media-prod/a.jpg', true],
+    [PHOTO_A, true], [PHOTO_B, true], ['https://lh3.ggpht.com/p/x', true],
+    // 🚨 THE IMAGE RULE: TappyAI's own media bucket holds clip/review thumbnails,
+    // which are not photos of a place. Never a canonical place image.
+    ['https://storage.googleapis.com/tappyai-media-prod/thumbnails/u/clip.jpg', false],
     ['https://notgoogleusercontent.com/x', false], ['https://googleusercontent.com.evil.test/x', false],
     ['https://127.0.0.1/x.png', false], ['data:image/png;base64,AAAA', false], ['', false],
   ])('isPlanPhotoUrl(%s) → %s', (url, ok) => {
     expect(isPlanPhotoUrl(url)).toBe(ok)
+  })
+
+  it('🚨 IMAGE RULE: a clip/review thumbnail on photo_url is dropped from the snapshot — it never becomes a place photo', () => {
+    const plan = quyNhon()
+    const clipThumb = 'https://storage.googleapis.com/tappyai-media-prod/thumbnails/f9077a52-b0f3-453a-a497-97da115ae386/Dmj1gsRANM7jZDyBIkcXiOKa.jpg'
+    for (const d of plan.days) for (const it of d.items) it.photo_url = clipThumb
+    const snap = toPlanShareSnapshot(plan)!
+    expect(JSON.stringify(snap)).not.toContain('storage.googleapis.com')
+    for (const d of snap.days) for (const it of d.items) expect(it.photo_url).toBeUndefined()
+    // And so the brochure has no hero and no highlights: nothing is substituted.
+    const b = brochureOf(snap)
+    expect(b.hero).toBeNull()
+    expect(b.highlights).toEqual([])
   })
 
   it('keeps only safe https links and drops a summary that carries a url or runs long', () => {

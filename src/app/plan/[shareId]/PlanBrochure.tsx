@@ -1,4 +1,4 @@
-import { MapPin, CalendarDays, Users, Wallet, ArrowRight, Route, ExternalLink, Ticket, Image as ImageIcon } from 'lucide-react'
+import { MapPin, CalendarDays, Users, Wallet, ArrowRight, Route, ExternalLink, Ticket } from 'lucide-react'
 import type { RequestLocale } from '@/lib/i18n/requestLocale'
 import { fill, planBrochureStrings } from '@/lib/i18n/planBrochure'
 import { planShareUrl, type PlanBrochure as Brochure, type PlanShareItem } from '@/lib/plans/share/planShare'
@@ -8,10 +8,16 @@ import PlanBrochureShare from './PlanBrochureShare'
 // ── The brochure — the approved composition, rendered from the snapshot ─────
 //
 // Everything on this page is a field of the published snapshot or a count of
-// its stops. Sections whose data is absent are not drawn: no photo → the branded
-// fallback hero and no highlights panel; no `people` → no travellers row; no
-// `budget_total` → no budget row; no summary → no quote card. Nothing is
-// substituted, guessed from the title, or pulled from a stock pool.
+// its stops. Sections whose data is absent are not drawn: no `people` → no
+// travellers row; no `budget_total` → no budget row; no summary → no quote card.
+//
+// 🚨 THE IMAGE RULE — accuracy and cost over pictures. A photo appears ONLY when
+// the plan carries a canonical place photo (`photo_url`, allow-listed to the
+// place-photo CDNs in planShare.ts). Without one: the hero is a text/branding
+// block with no background image, a stop is a text card with no image frame,
+// and the highlights panel is absent. No placeholder, no stock art, no clip or
+// review thumbnail standing in, no image of another place, and no AI/API/search
+// call made just to find a picture.
 //
 // Server component: no state, no effects. The only client island is the Share
 // button in the bar, which reuses the existing ShareMenu with this page's own
@@ -42,13 +48,18 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
       </header>
 
       <main className="v3-pb-main">
-        {/* ── Hero: the plan's own first photo, or the branded fallback ── */}
+        {/* ── Hero: the plan's own first canonical place photo — or no image at all.
+            🚨 THE IMAGE RULE. With no canonical photo the hero is a text/branding
+            block: no background picture, no placeholder frame, no stock art, no clip
+            thumbnail, and no call to any service to go and find one. */}
         <section className="v3-pb-hero" data-pb-hero data-has-photo={hero ? 'true' : 'false'}>
-          {hero
-            // eslint-disable-next-line @next/next/no-img-element -- allow-listed CDN photo from the plan itself
-            ? <img src={hero} alt="" className="v3-pb-hero-img" fetchPriority="high" decoding="async" />
-            : <div className="v3-pb-hero-fallback" aria-hidden="true"><ImageIcon size={28} strokeWidth={1.5} /><span>{s.noPhoto}</span></div>}
-          <div className="v3-pb-hero-shade" aria-hidden="true" />
+          {hero && (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element -- allow-listed place-photo CDN, from the plan itself */}
+              <img src={hero} alt="" className="v3-pb-hero-img" fetchPriority="high" decoding="async" />
+              <div className="v3-pb-hero-shade" aria-hidden="true" />
+            </>
+          )}
           <div className="v3-pb-hero-copy">
             <p className="v3-pb-eyebrow">{s.eyebrow}</p>
             <h1 className="v3-pb-title" data-pb-title>{snapshot.title}</h1>
@@ -136,16 +147,21 @@ export default function PlanBrochure({ brochure, locale, shareId }: Props) {
   )
 }
 
-/** One stop on the timeline: a compact card, with the real photo when there is one. */
+/**
+ * One stop on the timeline: a compact card, with the canonical place photo when the
+ * plan carries one. Without one the card is text only — name, time, description,
+ * address, price, links — and the image frame is not drawn at all (no emoji tile, no
+ * placeholder, nothing borrowed from a clip or another place).
+ */
 function Stop({ item, maps, booking }: { item: PlanShareItem; maps: string; booking: string }) {
   return (
     <li className="v3-pb-stop" data-pb-stop data-has-photo={item.photo_url ? 'true' : 'false'}>
       <span className="v3-pb-stop-time" data-pb-time>{item.time ?? ''}</span>
       <div className="v3-pb-card">
-        {item.photo_url
-          // eslint-disable-next-line @next/next/no-img-element -- allow-listed CDN photo from the plan itself
-          ? <img src={item.photo_url} alt="" className="v3-pb-card-img" loading="lazy" decoding="async" />
-          : <div className="v3-pb-card-img v3-pb-card-fallback" aria-hidden="true">{item.emoji ?? '📍'}</div>}
+        {item.photo_url && (
+          // eslint-disable-next-line @next/next/no-img-element -- allow-listed place-photo CDN, from the plan itself
+          <img src={item.photo_url} alt="" className="v3-pb-card-img" loading="lazy" decoding="async" />
+        )}
         <div className="v3-pb-card-body">
           <p className="v3-pb-card-name">{item.name}</p>
           {item.description && <p className="v3-pb-card-desc">{item.description}</p>}

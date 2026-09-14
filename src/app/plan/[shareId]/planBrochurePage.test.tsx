@@ -113,8 +113,14 @@ describe('the page', () => {
     expect(out).toContain('250.000đ/người')
     expect(out).toContain('href="https://maps.google.com/?cid=1"')
     expect(out).toContain('href="https://www.klook.com/x"')
-    // A stop without a photo gets the branded tile, never a stand-in picture.
-    expect(out).toMatch(/class="v3-pb-stop"[^>]*data-has-photo="false"[\s\S]*?v3-pb-card-fallback/)
+    // 🚨 IMAGE RULE: a stop WITH a canonical photo draws it; a stop WITHOUT one is a
+    // text card — no image frame, no emoji tile, no placeholder, no stand-in picture.
+    expect(out).toMatch(new RegExp(`class="v3-pb-stop"[^>]*data-has-photo="true"[^>]*>[\\s\\S]*?<img src="${PHOTO_B.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*class="v3-pb-card-img"`))
+    const textStop = out.match(/<li class="v3-pb-stop"[^>]*data-has-photo="false"[^>]*>[\s\S]*?<\/li>/)?.[0] ?? ''
+    expect(textStop).toContain('Quảng trường Quy Nhơn')
+    expect(textStop).not.toContain('<img')
+    expect(textStop).not.toContain('v3-pb-card-img')
+    expect(out).not.toContain('v3-pb-card-fallback')
     // Overview + highlights (the two distinct photos, named by their stop).
     expect(out).toContain('data-pb-overview')
     expect(out).toMatch(/data-pb-highlights[\s\S]*Bãi Kỳ Co[\s\S]*Hải sản Nhơn Lý/)
@@ -129,12 +135,18 @@ describe('the page', () => {
     expect(out).toContain('class="v3-theme dark v3-pb"')
   })
 
-  it('a sparse plan draws only what it has: no photo → branded hero, no highlights; no people, no budget, no summary → no rows', async () => {
+  it('🚨 IMAGE RULE: a sparse plan draws only what it has: no canonical photo → text hero with no background image and no frame, no highlights; no people, no budget, no summary → no rows', async () => {
     h.row = stored({ type: 'evening', title: 'Tối nay ăn gì', days: [{ label: 'Tối nay', items: [{ time: '19:00', emoji: '🍜', category: 'food', name: 'Phở Lệ' }] }] })
     const out = await html()
     expect(out).toMatch(/data-pb-hero[^>]*data-has-photo="false"/)
-    expect(out).toContain('v3-pb-hero-fallback')
-    expect(out).not.toContain('v3-pb-hero-img')
+    // The hero is copy only: title straight inside the section, nothing drawn behind it.
+    const hero = out.match(/<section class="v3-pb-hero"[^>]*>[\s\S]*?<\/section>/)?.[0] ?? ''
+    expect(hero).toContain('Tối nay ăn gì')
+    expect(hero).not.toContain('<img')
+    expect(hero).not.toContain('v3-pb-hero-img')
+    expect(hero).not.toContain('v3-pb-hero-shade')
+    expect(out).not.toContain('v3-pb-hero-fallback')
+    expect(out).not.toContain('v3-pb-card-fallback')
     expect(out).not.toContain('data-pb-highlights')
     expect(out).not.toContain('data-pb-people')
     expect(out).not.toContain('data-pb-budget')
@@ -144,6 +156,25 @@ describe('the page', () => {
     expect(out).toContain('1 điểm dừng')
     expect(out).toContain('Phở Lệ')
     // No stand-in photo anywhere.
+    expect(out).not.toMatch(/<img[^>]*src="https?:\/\/(?!www\.tappyai\.com)/)
+  })
+
+  it('🚨 IMAGE RULE: a clip/review thumbnail on photo_url is NOT rendered — even from a stored row that still carries it', async () => {
+    const clipThumb = 'https://storage.googleapis.com/tappyai-media-prod/thumbnails/f9077a52-b0f3-453a-a497-97da115ae386/Dmj1gsRANM7jZDyBIkcXiOKa.jpg'
+    const plan = quyNhon()
+    for (const d of plan.days) for (const it of d.items) it.photo_url = clipThumb
+    // Bypass the writer's whitelist: the row as a hand-edited or pre-rule writer might have left it.
+    h.row = { id: ID, plan: { v: 1, type: 'trip', title: plan.title, days: plan.days.map(d => ({ label: d.label, items: d.items.map(it => ({ ...it })) })) }, created_at: '2026-09-13T00:00:00Z' }
+    const out = await html()
+    expect(out).not.toContain('storage.googleapis.com')
+    expect(out).not.toContain(clipThumb)
+    expect(out).toMatch(/data-pb-hero[^>]*data-has-photo="false"/)
+    expect(out).not.toContain('v3-pb-hero-img')
+    expect(out).not.toContain('v3-pb-card-img')
+    expect(out).not.toContain('data-pb-highlights')
+    expect(out.match(/data-pb-stop/g)).toHaveLength(4)
+    for (const m of out.matchAll(/class="v3-pb-stop"[^>]*data-has-photo="([a-z]+)"/g)) expect(m[1]).toBe('false')
+    // No external image of any kind — nothing substituted, nothing fetched.
     expect(out).not.toMatch(/<img[^>]*src="https?:\/\/(?!www\.tappyai\.com)/)
   })
 

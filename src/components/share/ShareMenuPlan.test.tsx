@@ -100,13 +100,30 @@ describe('the mini brochure preview', () => {
     expect(preview.textContent).not.toContain('Kế hoạch từ TappyAI:')
   })
 
-  it('no photo → branded hero, nothing borrowed', () => {
+  it('🚨 IMAGE RULE: no canonical photo → text header, no image frame, no placeholder icon, nothing borrowed', () => {
     published()
     const bare: TappyPlan = { ...plan, days: [{ label: 'Tối nay', items: [{ time: '19:00', emoji: '🍜', category: 'food', name: 'Phở Lệ' }] }] }
     render(<ShareMenu artifact={buildPlanArtifact(bare, 'vi', env)} open onClose={() => {}} />)
     const hero = screen.getByTestId('share-preview').querySelector('[data-plan-preview-hero]')!
     expect(hero.getAttribute('data-has-photo')).toBe('false')
     expect(hero.querySelector('img[src^="https://"]')).toBeNull()
+    // No frame: no absolutely-positioned image layer, no lucide placeholder — only the brand mark and the copy.
+    expect(hero.querySelector('svg')).toBeNull()
+    expect(hero.querySelector('.absolute')).toBeNull()
+    expect(hero.querySelector('[data-plan-preview-title]')!.textContent).toBe('Quy Nhơn 3 ngày 2 đêm')
+    expect(hero.textContent).toContain('Tappy Plan')
+  })
+
+  it('🚨 IMAGE RULE: a clip/review thumbnail on photo_url is never the hero', () => {
+    published()
+    const clipThumb = 'https://storage.googleapis.com/tappyai-media-prod/thumbnails/f9077a52/clip.jpg'
+    const withClip: TappyPlan = { ...plan, days: [{ label: 'Ngày 1', items: [{ time: '09:00', emoji: '🏖️', category: 'entertainment', name: 'Bãi Kỳ Co', photo_url: clipThumb }] }] }
+    render(<ShareMenu artifact={buildPlanArtifact(withClip, 'vi', env)} open onClose={() => {}} />)
+    const preview = screen.getByTestId('share-preview')
+    const hero = preview.querySelector('[data-plan-preview-hero]')!
+    expect(hero.getAttribute('data-has-photo')).toBe('false')
+    expect(preview.querySelector('img[src^="https://"]')).toBeNull()
+    expect(preview.innerHTML).not.toContain('storage.googleapis.com')
   })
 
   it('the link line shows the plan url once it is minted', async () => {

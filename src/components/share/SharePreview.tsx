@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Star, MapPin, ChevronDown, ChevronUp, CalendarDays, Users, Wallet, Route, Image as ImageIcon } from 'lucide-react'
+import { Star, MapPin, ChevronDown, ChevronUp, CalendarDays, Users, Wallet, Route } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import type { ShareArtifact } from '@/lib/share/shareArtifact'
 import { BRAND } from '@/lib/share/openGraph'
@@ -125,10 +125,12 @@ const PREVIEW_STOPS_PER_DAY = 3
 /**
  * The mini brochure: the same composition as /plan/<shareId>, at card size.
  *
- * Hero from the plan's own first photo (branded fallback when there is none),
- * the eyebrow, title and real counts, the first days as "time · name" lines,
- * the link it will carry, and the attribution. Every value is a snapshot
- * field or a count of them — the page can only show more of the same.
+ * Hero from the plan's own first canonical photo — and, 🚨 THE IMAGE RULE, a
+ * text header with no image frame when there is none (no placeholder icon, no
+ * stock art, no clip thumbnail, nothing borrowed) — the eyebrow, title and real
+ * counts, the first days as "time · name" lines, the link it will carry, and the
+ * attribution. Every value is a snapshot field or a count of them — the page can
+ * only show more of the same.
  */
 function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanShareSnapshot; url: string; lang: 'vi' | 'en'; children?: React.ReactNode }) {
   const s = planBrochureStrings(lang)
@@ -139,22 +141,20 @@ function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanSha
 
   return (
     <div data-testid="share-preview" data-plan-preview className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--v3-border, #e5e7eb)', background: '#0B1220', color: '#F4F6FB' }}>
-      <div className="relative h-32 w-full overflow-hidden" data-plan-preview-hero data-has-photo={hero ? 'true' : 'false'}>
-        {hero
-          // eslint-disable-next-line @next/next/no-img-element -- allow-listed CDN photo from the plan itself
-          ? <img src={hero} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
-          : <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, rgba(51,145,255,0.35), rgba(139,92,246,0.35)), #0B1220' }} aria-hidden="true"><ImageIcon size={22} className="opacity-60" /></div>}
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(7,10,18,0.05) 0%, rgba(7,10,18,0.85) 100%)' }} aria-hidden="true" />
-        <div className="absolute left-3 top-2.5 flex items-center gap-1.5">
-          {/* eslint-disable-next-line @next/next/no-img-element -- local SVG, no pipeline needed */}
-          <img src="/logo.svg" alt="" aria-hidden="true" width={18} height={18} className="rounded" />
-          <span className="text-[11px] font-bold tracking-[0.18em]">TAPPY</span>
+      {hero ? (
+        <div className="relative h-32 w-full overflow-hidden" data-plan-preview-hero data-has-photo="true">
+          {/* eslint-disable-next-line @next/next/no-img-element -- allow-listed CDN photo from the plan itself */}
+          <img src={hero} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(7,10,18,0.05) 0%, rgba(7,10,18,0.85) 100%)' }} aria-hidden="true" />
+          <div className="absolute left-3 top-2.5"><MiniBrand /></div>
+          <div className="absolute bottom-2.5 left-3 right-3"><MiniTitle eyebrow={s.eyebrow} title={snapshot.title} /></div>
         </div>
-        <div className="absolute bottom-2.5 left-3 right-3">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: '#8FB8FF' }}>{s.eyebrow}</p>
-          <p className="mt-0.5 truncate text-base font-extrabold leading-tight" data-plan-preview-title>{snapshot.title}</p>
+      ) : (
+        <div className="px-3 pb-1 pt-2.5" data-plan-preview-hero data-has-photo="false" style={{ background: 'linear-gradient(160deg, rgba(51,145,255,0.16), rgba(139,92,246,0.16)), #0B1220' }}>
+          <MiniBrand />
+          <div className="mt-2.5"><MiniTitle eyebrow={s.eyebrow} title={snapshot.title} /></div>
         </div>
-      </div>
+      )}
 
       <div className="space-y-2 px-3 py-2.5">
         <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[11px] font-medium" style={{ color: 'rgba(244,246,251,0.8)' }} data-plan-preview-meta>
@@ -184,5 +184,24 @@ function PlanMiniBrochure({ snapshot, url, lang, children }: { snapshot: PlanSha
         {children}
       </div>
     </div>
+  )
+}
+
+function MiniBrand() {
+  return (
+    <div className="flex items-center gap-1.5">
+      {/* eslint-disable-next-line @next/next/no-img-element -- local SVG, no pipeline needed */}
+      <img src="/logo.svg" alt="" aria-hidden="true" width={18} height={18} className="rounded" />
+      <span className="text-[11px] font-bold tracking-[0.18em]">TAPPY</span>
+    </div>
+  )
+}
+
+function MiniTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
+  return (
+    <>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: '#8FB8FF' }}>{eyebrow}</p>
+      <p className="mt-0.5 truncate text-base font-extrabold leading-tight" data-plan-preview-title>{title}</p>
+    </>
   )
 }

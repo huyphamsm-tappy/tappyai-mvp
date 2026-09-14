@@ -58,6 +58,15 @@ describe('planOgContent', () => {
   it('a withdrawn link is the brand alone, with no photo', async () => {
     expect(await planOgContent('NoSuchPlan00')).toEqual({ eyebrow: 'Tappy Plan', title: 'TappyAI', line: 'Một chuyến đi, theo cách của bạn.', photo: null })
   })
+
+  it('🚨 IMAGE RULE: a stored clip/review thumbnail is not the social image — photo is null, the card is text', async () => {
+    const clipThumb = 'https://storage.googleapis.com/tappyai-media-prod/thumbnails/f9077a52/clip.jpg'
+    h.row = { id: ID, plan: { v: 1, title: 'Quy Nhơn 3 ngày 2 đêm', days: [{ label: 'Ngày 1', items: [{ name: 'Bãi Kỳ Co', photo_url: clipThumb }] }] }, created_at: '' }
+    const c = await planOgContent(ID)
+    expect(c.photo).toBeNull()
+    expect(c.title).toBe('Quy Nhơn 3 ngày 2 đêm')
+    expect(renderToStaticMarkup(planOgCard(c, 'Be Vietnam Pro'))).not.toContain('<img')
+  })
 })
 
 describe('the composition handed to the rasteriser', () => {

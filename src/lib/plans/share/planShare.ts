@@ -16,17 +16,22 @@ import { absoluteUrl } from '@/lib/share/openGraph'
 // and invents nothing: no dates, no nights, no destination the plan did not
 // state, no photo the enrichment step did not attach.
 //
-// 🚨 PHOTOS ARE ALLOW-LISTED BY HOST. `photo_url` is written by
-// `streamEnrichment.injectPlanPhotos` from a matched place — a Google CDN
-// address (Serper thumbnails on gstatic, Places photos resolved to
-// googleusercontent). The public page and the OG image put that URL in an
-// <img>, so only those hosts pass: a recipient's browser and the OG renderer
-// never fetch an arbitrary origin because a payload said so.
+// 🚨 PHOTOS ARE ALLOW-LISTED BY HOST, AND THE LIST IS THE CANONICAL PLACE
+// IMAGE RULE. `photo_url` is written by `streamEnrichment.injectPlanPhotos`
+// from a matched PLACE — a Google place-photo CDN address (Serper thumbnails on
+// gstatic, Places photos resolved to googleusercontent). Only those hosts pass.
+//
+// Deliberately NOT on the list: `storage.googleapis.com`, TappyAI's own media
+// bucket. That is where clip and review thumbnails live, and a clip frame is
+// not a photo of a place — it must never become a hero or a stop image just so
+// the brochure has a picture. A plan that carries such a URL renders WITHOUT
+// an image (the page drops the frame entirely); nothing is substituted, no
+// stock art, and no extra API call is ever made to find one.
 
 export const PLAN_SHARE_ID_RE = /^[A-Za-z0-9]{12}$/
 
-/** Hosts a plan photo may live on. Anchored on the registrable suffix. */
-const PHOTO_HOSTS = ['googleusercontent.com', 'gstatic.com', 'ggpht.com', 'storage.googleapis.com']
+/** Hosts a canonical place photo may live on. Anchored on the registrable suffix. */
+const PHOTO_HOSTS = ['googleusercontent.com', 'gstatic.com', 'ggpht.com']
 
 export function isPlanPhotoUrl(value: string | null | undefined): value is string {
   if (typeof value !== 'string' || !isSafeHttpsUrl(value)) return false
@@ -223,7 +228,7 @@ export interface BrochureHighlight {
 
 export interface PlanBrochure {
   snapshot: PlanShareSnapshot
-  /** The first real stop photo. Null when the plan has none — the page shows the branded fallback. */
+  /** The first canonical stop photo. Null when the plan has none — the hero is then text only, with no image frame. */
   hero: string | null
   dayCount: number
   stopCount: number
