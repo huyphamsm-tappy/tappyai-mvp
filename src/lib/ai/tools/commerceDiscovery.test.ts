@@ -16,8 +16,13 @@ describe('discovery scopes come from the registry', () => {
     expect(discoveryScopesFor('food_drink', 'order_delivery').map(s => s.providerId)).toEqual(['grabfood', 'shopeefood'])
     expect(discoveryScopesFor('entertainment', 'book_activity').map(s => s.providerId)).toEqual(['klook'])
     expect(discoveryScopesFor('spa', 'buy_spa_voucher').map(s => s.providerId)).toEqual(['klook'])
-    // CGV has no film tool to discover from: film pages are only used when a row already carries one.
-    expect(discoveryScopesFor('entertainment', 'buy_ticket')).toEqual([])
+    // Completion Pass (14 Sep 2026): CGV film pages are discovered by film TITLE (the seam runs the
+    // scope only when the user named a film); flights have no discovery (composed grammars).
+    expect(discoveryScopesFor('entertainment', 'buy_ticket').map(s => [s.providerId, s.subjectKind])).toEqual([['cgv', 'film']])
+    expect(discoveryScopesFor('entertainment', 'buy_event_ticket').map(s => [s.providerId, s.subjectKind])).toEqual([['ticketbox', 'event']])
+    expect(discoveryScopesFor('travel', 'book_transport').map(s => [s.providerId, s.subjectKind])).toEqual([['vexere', 'route']])
+    // (the former expectation, kept as history)
+    // CGV had no film tool to discover from: film pages were only used when a row already carries one.
     expect(discoveryScopesFor('travel', 'book_flight')).toEqual([])
   })
 

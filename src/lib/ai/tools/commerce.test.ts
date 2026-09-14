@@ -127,7 +127,8 @@ describe('Trip.com — hotel rows discovered by a scoped search, dates preserved
     const { search } = searchStub({ 'site:vn.trip.com/hotels': [{ title: 'x', link: 'https://vn.trip.com.attacker.example/hotels/detail/?hotelId=1', snippet: '' }] })
     const row = booking()
     await attachCommerceLinks('get_hotel_prices', { search_results: [row] }, { enabled: true, search, now: NOW })
-    expect(links(row)).toEqual([])
+    // The look-alike never becomes a Trip.com link; the row's own Booking.com page is its only link (Completion Pass).
+    expect(links(row).map(l => l.providerId)).toEqual(['booking'])
   })
 })
 
@@ -168,14 +169,16 @@ describe('CGV / Klook — the authentication boundary travels with the link', ()
 })
 
 describe('discovery budget and shortlist scope', () => {
-  it('spends at most 3 searches per tool call and only on the shortlist', async () => {
+  it('spends at most 3 searches per tool call: the shortlist first, then the leading rows up to the row cap', async () => {
     const { search, calls } = searchStub({})
     const rows = Array.from({ length: 8 }, (_, i) => ({ title: `Hotel ${i} - Đà Nẵng - Booking.com`, link: `https://www.booking.com/hotel/vn/h${i}.html` }))
     const result = { search_results: rows, _tappy_shortlist: [{ name: 'Hotel 5' }, { name: 'Hotel 2' }] }
     await attachCommerceLinks('get_hotel_prices', result, { enabled: true, search, now: NOW })
-    expect(calls).toHaveLength(2)
+    // Completion Pass: the card shows three rows, so the two shortlisted hotels AND the leading row are resolved.
+    expect(calls).toHaveLength(3)
     expect(calls.some(q => q.includes('"Hotel 5"'))).toBe(true)
     expect(calls.some(q => q.includes('"Hotel 2"'))).toBe(true)
+    expect(calls.some(q => q.includes('"Hotel 0"'))).toBe(true)
     const many = { search_results: rows }
     calls.length = 0
     await attachCommerceLinks('get_hotel_prices', many, { enabled: true, search, now: NOW })
@@ -223,8 +226,12 @@ describe('end to end through the canonical recommendation architecture', () => {
     const view = buildPlacesLiveView([stay], {})
     expect(view?.items[0].actions[0].commerce?.linkId).toBe(stay.entity.actions[0].commerce?.linkId)
     expect(view?.items[0].actions[0].platform).toBe("Trip.com")
-    // The legacy Booking.com SEARCH link is still there, after the verified one.
-    expect(stay.entity.actions.some(a => a.kind === 'booking' && a.urlKind === 'search')).toBe(true)
+    // Completion Pass (14 Sep 2026): the row's own Booking.com page is now a Commerce Link WITH the
+    // stay ("Đặt phòng trên Booking.com"); the legacy Booking.com SEARCH and the bare row link give
+    // way to it — one Booking.com action, the property page, never a duplicate.
+    const booking = stay.entity.actions.filter(a => a.platform === 'Booking.com')
+    expect(booking.map(a => [a.urlKind, a.commerce?.providerId])).toEqual([['direct', 'booking']])
+    expect(booking[0].url).toContain('/hotel/vn/muong-thanh.vi.html?checkin=2026-10-10&checkout=2026-10-12')
 
     const place = { name: 'Quá Ngon', address: '1 Lê Lợi', maps_link: 'https://maps.google.com/?cid=1' }
     const places = { results: [place], _tappy_place_domain: 'food', source: 'Google Maps' }

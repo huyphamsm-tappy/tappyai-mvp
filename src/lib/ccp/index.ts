@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { CCP_ENABLED } from '@/lib/config/product'
 import type { CommerceLink, CommerceRequest, CommerceResult, Offer, ProviderFailure } from './domain/types'
 import { parseCommerceRequest } from './domain/request'
-import { adaptersFor, isMarketplaceAdapter, type DiscoveryHint, type ProviderAdapter } from './adapters'
+import { adaptersFor, isSearchCapableAdapter, type DiscoveryHint, type ProviderAdapter } from './adapters'
 import { resolveDeepLink } from './resolver/resolve'
 import { rankLinks } from './ranking/score'
 import { RANKING_VERSION } from './ranking/weights'
@@ -11,7 +11,7 @@ import { isExpired } from './domain/freshness'
 
 export type * from './domain/types'
 export { parseCommerceRequest, CommerceRequestSchema } from './domain/request'
-export { PROVIDER_REGISTRY, getProvider, providersFor, providersForCapability, supportsCapability, depthProfileForCapability } from './registry'
+export { PROVIDER_REGISTRY, getProvider, providersFor, providersForCapability, supportsCapability, depthProfileForCapability, providerStatus, monetizationStatus, linkStrategyFor, type ProviderStatus, type MonetizationStatus, type LinkStrategyStep } from './registry'
 export { COMMERCE_CAPABILITIES, INTENT_CAPABILITY, DOMAIN_CAPABILITIES, capabilityForIntent } from './domain/types'
 export { resolveDeepLink } from './resolver/resolve'
 export { rankLinks } from './ranking/score'
@@ -20,7 +20,7 @@ export { projectToCta, actionKindFor, urlKindFor, type CommerceCta } from './cta
 export { emitCommerceEvent, setCommerceEventWriter } from './events/sink'
 export { installCommerceObservability } from './events/observabilityBridge'
 export { discoveryScopesFor, providerOwning, type DiscoveryScope } from './discovery'
-export { COMMERCE_LINKS_KEY, projectCommerceLinkRow, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from './row'
+export { COMMERCE_LINKS_KEY, projectCommerceLinkRow, isCommerceLinkRow, requiresMerchantLogin, handoffTypeOf, type CommerceLinkRow } from './row'
 export type { DiscoveryHint } from './adapters'
 
 // ── Orchestrator (Plan §2 core flow) ─────────────────────────────────────────
@@ -89,10 +89,11 @@ export function resolveCommerce(input: unknown, opts: ResolveCommerceOptions = {
       const offer = adapter.toOffer(request, hint, now)
       if (offer) mine.push(offer)
     }
-    // Marketplace fallback (owner decision 14 Sep 2026, §8 product identity): when no product page
-    // for the subject was discovered, the merchant's own search page for the user's words is an
-    // honest offer — labelled as a search, ranked below every detail link, never a fabricated SKU.
-    if (mine.length === 0 && isMarketplaceAdapter(adapter)) {
+    // Search / landing fallback (owner decision 14 Sep 2026, §8 product identity; Completion Pass
+    // for travel and events): when no subject page was discovered, the merchant's own search or
+    // landing page for the request is an honest offer — labelled as a search, ranked below every
+    // detail link by what it drops, never a fabricated id.
+    if (mine.length === 0 && isSearchCapableAdapter(adapter)) {
       const search = adapter.searchOffer(request, now)
       if (search) mine.push(search)
     }

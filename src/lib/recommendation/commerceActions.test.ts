@@ -26,7 +26,9 @@ function row(over: Partial<CommerceLinkRow> = {}): CommerceLinkRow {
     capability: 'hotel_booking',
     depth: 4,
     guestDepth: 5,
+    authenticatedDepth: 5,
     authRequiredAt: 'none',
+    handoff: 'guest',
     expiresAt: '2026-10-09T17:00:00.000Z',
     freshness: { source: 'registry:tripcom', retrievedAt: NOW, expiresAt: null, freshnessType: 'static', confidence: 1 },
     assumedParams: ['adults'],
@@ -47,7 +49,7 @@ describe('buildActions with commerce_links', () => {
     expect(actions[0]).toMatchObject({ kind: 'booking', urlKind: 'direct', platform: 'Trip.com', priority: -1 })
     expect(actions[0].commerce).toEqual({
       linkId: 'a'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom',
-      depth: 4, guestDepth: 5, authRequiredAt: 'none', loginRequired: false, freshnessType: 'static',
+      depth: 4, guestDepth: 5, authenticatedDepth: 5, authRequiredAt: 'none', loginRequired: false, handoff: 'guest', freshnessType: 'static',
       expiresAt: '2026-10-09T17:00:00.000Z', tracked: false, capability: 'hotel_booking', primary: true,
     })
     // The legacy Booking.com search handoff is still offered, after it.

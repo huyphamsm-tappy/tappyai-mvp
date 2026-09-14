@@ -3,7 +3,7 @@ import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
 import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
-import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
+import { searchTemplates } from '@/lib/ccp/adapters'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
@@ -85,7 +85,10 @@ const hostOf = (url: string): string => {
 /** Hosts the Commerce Capability Platform owns the handoff for (registry allow-lists, exact). */
 const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, ''))))
 /** The marketplaces' declared search grammars (URL prefixes) — honest L2 searches the registry itself projects. */
-const MARKETPLACE_SEARCH_PREFIXES = marketplaceSearchTemplates().map(t => t.template.slice(0, t.template.indexOf('{q}')))
+// Only a grammar that CARRIES the query is an honest search button. A front-door template (Agoda,
+// Vexere — declared so the legacy builders stay registry projections) is a front door here, and a
+// model button on it ("🏨 Agoda - Phú Quốc" → agoda.com/vi-vn/, live UAT 14 Sep 2026) is dropped.
+const MARKETPLACE_SEARCH_PREFIXES = searchTemplates().filter(t => t.template.includes('{q}')).map(t => t.template.slice(0, t.template.indexOf('{q}')))
 const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.some(p => url.startsWith(p))
 
 /**
@@ -106,6 +109,10 @@ const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.som
 export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   const host = hostOf(btn.url)
   if (!host) return false
+  // Completion Pass live UAT (14 Sep 2026): "🚌 Vexere - Phương Trang" pointed at a redBus page. A
+  // label that NAMES a registry merchant must point at that merchant — anything else is a
+  // mislabelled destination, and no relabelling can make it honest.
+  if (namesOtherMerchant(btn.label, host)) return true
   const kind = promisedKind(btn.label) ?? (btn.type === 'ticket' ? 'ticket' : null)
   if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
   if (!CCP_MERCHANT_HOSTS.has(host)) return false
@@ -115,10 +122,22 @@ export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   let path = '/'
   try { path = new URL(btn.url).pathname.replace(/\/+$/, '') || '/' } catch { return true /* unparseable on a CCP host */ }
   // A front door: the root, or a one-word section like tiktok.com/shop — never a product slug.
-  const segments = path.split('/').filter(Boolean)
+  // A locale segment ("/vi-vn/", "/vn/vi/") is not a subject: agoda.com/vi-vn/ is a front door.
+  const segments = path.split('/').filter(Boolean).filter(s => !/^[a-z]{2}(?:-[a-z]{2})?$/i.test(s))
   if (segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))) return true
   if (isDirectEntityUrl(btn.url)) return false
   return !!kind
+}
+
+/** Registry merchants by name (longest first, so "ShopeeFood" is matched before "Shopee"). */
+const MERCHANTS_BY_NAME = PROVIDER_REGISTRY
+  .map(e => ({ name: e.merchantName, re: new RegExp(`(?<![\\p{L}\\p{N}])${e.merchantName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu'), hosts: e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, '')) }))
+  .sort((a, b) => b.name.length - a.name.length)
+
+/** Does the label name a registry merchant whose hosts do not include the URL's host? */
+function namesOtherMerchant(label: string, host: string): boolean {
+  const named = MERCHANTS_BY_NAME.find(m => m.re.test(label))
+  return !!named && !named.hosts.includes(host)
 }
 
 /** Every button, validated. Order is preserved; only a button that cannot be made honest is dropped. */

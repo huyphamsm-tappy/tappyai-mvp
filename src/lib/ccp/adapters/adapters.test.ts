@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+import { CCP_ADAPTERS } from '@/lib/config/product'
 import type { CommerceRequest } from '../domain/types'
 import { dmxAdapter } from './dmx'
 import { tripcomAdapter } from './tripcom'
@@ -104,11 +105,12 @@ describe('adapter grammars — golden URLs from the Transaction Depth Audit', ()
   it('adaptersFor honours per-adapter flags and intent support', () => {
     const req: CommerceRequest = { domain: 'spa', intentType: 'buy_spa_voucher', subject: 'x' }
     expect(adaptersFor(req).map(a => a.providerId)).toEqual(['klook'])
-    const flags = { CCP_ADAPTER_DMX: true, CCP_ADAPTER_TRIPCOM: true, CCP_ADAPTER_CGV: true, CCP_ADAPTER_KLOOK: false, CCP_ADAPTER_SHOPEE: true, CCP_ADAPTER_TIKTOKSHOP: true, CCP_ADAPTER_LAZADA: true, CCP_HANDOFF_ONLY: true } as const
+    const flags = { ...CCP_ADAPTERS, CCP_ADAPTER_KLOOK: false }
     expect(adaptersFor(req, flags)).toEqual([])
     expect(MVP_ADAPTERS).toHaveLength(4) // PasGo removed from scope (14 Sep 2026)
-    // Owner decision 14 Sep 2026: the three shopping marketplaces are adapter-backed too.
-    expect(ADAPTERS.map(a => a.providerId)).toEqual(['dmx', 'tripcom', 'cgv', 'klook', 'shopee', 'tiktokshop', 'lazada'])
+    // Owner decision 14 Sep 2026: the three shopping marketplaces are adapter-backed too; the
+    // Completion Pass (14 Sep 2026) adds the travel search providers and Ticketbox. FROZEN list.
+    expect(ADAPTERS.map(a => a.providerId)).toEqual(['dmx', 'tripcom', 'cgv', 'klook', 'shopee', 'tiktokshop', 'lazada', 'booking', 'agoda', 'traveloka', 'vexere', 'vietnamairlines', 'vietjet', 'ticketbox'])
   })
 })
 

@@ -10,7 +10,7 @@ describe('provider registry', () => {
 
   it('contains the five MVP adapters (D10) plus the three shopping marketplaces (14 Sep 2026), and they agree with the adapter list', () => {
     const mvp = PROVIDER_REGISTRY.filter(p => p.tier === 'mvp').map(p => p.providerId).sort()
-    expect(mvp).toEqual(['cgv', 'dmx', 'klook', 'lazada', 'shopee', 'tiktokshop', 'tripcom'])
+    expect(mvp).toEqual(['agoda', 'booking', 'cgv', 'dmx', 'klook', 'lazada', 'shopee', 'ticketbox', 'tiktokshop', 'traveloka', 'tripcom', 'vexere', 'vietjet', 'vietnamairlines'])
     expect(ADAPTERS.map(a => a.providerId).sort()).toEqual(mvp)
     expect(MVP_ADAPTERS.map(a => a.providerId).sort()).toEqual(['cgv', 'dmx', 'klook', 'tripcom'])
   })
@@ -76,7 +76,10 @@ describe('provider registry', () => {
 
   it('routes intents to providers', () => {
     expect(providersFor('spa', 'buy_spa_voucher').map(p => p.providerId)).toEqual(['klook'])
-    expect(providersFor('travel', 'book_hotel').map(p => p.providerId).sort()).toEqual(['booking', 'tripcom'])
+    expect(providersFor('travel', 'book_hotel').map(p => p.providerId).sort()).toEqual(['agoda', 'booking', 'traveloka', 'tripcom'])
+    expect(providersFor('travel', 'book_flight').map(p => p.providerId).sort()).toEqual(['traveloka', 'tripcom', 'vietjet', 'vietnamairlines'])
+    expect(providersFor('travel', 'book_transport').map(p => p.providerId)).toEqual(['vexere'])
+    expect(providersFor('entertainment', 'buy_event_ticket').map(p => p.providerId)).toEqual(['ticketbox'])
   })
 
   it('ranking weights are versioned, sum to 1 and cap monetisation at 0.05 (D3)', () => {

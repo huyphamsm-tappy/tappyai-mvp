@@ -1098,7 +1098,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => webSearch(query, lang)
+        execute: async ({ query }) => {
+          const r = await webSearch(query, lang)
+          // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
+          // tool — Ticketbox listings are discovered and validated by CCP and projected as
+          // `event_links` (when CCP is on); the result is untouched otherwise.
+          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return r
+        }
       }),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
@@ -1111,14 +1118,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
       get_flight_prices: tool({
-        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales)',
+        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales), kem link dat ve theo dung chang/ngay',
         parameters: z.object({
           origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
+          departDate: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          returnDate: z.string().optional().describe('Ngay ve dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          passengers: z.number().int().min(1).max(9).optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc)'),
         }),
-        execute: async ({ origin, destination }) => {
-          const r = await getFlightPrices(origin, destination, lang)
-          return budget ? applyBudgetFilter(r, budget, 've may bay') : r
+        execute: async ({ origin, destination, departDate, returnDate, passengers }) => {
+          const r = await getFlightPrices(origin, destination, lang, departDate)
+          const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
+          // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
+          // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
+          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return filtered
         }
       }),
       get_hotel_prices: tool({
@@ -1147,8 +1161,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
           destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
           mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
+          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
         }),
-        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+        execute: async ({ origin, destination, mode, date }) => {
+          const r = await getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+          // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return r
+        }
       }),
       ...(authedUserId ? {
         save_price_watch: tool({

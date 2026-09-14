@@ -63,9 +63,11 @@ describe('capability model in the registry', () => {
         expect(inDomain, `${p.providerId}: ${c}`).toBe(true)
       }
     }
-    // PasGo "availability" is the one non-transactional capability declared beyond discovery/detail
-    // (the reservation form reports an unserved slot on the page — audit). Menu is declared by nobody.
-    expect(PROVIDER_REGISTRY.filter(p => p.commerce.includes('menu'))).toEqual([])
+    // Completion Pass (14 Sep 2026): the delivery platforms' restaurant page IS the menu page, so they
+    // declare `menu`; `availability` and `showtime_discovery` are declared by nobody (no source).
+    expect(PROVIDER_REGISTRY.filter(p => p.commerce.includes('menu')).map(p => p.providerId)).toEqual(['grabfood', 'shopeefood'])
+    expect(PROVIDER_REGISTRY.filter(p => p.commerce.includes('availability'))).toEqual([])
+    expect(PROVIDER_REGISTRY.filter(p => p.commerce.includes('showtime_discovery'))).toEqual([])
   })
 })
 

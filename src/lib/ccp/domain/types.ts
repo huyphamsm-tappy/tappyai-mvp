@@ -23,6 +23,8 @@ export const INTENT_TYPES = [
   'buy_ticket',
   'book_activity',
   'buy_spa_voucher',
+  // Provider Integration Completion Pass (14 Sep 2026): concerts / shows / events (Ticketbox).
+  'buy_event_ticket',
 ] as const
 export type IntentType = (typeof INTENT_TYPES)[number]
 
@@ -31,7 +33,7 @@ export const DOMAIN_INTENTS: Record<CommerceDomain, readonly IntentType[]> = {
   shopping: ['buy_product'],
   travel: ['book_hotel', 'book_flight', 'book_transport'],
   food_drink: ['reserve_table', 'order_delivery'],
-  entertainment: ['buy_ticket', 'book_activity'],
+  entertainment: ['buy_ticket', 'book_activity', 'buy_event_ticket'],
   spa: ['buy_spa_voucher'],
 }
 
@@ -62,9 +64,17 @@ export const COMMERCE_CAPABILITIES = [
   'hotel_booking',
   'flight_booking',
   'transport_booking',
-  // entertainment
+  // entertainment — the cinema foundation (Completion Pass, 14 Sep 2026): a FILM page is what a
+  // provider can hand off to today; SHOWTIME discovery (cinema · date · time) has no source and
+  // is declared by no provider, so it is explicitly unavailable rather than faked.
+  'film_discovery',
+  'film_detail',
+  'showtime_discovery',
   'cinema_ticket',
   'activity_booking',
+  'event_discovery',
+  'event_detail',
+  'event_ticket',
   // spa
   'spa_voucher',
   // cross-domain: the provider hands the user to a merchant flow
@@ -83,6 +93,7 @@ export const INTENT_CAPABILITY: Record<IntentType, CommerceCapability> = {
   buy_ticket: 'cinema_ticket',
   book_activity: 'activity_booking',
   buy_spa_voucher: 'spa_voucher',
+  buy_event_ticket: 'event_ticket',
 }
 
 /** Which capabilities a domain contains (discovery/detail/menu included — not every one is transactional). */
@@ -90,7 +101,7 @@ export const DOMAIN_CAPABILITIES: Record<CommerceDomain, readonly CommerceCapabi
   food_drink: ['restaurant_discovery', 'restaurant_detail', 'menu', 'availability', 'food_order', 'food_delivery', 'table_reservation', 'commerce_handoff'],
   shopping: ['product_discovery', 'product_detail', 'product_purchase', 'commerce_handoff'],
   travel: ['hotel_discovery', 'hotel_detail', 'hotel_booking', 'flight_booking', 'transport_booking', 'commerce_handoff'],
-  entertainment: ['cinema_ticket', 'activity_booking', 'commerce_handoff'],
+  entertainment: ['film_discovery', 'film_detail', 'showtime_discovery', 'cinema_ticket', 'activity_booking', 'event_discovery', 'event_detail', 'event_ticket', 'commerce_handoff'],
   spa: ['spa_voucher', 'commerce_handoff'],
 }
 
@@ -166,12 +177,23 @@ export interface HotelConfiguration {
 }
 export interface TransportConfiguration {
   kind: 'transport'
+  /** IATA code for a flight (SGN), a place name for a bus route ("Sài Gòn"). */
   originRef: string
   destinationRef: string
   departDate: string // YYYY-MM-DD
+  /** Present = round trip; a grammar carries both legs or records the return as dropped. */
   returnDate?: string
   passengers?: number
+  /** Flights only; a grammar that cannot carry it records it as page-only. */
+  cabin?: 'economy' | 'premium_economy' | 'business' | 'first'
   mode: 'flight' | 'bus' | 'train'
+}
+export interface EventConfiguration {
+  kind: 'event'
+  eventRef: string
+  city?: string
+  date?: string // YYYY-MM-DD
+  quantity?: number
 }
 export interface ReservationConfiguration {
   kind: 'reservation'
@@ -222,6 +244,7 @@ export type Configuration =
   | CinemaConfiguration
   | ActivityConfiguration
   | SpaConfiguration
+  | EventConfiguration
 
 export type ConfigurationKind = Configuration['kind']
 
@@ -338,6 +361,28 @@ export interface LinkValidation {
   detail?: string
 }
 
+// ── Commerce facts (Completion Pass, 14 Sep 2026 — architecture audit A-2) ───
+// A provider-agnostic, OPTIONAL observation contract: what a source said about
+// price / inventory / availability / schedule for the subject, when, and until
+// when it may be shown. Nothing populates it in this pass — no realtime source
+// is activated — and a link that carries none simply has no `facts`, so the
+// presentation can never mistake "unverified" for "available". A future source
+// (feed, merchant-page read, API) fills the same fields for every provider
+// instead of growing a per-merchant shape.
+export type FactsSource = 'registry' | 'feed' | 'merchant_page' | 'api'
+export interface CommerceFacts {
+  source: FactsSource
+  retrievedAt: string
+  expiresAt: string | null
+  freshnessType: FreshnessType
+  price?: { listPrice: number | null; salePrice: number | null; currency: 'VND' }
+  availability?: AvailabilityState
+  /** Seats / stock when a source states one; never inferred. */
+  inventory?: number | null
+  /** A dated / timed slot the subject is offered for (a showtime, a departure), when a source states one. */
+  schedule?: { date: string; time?: string } | null
+}
+
 export interface CommerceLink {
   linkId: string
   /** The URL handed to the user — a tracking wrapper when one was validated, else the direct URL. */
@@ -364,6 +409,8 @@ export interface CommerceLink {
   /** Human-readable, user-facing; e.g. "CGV yêu cầu đăng nhập trước khi chọn ghế". */
   limitations: string[]
   validation: LinkValidation
+  /** Observed facts for the subject (see CommerceFacts); absent = the link carries none. */
+  facts?: CommerceFacts
 }
 
 // ── Result ───────────────────────────────────────────────────────────────────

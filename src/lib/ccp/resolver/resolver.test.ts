@@ -143,6 +143,9 @@ describe('orchestrator + ranking + fallback', () => {
       if (req.domain === 'shopping') {
         expect(r.links.map(l => l.providerId).sort()).toEqual(['dmx', 'lazada', 'shopee'])
         expect(r.links.slice(1).every(l => l.kind === 'SEARCH_HANDOFF' && l.depth === 2)).toBe(true)
+      } else if (req.domain === 'travel') {
+        // Completion Pass: the OTA search / landing fallbacks follow the verified Trip.com link.
+        expect(r.links.slice(1).every(l => l.kind === 'SEARCH_HANDOFF'), provider).toBe(true)
       } else {
         expect(r.links, provider).toHaveLength(1)
       }
@@ -156,7 +159,8 @@ describe('orchestrator + ranking + fallback', () => {
     const r = resolveCommerce({ domain: 'travel', intentType: 'book_hotel', subject: 'x', configuration: { kind: 'hotel', propertyRef: '1', checkIn: '2026-10-12', checkOut: '2026-10-10', adults: 2 } }, { now, enabled: true })
     expect('issues' in r).toBe(true)
     const noHint = resolveCommerce(hotelReq, { now, enabled: true, hints: [] })
-    expect('links' in noHint && noHint.links).toEqual([])
+    // No hotel id was guessed: Trip.com yields nothing; only the OTAs' honest search / landing pages remain.
+    expect('links' in noHint && noHint.links.every(l => l.kind === 'SEARCH_HANDOFF' && l.providerId !== 'tripcom')).toBe(true)
     expect('providersFailed' in noHint && noHint.providersFailed.map(f => f.code)).toContain('no_offer')
   })
 

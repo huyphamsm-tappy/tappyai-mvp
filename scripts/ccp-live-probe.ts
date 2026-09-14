@@ -2,8 +2,8 @@
 // Runs attachCommerceLinks with the REAL discovery search and REAL merchant-page
 // verification for one venue row, prints the resolved links, and GETs each
 // destination read-only to report its HTTP status. Nothing is submitted.
-//   npx tsx --env-file=.env.local scripts/ccp-live-probe.ts hotel|spa|activity|delivery
-import { attachCommerceLinks } from '../src/lib/ai/tools/commerce'
+//   npx tsx --env-file=.env.local scripts/ccp-live-probe.ts hotel|spa|activity|delivery|flight|bus|event|film
+import { attachCommerceLinks, type RouteHandoffFacts } from '../src/lib/ai/tools/commerce'
 import { COMMERCE_LINKS_KEY, type CommerceLinkRow } from '../src/lib/ccp'
 
 const scenario = process.argv[2] ?? 'hotel'
@@ -14,12 +14,32 @@ async function status(url: string): Promise<string> {
     const r = await fetch(url, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0' } })
     const text = await r.text()
     const title = text.match(/<title>([^<]*)<\/title>/i)?.[1]?.trim() ?? ''
-    const marks = ['sfAdult', 'Chưa hỗ trợ đặt bàn qua PasGo', 'đã dừng đặt chỗ', 'Nhập thông tin', 'hotelId', 'Đặt ngay'].filter(m => text.includes(m))
+    const marks = ['Nhập thông tin', 'hotelId', 'Đặt ngay', 'Mua vé', 'Challenge Validation', 'Tôi sẽ đặt', 'Login Required'].filter(m => text.includes(m))
     return `${r.status} ${r.url} · title="${title.slice(0, 80)}" · marks=${marks.join(',') || '-'}`
   } catch (e) { return `ERR ${(e as Error).message}` }
 }
 
+async function routeScenario() {
+  const flight = scenario === 'flight'
+  const result: Record<string, unknown> = flight ? { booking_links: [] } : { type: 'intercity', vexere_link: '' }
+  await attachCommerceLinks(flight ? 'get_flight_prices' : 'get_transport_options', result, {
+    enabled: true, now: NOW, platform: 'web', locale: 'vi',
+    origin: flight ? 'Sài Gòn' : 'Sài Gòn', destination: flight ? 'Hà Nội' : 'Đà Lạt', departDate: '2026-10-10', ...(flight ? { passengers: 2 } : { transportMode: 'intercity' as const }),
+  })
+  const facts = (result._tappy_commerce as RouteHandoffFacts[] | undefined) ?? []
+  const urls = flight ? (result.booking_links as Array<{ name: string; url: string }>).map(l => l.url) : [String(result.vexere_link)]
+  for (let i = 0; i < facts.length; i++) {
+    const f = facts[i]
+    console.log(`\n▶ ${f.merchantName} ${f.kind} L${f.depth} guest L${f.guestDepth} auth=${f.authRequiredAt} assumed=[${f.assumedParams}]`)
+    console.log(`  → ${urls[i]}`)
+    if (f.limitations.length) console.log(`  limitations: ${f.limitations.join(' | ')}`)
+    console.log(`  GET: ${await status(urls[i])}`)
+  }
+  if (facts.length === 0) console.log('  (no commerce link)')
+}
+
 async function main() {
+  if (scenario === 'flight' || scenario === 'bus') return routeScenario()
   let toolName: 'search_places' | 'search_products' | 'get_hotel_prices' = 'search_places'
   let result: Record<string, unknown>
   let ctx: Record<string, unknown>
@@ -37,6 +57,12 @@ async function main() {
   } else if (scenario === 'spa') {
     result = { results: [{ name: 'Tiệm Massage Hán Cung', address: 'Quận 1' }], _tappy_place_domain: 'spa', source: 'probe' }
     ctx = { location: 'TP.HCM', query: 'spa', userTexts: ['Tìm spa ở TP.HCM.'] }
+  } else if (scenario === 'event') {
+    result = { results: [{ name: 'Nhà hát Hòa Bình', address: 'Quận 10' }], _tappy_place_domain: 'entertainment', source: 'probe', query: 'concert' }
+    ctx = { location: 'TP.HCM', query: 'concert', userTexts: ['Có concert nào ở TP.HCM cuối tuần này không?'] }
+  } else if (scenario === 'film') {
+    result = { results: [{ name: 'CGV Vincom Đồng Khởi', address: 'Quận 1' }], _tappy_place_domain: 'entertainment', source: 'probe', query: 'rạp chiếu phim' }
+    ctx = { location: 'Quận 1, TP.HCM', query: 'rạp chiếu phim', userTexts: ['Mua vé xem phim Mưa Đỏ tối nay ở Quận 1'] }
   } else if (scenario === 'activity') {
     result = { results: [{ name: 'Pont main', address: 'Đà Nẵng' }], _tappy_place_domain: 'entertainment', source: 'probe' }
     ctx = { location: 'Đà Nẵng', query: 'hoạt động vui chơi', userTexts: ['Tìm hoạt động vui chơi cho tôi.', 'Đà Nẵng'] }

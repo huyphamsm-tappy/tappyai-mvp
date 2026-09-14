@@ -29,18 +29,17 @@ describe('the measured CTA payload', () => {
     expect(buttons[0].label).toContain('Mua vé')
   })
 
-  it('the validated parse downgrades it to a search label', () => {
+  it('the validated parse DROPS the promise: Ticketbox is a CCP provider (Completion Pass, 14 Sep 2026) and its front door is never a model button', () => {
     const { buttons } = parseCTAValidated(MEASURED, t)
-    expect(buttons[0].label).not.toContain('Mua vé')
-    expect(buttons[0].label).toBe('Tìm vé trên Ticketbox')
-    expect(buttons[0].type).toBe('search')
+    expect(buttons.some(b => b.label.includes('Mua vé'))).toBe(false)
+    expect(buttons.some(b => b.url.startsWith('https://ticketbox.vn/'))).toBe(false)
   })
 
-  it('keeps the destination and the other button untouched', () => {
+  it('keeps the other button untouched', () => {
     const { buttons } = parseCTAValidated(MEASURED, t)
-    expect(buttons[0].url).toBe('https://ticketbox.vn/')
-    expect(buttons).toHaveLength(2)
-    expect(buttons[1].label).toBe('📅 Lịch sự kiện TP.HCM')
+    expect(buttons).toHaveLength(1)
+    expect(buttons[0].label).toBe('📅 Lịch sự kiện TP.HCM')
+    expect(buttons[0].url).toBe('https://sodulich.hochiminhcity.gov.vn/')
   })
 
   it('strips the marker from the visible text exactly as before', () => {

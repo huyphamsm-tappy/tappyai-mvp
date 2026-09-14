@@ -37,6 +37,10 @@ function linkId(url: string, actorHash?: string): string {
 export function deriveKind(depth: number, tracking: TrackingInfo, carriesConfiguration: boolean): LinkKind {
   if (tracking.mode === 'affiliate') return 'AFFILIATE_DEEP_LINK'
   if (tracking.mode === 'first_party') return 'TRACKED_DEEP_LINK'
+  // A results / landing page is a SEARCH even when the URL carries the user's dates and route
+  // (Completion Pass: Booking.com results, Trip.com / Traveloka fare lists, a dated Vexere route):
+  // the subject is still chosen on the page, and the honesty field must say so.
+  if (depth <= 2) return 'SEARCH_HANDOFF'
   if (depth >= 5) return 'CHECKOUT_HANDOFF'
   if (carriesConfiguration) return 'DIRECT_DEEP_LINK'
   if (depth === 4) return 'CONFIGURED_HANDOFF'

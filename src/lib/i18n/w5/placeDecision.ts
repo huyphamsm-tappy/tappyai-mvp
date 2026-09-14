@@ -63,6 +63,9 @@ export const vi: Record<string, string> = {
   'v3.action.orderLoginOn': 'Đặt món trên {platform} · cần đăng nhập',
   'v3.action.deliveryOn': 'Đặt giao hàng trên {platform}',
   'v3.action.deliveryLoginOn': 'Đặt giao hàng trên {platform} · cần đăng nhập',
+  // The page is the subject, but the transaction step from it was not verified (Agoda / Traveloka
+  // property pages, guest L3): the label promises a look, not a booking (Completion Pass, 14 Sep 2026).
+  'v3.action.viewOn': 'Xem trên {platform}',
   // The merchant takes the order only inside its app: the web page shows the restaurant, the app orders.
   'v3.action.purchaseAppOn': 'Xem trên {platform} · mua trong ứng dụng',
   'v3.action.bookingAppOn': 'Xem trên {platform} · đặt trong ứng dụng',
@@ -129,6 +132,7 @@ export const en: Record<string, string> = {
   'v3.action.deliveryOn': 'Order delivery on {platform}',
   'v3.action.deliveryLoginOn': 'Order delivery on {platform} · login required',
   // The merchant takes the order only inside its app: the web page shows the restaurant, the app orders.
+  'v3.action.viewOn': 'View on {platform}',
   'v3.action.purchaseAppOn': 'View on {platform} · buy in the app',
   'v3.action.bookingAppOn': 'View on {platform} · book in the app',
   'v3.action.reservationAppOn': 'View on {platform} · reserve in the app',

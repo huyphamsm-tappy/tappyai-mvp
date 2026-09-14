@@ -18,8 +18,10 @@ enum PlatformLinks {
         if let city, !city.isEmpty { parts.append(city) }
         let q = parts.joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
-            PlatformLink(name: "Booking.com", url: "https://www.booking.com/search.html?ss=\(q)"),
-            PlatformLink(name: "Agoda", url: "https://www.agoda.com/vi-vn/search?q=\(q)"),
+            // Registry grammars (CCP, 14 Sep 2026): the results page keeps the query on the first OTA;
+            // the second OTA's search URL drops it (verified), so its front door is the honest link.
+            PlatformLink(name: "Booking.com", url: "https://www.booking.com/searchresults.vi.html?ss=\(q)"),
+            PlatformLink(name: "Agoda", url: "https://www.agoda.com/vi-vn/"),
             PlatformLink(name: "Grab", url: "https://www.grab.com/vn/transport/car/"),
             PlatformLink(name: "Xanh SM", url: "https://xanhsm.com/"),
         ]

@@ -89,6 +89,10 @@ export function resolveActionLabel(
       // only in the app — "Đặt món trên ShopeeFood" would promise a web checkout the page cannot
       // keep, so the label states the app boundary instead.
       if (action.commerce.authRequiredAt === 'app_only') return withPlatform(`${key}AppOn`, key)
+      // Completion Pass (14 Sep 2026): a subject page whose merchant flow past it is UNVERIFIED for
+      // a guest (guest depth ≤ 3 with no login boundary declared — Agoda, Traveloka property pages)
+      // earns "Xem trên …", not the transaction verb. A verified L4/L5 flow keeps its verb.
+      if (!action.commerce.loginRequired && action.commerce.guestDepth <= 3) return withPlatform('v3.action.viewOn', key)
       return action.commerce.loginRequired
         ? withPlatform(`${key}LoginOn`, key)
         : withPlatform(`${key}On`, key)

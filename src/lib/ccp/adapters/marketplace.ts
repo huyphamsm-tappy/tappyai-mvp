@@ -107,7 +107,7 @@ const GRAMMARS: Record<'shopee' | 'tiktokshop' | 'lazada', MarketplaceGrammar> =
 /** Offers built from a search / listing page carry this ref prefix so the link builder knows they are not products. */
 const SEARCH_REF = 'search:'
 
-function marketplaceAdapter(entry: ProviderRegistryEntry, grammar: MarketplaceGrammar): MarketplaceAdapter {
+function marketplaceAdapter(entry: ProviderRegistryEntry, grammar: MarketplaceGrammar): SearchCapableAdapter {
   return {
     providerId: entry.providerId,
     entry,
@@ -158,20 +158,29 @@ function marketplaceAdapter(entry: ProviderRegistryEntry, grammar: MarketplaceGr
   }
 }
 
-/** A marketplace adapter can also offer its search page for the request's subject (L2, honest fallback). */
-export interface MarketplaceAdapter extends ProviderAdapter {
+/**
+ * An adapter that can also offer the merchant's own SEARCH / landing page for the request when
+ * no subject page is known (L0–L2, honest fallback). Marketplaces (14 Sep 2026) and the
+ * Completion Pass grammar adapters (travel, events) share this contract; the resolver asks for
+ * the fallback only after every hint failed to produce a subject offer.
+ */
+export interface SearchCapableAdapter extends ProviderAdapter {
   searchOffer(request: CommerceRequest, now?: Date): Offer | null
 }
+/** @deprecated name kept for existing imports; the contract is SearchCapableAdapter. */
+export type MarketplaceAdapter = SearchCapableAdapter
 
 export const shopeeAdapter = marketplaceAdapter(getProvider('shopee')!, GRAMMARS.shopee)
 export const tiktokshopAdapter = marketplaceAdapter(getProvider('tiktokshop')!, GRAMMARS.tiktokshop)
 export const lazadaAdapter = marketplaceAdapter(getProvider('lazada')!, GRAMMARS.lazada)
 
-export const MARKETPLACE_ADAPTERS: readonly MarketplaceAdapter[] = [shopeeAdapter, tiktokshopAdapter, lazadaAdapter]
+export const MARKETPLACE_ADAPTERS: readonly SearchCapableAdapter[] = [shopeeAdapter, tiktokshopAdapter, lazadaAdapter]
 
-export function isMarketplaceAdapter(a: ProviderAdapter): a is MarketplaceAdapter {
-  return typeof (a as MarketplaceAdapter).searchOffer === 'function'
+export function isSearchCapableAdapter(a: ProviderAdapter): a is SearchCapableAdapter {
+  return typeof (a as SearchCapableAdapter).searchOffer === 'function'
 }
+/** @deprecated use isSearchCapableAdapter. */
+export const isMarketplaceAdapter = isSearchCapableAdapter
 
 /**
  * The composable SEARCH grammars, for the legacy search builders and the prompt's CTA

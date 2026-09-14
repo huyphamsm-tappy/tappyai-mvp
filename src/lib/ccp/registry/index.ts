@@ -1,8 +1,8 @@
 import { PROVIDER_REGISTRY } from './providers'
-import type { ProviderRegistryEntry } from './types'
+import type { LinkStrategyStep, MonetizationStatus, ProviderRegistryEntry, ProviderStatus } from './types'
 import { INTENT_CAPABILITY, type CommerceCapability, type CommerceDomain, type IntentType, type TransactionDepthProfile } from '../domain/types'
 
-export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig } from './types'
+export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig, ProviderStatus, MonetizationStatus, LinkStrategyStep, DiscoverySubjectKind } from './types'
 export { PROVIDER_REGISTRY } from './providers'
 
 const BY_ID: ReadonlyMap<string, ProviderRegistryEntry> = new Map(PROVIDER_REGISTRY.map(p => [p.providerId, p]))
@@ -39,6 +39,32 @@ export function depthProfileForCapability(entry: ProviderRegistryEntry, capabili
   return intent ? entry.depth[intent] ?? null : null
 }
 
+// ── Provider state, derived (Completion Pass, owner §7) ─────────────────────
+// Reachability and monetisation are separate axes read off the same entry, so
+// "affiliate pending" can never be mistaken for "provider unavailable".
+
+/** Whether the merchant earns for TappyAI today — a monetisation fact only. */
+export function monetizationStatus(entry: ProviderRegistryEntry): MonetizationStatus {
+  if (!entry.tracking) return 'NOT_APPLICABLE'
+  return entry.tracking.approval === 'approved' ? 'APPROVED' : 'PENDING'
+}
+
+/**
+ * How the user reaches the merchant. An adapter-backed provider is ACTIVE (tracked) or
+ * ACTIVE_DIRECT (direct links while tracking is pending / absent); a passthrough entry is
+ * HANDOFF_ONLY; BLOCKED_EXTERNAL is reserved for a capability that needs something no one can
+ * supply from our side (none today — every frozen provider has a direct path).
+ */
+export function providerStatus(entry: ProviderRegistryEntry): ProviderStatus {
+  if (entry.tier === 'handoff_only') return 'HANDOFF_ONLY'
+  return monetizationStatus(entry) === 'APPROVED' ? 'ACTIVE' : 'ACTIVE_DIRECT'
+}
+
+/** The declared link ladder for a (provider, intent), best first. */
+export function linkStrategyFor(entry: ProviderRegistryEntry, intent: IntentType): readonly LinkStrategyStep[] {
+  return entry.linkStrategy[intent] ?? []
+}
+
 /** Exact-match host allow-list. No wildcard: a resolved URL may only point at a host the audit saw. */
 export function isAllowedHost(entry: ProviderRegistryEntry, host: string): boolean {
   const h = host.toLowerCase()
@@ -60,6 +86,11 @@ export function validateRegistry(entries: readonly ProviderRegistryEntry[] = PRO
     for (const intent of e.intents) {
       const d = e.depth[intent]
       if (!d) { problems.push(`${e.providerId}: no depth profile for ${intent}`); continue }
+      const strategy = e.linkStrategy?.[intent]
+      if (!strategy || strategy.length === 0) problems.push(`${e.providerId}/${intent}: no link strategy declared`)
+      // A tracked step needs a tracking config; a provider with an approved wrapper must declare it first.
+      if (strategy?.includes('tracked') && !e.tracking) problems.push(`${e.providerId}/${intent}: 'tracked' strategy without tracking config`)
+      if (e.tracking && e.capabilities.includes('tracking') && strategy && !strategy.includes('tracked')) problems.push(`${e.providerId}/${intent}: tracking configured but not in the link strategy`)
       if (d.guestDepth > d.bestPossibleDepth) problems.push(`${e.providerId}/${intent}: guestDepth > bestPossibleDepth`)
       if (d.authenticatedDepth !== null && d.authenticatedDepth < d.guestDepth) problems.push(`${e.providerId}/${intent}: authenticatedDepth < guestDepth`)
       if (d.guestDepth === 5 && !['none', 'at_order'].includes(d.authRequiredAt)) problems.push(`${e.providerId}/${intent}: L5 guest depth contradicts authRequiredAt=${d.authRequiredAt}`)

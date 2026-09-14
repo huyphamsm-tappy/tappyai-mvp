@@ -1,4 +1,4 @@
-import { INTENT_CAPABILITY, type AuthRequiredAt, type CommerceCapability, type CommerceDomain, type CommerceLink, type FreshnessType, type IntentType, type LinkKind, type TransactionDepth } from './domain/types'
+import { INTENT_CAPABILITY, type AuthRequiredAt, type CommerceCapability, type CommerceDomain, type CommerceFacts, type CommerceLink, type FreshnessType, type IntentType, type LinkKind, type TransactionDepth } from './domain/types'
 
 // ── The row-level attachment (owner decision P6-B, 13 Sep 2026) ─────────────
 // A resolved Commerce Link travels on the tool-result ROW under `commerce_links`,
@@ -35,7 +35,11 @@ export interface CommerceLinkRow {
   primary?: boolean
   depth: TransactionDepth
   guestDepth: TransactionDepth
+  /** Deepest verified level after a merchant login; null = not verified (Completion Pass, native contract §12). */
+  authenticatedDepth: TransactionDepth | null
   authRequiredAt: AuthRequiredAt
+  /** What the user meets after the tap: a guest flow, a merchant login, or the merchant's app. */
+  handoff: 'guest' | 'merchant_login' | 'app'
   /** Session-bound URLs (a dated stay, a hold) expire; null = stable. */
   expiresAt: string | null
   freshness: {
@@ -50,6 +54,14 @@ export interface CommerceLinkRow {
   /** User-facing limitation sentences from the adapter (vi). */
   limitations: string[]
   tracked: boolean
+  /** Observed price / availability / schedule facts, when a source stated them (CommerceFacts); absent otherwise. */
+  facts?: CommerceFacts
+}
+
+/** The handoff type a login boundary implies (shared by the row, the legacy CTA projection and the clients). */
+export function handoffTypeOf(authRequiredAt: AuthRequiredAt): 'guest' | 'merchant_login' | 'app' {
+  if (authRequiredAt === 'app_only') return 'app'
+  return requiresMerchantLogin(authRequiredAt) ? 'merchant_login' : 'guest'
 }
 
 export function projectCommerceLinkRow(link: CommerceLink, requestId: string, intentType: IntentType, assumedParams: string[] = [], opts: { primary?: boolean } = {}): CommerceLinkRow {
@@ -67,7 +79,9 @@ export function projectCommerceLinkRow(link: CommerceLink, requestId: string, in
     primary: opts.primary ?? true,
     depth: link.depth,
     guestDepth: link.depthProfile.guestDepth,
+    authenticatedDepth: link.depthProfile.authenticatedDepth,
     authRequiredAt: link.authRequiredAt,
+    handoff: handoffTypeOf(link.authRequiredAt),
     expiresAt: link.expiresAt,
     freshness: {
       source: link.freshness.source,
@@ -79,6 +93,7 @@ export function projectCommerceLinkRow(link: CommerceLink, requestId: string, in
     assumedParams: [...assumedParams],
     limitations: [...link.limitations],
     tracked: link.tracking.mode !== 'none',
+    ...(link.facts ? { facts: link.facts } : {}),
   }
 }
 

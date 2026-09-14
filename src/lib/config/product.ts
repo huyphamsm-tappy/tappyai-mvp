@@ -167,7 +167,16 @@ export const CCP_ADAPTERS = {
   CCP_ADAPTER_SHOPEE: true,
   CCP_ADAPTER_TIKTOKSHOP: true,
   CCP_ADAPTER_LAZADA: true,
-  /** Handoff-only registry entries (CellphoneS, Vexere, Booking.com) — facts, no adapter. */
+  /** Provider Integration Completion Pass (14 Sep 2026): travel search / detail providers and events.
+   * Every one of these works on DIRECT links; affiliate approval only adds a tracking wrapper. */
+  CCP_ADAPTER_BOOKING: true,
+  CCP_ADAPTER_AGODA: true,
+  CCP_ADAPTER_TRAVELOKA: true,
+  CCP_ADAPTER_VEXERE: true,
+  CCP_ADAPTER_VIETNAMAIRLINES: true,
+  CCP_ADAPTER_VIETJET: true,
+  CCP_ADAPTER_TICKETBOX: true,
+  /** Handoff-only registry entries (CellphoneS, GrabFood, ShopeeFood) — facts + passthrough, no grammar. */
   CCP_HANDOFF_ONLY: true,
 } as const
 

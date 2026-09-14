@@ -38,6 +38,39 @@ export interface TrackingConfig {
   unsafeWrappers: readonly string[]
 }
 
+export type AdapterFlagName =
+  | 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK'
+  | 'CCP_ADAPTER_SHOPEE' | 'CCP_ADAPTER_TIKTOKSHOP' | 'CCP_ADAPTER_LAZADA'
+  // Completion Pass (14 Sep 2026): travel search providers and events.
+  | 'CCP_ADAPTER_BOOKING' | 'CCP_ADAPTER_AGODA' | 'CCP_ADAPTER_TRAVELOKA' | 'CCP_ADAPTER_VEXERE'
+  | 'CCP_ADAPTER_VIETNAMAIRLINES' | 'CCP_ADAPTER_VIETJET' | 'CCP_ADAPTER_TICKETBOX'
+  | 'CCP_HANDOFF_ONLY'
+
+// ── Provider state (Completion Pass, 14 Sep 2026 — owner §7) ─────────────────
+// Four axes that must never collapse into one another: whether the provider is
+// reachable (status), whether it earns (monetisation), how deep a link lands
+// (depth profile) and which link the resolver prefers (strategy). "Affiliate
+// pending" is a MONETISATION fact; it never makes a provider unavailable.
+//
+// The status is DERIVED from the entry (tier, adapter shape, tracking), not
+// stored beside it — one truth, no second state system:
+//   ACTIVE          adapter-backed, tracking approved and applied
+//   ACTIVE_DIRECT   adapter-backed, direct links (tracking pending / none)
+//   HANDOFF_ONLY    registry facts + passthrough of a discovered page, no grammar of its own
+//   BLOCKED_EXTERNAL the capability needs something no one can supply from our side
+export type ProviderStatus = 'ACTIVE' | 'ACTIVE_DIRECT' | 'HANDOFF_ONLY' | 'BLOCKED_EXTERNAL'
+export type MonetizationStatus = 'APPROVED' | 'PENDING' | 'NOT_APPLICABLE'
+
+/**
+ * The link ladder the resolver walks for one (provider, intent), best first.
+ * Declared per entry so the audit matrix, the tests and the resolver read one
+ * list; ranking still orders emitted links by validity and intent (§8), never
+ * by this declaration and never by monetisation.
+ */
+export type LinkStrategyStep = 'tracked' | 'direct' | 'configured_search' | 'detail' | 'search' | 'handoff'
+
+export type DiscoverySubjectKind = 'product' | 'hotel' | 'restaurant' | 'activity' | 'film' | 'event' | 'route'
+
 export interface ProviderRegistryEntry {
   providerId: string
   merchantId: string
@@ -57,6 +90,8 @@ export interface ProviderRegistryEntry {
   commerce: readonly CommerceCapability[]
   /** One profile per supported intent. */
   depth: Partial<Record<IntentType, TransactionDepthProfile>>
+  /** The link ladder per supported intent (see LinkStrategyStep). */
+  linkStrategy: Partial<Record<IntentType, readonly LinkStrategyStep[]>>
   freshness: {
     identity: FreshnessPolicyEntry
     price?: FreshnessPolicyEntry
@@ -65,7 +100,7 @@ export interface ProviderRegistryEntry {
   rights: RightsFlags
   tracking?: TrackingConfig
   /** Product-policy flag name in src/lib/config/product.ts gating this adapter. */
-  enabledFlag: 'CCP_ADAPTER_DMX' | 'CCP_ADAPTER_TRIPCOM' | 'CCP_ADAPTER_CGV' | 'CCP_ADAPTER_KLOOK' | 'CCP_ADAPTER_SHOPEE' | 'CCP_ADAPTER_TIKTOKSHOP' | 'CCP_ADAPTER_LAZADA' | 'CCP_HANDOFF_ONLY'
+  enabledFlag: AdapterFlagName
   /** MVP adapters implement the contract; handoff-only entries carry facts for the ladder but no adapter. */
   tier: 'mvp' | 'handoff_only'
   /**
@@ -81,7 +116,7 @@ export interface ProviderRegistryEntry {
    * about. Registry DATA, so the query is composed outside CCP without spelling a host.
    * Absent = no discovery (handoff-only providers; CGV film pages have no film tool yet).
    */
-  discovery?: { site: string; subjectKind: 'product' | 'hotel' | 'restaurant' | 'activity' | 'film' }
+  discovery?: { site: string; subjectKind: DiscoverySubjectKind }
   /**
    * Handoff-only providers with this flag get a generic PASSTHROUGH adapter: a
    * discovered page on an allow-listed host is emitted as a DETAIL_HANDOFF at

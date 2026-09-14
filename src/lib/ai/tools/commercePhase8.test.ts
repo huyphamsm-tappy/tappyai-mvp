@@ -272,9 +272,11 @@ describe('F · hotel discovery — wrong city rejected, unavailable rejected, no
     const req = { domain: 'travel', intentType: 'book_hotel', capability: 'hotel_booking', subject: 'Oc Tien Sa Hotel', configuration: { kind: 'hotel', propertyRef: 'oc-tien-sa', checkIn: '2026-10-10', checkOut: '2026-10-12', adults: 2 } } as const
     const hint = { url: 'https://vn.trip.com/hotels/da-nang-hotel-detail-707332/oc-tien-sa-hotel/' }
     const ok = resolveCommerce(req, { enabled: true, now: NOW, hints: [hint] })
-    expect('links' in ok && ok.links.length).toBe(1)
+    // The Completion Pass OTA fallbacks (search / landing pages) follow; Trip.com is the one subject link.
+    expect('links' in ok && ok.links.filter(l => l.providerId === 'tripcom').length).toBe(1)
     const no = resolveCommerce(req, { enabled: true, now: NOW, hints: [{ ...hint, verified: { bookable: false, checkedAt: NOW.toISOString(), source: 'merchant_page' } }] })
-    expect('links' in no ? no.links : []).toEqual([])
+    expect('links' in no && no.links.some(l => l.providerId === 'tripcom')).toBe(false)
+    expect('links' in no && no.links.every(l => l.kind === 'SEARCH_HANDOFF')).toBe(true)
   })
 })
 
@@ -349,10 +351,11 @@ describe('I · no misleading CTA reaches the user', () => {
     expect(validateModelCtaButtons([home, page, pasgoSearch], t).map(b => b.url)).toEqual([page.url])
   })
 
-  it('an over-promising label on a search URL is still only downgraded (unchanged behaviour)', () => {
-    const [b] = validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/' }], t)
-    expect(b.type).toBe('search')
-    expect(b.label).toBe('v3.action.ticketSearch:Ticketbox')
+  it('a Ticketbox front door and a transaction promise on its search page are dropped (CCP-owned since the Completion Pass); a plain search button stays', () => {
+    expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/' }], t)).toEqual([])
+    expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/search?q=concert' }], t)).toEqual([])
+    const plain = { label: '🎫 Ticketbox', type: 'search', url: 'https://ticketbox.vn/search?q=concert' }
+    expect(validateModelCtaButtons([plain], t)).toEqual([plain])
   })
 
   it('a commerce action whose merchant orders only in its app says so; one that needs a login says so; a guest one does not', () => {
@@ -360,6 +363,8 @@ describe('I · no misleading CTA reaches the user', () => {
     const facts = { linkId: 'l', requestId: 'r', providerId: 'shopeefood', depth: 3, guestDepth: 3, freshnessType: 'realtime' as const, expiresAt: null, tracked: false, primary: true }
     expect(resolveActionLabel({ ...base, commerce: { ...facts, authRequiredAt: 'app_only', loginRequired: false } }).key).toBe('v3.action.orderAppOn')
     expect(resolveActionLabel({ ...base, kind: 'ticket', commerce: { ...facts, authRequiredAt: 'before_selection', loginRequired: true } }).key).toBe('v3.action.ticketLoginOn')
-    expect(resolveActionLabel({ ...base, kind: 'reservation', commerce: { ...facts, authRequiredAt: 'none', loginRequired: false } }).key).toBe('v3.action.reservationOn')
+    // A verified guest flow (guest depth 5) keeps its verb; an unverified one (guest depth 3, no boundary) says "Xem trên".
+    expect(resolveActionLabel({ ...base, kind: 'reservation', commerce: { ...facts, guestDepth: 5, authRequiredAt: 'none', loginRequired: false } }).key).toBe('v3.action.reservationOn')
+    expect(resolveActionLabel({ ...base, kind: 'booking', commerce: { ...facts, guestDepth: 3, authRequiredAt: 'none', loginRequired: false } }).key).toBe('v3.action.viewOn')
   })
 })

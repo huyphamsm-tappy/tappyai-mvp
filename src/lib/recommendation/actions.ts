@@ -3,7 +3,7 @@ import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace, type ReviewAction } from '@/lib/ai/consultative/reviewAction'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
-import { actionKindFor, urlKindFor, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp'
+import { actionKindFor, urlKindFor, isCommerceLinkRow, requiresMerchantLogin, providerOwning, type CommerceLinkRow } from '@/lib/ccp'
 
 // ── ONE ACTION LIST, ONE AUTHORITY ───────────────────────────────────────────
 //
@@ -75,6 +75,10 @@ export interface CommerceActionFacts {
   authRequiredAt: CommerceLinkRow['authRequiredAt']
   /** True when the merchant asks for a login BEFORE the landed step can be completed (CGV, Klook). */
   loginRequired: boolean
+  /** What the user meets after the tap (Completion Pass, native contract §12). Absent on rows persisted before it existed. */
+  handoff?: CommerceLinkRow['handoff']
+  /** Deepest verified level after a merchant login; null = not verified. */
+  authenticatedDepth?: CommerceLinkRow['authenticatedDepth']
   freshnessType: CommerceLinkRow['freshness']['freshnessType']
   /** Session-bound URLs expire (a dated stay, a hold); null = stable. */
   expiresAt: string | null
@@ -83,6 +87,8 @@ export interface CommerceActionFacts {
   capability?: CommerceLinkRow['capability']
   /** Whether that capability is the one the user asked for this turn. */
   primary: boolean
+  /** Observed facts (price / availability / schedule) when a source stated them; never inferred. */
+  facts?: CommerceLinkRow['facts']
 }
 
 /**
@@ -280,11 +286,14 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
         guestDepth: row.guestDepth,
         authRequiredAt: row.authRequiredAt,
         loginRequired: requiresMerchantLogin(row.authRequiredAt),
+        ...(row.handoff ? { handoff: row.handoff } : {}),
+        ...(row.authenticatedDepth !== undefined ? { authenticatedDepth: row.authenticatedDepth } : {}),
         freshnessType: row.freshness.freshnessType,
         expiresAt: row.expiresAt,
         tracked: row.tracked,
         ...(row.capability ? { capability: row.capability } : {}),
         primary,
+        ...(row.facts ? { facts: row.facts } : {}),
       },
     })
   })
@@ -318,7 +327,12 @@ export function buildActions(
   const commerceDestinations = new Set(
     (src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => destinationKey(r.destinationUrl)).filter((k): k is string => !!k),
   )
-  const rowLink = commerceDestinations.has(destinationKey(src.link) ?? '') ? undefined : src.link
+  // Completion Pass live UAT (14 Sep 2026): the hotel tool's row link is the OTA property page
+  // WITHOUT the stay (or in another locale); the Commerce Link is the same page with the stay
+  // applied. Same merchant, same subject → the row link is the duplicate, by provider.
+  const commerceProviders = new Set((src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => r.providerId))
+  const rowOwner = src.link ? providerOwning(src.link) : null
+  const rowLink = commerceDestinations.has(destinationKey(src.link) ?? '') || (rowOwner && commerceProviders.has(rowOwner)) ? undefined : src.link
 
   // ── Ordering / delivery — food only, and only from the shipped builder ─────
   // Recomputed here when the row did not carry them, so an entity built outside
@@ -342,8 +356,12 @@ export function buildActions(
   }
 
   // ── Travel ────────────────────────────────────────────────────────────────
-  out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
-  out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
+  // The legacy OTA search actions are skipped for a merchant that already has a Commerce Link on
+  // the row (its property page beats its results page), and Agoda's link only when it is a real
+  // search — Agoda's search URL drops the query (verified 14 Sep 2026), so the tool now hands a
+  // front door, which is never a "Tìm phòng trên Agoda" on a hotel.
+  if (!commerceProviders.has('booking')) out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
+  if (!commerceProviders.has('agoda') && src.agoda_link && /[?&](q|textToSearch|city)=/.test(src.agoda_link)) out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
 
   // ── The row's own link — and it is not a "product" outside shopping ───────
   //

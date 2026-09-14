@@ -14,7 +14,8 @@ import {
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, stripTrailingCity } from '@/lib/links/otaTitle'
 import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
-import { entertainmentCapabilityOf, foodCapabilityOf, type UserTurns } from './commerceIntent'
+import { entertainmentCapabilityOf, filmTitleMatches, filmTitleOf, foodCapabilityOf, type UserTurns } from './commerceIntent'
+import { cityToIATA } from './travel'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
 //
@@ -54,7 +55,7 @@ import { entertainmentCapabilityOf, foodCapabilityOf, type UserTurns } from './c
 // 🚨 OFF BY DEFAULT. `CCP_ENABLED` is false; with it off this function returns
 // its input untouched and performs no search. Every test passes `enabled`.
 
-export type CommerceToolName = 'search_places' | 'search_products' | 'get_hotel_prices'
+export type CommerceToolName = 'search_places' | 'search_products' | 'get_hotel_prices' | 'get_flight_prices' | 'get_transport_options' | 'web_search'
 
 export interface CommerceAttachContext {
   /** The user's stated area / city for this turn — narrows discovery and is the request's city constraint. */
@@ -64,6 +65,17 @@ export interface CommerceAttachContext {
   /** get_hotel_prices arguments, when the user gave dates (YYYY-MM-DD). */
   checkIn?: string
   checkOut?: string
+  /**
+   * get_flight_prices / get_transport_options arguments (Completion Pass, 14 Sep 2026). Origin and
+   * destination are the user's words; a flight needs IATA codes, which the tool layer maps. The
+   * departure date DEFAULTS when the user gave none and is recorded as assumed.
+   */
+  origin?: string
+  destination?: string
+  departDate?: string
+  returnDate?: string
+  passengers?: number
+  transportMode?: 'intercity' | 'taxi'
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'
   /**
@@ -98,6 +110,16 @@ interface PlannedIntent {
   primary: boolean
   /** Discover listings by the user's SUBJECT + city (experience catalogues) and attach them as their own rows. */
   subjectDiscovery: boolean
+  /** The subject to discover by, when it is not the tool's query (a film the user named). */
+  discoverySubject?: string
+  /**
+   * False when the provider's catalogue is not keyed by the ROW's name (films, events on a venue
+   * turn): no per-row discovery query is spent, and a page found for a venue's name can never be
+   * attached to the venue as if it were the venue.
+   */
+  rowDiscovery?: boolean
+  /** Keep only discovered listings whose title names the subject (film identity). */
+  subjectFilter?(title: string | undefined): boolean
   configurationFor(subject: string): { configuration: CommerceRequest['configuration']; assumed: string[] } | null
 }
 
@@ -109,6 +131,17 @@ const MAX_SHOPPING_QUERIES = 8
 const MAX_LINKS_PER_PROVIDER = 1
 const MAX_EXPERIENCE_ROWS = 2
 const DEFAULT_ADULTS = 2
+/** Hotels (Completion Pass): Trip.com + the row's own OTA page + one more OTA, side by side. */
+const MAX_HOTEL_LINKS_PER_ROW = 3
+const MAX_HOTEL_QUERIES = 4
+/**
+ * A ROW never carries a landing page (L0/L1): a venue or a hotel with a merchant homepage under it
+ * would be a duplicate, subject-less CTA. Landing fallbacks exist for the route-level handoffs
+ * (flights, coaches), where the merchant's front door with the route typed on site is the truth.
+ */
+const MIN_ROW_LINK_DEPTH = 2
+/** The departure the flight / coach tools assume when the user gave no date (+7 days, VN). */
+const DEFAULT_DEPART_OFFSET_MS = 7 * 86_400_000 + 7 * 3_600_000
 
 type Row = Record<string, unknown>
 const isRecord = (v: unknown): v is Row => typeof v === 'object' && v !== null && !Array.isArray(v)
@@ -160,15 +193,31 @@ function foodIntents(ctx: CommerceAttachContext): PlannedIntent[] {
   return []
 }
 
-function entertainmentIntents(ctx: CommerceAttachContext): PlannedIntent[] {
-  const cinema = entertainmentCapabilityOf(userTurns(ctx)) === 'cinema_ticket'
+/**
+ * Entertainment (Completion Pass, 14 Sep 2026): the words decide between three capabilities.
+ *   event_ticket    → buy_event_ticket, Ticketbox listings discovered by SUBJECT + city (own rows).
+ *   cinema_ticket   → buy_ticket; a CGV FILM page is discovered only when the user NAMED a film,
+ *                     and only a page whose title names that film is accepted. Showtimes have no
+ *                     source and are never composed — the film page's "Mua vé" picker is the boundary.
+ *   activity_booking → book_activity, Klook listings by subject (unchanged).
+ */
+function entertainmentIntents(ctx: CommerceAttachContext, now: Date): PlannedIntent[] {
+  const capability = entertainmentCapabilityOf(userTurns(ctx))
+  const cinema = capability === 'cinema_ticket'
+  const event = capability === 'event_ticket'
+  const film = cinema ? filmTitleOf(userTurns(ctx)) : null
   return [
-    { intentType: 'buy_ticket', primary: cinema, subjectDiscovery: false, configurationFor: noConfiguration },
-    { intentType: 'book_activity', primary: !cinema, subjectDiscovery: !cinema, configurationFor: noConfiguration },
+    { intentType: 'buy_ticket', primary: cinema, subjectDiscovery: cinema && !!film, rowDiscovery: false, ...(film ? { discoverySubject: film, subjectFilter: (title: string | undefined) => filmTitleMatches(film, title) } : {}), configurationFor: noConfiguration },
+    // Events are planned only when asked for: a Ticketbox search for a venue's NAME is not a link
+    // for that venue, and the discovery query would be spent on every entertainment row otherwise.
+    // Events: the current year joins the query (the index favours the upcoming edition) and a
+    // listing whose title names only a past year is refused.
+    ...(event ? [{ intentType: 'buy_event_ticket' as const, primary: true, subjectDiscovery: true, rowDiscovery: false, discoverySubject: `${str(ctx.query) ?? ''} ${now.getFullYear()}`.trim(), subjectFilter: (title: string | undefined) => !namesPastYear(title, now), configurationFor: noConfiguration }] : []),
+    { intentType: 'book_activity', primary: !cinema && !event, subjectDiscovery: !cinema && !event, configurationFor: noConfiguration },
   ]
 }
 
-function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext): Plan | null {
+function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext, now: Date): Plan | null {
   if (toolName === 'search_products') {
     return {
       domain: 'shopping',
@@ -206,6 +255,8 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext)
           : null,
       }],
       listKey: 'search_results',
+      maxLinks: MAX_HOTEL_LINKS_PER_ROW,
+      maxQueries: MAX_HOTEL_QUERIES,
       // P1-8: the OTA title, reduced to the hotel's name ("Book Oc Tien Sa Hotel Danang i Da Nang
       // på Agoda.com" → "Oc Tien Sa Hotel"); the entity builder applies the same cleaner for display.
       subjectOf: row => { const n = stripTrailingCity(cleanOtaTitle(str(row.name) ?? str(row.title))); return n || undefined },
@@ -220,7 +271,7 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext)
   const stated = str(r._tappy_place_domain)
   const domainIntents: Record<string, { domain: CommerceDomain; intents: PlannedIntent[] }> = {
     food: { domain: 'food_drink', intents: foodIntents(ctx) },
-    entertainment: { domain: 'entertainment', intents: entertainmentIntents(ctx) },
+    entertainment: { domain: 'entertainment', intents: entertainmentIntents(ctx, now) },
     spa: { domain: 'spa', intents: [{ intentType: 'buy_spa_voucher', primary: true, subjectDiscovery: true, configurationFor: noConfiguration }] },
   }
   const di = stated ? domainIntents[stated] : undefined
@@ -234,13 +285,20 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext)
   }
 }
 
-/** The rows CCP resolves for: the shortlist when the ranker produced one, else the first `max` (already ranked). */
+/**
+ * The rows CCP resolves for: the shortlist first (when the ranker produced one), then the leading
+ * rows in ranked order, up to `max`. Live UAT 14 Sep 2026 (Nha Trang): a one-entry shortlist left
+ * the card's #2 and #3 without a link while the card still showed them — the card and the
+ * resolution must cover the same rows.
+ */
 function candidateRows(rows: Row[], r: Row, max: number): Row[] {
   const sl = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ name?: string }>) : []
   const wanted = new Set(sl.map(s => (s.name || '').trim().toLowerCase()).filter(Boolean))
   const named = (row: Row) => String(row.name ?? row.title ?? '').split(' - ')[0].trim().toLowerCase()
   const picked = wanted.size > 0 ? rows.filter(row => wanted.has(named(row))) : []
-  return (picked.length > 0 ? picked : rows).slice(0, max)
+  const out = [...picked]
+  for (const row of rows) { if (out.length >= max) break; if (!out.includes(row)) out.push(row) }
+  return out.slice(0, max)
 }
 
 /** Keep CCP's ranking order, at most one link per provider, at most `max` overall (P2-1). */
@@ -257,10 +315,24 @@ function dedupeLinks(existing: CommerceLinkRow[], incoming: CommerceLinkRow[], m
   return out
 }
 
-/** A catalogue listing title → a card name: the vendor suffix ("… - Klook", "… | Klook Việt Nam") dropped. */
+/**
+ * A catalogue listing title → a card name: the vendor suffix ("… - Klook", "… | Klook Việt Nam")
+ * dropped. Only a SHORT trailing segment (≤ 3 words) is a suffix — live probe 14 Sep 2026:
+ * "[TP.HCM - NTPMM] Những Thành Phố Mơ Màng Summer 2025" lost everything after "[TP.HCM".
+ */
 const listingName = (title: string | undefined, fallback: string): string => {
-  const t = (title ?? '').replace(/\s*[-|–]\s*[^-|–]*$/, '').replace(/\s+/g, ' ').trim()
+  const t = (title ?? '').replace(/\s*[-|–]\s*((?:[^-|–\s]+\s*){1,3})$/, '').replace(/\s+/g, ' ').trim()
   return t || fallback
+}
+
+/**
+ * An event page whose title names a PAST year is a past event (Ticketbox keeps them online —
+ * live probe 14 Sep 2026 surfaced "Summer 2025"). Availability is never inferred; a year the
+ * title itself states is a fact, and a past one is never offered.
+ */
+const namesPastYear = (title: string | undefined, now: Date): boolean => {
+  const years = [...(title ?? '').matchAll(/\b(20\d{2})\b/g)].map(m => Number(m[1]))
+  return years.length > 0 && years.every(y => y < now.getFullYear())
 }
 
 /** Is this URL filed under a city other than the one requested? (null city on either side = not contradicted) */
@@ -276,10 +348,12 @@ const contradictsCity = (url: string | undefined, requestedCity: string | null):
 export async function attachCommerceLinks(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
   const enabled = ctx.enabled ?? CCP_ENABLED
   if (!enabled || !isRecord(result)) return result
+  if (toolName === 'get_flight_prices' || toolName === 'get_transport_options') return attachRouteLinks(toolName, result, ctx)
+  if (toolName === 'web_search') return attachEventLinks(result, ctx)
   try {
     const r = result
     const now = ctx.now ?? new Date()
-    const plan = planFor(toolName, r, ctx)
+    const plan = planFor(toolName, r, ctx, now)
     if (!plan) return result
     if (!Array.isArray(r[plan.listKey])) return result
     // 🚨 IDEMPOTENT ON A CACHED RESULT. The tools memoise their result OBJECT for minutes and
@@ -307,11 +381,11 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
     const constraints = ctx.location ? { constraints: { city: ctx.location.slice(0, 80) } } : {}
 
-    for (const { intentType, primary, subjectDiscovery, configurationFor } of plan.intents) {
+    for (const { intentType, primary, subjectDiscovery, rowDiscovery, discoverySubject, subjectFilter, configurationFor } of plan.intents) {
       const capability = capabilityForIntent(intentType)
       // Discovery is one budgeted pass per intent; the search seam lets tests count it.
       let discovered: DiscoveredHint[] = []
-      if (subjects.length > 0) {
+      if (subjects.length > 0 && rowDiscovery !== false) {
         try {
           discovered = await discoverCommerceHints(plan.domain, intentType, subjects, { search: ctx.search, ...(plan.maxQueries ? { maxQueries: plan.maxQueries } : {}) })
         } catch {
@@ -341,7 +415,13 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
         const request: CommerceRequest = { domain: plan.domain, intentType, capability, subject: s.subject.slice(0, 200), ...(cfg ? { configuration: cfg.configuration } : {}), ...constraints, context }
         const out = resolve(request, { hints, now, enabled: true })
         if (!('links' in out) || out.links.length === 0) continue
-        const projected = out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
+        // A ROW carries subject links. A merchant's SEARCH page for the row's name is kept only for
+        // shopping (owner decision 14 Sep 2026: the marketplaces' honest fallbacks); a hotel or a
+        // venue row never gets "Tìm … trên X" for a capability it was not asked for.
+        const projected = out.links
+          .filter(l => l.depth >= MIN_ROW_LINK_DEPTH && (plan.domain === 'shopping' || l.kind !== 'SEARCH_HANDOFF'))
+          .map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
+        if (projected.length === 0) continue
         const existing = Array.isArray(row[COMMERCE_LINKS_KEY]) ? (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) : []
         row[COMMERCE_LINKS_KEY] = dedupeLinks(existing, projected, plan.maxLinks)
         attachedAny = true
@@ -351,24 +431,28 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
       // asked for, and each listing becomes its OWN row — a ticket for Bà Nà Hills is never a link
       // on an unrelated bar the places tool returned. Only when no venue row took a link.
       if (subjectDiscovery && primary && !attachedAny) {
-        const subject = str(ctx.query) ?? str(r.query)
+        const subject = discoverySubject ?? str(ctx.query) ?? str(r.query)
         if (!subject) continue
         let hits: DiscoveredHint[] = []
         try { hits = await discoverBySubject(plan.domain, intentType, subject, ctx.location, { search: ctx.search, perScope: MAX_EXPERIENCE_ROWS }) } catch { hits = [] }
         const added: Row[] = []
         for (const h of hits) {
           if (added.length >= MAX_EXPERIENCE_ROWS) break
+          // A film page that names another film is not the film the user asked for.
+          if (subjectFilter && !subjectFilter(h.title)) continue
           const name = listingName(h.title, subject)
           const request: CommerceRequest = { domain: plan.domain, intentType, capability, subject: name.slice(0, 200), ...constraints, context }
           const out = resolve(request, { hints: [{ url: h.url, title: name }], now, enabled: true })
-          if (!('links' in out) || out.links.length === 0) continue
+          // A listing row IS the subject: only a page-level link makes one (a search fallback is not a listing).
+          const detail = 'links' in out ? out.links.filter(l => l.kind !== 'SEARCH_HANDOFF') : []
+          if (!('links' in out) || detail.length === 0) continue
           added.push({
             name,
             ...(ctx.location ? { address: ctx.location } : {}),
             // A listing discovered for the subject — not a venue the places tool returned.
             _tappy_experience: true,
-            _tappy_source: out.links[0].merchantName,
-            [COMMERCE_LINKS_KEY]: dedupeLinks([], out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, [], { primary: true }))),
+            _tappy_source: detail[0].merchantName,
+            [COMMERCE_LINKS_KEY]: dedupeLinks([], detail.map(l => projectCommerceLinkRow(l, out.requestId, intentType, [], { primary: true }))),
           })
         }
         // Placed right after the ranker's #1, not appended: the card shows three rows and a
@@ -384,6 +468,137 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
   } catch {
     // A commerce failure must never cost the user the search result it decorates.
     return result
+  }
+}
+
+// ── Route-level handoffs: flights and coaches (Completion Pass, 14 Sep 2026) ─
+//
+// A flight or coach turn has no ranked rows and no decision card (the engine
+// does not choose between fares), so its handoff channel is the tool result's
+// own link fields, which the prompt tells the model to copy verbatim:
+// `booking_links` (flights) and `vexere_link` (coaches). Those fields are now
+// a PROJECTION of CCP links — the registry decides which merchants exist, the
+// adapters compose only their verified grammars, the resolver validates every
+// URL and the events fire — instead of a second, hand-written provider list.
+// The CommerceLink rows themselves are not left on the result (nothing carves
+// them for this tool, and the model must not read them); `_tappy_commerce`
+// carries the non-URL facts a native client can read (merchant, depth, login).
+//
+// Flights: Trip.com and Traveloka dated fare lists (L2, verified), then the
+// airlines' entry pages (L1 — they publish no dated URL). Coaches: the Vexere
+// route page for the two places (discovered, + date), else Vexere's front door.
+export interface RouteHandoffFacts {
+  merchantName: string
+  providerId: string
+  kind: CommerceLinkRow['kind']
+  depth: CommerceLinkRow['depth']
+  guestDepth: CommerceLinkRow['guestDepth']
+  authRequiredAt: CommerceLinkRow['authRequiredAt']
+  linkId: string
+  requestId: string
+  assumedParams: string[]
+  limitations: string[]
+}
+
+const ISO_DAY = (d: Date) => d.toISOString().slice(0, 10)
+
+async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_options', r: Row, ctx: CommerceAttachContext): Promise<unknown> {
+  try {
+    const now = ctx.now ?? new Date()
+    const flight = toolName === 'get_flight_prices'
+    if (!flight && ctx.transportMode === 'taxi') return r
+    const origin = str(ctx.origin), destination = str(ctx.destination)
+    if (!origin || !destination) return r
+    // Flights need IATA codes; coach routes are named by place SLUGS (the request schema refuses whitespace).
+    const originRef = flight ? cityToIATA(origin) : slug(origin)
+    const destinationRef = flight ? cityToIATA(destination) : slug(destination)
+    if (!originRef || !destinationRef) return r
+    const assumed: string[] = []
+    let departDate = str(ctx.departDate)
+    if (!departDate || !ISO_DATE.test(departDate)) { departDate = ISO_DAY(new Date(now.getTime() + DEFAULT_DEPART_OFFSET_MS)); assumed.push('departDate') }
+    const returnDate = str(ctx.returnDate)
+    const configuration: CommerceRequest['configuration'] = {
+      kind: 'transport',
+      originRef: originRef.slice(0, 80),
+      destinationRef: destinationRef.slice(0, 80),
+      departDate,
+      ...(returnDate && ISO_DATE.test(returnDate) && returnDate >= departDate ? { returnDate } : {}),
+      ...(ctx.passengers && ctx.passengers > 0 ? { passengers: Math.min(20, Math.floor(ctx.passengers)) } : {}),
+      mode: flight ? 'flight' : 'bus',
+    }
+    const intentType: IntentType = flight ? 'book_flight' : 'book_transport'
+    const subject = `${origin} → ${destination}`.slice(0, 200)
+    // Coaches: the route page carries Vexere's own ids, so it is discovered, never composed.
+    let hints: DiscoveryHint[] = []
+    if (!flight) {
+      try {
+        const hits = await discoverBySubject('travel', intentType, `xe khách ${origin} ${destination}`, undefined, { search: ctx.search, perScope: 3 })
+        hints = hits.map(h => ({ url: h.url, title: h.title ?? subject }))
+      } catch { hints = [] }
+    }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
+    const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, context }
+    const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
+    if (!('links' in out) || out.links.length === 0) return r
+    const rows = dedupeLinks([], out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
+    if (rows.length === 0) return r
+    const projected = rows.map(l => ({ name: l.merchantName, url: l.url }))
+    if (flight) r.booking_links = projected
+    else r.vexere_link = projected[0].url
+    r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+      merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+      linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+    }))
+    return r
+  } catch {
+    return r
+  }
+}
+
+// ── Event handoffs on a web-search turn (Completion Pass live UAT, 14 Sep 2026) ──
+//
+// "Có concert nào ở TP.HCM…" is answered by web_search, not by the places
+// tool, so the events path on the places seam never ran and the reply had no
+// ticket link at all (honest, but empty). On a web turn whose words ask for an
+// event, Ticketbox listings are discovered by SUBJECT + city (year included,
+// past years refused), resolved and validated by CCP, and projected as
+// `event_links` for the prose — the same channel as `booking_links` — with
+// `_tappy_commerce` carrying the facts. Nothing is composed: no listing, no link.
+const MAX_EVENT_LINKS = 3
+
+async function attachEventLinks(r: Row, ctx: CommerceAttachContext): Promise<unknown> {
+  try {
+    if (entertainmentCapabilityOf(userTurns(ctx)) !== 'event_ticket') return r
+    const now = ctx.now ?? new Date()
+    const subject = str(ctx.query)
+    if (!subject) return r
+    const intentType: IntentType = 'buy_event_ticket'
+    let hits: DiscoveredHint[] = []
+    try { hits = await discoverBySubject('entertainment', intentType, `${subject} ${now.getFullYear()}`, ctx.location, { search: ctx.search, perScope: MAX_EVENT_LINKS + 2 }) } catch { hits = [] }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
+    const rows: CommerceLinkRow[] = []
+    const names: string[] = []
+    for (const h of hits) {
+      if (rows.length >= MAX_EVENT_LINKS) break
+      if (namesPastYear(h.title, now)) continue
+      const name = listingName(h.title, subject)
+      const request: CommerceRequest = { domain: 'entertainment', intentType, capability: capabilityForIntent(intentType), subject: name.slice(0, 200), context }
+      const out = (ctx.resolve ?? resolveCommerce)(request, { hints: [{ url: h.url, title: name }], now, enabled: true })
+      const detail = 'links' in out ? out.links.find(l => l.kind !== 'SEARCH_HANDOFF') : undefined
+      if (!('links' in out) || !detail) continue
+      if (rows.some(x => x.destinationUrl === detail.directUrl)) continue
+      rows.push(projectCommerceLinkRow(detail, out.requestId, intentType, [], { primary: true }))
+      names.push(name)
+    }
+    if (rows.length === 0) return r
+    r.event_links = rows.map((l, i) => ({ name: names[i], platform: l.merchantName, url: l.url }))
+    r._tappy_commerce = rows.map((l): RouteHandoffFacts => ({
+      merchantName: l.merchantName, providerId: l.providerId, kind: l.kind, depth: l.depth, guestDepth: l.guestDepth, authRequiredAt: l.authRequiredAt,
+      linkId: l.linkId, requestId: l.requestId, assumedParams: l.assumedParams, limitations: l.limitations,
+    }))
+    return r
+  } catch {
+    return r
   }
 }
 

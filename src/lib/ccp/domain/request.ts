@@ -32,8 +32,10 @@ const configurationSchema = z.discriminatedUnion('kind', [
     departDate: isoDate,
     returnDate: isoDate.optional(),
     passengers: small.optional(),
+    cabin: z.enum(['economy', 'premium_economy', 'business', 'first']).optional(),
     mode: z.enum(['flight', 'bus', 'train']),
   }),
+  z.object({ kind: z.literal('event'), eventRef: ref, city: z.string().trim().max(80).optional(), date: isoDate.optional(), quantity: small.optional() }),
   z.object({
     kind: z.literal('reservation'),
     restaurantRef: ref,

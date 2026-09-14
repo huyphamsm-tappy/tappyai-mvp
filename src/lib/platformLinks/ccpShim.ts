@@ -1,5 +1,5 @@
 import { providerOwning, PROVIDER_REGISTRY, isCommerceLinkRow, type CommerceLinkRow } from '@/lib/ccp'
-import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
+import { searchTemplates } from '@/lib/ccp/adapters'
 
 // ── Legacy platform links ↔ CCP (Phase 6 compatibility shim) ────────────────
 //
@@ -29,26 +29,34 @@ export function commerceOwnedHosts(): string[] {
   return PROVIDER_REGISTRY.filter(e => e.tier === 'mvp').flatMap(e => [...e.allowedHosts])
 }
 
-/** The marketplaces' declared SEARCH grammars, as URL prefixes (everything before the query value). */
-export function marketplaceSearchPrefixes(): string[] {
-  return marketplaceSearchTemplates().map(t => t.template.slice(0, t.template.indexOf('{q}')))
+/**
+ * Every adapter-declared SEARCH / landing grammar, as URL prefixes (everything before the query
+ * value; a front door is its own prefix). Marketplaces (14 Sep 2026) and the Completion Pass
+ * travel / event grammars alike.
+ */
+export function registrySearchPrefixes(): string[] {
+  return searchTemplates().map(t => { const i = t.template.indexOf('{q}'); return i < 0 ? t.template : t.template.slice(0, i) })
 }
+/** @deprecated use registrySearchPrefixes. */
+export const marketplaceSearchPrefixes = registrySearchPrefixes
 
 /**
  * A legacy link that IS a registry search grammar instance (Shopee "/search?keyword=…",
- * Lazada "/catalog/?q=…") is the platform's own L2 SEARCH_HANDOFF projected for the flag-off
- * path — one authority, one grammar (owner decision 14 Sep 2026). Anything else on a CCP host
- * is a second authority and is removed.
+ * Booking.com "/searchresults.vi.html?ss=…", Agoda's front door) is the platform's own L0–L2
+ * SEARCH_HANDOFF projected for the flag-off path — one authority, one grammar (owner decision
+ * 14 Sep 2026). Anything else on a CCP host is a second authority and is removed.
  */
-export function isMarketplaceSearchLink(url: string): boolean {
-  return marketplaceSearchPrefixes().some(p => url.startsWith(p))
+export function isRegistrySearchLink(url: string): boolean {
+  return registrySearchPrefixes().some(p => url.startsWith(p))
 }
+/** @deprecated use isRegistrySearchLink. */
+export const isMarketplaceSearchLink = isRegistrySearchLink
 
-/** True when a CCP MVP provider owns this URL's host and the URL is not its declared search grammar. */
+/** True when a CCP adapter-backed provider owns this URL's host and the URL is not its declared search grammar. */
 export function isCommerceOwnedLink(url: string): boolean {
   const provider = providerOwning(url)
   if (!provider) return false
-  if (isMarketplaceSearchLink(url)) return false
+  if (isRegistrySearchLink(url)) return false
   return PROVIDER_REGISTRY.some(e => e.providerId === provider && e.tier === 'mvp')
 }
 

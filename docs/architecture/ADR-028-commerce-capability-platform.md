@@ -74,3 +74,41 @@ capabilities are restaurant_discovery, restaurant_detail, food_order and food_de
 (GrabFood, ShopeeFood). No replacement provider is added. Historical evidence stays in the
 Transaction Depth Audit and the Phase 8 report. The removal touched no other domain — the
 architecture test the owner asked for (provider removal without redesign) passed.
+
+## Addendum (14 Sep 2026) — Provider Integration Completion Pass (provider list FROZEN)
+
+Owner directive: stop the provider-by-provider loop; the list is final (17 merchants) and
+every direct / search / detail path TappyAI can build on its own is built now. Affiliate
+approval affects monetisation only — it never gates a provider.
+
+- **Registry**: seven adapter-backed providers added or promoted — Booking.com, Agoda,
+  Traveloka (hotels + flights), Vexere, Vietnam Airlines, Vietjet, Ticketbox — and Trip.com
+  gains `book_flight`. Every entry declares a `linkStrategy` per intent; `providerStatus`
+  (ACTIVE · ACTIVE_DIRECT · HANDOFF_ONLY · BLOCKED_EXTERNAL) and `monetizationStatus`
+  (APPROVED · PENDING · NOT_APPLICABLE) are DERIVED from the entry, never stored beside it.
+- **Adapters**: a fourth shape, the handoff-grammar adapter (`adapters/grammar.ts`): a
+  discovered DETAIL page + configuration appended + a composable SEARCH or landing page.
+  Every grammar was checked read-only on 14 Sep 2026; unverified application is `observed`.
+  The resolver's search fallback is the shared `SearchCapableAdapter` contract (marketplaces
+  and grammar adapters alike). A results / landing page is a `SEARCH_HANDOFF` even when the
+  URL carries dates and a route (depth ≤ 2).
+- **Capabilities**: `film_discovery` / `film_detail` (CGV film page, discovered by the film
+  the user NAMED, title-matched) and `showtime_discovery` (declared by nobody — no source, so
+  explicitly unavailable); `event_discovery` / `event_detail` / `event_ticket` with the new
+  `buy_event_ticket` intent (Ticketbox). `TransportConfiguration` carries `returnDate`,
+  `passengers` and `cabin`; `EventConfiguration` added.
+- **Facts contract** (`CommerceFacts`): optional, provider-agnostic price / availability /
+  inventory / schedule observation on `CommerceLink` and the row; nothing populates it yet.
+- **Seam**: flights and coaches are ROUTE-level handoffs — the tool results' `booking_links`
+  and `vexere_link` are now projections of CCP links (no second provider list; events fire);
+  `_tappy_commerce` carries the non-URL facts. Hotel rows carry their OTA page with the stay
+  applied; no landing page ever lands on a row; a venue row never receives a search fallback.
+- **Legacy projections**: `platformLinks/travel.ts` and the prompt's hotel CTA template read
+  the registry grammars. Two legacy grammars were found broken and retired: Agoda
+  `/vi-vn/search?q=` (drops the query → homepage) and Vexere
+  `/ket-qua-tim-kiem-ve-xe-khach?fromLocationName=` (404). The iOS Swift twin's two URLs were
+  aligned (parity test).
+- **Labels**: a subject page whose merchant flow past it is unverified for a guest (guest L3,
+  no login boundary) is labelled "Xem trên {platform}", never a transaction verb.
+- Out of scope, unchanged: payment, booking engine, CAPTCHA/auth handling, Android V3 UI,
+  `CCP_ENABLED` (still false), feed display/ingest (off), PasGo / Tiki / TGDD (out).

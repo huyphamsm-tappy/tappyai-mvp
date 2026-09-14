@@ -124,14 +124,30 @@ describe('5. the label cannot upgrade the action', () => {
 })
 
 describe('the batch preserves order and count', () => {
-  it('drops nothing', () => {
+  it('downgrades a promise on a non-CCP aggregator homepage and drops nothing', () => {
+    // Ticketbox is a CCP provider since the Completion Pass (14 Sep 2026): its front door is
+    // DROPPED (see below); a homepage the platform does not own is only downgraded.
     const buttons = [
-      { label: '🎫 Ticketbox - Mua vé sự kiện', type: 'website', url: AGGREGATOR_HOMEPAGE, primary: true },
+      { label: '🎫 Eventbrite - Mua vé sự kiện', type: 'website', url: 'https://www.eventbrite.com/', primary: true },
       { label: '📅 Lịch sự kiện TP.HCM', type: 'website', url: 'https://sodulich.hochiminhcity.gov.vn/', primary: false },
     ]
     const out = validateModelCtaButtons(buttons, t)
     expect(out).toHaveLength(2)
     expect(out[1]).toEqual(buttons[1])
-    expect(out[0].label).toBe('Tìm vé trên Ticketbox')
+    expect(out[0].label).toBe('Tìm vé trên Eventbrite')
+  })
+  it('drops a button whose label names a registry merchant but whose URL is another site (live UAT 14 Sep 2026: "Vexere - Phương Trang" → redBus)', () => {
+    const out = validateModelCtaButtons([
+      { label: '🚌 Vexere - Phương Trang', type: 'website', url: 'https://www.redbus.vn/ve-xe-khach/nha-xe/phuong-trang', primary: true },
+      { label: '🚌 Phương Trang', type: 'website', url: 'https://www.redbus.vn/ve-xe-khach/nha-xe/phuong-trang', primary: false },
+      { label: '🏨 Booking.com - Mường Thanh', type: 'booking', url: 'https://www.booking.com/searchresults.vi.html?ss=Muong+Thanh', primary: false },
+    ], t)
+    expect(out.map(b => b.label)).toEqual(['🚌 Phương Trang', '🏨 Booking.com - Mường Thanh'])
+  })
+  it('drops a model button on the Agoda front door even without a promise word: the front-door template is not a search grammar', () => {
+    expect(validateModelCtaButtons([{ label: '🏨 Agoda - Phú Quốc', type: 'booking', url: 'https://www.agoda.com/vi-vn/', primary: false }], t)).toEqual([])
+  })
+  it('drops a Ticketbox front door (CCP-owned): the verified event link arrives as a Commerce Link instead', () => {
+    expect(validateModelCtaButtons([{ label: '🎫 Ticketbox - Mua vé sự kiện', type: 'website', url: AGGREGATOR_HOMEPAGE, primary: true }], t)).toEqual([])
   })
 })

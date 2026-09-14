@@ -22,11 +22,30 @@ export interface DiscoveryScope {
   segment?: ProviderRegistryEntry['segment']
 }
 
+/**
+ * What kind of page an intent's discovery looks for. A provider serving two intents (Trip.com:
+ * hotels AND flights; Traveloka) declares ONE scope, and that scope must fit the intent — a
+ * flight request never spends a search on hotel pages. Flights have no discovery: their pages
+ * are composed from the verified grammars.
+ */
+const INTENT_SUBJECT_KIND: Partial<Record<IntentType, DiscoverySubjectKind>> = {
+  buy_product: 'product',
+  book_hotel: 'hotel',
+  book_transport: 'route',
+  order_delivery: 'restaurant',
+  buy_ticket: 'film',
+  book_activity: 'activity',
+  buy_spa_voucher: 'activity',
+  buy_event_ticket: 'event',
+}
+
 /** Scopes for the adapters that are ON and can serve this domain + intent. */
 export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentType, flags: Record<string, boolean> = CCP_ADAPTERS): DiscoveryScope[] {
   const out: DiscoveryScope[] = []
+  const kind = INTENT_SUBJECT_KIND[intentType]
+  if (!kind) return out
   for (const e of PROVIDER_REGISTRY) {
-    if (!e.discovery || (e.tier !== 'mvp' && e.handoffPassthrough !== true)) continue
+    if (!e.discovery || e.discovery.subjectKind !== kind || (e.tier !== 'mvp' && e.handoffPassthrough !== true)) continue
     if (flags[e.enabledFlag] !== true) continue
     if (!e.domains.includes(domain) || !e.intents.includes(intentType)) continue
     out.push({ providerId: e.providerId, merchantName: e.merchantName, site: e.discovery.site, subjectKind: e.discovery.subjectKind, ...(e.segment ? { segment: e.segment } : {}) })

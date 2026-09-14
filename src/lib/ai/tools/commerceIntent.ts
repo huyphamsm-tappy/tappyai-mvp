@@ -14,7 +14,7 @@
 // the seam hands to CCP.
 
 export type FoodCapability = 'food_delivery' | 'table_reservation' | 'restaurant_discovery'
-export type EntertainmentCapability = 'cinema_ticket' | 'activity_booking'
+export type EntertainmentCapability = 'cinema_ticket' | 'activity_booking' | 'event_ticket'
 
 /**
  * The conversation window the seam reads (Phase 8, P1-2). Tappy often answers a
@@ -47,6 +47,13 @@ const RESERVATION = phrase([
   'đặt\\s*bàn', 'dat\\s*ban', 'đặt\\s*chỗ', 'dat\\s*cho', 'giữ\\s*bàn', 'giu\\s*ban', 'giữ\\s*chỗ', 'giu\\s*cho',
   'book(?:ing)?\\s+(?:a\\s+)?table', 'reserv(?:e|ation)', 'đặt\\s*trước\\s*bàn', 'dat\\s*truoc\\s*ban',
 ])
+// Concerts, shows, festivals — Ticketbox's catalogue (Completion Pass, 14 Sep 2026). Checked before
+// CINEMA so "show" never falls into the film branch; "phim" alone still means cinema.
+const EVENT = phrase([
+  'concert', 'live\\s*show', 'liveshow', 'sự\\s*kiện', 'su\\s*kien', 'lễ\\s*hội', 'le\\s*hoi', 'đêm\\s*nhạc', 'dem\\s*nhac',
+  'ca\\s*nhạc', 'ca\\s*nhac', 'fan\\s*meeting', 'festival', 'hội\\s*chợ', 'hoi\\s*cho', 'vé\\s*show', 've\\s*show', 'nhạc\\s*hội', 'nhac\\s*hoi',
+  'kịch', 'kich\\s*noi', 'stand\\s*-?up', 'workshop', 'triển\\s*lãm', 'trien\\s*lam',
+])
 const CINEMA = phrase([
   'vé\\s*xem\\s*phim', 've\\s*xem\\s*phim', 'xem\\s*phim', 'rạp', 'rap\\s*phim', 'cgv', 'lotte\\s*cinema', 'galaxy\\s*cinema',
   'cinema', 'movie', 'suất\\s*chiếu', 'suat\\s*chieu', 'phim',
@@ -64,7 +71,46 @@ export function foodCapabilityOf(input: UserTurns): FoodCapability {
   return 'restaurant_discovery'
 }
 
-/** Entertainment: a film/cinema sentence in the window asks for cinema_ticket; anything else is an activity. */
+/** Entertainment: an event sentence asks for event_ticket, a film/cinema sentence for cinema_ticket; anything else is an activity. Newest signal wins. */
 export function entertainmentCapabilityOf(input: UserTurns): EntertainmentCapability {
-  return turns(input).some(t => CINEMA.test(t)) ? 'cinema_ticket' : 'activity_booking'
+  for (const t of turns(input).reverse()) {
+    if (EVENT.test(t)) return 'event_ticket'
+    if (CINEMA.test(t)) return 'cinema_ticket'
+  }
+  return 'activity_booking'
+}
+
+// ── Film title (cinema foundation, Completion Pass) ─────────────────────────
+// A CGV film page can be discovered only when the user NAMED a film. The title
+// is the text after "phim" up to a place / time word or the end of the sentence;
+// generic continuations ("phim gì hay", "phim mới", "phim hôm nay") are not a
+// title. Conservative on purpose: no title → no film discovery → no CGV link,
+// and the cinema venues from the places tool stand on their own.
+const FILM_AFTER = /(?:xem\s+)?phim\s+["“]?([^"”?!.,;\n]{2,80})/iu
+const FILM_STOP = /(?:^|\s+)(?:ở|o|tại|tai|gần|gan|hôm\s*nay|hom\s*nay|tối\s*nay|toi\s*nay|ngày\s*mai|ngay\s*mai|cuối\s*tuần|cuoi\s*tuan|lúc|luc|suất|suat|rạp|rap|cho\s|với|voi|nhé|nhe|đi\b|di\b)[\s\S]*$/iu
+const FILM_GENERIC = /^(?:gì|gi|nào|nao|hay|mới|moi|hot|đang\s*chiếu|dang\s*chieu|chiếu\s*rạp|hành\s*động|kinh\s*dị|tình\s*cảm|hoạt\s*hình|hài|việt|hàn|mỹ|nhật|trung|nước\s*ngoài)(?![\p{L}\p{N}])/iu
+
+/** The film the user named in the window (newest first), or null when none was named. */
+export function filmTitleOf(input: UserTurns): string | null {
+  for (const t of turns(input).reverse()) {
+    const m = t.match(FILM_AFTER)
+    if (!m) continue
+    const title = m[1].replace(FILM_STOP, '').replace(/\s+/g, ' ').trim().replace(/[”"]$/, '')
+    if (title.length < 2 || FILM_GENERIC.test(title)) continue
+    return title
+  }
+  return null
+}
+
+const fold = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd')
+const FILM_NOISE = new Set(['phim', 'movie', 'film', 'cgv', 'ban', 'cua', 'va', 'the', 'of', 'a', 'an', 'and'])
+
+/** Does a discovered film page title name the film the user asked for? (≥ 60% of the film's tokens, order-free.) */
+export function filmTitleMatches(film: string, pageTitle: string | undefined): boolean {
+  if (!pageTitle) return false
+  const want = fold(film).split(/[^a-z0-9]+/).filter(w => w.length > 1 && !FILM_NOISE.has(w))
+  if (want.length === 0) return false
+  const have = new Set(fold(pageTitle).split(/[^a-z0-9]+/))
+  const hit = want.filter(w => have.has(w)).length
+  return hit / want.length >= 0.6
 }

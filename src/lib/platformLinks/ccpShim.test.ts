@@ -10,8 +10,11 @@ describe('ownership comes from the CCP registry', () => {
   it('the five MVP merchants are owned; handoff-only and legacy platforms are not', () => {
     expect(commerceOwnedHosts()).toEqual(expect.arrayContaining(['www.dienmayxanh.com', 'vn.trip.com', 'www.cgv.vn', 'www.klook.com']))
     expect(isCommerceOwnedLink('https://vn.trip.com/hotels/detail/?hotelId=1')).toBe(true)
-    // Booking.com is a registry entry (handoff-only), NOT an MVP adapter — the legacy search link stays legacy.
-    expect(isCommerceOwnedLink('https://www.booking.com/searchresults.html?ss=x')).toBe(false)
+    // Booking.com is adapter-backed since the Completion Pass (14 Sep 2026): its registry results
+    // grammar stays a legacy projection; a property page is a Commerce Link and is owned.
+    expect(isCommerceOwnedLink('https://www.booking.com/searchresults.vi.html?ss=x')).toBe(false)
+    expect(isCommerceOwnedLink('https://www.booking.com/hotel/vn/muong-thanh-luxury-da-nang.vi.html')).toBe(true)
+    expect(isCommerceOwnedLink('https://www.agoda.com/vi-vn/')).toBe(false)
     expect(isCommerceOwnedLink('https://shopee.vn/search?keyword=x')).toBe(false)
     expect(isCommerceOwnedLink('https://vn.trip.com.evil.example/')).toBe(false)
   })
@@ -24,8 +27,8 @@ describe('withoutCommerceOwnedLinks', () => {
     }
   })
   it('would strip a legacy entry that reached into the platform, preserving order', () => {
-    const mixed = [{ name: 'Booking.com', url: 'https://www.booking.com/x' }, { name: 'Trip.com', url: 'https://vn.trip.com/x' }, { name: 'Agoda', url: 'https://www.agoda.com/x' }]
-    expect(withoutCommerceOwnedLinks(mixed).map(l => l.name)).toEqual(['Booking.com', 'Agoda'])
+    const mixed = [{ name: 'Booking.com', url: 'https://www.booking.com/x' }, { name: 'Maps', url: 'https://www.google.com/maps/x' }, { name: 'Trip.com', url: 'https://vn.trip.com/x' }, { name: 'Agoda', url: 'https://www.agoda.com/x' }, { name: 'Grab', url: 'https://www.grab.com/vn/' }]
+    expect(withoutCommerceOwnedLinks(mixed).map(l => l.name)).toEqual(['Maps', 'Grab'])
   })
 })
 

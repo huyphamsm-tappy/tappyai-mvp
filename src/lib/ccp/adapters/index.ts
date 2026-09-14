@@ -5,20 +5,31 @@ import { tripcomAdapter } from './tripcom'
 import { cgvAdapter } from './cgv'
 import { klookAdapter } from './klook'
 import { PASSTHROUGH_ADAPTERS } from './handoff'
-import { MARKETPLACE_ADAPTERS } from './marketplace'
+import { MARKETPLACE_ADAPTERS, marketplaceSearchTemplates } from './marketplace'
+import { GRAMMAR_ADAPTERS, grammarSearchTemplates } from './grammar'
 import { INTENT_CAPABILITY, type CommerceRequest } from '../domain/types'
 
 export type { ProviderAdapter, DirectLinkBuild, DiscoveryHint } from './types'
-export { MARKETPLACE_ADAPTERS, isMarketplaceAdapter, marketplaceSearchTemplates, type MarketplaceAdapter } from './marketplace'
+export { MARKETPLACE_ADAPTERS, isMarketplaceAdapter, isSearchCapableAdapter, marketplaceSearchTemplates, type MarketplaceAdapter, type SearchCapableAdapter } from './marketplace'
+export { GRAMMAR_ADAPTERS, grammarSearchTemplates } from './grammar'
 
-// The five MVP adapters (owner decision D10) plus the three shopping marketplaces (owner
-// decision 14 Sep 2026: Shopee and TikTok Shop mandatory, Lazada desired). Adding one is a
-// reviewed change here AND a registry entry with a dated depth profile; the adapter test
-// asserts both lists agree.
-// PasGo removed from active scope (owner decision 14 Sep 2026) — four MVP adapters remain.
+// The four bespoke MVP adapters (owner decision D10; PasGo removed 14 Sep 2026), the three
+// shopping marketplaces (14 Sep 2026: Shopee and TikTok Shop mandatory, Lazada desired) and the
+// Completion Pass grammar adapters (14 Sep 2026: Booking.com, Agoda, Traveloka, Vexere, Vietnam
+// Airlines, Vietjet, Ticketbox). Adding one is a reviewed change here AND a registry entry with a
+// dated depth profile; the adapter test asserts both lists agree. The provider list is FROZEN.
 export const MVP_ADAPTERS: readonly ProviderAdapter[] = [dmxAdapter, tripcomAdapter, cgvAdapter, klookAdapter]
-/** Every adapter-backed provider: MVP core + marketplaces. Registry entries with tier 'mvp'. */
-export const ADAPTERS: readonly ProviderAdapter[] = [...MVP_ADAPTERS, ...MARKETPLACE_ADAPTERS]
+/** Every adapter-backed provider (registry entries with tier 'mvp'). */
+export const ADAPTERS: readonly ProviderAdapter[] = [...MVP_ADAPTERS, ...MARKETPLACE_ADAPTERS, ...GRAMMAR_ADAPTERS]
+
+/**
+ * Every composable SEARCH grammar an adapter publishes, for the legacy builders and the prompt's
+ * CTA templates (`{q}` placeholder). Registry-projected: a merchant without a composable search
+ * page (TikTok Shop, Agoda, Vexere) is absent by fact.
+ */
+export function searchTemplates(): Array<{ providerId: string; name: string; template: string }> {
+  return [...marketplaceSearchTemplates(), ...grammarSearchTemplates()]
+}
 
 /** Adapters whose product flag is on and that can serve the request. */
 export type AdapterFlags = Record<keyof typeof CCP_ADAPTERS, boolean>

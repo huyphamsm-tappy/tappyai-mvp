@@ -25,9 +25,14 @@ describe('bridge translation', () => {
       { domain: 'travel', intentType: 'book_hotel', subject: 'Mường Thanh', configuration: { kind: 'hotel', propertyRef: 'x', checkIn: '2026-10-10', checkOut: '2026-10-12', adults: 2 }, context: { platform: 'web' } },
       { enabled: true, hints: [{ subjectRef: '10569789' }], now: new Date('2026-09-13T08:00:00Z') },
     )
-    expect('links' in r && r.links).toHaveLength(1)
+    // Trip.com's configured detail leads; the Completion Pass OTA fallbacks (Booking.com results,
+    // Agoda / Traveloka landings) follow as SEARCH_HANDOFFs. Only the first link is asserted below.
+    expect('links' in r && r.links.length).toBeGreaterThanOrEqual(1)
+    expect('links' in r && r.links[0].providerId).toBe('tripcom')
     const types = seen.map(e => e.type)
-    expect(types).toEqual(['commerce_request', 'commerce_provider_search', 'commerce_deep_link_resolved', 'commerce_deep_link_validated', 'commerce_provider_selected'])
+    expect(types[0]).toBe('commerce_request')
+    expect(types.at(-1)).toBe('commerce_provider_selected')
+    expect(new Set(types)).toEqual(new Set(['commerce_request', 'commerce_provider_search', 'commerce_deep_link_resolved', 'commerce_deep_link_validated', 'commerce_provider_selected']))
     for (const e of seen) {
       const payload = sanitizePayload(e)
       // Nothing was dropped by the shared sanitiser: every field is allow-listed and scalar.

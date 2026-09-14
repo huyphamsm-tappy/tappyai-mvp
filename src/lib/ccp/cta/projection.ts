@@ -1,4 +1,5 @@
 import type { CommerceLink, IntentType, LinkKind, TransactionDepth } from '../domain/types'
+import { handoffTypeOf } from '../row'
 
 // ── Commerce Link → the canonical action vocabulary ─────────────────────────
 // On the canonical tree the application's ONE action list is
@@ -22,8 +23,11 @@ export function actionKindFor(intentType: IntentType): CommerceActionKind {
     case 'buy_product': return 'purchase'
     case 'buy_spa_voucher': return 'purchase'
     case 'book_hotel': return 'booking'
-    case 'book_flight': return 'booking'
-    case 'book_transport': return 'booking'
+    // A flight or a coach seat is a TICKET the user buys ("Mua vé trên Vietnam Airlines",
+    // "Tìm vé trên Vexere"), not a room booking — the label vocabulary follows the purchase.
+    case 'book_flight': return 'ticket'
+    case 'book_transport': return 'ticket'
+    case 'buy_event_ticket': return 'ticket'
     case 'reserve_table': return 'reservation'
     case 'order_delivery': return 'delivery'
     case 'buy_ticket': return 'ticket'
@@ -80,11 +84,8 @@ function legacyType(link: CommerceLink): CommerceCta['type'] {
   return 'booking'
 }
 
-function handoffOf(link: CommerceLink): CommerceCta['commerce']['handoff'] {
-  if (link.authRequiredAt === 'app_only') return 'app'
-  if (link.authRequiredAt === 'none' || link.authRequiredAt === 'at_order') return 'guest'
-  return 'merchant_login'
-}
+// One definition of the handoff type (row.ts) serves the row, this projection and the clients.
+const handoffOf = (link: CommerceLink): CommerceCta['commerce']['handoff'] => handoffTypeOf(link.authRequiredAt)
 
 const VERB: Record<string, string> = {
   shopping: 'Mua tại',
