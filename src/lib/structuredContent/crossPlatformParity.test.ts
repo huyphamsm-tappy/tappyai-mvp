@@ -174,6 +174,21 @@ describe('MUST MATCH — the action boundary (DD-006)', () => {
   })
 })
 
+describe('MUST MATCH — shopping owns its own decision surface (cross-platform UAT, 15 Sep 2026)', () => {
+  // A shopping turn renders the ShoppingDecision, not the product place cards: the two are mutually
+  // exclusive, or a turn shows its products twice (a Google-search place card ABOVE the verified
+  // merchant handoff). Web: `placeView && !shopView`. Android must guard PlaceCards the same way, or
+  // the CCP handoff ("Mua trên Shopee") is buried under a "Tìm trên Google" place card.
+  it('web gates PlaceDecision on the absence of a shopping view', () => {
+    expect(read('src/components/ChatInterface.tsx')).toMatch(/placeView && !shopView/)
+  })
+  it('android suppresses the place cards when a shopping decision is present', () => {
+    const src = stripComments(read('android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt'))
+    expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn')
+      .toMatch(/message\.shopping == null[\s\S]{0,700}PlaceCards\(/)
+  })
+})
+
 describe('MUST MATCH — the assistant comes first on every platform (DD-002 / P4-11)', () => {
   // The rule is an ORDER, so each platform is checked by the position of its own section calls.
   // The section NAMES legitimately differ; where they sit relative to each other does not.

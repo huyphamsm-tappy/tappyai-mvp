@@ -294,7 +294,16 @@ fun ChatScreen(
                             // On a plan turn either projection can repeat venues the itinerary
                             // above already presents; those are dropped (TravelPlaceFilter) so one
                             // venue is one card. The projections themselves are untouched.
-                            if (!isResponding) {
+                            //
+                            // 🔑 SHOPPING OWNS ITS OWN DECISION SURFACE (cross-platform UAT, 15 Sep
+                            // 2026). Web renders PlaceDecision only when there is NO shopping view
+                            // (`placeView && !shopView`, ChatInterface.tsx) — the two are mutually
+                            // exclusive. Android rendered BOTH, so a shopping turn showed the
+                            // products twice: once as product place cards (a Google-search action)
+                            // ABOVE, burying the ShoppingDecisionCard's verified merchant handoff
+                            // ("Mua trên Shopee") below. Suppressing the place cards when a shopping
+                            // decision exists matches web and keeps the CCP handoff first.
+                            if (!isResponding && message.shopping == null) {
                                 val cards = message.livePlaces?.items
                                     ?.let { livePlacesOutsideItinerary(message.plan, it) }
                                     ?.map { it.toCardView() }

@@ -5506,13 +5506,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "A comparison in plain language plus Shopee, Tiki and Lazada buttons that search for that product."
+            "value": "A comparison in plain language plus Shopee and Lazada buttons that search for that product."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bản so sánh dễ hiểu cùng các nút Shopee, Tiki, Lazada tìm đúng sản phẩm đó."
+            "value": "Bản so sánh dễ hiểu cùng các nút Shopee, Lazada tìm đúng sản phẩm đó."
           }
         }
       }

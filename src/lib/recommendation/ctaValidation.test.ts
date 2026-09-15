@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateModelCtaButton, validateModelCtaButtons, promisedKind, unlinkMislabelledMerchantLinks } from './ctaValidation'
+import { validateModelCtaButton, validateModelCtaButtons, promisedKind, unlinkMislabelledMerchantLinks, validateModelCtaBlock, isMisleadingModelCta, stripFalseDisconnectClaims } from './ctaValidation'
 import { vi as viDict } from '@/lib/i18n/w5/placeDecision'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -173,5 +173,49 @@ describe('a named merchant unmakes prose links to OTHER registry merchants (live
     const url = 'https://www.booking.com/searchresults.vi.html?ss=Da+Nang'
     const text = `Xem [Booking.com](${url}).`
     expect(unlinkMislabelledMerchantLinks(text, new Set([url]), 'tripcom')).toBe(text)
+  })
+})
+
+describe('a REMOVED provider never returns through the model (cross-platform UAT, 15 Sep 2026)', () => {
+  it('drops a model "📦 Tiki" button (Tiki is forbidden) — under a Shopee request only Shopee survives', () => {
+    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Tìm trên Shopee","type":"search","url":"https://shopee.vn/search?keyword=iphone"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=iphone"},{"label":"🛍️ Lazada","type":"search","url":"https://www.lazada.vn/catalog/?q=iphone"}]}[/CTA_BUTTONS]'
+    const out = validateModelCtaBlock('Đây nhé.\n\n' + block, t, 'shopee')
+    expect(out).toContain('Tìm trên Shopee')
+    expect(out).not.toContain('Tiki')
+    expect(out).not.toContain('Lazada')
+  })
+  it('drops Tiki even with NO named merchant (a general shopping turn)', () => {
+    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Shopee","type":"search","url":"https://shopee.vn/search?keyword=x"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=x"}]}[/CTA_BUTTONS]'
+    const out = validateModelCtaBlock('x\n\n' + block, t, null)
+    expect(out).toContain('Shopee')
+    expect(out).not.toContain('Tiki')
+  })
+  it('a Tiki button on a non-Tiki host (mislabelled) is dropped by name', () => {
+    expect(isMisleadingModelCta({ label: '📦 Tiki', type: 'search', url: 'https://www.google.com/search?q=iphone' })).toBe(true)
+  })
+  it('unlinks a prose link to Tiki', () => {
+    expect(unlinkMislabelledMerchantLinks('Bạn có thể xem trên [Tiki](https://tiki.vn/dien-thoai) nữa.')).toBe('Bạn có thể xem trên Tiki nữa.')
+  })
+  it('does not touch a legitimate registry merchant (Shopee)', () => {
+    expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=x' })).toBe(false)
+  })
+})
+
+describe('a false "chưa kết nối" claim about a connected provider is removed (cross-platform UAT, 15 Sep 2026)', () => {
+  it('drops the sentence claiming Trip.com is not connected; keeps the rest', () => {
+    const text = 'Mình tìm thấy vài khách sạn ở Đà Nẵng. Tuy nhiên, hệ thống mình chưa kết nối trực tiếp với Trip.com. Bạn muốn xem thêm không?'
+    const out = stripFalseDisconnectClaims(text, 'tripcom')
+    expect(out).not.toContain('chưa kết nối')
+    expect(out).toContain('Mình tìm thấy vài khách sạn ở Đà Nẵng.')
+    expect(out).toContain('Bạn muốn xem thêm không?')
+  })
+  it('leaves a genuinely-unsupported claim that names no registry provider (table reservation)', () => {
+    const text = 'TappyAI chưa hỗ trợ đặt bàn nhà hàng trực tuyến.'
+    expect(stripFalseDisconnectClaims(text, null)).toBe(text)
+    expect(stripFalseDisconnectClaims(text, 'shopee')).toBe(text) // "đặt bàn" names no provider
+  })
+  it('drops "không hỗ trợ Klook" when Klook was the named provider', () => {
+    const out = stripFalseDisconnectClaims('Xin lỗi, mình không hỗ trợ Klook. Bạn thử cách khác nhé.', 'klook')
+    expect(out).toBe('Bạn thử cách khác nhé.')
   })
 })

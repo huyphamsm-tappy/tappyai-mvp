@@ -5,6 +5,24 @@ import { INTENT_CAPABILITY, type CommerceCapability, type CommerceDomain, type I
 export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig, ProviderStatus, MonetizationStatus, LinkStrategyStep, DiscoverySubjectKind } from './types'
 export { PROVIDER_REGISTRY } from './providers'
 
+// ── REMOVED PROVIDERS — the ones the owner took out and forbade reintroducing ──
+//
+// PasGo / Tiki / TGDD / California Fitness were in earlier scope and are gone. They have no
+// `PROVIDER_REGISTRY` entry, so the registry-driven CTA/link rules never see them — yet the model
+// still writes "📦 Tiki" buttons and "chưa kết nối" prose from its own training. This is the one
+// place their hosts and names are spelled, inside the CCP layer, so the clients and the AI layer can
+// ask "is this a removed merchant?" without spelling a merchant host themselves (architecture rule
+// no-commerce-merchant-hosts-outside-ccp).
+export const REMOVED_MERCHANT_HOSTS: ReadonlySet<string> = new Set([
+  'tiki.vn', 'pasgo.vn', 'thegioididong.com', 'dienthoai.thegioididong.com', 'sendo.vn', 'californiafitness.com.vn', 'cthesports.com',
+])
+const REMOVED_MERCHANT_NAME_RE = /(?<![\p{L}\p{N}])(tiki|pasgo|th[eế] gi[oớ]i di đ[oộ]ng|tgdd|sendo|california fitness)(?![\p{L}\p{N}])/iu
+
+/** A label or a host that names / points at a removed provider — never reintroduced through the model. */
+export function isRemovedMerchant(label: string, host: string): boolean {
+  return REMOVED_MERCHANT_HOSTS.has(host.replace(/^www\./, '')) || REMOVED_MERCHANT_NAME_RE.test(label)
+}
+
 const BY_ID: ReadonlyMap<string, ProviderRegistryEntry> = new Map(PROVIDER_REGISTRY.map(p => [p.providerId, p]))
 
 export function getProvider(providerId: string): ProviderRegistryEntry | null {

@@ -2,7 +2,7 @@ import { actionLabel } from './actionLabel'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
-import { PROVIDER_REGISTRY } from '@/lib/ccp/registry'
+import { PROVIDER_REGISTRY, isRemovedMerchant } from '@/lib/ccp/registry'
 import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
@@ -114,6 +114,13 @@ const isFlightResultsPage = (url: string) => /^https:\/\/(vn\.trip\.com\/flights
 export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   const host = hostOf(btn.url)
   if (!host) return false
+  // 🚨 A REMOVED PROVIDER NEVER COMES BACK THROUGH THE MODEL (cross-platform UAT, 15 Sep 2026).
+  // The frozen registry is the allow-list of merchants TappyAI hands off to; Tiki, PasGo, TGDD and
+  // California Fitness were deliberately removed. The model still writes "📦 Tiki" / "Lazada, Tiki"
+  // buttons from its own training, and because those hosts are not in the registry no other rule
+  // here drops them — measured live on Android, a Tiki button under "mua … trên Shopee". A button
+  // that names or points at a forbidden merchant is dropped, on every client.
+  if (isForbiddenMerchant(btn.label, host)) return true
   // Completion Pass live UAT (14 Sep 2026): "🚌 Vexere - Phương Trang" pointed at a redBus page. A
   // label that NAMES a registry merchant must point at that merchant — anything else is a
   // mislabelled destination, and no relabelling can make it honest.
@@ -138,6 +145,18 @@ export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   if (segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))) return true
   if (isDirectEntityUrl(btn.url)) return false
   return !!kind
+}
+
+/**
+ * Providers the owner deliberately REMOVED from the frozen registry and forbade reintroducing
+ * (PasGo / Tiki / TGDD / California Fitness). They have no registry entry, so the registry-driven
+ * rules above never see them — this list is what keeps a model-authored button or prose link to one
+ * of them from reaching a user. Hosts and a name matcher, so both "[Tiki](https://tiki.vn/…)" and a
+ * bare "📦 Tiki" button on a non-Tiki URL are caught.
+ */
+/** A button/link that names or points at a removed provider (never reintroduced through the model). Delegates to the CCP registry, which is the one place a removed merchant's host is spelled. */
+export function isForbiddenMerchant(label: string, host: string): boolean {
+  return isRemovedMerchant(label, host)
 }
 
 /** Registry merchants by name (longest first, so "ShopeeFood" is matched before "Shopee"). */
@@ -169,7 +188,7 @@ export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: Readon
     // turn — a link to ANY OTHER registry merchant (live UAT 14 Sep 2026: "… trên Trip.com" whose
     // reply still linked "[Booking.com] hoặc [Agoda]"). The named merchant's own links stay.
     const other = !!requestedProviderId && isOtherRegistryMerchant(url, requestedProviderId)
-    return other || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) ? label : whole
+    return other || isForbiddenMerchant(label, hostOf(url)) || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) ? label : whole
   })
 }
 
@@ -182,6 +201,33 @@ export function isRegistryFrontDoor(url: string): boolean {
   try { path = new URL(url).pathname.replace(/\/+$/, '') || '/' } catch { return false }
   const segments = path.split('/').filter(Boolean).filter(s => !/^[a-z]{2}(?:-[a-z]{2})?$/i.test(s))
   return segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))
+}
+
+/**
+ * 🚨 A CONNECTED PROVIDER IS NEVER CALLED "chưa kết nối" (cross-platform UAT, 15 Sep 2026).
+ *
+ * Rule 18b tells the model, in as many words, never to answer "chưa kết nối với X" for a platform in
+ * the frozen registry — yet it still did: a Trip.com hotel turn whose CARD correctly showed "Đặt
+ * phòng trên Trip.com" opened with "hệ thống mình chưa kết nối trực tiếp với Trip.com". The claim is
+ * provably false — `requestedProviderId` is only ever a REGISTRY provider — so the sentence carrying
+ * it (and only that sentence) is removed at settle time. Nothing else in the prose is touched;
+ * a genuinely unsupported capability (table reservation, showtimes) names no registry provider and
+ * so is never matched.
+ */
+const DISCONNECT_CLAIM = /(ch[ưu]a|kh[ôo]ng)\s+(k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)/iu
+
+export function stripFalseDisconnectClaims(text: string, requestedProviderId?: string | null): string {
+  if (!text || !requestedProviderId) return text
+  const entry = PROVIDER_REGISTRY.find(e => e.providerId === requestedProviderId)
+  if (!entry) return text
+  const name = entry.merchantName
+  const nameRe = new RegExp(`(?<![\\p{L}\\p{N}])${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu')
+  // Split into sentences at a "." / "!" / "?" that is FOLLOWED BY whitespace (so the "." inside
+  // "Trip.com" never splits the name), and at newlines; keep every delimiter so a rejoin is lossless.
+  const parts = text.split(/(?<=[.!?])(?=\s)|(?<=\S)(?=\n)/)
+  const kept = parts.filter(s => !(DISCONNECT_CLAIM.test(s) && nameRe.test(s)))
+  if (kept.length === parts.length) return text
+  return kept.join('').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
 }
 
 /**

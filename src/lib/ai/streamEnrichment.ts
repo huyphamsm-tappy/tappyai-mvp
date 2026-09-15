@@ -13,7 +13,7 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
-import { unlinkMislabelledMerchantLinks, validateModelCtaBlock } from '@/lib/recommendation/ctaValidation'
+import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims } from '@/lib/recommendation/ctaValidation'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
@@ -1267,7 +1267,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // The model's own [CTA_BUTTONS] block is validated HERE for every client (cross-platform CCP,
     // 14 Sep 2026): another registry merchant's button under a named-merchant request, a merchant
     // front door, a mislabelled destination — dropped; a promise on a results page — relabelled.
-    const scaffoldStripped = validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId)
+    // A false "chưa kết nối với <named provider>" claim is removed here too (the provider is in the
+    // registry, so the claim is provably wrong — live UAT 15 Sep 2026, a Trip.com hotel turn).
+    const scaffoldStripped = stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId)
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`

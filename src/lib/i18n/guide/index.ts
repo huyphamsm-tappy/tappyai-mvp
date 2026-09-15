@@ -73,7 +73,7 @@ export const en: Record<string, string> = {
   'guide.shop.s3': 'Read the comparison, then open a shopping link to check the current price.',
   'guide.shop.result':
     'A comparison in plain language, plus links to search for the product on the marketplaces.',
-  'guide.shop.b1': 'Shopee, Tiki, Lazada — open a search for that product on each site.',
+  'guide.shop.b1': 'Shopee, Lazada — open a search for that product on each site.',
   'guide.shop.nodata':
     'TappyAI cannot see live stock or checkout prices. Treat any price it mentions as a rough guide and confirm on the store page.',
 
@@ -204,7 +204,7 @@ export const vi: Record<string, string> = {
   'guide.shop.s3': 'Đọc phần so sánh rồi mở link mua sắm để xem giá hiện tại.',
   'guide.shop.result':
     'Một bản so sánh dễ hiểu, kèm link tìm sản phẩm đó trên các sàn.',
-  'guide.shop.b1': 'Shopee, Tiki, Lazada — mở trang tìm sản phẩm đó trên từng sàn.',
+  'guide.shop.b1': 'Shopee, Lazada — mở trang tìm sản phẩm đó trên từng sàn.',
   'guide.shop.nodata':
     'TappyAI không thấy được tồn kho hay giá lúc thanh toán. Hãy xem giá TappyAI nêu là con số tham khảo và kiểm tra lại trên trang của người bán.',
 
