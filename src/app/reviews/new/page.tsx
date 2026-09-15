@@ -7,9 +7,11 @@ import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {
-  Star, Camera, X, ArrowLeft, Loader2, AlertTriangle,
-  MapPin, Plus, Video, Link2, XCircle, Music, UploadCloud, Info,
+  Star, X, ArrowLeft, Loader2, AlertTriangle,
+  MapPin, Plus, Video, XCircle, Music, UploadCloud, Info,
+  Image as ImageIcon, Youtube, Play, Sparkles, PenLine, Users, Globe,
 } from 'lucide-react'
+import TappyPresence from '@/components/v3/TappyPresence'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import {
@@ -56,10 +58,12 @@ const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
  * implementation anywhere in web, Android or iOS). A tile is a promise the product has to keep.
  */
 const MODES = [
-  { id: 'photo', icon: Camera, labelKey: 'reviewNew.tabPhoto' },
-  { id: 'video', icon: Video,  labelKey: 'reviewNew.tabVideo' },
-  { id: 'url',   icon: Link2,  labelKey: 'reviewNew.tabLink'  },
+  { id: 'photo', icon: ImageIcon, tone: 'blue', labelKey: 'reviewNew.tabPhoto', hintKey: 'reviewNew.tabPhotoHint' },
+  { id: 'video', icon: Video,     tone: 'ink',  labelKey: 'reviewNew.tabVideo', hintKey: 'reviewNew.tabVideoHint' },
+  { id: 'url',   icon: Youtube,   tone: 'red',  labelKey: 'reviewNew.tabLink',  hintKey: 'reviewNew.tabLinkHint'  },
 ] as const
+/** The body's existing ceiling - the same 1000 the textarea and its counter always used. */
+const BODY_MAX = 1000
 
 /* ─── helpers ─── */
 
@@ -225,19 +229,21 @@ function SelectedMusicCard({
       onClick={onReplace}
       onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReplace() } }}
       aria-label={t('reviewNew.selectedMusicAria')}
-      className="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-gray-200 dark:border-gray-700 p-3 text-left transition-colors hover:border-[#fe2c55]/50"
+      className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border p-3 text-left transition-colors"
+      style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
     >
       <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900 dark:text-white">{track?.title ?? t('reviewNew.loading')}</p>
-        {track?.artist && <p className="truncate text-xs text-content-secondary">{track.artist}</p>}
+        <p className="truncate text-sm font-semibold" style={{ color: 'var(--v3-fg)' }}>{track?.title ?? t('reviewNew.loading')}</p>
+        {track?.artist && <p className="truncate text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{track.artist}</p>}
       </div>
-      {track && <MusicDuration seconds={track.durationSec} className="flex-shrink-0 text-xs text-gray-400" />}
+      {track && <span className="flex-shrink-0 text-xs" style={{ color: 'var(--v3-fg-muted)' }}><MusicDuration seconds={track.durationSec} /></span>}
       <button
         type="button"
         aria-label={t('reviewNew.removeMusic')}
         onClick={e => { e.stopPropagation(); onRemove() }}
-        className="flex-shrink-0 rounded-full p-1 text-gray-400 hover:text-red-500"
+        className="flex-shrink-0 rounded-full p-1 transition-colors hover:text-red-500"
+        style={{ color: 'var(--v3-fg-muted)' }}
       >
         <X size={16} />
       </button>
@@ -748,69 +754,71 @@ export default function NewReviewPage() {
   }
 
   return (
-    <div className="min-h-dvh bg-white dark:bg-gray-950 flex flex-col">
+    <div className="v3-theme v3-post-page flex min-h-dvh flex-col">
 
-      {/* Header */}
-      <div className="sticky top-0 z-30 bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800 px-4 py-3 flex items-center justify-between">
-        <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
-          <ArrowLeft size={22} />
-        </Link>
-        <h1 className="font-bold text-gray-900 dark:text-white">{t('reviewNew.headerTitle')}</h1>
-        <button
-          onClick={handleSubmit}
-          disabled={!canPost || submitting || isUploading}
-          className="py-3 px-6 rounded-full bg-[#fe2c55] hover:bg-[#ef2950] disabled:bg-gray-200 dark:disabled:bg-gray-800 disabled:text-gray-400 text-white text-sm font-semibold transition-all"
-        >
-          {submitting ? <Loader2 size={15} className="animate-spin" /> : t('reviewNew.post')}
-        </button>
-      </div>
+      {/* -- Top bar -- back . title . post. The submit handler and its disabled rule are the
+          composer's own; only the chrome changed. */}
+      <header className="v3-post-topbar sticky top-0 z-30">
+        <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between gap-3 px-4 sm:px-6">
+          <Link href="/reviews" className="v3-post-iconbtn" aria-label={t('reviewNew.back')}>
+            <ArrowLeft size={22} />
+          </Link>
+          <h1 className="min-w-0 truncate text-[17px] font-bold sm:text-[19px]" style={{ color: 'var(--v3-fg)' }}>
+            {t('reviewNew.headerTitle')}
+          </h1>
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={!canPost || submitting || isUploading}
+            className="v3-post-primary v3-post-submit"
+          >
+            {submitting ? <Loader2 size={16} className="animate-spin" /> : t('reviewNew.post')}
+          </button>
+        </div>
+      </header>
 
-      <div className="flex-1 container-content py-4 space-y-4">
+      <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-24 pt-1 sm:px-6 sm:pt-2" data-post-main>
 
-        {/* -- Media step . V3 ---------------------------------------------------------
-            Redesigned in place. The composer around it - body, place, rating, music, submit,
-            moderation and the restricted flow - is untouched, and so is every upload path: this
-            block still calls `handlePhotoSelect`, `handleVideoSelect` and `handleUrlChange`.
-
-            🚨 IT SHOWS THREE MODES BECAUSE THERE ARE THREE. The design reference drew four tiles
-            - Photo, Video, "short clip" and Livestream. A short clip is not a capability of its
-            own: there is ONE
-            `content_type: 'video'` and one duration rule, so a third tile would be a third name
-            for this same flow. Livestream has no implementation in web, Android or iOS - not
-            even behind a flag - so it is not offered, and not advertised as "coming soon"
-            either. Link (YouTube) is real, ships today, and the reference omitted it.
-
-            Adding a mode later is one entry in MODES plus its surface; nothing else here
-            hardcodes the count.
-
-            🔑 `v3-theme` scopes the V3 tokens to this block. The background is cleared because
-            the class paints `--v3-page` on itself, and this is a section inside the composer
-            rather than a page of its own. */}
-        <div className="v3-theme space-y-4" style={{ background: 'transparent' }}>
-
-          {/* Identity */}
-          <div className="flex items-center gap-3">
-            <span
-              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl"
-              style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
-              aria-hidden="true"
-            >
-              <UploadCloud size={22} strokeWidth={2.2} />
-            </span>
-            <div className="min-w-0">
+        {/* -- Hero -- Tappy (the owner's `welcome` pose, unchanged) beside the title. The
+            character steps down over the upload card via `.v3-post-mascot`. The place /
+            rating / music controls live in ONE place, below the body - not here. */}
+        <section className="v3-post-hero" aria-labelledby="post-hero-title" data-post-hero>
+          <div className="flex flex-col items-center gap-0 px-2 pt-1 text-center sm:flex-row sm:items-end sm:gap-4 sm:px-3 sm:pt-2 sm:text-left md:gap-6">
+            <div className="v3-post-mascot relative" data-post-mascot>
+              <span className="v3-post-spark" aria-hidden="true" data-tone="blue" style={{ right: '-2px', top: '8%' }}><Sparkles size={24} /></span>
+              <span className="v3-post-spark" aria-hidden="true" style={{ left: '-2px', top: '40%' }}><Sparkles size={16} /></span>
+              <div className="v3-post-float">
+                <TappyPresence
+                  pose="welcome"
+                  size={300}
+                  aura="calm"
+                  className="max-h-[184px] max-w-[184px] sm:max-h-[244px] sm:max-w-[244px] md:max-h-[276px] md:max-w-[276px]"
+                />
+              </div>
+            </div>
+            <div className="min-w-0 flex-1 pb-4 sm:pb-[68px]">
               <h2
-                className="text-[15px] font-extrabold uppercase leading-tight tracking-[0.06em]"
+                id="post-hero-title"
+                className="text-[30px] font-extrabold uppercase leading-none tracking-[-0.01em] sm:text-[40px] md:text-[46px]"
                 style={{ color: 'var(--v3-fg)' }}
               >
-                {t('v3.nav.post')}
+                {t('reviewNew.heroTitle1')}{' '}
+                <span className="v3-post-hero-slash">/</span>{' '}
+                <span className="v3-post-hero-accent">{t('reviewNew.heroTitle2')}</span>
               </h2>
-              <p className="mt-0.5 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+              <p className="v3-post-hero-muted mt-2 text-[15px] sm:text-[17px]">
                 {t('reviewNew.mediaSubtitle')}
               </p>
             </div>
           </div>
+        </section>
 
-          {/* -- Anh -- */}
+        {/* -- Upload card -- one card, three surfaces. Each surface still calls the same
+            `handlePhotoSelect` / `handleVideoSelect` / `handleUrlChange`, and the format,
+            size and count lines are the server's own policy strings. */}
+        <section className="v3-post-panel p-3 sm:p-4" data-post-upload>
+
+          {/* -- Photo -- */}
           {mediaMode === 'photo' && (
             <div>
               {photos.length === 0 ? (
@@ -818,58 +826,52 @@ export default function NewReviewPage() {
                   onDragOver={e => { e.preventDefault(); setDragging(true) }}
                   onDragLeave={() => setDragging(false)}
                   onDrop={e => { e.preventDefault(); acceptDrop(Array.from(e.dataTransfer.files)) }}
-                  className="rounded-2xl border border-dashed px-5 py-8 text-center transition-colors"
-                  style={{
-                    borderColor: dragging ? 'var(--v3-accent)' : 'var(--v3-border-strong)',
-                    background: dragging ? 'var(--v3-accent-soft)' : 'var(--v3-panel-elevated)',
-                  }}
+                  className="v3-post-drop relative overflow-hidden px-5 py-7 text-center sm:px-8 sm:py-8"
+                  data-dragging={dragging ? 'true' : 'false'}
                 >
-                  <span
-                    className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
-                    style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
-                    aria-hidden="true"
-                  >
-                    {photoUploading ? <Loader2 size={26} className="animate-spin" /> : <UploadCloud size={26} />}
+                  <PostTiles />
+                  <span className="v3-post-drop-icon mx-auto" aria-hidden="true">
+                    {photoUploading ? <Loader2 size={32} className="animate-spin" /> : <UploadCloud size={34} />}
                   </span>
-                  <p className="mt-3 text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>
+                  <p className="mt-4 text-[19px] font-extrabold sm:text-[21px]" style={{ color: 'var(--v3-fg)' }}>
                     {dragging ? t('reviewNew.dropActive') : t('reviewNew.dropTitle')}
                   </p>
-                  <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                  <p className="mt-1 text-[14px] sm:text-[15px]" style={{ color: 'var(--v3-fg-secondary)' }}>
                     {t('reviewNew.dropHint')}
                   </p>
-                  {/* Real formats, real per-file cap - both from the server's own policy. */}
-                  <p className="mt-2 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                  <p className="v3-post-formats mt-2 text-[12.5px] sm:text-[13px]">
                     {t('reviewNew.photoHint', { n: String(MAX_PHOTO_SIZE_MB) })}
-                    {' · '}
+                    {'  |  '}
                     {t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })}
                   </p>
                   <button
                     type="button"
                     onClick={() => photoInputRef.current?.click()}
                     disabled={photoUploading}
-                    className="mt-4 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14.5px] font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-50"
-                    style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+                    className="v3-post-primary v3-post-choose mx-auto mt-5"
                   >
-                    <Plus size={18} />
-                    {t('reviewNew.choosePhotos')}
+                    <Plus size={20} />
+                    {t('reviewNew.chooseFile')}
                   </button>
                 </div>
               ) : (
-                <div className={`grid gap-1.5 ${photos.length === 1 ? 'grid-cols-1' : photos.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                <div className={`grid gap-2 ${photos.length === 1 ? 'grid-cols-1' : photos.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
                   {photos.map((url, i) => (
-                    <div key={i} className="relative aspect-square overflow-hidden rounded-xl">
+                    <div key={i} className="relative aspect-square overflow-hidden rounded-2xl">
                       <Image src={url} alt="" fill className="object-cover" sizes="33vw" />
                       <button type="button" onClick={() => setPhotos(prev => prev.filter((_, j) => j !== i))}
-                        className="absolute right-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-full bg-black/60">
-                        <X size={13} className="text-white" />
+                        aria-label={t('reviewNew.remove')}
+                        className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white">
+                        <X size={14} />
                       </button>
                     </div>
                   ))}
                   {photos.length < MAX_PHOTOS && (
                     <button type="button" onClick={() => photoInputRef.current?.click()} disabled={photoUploading}
-                      className="flex aspect-square items-center justify-center rounded-xl border border-dashed transition-colors disabled:opacity-50"
-                      style={{ borderColor: 'var(--v3-border-strong)', background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-muted)' }}>
-                      {photoUploading ? <Loader2 size={20} className="animate-spin" /> : <Plus size={24} />}
+                      aria-label={t('reviewNew.chooseFile')}
+                      className="v3-post-drop flex aspect-square items-center justify-center disabled:opacity-50"
+                      style={{ color: 'var(--v3-accent)' }}>
+                      {photoUploading ? <Loader2 size={22} className="animate-spin" /> : <Plus size={28} />}
                     </button>
                   )}
                 </div>
@@ -886,39 +888,31 @@ export default function NewReviewPage() {
                   onDragOver={e => { e.preventDefault(); setDragging(true) }}
                   onDragLeave={() => setDragging(false)}
                   onDrop={e => { e.preventDefault(); acceptDrop(Array.from(e.dataTransfer.files)) }}
-                  className="rounded-2xl border border-dashed px-5 py-8 text-center transition-colors"
-                  style={{
-                    borderColor: dragging ? 'var(--v3-accent)' : 'var(--v3-border-strong)',
-                    background: dragging ? 'var(--v3-accent-soft)' : 'var(--v3-panel-elevated)',
-                  }}
+                  className="v3-post-drop relative overflow-hidden px-5 py-7 text-center sm:px-8 sm:py-8"
+                  data-dragging={dragging ? 'true' : 'false'}
                 >
-                  <span
-                    className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
-                    style={{ background: 'var(--v3-accent-soft)', color: 'var(--v3-accent)' }}
-                    aria-hidden="true"
-                  >
-                    <UploadCloud size={26} />
+                  <PostTiles />
+                  <span className="v3-post-drop-icon mx-auto" aria-hidden="true">
+                    <UploadCloud size={34} />
                   </span>
-                  <p className="mt-3 text-[15px] font-bold" style={{ color: 'var(--v3-fg)' }}>
+                  <p className="mt-4 text-[19px] font-extrabold sm:text-[21px]" style={{ color: 'var(--v3-fg)' }}>
                     {dragging ? t('reviewNew.dropActive') : t('reviewNew.dropTitle')}
                   </p>
-                  <p className="mt-0.5 text-[12.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>
+                  <p className="mt-1 text-[14px] sm:text-[15px]" style={{ color: 'var(--v3-fg-secondary)' }}>
                     {t('reviewNew.dropHint')}
                   </p>
-                  {/* 🚨 mp4 . mov . webm . 5 minutes . 150MB - the existing string, which already
-                      matches `ALLOWED_VIDEO_TYPES` and the shared config. The reference said
-                      "MP4, MOV - 2GB"; that would invite a file the upload refuses. */}
-                  <p className="mt-2 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                  {/* mp4 . mov . webm . 5 minutes . 150MB - the existing string, which already
+                      matches `ALLOWED_VIDEO_TYPES` and the shared config. */}
+                  <p className="v3-post-formats mt-2 text-[12.5px] sm:text-[13px]">
                     {t('reviewNew.videoHint')}
                   </p>
                   <button
                     type="button"
                     onClick={() => videoInputRef.current?.click()}
-                    className="mt-4 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14.5px] font-semibold transition-opacity"
-                    style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+                    className="v3-post-primary v3-post-choose mx-auto mt-5"
                   >
-                    <Plus size={18} />
-                    {t('reviewNew.selectVideo')}
+                    <Plus size={20} />
+                    {t('reviewNew.chooseFile')}
                   </button>
                 </div>
               )}
@@ -985,16 +979,17 @@ export default function NewReviewPage() {
             </div>
           )}
 
-          {/* -- Link -- */}
+          {/* -- YouTube -- the existing link flow: provider list from the backend, URL input,
+              metadata preview. Nothing new is integrated. */}
           {mediaMode === 'url' && (
-            <div className="space-y-3">
+            <div className="space-y-3 p-1 sm:p-2">
               {/* Rendered from the backend-owned provider list - the composer never hardcodes
                   which platforms are importable. */}
               <div className="flex gap-2">
                 {SUPPORTED_LINK_SOURCES.map(src => (
-                  <button key={src}
+                  <button key={src} type="button"
                     onClick={() => { setSource_type(src); setSource_url(''); setUrlMeta(null); setUrlUnsupported(false) }}
-                    className="flex-1 rounded-xl border py-2 text-[12px] font-semibold transition-colors"
+                    className="flex-1 rounded-xl border py-2.5 text-[13px] font-semibold transition-colors"
                     style={source_type === src
                       ? { background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)', borderColor: 'transparent' }
                       : { background: 'var(--v3-panel-elevated)', color: 'var(--v3-fg-muted)', borderColor: 'var(--v3-border)' }}>
@@ -1008,22 +1003,18 @@ export default function NewReviewPage() {
                 value={source_url}
                 onChange={e => handleUrlChange(e.target.value)}
                 placeholder={t('reviewNew.pasteYoutube')}
-                className="w-full rounded-xl border px-4 py-3 text-[14px] outline-none transition-colors focus:border-[var(--v3-accent)]"
-                style={{ background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)', color: 'var(--v3-fg)' }}
+                className="v3-post-input"
               />
 
-              {/* Only worth saying once there is a CHOICE. With a single provider the selector
-                  above is already one full-width button reading "YouTube", so a line underneath
-                  repeating it is noise; the moment `SUPPORTED_LINK_SOURCES` grows, this earns its
-                  place and lists whatever the backend actually allows. */}
+              {/* Only worth saying once there is a CHOICE - see SUPPORTED_LINK_SOURCES. */}
               {SUPPORTED_LINK_SOURCES.length > 1 && (
-                <p className="text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }}>
+                <p className="text-[12px]" style={{ color: 'var(--v3-fg-muted)' }}>
                   {t('reviewNew.linkHint', { list: SUPPORTED_LINK_SOURCES.map(src => LINK_SOURCE_LABEL[src]).join(' · ') })}
                 </p>
               )}
 
               {urlUnsupported && (
-                <p className="text-[12px]" style={{ color: 'var(--v3-amber)' }}>{t('reviewNew.linkUnsupported')}</p>
+                <p className="text-[12.5px]" style={{ color: 'var(--v3-amber)' }}>{t('reviewNew.linkUnsupported')}</p>
               )}
 
               {fetchingMeta && (
@@ -1043,150 +1034,189 @@ export default function NewReviewPage() {
                     </div>
                   </div>
                   {urlMeta.title && (
-                    <p className="line-clamp-1 px-3 py-2 text-[12px]" style={{ color: 'var(--v3-fg-secondary)' }}>{urlMeta.title}</p>
+                    <p className="line-clamp-1 px-3 py-2 text-[12.5px]" style={{ color: 'var(--v3-fg-secondary)' }}>{urlMeta.title}</p>
                   )}
                 </div>
               )}
             </div>
           )}
+        </section>
 
-          {/* -- Mode tiles -- */}
-          <div className="grid grid-cols-3 gap-2">
-            {MODES.map(mode => {
-              const active = mediaMode === mode.id
-              return (
-                <button
-                  key={mode.id}
-                  type="button"
-                  aria-pressed={active}
-                  onClick={() => { if (!isUploading) { setMediaMode(mode.id); setDragging(false); setError('') } }}
-                  disabled={isUploading}
-                  className="flex flex-col items-center justify-center gap-1.5 rounded-2xl border py-3.5 text-[12.5px] font-semibold transition-colors disabled:opacity-50"
-                  style={active
-                    ? { background: 'var(--v3-accent-soft)', borderColor: 'var(--v3-accent)', color: 'var(--v3-accent)' }
-                    : { background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
-                >
-                  <mode.icon size={20} aria-hidden="true" />
-                  {t(mode.labelKey)}
-                </button>
-              )
-            })}
-          </div>
-
-          <p className="flex items-start gap-2 text-[11.5px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
-            <Info size={13} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
-            {t('reviewNew.communityNote')}
-          </p>
+        {/* -- Media tabs -- exactly the three real modes in MODES. */}
+        <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3" data-post-tabs>
+          {MODES.map(mode => {
+            const active = mediaMode === mode.id
+            return (
+              <button
+                key={mode.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => { if (!isUploading) { setMediaMode(mode.id); setDragging(false); setError('') } }}
+                disabled={isUploading}
+                className="v3-post-tab flex-col items-center text-center sm:flex-row sm:text-left"
+              >
+                <span className="v3-post-tab-icon" data-tone={mode.tone} aria-hidden="true">
+                  <mode.icon size={22} />
+                </span>
+                <span className="min-w-0">
+                  <span className="v3-post-tab-title block">{t(mode.labelKey)}</span>
+                  <span className="v3-post-tab-hint hidden sm:block">{t(mode.hintKey)}</span>
+                </span>
+              </button>
+            )
+          })}
         </div>
+
+        {/* -- Content -- the same textarea, same max length, counter always visible. */}
+        <section className="v3-post-panel mt-4 px-4 pb-3 pt-4 sm:px-5" data-post-body>
+          <div className="flex gap-3">
+            <PenLine size={20} className="mt-1 flex-shrink-0" style={{ color: 'var(--v3-fg-muted)' }} aria-hidden="true" />
+            <textarea
+              value={body}
+              onChange={e => setBody(e.target.value)}
+              placeholder={t('reviewNew.bodyPlaceholder')}
+              rows={4}
+              maxLength={BODY_MAX}
+              className="v3-post-body"
+              aria-label={t('reviewNew.bodyPlaceholder')}
+            />
+          </div>
+          <p className="v3-post-counter mt-1 text-right">{body.length}/{BODY_MAX}</p>
+        </section>
 
         {/* AI hashtag chips */}
         {aiHashtags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="mt-3 flex flex-wrap gap-1.5">
             {aiHashtags.map(tag => (
-              <span key={tag} className="text-xs px-3 py-1 bg-[#fe2c55]/10 text-[#fe2c55] rounded-full font-medium">
-                #{tag}
-              </span>
+              <span key={tag} className="v3-post-tag">#{tag}</span>
             ))}
           </div>
         )}
 
-        {/* Body */}
-        <textarea
-          value={body}
-          onChange={e => setBody(e.target.value)}
-          placeholder={t('reviewNew.bodyPlaceholder')}
-          rows={4}
-          maxLength={1000}
-          className="w-full px-0 py-2 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 bg-transparent border-none outline-none resize-none text-base leading-relaxed"
-        />
-        {body.length > 0 && <p className="text-right text-xs text-gray-400">{body.length}/1000</p>}
-
-        <div className="border-t border-gray-100 dark:border-gray-800" />
-
-        {/* Place */}
-        <div>
+        {/* -- Quick actions -- place . rating . music. The only place they appear. */}
+        <div className="mt-4 flex flex-wrap gap-2.5 sm:gap-3" data-post-actions>
           <button type="button" onClick={() => setShowPlaceInput(v => !v)}
-            className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
-            <MapPin size={16} />
-            {placeName || t('reviewNew.addPlace')}
+            className="v3-post-chip" data-tone="blue" data-active={placeName ? 'true' : 'false'} aria-expanded={showPlaceInput}>
+            <span className="v3-post-chip-icon" aria-hidden="true"><MapPin size={16} /></span>
+            <span className="max-w-[46vw] truncate sm:max-w-[28ch]">{placeName || t('reviewNew.addPlace')}</span>
             {placeName && (
-              <X size={14} className="text-gray-400"
+              <X size={15} className="v3-post-chip-clear" aria-hidden="true"
                 onClick={e => { e.stopPropagation(); setPlaceName(''); setShowPlaceInput(false) }} />
             )}
           </button>
-          {showPlaceInput && (
-            <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)}
-              placeholder={t('reviewNew.placePlaceholder')} autoFocus maxLength={100}
-              className="mt-2 w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
-          )}
-          {/* The area, shown whenever the place sheet is open or the clip suggested one — the
-              poster sees exactly what will be stored and can edit or clear it. */}
-          {(showPlaceInput || placeArea) && (
-            <div className="mt-2">
-              <input type="text" value={placeArea} data-testid="review-place-area"
-                onChange={e => { setPlaceArea(e.target.value); setAreaFromAi(false) }}
-                placeholder={t('reviewNew.areaPlaceholder')} maxLength={100}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 text-sm text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#fe2c55]/40" />
-              {areaFromAi && placeArea && (
-                <p className="mt-1 text-[11px] text-gray-400" data-testid="review-place-area-hint">{t('reviewNew.areaSuggested')}</p>
-              )}
-            </div>
-          )}
-        </div>
 
-        {/* Rating */}
-        <div>
           <button type="button" onClick={() => { setShowRating(v => !v); if (showRating) setRating(0) }}
-            className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
-            <Star size={16} />
+            className="v3-post-chip" data-tone="amber" data-active={rating > 0 ? 'true' : 'false'} aria-expanded={showRating}>
+            <span className="v3-post-chip-icon" aria-hidden="true"><Star size={16} /></span>
             {rating > 0 ? t('reviewNew.ratingLabel', { n: String(rating), label: ratingLabels[rating] }) : t('reviewNew.addRating')}
             {rating > 0 && (
-              <X size={14} className="text-gray-400" onClick={e => { e.stopPropagation(); setRating(0) }} />
+              <X size={15} className="v3-post-chip-clear" aria-hidden="true" onClick={e => { e.stopPropagation(); setRating(0) }} />
             )}
           </button>
-          {showRating && (
-            <div className="flex items-center gap-1 mt-2">
-              {[1, 2, 3, 4, 5].map(i => (
-                <button key={i} type="button"
-                  onMouseEnter={() => setHoverRating(i)} onMouseLeave={() => setHoverRating(0)}
-                  onClick={() => { setRating(i); setShowRating(false) }}
-                  className="p-0.5 transition-transform hover:scale-110">
-                  <Star size={30} className={`transition-colors ${i <= displayRating ? 'text-amber-400 fill-amber-400' : 'text-gray-200 dark:text-gray-700'}`} />
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
 
-        {/* Music */}
-        <div>
-          {!music ? (
+          {!music && (
             <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
-              className="flex items-center gap-2 text-sm text-[#fe2c55] font-medium hover:text-[#ef2950] transition-colors">
-              <Music size={16} />
+              className="v3-post-chip" data-tone="rose" data-active="false">
+              <span className="v3-post-chip-icon" aria-hidden="true"><Music size={16} /></span>
               {t('reviewNew.addMusic')}
             </button>
-          ) : (
-            <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
-          )}
-          {hasOpenedMusicPicker && (
-            <MusicPickerSheet
-              open={musicPickerOpen}
-              onClose={() => setMusicPickerOpen(false)}
-              onSelect={selection => setMusic(selection)}
-            />
           )}
         </div>
 
-        {/* Error */}
-        {error && (
-          <div className="bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 text-sm px-4 py-3 rounded-xl">
-            {error}
+        {/* Place: the name and the area, exactly as before. */}
+        {showPlaceInput && (
+          <input type="text" value={placeName} onChange={e => setPlaceName(e.target.value)}
+            placeholder={t('reviewNew.placePlaceholder')} autoFocus maxLength={100}
+            className="v3-post-input mt-3" />
+        )}
+        {/* The area, shown whenever the place sheet is open or the clip suggested one - the
+            poster sees exactly what will be stored and can edit or clear it. */}
+        {(showPlaceInput || placeArea) && (
+          <div className="mt-2">
+            <input type="text" value={placeArea} data-testid="review-place-area"
+              onChange={e => { setPlaceArea(e.target.value); setAreaFromAi(false) }}
+              placeholder={t('reviewNew.areaPlaceholder')} maxLength={100}
+              className="v3-post-input" />
+            {areaFromAi && placeArea && (
+              <p className="mt-1 text-[11.5px]" style={{ color: 'var(--v3-fg-muted)' }} data-testid="review-place-area-hint">{t('reviewNew.areaSuggested')}</p>
+            )}
           </div>
         )}
 
-        <div className="h-8" />
-      </div>
+        {/* Rating stars */}
+        {showRating && (
+          <div className="mt-3 flex items-center gap-1" data-post-stars>
+            {[1, 2, 3, 4, 5].map(i => (
+              <button key={i} type="button"
+                aria-label={t('reviewNew.ratingLabel', { n: String(i), label: ratingLabels[i] })}
+                onMouseEnter={() => setHoverRating(i)} onMouseLeave={() => setHoverRating(0)}
+                onClick={() => { setRating(i); setShowRating(false) }}
+                className="p-1 transition-transform hover:scale-110">
+                <Star size={32} className={`transition-colors ${i <= displayRating ? 'fill-[#F5B301] text-[#F5B301]' : ''}`}
+                  style={i <= displayRating ? undefined : { color: 'var(--v3-border-strong)' }} />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Music */}
+        {music && (
+          <div className="mt-3">
+            <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
+          </div>
+        )}
+        {hasOpenedMusicPicker && (
+          <MusicPickerSheet
+            open={musicPickerOpen}
+            onClose={() => setMusicPickerOpen(false)}
+            onSelect={selection => setMusic(selection)}
+          />
+        )}
+
+        {/* -- Visibility -- every post is public today; there is no per-post audience
+            setting in the data model, so this states the fact instead of drawing a
+            control that would not do anything. The community note sits beside it. */}
+        <section className="v3-post-panel mt-4 px-4 py-4 sm:px-5" data-post-visibility>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-3">
+              <span className="v3-post-vis-icon" aria-hidden="true"><Users size={24} /></span>
+              <div>
+                <p className="v3-post-vis-label">{t('reviewNew.visibilityLabel')}</p>
+                <p className="v3-post-vis-value flex items-center gap-1.5"><Globe size={16} aria-hidden="true" />{t('reviewNew.visibilityPublic')}</p>
+              </div>
+            </div>
+            <p className="flex items-start gap-2 text-[12.5px] leading-snug sm:max-w-[38ch]" style={{ color: 'var(--v3-fg-muted)' }}>
+              <Info size={14} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
+              {t('reviewNew.communityNote')}
+            </p>
+          </div>
+        </section>
+
+        {/* Error */}
+        {error && (
+          <div className="v3-post-error mt-4">{error}</div>
+        )}
+      </main>
+    </div>
+  )
+}
+
+/**
+ * Three illustration tiles inside the drop zone - image, play, YouTube - pure CSS on the
+ * card's right edge, hidden below `sm` so the copy keeps the full width on a phone.
+ */
+function PostTiles() {
+  return (
+    <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[34%] sm:block" aria-hidden="true">
+      <span className="v3-post-tile" data-tone="violet" style={{ width: 76, height: 76, right: '44%', top: '18%', transform: 'rotate(-10deg)' }}>
+        <ImageIcon size={30} />
+      </span>
+      <span className="v3-post-tile" data-tone="blue" style={{ width: 66, height: 66, right: '16%', top: '10%', transform: 'rotate(8deg)' }}>
+        <Play size={26} fill="currentColor" />
+      </span>
+      <span className="v3-post-tile" data-tone="red" style={{ width: 70, height: 70, right: '22%', top: '48%', transform: 'rotate(-6deg)' }}>
+        <Youtube size={30} />
+      </span>
     </div>
   )
 }
