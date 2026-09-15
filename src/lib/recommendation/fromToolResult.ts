@@ -2,6 +2,8 @@ import { buildPlaceEntity, buildProductEntity, buildStayEntity, sourceOf, type P
 import { buildRecommendations, type Recommendation, type RecommendationReason, type ShortlistEntry } from './recommendation'
 import type { CanonicalEntity, EntityDomain } from './entity'
 import { applyEligibility } from './eligibility'
+import { admitStays } from './stayAdmission'
+import { cityInText } from '@/lib/ai/tools/vietnamCities'
 
 // ── The one adapter from a tool result to recommendations ────────────────────
 //
@@ -53,6 +55,57 @@ const ENTITY_DOMAIN_DEFAULT: EntityDomain = 'food'
 const rows = (r: Record<string, unknown>, key: string): Record<string, unknown>[] => {
   const v = r[key]
   return Array.isArray(v) ? v.filter((x): x is Record<string, unknown> => !!x && typeof x === 'object') : []
+}
+
+/**
+ * Move ENTITY-SCOPED search evidence off the envelope and onto the row it is about.
+ *
+ * 🚨 IT WAS RETRIEVED, SCOPED, ATTRIBUTED — AND THEN DROPPED. `food.ts` writes
+ * `extra.price_search_results` / `extra.order_search_results` onto the RESULT
+ * ENVELOPE, already tagged by `placeNamedBy` with `evidence_scope` and, for
+ * entity-level items, `evidence_about` naming the exact place. `buildPlaceEntity`
+ * then reads `row.price_search_results` — a key no row has ever carried. So
+ * `pricing.priceSignal` was `unknown` on every place, in every domain, on every
+ * turn, while the evidence sat one level up. Measured 2026-09-10: 18 items
+ * retrieved across three domains, 0 reaching an entity.
+ *
+ * 🔑 ONLY `evidence_scope === 'entity'` CROSSES. An `area` item is a listicle
+ * about a district — the exact thing that produced "Bún Bò Huế Đông Ba — giá
+ * tham khảo 25.000–50.000đ" from an article about Quận 1. It stays on the
+ * envelope for the prose layer, which knows how to qualify it, and is never
+ * attached to a venue. This function can only ever make an entity carry evidence
+ * that already names it.
+ */
+function withEntityScopedEvidence(
+  list: Record<string, unknown>[],
+  envelope: Record<string, unknown>,
+): Record<string, unknown>[] {
+  const KEYS = ['price_search_results', 'order_search_results'] as const
+  const byKey = new Map<string, Map<string, unknown[]>>()
+  for (const key of KEYS) {
+    const scoped = new Map<string, unknown[]>()
+    for (const item of rows(envelope, key)) {
+      if (item.evidence_scope !== 'entity') continue
+      const about = typeof item.evidence_about === 'string' ? item.evidence_about.trim().toLowerCase() : ''
+      if (!about) continue
+      const bucket = scoped.get(about) ?? []
+      bucket.push(item)
+      scoped.set(about, bucket)
+    }
+    if (scoped.size > 0) byKey.set(key, scoped)
+  }
+  if (byKey.size === 0) return list
+
+  return list.map(row => {
+    const name = typeof row.name === 'string' ? row.name.trim().toLowerCase() : ''
+    if (!name) return row
+    const add: Record<string, unknown> = {}
+    for (const [key, scoped] of byKey) {
+      const hit = scoped.get(name)
+      if (hit && hit.length > 0) add[key] = hit
+    }
+    return Object.keys(add).length > 0 ? { ...row, ...add } : row
+  })
 }
 
 /**
@@ -119,7 +172,7 @@ export function placeRecommendations(result: unknown, location?: string, pick?: 
     placeTypes: Array.isArray(row.place_types) ? (row.place_types as string[]) : undefined,
   })).eligible
 
-  const entities = eligible
+  const entities = withEntityScopedEvidence(eligible, r)
     .map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location }))
     .filter(e => e.identity.name.length > 0)
 
@@ -138,11 +191,31 @@ export function productRecommendations(result: unknown): Recommendation[] {
   return withShortlist(entities, r, e => e.identity.name)
 }
 
-/** Build recommendations from a `get_hotel_prices` result. */
+/**
+ * Build recommendations from a `get_hotel_prices` result.
+ *
+ * 🚨 `search_results` IS A RAW WEB SEARCH, AND IT USED TO BECOME ENTITIES
+ * UNCHECKED. Measured 2026-09-10: eight stay cards for "khách sạn Đà Nẵng giá
+ * rẻ" were two real hotels (one repeated four times, one three), a Hội An hotel,
+ * and the article "10 khách sạn tốt nhất tại Đà Nẵng năm 2026" — because the
+ * page TITLE was taken as the entity name with nothing in between. `admitStays`
+ * applies the rule food.ts already states for price snippets ("NEVER a source of
+ * new place names") to the one path that never had it. See `stayAdmission.ts`.
+ *
+ * 🔑 OSM FIRST. `hotel_list` carries structured rows with real names and
+ * coordinates; `search_results` carries decorated titles. Offering OSM first
+ * lets a structured row win the identity when both describe the same hotel,
+ * instead of the search snippet's "Book … på Agoda.com" winning by arriving
+ * first — which is exactly what happened before.
+ */
 export function stayRecommendations(result: unknown, pick?: PickContext): Recommendation[] {
   if (!result || typeof result !== 'object') return []
   const r = result as Record<string, unknown>
-  const list = [...rows(r, 'search_results'), ...rows(r, 'hotel_list')]
+  const destination = typeof r.location === 'string' ? cityInText(r.location) : null
+  const list = admitStays(
+    [...rows(r, 'hotel_list'), ...rows(r, 'search_results')] as StayRow[],
+    destination,
+  )
   if (list.length === 0) return []
   const bookingLink = typeof r.booking_link === 'string' ? r.booking_link : undefined
   const agodaLink = typeof r.agoda_link === 'string' ? r.agoda_link : undefined

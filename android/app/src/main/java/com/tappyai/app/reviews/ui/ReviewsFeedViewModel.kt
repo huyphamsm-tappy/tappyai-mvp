@@ -14,6 +14,11 @@ import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.sync.Semaphore
+import kotlinx.coroutines.sync.withPermit
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -50,6 +55,12 @@ data class ReviewsFeedUiState(
 sealed interface ReviewsFeedSource {
     data object Explore : ReviewsFeedSource
     data class Profile(val userId: String?) : ReviewsFeedSource
+    /**
+     * The signed-in user's saved reviews — the self profile's "Đã lưu" grid, in its order (newest
+     * save first). Self-only by the route's construction (`GET /api/reviews/saved` keys on the
+     * bearer); one unpaged call, each reduced row hydrated through `GET /api/reviews/{id}`.
+     */
+    data object Saved : ReviewsFeedSource
 }
 
 @HiltViewModel
@@ -98,7 +109,8 @@ class ReviewsFeedViewModel @Inject constructor(
                         reviews = result.data,
                         isInitialLoading = false,
                         error = null,
-                        // A profile's own-posts list is one unpaged call; the others page by size.
+                        // A profile's own-posts list and the saved list are one unpaged call each;
+                        // the others page by size.
                         endReached = source.isMine || result.data.size < PAGE_SIZE,
                     )
                 }
@@ -276,10 +288,31 @@ class ReviewsFeedViewModel @Inject constructor(
             null -> if (pageIndex == 0) repository.getMine() else NetworkResult.Success(emptyList())
             else -> repository.getFeed(page = pageIndex, limit = PAGE_SIZE, sort = "latest", userId = userId)
         }
+        ReviewsFeedSource.Saved -> if (pageIndex == 0) loadSaved() else NetworkResult.Success(emptyList())
     }
 
+    /** The viewer's own unpaged lists — own posts (`/mine`) and saved (`/saved`): one call, no page 2. */
     private val ReviewsFeedSource.isMine: Boolean
-        get() = this is ReviewsFeedSource.Profile && userId == null
+        get() = (this is ReviewsFeedSource.Profile && userId == null) || this is ReviewsFeedSource.Saved
+
+    /**
+     * The saved list, playable: `GET /api/reviews/saved` answers reduced rows (tile fields only —
+     * no author, media or counts), so each is fetched in full through the existing
+     * `GET /api/reviews/{id}`, a few at a time, keeping the saved order. A row the server no
+     * longer serves (hidden or deleted since it was saved → 404) is dropped rather than shown
+     * empty; only when every row fails does the pager report the failure.
+     */
+    private suspend fun loadSaved(): NetworkResult<List<Review>> {
+        val saved = repository.getSaved()
+        if (saved !is NetworkResult.Success || saved.data.isEmpty()) return saved
+        val limit = Semaphore(HYDRATE_CONCURRENCY)
+        val full = coroutineScope {
+            saved.data.map { row -> async { limit.withPermit { repository.getReview(row.id) } } }.awaitAll()
+        }
+        val rows = full.mapNotNull { (it as? NetworkResult.Success)?.data }
+        if (rows.isEmpty()) full.firstOrNull { it is NetworkResult.Error }?.let { return it as NetworkResult.Error }
+        return NetworkResult.Success(rows)
+    }
 
     // Exact sort/following params the web sends per tab: For You → trending ranking; Following →
     // followed-authors, latest order; Latest → plain reverse-chronological.
@@ -336,6 +369,8 @@ class ReviewsFeedViewModel @Inject constructor(
     private companion object {
         const val TAG = "ReviewsFeedViewModel"
         const val PAGE_SIZE = 12
+        /** Saved rows hydrated in parallel, at most this many requests in flight. */
+        const val HYDRATE_CONCURRENCY = 4
         const val PREFETCH_DISTANCE = 3
         const val MIN_WATCH_SECONDS = 3.0
     }
@@ -343,11 +378,12 @@ class ReviewsFeedViewModel @Inject constructor(
 
 /**
  * The pager's source from the destination's arguments: `ReviewsRoute.ProfileClips` carries
- * `startReviewId` (+ nullable `userId`); the Feed destination carries nothing → Explore.
+ * `startReviewId` (+ nullable `userId`, + `saved`); the Feed destination carries nothing → Explore.
  */
 internal fun sourceFrom(savedStateHandle: SavedStateHandle): ReviewsFeedSource =
     if (savedStateHandle.contains("startReviewId")) {
-        ReviewsFeedSource.Profile(userId = savedStateHandle.toRoute<ReviewsRoute.ProfileClips>().userId)
+        val route = savedStateHandle.toRoute<ReviewsRoute.ProfileClips>()
+        if (route.saved) ReviewsFeedSource.Saved else ReviewsFeedSource.Profile(userId = route.userId)
     } else {
         ReviewsFeedSource.Explore
     }

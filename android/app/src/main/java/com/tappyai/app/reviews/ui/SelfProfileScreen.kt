@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Search
@@ -45,6 +47,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,6 +61,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -99,15 +106,18 @@ private val SelfPremium = Color(0xFFFBBF24)
  * Row for row against the mockup: back + the brand lockup + search + bell; avatar beside name,
  * handle and the Premium badge; the stat row; the bio; the action row — "Sửa hồ sơ" (→ this
  * profile's own Edit Profile screen, `ReviewsRoute.EditProfile`), a link button that shares the
- * web profile URL, and a compose button for a new post; a "Bài viết" segment; then the 3-column
- * clip grid, each tile with its play badge and view count.
+ * web profile URL, and a compose button for a new post; the "Bài viết" | "Đã lưu" segments; then
+ * the 3-column clip grid, each tile with its play badge and view count. "Đã lưu" is the caller's
+ * saved reviews from `GET /api/reviews/saved` (self-only by construction; a tile pages the saved
+ * list, `ProfileClips(saved = true)`) — drawn ONLY on the self profile, and only where a host
+ * wires [onSavedReviewClick]; another creator's profile never shows anyone's saves.
  *
  * What is NOT drawn, and why (no invented data, no dead buttons):
  *  - city — no field anywhere; the bio IS drawn, from `GET /api/profile`;
  *  - the avatar's camera badge and the header's gear — the avatar is changed on the Edit Profile
  *    screen that "Sửa hồ sơ" opens (`ReviewsRoute.EditProfile`), and Explore has no settings;
- *  - "Đã lưu" / "Đã thích" segments and the bookmark button — the web reads those straight from
- *    Supabase and Android has no API for them (owner decision, unchanged);
+ *  - the "Đã thích" segment and the bookmark button — the web reads likes straight from Supabase
+ *    and Android has no API for them (owner decision, unchanged; "Đã lưu" has one, see above);
  *  - the bell's unread dot — no unread state exists in the app.
  */
 @Composable
@@ -115,6 +125,12 @@ internal fun SelfProfileScreen(
     onReviewClick: (String) -> Unit,
     onEditProfile: () -> Unit,
     onBack: () -> Unit,
+    /**
+     * A "Đã lưu" tile tapped: page the saved list on that clip (`ProfileClips(saved = true)`).
+     * Null hides the segment altogether (a host with no route for the saved pager, e.g. the Me
+     * tab's nested profile) — the grid is never drawn without a way to open its rows.
+     */
+    onSavedReviewClick: ((String) -> Unit)? = null,
     onSearch: () -> Unit = {},
     onNotifications: () -> Unit = {},
     onCompose: () -> Unit = {},
@@ -163,6 +179,9 @@ internal fun SelfProfileScreen(
                     onShareLink = { uiState.userId?.let { id -> shareProfileLink(context, id) } },
                     onCompose = onCompose,
                     onReviewClick = onReviewClick,
+                    saved = onSavedReviewClick?.let { open ->
+                        CreatorSavedSection(rows = uiState.saved, onReviewClick = open, onRetry = viewModel::load)
+                    },
                     emptyState = {
                         TappyEmptyState(
                             icon = Icons.Filled.RateReview,
@@ -209,6 +228,8 @@ internal fun ReviewProfileScreen(
      * Null (the Me tab's nested profile) keeps [onReviewClick] for both.
      */
     onSelfReviewClick: ((String) -> Unit)? = null,
+    /** Forwarded to [SelfProfileScreen] when the server says `is_self`; never used for another creator. */
+    onSavedReviewClick: ((String) -> Unit)? = null,
     onSearch: () -> Unit = {},
     onNotifications: () -> Unit = {},
     onEditProfile: () -> Unit = {},
@@ -228,6 +249,7 @@ internal fun ReviewProfileScreen(
     if (profile?.isSelf == true) {
         SelfProfileScreen(
             onReviewClick = onSelfReviewClick ?: onReviewClick,
+            onSavedReviewClick = onSavedReviewClick,
             onEditProfile = onEditProfile,
             onBack = onBack,
             onSearch = onSearch,
@@ -290,10 +312,26 @@ internal sealed interface CreatorPrimaryAction {
     data class Follow(val isFollowing: Boolean, val isToggling: Boolean, val onToggle: () -> Unit) : CreatorPrimaryAction
 }
 
+/** The profile's grid segments. [Saved] exists only on the self profile (see [CreatorSavedSection]). */
+internal enum class CreatorProfileTab { Posts, Saved }
+
+/**
+ * The self profile's "Đã lưu" segment: [rows] from `GET /api/reviews/saved` (null while unknown
+ * or when that call failed → an error state with [onRetry]), a tile opening [onReviewClick].
+ * Absent (null) on another creator's profile — their saves are private and never requested.
+ */
+internal data class CreatorSavedSection(
+    val rows: List<Review>?,
+    val onReviewClick: (String) -> Unit,
+    val onRetry: () -> Unit,
+)
+
 /**
  * The profile body both screens draw: the header ([CreatorProfileHeader]) spanning the grid,
  * then the 3-column clip grid of [PostGridTile]s, or [emptyState] when there are no posts.
  * Identical geometry for self and other — the approved Self Profile V3 appearance is the spec.
+ * With a [saved] section the header's segments switch the SAME grid between the posts and the
+ * saved rows; the selection survives rotation and the pager round-trip.
  */
 @Composable
 private fun CreatorProfileContent(
@@ -305,7 +343,10 @@ private fun CreatorProfileContent(
     onCompose: () -> Unit,
     onReviewClick: (String) -> Unit,
     emptyState: @Composable () -> Unit,
+    saved: CreatorSavedSection? = null,
 ) {
+    var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }
+    val tab = if (saved == null) CreatorProfileTab.Posts else selectedTab
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.fillMaxSize(),
@@ -320,13 +361,45 @@ private fun CreatorProfileContent(
                 showCompose = showCompose,
                 onShareLink = onShareLink,
                 onCompose = onCompose,
+                selectedTab = tab,
+                showSaved = saved != null,
+                onTabSelected = { selectedTab = it },
             )
         }
-        if (posts.isEmpty()) {
-            item(span = { GridItemSpan(maxLineSpan) }) { emptyState() }
-        }
-        items(items = posts, key = { it.id }) { review ->
-            PostGridTile(review = review, onClick = { onReviewClick(review.id) })
+        when (tab) {
+            CreatorProfileTab.Posts -> {
+                if (posts.isEmpty()) {
+                    item(span = { GridItemSpan(maxLineSpan) }) { emptyState() }
+                }
+                items(items = posts, key = { it.id }) { review ->
+                    PostGridTile(review = review, onClick = { onReviewClick(review.id) })
+                }
+            }
+            CreatorProfileTab.Saved -> {
+                val rows = saved?.rows
+                when {
+                    rows == null -> item(span = { GridItemSpan(maxLineSpan) }) {
+                        TappyErrorState(
+                            title = stringResource(R.string.reviews_profile_error_title),
+                            message = stringResource(R.string.reviews_error_generic),
+                            retryText = stringResource(R.string.common_try_again),
+                            onRetry = saved?.onRetry ?: {},
+                        )
+                    }
+                    rows.isEmpty() -> item(span = { GridItemSpan(maxLineSpan) }) {
+                        TappyEmptyState(
+                            icon = Icons.Filled.BookmarkBorder,
+                            title = stringResource(R.string.reviews_self_saved_empty_title),
+                            message = stringResource(R.string.reviews_self_saved_empty_message),
+                            titleColor = SelfTextPrimary,
+                            contentColor = SelfTextSecondary,
+                        )
+                    }
+                    else -> items(items = rows, key = { "saved:" + it.id }) { review ->
+                        PostGridTile(review = review, onClick = { saved.onReviewClick(review.id) })
+                    }
+                }
+            }
         }
     }
 }
@@ -388,6 +461,9 @@ private fun CreatorProfileHeader(
     showCompose: Boolean,
     onShareLink: () -> Unit,
     onCompose: () -> Unit,
+    selectedTab: CreatorProfileTab = CreatorProfileTab.Posts,
+    showSaved: Boolean = false,
+    onTabSelected: (CreatorProfileTab) -> Unit = {},
 ) {
     val displayName = facts.displayName ?: stringResource(R.string.reviews_anonymous_name)
 
@@ -510,29 +586,58 @@ private fun CreatorProfileHeader(
             }
         }
 
-        // One segment, "Bài viết": the mockup's Saved / Liked have no Android API (see the class doc).
-        Column(
-            modifier = Modifier.padding(top = TappySpacing.xxxl, bottom = TappySpacing.lg),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        // The segments: "Bài viết", and on the self profile "Đã lưu" (`/api/reviews/saved`). The
+        // mockup's "Đã thích" has no Android API (see the class doc) and is not drawn.
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = TappySpacing.xxxl, bottom = TappySpacing.lg),
+            horizontalArrangement = Arrangement.Center,
         ) {
-            Column(modifier = Modifier.width(IntrinsicSize.Max)) {
-                Text(
-                    text = stringResource(R.string.reviews_self_tab_posts),
-                    color = ExploreV3.Purple,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = TappySpacing.xxl),
-                )
-                Box(
-                    modifier = Modifier
-                        .padding(top = TappySpacing.md)
-                        .fillMaxWidth()
-                        .height(3.dp)
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(ExploreV3.Purple),
+            ProfileSegment(
+                text = stringResource(R.string.reviews_self_tab_posts),
+                selected = selectedTab == CreatorProfileTab.Posts,
+                onClick = { onTabSelected(CreatorProfileTab.Posts) },
+            )
+            if (showSaved) {
+                ProfileSegment(
+                    text = stringResource(R.string.reviews_self_tab_saved),
+                    selected = selectedTab == CreatorProfileTab.Saved,
+                    onClick = { onTabSelected(CreatorProfileTab.Saved) },
                 )
             }
         }
+    }
+}
+
+/** One grid segment: accent text and underline when selected, muted text otherwise. */
+@Composable
+private fun ProfileSegment(text: String, selected: Boolean, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                role = Role.Tab,
+                onClick = onClick,
+            ),
+    ) {
+        Text(
+            text = text,
+            color = if (selected) ExploreV3.Purple else SelfTextSecondary,
+            fontSize = 16.sp,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier.padding(horizontal = TappySpacing.xxl),
+        )
+        Box(
+            modifier = Modifier
+                .padding(top = TappySpacing.md)
+                .fillMaxWidth()
+                .height(3.dp)
+                .clip(RoundedCornerShape(2.dp))
+                .background(if (selected) ExploreV3.Purple else Color.Transparent),
+        )
     }
 }
 

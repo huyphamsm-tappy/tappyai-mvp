@@ -171,10 +171,37 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           </p>
         )}
 
+        {p.tappyRating && (
+          // Tappy's OWN review aggregate. Carried on the entity since the
+          // canonical model was built and never rendered — a second real rating,
+          // from a source we own, dropped at the last step. Labelled "Tappy" so
+          // it can never be mistaken for the provider's rating above.
+          <p className="flex items-center gap-1.5 text-sm text-gray-700 dark:text-gray-300" data-testid="tappy-rating">
+            <Star size={13} className="flex-shrink-0 text-sky-400" aria-hidden="true" />
+            <span className="tabular-nums font-medium">
+              {t('placeDecision.tappyRating', {
+                avg: String(p.tappyRating.avg),
+                count: String(p.tappyRating.count),
+              })}
+            </span>
+          </p>
+        )}
+
         {p.address && (
           <p className="flex items-start gap-1.5 text-xs text-gray-600 dark:text-gray-400">
             <MapPin size={12} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
             <span className="min-w-0">{p.address}</span>
+          </p>
+        )}
+
+        {p.phone && (
+          // The NUMBER, not just the dialler. A call button is an action; the
+          // printed number is information — it is what a user copies, checks
+          // against a listing, or reads out. Google shows both, and the entity
+          // has carried `phone` all along while only the button used it.
+          <p className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400" data-testid="place-phone">
+            <Phone size={12} className="flex-shrink-0" aria-hidden="true" />
+            <span className="tabular-nums">{p.phone}</span>
           </p>
         )}
 
@@ -199,6 +226,15 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           </p>
         )}
 
+        {p.priceRangeText && (
+          // The provider's OWN band. Shown plainly, with no "reference price"
+          // hedge, because unlike `priceSignal` below it is a structured field
+          // rather than a number spotted in search prose.
+          <p className="text-xs text-gray-600 dark:text-gray-400 tabular-nums" data-testid="price-range-text">
+            {p.priceRangeText}
+          </p>
+        )}
+
         {p.priceSignal && (
           // Snippet money is weak evidence and must never read as a fact — the
           // same qualifier the prompt requires of the model.
@@ -212,6 +248,16 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
             {p.flags?.map(f => <Chip key={f}>{flagLabel[f]}</Chip>)}
             {p.categories?.slice(0, 2).map(c => <Chip key={c}>{c}</Chip>)}
           </div>
+        )}
+
+        {p.reasons && p.reasons.length > 0 && (
+          // WHY this one. The ranker produces these and the payload has carried
+          // them since the live view was built; the card showed only the
+          // trade-off, so the engine's positive case — the half that explains
+          // the recommendation — never reached the user.
+          <p className="pt-0.5 text-xs text-emerald-700 dark:text-emerald-300" data-testid="place-reasons">
+            {t('placeDecision.why')}: {p.reasons.map(r => r.evidence).filter(Boolean).join(' · ')}
+          </p>
         )}
 
         {p.tradeOff && (

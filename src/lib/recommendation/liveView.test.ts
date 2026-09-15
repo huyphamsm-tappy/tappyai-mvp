@@ -185,7 +185,7 @@ describe('buildPlacesLiveView — facts are copied, never invented', () => {
       images: { primary: null, gallery: [] },
       quality: { rating: unknownClaim<number>(), ratingCount: unknownClaim<number>(), tappyRating: null, stars: null },
       availability: { openingHours: unknownClaim<string>(), openNow: null },
-      pricing: { price: unknownClaim<number>(), priceRange: null, priceLevel: null, priceSignal: unknownClaim<string>() },
+      pricing: { price: unknownClaim<number>(), priceRange: null, priceLevel: null, priceSignal: unknownClaim<string>(), priceRangeText: unknownClaim<string>() },
       location: { address: unknownClaim<string>() as never, coordinates: null, distanceKm: null },
       attributes: {},
     })

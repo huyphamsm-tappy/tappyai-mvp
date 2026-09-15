@@ -119,14 +119,25 @@ interface ReviewsRepository {
     ): NetworkResult<ReviewModeration?>
 
     /**
-     * The tapped review, if it was served by a previous feed/search/profile fetch. There is no
-     * single-review GET endpoint, so the detail screen resolves its review from this in-memory
-     * cache. Returns null on a cache miss (e.g. cold deep-link) — the caller shows an empty state.
+     * The tapped review, if it was served by a previous feed/search/profile fetch. The detail
+     * screen resolves its review from this in-memory cache (it never fetches). Returns null on a
+     * cache miss (e.g. cold deep-link) — the caller shows an empty state.
      */
     fun getCachedReview(reviewId: String): Review?
 
     /** The caller's own reviews, including hidden ones — backs the My Reviews screen. */
     suspend fun getMine(): NetworkResult<List<Review>>
+
+    /**
+     * The caller's saved reviews (`GET /api/reviews/saved`), newest save first — the profile's
+     * "Đã lưu" grid. Self-only: the server keys the list on the bearer, never on a user id, so
+     * another creator's saves cannot be requested. Rows are reduced (no author, media or counts);
+     * see [getReview] for the full row.
+     */
+    suspend fun getSaved(): NetworkResult<List<Review>>
+
+    /** One review in full (`GET /api/reviews/{id}`), cached for [getCachedReview] on success. */
+    suspend fun getReview(reviewId: String): NetworkResult<Review>
 
     /** Hides or unhides one of the caller's own reviews. */
     suspend fun setHidden(reviewId: String, hidden: Boolean): NetworkResult<Unit>

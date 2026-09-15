@@ -189,6 +189,25 @@ export function placePhotosCacheKey(placeName: string, max: number, context: str
   return `photos:${cacheKeyPart(placeName)}:${max}:${context}`
 }
 
+/**
+ * Serper `/maps`, keyed on the query AND the coordinates it was targeted at.
+ *
+ * 🚨 `ll` MUST BE IN THE KEY. It is what makes "khách sạn" mean Đà Nẵng rather
+ * than Sài Gòn — the same query at two centres is two genuinely different paid
+ * requests, and merging them would serve one city's venues for the other. That
+ * is BUG-011 re-entering through the cache.
+ *
+ * Rounded to 3 decimals (~110m): a city centre resolved twice must hit the same
+ * entry, while two different cities never can.
+ */
+export function serperPlacesCacheKey(
+  query: string,
+  ll: { lat: number; lng: number; zoom?: number } | null,
+): string {
+  const at = ll ? `${ll.lat.toFixed(3)},${ll.lng.toFixed(3)},${ll.zoom ?? 14}` : 'none'
+  return `serpplaces:${cacheKeyPart(query)}:${at}`
+}
+
 export function productsCacheKey(query: string, lang: string): string {
   return `products:${cacheKeyPart(query)}:${lang}`
 }

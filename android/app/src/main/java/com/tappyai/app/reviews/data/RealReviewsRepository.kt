@@ -162,6 +162,17 @@ class RealReviewsRepository @Inject constructor(
         return result
     }
 
+    // Reduced rows are NOT cached: a grid tile's row must never stand in for the full review the
+    // detail/comment screens read from the cache.
+    override suspend fun getSaved(): NetworkResult<List<Review>> =
+        safeApiCall { api.getSaved().reviews.map { it.toDomain() } }
+
+    override suspend fun getReview(reviewId: String): NetworkResult<Review> {
+        val result = safeApiCall { api.getReview(reviewId).toDomain() }
+        if (result is NetworkResult.Success) reviewCache[result.data.id] = result.data
+        return result
+    }
+
     override suspend fun setHidden(reviewId: String, hidden: Boolean): NetworkResult<Unit> =
         safeApiCall { api.setHidden(reviewId, SetHiddenRequestDto(isHidden = hidden)); Unit }
 

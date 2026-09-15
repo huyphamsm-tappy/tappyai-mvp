@@ -9,6 +9,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.tappyai.app.reviews.data.Review
+import kotlinx.coroutines.launch
 
 /**
  * The vertical clip pager — the block that used to live inline in [ReviewsFeedScreen], moved here
@@ -53,6 +55,8 @@ internal fun ReviewClipPager(
     bottomClearance: Dp = 0.dp,
 ) {
     val context = LocalContext.current
+    // The share fetches the clip before the chooser opens; leaving the pager cancels it.
+    val shareScope = rememberCoroutineScope()
 
     // Advance pagination as the user swipes toward the end of the loaded pages.
     LaunchedEffect(pagerState.currentPage) {
@@ -94,7 +98,7 @@ internal fun ReviewClipPager(
                 onLike = { viewModel.toggleLike(review) },
                 onSave = { viewModel.toggleSave(review) },
                 onComment = { commentsFor = review.id },
-                onShare = { shareReview(context, review) },
+                onShare = { shareScope.launch { shareReview(context, review) } },
                 onAvatarClick = { onAuthorClick(review.userId) },
                 onFollow = { viewModel.toggleFollow(review) },
                 onDelete = { viewModel.deleteReview(review) },

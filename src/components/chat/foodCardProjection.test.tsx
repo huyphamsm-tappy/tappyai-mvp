@@ -56,10 +56,19 @@ const toolResult = (rows: Record<string, unknown>[]) => ({
   _tappy_shortlist: rows.map((r, i) => ({ rank: i, id: `ChIJ-${r.name}`, name: r.name, role: i === 0 ? 'best_overall' : 'value_gem' })),
 })
 
-function renderFromTool(rows: Record<string, unknown>[]) {
+/**
+ * `reasons` is a PARAMETER, because the ranker's reasons depend on the data.
+ * The 403 case below has no rating at all, so a hardcoded "4.8⭐ · 320 đánh giá"
+ * reason would put rating vocabulary on a card that must show none — a fixture
+ * asserting the opposite of what the pipeline could produce.
+ */
+function renderFromTool(
+  rows: Record<string, unknown>[],
+  reasons: { attribute: string; evidence: string }[] = [{ attribute: 'rating', evidence: '4.8⭐ · 320 đánh giá' }],
+) {
   const recs = placeRecommendations(toolResult(rows), 'Quận 1', {
     name: rows[0].name as string,
-    reasons: [{ attribute: 'rating', evidence: '4.8⭐ · 320 đánh giá' }],
+    reasons,
     tradeOff: null,
   })
   const view = buildPlacesLiveView(recs, { mapsSearchUrl: 'https://www.google.com/maps/search/cafe+quan+1' })
@@ -73,7 +82,8 @@ describe('Google fields reach the card', () => {
     const [card] = renderFromTool([googleRow('AnAn'), googleRow('Cosa', { rating_value: 4.5, rating_count: 90, open_now: false, price_level: 1 })])
 
     expect(within(card).getByText('4.8')).toBeTruthy()
-    expect(within(card).getByText(/320/)).toBeTruthy()
+    // Scoped to the rating line: the reasons line legitimately repeats the count.
+    expect(within(card).getByText(/^\(?320 (đánh giá|reviews)\)?$/)).toBeTruthy()
     expect(within(card).getByText(/08:00 – 22:30/)).toBeTruthy()
     // open-now is a state, not a repeat of the hours string
     expect(within(card).getByText(/đang mở|open now/i)).toBeTruthy()
@@ -97,11 +107,17 @@ describe('Google fields reach the card', () => {
     const [card] = renderFromTool([
       { name: 'Quán Không Số', address: 'Ngô Thời Nhiệm', opening_hours: 'Mo-Su 08:00-22:30', maps_link: 'https://www.google.com/maps?q=10.7,106.7' },
       { name: 'Quán Khác', address: 'Lý Tự Trọng', maps_link: 'https://www.google.com/maps?q=10.8,106.8' },
-    ])
+    ], [{ attribute: 'distance', evidence: 'gần bạn nhất' }])
     expect(within(card).getByText(/Mo-Su 08:00-22:30/)).toBeTruthy()
     expect(within(card).queryByText('₫')).toBeNull()
     expect(within(card).queryByText('₫₫')).toBeNull()
-    expect(card.textContent).not.toMatch(/⭐|đánh giá|reviews/i)
+    // 🔑 NO FABRICATED RATING — which is a narrower claim than "the word
+    // 'review' never appears". A clearly-labelled "Search reviews on YouTube"
+    // button is an ACTION, not a fact about this venue: it promises a search and
+    // carries `attributed: false`. What must never appear is a star or a review
+    // COUNT for a row whose provider gave neither.
+    expect(card.textContent).not.toMatch(/⭐/)
+    expect(card.textContent).not.toMatch(/\d+\s*(đánh giá|reviews)/i)
     expect(card.textContent).not.toMatch(/đang mở|đang đóng|open now|closed now/i)
     expect(card.textContent).not.toMatch(/undefined|null|NaN/)
   })

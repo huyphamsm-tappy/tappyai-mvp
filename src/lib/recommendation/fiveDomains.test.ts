@@ -151,7 +151,9 @@ describe('all five share one core, and none of them fabricates', () => {
     const all = [
       placeRecommendations(placeResult('food', [{ name: 'A', place_id: 'a' }]))[0],
       productRecommendations({ search_results: [{ title: 'B', link: 'https://s.example/b' }] })[0],
-      stayRecommendations({ search_results: [{ title: 'C' }] })[0],
+      // A stay snippet needs a DIRECT entity link to be admitted at all — a bare
+      // title is exactly the listicle/search-page shape `admitStays` rejects.
+      stayRecommendations({ search_results: [{ title: 'C', link: 'https://c-hotel.example/rooms' }] })[0],
       placeRecommendations(placeResult('entertainment', [{ name: 'D', place_id: 'd' }]))[0],
       placeRecommendations(placeResult('spa', [{ name: 'E', place_id: 'e' }]))[0],
     ]

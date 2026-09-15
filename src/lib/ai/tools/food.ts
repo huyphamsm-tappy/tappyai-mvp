@@ -17,6 +17,8 @@ import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnam
 import { osmCategoryFor, osmUnionFor, placeDomainFor } from './osmCategory'
 import { usableOverpass } from './overpassResponse'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
+import { serperPlaces, serperPlaceToRow } from './serperPlaces'
+import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 
 export async function getNews(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
@@ -618,6 +620,75 @@ export function __resetPlacesBreaker(): void {
 }
 
 /**
+ * Serper `/maps` — the PRIMARY structured place source for Vietnam.
+ *
+ * 🚨 WHY IT SITS ABOVE OSM AND BELOW GOOGLE. Google Places is the richest source
+ * when the key works; in this product's environment it 403s and every turn fell
+ * to OSM, which has no rating, no review count and no price at all. Measured
+ * 2026-09-10, `/maps` answers the same question with rating, ratingCount,
+ * priceLevel, phone, a published week of hours, website, category and a
+ * thumbnail — for FEWER credits than the `/search` + `/images` combination it
+ * replaces. OSM stays underneath as the genuine no-results fallback, because
+ * `/places` was measured returning zero rows for a narrow query.
+ *
+ * The BUG-011 contract is enforced here exactly as on the other two branches:
+ * the search is centred with `ll` (the only targeting that works — a `location`
+ * string returned zero rows), out-of-scope rows are rejected by coordinates
+ * BEFORE the slice, and `distance_km` exists only when the centre was the user.
+ */
+async function searchPlacesSerper(
+  query: string,
+  location: string | undefined,
+  lang: string,
+  locationBias: { lat: number; lng: number } | null | undefined,
+  scope: { destination: VietnamCity | null; remote: boolean },
+): Promise<Record<string, unknown> | null> {
+  const { destination, remote } = scope
+  const centeredOnUser = !!locationBias && !remote
+  const centre = centeredOnUser
+    ? { lat: locationBias!.lat, lng: locationBias!.lng }
+    : destination
+      ? { lat: destination.coords[0], lng: destination.coords[1] }
+      : locationBias
+        ? { lat: locationBias.lat, lng: locationBias.lng }
+        : null
+
+  const sq = location ? query + ' ' + location : query
+  const records = await serperPlaces(sq, centre)
+  if (!records || records.length === 0) return null
+
+  const rows = records
+    .map(rec => serperPlaceToRow(rec, {
+      ratingText: (r, c) => messages.places.googleRating(lang, r, c),
+      userAt: centeredOnUser ? locationBias : null,
+      distanceKm: haversineKmLocal,
+    }))
+    // BUG-011 (D3), applied BEFORE the slice so an out-of-scope row does not
+    // consume a result slot. Every `/maps` row carries coordinates, so the
+    // judgement here is exact rather than address-shaped.
+    .filter(r => belongsToDestination(
+      destination,
+      typeof r.lat === 'number' && typeof r.lng === 'number' ? [r.lat as number, r.lng as number] : null,
+      typeof r.address === 'string' ? r.address : undefined,
+    ))
+
+  if (rows.length === 0) return null
+  console.log(JSON.stringify({
+    type: 'tappyai_places_debug', provider: 'serper_maps',
+    returned: records.length, inScope: rows.length,
+    destination: destination?.query ?? null, centeredOnUser,
+  }))
+  return {
+    source: SERPER_PLACES_SOURCE,
+    count: rows.length,
+    location: location ?? '',
+    results: rows.slice(0, 10),
+    google_maps_search: 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location ?? '')),
+  }
+}
+
+
+/**
  * The retrieval itself. Reached only through [searchPlaces], which owns the cache, the retrieval
  * budget and in-flight deduplication — this function owns the Google path, the field-mask readers
  * above, the availability breaker and the OSM fallback, and nothing else.
@@ -818,6 +889,19 @@ async function searchPlacesUncached(
       }))
     }
   }
+  /**
+   * 🔑 SERPER `/maps` BEFORE OSM, AND BOTH AFTER GOOGLE.
+   *
+   * A place turn now degrades through three real providers instead of two, and
+   * each step down loses information rather than gaining a fabrication. OSM is
+   * reached only when the two structured sources genuinely returned nothing.
+   * A Serper answer counts as a structured hit for the 30-minute cache exactly
+   * like a Google one — the credits it costs are the reason the cache exists.
+   */
+  if (!result) {
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination })
+    if (result) googleOk = true
+  }
   if (!result) {
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'osm_fallback_used' }))
     result = await searchPlacesOSM(query, location, type, locationBias, lang)
@@ -887,31 +971,56 @@ async function searchPlacesUncached(
   if (!placeSearchEmpty && (isFood || isSpa || isEntertainment)) {
     try {
       /**
-       * 🚨 A BILLED CALL ON EVERY PLACE TURN THAT RETURNED NOTHING.
+       * 🚨 THE AREA-TARGETED TIKTOK SEARCH IS GONE FROM HERE, AND SO IS THE GATE
+       * THAT TRIED TO MAKE IT AFFORDABLE.
        *
-       * MEASURED across 17 live place turns: this TikTok query ran 17 times and
-       * produced 0 attributed links and 0 discovery links. It is one Serper
-       * request per turn, every turn, for a result the product almost never got.
+       * What used to run: `"<user query> <location> review site:tiktok.com"` —
+       * one search about a DISTRICT, whose results `attributeTikTok` then tried
+       * to tie to a specific venue. It produced 0 attributed links across 17 live
+       * turns, and the response was a `wantsReviewContent` gate that stopped
+       * paying for it.
        *
-       * The capability is NOT removed - `attributeTikTok`, `review_actions` and
-       * the `tiktok_verified` rung all stay exactly as they are, and the search
-       * still runs whenever the user actually asks about reviews or TikTok. What
-       * is removed is paying for it on turns where nobody asked.
+       * 🔑 THE MEASUREMENT WAS RIGHT AND THE DIAGNOSIS WAS WRONG. Re-measured
+       * 2026-09-10, that same area query returns EIGHT valid TikTok posts —
+       * "13 Quán Bún Bò Ngon Nhất Sài Gòn", "Top 5 Quán Bún Bò", a review of a
+       * different restaurant. Retrieval always worked; an area question simply
+       * cannot yield entity evidence, and the attributor was right to refuse it.
        *
-       * Deliberately checks the USER'S words, not the domain: "quan cafe view
-       * dep" is not a request for video reviews, and "review quan nay" is.
+       * So the search moved rather than shrank. `tiktokEnrichment` asks about the
+       * venues that SURVIVED ADMISSION, batched into one request — the same
+       * single search per turn this used to cost, now attributable. See
+       * `lib/links/tiktokEnrichment.ts` for the measured comparison.
        */
-      const wantsReviewContent = /tiktok|review|danh gia|đánh giá|vlog|video|clip|feedback|nhan xet|nhận xét/i
+      /**
+       * 🚨 THE PRICE SNIPPET SEARCH RAN ON EVERY FOOD/SPA/ENTERTAINMENT TURN,
+       * AND MOST TURNS DID NOT ASK ABOUT PRICE.
+       *
+       * It is one billed `/search` per turn whose entire yield is AREA-level
+       * prose the guards then refuse to attach to any venue — measured
+       * 2026-09-10: 18 items retrieved across three domains, 18 of them `area`,
+       * 0 reaching an entity. Meanwhile Serper `/maps` now carries the
+       * provider's OWN band (`priceLevel`, "1-100.000 ₫") on the row itself, at
+       * no extra call, entity-attributed by construction.
+       *
+       * So the snippet search stops being the default and becomes what the
+       * TikTok gate already is: paid for when the user actually asked. A price
+       * question still gets the deeper search; "quán bún bò ngon" gets the band
+       * that came free with the place record.
+       *
+       * Deliberately reads the USER'S words, not the domain — same reasoning,
+       * same shape as `wantsReviewContent` below.
+       */
+      const wantsPriceDetail = /gia|giá|bao nhieu|bao nhiêu|re |rẻ |dat |đắt |chi phi|chi phí|menu|thuc don|thực đơn|bang gia|bảng giá|budget|price|cost|combo|khuyen mai|khuyến mãi/i
         .test(normalizeVN(query.toLowerCase()) + ' ' + query.toLowerCase())
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
       const [priceResults, orderResults, tiktokResults] = await Promise.all([
-        serperSearch(query + ' ' + (location || '') + ' ' + suffix),
+        wantsPriceDetail ? serperSearch(query + ' ' + (location || '') + ' ' + suffix) : Promise.resolve(null),
         isFood ? serperSearch(query + ' ' + (location || '') + ' (site:shopeefood.vn OR site:food.grab.com OR site:baemin.vn)') : Promise.resolve(null),
         // TikTok review discovery (consultative only, product decision 2026-08-16). Same shape as
         // the order-link search above: a real provider query, whose results are then VALIDATED —
         // nothing here is constructed from the place name, so a place with no coverage simply
         // ends up without a link.
-        wantsReviewContent ? serperSearch(query + ' ' + (location || '') + ' review site:tiktok.com') : Promise.resolve(null),
+        Promise.resolve(null),
       ])
       if (result && typeof result === 'object') {
         const extra: Record<string, unknown> = {}

@@ -104,6 +104,10 @@ fun ReviewsNavHost(
                 onReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
                 },
+                // A "Đã lưu" tile pages the saved list (`/api/reviews/saved`), on that clip.
+                onSavedReviewClick = { reviewId ->
+                    navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                },
                 // Explore → My Profile → Sửa hồ sơ → Edit Profile → Save → My Profile. Never the Tôi tab.
                 onEditProfile = { navController.navigate(ReviewsRoute.EditProfile) },
                 onBack = { navController.popBackStack() },
@@ -154,6 +158,9 @@ fun ReviewsNavHost(
                 // exactly as Explore → My Profile does — never the public `?userId=` feed.
                 onSelfReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
+                },
+                onSavedReviewClick = { reviewId ->
+                    navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
                 },
                 onBack = { navController.popBackStack() },
                 onSearch = { navController.navigate(ReviewsRoute.Search) },

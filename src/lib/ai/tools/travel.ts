@@ -3,6 +3,9 @@ import { normalizeVN } from '@/lib/ai/intent'
 import { cityInText, haversineKm } from './vietnamCities'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
 import { searchPlacesOSM } from './food'
+import { serperPlaces, serperPlaceToRow } from './serperPlaces'
+import { cityForName } from './vietnamCities'
+import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 import { buildFlightLinks } from '@/lib/platformLinks/travel'
 import { messages } from '@/lib/ai/messages'
 import { flightsCacheKey, hotelsCacheKey, transportCacheKey } from './cacheKeys'
@@ -158,16 +161,47 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
 
   let result: unknown
   try {
-    // Buoc 1: lay gia chung + danh sach khach san OSM song song
+    /**
+     * 🚨 STEP 1 IS NOW ONE STRUCTURED REQUEST, NOT FIVE WEB SEARCHES.
+     *
+     * What this path used to do, measured 2026-09-10: one `/search` for the
+     * area, then ONE MORE `/search` PER OSM HOTEL NAME (3), then a supplementary
+     * OR-query when fewer than two direct links came back — up to five billed
+     * requests whose entire purpose was to discover a Booking/Agoda URL. Then
+     * eight `/images` calls. Thirteen credits, and the eight "hotels" it
+     * produced were two real properties, a Hội An hotel and a listicle.
+     *
+     * Serper `/maps` answers the same question in ONE request (3 credits) with
+     * real hotel records: name, address, rating, ratingCount, phoneNumber,
+     * website — which for hotels IS the Booking.com deep link the four searches
+     * were hunting for — plus `bookingLinks` and a thumbnail.
+     *
+     * The old snippet path is kept BELOW as the fallback, because `/maps` was
+     * measured returning nothing for narrow queries. It is no longer the plan.
+     */
+    const city = cityForName(location) ?? cityInText(location)
+    const mapsHotels = await serperPlaces(
+      'khách sạn ' + location,
+      city ? { lat: city.coords[0], lng: city.coords[1] } : null,
+    )
+    const mapsRows = (mapsHotels ?? []).map(rec => serperPlaceToRow(rec, {
+      ratingText: (r, c) => messages.places.googleRating(lang, r, c),
+    }))
+
+    // Buoc 1b: danh sach khach san OSM chi khi /maps khong tra du
     const [serperResults, places] = await Promise.all([
-      serperSearch(searchQuery),
-      searchPlacesOSM('khach san', location, 'hotel', null, lang) as Promise<{ results?: Array<{ name: string; address?: string; maps_link: string }> }>,
+      mapsRows.length > 0 ? Promise.resolve(null) : serperSearch(searchQuery),
+      mapsRows.length > 0
+        ? Promise.resolve({ results: [] as Array<{ name: string; address?: string; maps_link: string }> })
+        : searchPlacesOSM('khach san', location, 'hotel', null, lang) as Promise<{ results?: Array<{ name: string; address?: string; maps_link: string }> }>,
     ])
-    let hotelList = places?.results?.slice(0, 5) || []
+    let hotelList: Array<Record<string, unknown>> = mapsRows.length > 0
+      ? mapsRows
+      : (places?.results?.slice(0, 5) || [])
     // Filter luxury brands khoi OSM list neu co budget
     if (maxBudgetVnd && maxBudgetVnd < 1_500_000) {
       hotelList = hotelList.filter(h => {
-        const hn = normalizeVN(h.name.toLowerCase())
+        const hn = normalizeVN(String(h.name ?? '').toLowerCase())
         return !LUXURY_KEYWORDS.some(k => hn.includes(k))
       })
     }
@@ -176,23 +210,32 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
     // Tim rieng tung ten → Google tra ve trang hotel cu the, khong phai trang search chung
     let directHotelLinks: Array<{ title: string; link: string; snippet: string }> = []
     {
-      const hotelQueries = hotelList.slice(0, 3).map(h =>
-        '"' + h.name + '" ' + location + ' site:booking.com OR site:agoda.com'
+      /**
+       * 🔑 SKIPPED ENTIRELY WHEN `/maps` ANSWERED. Each of these is a billed
+       * request whose only job is to find one hotel's OTA page — and a `/maps`
+       * record already carries `website` (typically the Booking deep link) and
+       * `bookingLinks`. Running them anyway would be paying to rediscover a URL
+       * we were handed.
+       */
+      const hotelQueries = mapsRows.length > 0 ? [] : hotelList.slice(0, 3).map(h =>
+        '"' + String(h.name) + '" ' + location + ' site:booking.com OR site:agoda.com'
       )
       // Neu khong co OSM hotel, dung query co path /hotel/ de ep Google tra trang cu the
       const genericFallback = 'khach san ' + location + ' site:booking.com/hotel' + (budgetTag ? ' gia re binh dan' : '')
       const queriesToRun = hotelQueries.length > 0 ? hotelQueries : [genericFallback]
 
-      const allResults = await Promise.all(queriesToRun.map(q => serperSearch(q)))
+      const allResults = mapsRows.length > 0
+        ? []
+        : await Promise.all(queriesToRun.map(q => serperSearch(q)))
       directHotelLinks = allResults
         .flatMap(r => r || [])
         .filter(r => isSpecificOtaHotelPage(r.link))
         .filter((r, i, arr) => arr.findIndex(x => x.link === r.link) === i) // dedup
 
       // Neu van it hon 2 direct link, thu them OR query + site:agoda.com
-      if (directHotelLinks.length < 2) {
+      if (mapsRows.length === 0 && directHotelLinks.length < 2) {
         const supplementQ = hotelList.length > 0
-          ? hotelList.slice(0, 3).map(h => '"' + h.name + '"').join(' OR ') + ' ' + location + ' (site:booking.com OR site:agoda.com)'
+          ? hotelList.slice(0, 3).map(h => '"' + String(h.name ?? '') + '"').join(' OR ') + ' ' + location + ' (site:booking.com OR site:agoda.com)'
           : genericFallback
         const supplement = await serperSearch(supplementQ)
         const seen = new Set(directHotelLinks.map(r => r.link))
@@ -226,8 +269,21 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         } catch { return r }
       })
     }
-    let source = messages.hotels.sourceSerperOsm()
-    if (!searchResults || searchResults.length === 0) {
+    /**
+     * 🚨 THE ENVELOPE'S `source` IS PROVENANCE, NOT A CAPTION.
+     *
+     * `sourceOf` reads exactly this string to decide which `SourceId` every field
+     * on every row carries. Measured while wiring `/maps` in: the hotel list came
+     * back full of structured `/maps` rows — rating, phone, category on 20 of 20 —
+     * under the label "DuckDuckGo + OpenStreetMap", because the snippet path was
+     * skipped and the fallback branch relabelled unconditionally. The data was
+     * right and its stated origin was wrong, which is the one kind of bug this
+     * whole architecture exists to make impossible.
+     *
+     * So the label follows the rows that actually populated the list.
+     */
+    let source: string = mapsRows.length > 0 ? SERPER_PLACES_SOURCE : messages.hotels.sourceSerperOsm()
+    if (mapsRows.length === 0 && (!searchResults || searchResults.length === 0)) {
       const ddg = await webSearch(searchQuery, lang) as { results?: Array<{ title: string; link: string; snippet: string }> }
       searchResults = ddg?.results
       source = messages.hotels.sourceDdgOsm(lang)
@@ -240,7 +296,11 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
     // the first few array entries, so limiting photos to a "top N" left whichever hotels
     // it actually picked without an image to attach.
     if (searchResults && searchResults.length > 0) {
-      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title)))
+      // Only rows that still LACK an image cost a billed lookup: a `/maps` row
+      // arrives with `thumbnailUrl` already attached, and paying to rediscover
+      // a photo we were handed is the waste this whole pass exists to remove.
+      const photoLists = await Promise.all(searchResults.map(r =>
+        (r as { photo_url?: string }).photo_url ? Promise.resolve([] as string[]) : fetchPlacePhotosByName(r.link, r.title)))
       searchResults = searchResults.map((r, idx) =>
         photoLists[idx].length > 0
           ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }
@@ -248,11 +308,21 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
       )
     }
 
-    if (searchResults && searchResults.length > 0) {
+    /**
+     * 🚨 "HAVE WE GOT HOTELS?" IS NOT "HAVE WE GOT SNIPPETS?".
+     *
+     * This branch keyed the whole result on `search_results`, because snippets
+     * were once the only way a hotel arrived. With `/maps` answering, twenty real
+     * hotels can land in `hotel_list` while `search_results` is legitimately
+     * empty — and the turn fell through to the no-data branch, discarding all of
+     * them and reporting an error. The question is whether we have HOTELS.
+     */
+    const haveHotels = (searchResults && searchResults.length > 0) || hotelList.length > 0
+    if (haveHotels) {
       result = {
         location,
         source,
-        search_results: searchResults,
+        ...(searchResults && searchResults.length > 0 ? { search_results: searchResults } : {}),
         hotel_list: hotelList,
         booking_link: bookingUrl,
         agoda_link: agodaUrl,

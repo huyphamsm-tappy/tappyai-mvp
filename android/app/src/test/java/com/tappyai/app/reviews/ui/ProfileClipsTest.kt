@@ -52,8 +52,8 @@ class ProfileClipsTest {
         val author = nav.substring(nav.indexOf("composable<ReviewsRoute.AuthorProfile>"), nav.indexOf("composable<ReviewsRoute.ProfileClips>"))
         assertTrue(author.contains("navController.navigate(ReviewsRoute.ProfileClips(userId = route.userId, startReviewId = reviewId))"))
         assertFalse(author.contains("ReviewsRoute.Detail"))
-        assertTrue(src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewsRoute.kt")
-            .contains("@Serializable data class ProfileClips(val userId: String?, val startReviewId: String) : ReviewsRoute"))
+        val route = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewsRoute.kt")
+        assertTrue(Regex("""@Serializable data class ProfileClips\(\s*val userId: String\?,\s*val startReviewId: String,[\s\S]*?val saved: Boolean = false,\s*\) : ReviewsRoute""").containsMatchIn(route))
     }
 
     // ── 3 + 4 + 5 + 11: what each source loads, and what it never loads ──
@@ -91,7 +91,7 @@ class ProfileClipsTest {
         assertEquals("the Feed destination carries no arguments → Explore", ReviewsFeedSource.Explore, sourceFrom(SavedStateHandle()))
         assertEquals(ReviewsFeedSource.Explore, sourceFrom(SavedStateHandle(mapOf("something" to "else"))))
         assertTrue("ProfileClips arguments → Profile", vm.contains("""if (savedStateHandle.contains("startReviewId"))""")
-            && vm.contains("ReviewsFeedSource.Profile(userId = savedStateHandle.toRoute<ReviewsRoute.ProfileClips>().userId)"))
+            && vm.contains("if (route.saved) ReviewsFeedSource.Saved else ReviewsFeedSource.Profile(userId = route.userId)"))
     }
 
     // ── 6 + 7: the tapped clip is the first page; a vanished clip falls back to the first row ──
@@ -157,7 +157,7 @@ class ProfileClipsTest {
             "onRequestAudioUnlock = { audioUnlocked = true },",
             "onLike = { viewModel.toggleLike(review) },",
             "onSave = { viewModel.toggleSave(review) },",
-            "onShare = { shareReview(context, review) },",
+            "onShare = { shareScope.launch { shareReview(context, review) } },",
             "onAvatarClick = { onAuthorClick(review.userId) },",
             "onDelete = { viewModel.deleteReview(review) },",
             "onHide = { viewModel.hideReview(review) },",

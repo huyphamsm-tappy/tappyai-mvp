@@ -25,10 +25,12 @@ import javax.inject.Inject
 /**
  * The signed-in user's own profile inside Explore — the V3 self profile (mockup 05_17_48) over
  * the same three real sources it always had plus one: identity/stats from GET /api/users/{me},
- * the user's own posts from GET /api/reviews/mine (hidden ones included), and now the membership
- * status from GET /api/subscription for the "Premium" badge. The web's Saved/Liked tabs query
- * Supabase directly (no Android API), so per the owner's decision those tabs are omitted here —
- * no new backend was added. [userId] backs the "share profile link" action.
+ * the user's own posts from GET /api/reviews/mine (hidden ones included), the membership status
+ * from GET /api/subscription for the "Premium" badge, and the user's saved reviews from
+ * GET /api/reviews/saved for the "Đã lưu" segment (the web's Saved hub route — self-only by
+ * construction, so no other user's saves can ever be requested). The web's "Đã thích" tab reads
+ * `review_likes` straight from Supabase and has no API, so it is not drawn — nothing invented.
+ * [userId] backs the "share profile link" action.
  *
  * [isPro] is null until the membership row answers, and stays null when it cannot (signed out, or
  * the request failed) — the badge is drawn only for a real `true`, never assumed either way.
@@ -36,6 +38,8 @@ import javax.inject.Inject
 data class SelfProfileUiState(
     val profile: ReviewProfile? = null,
     val posts: List<Review> = emptyList(),
+    /** The "Đã lưu" grid rows (newest save first); null while unknown or when the call failed. */
+    val saved: List<Review>? = null,
     val userId: String? = null,
     val isPro: Boolean? = null,
     /** The bio from `GET /api/profile` (auth metadata — the users row has none); null while unknown. */
@@ -73,10 +77,14 @@ class SelfProfileViewModel @Inject constructor(
             // The bio lives in auth metadata and only `GET /api/profile` returns it; like the
             // membership row it decorates the page and never fails the load.
             val account = async { accountRepository.getProfile() }
+            // The saved list is its own segment: fetched alongside, never able to fail the page.
+            val saved = async { repository.getSaved() }
             val profileResult = repository.getUserProfile(userId)
             val postsResult = repository.getMine()
             val isPro = (membership.await() as? NetworkResult.Success)?.data?.isPro
             val bio = (account.await() as? NetworkResult.Success)?.data?.bio
+            val savedResult = saved.await()
+            if (savedResult is NetworkResult.Error) logger.e(TAG, "Saved list load failed: ${savedResult.error}")
 
             val profile = (profileResult as? NetworkResult.Success)?.data
             val posts = (postsResult as? NetworkResult.Success)?.data
@@ -98,6 +106,7 @@ class SelfProfileViewModel @Inject constructor(
                 it.copy(
                     profile = profile ?: ReviewProfile(null, null),
                     posts = posts ?: emptyList(),
+                    saved = (savedResult as? NetworkResult.Success)?.data,
                     isPro = isPro,
                     bio = bio,
                     isLoading = false,

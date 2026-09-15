@@ -114,7 +114,9 @@ class SelfProfileV3Test {
         assertTrue("the primary action is the Edit branch for self", header.contains("is CreatorPrimaryAction.Edit -> PrimaryAction(") && header.contains("onClick = primaryAction.onEdit,"))
         assertTrue("the bio is drawn only when the server has one", header.contains("facts.bio?.let { bio ->"))
         assertFalse("no city invented", header.contains("facts.city") || header.contains("R.string.reviews_self_city"))
-        assertFalse("no Saved / Liked segments without an API", header.contains("reviews_self_tab_saved") || header.contains("reviews_self_tab_liked"))
+        // 2026-09-13: "Đã lưu" joined "Bài viết" — GET /api/reviews/saved exists (see ProfileSavedTest); Liked still has no API.
+        assertTrue("the Saved segment, self-only (behind showSaved)", header.contains("if (showSaved) {") && header.contains("R.string.reviews_self_tab_saved"))
+        assertFalse("no Liked segment without an API", header.contains("reviews_self_tab_liked"))
     }
 
     @Test

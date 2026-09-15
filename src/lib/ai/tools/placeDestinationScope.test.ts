@@ -353,6 +353,41 @@ describe('BUG-011 · 9 — the Google path is scoped too', () => {
     expect(names(r)).toEqual(['Quán không rõ'])
   })
 
+  /**
+   * D2 ON THE GOOGLE BRANCH — added 2026-09-10, and it was NOT covered.
+   *
+   * `distance_km` reached the Google rows only after 3fade82 was written (the
+   * widened field mask brought `places.location` with it), so the branch never
+   * inherited D2's gate. A mutation removing that gate SURVIVED the first run:
+   * nothing measured what the Google path did with distance on a remote search.
+   *
+   * The contract is the same one D2 states for OSM. `distance_km` means how far
+   * from YOU — so on a search the user is not standing in, it must be ABSENT
+   * rather than a real haversine from the wrong origin (Saigon → Quy Nhơn would
+   * have reported ~440km as if it were a proximity signal).
+   */
+  it('omits distance_km on a remote destination, rather than measuring from the caller', async () => {
+    stubFetch({
+      places: [{
+        ...googlePlace('Quảng trường Quy Nhơn', 'Nguyễn Tất Thành, Quy Nhơn, Bình Định'),
+        location: { latitude: QUY_NHON.coords[0], longitude: QUY_NHON.coords[1] },
+      }],
+    })
+    const r = await searchPlaces(uniqueQuery(), 'Quy Nhơn', 'attraction', 'vi', gps(HCMC))
+    expect(rows(r)[0]).not.toHaveProperty('distance_km')
+  })
+
+  it('still measures distance_km on a nearby search', async () => {
+    stubFetch({
+      places: [{
+        ...googlePlace('Quán gần đây', 'Quận 1, Hồ Chí Minh'),
+        location: { latitude: HCMC.coords[0] + 0.01, longitude: HCMC.coords[1] + 0.01 },
+      }],
+    })
+    const r = await searchPlaces(uniqueQuery(), 'Ho Chi Minh', undefined, 'vi', gps(HCMC))
+    expect(rows(r)[0]).toHaveProperty('distance_km')
+  })
+
   it('falls through to OSM when every Google result is out of scope', async () => {
     // Returning an empty Google set for a real city would be worse than asking the other
     // provider — which is now centred on the destination.

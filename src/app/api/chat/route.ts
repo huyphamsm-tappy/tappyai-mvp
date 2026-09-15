@@ -32,6 +32,10 @@ import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
 import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
+import { producerSubject } from '@/lib/recommendation/slotAdmission'
+import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
+import { serperSearch } from '@/lib/ai/tools/common'
+import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
@@ -516,7 +520,22 @@ export async function POST(req: Request) {
   // applyPlaceEnrichmentStreamFilter injects them positionally afterwards. This
   // const lives and dies with this request: no module state, no key to collide
   // on, nothing shared between users or carried across warm invocations.
-  const enrichment = createEnrichmentCollector()
+  // The turn's own words decide which producer may claim the recommendation card.
+  // Passed in at construction because the collector outlives every individual
+  // tool call and must judge them all against the SAME question.
+  const enrichment = createEnrichmentCollector(lastText)
+  // Observability for the TikTok cost/quality trade-off. Nothing branches on these.
+  let tiktokEntitiesAsked = 0
+  let tiktokSearched = false
+  let tiktokAttributed = 0
+  /**
+   * The city THIS turn actually searched, captured from the tool call.
+   *
+   * 🚨 NOT the bare identifier `location`, which at this scope resolves to the
+   * DOM's global `Location` — a real trap the compiler happened to catch here,
+   * and would not have if the parameter took `unknown`.
+   */
+  let turnPlaceLocation: string | undefined
   const forModel = (toolName: string, result: unknown) => {
     const { model, enrichment: carved, batchTikTokUrl } = splitToolResult(toolName, result)
     enrichment.add(carved)
@@ -810,10 +829,11 @@ export async function POST(req: Request) {
   // question is asked exactly once and never on a non-trip turn.
   const tripContext = resolveTripContext(messages)
 
-  // Which client is asking. Only the web chat renders the decision as a card, so
-  // only the web reply is told to stop repeating what the card shows. A client
-  // that sends no header - Android, iOS, anything older - keeps today's prose.
-  const rendersDecisionCard = req.headers.get('x-tappy-surface') === 'web'
+  // Which client is asking. The web chat and the Android app render the decision
+  // as a card (`x-tappy-surface: web` / `android`, see decisionSurface.ts), so
+  // their reply is told to stop repeating what the card shows. A client that
+  // sends no header - iOS, anything older - keeps today's prose.
+  const rendersDecisionCard = rendersDecisionCardFor(req.headers.get('x-tappy-surface'))
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
@@ -1004,7 +1024,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // keeps the data layer exercised (and its tests honest) while the
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
-          enrichment.setPlacesRecommendations(placeRecommendations(result, location, pickContext(pick)))
+          turnPlaceLocation = location
+          enrichment.setPlacesRecommendations(
+            placeRecommendations(result, location, pickContext(pick)),
+            producerSubject('search_places', (result as Record<string, unknown>)._tappy_place_domain),
+          )
           // The map destination the provider itself returned for this search.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
@@ -1027,7 +1051,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
-          enrichment.setPlacesRecommendations(productRecommendations(result))
+          enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
            *
@@ -1118,7 +1142,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
-          enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)))
+          turnPlaceLocation = location
+          enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result)
@@ -1292,7 +1317,33 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // skip the boundary entirely and state a price reconstructed from general knowledge.
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
-  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places')
+  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places',
+  /**
+   * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
+   * THAT CAN ACTUALLY BE ATTRIBUTED.
+   *
+   * V1/V2 asked the AREA ("<user query> review site:tiktok.com") and V3 kept the
+   * same query behind a `wantsReviewContent` gate. Re-measured 2026-09-10: that
+   * area query returns EIGHT valid TikTok posts — all listicles or videos about
+   * other venues, so `attributeTikTok` refuses every one. Retrieval was never the
+   * failure; asking about a district and hoping for a venue was.
+   *
+   * This asks about the venues on the card, batched into ONE request — the same
+   * single search per turn V1/V2 paid for, now yielding attributable results.
+   */
+  async (names, location) => {
+    tiktokEntitiesAsked = names.length
+    const result = await enrichWithTikTok(names, location, serperSearch)
+    tiktokSearched = result.searched
+    tiktokAttributed = result.perPlace.size
+    console.log(JSON.stringify({
+      type: 'tappyai_tiktok_enrichment',
+      entities: names.length, searched: result.searched,
+      attributed: result.perPlace.size, batch: !!result.batch,
+    }))
+    return { perPlace: result.perPlace, batch: result.batch }
+  },
+  turnPlaceLocation)
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

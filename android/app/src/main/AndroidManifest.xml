@@ -135,6 +135,20 @@
                     android:host="group" />
             </intent-filter>
         </activity>
+
+        <!-- Shared review media (ReviewShare.kt): a clip or photo fetched into cacheDir/share/ is
+             handed to the chosen app as a content:// URI with a temporary read grant, which is what
+             the system share contract requires for a video/* or image/* payload. Not exported —
+             receivers get access only through the per-intent grant. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_paths" />
+        </provider>
     </application>
 
 </manifest>

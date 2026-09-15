@@ -26,5 +26,11 @@ sealed interface ReviewsRoute {
      * is fetched by the destination, never carried in the route. Only the profile's own clips are
      * paged — never the discovery feed.
      */
-    @Serializable data class ProfileClips(val userId: String?, val startReviewId: String) : ReviewsRoute
+    @Serializable data class ProfileClips(
+        val userId: String?,
+        val startReviewId: String,
+        /** True for the self profile's "Đã lưu" grid: the pager pages the caller's saved reviews
+         *  (`/api/reviews/saved`) instead of a profile's posts. [userId] is ignored then. */
+        val saved: Boolean = false,
+    ) : ReviewsRoute
 }

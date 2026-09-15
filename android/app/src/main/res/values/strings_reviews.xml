@@ -108,6 +108,7 @@
     <string name="reviews_share_copied_label">Copied</string>
     <string name="reviews_share_copy_label">Copy</string>
     <string name="reviews_share_fallback_text">TappyAI Review</string>
+    <string name="reviews_share_preparing">Preparing to share…</string>
 
     <!-- Feed -->
     <string name="reviews_feed_title">Reviews</string>
@@ -150,6 +151,9 @@
     <string name="reviews_self_share_link">Share profile link</string>
     <string name="reviews_self_new_post">New post</string>
     <string name="reviews_self_tab_posts">Posts</string>
+    <string name="reviews_self_tab_saved">Saved</string>
+    <string name="reviews_self_saved_empty_title">No saved posts yet</string>
+    <string name="reviews_self_saved_empty_message">Posts you save from Explore will show up here, only for you.</string>
     <string name="reviews_self_empty_title">No posts yet</string>
     <string name="reviews_self_empty_message">Clips you post will show up here.</string>
     <string name="reviews_self_share_text">My TappyAI profile: %1$s</string>

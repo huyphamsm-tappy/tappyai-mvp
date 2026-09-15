@@ -1,7 +1,5 @@
 package com.tappyai.app.reviews.ui
 
-import android.content.Context
-import android.content.Intent
 import android.widget.Toast
 import com.tappyai.app.music.MusicPickerSheet
 import androidx.compose.foundation.Image
@@ -60,6 +58,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -83,13 +82,13 @@ import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.reviews.data.ReviewGroupedNotification
-import com.tappyai.app.reviews.data.isShareOnlyName
 import androidx.compose.runtime.saveable.listSaver
 import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappySpacing
+import kotlinx.coroutines.launch
 
 private val ScreenBackground = Color(0xFF000000)
 private val ScreenTextPrimary = Color(0xFFFFFFFF)
@@ -223,7 +222,12 @@ internal fun ProfileClipsScreen(
             .fillMaxSize()
             .background(ScreenBackground),
     ) {
-        ScreenHeader(title = stringResource(R.string.reviews_profile_stat_posts), onBack = onBack)
+        ScreenHeader(
+            title = stringResource(
+                if (viewModel.source == ReviewsFeedSource.Saved) R.string.reviews_self_tab_saved else R.string.reviews_profile_stat_posts,
+            ),
+            onBack = onBack,
+        )
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -538,6 +542,7 @@ internal fun ReviewDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(reviewId) { viewModel.load(reviewId) }
     val context = LocalContext.current
+    val shareScope = rememberCoroutineScope()
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
     // Id of the comment whose emoji picker is open (only one at a time), or null.
@@ -601,7 +606,7 @@ internal fun ReviewDetailScreen(
                             onLike = { viewModel.toggleLike() },
                             onSave = { viewModel.toggleSave() },
                             onComment = {},
-                            onShare = { shareReview(context, review) },
+                            onShare = { shareScope.launch { shareReview(context, review) } },
                             onAvatarClick = { onAvatarClick(review.userId) },
                             onDelete = {},
                             onHide = {},
@@ -910,31 +915,4 @@ private fun ScreenHeader(title: String, onBack: () -> Unit) {
             fontWeight = FontWeight.Bold,
         )
     }
-}
-
-/**
- * Fires the system share sheet with the review's text. There is no backend share endpoint and no
- * production web domain configured in the app, so this shares the place + body (+ source link if
- * the review has one) rather than a canonical review URL. Uses ACTION_SEND — a system overlay, not
- * an in-app UI change.
- */
-internal fun shareReview(context: Context, review: Review) {
-    val text = buildString {
-        if (review.placeName.isNotBlank() && !isShareOnlyName(review.placeName)) {
-            append(review.placeName)
-            append("\n")
-        }
-        if (review.body.isNotBlank()) append(review.body)
-        val source = review.sourceUrl
-        if (!source.isNullOrBlank()) {
-            append("\n")
-            append(source)
-        }
-    }.trim().ifBlank { review.placeName.ifBlank { context.getString(R.string.reviews_share_fallback_text) } }
-
-    val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, text)
-    }
-    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.reviews_action_share)))
 }

@@ -31,6 +31,7 @@
 // exactly the paid-context waste this split exists to prevent.
 import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capabilities'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
+import { admitsProducer, type ProducerSubject } from '@/lib/recommendation/slotAdmission'
 
 export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names'] as const
 
@@ -113,7 +114,15 @@ export interface EnrichmentCollector {
    * folds in the shopping marker.
    */
   placesRecommendations?: Recommendation[]
-  setPlacesRecommendations(recs: Recommendation[] | undefined): void
+  /**
+   * WHICH SUBJECT owns the card this turn — 'food', 'stay', 'shopping'…
+   *
+   * Recorded rather than inferred so the trip subdomains stay distinguishable
+   * downstream: a plan runs a hotel search AND two place searches, and "which of
+   * them is on screen" is otherwise unanswerable after the fact.
+   */
+  placesProducer?: ProducerSubject
+  setPlacesRecommendations(recs: Recommendation[] | undefined, producer: ProducerSubject | null): void
   /**
    * The provider's own map search for this turn, straight off the tool result.
    *
@@ -257,7 +266,7 @@ export function splitToolResult(
  * to carry data across invocations. It also survives any number of concurrent
  * requests on the same instance for free.
  */
-export function createEnrichmentCollector(): EnrichmentCollector {
+export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
   const places: PlaceEnrichment[] = []
   /** Every photo URL already claimed by an earlier entry, so no image is used twice. */
   const claimedPhotos = new Set<string>()
@@ -314,10 +323,27 @@ export function createEnrichmentCollector(): EnrichmentCollector {
     rendersDecisionCard: false,
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
     placesRecommendations: undefined as Recommendation[] | undefined,
-    setPlacesRecommendations(recs) {
-      // First non-empty set wins, mirroring the other batch-level values: a trip
-      // plan runs several place searches and the reply carries one block.
-      if (recs && recs.length > 0 && !this.placesRecommendations) this.placesRecommendations = recs
+    placesProducer: undefined as ProducerSubject | undefined,
+    setPlacesRecommendations(recs, producer) {
+      /**
+       * 🚨 "FIRST NON-EMPTY SET WINS" WAS NOT ENOUGH, AND THE GAP WAS VISIBLE.
+       *
+       * That rule is still here — a trip plan runs several place searches and the
+       * reply carries one block — but it now runs AFTER an admission check,
+       * because on its own it let a producer from a different subject fill a slot
+       * that a same-subject producer had just declined by returning nothing.
+       * Measured: a flight question rendered eight hotel cards under the sentence
+       * "Mình chưa tìm thấy địa điểm nào đủ dữ liệu để giới thiệu cho yêu cầu
+       * này". See `slotAdmission.ts` for the full trace.
+       *
+       * Order matters: admission is judged before emptiness, so a REFUSED
+       * producer cannot leave a trace either way.
+       */
+      if (!admitsProducer(turnText, producer)) return
+      if (recs && recs.length > 0 && !this.placesRecommendations) {
+        this.placesRecommendations = recs
+        this.placesProducer = producer ?? undefined
+      }
     },
     shoppingMarker: undefined as string | undefined,
     setShoppingMarker(marker) {
