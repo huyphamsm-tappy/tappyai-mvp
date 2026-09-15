@@ -120,7 +120,19 @@ const QUALITY_RE = /(đánh giá cao|danh gia cao|đánh giá tốt|danh gia tot
  * was correctly removed. They are governed by the same rule, which needs a
  * retrieved rating or text that named this very venue.
  */
-const POPULARITY_RE = /(được nhiều người|duoc nhieu nguoi|nhiều người (?:yêu thích|ưa chuộng|thích|lựa chọn)|nhieu nguoi (?:yeu thich|ua chuong|thich|lua chon)|được (?:yêu thích|ưa chuộng)|duoc (?:yeu thich|ua chuong)|đông khách|dong khach|nổi tiếng|noi tieng|quán ruột|quan ruot|được nhiều khách|duoc nhieu khach|nhiều khách|nhieu khach|(?:thực |thuc )?khách (?:hàng )?(?:thường )?(?:khen|nhận xét|đánh giá)|(?:thuc )?khach (?:hang )?(?:thuong )?(?:khen|nhan xet|danh gia)|được review tốt|duoc review tot|best[\s-]?sell|popular|well[\s-]?loved|crowd[\s-]?favou?rite|favou?rite|beloved|famous for|customers? (?:love|rave|praise)|diners? (?:love|praise))/iu
+/**
+ * Atmosphere and quality — "không gian thoải mái", "sôi động", "chất lượng",
+ * "phục vụ tốt". Measured 2026-09-15: written about OpenStreetMap rows that
+ * carried a name, a pin and (once) a wifi flag. These are claims about what a
+ * place is LIKE, and the only evidence that can carry them is retrieved text
+ * ABOUT that place (a snippet, a review). No such text ⇒ the clause goes, exactly
+ * as an unsupported popularity claim does. Suitability ("lý tưởng để nhảy múa",
+ * "perfect for a quick session") is deliberately NOT here: it is the assistant's
+ * inference from a real category or distance, not a fact about the room.
+ */
+const ATMOSPHERE_RE = /(không gian (?:thoải mái|đẹp|rộng|ấm cúng|sang trọng|yên tĩnh|thoáng|chill|hiện đại)|khong gian (?:thoai mai|dep|rong|am cung|sang trong|yen tinh|thoang|chill|hien dai)|sôi động|soi dong|ấm cúng|am cung|sang trọng|sang trong|lãng mạn|lang man|(?:vibe|không khí|khong khi) (?:rất |khá |rat |kha )?(?:thoải mái|thoai mai|chill|sôi động|soi dong|đẹp|dep|hay|dễ chịu|de chiu)|vibe [^,.;]{0,24}?(?:thoải mái|thoai mai|chill|sôi động|soi dong|hay|đẹp|dep|tuyệt|tuyet|xịn|xin)|chất lượng|chat luong|(?:đồ ăn|do an|món|mon) ngon|phục vụ (?:tốt|nhiệt tình|chu đáo)|phuc vu (?:tot|nhiet tinh|chu dao)|lựa chọn (?:khá |rất |cực )?(?:tốt|hay|ổn|tuyệt vời)|lua chon (?:kha |rat |cuc )?(?:tot|hay|on|tuyet voi)|đáng thử|dang thu|đáng đến|dang den|khá ổn|kha on|\b(?:great|good|solid|excellent|safe) (?:choice|option|pick|bet)\b|\bworth (?:a try|trying|visiting)\b|\bcozy\b|\blively\b|\bvibrant\b|\bupscale\b|\bromantic\b|\bgreat (?:vibe|atmosphere|ambiance)|\bhigh[- ]quality\b|\bdelicious\b)/iu
+
+const POPULARITY_RE = /(được nhiều người|duoc nhieu nguoi|nhiều người (?:yêu thích|ưa chuộng|thích|lựa chọn)|nhieu nguoi (?:yeu thich|ua chuong|thich|lua chon)|được (?:yêu thích|ưa chuộng)|duoc (?:yeu thich|ua chuong)|đông khách|dong khach|nổi tiếng|noi tieng|phổ biến|pho bien|quán ruột|quan ruot|được nhiều khách|duoc nhieu khach|nhiều khách|nhieu khach|(?:thực |thuc )?khách (?:hàng )?(?:thường )?(?:khen|nhận xét|đánh giá)|(?:thuc )?khach (?:hang )?(?:thuong )?(?:khen|nhan xet|danh gia)|được review tốt|duoc review tot|best[\s-]?sell|popular|well[\s-]?loved|crowd[\s-]?favou?rite|favou?rite|beloved|famous for|customers? (?:love|rave|praise)|diners? (?:love|praise))/iu
 
 /**
  * A claim that a venue sells online / delivers.
@@ -613,6 +625,15 @@ export function guardPlaceClaimsInText(
       const named = placeNamedIn(s)
       const own = named ? (entityTexts?.get(named) ?? []) : []
       if (own.length === 0) violated.push(POPULARITY_RE)
+    }
+
+    // 1b-ii) An atmosphere / suitability claim needs retrieved TEXT about that
+    // place. Same shape as the popularity rule; batch ratings do not vouch for
+    // what a room feels like either, so this one never falls back to them.
+    if (!ticketsOnly && ATMOSPHERE_RE.test(s)) {
+      const named = placeNamedAt(i, spans)
+      const own = named ? (entityTexts?.get(named) ?? []) : []
+      if (own.length === 0) violated.push(ATMOSPHERE_RE)
     }
 
     // 1c) An ordering/delivery claim needs a DIRECT ordering page for the place

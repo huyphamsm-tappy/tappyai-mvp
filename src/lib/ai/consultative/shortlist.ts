@@ -103,6 +103,16 @@ export interface CandidateShortlist {
 export function shortlistCandidates(
   ranked: readonly RankedEntry[],
   max: number = RULE_OF_ONE_TO_THREE_MAX,
+  /**
+   * 🚨 EVIDENCE THRESHOLD — measured 2026-09-15. The cap was the only rule, so a
+   * set where ONE row carried one wifi flag was "rankable" and the shortlist
+   * filled to three with two rows that carried nothing at all, tie-broken by
+   * name. MIN is what the evidence supports: a candidate that does not carry
+   * evidence for the decision is a search result and never takes a slot. The
+   * caller decides what counts (see `decisionFrame.qualifiesFor`); with no
+   * predicate the selector behaves exactly as before.
+   */
+  qualifies?: (entry: RankedEntry) => boolean,
 ): CandidateShortlist {
   const cap = Math.max(0, Math.min(max, RULE_OF_ONE_TO_THREE_MAX))
   const totalRanked = ranked.length
@@ -115,6 +125,7 @@ export function shortlistCandidates(
   let duplicatesDropped = 0
 
   for (const entry of ranked) {
+    if (qualifies && !qualifies(entry)) continue
     const key = identityKey(entry.candidate)
     if (seen.has(key)) { duplicatesDropped++; continue }
     seen.add(key)

@@ -16,6 +16,7 @@ import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import { guardClarifications } from './clarificationGuard'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -1303,7 +1304,16 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(placeGuarded)
+    /**
+     * CLARIFICATION BACKSTOP. The decision frame told the model whether a
+     * question was worth asking; measured 2026-09-15 the model still closed
+     * with "bạn thích ăn gì?" on turns where the frame said recommend-or-say-so.
+     * Reflex taste/type questions go under `no_reflex`; decision-critical ones
+     * (where, when, how many, budget, which item) always stay; at most one
+     * question survives either way. Prose only — machine blocks untouched.
+     */
+    const clarified = guardClarifications(placeGuarded, collector?.clarificationPolicy ?? 'allow').text
+    const scaffoldStripped = stripModelScaffolding(clarified)
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`

@@ -38,8 +38,26 @@ const HEADING = /\*\*([^*\n]{3,60})\*\*/g
  * something the detector considers grounded, or vice versa.
  */
 export function normalizeHeading(shown: string): string {
-  const cleaned = shown.replace(/^\s*\d+[.)]\s*/, '').replace(/[:：\-–—\s]+$/, '').trim()
+  const cleaned = shown
+    .replace(/^\s*\d+[.)]\s*/, '')
+    // A parenthetical after the name ("(chuyên ẩm thực Việt)") is commentary.
+    .replace(/\s*\([^)]*\)\s*$/, '')
+    .replace(/[:：,;.!?\-–—\s]+$/, '')
+    .trim()
   return normalizeVN(cleaned.toLowerCase())
+}
+
+/**
+ * The venue-type words a name is written with or without — "Nhà Hàng Au
+ * Tresor" is "Au Tresor" is "Restaurant Au Tresor". Measured 2026-09-15: the
+ * model wrote the row's name with a different prefix and the whole reply was
+ * replaced by the not-found line. Only the LEADING type word is stripped, and
+ * only when something of substance remains; "Nhà Hàng" alone still fails.
+ */
+const VENUE_TYPE_PREFIX = /^(?:nha hang|quan an|quan|tiem|cafe|ca phe|coffee|restaurant|bar|pub|club|spa|salon|khach san|hotel|resort|homestay|the)\s+/
+function stripVenueType(norm: string): string {
+  const stripped = norm.replace(VENUE_TYPE_PREFIX, '').trim()
+  return stripped.length >= 3 ? stripped : norm
 }
 
 /**
@@ -54,7 +72,11 @@ export function normalizeHeading(shown: string): string {
  */
 export function isGrounded(headingNorm: string, knownNorm: string[]): boolean {
   if (headingNorm.length < 3) return true   // too short to be a venue claim
-  return knownNorm.some(k => k.includes(headingNorm) || headingNorm.includes(k))
+  const h = stripVenueType(headingNorm)
+  return knownNorm.some(k => {
+    const kk = stripVenueType(k)
+    return k.includes(headingNorm) || headingNorm.includes(k) || kk.includes(h) || h.includes(kk)
+  })
 }
 
 /** Where machine content starts, so prose removal can never run into it. */

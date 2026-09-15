@@ -155,7 +155,10 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   // phrase set a storage priority the user never expressed.
   [/dung luong(?! pin)|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
   [/man hinh|\bscreen\b|\bdisplay\b|\boled\b/, 'screen', false],
-  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b/, 'rating', true],
+  // "ngon" / "chất lượng" / "tốt nhất" name the same axis the rating scores — the
+  // measured 2026-09-15 lunch request ("ăn gì cho ngon") stated its one criterion
+  // and the ranker heard nothing.
+  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b|\bngon\b|ngon nhat|chat luong|\btot nhat\b|\bdelicious\b|\btasty\b/, 'rating', true],
   [/\bgan\b|\bnear\b|\bclose to\b|gan day|gan toi|khoang cach|\bdistance\b/, 'distance', true],
   // Transport pickup speed. Phrases are deliberately specific ("toi nhanh", not
   // bare "nhanh") so a laptop "xu ly nhanh" query still resolves to performance.
@@ -164,6 +167,9 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   [/gan bien|\bbeach\b|view bien|beachfront/, 'beach', true],
   [/trung tam|\bcentral\b|\bdowntown\b|city cent(er|re)/, 'central', true],
   [/\bwifi\b|\bwi-fi\b/, 'wifi', true],
+  // Time-bound: "trưa nay", "tối nay", "đang mở", "bây giờ" make being open a
+  // stated criterion, scored only when the row says whether it is open.
+  [/dang mo|con mo|\bmo cua\b|open now|\bbay gio\b|\bright now\b|trua nay|toi nay|sang nay|chieu nay|\btonight\b/, 'openNow', true],
   [/ngoai troi|\boutdoor\b|san vuon/, 'outdoor', true],
 ]
 

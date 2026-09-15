@@ -115,6 +115,14 @@ export interface EnrichmentCollector {
    */
   rendersDecisionCard?: boolean
   setRendersDecisionCard(on: boolean): void
+  /**
+   * Whether a reflex "what kind would you like?" question may survive this
+   * reply. Set by the route once a tool result has been judged against the
+   * decision frame: a recommendation that is possible, or an evidence gap no
+   * question can close, leaves no room for one. See `clarificationGuard`.
+   */
+  clarificationPolicy?: 'allow' | 'no_reflex'
+  setClarificationPolicy(policy: 'allow' | 'no_reflex'): void
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -267,6 +275,8 @@ export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
     },
     rendersDecisionCard: false,
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
+    clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
+    setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
     placesRecommendations: undefined as Recommendation[] | undefined,
     placesProducer: undefined as ProducerSubject | undefined,
     setPlacesRecommendations(recs, producer) {

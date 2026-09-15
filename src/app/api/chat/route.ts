@@ -26,6 +26,7 @@ import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refine
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
@@ -562,6 +563,23 @@ export async function POST(req: Request) {
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
 
+  /**
+   * The decision frame — what the user is trying to DO, decided before any tool
+   * runs: goal, occasion, criteria and the evidence a recommendation needs. The
+   * ranker still orders against `needProfile`; the frame decides which ranked
+   * rows may be recommended at all, what the model is told to search for, and
+   * what to do when the evidence does not come back. Deterministic; no call.
+   */
+  const decisionFrame = deriveDecisionFrame({
+    messages,
+    need: needProfile,
+    planningIntent,
+    forcedTool,
+    hasGps: !!userLocation,
+    storedPreferences: storedPrefs,
+    now: new Date(),
+  })
+
   // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
   // it models what the user wants from the PRODUCT, not what they want from us —
   // and only the route knows which message is the current one.
@@ -684,15 +702,33 @@ export async function POST(req: Request) {
     // reference the 1–3 top-of-decision entries + their role. Never
     // manufactures a third slot; dedupes on canonical id.
     if (toolName === 'search_places' || toolName === 'get_hotel_prices') {
-      const sl = shortlistCandidates(ranked.ranked, 3)
+      // Only candidates that carry evidence for THIS decision may take a slot;
+      // the rest stay in `results` as what they are — search results.
+      const sl = shortlistCandidates(ranked.ranked, 3, e => qualifiesFor(decisionFrame, e))
       if (sl.selected.length > 0) {
         (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
           rank: idx,
           id: s.entry.candidate.id,
           name: s.entry.candidate.name,
           role: s.role,
+          // The evidence the recommendation may rest on — real fields only — and
+          // the reasons the ranker actually counted, so the model reasons over the
+          // same numbers the engine ordered by instead of over the row's absence.
+          evidence: evidenceSummary(s.entry.candidate.attrs),
+          why: s.entry.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => r.detail),
+          missing: missingFor(decisionFrame, s.entry),
         }))
       }
+      // What the reply may do with this evidence. The OpenStreetMap fallback
+      // carries no rating, price, hours or reviews for any row, so a repeat
+      // search there cannot help; a Google/Serper result can.
+      const providerCanImprove = typeof r.source === 'string' && !/openstreetmap/i.test(r.source)
+      const gap = evidenceGap(decisionFrame, ranked.ranked, providerCanImprove)
+      ;(result as Record<string, unknown>)._tappy_evidence_gap = gap
+      // A recommendation that is possible, or a gap no question can close,
+      // leaves no room for a reflex "what kind?" — only a bounded retry does.
+      enrichment.setClarificationPolicy(gap.action === 'search_again' ? 'allow' : 'no_reflex')
+      console.log(JSON.stringify({ type: 'tappyai_evidence_gap', tool: toolName, ...gap, goal: decisionFrame.goal, criteria: decisionFrame.criteria.map(c => c.key) }))
     }
 
     // ADR-024: the rows that survive the shortlist, as CANDIDATES. The evidence
@@ -854,6 +890,10 @@ export async function POST(req: Request) {
     // rule that a clip address stands in for the missing GPS/city. Absent on
     // every turn that did not come from the button, so generic chat is unchanged.
     clipContext ? buildExploreClipBlock(clipContext, lang) : '',
+    // The frame first: what the user is trying to do, what to search for and
+    // what evidence settles it — read before the ranking/pick instructions that
+    // explain how to present the result.
+    buildDecisionFrameBlock(decisionFrame, needProfile),
     isDecisionDomain ? buildRankingInstructionBlock() : '',
     isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
@@ -1502,6 +1542,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       forcedTool,
       planningIntent,
       planEmitted,
+      frameGoal: decisionFrame.goal,
+      frameDomains: decisionFrame.domains,
+      frameClarify: decisionFrame.clarify?.about ?? null,
     }))
   }
   const timedBody = finalResponse.body
