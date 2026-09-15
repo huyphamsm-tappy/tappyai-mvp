@@ -115,7 +115,7 @@
     <string name="chat_plan_share_short">Share</string>
     <string name="chat_plan_share_cta">📤 Share itinerary</string>
     <string name="chat_plan_cost_title">💰 Estimated cost</string>
-    <string name="chat_plan_cost_total">Total estimate</string>
+    <string name="chat_plan_cost_total">Budget</string>
     <string name="chat_plan_map">Map</string>
     <string name="chat_plan_book">Book now</string>
     <string name="chat_save_place">Save place</string>

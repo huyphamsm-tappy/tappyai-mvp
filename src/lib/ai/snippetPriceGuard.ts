@@ -19,10 +19,15 @@
 
 import { extractMoneyClaims, redactUnsupportedClaims, sentenceSpans, type MoneyClaim } from './moneyGuard'
 import { placeTokensFor, textNamesPlace } from '@/lib/links/placeAttribution'
+import { normalizeVN } from './intent'
 
 // Snippets round loosely ("khoảng 50k", "45–55k"), so allow a wider match than
 // the shopping guard's 2%. Still far tighter than "any number goes".
 const ROUNDING = 0.05
+
+/** Words that present an amount as what something COSTS, and the words that name it as a budget. */
+const COST_FRAME_RE = /\btong\b|\btotal\b|\buoc tinh\b|\bestimated?\b|\bestimate\b|\bchi phi\b|\bcost\b|\bspend\b|\bcon lai\b|\bcon du\b|\bremaining\b|\bhet\b/
+const BUDGET_FRAME_RE = /\bngan sach\b|\bbudget\b|\btam gia\b|\btrong khoang\b|\btoi da\b/
 
 const near = (v: number, prices: number[]): boolean =>
   prices.some(p => Math.abs(v - p) <= Math.max(p * ROUNDING, 1000))
@@ -125,9 +130,29 @@ export function guardSnippetPricesInText(
     return null
   }
 
+  /**
+   * 🚨 A USER NUMBER ECHOED AS A COST IS NOT THE USER'S NUMBER ANY MORE — measured
+   * 2026-09-15 on the planning UAT: "budget 3 triệu" came back as "Tổng ước tính
+   * 3.000.000 VND cho cả tối" under two venues with no price at all. The amount is
+   * the user's, the CLAIM is not: it presents the envelope as what the evening
+   * costs. So the echo exemption holds only while the sentence frames the number
+   * as a budget (or frames it as nothing in particular); a sentence that frames it
+   * as a total, an estimate, a spend or a remainder — and does not say budget —
+   * is judged like any other claim, and with no snippet behind it, it goes.
+   */
+  const echoSpans = sentenceSpans(text)
+  const sentenceAt = (pos: number): string => {
+    const span = echoSpans.find(([a, b]) => pos >= a && pos < b)
+    return span ? normalizeVN(text.slice(span[0], span[1]).toLowerCase()) : ''
+  }
+  const framedAsCost = (pos: number): boolean => {
+    const s = sentenceAt(pos)
+    return COST_FRAME_RE.test(s) && !BUDGET_FRAME_RE.test(s)
+  }
+
   const judged: MoneyClaim[] = claims.map(c => {
     const userEcho = userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)
-    if (userEcho) return { ...c, entity: null, verdict: 'VERIFIED' as const }
+    if (userEcho && !framedAsCost(c.start)) return { ...c, entity: null, verdict: 'VERIFIED' as const }
 
     const entity = scope ? placeNamedAt(c.start) : null
     // A sentence about ONE named place may only rest on evidence about that
