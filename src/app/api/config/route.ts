@@ -30,11 +30,16 @@ export async function GET() {
   return NextResponse.json(
     {
       freemium: {
-        // ONE shared AI question pool for every AI feature (chat in all areas, Cảnh báo lừa đảo).
+        // ONE shared AI question pool for every AI feature (chat in all areas, Scam Alerts).
+        /** Registered account: AI questions per VN day. */
         freeDailyLimit: FREE_DAILY_LIMIT,
-        // The anonymous allowance is LIFETIME since 2026-09-15 (five, once), not per day. The old
-        // field name is kept so native clients keep parsing; `anonLifetimeLimit` is the honest one.
-        anonDailyLimit: ANON_LIFETIME_LIMIT,
+        /**
+         * Anonymous identity: AI questions for its LIFETIME — one trial, once. Not per day.
+         * 🚨 Renamed from `anonDailyLimit` (2026-09-15): the old name said "daily" for a value
+         * that is not, and a client rendering "5/day" from it would be lying. No web code read
+         * the old field; the iOS `AppConfig.Freemium` model is renamed in the same change and
+         * Android ignores this block entirely.
+         */
         anonLifetimeLimit: ANON_LIFETIME_LIMIT,
       },
       flags: {

@@ -10,8 +10,8 @@ import { ProfileRowList, accountRows, settingsRows, signInHref } from './Profile
 
 // Signed-out Profile screen. The "Me" tab is one of five primary tabs, so
 // ejecting anonymous visitors to a full-page /login made the whole product look
-// gated even though Home, Chat, Explore and Deals are open (ANON_DAILY_LIMIT
-// questions/day). This mirrors the signed-in layout instead: the same rows in
+// gated even though Home, Chat, Explore and Deals are open (ANON_LIFETIME_LIMIT
+// AI questions, once). This mirrors the signed-in layout instead: the same rows in
 // the same order, locked, each linking to /login?returnTo=<that row>.
 //
 // The row inventory is now shared with ProfileView (see ProfileRows) rather than

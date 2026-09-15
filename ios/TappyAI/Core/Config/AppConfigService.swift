@@ -17,8 +17,11 @@ struct AppConfig: Decodable, Sendable {
     }
 
     struct Freemium: Decodable, Sendable {
+        /// Registered account: AI questions per VN day (one pool shared by every AI feature).
         let freeDailyLimit: Int
-        let anonDailyLimit: Int
+        /// Anonymous identity: AI questions for its LIFETIME — one trial, once. NOT per day.
+        /// Renamed from `anonDailyLimit` (2026-09-15) so no screen can present it as a daily figure.
+        let anonLifetimeLimit: Int
     }
 
     struct Flags: Decodable, Sendable {

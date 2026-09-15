@@ -664,7 +664,7 @@ export default function LoginPage() {
                       <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                     </div>
 
-                    {/* Guest — browse anonymously (5 AI questions/day, read-only social) */}
+                    {/* Guest — browse anonymously (ANON_LIFETIME_LIMIT AI questions for the lifetime of the identity, read-only social) */}
                     <button
                       onClick={handleGuest}
                       disabled={anyLoading}
