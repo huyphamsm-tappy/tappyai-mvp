@@ -8,12 +8,23 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 // (Backend Contract Audit, 2026-07-11 — see docs/architecture/BACKEND_OWNERSHIP.md)
 // ─────────────────────────────────────────────────────────────────────────────
 
-// ── Freemium quotas (enforced in POST /api/chat) ────────────────────────────
-/** Logged-in free tier: messages per VN day. Temporarily 15 during the free
- * test phase (Pro hidden — no legal entity for payments yet). */
+// ── The ONE AI question quota (enforced by lib/ai/quota, spent by every AI feature) ─────────
+//
+// 🚨 ONE POOL, NOT ONE PER FEATURE (owner decision 2026-09-15). A "question" is any user action
+// that actually invokes a model: a chat turn in any of the five service areas, a Cảnh báo lừa đảo
+// message analysis, a screenshot analysis. Deterministic work — the URL/QR engine, reading the
+// knowledge library — never touches it. Enforced server-side in `lib/ai/quota/aiQuestionQuota.ts`;
+// clients read these numbers via GET /api/config and /api/subscription for DISPLAY only.
+//
+/** Logged-in free tier: AI questions per VN day, across the whole product. Temporarily 15 during
+ * the free test phase (Pro hidden — no legal entity for payments yet). */
 export const FREE_DAILY_LIMIT = 15
-/** Anonymous visitors: questions per VN day (httpOnly cookie `tappy_anon`). */
-export const ANON_DAILY_LIMIT = 5
+/**
+ * Anonymous visitors: AI questions for the LIFETIME of the anonymous identity — a one-time trial,
+ * not a daily allowance. Five, once; then an account. Not per day, not per session, not per
+ * return visit. (Was `ANON_DAILY_LIMIT`, five per VN day, until 2026-09-15.)
+ */
+export const ANON_LIFETIME_LIMIT = 5
 
 /**
  * How many ranked shopping listings reach the model — the decision set, not the search dump.

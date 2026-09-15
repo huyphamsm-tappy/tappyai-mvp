@@ -73,6 +73,10 @@ const ALLOWED_CODE_EXPRESSIONS = [
   // The validator's own discriminated code — `clientInput.ts` types it as a union of snake_case
   // literals, so it cannot carry a sentence.
   'validated.code',
+  // `accountRestrictionCode()` is typed to return exactly 'account_banned' | 'account_suspended'
+  // (lib/account/accountStatus.ts) — a code by construction, never prose. The paired message goes
+  // in `message`, which is the shape this file asks for.
+  'accountRestrictionCode(restriction.reason!)',
 ]
 
 /**

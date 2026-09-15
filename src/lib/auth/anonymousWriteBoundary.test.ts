@@ -53,7 +53,7 @@ const EXEMPT: Record<string, string> = {
   'auth/zalo/complete': 'sign-in completion, runs before any account exists',
 
   // ── The product deliberately offers these to a visitor (see socialWriteAccess.ts). ──
-  'chat': 'the anonymous tier IS chat — capped at ANON_DAILY_LIMIT per identity, server-side',
+  'chat': 'the anonymous tier IS chat — capped at ANON_LIFETIME_LIMIT per identity (five, once), server-side, from the shared AI question pool',
   'conversations': "the visitor's own chat history; claimed into the account on sign-in",
   'memory': "the visitor's own chat memory; private, never shown to another user",
   'preferences': "the visitor's own preferences; private",
@@ -109,6 +109,11 @@ const EXEMPT: Record<string, string> = {
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
+  // Analyze Message. Anonymous use is a product decision (FREE/TRIAL = 2 AI analyses per VN day),
+  // metered per IP through the shared limiter — a fresh anonymous session is NOT a fresh
+  // allowance — plus a per-IP burst cap; the deterministic link checks it runs are the same ones
+  // scam-shield/check already serves anonymously. See lib/scam-shield/message/quota.ts.
+  'scam-shield/analyze': 'anonymous AI analysis is a product feature; 2/day per IP via the shared limiter, burst-capped',
   'translate': 'anonymous tool; rate-limited',
   'scan': 'anonymous tool',
   'viet-content': 'anonymous tool; rate-limited',

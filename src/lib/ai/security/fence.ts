@@ -51,6 +51,7 @@ export const UNTRUSTED_SOURCES = [
   'calendar_events',     // Google Calendar — third parties can write this
   'user_location',       // client-supplied address label
   'explore_clip',        // reviews row (place name / address / caption) the user pressed Ask Tappy on
+  'scam_message',        // a suspicious message the user pasted (or OCR'd from a screenshot) for Scam Shield to ANALYZE — by definition adversarial text
 ] as const
 
 export type UntrustedSource = (typeof UNTRUSTED_SOURCES)[number]

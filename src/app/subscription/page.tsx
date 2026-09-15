@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
-import { FREE_DAILY_LIMIT, countTodayUserMessages } from '@/lib/config/product'
+import { aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
+import { headers } from 'next/headers'
 import SubscriptionView from './SubscriptionView'
 
 // Session-bound data only. All presentation lives in SubscriptionView, which is a client component
@@ -28,10 +29,14 @@ export default async function SubscriptionPage() {
     ? new Date(sub.current_period_end) > new Date()
     : false
 
-  // Same measurement helper /api/chat enforces with — display can never drift
-  // from enforcement again (this page once showed 10/day against an enforced 15).
-  const todayMsgCount = isPro ? 0 : await countTodayUserMessages(supabase, user.id)
-  const remaining = Math.max(0, FREE_DAILY_LIMIT - todayMsgCount)
+  // Read from the ONE shared AI quota /api/chat and /api/scam-shield/analyze spend from — display
+  // can never drift from enforcement (this page once showed 10/day against an enforced 15). A
+  // store that cannot report the count is shown as the limit used, never as plenty left.
+  const h = headers()
+  const ip = h.get('x-forwarded-for')?.split(',')[0].trim() || h.get('x-real-ip') || 'unknown'
+  const quota = await peekAiQuestionQuota(aiQuotaIdentity(user, ip))
+  const todayMsgCount = isPro ? 0 : (quota.used ?? quota.limit)
+  const remaining = isPro ? quota.limit : Math.max(0, quota.limit - todayMsgCount)
 
   return (
     <SubscriptionView
@@ -39,7 +44,7 @@ export default async function SubscriptionPage() {
       isPro={isPro}
       periodEnd={sub?.current_period_end ?? null}
       remaining={remaining}
-      freeDailyLimit={FREE_DAILY_LIMIT}
+      freeDailyLimit={quota.limit}
     />
   )
 }

@@ -85,22 +85,25 @@ describe('the server stays the authority on quota identity', () => {
     expect(route).toMatch(/const \{ user, supabase \} = await getRequestUser\(req\)/)
   })
 
-  it('🚨 an ANONYMOUS session gets the anonymous quota', () => {
+  it('🚨 an ANONYMOUS session gets the anonymous (lifetime) quota, spent from the ONE shared pool', () => {
     expect(route).toMatch(/if \(user\?\.is_anonymous\) \{/)
-    expect(route).toContain('anon_chat_usage_increment')
-    expect(route).toContain('ANON_DAILY_LIMIT')
+    // The identity handed to the quota is the verified session — `aiQuotaIdentity(user, …)` maps
+    // `is_anonymous` to the lifetime tier; nothing here reads a count from the client.
+    expect(route).toMatch(/if \(user\?\.is_anonymous\) \{[\s\S]{0,900}consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)/)
+    expect(route).toContain('ANON_LIFETIME_LIMIT')
+    expect(route).not.toContain('anon_chat_usage_increment')
   })
 
   it('🚨 a real account is NEVER counted against the anonymous quota', () => {
-    // The two branches are exclusive by construction — `else if (user)` — and the
-    // cookie fallback is additionally guarded on `!authedUserId`.
+    // The two branches are exclusive by construction — `else if (user)` — and the identity-less
+    // fallback runs only when NO verified identity was metered.
     expect(route).toMatch(/\} else if \(user\) \{/)
-    expect(route).toMatch(/else if \(!authedUserId && !anonQuotaByToken\)/)
+    expect(route).toMatch(/if \(!quotaMetered\) \{/)
   })
 
   it('the anonymous limit is still enforced — this was never about removing it', () => {
     expect(route).toContain("error: 'anon_limit_reached'")
-    expect(route).toMatch(/usedToday > ANON_DAILY_LIMIT/)
-    expect(route).toMatch(/anonCount >= ANON_DAILY_LIMIT/)
+    expect(route).toMatch(/if \(!spend\.ok\)/)
+    expect(route).not.toMatch(/tappy_anon=/)
   })
 })

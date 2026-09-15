@@ -29,13 +29,15 @@ const MESSAGES = {
     vi: 'Vui lòng thử lại vào ngày mai.',
     en: 'Please try again tomorrow.',
   },
+  // ONE shared AI question pool (2026-09-15): the anonymous allowance is a one-time trial, not a
+  // daily one — so its copy must not promise "tomorrow". The registered copy keeps "today".
   'chat.anonLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!',
-    en: "You've used all {n} free questions for today. Sign in to keep chatting with Tappy!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI dùng thử. Đăng nhập để có {d} câu hỏi AI mỗi ngày với Tappy!',
+    en: "You've used all {n} free trial AI questions. Sign in for {d} AI questions a day with Tappy!",
   },
   'chat.freeLimit': {
-    vi: 'Bạn đã dùng hết {n} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!',
-    en: "You've used all {n} free messages for today. See you again tomorrow!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay (tính chung mọi tính năng). Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've used all {n} AI questions for today (across every feature). See you again tomorrow!",
   },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
@@ -226,6 +228,10 @@ const MESSAGES = {
   'scam.checkFailed': { vi: 'Chưa kiểm tra được liên kết này. Vui lòng thử lại.', en: "Couldn't check this link. Please try again." },
   'scam.tooManyChecks': { vi: 'Bạn kiểm tra quá nhiều lần. Vui lòng thử lại sau.', en: 'Too many checks. Please try again later.' },
   'scam.dailyLimit': { vi: 'Bạn đã dùng hết lượt kiểm tra hôm nay.', en: "You've used all of today's checks." },
+  // Scam Shield · Analyze Message.
+  'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
+  'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
   // ── W2 · voice ──────────────────────────────────────────────────────────────

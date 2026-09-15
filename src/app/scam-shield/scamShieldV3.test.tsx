@@ -8,6 +8,8 @@ vi.mock('next/navigation', () => ({
   usePathname: () => '/scam-shield',
   useSearchParams: () => new URLSearchParams(),
 }))
+// The view mints an anonymous identity before spending a shared AI question; not under test here.
+vi.mock('@/lib/auth/ensureAnonymousSession', () => ({ ensureAnonymousSession: async () => true }))
 vi.mock('@/components/NotificationProvider', () => ({
   useNotifications: () => ({ notifications: [], unreadCount: 0, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
 }))
@@ -63,7 +65,7 @@ describe('header', () => {
   it('names the feature, keeps the tagline and offers the history as an in-page anchor', () => {
     render(<ScamShieldView />)
     const header = document.querySelector('[data-scam-header]') as HTMLElement
-    expect(within(header).getByRole('heading', { level: 1 }).textContent).toMatch(/scam shield/i)
+    expect(within(header).getByRole('heading', { level: 1 }).textContent).toMatch(/scam alerts|cảnh báo lừa đảo/i)
     const link = header.querySelector('[data-scam-history-link]') as HTMLAnchorElement
     expect(link.getAttribute('href')).toBe('#scam-shield-history')
     // The anchor target is the existing device-local history section on this page — no new route.
@@ -185,9 +187,109 @@ describe('the QR tab is the same upload it always was', () => {
     expect((await screen.findByRole('alert')).textContent).toMatch(/qr|url|liên kết/i)
   })
 
-  it('offers exactly two tabs — URL and QR — and nothing the engine does not do', () => {
+  it('offers exactly three tabs — URL, QR, message — and nothing the engine does not do', () => {
+    // Three capabilities: the URL engine, the QR decoder in front of it, and Analyze Message
+    // (`lib/scam-shield/message`), which runs the same URL engine over every link plus the
+    // social-engineering rules and a model. A fourth tab needs a fourth capability.
     render(<ScamShieldView />)
-    expect(screen.getAllByRole('tab')).toHaveLength(2)
+    // Scoped to the tool's own tablist — the knowledge library below has its own filter buttons.
+    expect(screen.getAllByRole('tab').filter(t => t.closest('[data-scam-tabs]'))).toHaveLength(3)
+  })
+})
+
+describe('the message tab — Analyze Message', () => {
+  const messageTab = () => screen.getByRole('tab', { name: /analyze a message|phân tích tin nhắn/i })
+  const analyzeButton = () => within(tool()).getByRole('button', { name: /analyze now|phân tích ngay/i })
+
+  const MESSAGE_RESULT = {
+    inputType: 'message',
+    risk: { level: 'HIGH', score: 72, confidence: 78 },
+    scamType: 'telegram_account_phishing', attackGoal: 'account_takeover',
+    signals: [{ type: 'verify_phone_request', severity: 'high', explanation: 'Asks you to verify your phone number via a link.', source: 'ai' }],
+    requestedActions: ['Open the link and enter your phone number'],
+    detectedEntities: { urls: ['https://42777qz.hanveko.cfd/'], phoneNumbers: [], emails: [], organizations: [], platforms: ['Telegram'] },
+    urlChecks: [{ url: 'https://42777qz.hanveko.cfd/', status: 'checked', level: 'LOW', score: 12, confidence: 90, officialMatch: null }],
+    advice: {
+      doNot: [{ code: 'NO_OTP', label_vi: 'KHÔNG nhập mã OTP', label_en: 'Do NOT enter any OTP' }],
+      doNow: [{ code: 'VERIFY_IN_OFFICIAL_APP', label_vi: 'Mở ứng dụng chính thức', label_en: 'Open the official app yourself' }],
+    },
+    reasoningSummary: 'Likely Telegram account takeover phishing.',
+    analysis: { tier: 2, aiStatus: 'used', provider: 'claude', modelRole: 'smart' },
+    analyzedAt: Date.now(),
+    quota: { kind: 'anon', limit: 5, period: 'lifetime', used: 1, remaining: 4, exhausted: false, pro: false },
+  }
+
+  it('posts the pasted text and optional link to /api/scam-shield/analyze and renders the verdict card', async () => {
+    vi.stubGlobal('fetch', okFetch(MESSAGE_RESULT))
+    render(<ScamShieldView />)
+    fireEvent.click(messageTab())
+    expect(messageTab().getAttribute('aria-selected')).toBe('true')
+    expect(document.querySelector('[data-scam-message-form]')).not.toBeNull()
+
+    const textarea = within(tool()).getByRole('textbox', { name: /analyze a message|phân tích tin nhắn/i })
+    fireEvent.change(textarea, { target: { value: 'Your account is at high risk, verify your phone within 48 hours' } })
+    fireEvent.change(within(tool()).getByRole('textbox', { name: /link included|liên kết kèm theo/i }), { target: { value: 'https://42777qz.hanveko.cfd' } })
+    fireEvent.click(analyzeButton())
+
+    await waitFor(() => expect(fetch).toHaveBeenCalled())
+    const [url, init] = (fetch as unknown as ReturnType<typeof vi.fn>).mock.calls[0]
+    expect(url).toBe('/api/scam-shield/analyze')
+    expect(JSON.parse((init as RequestInit).body as string)).toEqual({
+      text: 'Your account is at high risk, verify your phone within 48 hours',
+      url: 'https://42777qz.hanveko.cfd',
+    })
+
+    const card = await waitFor(() => {
+      const el = document.querySelector('[data-scam-message-result]') as HTMLElement | null
+      expect(el).not.toBeNull()
+      return el as HTMLElement
+    })
+    expect(card.getAttribute('data-scam-message-result')).toBe('HIGH')
+    expect(card.textContent).toContain('Likely Telegram account takeover phishing.')
+    expect(card.textContent).toMatch(/Do NOT enter any OTP|KHÔNG nhập mã OTP/)
+    expect(card.textContent).toMatch(/Open the official app yourself|Mở ứng dụng chính thức/)
+    expect(card.textContent).toContain('42777qz.hanveko.cfd')
+    expect(card.querySelector('[data-scam-ai-note]')?.getAttribute('data-scam-ai-note')).toBe('used')
+    // A message verdict is not a link and never enters the link history.
+    expect(localStorage.getItem(HISTORY_STORAGE_KEY)).toBeNull()
+  })
+
+  it('the analyze button is disabled with nothing to analyze, and the screenshot input accepts only JPEG/PNG/WebP', () => {
+    render(<ScamShieldView />)
+    fireEvent.click(messageTab())
+    expect((analyzeButton() as HTMLButtonElement).disabled).toBe(true)
+    const file = document.querySelector('[data-scam-screenshot-input]') as HTMLInputElement
+    expect(file.getAttribute('accept')).toBe('image/jpeg,image/png,image/webp')
+    fireEvent.change(file, { target: { files: [new File(['x'], 'shot.png', { type: 'image/png' })] } })
+    expect(document.querySelector('[data-scam-screenshot-name]')?.textContent).toContain('shot.png')
+    expect((analyzeButton() as HTMLButtonElement).disabled).toBe(false)
+  })
+
+  it('says why AI was not used when the allowance is spent', async () => {
+    vi.stubGlobal('fetch', okFetch({ ...MESSAGE_RESULT, analysis: { tier: 2, aiStatus: 'quota_exhausted', provider: null, modelRole: null }, quota: { kind: 'anon', limit: 5, period: 'lifetime', used: 5, remaining: 0, exhausted: true, pro: false } }))
+    render(<ScamShieldView />)
+    fireEvent.click(messageTab())
+    fireEvent.change(within(tool()).getByRole('textbox', { name: /analyze a message|phân tích tin nhắn/i }), { target: { value: 'hello' } })
+    fireEvent.click(analyzeButton())
+    const note = await waitFor(() => {
+      const el = document.querySelector('[data-scam-ai-note]') as HTMLElement | null
+      expect(el).not.toBeNull()
+      return el as HTMLElement
+    })
+    expect(note.getAttribute('data-scam-ai-note')).toBe('quota_exhausted')
+    // The GLOBAL counter, not a Scam Alerts allowance: 5/5 spent, sign in for 15/day.
+    expect(note.textContent).toMatch(/5\/5/)
+    expect(note.querySelector('[data-scam-ai-counter]')?.textContent).toMatch(/AI (left|còn lại): 0\/5/)
+    expect(note.textContent).toMatch(/15/)
+  })
+
+  it('surfaces a server error with a dictionary message', async () => {
+    vi.stubGlobal('fetch', vi.fn(async () => ({ ok: false, status: 400, json: async () => ({ error: 'invalid_image' }) })))
+    render(<ScamShieldView />)
+    fireEvent.click(messageTab())
+    fireEvent.change(within(tool()).getByRole('textbox', { name: /analyze a message|phân tích tin nhắn/i }), { target: { value: 'hello' } })
+    fireEvent.click(analyzeButton())
+    expect((await screen.findByRole('alert')).textContent).toMatch(/image|ảnh/i)
   })
 })
 
@@ -217,14 +319,16 @@ describe('history section', () => {
 describe('boundaries the skin did not cross', () => {
   const src = readFileSync('src/app/scam-shield/ScamShieldView.tsx', 'utf8')
 
-  it('still talks only to the two existing endpoints', () => {
+  it('still talks only to the three Scam Shield endpoints', () => {
     const endpoints = [...src.matchAll(/fetch\('([^']+)'/g)].map(m => m[1]).sort()
-    expect(endpoints).toEqual(['/api/scam-shield/check', '/api/scam-shield/qr'])
+    expect(endpoints).toEqual(['/api/scam-shield/analyze', '/api/scam-shield/check', '/api/scam-shield/qr'])
   })
 
-  it('imports nothing from the engine but its types and the history store', () => {
+  it('imports nothing from the engine but its types, the history store, and the message-analysis bounds', () => {
+    // `message/config` is limits only (max chars, allowed image types) — the numbers the server
+    // enforces, read here so the picker cannot drift from the route. No engine code is imported.
     const imports = [...src.matchAll(/from '@\/lib\/scam-shield\/([^']+)'/g)].map(m => m[1]).sort()
-    expect(imports).toEqual(['history', 'types'])
+    expect(imports).toEqual(['history', 'message/config', 'types'])
   })
 
   it('holds no hardcoded Vietnamese UI text', () => {

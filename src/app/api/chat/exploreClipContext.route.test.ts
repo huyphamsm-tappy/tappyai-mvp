@@ -17,6 +17,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 
 const REVIEW = '9d4cdf3b-a93f-427c-880a-9950472e3705'
 const OTHER = 'af7dfbea-b41f-41e3-853c-9a5403ca1f3d'
@@ -119,6 +120,9 @@ const tools = () => (h.state.streamOptions?.tools ?? {}) as Record<string, { exe
 const runPlaceTool = (args: { query: string; location?: string }) => tools().search_places.execute(args, {})
 
 beforeEach(() => {
+  // Every test here is a fresh turn for the same account. The shared AI question quota (15/day,
+  // in-process here) would otherwise run out partway through the file and refuse the later turns.
+  __resetAiQuestionQuotaLocal()
   h.state.reviewRow = null
   h.state.reviewQueries = []
   h.state.streamOptions = null

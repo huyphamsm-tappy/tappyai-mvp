@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
   Shield, Link2, QrCode, Upload, Loader2, Search, Clock, Globe, Trash2, ArrowRight,
-  ShieldCheck, ShieldAlert, Lock, Radar, Zap, BadgeCheck, type LucideIcon,
+  ShieldCheck, ShieldAlert, Lock, Radar, Zap, BadgeCheck, MessageSquareWarning, ImagePlus, X, type LucideIcon,
 } from 'lucide-react'
 import type { CheckResult, RiskLevel } from '@/lib/scam-shield/types'
 import {
@@ -14,8 +14,19 @@ import {
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
 import ScamShieldResult, { LEVEL_TONE, LEVEL_KEY } from './ScamShieldResult'
+import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
+import ScamKnowledgeSection from './ScamKnowledgeSection'
+import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
+import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
+import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
 
-type Tab = 'url' | 'qr'
+/**
+ * Three capabilities, three tabs. `message` is Analyze Message — the SAME URL engine over every
+ * link the message carries, plus the social-engineering rules and (when needed) a model; see
+ * `lib/scam-shield/message`. It posts to its own route and renders its own card, and shares the
+ * level vocabulary and palette with the other two.
+ */
+type Tab = 'url' | 'qr' | 'message'
 
 const ERROR_I18N: Record<string, string> = {
   rate_limit: 'scamShield.error.rateLimit',
@@ -28,6 +39,20 @@ const ERROR_I18N: Record<string, string> = {
   no_image: 'scamShield.error.qrFailed',
   too_large: 'scamShield.error.qrFailed',
   invalid_content_type: 'scamShield.error.qrFailed',
+  invalid_image: 'v3.scam.msg.errImage',
+  analyze_failed: 'v3.scam.msg.errFailed',
+  account_suspended: 'v3.scam.msg.errFailed',
+  account_banned: 'v3.scam.msg.errFailed',
+}
+
+/** Reads a File as a base64 data URL — the shape `/api/scam-shield/analyze` accepts for a screenshot. */
+function readAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(String(reader.result))
+    reader.onerror = () => reject(reader.error)
+    reader.readAsDataURL(file)
+  })
 }
 
 /** How many rows the history shows before "see all". The rest are stored, just not on screen. */
@@ -110,6 +135,14 @@ export default function ScamShieldView() {
   const [expanded, setExpanded] = useState(false)
   const fileRef = useRef<HTMLInputElement>(null)
 
+  // Analyze Message state. Its result is a different shape from `CheckResult` and is NOT written
+  // to the device history — that list is a list of links, and a message is not a link.
+  const [message, setMessage] = useState('')
+  const [messageUrl, setMessageUrl] = useState('')
+  const [screenshot, setScreenshot] = useState<File | null>(null)
+  const [messageResult, setMessageResult] = useState<MessageAnalysisResponse | null>(null)
+  const screenshotRef = useRef<HTMLInputElement>(null)
+
   /**
    * 🚨 Read AFTER mount, never during render. The server has no `localStorage`, so seeding state
    * from it directly would hydrate a server-rendered empty list against a client-rendered
@@ -177,9 +210,66 @@ export default function ScamShieldView() {
     }
   }
 
+  async function handleAnalyzeMessage() {
+    const text = message.trim()
+    const url = messageUrl.trim()
+    if ((!text && !url && !screenshot) || loading) return
+    setLoading(true)
+    setMessageResult(null)
+    setError(null)
+
+    try {
+      // Give a signed-out browser its anonymous identity BEFORE spending an AI question, so the
+      // shared quota is keyed by that verified identity rather than by IP. Same contract chat
+      // uses; fail-open like it (the server then meters the identity-less fallback).
+      await ensureAnonymousSession()
+      const body: Record<string, string> = {}
+      if (text) body.text = text
+      if (url) body.url = url
+      if (screenshot) {
+        body.imageBase64 = await readAsDataUrl(screenshot)
+        body.mimeType = screenshot.type
+      }
+      const res = await fetch('/api/scam-shield/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({} as Record<string, string>))
+        const key = ERROR_I18N[data.error as string]
+        setError(key ? t(key) : t('v3.scam.msg.errFailed'))
+        return
+      }
+      const analyzed = await res.json() as Partial<MessageAnalysisResponse>
+      // A 200 without a verdict is not a verdict. The card reads `risk.level` unconditionally, so a
+      // malformed body must land in the error branch rather than crash the render.
+      if (!analyzed?.risk?.level || !analyzed.analysis || !analyzed.advice) {
+        setError(t('v3.scam.msg.errFailed'))
+        return
+      }
+      setMessageResult(analyzed as MessageAnalysisResponse)
+    } catch {
+      setError(t('v3.scam.msg.errFailed'))
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function pickScreenshot(file: File) {
+    // The server enforces both bounds again; checking here only saves the upload.
+    if (!(SCREENSHOT_ALLOWED_MIME as readonly string[]).includes(file.type) || file.size > SCREENSHOT_MAX_BYTES) {
+      setError(t('v3.scam.msg.errImage'))
+      return
+    }
+    setError(null)
+    setScreenshot(file)
+  }
+
   function switchTab(next: Tab) {
     setTab(next)
     setResult(null)
+    setMessageResult(null)
     setError(null)
   }
 
@@ -288,8 +378,13 @@ export default function ScamShieldView() {
             {/* QR is REAL functionality with its own decoder and SSRF boundary — the reference
                 simply did not picture it. Dropping a working capability to match a mockup would be
                 a product decision smuggled in as a visual one, so it stays as a second tab. */}
-            <div className="v3-scroll-x -mx-1 flex gap-2 px-1 pb-1" role="tablist">
-              {(['url', 'qr'] as const).map(id => (
+            {/* 🚨 WRAP, never scroll. This row was `v3-scroll-x` — horizontal scroll with the
+                scrollbar hidden — which fits two chips on a phone and pushes the third
+                ("Phân tích tin nhắn") past the right edge with no affordance that anything is
+                there. A capability the user cannot see is a capability the product does not have.
+                Three chips wrap to a second line at 375px and sit on one line from `sm`. */}
+            <div className="flex flex-wrap gap-2 pb-1" role="tablist" data-scam-tabs>
+              {(['url', 'qr', 'message'] as const).map(id => (
                 <button
                   key={id}
                   type="button"
@@ -298,8 +393,8 @@ export default function ScamShieldView() {
                   onClick={() => switchTab(id)}
                   className={`v3-chip v3-scam-tab flex-shrink-0 ${tab === id ? 'v3-chip-active' : ''}`}
                 >
-                  {id === 'url' ? <Link2 size={16} aria-hidden="true" /> : <QrCode size={16} aria-hidden="true" />}
-                  {id === 'url' ? t('v3.scam.tabUrl') : t('scamShield.qrUpload')}
+                  {id === 'url' ? <Link2 size={16} aria-hidden="true" /> : id === 'qr' ? <QrCode size={16} aria-hidden="true" /> : <MessageSquareWarning size={16} aria-hidden="true" />}
+                  {id === 'url' ? t('v3.scam.tabUrl') : id === 'qr' ? t('scamShield.qrUpload') : t('v3.scam.tabMessage')}
                 </button>
               ))}
             </div>
@@ -376,6 +471,91 @@ export default function ScamShieldView() {
               </div>
             )}
 
+            {tab === 'message' && (
+              <div className="mt-4 space-y-3" data-scam-message-form>
+                {/* The tab says what it is; the heading says what to put in it. A message, a
+                    described situation ("someone called claiming to be my bank…"), or a screenshot
+                    all go to the same analysis. */}
+                <div>
+                  <h3 className="text-[16px] font-bold" style={{ color: 'var(--v3-fg)' }}>{t('v3.scam.msg.title')}</h3>
+                  <p className="mt-0.5 text-[13px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>{t('v3.scam.msg.subtitle')}</p>
+                </div>
+                <textarea
+                  value={message}
+                  onChange={e => setMessage(e.target.value.slice(0, MESSAGE_MAX_CHARS))}
+                  placeholder={t('v3.scam.msg.placeholder')}
+                  disabled={loading}
+                  rows={5}
+                  maxLength={MESSAGE_MAX_CHARS}
+                  aria-label={t('v3.scam.tabMessage')}
+                  className="v3-scam-input w-full resize-y rounded-2xl px-4 py-3 text-[14.5px] leading-relaxed disabled:opacity-50"
+                />
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <div className="relative min-w-0 flex-1">
+                    <Link2 size={17} aria-hidden="true" className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2" style={{ color: 'var(--v3-fg-muted)' }} />
+                    <input
+                      type="url"
+                      inputMode="url"
+                      value={messageUrl}
+                      onChange={e => setMessageUrl(e.target.value)}
+                      placeholder={t('v3.scam.msg.urlPlaceholder')}
+                      disabled={loading}
+                      aria-label={t('v3.scam.msg.urlPlaceholder')}
+                      className="v3-scam-input min-h-[48px] w-full rounded-2xl py-2.5 pl-12 pr-4 text-[14px] disabled:opacity-50"
+                    />
+                  </div>
+                  {/* The screenshot input is rendered ONLY on this tab, so the QR tab's file input
+                      stays the single `input[type=file]` on its own tab. */}
+                  <input
+                    ref={screenshotRef}
+                    type="file"
+                    accept={SCREENSHOT_ALLOWED_MIME.join(',')}
+                    className="hidden"
+                    data-scam-screenshot-input
+                    onChange={e => {
+                      const file = e.target.files?.[0]
+                      if (file) pickScreenshot(file)
+                      e.target.value = ''
+                    }}
+                  />
+                  {screenshot ? (
+                    <span className="v3-chip inline-flex min-h-[48px] max-w-full items-center gap-2 self-start sm:self-auto" data-scam-screenshot-name>
+                      <ImagePlus size={16} aria-hidden="true" />
+                      <span className="max-w-[180px] truncate">{screenshot.name}</span>
+                      <button type="button" onClick={() => setScreenshot(null)} aria-label={t('v3.scam.msg.removeScreenshot')} className="ml-1 inline-flex h-6 w-6 items-center justify-center rounded-full">
+                        <X size={14} aria-hidden="true" />
+                      </button>
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => screenshotRef.current?.click()}
+                      disabled={loading}
+                      className="v3-chip v3-scam-tab inline-flex min-h-[48px] flex-shrink-0 items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <ImagePlus size={16} aria-hidden="true" />
+                      {t('v3.scam.msg.upload')}
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <p className="min-w-0 flex-1 text-[12px] leading-snug" style={{ color: 'var(--v3-fg-muted)' }}>
+                    {t('v3.scam.msg.quotaHint', { a: String(ANON_LIFETIME_LIMIT), n: String(FREE_DAILY_LIMIT) })}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleAnalyzeMessage()}
+                    disabled={loading || (!message.trim() && !messageUrl.trim() && !screenshot)}
+                    className="v3-scam-brand v3-scam-cta flex min-h-[52px] flex-shrink-0 items-center justify-center gap-2 rounded-2xl px-6 text-[15px] font-semibold disabled:cursor-not-allowed disabled:opacity-45"
+                  >
+                    {loading
+                      ? <><Loader2 size={17} className="animate-spin" aria-hidden="true" />{t('v3.scam.msg.analyzing')}</>
+                      : <><MessageSquareWarning size={17} aria-hidden="true" />{t('v3.scam.msg.cta')}</>}
+                  </button>
+                </div>
+              </div>
+            )}
+
             {error && (
               <div
                 role="alert"
@@ -393,6 +573,10 @@ export default function ScamShieldView() {
 
           {/* ── Verdict ── */}
           {result && <ScamShieldResult result={result} />}
+          {messageResult && <ScamMessageResult result={messageResult} />}
+
+          {/* ── Official anti-fraud knowledge — static, sourced, costs nothing to browse ── */}
+          <ScamKnowledgeSection />
 
           {/* ── Recent checks, on this device ── */}
           <section id="scam-shield-history" className="v3-scam-tool scroll-mt-24 p-4 sm:p-5" aria-labelledby="scam-history-title" data-scam-history>

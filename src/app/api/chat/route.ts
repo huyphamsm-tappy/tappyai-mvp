@@ -50,7 +50,8 @@ import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantCo
 import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
-import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
+import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
+import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
 
 export const maxDuration = 60
 
@@ -250,29 +251,20 @@ export async function POST(req: Request) {
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
-  // True once a token-based ANONYMOUS session's quota was enforced server-side
-  // (keyed by anonymous_id) — the legacy cookie counter below is then skipped.
-  let anonQuotaByToken = false
-  /**
-   * The count the token authority reported, mirrored into the cookie.
-   *
-   * ============================================================================
-   * WHY THE COOKIE IS MIRRORED AND NOT MERELY SKIPPED — dual-authority closure
-   * ============================================================================
-   * There are two anonymous counters: the `anon_chat_usage` row (keyed by anonymous_id,
-   * durable) and the `tappy_anon` cookie (keyed by browser). The row is authoritative; the
-   * cookie exists so a guest is still capped when the RPC is unavailable.
-   *
-   * 🚨 They were INDEPENDENT, which made the fallback a second allowance: a guest who used
-   * all five through the RPC and then hit one transient RPC failure met a cookie counter that
-   * had never been written and started again at zero. "Authoritative with a fallback" only
-   * holds if the fallback inherits what the authority already counted.
-   *
-   * Mirroring costs one header on a request that is already setting none. The row stays the
-   * authority — the cookie is never read while the RPC answers, and a cleared cookie still
-   * cannot raise the cap, because the row is what the next successful call reads.
-   */
-  let anonTokenCount: number | null = null
+  // ── The ONE AI question quota ─────────────────────────────────────────────
+  //
+  // Every model-invoking feature spends from `lib/ai/quota/aiQuestionQuota.ts`; this route is one
+  // spender among several (Cảnh báo lừa đảo message analysis is another). Anonymous = 5 for the
+  // lifetime of the identity, registered = 15 per VN day, Pro exempt. The spend is atomic in the
+  // shared store and happens here, before any model or tool work, exactly once per turn.
+  //
+  // The previous three mechanisms — the per-day anonymous-usage RPC in Postgres, the httpOnly
+  // cookie mirror, and the count of today's chat rows — are gone from this route: none of them
+  // could express a lifetime allowance or be shared with a non-chat feature.
+  //
+  // True once a VERIFIED identity (anonymous session or account) has been metered above; the
+  // identity-less fallback below then stays out of the way.
+  let quotaMetered = false
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -305,29 +297,21 @@ export async function POST(req: Request) {
     // key on. Guests are the majority web path and the one that fabricated.
     if (user) evidenceDb = supabase
     if (user?.is_anonymous) {
-      // Anonymous session minted by POST /api/auth/anonymous. Same Bearer
-      // pipeline as logged-in users (getRequestUser verified the JWT); quota is
-      // keyed by anonymous_id = auth.uid() inside a SECURITY DEFINER function —
-      // the client never sends or computes quota information. No memory,
-      // preferences, or subscription lookups for anonymous identities.
-      const { data: usedToday, error: quotaError } = await supabase.rpc('anon_chat_usage_increment')
-      if (!quotaError && typeof usedToday === 'number') {
-        anonQuotaByToken = true
-        anonTokenCount = usedToday
-        if (usedToday > ANON_DAILY_LIMIT) {
-          return new Response(
-            JSON.stringify({
-              error: 'anon_limit_reached',
-              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
-              upgradeUrl: '/login',
-            }),
-            { status: 401, headers: { 'Content-Type': 'application/json' } }
-          )
-        }
-      } else {
-        // RPC unavailable (migration not applied yet / transient) — fall back to
-        // the legacy cookie cap below rather than leaving the request uncapped.
-        console.error('[chat] anon quota rpc failed, falling back to cookie cap:', quotaError?.message)
+      // Anonymous session minted by POST /api/auth/anonymous. Same Bearer pipeline as logged-in
+      // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
+      // client never sends or computes quota information. No memory, preferences, or
+      // subscription lookups for anonymous identities.
+      quotaMetered = true
+      const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+      if (!spend.ok) {
+        return new Response(
+          JSON.stringify({
+            error: 'anon_limit_reached',
+            message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
+            upgradeUrl: '/login',
+          }),
+          { status: 401, headers: { 'Content-Type': 'application/json' } }
+        )
       }
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
@@ -347,15 +331,18 @@ export async function POST(req: Request) {
 
       authedUserId = user.id
 
-      // Four reads that need nothing but `user.id` and never feed each other.
+      // Three reads that need nothing but `user.id` and never feed each other.
       // Run serially they were ~2-3s of dead air before the model was even
       // called (measured on prod 1e6c867: authenticated TTFB 3.6-4.0s against
       // 1.0s anonymous on the same tool-free question).
       //
       // Their position AFTER the restriction gate is deliberately unchanged: a
       // blocked account still returns above, so it still costs no LLM tokens and
-      // no third-party calls. Only the four post-gate reads move in parallel.
-      const [chatContext, calendarBlock, subResult, todayMsgCount] = await Promise.all([
+      // no third-party calls. Only the post-gate reads move in parallel.
+      //
+      // The quota is NOT in this batch any more: it is a SPEND, not a read, and a Pro account
+      // must not spend — so it waits for `isPro`, one store round-trip after the batch.
+      const [chatContext, calendarBlock, subResult] = await Promise.all([
         buildChatPromptContext(user.id, supabase),
         // Calendar keeps its own catch INSIDE the batch. Hoisting it without one
         // would let an integration outage reject the whole Promise.all and take
@@ -374,15 +361,6 @@ export async function POST(req: Request) {
           .select('status, current_period_end')
           .eq('user_id', user.id)
           .single(),
-        // Speculative on purpose. The count is only ENFORCED for non-Pro users,
-        // but waiting for `isPro` to decide whether to ask would put this read
-        // straight back on the serial path it was moved off. A Pro user's count
-        // is computed and then ignored: one read, no behavioural change.
-        //
-        // Shared VN-day measurement from @/lib/config/product — the same helper
-        // the subscription page displays from, so display and enforcement can
-        // never disagree.
-        countTodayUserMessages(supabase, user.id),
       ])
 
       existingMemory = chatContext.memory
@@ -397,7 +375,10 @@ export async function POST(req: Request) {
         isPro = new Date(subData.current_period_end) > new Date()
       }
 
-      if (!isPro && todayMsgCount >= FREE_DAILY_LIMIT) {
+      // One question from the shared daily pool. Same pool every AI feature draws on, so a
+      // Cảnh báo lừa đảo analysis earlier today is already counted here.
+      quotaMetered = true
+      if (!isPro && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
         return new Response(
           JSON.stringify({
             error: 'free_limit_reached',
@@ -467,37 +448,21 @@ export async function POST(req: Request) {
     }
   }
 
-  // Freemium policy: anonymous visitors get a small taste — FREE_ANON_LIMIT basic
-  // questions per day — then must log in. The count lives in an httpOnly cookie
-  // (server-set, so ordinary users can't tamper; clearing cookies resets it,
-  // which is acceptable for a top-of-funnel teaser). Everything past chat
-  // (reviews, saves, upload, …) still requires an account.
-  let anonSetCookie: string | null = null
-  if (anonTokenCount !== null) {
-    // Mirror the authoritative count into the fallback counter — see `anonTokenCount`. Written
-    // even when the RPC has already refused this request, so a guest at the cap stays at the cap
-    // if the next request has to fall back.
-    anonSetCookie = `tappy_anon=${vnToday()}:${anonTokenCount}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
-  } else if (!authedUserId && !anonQuotaByToken) {
-    const today = vnToday()
-    const cookieHeader = req.headers.get('cookie') || ''
-    const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
-    let anonCount = 0
-    if (m) {
-      const [d, c] = decodeURIComponent(m[1]).split(':')
-      if (d === today) anonCount = parseInt(c, 10) || 0
-    }
-    if (anonCount >= ANON_DAILY_LIMIT) {
+  // A caller with no verified identity at all — a direct API call, or a browser whose anonymous
+  // mint failed. Metered as the lifetime anonymous tier keyed by IP: the same five, once. The
+  // previous cookie counter is gone — a counter the client carries is a counter the client resets.
+  if (!quotaMetered) {
+    const spend = await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
+    if (!spend.ok) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
-          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
+          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
-    anonSetCookie = `tappy_anon=${today}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
   }
 
   // Inject freeform user preferences from client request body
@@ -1398,8 +1363,6 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
-  // Persist the incremented anonymous question count for the day.
-  if (anonSetCookie) finalResponse.headers.set('Set-Cookie', anonSetCookie)
   // ADR-024. The key to this turn's evidence, if a shopping decision writes one.
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import {
   FREE_DAILY_LIMIT,
-  ANON_DAILY_LIMIT,
+  ANON_LIFETIME_LIMIT,
   SHOW_PRO_UPGRADE,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
@@ -30,8 +30,12 @@ export async function GET() {
   return NextResponse.json(
     {
       freemium: {
+        // ONE shared AI question pool for every AI feature (chat in all areas, Cảnh báo lừa đảo).
         freeDailyLimit: FREE_DAILY_LIMIT,
-        anonDailyLimit: ANON_DAILY_LIMIT,
+        // The anonymous allowance is LIFETIME since 2026-09-15 (five, once), not per day. The old
+        // field name is kept so native clients keep parsing; `anonLifetimeLimit` is the honest one.
+        anonDailyLimit: ANON_LIFETIME_LIMIT,
+        anonLifetimeLimit: ANON_LIFETIME_LIMIT,
       },
       flags: {
         showProUpgrade: SHOW_PRO_UPGRADE,
@@ -49,6 +53,7 @@ export async function GET() {
       scamShield: {
         dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH,
         dailyLimitAnon: SCAM_SHIELD_DAILY_LIMIT_ANON,
+        // Analyze Message has NO allowance of its own: it spends from `freemium` above.
       },
       video: {
         linkProviders: LINK_VIDEO_PROVIDERS,

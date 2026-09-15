@@ -23,6 +23,8 @@ const PRODUCERS: Array<[string, string]> = [
   ['client preferences', 'src/app/api/chat/route.ts'],
   // The Explore clip's own place name / address / caption — typed by whoever posted it.
   ['explore clip row', 'src/lib/ai/exploreClipContext.ts'],
+  // The suspicious message Scam Shield is asked to analyze — adversarial by definition.
+  ['scam message', 'src/lib/scam-shield/message/ai/prompt.ts'],
 ]
 
 describe('the fence is the single implementation', () => {

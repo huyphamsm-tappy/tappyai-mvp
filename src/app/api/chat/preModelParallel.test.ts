@@ -22,12 +22,12 @@ const SRC = readFileSync(join(__dirname, 'route.ts'), 'utf8')
 /** Source with comments removed — a rule must hold in CODE, not in prose about code. */
 const CODE = SRC.replace(/\/\/.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '')
 
-/** The four reads that were serial and are now batched. */
+/** The reads that were serial and are now batched. The quota is no longer among them: since
+ *  2026-09-15 it is a SPEND on the shared AI question pool, made after `isPro` is known. */
 const BATCHED = [
   'buildChatPromptContext',
   'getUpcomingEvents',
   'subscriptions',
-  'countTodayUserMessages',
 ] as const
 
 /** The single `Promise.all([...])` holding them, extracted for containment checks. */
@@ -73,12 +73,12 @@ describe('the account-restriction short-circuit still runs FIRST', () => {
   })
 })
 
-describe('all four reads still happen, and happen together', () => {
+describe('all three reads still happen, and happen together', () => {
   it.each(BATCHED)('%s is inside the Promise.all batch', (name) => {
     expect(batchBlock(), `${name} must be one of the parallel tasks`).toContain(name)
   })
 
-  it('awaits the batch exactly once — not four separate awaits', () => {
+  it('awaits the batch exactly once — not three separate awaits', () => {
     const block = batchBlock()
     // `getUpcomingEvents` is deliberately exempt: it lives inside the calendar
     // async IIFE, which awaits its own dynamic import and lookup. That await is
@@ -99,7 +99,7 @@ describe('all four reads still happen, and happen together', () => {
   })
 
   it('has no second, sequential await of a batched read anywhere in the route', () => {
-    // `buildChatPromptContext` and `countTodayUserMessages` are the two that were
+    // `buildChatPromptContext` (and, historically, `countTodayUserMessages`) were the ones that were
     // previously `const x = await f(...)`. Re-introducing that form is the exact
     // regression this guards.
     expect(CODE).not.toMatch(/await\s+buildChatPromptContext\s*\(/)
@@ -131,11 +131,12 @@ describe('calendar cannot take the batch down with it', () => {
   })
 })
 
-describe('isPro semantics for the quota count are unchanged', () => {
-  it('enforces the free cap only when the user is not Pro', () => {
-    // The count may now be computed for everyone (it is speculative, off the
-    // serial path) — but ENFORCEMENT must still be gated on !isPro.
-    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*todayMsgCount\s*>=\s*FREE_DAILY_LIMIT\s*\)/)
+describe('isPro semantics for the quota are unchanged', () => {
+  it('spends from the shared pool only when the user is not Pro, and only after isPro is known', () => {
+    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*!\(await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)\)\.ok\s*\)/)
+    const spend = CODE.indexOf('!isPro && !(await consumeAiQuestion')
+    expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))
+    expect(batchBlock()).not.toContain('consumeAiQuestion')
   })
 
   it('still derives isPro from an active subscription with a future period end', () => {

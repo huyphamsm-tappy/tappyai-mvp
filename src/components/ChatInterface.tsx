@@ -1670,7 +1670,7 @@ export default function ChatInterface({
                     // Anonymous visitor used up their free questions → prompt login.
                     // Message text comes from the server (backend owns quota copy).
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
-                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi miễn phí hôm nay.'}</p>
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? 'Bạn đã dùng hết số câu hỏi AI dùng thử.'}</p>
                       <p className="leading-relaxed mt-1 text-primary-600 dark:text-primary-400">Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng!</p>
                       <button
                         type="button"
