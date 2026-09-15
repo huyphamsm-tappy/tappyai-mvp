@@ -33,7 +33,9 @@ class HomeAiFirstTest {
         var dir: File? = File(".").absoluteFile
         while (dir != null) {
             val f = File(dir, "app/src/main/java/com/tappyai/app/home/HomeScreen.kt")
-            if (f.isFile) return@lazy f.readText()
+            // Normalize CRLF → LF: on Windows worktrees the file is checked out with \r\n, and the
+            // raw-source scans below (`indexOf("\n}\n", …)`) key off bare LF.
+            if (f.isFile) return@lazy f.readText().replace("\r\n", "\n")
             dir = dir.parentFile
         }
         fail("HomeScreen.kt not found above ${File(".").absolutePath}")
