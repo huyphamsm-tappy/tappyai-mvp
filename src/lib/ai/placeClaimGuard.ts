@@ -637,7 +637,7 @@ export function guardPlaceClaimsInText(
      * baseline). A span with no prose is never judged; digits inside links or
      * markup inside a prose sentence are masked before any number is read.
      */
-    const prose = proseOnly(s)
+    let prose = proseOnly(s)
     if (!/\p{L}/u.test(prose)) return
 
     /**
@@ -746,12 +746,18 @@ export function guardPlaceClaimsInText(
         && (namedBefore === null || survivorNames === namedBefore)
         && trimStandsAlone(trim.headRemoved, survivorNames)) {
         trimmed.set(i, trim.text)
+        // 🚨 A TRIM IS NOT A VERDICT ON THE REST OF THE SENTENCE. Returning here let
+        // "Quán này 3.1 sao, hơn 99.999 đánh giá, giao hàng tận nơi." keep its invented
+        // rating and count once the delivery clause was cut (measured in the G1b
+        // stream test). The numeric checks below now run on the trimmed text; a
+        // doomed sentence wins over its trim in `render`.
+        prose = proseOnly(trim.text)
       } else {
         doomed.add(i)
         reasonOf.set(i, reasonForRegex(violated[0]))
         if (namedBefore === null) stats.unattributable_claims++
+        return
       }
-      return
     }
 
     /**
@@ -926,6 +932,9 @@ export function guardPlaceClaimsInText(
         const startsParagraph = i === 0 || /\n\s*\n/.test(text.slice(spans[i - 1][1], a))
         if (startsParagraph) { paragraphOpen = true; prevDroppedInParagraph = false }
         if (dropped(i)) { prevDroppedInParagraph = true; continue }
+        // Whitespace-only spans (the newlines between sentences) are neither fragments
+        // nor antecedents: not counted as cascade, and they do not close the paragraph.
+        if (!raw.trim()) continue
         if (paragraphOpen) {
           const body = raw.replace(/^[\s*_>-]+/, '')
           const letters = (body.match(/\p{L}/gu) ?? []).length

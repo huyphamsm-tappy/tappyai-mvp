@@ -1360,7 +1360,16 @@ export function applyPlaceEnrichmentStreamFilter(
     const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
     const fallback = bodyLetters < 40 ? fallbackSentence() : null
     if (fallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
-    const groundedProse = fallback ? `${gated.text.trimEnd()}\n\n${fallback}` : gated.text
+    // The sentence goes where the body was — BEFORE the first structured block. Appending
+    // it after [CTA_BUTTONS]/[FOLLOWUPS] put it below the buttons (measured on the
+    // 2026-09-17 replay, run 2 #11), where the client renders it as an orphan line.
+    const groundedProse = (() => {
+      if (!fallback) return gated.text
+      const at = earliestMarker(gated.text)
+      const head = gated.text.slice(0, at).replace(/\s+$/, '')
+      const tail = gated.text.slice(at)
+      return `${head}${head ? '\n\n' : ''}${fallback}${tail ? `\n\n${tail}` : ''}`
+    })()
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
