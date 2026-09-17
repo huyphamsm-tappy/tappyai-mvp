@@ -24,7 +24,9 @@ describe('money parsing — a currency unit is mandatory', () => {
   describe('Vietnamese forms are recognised', () => {
     for (const [text, expected] of [
       ['khoảng 7 triệu', 7e6], ['khoảng 7,5 triệu', 7.5e6], ['khoảng 7.5 triệu', 7.5e6],
-      ['giá 7,5M', 7.5e6], ['giá 7m', 7e6], ['giá 7000000đ', 7e6], ['giá 7.000.000₫', 7e6],
+      // "giá 7m" (lowercase m) sat here as 7e6 until G2: a lowercase m is metres now
+      // (owner Q2, documented residual) — pinned in moneyGuardMetres.test.ts.
+      ['giá 7,5M', 7.5e6], ['giá 7M', 7e6], ['giá 7000000đ', 7e6], ['giá 7.000.000₫', 7e6],
       ['chỉ 500k', 5e5], ['7 million VND', 7e6],
     ] as const) {
       it(`"${text}"`, () => {

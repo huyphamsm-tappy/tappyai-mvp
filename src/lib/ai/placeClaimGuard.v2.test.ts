@@ -73,6 +73,24 @@ describe('G1 · attribution ladder (placeAttribution.attributePlace)', () => {
     const t = turns['P15-r1']
     expect(attributePlace('**MASSAGE HẠ SPA QUẬN 1** và **AN’s spa** đều ở gần.', t.rows.map(r => r.name))).toBeNull()
   })
+  it('one venue by full name and another by head alias is still two venues (G2 replay: "BÒ TƠ QUÁN MỘC … hoặc SOO COFFEE")', () => {
+    const names = ['BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai', 'SOO COFFEE', 'Wego Coffee Thảo Điền']
+    expect(attributePlace('Ngoài ra còn **BÒ TƠ QUÁN MỘC** (200-400k) hoặc **SOO COFFEE** (100-200k).', names)).toBeNull()
+    expect(attributePlace('Mình chọn **BÒ TƠ QUÁN MỘC** cho bạn.', names)).toEqual({ name: names[0], level: 'L2' })
+  })
+  it('a segment shared with another venue\'s name or a service word is not an alias ("Landmark 81", "Thư Giãn")', () => {
+    const cafes = ['RuNam Vincom Landmark 81', 'Highlands Coffee Vincom Landmark 81', 'KATINAT Coffee & Tea House - Landmark 81']
+    expect(attributePlace('Quán này nằm ngay trong Landmark 81 nên cực tiện.', cafes)).toBeNull()
+    expect(attributePlace('Mình chọn **RuNam Vincom Landmark 81** — nằm ngay trong Landmark 81.', cafes)).toEqual({ name: cafes[0], level: 'L1' })
+    const spas = ['Trạm Sạc Đầu | Gội Đầu Thư Giãn An Đông', 'SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |', 'Sunyata Retreat Hill Spa']
+    expect(attributePlace('Giá dịch vụ spa thường khoảng 300.000-500.000đ cho massage thư giãn 60 phút.', spas)).toBeNull()
+  })
+  it('a decomposed (NFD) provider name tokenises like its composed form', () => {
+    const nfd = 'SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |'.normalize('NFD')
+    const spas = ['Trạm Sạc Đầu | Gội Đầu Thư Giãn An Đông', nfd, 'Sunyata Retreat Hill Spa']
+    expect(attributePlace('cho massage thư giãn 60 phút', spas)).toBeNull()
+    expect(attributePlace('Mình chọn **SPA Cô Chủ Nhỏ** cho bạn.', spas)?.name).toBe(nfd)
+  })
   it('L4 is skipped for names of < 3 tokens with no non-common token ("Spa", "Massage Spa")', () => {
     // "massage" is shared, so L3 (distinctive tokens) cannot fire and only L4 is left.
     const names = ['Spa', 'Massage Spa', 'Sunyata Massage Spa']

@@ -9,7 +9,8 @@ import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
-import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled } from '@/lib/config/product'
+import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled } from '@/lib/config/product'
+import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
@@ -874,6 +875,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const phonesByEntity = new Map<string, string[]>()
   /** Today's opening hours per venue (G1b fallback sentence only; never a claim source). */
   const hoursByEntity = new Map<string, string>()
+  /** G2: the provider's own price band per venue (`price_range_text` / `price_range`) — entity-level price evidence. */
+  const priceBandsByEntity = new Map<string, PriceBand>()
   /**
    * Rating / distance evidence for `guardPlaceClaimsInText`, gathered the same
    * way and at the same moment as `snippetPrices`: read off the provider's own
@@ -1239,9 +1242,15 @@ export function applyPlaceEnrichmentStreamFilter(
       snippetPlaceNames.length > 0
         ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
         : undefined
-    const foodGuarded = ((hadPlaceSearch || placeIntent) && !travelIntent)
-      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope()).text
-      : travelGuarded
+    const snippetV2 = snippetPriceGuardV2Enabled()
+    const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent)
+      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      : null
+    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : travelGuarded
+    // G2 telemetry: counts only — never text, never a venue name (same rule as the place guard line).
+    if (snippetGuardResult?.stats) {
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'snippet_price', v2: snippetV2, band_rows: priceBandsByEntity.size, ...snippetGuardResult.stats }))
+    }
     /**
      * PLACE QUALITY + DISTANCE BOUNDARY. Money guards what a place COSTS; this
      * guards how GOOD and how FAR it is — the other two things a place reply
@@ -1696,6 +1705,10 @@ export function applyPlaceEnrichmentStreamFilter(
                 }
                 if (rowName && typeof row.opening_hours === 'string' && row.opening_hours && !hoursByEntity.has(rowName)) {
                   hoursByEntity.set(rowName, row.opening_hours)
+                }
+                if (rowName && !priceBandsByEntity.has(rowName)) {
+                  const band = bandFromRow(row)
+                  if (band) priceBandsByEntity.set(rowName, band)
                 }
                 if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
                 for (const k of ['snippet', 'address', 'opening_hours']) {

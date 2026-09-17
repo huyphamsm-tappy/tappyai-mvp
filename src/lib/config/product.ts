@@ -283,3 +283,18 @@ export function placeGuardAttributionV2Enabled(env: NodeJS.ProcessEnv = process.
   const v = env.PLACE_GUARD_ATTRIBUTION_V2
   return v === '1' || v === 'true'
 }
+
+/**
+ * G2 — SNIPPET_PRICE_GUARD_V2.
+ *
+ * Switches `guardSnippetPricesInText` to band evidence (the provider's own
+ * `price_range_text` / `price_range`, parsed by `recommendation/priceBand.ts`),
+ * the G1 identity attribution, and the R3′ clause cut. Measured on the
+ * 2026-09-17 V3 capture: 13 of the 17 price sentences the guard removed quoted
+ * the venue's own band — the model was copying the card, not inventing.
+ * Same shape as the G1 flag: read at call time, default OFF.
+ */
+export function snippetPriceGuardV2Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.SNIPPET_PRICE_GUARD_V2
+  return v === '1' || v === 'true'
+}

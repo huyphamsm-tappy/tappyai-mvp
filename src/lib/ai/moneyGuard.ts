@@ -119,13 +119,35 @@ function toNumber(raw: string, hasScaleUnit: boolean): number {
   return parseFloat(raw)
 }
 
+/**
+ * G2 (owner Q2) — A LOWERCASE "m" IS NEVER MONEY.
+ *
+ * `UNIT_ALT` carries `M` (million) and the patterns run with the `i` flag, so
+ * "cách bạn chỉ 100m" was 100 000 000 ₫ and the snippet-price guard deleted both
+ * recommendation paragraphs of a "quán cafe chill gần đây" reply (2026-09-17 V3
+ * capture). Decided on the MATCHED TEXT with `===`, never inside the regex: the
+ * "đồng" incident recorded what an `i`-flag rule does silently. Uppercase "M"
+ * ("7-8M", "14.7M VND") stays a million.
+ *
+ * Documented residual: chat slang "tầm 2m" (= 2 triệu) is invisible from now on,
+ * so an echoed one passes unchecked. Pinned in moneyGuardMetres.test.ts.
+ */
+const isLowercaseMetre = (unit: string): boolean => unit === 'm'
+
 /** Every monetary claim in the prose, with its offsets in the ORIGINAL text. */
 export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> {
+  return extractMoneyClaimsDetailed(text).claims
+}
+
+/** Same, plus what the extractor deliberately skipped — for guard telemetry. */
+export function extractMoneyClaimsDetailed(text: string): { claims: Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>>; lowercase_m_skipped: number } {
   // Blank the machine blocks in place so offsets stay aligned with `text`.
   const masked = maskNonProse(text)
   const out: Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> = []
+  let lowercaseMSkipped = 0
   for (const m of masked.matchAll(RANGE_RE)) {
     const unit = m[3]
+    if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
     const scale = unitScale(unit)
     out.push({
       raw: m[0].trim(), kind: 'range',
@@ -148,6 +170,7 @@ export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdic
   for (const m of masked.matchAll(SINGLE_RE)) {
     if (overlaps(m.index!)) continue
     const unit = m[2]
+    if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
     const scale = unitScale(unit)
     const v = toNumber(m[1], scale > 1) * scale
     out.push({
@@ -155,7 +178,7 @@ export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdic
       currency: isUSD(unit) ? 'USD' : 'VND', start: m.index!, end: m.index! + m[0].length,
     })
   }
-  return out.sort((a, b) => a.start - b.start)
+  return { claims: out.sort((a, b) => a.start - b.start), lowercase_m_skipped: lowercaseMSkipped }
 }
 
 /** The structured price of a record, in VND. Never read from title/snippet. */

@@ -48,9 +48,16 @@ const isDecorated = (word: string): boolean => normalizeVN(word) !== word
  * Every word of a string, keeping its diacritics. Case is folded here and nowhere else.
  *
  * Unicode-aware on purpose: splitting on `[^a-z0-9]` would cut "đường" into pieces.
+ *
+ * 🚨 COMPOSED FIRST (NFC). Serper delivers some names in DECOMPOSED form (NFD:
+ * "Giãn" = "Gia" + U+0303 + "n"), and a combining mark is `\p{M}`, not `\p{L}` —
+ * so the split cut "Giãn" into "gia" + "n", the token "gia" looked unique in the
+ * batch, and "Thư Giãn" (a segment of "SPA Cô Chủ Nhỏ | … - Thư Giãn - …") became
+ * a distinctive alias that matched the user's own words (2026-09-17 G2 replay).
+ * The same cut corrupted the L3 distinctive-token set for every NFD name.
  */
 export const wordsOf = (text: string): string[] =>
-  text.toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean)
+  text.normalize('NFC').toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean)
 
 /**
  * A place name as `folded token -> the spellings the name itself uses`.
@@ -223,8 +230,13 @@ const foldedTokens = (text: string): string[] => wordsOf(text).map(fold).filter(
 const nonCommon = (tokens: readonly string[]): string[] => tokens.filter(t => !COMMON_TOKENS.has(t))
 const nonStop = (tokens: readonly string[]): string[] => tokens.filter(t => !STOPWORDS.has(t))
 
-/** Segments of a venue name as providers write them: "Head - Sub, Address (note)". */
-const SEGMENT_BREAK = /\s[-–|]\s|[,;:()[\]]|\s-\s?|\s?-\s/u
+/**
+ * Segments of a venue name as providers write them: "Head - Sub, Address (note)".
+ * A house number followed by a capitalised street word also opens a segment
+ * ("BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai" → head "BÒ TƠ QUÁN MỘC"): Serper glues
+ * the address on with a bare space, and the model quotes the head alone.
+ */
+const SEGMENT_BREAK = /\s[-–|]\s|[,;:()[\]]|\s-\s?|\s?-\s|\s(?=\d{1,4}[A-Za-z]?(?:\/\d+)?\s+\p{Lu})/u
 export function nameSegments(name: string): string[] {
   return name.split(SEGMENT_BREAK).map(s => s.trim()).filter(Boolean)
 }
@@ -269,16 +281,51 @@ export function aliasesOf(name: string): { head: string | null; segments: string
  * that `attributePlace` rightly refuses to pin on one venue. Verification-only: the
  * guard checks each stated number against the union of these venues' evidence.
  */
+/**
+ * The aliases that identify each venue WITHIN THIS BATCH: a head or segment alias
+ * counts only when it is owned by one name and carries at least one non-common
+ * token that appears in no other venue's name.
+ *
+ * 🚨 MEASURED 2026-09-17 (G2 replay): "Landmark 81" — a segment of "KATINAT … -
+ * Landmark 81" — was unique as an alias but sits inside "RuNam Vincom Landmark 81"
+ * and "Highlands Coffee Vincom Landmark 81", so every sentence about the mall was
+ * attributed to KATINAT and the Pick's own sentence became "two venues" (null).
+ * "Thư Giãn" — a segment of "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - …" — matched
+ * the user's own word ("spa thư giãn") in unrelated sentences. A service word or a
+ * landmark shared with another name identifies nothing.
+ */
+function batchAliases(names: readonly string[]): { heads: Map<string, string>; segs: Map<string, string[]> } {
+  const tokenOwners = new Map<string, Set<string>>()
+  for (const n of names) for (const t of new Set(nonCommon(foldedTokens(n)))) tokenOwners.set(t, (tokenOwners.get(t) ?? new Set()).add(n))
+  const distinctiveFor = (alias: string, n: string): boolean => nonCommon(foldedTokens(alias)).some(t => tokenOwners.get(t)?.size === 1 && tokenOwners.get(t)!.has(n))
+  const owners = new Map<string, Set<string>>()
+  const raw = new Map<string, { head: string | null; segments: string[] }>()
+  for (const n of names) {
+    const a = aliasesOf(n); raw.set(n, a)
+    for (const al of [a.head, ...a.segments]) if (al) { const f = foldForContainment(al); owners.set(f, (owners.get(f) ?? new Set()).add(n)) }
+  }
+  const ok = (al: string, n: string): boolean => owners.get(foldForContainment(al))?.size === 1 && distinctiveFor(al, n)
+  const heads = new Map<string, string>()
+  const segs = new Map<string, string[]>()
+  for (const n of names) {
+    const a = raw.get(n)!
+    if (a.head && ok(a.head, n)) heads.set(n, foldForContainment(a.head))
+    segs.set(n, a.segments.filter(sg => ok(sg, n)).map(foldForContainment))
+  }
+  return { heads, segs }
+}
+
 export function placesNamedIn(sentence: string, names: readonly string[]): string[] {
   const hay = foldForContainment(sentence)
   if (!hay) return []
+  const { heads, segs } = batchAliases(names)
   const out = new Set<string>()
   for (const n of names) {
     const f = foldForContainment(n)
     if (f.length > 2 && identifying(n) && hay.includes(f)) { out.add(n); continue }
-    const { head, segments } = aliasesOf(n)
-    if (head && hay.includes(foldForContainment(head))) { out.add(n); continue }
-    if (segments.some(s => hay.includes(foldForContainment(s)))) out.add(n)
+    const h = heads.get(n)
+    if (h && hay.includes(h)) { out.add(n); continue }
+    if ((segs.get(n) ?? []).some(sg => hay.includes(sg))) out.add(n)
   }
   return [...out]
 }
@@ -292,29 +339,28 @@ export function attributePlace(sentence: string, names: readonly string[]): Plac
   // L1 — the full normalised name appears in the sentence. A name that is a single
   // category word ("Spa") cannot identify anything and is skipped.
   const l1 = [...new Set(names.filter(n => { const f = foldForContainment(n); return f.length > 2 && identifying(n) && hay.includes(f) }))]
-  if (l1.length > 1) return null
-  const r1 = one(l1, 'L1'); if (r1) return r1
 
-  // L2 / L2′ — a unique alias (head, then other segments) appears in the sentence.
-  const aliasIndex = new Map<string, Set<string>>() // folded alias → names that own it
-  const heads = new Map<string, string>()
-  for (const n of names) {
-    const { head, segments } = aliasesOf(n)
-    if (head) { const f = foldForContainment(head); heads.set(n, f); aliasIndex.set(f, (aliasIndex.get(f) ?? new Set()).add(n)) }
-    for (const s of segments) { const f = foldForContainment(s); aliasIndex.set(f, (aliasIndex.get(f) ?? new Set()).add(n)) }
-  }
-  const uniqueAlias = (f: string): boolean => (aliasIndex.get(f)?.size ?? 0) === 1
-  const l2 = [...new Set(names.filter(n => { const h = heads.get(n); return !!h && uniqueAlias(h) && hay.includes(h) }))]
-  if (l2.length > 1) return null
-  const r2 = one(l2, 'L2'); if (r2) return r2
-  const l2p = [...new Set(names.filter(n => aliasesOf(n).segments.some(s => { const f = foldForContainment(s); return uniqueAlias(f) && hay.includes(f) })))]
-  if (l2p.length > 1) return null
-  const r2p = one(l2p, 'L2p'); if (r2p) return r2p
-
-  // L3 — the existing distinctive-tokens-in-one-clause rule.
+  // L2 / L2′ — a batch-unique, distinctive alias (head, then other segments) appears in the sentence.
+  const { heads, segs } = batchAliases(names)
+  const l2 = [...new Set(names.filter(n => { const h = heads.get(n); return !!h && hay.includes(h) }))]
+  const l2p = [...new Set(names.filter(n => (segs.get(n) ?? []).some(sg => hay.includes(sg))))]
+  // 🚨 THE IDENTITY LEVELS ARE JUDGED TOGETHER. Taking a lone L1 hit before looking
+  // at L2 pinned "**BÒ TƠ QUÁN MỘC** (200-400k) hoặc **SOO COFFEE** (100-200k)" on
+  // SOO COFFEE (the only full name present) and judged both prices against its
+  // band. A sentence that names two venues by ANY identity level names two venues.
+  const identity = new Set([...l1, ...l2, ...l2p])
+  if (identity.size > 1) return null
+  // L3 — the existing distinctive-tokens-in-one-clause rule. Computed here too:
+  // "Mặc dù MOON COFFEE AND APARTMENT có rating cao hơn, nhưng RuNam vượt trội" names
+  // MOON by full name and RuNam by its distinctive token — a comparison, so the
+  // sentence is about neither, and the subject stays with the sentence before it.
   const tokens = placeTokensFor(names)
-  const l3 = tokens.filter(t => textNamesPlace(sentence, '', t)).map(t => t.name)
-  const r3 = one([...new Set(l3)], 'L3'); if (r3) return r3
+  const l3 = [...new Set(tokens.filter(t => textNamesPlace(sentence, '', t)).map(t => t.name))]
+  if (identity.size === 1 && l3.some(n => !identity.has(n))) return null
+  const r1 = one(l1, 'L1'); if (r1) return r1
+  const r2 = one(l2, 'L2'); if (r2) return r2
+  const r2p = one(l2p, 'L2p'); if (r2p) return r2p
+  const r3 = one(l3, 'L3'); if (r3) return r3
 
   // L4 — every token of the name (minus stop-words) is somewhere in the sentence.
   // Owner rule: only for names with ≥ 3 tokens or ≥ 1 non-common token, and the
