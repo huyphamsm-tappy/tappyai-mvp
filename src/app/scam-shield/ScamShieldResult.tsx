@@ -72,7 +72,9 @@ const ACTION_ICONS: Record<string, typeof ShieldCheck> = {
   check: CircleCheck,
 }
 
-function ConfidenceBadge({ confidence }: { confidence: number }) {
+/** Exported: the message-analysis card (`ScamMessageResult`) renders the same badge, so the two
+ *  verdict surfaces cannot disagree about what a confidence number means. */
+export function ConfidenceBadge({ confidence }: { confidence: number }) {
   const { t } = useTranslation()
   const [key, tone] = confidence >= 80
     ? ['scamShield.confidence.high', LEVEL_TONE.SAFE]

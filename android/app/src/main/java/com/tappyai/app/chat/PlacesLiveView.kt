@@ -42,6 +42,12 @@ data class LivePlaceReason(
 )
 
 @Serializable
+data class LiveTappyRating(
+    val avg: Double = 0.0,
+    val count: Int = 0,
+)
+
+@Serializable
 data class LivePlace(
     val id: String = "",
     val domain: String = "",
@@ -59,6 +65,10 @@ data class LivePlace(
     val priceLevel: Int? = null,
     /** A price seen in a search snippet. Weak evidence — the card labels it as reference. */
     val priceSignal: String? = null,
+    /** The provider's own price band, shown plainly (web `priceRangeText`). */
+    val priceRangeText: String? = null,
+    /** Our own review aggregate, labelled "Tappy" so it is never read as the provider's rating. */
+    val tappyRating: LiveTappyRating? = null,
     val distanceKm: Double? = null,
     val categories: List<String> = emptyList(),
     val flags: List<String> = emptyList(),
@@ -117,6 +127,15 @@ data class PlaceCardView(
     val openNow: Boolean? = null,
     val priceLevel: Int? = null,
     val priceSignal: String? = null,
+    /**
+     * The provider's OWN price band ("1-100.000 ₫", Serper `/maps`). A structured field, shown as
+     * a plain fact — unlike [priceSignal], which is a number spotted in search prose.
+     */
+    val priceRangeText: String? = null,
+    /** TappyAI's own community rating for this place, when we have reviews of it. */
+    val tappyRating: LiveTappyRating? = null,
+    /** The phone NUMBER as information — web prints it beside the dialler (`place-phone`). */
+    val phone: String? = null,
     val distanceKm: Double? = null,
     val categories: List<String> = emptyList(),
     /**
@@ -139,6 +158,12 @@ data class PlaceCardAction(
     val url: String,
     val labelKey: String,
     val platform: String? = null,
+    /**
+     * `review` only: true when the URL is a specific attributed piece of content rather than a
+     * search for one. Web's label reads it ("Review trên TikTok" vs "Tìm review trên YouTube"),
+     * so the card must carry it or it cannot say the same thing.
+     */
+    val attributed: Boolean? = null,
 )
 
 /** The LIVE projection → the card. Nothing is dropped that the card can show. */
@@ -154,12 +179,15 @@ fun LivePlace.toCardView(): PlaceCardView = PlaceCardView(
     openNow = openNow,
     priceLevel = priceLevel,
     priceSignal = priceSignal,
+    priceRangeText = priceRangeText,
+    phone = phone,
+    tappyRating = tappyRating,
     distanceKm = distanceKm,
     categories = categories,
     flags = flags,
     reasons = reasons.map { it.evidence }.filter { it.isNotBlank() },
     tradeOff = tradeOff?.evidence?.takeIf { it.isNotBlank() },
-    actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform) },
+    actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform, it.attributed) },
 )
 
 /**
@@ -181,9 +209,10 @@ fun PersistedPlace.toCardView(): PlaceCardView? {
         ratingCount = ratingCount,
         openingHours = openingHours,
         openNow = openNow,
+        phone = phone,
         priceLevel = priceLevel,
         distanceKm = distanceKm,
         reasons = reasons.map { it.evidence }.filter { it.isNotBlank() },
-        actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform) },
+        actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform, it.attributed) },
     )
 }

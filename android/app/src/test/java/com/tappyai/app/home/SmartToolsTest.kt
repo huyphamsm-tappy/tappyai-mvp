@@ -72,7 +72,7 @@ class SmartToolsTest {
         val titles = mapOf(
             SmartToolId.Scan to ("Quét" to "Quét hóa đơn, menu, văn bản"), SmartToolId.Translate to ("Dịch" to "Dịch nhanh hơn 100 ngôn ngữ"),
             SmartToolId.Currency to ("Tỷ giá" to "Quy đổi tiền tệ"), SmartToolId.Split to ("Chia bill" to "Chia tiền nhóm"),
-            SmartToolId.Safety to ("An toàn" to "Kiểm tra link, website mã QR an toàn"), SmartToolId.Together to ("Nhóm ăn" to "Chọn quán cùng nhau"),
+            SmartToolId.Safety to ("Cảnh báo lừa đảo" to "Kiểm tra link, website mã QR an toàn"), SmartToolId.Together to ("Nhóm ăn" to "Chọn quán cùng nhau"),
             SmartToolId.Music to ("Nhạc" to "Thư viện nhạc"), SmartToolId.Fortune to ("Bói" to "Xem tử vi hôm nay"), SmartToolId.Captions to ("Viết" to "Viết caption"),
         )
         assertEquals(SMART_TOOLS.map { it.id }.toSet(), titles.keys)
@@ -226,7 +226,7 @@ class SmartToolsTest {
         for (k in keys) {
             assertTrue("$k (vi)", vi.contains("name=\"$k\"")); assertTrue("$k (en)", en.contains("name=\"$k\""))
         }
-        for (copy in listOf(">Quét<", ">Dịch<", ">Tỷ giá<", ">Chia bill<", ">An toàn<", ">Nhóm ăn<", ">Nhạc<", ">Bói<", ">Viết<", ">Hằng ngày<", ">Khám phá<", ">Giải trí<", ">Cần đăng nhập<", ">Tìm công cụ…<", ">Làm nhiều hơn cùng TappyAI<", "Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày")) {
+        for (copy in listOf(">Quét<", ">Dịch<", ">Tỷ giá<", ">Chia bill<", ">Cảnh báo lừa đảo<", ">Nhóm ăn<", ">Nhạc<", ">Bói<", ">Viết<", ">Hằng ngày<", ">Khám phá<", ">Giải trí<", ">Cần đăng nhập<", ">Tìm công cụ…<", ">Làm nhiều hơn cùng TappyAI<", "Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày")) {
             assertTrue(copy, vi.contains(copy))
         }
     }

@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
+import com.tappyai.app.notifications.UnreadBadge
 import com.tappyai.core.designsystem.theme.TappyPalette
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -223,6 +224,8 @@ internal fun HomeV3TopBar(
     onToggleDarkTheme: () -> Unit,
     onOpenSearch: () -> Unit,
     onOpenNotifications: () -> Unit,
+    /** The Inbox's unread count for the bell's badge (web `V3Shell` bell); 0 draws nothing. */
+    unreadCount: Int = 0,
 ) {
     Row(
         modifier = Modifier
@@ -288,12 +291,15 @@ internal fun HomeV3TopBar(
             onClick = onOpenNotifications,
             contentDescription = stringResource(R.string.home_v3_notifications),
         ) {
-            Icon(
-                imageVector = Icons.Filled.NotificationsNone,
-                contentDescription = null,
-                tint = HomeV3.OnSurface,
-                modifier = Modifier.size(21.dp),
-            )
+            Box {
+                Icon(
+                    imageVector = Icons.Filled.NotificationsNone,
+                    contentDescription = null,
+                    tint = HomeV3.OnSurface,
+                    modifier = Modifier.size(21.dp),
+                )
+                UnreadBadge(count = unreadCount)
+            }
         }
     }
 }

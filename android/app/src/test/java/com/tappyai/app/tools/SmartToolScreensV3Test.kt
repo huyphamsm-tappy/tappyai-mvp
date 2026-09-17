@@ -37,7 +37,7 @@ class SmartToolScreensV3Test {
 
     @Test
     fun `every feature screen stands on the V3 kit - none on the Material default chrome`() {
-        val onKit = mapOf("scan" to scan, "translate" to translate, "currency" to currency, "split" to split, "scam" to scam, "group" to group, "viet" to viet)
+        val onKit = mapOf("scan" to scan, "translate" to translate, "currency" to currency, "split" to split, "group" to group, "viet" to viet)
         onKit.forEach { (name, s) ->
             assertTrue("$name uses ToolV3Page", s.contains("ToolV3Page(onBack = onBack)"))
             assertTrue("$name has a ToolHero or its own hero", s.contains("ToolHero(") || s.contains("VietHero()"))
@@ -49,6 +49,10 @@ class SmartToolScreensV3Test {
         assertTrue(music.contains("V3HomeTheme {") && music.contains("LazyVerticalGrid("))
         assertFalse(music.contains("FilterChip(") || music.contains("TappySearchBar("))
         assertTrue(fortune.contains("V3HomeTheme {"))
+        // Scam Shield (2026-09-17) follows the CURRENT web page (`design/v3-phase4`): the Navy hero
+        // with the shield pose and the four capability tiles, then the three-tab tool (see
+        // ScamShieldV3Test). It scrolls its own column (the history anchor), not ToolV3Page.
+        assertTrue(scam.contains("ToolHero(") && scam.contains("hue = ToolHue.Navy") && scam.contains("R.drawable.tappy_recommendation") && !scam.contains("TappyCard("))
     }
 
     @Test
@@ -57,7 +61,6 @@ class SmartToolScreensV3Test {
         assertTrue(translate.contains("hue = ToolHue.Indigo") && translate.contains("R.drawable.tappy_welcome") && translate.contains("TranslateScene("))
         assertTrue(currency.contains("hue = ToolHue.Navy") && currency.contains("R.drawable.tappy_wave") && currency.contains("ToolCoin("))
         assertTrue(split.contains("hue = ToolHue.Navy") && split.contains("R.drawable.tappy_wave") && split.contains("SplitScene("))
-        assertTrue(scam.contains("hue = ToolHue.Navy") && scam.contains("R.drawable.tappy_recommendation") && scam.contains("ScamScene("))
         assertTrue(group.contains("hue = ToolHue.Blue") && group.contains("R.drawable.tappy_thinking") && group.contains("GroupScene("))
         assertTrue(music.contains("R.drawable.tappy_aitools") && music.contains("Color(0xFF1D4ED8), Color(0xFF4338CA), Color(0xFF6D28D9)"))
         assertTrue(viet.contains("hue = ToolHue.Pink") && viet.contains("R.drawable.tappy_reading") && viet.contains("Color(0xFFEC4899), Color(0xFFF43F5E), Color(0xFFFB923C)"))
@@ -72,7 +75,7 @@ class SmartToolScreensV3Test {
             .forEach { assertTrue("scan $it", scan.contains(it)) }
         listOf("viewModel::onInputTextChange", "viewModel::translate", "viewModel::clear", "viewModel.onTargetLanguageChange(language)", "viewModel.speak(translation, viewModel.targetLanguage.ttsTag)", "viewModel.isTranslating", "viewModel.translation", "viewModel.ttsAvailable")
             .forEach { assertTrue("translate $it", translate.contains(it)) }
-        listOf("viewModel::onUrlChange", "viewModel::check", "is ScamShieldUiState.Result -> VerdictCard", "is ScamShieldUiState.Failed -> UnresolvedCard")
+        listOf("viewModel::onUrlChange", "viewModel::check", "as? ScamShieldUiState.Result)?.let { VerdictCard(it.result) }", "as? ScamShieldUiState.Failed)?.let { failed -> UnresolvedCard(failed.failure, forMessage = viewModel.tab == ScamShieldTab.Message) }")
             .forEach { assertTrue("scam $it", scam.contains(it)) }
         listOf("viewModel::onGroupNameChange", "viewModel::createGroup", "viewModel.isCreating", "viewModel.errorMessage", "GroupDiningViewModel.MAX_NAME")
             .forEach { assertTrue("group $it", group.contains(it)) }

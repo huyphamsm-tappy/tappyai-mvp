@@ -41,6 +41,8 @@ import javax.inject.Inject
 data class SelfProfileUiState(
     val profile: ReviewProfile? = null,
     val posts: List<Review> = emptyList(),
+    /** False when `/mine` failed while the profile row loaded: "Bài viết" and "Đã ẩn" then show a retry, not an empty lie. */
+    val postsLoaded: Boolean = false,
     /** The "Đã lưu" grid rows (newest save first); null while unknown or when the call failed. */
     val saved: List<Review>? = null,
     /** "Đã thích" — `GET /api/reviews/liked`, newest like first; null while unknown or failed. */
@@ -140,6 +142,7 @@ class SelfProfileViewModel @Inject constructor(
                 it.copy(
                     profile = profile ?: ReviewProfile(null, null),
                     posts = posts ?: emptyList(),
+                    postsLoaded = posts != null,
                     saved = (savedResult as? NetworkResult.Success)?.data,
                     liked = (likedResult as? NetworkResult.Success)?.data,
                     shared = (sharedResult as? NetworkResult.Success)?.data,

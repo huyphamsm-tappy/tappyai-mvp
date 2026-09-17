@@ -12,6 +12,7 @@ import { useState } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import ShareMenu from '@/components/share/ShareMenu'
+import { recordReviewShare } from '@/lib/share/recordReviewShare'
 
 export default function ReviewShareButton({
   reviewId,
@@ -36,7 +37,16 @@ export default function ReviewShareButton({
   // deployment would hand out a non-canonical host.
   const url = absoluteUrl(`/reviews/${reviewId}`)
 
-  const menu = <ShareMenu url={url} title={placeName} open={open} onClose={() => setOpen(false)} />
+  const menu = (
+    <ShareMenu
+      url={url}
+      title={placeName}
+      open={open}
+      onClose={() => setOpen(false)}
+      // A completed share becomes a row of the self profile's "Đã share" history.
+      onShared={(channel) => { void recordReviewShare(reviewId, channel) }}
+    />
+  )
 
   if (variant === 'bar') {
     return (

@@ -34,8 +34,6 @@
     <string name="reviews_composer_using_sound">Đang dùng: %1$s</string>
     <string name="reviews_composer_remove_sound">Bỏ âm thanh</string>
     <string name="reviews_composer_add_music">Thêm nhạc</string>
-    <string name="reviews_notification_banner_title">Tappy gợi ý hôm nay</string>
-    <string name="reviews_notification_banner_subtext">3 quán bạn bè hay đến đang mở gần bạn</string>
     <string name="reviews_notification_section_just_now">VỪA XONG</string>
     <string name="reviews_notification_section_today">HÔM NAY</string>
     <string name="reviews_notification_section_this_week">TUẦN NÀY</string>
@@ -61,7 +59,6 @@
     <string name="reviews_notifications_error_title">Không tải được thông báo</string>
     <string name="reviews_notification_empty_title">Chưa có thông báo</string>
     <string name="reviews_notification_empty_message">Thông báo sẽ xuất hiện khi có người tương tác với bài viết của bạn.</string>
-    <string name="reviews_notification_others">và %1$d người khác</string>
 
     <!-- Overflow menu -->
     <string name="reviews_overflow_more_options">Tùy chọn khác</string>
@@ -173,4 +170,8 @@
     <string name="reviews_sound_original">Âm thanh gốc - %1$s</string>
     <string name="reviews_sound_attached">Âm thanh đính kèm</string>
     <string name="reviews_creator_open_profile">Mở hồ sơ %1$s</string>
+    <string name="reviews_likes_title">Lượt thích</string>
+    <string name="reviews_likes_empty">Chưa có ai thích bài viết này</string>
+    <string name="reviews_likes_error">Không tải được danh sách lượt thích</string>
+    <string name="reviews_likes_more">Xem thêm</string>
 </resources>

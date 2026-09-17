@@ -95,7 +95,10 @@ class ExploreV3Test {
         assertTrue(bar.contains("onClick = onProfile") && bar.contains("Icons.Filled.PersonOutline"))
         assertTrue("the header's own Create Post + (owner ruling 2026-09-13)", bar.contains("onClick = onCompose") && bar.contains("Icons.Filled.Add"))
         assertTrue(bar.contains("stringResource(R.string.reviews_search_label)") && bar.contains("stringResource(R.string.reviews_notifications_label)") && bar.contains("stringResource(R.string.reviews_self_profile_open)") && bar.contains("stringResource(R.string.reviews_tab_compose)"))
-        assertFalse("no unread dot is faked", bar.contains("Badge"))
+        // 2026-09-17: the bell carries the REAL unread count (GET /api/notifications → unread_count, see
+        // InboxBadgeTest) — drawn only above zero, never a decorative dot.
+        assertTrue("the bell's badge is the real count, not a decoration", bar.contains("UnreadBadge(count = unreadCount)"))
+        assertFalse("no faked dot", bar.contains("Badge(") && !bar.contains("UnreadBadge("))
         val action = screens.substring(screens.indexOf("private fun ExploreHeaderAction("), screens.indexOf("internal fun ReviewDetailScreen("))
         assertTrue("48dp glass circle with a thin light border", action.contains(".size(48.dp)") && action.contains(".clip(CircleShape)") && action.contains(".background(ExploreV3.Glass)") && action.contains("ExploreV3.GlassBorder"))
     }

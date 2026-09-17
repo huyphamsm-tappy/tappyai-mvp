@@ -197,11 +197,21 @@ internal fun SelfProfileScreen(
                     onShareLink = { uiState.userId?.let { id -> shareProfileLink(context, id) } },
                     onCompose = onCompose,
                     onReviewClick = onReviewClick,
+                    postsFailed = !uiState.postsLoaded,
+                    postsError = {
+                        TappyErrorState(
+                            title = stringResource(R.string.reviews_profile_error_title),
+                            message = stringResource(R.string.reviews_error_generic),
+                            retryText = stringResource(R.string.common_try_again),
+                            onRetry = viewModel::load,
+                        )
+                    },
                     collections = onCollectionReviewClick?.let { open ->
                         CreatorCollections(
                             liked = uiState.liked,
                             saved = uiState.saved,
-                            hidden = uiState.posts.filter { it.isHidden },
+                            // Null (→ retry) when /mine itself failed; an empty list means "none hidden".
+                            hidden = if (uiState.postsLoaded) uiState.posts.filter { it.isHidden } else null,
                             shared = uiState.shared,
                             onReviewClick = open,
                             onRetry = viewModel::load,
@@ -420,6 +430,9 @@ private fun CreatorProfileContent(
     onReviewClick: (String) -> Unit,
     emptyState: @Composable () -> Unit,
     collections: CreatorCollections? = null,
+    /** True when the posts list could not be loaded although the header did; [postsError] is drawn instead of [emptyState]. */
+    postsFailed: Boolean = false,
+    postsError: @Composable () -> Unit = {},
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }
     val tab = if (collections == null) CreatorProfileTab.Posts else selectedTab
@@ -445,7 +458,8 @@ private fun CreatorProfileContent(
         when (tab) {
             CreatorProfileTab.Posts -> {
                 if (posts.isEmpty()) {
-                    item(span = { GridItemSpan(maxLineSpan) }) { emptyState() }
+                    // A failed /mine (the profile row loaded, the posts did not) is a retry, never "no posts".
+                    item(span = { GridItemSpan(maxLineSpan) }) { if (postsFailed) postsError() else emptyState() }
                 }
                 items(items = posts, key = { it.id }) { review ->
                     PostGridTile(review = review, onClick = { onReviewClick(review.id) })

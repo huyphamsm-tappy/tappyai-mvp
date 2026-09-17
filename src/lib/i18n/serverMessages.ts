@@ -226,6 +226,10 @@ const MESSAGES = {
   'scam.checkFailed': { vi: 'Chưa kiểm tra được liên kết này. Vui lòng thử lại.', en: "Couldn't check this link. Please try again." },
   'scam.tooManyChecks': { vi: 'Bạn kiểm tra quá nhiều lần. Vui lòng thử lại sau.', en: 'Too many checks. Please try again later.' },
   'scam.dailyLimit': { vi: 'Bạn đã dùng hết lượt kiểm tra hôm nay.', en: "You've used all of today's checks." },
+  // Scam Shield · Analyze Message.
+  'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
+  'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
   // ── W2 · voice ──────────────────────────────────────────────────────────────

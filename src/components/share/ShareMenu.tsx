@@ -27,12 +27,20 @@ export default function ShareMenu({
   title,
   open,
   onClose,
+  onShared,
 }: {
   /** Canonical public URL. Anything else is refused by isShareableUrl. */
   url: string
   title?: string
   open: boolean
   onClose: () => void
+  /**
+   * Fires once per share that actually COMPLETED, with the target that completed it — the
+   * clipboard write resolved, `navigator.share()` resolved (not rejected/cancelled), or the
+   * hand-off window really opened. Never on open, never on a blocked popup or a failed copy.
+   * The review share sheets use it to persist the self-profile share history (2026-09-15).
+   */
+  onShared?: (channel: ShareTargetId) => void
 }) {
   const { t } = useTranslation()
   const [feedback, setFeedback] = useState<Feedback>(null)
@@ -70,12 +78,14 @@ export default function ShareMenu({
     if (id === 'copy') {
       const ok = await copyLink()
       setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.copied') : t('share.copyFailed') })
+      if (ok) onShared?.('copy')
       return
     }
 
     if (id === 'native') {
       try {
         await navigator.share({ title, url })
+        onShared?.('native')
         onClose()
       } catch {
         // A cancelled share is not an error; only report if sharing is truly
@@ -93,6 +103,7 @@ export default function ShareMenu({
         kind: ok ? 'ok' : 'error',
         text: ok ? t('share.tiktokHint') : t('share.copyFailed'),
       })
+      if (ok) onShared?.(id)
       return
     }
 
@@ -103,6 +114,7 @@ export default function ShareMenu({
       return
     }
     setFeedback({ kind: 'ok', text: t('share.opened').replace('{app}', t(`share.${id}`)) })
+    onShared?.(id)
   }
 
   const targets = SHARE_TARGETS.filter((target) => target.id !== 'native' || canNativeShare)

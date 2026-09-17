@@ -68,7 +68,7 @@ class SelfProfileCollectionsTest {
         val api = src("app/src/main/java/com/tappyai/app/profile/data/ProfileCollectionsApi.kt")
         assertTrue(api.contains("@GET(\"api/reviews/liked\")") && api.contains("@GET(\"api/reviews/shared\")"))
         val s = screen
-        assertTrue("the grid splits own rows into public posts and hidden posts", s.contains("posts = publicPosts,") && s.contains("hidden = uiState.posts.filter { it.isHidden },"))
+        assertTrue("the grid splits own rows into public posts and hidden posts", s.contains("posts = publicPosts,") && s.contains("uiState.posts.filter { it.isHidden } else null,"))
         assertTrue("the stat and the grid count the SAME public rows — the number over the grid is the number of tiles in it", s.contains("val publicPosts = uiState.posts.filterNot { it.isHidden }") && s.contains("selfProfileFacts(uiState.profile, publicPosts, uiState.isPro, uiState.bio)") && s.contains("posts = publicPosts,"))
         assertTrue(s.contains("liked = uiState.liked,") && s.contains("saved = uiState.saved,") && s.contains("shared = uiState.shared,"))
         val rows = CreatorCollections(liked = listOf(), saved = null, hidden = listOf(), shared = null, onReviewClick = { _, _ -> }, onRetry = {})
@@ -85,6 +85,15 @@ class SelfProfileCollectionsTest {
         listOf("SharedPreferences", "DataStore", "emptyList<Review>() //", "listOf(Review(").forEach { assertFalse("$it in the view model", vm.contains(it)) }
         assertTrue("a null collection draws the retry state", screen.contains("rows == null -> item(span = { GridItemSpan(maxLineSpan) }) {\n                        TappyErrorState("))
         assertFalse("another creator's profile never requests anyone's collections", src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewProfileViewModel.kt").contains("collectionsRepository"))
+    }
+
+    @Test
+    fun `a failed mine load is a retry on Bài viết and Đã ẩn, never an empty lie - the profile row alone does not vouch for the posts`() {
+        val s = screen
+        assertTrue(s.contains("hidden = if (uiState.postsLoaded) uiState.posts.filter { it.isHidden } else null,"))
+        assertTrue(s.contains("postsFailed = !uiState.postsLoaded,") && s.contains("if (postsFailed) postsError() else emptyState()"))
+        assertTrue(vm.contains("postsLoaded = posts != null,"))
+        assertFalse("nothing is loaded for a guest", SelfProfileUiState(isLoading = false, isSignedIn = false).postsLoaded)
     }
 
     // ── 5. navigation opens the existing surface for each collection ──

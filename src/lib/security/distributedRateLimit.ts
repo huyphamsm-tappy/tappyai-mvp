@@ -24,6 +24,13 @@ export interface RateLimitStore {
     limit: number,
     member: string
   ): Promise<[number, number]>
+  /**
+   * READ-ONLY: how many entries the window currently holds, after expiring stale ones. Never
+   * admits or adds — it exists so a quota can be DISPLAYED ("11/15 today") from the same set that
+   * enforces it, without the display consuming what it describes. Optional so a store (or a test
+   * double) that only limits keeps working; callers treat "unsupported" as "unknown".
+   */
+  countInWindow?(key: string, nowMs: number, windowMs: number): Promise<number>
 }
 
 export interface RateLimitResult {
@@ -51,9 +58,29 @@ redis.call('ZADD', key, now, member)
 redis.call('PEXPIRE', key, window)
 return {1, 0}`
 
+/** Same sorted set, no write: expire what has left the window, then count what remains. */
+const COUNT_IN_WINDOW = `local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+return redis.call('ZCARD', key)`
+
 /** Upstash REST store. Credentials come from the Vercel Upstash integration. */
 export function createUpstashStore(url: string, token: string): RateLimitStore {
   return {
+    async countInWindow(key, nowMs, windowMs) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(['EVAL', COUNT_IN_WINDOW, '1', key, String(nowMs), String(windowMs)]),
+      })
+      if (!res.ok) throw new Error(`rate-limit store HTTP ${res.status}`)
+      const body = (await res.json()) as { result?: unknown; error?: string }
+      if (body.error) throw new Error('rate-limit store error')
+      const n = Number(body.result)
+      if (!Number.isFinite(n)) throw new Error('rate-limit store malformed response')
+      return n
+    },
     async evalSlidingWindow(key, nowMs, windowMs, limit, member) {
       const res = await fetch(url, {
         method: 'POST',
@@ -171,5 +198,22 @@ export async function distributedRateLimit(
     return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)) }
   } catch {
     return failClosed
+  }
+}
+
+/**
+ * READ-ONLY count of entries in a key's window — for displaying a quota, never for enforcing one.
+ *
+ * `null` when there is no store, the store does not support counting, or it did not answer. A
+ * display that cannot be produced is reported as unknown rather than guessed: the caller decides
+ * whether to show nothing or to show the limit as used (the fail-closed display choice).
+ */
+export async function distributedCountInWindow(key: string, windowMs: number): Promise<number | null> {
+  const active = resolveStore()
+  if (!active?.countInWindow) return null
+  try {
+    return await active.countInWindow(key, Date.now(), windowMs)
+  } catch {
+    return null
   }
 }

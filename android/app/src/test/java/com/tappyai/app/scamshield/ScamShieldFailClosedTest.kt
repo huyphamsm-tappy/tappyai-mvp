@@ -70,12 +70,14 @@ class ScamShieldFailClosedTest {
 
     @Test
     fun `every unresolved level is drawn in the neutral slate colour, not green`() {
-        val screen = source("ScamShieldScreen.kt")
-        val green = "0xFF16A34A"
-        val slate = "0xFF64748B"
+        // 2026-09-17: the tones are the V3 palette's (`LEVEL_TONE` on the web). The neutral one is
+        // the surface-variant foreground; green is `V3Tone.Emerald`, SAFE's tone alone.
+        val screen = source("ScamShieldResult.kt")
+        val green = "V3Tone.Emerald"
+        val slate = "HomeV3.OnSurfaceVariant"
 
-        val inconclusive = screen.lineSequence().first { it.contains("RiskLevel.INCONCLUSIVE ->") }
-        val unknown = screen.lineSequence().first { it.contains("RiskLevel.UNKNOWN ->") }
+        val inconclusive = screen.lineSequence().first { it.contains("RiskLevel.INCONCLUSIVE") && it.contains("->") }
+        val unknown = screen.lineSequence().first { it.contains("RiskLevel.UNKNOWN") && it.contains("->") }
 
         assertTrue("INCONCLUSIVE must use the neutral slate colour", inconclusive.contains(slate))
         assertTrue("UNKNOWN must use the neutral slate colour", unknown.contains(slate))
@@ -89,12 +91,12 @@ class ScamShieldFailClosedTest {
     fun `the appearance map covers every level with no else branch`() {
         // An `else ->` would let a newly added level fall through to whatever the author picked
         // last, instead of failing the build until it has been given a deliberate appearance.
-        val screen = source("ScamShieldScreen.kt")
-        val block = screen.substringAfter("private fun appearanceFor").substringBefore("\n}")
+        val screen = source("ScamShieldResult.kt")
+        val block = screen.substringAfter("internal fun toneFor").substringBefore("\n}")
         RiskLevel.entries.forEach { level ->
-            assertTrue("appearanceFor must handle ${level.name}", block.contains("RiskLevel.${level.name} ->"))
+            assertTrue("toneFor must handle ${level.name}", block.contains("RiskLevel.${level.name}"))
         }
-        assertTrue("appearanceFor must not have an else branch", !block.contains("else ->"))
+        assertTrue("toneFor must not have an else branch", !block.contains("else ->"))
     }
 
     @Test
@@ -102,11 +104,15 @@ class ScamShieldFailClosedTest {
         val screen = source("ScamShieldScreen.kt")
         assertTrue(
             "ScamShieldUiState.Failed must route to UnresolvedCard",
-            Regex("""is ScamShieldUiState\.Failed -> UnresolvedCard""").containsMatchIn(screen),
+            Regex("""as\? ScamShieldUiState\.Failed\)\?\.let \{ failed -> UnresolvedCard\(failed\.failure(, forMessage = [^)]*)?\) \}""").containsMatchIn(screen),
         )
         assertTrue(
             "Only a backend verdict may render VerdictCard",
-            Regex("""is ScamShieldUiState\.Result -> VerdictCard""").containsMatchIn(screen),
+            Regex("""as\? ScamShieldUiState\.Result\)\?\.let \{ VerdictCard\(it\.result\) \}""").containsMatchIn(screen),
+        )
+        assertTrue(
+            "Only a backend message verdict may render MessageResultCard",
+            Regex("""as\? ScamShieldUiState\.MessageResult\)\?\.let \{ MessageResultCard\(it\.result\) \}""").containsMatchIn(screen),
         )
     }
 
@@ -141,17 +147,22 @@ class ScamShieldFailClosedTest {
     fun `the only network call is the backend check endpoint`() {
         val api = File(packageDir, "data/ScamShieldApi.kt").readText()
         assertTrue(api.contains("api/scam-shield/check"))
-        // One endpoint, one method — nothing that could fetch a blocklist to evaluate on-device.
-        assertEquals(1, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
+        // 2026-09-17: three routes, all the backend engine's (the URL, the QR image the server
+        // decodes, the message the server analyzes) — still nothing that could fetch a blocklist
+        // to evaluate on-device.
+        assertEquals(3, Regex("""@(GET|POST|PUT|DELETE|PATCH)""").findAll(api).count())
+        assertTrue(api.contains("api/scam-shield/qr"))
+        assertTrue(api.contains("api/scam-shield/analyze"))
+        assertEquals(3, Regex("""@POST\("api/scam-shield/""").findAll(api).count())
     }
 
     // ---------------------------------------------------------------- error mapping
 
     @Test
     fun `every documented refusal code maps to a specific message`() {
-        val screen = source("ScamShieldScreen.kt")
+        val screen = source("ScamShieldResult.kt")
         val block = screen.substringAfter("private fun localFallbackFor")
-        listOf("rate_limit", "daily_limit", "invalid_input", "private_url").forEach { code ->
+        listOf("rate_limit", "daily_limit", "invalid_input", "private_url", "invalid_image", "analyze_failed").forEach { code ->
             assertTrue("\"$code\" must map to its own string", block.contains("\"$code\""))
         }
     }
@@ -166,9 +177,12 @@ class ScamShieldFailClosedTest {
         assertTrue("CancellationException must be caught", catches.contains("CancellationException"))
         assertTrue("must rethrow cancellation", repo.contains("throw e"))
 
-        val failedCount = Regex("""ScamCheckOutcome\.Failed""").findAll(repo).count()
-        val verdictCount = Regex("""ScamCheckOutcome\.Verdict""").findAll(repo).count()
-        assertEquals("exactly one path may produce a verdict", 1, verdictCount)
-        assertTrue("every other path must fail closed", failedCount >= catches.size - 1)
+        // One `attempt` wraps all three routes: the single `Outcome.Ok` is the only way a decoded
+        // body becomes a verdict, and every catch (bar cancellation) lands in `Outcome.Err`.
+        val okCount = Regex("""Outcome\.Ok\(call\(\)\)""").findAll(repo).count()
+        val errCount = Regex("""Outcome\.Err\(""").findAll(repo).count()
+        assertEquals("exactly one path may produce a verdict", 1, okCount)
+        assertTrue("every other path must fail closed", errCount >= catches.size - 1)
+        assertTrue("a 200 without a verdict is not a verdict", repo.contains("throw SerializationException(\"no verdict\")"))
     }
 }

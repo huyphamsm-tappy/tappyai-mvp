@@ -117,15 +117,28 @@ class ShoppingDecisionParseTest {
 
     @Test
     fun `price range renders both bounds, a single bound, or an explicit unknown`() {
-        assertEquals("18.9 triệu – 20.4 triệu", priceRangeText(18_990_000.0, 20_490_000.0, "chưa rõ"))
-        assertEquals("24.9 triệu", priceRangeText(24_990_000.0, null, "chưa rõ"))
-        assertEquals("24.9 triệu", priceRangeText(null, 24_990_000.0, "chưa rõ"))
+        // Web `formatVndShort`: one ROUNDED decimal of a million, comma for Vietnamese.
+        val vi = java.util.Locale("vi", "VN")
+        assertEquals("19 triệu – 20,5 triệu", priceRangeText(18_990_000.0, 20_490_000.0, "chưa rõ", vi))
+        assertEquals("25 triệu", priceRangeText(24_990_000.0, null, "chưa rõ", vi))
+        assertEquals("25 triệu", priceRangeText(null, 24_990_000.0, "chưa rõ", vi))
         // Neither bound known: say so. Never "0đ", never an empty string.
-        assertEquals("chưa rõ", priceRangeText(null, null, "chưa rõ"))
+        assertEquals("chưa rõ", priceRangeText(null, null, "chưa rõ", vi))
     }
 
     @Test
     fun `a single-point price is not rendered as a fake range`() {
-        assertEquals("18.9 triệu", priceRangeText(18_990_000.0, 18_990_000.0, "chưa rõ"))
+        assertEquals("19 triệu", priceRangeText(18_990_000.0, 18_990_000.0, "chưa rõ", java.util.Locale("vi", "VN")))
+    }
+
+    @Test
+    fun `prices print exactly as web formatVndShort does, in both languages`() {
+        val vi = java.util.Locale("vi", "VN")
+        assertEquals("169.000₫", formatVndShort(169_000.0, vi))
+        assertEquals("169,000₫", formatVndShort(169_000.0, java.util.Locale.US))
+        assertEquals("1,3 triệu", formatVndShort(1_300_000.0, vi))
+        assertEquals("1.3M", formatVndShort(1_300_000.0, java.util.Locale.US))
+        assertEquals("1,1 triệu", formatVndShort(1_099_000.0, vi))
+        assertEquals("595.209₫", formatVndShort(595_209.0, vi))
     }
 }

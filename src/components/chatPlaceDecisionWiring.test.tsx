@@ -162,11 +162,14 @@ describe('the delivery channel stays the safe one', () => {
     expect(stream).toMatch(/const batchTikTok = cardOwnsEnrichment \? undefined :/)
   })
 
-  it('only the web surface is told to stop repeating the card facts', () => {
+  it('only a surface that renders the card is told to stop repeating the card facts', () => {
     // The prompt is shared with clients that have no card; telling them the same
     // thing would delete the rating and the address from their only channel.
+    // Which surfaces render the card is one list (decisionSurface.ts) — web and,
+    // since the V3 place section shipped, Android — and the route reads it.
     const route = read('src/app/api/chat/route.ts')
-    expect(route).toMatch(/x-tappy-surface'\) === 'web'/)
+    expect(route).toMatch(/rendersDecisionCardFor\(req\.headers\.get\('x-tappy-surface'\)\)/)
+    expect(route).not.toMatch(/x-tappy-surface'\) === 'web'/)
     expect(route).toMatch(/rendersDecisionCard \? buildRenderedDecisionBlock\(\) : ''/)
   })
 })

@@ -13,6 +13,11 @@
     <string name="settings_notifications">Thông báo</string>
     <string name="settings_memory">Bộ nhớ</string>
     <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_appearance">Giao diện</string>
+    <string name="settings_appearance_desc">Theo hệ thống, hoặc luôn sáng / tối</string>
+    <string name="settings_appearance_system">Theo hệ thống</string>
+    <string name="settings_appearance_light">Sáng</string>
+    <string name="settings_appearance_dark">Tối</string>
     <string name="settings_section_other">Khác</string>
     <string name="settings_how_to_use">Hướng dẫn sử dụng</string>
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
@@ -62,11 +67,16 @@
     <string name="profile_privacy_card_subtitle">An toàn dữ liệu, an tâm trải nghiệm</string>
     <string name="profile_qr_button_content_description">Hiển thị hồ sơ QR</string>
     <string name="profile_qr_default_name">Hồ sơ của tôi</string>
-    <string name="profile_qr_scan_subtitle">Quét để xem hồ sơ</string>
+    <string name="profile_qr_scan_subtitle">Quét mã QR để xem hồ sơ TappyAI của tôi</string>
     <string name="profile_qr_code_content_description">Mã QR liên kết đến hồ sơ này</string>
     <string name="profile_qr_generate_error">Không thể tạo mã QR. Vui lòng thử lại.</string>
-    <string name="profile_qr_share_button">Chia sẻ liên kết</string>
+    <string name="profile_qr_share_button">Chia sẻ profile</string>
     <string name="profile_qr_share_chooser_title">Chia sẻ liên kết hồ sơ</string>
+    <string name="profile_qr_title">Chia sẻ hồ sơ</string>
+    <string name="profile_qr_download_button">Tải mã QR</string>
+    <string name="profile_qr_save_hint">Bạn có thể lưu hoặc chia sẻ mã QR này.</string>
+    <string name="profile_qr_saved">Đã lưu mã QR vào Ảnh</string>
+    <string name="profile_qr_save_failed">Không lưu được mã QR</string>
 
     <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
     <string name="notif_title">Thông báo</string>
@@ -74,6 +84,8 @@
     <string name="notif_push_on_description">Đang bật — Tappy sẽ nhắc bạn đúng lúc</string>
     <string name="notif_push_off_description">Đang tắt — bật để nhận nhắc nhở từ Tappy</string>
     <string name="notif_toggle_content_description">Bật/tắt thông báo đẩy</string>
+    <string name="notif_os_blocked">Thiết bị đang chặn thông báo của TappyAI. Hãy cho phép trong cài đặt hệ thống để nhận nhắc nhở.</string>
+    <string name="notif_os_allow">Cho phép</string>
     <string name="notif_receive_header">BẠN SẼ NHẬN ĐƯỢC GÌ</string>
     <string name="notif_receive_morning_brief">Bản tin buổi sáng riêng cho bạn lúc 7:30 sáng</string>
     <string name="notif_receive_deals">Ưu đãi &amp; khuyến mãi phù hợp với sở thích của bạn</string>

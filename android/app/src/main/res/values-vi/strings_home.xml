@@ -124,7 +124,7 @@
     <string name="smart_tool_currency_desc">Quy đổi tiền tệ VND, USD, EUR, JPY…</string>
     <string name="smart_tool_split">Chia bill</string>
     <string name="smart_tool_split_desc">Chia đều hóa đơn theo người / món</string>
-    <string name="smart_tool_safety">An toàn</string>
+    <string name="smart_tool_safety">Cảnh báo lừa đảo</string>
     <string name="smart_tool_safety_desc">Kiểm tra link, website mã QR an toàn</string>
     <string name="smart_tool_together">Nhóm ăn</string>
     <string name="smart_tool_together_desc">Chọn địa điểm ăn uống phù hợp nhóm bạn</string>

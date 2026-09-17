@@ -50,6 +50,7 @@ export const UNTRUSTED_SOURCES = [
   'user_memory',         // LLM-extracted memory, persisted per user
   'calendar_events',     // Google Calendar — third parties can write this
   'user_location',       // client-supplied address label
+  'scam_message',        // a suspicious message the user pasted (or OCR'd from a screenshot) for Scam Shield to ANALYZE — by definition adversarial text
 ] as const
 
 export type UntrustedSource = (typeof UNTRUSTED_SOURCES)[number]

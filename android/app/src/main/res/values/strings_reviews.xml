@@ -40,8 +40,6 @@
     <string name="reviews_composer_using_sound">Using: %1$s</string>
     <string name="reviews_composer_remove_sound">Remove sound</string>
     <string name="reviews_composer_add_music">Add music</string>
-    <string name="reviews_notification_banner_title">Tappy\'s picks for today</string>
-    <string name="reviews_notification_banner_subtext">3 spots your friends love are open near you</string>
     <string name="reviews_notification_section_just_now">JUST NOW</string>
     <string name="reviews_notification_section_today">TODAY</string>
     <string name="reviews_notification_section_this_week">THIS WEEK</string>
@@ -67,7 +65,6 @@
     <string name="reviews_notifications_error_title">Couldn\'t load notifications</string>
     <string name="reviews_notification_empty_title">No notifications yet</string>
     <string name="reviews_notification_empty_message">Notifications will appear when someone interacts with your posts.</string>
-    <string name="reviews_notification_others">and %1$d more</string>
 
     <!-- Overflow menu -->
     <string name="reviews_overflow_more_options">More options</string>
@@ -179,4 +176,8 @@
     <string name="reviews_sound_original">Original sound - %1$s</string>
     <string name="reviews_sound_attached">Attached sound</string>
     <string name="reviews_creator_open_profile">Open the profile of %1$s</string>
+    <string name="reviews_likes_title">Likes</string>
+    <string name="reviews_likes_empty">No likes on this post yet</string>
+    <string name="reviews_likes_error">Couldn\'t load the like list</string>
+    <string name="reviews_likes_more">Show more</string>
 </resources>

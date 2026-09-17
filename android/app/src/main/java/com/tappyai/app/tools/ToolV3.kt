@@ -180,6 +180,8 @@ fun ToolHero(
     mascotSize: Dp = 176.dp,
     sceneHeight: Dp = 168.dp,
     scene: (@Composable BoxScope.() -> Unit)? = null,
+    /** Content under the scene, still inside the hero card (the Scam Shield feature tiles, `.v3-scam-feat`). */
+    footer: (@Composable ColumnScope.() -> Unit)? = null,
 ) {
     val shape = RoundedCornerShape(28.dp)
     Column(
@@ -282,6 +284,7 @@ fun ToolHero(
                 )
             }
         }
+        footer?.invoke(this)
     }
 }
 

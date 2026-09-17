@@ -3,6 +3,7 @@ package com.tappyai.core.designsystem.component
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -10,8 +11,15 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreviewKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.semantics.error
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -25,6 +33,14 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  * Error text is exposed both visually (helper text below) and to accessibility services via
  * `semantics { error(...) }` so TalkBack announces the error, not just shows red text.
  */
+/**
+ * Whether a key event is the Enter that submits: a key-DOWN of Enter (main or numpad) without Shift.
+ * Shift+Enter is the line break, as on the web composer. Pure, so the rule is unit-testable
+ * without a native key event.
+ */
+fun enterSubmits(key: Key, type: KeyEventType, shiftPressed: Boolean): Boolean =
+    type == KeyEventType.KeyDown && (key == Key.Enter || key == Key.NumPadEnter) && !shiftPressed
+
 /**
  * The [androidx.compose.ui.text.input.TextFieldValue] overload — for fields that must survive IME
  * COMPOSITION.
@@ -54,6 +70,19 @@ fun TappyTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     keyboardType: KeyboardType = KeyboardType.Text,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    /**
+     * When set, ENTER SUBMITS instead of breaking the line — the way the web composer sends.
+     *
+     * Two paths reach it, because Android has two Enters: the soft keyboard's action key (the IME
+     * action becomes Send, so Gboard draws a send key and fires [KeyboardActions.onSend]) and a
+     * hardware/Bluetooth/emulator-host Enter, which never goes through the IME action and would
+     * otherwise be typed into a multi-line field as a newline. Shift+Enter still breaks the line,
+     * as on web. Null keeps the field's default behaviour (Enter = newline on a multi-line field).
+     *
+     * Measured on Pixel_8 (UAT 2026-09-12): with `singleLine = false` and no action, both Enters
+     * inserted a newline and only the send arrow sent.
+     */
+    onSubmit: (() -> Unit)? = null,
 ) {
     val isError = errorText != null
 
@@ -63,7 +92,17 @@ fun TappyTextField(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .semantics { if (isError) error(errorText!!) },
+                .semantics { if (isError) error(errorText!!) }
+                .then(
+                    if (onSubmit != null) {
+                        Modifier.onPreviewKeyEvent { event ->
+                            if (enterSubmits(event.key, event.type, event.isShiftPressed)) {
+                                onSubmit()
+                                true
+                            } else false
+                        }
+                    } else Modifier,
+                ),
             enabled = enabled,
             isError = isError,
             singleLine = singleLine,
@@ -72,7 +111,11 @@ fun TappyTextField(
             label = label?.let { { Text(it) } },
             placeholder = placeholder?.let { { Text(it) } },
             shape = TappyShapes.input,
-            keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
+                imeAction = if (onSubmit != null) ImeAction.Send else ImeAction.Default,
+            ),
+            keyboardActions = KeyboardActions(onSend = { onSubmit?.invoke() }),
             visualTransformation = visualTransformation,
             textStyle = MaterialTheme.typography.bodyMedium,
             colors = OutlinedTextFieldDefaults.colors(),

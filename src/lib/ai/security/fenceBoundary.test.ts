@@ -21,6 +21,8 @@ const PRODUCERS: Array<[string, string]> = [
   ['stored preferences + GPS label', 'src/lib/ai/promptBuilder.ts'],
   ['calendar events', 'src/lib/integrations/googleCalendar.ts'],
   ['client preferences', 'src/app/api/chat/route.ts'],
+  // The suspicious message Scam Shield is asked to analyze — adversarial by definition.
+  ['scam message', 'src/lib/scam-shield/message/ai/prompt.ts'],
 ]
 
 describe('the fence is the single implementation', () => {

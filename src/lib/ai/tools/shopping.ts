@@ -16,6 +16,21 @@ export async function searchProducts(query: string, lang = 'vi') {
   ]
 
   let result: unknown
+  /**
+   * `/shopping` ANSWERED, and the answer was "no listings".
+   *
+   * 🚨 THE SAME REQUEST WAS BOUGHT TWICE (Pass 2, 2026-09-13). The organic
+   * fallback below opens with `serperShopping(query)` — the identical body
+   * ({q, gl, hl, num: 20}) the block underneath has just sent. When that first
+   * call returned an EMPTY array, the second could not change the turn:
+   * `hasStructured` is false either way and `shopping_results` is omitted either
+   * way. One billed request, zero information.
+   *
+   * Only a definitive empty answer sets this. A `null` (timeout, non-2xx, no key)
+   * leaves it false, so the fallback's attempt still runs exactly as before — a
+   * failure is not an answer, and a retry that can succeed is kept.
+   */
+  let structuredAnsweredEmpty = false
 
   // ── Shopping listings first ───────────────────────────────────────────────
   // Google Shopping returns a SELLER and a PRICE per row; web search returns
@@ -55,6 +70,7 @@ export async function searchProducts(query: string, lang = 'vi') {
       setCache(cacheKey, result, 15 * 60 * 1000)
       return result
     }
+    structuredAnsweredEmpty = rows !== null
   } catch {
     // fall through to the web-search path below
   }
@@ -66,7 +82,9 @@ export async function searchProducts(query: string, lang = 'vi') {
     // shop-info/direct-link enrichment the prompt rules already depend on —
     // removing them would change shipped behaviour beyond this task's scope.
     const [shoppingRecords, searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
-      serperShopping(query),
+      // Not re-asked when the provider has already said "no listings" — see
+      // `structuredAnsweredEmpty`. An empty array here is what that answer was.
+      structuredAnsweredEmpty ? Promise.resolve([] as Awaited<ReturnType<typeof serperShopping>>) : serperShopping(query),
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
       serperSearch(query + ' shop website địa chỉ facebook'),

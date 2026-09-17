@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
+import com.tappyai.app.profile.data.ShareHistoryRecorder
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.ReviewSourceType
@@ -62,7 +63,13 @@ internal suspend fun shareReview(context: Context, review: Review) {
             type = "text/plain"
         }
     }
-    val chooser = Intent.createChooser(send, context.getString(R.string.reviews_action_share)).apply {
+    // "Đã share" history: the chooser tells this sender which app was chosen — a completed share.
+    // A dismissed sheet reports nothing and records nothing. See ShareHistoryRecorder.
+    val chooser = Intent.createChooser(
+        send,
+        context.getString(R.string.reviews_action_share),
+        ShareHistoryRecorder.chooserSender(context, review.id),
+    ).apply {
         // The grant must ride on the chooser too: it is the chooser that starts the chosen app.
         if (stream != null) addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }

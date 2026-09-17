@@ -109,6 +109,12 @@ const EXEMPT: Record<string, string> = {
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
+  // Analyze Message. Anonymous use is a product feature: metered per verified identity (or per IP
+  // for an identity-less guest) through the shared AI question quota — ANON_DAILY_LIMIT per VN
+  // day on this branch, the same allowance chat gives a visitor — plus a per-IP burst cap; the
+  // deterministic link checks it runs are the same ones scam-shield/check already serves
+  // anonymously. See lib/ai/quota/aiQuestionQuota.ts.
+  'scam-shield/analyze': 'anonymous AI analysis is a product feature; ANON_DAILY_LIMIT/day per identity via the shared AI question quota, burst-capped',
   'translate': 'anonymous tool; rate-limited',
   'scan': 'anonymous tool',
   'viet-content': 'anonymous tool; rate-limited',

@@ -39,11 +39,6 @@
     <string name="tool_split_chip_tip">Tip tùy chỉnh</string>
     <string name="tool_split_chip_modes">Chia đều hoặc theo món</string>
 
-    <!-- An toàn (/scam-shield) -->
-    <string name="tool_scam_eyebrow">Duyệt web an toàn hơn</string>
-    <string name="tool_scam_title1">Kiểm tra an toàn</string>
-    <string name="tool_scam_title2">trước khi truy cập</string>
-    <string name="tool_scam_body">Tappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — kiểm tra trước, mở sau.</string>
 
     <!-- Nhóm ăn (/group/new) -->
     <string name="tool_group_eyebrow">Tạo nhóm với TappyAI</string>

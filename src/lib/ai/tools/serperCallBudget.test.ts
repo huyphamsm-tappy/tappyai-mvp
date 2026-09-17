@@ -239,3 +239,87 @@ describe('nothing downstream lost its data', () => {
     process.env.SERPER_API_KEY = 'test-key-not-a-real-secret'
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PASS 2 (2026-09-13): the /shopping "no listings" turn was buying the SAME
+// request twice.
+//
+// `searchProducts` asks `/shopping` first (num: 20). When the provider answers
+// with ZERO listings it falls through to the organic path — which opened with
+// `serperShopping(query)` again: the identical body ({q, gl, hl, num: 20}) to an
+// endpoint that had just said "nothing", and whose answer cannot change what the
+// turn returns (`hasStructured` is false either way). One billed request for no
+// information. A FAILED first attempt (null: timeout / non-2xx) is deliberately
+// NOT covered here — that retry can still succeed, and its behaviour is kept.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Re-stub so `/shopping` answers, but with no listings; everything else as `respond`. */
+function stubShoppingEmpty() {
+  vi.stubGlobal('fetch', vi.fn(async (input: unknown, init?: { body?: string }) => {
+    const url = typeof input === 'string' ? input : String((input as { url?: string })?.url ?? input)
+    if (url.includes('serper.dev/shopping')) {
+      counts.shopping++
+      return new Response(JSON.stringify({ shopping: [] }), { status: 200 })
+    }
+    if (url.includes('serper.dev/search')) {
+      counts.search++; queries.push(String(init?.body ?? ''))
+      // A direct Shopee product page, so the organic path has a row that survives
+      // its own validity filter and the fallback's full shape can be asserted.
+      return new Response(JSON.stringify({
+        organic: [{ title: 'Sản phẩm probe 128GB', link: 'https://shopee.vn/san-pham-probe-i.123.456', snippet: '₫1.290.000' }],
+      }), { status: 200 })
+    }
+    if (url.includes('serper.dev/images')) { counts.images++; queries.push(String(init?.body ?? '')) }
+    else counts.other++
+    return respond(url)
+  }))
+}
+
+describe('🚨 a /shopping answer of "no listings" is paid for ONCE', () => {
+  it('the organic fallback does not re-buy the identical /shopping request', async () => {
+    stubShoppingEmpty()
+    const { searchProducts } = await import('./shopping')
+    const r = await searchProducts('san pham empty-shopping-probe') as {
+      search_results?: unknown[]; shopping_results?: unknown[]; shop_info_results?: unknown[]; links?: unknown[]
+    }
+    console.log('[budget] SHOP-EMPTY', JSON.stringify(counts))
+    // Exactly one /shopping request: the first answered, and "nothing" is an answer.
+    expect(counts.shopping).toBe(1)
+    // The organic fallback still runs in full — three /search and the per-row
+    // photo lookup, unchanged.
+    expect(counts.search).toBe(3)
+    expect(counts.images).toBe(1)
+    // And the turn's shape is the fallback's shape: organic rows (with photo),
+    // shop info, the three marketplace links, and NO structured field (there
+    // were no listings — the same as when the second request was still made).
+    expect(r.shopping_results).toBeUndefined()
+    const rows = r.search_results as Array<Record<string, unknown>> | undefined
+    expect(Array.isArray(rows) && rows.length > 0).toBe(true)
+    expect(rows![0].link).toBe('https://shopee.vn/san-pham-probe-i.123.456')
+    expect(rows![0].photo_url).toBeDefined()
+    expect(Array.isArray(r.shop_info_results) && r.shop_info_results.length > 0).toBe(true)
+    expect(r.links).toHaveLength(3)
+  })
+
+  it('a FAILED first /shopping attempt keeps its retry — a timeout is not an answer', async () => {
+    let shoppingCalls = 0
+    vi.stubGlobal('fetch', vi.fn(async (input: unknown) => {
+      const url = typeof input === 'string' ? input : String((input as { url?: string })?.url ?? input)
+      if (url.includes('serper.dev/shopping')) {
+        counts.shopping++
+        // First attempt: provider error (non-2xx → serperShopping returns null).
+        // Second: it recovers. Today's behaviour is that the second attempt is made.
+        if (++shoppingCalls === 1) return new Response('{"message":"upstream"}', { status: 502 })
+        return respond(url)
+      }
+      if (url.includes('serper.dev/search')) counts.search++
+      else if (url.includes('serper.dev/images')) counts.images++
+      else counts.other++
+      return respond(url)
+    }))
+    const { searchProducts } = await import('./shopping')
+    const r = await searchProducts('san pham failed-shopping-probe') as { shopping_results?: unknown[] }
+    expect(counts.shopping).toBe(2)
+    expect(Array.isArray(r.shopping_results) && r.shopping_results.length > 0).toBe(true)
+  })
+})

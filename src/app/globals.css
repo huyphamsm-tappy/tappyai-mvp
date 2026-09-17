@@ -1081,3 +1081,174 @@
 .v3-tile:hover { border-color: var(--v3-border-strong); transform: translateY(-1px); }
 .v3-scroll-x { overflow-x: auto; scrollbar-width: none; }
 .v3-scroll-x::-webkit-scrollbar { display: none; }
+
+/* ── Scam Shield (/scam-shield) — the security destination skin ───────────
+   Same family as the other V3 destinations: one framed surface, a hero with
+   Tappy (the owner's `recommendation` pose — the shield), pill tabs with the
+   brand active state, and one wide input. Paint only — every request, every
+   error string and all six verdict levels stay exactly where they were.
+
+   🚨 The floating chips in the hero are ILLUSTRATION: icon-only, aria-hidden,
+   no verdict words. The only verdict on this page is the one the engine
+   returns, rendered by `ScamShieldResult`. */
+.v3-scam-frame {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border);
+  border-radius: 24px;
+}
+.dark .v3-scam-frame {
+  background-color: #0B1224;
+  border-color: rgba(76, 121, 255, 0.22);
+}
+@media (max-width: 639px) {
+  .v3-scam-frame, .dark .v3-scam-frame { background-color: transparent; border-color: transparent; padding: 0; }
+}
+/* The header's shield tile and the primary CTA share the brand gradient. */
+.v3-scam-brand {
+  color: #FFFFFF;
+  background-image: linear-gradient(135deg, #2F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 14px 30px -14px rgba(47, 107, 255, 0.8);
+}
+.v3-scam-hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 22px;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  color: #FFFFFF;
+  background-image:
+    radial-gradient(60% 90% at 78% 30%, rgba(59, 130, 246, 0.42), transparent 60%),
+    radial-gradient(50% 70% at 20% 100%, rgba(109, 40, 217, 0.35), transparent 60%),
+    linear-gradient(160deg, #0A1233 0%, #101B4D 55%, #14124A 100%);
+  box-shadow: 0 30px 70px -40px rgba(47, 107, 255, 0.9);
+}
+.v3-scam-hero-muted { color: rgba(226, 232, 255, 0.86); }
+.v3-scam-hero-accent {
+  background-image: linear-gradient(90deg, #A78BFA 0%, #60A5FA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.v3-scam-eyebrow {
+  background-color: rgba(59, 130, 246, 0.16);
+  border: 1px solid rgba(147, 197, 253, 0.35);
+  color: #BFDBFE;
+}
+/* Static star-field behind the scene. */
+.v3-scam-stars {
+  position: absolute; inset: 0; pointer-events: none; opacity: 0.7;
+  background-image:
+    radial-gradient(1px 1px at 8% 30%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1.5px 1.5px at 30% 12%, rgba(255, 255, 255, 0.8), transparent 55%),
+    radial-gradient(1px 1px at 55% 80%, rgba(255, 255, 255, 0.6), transparent 55%),
+    radial-gradient(1.5px 1.5px at 70% 22%, rgba(255, 255, 255, 0.9), transparent 55%),
+    radial-gradient(1px 1px at 88% 66%, rgba(255, 255, 255, 0.7), transparent 55%),
+    radial-gradient(1px 1px at 94% 18%, rgba(255, 255, 255, 0.8), transparent 55%);
+}
+/* A globe outline and an orbit behind Tappy. */
+.v3-scam-globe {
+  position: absolute; border-radius: 9999px; pointer-events: none;
+  border: 1px solid rgba(147, 197, 253, 0.30);
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.25), transparent 70%),
+    repeating-linear-gradient(90deg, rgba(147, 197, 253, 0.10) 0 1px, transparent 1px 34px),
+    repeating-linear-gradient(0deg, rgba(147, 197, 253, 0.10) 0 1px, transparent 1px 34px);
+  box-shadow: 0 0 60px 10px rgba(59, 130, 246, 0.25);
+}
+.v3-scam-orbit {
+  position: absolute; border-radius: 9999px; pointer-events: none;
+  border: 1px solid rgba(167, 139, 250, 0.35);
+  transform: rotate(-12deg) scaleY(0.42);
+}
+/* Illustration chips — icon-only. */
+.v3-scam-float {
+  position: absolute;
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 12px; padding: 8px 12px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.01em;
+  border: 1px solid var(--sf-border);
+  background-color: var(--sf-bg);
+  color: var(--sf-fg);
+  box-shadow: 0 16px 30px -18px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+.v3-scam-float[data-tone="ok"]    { --sf-bg: rgba(16, 185, 129, 0.22); --sf-border: rgba(52, 211, 153, 0.55); --sf-fg: #D1FAE5; }
+.v3-scam-float[data-tone="risk"]  { --sf-bg: rgba(244, 63, 94, 0.22);  --sf-border: rgba(251, 113, 133, 0.55); --sf-fg: #FFE4E6; }
+.v3-scam-float[data-tone="https"] { --sf-bg: rgba(99, 102, 241, 0.26); --sf-border: rgba(165, 180, 252, 0.55); --sf-fg: #E0E7FF; }
+/* Capability tiles under the hero copy. */
+.v3-scam-feat {
+  display: flex; align-items: center; gap: 12px;
+  border-radius: 16px; padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background-color: rgba(8, 12, 40, 0.45);
+  color: #FFFFFF;
+}
+.v3-scam-feat-desc { color: rgba(226, 232, 255, 0.72); }
+.v3-scam-feat-icon {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 12px;
+  background-color: var(--sf-soft); color: var(--sf-fg);
+}
+.v3-scam-feat[data-tone="rose"]    { --sf-soft: rgba(251, 113, 133, 0.18); --sf-fg: #FDA4AF; }
+.v3-scam-feat[data-tone="emerald"] { --sf-soft: rgba(52, 211, 153, 0.18);  --sf-fg: #6EE7B7; }
+.v3-scam-feat[data-tone="blue"]    { --sf-soft: rgba(96, 165, 250, 0.20);  --sf-fg: #93C5FD; }
+.v3-scam-feat[data-tone="violet"]  { --sf-soft: rgba(167, 139, 250, 0.20); --sf-fg: #C4B5FD; }
+/* The tool card: tabs on top, then the input row. */
+.v3-scam-tool {
+  border-radius: 20px;
+  border: 1px solid var(--v3-border);
+  background-color: var(--v3-panel-elevated);
+}
+.dark .v3-scam-tool { background-color: rgba(255, 255, 255, 0.035); border-color: rgba(255, 255, 255, 0.10); }
+.v3-scam-tab {
+  font-size: 13.5px; font-weight: 600; padding: 10px 16px; min-height: 44px;
+}
+.v3-scam-tab:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-scam-tab.v3-chip-active {
+  color: #FFFFFF; border-color: transparent; background-color: transparent;
+  background-image: linear-gradient(135deg, #2F6BFF 0%, #6D28D9 100%);
+  box-shadow: 0 10px 24px -12px rgba(47, 107, 255, 0.8);
+}
+.v3-scam-input {
+  background-color: var(--v3-panel);
+  border: 1px solid var(--v3-border-strong);
+  color: var(--v3-fg);
+  transition: border-color 150ms, box-shadow 150ms;
+}
+.v3-scam-input::placeholder { color: var(--v3-fg-muted); opacity: 1; }
+.v3-scam-input:focus { border-color: var(--v3-accent); outline: none; box-shadow: 0 0 0 3px var(--v3-accent-soft); }
+.dark .v3-scam-input { background-color: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.14); }
+.v3-scam-cta { transition: filter 150ms, transform 120ms; }
+.v3-scam-cta:hover:not(:disabled) { filter: brightness(1.08); }
+.v3-scam-cta:active:not(:disabled) { transform: scale(0.98); }
+.v3-scam-cta:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 2px; }
+.v3-scam-drop {
+  border: 1px dashed var(--v3-border-strong);
+  background-color: var(--v3-panel);
+  color: var(--v3-fg-muted);
+  transition: border-color 150ms, background-color 150ms;
+}
+.dark .v3-scam-drop { background-color: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.18); }
+.v3-scam-drop:hover:not(:disabled) { border-color: var(--v3-accent); }
+.v3-scam-drop:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+/* History rows: the panel surface, verdict badge unchanged. */
+.v3-scam-row {
+  border-radius: 14px; border: 1px solid transparent;
+  background-color: var(--v3-panel);
+  transition: background-color 150ms, border-color 150ms;
+}
+.dark .v3-scam-row { background-color: rgba(255, 255, 255, 0.03); }
+.v3-scam-row:hover:not(:disabled) { border-color: var(--v3-border-strong); }
+.v3-scam-row:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; }
+.v3-scam-seeall { color: var(--v3-accent); }
+.v3-scam-seeall svg { transition: transform 150ms; }
+.v3-scam-seeall:hover svg { transform: translateX(3px); }
+.v3-scam-seeall:focus-visible { outline: 2px solid var(--v3-accent); outline-offset: 2px; border-radius: 8px; }
+/* Tappy breathes, gently, unless motion is reduced. */
+@keyframes v3-scam-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.v3-scam-mascot { animation: v3-scam-float 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .v3-scam-mascot { animation: none; }
+  .v3-scam-cta, .v3-scam-row, .v3-scam-input, .v3-scam-drop, .v3-scam-seeall svg { transition: none; }
+  .v3-scam-seeall:hover svg, .v3-scam-cta:active:not(:disabled) { transform: none; }
+}

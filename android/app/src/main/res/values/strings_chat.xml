@@ -138,6 +138,31 @@
     <string name="shopping_decision_options_title">Your options</string>
     <string name="shopping_decision_other_options">Other options</string>
     <string name="shopping_decision_view">View</string>
+    <!-- Shopping information parity (web w5/shoppingDecision.ts + reasonText.ts) -->
+    <string name="shopping_decision_rating_line">%1$s · %2$s reviews</string>
+    <string name="shopping_decision_rating_only">%1$s</string>
+    <string name="shopping_decision_view_on">View on %1$s</string>
+    <string name="shopping_decision_view_on_search">Search on %1$s</string>
+    <string name="shopping_spec_chip">%1$s</string>
+    <string name="shopping_spec_ram">%1$sGB RAM</string>
+    <string name="shopping_spec_storage">%1$sGB storage</string>
+    <string name="shopping_spec_size">%1$s</string>
+    <string name="shopping_condition_dealer_official">Authorised dealer</string>
+    <string name="shopping_condition_warranty_official">Official warranty</string>
+    <string name="shopping_condition_genuine">Genuine</string>
+    <string name="shopping_condition_official">Official</string>
+    <string name="shopping_condition_like_new">Like new</string>
+    <string name="shopping_condition_refurbished">Refurbished</string>
+    <string name="shopping_condition_sealed">Sealed</string>
+    <string name="shopping_condition_grade_high">Grade 99%</string>
+    <string name="shopping_condition_used">Used</string>
+    <string name="shopping_reason_rating">rated %1$s</string>
+    <string name="shopping_reason_review_count">%1$s reviews</string>
+    <string name="shopping_reason_price">priced %1$s</string>
+    <string name="shopping_reason_distance">%1$s km away</string>
+    <string name="shopping_reason_stars">%1$s-star</string>
+    <string name="shopping_reason_eta">%1$s min to pickup</string>
+    <string name="shopping_reason_direct_page">direct booking page</string>
 
     <!-- P4-06 — comparison (DD-005) and confirmation (DD-006). An unknown value is stated as
          unknown; a recommendation always carries its reason. -->
@@ -167,16 +192,16 @@
     <string name="place_card_closed_now">closed now</string>
     <string name="place_card_away">%1$s km away</string>
     <string name="place_card_trade_off">Trade-off</string>
-    <string name="place_action_maps">View map</string>
+    <string name="place_action_maps">Open in Maps</string>
     <string name="place_action_directions">Directions</string>
     <string name="place_action_website">Website</string>
     <string name="place_action_order">Order</string>
     <string name="place_action_delivery">Order delivery</string>
-    <string name="place_action_booking">Book a room</string>
+    <string name="place_action_booking">Book</string>
     <string name="place_action_reservation">Reserve</string>
-    <string name="place_action_ticket">Buy tickets</string>
+    <string name="place_action_ticket">Tickets</string>
     <string name="place_action_call">Call</string>
-    <string name="place_action_review">See reviews</string>
+    <string name="place_action_review">Read reviews</string>
     <string name="place_action_social">Social page</string>
     <string name="place_action_open">Open</string>
     <string name="place_action_search_on">Search on %1$s</string>
@@ -187,6 +212,22 @@
     <string name="place_card_flag_wifi">Wi-Fi</string>
     <string name="place_card_flag_outdoor">Outdoor seating</string>
     <string name="place_card_flag_vegetarian">Vegetarian options</string>
+    <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
+    <string name="place_filter_all">All (%1$d)</string>
+    <string name="place_filter_open">Open now</string>
+    <string name="place_filter_rated">Top rated</string>
+    <string name="place_rank">#%1$d</string>
+    <string name="place_explore_map">See all of these on the map</string>
+    <string name="place_explore_map_hint">Opens Google Maps to explore more places</string>
+    <string name="place_action_review_search_on">Find reviews on %1$s</string>
+    <string name="place_action_review_on">Reviews on %1$s</string>
+    <string name="place_action_review_search_generic">Search reviews</string>
+    <string name="place_action_booking_search_on">Find rooms on %1$s</string>
+    <string name="place_action_ticket_search_on">Find tickets on %1$s</string>
+    <string name="place_action_purchase">View product</string>
+    <string name="place_pager_position">Place %1$d of %2$d</string>
+    <string name="place_card_tappy_rating">Tappy %1$s · %2$d reviews</string>
+    <string name="place_card_why">Why</string>
 
     <!-- V3 (ported from A 77b0bb7): voice listening screen -->
     <string name="voice_listening_cancel">Hủy</string>
