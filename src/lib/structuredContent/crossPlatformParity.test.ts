@@ -21,7 +21,12 @@ import { resolve } from 'node:path'
  */
 
 const root = process.cwd()
-const read = (p: string) => readFileSync(resolve(root, p), 'utf8')
+// 🚨 CRLF-SAFE ON PURPOSE. On a Windows checkout every source file arrives as CRLF, and
+// `stripComments` below works line by line with `.*$` — JS `.` does not match `\r`, so a
+// comment line "// … a \"cheapest\" flag …\r" was never stripped and the "no invented
+// attribute" assertion fired on the very sentence that documents the rule (measured
+// 2026-09-17, the only red test in the app project). Normalise before anything reads it.
+const read = (p: string) => readFileSync(resolve(root, p), 'utf8').replace(/\r\n/g, '\n')
 const has = (p: string) => existsSync(resolve(root, p))
 
 /**
