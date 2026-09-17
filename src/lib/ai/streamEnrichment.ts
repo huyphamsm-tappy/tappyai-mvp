@@ -1662,7 +1662,13 @@ export function applyPlaceEnrichmentStreamFilter(
               }
               // Same rows, two more kinds of evidence — see placeClaimGuard.
               for (const row of (Array.isArray(results) ? results : []) as Array<Record<string, unknown>>) {
-                const rating = row.rating ?? row.google_rating
+                // 🚨 THE RATING EVIDENCE WAS ALWAYS EMPTY. The Google and Serper rows carry the
+                // number as `rating_value` (`google_rating` is the FORMATTED STRING the prompt
+                // reads), so `row.rating ?? row.google_rating` was never a number and
+                // `ratingsByEntity` stayed empty on every real turn. Nobody noticed because v1
+                // never read "4.9⭐" as a score; the G1 replay on the 2026-09-17 capture did
+                // (15/15 turns, `ratingsByEntity: {}` beside a full `reviewCountsByEntity`).
+                const rating = typeof row.rating_value === 'number' ? row.rating_value : (row.rating ?? row.google_rating)
                 const rowName = typeof row.name === 'string' ? row.name : ''
                 if (rowName) snippetPlaceNames.push(rowName)
                 if (typeof rating === 'number') placeRatings.push(rating)
