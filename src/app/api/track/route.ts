@@ -4,6 +4,7 @@ import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { randomUUID } from 'crypto'
+import { ANALYTICS_FORBIDDEN_KEYS, stripForbiddenKeys } from '@/lib/account/userDataClassification'
 
 // Unified analytics ingestion (Analytics v1.1 §8A). Accepts authenticated AND
 // anonymous events, dedups on the client-generated event_id, and is
@@ -36,6 +37,20 @@ const PII_RE = /[\w.+-]+@[\w-]+\.[\w-]{2,}|\+?\d[\d\s().-]{7,}\d/ // email / pho
  */
 const UUID_RE = /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi
 const hasPii = (metadata: unknown) => PII_RE.test(JSON.stringify(metadata ?? {}).replace(UUID_RE, 'uuid'))
+
+// V3 User Data Foundation — the KEY check, alongside the VALUE check above.
+//
+// `PII_RE` matches things that LOOK like an email or a phone number. A date of
+// birth looks like any other date, so no value pattern can find it; a stored
+// age looks like any other small integer. What identifies them is the key they
+// arrive under. Stripping by key is therefore not redundant with PII_RE — the
+// two close opposite halves of the same door.
+//
+// Stripped rather than rejected: analytics is best-effort by design
+// (`tracker.ts` fails silently), so dropping the whole event would turn a
+// privacy guard into silent data loss for the events that are fine. The removed
+// KEY NAMES are logged — never their values — so a client trying to send a date
+// of birth is visible rather than quietly cleaned up forever.
 
 interface IncomingEvent {
   event_id?: string
@@ -86,13 +101,25 @@ export async function POST(req: NextRequest) {
     .filter((e) => JSON.stringify(e).length <= MAX_EVENT_BYTES)
     .filter((e) => !hasPii(e.metadata))
     .filter((e) => user || e.anon_id) // must have an identity
-    .map((e) => ({
+    .map((e) => {
+      // Applied to `metadata` AND `device_context`: both are caller-supplied
+      // JSON that lands in a column verbatim, so both are places a profile row
+      // could be spread into by a well-meaning client.
+      const cleanedMeta = stripForbiddenKeys(e.metadata ?? {}, ANALYTICS_FORBIDDEN_KEYS)
+      const cleanedCtx = stripForbiddenKeys(e.device_context ?? null, ANALYTICS_FORBIDDEN_KEYS)
+      const removed = [...new Set([...cleanedMeta.removed, ...cleanedCtx.removed])]
+      if (removed.length) {
+        console.warn(`[track] dropped disallowed keys from ${e.event_type}: ${removed.join(', ')}`)
+      }
+      return { e, metadata: cleanedMeta.value, device_context: cleanedCtx.value }
+    })
+    .map(({ e, metadata, device_context }) => ({
       event_id: e.event_id || randomUUID(),
       schema_version: typeof e.schema_version === 'number' ? e.schema_version : 1,
       user_id: user?.id ?? null,
       anon_id: e.anon_id ?? null,
       event_type: e.event_type as string,
-      metadata: e.metadata ?? {},
+      metadata,
       is_unknown_event: !KNOWN_TYPES.has(e.event_type as string),
       platform: e.platform ?? null,
       app_version: e.app_version ?? null,
@@ -104,7 +131,7 @@ export async function POST(req: NextRequest) {
       language: e.language ?? null,
       session_id: e.session_id ?? null,
       client_timestamp: e.client_timestamp ?? null,
-      device_context: e.device_context ?? null, // full cross-platform device contract
+      device_context, // full cross-platform device contract, key-filtered above
       created_at: nowIso, // server_timestamp
     }))
 

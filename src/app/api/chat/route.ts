@@ -6,6 +6,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
@@ -47,7 +48,7 @@ import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
-import { buildChatPromptContext } from '@/lib/ai/contextBuilder'
+import { buildChatPromptContext, buildIdentityBlock } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
@@ -296,6 +297,46 @@ export async function POST(req: Request) {
     // auth.uid() on the `authenticated` role, which is exactly what the RPCs
     // key on. Guests are the majority web path and the one that fabricated.
     if (user) evidenceDb = supabase
+
+    // ── V3 User Data Foundation: product access requires an account, then 18+ ──
+    //
+    // Chat is product functionality, so it is gated. The check sits at the very
+    // top of the authenticated path — before memory, preferences, subscription,
+    // quota and any LLM or third-party call — so a refused turn costs nothing,
+    // the same discipline the Module 08 suspension gate already follows below.
+    //
+    // 🚨 BEHAVIOUR CHANGE, stated plainly: anonymous sessions previously reached
+    //    the model under a daily quota. Under the instruction that Chat
+    //    constitutes actual TappyAI usage, they are now refused with
+    //    `auth_required`. The anonymous quota code below is deliberately left
+    //    intact and unreferenced by this branch — deleting it would be an
+    //    unrelated refactor, and it still governs any surface that stays
+    //    anonymous-accessible.
+    if (!user || user.is_anonymous) {
+      return new Response(
+        JSON.stringify({
+          error: 'auth_required',
+          message: serverMessage('auth.accountRequired', requestLocale(req)),
+          upgradeUrl: '/login',
+        }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const ageGate = await getAgeEligibility(supabase)
+    if (ageGate.status !== 'eligible') {
+      return new Response(
+        JSON.stringify({
+          error: ageEligibilityCode(ageGate.status),
+          message: serverMessage(
+            ageGate.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
+            requestLocale(req)
+          ),
+        }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     if (user?.is_anonymous) {
       // Anonymous session minted by POST /api/auth/anonymous. Same Bearer pipeline as logged-in
       // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
@@ -342,8 +383,9 @@ export async function POST(req: Request) {
       //
       // The quota is NOT in this batch any more: it is a SPEND, not a read, and a Pro account
       // must not spend — so it waits for `isPro`, one store round-trip after the batch.
+      // The age band (main #251) rides into the prompt context; the gate itself returned above.
       const [chatContext, calendarBlock, subResult] = await Promise.all([
-        buildChatPromptContext(user.id, supabase),
+        buildChatPromptContext(user.id, supabase, ageGate.ageBand),
         // Calendar keeps its own catch INSIDE the batch. Hoisting it without one
         // would let an integration outage reject the whole Promise.all and take
         // memory, subscription and quota down with it — which the sequential
@@ -365,6 +407,24 @@ export async function POST(req: Request) {
 
       existingMemory = chatContext.memory
       if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
+
+      // V3 User Data Foundation — the canonical identity block (preferred name,
+      // city, age band, gender). Appended to the memory block for the same
+      // reason the calendar block is: it extends the user context the prompt
+      // already carries rather than introducing a second channel into it.
+      //
+      // Before V3 the model received no name at all, so it could not address
+      // the user. The block's contents are allowlisted in `contextBuilder`
+      // against AI_CONTEXT_FIELDS and asserted at runtime — a date of birth
+      // cannot reach here even by accident.
+      //
+      // Written as `+=` rather than the `(memoryBlock || '') + …` form the
+      // calendar append uses, deliberately: `preModelParallel.test.ts` counts
+      // that exact form to assert the calendar block is appended exactly once,
+      // and a second occurrence of it here would break that count while
+      // asserting nothing about this line. `memoryBlock` is initialised to ''
+      // at its declaration, so `+=` needs no null guard.
+      memoryBlock += buildIdentityBlock(chatContext.identity)
       if (chatContext.prefs) { prefBlock = buildPrefBlock(chatContext.prefs); storedPrefs = chatContext.prefs }
       // Appended AFTER the memory block is built, exactly as the sequential
       // version did — calendar events extend the memory block, never replace it.
@@ -1259,6 +1319,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             // have no session and RLS would silently drop the write.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
+              discovery_city: extracted.discovery_city ?? existingMemory?.discovery_city ?? null,
               companions: extracted.companions ?? existingMemory?.companions ?? null,
               timing: extracted.timing ?? existingMemory?.timing ?? null,
               personality: extracted.personality ?? existingMemory?.personality ?? null,

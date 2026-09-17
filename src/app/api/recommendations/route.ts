@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { buildAIContext } from '@/lib/ai/contextBuilder'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
@@ -24,15 +25,36 @@ export async function GET(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
+  // V3 User Data Foundation — personalized recommendations are product
+  // functionality, and they are built from the same profile the gate protects.
+  //
+  // Read once and reused below: the derived band is an input to the AI context,
+  // so asking for it a second time would be a second RPC for a value already in
+  // hand — and two derivations of the same band is how clients come to disagree.
+  const eligibility = await getAgeEligibility(supabase)
+  if (eligibility.status !== 'eligible') {
+    return NextResponse.json(
+      {
+        error: ageEligibilityCode(eligibility.status),
+        message: serverMessage(
+          eligibility.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
+          requestLocale(req)
+        ),
+      },
+      { status: 403 }
+    )
+  }
+
   // 1. Personalization context. If the profile is too low-signal, buildAIContext
   //    returns null — fall back to an empty profile so the engine still ranks by
   //    popularity + freshness (everyone gets sensible results).
-  const built = await buildAIContext(user.id, supabase)
+  const built = await buildAIContext(user.id, supabase, eligibility.ageBand)
   const context: AIContextResult = built ?? {
     version: 1,
     generatedAt: new Date().toISOString(),
     confidence: 0,
     profile: {
+      preferredName: null, ageBand: null, gender: null, country: null,
       city: null, budget: null, favoriteFoods: [], favoriteCategories: [],
       recentInterests: [], travelStyle: [], hiddenTopics: [],
       companions: null, timing: null, personality: null,

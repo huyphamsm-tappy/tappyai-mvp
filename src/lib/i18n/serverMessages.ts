@@ -77,6 +77,29 @@ const MESSAGES = {
     en: 'Sign in to post, comment and follow.',
   },
 
+  // ── 18+ eligibility ────────────────────────────────────────────────────────
+  // Two states, two sentences. "We need your date of birth" and "you may not use
+  // this" are different situations, and a single shared string would tell a user
+  // who has simply never been asked that they have been refused.
+  'age.verificationRequired': {
+    vi: 'Hãy cho chúng tôi biết ngày sinh của bạn để tiếp tục.',
+    en: 'Please tell us your date of birth to continue.',
+  },
+  'age.ineligible': {
+    vi: 'TappyAI chỉ dành cho người từ 18 tuổi trở lên.',
+    en: 'TappyAI is only available to people aged 18 and over.',
+  },
+  // The single self-correction has been used. Says what to do next rather than
+  // restating the refusal.
+  'age.correctionExhausted': {
+    vi: 'Bạn đã thay đổi ngày sinh một lần. Hãy liên hệ hỗ trợ nếu thông tin vẫn chưa đúng.',
+    en: "You've already changed your date of birth once. Please contact support if it's still wrong.",
+  },
+  'age.invalidDate': {
+    vi: 'Ngày sinh không hợp lệ.',
+    en: 'That date of birth is not valid.',
+  },
+
   // Validation
   'validation.invalid': { vi: 'Dữ liệu không hợp lệ', en: 'That data is not valid' },
   'validation.missingFields': { vi: 'Thiếu thông tin bắt buộc', en: 'Some required information is missing' },

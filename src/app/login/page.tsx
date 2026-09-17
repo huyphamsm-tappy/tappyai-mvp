@@ -62,6 +62,12 @@ export default function LoginPage() {
   const [loadingGoogle, setLoadingGoogle] = useState(false)
   const [loadingFacebook, setLoadingFacebook] = useState(false)
   const [loadingZalo, setLoadingZalo] = useState(false)
+  // Consumer email + password. A first-class sign-in method as of 2026-09-10,
+  // kept in its own state so it cannot disturb the OTP block it sits beside.
+  const [pwEmail, setPwEmail] = useState('')
+  const [pwPassword, setPwPassword] = useState('')
+  const [pwBusy, setPwBusy] = useState(false)
+  const [pwError, setPwError] = useState<string | null>(null)
   const [inApp, setInApp] = useState<{ isInApp: boolean; name: string; isAndroid: boolean }>({ isInApp: false, name: '', isAndroid: false })
   // `/login?email=1` reveals the EXISTING email block in a normal browser. Starts
   // false so the server-rendered card is the unchanged V1 card (no hydration
@@ -217,6 +223,32 @@ export default function LoginPage() {
     return dest
   }
 
+  // ── AUTHENTICATE FIRST, THEN AGE (owner decision 2026-09-10) ───────────────
+  //
+  // Every consumer sign-in that completes IN THIS PAGE lands here. OAuth does
+  // not: it leaves the SPA entirely and comes back through `/auth/callback`,
+  // which already runs `getAgeEligibility` and picks the destination. The
+  // in-page methods — email OTP, and now email + password — never touch that
+  // route, so without this they would walk straight past the age decision that
+  // every other entry point makes.
+  //
+  // 🔑 NO ELIGIBILITY LOGIC LIVES HERE, deliberately. This does not read a
+  //    status, does not compare an age and does not decide anything: it routes
+  //    THROUGH `/age-check`, whose server guard runs the same
+  //    `getAgeEligibility()` and forwards an eligible user to `next` without
+  //    rendering. An already-verified user therefore never sees the screen —
+  //    they pass through it. One decision point, not three.
+  //
+  // 🔑 AGE BEFORE ONBOARDING, matching `/auth/callback`'s order. `dest` is
+  //    already onboarding-aware, so it becomes the `next` we hand the gate.
+  //
+  // This is screen ORDER, not enforcement — every product API still refuses an
+  // ineligible caller on its own.
+  const destViaAgeGate = async (): Promise<string> => {
+    const dest = await destWithOnboarding(getReturnDest())
+    return `/age-check?next=${encodeURIComponent(dest)}`
+  }
+
   // ── The ONE email sign-in mechanism ───────────────────────────────────────
   // Both cards on this page — the consumer email block and the Controller card
   // — go through these two functions, so there is exactly one place that asks
@@ -279,7 +311,7 @@ export default function LoginPage() {
     // On success the client sets the session → onAuthStateChange (SIGNED_IN) →
     // the global listener emits auth_login_completed (+ signup if first) with the
     // pending 'email_otp' method.
-    router.replace(await destWithOnboarding(getReturnDest()))
+    router.replace(await destViaAgeGate())
   }
 
   const handleOpenInChrome = () => {
@@ -297,7 +329,53 @@ export default function LoginPage() {
     }
   }
 
-  const anyLoading = loadingGoogle || loadingFacebook || loadingZalo
+  // ── Consumer email + password ─────────────────────────────────────────────
+  //
+  // 🔑 SAME PRIMITIVE THE CONTROLLER USES, SEPARATE CALL SITE. Both reach
+  //    `supabase.auth.signInWithPassword` — one provider, one session
+  //    mechanism, no second authentication system. They are not folded into a
+  //    shared function on purpose: the Controller's sign-in is a corporate
+  //    boundary with its own copy, its own analytics label and its own success
+  //    destination, and threading a "which product" flag through one helper is
+  //    how the two policies eventually get swapped. Consumer changes must not
+  //    be able to reach the Controller's path at all.
+  //
+  // 🔑 SELF-REGISTRATION IS IMPOSSIBLE HERE BY CONSTRUCTION, not by a flag:
+  //    `signInWithPassword` has no "create the user" option. Signing up is
+  //    `/register`, which is linked below and calls `signUp` explicitly.
+  //
+  // 🔑 ONE MESSAGE FOR EVERY REFUSAL. The provider's own text is deliberately
+  //    NOT forwarded — "user not found" vs "wrong password" would make this
+  //    form an account-enumeration oracle. Same rule the Controller card
+  //    already applies.
+  //
+  // NO "forgot password" control, and that is a decision rather than an
+  // omission (Owner, 2026-09-10): the product has no recovery flow —
+  // `resetPasswordForEmail` has zero call sites — and a link that leads nowhere
+  // promises a way back in that does not exist.
+  const handlePasswordSignIn = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const email = pwEmail.trim()
+    if (!email || !pwPassword || pwBusy) return
+
+    setPwError(null)
+    setPwBusy(true)
+    markAuthPending('email')
+    const { error } = await supabase.auth.signInWithPassword({ email, password: pwPassword })
+
+    if (error) {
+      setPwBusy(false)
+      emitAuthLoginFailed('email', 'invalid_credentials')
+      setPwError(t('login.errorSignInFailed'))
+      return
+    }
+    // Session is set → onAuthStateChange (SIGNED_IN) → the global listener emits
+    // auth_login_completed with the pending 'email' method. Busy stays true
+    // through the redirect so the button cannot be pressed twice.
+    router.replace(await destViaAgeGate())
+  }
+
+  const anyLoading = loadingGoogle || loadingFacebook || loadingZalo || pwBusy
 
   // ── Controller sign-in — EMAIL + PASSWORD ─────────────────────────────────
   // Owner correction, 2026-08-21. Controller V2 is a corporate back-office
@@ -664,7 +742,76 @@ export default function LoginPage() {
                       <div className="flex-1 h-px bg-gray-200 dark:bg-gray-800" />
                     </div>
 
-                    {/* Guest — browse anonymously (ANON_LIFETIME_LIMIT AI questions for the lifetime of the identity, read-only social) */}
+                    {/* Email + password — a first-class consumer method (2026-09-10)
+                        and the DEFAULT email path. Gated on the same product config
+                        every other provider reads, so what the card offers stays in
+                        one place.
+
+                        🔑 MUTUALLY EXCLUSIVE WITH THE OTP BLOCK, deliberately. Both
+                        are "sign in with your email address", and rendering the two
+                        together puts two email fields in one card — the visitor has
+                        to work out which of them their password belongs to. So the
+                        card offers exactly one email method at a time: password
+                        normally, and the one-time code on the paths that exist
+                        precisely because something else is unavailable — inside a
+                        chat-app webview, or via an explicit `?email=1`. That keeps
+                        the in-app fallback behaving exactly as it did. */}
+                    {AUTH_PROVIDERS.email.enabled && !(SHOW_EMAIL_OTP_IN_CARD || showEmailEntry) && (
+                      <form onSubmit={handlePasswordSignIn} className="space-y-3">
+                        <div>
+                          <label htmlFor="login-email" className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1.5">
+                            {t('register.email')}
+                          </label>
+                          <input
+                            id="login-email"
+                            type="email"
+                            inputMode="email"
+                            autoComplete="email"
+                            value={pwEmail}
+                            onChange={(e) => setPwEmail(e.target.value)}
+                            placeholder={t('register.emailPlaceholder')}
+                            disabled={anyLoading}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-70"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="login-password" className="block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1.5">
+                            {t('register.password')}
+                          </label>
+                          <input
+                            id="login-password"
+                            type="password"
+                            autoComplete="current-password"
+                            value={pwPassword}
+                            onChange={(e) => setPwPassword(e.target.value)}
+                            placeholder={t('register.passwordPlaceholder')}
+                            disabled={anyLoading}
+                            className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 disabled:opacity-70"
+                          />
+                        </div>
+
+                        {pwError && (
+                          <p role="alert" className="text-xs text-red-600 dark:text-red-400">{pwError}</p>
+                        )}
+
+                        <button
+                          type="submit"
+                          disabled={anyLoading || !pwEmail.trim() || !pwPassword}
+                          className="w-full bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold py-3.5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                          {pwBusy && <Loader2 size={20} className="animate-spin" />}
+                          {pwBusy ? t('login.signingIn') : t('home.login')}
+                        </button>
+
+                        <p className="text-center text-xs text-content-secondary">
+                          <Link href="/register" className="text-link hover:underline font-medium">
+                            {t('register.submit')}
+                          </Link>
+                        </p>
+                      </form>
+                    )}
+
+                    {/* Guest — browse anonymously (ANON_LIFETIME_LIMIT AI questions for the lifetime of the identity, read-only social; chat itself requires an account — main #251) */}
                     <button
                       onClick={handleGuest}
                       disabled={anyLoading}

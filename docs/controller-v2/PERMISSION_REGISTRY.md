@@ -47,6 +47,28 @@ Legend — **Cat**: read / write / destructive / security · **Risk**: low / med
 | `users.account.unsuspend` | users | **write** | **medium** | `users.manage` | moderator, admin, super_admin | Return a suspended consumer account to active standing. |
 | `users.account.ban` | users | **destructive** | **critical** | `users.manage` | admin, super_admin | Permanently bar a consumer account. Records the ban and its internal reason; session revocation is a separate operation and is NOT performed by this permission. |
 | `users.account.unban` | users | **write** | **high** | `users.manage` | admin, super_admin | Restore a banned consumer account and clear its ban reason. |
+| `users.date_of_birth.correct` | users | **write** | **critical** | `users.manage` | **super_admin only** | Set the date of birth on a consumer account after its single self-service correction is spent. Write-only: it does NOT confer permission to read a date of birth. |
+
+### Why `users.date_of_birth.correct` is `super_admin` alone
+
+Owner decision, 2026-09-09. A date of birth decides whether an account may
+use an 18+ product at all, so in consequence the operation sits beside
+`users.account.ban` rather than beside a profile edit — but it confers no
+authority over the platform, so it is `write`, not `security` or
+`destructive`. It is deliberately NOT granted to `admin`.
+
+**It is a write-only authority.** It does not carry, and must never be
+extended to carry, permission to READ a date of birth. No PostgREST role
+holds a privilege on `user_demographics.date_of_birth`, `user_age_status()`
+answers only for the caller's own `auth.uid()`, and correcting a value does
+not require seeing it. Adding an admin read to serve a UI would recreate the
+broad exposure [ADR-027](../architecture/ADR-027-user-demographics-isolation.md)
+removed. Full contract:
+[V3_DOB_ADMIN_CORRECTION_PATH.md](../backoffice/phase-reports/V3_DOB_ADMIN_CORRECTION_PATH.md).
+
+The audit entry is written by the SQL function in the same transaction as the
+change, so `POST /api/admin/users/[id]/date-of-birth` does **not** call
+`writeAuditLog` — doing so would produce two entries for one event.
 
 ### Why `users.account.ban` is `destructive` and not `security`
 
@@ -68,7 +90,7 @@ own.
 | `analyst` | `dashboard.home.view`, `analytics.auth.read`, `analytics.activation.read`, `analytics.content.read` | 4 |
 | `moderator` | analyst's 4 + `users.list.read`, `users.detail.read`, `users.account.suspend`, `users.account.unsuspend` | 8 |
 | `admin` | analyst's 4 + `audit.log.read`, `settings.config.read`, all 5 `commerce.deals.*`, `security.sessions.read`, the 4 `users` permissions moderator holds, `users.email.read_full`, `users.ban_reason.read`, `users.account.ban`, `users.account.unban` | 20 |
-| `super_admin` | admin's 20 + all 3 `security.roles.*`, `security.sessions.revoke`, both `security.membership.*` | 26 |
+| `super_admin` | admin's 20 + all 3 `security.roles.*`, `security.sessions.revoke`, both `security.membership.*`, `users.date_of_birth.correct` | 27 |
 | **Platform Owner** | **not applicable** — the Owner bypasses the engine entirely (`OWNER_BYPASS`) and is never resolved against this table | — |
 
 **`moderator` stopped being a copy of `analyst` on 2026-08-20**, by

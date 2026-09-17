@@ -770,7 +770,9 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         // (see resolvePlacePhotos in ./common). place_id and website_uri below
         // are what it resolves from.
         result = {
-          source: 'Google Maps', count: d.places.length,
+          // The count the model reads must describe the rows it was GIVEN, not the rows the
+          // provider offered before the destination guard ran (main #248, kept in the merge).
+          source: 'Google Maps', count: inScope.length,
           results: placesData.map((r) => {
             const coords = readCoords(r)
             const openingHours = readOpeningHours(r)

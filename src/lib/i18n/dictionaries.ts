@@ -85,6 +85,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f4Desc': 'AI agent cá nhân, mọi lúc, mọi nơi.',
     'login.signinTitle': 'Đăng nhập TappyAI',
     'login.signinSubtitle': 'Chọn cách phù hợp nhất để tiếp tục',
+    // ONE message for every email/password refusal — wrong address, wrong
+    // password, no such account. Forwarding the provider's own text would turn
+    // the form into an account-enumeration oracle, so it never is.
+    'login.errorSignInFailed': 'Email hoặc mật khẩu không đúng.',
     'login.continueGuest': 'Tiếp tục với tư cách Khách',
     'login.trustLine': 'Dữ liệu của bạn được an toàn. Chúng tôi không bao giờ đăng gì nếu chưa được phép.',
     'login.statUsers': 'Người dùng hài lòng',
@@ -113,10 +117,15 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'common.skip': 'Bỏ qua',
     'onboarding.welcomeTitle': 'Chào mừng đến với TappyAI! 👋',
     'onboarding.welcomeDesc': 'Cho mình biết bạn quan tâm đến lĩnh vực nào để cá nhân hóa trải nghiệm nhé.',
-    'onboarding.locationTitle': 'Bạn đang ở đâu? 📍',
-    'onboarding.locationDesc': 'Để gợi ý địa điểm sát thực tế hơn với bạn.',
-    'onboarding.otherCity': 'Hoặc nhập thành phố khác...',
+    'onboarding.locationTitle': 'Bạn đang muốn khám phá thành phố nào? 📍',
+    'onboarding.locationDesc': 'TappyAI sẽ giúp bạn tìm những trải nghiệm phù hợp tại nơi bạn quan tâm.',
+    'onboarding.otherCity': 'Nhập tên thành phố hoặc điểm đến khác...',
     'onboarding.start': '🚀 Bắt đầu khám phá',
+    'onboarding.stepInterests': 'Bước 1/2',
+    'onboarding.stepLocation': 'Bước 2/2',
+    'onboarding.tagline': 'Người bạn AI cho ngày vui hơn',
+    'onboarding.mascotBubble': 'Chọn những chủ đề bạn yêu thích nhé! 💙',
+    'onboarding.mascotCaption': 'Khám phá thế giới cùng TappyAI',
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
@@ -337,6 +346,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f4Desc': 'Your personal AI agent, anytime, anywhere.',
     'login.signinTitle': 'Sign in to TappyAI',
     'login.signinSubtitle': 'Choose the best way to continue',
+    'login.errorSignInFailed': 'That email or password is not correct.',
     'login.continueGuest': 'Continue as Guest',
     'login.trustLine': 'Your data is safe with us. We never post without your permission.',
     'login.statUsers': 'Happy Users',
@@ -365,10 +375,15 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'common.skip': 'Skip',
     'onboarding.welcomeTitle': 'Welcome to TappyAI! 👋',
     'onboarding.welcomeDesc': 'Tell us which areas interest you so we can personalize your experience.',
-    'onboarding.locationTitle': 'Where are you? 📍',
-    'onboarding.locationDesc': 'So we can suggest places that fit you better.',
-    'onboarding.otherCity': 'Or type another city...',
+    'onboarding.locationTitle': 'Which city do you want to explore? 📍',
+    'onboarding.locationDesc': 'TappyAI will help you find experiences that fit the place you care about.',
+    'onboarding.otherCity': 'Enter another city or destination...',
     'onboarding.start': '🚀 Start exploring',
+    'onboarding.stepInterests': 'Step 1 of 2',
+    'onboarding.stepLocation': 'Step 2 of 2',
+    'onboarding.tagline': 'Your AI friend for a happier you',
+    'onboarding.mascotBubble': 'Pick the topics you love! 💙',
+    'onboarding.mascotCaption': 'Explore the world with TappyAI',
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',
