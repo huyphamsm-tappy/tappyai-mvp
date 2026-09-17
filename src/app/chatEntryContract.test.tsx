@@ -128,7 +128,10 @@ describe('the receiving side submits the prompt instead of parking it', () => {
 
   it('a completed turn is saved and becomes its own reloadable conversation', () => {
     // send → stream → save → /chat/[id]: the persistence chain, in the route that owns it.
-    expect(chatPage).toMatch(/fetch\('\/api\/conversations'/)
+    // Accepts the age-gate-aware `apiFetch` wrapper (V3 user-data foundation) as well as a
+    // raw `fetch` — both POST the same /api/conversations endpoint; apiFetch only adds the
+    // shared age-refusal redirect on top.
+    expect(chatPage).toMatch(/(?:api)?[Ff]etch\('\/api\/conversations'/)
     expect(chatPage).toMatch(/router\.replace\(`\/chat\/\$\{conv\.id\}`\)/)
   })
 })

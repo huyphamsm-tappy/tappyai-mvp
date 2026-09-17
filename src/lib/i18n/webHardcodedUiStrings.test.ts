@@ -74,6 +74,10 @@ const SEALED = [
  */
 const SEALED_WITH_PERSISTED_VALUES: Record<string, RegExp> = {
   'src/app/profile/preferences/page.tsx': /^\s*\{\s*value:\s*'[^']+',\s*key:\s*'[a-z][A-Za-z.]+'\s*\},?\s*$/,
+  // The 18+ age-check screen (V3 user-data foundation) is fully localized except for the
+  // language toggle, which shows each language's own endonym — 'Tiếng Việt' / 'English' —
+  // and is intentionally never translated. That single locale-aware line is the only carve-out.
+  'src/app/age-check/AgeCheckView.tsx': /'Tiếng Việt'\s*:\s*'English'/,
 }
 
 function walk(dir: string, out: string[] = []): string[] {
