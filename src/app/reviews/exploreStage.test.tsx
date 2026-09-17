@@ -34,21 +34,19 @@ const trackMock = vi.fn()
 vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))
 /** Who is signed in, per test. */
 let sessionUser: { id: string; user_metadata?: Record<string, unknown> } | null = null
-/** What the last 24h of `review_likes` (joined to the review's place) returns, per test. */
-let hotRows: Array<{ reviews: { place_name: string | null } | null }> = []
+/** What `hot_places_24h()` (the place + count aggregate over the last 24h of likes) returns, per test. */
+let hotRows: Array<{ place_name: string | null; like_count: number | string }> = []
+/** Every rpc the stage made — the like rows are owner-read, so the table must never be selected. */
+let rpcCalls: Array<{ fn: string; args: unknown }> = []
 vi.mock('@/lib/supabase/client', () => ({
-  createClient: () => {
-    const q = {
-      select: () => q, gte: () => q, limit: async () => ({ data: hotRows, error: null }),
-    }
-    return {
-      auth: {
-        getUser: async () => ({ data: { user: sessionUser } }),
-        onAuthStateChange: () => ({ data: { subscription: { unsubscribe: vi.fn() } } }),
-      },
-      from: (table: string) => { if (table !== 'review_likes') throw new Error(`unexpected table ${table}`); return q },
-    }
-  },
+  createClient: () => ({
+    auth: {
+      getUser: async () => ({ data: { user: sessionUser } }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
+    from: (table: string) => { throw new Error(`unexpected table ${table}`) },
+    rpc: async (fn: string, args: unknown) => { rpcCalls.push({ fn, args }); if (fn !== 'hot_places_24h') throw new Error(`unexpected rpc ${fn}`); return { data: hotRows, error: null } },
+  }),
 }))
 let unread = 0
 vi.mock('@/components/NotificationProvider', () => ({
@@ -120,7 +118,7 @@ const activeId = () => stage().getAttribute('data-active-review-id')
 const ask = () => document.querySelector<HTMLAnchorElement>('[data-stage-ask]')
 const untilCards = () => waitFor(() => expect(cards().length).toBeGreaterThan(0))
 
-beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0; hotRows = [] })
+beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0; hotRows = []; rpcCalls = [] })
 afterEach(cleanup)
 
 describe('several visible, ONE playing', () => {
@@ -547,16 +545,18 @@ describe('the three-column composition: shell sidebar · stage · right column',
     expect(decodeURIComponent(ask.getAttribute('href')!)).toContain('Cơm tấm Ba Ghiền')
   })
 
-  it('right column: trending places are the last 24h of real likes grouped by place, most liked first', async () => {
+  it('right column: trending places are the last 24h of real likes grouped by place, most liked first — through the aggregate, never the like rows', async () => {
     hotRows = [
-      { reviews: { place_name: 'Phở Lệ' } }, { reviews: { place_name: 'The Workshop' } }, { reviews: { place_name: 'Phở Lệ' } },
-      { reviews: { place_name: 'Chia sẻ' } }, { reviews: null }, { reviews: { place_name: null } },
+      { place_name: 'Phở Lệ', like_count: 2 }, { place_name: 'The Workshop', like_count: '1' },
+      { place_name: 'Chia sẻ', like_count: 9 }, { place_name: null, like_count: 3 },
     ]
     mockFeed(five())
     render(<ExploreStage />)
     await waitFor(() => expect(document.querySelector('[data-xp-trends]')).toBeTruthy())
     const rows = Array.from(document.querySelectorAll('[data-xp-trends] .v3-xp-trend')).map(e => e.textContent)
     expect(rows).toEqual(['1Phở Lệ2 likes', '2The Workshop1 likes'])
+    // `review_likes` is owner-read (20260915b); the panel reads the SECURITY DEFINER aggregate only.
+    expect(rpcCalls.map(c => c.fn)).toEqual(['hot_places_24h'])
   })
 
   it('right column: creators to follow come from the feed itself — not me, not already followed, no duplicates', async () => {

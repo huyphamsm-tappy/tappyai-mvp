@@ -574,8 +574,10 @@ export default function ExploreStage() {
  * Four panels, each drawn only when its REAL source has something to show:
  *   · Suggested for you — `/api/recommendations` (ranked places from real reviews; the
  *     `/recommendations` page's own endpoint). Signed-out visitors get a 401 and no panel.
- *   · Trending today — the last day's most-liked places, the phone feed's own query
- *     (`review_likes` joined to `reviews.place_name`).
+ *   · Trending today — the last day's most-liked places, the phone feed's own source:
+ *     `hot_places_24h()`, a place-name + count aggregate over visible reviews. Since
+ *     `20260915b_review_likes_private.sql` the like rows themselves are owner-read, so the
+ *     aggregate is the only cross-user view of them — and it carries no user id.
  *   · The chat CTA — the app's one entry into Tappy.
  *   · You may like — creators of the clips on stage the viewer does not follow yet, with the
  *     real follow endpoint. There is no "suggested users" API; the feed is the honest source.
@@ -604,20 +606,15 @@ function RightColumn({ rows, me, onFollow, t }: {
 
   useEffect(() => {
     let alive = true
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     ;(async () => {
       try {
-        const { data } = await createClient()
-          .from('review_likes')
-          .select('reviews!inner(place_name)')
-          .gte('created_at', since)
-          .limit(200)
-        const counts = new Map<string, number>()
-        for (const row of (data || []) as Array<{ reviews?: { place_name?: string | null } | null }>) {
-          const name = row.reviews?.place_name
-          if (name && !isShareOnlyName(name)) counts.set(name, (counts.get(name) || 0) + 1)
+        const { data } = await createClient().rpc('hot_places_24h', { p_limit: 10 })
+        const hot: Hot[] = []
+        for (const row of (data || []) as Array<{ place_name?: string | null; like_count?: number | string | null }>) {
+          const name = row.place_name
+          if (name && !isShareOnlyName(name)) hot.push({ place_name: name, count: Number(row.like_count) || 0 })
         }
-        if (alive) setHot(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([place_name, count]) => ({ place_name, count })))
+        if (alive) setHot(hot.slice(0, 5))
       } catch {
         // Best-effort: the panel simply does not render.
       }

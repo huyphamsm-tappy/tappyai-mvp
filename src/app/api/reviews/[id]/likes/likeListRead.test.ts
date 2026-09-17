@@ -27,7 +27,9 @@ const h = vi.hoisted(() => {
     filters: [] as string[],
     /** `from()` targets, so "did it read the notifications table?" is checkable. */
     tables: [] as string[],
-    /** The `.limit()` the like query asked for, and any `.lt()` cursor. */
+    /** Every `rpc()` call — since 20260915b the likers come from `review_likers`, not the table. */
+    rpcs: [] as { fn: string; args: Record<string, unknown> }[],
+    /** The limit the like read asked for, and any cursor. */
     limit: null as number | null,
     lt: null as [string, string] | null,
   }
@@ -59,6 +61,15 @@ const h = vi.hoisted(() => {
 
   const client = {
     from: (table: string) => { state.tables.push(table); return builder(table) },
+    rpc: (fn: string, args: Record<string, unknown>) => {
+      state.rpcs.push({ fn, args })
+      if (fn === 'review_likers') {
+        state.limit = args.p_limit as number
+        state.lt = args.p_before ? ['created_at', String(args.p_before)] : null
+        return Promise.resolve({ data: state.likeRows, error: null })
+      }
+      return Promise.resolve({ data: null, error: { message: `unexpected rpc ${fn}` } })
+    },
   }
 
   return { state, client }
@@ -89,6 +100,7 @@ beforeEach(() => {
   h.state.profiles = []
   h.state.filters = []
   h.state.tables = []
+  h.state.rpcs = []
   h.state.limit = null
   h.state.lt = null
 })
@@ -107,6 +119,7 @@ describe('GET /api/reviews/[id]/likes — access', () => {
     expect(body.error).toBe('not_found')
     // If you may not read the post, you may not enumerate who liked it.
     expect(h.state.tables).not.toContain('review_likes')
+    expect(h.state.rpcs).toHaveLength(0)
   })
 
   it('an anonymous caller can read the list — this is a public read', async () => {
@@ -118,9 +131,13 @@ describe('GET /api/reviews/[id]/likes — access', () => {
 })
 
 describe('GET /api/reviews/[id]/likes — the list', () => {
-  it('🚨 reads review_likes (current state), NEVER notifications (an append-only log)', async () => {
+  it('🚨 reads CURRENT likes through review_likers(), NEVER notifications (an append-only log)', async () => {
     await get()
-    expect(h.state.tables).toContain('review_likes')
+    // The table is owner-read since 20260915b_review_likes_private.sql: the per-review list is the
+    // one cross-user read, and it goes through the review-scoped SECURITY DEFINER function.
+    expect(h.state.tables).not.toContain('review_likes')
+    expect(h.state.rpcs.map(r => r.fn)).toEqual(['review_likers'])
+    expect(h.state.rpcs[0].args).toMatchObject({ p_review_id: REVIEW_ID })
     expect(h.state.tables).not.toContain('notifications')
   })
 

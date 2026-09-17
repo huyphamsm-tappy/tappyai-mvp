@@ -12,6 +12,7 @@ import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
+import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
@@ -580,6 +581,34 @@ export async function POST(req: Request) {
     now: new Date(),
   })
 
+  /**
+   * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
+   *
+   * Gated on the frame, deterministically: a TRAVEL turn whose goal is inform /
+   * recommend / plan, with a destination the city table knows — from the tool's
+   * own `location` argument when it has one, else the user's text. Anything else
+   * (shopping, food-at-home, a hotel PRICE lookup without a city, an unknown
+   * place) asks VnExpress for nothing at all.
+   *
+   * It runs INSIDE the tool's execute(), alongside the live call, so the model
+   * reads it in the same single reasoning pass; it never fails the turn (the
+   * module resolves every failure to an empty list, and an empty list attaches
+   * nothing). The live providers stay authoritative for every dynamic fact — the
+   * items are REVIEW_SUPPORTED and carry no structured field a guard would read.
+   *
+   * ONE retrieval per destination per turn: the SDK runs a step's tool calls
+   * concurrently and a planning turn has up to 8 steps, so several tools may ask
+   * for the supplement — they share one in-flight promise (`createTurnEditorial`).
+   */
+  const turnEditorial = createTurnEditorial()
+  const travelEditorialFor = async (toolLocation?: string | null): Promise<TravelEditorialItem[]> => {
+    const gate = editorialGate(decisionFrame, toolLocation, lastText)
+    if (!gate) return []
+    const travel_editorial = await turnEditorial(gate.destination.term, gate.intent, lang)
+    if (travel_editorial.length) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'vnexpress_travel', destination: gate.destination.term, count: travel_editorial.length }))
+    return travel_editorial
+  }
+
   // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
   // it models what the user wants from the PRODUCT, not what they want from us —
   // and only the route knows which message is the current one.
@@ -1066,7 +1095,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // location the model DID name still wins; this only fills a blank.
           const location = modelLocation ?? exploreClipLocationHint(clipContext)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
-          let r: unknown = await searchPlaces(query, location, type, lang, userLocation)
+          // The editorial supplement runs beside the live search, not after it.
+          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation), travelEditorialFor(location)])
+          let r: unknown = placesResult
           // Explore clip: "this place" is ONE venue. The tool just returned the
           // 8-10 places around the address — as it must for discovery — so the
           // rows are narrowed HERE, deterministically, to the one(s) that carry
@@ -1142,9 +1173,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
           enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
-          return forModel('search_places', pick
+          return forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
+            : result, editorial))
         }
       }) }),
       get_news: tool({
@@ -1215,7 +1246,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => webSearch(query, lang)
+        execute: async ({ query }) => {
+          // A travel turn that reaches for the general search still gets the editorial supplement.
+          const [r, editorial] = await Promise.all([webSearch(query, lang), travelEditorialFor(null)])
+          return withTravelEditorial(r, editorial)
+        }
       }),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
@@ -1247,15 +1282,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
         execute: async ({ location, checkIn, checkOut }) => {
-          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
+          const [r, editorial] = await Promise.all([getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
-          return forModel('get_hotel_prices', pick
+          return forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
+            : result, editorial))
         }
       }),
       get_transport_options: tool({
@@ -1265,7 +1300,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
           mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
         }),
-        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+        execute: async ({ origin, destination, mode }) => {
+          const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
+          return withTravelEditorial(r, editorial)
+        }
       }),
       ...(authedUserId ? {
         save_price_watch: tool({

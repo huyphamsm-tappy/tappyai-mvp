@@ -96,6 +96,9 @@ export default async function ProfilePage() {
       firstName={firstName}
       conversationCount={conversationCount || 0}
       bio={profile?.bio ?? null}
+      // `profiles.cover_url` — `20260915_profile_public_presentation.sql`. `select('*')` above
+      // means this is simply absent (null) until the column exists; the hero then stays a gradient.
+      coverUrl={typeof profile?.cover_url === 'string' && profile.cover_url ? profile.cover_url : null}
       joinedAt={profile?.created_at ?? null}
       followerCount={typeof profile?.follower_count === 'number' ? profile.follower_count : null}
       followingCount={typeof profile?.following_count === 'number' ? profile.following_count : null}

@@ -1576,6 +1576,7 @@ export function applyPlaceEnrichmentStreamFilter(
                 /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
                  *  the reply states must trace to one of these, else it's fabricated. */
                 price_search_results?: Array<{ title?: string; snippet?: string; link?: string; evidence_scope?: string; evidence_about?: string }>
+                travel_editorial?: Array<{ title?: string; summary?: string; extract?: string }>
                 /** Direct ordering pages, each attributed to the place its own text named. */
                 order_search_results?: Array<{ evidence_scope?: string; evidence_about?: string }>
                 /** The tool's own verdict on retrieval — see `PlaceSearchStatus`. */
@@ -1691,6 +1692,16 @@ export function applyPlaceEnrichmentStreamFilter(
                 for (const k of ['snippet', 'title']) {
                   if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
                 }
+              }
+            }
+            // VnExpress editorial (`travel_editorial`, any travel tool): retrieved TEXT, the
+            // same standing as a hotel snippet for the place guard — a quality or distance
+            // the article states may be restated. It is NOT a price source: `travelFares`
+            // and `snippetPrices` are not read from it, so a fare or fee in an article
+            // stays exactly as unsupported as it was — the guards redact it.
+            for (const e of (res.result?.travel_editorial ?? []) as Array<Record<string, unknown>>) {
+              for (const k of ['title', 'summary', 'extract']) {
+                if (typeof e[k] === 'string') placeTexts.push(e[k] as string)
               }
             }
             if (toolName === 'get_hotel_prices' || toolName === 'search_products') {

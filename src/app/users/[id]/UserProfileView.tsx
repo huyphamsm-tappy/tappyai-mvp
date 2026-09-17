@@ -1,14 +1,12 @@
 'use client'
 
-// Author profile. The URL stays /users/[id] — this route renders the very same
-// ProfileTab the bottom-nav "Hồ sơ" tab uses, which brings its own clip grid and
-// its own ClipViewer (a thin wrapper around the Feed's Post). Before this, the
-// page had its own review-card list and linked clips to /reviews/[id], so tapping
-// a creator's avatar landed you in a completely different UI from the feed.
+// The Explore profile. The URL stays /users/[id]; the page is `PublicProfileView`,
+// which renders in the Explore shell and decides from viewer vs owner what it may
+// show: the public identity and content for everyone, the owner's private activity
+// (liked / saved / hidden), edit and cover controls for the owner alone.
 //
-// viewerId is who is logged in, userId is whose profile this is — ProfileTab uses
-// the difference to decide what is public (the posts grid) and what is private
-// (saved/liked/hidden, edit-profile, delete/hide).
+// viewer is who is logged in, userId is whose profile this is — the view uses the
+// difference; the server routes and RLS enforce it.
 //
 // 🔑 Split out of page.tsx (U12) so the route can be a server component and export
 // `generateMetadata`. A 'use client' module cannot, which is why a shared profile
@@ -18,36 +16,40 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { ProfileTab } from '@/app/reviews/ProfileTab'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
+import PublicProfileView, { type Viewer } from './PublicProfileView'
 
 export default function UserProfileView({ userId }: { userId: string }) {
   const router = useRouter()
-  const [viewerId, setViewerId] = useState<string | null>(null)
+  const [viewer, setViewer] = useState<Viewer | null>(null)
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => {
-      setViewerId(data.user?.id ?? null)
+      // B17: an anonymous session is authenticated but is not an account. For this page
+      // that means "not signed in" — following is a social write the server refuses for
+      // it (403), so the Follow button sends such a visitor to login up front.
+      const u = data.user && !isAnonymousUser(data.user) ? data.user : null
+      setViewer(u ? { id: u.id, avatarUrl: (u.user_metadata?.avatar_url as string | undefined) ?? null } : null)
       setReady(true)
     })
   }, [])
 
-  // Wait for the session before the first render: ProfileTab decides public vs
-  // private from viewerId, so mounting with a not-yet-known null would briefly
+  // Wait for the session before the first render: the view decides owner vs
+  // visitor from the viewer, so mounting with a not-yet-known null would briefly
   // render your own profile as if you were a stranger.
   if (!ready) return <div className="h-dvh bg-black" />
 
+  // One page for every viewer — the COMMUNITY profile. Who is looking changes what
+  // is unlocked: edit, cover and the private activity tabs for the owner; follow for
+  // a visitor. Back returns to where the visitor came from (Explore); with no
+  // history it lands on Explore rather than a blank tab.
   return (
-    // variant="page" fixes this route's LAYOUT for every viewer — owner and
-    // visitor see the same shape here. Who is looking (viewerId) only changes
-    // permissions: edit vs follow, private tabs, delete/hide.
-    <ProfileTab
+    <PublicProfileView
       userId={userId}
-      viewerId={viewerId}
-      showBackButton
-      onBack={() => router.back()}
-      variant="page"
+      viewer={viewer}
+      onBack={() => { if (typeof window !== 'undefined' && window.history.length > 1) router.back(); else router.push('/reviews') }}
     />
   )
 }

@@ -6,6 +6,9 @@
 /** The only prefixes any producer is allowed to write under. */
 export const ALLOWED_MEDIA_PREFIXES = [
   'avatars',
+  // Profile cover images — same public bucket and the same server-only writer
+  // (POST /api/profile) as avatars; a prefix of its own so the two never collide.
+  'covers',
   'reviews',
   'videos',
   'thumbnails',

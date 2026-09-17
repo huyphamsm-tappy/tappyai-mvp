@@ -116,6 +116,14 @@ export const vi: Record<string, string> = {
   'editProfile.err.notImage': 'Chỉ chấp nhận file ảnh',
   'editProfile.err.upload': 'Tải ảnh lên thất bại',
   'editProfile.err.save': 'Lưu thất bại',
+  'editProfile.cover': 'Ảnh bìa',
+  'editProfile.coverHint': 'Hiện trên trang cá nhân của bạn · JPG, PNG, WebP · Tối đa 5MB',
+  'editProfile.coverChange': 'Thay ảnh bìa',
+  'editProfile.coverRemove': 'Gỡ ảnh bìa',
+  'editProfile.coverUploading': 'Đang tải ảnh bìa…',
+  'editProfile.coverNone': 'Chưa có ảnh bìa',
+  'editProfile.err.coverTooLarge': 'Ảnh bìa tối đa 5MB',
+  'editProfile.err.cover': 'Không thể cập nhật ảnh bìa',
 
   // Saved
   'saved.title': 'Đã lưu',
@@ -235,6 +243,14 @@ export const en: Record<string, string> = {
   'editProfile.err.notImage': 'Only image files are accepted',
   'editProfile.err.upload': 'Upload failed',
   'editProfile.err.save': 'Save failed',
+  'editProfile.cover': 'Cover photo',
+  'editProfile.coverHint': 'Shown on your public profile · JPG, PNG, WebP · 5MB maximum',
+  'editProfile.coverChange': 'Change cover',
+  'editProfile.coverRemove': 'Remove cover',
+  'editProfile.coverUploading': 'Uploading cover…',
+  'editProfile.coverNone': 'No cover photo yet',
+  'editProfile.err.coverTooLarge': 'Cover photos are limited to 5MB',
+  'editProfile.err.cover': "Couldn't update the cover photo",
 
   'saved.title': 'Saved',
 
