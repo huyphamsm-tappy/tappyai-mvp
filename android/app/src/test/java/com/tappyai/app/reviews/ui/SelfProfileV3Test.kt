@@ -50,7 +50,8 @@ class SelfProfileV3Test {
         assertEquals("https://a/x.png", f.avatarUrl)
         assertEquals(56, f.followingCount)
         assertEquals(1248, f.followerCount)
-        assertEquals("posts LOADED, hidden included — the rows the grid draws", 3, f.postCount)
+        // The function counts what it is given; the screen gives it the PUBLIC rows (SelfProfileCollectionsTest).
+        assertEquals("the rows it was given", 3, f.postCount)
         assertEquals("sum of like_count over those rows", 128, f.totalLikes)
         assertEquals(true, f.isPro)
     }
@@ -92,7 +93,7 @@ class SelfProfileV3Test {
         // the self screen feeds it self facts and the Edit action.
         val body = screen.substring(screen.indexOf("internal fun SelfProfileScreen("), screen.indexOf("internal fun ReviewProfileScreen("))
         assertTrue(body.contains("CreatorProfileTopBar(onBack = onBack, onSearch = onSearch, onNotifications = onNotifications)"))
-        assertTrue("facts, not raw state, feed the header", body.contains("selfProfileFacts(uiState.profile, uiState.posts, uiState.isPro, uiState.bio)"))
+        assertTrue("facts, not raw state, feed the header — over the public rows the grid draws", body.contains("selfProfileFacts(uiState.profile, publicPosts, uiState.isPro, uiState.bio)"))
         assertTrue(body.contains("primaryAction = CreatorPrimaryAction.Edit(onEdit = onEditProfile),") && body.contains("showCompose = true,"))
         val content = screen.substring(screen.indexOf("private fun CreatorProfileContent("), screen.indexOf("private fun CreatorProfileTopBar("))
         assertTrue("three columns", content.contains("GridCells.Fixed(3)"))
@@ -105,7 +106,7 @@ class SelfProfileV3Test {
         val identity = header.indexOf("TappyAvatar(")
         val stats = header.indexOf("R.string.reviews_self_stat_following")
         val actions = header.indexOf("R.string.reviews_self_edit_profile")
-        val segment = header.indexOf("R.string.reviews_self_tab_posts")
+        val segment = header.indexOf("ProfileSegment(")
         assertTrue("identity → stats → actions → segment", identity in 1 until stats && stats < actions && actions < segment)
         assertTrue("Premium only for a real true", header.contains("if (facts.isPro == true)"))
         assertTrue("four stats: following, followers, posts, likes", header.contains("R.string.reviews_self_stat_followers") && header.contains("R.string.reviews_profile_stat_posts") && header.contains("R.string.reviews_profile_stat_likes"))
@@ -115,7 +116,8 @@ class SelfProfileV3Test {
         assertTrue("the bio is drawn only when the server has one", header.contains("facts.bio?.let { bio ->"))
         assertFalse("no city invented", header.contains("facts.city") || header.contains("R.string.reviews_self_city"))
         // 2026-09-13: "Đã lưu" joined "Bài viết" — GET /api/reviews/saved exists (see ProfileSavedTest); Liked still has no API.
-        assertTrue("the Saved segment, self-only (behind showSaved)", header.contains("if (showSaved) {") && header.contains("R.string.reviews_self_tab_saved"))
+        // 2026-09-17: the personal segments (Đã thích / Đã lưu / Đã ẩn / Đã share) are self-only, behind showCollections.
+        assertTrue("the personal segments, self-only (behind showCollections)", header.contains("val tabs = if (showCollections) CreatorProfileTab.entries else listOf(CreatorProfileTab.Posts)"))
         assertFalse("no Liked segment without an API", header.contains("reviews_self_tab_liked"))
     }
 

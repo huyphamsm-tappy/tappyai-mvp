@@ -44,14 +44,20 @@ class ProfileClipsTest {
     fun `the Self Profile tile opens ProfileClips with userId null and the tapped id`() {
         val self = nav.substring(nav.indexOf("composable<ReviewsRoute.SelfProfile>"), nav.indexOf("composable<ReviewsRoute.EditProfile>"))
         assertTrue(self.contains("navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))"))
-        assertFalse(self.contains("ReviewsRoute.Detail"))
+        // A POST tile never opens the detail. Detail appears in this block only for the two personal
+        // collections that have no pager source (liked, shared) — the Tôi hub's own rule.
+        val postOpener = self.substringAfter("onReviewClick = { reviewId ->").substringBefore("},")
+        assertFalse(postOpener.contains("ReviewsRoute.Detail"))
+        assertTrue(self.substringAfter("onCollectionReviewClick = { collection, reviewId ->").substringBefore("\n                },").contains("CreatorProfileTab.Liked, CreatorProfileTab.Shared ->\n                            navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))"))
     }
 
     @Test
     fun `the Author Profile tile opens ProfileClips with that author's id and the tapped id`() {
         val author = nav.substring(nav.indexOf("composable<ReviewsRoute.AuthorProfile>"), nav.indexOf("composable<ReviewsRoute.ProfileClips>"))
         assertTrue(author.contains("navController.navigate(ReviewsRoute.ProfileClips(userId = route.userId, startReviewId = reviewId))"))
-        assertFalse(author.contains("ReviewsRoute.Detail"))
+        val authorPostOpener = author.substringAfter("onReviewClick = { reviewId ->").substringBefore("},")
+        assertFalse(authorPostOpener.contains("ReviewsRoute.Detail"))
+        assertFalse("another creator's tiles never open the detail; only the is_self collections may", author.substringBefore("onCollectionReviewClick").contains("ReviewsRoute.Detail"))
         val route = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewsRoute.kt")
         assertTrue(Regex("""@Serializable data class ProfileClips\(\s*val userId: String\?,\s*val startReviewId: String,[\s\S]*?val saved: Boolean = false,\s*\) : ReviewsRoute""").containsMatchIn(route))
     }

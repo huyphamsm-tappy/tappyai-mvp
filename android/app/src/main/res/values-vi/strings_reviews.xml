@@ -153,6 +153,8 @@
     <string name="reviews_self_share_text">Hồ sơ TappyAI của mình: %1$s</string>
     <!-- Khám phá → Hồ sơ của tôi → Sửa hồ sơ (V3) -->
     <string name="reviews_self_edit_title">Sửa hồ sơ</string>
+    <string name="reviews_self_profile_sign_in_title">Đăng nhập để xem hồ sơ của bạn</string>
+    <string name="reviews_self_profile_sign_in_body">Bài viết, mục đã lưu và cài đặt hồ sơ gắn với tài khoản của bạn. Hãy đăng nhập để sử dụng.</string>
     <string name="reviews_self_edit_save">Lưu</string>
     <string name="reviews_self_edit_saved">Đã lưu hồ sơ</string>
     <string name="reviews_self_edit_change_avatar">Đổi ảnh đại diện</string>

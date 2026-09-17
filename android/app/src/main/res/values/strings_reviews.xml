@@ -159,6 +159,8 @@
     <string name="reviews_self_share_text">My TappyAI profile: %1$s</string>
     <!-- Explore → My Profile → Edit Profile (V3) -->
     <string name="reviews_self_edit_title">Edit profile</string>
+    <string name="reviews_self_profile_sign_in_title">Sign in to see your profile</string>
+    <string name="reviews_self_profile_sign_in_body">Your posts, saved items and profile settings live on your account. Sign in to use them.</string>
     <string name="reviews_self_edit_save">Save</string>
     <string name="reviews_self_edit_saved">Profile saved</string>
     <string name="reviews_self_edit_change_avatar">Change profile photo</string>

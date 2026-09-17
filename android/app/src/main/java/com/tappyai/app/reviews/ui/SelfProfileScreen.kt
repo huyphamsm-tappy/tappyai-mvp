@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,12 +26,14 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.EditNote
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.PersonAdd
@@ -39,6 +42,7 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.Icon
@@ -72,6 +76,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.app.explore.ExploreV3
+import com.tappyai.app.personal.V3AccentPill
 import com.tappyai.app.explore.compactCount
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
@@ -106,18 +111,19 @@ private val SelfPremium = Color(0xFFFBBF24)
  * Row for row against the mockup: back + the brand lockup + search + bell; avatar beside name,
  * handle and the Premium badge; the stat row; the bio; the action row — "Sửa hồ sơ" (→ this
  * profile's own Edit Profile screen, `ReviewsRoute.EditProfile`), a link button that shares the
- * web profile URL, and a compose button for a new post; the "Bài viết" | "Đã lưu" segments; then
- * the 3-column clip grid, each tile with its play badge and view count. "Đã lưu" is the caller's
- * saved reviews from `GET /api/reviews/saved` (self-only by construction; a tile pages the saved
- * list, `ProfileClips(saved = true)`) — drawn ONLY on the self profile, and only where a host
- * wires [onSavedReviewClick]; another creator's profile never shows anyone's saves.
+ * web profile URL, and a compose button for a new post; the segments — "Bài viết" | "Đã thích" |
+ * "Đã lưu" | "Đã ẩn" | "Đã share" (2026-09-17: the five personal surfaces the Tôi hub already
+ * exposes, one scrolling row); then the 3-column clip grid, each tile with its play badge and view
+ * count. The four personal collections ([CreatorCollections]) are the caller's own — likes and
+ * share history via `ProfileCollectionsRepository`, saves via `GET /api/reviews/saved`, hidden
+ * posts as the `is_hidden` rows of `/mine` — drawn ONLY on the self profile, and only where a host
+ * wires [onCollectionReviewClick]; another creator's profile never shows anyone's collections.
  *
  * What is NOT drawn, and why (no invented data, no dead buttons):
  *  - city — no field anywhere; the bio IS drawn, from `GET /api/profile`;
  *  - the avatar's camera badge and the header's gear — the avatar is changed on the Edit Profile
  *    screen that "Sửa hồ sơ" opens (`ReviewsRoute.EditProfile`), and Explore has no settings;
- *  - the "Đã thích" segment and the bookmark button — the web reads likes straight from Supabase
- *    and Android has no API for them (owner decision, unchanged; "Đã lưu" has one, see above);
+ *  - the bookmark button — "Đã lưu" is a segment here, not a header button;
  *  - the bell's unread dot — no unread state exists in the app.
  */
 @Composable
@@ -126,17 +132,20 @@ internal fun SelfProfileScreen(
     onEditProfile: () -> Unit,
     onBack: () -> Unit,
     /**
-     * A "Đã lưu" tile tapped: page the saved list on that clip (`ProfileClips(saved = true)`).
-     * Null hides the segment altogether (a host with no route for the saved pager, e.g. the Me
-     * tab's nested profile) — the grid is never drawn without a way to open its rows.
+     * A tile in one of the PERSONAL collections tapped — "Đã thích", "Đã lưu", "Đã ẩn", "Đã share"
+     * — with its collection, so the host opens it in THAT collection's surface (the saved pager,
+     * the own-posts pager, the detail). Null hides every personal segment (a host with no route
+     * for them) — a grid is never drawn without a way to open its rows.
      */
-    onSavedReviewClick: ((String) -> Unit)? = null,
+    onCollectionReviewClick: ((CreatorProfileTab, String) -> Unit)? = null,
     onSearch: () -> Unit = {},
     onNotifications: () -> Unit = {},
     onCompose: () -> Unit = {},
     /** True when Edit Profile was just left — the nav host's result flag; re-read the server. */
     reloadRequested: Boolean = false,
     onReloadHandled: () -> Unit = {},
+    /** A guest's way in — the root graph's Login, routed up like the Inbox's. Null hides the pill. */
+    onSignIn: (() -> Unit)? = null,
     viewModel: SelfProfileViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -160,6 +169,9 @@ internal fun SelfProfileScreen(
         CreatorProfileTopBar(onBack = onBack, onSearch = onSearch, onNotifications = onNotifications)
 
         when {
+            // A guest (anonymous session or none): the sign-in state, nothing personal — no
+            // "Ẩn danh" identity, no "Sửa hồ sơ", no stats, no saved rows, no compose entry.
+            uiState.isSignedIn == false -> SelfProfileSignedOut(onSignIn)
             uiState.isLoading && uiState.profile == null ->
                 TappyLoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
             uiState.error != null && uiState.profile == null ->
@@ -170,17 +182,30 @@ internal fun SelfProfileScreen(
                     onRetry = viewModel::load,
                 )
             else -> {
-                val facts = selfProfileFacts(uiState.profile, uiState.posts, uiState.isPro, uiState.bio)
+                // "Bài viết" — the stat AND the grid — is the PUBLIC own posts; the hidden ones are
+                // "Đã ẩn". One list feeds both, so the number over the grid is the number of tiles
+                // in it (UAT 2026-09-17: the stat once counted every `/mine` row, hidden included,
+                // and read "2" above one visible tile). The web's own profile counts the same way
+                // (`posts.length` of the public rows; hidden fetched separately).
+                val publicPosts = uiState.posts.filterNot { it.isHidden }
+                val facts = selfProfileFacts(uiState.profile, publicPosts, uiState.isPro, uiState.bio)
                 CreatorProfileContent(
                     facts = facts,
-                    posts = uiState.posts,
+                    posts = publicPosts,
                     primaryAction = CreatorPrimaryAction.Edit(onEdit = onEditProfile),
                     showCompose = true,
                     onShareLink = { uiState.userId?.let { id -> shareProfileLink(context, id) } },
                     onCompose = onCompose,
                     onReviewClick = onReviewClick,
-                    saved = onSavedReviewClick?.let { open ->
-                        CreatorSavedSection(rows = uiState.saved, onReviewClick = open, onRetry = viewModel::load)
+                    collections = onCollectionReviewClick?.let { open ->
+                        CreatorCollections(
+                            liked = uiState.liked,
+                            saved = uiState.saved,
+                            hidden = uiState.posts.filter { it.isHidden },
+                            shared = uiState.shared,
+                            onReviewClick = open,
+                            onRetry = viewModel::load,
+                        )
                     },
                     emptyState = {
                         TappyEmptyState(
@@ -196,6 +221,29 @@ internal fun SelfProfileScreen(
                 )
             }
         }
+    }
+}
+
+/** The guest state of the self profile — the Inbox's and the Social page's sign-in state, on Explore's chrome. */
+@Composable
+private fun SelfProfileSignedOut(onSignIn: (() -> Unit)?) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = TappySpacing.xl, vertical = 80.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        Box(modifier = Modifier.size(56.dp).clip(CircleShape).background(SelfTileBg), contentAlignment = Alignment.Center) {
+            Icon(Icons.Filled.PersonOutline, contentDescription = null, tint = SelfTextSecondary, modifier = Modifier.size(28.dp))
+        }
+        Text(text = stringResource(R.string.reviews_self_profile_sign_in_title), color = SelfTextPrimary, fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = stringResource(R.string.reviews_self_profile_sign_in_body),
+            color = SelfTextSecondary,
+            fontSize = 13.5.sp,
+            lineHeight = 19.sp,
+            textAlign = TextAlign.Center,
+        )
+        if (onSignIn != null) V3AccentPill(text = stringResource(R.string.settings_sign_in), onClick = onSignIn, modifier = Modifier.padding(top = 4.dp))
     }
 }
 
@@ -229,7 +277,7 @@ internal fun ReviewProfileScreen(
      */
     onSelfReviewClick: ((String) -> Unit)? = null,
     /** Forwarded to [SelfProfileScreen] when the server says `is_self`; never used for another creator. */
-    onSavedReviewClick: ((String) -> Unit)? = null,
+    onCollectionReviewClick: ((CreatorProfileTab, String) -> Unit)? = null,
     onSearch: () -> Unit = {},
     onNotifications: () -> Unit = {},
     onEditProfile: () -> Unit = {},
@@ -249,7 +297,7 @@ internal fun ReviewProfileScreen(
     if (profile?.isSelf == true) {
         SelfProfileScreen(
             onReviewClick = onSelfReviewClick ?: onReviewClick,
-            onSavedReviewClick = onSavedReviewClick,
+            onCollectionReviewClick = onCollectionReviewClick,
             onEditProfile = onEditProfile,
             onBack = onBack,
             onSearch = onSearch,
@@ -312,19 +360,47 @@ internal sealed interface CreatorPrimaryAction {
     data class Follow(val isFollowing: Boolean, val isToggling: Boolean, val onToggle: () -> Unit) : CreatorPrimaryAction
 }
 
-/** The profile's grid segments. [Saved] exists only on the self profile (see [CreatorSavedSection]). */
-internal enum class CreatorProfileTab { Posts, Saved }
+/**
+ * The profile's grid segments, in the product's order. [Posts] is every profile's; the other four
+ * are the signed-in user's PERSONAL collections and exist only on the self profile (see
+ * [CreatorCollections]) — the same five surfaces the Tôi hub exposes, over the same sources.
+ */
+internal enum class CreatorProfileTab { Posts, Liked, Saved, Hidden, Shared }
 
 /**
- * The self profile's "Đã lưu" segment: [rows] from `GET /api/reviews/saved` (null while unknown
- * or when that call failed → an error state with [onRetry]), a tile opening [onReviewClick].
- * Absent (null) on another creator's profile — their saves are private and never requested.
+ * The self profile's personal collections, each null while unknown or when its call failed (→ an
+ * error state with [onRetry]), a tile opening [onReviewClick] with its collection:
+ *  - [liked]  `GET /api/reviews/liked`  — newest like first;
+ *  - [saved]  `GET /api/reviews/saved`  — newest save first;
+ *  - [hidden] the `is_hidden` rows of `GET /api/reviews/mine` — own-only by the route;
+ *  - [shared] `GET /api/reviews/shared` — the share history (`review_shares`), newest first.
+ * Absent (null) on another creator's profile — these are private and never requested for anyone else.
  */
-internal data class CreatorSavedSection(
-    val rows: List<Review>?,
-    val onReviewClick: (String) -> Unit,
+internal data class CreatorCollections(
+    val liked: List<Review>?,
+    val saved: List<Review>?,
+    val hidden: List<Review>?,
+    val shared: List<Review>?,
+    val onReviewClick: (CreatorProfileTab, String) -> Unit,
     val onRetry: () -> Unit,
-)
+) {
+    fun rows(tab: CreatorProfileTab): List<Review>? = when (tab) {
+        CreatorProfileTab.Posts -> null
+        CreatorProfileTab.Liked -> liked
+        CreatorProfileTab.Saved -> saved
+        CreatorProfileTab.Hidden -> hidden
+        CreatorProfileTab.Shared -> shared
+    }
+}
+
+/** The segment label — "Bài viết", "Đã thích", "Đã lưu", "Đã ẩn", "Đã share" (the Tôi hub's own words). */
+internal fun CreatorProfileTab.labelRes(): Int = when (this) {
+    CreatorProfileTab.Posts -> R.string.reviews_self_tab_posts
+    CreatorProfileTab.Liked -> R.string.profile_v3_tab_liked
+    CreatorProfileTab.Saved -> R.string.reviews_self_tab_saved
+    CreatorProfileTab.Hidden -> R.string.profile_v3_tab_hidden
+    CreatorProfileTab.Shared -> R.string.profile_v3_tab_shared
+}
 
 /**
  * The profile body both screens draw: the header ([CreatorProfileHeader]) spanning the grid,
@@ -343,10 +419,10 @@ private fun CreatorProfileContent(
     onCompose: () -> Unit,
     onReviewClick: (String) -> Unit,
     emptyState: @Composable () -> Unit,
-    saved: CreatorSavedSection? = null,
+    collections: CreatorCollections? = null,
 ) {
     var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }
-    val tab = if (saved == null) CreatorProfileTab.Posts else selectedTab
+    val tab = if (collections == null) CreatorProfileTab.Posts else selectedTab
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
         modifier = Modifier.fillMaxSize(),
@@ -362,7 +438,7 @@ private fun CreatorProfileContent(
                 onShareLink = onShareLink,
                 onCompose = onCompose,
                 selectedTab = tab,
-                showSaved = saved != null,
+                showCollections = collections != null,
                 onTabSelected = { selectedTab = it },
             )
         }
@@ -375,28 +451,36 @@ private fun CreatorProfileContent(
                     PostGridTile(review = review, onClick = { onReviewClick(review.id) })
                 }
             }
-            CreatorProfileTab.Saved -> {
-                val rows = saved?.rows
+            else -> {
+                // The four personal collections share this one branch: the same 3-column grid,
+                // the same tile, each with its own empty copy and its own opener.
+                val rows = collections?.rows(tab)
                 when {
                     rows == null -> item(span = { GridItemSpan(maxLineSpan) }) {
                         TappyErrorState(
                             title = stringResource(R.string.reviews_profile_error_title),
                             message = stringResource(R.string.reviews_error_generic),
                             retryText = stringResource(R.string.common_try_again),
-                            onRetry = saved?.onRetry ?: {},
+                            onRetry = collections?.onRetry ?: {},
                         )
                     }
                     rows.isEmpty() -> item(span = { GridItemSpan(maxLineSpan) }) {
-                        TappyEmptyState(
-                            icon = Icons.Filled.BookmarkBorder,
-                            title = stringResource(R.string.reviews_self_saved_empty_title),
-                            message = stringResource(R.string.reviews_self_saved_empty_message),
-                            titleColor = SelfTextPrimary,
-                            contentColor = SelfTextSecondary,
-                        )
+                        when (tab) {
+                            CreatorProfileTab.Saved -> TappyEmptyState(
+                                icon = Icons.Filled.BookmarkBorder,
+                                title = stringResource(R.string.reviews_self_saved_empty_title),
+                                message = stringResource(R.string.reviews_self_saved_empty_message),
+                                titleColor = SelfTextPrimary,
+                                contentColor = SelfTextSecondary,
+                            )
+                            CreatorProfileTab.Liked -> TappyEmptyState(icon = Icons.Filled.FavoriteBorder, title = stringResource(R.string.profile_v3_empty_liked), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
+                            CreatorProfileTab.Hidden -> TappyEmptyState(icon = Icons.Filled.VisibilityOff, title = stringResource(R.string.profile_v3_empty_hidden), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
+                            CreatorProfileTab.Shared -> TappyEmptyState(icon = Icons.Filled.Share, title = stringResource(R.string.profile_v3_empty_shared), titleColor = SelfTextPrimary, contentColor = SelfTextSecondary)
+                            CreatorProfileTab.Posts -> emptyState()
+                        }
                     }
-                    else -> items(items = rows, key = { "saved:" + it.id }) { review ->
-                        PostGridTile(review = review, onClick = { saved.onReviewClick(review.id) })
+                    else -> items(items = rows, key = { tab.name + ":" + it.id }) { review ->
+                        PostGridTile(review = review, onClick = { collections.onReviewClick(tab, review.id) })
                     }
                 }
             }
@@ -462,7 +546,7 @@ private fun CreatorProfileHeader(
     onShareLink: () -> Unit,
     onCompose: () -> Unit,
     selectedTab: CreatorProfileTab = CreatorProfileTab.Posts,
-    showSaved: Boolean = false,
+    showCollections: Boolean = false,
     onTabSelected: (CreatorProfileTab) -> Unit = {},
 ) {
     val displayName = facts.displayName ?: stringResource(R.string.reviews_anonymous_name)
@@ -586,24 +670,23 @@ private fun CreatorProfileHeader(
             }
         }
 
-        // The segments: "Bài viết", and on the self profile "Đã lưu" (`/api/reviews/saved`). The
-        // mockup's "Đã thích" has no Android API (see the class doc) and is not drawn.
+        // The segments: "Bài viết" on every profile; on the self profile the four personal
+        // collections too — "Đã thích", "Đã lưu", "Đã ẩn", "Đã share" — in ONE scrolling row of
+        // the same underline segments (the Tôi hub's rule: one scrolling row, never a cramped
+        // five-way split on a phone).
+        val tabs = if (showCollections) CreatorProfileTab.entries else listOf(CreatorProfileTab.Posts)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = TappySpacing.xxxl, bottom = TappySpacing.lg),
-            horizontalArrangement = Arrangement.Center,
+                .padding(top = TappySpacing.xxxl, bottom = TappySpacing.lg)
+                .horizontalScroll(rememberScrollState()),
+            horizontalArrangement = if (showCollections) Arrangement.Start else Arrangement.Center,
         ) {
-            ProfileSegment(
-                text = stringResource(R.string.reviews_self_tab_posts),
-                selected = selectedTab == CreatorProfileTab.Posts,
-                onClick = { onTabSelected(CreatorProfileTab.Posts) },
-            )
-            if (showSaved) {
+            tabs.forEach { t ->
                 ProfileSegment(
-                    text = stringResource(R.string.reviews_self_tab_saved),
-                    selected = selectedTab == CreatorProfileTab.Saved,
-                    onClick = { onTabSelected(CreatorProfileTab.Saved) },
+                    text = stringResource(t.labelRes()),
+                    selected = selectedTab == t,
+                    onClick = { onTabSelected(t) },
                 )
             }
         }
@@ -628,7 +711,7 @@ private fun ProfileSegment(text: String, selected: Boolean, onClick: () -> Unit)
             color = if (selected) ExploreV3.Purple else SelfTextSecondary,
             fontSize = 16.sp,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier.padding(horizontal = TappySpacing.xxl),
+            modifier = Modifier.padding(horizontal = TappySpacing.lg),
         )
         Box(
             modifier = Modifier

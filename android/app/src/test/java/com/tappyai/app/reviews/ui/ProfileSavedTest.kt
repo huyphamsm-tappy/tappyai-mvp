@@ -82,21 +82,22 @@ class ProfileSavedTest {
         assertTrue("null when the call failed → the segment shows a retry, not an empty lie", selfVm.contains("saved = (savedResult as? NetworkResult.Success)?.data,"))
         assertTrue(selfVm.contains("val saved: List<Review>? = null,"))
         val self = screen.substring(screen.indexOf("internal fun SelfProfileScreen("), screen.indexOf("internal fun ReviewProfileScreen("))
-        assertTrue(self.contains("onSavedReviewClick: ((String) -> Unit)? = null,"))
-        assertTrue("wired only when a host can open a saved clip", self.contains("saved = onSavedReviewClick?.let { open ->") && self.contains("CreatorSavedSection(rows = uiState.saved, onReviewClick = open, onRetry = viewModel::load)"))
+        // 2026-09-17: "Đã lưu" is one of the four personal collections (see SelfProfileCollectionsTest).
+        assertTrue(self.contains("onCollectionReviewClick: ((CreatorProfileTab, String) -> Unit)? = null,"))
+        assertTrue("wired only when a host can open a collection clip", self.contains("collections = onCollectionReviewClick?.let { open ->") && self.contains("saved = uiState.saved,") && self.contains("onRetry = viewModel::load,"))
     }
 
     @Test
     fun `another creator's profile never requests or draws anyone's saves`() {
         val other = screen.substring(screen.indexOf("internal fun ReviewProfileScreen("), screen.indexOf("internal sealed interface CreatorPrimaryAction"))
         val otherBody = other.substring(other.indexOf("CreatorProfileContent(", other.indexOf("profile != null ->")))
-        assertFalse("the other-creator content passes no saved section", otherBody.contains("saved ="))
-        assertTrue("the self branch (server is_self) forwards the handler", other.contains("onSavedReviewClick = onSavedReviewClick,"))
+        assertFalse("the other-creator content passes no collections", otherBody.contains("collections ="))
+        assertTrue("the self branch (server is_self) forwards the handler", other.contains("onCollectionReviewClick = onCollectionReviewClick,"))
         val otherVm = src("app/src/main/java/com/tappyai/app/reviews/ui/ReviewProfileViewModel.kt")
         assertFalse(otherVm.contains("getSaved"))
         val content = screen.substring(screen.indexOf("private fun CreatorProfileContent("), screen.indexOf("private fun CreatorProfileTopBar("))
-        assertTrue("without a section the grid is the posts, whatever was selected", content.contains("val tab = if (saved == null) CreatorProfileTab.Posts else selectedTab"))
-        assertTrue("the segment is drawn only with a section", content.contains("showSaved = saved != null,"))
+        assertTrue("without collections the grid is the posts, whatever was selected", content.contains("val tab = if (collections == null) CreatorProfileTab.Posts else selectedTab"))
+        assertTrue("the personal segments are drawn only with collections", content.contains("showCollections = collections != null,"))
     }
 
     @Test
@@ -105,12 +106,13 @@ class ProfileSavedTest {
         assertTrue(content.contains("var selectedTab by rememberSaveable { mutableStateOf(CreatorProfileTab.Posts) }"))
         assertTrue(content.contains("columns = GridCells.Fixed(3),"))
         assertTrue("posts branch unchanged", content.contains("PostGridTile(review = review, onClick = { onReviewClick(review.id) })"))
-        assertTrue("saved rows use the same tile", content.contains("""items(items = rows, key = { "saved:" + it.id }) { review ->""") && content.contains("PostGridTile(review = review, onClick = { saved.onReviewClick(review.id) })"))
+        assertTrue("collection rows use the same tile, keyed by their collection", content.contains("""items(items = rows, key = { tab.name + ":" + it.id }) { review ->""") && content.contains("PostGridTile(review = review, onClick = { collections.onReviewClick(tab, review.id) })"))
         assertTrue("empty saved copy", content.contains("R.string.reviews_self_saved_empty_title") && content.contains("Icons.Filled.BookmarkBorder"))
-        assertTrue("a failed load retries", content.contains("rows == null -> item") && content.contains("onRetry = saved?.onRetry ?: {},"))
-        val header = screen.substring(screen.indexOf("private fun CreatorProfileHeader("), screen.indexOf("private fun ProfileSegment("))
-        val posts = header.indexOf("R.string.reviews_self_tab_posts"); val saved = header.indexOf("R.string.reviews_self_tab_saved")
-        assertTrue("Bài viết | Đã lưu, in that order", posts in 1 until saved)
+        assertTrue("a failed load retries", content.contains("rows == null -> item") && content.contains("onRetry = collections?.onRetry ?: {},"))
+        // 2026-09-17: the segments are drawn from `CreatorProfileTab.entries`, so the order is the enum's.
+        assertTrue("Bài viết before Đã lưu, in the enum", CreatorProfileTab.Posts.ordinal < CreatorProfileTab.Saved.ordinal)
+        val labels = screen.substringAfter("internal fun CreatorProfileTab.labelRes()").substringBefore("\n}")
+        assertTrue(labels.indexOf("R.string.reviews_self_tab_posts") in 1 until labels.indexOf("R.string.reviews_self_tab_saved"))
         for (rel in listOf("app/src/main/res/values/strings_reviews.xml", "app/src/main/res/values-vi/strings_reviews.xml")) {
             val xml = src(rel)
             for (key in listOf("reviews_self_tab_saved", "reviews_self_saved_empty_title", "reviews_self_saved_empty_message")) assertTrue("$key in $rel", xml.contains("name=\"$key\""))

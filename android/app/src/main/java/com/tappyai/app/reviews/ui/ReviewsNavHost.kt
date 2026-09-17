@@ -40,6 +40,8 @@ fun ReviewsNavHost(
      * equivalent of the web's `/chat?q=` bridge (`bridge.promptEntity`). Null hides the action.
      */
     onAskTappy: ((String) -> Unit)? = null,
+    /** The self profile's sign-in state for a guest — routed up to the root graph's Login. Null hides the button. */
+    onSignIn: (() -> Unit)? = null,
 ) {
     val navController = rememberNavController()
     val context = LocalContext.current
@@ -104,9 +106,18 @@ fun ReviewsNavHost(
                 onReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
                 },
-                // A "Đã lưu" tile pages the saved list (`/api/reviews/saved`), on that clip.
-                onSavedReviewClick = { reviewId ->
-                    navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                // A tile in a personal collection opens the clip in THAT collection's surface, as the
+                // Tôi hub does: own/hidden posts page `/mine` (the pager includes hidden rows), saved
+                // pages `/saved`; liked and shared have no pager source, so they open the detail.
+                onCollectionReviewClick = { collection, reviewId ->
+                    when (collection) {
+                        CreatorProfileTab.Posts, CreatorProfileTab.Hidden ->
+                            navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
+                        CreatorProfileTab.Saved ->
+                            navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                        CreatorProfileTab.Liked, CreatorProfileTab.Shared ->
+                            navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))
+                    }
                 },
                 // Explore → My Profile → Sửa hồ sơ → Edit Profile → Save → My Profile. Never the Tôi tab.
                 onEditProfile = { navController.navigate(ReviewsRoute.EditProfile) },
@@ -114,6 +125,7 @@ fun ReviewsNavHost(
                 onSearch = { navController.navigate(ReviewsRoute.Search) },
                 onNotifications = { navController.navigate(ReviewsRoute.Notifications) },
                 onCompose = { navController.navigate(ReviewsRoute.Composer) },
+                onSignIn = onSignIn,
             )
         }
 
@@ -159,8 +171,18 @@ fun ReviewsNavHost(
                 onSelfReviewClick = { reviewId ->
                     navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
                 },
-                onSavedReviewClick = { reviewId ->
-                    navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                // A tile in a personal collection opens the clip in THAT collection's surface, as the
+                // Tôi hub does: own/hidden posts page `/mine` (the pager includes hidden rows), saved
+                // pages `/saved`; liked and shared have no pager source, so they open the detail.
+                onCollectionReviewClick = { collection, reviewId ->
+                    when (collection) {
+                        CreatorProfileTab.Posts, CreatorProfileTab.Hidden ->
+                            navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId))
+                        CreatorProfileTab.Saved ->
+                            navController.navigate(ReviewsRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                        CreatorProfileTab.Liked, CreatorProfileTab.Shared ->
+                            navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))
+                    }
                 },
                 onBack = { navController.popBackStack() },
                 onSearch = { navController.navigate(ReviewsRoute.Search) },

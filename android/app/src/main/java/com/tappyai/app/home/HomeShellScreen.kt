@@ -264,6 +264,7 @@ fun HomeShellScreen(
                     composable<HomeRoute.Explore> {
                         ExploreTab(
                             onEditProfile = { navController.selectTab(HomeTab.Profile) },
+                            onSignIn = onSignIn,
                             // ✦ Hỏi Tappy: the same Chat-with-prefill navigation Home and Deals
                             // use — the native `/chat?q=` bridge, one prompt per clip.
                             onAskTappy = { prefill -> navController.navigateToChatWithPrefill(prefill) },
