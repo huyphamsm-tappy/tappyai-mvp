@@ -62,6 +62,7 @@ function renderHome(overrides: Partial<React.ComponentProps<typeof HomeV3>> = {}
       firstName="Huy"
       suggestions={SUGGESTIONS}
       conversations={CONVERSATIONS}
+      hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }}
       {...overrides}
     />,
   )

@@ -1,0 +1,22 @@
+status 200
+places 20 credits 3 with priceLevel 18
+  Quán ăn ngon Sài Gòn                          | 200-300 N ₫ | 4.1 1152
+  NHÀ HÀNG NGON                                 | 200-600 N ₫ | 4 11405
+  Hàng Dương Quán Quận 1                        | - | 4.5 717
+  A Xỉu - Quán Ăn Ngon                          | 1-100.000 ₫ | 4.7 245
+  Quán Bụi Central, Sài Gòn - Authentic Vietnam | 100-600 N ₫ | 4.5 890
+  Ann Quán                                      | 100-500 N ₫ | 4.2 1279
+  Vạn Quán - Lẩu Gà Lá É CN3 Q.1                | 100-200 N ₫ | 4.5 172
+  Quán Bụi Original, Sài Gòn - Authentic Vietna | 200-600 N ₫ | 4.3 4220
+  Cục Gạch Quán                                 | 200-800 N ₫ | 4.3 4260
+  Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1  | Trên 1 Tr ₫ | 4.7 961
+  Quán Bụi - Lê Thánh Tôn - Authentic Vietnames | 200-600 N ₫ | 4.5 1188
+  Nhà hàng Tân Hải Vân                          | - | 4.3 3394
+  Béo Ơi Quán - Món ngon Hà Nội                 | 100-200 N ₫ | 4.6 1189
+  Sài Gòn Xưa và Nay                            | 100-600 N ₫ | 4 1274
+  Ốc Đào                                        | 100-500 N ₫ | 4.2 2459
+  Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU            | 100-200 N ₫ | 4.7 278
+  Quán Vỹ Dạ                                    | 200-500 N ₫ | 3.9 799
+  Nhà hàng chay Phương Mai                      | 100-200 N ₫ | 4.9 3386
+  Bánh Cuốn Ngon Quận 1 | Bánh Cuốn Bắc Nước Mắ | 1-100.000 ₫ | 4.3 221
+  Bún Riêu Gánh Chợ Bến Thành                   | 1-100.000 ₫ | 4.1 1351

@@ -82,7 +82,7 @@ const REPEATED = [
 
 function renderHome(suggestions: Sugg[]) {
   return render(
-    <HomeV3 user userInfo={undefined} firstName="Huy" suggestions={suggestions} conversations={[]} />,
+    <HomeV3 user userInfo={undefined} firstName="Huy" suggestions={suggestions} conversations={[]} hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }} />,
   )
 }
 

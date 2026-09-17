@@ -140,7 +140,9 @@ describe('B07 — the rest of the Web surface only gets better', () => {
   // 513 → 497 when U04 moved the copyright policy into the legal dictionary. Lowered so the gain
   // is locked in: a ratchet left above the real number quietly re-opens room for the next
   // regression to fit inside.
-  const BASELINE = 497
+  // 497 → 465 when the Home hero greeting pools moved out of `(home)/page.tsx` into the one
+  // shared engine under src/lib/home (heroGreeting.ts), where product copy is allowed to live.
+  const BASELINE = 465
 
   it(`carries at most ${BASELINE} Vietnamese UI lines outside the sealed screens`, () => {
     const sealed = new Set([...SEALED, ...Object.keys(SEALED_WITH_PERSISTED_VALUES)])
