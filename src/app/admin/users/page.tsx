@@ -45,6 +45,11 @@ export default async function AdminUsersPage() {
     // the panel hides the form for a reader who may not write.
     notesRead: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_NOTES_READ),
     notesWrite: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_NOTES_WRITE),
+    // V3 User Data Foundation. `super_admin` alone (Owner, 2026-09-09), so
+    // for every other role this resolves false and the panel never renders —
+    // "you never see a door you cannot open". The API enforces it again on
+    // every request; this flag is UX, exactly like the ones above.
+    correctDob: permissionEngine.can(ctx.actor, PERMISSIONS.USERS_DOB_CORRECT),
   }
 
   return <UsersManager can={can} />

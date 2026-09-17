@@ -5,7 +5,8 @@ import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { sanitizeMemoryPatch } from './memoryContract'
 
 export interface UserMemory {
-  location_base: string | null
+  location_base: string | null   // residence / usual area — where the user lives or usually is
+  discovery_city?: string | null // destination / discovery interest — a place they want to EXPLORE, not where they are
   preferences: {
     food?: string[]
     spa?: string[]
@@ -27,7 +28,7 @@ export interface UserMemory {
 // may touch the table directly. Callers with a user session omit `client`
 // (cookie-scoped server client); cron jobs inject createAdminClient().
 
-const MEMORY_COLUMNS = 'location_base, preferences, budget, history, companions, timing, personality, updated_at'
+const MEMORY_COLUMNS = 'location_base, discovery_city, preferences, budget, history, companions, timing, personality, updated_at'
 
 export async function getMemory(userId: string, client?: SupabaseClient): Promise<UserMemory | null> {
   try {
@@ -124,8 +125,15 @@ export function buildMemoryBlock(memory: UserMemory, forcedTool?: string | null)
 
   const parts: string[] = []
 
+  // Two DISTINCT location concepts, never conflated. location_base is where the
+  // user lives / usually is; discovery_city is a place they want to explore and
+  // is NOT necessarily where they are. Labelled apart so the model does not read
+  // a travel interest as a residence.
   if (memory.location_base) {
-    parts.push(`- Vi tri thuong dung: ${memory.location_base}`)
+    parts.push(`- Khu vuc thuong o (noi song/hay o): ${memory.location_base}`)
+  }
+  if (memory.discovery_city) {
+    parts.push(`- Diem den dang quan tam (muon kham pha, KHONG phai noi dang o): ${memory.discovery_city}`)
   }
 
   if (!infoOnly && !locationAndHistory) {
@@ -216,6 +224,7 @@ export async function extractMemoryFromConversation(
     const existingCtx = existingMemory
       ? JSON.stringify({
           location_base: existingMemory.location_base,
+          discovery_city: existingMemory.discovery_city,
           companions: existingMemory.companions,
           timing: existingMemory.timing,
           personality: existingMemory.personality,
@@ -237,7 +246,8 @@ ${userTexts}
 
 Tra ve JSON (chi cac truong co du lieu RO RANG tu user):
 {
-  "location_base": "quan/khu vuc user o hoac hay lui toi (vd: Quan 3, Binh Thanh, Ha Noi)",
+  "location_base": "NOI USER SONG hoac hay o (residence/usual area). CHI dien khi user noi ho SONG/O/hay lui toi (vd: 'toi song o Ha Noi', 'minh hay o Quan 3'). KHONG phai noi user muon di choi.",
+  "discovery_city": "NOI USER MUON KHAM PHA/DU LICH/TIM DICH VU (destination interest), KHONG nhat thiet la noi dang o. CHI dien khi user the hien y dinh di/tim o mot noi (vd: 'muon di Quy Nhon', 'tim khach san o Da Nang', 'kiem quan an o Nha Trang').",
   "companions": "hay di voi ai (vd: ban be, cap doi, gia dinh, 1 minh)",
   "timing": "thoi gian hay di (vd: cuoi tuan, buoi toi, gio trua)",
   "personality": "phong cach (vd: thich quan nho local, ua sang trong, thich thu do moi)",
@@ -258,6 +268,7 @@ Tra ve JSON (chi cac truong co du lieu RO RANG tu user):
 
 Quy tac:
 - Chi dien truong neu co bang chung RO RANG tu user (khong suy doan)
+- location_base va discovery_city LA HAI KHAI NIEM KHAC NHAU: noi song KHAC noi muon di choi. TUYET DOI khong suy ra cai nay tu cai kia. Cau ve du lich/tim dich vu o mot noi -> discovery_city, KHONG dong vao location_base. Cau ve noi song -> location_base, KHONG dong vao discovery_city.
 - history: ghi chu de chinh cua cuoc hoi thoai NAY, khong copy tu memory cu
 - Neu khong co thong tin gi moi, tra ve {}
 - Chi tra ve JSON, khong giai thich.`,

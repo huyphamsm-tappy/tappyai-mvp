@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 
 type Memory = {
   location_base: string | null
+  discovery_city: string | null
   companions: string | null
   timing: string | null
   personality: string | null
@@ -87,6 +88,7 @@ function MemoryCard({ icon: Icon, label, children, iconColor = 'text-link' }: {
 function countFacts(m: Memory) {
   let n = 0
   if (m.location_base) n++
+  if (m.discovery_city) n++
   if (m.companions) n++
   if (m.timing) n++
   if (m.personality) n++
@@ -201,7 +203,7 @@ export default function TappyKnowsPage() {
     }
   }
 
-  const removeField = (field: 'location_base' | 'companions' | 'timing' | 'personality') => {
+  const removeField = (field: 'location_base' | 'discovery_city' | 'companions' | 'timing' | 'personality') => {
     if (!memory) return
     patchMemory({ [field]: null }, { ...memory, [field]: null })
   }
@@ -297,12 +299,24 @@ export default function TappyKnowsPage() {
               </div>
             </div>
 
-            {/* Location */}
+            {/* Location — residence / usual area */}
             {memory.location_base && (
               <MemoryCard icon={MapPin} label={t('memory.card.area')} iconColor="text-blue-500">
                 <div className="flex items-center justify-between gap-2">
                   <p className="font-semibold text-gray-900 dark:text-white">{memory.location_base}</p>
                   {editing && <RemoveBtn onClick={() => removeField('location_base')} label={t('memory.removeArea')} />}
+                </div>
+              </MemoryCard>
+            )}
+
+            {/* Destination — a place the user wants to explore, NOT where they
+                live. Deliberately a separate card with its own label so it is
+                never read as residence. */}
+            {memory.discovery_city && (
+              <MemoryCard icon={MapPin} label={t('memory.card.destination')} iconColor="text-violet-500">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-gray-900 dark:text-white">{memory.discovery_city}</p>
+                  {editing && <RemoveBtn onClick={() => removeField('discovery_city')} label={t('memory.removeDestination')} />}
                 </div>
               </MemoryCard>
             )}

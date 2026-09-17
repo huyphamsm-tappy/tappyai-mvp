@@ -32,6 +32,7 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
+import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
 // localize; the analytics id stays stable across languages.
@@ -1623,7 +1624,28 @@ export default function ChatInterface({
               <div className="flex gap-3 animate-fade-in">
                 <TappyAvatar category={category} error />
                 <div className="flex-1 min-w-0">
-                  {/auth_required|Unauthorized/i.test(error.message || '') ? (
+                  {isAgeGateMessage(error.message) ? (
+                    // ── V3 User Data Foundation: the 18+ gate ────────────────
+                    // This branch is what the existing user base actually hits:
+                    // the auth-callback redirect to /age-check only fires on a
+                    // LOGIN transition, so users already signed in when this
+                    // ships meet the gate as a 403 here, not on that redirect.
+                    // The server owns the wording; this side only decides where
+                    // the button goes.
+                    <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
+                      <p className="leading-relaxed font-medium">{serverErrorMessage(error.message) ?? t('age.ask.desc')}</p>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          stashPendingChat() // keep the transcript across the age flow
+                          redirectToAgeCheck()
+                        }}
+                        className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-interactive hover:bg-interactive-hover text-white text-xs font-medium transition-colors"
+                      >
+                        {t('age.submit')}
+                      </button>
+                    </div>
+                  ) : /auth_required|Unauthorized/i.test(error.message || '') ? (
                     <div className="rounded-2xl bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/40 px-4 py-3 text-sm text-primary-800 dark:text-primary-200">
                       <p className="leading-relaxed">{t('chat.loginPrompt')}</p>
                       <button

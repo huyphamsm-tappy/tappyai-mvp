@@ -73,6 +73,11 @@ const ALLOWED_CODE_EXPRESSIONS = [
   // The validator's own discriminated code — `clientInput.ts` types it as a union of snake_case
   // literals, so it cannot carry a sentence.
   'validated.code',
+  // The 18+ gate's code. `ageEligibilityCode()` returns `AgeEligibilityCode`, a union of exactly
+  // two snake_case literals ('age_ineligible' | 'age_verification_required'), so the compiler —
+  // not this list — is what guarantees it cannot carry a sentence. Same standard as the entry
+  // above: listed because it PROVABLY yields a code, never merely because it is convenient.
+  'ageEligibilityCode(eligibility.status)',
 ]
 
 /**

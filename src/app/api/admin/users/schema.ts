@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { AccountStanding } from '@/lib/admin/users/accountStatusAdmin'
+import { parseDateOfBirthInput } from '@/lib/account/ageEligibility'
 
 // Module 08 — request/response shapes for `/api/admin/users`.
 // Contract: docs/backoffice/05_API_Architecture.md §6, 10_User_Management.md,
@@ -81,6 +82,42 @@ export const BanUserSchema = z
   .strict()
 
 export const UnbanUserSchema = z.object({ reason: ReasonSchema }).strict()
+
+/**
+ * Correcting a date of birth after the single self-service allowance is spent
+ * (`users.date_of_birth.correct`).
+ *
+ * The date is validated by `parseDateOfBirthInput` — the SAME function the
+ * consumer path uses — rather than a second calendar rule written here. It
+ * accepts a plain `YYYY-MM-DD` and nothing else, refuses "2005-02-30" instead
+ * of rolling it into March, refuses a future date, and returns the normalised
+ * string the RPC expects. A second implementation would be free to disagree
+ * with the database CHECK, and the disagreement would surface only on a
+ * boundary case, in production.
+ *
+ * The reason is the SAME `ReasonSchema` every other sanction uses. Its
+ * twenty-character floor already matches the SQL function's own check, so the
+ * API and the database refuse the same input rather than nearly the same.
+ *
+ * There is no field for the CURRENT date of birth, and there must never be one:
+ * correcting a value does not require reading it.
+ */
+export const CorrectDateOfBirthSchema = z
+  .object({
+    date_of_birth: z.string().transform((value, ctx) => {
+      const iso = parseDateOfBirthInput(value)
+      if (!iso) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'date_of_birth must be a real past calendar date in YYYY-MM-DD form',
+        })
+        return z.NEVER
+      }
+      return iso
+    }),
+    reason: ReasonSchema,
+  })
+  .strict()
 
 /** One row of the user list. */
 export interface AdminUserListItem {

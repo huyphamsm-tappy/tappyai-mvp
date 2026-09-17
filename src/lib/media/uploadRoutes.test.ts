@@ -29,6 +29,18 @@ const h = vi.hoisted(() => ({
       body: { provider: 'gcs', uploadUrl: 'https://session', url: 'https://public', key: 'videos/u-1/k.mp4' },
     })
   ),
+  // V3 User Data Foundation - the 18+ gate on /api/upload/video reads
+  // `user_age_status()` through the request-scoped client. This stub answers as
+  // an ELIGIBLE adult so the cases below keep measuring the GUARDS they were
+  // written for. The gate has its own suite (`app/api/upload/video/route.test.ts`).
+  // Without this the RPC is missing, `getAgeEligibility` fails closed to
+  // `unknown`, and every video case 403s for the wrong reason.
+  supabase: {
+    rpc: (fn: string) =>
+      fn === 'user_age_status'
+        ? Promise.resolve({ data: [{ has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }], error: null })
+        : Promise.resolve({ data: null, error: null }),
+  },
 }))
 
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: h.getRequestUser }))
@@ -85,7 +97,7 @@ const original = process.env.MEDIA_PROVIDER
 beforeEach(() => {
   vi.clearAllMocks()
   h.user = { id: 'u-1' }
-  h.getRequestUser.mockImplementation(async () => ({ user: h.user, supabase: {} }))
+  h.getRequestUser.mockImplementation(async () => ({ user: h.user, supabase: h.supabase }))
   h.requirePermission.mockResolvedValue({ user: { id: 'admin-1' }, actor: { userId: 'admin-1', isOwner: true, roles: [] } })
   h.isSameOrigin.mockReturnValue(true)
   h.rateLimit.mockReturnValue({ ok: true, retryAfter: 0 })

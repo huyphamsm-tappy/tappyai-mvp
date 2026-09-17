@@ -18,7 +18,7 @@ import type { PermissionDefinition, PermissionId } from './types'
  * Cached permission sets carry this value and are discarded on mismatch, so a
  * registry change can never be served from a stale cache.
  */
-export const REGISTRY_VERSION = '2026-08-29.2'
+export const REGISTRY_VERSION = '2026-09-09.1'
 
 function def(d: PermissionDefinition): PermissionDefinition {
   return d
@@ -743,6 +743,28 @@ const DEFINITIONS: readonly PermissionDefinition[] = [
     riskLevel: 'high',
     defaultRoles: ['admin', 'super_admin'],
   }),
+  def({
+    id: 'users.date_of_birth.correct',
+    displayName: 'Correct a date of birth',
+    description:
+      'Set the date of birth on a consumer account after its single self-service correction is spent. The remedy of last resort for someone locked out by a mis-typed year.',
+    module: 'users',
+    capability: 'users.manage',
+    // `write`, not `destructive`: it repairs a value rather than removing
+    // access. But `critical`, and Owner-assigned to `super_admin` ALONE
+    // (2026-09-09) — a date of birth decides whether an account may use the
+    // product at all, so this sits beside `users.account.ban` in consequence
+    // even though it confers no authority. Deliberately NOT granted to `admin`.
+    //
+    // THIS IS A WRITE-ONLY AUTHORITY. It does not carry, and must never be
+    // extended to carry, permission to READ a date of birth: no PostgREST role
+    // holds a privilege on the column, `user_age_status()` answers only for the
+    // caller's own `auth.uid()`, and correcting a value does not require seeing
+    // it. ADR-027 and V3_DOB_ADMIN_CORRECTION_PATH.md govern.
+    category: 'write',
+    riskLevel: 'critical',
+    defaultRoles: ['super_admin'],
+  }),
 
 ] as const
 
@@ -846,6 +868,7 @@ export const PERMISSIONS = {
   USERS_UNSUSPEND: 'users.account.unsuspend',
   USERS_BAN: 'users.account.ban',
   USERS_UNBAN: 'users.account.unban',
+  USERS_DOB_CORRECT: 'users.date_of_birth.correct',
 } as const
 
 export type KnownPermissionId = (typeof PERMISSIONS)[keyof typeof PERMISSIONS]

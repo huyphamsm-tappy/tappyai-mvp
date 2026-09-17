@@ -19,6 +19,7 @@ export async function GET(req: Request) {
     const hasMemory =
       memory !== null &&
       (!!memory.location_base ||
+        !!memory.discovery_city ||
         Object.keys(memory.preferences || {}).length > 0 ||
         Object.keys(memory.budget || {}).length > 0 ||
         (memory.history || []).length > 0)
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
     if (Object.keys(extracted).length > 0) {
       await updateMemory(user.id, {
         location_base: extracted.location_base ?? existing?.location_base ?? null,
+        discovery_city: extracted.discovery_city ?? existing?.discovery_city ?? null,
         companions: extracted.companions ?? existing?.companions ?? null,
         timing: extracted.timing ?? existing?.timing ?? null,
         personality: extracted.personality ?? existing?.personality ?? null,
@@ -84,6 +86,7 @@ export async function PATCH(req: Request) {
 
     const patch: Record<string, unknown> = {}
     if ('location_base' in body) patch.location_base = str(body.location_base)
+    if ('discovery_city' in body) patch.discovery_city = str(body.discovery_city)
     if ('companions' in body) patch.companions = str(body.companions)
     if ('timing' in body) patch.timing = str(body.timing)
     if ('personality' in body) patch.personality = str(body.personality)

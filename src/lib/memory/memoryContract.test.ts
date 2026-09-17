@@ -53,7 +53,7 @@ describe('canonical re-materialisation', () => {
 
   it('names exactly the fields the memory table supports', () => {
     expect([...MEMORY_FIELDS].sort()).toEqual([
-      'behavior_summary', 'budget', 'companions', 'history',
+      'behavior_summary', 'budget', 'companions', 'discovery_city', 'history',
       'location_base', 'personality', 'preferences', 'timing',
     ])
   })

@@ -40,7 +40,17 @@ const h = vi.hoisted(() => {
     };
     return b;
   };
-  return { state, client: { from: () => builder() } };
+  // V3 User Data Foundation — the 18+ gate reads `user_age_status()` through the
+  // request-scoped client. This stub answers it as an ELIGIBLE adult so these
+  // tests keep measuring what they were written to measure; the age gate has its
+  // own suite (`src/lib/account/requireEligibleUser.test.ts`). Without this the
+  // RPC is missing from the stub, `getAgeEligibility` fails closed to `unknown`,
+  // and every case here 403s for the wrong reason.
+  const rpc = (fn: string) =>
+    fn === 'user_age_status'
+      ? Promise.resolve({ data: [{ has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }], error: null })
+      : Promise.resolve({ data: null, error: null });
+  return { state, client: { from: () => builder(), rpc } };
 });
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }));

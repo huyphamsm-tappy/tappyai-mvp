@@ -1,5 +1,6 @@
 import { processContent } from '@/lib/explore/contentProcessor'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { rateLimit } from '@/lib/security/rateLimit'
@@ -41,11 +42,17 @@ const EMPTY: Record<string, unknown> = { caption: '', hashtags: [], category: 'o
  * not missing data.
  */
 export async function POST(req: NextRequest) {
-  const { user } = await getRequestUser(req)
+  const { user, supabase } = await getRequestUser(req)
   if (!user) return NextResponse.json(EMPTY)
   // An anonymous session is authenticated but is not an account, and cannot publish a review.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+
+  // V3 User Data Foundation — Explore is product functionality, so it is 18+.
+  // Placed after the anonymous refusal: an anonymous caller has no eligibility
+  // to read, and telling them their age is the problem would be false.
+  const ageRefusal = await refuseIneligible(req, supabase)
+  if (ageRefusal) return ageRefusal
 
   if (!rateLimit(`explore-process:${user.id}`, 20, 60_000).ok) {
     return NextResponse.json(
