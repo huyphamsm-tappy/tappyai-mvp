@@ -9,7 +9,7 @@ import Panel from '@/components/v3/Panel'
 import { ChipRow } from '@/components/v3/Panel'
 import {
   Settings, UserCircle, Pencil, Play, Heart, MessageCircle, MapPin,
-  Sparkles, QrCode, Loader2, ImageOff, Star,
+  Sparkles, QrCode, Loader2, ImageOff, Star, EyeOff,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
@@ -40,16 +40,26 @@ import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
 //     …) written by `/api/track` with an open vocabulary and no display copy. Rendering it as
 //     "Bạn đã …" would require inventing a human sentence per event type — a presentation layer
 //     over analytics, presented to the user as their own history.
-//   • "ĐÃ THÍCH" TAB — `review_likes` exists, but the only endpoints over it are "toggle a like"
-//     and "who liked THIS post". There is no gated list of the posts I have liked, and reading
-//     the table directly would bypass `publishableFilter()` and `stripUnservableMedia` — i.e.
-//     render held posts and dead media. Omitted rather than built past the safety boundary.
-//   • "DEALS ĐÃ LƯU" / "LƯỢT CHIA SẺ" stats — no saved-deal model, no share counter.
+//   • "DEALS ĐÃ LƯU" stat — no saved-deal model.
 //
 // 🚨 WHAT IS REAL IS ALL HERE, AND ALL OF IT IS FETCHED THROUGH THE GATED ROUTES.
-// Content comes from `/api/reviews/mine`, `/api/reviews/saved` and `/api/favorites` — the three
-// endpoints that already apply the publication gate and strip unservable media. This file adds
-// no fetch of its own to `reviews`, and no new API was written for it.
+// The personal collections are the FIVE the Android self profile shows, in its order — the
+// cross-platform contract pinned by `profileCollectionsParity.test.ts` (2026-09-17):
+//
+//   Bài viết  — the public rows of `GET /api/reviews/mine`
+//   Đã thích  — `GET /api/reviews/liked`   (newest like first)
+//   Đã lưu    — `GET /api/reviews/saved`   (newest save first)
+//   Đã ẩn     — the `is_hidden` rows of `/mine`, drawn with the eye-off treatment
+//   Đã share  — `GET /api/reviews/shared`  (the share history, newest first)
+//
+// Every one of those routes is the bearer's own (401 without a session, no user parameter), and
+// every one applies the publication gate and `stripUnservableMedia`. The "Đã thích" omission that
+// used to be recorded here — no gated list over `review_likes` — ended when `/api/reviews/liked`
+// was written (2026-09-15); the direct `review_likes` read it refused is still refused. Saved
+// PLACES are a separate surface (`/profile/favorites`), linked from the panel, not a sixth
+// collection: the contract is reviews, and Android's five are reviews.
+//
+// This file adds no fetch of its own to `reviews`, and no new API was written for it.
 //
 // 🚨 EVERY ACCOUNT ROW SURVIVED. `profileRowParity.test.tsx` pins that the guest and signed-in
 // screens render the SAME inventory from `ProfileRows` in the same order — the hub keeps both
@@ -68,14 +78,8 @@ interface ReviewCard {
   like_count?: number | null
   comment_count?: number | null
   view_count?: number | null
-}
-
-interface FavoritePlace {
-  id: string
-  place_id: string | null
-  place_name: string | null
-  place_address: string | null
-  created_at: string
+  /** Only `/api/reviews/mine` carries it — the author hid this post themselves. */
+  is_hidden?: boolean | null
 }
 
 type ProfileViewProps = {
@@ -99,7 +103,28 @@ type ProfileViewProps = {
   following: { id: string; name: string | null; avatarUrl: string | null }[]
 }
 
-const TABS = ['v3.profile.tabPosts', 'v3.profile.tabSaved', 'v3.profile.tabPlaces'] as const
+/**
+ * The signed-in user's own collections — the cross-platform contract, in the canonical order.
+ * Android: `CreatorProfileTab { Posts, Liked, Saved, Hidden, Shared }`; iOS: `OwnCollection`.
+ * `profileCollectionsParity.test.ts` reads this list from source and pins all three.
+ */
+export const OWN_PROFILE_COLLECTIONS = ['posts', 'liked', 'saved', 'hidden', 'shared'] as const
+export type OwnCollection = (typeof OWN_PROFILE_COLLECTIONS)[number]
+
+const TAB_LABEL: Record<OwnCollection, string> = {
+  posts: 'v3.profile.tabPosts',
+  liked: 'v3.profile.tabLiked',
+  saved: 'v3.profile.tabSaved',
+  hidden: 'v3.profile.tabHidden',
+  shared: 'v3.profile.tabShared',
+}
+const EMPTY_KEY: Record<OwnCollection, string> = {
+  posts: 'v3.profile.emptyPosts',
+  liked: 'v3.profile.emptyLiked',
+  saved: 'v3.profile.emptySaved',
+  hidden: 'v3.profile.emptyHidden',
+  shared: 'v3.profile.emptyShared',
+}
 
 export default function ProfileView({
   userId, userInfo, firstName: rawFirstName, conversationCount,
@@ -260,81 +285,119 @@ function Stat({ value, label }: { value: number | null; label: string }) {
 }
 
 /**
- * The tabbed content area.
+ * The tabbed content area — the five personal collections.
  *
- * 🚨 THREE TABS, THREE GATED ENDPOINTS. Each tab is one real dataset behind one real route that
- * already applies the publication gate. There is no fourth tab because there is no fourth gated
- * endpoint — see the omission note at the top of this file for the Liked and Reviews tabs (the
- * latter is the SAME `reviews` table this product calls posts; two tabs over one dataset would
- * be a distinction the model does not make).
+ * 🚨 FIVE TABS, FOUR GATED ENDPOINTS. Posts and Hidden are the two halves of `/api/reviews/mine`
+ * (own-only by construction), split on `is_hidden`; Liked, Saved and Shared are one route each.
+ * Each collection is fetched once, on first visit, and kept — switching tabs is free after that.
+ * Saved places are a separate surface and are linked, not listed, here.
  */
 function ProfileContent() {
   const { t } = useTranslation()
-  const [tab, setTab] = useState(0)
-  const [posts, setPosts] = useState<ReviewCard[] | null>(null)
+  const [tab, setTab] = useState<OwnCollection>('posts')
+  const [mine, setMine] = useState<ReviewCard[] | null>(null)
+  const [liked, setLiked] = useState<ReviewCard[] | null>(null)
   const [saved, setSaved] = useState<ReviewCard[] | null>(null)
-  const [places, setPlaces] = useState<FavoritePlace[] | null>(null)
+  const [shared, setShared] = useState<ReviewCard[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [failed, setFailed] = useState(false)
 
-  const load = useCallback(async (index: number) => {
+  const load = useCallback(async (c: OwnCollection) => {
     setFailed(false)
-    if ((index === 0 && posts) || (index === 1 && saved) || (index === 2 && places)) return
+    const already =
+      c === 'posts' || c === 'hidden' ? mine !== null : c === 'liked' ? liked !== null : c === 'saved' ? saved !== null : shared !== null
+    if (already) return
     setLoading(true)
     try {
-      if (index === 0) {
-        const r = await fetch('/api/reviews/mine')
+      const fetchRows = async (url: string) => {
+        const r = await fetch(url)
         if (!r.ok) throw new Error('load')
-        setPosts(((await r.json()).reviews ?? []) as ReviewCard[])
-      } else if (index === 1) {
-        const r = await fetch('/api/reviews/saved')
-        if (!r.ok) throw new Error('load')
-        setSaved(((await r.json()).reviews ?? []) as ReviewCard[])
-      } else {
-        const r = await fetch('/api/favorites')
-        if (!r.ok) throw new Error('load')
-        setPlaces(((await r.json()).favorites ?? []) as FavoritePlace[])
+        return ((await r.json()).reviews ?? []) as ReviewCard[]
       }
+      if (c === 'posts' || c === 'hidden') setMine(await fetchRows('/api/reviews/mine'))
+      else if (c === 'liked') setLiked(await fetchRows('/api/reviews/liked'))
+      else if (c === 'saved') setSaved(await fetchRows('/api/reviews/saved'))
+      // One per post, latest share first (the route collapses the history rows).
+      else setShared(await fetchRows('/api/reviews/shared'))
     } catch {
       setFailed(true)
     } finally {
       setLoading(false)
     }
-  }, [posts, saved, places])
+  }, [mine, liked, saved, shared])
 
   useEffect(() => { void load(tab) }, [tab, load])
 
-  const rows = tab === 0 ? posts : tab === 1 ? saved : places
-  const emptyKey = tab === 0 ? 'v3.profile.emptyPosts' : tab === 1 ? 'v3.profile.emptySaved' : 'v3.profile.emptyPlaces'
+  // "Hiện lại" on a hidden tile — the same PATCH the Explore action sheet used to make. The row
+  // moves from Đã ẩn to Bài viết in place; nothing is refetched.
+  const unhide = useCallback(async (id: string) => {
+    const r = await fetch(`/api/reviews/${id}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_hidden: false }),
+    })
+    if (!r.ok) return
+    setMine((rows) => rows ? rows.map((x) => (x.id === id ? { ...x, is_hidden: false } : x)) : rows)
+  }, [])
+
+  const rows: ReviewCard[] | null =
+    tab === 'posts' ? (mine ? mine.filter((r) => r.is_hidden !== true) : null)
+    : tab === 'hidden' ? (mine ? mine.filter((r) => r.is_hidden === true) : null)
+    : tab === 'liked' ? liked
+    : tab === 'saved' ? saved
+    : shared
 
   return (
     <section className="v3-panel" data-profile-content>
       <div className="flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3" style={{ borderColor: 'var(--v3-border)' }}>
-        <ChipRow items={TABS.map((k) => t(k))} activeIndex={tab} onSelect={setTab} />
-        <Link
-          href="/reviews/new"
-          className="inline-flex min-h-[32px] flex-shrink-0 items-center gap-1.5 rounded-full px-3 text-[12px] font-semibold transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2"
-          style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
-        >
-          {t('v3.profile.postAction')}
-        </Link>
+        <ChipRow
+          items={OWN_PROFILE_COLLECTIONS.map((c) => t(TAB_LABEL[c]))}
+          activeIndex={OWN_PROFILE_COLLECTIONS.indexOf(tab)}
+          onSelect={(i) => setTab(OWN_PROFILE_COLLECTIONS[i])}
+        />
+        <div className="flex flex-shrink-0 items-center gap-2">
+          {/* Saved PLACES — a separate surface, not a sixth collection (see the header note). */}
+          <Link
+            href="/profile/favorites"
+            data-profile-places
+            className="inline-flex min-h-[32px] items-center gap-1.5 rounded-full border px-3 text-[12px] font-semibold transition-colors hover:bg-[color:var(--v3-panel-elevated)] focus-visible:outline-none focus-visible:ring-2"
+            style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-secondary)' }}
+          >
+            <MapPin size={12} aria-hidden="true" />{t('v3.profile.tabPlaces')}
+          </Link>
+          <Link
+            href="/reviews/new"
+            className="inline-flex min-h-[32px] flex-shrink-0 items-center gap-1.5 rounded-full px-3 text-[12px] font-semibold transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2"
+            style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+          >
+            {t('v3.profile.postAction')}
+          </Link>
+        </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4" data-collection={tab}>
         {loading && !rows && (
           <div className="flex items-center justify-center py-14">
             <Loader2 size={22} className="animate-spin" style={{ color: 'var(--v3-fg-muted)' }} />
           </div>
         )}
 
-        {failed && <Empty text={t('v3.profile.loadFailed')} />}
+        {failed && (
+          <Empty text={t('v3.profile.loadFailed')}>
+            <button
+              type="button"
+              onClick={() => { void load(tab) }}
+              data-collection-retry
+              className="mt-1 inline-flex min-h-[32px] items-center rounded-full border px-3 text-[12px] font-semibold transition-colors hover:bg-[color:var(--v3-panel-elevated)] focus-visible:outline-none focus-visible:ring-2"
+              style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-accent)' }}
+            >
+              {t('v3.profile.retry')}
+            </button>
+          </Empty>
+        )}
 
-        {!loading && !failed && rows && rows.length === 0 && <Empty text={t(emptyKey)} />}
+        {!loading && !failed && rows && rows.length === 0 && <Empty text={t(EMPTY_KEY[tab])} />}
 
         {!failed && rows && rows.length > 0 && (
-          tab === 2
-            ? <PlaceList places={rows as FavoritePlace[]} />
-            : <ReviewGrid reviews={rows as ReviewCard[]} />
+          <ReviewGrid reviews={rows} hidden={tab === 'hidden'} onUnhide={tab === 'hidden' ? unhide : undefined} />
         )}
       </div>
     </section>
@@ -348,20 +411,21 @@ function ProfileContent() {
  * by database triggers and arrive on the payload; each renders only when the row actually carries
  * it. The play badge appears only for `content_type === 'video'`, which is the product's own
  * discriminator — there is no faked video treatment on a photo post.
+ *
+ * `hidden` is the Hidden collection: the eye-off veil over every tile (Android's `HiddenVeil`,
+ * the Explore grid's old `EyeOff` overlay), an unhide action, and NO link — the public detail
+ * route answers 404 for a hidden post, its author included, so a link there could only fail.
  */
-function ReviewGrid({ reviews }: { reviews: ReviewCard[] }) {
+function ReviewGrid({ reviews, hidden = false, onUnhide }: { reviews: ReviewCard[]; hidden?: boolean; onUnhide?: (id: string) => void }) {
+  const { t } = useTranslation()
   return (
     <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {reviews.map((r) => {
         const image = r.thumbnail || r.photos?.[0] || null
         const isVideo = r.content_type === 'video'
-        return (
-          <li key={r.id}>
-            <Link
-              href={`/reviews/${r.id}`}
-              data-review={r.id}
-              className="v3-tile group block overflow-hidden p-0 focus-visible:outline-none focus-visible:ring-2"
-            >
+        const tileClass = 'v3-tile group block overflow-hidden p-0 focus-visible:outline-none focus-visible:ring-2'
+        const tile = (
+          <>
               <span className="relative block aspect-[4/5] w-full overflow-hidden" style={{ background: 'var(--v3-panel-elevated)' }}>
                 {image ? (
                   // Review media is arbitrary remote storage, not a configured next/image domain —
@@ -398,6 +462,16 @@ function ReviewGrid({ reviews }: { reviews: ReviewCard[] }) {
                     </span>
                   )}
                 </span>
+
+                {hidden && (
+                  <span
+                    className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-black/55 text-[11px] font-semibold text-white"
+                    data-hidden-veil
+                  >
+                    <EyeOff size={20} aria-hidden="true" />
+                    {t('v3.profile.hiddenBadge')}
+                  </span>
+                )}
               </span>
 
               <span className="block px-2.5 py-2">
@@ -410,9 +484,28 @@ function ReviewGrid({ reviews }: { reviews: ReviewCard[] }) {
                       <Star size={10} aria-hidden="true" />{r.rating}
                     </span>
                   )}
+                  {hidden && onUnhide && (
+                    <button
+                      type="button"
+                      onClick={() => onUnhide(r.id)}
+                      data-unhide={r.id}
+                      className="inline-flex flex-shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold transition-colors hover:bg-[color:var(--v3-panel-elevated)] focus-visible:outline-none focus-visible:ring-2"
+                      style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-accent)' }}
+                    >
+                      {t('v3.profile.unhide')}
+                    </button>
+                  )}
                 </span>
               </span>
-            </Link>
+          </>
+        )
+        return (
+          <li key={r.id}>
+            {hidden ? (
+              <div data-review={r.id} data-hidden="true" className={tileClass}>{tile}</div>
+            ) : (
+              <Link href={`/reviews/${r.id}`} data-review={r.id} className={tileClass}>{tile}</Link>
+            )}
           </li>
         )
       })}
@@ -420,40 +513,14 @@ function ReviewGrid({ reviews }: { reviews: ReviewCard[] }) {
   )
 }
 
-/** Saved places: a flat list, because `favorites` is a flat list. No cover art is invented for them. */
-function PlaceList({ places }: { places: FavoritePlace[] }) {
-  return (
-    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-      {places.map((p) => (
-        <li key={p.id}>
-          <div
-            data-place={p.id}
-            className="flex items-start gap-2.5 rounded-xl border p-3"
-            style={{ background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)' }}
-          >
-            <span className="mt-0.5 flex-shrink-0" style={{ color: 'var(--v3-accent)' }} aria-hidden="true">
-              <MapPin size={14} />
-            </span>
-            <span className="min-w-0">
-              <span className="block truncate text-[12.5px] font-medium" style={{ color: 'var(--v3-fg)' }}>{p.place_name || ''}</span>
-              {p.place_address && (
-                <span className="block truncate text-[11px]" style={{ color: 'var(--v3-fg-muted)' }}>{p.place_address}</span>
-              )}
-            </span>
-          </div>
-        </li>
-      ))}
-    </ul>
-  )
-}
-
-function Empty({ text }: { text: string }) {
+function Empty({ text, children }: { text: string; children?: React.ReactNode }) {
   return (
     <div
       className="flex flex-col items-center justify-center gap-2 rounded-2xl border border-dashed px-6 py-12 text-center"
       style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg-muted)' }}
     >
       <p className="max-w-[34ch] text-[13px] leading-relaxed">{text}</p>
+      {children}
     </div>
   )
 }

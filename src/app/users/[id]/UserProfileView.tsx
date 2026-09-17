@@ -7,8 +7,12 @@
 // a creator's avatar landed you in a completely different UI from the feed.
 //
 // viewerId is who is logged in, userId is whose profile this is — ProfileTab uses
-// the difference to decide what is public (the posts grid) and what is private
-// (saved/liked/hidden, edit-profile, delete/hide).
+// the difference to decide which ACTIONS exist (edit-profile vs follow, delete/hide).
+//
+// 🚨 Your OWN id is not a creator page (2026-09-17). The signed-in user's own profile — with
+// its five private collections — has exactly one implementation, the V3 `/profile` hub, so
+// `/users/<me>` goes there instead of rendering a second own-profile with a different model.
+// Anyone else's id renders the public creator profile exactly as before.
 //
 // 🔑 Split out of page.tsx (U12) so the route can be a server component and export
 // `generateMetadata`. A 'use client' module cannot, which is why a shared profile
@@ -28,10 +32,14 @@ export default function UserProfileView({ userId }: { userId: string }) {
   useEffect(() => {
     const supabase = createClient()
     supabase.auth.getUser().then(({ data }) => {
+      // An anonymous session is a viewer, never an owner: its `id` can equal nothing this route
+      // is asked for that it may see privately, and /profile would only show it the guest screen.
+      const viewer = data.user && data.user.is_anonymous !== true ? data.user.id : null
+      if (viewer && viewer === userId) { router.replace('/profile'); return }
       setViewerId(data.user?.id ?? null)
       setReady(true)
     })
-  }, [])
+  }, [userId, router])
 
   // Wait for the session before the first render: ProfileTab decides public vs
   // private from viewerId, so mounting with a not-yet-known null would briefly

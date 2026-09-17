@@ -39,21 +39,29 @@ import { setLocale } from '@/lib/i18n/useTranslation'
 // following counts (trigger-maintained columns), likes received, the gated content endpoints, and
 // the existing QR capability — is actually rendered.
 
+const SHARED = [
+  { id: 'shared-1', place_name: 'Quán chia sẻ', body: null, photos: null, thumbnail: null, content_type: 'photo', created_at: '2026-09-01', shared_at: '2026-09-15T10:00:00Z' },
+]
+const LIKED = [
+  { id: 'liked-1', place_name: 'Quán đã thích', body: null, photos: null, thumbnail: null, content_type: 'photo', created_at: '2026-09-02', liked_at: '2026-09-16T10:00:00Z' },
+]
+// `/api/reviews/mine` is the author's COMPLETE list — the hidden row rides along with `is_hidden`.
 const REVIEWS = [
   {
     id: 'r1', place_name: 'Cà phê Đà Lạt', body: 'ngon', photos: ['https://cdn/x.jpg'],
     thumbnail: null, content_type: 'video', created_at: '2026-09-01T00:00:00Z',
-    rating: 5, like_count: 1248, comment_count: 12, view_count: 12400,
+    rating: 5, like_count: 1248, comment_count: 12, view_count: 12400, is_hidden: false,
   },
   {
     id: 'r2', place_name: 'Bún bò Huế', body: 'ok', photos: null,
     thumbnail: 'https://cdn/y.jpg', content_type: 'photo', created_at: '2026-08-30T00:00:00Z',
-    rating: 4, like_count: 3, comment_count: 0, view_count: 999,
+    rating: 4, like_count: 3, comment_count: 0, view_count: 999, is_hidden: false,
   },
-]
-
-const FAVORITES = [
-  { id: 'f1', place_id: 'p1', place_name: 'Nhà hàng A', place_address: '12 Lê Lợi, Q1', created_at: '2026-08-01T00:00:00Z' },
+  {
+    id: 'r3-hidden', place_name: 'Quán đã ẩn', body: 'private', photos: null,
+    thumbnail: null, content_type: 'photo', created_at: '2026-08-20T00:00:00Z',
+    rating: 3, like_count: 1, comment_count: 0, is_hidden: true,
+  },
 ]
 
 const BASE = {
@@ -79,8 +87,10 @@ beforeEach(() => {
   setLocale('en')
   fetchMock = vi.fn(async (url: string) => {
     if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS }) }
+    if (url === '/api/reviews/liked') return { ok: true, json: async () => ({ reviews: LIKED }) }
     if (url === '/api/reviews/saved') return { ok: true, json: async () => ({ reviews: [] }) }
-    if (url === '/api/favorites') return { ok: true, json: async () => ({ favorites: FAVORITES }) }
+    if (url === '/api/reviews/shared') return { ok: true, json: async () => ({ reviews: SHARED }) }
+    if (url === '/api/reviews/r3-hidden') return { ok: true, json: async () => ({ ok: true }) }
     throw new Error(`unexpected fetch: ${url}`)
   })
   vi.stubGlobal('fetch', fetchMock)
@@ -199,7 +209,7 @@ describe('content comes from the gated endpoints, and only from them', () => {
     renderHub()
     await waitFor(() => expect(fetchMock).toHaveBeenCalled())
     for (const [url] of fetchMock.mock.calls) {
-      expect(['/api/reviews/mine', '/api/reviews/saved', '/api/favorites']).toContain(url)
+      expect(['/api/reviews/mine', '/api/reviews/liked', '/api/reviews/saved', '/api/reviews/shared']).toContain(url)
     }
   })
 
@@ -221,13 +231,15 @@ describe('content comes from the gated endpoints, and only from them', () => {
     expect(container.querySelector('[data-review="r1"]')!.getAttribute('href')).toBe('/reviews/r1')
   })
 
-  it('switches tabs and loads saved places from /api/favorites', async () => {
+  it('saved PLACES are a separate surface — a link to /profile/favorites, not a sixth collection', async () => {
     const { container } = renderHub()
     await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
-    fireEvent.click(screen.getByRole('button', { name: 'Places' }))
-    await waitFor(() => expect(container.querySelector('[data-place="f1"]')).toBeTruthy())
-    expect(fetchMock).toHaveBeenCalledWith('/api/favorites')
-    expect(container.querySelector('[data-place="f1"]')!.textContent).toContain('Nhà hàng A')
+    const places = container.querySelector('[data-profile-content] [data-profile-places]')
+    expect(places?.getAttribute('href')).toBe('/profile/favorites')
+    expect(places?.textContent).toContain('Places')
+    // The five chips are reviews; `/api/favorites` is never fetched by the collections panel.
+    expect(fetchMock).not.toHaveBeenCalledWith('/api/favorites')
+    expect(screen.queryByRole('button', { name: 'Places' })).toBeNull()
   })
 
   it('an empty dataset gets an empty state, never filler cards', async () => {
@@ -238,20 +250,75 @@ describe('content comes from the gated endpoints, and only from them', () => {
     expect(container.querySelectorAll('[data-review]').length).toBe(0)
   })
 
-  it('a failed load says so instead of rendering an empty success', async () => {
+  it('a failed load says so instead of rendering an empty success, and retry re-reads', async () => {
     fetchMock.mockImplementation(async () => ({ ok: false, json: async () => ({}) }))
     const { container } = renderHub()
     await waitFor(() => expect(screen.getByText(/didn't load/)).toBeTruthy())
     expect(container.querySelectorAll('[data-review]').length).toBe(0)
+    expect(fetchMock.mock.calls.filter(([u]) => u === '/api/reviews/mine').length).toBe(1)
+
+    fetchMock.mockImplementation(async () => ({ ok: true, json: async () => ({ reviews: REVIEWS }) }))
+    fireEvent.click(container.querySelector('[data-collection-retry]') as HTMLElement)
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(fetchMock.mock.calls.filter(([u]) => u === '/api/reviews/mine').length).toBe(2)
   })
 
-  it('offers exactly three tabs — one per gated endpoint', () => {
+  it('offers exactly the five personal collections, in the Android order', () => {
     const { container } = renderHub()
     const tabs = [...container.querySelectorAll('[data-profile-content] .v3-chip')].map((c) => c.textContent)
-    expect(tabs).toEqual(['Posts', 'Saved', 'Places'])
-    // No "Liked" tab: review_likes has no gated list endpoint, and reading it directly would
-    // bypass publishableFilter() and stripUnservableMedia.
-    expect(tabs).not.toContain('Liked')
+    // Posts / Liked / Saved / Hidden / Shared — the cross-platform contract (see
+    // profileCollectionsParity.test.ts). Liked arrived with `/api/reviews/liked` (2026-09-15);
+    // what must never come back is a direct `review_likes` read that bypasses publishableFilter().
+    expect(tabs).toEqual(['Posts', 'Liked', 'Saved', 'Hidden', 'Shared'])
+  })
+
+  it('Posts lists only the public rows of /mine — the hidden row is not a post anyone can see', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    expect(container.querySelectorAll('[data-review]').length).toBe(2)
+    expect(container.querySelector('[data-review="r3-hidden"]')).toBeNull()
+  })
+
+  it('switches to Liked and renders the liked reviews from /api/reviews/liked', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Liked' }))
+    await waitFor(() => expect(container.querySelector('[data-review="liked-1"]')).toBeTruthy())
+    expect(fetchMock).toHaveBeenCalledWith('/api/reviews/liked')
+    expect(container.querySelector('[data-review="liked-1"]')!.getAttribute('href')).toBe('/reviews/liked-1')
+  })
+
+  it('Hidden is the is_hidden half of /mine — veiled, unlinked, with an unhide action that moves it back to Posts', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Hidden' }))
+    await waitFor(() => expect(container.querySelector('[data-review="r3-hidden"]')).toBeTruthy())
+    // No second request: Hidden and Posts are two halves of the one /mine payload.
+    expect(fetchMock.mock.calls.filter(([u]) => u === '/api/reviews/mine').length).toBe(1)
+    const tile = container.querySelector('[data-review="r3-hidden"]') as HTMLElement
+    expect(tile.getAttribute('data-hidden')).toBe('true')
+    expect(tile.getAttribute('href')).toBeNull()               // GET /api/reviews/{id} is 404 for a hidden post
+    expect(tile.querySelector('[data-hidden-veil]')?.textContent).toContain('Hidden')
+    expect(container.querySelectorAll('[data-review]').length).toBe(1)
+    expect(container.querySelector('[data-review="r1"]')).toBeNull()
+
+    fireEvent.click(container.querySelector('[data-unhide="r3-hidden"]') as HTMLElement)
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith('/api/reviews/r3-hidden', expect.objectContaining({ method: 'PATCH' })))
+    const [, init] = fetchMock.mock.calls.find(([u]) => u === '/api/reviews/r3-hidden')!
+    expect(JSON.parse((init as RequestInit).body as string)).toEqual({ is_hidden: false })
+    await waitFor(() => expect(screen.getByText("You haven't hidden any posts.")).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Posts' }))
+    await waitFor(() => expect(container.querySelectorAll('[data-review]').length).toBe(3))
+    expect(container.querySelector('[data-review="r3-hidden"]')?.getAttribute('href')).toBe('/reviews/r3-hidden')
+  })
+
+  it('switches to Shared and renders the shared reviews from /api/reviews/shared', async () => {
+    const { container } = renderHub()
+    await waitFor(() => expect(container.querySelector('[data-review="r1"]')).toBeTruthy())
+    fireEvent.click(screen.getByRole('button', { name: 'Shared' }))
+    await waitFor(() => expect(container.querySelector('[data-review="shared-1"]')).toBeTruthy())
+    expect(fetchMock).toHaveBeenCalledWith('/api/reviews/shared')
+    expect(container.querySelector('[data-review="shared-1"]')!.getAttribute('href')).toBe('/reviews/shared-1')
   })
 })
 

@@ -477,7 +477,8 @@ export const vi: Record<string, string> = {
   'v3.profile.statFollowing': 'Đang theo dõi',
   'v3.profile.statFollowers': 'Người theo dõi',
   'v3.profile.statLikes': 'Lượt thích',
-  // Tabs — one per dataset that has a real, safety-gated endpoint behind it.
+  // The five personal collections — the Android self profile's wording, in its order
+  // (Bài viết / Đã thích / Đã lưu / Đã ẩn / Đã share). Places is a separate surface.
   'v3.profile.tabPosts': 'Bài viết',
   'v3.profile.tabSaved': 'Đã lưu',
   'v3.profile.tabPlaces': 'Địa điểm',
@@ -590,11 +591,20 @@ export const en: Record<string, string> = {
   // ── Smart Tools page (/tools) ───────────────────────────────────────────
   'v3.tools.subtitle': 'Smart tools',
   'v3.tools.blurb': 'Useful utilities, built to help you every day',
+  'v3.profile.tabLiked': 'Đã thích',
   'v3.tools.authHint': 'Sign-in required',
+  'v3.profile.tabHidden': 'Đã ẩn',
+  'v3.profile.tabShared': 'Đã share',
   'v3.tools.daily': 'Everyday',
   'v3.tools.discover': 'Discover',
+  'v3.profile.emptyLiked': 'Bạn chưa thích bài viết nào.',
   'v3.tools.fun': 'Fun',
+  'v3.profile.emptyHidden': 'Bạn chưa ẩn bài viết nào.',
+  'v3.profile.emptyShared': 'Bạn chưa chia sẻ bài viết nào.',
   'v3.panel.saved': 'Saved',
+  'v3.profile.hiddenBadge': 'Đã ẩn',
+  'v3.profile.unhide': 'Hiện lại',
+  'v3.profile.retry': 'Thử lại',
   'v3.panel.history': 'History',
   'v3.panel.continue': 'Continue',
   'v3.panel.capabilities': 'AI Capabilities',
@@ -940,3 +950,12 @@ export const en: Record<string, string> = {
   'v3.profile.qrHint': 'Share your profile',
   'v3.notifications.body': 'Manage push, email and reminders in settings.',
 }
+  'v3.profile.tabLiked': 'Liked',
+  'v3.profile.tabHidden': 'Hidden',
+  'v3.profile.tabShared': 'Shared',
+  'v3.profile.emptyLiked': "You haven't liked any posts yet.",
+  'v3.profile.emptyHidden': "You haven't hidden any posts.",
+  'v3.profile.emptyShared': "You haven't shared any posts yet.",
+  'v3.profile.hiddenBadge': 'Hidden',
+  'v3.profile.unhide': 'Show again',
+  'v3.profile.retry': 'Try again',

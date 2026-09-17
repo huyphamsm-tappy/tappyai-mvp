@@ -17,7 +17,8 @@ import LikeListSheet from './LikeListSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
 import LinkPoster from '@/components/LinkPoster'
-import { ProfileTab, ClipViewer } from './ProfileTab'
+import { ClipViewer } from './ProfileTab'
+import { OwnProfileRedirect } from './OwnProfileRedirect'
 import ExploreV3Desktop from './ExploreV3Desktop'
 import { useNotifications } from '@/components/NotificationProvider'
 import { getExploreSession, reportAuthState } from '@/lib/explore/webExploreSession'
@@ -1281,14 +1282,13 @@ function ReviewsPageInner() {
             </div>
           )}
 
-          {/* Profile (TikTok style) */}
-          {tab === 'profile' && (
-            me
-              ? <ProfileTab userId={me} viewerId={me} />
-              : <div className="h-dvh flex items-center justify-center">
-                  <Link href="/login" className="text-[#fe2c55] text-sm font-semibold">{t('reviews.loginToViewProfile')}</Link>
-                </div>
-          )}
+          {/* Profile — the signed-in user's OWN profile has exactly one implementation, the V3
+              `/profile` hub (2026-09-17). This tab used to render a second one (`ProfileTab` with
+              viewerId === userId: three tabs over direct Supabase reads), which is how web and
+              Android drifted apart. The tab now hands over: `?tab=profile` (the composer's
+              post-publish redirect, the nav buttons, a restored URL) lands on `/profile`, whose
+              server gate turns a guest — anonymous session included — into the guest screen. */}
+          {tab === 'profile' && <OwnProfileRedirect />}
 
           {/* Inbox - notifications */}
           {tab === 'inbox' && (
