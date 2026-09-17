@@ -577,11 +577,15 @@ internal fun ReviewDetailScreen(
     ) {
         ScreenHeader(title = stringResource(R.string.reviews_detail_title), onBack = onBack)
         if (review == null) {
-            TappyEmptyState(
-                icon = Icons.Filled.RateReview,
-                title = stringResource(R.string.reviews_detail_unavailable_title),
-                message = stringResource(R.string.reviews_detail_unavailable_message),
-            )
+            if (uiState.isLoadingReview) {
+                TappyLoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = TappySpacing.xxl))
+            } else {
+                TappyEmptyState(
+                    icon = Icons.Filled.RateReview,
+                    title = stringResource(R.string.reviews_detail_unavailable_title),
+                    message = stringResource(R.string.reviews_detail_unavailable_message),
+                )
+            }
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 item(key = "review-card") {
