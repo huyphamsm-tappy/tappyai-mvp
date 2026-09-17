@@ -139,6 +139,50 @@ describe('G2 · R3′ clause cut (Q1)', () => {
   })
 })
 
+describe('G2 · mixed-unit ranges ("500k-1tr") — two single amounts, each checked; fail-closed (owner follow-up 2)', () => {
+  it('"500k-1tr" is read as 500k AND 1tr; one amount outside the band removes the sentence (v1 and v2)', () => {
+    const text = 'Mình chọn **BÒ TƠ QUÁN MỘC** cho bạn. Giá khoảng 300k-1tr/người.' // band 200-400 N ₫: 300k inside, 1tr outside
+    expect(v1(text).text).not.toContain('300k-1tr')
+    const r = v2(text)
+    expect(r.text).not.toContain('300k-1tr')
+    expect(r.stats?.claims).toBe(2)
+    expect(r.stats?.unsupported).toBe(1)
+  })
+  it('"200k-1,5tr" likewise; the clause cut never rescues a mixed range with one bad half', () => {
+    const text = 'Hoặc **SOO COFFEE** (4.7⭐, 556 đánh giá) nếu bạn thích không gian hiện đại, giá 200k-1,5tr.'
+    const r = v2(text)
+    expect(r.text).toBe('')
+    expect(r.stats?.clause_cut).toBe(0)
+  })
+  it('both halves inside the band ⇒ kept', () => {
+    const text = 'Mình chọn **RuNam Vincom Landmark 81** cho bạn. Giá khoảng 500k-0,7tr.' // band 100-700 N ₫
+    expect(v2(text).text).toBe(text)
+  })
+})
+
+describe('G2 · single-subject carry-over is v2-only and bounded (owner follow-up 3)', () => {
+  const pickThenPrice = 'Mình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** — lựa chọn tốt nhất cho bạn 👌\n\n**4.9⭐ (7.166 đánh giá)**\n\nGiá khoảng 100-200k/người, mở đến 02:00.'
+  it('v1 never carries a subject across a blank line (the sentence stays area-level and, with no snippet, is removed)', () => {
+    expect(v1(pickThenPrice).text).not.toContain('100-200k')
+  })
+  it('a DIFFERENT venue named in a LATER paragraph does not retract the carry-over for the earlier price sentence', () => {
+    const text = pickThenPrice + '\n\nNgoài ra, **SOO COFFEE** (4.7⭐) cũng đáng thử nếu bạn muốn cafe.'
+    const r = v2(text)
+    expect(r.text).toBe(text)
+    expect(r.stats?.supported_by_band).toBe(1)
+  })
+  it('a different venue named BEFORE the price sentence ends the carry-over (already pinned above); a later price after that second venue is judged by paragraph anaphora, not by the pick', () => {
+    const text = 'Mình chọn **GÀ RÁN K- JEJU CHICKEN-Quận 1** cho bạn.\n\nNgoài ra có **SOO COFFEE** (4.7⭐).\n\nGiá khoảng 100-200k/người.'
+    expect(v2(text).text).not.toContain('100-200k')
+  })
+  it('a carried subject whose band does not support the amount falls back to area snippet evidence, and with none the sentence goes', () => {
+    const text = 'Mình chọn **SOO COFFEE** cho bạn.\n\n**4.7⭐**\n\nGiá dịch vụ ở khu này thường khoảng 1-2tr.'
+    expect(v2(text).text).not.toContain('1-2tr')
+    const withArea = guardSnippetPricesInText(text, [1000000, 2000000], '', scope, { v2: true, priceBandsByEntity: BANDS })
+    expect(withArea.text).toBe(text)
+  })
+})
+
 describe('G2 · v1 byte-identical without the flag', () => {
   it('same text, same result, no stats', () => {
     const text = 'Mình chọn **SOO COFFEE** cho bạn. Giá khoảng 100-200k.'
