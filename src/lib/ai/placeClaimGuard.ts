@@ -23,7 +23,7 @@
 // m" is evidence for exactly those numbers. Anything tracing to neither is
 // removed with the whole sentence, and nothing is ever written.
 
-import { sentenceSpans } from './moneyGuard'
+import { sentenceSpans, proseOnly } from './moneyGuard'
 import { placeTokensFor, textNamesPlace, attributePlace } from '@/lib/links/placeAttribution'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 
@@ -627,6 +627,18 @@ export function guardPlaceClaimsInText(
 
   spans.forEach(([a, b], i) => {
     const s = text.slice(a, b)
+    /**
+     * 🚨 MACHINE PAYLOAD IS NOT A CLAIM. `sentenceSpans` keeps a [CTA_BUTTONS] /
+     * [FOLLOWUPS] / [TAPPY_PLAN] block or a link as its own span, but this guard
+     * then judged it like prose — and a Google Maps `?cid=3700468258469518959`
+     * contains "0468258469", which PHONE_RE reads as a phone nobody's evidence
+     * owns. Measured on the 2026-09-17 V3 capture: the model's CTA block was
+     * deleted on 11/15 turns and reached the user on 4/15 (7/30 in the earlier
+     * baseline). A span with no prose is never judged; digits inside links or
+     * markup inside a prose sentence are masked before any number is read.
+     */
+    const prose = proseOnly(s)
+    if (!/\p{L}/u.test(prose)) return
 
     /**
      * The claim rules that fired on this sentence.
@@ -759,14 +771,14 @@ export function guardPlaceClaimsInText(
      * retrieved text that NAMED it. Area text supports an unattributed sentence
      * and nothing else — the same rule the price guard already applies.
      */
-    if (!ticketsOnly && scoreRe.test(s)) {
+    if (!ticketsOnly && scoreRe.test(prose)) {
       // Fail-closed for the same reason as the verdict above: an unattributable
       // score has no venue to be a score OF.
-      const named = placeNamedAt(i, spans) ?? placeByNumbers(s)
+      const named = placeNamedAt(i, spans) ?? placeByNumbers(prose)
       const pool = ratingsByEntity
         ? (named ? [...(ratingsByEntity.get(named) ?? []), ...numbersIn(entityTexts?.get(named) ?? [])] : [])
         : ratingPool
-      const stated = numbersOf(s)
+      const stated = numbersOf(prose)
       if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'score'); if (!named) stats.unattributable_claims++; return }
     }
 
@@ -777,10 +789,10 @@ export function guardPlaceClaimsInText(
      * the user because no rule matched the phrase. A count is a fact about one
      * business; with nothing structured for it, it cannot be stated.
      */
-    if (!ticketsOnly && REVIEW_COUNT_RE.test(s)) {
-      const named = placeNamedAt(i, spans) ?? placeByNumbers(s)
+    if (!ticketsOnly && REVIEW_COUNT_RE.test(prose)) {
+      const named = placeNamedAt(i, spans) ?? placeByNumbers(prose)
       const pool = named ? (reviewCountsByEntity?.get(named) ?? []) : []
-      const stated = statedReviewCounts(s)
+      const stated = statedReviewCounts(prose)
       if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'review_count'); if (!named) stats.unattributable_claims++; return }
     }
 
@@ -793,16 +805,16 @@ export function guardPlaceClaimsInText(
      * survived. Calling the wrong business is the kind of error a user acts on
      * immediately, so an unmatched or unattributable number is removed.
      */
-    if (!ticketsOnly && PHONE_RE.test(s)) {
+    if (!ticketsOnly && PHONE_RE.test(prose)) {
       const named = placeNamedAt(i, spans)
       const own = (named ? (phonesByEntity?.get(named) ?? []) : []).map(phoneDigits)
-      const stated = (s.match(new RegExp(PHONE_RE, 'gu')) ?? []).map(phoneDigits)
+      const stated = (prose.match(new RegExp(PHONE_RE, 'gu')) ?? []).map(phoneDigits)
       if (stated.length > 0 && !stated.every(d => own.includes(d))) { doomed.add(i); reasonOf.set(i, 'phone'); if (!named) stats.unattributable_claims++; return }
     }
 
     // 3) A stated distance must trace to a computed distance or a retrieved one.
-    if (!ticketsOnly && DISTANCE_RE.test(s)) {
-      const stated = numbersOf(s)
+    if (!ticketsOnly && DISTANCE_RE.test(prose)) {
+      const stated = numbersOf(prose)
       if (stated.length > 0 && !stated.some(n => near(n, distancePool))) { doomed.add(i); reasonOf.set(i, 'distance'); return }
     }
   })
