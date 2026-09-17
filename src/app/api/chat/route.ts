@@ -22,7 +22,7 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -40,6 +40,7 @@ import { placeRecommendations, productRecommendations, stayRecommendations } fro
 import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
+import { attachCommerceLinks } from '@/lib/ai/tools/commerce'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
@@ -54,6 +55,7 @@ import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
+import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 
 export const maxDuration = 60
 
@@ -176,11 +178,26 @@ export async function POST(req: Request) {
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
   const movieRecommend = detectMovieRecommendationIntent(lastText)
-  // Response language = the user's LATEST message, unless they explicitly ask
-  // for another one ("Answer in English", "Trả lời bằng tiếng Việt") — that
-  // request always wins. Never derived from UI locale, browser language,
-  // profile, country, or earlier turns (none of those are read here).
-  const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
+  // Response language, in priority order:
+  //   1. an explicit request in the message ("Answer in English", "Trả lời bằng tiếng Việt"),
+  //   2. the language the CLIENT says the user is using (`Accept-Language` / `?lang`),
+  //   3. detection from the message text.
+  //
+  // Step 2 is new, and it reverses the previous rule, which read the language out of the message
+  // text alone and deliberately ignored the UI locale. That rule breaks on the most ordinary
+  // Vietnamese input there is: typing without diacritics. "Tim quan bun bo ngon o TPHCM" has no
+  // accented characters and no Vietnamese function words that `detectLang` weighs, so it scores as
+  // English and the assistant answers a Vietnamese user in English — reproduced repeatedly on
+  // 2026-09-08 against the live pipeline.
+  //
+  // Text detection remains the fallback for a client that sends no locale at all, so nothing
+  // regresses for callers that never had one, and an explicit in-message request still wins over
+  // both — asking for English in a Vietnamese app still gets English, for that turn.
+  const clientLocale = requestLocale(req)
+  const lang = detectExplicitLangRequest(lastText)
+    ?? detectLangConfident(lastText)
+    ?? clientLocale
+    ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
@@ -192,6 +209,12 @@ export async function POST(req: Request) {
   const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
+  // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
+  // from the last few USER turns, so a reply to Tappy's clarifying question keeps them. Text only.
+  const recentUserTexts: string[] = userMessages.slice(-3).map((m: { content?: unknown }) => {
+    const c = m.content
+    return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : ''
+  })
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
@@ -905,6 +928,10 @@ export async function POST(req: Request) {
   // only the web reply is told to stop repeating what the card shows. A client
   // that sends no header - Android, iOS, anything older - keeps today's prose.
   const rendersDecisionCard = req.headers.get('x-tappy-surface') === 'web'
+  // CommerceContext for the CCP seam: the surface header is the only platform signal the route
+  // has, and the response language is what the merchant page should open in. No user identifier.
+  const commercePlatform: 'web' | 'android' | 'ios' | undefined = rendersDecisionCard ? 'web' : undefined
+  const commerceLocale: 'vi' | 'en' | undefined = lang === 'en' ? 'en' : lang === 'vi' ? 'vi' : undefined
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
@@ -1002,6 +1029,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     llmCalls: number | null; toolCalls: number
   } | null = null
 
+  /**
+   * This turn's Google Places allowance.
+   *
+   * `maxSteps` above is why one is needed: the model may take up to eight tool steps, and each may
+   * call `search_places` with different words. Different words are a different cache key, so the
+   * cache cannot collapse them — measured, one Food consultation spent SEVEN SearchText calls
+   * against a 100/day project quota.
+   *
+   * A planning turn asks genuinely different questions (eat / see / stay) and gets three; every
+   * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
+   * collector, so one conversation can never spend another's allowance.
+   */
+  const placesBudget = createPlacesBudget(planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
@@ -1078,7 +1119,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // location the model DID name still wins; this only fills a blank.
           const location = modelLocation ?? exploreClipLocationHint(clipContext)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
-          let r: unknown = await searchPlaces(query, location, type, lang, userLocation)
+          let r: unknown = await searchPlaces(query, location, type, lang, userLocation, placesBudget)
           // Explore clip: "this place" is ONE venue. The tool just returned the
           // 8-10 places around the address — as it must for discovery — so the
           // rows are narrowed HERE, deterministically, to the one(s) that carry
@@ -1139,6 +1180,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             ? { result: filtered, pick: null }
             : rankForModel('search_places', filtered)
           if (pick) turnPick = pick
+          // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
+          // `commerce_links`, read by buildActions below and carved from the model by forModel.
+          // Identity-preserving and a no-op while CCP_ENABLED is false.
+          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
           // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
@@ -1172,6 +1217,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, query) : r
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -1227,7 +1273,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       web_search: tool({
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => webSearch(query, lang)
+        execute: async ({ query }) => {
+          const r = await webSearch(query, lang)
+          // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
+          // tool — Ticketbox listings are discovered and validated by CCP and projected as
+          // `event_links` (when CCP is on); the result is untouched otherwise.
+          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return r
+        }
       }),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
@@ -1240,14 +1293,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         execute: async ({ query }) => getGoldPrice(query || '', lang)
       }),
       get_flight_prices: tool({
-        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales)',
+        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales), kem link dat ve theo dung chang/ngay',
         parameters: z.object({
           origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
+          departDate: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          returnDate: z.string().optional().describe('Ngay ve dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          passengers: z.number().int().min(1).max(9).optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc)'),
         }),
-        execute: async ({ origin, destination }) => {
-          const r = await getFlightPrices(origin, destination, lang)
-          return budget ? applyBudgetFilter(r, budget, 've may bay') : r
+        execute: async ({ origin, destination, departDate, returnDate, passengers }) => {
+          const r = await getFlightPrices(origin, destination, lang, departDate)
+          const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
+          // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
+          // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
+          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return filtered
         }
       }),
       get_hotel_prices: tool({
@@ -1264,6 +1324,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
           return forModel('get_hotel_prices', pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
@@ -1276,8 +1337,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
           destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
           mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
+          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
         }),
-        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+        execute: async ({ origin, destination, mode, date }) => {
+          const r = await getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+          // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return r
+        }
       }),
       ...(authedUserId ? {
         save_price_watch: tool({

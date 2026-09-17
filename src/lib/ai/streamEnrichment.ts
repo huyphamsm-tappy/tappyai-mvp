@@ -15,6 +15,9 @@ import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
+import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
+import { actionTranslator } from '@/lib/recommendation/actionLabel'
+import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
@@ -46,6 +49,21 @@ type PlaceLike = {
   photo_names?: string[]
   /** Backend-validated TikTok review/video URL, or absent when the provider found none. */
   tiktok_review_url?: string
+  // Structured place facts carried alongside the localized `google_rating` sentence, so the
+  // [TAPPY_PLACES] block can state them as values instead of a client parsing them back out of
+  // prose. Provider-dependent, hence all optional (Google: rating/review count; OSM: hours,
+  // distance, cuisine).
+  rating?: number
+  review_count?: number
+  /**
+   * Whether the provider ranked this place against the query TEXT (Google Places textSearch) or
+   * only by category and radius (the OpenStreetMap fallback). Gates [TAPPY_PLACES] — see
+   * renderPlacesMarker. Carried from the tool result by toolResultSplit.
+   */
+  text_ranked?: boolean
+  distance_km?: number
+  hours?: string
+  attributes?: string[]
 }
 // get_hotel_prices / search_products' primary content — 'title' stands in for 'name'.
 type SearchResultLike = { title?: string; photo_url?: string; photo_urls?: string[] }
@@ -117,6 +135,85 @@ function hasDomainNearName(placeName: string, domain: string, lowerText: string,
 const normName = (n: string) => normalizeVN(n.toLowerCase())
 
 const hasPhoto = (p: PlaceLike) => !!((p.photo_urls && p.photo_urls.length > 0) || p.photo_url)
+
+/**
+ * Which places a durable card may name, and in which order.
+ *
+ * 🚨 THIS USED TO BE A SECOND `[TAPPY_PLACES]` RENDERER. It serialized its own
+ * `{ v: 1, places: [...] }` payload while `lib/recommendation/marker.ts` serialized
+ * `{ v: 1, items: [...] }` under the SAME marker literal and the SAME version number —
+ * two schemas, one wire contract, and only the latter had a client parser
+ * (`parsePlacesMarker` checks `payload.items`), a persistence policy (`mayPersist`) and a
+ * place in the shared three-platform fixture suite. The serializer therefore lives there
+ * and only there; what survives here is the part that was NOT duplicated: the two
+ * conditions under which a place has earned a card at all.
+ *
+ * 1. THE PROVIDER MUST HAVE RANKED IT AGAINST THE USER'S WORDS (`text_ranked`).
+ *    Google Places textSearch does. The OpenStreetMap fallback does not: it is handed a
+ *    category and a radius, so for "bún bò" it returns whatever restaurants are nearby.
+ *    Measured on 2026-09-08, with Google returning 403, that produced a Western
+ *    restaurant, a French restaurant and a steakhouse — all real, all nearby, none of
+ *    them an answer. Those rows still reach the model and can inform its prose; what they
+ *    must not do is become a numbered "Tappy recommends" rail.
+ *
+ * 2. THE REPLY MUST ALREADY NAME IT. A card can never advertise a place the reader was
+ *    not shown, nor contradict the order they read, so the result is ordered by where the
+ *    prose mentions each name.
+ *
+ * Returns [] when either condition removes everything — the caller emits no marker at all
+ * rather than an empty one.
+ */
+export function placesGroundedInProse(places: PlaceLike[], prose: string): PlaceLike[] {
+  if (!places || places.length === 0 || !prose.trim()) return []
+
+  const ranked = places.filter(p => p.text_ranked === true)
+  if (ranked.length === 0) return []
+  places = ranked
+
+  // Same alignment guard injectPlaceEnrichment uses: normalizeVN must stay index-aligned for
+  // offsets to mean anything. When it does not, fall back to the source order rather than mis-rank.
+  const norm = normalizeVN(prose.toLowerCase())
+  const aligned = norm.length === prose.length
+  const headers: Header[] = aligned ? proseHeaders(norm) : []
+
+  const named = places
+    .map((place, index) => {
+      const name = (place.name ?? '').trim()
+      const at = aligned && name ? findPlaceOffset(name, norm, headers) : -1
+      return { place, name, at, index }
+    })
+    .filter(entry => entry.name !== '' && (!aligned || entry.at !== -1))
+    .sort((a, b) => (aligned ? a.at - b.at : a.index - b.index))
+
+  return named.map(entry => entry.place)
+}
+
+/**
+ * The same two conditions, applied to the RECOMMENDATIONS the durable marker serializes.
+ *
+ * `renderPlacesMarker` (marker.ts) takes `Recommendation[]`; the evidence for both
+ * conditions lives on the tool rows (`text_ranked`) and in the prose. So the rows decide,
+ * and the recommendations follow them — matched by name, ordered exactly as
+ * [placesGroundedInProse] ordered the rows, so the card cannot rank differently from the
+ * text the reader just read.
+ *
+ * A recommendation whose place is not in the grounded set is dropped rather than
+ * reordered: it has no card because the reply gave it no mention.
+ */
+export function recommendationsGroundedInProse(
+  recs: Recommendation[],
+  places: PlaceLike[],
+  prose: string,
+): Recommendation[] {
+  const grounded = placesGroundedInProse(places, prose)
+  if (grounded.length === 0) return []
+  const order = new Map(grounded.map((p, i) => [normName((p.name ?? '').trim()), i]))
+  return recs
+    .map(r => ({ r, at: order.get(normName(r.entity.identity.name.trim())) }))
+    .filter((e): e is { r: Recommendation; at: number } => e.at !== undefined)
+    .sort((a, b) => a.at - b.at)
+    .map(e => e.r)
+}
 
 // ── System-owned enrichment placement ────────────────────────────────────────
 // Architecture: the LLM writes PROSE ONLY; the app OWNS where each place's images
@@ -924,6 +1021,9 @@ export function applyPlaceEnrichmentStreamFilter(
    * door, not evidence about one cinema; `isDirectTicketUrl` draws that line.
    */
   const ticketablePlaces = new Set<string>()
+  /** Validated commerce links the system handed the model this turn (CCP route / event / film projections). */
+  const systemLinkUrls = new Set<string>()
+  const systemLinks: Array<{ name: string; url: string }> = []
   /**
    * Quality facts keyed by the venue they belong to.
    *
@@ -982,6 +1082,15 @@ export function applyPlaceEnrichmentStreamFilter(
    */
   const ticketIntent = mentionsTickets(userText)
   if (ticketIntent) bufferMode = true
+  /**
+   * The same shape for a COMMERCE HANDOFF turn (Final local live UAT, 14 Sep 2026): a user who
+   * names a registry merchant or asks for events gets the platform's validated links, and the
+   * prose hygiene that unmakes a mislabelled or front-door merchant link runs at settle time —
+   * a live-streamed "[Ticketbox.vn](https://ticketbox.vn/)" was measured getting through.
+   */
+  const requestedProviderId = requestedProviderOf(userText)
+  const commerceHandoffIntent = !!requestedProviderId || entertainmentCapabilityOf(userText) === 'event_ticket'
+  if (commerceHandoffIntent) bufferMode = true
   /**
    * A5-P1. Buffering the WHOLE places reply was broader than the danger: measured on production
    * 63313d5, shopping showed content at 2.2s and food at 15.4s with the same pipeline and the same
@@ -1349,6 +1458,8 @@ export function applyPlaceEnrichmentStreamFilter(
         reviewCountsByEntity,
         phonesByEntity,
         ticketablePlaces,
+        // CCP: sentences carrying a system-placed commerce link are never judged as claims.
+        systemLinkUrls,
       }, { scope: placeClaimScope, attributionV2: guardV2, pickName })
       : null
     const placeGuarded = placeGuardResult ? placeGuardResult.text : foodGuarded
@@ -1373,7 +1484,18 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
-    const scaffoldStripped = stripModelScaffolding(placeGuarded)
+    // A model link whose label names a registry merchant but whose URL is another site is unmade
+    // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").
+    const systemPlaced = new Set<string>(systemLinkUrls)
+    for (const p of places) for (const l of [...(p.order_links ?? []), ...(p.platform_links ?? [])]) systemPlaced.add(l.url)
+    // The model's own [CTA_BUTTONS] block is validated HERE for every client (cross-platform CCP,
+    // 14 Sep 2026): another registry merchant's button under a named-merchant request, a merchant
+    // front door, a mislabelled destination — dropped; a promise on a results page — relabelled.
+    // A false "chưa kết nối với <named provider>" claim is removed here too (the provider is in the
+    // registry, so the claim is provably wrong — live UAT 15 Sep 2026, a Trip.com hotel turn).
+    // …and any markdown link the model wrapped in bold/italic is un-emphasised, so Android's
+    // single-pass renderer (which does not recurse into `**…**`) still linkifies the handoff.
+    const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`
@@ -1480,10 +1602,10 @@ export function applyPlaceEnrichmentStreamFilter(
      *
      * Built here rather than at tool time because photos resolve late, inside
      * this filter: serializing earlier would persist a block with no images.
+     *
+     * 🚨 DECLARED BELOW, NOT HERE. It needs `prose`, because a place earns a card
+     * only if this reply already named it — see `recommendationsGroundedInProse`.
      */
-    const placesSuffix = (EMIT_TAPPY_PLACES && collector?.placesRecommendations?.length)
-      ? `\n\n${renderPlacesMarker(withResolvedPhotos(collector.placesRecommendations, places))}`
-      : ''
 
     /**
      * Server-authored CTA. The model's own block is stripped FIRST — a prompt
@@ -1506,11 +1628,41 @@ export function applyPlaceEnrichmentStreamFilter(
     // early send must not change it. Splitting delivery is allowed to change
     // WHEN the user sees the decision; it is not allowed to change what the
     // guards analysed or which candidates the turn recorded as presented.
+    // The places block rides the SAME channel as the shopping decision, for the same reason: text
+    // is the only thing that survives reload, so a structured card must live in the message. It is
+    // therefore part of `finalText` too — the detectors read exactly what the user receives, and
+    // "detector in == user out" still holds with two markers as it did with one.
+    //
+    // It cannot widen what the turn counts as presented: `recommendationsGroundedInProse` keeps
+    // only places the prose ALREADY names (it drops any place `findPlaceOffset` cannot locate in
+    // the prose), so every name the block carries is a name `seenIn` would have matched from the
+    // prose alone. An empty grounded set emits no block at all, rather than an empty one.
+    //
+    // Appended after the shopping suffix so the existing marker order is untouched.
+    const groundedRecs = (EMIT_TAPPY_PLACES && collector?.placesRecommendations?.length)
+      ? recommendationsGroundedInProse(
+        withResolvedPhotos(collector.placesRecommendations, places),
+        places,
+        prose,
+      )
+      : []
+    const placesSuffix = groundedRecs.length > 0 ? `\n\n${renderPlacesMarker(groundedRecs)}` : ''
     // With the server authoring the CTA, the model's block is removed from the
     // prose before anything is appended; without the flag, `prose` is untouched.
     const ctaOwnedProse = serverCta ? stripModelCta(prose) : prose
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
-    const finalText = `${ctaOwnedProse}${markerSuffix}${placesSuffix}${ctaSuffix}`
+    /**
+     * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
+     * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
+     * tìm được link Traveloka" with no link). When NONE of the system's validated URLs made it into
+     * the prose, the system appends them itself, the way it injects order links under a venue:
+     * validated links, never the model's, never composed here.
+     */
+    const missingSystemLinks = systemLinks.filter(l => !prose.includes(l.url))
+    const systemLinksSuffix = systemLinks.length > 0 && missingSystemLinks.length === systemLinks.length
+      ? `\n\n${lang === 'vi' ? '🔗 Liên kết chính thức:' : '🔗 Official links:'} ${missingSystemLinks.map(l => `[${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`).join(' · ')}`
+      : ''
+    const finalText = `${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
     const seenIn = normalizeVN(finalText.toLowerCase())
@@ -1533,7 +1685,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // What still needs sending. When the decision already went out after the
     // tool result, only the prose is left — re-sending the marker here would
     // put a second copy in the message text and render a duplicate card.
-    const outText = earlyShoppingMarkerSent ? prose : finalText
+    // The SHOPPING marker is the only thing the early send delivered, so it is the only thing
+    // subtracted here. `placesSuffix` has not been sent by anyone and must still ride out, or a
+    // turn that searched both places and products would lose its place cards entirely.
+    const outText = earlyShoppingMarkerSent ? `${prose}${placesSuffix}` : finalText
     // A5-P1: whatever was already released early must not be sent a second time. The released
     // prefix is money-free whole sentences taken from before any place tool, so neither the guard
     // (which only removes sentences carrying a money claim) nor the photo injector (which writes
@@ -1686,6 +1841,17 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            // CCP route / event / film projections (`_tappy_commerce` marks them): every URL the
+            // platform validated for this turn, so the ticket guard can tell a system link from a claim.
+            if (res.result && Array.isArray((res.result as { _tappy_commerce?: unknown })._tappy_commerce)) {
+              const r = res.result as { booking_links?: Array<{ url?: string }>; event_links?: Array<{ url?: string }>; film_links?: Array<{ url?: string }>; vexere_link?: string }
+              for (const l of [...(r.booking_links ?? []), ...(r.event_links ?? []), ...(r.film_links ?? [])] as Array<{ name?: string; platform?: string; url?: string }>) {
+                if (typeof l?.url !== 'string' || systemLinkUrls.has(l.url)) continue
+                systemLinkUrls.add(l.url)
+                systemLinks.push({ name: [l.name, l.platform].filter(Boolean).join(' · ') || l.url, url: l.url })
+              }
+              if (typeof r.vexere_link === 'string' && !systemLinkUrls.has(r.vexere_link)) { systemLinkUrls.add(r.vexere_link); systemLinks.push({ name: 'Vexere', url: r.vexere_link }) }
+            }
             let newPlaces: PlaceLike[] = []
             if (toolName === 'search_places') {
               const results = res.result?.results

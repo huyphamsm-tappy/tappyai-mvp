@@ -86,6 +86,14 @@ export interface PlaceClaimEvidence {
    * every Entertainment turn measured so far.
    */
   ticketablePlaces?: Set<string>
+  /**
+   * URLs the SYSTEM handed the model this turn as validated commerce links (Final local live UAT,
+   * 14 Sep 2026): the Commerce Capability Platform's flight / coach / event / film handoffs
+   * (`booking_links`, `vexere_link`, `event_links`, `film_links`). A ticket-sale sentence that
+   * carries one of these is backed by the platform's own resolution — the guard, which knows only
+   * venues, must not delete it. Measured: "…đã tìm được link Traveloka…" with the link gone.
+   */
+  systemLinkUrls?: Set<string>
 }
 
 /**
@@ -171,8 +179,22 @@ export function isOrderingClaim(sentence: string): boolean {
   if (!ORDERING_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (ORDERING_POSSESSION_RE.test(sentence)) return true
+  if (CAPABILITY_NEGATION_RE.test(sentence)) return false
+  if (USER_WISH_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
+
+/** "Mình hiểu bạn muốn đặt bàn cho 4 người" restates the USER's wish; it claims nothing about a venue. */
+const USER_WISH_RE = /(?:bạn|ban|anh|chị|chi|quý khách|quy khach)\s+(?:muốn|muon|cần|can|định|dinh|đang muốn|dang muon)\s+/iu
+
+/**
+ * A sentence that DENIES the capability ("TappyAI chưa hỗ trợ đặt bàn trực tuyến") is the
+ * honest answer the reservation rule asks for, not a claim that a venue takes bookings — the
+ * Final local live UAT (14 Sep 2026) measured that sentence being deleted, leaving "Tuy nhiên…"
+ * without its first half. Possession still wins: "quán không có giao hàng" asserts a fact about
+ * the venue and stays governed by the evidence rule.
+ */
+const CAPABILITY_NEGATION_RE = /(?:chưa|chua|không|khong|not|cannot|can't|doesn't|does not)\s+(?:thể\s+|the\s+)?(?:hỗ trợ|ho tro|support|cung cấp|cung cap|có chức năng|co chuc nang|làm được|lam duoc|kết nối|ket noi|available)/iu
 
 // ── ENTERTAINMENT: TICKETS ───────────────────────────────────────────────────
 //
@@ -554,7 +576,8 @@ export function guardPlaceClaimsInText(
   }
   if (!text) return { text, redacted: 0, stats }
   const { ratings, distancesKm, texts, entityTexts, placeNames, orderablePlaces } = evidence
-  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces } = evidence
+  const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces, systemLinkUrls } = evidence
+  const carriesSystemLink = (sentence: string): boolean => !!systemLinkUrls && systemLinkUrls.size > 0 && [...systemLinkUrls].some(u => sentence.includes(u))
   const retrievedNumbers = numbersIn(texts)
   const tokens = placeTokensFor(placeNames ?? [])
   const names = placeNames ?? []
@@ -717,7 +740,7 @@ export function guardPlaceClaimsInText(
      * does a search URL. With nothing direct retrieved — the normal case today —
      * no venue can be said to sell tickets.
      */
-    if (isTicketSaleClaim(s)) {
+    if (isTicketSaleClaim(s) && !carriesSystemLink(s)) {
       const named = placeNamedAt(i, spans)
       const ticketable = ticketablePlaces ?? new Set<string>()
       if (ticketable.size === 0 || !named || !ticketable.has(named)) violated.push(TICKET_RE)

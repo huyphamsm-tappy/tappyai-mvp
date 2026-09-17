@@ -30,10 +30,14 @@
 // the model has no legitimate use for them, and three ~90-character resource names per place is
 // exactly the paid-context waste this split exists to prevent.
 import { capabilitiesOf, type CapabilitySource } from '@/lib/recommendation/capabilities'
+import type { CommerceLinkRow } from '@/lib/ccp'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 import { admitsProducer, type ProducerSubject } from '@/lib/recommendation/slotAdmission'
 
-export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names'] as const
+// `commerce_links` is the CCP row attachment (owner decision P6-B): Commerce Links the platform
+// resolved for the row. Carved for the same reason as `order_links` — the model must never see a
+// merchant URL — and replaced in its view by the `has_direct_handoff` capability.
+export const ENRICHMENT_KEYS = ['photo_url', 'photo_urls', 'order_links', 'platform_links', 'tiktok_review_url', 'photo_names', 'commerce_links'] as const
 
 export interface PlatformLink { name: string; url: string }
 
@@ -44,6 +48,8 @@ export interface PlaceEnrichment {
   photo_urls?: string[]
   order_links?: PlatformLink[]
   platform_links?: PlatformLink[]
+  /** CCP row attachment, carried through so `buildActions` (via the entity builders) can read it. */
+  commerce_links?: CommerceLinkRow[]
   tiktok_review_url?: string
   /** Google photo resource names ("places/…/photos/…") — the input to the late photo resolver. */
   photo_names?: string[]
@@ -55,6 +61,34 @@ export interface PlaceEnrichment {
   // website_uri as before.
   place_id?: string
   website_uri?: string
+  // Facts about the place itself, carried the SAME way as place_id / website_uri: read off the
+  // item without being destructured out of `rest`, so the model still sees and cites them exactly
+  // as before. They exist so a client can render a place card from structured values instead of
+  // parsing the localized `google_rating` sentence back into numbers. Provider-dependent by
+  // nature — Google states rating and review count, OSM states hours, distance and cuisine, and
+  // neither states both — so each is optional and an absent value stays absent.
+  address?: string
+  rating?: number
+  review_count?: number
+  distance_km?: number
+  hours?: string
+  attributes?: string[]
+  /**
+   * Whether the provider that returned this place ranked it against the QUERY TEXT.
+   *
+   * True for Google Places textSearch, which is given the user's words. False for the OpenStreetMap
+   * fallback, which is given only a category and a radius: `searchPlacesOSM` reads the query solely
+   * to guess an amenity tag, then asks Overpass for every venue of that tag nearby. Measured on
+   * 2026-09-08 — with Google returning 403, "Quán bún bò ngon ở TP.HCM?" came back as Nhà Hàng
+   * Jaspas, Nhà Hàng Au Tresor and Nhà Hàng Crazy Buffalo: three real, nearby, correctly-tagged
+   * restaurants, and not one of them serves bún bò.
+   *
+   * Those rows are still useful CONTEXT for the model's prose. What they cannot be is a ranked
+   * "Tappy recommends these" card, because nothing in them answers the dish the user asked for.
+   * Absent means unknown, and unknown is treated as not text-ranked — a provider must earn the
+   * card, not inherit it by omission.
+   */
+  text_ranked?: boolean
 }
 
 /** Request-scoped. One per HTTP request, created in the route and never shared. */
@@ -123,6 +157,7 @@ const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_produc
 const hasEnrichment = (p: PlaceEnrichment) =>
   !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0) ||
     (p.order_links && p.order_links.length > 0) || (p.platform_links && p.platform_links.length > 0) ||
+    (p.commerce_links && p.commerce_links.length > 0) ||
     p.tiktok_review_url || (p.photo_names && p.photo_names.length > 0))
 
 const hasPhoto = (p: PlaceEnrichment) => !!(p.photo_url || (p.photo_urls && p.photo_urls.length > 0))
@@ -165,11 +200,18 @@ export function splitToolResult(
       : null
   if (!listKey) return { model: root, enrichment: [], batchTikTokUrl }
 
+  /**
+   * `searchPlaces` states which provider answered: 'Google Maps' for the textSearch path,
+   * 'OpenStreetMap' for the amenity-radius fallback. It is a property of the SEARCH, so it is read
+   * once here rather than expected on every row.
+   */
+  const textRanked = root.source === 'Google Maps'
+
   const items = root[listKey] as unknown[]
   const enrichment: PlaceEnrichment[] = []
   const slimItems = items.map((item) => {
     if (!isRecord(item)) return item
-    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, ...rest } = item as PlaceEnrichment & Record<string, unknown>
+    const { photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, commerce_links, ...rest } = item as PlaceEnrichment & Record<string, unknown>
     const name = listKey === 'results'
       ? (item.name as string | undefined)
       : String((item.title as string | undefined) ?? '').split(' - ')[0].trim() || undefined
@@ -182,7 +224,28 @@ export function splitToolResult(
       ? (item as { place_id: string }).place_id : undefined
     const website_uri = typeof (item as { website_uri?: unknown }).website_uri === 'string'
       ? (item as { website_uri: string }).website_uri : undefined
-    const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, place_id, website_uri }
+    // Place facts, same ride-along rule as the identity fields above: typed guards only, never a
+    // coerced or inferred value. `cuisine` is OSM's own comma-joined list and becomes attributes.
+    const str = (k: string): string | undefined => {
+      const v = (item as Record<string, unknown>)[k]
+      return typeof v === 'string' && v.trim() !== '' ? v : undefined
+    }
+    const num = (k: string): number | undefined => {
+      const v = (item as Record<string, unknown>)[k]
+      return typeof v === 'number' && Number.isFinite(v) ? v : undefined
+    }
+    const cuisine = str('cuisine')
+    const carved: PlaceEnrichment = {
+      name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, photo_names, place_id, website_uri,
+      commerce_links: Array.isArray(commerce_links) && commerce_links.length > 0 ? commerce_links : undefined,
+      address: str('address'),
+      rating: num('rating'),
+      review_count: num('review_count'),
+      distance_km: num('distance_km'),
+      hours: str('opening_hours'),
+      attributes: cuisine ? cuisine.split(',').map(c => c.trim()).filter(Boolean) : undefined,
+      text_ranked: textRanked,
+    }
     if (name && hasEnrichment(carved)) enrichment.push(carved)
     // 🔑 CAPABILITIES REPLACE THE CARVED URLS IN THE MODEL'S VIEW.
     //

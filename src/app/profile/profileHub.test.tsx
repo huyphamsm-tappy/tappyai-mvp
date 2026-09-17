@@ -23,6 +23,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 import ProfileView from './ProfileView'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // ── V3 Web · Profile / Me ───────────────────────────────────────────────────
 //
@@ -71,7 +72,11 @@ const BASE = {
 
 let fetchMock: ReturnType<typeof vi.fn>
 
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
 beforeEach(() => {
+  setLocale('en')
   fetchMock = vi.fn(async (url: string) => {
     if (url === '/api/reviews/mine') return { ok: true, json: async () => ({ reviews: REVIEWS }) }
     if (url === '/api/reviews/saved') return { ok: true, json: async () => ({ reviews: [] }) }

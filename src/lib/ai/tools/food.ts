@@ -11,6 +11,8 @@ import { messages, isVi } from '@/lib/ai/messages'
 import { detectFoodConstraints, osmFilterFor, unmetConstraintNote } from '@/lib/ai/foodConstraints'
 import { rowServesDish } from '@/lib/ai/foodDish'
 import { newsCacheKey, placesCacheKey } from './cacheKeys'
+import { withSingleFlight } from './common'
+import type { PlacesBudget } from './placesBudget'
 import { osmCategoryFor, osmUnionFor, placeDomainFor } from './osmCategory'
 import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnamCities'
 import { usableOverpass } from './overpassResponse'
@@ -179,7 +181,9 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
     // ── BUG-011 (D1): a NAMED destination outranks the caller's GPS ───────────
     // `remote` is true only when the caller named a city we know AND they are not in it. Every
     // other shape — no location, an unresolvable location, or a location that IS the city they
-    // are standing in — leaves the branches below exactly as they shipped.
+    // are standing in — leaves the branches below exactly as they shipped. It resolves through
+    // the SAME shared city table as `city` above, so the two can never disagree about which
+    // cities exist.
     const { destination, remote: remoteDestination } = resolveSearchScope(location, locationBias)
     let lat: number
     let lon: number
@@ -565,9 +569,30 @@ function readPhotoNames(r: Record<string, unknown>): string[] | undefined {
  * next turn after the window simply tries again and, on success, the breaker is
  * never armed. Nothing about the OSM fallback, the fields, or the cards changes
  * either way - this only stops paying for a refusal we have already had.
+ *
+ * 🚨 AND THE ONE THING IT MAY NEVER COST US: THE RECOVERY CALL.
+ *
+ * The two refusals are not the same event, so they no longer arm the same way.
+ *
+ *   403 — permission / Maps Platform onboarding. A project CONFIGURATION state.
+ *         It cannot change between two turns, so re-asking inside the window
+ *         buys nothing: it arms on the first refusal, exactly as before.
+ *
+ *   429 — quota. The allowance resets on GOOGLE's clock, not ours, and with an
+ *         effective 100/day the request right after that reset is the single
+ *         most valuable one we make. Arming on the first 429 would close the
+ *         door for ten minutes precisely when it had just been unlocked — so
+ *         the first 429 records the refusal and nothing more, and the VERY NEXT
+ *         call still reaches Google. Only a SECOND consecutive 429 — evidence
+ *         that the allowance really is still spent — arms the breaker.
+ *
+ * The cost of that guarantee is exactly one extra refused request per window,
+ * and what it buys is that a reset is never missed by up to ten minutes.
  */
 const PLACES_BREAKER_MS = 10 * 60 * 1000
 let placesUnavailableUntil = 0
+/** Consecutive 429s with no Google answer in between. The first one does not arm. */
+let placesQuotaRefusals = 0
 
 /** Read by tests; also the one place that decides whether to try Google. */
 export function googlePlacesLikelyAvailable(now = Date.now()): boolean {
@@ -576,12 +601,21 @@ export function googlePlacesLikelyAvailable(now = Date.now()): boolean {
 
 /** Arm the breaker after a refusal Google will keep repeating (quota/permission). */
 function notePlacesRefusal(status: number, now = Date.now()): void {
-  if (status === 429 || status === 403) placesUnavailableUntil = now + PLACES_BREAKER_MS
+  // Configuration, not allowance: nothing about it can change inside the window.
+  if (status === 403) { placesUnavailableUntil = now + PLACES_BREAKER_MS; return }
+  // Allowance: the next call is the recovery call and must not be sacrificed.
+  if (status === 429 && ++placesQuotaRefusals >= 2) placesUnavailableUntil = now + PLACES_BREAKER_MS
+}
+
+/** Google answered — the allowance is back, so the refusal streak starts over. */
+function notePlacesSuccess(): void {
+  placesQuotaRefusals = 0
 }
 
 /** Test seam — the breaker is module state, like the tool cache. */
 export function __resetPlacesBreaker(): void {
   placesUnavailableUntil = 0
+  placesQuotaRefusals = 0
 }
 
 /**
@@ -652,14 +686,16 @@ async function searchPlacesSerper(
   }
 }
 
-export async function searchPlaces(query: string, location?: string, type?: string, lang = 'vi', locationBias?: { lat: number; lng: number } | null) {
-  const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
-  const cached = getCache(cacheKey)
-  if (cached) {
-    console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'cache_hit', cacheKey }))
-    return cached
-  }
 
+/**
+ * The retrieval itself. Reached only through [searchPlaces], which owns the cache, the retrieval
+ * budget and in-flight deduplication — this function owns the Google path, the field-mask readers
+ * above, the availability breaker and the OSM fallback, and nothing else.
+ */
+async function searchPlacesUncached(
+  query: string, location?: string, type?: string, lang = 'vi',
+  locationBias?: { lat: number; lng: number } | null,
+): Promise<{ result: unknown; googleOk: boolean }> {
   const key = process.env.GOOGLE_PLACES_API_KEY
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
   // fallback can never disagree about which city this search is for.
@@ -670,6 +706,14 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     destination: destination?.query ?? null, remoteDestination,
   }))
   let result: unknown = null
+  /**
+   * True only when Google returned usable, in-scope rows. It is what decides whether the answer is
+   * worth caching: an OSM fallback answers a different (weaker) question, and a 403/429/timeout
+   * answers none at all.
+   */
+  let googleOk = false
+  // The breaker is asked here, inside the uncached path: a refusal Google will repeat for the next
+  // ten minutes must not be paid for again, and the wrapper above has no business knowing why.
   if (key && googlePlacesLikelyAvailable()) {
     try {
       const sq = location ? query + ' ' + location : query
@@ -737,6 +781,8 @@ export async function searchPlaces(query: string, location?: string, type?: stri
         new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 5000))
       ])
       const d = await (resp as Response).json()
+      // An answer — of any shape — proves the allowance is not spent.
+      if ((resp as Response).ok) notePlacesSuccess()
       // ── BUG-011 (D3): geographic output guard, address-based ───────────────
       // The field mask does not request coordinates, so scope is judged from `formattedAddress`
       // via the same city resolver the rest of the repo uses. Reject only when the address
@@ -751,6 +797,7 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           belongsToDestination(destination, null, r.formattedAddress as string | undefined))
         : []
       if (inScope.length) {
+        googleOk = true
         const placesData = inScope.slice(0, 8)
         console.log(JSON.stringify({
           type: 'tappyai_photo_debug', step: 'places_textsearch_new',
@@ -796,6 +843,12 @@ export async function searchPlaces(query: string, location?: string, type?: stri
               // entity reads these instead, so the round trip stops here.
               ...(ratingValue !== undefined ? { rating_value: ratingValue } : {}),
               ...(ratingCount !== undefined ? { rating_count: ratingCount } : {}),
+              // The SAME two numbers under the keys `toolResultSplit` carves for the place card
+              // (`rating` / `review_count`). Two readers, two names, one source: the canonical
+              // entity reads `rating_value`/`rating_count`, the card reads these, and neither
+              // parses them back out of the localized `google_rating` sentence. Absent stays absent.
+              ...(ratingValue !== undefined ? { rating: ratingValue } : {}),
+              ...(ratingCount !== undefined ? { review_count: ratingCount } : {}),
               maps_link: (r.googleMapsUri as string | undefined) || ('https://www.google.com/maps/place/?q=place_id:' + r.id),
               ...(r.websiteUri ? { website_uri: r.websiteUri as string } : {}),
               ...(openingHours ? { opening_hours: openingHours } : {}),
@@ -818,11 +871,22 @@ export async function searchPlaces(query: string, location?: string, type?: stri
           })
         }
       } else {
-        console.log(JSON.stringify({ type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: (resp as Response).status, errorMessage: (d.error as { message?: string })?.message || null }))
-        notePlacesRefusal((resp as Response).status)
+        const status = (resp as Response).status
+        console.log(JSON.stringify({
+          type: 'tappyai_places_debug', apiVersion: 'new', httpStatus: status,
+          // Named so quota exhaustion is distinguishable from a key problem at a glance.
+          outcome: status === 429 ? 'quota_exhausted' : status === 403 ? 'permission_denied' : 'http_error',
+          errorMessage: (d.error as { message?: string })?.message || null,
+        }))
+        notePlacesRefusal(status)
       }
     } catch (e) {
-      console.log(JSON.stringify({ type: 'tappyai_places_debug', error: String(e) }))
+      const msg = String(e)
+      console.log(JSON.stringify({
+        type: 'tappyai_places_debug',
+        outcome: msg.includes('timeout') ? 'timeout' : 'exception',
+        error: msg,
+      }))
     }
   }
   /**
@@ -831,11 +895,19 @@ export async function searchPlaces(query: string, location?: string, type?: stri
    * A place turn now degrades through three real providers instead of two, and
    * each step down loses information rather than gaining a fabrication. OSM is
    * reached only when the two structured sources genuinely returned nothing.
+   *
+   * A Serper answer is a STRUCTURED answer (rating, count, band, hours) — it is cached
+   * exactly like a Google one (`googleOk` below reads as "a structured provider answered";
+   * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result) {
     result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination })
+    if (result) googleOk = true
   }
-  if (!result) result = await searchPlacesOSM(query, location, type, locationBias, lang)
+  if (!result) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'osm_fallback_used' }))
+    result = await searchPlacesOSM(query, location, type, locationBias, lang)
+  }
 
   // ===== Gia tham khao tu Serper (an uong / spa / giai tri) =====
   // One classifier, one answer - see `placeDomainFor`, which also records the two
@@ -1138,6 +1210,65 @@ export async function searchPlaces(query: string, location?: string, type?: stri
     }
   }
 
-  setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
-  return result
+  return { result, googleOk }
+}
+
+/**
+ * Places retrieval, with the three protections that stand between one conversation and the whole
+ * project's daily SearchText quota.
+ *
+ * 1. CACHE — unchanged: same normalized key, 30 minutes.
+ * 2. SINGLE-FLIGHT — concurrent callers on one key share one upstream request.
+ * 3. BUDGET — a turn may retrieve a bounded number of distinct intents; see [PlacesBudget].
+ *
+ * Only a GOOGLE answer is cached. An OSM fallback is a weaker answer to a different question, and
+ * caching it under the Google key meant a single 403 poisoned that query for thirty minutes — so
+ * the first request after quota recovered still got the fallback. Failures are never cached at all.
+ */
+export async function searchPlaces(
+  query: string, location?: string, type?: string, lang = 'vi',
+  locationBias?: { lat: number; lng: number } | null,
+  budget?: PlacesBudget,
+) {
+  const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
+  const cached = getCache(cacheKey)
+  if (cached) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit', cacheKey }))
+    return cached
+  }
+
+  return withSingleFlight(cacheKey, async () => {
+    // A flight that finished while this one waited has already filled the cache.
+    const fresh = getCache(cacheKey)
+    if (fresh) {
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit_after_join', cacheKey }))
+      return fresh
+    }
+
+    if (budget) {
+      const verdict = budget.claim(type, location)
+      if (!verdict.allowed) {
+        console.log(JSON.stringify({
+          type: 'tappyai_places_budget', step: 'blocked', reason: verdict.reason,
+          used: budget.used, limit: budget.limit, placeType: type ?? null,
+        }))
+        // No search, and nothing invented to stand in for one. The turn answers from its prose and
+        // from whatever it already retrieved — a thinner answer, never a fabricated one.
+        return {
+          source: 'budget', count: 0, results: [],
+          note: messages.places.searchOnMaps(lang, 'https://maps.google.com/maps?q=' + encodeURIComponent(query + ' ' + (location || ''))),
+        }
+      }
+    }
+
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_attempt', placeType: type ?? null }))
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias)
+    if (googleOk) {
+      setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))
+    } else {
+      console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'not_cached', reason: 'no_google_result' }))
+    }
+    return result
+  })
 }

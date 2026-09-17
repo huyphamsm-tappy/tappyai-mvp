@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,6 +46,8 @@ import com.tappyai.app.R
 import com.tappyai.app.share.ShareArtifactBuilder
 import com.tappyai.app.share.TappyShareSheet
 import java.util.Locale
+import androidx.compose.ui.layout.ContentScale
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappySpacing
 import androidx.compose.ui.res.stringResource
 
@@ -266,6 +269,28 @@ private fun PlanTimelineItem(item: PlanItem, isLast: Boolean, onOpenUrl: (String
                 .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
+            // This item's own photo, keyed to this item by the server. Sits above the title rather
+            // than beside it so the name/price/description keep their full width. Same neutral-box
+            // idiom ChatImageCarousel uses: the box shows while loading and stays for a broken URL
+            // instead of collapsing the row. Absent photo → nothing renders, no placeholder that
+            // would imply a picture exists.
+            item.photoUrl?.takeIf { it.isNotBlank() }?.let { photo ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(88.dp)
+                        .padding(top = 2.dp, bottom = 2.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)),
+                ) {
+                    TappyImage(
+                        url = photo,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
             Row(verticalAlignment = Alignment.Top, modifier = Modifier.fillMaxWidth()) {
                 Text(text = item.emoji.ifBlank { "📍" }, fontSize = 16.sp)
                 Spacer(Modifier.width(TappySpacing.xs))

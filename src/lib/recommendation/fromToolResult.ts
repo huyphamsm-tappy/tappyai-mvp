@@ -173,7 +173,9 @@ export function placeRecommendations(result: unknown, location?: string, pick?: 
   })).eligible
 
   const entities = withEntityScopedEvidence(eligible, r)
-    .map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location }))
+    // An unknown stated domain labels the entity 'food' (shipped default) but builds its ACTIONS as a
+    // plain place — nothing food-specific is invented for a bridge or a museum.
+    .map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location, actionDomain: statedDomain ?? 'place' }))
     .filter(e => e.identity.name.length > 0)
 
   return withShortlist(entities, r, e => e.identity.name, pick)

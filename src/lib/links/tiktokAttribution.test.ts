@@ -236,6 +236,13 @@ describe('the rendered wording matches what the evidence supports', () => {
     expect(foldAt).toBeGreaterThan(-1)
     expect(composeAt).toBeGreaterThan(foldAt)
     expect(detectAt).toBeGreaterThan(composeAt)
+    // And the reachability half, which the ordering alone does not prove: the first term of the
+    // composition must still be the folded prose. It is now `ctaOwnedProse` — a CTA-stripped
+    // restatement of `prose`, not a different text — so both links of that chain are asserted
+    // rather than one literal byte string, which is what a renamed term would silently break.
+    const composed = filter.match(/const finalText = `([^`]*)`/)?.[1]
+    expect(composed).toMatch(/^\$\{ctaOwnedProse\}/)
+    expect(filter).toMatch(/const ctaOwnedProse = .*\bprose\b/)
   })
 
   it('re-validates the URL at the render boundary', () => {

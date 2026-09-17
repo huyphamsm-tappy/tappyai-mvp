@@ -178,11 +178,11 @@ describe('the Deals card walks the §8 fallback chain', () => {
     // The exact branch text, so `if (false && hasBrandLogo(…))` — a mutation that disables the
     // registry without moving anything — fails here rather than sailing through an offset check.
     expect(screen).toContain('if (hasBrandLogo(deal.partnerName)) {')
-    expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = 48\.dp\)/)
+    expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = size, decorative = true\)/)
 
     const registryAt = screen.indexOf('hasBrandLogo(deal.partnerName)')
-    const logoImageAt = screen.indexOf('if (deal.logoImage != null)')
-    const initialAt = screen.indexOf('deal.partnerName.firstOrNull()?.uppercase()')
+    const logoImageAt = screen.indexOf('if (logo != null)')
+    const initialAt = screen.indexOf('deal.partnerName.trim().take(1).uppercase()')
     expect(registryAt).toBeGreaterThan(-1)
     expect(logoImageAt).toBeGreaterThan(registryAt)
     expect(initialAt).toBeGreaterThan(logoImageAt)

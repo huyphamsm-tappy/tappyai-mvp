@@ -199,7 +199,12 @@ export function suppressUngroundedVenues(
    * it was equivalent — the case that distinguishes it is now a test.
    */
   const withoutLeadIn = out.replace(/(?:^|\n)[^\n]*:[ \t]*$/, '').trimEnd()
-  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${notFoundLine(lang)}`.trim() : withoutLeadIn
+  // CCP Phase 8 (owner-like UAT R1, P2-5): when the prose named venues the tool did not return
+  // but the tool DID return venues, "found nothing" contradicts the card rendered right under
+  // it. The truthful line is then that the verified places are on the card — the not-found
+  // line is kept for the case it was written for: retrieval came back empty.
+  const fallback = knownNorm.length > 0 ? seeCardLine(lang) : notFoundLine(lang)
+  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${fallback}`.trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
 
@@ -208,6 +213,13 @@ function notFoundLine(lang: string): string {
   return lang === 'vi'
     ? 'Mình chưa tìm thấy địa điểm nào đủ dữ liệu để giới thiệu cho yêu cầu này.'
     : "I couldn't find a place with enough verified data to recommend for this request."
+}
+
+/** The prose named venues/products the search did not return; what it DID return is on the card (places or products). */
+function seeCardLine(lang: string): string {
+  return lang === 'vi'
+    ? 'Những lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.'
+    : 'The options I could verify for this request are on the card below.'
 }
 
 /**

@@ -151,6 +151,46 @@ export const AUTH_PROVIDERS = [
   { id: 'email', enabled: true },
 ] as const
 
+// ── Commerce Capability Platform (CCP) gates — owner decisions 13 Sep 2026 ──
+// CCP is built as an isolated module (src/lib/ccp) and is OFF by default until
+// each phase clears the release gate (IMPLEMENTED → TESTED → PRODUCTION
+// VERIFIED → OWNER APPROVED). Nothing outside src/lib/ccp changes behaviour
+// while CCP_ENABLED is false. Flip flags HERE only. These flags are server-side: nothing exposes
+// them through /api/config, and Phase 6 (13 Sep 2026) wires CCP into the SERVER-owned action
+// channel only (row attachment → recommendation/actions → web live view), so no client reads them.
+/** Master switch for CCP-resolved commerce links. */
+export const CCP_ENABLED = false
+/** D7: ACCESSTRADE feed fields (title/price/image) are NEVER displayed until the
+ * written data-rights confirmation is on file. Link-only until then. */
+export const CCP_FEED_DISPLAY_ENABLED = false
+/** D6: feed ingestion only over an authenticated HTTPS endpoint; off for MVP. */
+export const CCP_FEED_INGEST_ENABLED = false
+/** D4: affiliate wrapping is applied only when a validated wrapper exists AND
+ * this is on. Direct links remain the fallback either way. */
+export const CCP_AFFILIATE_WRAPPING_ENABLED = true
+/** Per-adapter gates (D10: exactly five MVP adapters). */
+export const CCP_ADAPTERS = {
+  CCP_ADAPTER_DMX: true,
+  CCP_ADAPTER_TRIPCOM: true,
+  CCP_ADAPTER_CGV: true,
+  CCP_ADAPTER_KLOOK: true,
+  /** Shopping marketplaces (owner decision 14 Sep 2026: Shopee and TikTok Shop are mandatory first-class providers; Lazada desired). */
+  CCP_ADAPTER_SHOPEE: true,
+  CCP_ADAPTER_TIKTOKSHOP: true,
+  CCP_ADAPTER_LAZADA: true,
+  /** Provider Integration Completion Pass (14 Sep 2026): travel search / detail providers and events.
+   * Every one of these works on DIRECT links; affiliate approval only adds a tracking wrapper. */
+  CCP_ADAPTER_BOOKING: true,
+  CCP_ADAPTER_AGODA: true,
+  CCP_ADAPTER_TRAVELOKA: true,
+  CCP_ADAPTER_VEXERE: true,
+  CCP_ADAPTER_VIETNAMAIRLINES: true,
+  CCP_ADAPTER_VIETJET: true,
+  CCP_ADAPTER_TICKETBOX: true,
+  /** Handoff-only registry entries (CellphoneS, GrabFood, ShopeeFood) — facts + passthrough, no grammar. */
+  CCP_HANDOFF_ONLY: true,
+} as const
+
 // ── Onboarding choices (product catalog, identical on every platform) ────────
 // The web onboarding page renders these directly; native clients read them from
 // GET /api/config. Interest ids are the backend vocabulary stored in memory/

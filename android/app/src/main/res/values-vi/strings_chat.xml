@@ -73,6 +73,7 @@
     <string name="chat_error_generic_with_code">Có lỗi xảy ra (mã %1$d)</string>
     <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
     <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
     <string name="chat_followup_food_1">Tìm quán khác</string>
     <string name="chat_followup_food_2">Xem giá menu</string>
@@ -154,4 +155,68 @@
     <string name="confirm_booking_consequence">Tappy sẽ mở trang đặt chỗ của %1$s. Bạn xem lại thông tin rồi mới gửi yêu cầu.</string>
     <string name="confirm_booking_confirm">Tiếp tục đặt chỗ</string>
     <string name="confirm_this_place">chỗ này</string>
+    <!-- Durable place card ([TAPPY_PLACES]). Labels mirror web's w5/placeDecision catalogue,
+         which is where the same strings are defined for the browser. -->
+    <string name="place_card_recommended">Tappy gợi ý</string>
+    <string name="place_card_popular">Phổ biến</string>
+    <string name="place_card_rating_count">%1$d đánh giá</string>
+    <string name="place_card_open_now">đang mở</string>
+    <string name="place_card_closed_now">đang đóng</string>
+    <string name="place_card_away">cách bạn %1$s km</string>
+    <string name="place_card_trade_off">Đánh đổi</string>
+    <string name="place_action_maps">Xem bản đồ</string>
+    <string name="place_action_directions">Chỉ đường</string>
+    <string name="place_action_website">Trang web</string>
+    <string name="place_action_order">Đặt món</string>
+    <string name="place_action_delivery">Đặt giao hàng</string>
+    <string name="place_action_booking">Đặt phòng</string>
+    <string name="place_action_reservation">Đặt chỗ</string>
+    <string name="place_action_ticket">Mua vé</string>
+    <string name="place_action_call">Gọi</string>
+    <string name="place_action_review">Xem review</string>
+    <string name="place_action_social">Trang mạng xã hội</string>
+    <string name="place_action_open">Mở</string>
+    <string name="place_action_search_on">Tìm trên %1$s</string>
+    <string name="place_action_search_generic">Tìm kiếm</string>
+    <!-- Commerce handoff labels (CCP): the key is RESOLVED on the server; %1$s is the merchant. Must say what web says (shared/ccp/commerce-action-fixtures.json). -->
+    <string name="place_action_purchase">Xem sản phẩm</string>
+    <string name="place_action_search_login_on">Tìm trên %1$s · cần đăng nhập</string>
+    <string name="place_action_booking_search">Tìm phòng trên %1$s</string>
+    <string name="place_action_ticket_search">Tìm vé trên %1$s</string>
+    <string name="place_action_order_search">Tìm trên %1$s</string>
+    <string name="place_action_view_on">Xem trên %1$s</string>
+    <string name="place_action_purchase_on">Mua trên %1$s</string>
+    <string name="place_action_purchase_login_on">Mua trên %1$s · cần đăng nhập</string>
+    <string name="place_action_purchase_app_on">Xem trên %1$s · mua trong ứng dụng</string>
+    <string name="place_action_booking_on">Đặt phòng trên %1$s</string>
+    <string name="place_action_booking_login_on">Đặt phòng trên %1$s · cần đăng nhập</string>
+    <string name="place_action_booking_app_on">Xem trên %1$s · đặt trong ứng dụng</string>
+    <string name="place_action_reservation_on">Đặt bàn trên %1$s</string>
+    <string name="place_action_reservation_login_on">Đặt bàn trên %1$s · cần đăng nhập</string>
+    <string name="place_action_reservation_app_on">Xem trên %1$s · đặt trong ứng dụng</string>
+    <string name="place_action_ticket_on">Mua vé trên %1$s</string>
+    <string name="place_action_ticket_login_on">Mua vé trên %1$s · cần đăng nhập</string>
+    <string name="place_action_ticket_app_on">Xem trên %1$s · mua vé trong ứng dụng</string>
+    <string name="place_action_order_on">Đặt món trên %1$s</string>
+    <string name="place_action_order_login_on">Đặt món trên %1$s · cần đăng nhập</string>
+    <string name="place_action_order_app_on">Xem trên %1$s · đặt món trong ứng dụng</string>
+    <string name="place_action_delivery_on">Đặt giao hàng trên %1$s</string>
+    <string name="place_action_delivery_login_on">Đặt giao hàng trên %1$s · cần đăng nhập</string>
+    <string name="place_action_delivery_app_on">Xem trên %1$s · đặt giao trong ứng dụng</string>
+    <string name="place_card_stars">Khách sạn %1$d sao</string>
+    <string name="place_card_reference_price">Giá tham khảo</string>
+    <string name="shopping_decision_price_watch">Theo dõi giá</string>
+    <string name="place_card_flag_wifi">Có Wi-Fi</string>
+    <string name="place_card_flag_outdoor">Chỗ ngồi ngoài trời</string>
+    <string name="place_card_flag_vegetarian">Có món chay</string>
+
+    <!-- V3 (ported from A 77b0bb7): voice listening screen -->
+    <string name="voice_listening_cancel">Hủy</string>
+    <string name="voice_listening_hint_example">“Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này”</string>
+    <string name="voice_listening_hint_label">Thử nói:</string>
+    <string name="voice_listening_pill">Đang nghe…</string>
+    <string name="voice_listening_send">Gửi</string>
+    <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
+    <string name="voice_listening_title_accent">lắng nghe…</string>
+    <string name="voice_listening_title_lead">Tôi đang</string>
 </resources>

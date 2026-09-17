@@ -217,6 +217,63 @@ export function detectLang(text: string): string {
   return lowercaseAccentedWords / scoredWords >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
 }
 
+/**
+ * The language the message is CLEARLY in, or null when the text does not settle it.
+ *
+ * `detectLang` always returns something, because it has to — every turn needs a language. That
+ * makes it unsuitable for deciding whether to trust the text over the user's locale: its answer
+ * for "Tim quan bun bo ngon o TPHCM" is `en`, and acting on that answers a Vietnamese user in
+ * English. Diacritic-free Vietnamese is ordinary typing, not an English sentence.
+ *
+ * So this reuses the same signals and reports only what they establish beyond doubt:
+ *   · a non-Latin script — nothing else writes in kana, hangul, Thai or Arabic;
+ *   · Vietnamese by tone marks, or by real Vietnamese grammar words alongside at least one;
+ *   · English by TWO or more English function words, so one stray loanword cannot flip a turn.
+ * Anything else returns null, and the caller falls back to the product locale.
+ *
+ * Deliberately no new inputs: no profile fields, no history, no account data. Only this message.
+ */
+export function detectLangConfident(text: string): string | null {
+  for (const ch of text) {
+    const cp = ch.codePointAt(0) ?? 0
+    if (cp <= 0x7F) continue
+    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'
+    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'
+    if (cp >= 0x4E00 && cp <= 0x9FFF) return 'zh'
+    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'
+    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'
+  }
+
+  const words = text.split(/\s+/).filter(w => HAS_LETTER.test(w))
+  if (words.length === 0) return null
+
+  let accentedWords = 0
+  let lowercaseAccentedWords = 0
+  let viFunctionWords = 0
+  let enFunctionWords = 0
+  for (const w of words) {
+    let accented = false
+    for (const ch of w) {
+      if (isAccentedLatin(ch.codePointAt(0) ?? 0)) { accented = true; break }
+    }
+    if (accented) {
+      accentedWords++
+      if (!STARTS_UPPERCASE.test(w)) lowercaseAccentedWords++
+    }
+    const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z]/g, '')
+    if (bare && VI_FUNCTION_WORDS.has(bare)) viFunctionWords++
+    if (bare && EN_FUNCTION_WORDS.has(bare)) enFunctionWords++
+  }
+
+  // Vietnamese, on the same evidence detectLang already trusts most.
+  if (accentedWords > 0 && accentedWords === words.length) return 'vi'
+  if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
+  // English needs TWO function words. One ("best", "the") appears constantly inside Vietnamese
+  // sentences about products, and a single loanword must not decide the turn.
+  if (enFunctionWords >= 2 && lowercaseAccentedWords === 0) return 'en'
+  return null
+}
+
 // Language names this app can explicitly instruct the model to answer in —
 // must stay in sync with LANG_NAMES in promptBuilder.ts and LANG_BCP47 in
 // lib/tts/voiceSelection.ts (same code set: vi/en/ja/ko/zh/ar/th).

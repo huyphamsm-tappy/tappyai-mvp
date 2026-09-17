@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, cleanup, fireEvent } from '@testing-library/react'
 import { MusicTrackCard } from './MusicTrackCard'
 import { MusicTrackGrid } from './MusicTrackGrid'
@@ -13,6 +14,10 @@ import type { MusicTrack } from '../types/track'
 // assistive tech, and a square artwork footprint that does not depend on the
 // picture arriving.
 
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const track: MusicTrack = {

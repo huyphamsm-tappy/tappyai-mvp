@@ -5,7 +5,10 @@ import com.tappyai.app.history.data.StoredMessageDto
 import com.tappyai.app.history.data.UpdateConversationRequestDto
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -111,5 +114,35 @@ class ChatWireContractTest {
         assertEquals("like", MessageFeedback.Like.wireValue)
         assertEquals("dislike", MessageFeedback.Dislike.wireValue)
         assertEquals("report", MessageFeedback.Report.wireValue)
+    }
+
+    /**
+     * What the user typed is what `/api/chat` receives — every tone mark included.
+     *
+     * The composer is a plain Unicode `String` all the way down (`onInputChange` is identity,
+     * `onSend` only trims whitespace, `textContent` wraps the string verbatim), so nothing in the
+     * app folds accents. This pins the LAST place that could still lose them silently: the
+     * serialization boundary. It is asserted on the UTF-8 bytes as well as the decoded string,
+     * because a body that round-trips through the wrong charset decodes back to mojibake, not to
+     * an exception anything would notice.
+     */
+    @Test
+    fun `the chat request keeps Vietnamese diacritics through serialization`() {
+        val typed = "Hôm nay tôi muốn tìm quán ăn ngon ở Hồ Chí Minh, Đà Lạt, giá tốt nhất"
+        val body = json.encodeToString(
+            ChatRequest(messages = listOf(ChatMessageDto(role = "user", content = textContent(typed)))),
+        )
+
+        // The exact characters, not an ASCII-folded or escape-mangled stand-in.
+        assertTrue(body.contains(typed))
+        assertFalse(body.contains("Hom nay toi muon"))
+        // Round-trips byte-for-byte as UTF-8, which is what OkHttp sends for `application/json`.
+        assertEquals(body, String(body.toByteArray(Charsets.UTF_8), Charsets.UTF_8))
+        assertEquals(
+            typed,
+            json.decodeFromString<ChatRequest>(body).messages.first().content.jsonPrimitive.content,
+        )
+        // A first turn still omits conversationId (encodeDefaults=false), unchanged by the above.
+        assertFalse(body.contains("conversationId"))
     }
 }

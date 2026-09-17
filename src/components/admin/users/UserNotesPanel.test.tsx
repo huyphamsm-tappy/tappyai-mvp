@@ -6,6 +6,7 @@ import { render, screen, cleanup, waitFor, within } from '@testing-library/react
 import userEvent from '@testing-library/user-event'
 import { UserNotesPanel } from './UserNotesPanel'
 import { en as enStrings } from '@/lib/i18n/admin'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // Module 08 — the internal notes panel.
 //
@@ -44,7 +45,9 @@ function stubFetch(handler: (url: string, init?: RequestInit) => { status?: numb
   return calls
 }
 
-beforeEach(() => vi.unstubAllGlobals())
+// Queries below use the English names and `enStrings`, so the locale is stated: the product
+// default is Vietnamese, and the English these tests used to get was jsdom's `navigator.language`.
+beforeEach(() => { vi.unstubAllGlobals(); setLocale('en') })
 
 describe('the read permission gates the panel itself', () => {
   it('🔑 renders NOTHING without users.notes.read — and issues no request', async () => {

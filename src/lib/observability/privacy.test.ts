@@ -49,6 +49,34 @@ const SAMPLES: Record<ObservabilityEvent['type'], ObservabilityEvent> = {
   wif_failure: { type: 'wif_failure', stage: 'sts', status: 400, reason: 'unauthorized_client', identitySource: 'header' },
   ai_provider_failure: { type: 'ai_provider_failure', providerId: 'claude', role: 'smart', status: 429, kind: 'RateLimitError' },
   request_error: { type: 'request_error', route: '/api/chat', status: 500, code: 'rate_limit' },
+  // CCP commerce events (D5 / P6-C), every optional field populated. Ids are opaque hashes/UUIDs;
+  // `linkDigest` is a truncated sha256 of the URL — the URL itself never appears.
+  commerce_request: {
+    type: 'commerce_request', requestId: '550e8400-e29b-41d4-a716-446655440000', domain: 'travel', intentType: 'book_hotel', capability: 'hotel_booking',
+    configurationFields: 'checkIn,checkOut,adults', actorHash: 'a'.repeat(32), sessionHash: 'b'.repeat(32), platform: 'web',
+  },
+  commerce_provider_search: {
+    type: 'commerce_provider_search', requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom',
+    offersCount: 1, freshnessType: 'static', latencyMs: 3, errorCode: 'no_offer',
+  },
+  commerce_provider_selected: {
+    type: 'commerce_provider_selected', requestId: '550e8400-e29b-41d4-a716-446655440000', providerId: 'tripcom',
+    merchantId: 'tripcom', score: 0.83, rankingVersion: 'v1',
+  },
+  commerce_deep_link_resolved: {
+    type: 'commerce_deep_link_resolved', requestId: '550e8400-e29b-41d4-a716-446655440000', linkId: 'c'.repeat(24),
+    providerId: 'tripcom', merchantId: 'tripcom', domain: 'travel', kind: 'DIRECT_DEEP_LINK', depth: 4, guestDepth: 5,
+    authenticatedDepth: 5, authRequiredAt: 'none', paramsPreserved: 'propertyRef,checkIn,checkOut', paramsDropped: '',
+    trackingPresent: false, trackingNetwork: 'accesstrade', freshnessType: 'static', expiresAt: '2026-10-10T00:00:00.000Z',
+    confidence: 0.97, linkDigest: 'd'.repeat(16),
+  },
+  commerce_deep_link_validated: {
+    type: 'commerce_deep_link_validated', linkId: 'c'.repeat(24), status: 'grammar_ok', method: 'static', ms: 1, reason: 'not_configured',
+  },
+  commerce_handoff: {
+    type: 'commerce_handoff', linkId: 'c'.repeat(24), requestId: '550e8400-e29b-41d4-a716-446655440000',
+    actorHash: 'a'.repeat(32), sessionHash: 'b'.repeat(32), platform: 'web',
+  },
   system_error: { type: 'system_error', scope: 'observability', code: 'buffer_overflow' },
 }
 

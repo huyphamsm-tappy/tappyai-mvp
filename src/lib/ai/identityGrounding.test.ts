@@ -129,7 +129,22 @@ describe('the detector reports and never rewrites', () => {
     // starts depending on anything but the early-send flag, this fails — which
     // is the moment "we noticed a fabricated name" could turn into "we silently
     // edited the user's reply".
-    expect(filter).toMatch(/const outText = earlyShoppingMarkerSent \? prose : finalText/)
+    //
+    // Asserted through the ternary's two branches rather than one literal byte string. The
+    // property is "delivery state alone decides", not "the expression never changes shape": the
+    // early branch must drop EXACTLY what the early send already delivered (the shopping marker)
+    // and keep everything else, or a turn that searched both places and products would silently
+    // lose its place cards. A literal match cannot tell those two apart.
+    const outTernary = filter.match(/const outText = (.*)/)?.[1]
+    expect(outTernary).toBeDefined()
+    expect(outTernary).toMatch(/^earlyShoppingMarkerSent \?/)
+    const [earlyBranch, lateBranch] = outTernary!.replace(/^earlyShoppingMarkerSent \?/, '').split(':')
+    // Early branch: everything `finalText` carries EXCEPT the marker that already shipped.
+    expect(earlyBranch).toContain('${prose}')
+    expect(earlyBranch).toContain('${placesSuffix}')
+    expect(earlyBranch).not.toContain('markerSuffix')
+    // Late branch: the detector's input, unchanged.
+    expect(lateBranch.trim()).toBe('finalText')
     // The second split obeys the same rule: `send` subtracts what was already streamed, and its
     // only inputs are `flushedText` (delivery state) and `outText`. If a detector result ever
     // appears in this expression, this fails — which is the moment "we noticed a fabricated name"

@@ -26,6 +26,10 @@ abstract class ChatModule {
     @Singleton
     @Binds
     abstract fun bindVoiceLanguageRepository(impl: RealVoiceLanguageRepository): VoiceLanguageRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindCommerceHandoffReporter(impl: RealCommerceHandoffReporter): CommerceHandoffReporter
 }
 
 /** [MessageFeedbackApi] is built from the shared singleton [Retrofit] (core:network) — a separate
@@ -48,4 +52,9 @@ object ChatNetworkModule {
     @Singleton
     fun provideVoiceLanguageApi(retrofit: Retrofit): VoiceLanguageApi =
         retrofit.create(VoiceLanguageApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCommerceHandoffApi(retrofit: Retrofit): CommerceHandoffApi =
+        retrofit.create(CommerceHandoffApi::class.java)
 }

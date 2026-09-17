@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, cleanup, fireEvent, waitFor, act } from '@testing-library/react'
 import { existsSync, readFileSync } from 'node:fs'
 
@@ -37,6 +38,10 @@ const API = readFileSync('src/app/api/group/route.ts', 'utf8')
 const PAGE = readFileSync('src/app/group/new/page.tsx', 'utf8')
 
 let fetchMock: ReturnType<typeof vi.fn>
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 beforeEach(() => {
   push.mockReset()
   fetchMock = vi.fn(async () => ({ ok: true, json: async () => ({ id: 'g-42', name: 'Hội bạn thân' }) }))

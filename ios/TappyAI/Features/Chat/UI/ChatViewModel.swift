@@ -405,11 +405,12 @@ final class ChatViewModel: AppObservableObject {
                         }
                         self.activeTool = nil
 
-                    case .annotation(let data):
-                        // Share parity: the structured places of this turn (never persisted).
-                        if let view = PlacesLiveViewParser.parse(annotationPayload: data) {
-                            self.messages[assistantIndex].placesView = view
-                        }
+                    case .places(let view):
+                        // Held on the message, never appended to `content` — so it cannot leak into
+                        // the reply, into TTS or into what gets persisted.
+                        self.messages[assistantIndex].livePlaces = view
+                        // Share parity: the same decision, projected for the share sheet.
+                        self.messages[assistantIndex].placesView = SharePlacesView(from: view)
 
                     case .stepEnd:
                         self.activeTool = nil

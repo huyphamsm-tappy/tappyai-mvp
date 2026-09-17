@@ -17,6 +17,8 @@ import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.ChatRepository
+import com.tappyai.app.chat.data.CommerceHandoffReporter
+import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.MessageLanguage
@@ -52,6 +54,7 @@ class ChatViewModel @Inject constructor(
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
+    private val commerceHandoffReporter: CommerceHandoffReporter,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -173,6 +176,31 @@ class ChatViewModel @Inject constructor(
 
     private var speechRecognizer: SpeechRecognizer? = null
     private val _isListening = MutableStateFlow(false)
+
+    /**
+     * How loud the microphone is right now, 0..1.
+     *
+     * [SpeechRecognizer] already delivers this through `onRmsChanged` on every voice turn; the
+     * callback was simply empty, so the value was measured and thrown away. Surfacing it drives a
+     * waveform that moves with the user's actual voice instead of an animation pretending to.
+     * NOT a new audio pipeline — no recorder, no buffer, no permission beyond the RECORD_AUDIO the
+     * mic already asks for.
+     */
+    private val _voiceLevel = MutableStateFlow(0f)
+    val voiceLevel: StateFlow<Float> = _voiceLevel.asStateFlow()
+
+    /**
+     * True while the full-screen listening UI owns the turn.
+     *
+     * The inline composer mic auto-sends the moment recognition finishes — web parity, and it stays
+     * exactly that way. The listening screen shows an explicit "Gửi", and a button that sends a
+     * message the app already sent is not a button. So the auto-send is deferred for that entry
+     * point only, and the recognised text waits in [input] until the user taps send or cancel.
+     */
+    private var deferVoiceAutoSend = false
+
+    /** The draft as it was when listening started, so a cancelled voice turn restores it. */
+    private var voiceInputBase: String? = null
     /** True while the in-app voice recogniser is actively listening — drives the mic recording
      *  animation (mirrors the web chat's `isListening`). */
     val isListening: StateFlow<Boolean> = _isListening.asStateFlow()
@@ -228,10 +256,27 @@ class ChatViewModel @Inject constructor(
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
                     is NetworkResult.Success -> {
                         _messages.value = result.data.map { stored ->
+                            val isUser = stored.role == "user"
+                            // 🚨 A REOPENED CONVERSATION USED TO LOSE EVERY STRUCTURED CARD.
+                            // The stored content is the raw reply, markers and all, so the plan,
+                            // the CTA buttons, the shopping decision and the inline photo galleries
+                            // are all still in there — they just were never decoded on this path.
+                            // The message was built with `text = stored.content`, which both showed
+                            // the raw marker text and rendered no cards. Running the SAME parser
+                            // the live path runs is what makes a restored turn identical to the
+                            // turn the user originally received, which is what web and iOS do.
+                            val parsed = if (isUser) null else ChatResponseParser.parse(stored.content)
                             ChatMessage(
                                 id = nextId++,
-                                role = if (stored.role == "user") TappyChatRole.User else TappyChatRole.Assistant,
-                                text = stored.content,
+                                role = if (isUser) TappyChatRole.User else TappyChatRole.Assistant,
+                                text = parsed?.text ?: stored.content,
+                                plan = parsed?.plan,
+                                ctaButtons = parsed?.ctaButtons ?: emptyList(),
+                                followups = parsed?.followups ?: emptyList(),
+                                shopping = parsed?.shopping,
+                                places = parsed?.places ?: emptyList(),
+                                segments = parsed?.segments ?: emptyList(),
+                                raw = if (isUser) "" else stored.content,
                             )
                         }
                     }
@@ -294,17 +339,25 @@ class ChatViewModel @Inject constructor(
      * a live partial transcript flows into the input as the user speaks, and on a final result the
      * recognised text is appended and the message is AUTO-SENT — the same behaviour as web (no extra
      * manual tap). Toggling while already listening stops it. RECORD_AUDIO is requested by the screen.
+     *
+     * [deferAutoSend] is the full-screen listening UI's entry point: recognition still runs the
+     * same way, but the final text waits in [input] for an explicit send (see [deferVoiceAutoSend]).
      */
-    fun startVoiceInput() {
+    fun startVoiceInput(deferAutoSend: Boolean = false) {
         if (_isListening.value) { stopVoiceInput(); return }
         if (!SpeechRecognizer.isRecognitionAvailable(context)) return
+        deferVoiceAutoSend = deferAutoSend
         val base = input
+        voiceInputBase = base
         val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
         speechRecognizer = recognizer
         recognizer.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(params: Bundle?) { _isListening.value = true }
             override fun onBeginningOfSpeech() {}
-            override fun onRmsChanged(rmsdB: Float) {}
+            override fun onRmsChanged(rmsdB: Float) {
+                // SpeechRecognizer reports roughly -2..10 dB; fold that onto 0..1 for the waveform.
+                _voiceLevel.value = ((rmsdB + 2f) / 12f).coerceIn(0f, 1f)
+            }
             override fun onBufferReceived(buffer: ByteArray?) {}
             override fun onEndOfSpeech() { _isListening.value = false }
             override fun onError(error: Int) {
@@ -322,7 +375,9 @@ class ChatViewModel @Inject constructor(
                 val text = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull()
                 if (!text.isNullOrBlank()) {
                     input = if (base.isBlank()) text else "$base $text"
-                    onSend() // web parity: auto-send once recognition completes
+                    // Web parity: auto-send once recognition completes — unless the full-screen
+                    // listening UI owns this turn, in which case its own send button does.
+                    if (!deferVoiceAutoSend) onSend()
                 }
             }
             override fun onEvent(eventType: Int, params: Bundle?) {}
@@ -341,6 +396,20 @@ class ChatViewModel @Inject constructor(
         speechRecognizer?.let { runCatching { it.stopListening() }; runCatching { it.destroy() } }
         speechRecognizer = null
         _isListening.value = false
+        _voiceLevel.value = 0f
+        deferVoiceAutoSend = false
+    }
+
+    /**
+     * The listening screen's cancel: stops recognition AND restores the draft to what it was
+     * before listening began, so a half-recognised sentence does not stay in the composer as if
+     * the user had typed it.
+     */
+    fun cancelVoiceInput() {
+        val base = voiceInputBase
+        stopVoiceInput()
+        if (base != null) input = base
+        voiceInputBase = null
     }
 
     fun onImagePicked(uri: Uri) { pendingImageUri = uri }
@@ -495,6 +564,13 @@ class ChatViewModel @Inject constructor(
     suspend fun removeFavorite(placeId: String): Boolean =
         mapsRepository.removeFavorite(placeId) is NetworkResult.Success
 
+    /**
+     * A Commerce Link was drawn / followed (CCP event 6, web `reportCommerceHandoff`). The card has
+     * already fired the merchant intent; this only reports the opaque ids and the analytics event.
+     */
+    fun onCommerceActionRendered(commerce: LiveCommerceFacts) = commerceHandoffReporter.rendered(commerce)
+    fun onCommerceHandoff(commerce: LiveCommerceFacts, opened: Boolean) = commerceHandoffReporter.tapped(commerce, opened)
+
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""
@@ -512,7 +588,16 @@ class ChatViewModel @Inject constructor(
 
             try {
                 val reply = StringBuilder()
-                chatRepository.streamReply(history).collect { token ->
+                // The turn's LIVE place decision, if the stream carried one. It arrives on its own
+                // `8:` frame, usually before the prose finishes, and is held here until the message
+                // is built — it is never appended to the text, which is why it cannot leak into the
+                // reply, into TTS, or into what gets persisted.
+                var livePlaces: PlacesLiveView? = null
+                chatRepository.streamReply(history).collect { event ->
+                    val token = when (event) {
+                        is ChatStreamEvent.Text -> event.delta
+                        is ChatStreamEvent.Places -> { livePlaces = event.view; return@collect }
+                    }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
                     // RETAINED — the UI segments it live, so each recommendation's photos render
@@ -539,8 +624,13 @@ class ChatViewModel @Inject constructor(
                         followups = followups,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
-                        // Share parity: the structured places of this turn (never persisted).
-                        placesView = chatRepository.takeLatestPlacesView(),
+                        places = parsed.places,
+                        livePlaces = livePlaces,
+                        // Share parity (V3): the same `8:` decision projected for the share sheet.
+                        placesView = livePlaces?.toShareView(),
+                        // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
+                        // a card, so the unstripped reply is carried alongside it.
+                        raw = reply.toString(),
                     )
                 }
                 persistConversation()
@@ -650,7 +740,12 @@ class ChatViewModel @Inject constructor(
     private suspend fun persistConversation() {
         val stored = _messages.value
             .filterNot { it.isError }
-            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.text) }
+            // 🚨 `raw`, NOT `text`. `text` has had every structured block decoded and REMOVED, so
+            // saving it threw away the plan, the CTA buttons and the shopping decision — the
+            // reopened conversation could never show them again because the data was gone from
+            // storage, not merely undecoded. Web and iOS both save the unstripped content for this
+            // exact reason. `ifBlank` covers user turns, which have no raw form and need none.
+            .map { StoredChatMessage(role = if (it.role == TappyChatRole.User) "user" else "assistant", content = it.raw.ifBlank { it.text }) }
         if (stored.isEmpty()) return
 
         // Same title rule as the web: first message's text, capped at 50 chars.

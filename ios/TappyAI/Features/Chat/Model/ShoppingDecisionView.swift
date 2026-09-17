@@ -24,6 +24,107 @@ struct ShoppingOfferView: Codable, Equatable, Sendable {
     let condition: String?
 }
 
+/// A Commerce Link the platform attached to a product entity (web `SynthesisCommerceView`,
+/// src/lib/ai/consultative/synthesisView.ts; Android `ShoppingCommerceView`). The Shopping card
+/// renders from the `[TAPPY_SHOPPING]` marker rather than the live place view, so the same
+/// canonical handoff is projected here with the same facts: merchant, depth, login boundary, the
+/// RESOLVED `labelKey` and the opaque ids the handoff beacon reports.
+///
+/// 🚨 iOS DECODED NONE OF THIS BEFORE. `commerceLinks` was an unknown key and was ignored, so
+/// "Mua iPhone trên TikTok Shop" showed the web its TikTok Shop handoff and showed the phone a
+/// Google Shopping redirect list. Same marker, two merchants — the drift the shared fixtures pin.
+struct ShoppingCommerceView: Codable, Equatable, Sendable, Identifiable {
+    var linkId: String = ""
+    var requestId: String = ""
+    var providerId: String = ""
+    var merchantName: String = ""
+    var url: String = ""
+    var depth: Int = 0
+    var guestDepth: Int = 0
+    var authRequiredAt: String = ""
+    var loginRequired: Bool = false
+    var freshnessType: String = ""
+    var expiresAt: String?
+    var tracked: Bool = false
+    var capability: String?
+    var primary: Bool = true
+    /// `SEARCH_HANDOFF` (the merchant's search for the user's words) vs a detail / checkout handoff.
+    var kind: String = ""
+    /// The RESOLVED label key. Nil on a marker written before the field existed (see `labelKeyOrFallback`).
+    var labelKey: String?
+    var handoff: String?
+    var authenticatedDepth: Int?
+    var facts: LiveCommerceObservedFacts?
+
+    var id: String { linkId.isEmpty ? url : linkId }
+    var isSearch: Bool { kind == "SEARCH_HANDOFF" }
+
+    /// A marker persisted before the server projected `labelKey` still renders an honest label: a
+    /// search says "search on", a detail handoff says "view on" — never a stronger verb than the
+    /// server chose (the resolver on the server is the only thing allowed to promise a purchase).
+    var labelKeyOrFallback: String { labelKey ?? (isSearch ? "v3.action.searchOn" : "v3.action.viewOn") }
+
+    /// The same action shape the live place card renders, so one label resolver serves both.
+    var asPlaceCardAction: PersistedPlaceAction {
+        PersistedPlaceAction(
+            kind: "purchase",
+            urlKind: isSearch ? "search" : "direct",
+            url: url,
+            labelKey: labelKeyOrFallback,
+            platform: merchantName,
+            attributed: nil,
+            commerce: LiveCommerceFacts(
+                linkId: linkId, requestId: requestId, providerId: providerId, depth: depth, guestDepth: guestDepth,
+                authRequiredAt: authRequiredAt, loginRequired: loginRequired, handoff: handoff,
+                authenticatedDepth: authenticatedDepth, freshnessType: freshnessType, expiresAt: expiresAt,
+                tracked: tracked, capability: capability, primary: primary, facts: facts
+            )
+        )
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        linkId = (try? c.decode(String.self, forKey: .linkId)) ?? ""
+        requestId = (try? c.decode(String.self, forKey: .requestId)) ?? ""
+        providerId = (try? c.decode(String.self, forKey: .providerId)) ?? ""
+        merchantName = (try? c.decode(String.self, forKey: .merchantName)) ?? ""
+        url = (try? c.decode(String.self, forKey: .url)) ?? ""
+        depth = (try? c.decode(Int.self, forKey: .depth)) ?? 0
+        guestDepth = (try? c.decode(Int.self, forKey: .guestDepth)) ?? 0
+        authRequiredAt = (try? c.decode(String.self, forKey: .authRequiredAt)) ?? ""
+        loginRequired = (try? c.decode(Bool.self, forKey: .loginRequired)) ?? false
+        freshnessType = (try? c.decode(String.self, forKey: .freshnessType)) ?? ""
+        expiresAt = try? c.decode(String.self, forKey: .expiresAt)
+        tracked = (try? c.decode(Bool.self, forKey: .tracked)) ?? false
+        capability = try? c.decode(String.self, forKey: .capability)
+        primary = (try? c.decode(Bool.self, forKey: .primary)) ?? true
+        kind = (try? c.decode(String.self, forKey: .kind)) ?? ""
+        labelKey = try? c.decode(String.self, forKey: .labelKey)
+        handoff = try? c.decode(String.self, forKey: .handoff)
+        authenticatedDepth = try? c.decode(Int.self, forKey: .authenticatedDepth)
+        facts = try? c.decode(LiveCommerceObservedFacts.self, forKey: .facts)
+    }
+
+    init(url: String, merchantName: String, kind: String, labelKey: String? = nil, linkId: String = "", requestId: String = "", providerId: String = "") {
+        self.url = url
+        self.merchantName = merchantName
+        self.kind = kind
+        self.labelKey = labelKey
+        self.linkId = linkId
+        self.requestId = requestId
+        self.providerId = providerId
+    }
+}
+
+/// The handoffs the card shows, split the way web splits them (`handoffsOf`,
+/// components/chat/ShoppingDecision.tsx): DETAIL links are the buttons; the marketplaces' SEARCH
+/// fallbacks are offered only when the entity has no detail link at all.
+struct ShoppingCommerceHandoffs: Equatable, Sendable {
+    let detail: [ShoppingCommerceView]
+    let search: [ShoppingCommerceView]
+    var isEmpty: Bool { detail.isEmpty && search.isEmpty }
+}
+
 /// One product configuration the assistant considered.
 struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
     let key: String
@@ -36,8 +137,19 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
     /// A representative product photo, if any offer carried one.
     let image: String?
     let offers: [ShoppingOfferView]
+    /// The entity's leading DETAIL handoff (a stored marker from before `commerceLinks` carries only this).
+    let commerce: ShoppingCommerceView?
+    /// Every Commerce Link CCP attached, in CCP's ranking order.
+    let commerceLinks: [ShoppingCommerceView]?
 
     var id: String { key }
+
+    var commerceHandoffs: ShoppingCommerceHandoffs {
+        let all = commerceLinks ?? (commerce.map { [$0] } ?? [])
+        let detail = Array(all.filter { !$0.isSearch }.prefix(5))
+        let search = detail.isEmpty ? Array(all.filter { $0.isSearch }.prefix(2)) : []
+        return ShoppingCommerceHandoffs(detail: detail, search: search)
+    }
 
     /// Restores the memberwise initialiser that `init(from:)` below suppresses.
     init(
@@ -48,7 +160,9 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         priceLow: Double? = nil,
         priceHigh: Double? = nil,
         image: String? = nil,
-        offers: [ShoppingOfferView] = []
+        offers: [ShoppingOfferView] = [],
+        commerce: ShoppingCommerceView? = nil,
+        commerceLinks: [ShoppingCommerceView]? = nil
     ) {
         self.key = key
         self.config = config
@@ -58,6 +172,8 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         self.priceHigh = priceHigh
         self.image = image
         self.offers = offers
+        self.commerce = commerce
+        self.commerceLinks = commerceLinks
     }
 
     // Defaults on decode: a field the server omitted must not fail the whole decision, but it must
@@ -73,6 +189,8 @@ struct ShoppingEntityView: Codable, Equatable, Sendable, Identifiable {
         priceHigh = try? c.decode(Double.self, forKey: .priceHigh)
         image = try? c.decode(String.self, forKey: .image)
         offers = (try? c.decode([ShoppingOfferView].self, forKey: .offers)) ?? []
+        commerce = try? c.decode(ShoppingCommerceView.self, forKey: .commerce)
+        commerceLinks = try? c.decode([ShoppingCommerceView].self, forKey: .commerceLinks)
     }
 }
 

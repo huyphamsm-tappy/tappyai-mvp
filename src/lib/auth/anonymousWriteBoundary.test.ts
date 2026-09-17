@@ -129,6 +129,7 @@ const EXEMPT: Record<string, string> = {
   'reviews/[id]/interact': "the caller's own watch row; rate-limited 10/min, values clamped, one view per user per review",
   'deals/[id]/click': 'click analytics, no user content',
   'track': 'analytics, no user content',
+  'commerce/handoff': 'CCP handoff counter (event 6) — body is two opaque ids the server minted, no user content, no URL; rate-limited 60/min per IP; dropped while CCP_ENABLED is false',
 
   // ── Machine-to-machine. No end user is present at all. ──
   'iap/apple/notifications': 'Apple server-to-server notification',

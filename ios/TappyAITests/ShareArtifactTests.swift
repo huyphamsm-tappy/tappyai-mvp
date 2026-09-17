@@ -2,7 +2,7 @@ import XCTest
 @testable import TappyAI
 
 /// The share artifact is a WHITELIST, and iOS must produce the SAME brochure as web and
-/// Android for the same `PlacesLiveView`. The fixture is a real `/api/chat` `8:` payload,
+/// Android for the same `SharePlacesView`. The fixture is a real `/api/chat` `8:` payload,
 /// shared with the web suite (`src/lib/share/__fixtures__/placesLiveView.food.json`).
 ///
 /// ⚠️ Not executed in this repository's CI (no macOS runner); written for Xcode.
@@ -19,9 +19,9 @@ final class ShareArtifactTests: XCTestCase {
         throw XCTSkip("shared places fixture not found above \(#filePath)")
     }
 
-    private func view() throws -> PlacesLiveView {
+    private func view() throws -> SharePlacesView {
         let data = try fixtureData()
-        guard let v = PlacesLiveViewParser.parse(annotationPayload: data) else {
+        guard let v = SharePlacesViewParser.parse(annotationPayload: data) else {
             XCTFail("fixture did not parse"); throw XCTSkip("unparseable")
         }
         return v
@@ -75,7 +75,7 @@ final class ShareArtifactTests: XCTestCase {
 
     func testInboxBodyFitsWithoutCuttingAURL() throws {
         let v = try view()
-        let big = PlacesLiveView(domain: v.domain, items: Array(repeating: v.items, count: 6).flatMap { $0 })
+        let big = SharePlacesView(domain: v.domain, items: Array(repeating: v.items, count: 6).flatMap { $0 })
         let a = ShareArtifactBuilder.buildPlacesArtifact(big, title: "Quán bún bò ngon ở TP.HCM", lang: "vi")
         XCTAssertGreaterThan(a.text.count, ShareArtifactBuilder.inboxMaxBody)
         let body = ShareArtifactBuilder.inboxBody(a, lang: "vi")

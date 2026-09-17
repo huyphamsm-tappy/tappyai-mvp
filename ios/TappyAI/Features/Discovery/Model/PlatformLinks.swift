@@ -7,8 +7,9 @@ enum PlatformLinks {
         else if let address, !address.isEmpty { parts.append(address) }
         let q = parts.joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
-            PlatformLink(name: "ShopeeFood", url: "https://shopeefood.vn/tim-kiem?q=\(q)"),
-            PlatformLink(name: "GrabFood", url: "https://food.grab.com/vn/en/s?searchKeyword=\(q)"),
+            // Registry grammar (CCP, 14 Sep 2026): GrabFood's results page keeps the query; ShopeeFood
+            // has no search page (its /tim-kiem drops the query), so it is not a search link here.
+            PlatformLink(name: "GrabFood", url: "https://food.grab.com/vn/vi/restaurants?search=\(q)"),
             PlatformLink(name: "BeFood", url: "https://be.com.vn/"),
         ]
     }
@@ -18,8 +19,10 @@ enum PlatformLinks {
         if let city, !city.isEmpty { parts.append(city) }
         let q = parts.joined(separator: " ").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
-            PlatformLink(name: "Booking.com", url: "https://www.booking.com/search.html?ss=\(q)"),
-            PlatformLink(name: "Agoda", url: "https://www.agoda.com/vi-vn/search?q=\(q)"),
+            // Registry grammars (CCP, 14 Sep 2026): the results page keeps the query on the first OTA;
+            // the second OTA's search URL drops it (verified), so its front door is the honest link.
+            PlatformLink(name: "Booking.com", url: "https://www.booking.com/searchresults.vi.html?ss=\(q)"),
+            PlatformLink(name: "Agoda", url: "https://www.agoda.com/vi-vn/"),
             PlatformLink(name: "Grab", url: "https://www.grab.com/vn/transport/car/"),
             PlatformLink(name: "Xanh SM", url: "https://xanhsm.com/"),
         ]
@@ -48,8 +51,8 @@ enum PlatformLinks {
     static func buildShoppingLinks(productName: String) -> [PlatformLink] {
         let q = productName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         return [
+            // Mirrors src/lib/platformLinks/shopping.ts (CCP registry search grammars, 14 Sep 2026).
             PlatformLink(name: "Shopee", url: "https://shopee.vn/search?keyword=\(q)"),
-            PlatformLink(name: "Tiki", url: "https://tiki.vn/search?q=\(q)"),
             PlatformLink(name: "Lazada", url: "https://www.lazada.vn/catalog/?q=\(q)"),
         ]
     }

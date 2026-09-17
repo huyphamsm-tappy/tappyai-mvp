@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
 import { render, screen, cleanup, within } from '@testing-library/react'
 
 vi.mock('next/navigation', () => ({
@@ -23,12 +23,17 @@ Object.defineProperty(window, 'matchMedia', {
 
 import ToolsView from './ToolsView'
 import { smartTools, smartToolGroups } from '@/lib/tools/registry'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // ── V3 Web · Smart Tools (/tools) ───────────────────────────────────────────
 //
 // The page renders the registry and nothing else. `registry.test.ts` proves the registry is
 // real; this proves the page does not add to it, subtract from it, or dress it up as commerce.
 
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const user = { full_name: 'Huy', avatar_url: null, email: 'h@example.com' }

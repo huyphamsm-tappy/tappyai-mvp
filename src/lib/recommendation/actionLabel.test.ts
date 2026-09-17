@@ -191,3 +191,14 @@ describe("🚨 a row's own link means different things in different domains", ()
     }
   })
 })
+
+describe('search handoff labels and the login boundary (live UAT 14 Sep 2026)', () => {
+  const base = { urlKind: 'search' as const, url: 'https://www.lazada.vn/catalog/?q=iphone', platform: 'Lazada', attributed: false }
+  const facts = { linkId: 'l', requestId: 'r', providerId: 'lazada', depth: 2, guestDepth: 3, freshnessType: 'static' as const, expiresAt: null, tracked: false, primary: true }
+  it('the search page of a merchant that logs in at checkout is a plain search', () => {
+    expect(resolveActionLabel({ ...base, kind: 'purchase', commerce: { ...facts, authRequiredAt: 'before_checkout', loginRequired: true } }).key).toBe('v3.action.searchOn')
+  })
+  it('the search page of a merchant that walls the results behind a login says so', () => {
+    expect(resolveActionLabel({ ...base, kind: 'purchase', platform: 'Shopee', url: 'https://shopee.vn/search?keyword=iphone', commerce: { ...facts, providerId: 'shopee', guestDepth: 2, authRequiredAt: 'before_selection', loginRequired: true } }).key).toBe('v3.action.searchLoginOn')
+  })
+})

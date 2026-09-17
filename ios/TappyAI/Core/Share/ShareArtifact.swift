@@ -4,7 +4,7 @@ import Foundation
 /// (and `ShareArtifact.kt` on Android).
 ///
 /// 🔑 SAME INPUT, SAME TEXT AS THE WEB. The brochure format is deliberately identical to the
-/// web builder for the same `PlacesLiveView`, so a recommendation shared from iOS and one
+/// web builder for the same `SharePlacesView`, so a recommendation shared from iOS and one
 /// shared from the web look like they came from the same product — because they did.
 ///
 /// 🚨 WHITELIST, NEVER BLACKLIST. `SharedPlace` names every field that may leave the app and
@@ -89,7 +89,7 @@ enum ShareArtifactBuilder {
         return true
     }
 
-    static func pickPlace(_ p: LivePlace) -> SharedPlace {
+    static func pickPlace(_ p: SharePlace) -> SharedPlace {
         var seen = Set<String>()
         let links: [SharedLink] = p.actions.compactMap { a in
             guard sharedActionKinds.contains(a.kind), a.urlKind == "direct",
@@ -232,7 +232,7 @@ enum ShareArtifactBuilder {
         return String([head, "", "1. \(p.name)", "", foot].joined(separator: "\n").prefix(max))
     }
 
-    static func buildPlacesArtifact(_ view: PlacesLiveView, title: String, lang: String) -> ShareArtifact {
+    static func buildPlacesArtifact(_ view: SharePlacesView, title: String, lang: String) -> ShareArtifact {
         let url = TappyShare.canonicalOrigin
         let places = view.items.map(pickPlace)
         let l = labels(lang)

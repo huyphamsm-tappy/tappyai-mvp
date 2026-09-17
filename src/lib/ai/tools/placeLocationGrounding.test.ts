@@ -24,7 +24,8 @@ import { __clearToolCache } from './common'
 
 let overpassCalls: string[]
 
-// Quy Nhơn, matching the geocode stub below and the GPS the tests pass.
+// Quy Nhơn rows — the coordinates this file's geocode stub returns, so they are consistent with
+// every case here that searches Quy Nhơn or an unresolvable place.
 const OSM_ROWS = {
   elements: [
     { type: 'node', lat: 13.78, lon: 109.22, tags: { name: 'Quán A', 'addr:street': 'Phố A' } },
@@ -33,21 +34,22 @@ const OSM_ROWS = {
 }
 
 /**
- * 🚨 THE ROWS AND THE REQUESTED CITY MUST AGREE, or BUG-011's output guard
- * rejects them — correctly. `belongsToDestination` (food.ts, D3) drops any row
- * whose coordinates fall outside the destination the caller named, so a fixture
- * that asks for Hà Nội and answers with Quy Nhơn coordinates now returns zero
- * rows. That is the guard doing its job on a fixture that was never
- * geographically coherent; the fixture moves, the guard stays.
+ * The same two venues, in Hanoi.
+ *
+ * 🚨 A FIXTURE MAY NOT ANSWER A QUESTION IT WAS NOT ASKED. Overpass is queried with an `around:`
+ * centre, so rows in Quy Nhơn are not a possible answer to a Hanoi search — and BUG-011's output
+ * guard now says so, dropping any row outside the requested destination. That guard is the
+ * product behaviour; the shared fixture returning southern coordinates for every centre was the
+ * inconsistency. Cases that search Hanoi use these rows.
  */
 const HANOI_ROWS = {
   elements: [
-    { type: 'node', lat: 21.0285, lon: 105.8542, tags: { name: 'Quán A', 'addr:street': 'Phố A' } },
-    { type: 'node', lat: 21.03, lon: 105.86, tags: { name: 'Quán B', 'addr:street': 'Phố B' } },
+    { type: 'node', lat: 21.03, lon: 105.85, tags: { name: 'Quán A', 'addr:street': 'Phố A' } },
+    { type: 'node', lat: 21.02, lon: 105.84, tags: { name: 'Quán B', 'addr:street': 'Phố B' } },
   ],
 }
 
-function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok', rows: unknown = OSM_ROWS) {
+function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok', rows: typeof OSM_ROWS = OSM_ROWS) {
   vi.stubGlobal('fetch', vi.fn(async (input: unknown) => {
     const url = typeof input === 'string' ? input : String((input as { url?: string })?.url ?? input)
     if (url.includes('nominatim')) {

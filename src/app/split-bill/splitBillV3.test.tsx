@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, cleanup, screen, fireEvent, within } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 
@@ -35,6 +36,10 @@ import { vi as viCopy, en as enCopy } from '@/lib/i18n/w3/splitBill'
 const SRC = readFileSync('src/app/split-bill/page.tsx', 'utf8')
 const fmt = (n: number) => n.toLocaleString('vi-VN', { maximumFractionDigits: 0 })
 
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const total = () => document.getElementById('sb-total') as HTMLInputElement

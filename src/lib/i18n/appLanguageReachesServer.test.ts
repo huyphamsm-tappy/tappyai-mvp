@@ -19,8 +19,13 @@ import { readFileSync } from 'node:fs'
 //
 // The Android half is an interceptor (`AppLanguageInterceptor`) with its own behavioural test,
 // because there `Accept-Language` can be set and setting it once fixes every endpoint at once.
-// The web half has to be `?lang=`: `Accept-Language` is a forbidden header name, so a browser
-// will not let fetch() override it. Hence a per-call-site guard, here.
+// The web half was written as a per-call-site `?lang=` guard, below, on the belief that
+// `Accept-Language` is a forbidden header name that fetch() may not set. That belief is wrong —
+// it was removed from the Fetch spec's forbidden list — and C29 relies on it being wrong: the web
+// now has its own interceptor (`appLanguageFetch`, behaviour pinned in appLanguageFetch.test.ts)
+// setting the header on every same-origin /api/** call. These per-call-site guards stay because
+// `?lang=` takes precedence over the header and these four call sites carry the safety notice, so
+// pinning them costs nothing and removes a class of regression the interceptor cannot see.
 
 const read = (path: string) => readFileSync(path, 'utf8')
 

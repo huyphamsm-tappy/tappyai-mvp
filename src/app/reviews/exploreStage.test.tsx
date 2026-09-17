@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, screen, cleanup, waitFor, fireEvent, act } from '@testing-library/react'
 import { readFileSync, existsSync } from 'node:fs'
 
@@ -120,6 +121,10 @@ const activeId = () => stage().getAttribute('data-active-review-id')
 const ask = () => document.querySelector<HTMLAnchorElement>('[data-stage-ask]')
 const untilCards = () => waitFor(() => expect(cards().length).toBeGreaterThan(0))
 
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 beforeEach(() => { vi.unstubAllGlobals(); pauseToggle.mockClear(); trackMock.mockClear(); sessionUser = null; unread = 0; hotRows = [] })
 afterEach(cleanup)
 

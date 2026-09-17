@@ -125,6 +125,10 @@ internal fun LazyListScope.reviewNotificationItems(
                 icon = Icons.Filled.Notifications,
                 title = stringResource(R.string.reviews_notification_empty_title),
                 message = stringResource(R.string.reviews_notification_empty_message),
+                // This screen paints its own black surface, so it supplies its own on-dark
+                // colours — the same two every other row here uses.
+                titleColor = NotifTextPrimary,
+                contentColor = NotifTextSecondary,
             )
         }
     } else {

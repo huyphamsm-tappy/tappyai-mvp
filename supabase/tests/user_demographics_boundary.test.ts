@@ -42,7 +42,7 @@ const REPO = join(__dirname, '..', '..')
 const MIGRATION_PATH = 'supabase/migrations/20260908_user_demographics_foundation.sql'
 const MIGRATION = readFileSync(join(REPO, MIGRATION_PATH), 'utf8')
 
-const PORT = 54375
+const PORT = 54381 // 54375 belongs to chat_messaging_boundary (V3); unique per suite, see portAllocation.test.ts
 const SELF = '11111111-1111-4111-8111-111111111111'
 const OTHER = '22222222-2222-4222-8222-222222222222'
 /** Has a profile and deliberately NO demographic row — the never-asked default. */
@@ -768,7 +768,10 @@ describe('admin_set_user_date_of_birth', () => {
 
   it('refuses an invalid or future date', async () => {
     expect(await adminCall('1899-01-01')).toBe('invalid_date')
-    const next = new Date(Date.now() + 86_400_000).toISOString().slice(0, 10)
+    // Two days out, not one: `toISOString` is UTC while the function compares against the
+    // database's CURRENT_DATE (UTC+7 here). Between 00:00 and 07:00 local, "UTC tomorrow" IS
+    // the database's today, and the date the test meant as future was accepted as `corrected`.
+    const next = new Date(Date.now() + 2 * 86_400_000).toISOString().slice(0, 10)
     expect(await adminCall(next)).toBe('invalid_date')
   })
 

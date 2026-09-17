@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, cleanup, screen, fireEvent, waitFor, within } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 
@@ -38,6 +39,10 @@ const RATES = { USD: 1, VND: 24000, EUR: 0.5, JPY: 150, KRW: 1300, GBP: 0.8, AUD
 const PAYLOAD = { rates: RATES, date: 'Fri, 12 Sep 2026 00:02:31 +0000', fallback: false }
 
 let fetchMock: ReturnType<typeof vi.fn>
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 beforeEach(() => {
   fetchMock = vi.fn(async () => ({ ok: true, json: async () => PAYLOAD }))
   vi.stubGlobal('fetch', fetchMock)

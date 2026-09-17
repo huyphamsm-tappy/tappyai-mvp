@@ -6,7 +6,7 @@ import { searchPlacesOSM } from './food'
 import { serperPlaces, serperPlaceToRow } from './serperPlaces'
 import { cityForName } from './vietnamCities'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
-import { buildFlightLinks } from '@/lib/platformLinks/travel'
+import { buildCoachLandingLink, buildFlightLinks, buildHotelSearchLinks } from '@/lib/platformLinks/travel'
 import { messages } from '@/lib/ai/messages'
 import { flightsCacheKey, hotelsCacheKey, transportCacheKey } from './cacheKeys'
 
@@ -24,7 +24,9 @@ export function isSpecificOtaHotelPage(link: string): boolean {
     const path = u.pathname.toLowerCase()
     if (!(host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com'))) return false
     if (path.length <= 1) return false
-    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/') || path.includes('/country/') || path.includes('/maps/') || path.includes('/landmark/')) return false
+    // Listing pages are not a hotel: OTA "attractions" / "hotels-near-…" / area pages (live UAT
+    // 14 Sep 2026: "Hotels near Sun World Danang Wonders" rendered as a hotel with "Đặt phòng").
+    if (path.includes('search') || path.includes('/region/') || path.includes('/city/') || path.includes('/budget/') || path.includes('/country/') || path.includes('/maps/') || path.includes('/landmark/') || path.includes('/attractions/') || path.includes('/hotels-near-') || path.includes('/area/') || path.includes('/district/') || path.includes('/neighborhood/')) return false
     return true
   } catch {
     return false
@@ -74,7 +76,7 @@ const AIRLINE_NAMES: Record<string, string> = {
   CX: 'Cathay Pacific', MU: 'China Eastern', AK: 'AirAsia',
 }
 
-function cityToIATA(name: string): string | null {
+export function cityToIATA(name: string): string | null {
   const n = normalizeVN((name || '').toLowerCase().trim())
   if (/^[a-z]{3}$/i.test(n)) return n.toUpperCase()
   for (const [key, code] of Object.entries(IATA_MAP)) {
@@ -83,8 +85,8 @@ function cityToIATA(name: string): string | null {
   return null
 }
 
-export async function getFlightPrices(origin: string, destination: string, lang = 'vi') {
-  const cacheKey = flightsCacheKey(origin, destination, lang)
+export async function getFlightPrices(origin: string, destination: string, lang = 'vi', departDateISO?: string) {
+  const cacheKey = flightsCacheKey(origin, destination, lang) + (departDateISO ? `|${departDateISO}` : '')
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -93,7 +95,7 @@ export async function getFlightPrices(origin: string, destination: string, lang 
 
   // Default departure ~7 days out (VN) when no specific fare date is known — keeps the
   // Traveloka deep-link on a valid FUTURE date instead of erroring.
-  const defaultDepartISO = new Date(Date.now() + 7 * 86400000 + 7 * 3600000).toISOString().slice(0, 10)
+  const defaultDepartISO = departDateISO && /^\d{4}-\d{2}-\d{2}$/.test(departDateISO) ? departDateISO : new Date(Date.now() + 7 * 86400000 + 7 * 3600000).toISOString().slice(0, 10)
   // VN-recognizable booking links (Traveloka + Google Flights). If a city can't be mapped
   // to an airport code, fall back to a city-name Google Flights query only.
   const bookingLinks = originCode && destCode
@@ -150,10 +152,10 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  const bookingUrl = 'https://www.booking.com/searchresults.html?ss=' + encodeURIComponent(location)
-    + (checkIn ? '&checkin=' + checkIn : '') + (checkOut ? '&checkout=' + checkOut : '')
-  const agodaUrl = 'https://www.agoda.com/vi-vn/search?q=' + encodeURIComponent(location)
-    + (checkIn ? '&checkIn=' + checkIn : '') + (checkOut ? '&checkOut=' + checkOut : '')
+  // Registry projections (Completion Pass, 14 Sep 2026): the Booking.com results page keeps the
+  // destination and the stay; Agoda's search URL drops the query (verified), so its link is the
+  // front door — a "see more on Agoda" text link, never a per-hotel search button.
+  const { bookingUrl, agodaUrl } = buildHotelSearchLinks(location, checkIn, checkOut)
   const budgetTag = maxBudgetVnd && maxBudgetVnd < 1_500_000
     ? ' gia re binh dan duoi ' + Math.round(maxBudgetVnd / 1000) + 'k -"5 sao" -pullman -marriott -hilton -sheraton -sofitel -intercontinental -novotel'
     : ''
@@ -400,7 +402,9 @@ export async function getTransportOptions(origin: string, destination: string, m
   let result: unknown
 
   if (!isTaxi) {
-    const vexereUrl = 'https://vexere.com/vi-VN/ket-qua-tim-kiem-ve-xe-khach?fromLocationName=' + encodeURIComponent(origin) + '&toLocationName=' + encodeURIComponent(destination)
+    // Vexere's front door. The former /ket-qua-tim-kiem-ve-xe-khach?fromLocationName= grammar
+    // returns 404 (verified 14 Sep 2026); the dated route page is a CCP link (attachCommerceLinks).
+    const vexereUrl = buildCoachLandingLink()
     const trainUrl = 'https://dsvn.vn/'
     try {
       const [busResults, trainResults] = await Promise.all([

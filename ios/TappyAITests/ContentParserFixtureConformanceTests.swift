@@ -28,6 +28,10 @@ final class ContentParserFixtureConformanceTests: XCTestCase {
         let expectCtaLabels: [String]
         let expectFollowups: [String]
         let expectPlanPresent: Bool
+        /// Durable places decoded from [TAPPY_PLACES]. Absent on a case that carries none, so both
+        /// are optional and default to "no places" rather than failing to decode the fixture.
+        let expectPlacesCount: Int?
+        let expectPlaceNames: [String]?
     }
 
     private struct FixtureFile: Decodable {
@@ -86,6 +90,20 @@ final class ContentParserFixtureConformanceTests: XCTestCase {
 
             if (parsed.plan != nil) != c.expectPlanPresent {
                 failures.append("[\(c.id)] plan presence: expected \(c.expectPlanPresent) but was \(parsed.plan != nil)")
+            }
+
+            // The DURABLE place block. Count first, then the names IN ORDER — rank order is part of
+            // the contract, not a rendering preference, so a parser that decodes the right places
+            // in the wrong order is still drift.
+            let expectPlaces = c.expectPlacesCount ?? 0
+            if parsed.places.count != expectPlaces {
+                failures.append("[\(c.id)] places count: expected \(expectPlaces) but was \(parsed.places.count) — \(c.description)")
+            }
+            if let expectedNames = c.expectPlaceNames {
+                let actualNames = parsed.places.map { $0.name ?? "" }
+                if actualNames != expectedNames {
+                    failures.append("[\(c.id)] place names: expected \(expectedNames) but was \(actualNames)")
+                }
             }
         }
 

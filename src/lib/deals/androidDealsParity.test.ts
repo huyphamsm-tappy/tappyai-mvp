@@ -104,22 +104,26 @@ describe('Android Deals renders the card the web renders', () => {
   it('colours the category chip from the language-independent key', () => {
     // `category` is localized; the colour map is keyed on the Vietnamese base label. Colouring from
     // the localized label drops every colour the moment the user switches to English.
-    expect(screen).toContain('categoryColor(deal.categoryKey)')
-    expect(screen).not.toContain('categoryColor(deal.category)')
+    expect(screen).toContain('categoryAccent(deal.categoryKey)')
+    expect(screen).not.toContain('categoryAccent(deal.category)')
   })
 
   it('keys the list through dealListKeys, never straight off a field', () => {
     // `key = { it.<field> }` is what threw `Key "" was already used` and killed the tab before it
     // drew. Asserting the token `dealListKeys` appears would prove nothing — this asserts the
     // expression the LazyColumn actually keys on.
-    expect(screen).toMatch(/key = \{ index, _ -> keys\[index\] \}/)
-    expect(screen).toMatch(/val keys = remember\(deals\) \{ dealListKeys\(deals\) \}/)
-    expect(screen).not.toMatch(/key = \{ it\./)
+    // V3: the list is paired into two-column rows, so the row key is the first deal's key.
+    expect(screen).toMatch(/key = \{ index, _ -> "row-" \+ \(keys\.getOrNull\(index \* 2\) \?: index\.toString\(\)\) \}/)
+    expect(screen).toMatch(/val keys = remember\(featured\) \{ dealListKeys\(featured\) \}/)
+    // The DEALS list never keys straight off a field. (The partner rail keys a `distinctBy`
+    // list on the same slug/name expression, which is unique by construction — allowed.)
+    expect(screen).not.toMatch(/items(?:Indexed)?\((?:deals|featured)[^)]*key = \{ it\./)
+    expect(screen).toMatch(/val partners = remember\(deals\) \{ deals\.distinctBy \{ it\.partnerSlug\.ifBlank \{ it\.partnerName \} \} \}/)
   })
 
   it('renders the parts that were missing from the photographed screen', () => {
     for (const part of [
-      'R.string.deals_subtitle', // curated-count line above the list
+      'R.string.deals_v3_subtitle', // the hero's subtitle line (V3 replaced the curated-count line)
       'R.string.deals_disclosure', // commercial-nature disclosure (MFS 3.10)
       'R.string.deals_via_source', // "via Shopee" attribution
       'deal.description', // the one field carrying real copy today
@@ -134,9 +138,9 @@ describe('Android Deals renders the card the web renders', () => {
   it('shows a logo when there is one and an initial when there is not', () => {
     // Asserting that the string `deal.logoImage` merely APPEARS proves nothing — it appears inside
     // the image call too, so deleting the branch entirely still matches. These pin the branch.
-    expect(screen).toMatch(/if \(deal\.logoImage != null\) \{/)
-    expect(screen).toMatch(/TappyImage\(url = deal\.logoImage/)
-    expect(screen).toMatch(/deal\.partnerName\.firstOrNull\(\)\?\.uppercase\(\)/)
+    expect(screen).toMatch(/val logo = deal\.logoImage\s*\n\s*if \(logo != null\) \{/)
+    expect(screen).toMatch(/TappyImage\(\s*url = logo,/)
+    expect(screen).toMatch(/deal\.partnerName\.trim\(\)\.take\(1\)\.uppercase\(\)/)
   })
 
   it('reloads the feed when the app language changes', () => {

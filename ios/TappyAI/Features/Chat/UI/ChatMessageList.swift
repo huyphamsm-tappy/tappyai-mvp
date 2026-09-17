@@ -61,6 +61,13 @@ struct ChatMessageList: View {
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
                                 shopping: parsed.shopping,
+                                // LIVE first, DURABLE as the fallback — and never both, or the
+                                // turn would show the same places twice. The live annotation is
+                                // the richer projection and exists for the session that produced
+                                // the turn; it is never persisted, so a reopened conversation has
+                                // only the durable block, which is what that block is for.
+                                places: msg.livePlaces.map { $0.items.map { $0.toCardView() } }
+                                    ?? parsed.places.compactMap { $0.toCardView() },
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 isLastMessage: isLast,
                                 tts: tts,
@@ -168,6 +175,8 @@ private struct AssistantBubble: View {
     /// D1 — the shopping decision for this turn, when the reply carried one.
     /// Defaulted so existing call sites keep compiling unchanged.
     var shopping: ShoppingDecisionView? = nil
+    /// The turn's place cards, already projected from whichever payload was available.
+    var places: [PlaceCardView] = []
     /// Whether the comparison sheet is open for this row.
     @State private var showComparison = false
     let followups: [String]
@@ -214,6 +223,13 @@ private struct AssistantBubble: View {
                 // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
                 // structured block: a half-arrived decision is not a decision, and showing one
                 // mid-stream is how partial JSON reached users in the first place.
+                // The place decision. Rendered only once streaming ends, like every other
+                // structured block: a half-arrived card is not a card, and showing one mid-stream
+                // is how partial JSON reached users in the first place.
+                if !places.isEmpty, !isStreaming {
+                    PlaceCardsView(places: places)
+                }
+
                 if let shopping, !isStreaming {
                     ShoppingDecisionCardView(view: shopping)
 

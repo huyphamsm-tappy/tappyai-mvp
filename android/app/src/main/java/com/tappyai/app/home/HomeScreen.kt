@@ -1,14 +1,20 @@
 package com.tappyai.app.home
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -41,18 +47,28 @@ import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Map
-import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.GppGood
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SportsEsports
 import androidx.compose.material.icons.filled.Translate
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.EditNote
+import androidx.compose.material.icons.outlined.LocalCafe
+import androidx.compose.material.icons.outlined.People
+import androidx.compose.material.icons.outlined.Place
+import androidx.compose.material.icons.outlined.Translate
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -71,13 +87,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.booleanResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
+import com.tappyai.app.deals.Deal
+import com.tappyai.app.deals.dealListKeys
 import com.tappyai.app.history.Conversation
+import com.tappyai.app.recommendations.Recommendation
+import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.history.emojiForCategory
 import com.tappyai.app.history.formatRelativeTime
 import com.tappyai.core.common.UiState
@@ -85,6 +108,7 @@ import com.tappyai.core.designsystem.component.TappyAvatar
 import com.tappyai.core.designsystem.component.TappyAvatarSize
 import com.tappyai.core.designsystem.component.TappyCard
 import com.tappyai.core.designsystem.component.TappyEmptyState
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappyShapes
@@ -125,80 +149,91 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val recentActivity by viewModel.recentActivityState.collectAsStateWithLifecycle()
+    val communityVideos by viewModel.communityVideosState.collectAsStateWithLifecycle()
+    val deals by viewModel.dealsState.collectAsStateWithLifecycle()
+    val recommendations by viewModel.recommendationsState.collectAsStateWithLifecycle()
+    val userName by viewModel.userName.collectAsStateWithLifecycle()
 
-    // The feature whose "coming soon" sheet is open (null = closed). A single shared sheet for
-    // every unfinished quick action, rather than one snackbar per tap.
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    // The whole Home surface renders in the V3 palette, in whichever appearance the system asks
+    // for — see [V3HomeTheme] for why this is a scoped override rather than a theme change.
+    V3HomeTheme {
         Column(
             modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            // Web parity: section vertical rhythm is space-y-6 = 24px.
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.xxxl),
+                .fillMaxSize()
+                .background(HomeV3.Background)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            // ── P4-11 · AI-FIRST HOME (DD-002 / OD-1) ────────────────────────────────────
-            //
-            // Section order mirrors the web Home (HomeView.tsx), which V3 reordered: ask Tappy,
-            // then the suggestions that turn a vague need into a question worth asking, then
-            // Continue, then the tools. It used to be hero → categories → nine tool sections →
-            // suggestions → recent, so the conversation you were in the middle of sat below every
-            // tool on the page.
-            //
-            // 🚨 HOME IS NOT CHAT. Nothing here renders a thread, streams a reply, or shows
-            // assistant output in place — the hero and every suggestion NAVIGATE to the Chat tab.
-            // Home is a door, not a room.
-            //
-            // 🚨 NO TOOL WAS REMOVED to make that true (DD-002). All nine tool sections are still
-            // here, in the same order relative to each other; they moved down, they did not go.
-            //
-            // The greeting's language comes from the resolved resources, not from the language
-            // store, so it cannot drift out of step with the strings beside it — see
-            // [HomeViewModel.greeting]. Reading it here also means a language switch recomposes it.
-            HomeHero(
-                greeting = viewModel.greeting(booleanResource(R.bool.resources_are_english)),
-                onOpenChat = { onNavigateToTab(HomeTab.Chat) },
-            )
-            SuggestionsSection(onOpenChatWithPrefill = onOpenChatWithPrefill)
-            CategoryChipsSection(onOpenCategory = onOpenChatWithCategory)
-            RecentActivitySection(state = recentActivity, onOpenConversation = onOpenConversation)
+            Column(
+                modifier = Modifier
+                    .widthIn(max = TappyContainers.content)
+                    .fillMaxWidth()
+                    .padding(TappySpacing.xl),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xxxl),
+            ) {
+                // ── PRIMARY AI BLOCK (master mockup 05_07_31) ─────────────────────────────
+                // Header (drawn by the shell) -> hero -> ask box -> quick suggestions. The pills
+                // are prompts, so they belong to the ask interaction rather than to the content
+                // below it; the mockup places them the same way.
+                // The mockup reads the greeting and the ask box as one block, so they get their
+                // own tighter spacing instead of the section rhythm the rest of the page uses.
+                Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+                    V3HeroSection(userName = userName)
+                    V3AskBar(onClick = { onNavigateToTab(HomeTab.Chat) })
+                }
+                V3QuickSuggestionsSection(
+                    onOpenChat = { onNavigateToTab(HomeTab.Chat) },
+                    onOpenChatWithPrefill = onOpenChatWithPrefill,
+                    onOpenTranslate = onOpenTranslate,
+                    onOpenSplitBill = onOpenSplitBill,
+                    onOpenVietWriter = onOpenVietWriter,
+                    onOpenRecommendations = onOpenRecommendations,
+                )
 
-            // "For You" (ND-001) is a discovery/content preview on EXISTING V3-available sources.
-            // Android has no such source wired yet, and the approved behaviour when none can fill
-            // the section is to HIDE it — never to pad it with placeholder or invented content. So
-            // there is deliberately nothing here rather than an empty shell.
+                // ── FIRST CONTENT SECTION ─────────────────────────────────────────────────
+                // Personalization leads: what Tappy has picked for this person outranks any
+                // catalogue of features.
+                V3RecommendationsSection(
+                    state = recommendations,
+                    onOpenRecommendations = onOpenRecommendations,
+                )
 
-            // ── Tools ───────────────────────────────────────────────────────────────────
-            // De-emphasised, never removed. Every tool keeps its destination and its behaviour.
-            SectionHeader(title = stringResource(R.string.home_section_tools_group))
-            FortuneSection(
-                onOpenTarot = onOpenTarot,
-                onOpenTuVi = onOpenTuVi,
-                onOpenZodiac = onOpenZodiac,
-            )
-            ScanSection(onOpenScan = onOpenScan)
-            TappyTogetherSection(onOpenTappyTogether = onOpenTappyTogether)
-            RecommendationsAndMusicSection(
-                onOpenRecommendations = onOpenRecommendations,
-                onOpenMusic = onOpenMusic,
-            )
-            ToolsSection(
-                onOpenCurrency = onOpenCurrency,
-                onOpenScamShield = onOpenScamShield,
-                onOpenTranslate = onOpenTranslate,
-                onOpenGames = onOpenGames,
-                onOpenSplitBill = onOpenSplitBill,
-            )
-            ContentWriterSection(onOpenVietWriter = onOpenVietWriter)
+                // ── REMAINING DISCOVERY CONTENT ───────────────────────────────────────────
+                V3DiscoverBanner(onClick = onOpenDeals)
+                V3DealsSection(state = deals, onOpenDeals = onOpenDeals)
+                CommunityVideosSection(
+                    state = communityVideos,
+                    onOpenExplore = { onNavigateToTab(HomeTab.Explore) },
+                )
+                // The five-category pill row under "Kham pha theo linh vuc" — the single
+                // category-discovery surface on Home now, and the one that keeps "Spa & Beauty"
+                // reachable.
+                CategoryChipsSection(onOpenCategory = onOpenChatWithCategory)
+                FortuneSection(
+                    onOpenTarot = onOpenTarot,
+                    onOpenTuVi = onOpenTuVi,
+                    onOpenZodiac = onOpenZodiac,
+                )
+                SuggestionsSection(onOpenChatWithPrefill = onOpenChatWithPrefill)
+                RecentActivitySection(state = recentActivity, onOpenConversation = onOpenConversation)
+
+                // ── SMART TOOLS ───────────────────────────────────────────────────────────
+                // One home for what used to be three separate sections, and the last major
+                // section on the page: the tools are a utility drawer, not something that should
+                // compete with discovery content for attention on the way down.
+                SmartToolsSection(
+                    onOpenScan = onOpenScan,
+                    onOpenScamShield = onOpenScamShield,
+                    onOpenVietWriter = onOpenVietWriter,
+                    onOpenTranslate = onOpenTranslate,
+                    onOpenSplitBill = onOpenSplitBill,
+                    onOpenCurrency = onOpenCurrency,
+                    onOpenMusic = onOpenMusic,
+                    onOpenTappyTogether = onOpenTappyTogether,
+                )
+            }
         }
     }
-
 }
 
 // Web hero palette (tailwind primary-500/600, accent-500/300 — the exact hero gradient stops).
@@ -208,107 +243,696 @@ private val HeroAccent500 = Color(0xFFFF9500)
 private val HeroAccent300 = Color(0xFFFFBD66)
 private val Primary400 = Color(0xFF3391FF)
 
+/**
+ * The V3 AI-agent hero, per the master mockup.
+ *
+ * Deliberately has NO card, container or border: the mascot sits on the page background at the
+ * upper right, bleeding past the content padding, over a soft radial glow with a few sparkle
+ * accents. The greeting sits to its left.
+ *
+ * [userName] is the real display name from the existing account profile, or null when it is not
+ * known (signed out, anonymous, or a failed load) — in which case the greeting falls back to a
+ * generic form rather than inventing a name.
+ */
 @Composable
-private fun HomeHero(greeting: String, onOpenChat: () -> Unit) {
-    // Web parity: rounded-3xl (24) gradient banner `from-primary-500 via-primary-600 to-accent-500`
-    // (to bottom-right), shadow-lg, two decorative blobs, an eyebrow greeting + a black heading, and
-    // the embedded search box (<SearchBar variant="hero">).
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(elevation = 16.dp, shape = RoundedCornerShape(24.dp), spotColor = HeroPrimary500, ambientColor = HeroPrimary500)
-            .clip(RoundedCornerShape(24.dp))
-            .background(
-                Brush.linearGradient(
-                    colors = listOf(HeroPrimary500, HeroPrimary600, HeroAccent500),
-                    start = Offset.Zero,
-                    end = Offset.Infinite, // → bottom-right (135°)
-                ),
-            ),
-    ) {
-        // Decorative blobs (pointer-events-none): white/10 top-right, accent-300/20 blurred bottom-left.
+private fun V3HeroSection(userName: String?) {
+    // Tall enough for the mascot's visible art and no taller: the previous 216dp left a band of
+    // dead space under the centred greeting, which pushed the ask bar far below where the mockup
+    // puts it. The mascot itself is unchanged.
+    Box(modifier = Modifier.fillMaxWidth().height(150.dp)) {
+        // Radial AI glow behind the mascot. A real radial gradient rather than a blurred
+        // circle: Modifier.blur clips to its own layer bounds, which drew the glow as a
+        // visible rectangle behind the mascot. Decorative only.
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .offset(x = 56.dp, y = (-56).dp)
-                .size(192.dp)
-                .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.1f)),
+                .offset(x = 44.dp, y = (-16).dp)
+                .size(268.dp)
+                .background(
+                    Brush.radialGradient(listOf(HomeV3.HeroGlow, Color.Transparent)),
+                ),
+        )
+        // Sparkle accents, mirroring the mockup's particle cluster around the mascot.
+        Sparkle(size = 12.dp, alpha = 0.9f, x = 176.dp, y = 34.dp)
+        Sparkle(size = 8.dp, alpha = 0.7f, x = 150.dp, y = 96.dp)
+        Sparkle(size = 7.dp, alpha = 0.55f, x = 196.dp, y = 140.dp)
+        Image(
+            painter = painterResource(R.drawable.tappy_wave),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                // Bleeds past the page padding, as in the mockup.
+                .offset(x = 22.dp)
+                .size(212.dp),
+        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.CenterStart)
+                .fillMaxWidth(0.58f),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        ) {
+            Text(
+                text = userName
+                    ?.let { stringResource(R.string.home_v3_greeting_named, it) }
+                    ?: stringResource(R.string.home_v3_greeting_generic),
+                fontSize = 30.sp,
+                lineHeight = 36.sp,
+                fontWeight = FontWeight.Bold,
+                color = HomeV3.OnSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                text = stringResource(R.string.home_v3_hero_tagline),
+                fontSize = 15.sp,
+                lineHeight = 21.sp,
+                color = HomeV3.OnSurfaceVariant,
+            )
+        }
+    }
+}
+
+/** One decorative sparkle dot in the hero's particle cluster. */
+@Composable
+private fun BoxScope.Sparkle(size: androidx.compose.ui.unit.Dp, alpha: Float, x: androidx.compose.ui.unit.Dp, y: androidx.compose.ui.unit.Dp) {
+    Icon(
+        imageVector = Icons.Filled.AutoAwesome,
+        contentDescription = null,
+        tint = HomeV3.Blue.copy(alpha = alpha),
+        modifier = Modifier.align(Alignment.TopStart).offset(x = x, y = y).size(size),
+    )
+}
+
+/**
+ * The V3 ask box, per the mockup: a tall pill with the placeholder, a microphone glyph and a
+ * large purple sparkle action.
+ *
+ * Still a tap target that opens the Chat tab rather than an inline field — the composer, its
+ * history and its voice input all live in Chat, and a second one here would be a second chat
+ * implementation. The microphone is part of that single target rather than a separate control,
+ * so it never implies that recording starts on Home.
+ */
+@Composable
+private fun V3AskBar(onClick: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(30.dp))
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, RoundedCornerShape(30.dp))
+            .clickable(onClickLabel = stringResource(R.string.home_v3_ask_action), onClick = onClick)
+            .padding(start = TappySpacing.xxl, end = TappySpacing.md, top = TappySpacing.md, bottom = TappySpacing.md),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.home_v3_ask_placeholder),
+            fontSize = 16.sp,
+            color = HomeV3.OnSurfaceVariant,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.weight(1f),
+        )
+        Icon(
+            imageVector = Icons.Filled.Mic,
+            contentDescription = null,
+            tint = HomeV3.OnSurfaceVariant,
+            modifier = Modifier.size(24.dp),
         )
         Box(
             modifier = Modifier
-                .align(Alignment.BottomStart)
-                .offset(x = (-40).dp, y = 64.dp)
-                .size(160.dp)
-                .blur(40.dp)
-                .clip(CircleShape)
-                .background(HeroAccent300.copy(alpha = 0.2f)),
+                .size(56.dp)
+                .clip(RoundedCornerShape(18.dp))
+                .background(HomeV3.ActionGradient),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Filled.AutoAwesome,
+                contentDescription = null,
+                tint = Color.White,
+                modifier = Modifier.size(24.dp),
+            )
+        }
+    }
+}
+
+private data class V3QuickAction(
+    val icon: ImageVector,
+    @StringRes val labelRes: Int,
+    val onClick: () -> Unit,
+)
+
+/**
+ * "Goi y nhanh" — six outlined pills in a 2x3 grid, as in the master mockup.
+ *
+ * Every pill goes somewhere real. Five map straight onto the mockup's own actions; the mockup's
+ * fourth, "Kiem tra link lua dao", needs Scam Shield, which does not exist on this Android branch.
+ * It is therefore NOT rendered — no dead pill, no fake screen, and no unrelated feature wearing
+ * its label. To keep the 2x3 grid whole, that fourth slot carries AI caption writing, a shipped
+ * capability presented under its own name and never under the scam-check one.
+ *
+ * The two conversational pills open Chat pre-filled, which is the app's real behaviour for a
+ * question like this — not a stub.
+ */
+@Composable
+private fun V3QuickSuggestionsSection(
+    onOpenChat: () -> Unit,
+    onOpenChatWithPrefill: (String) -> Unit,
+    onOpenTranslate: () -> Unit,
+    onOpenSplitBill: () -> Unit,
+    onOpenVietWriter: () -> Unit,
+    onOpenRecommendations: () -> Unit,
+) {
+    val cafePrompt = stringResource(R.string.home_v3_quick_cafe_prompt)
+    val planPrompt = stringResource(R.string.home_v3_quick_plan_prompt)
+    val actions = listOf(
+        V3QuickAction(Icons.Outlined.LocalCafe, R.string.home_v3_quick_cafe) { onOpenChatWithPrefill(cafePrompt) },
+        V3QuickAction(Icons.Outlined.Translate, R.string.home_v3_quick_translate, onOpenTranslate),
+        V3QuickAction(Icons.Outlined.People, R.string.home_v3_quick_splitbill, onOpenSplitBill),
+        V3QuickAction(Icons.Outlined.EditNote, R.string.home_v3_quick_caption, onOpenVietWriter),
+        V3QuickAction(Icons.Outlined.Place, R.string.home_v3_quick_travel, onOpenRecommendations),
+        V3QuickAction(Icons.Outlined.CalendarMonth, R.string.home_v3_quick_plan) { onOpenChatWithPrefill(planPrompt) },
+    )
+
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        V3SectionHeading(
+            title = stringResource(R.string.home_v3_quick_title),
+            linkText = stringResource(R.string.home_v3_deals_see_all),
+            // "See all" opens Chat empty. It used to carry the first pill's cafe prompt, which
+            // made a generic link behave like one specific suggestion.
+            onLinkClick = onOpenChat,
         )
-        Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 28.dp)) {
-            Text(
-                text = stringResource(R.string.home_hero_greeting_sub),
-                fontSize = 14.sp, // text-sm
-                fontWeight = FontWeight.Medium,
-                color = Color.White.copy(alpha = 0.8f),
-                modifier = Modifier.padding(bottom = 4.dp), // mb-1
-            )
-            Text(
-                text = greeting,
-                fontSize = 24.sp, // text-2xl
-                lineHeight = 30.sp, // leading-tight
-                fontWeight = FontWeight.Black, // font-black (900)
-                color = Color.White,
-                modifier = Modifier.padding(bottom = 20.dp), // mb-5
-            )
-            HeroSearchBar(onClick = onOpenChat)
+        actions.chunked(2).forEach { row ->
+            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+                row.forEach { action ->
+                    V3QuickPill(action = action, modifier = Modifier.weight(1f))
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun HeroSearchBar(onClick: () -> Unit) {
-    // Web <SearchBar variant="hero">: white rounded-2xl input, shadow-lg, Sparkles leading icon
-    // (primary-400), static placeholder, primary submit button. Tapping opens Chat (the web submits
-    // to /chat?q=…). Kept as a tap target rather than an inline field — the composer lives in Chat.
+private fun V3QuickPill(action: V3QuickAction, modifier: Modifier = Modifier) {
+    val label = stringResource(action.labelRes)
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp))
-            .clip(RoundedCornerShape(16.dp))
-            .background(MaterialTheme.colorScheme.surface)
-            .clickable(onClick = onClick)
-            .padding(horizontal = TappySpacing.xl, vertical = TappySpacing.xl), // py-4 = 16px
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        modifier = modifier
+            .height(60.dp)
+            .clip(RoundedCornerShape(18.dp))
+            .border(1.dp, HomeV3.Outline, RoundedCornerShape(18.dp))
+            .clickable(onClickLabel = label, onClick = action.onClick)
+            // Tighter than the usual pill inset: the longest label ("Len ke hoach cuoi tuan")
+            // needs the width to stay on one line, as every label does in the mockup.
+            .padding(horizontal = TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
     ) {
         Icon(
-            imageVector = Icons.Filled.AutoAwesome, // lucide Sparkles
+            imageVector = action.icon,
             contentDescription = null,
-            tint = Primary400,
-            modifier = Modifier.size(18.dp),
+            tint = HomeV3.OnSurfaceVariant,
+            modifier = Modifier.size(21.dp),
         )
         Text(
-            text = stringResource(R.string.home_hero_search_placeholder),
-            style = MaterialTheme.typography.bodyLarge, // 16px
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            modifier = Modifier.weight(1f),
+            text = label,
+            fontSize = 13.sp,
+            lineHeight = 17.sp,
+            color = HomeV3.OnSurface,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
         )
+    }
+}
+
+/**
+ * "Goi y danh cho ban" — the personalized place rail.
+ *
+ * The mockup's cards carry photography, a star rating and a review count. The Android
+ * [Recommendation] model carries placeId, placeName and matchedSignals and nothing else, so none
+ * of those three exist here and none are invented: the card shows the real place name and the
+ * real matched signal, over a tinted panel that is plainly decoration rather than a stand-in
+ * photograph. Reproducing the mockup's card would require backend work, which is out of scope.
+ */
+@Composable
+private fun V3RecommendationsSection(
+    state: UiState<List<Recommendation>>,
+    onOpenRecommendations: () -> Unit,
+) {
+    val items = (state as? UiState.Success)?.data ?: return
+    if (items.isEmpty()) return
+
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        V3SectionHeading(
+            title = stringResource(R.string.home_v3_recs_title),
+            linkText = stringResource(R.string.home_v3_deals_see_all),
+            onLinkClick = onOpenRecommendations,
+        )
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+            itemsIndexed(items = items, key = { _, item -> item.placeId }) { index, item ->
+                V3RecommendationCard(
+                    item = item,
+                    // Position-based, deliberately NOT category-based: the payload carries no
+                    // category (placeId/placeName/matchedSignals only), so the rail rotates the
+                    // approved artwork by index the way the web rail rotates its tints. Nothing
+                    // about the artwork is a claim about the place.
+                    art = V3_RECOMMENDATION_ART[index % V3_RECOMMENDATION_ART.size],
+                    onClick = onOpenRecommendations,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * The five owner-approved illustrations, in the approved order, rotated by card position.
+ *
+ * Explicitly not a category map: [Recommendation] carries `placeId`, `placeName` and
+ * `matchedSignals` and nothing that identifies a category, and `matchedSignals` is free text
+ * ("Korean BBQ", "Near Quan 3", "4.5★"), so deriving one would be a guess. The web rail solves the
+ * same gap the same way — it rotates four tints by index, with the comment "places carry no photo
+ * in the recommendation payload".
+ */
+private val V3_RECOMMENDATION_ART = listOf(
+    R.drawable.category_food,
+    R.drawable.category_shopping,
+    R.drawable.category_travel,
+    R.drawable.category_entertainment,
+    R.drawable.category_spa,
+)
+
+@Composable
+private fun V3RecommendationCard(item: Recommendation, @DrawableRes art: Int, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .width(190.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, RoundedCornerShape(20.dp))
+            .clickable(onClickLabel = item.placeName, onClick = onClick),
+    ) {
+        // The header keeps its branded gradient and the artwork sits INSET on top of it, framed,
+        // with the panel visible all around. A full-bleed photograph here would read as "a photo
+        // of this place", which none of these images is — they are approved illustrations rotated
+        // by position. Inset-on-a-tinted-panel is the card's existing decorative grammar (it used
+        // to hold a centred pin glyph), so this makes the distinction without new copy or a
+        // redesign. The image is decorative for TalkBack too: it announces nothing.
         Box(
             modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.primary),
+                .fillMaxWidth()
+                .height(96.dp)
+                .background(
+                    Brush.linearGradient(
+                        listOf(HomeV3.Purple.copy(alpha = 0.45f), HomeV3.Blue.copy(alpha = 0.16f)),
+                    ),
+                ),
             contentAlignment = Alignment.Center,
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowUpward,
+            Image(
+                painter = painterResource(art),
                 contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(18.dp),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(width = 104.dp, height = 64.dp)
+                    .clip(RoundedCornerShape(12.dp)),
+            )
+        }
+        Column(
+            modifier = Modifier.padding(TappySpacing.lg),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+        ) {
+            Text(
+                text = item.placeName,
+                fontSize = 14.sp,
+                lineHeight = 19.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = HomeV3.OnSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            // The real "why this place" signal the ranking API returns. No rating or review
+            // count is shown because the model carries neither.
+            item.matchedSignals.firstOrNull()?.takeIf { it.isNotBlank() }?.let { signal ->
+                Text(
+                    text = signal,
+                    fontSize = 12.sp,
+                    color = HomeV3.OnSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * The "Kham pha them cung TappyAI" discovery banner.
+ *
+ * The mockup fills it with a night-landscape illustration. No such artwork ships in the Android
+ * resources, so the banner is built from the design system's own gradient rather than invented
+ * or generated production art; the structure, copy and chevron affordance match. It opens the
+ * existing Deals surface, which is what its subtitle promises.
+ */
+@Composable
+private fun V3DiscoverBanner(onClick: () -> Unit) {
+    val label = stringResource(R.string.home_v3_banner_title)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(24.dp))
+            .background(
+                Brush.linearGradient(listOf(Color(0xFF3B2E8F), Color(0xFF1B2A6B), Color(0xFF16265C))),
+            )
+            .border(1.dp, HomeV3.Purple.copy(alpha = 0.28f), RoundedCornerShape(24.dp))
+            .clickable(onClickLabel = label, onClick = onClick)
+            .padding(horizontal = TappySpacing.xxl, vertical = TappySpacing.xl),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            ) {
+                Text(
+                    text = label,
+                    fontSize = 18.sp,
+                    lineHeight = 24.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                )
+                Text(
+                    text = stringResource(R.string.home_v3_banner_subtitle),
+                    fontSize = 13.sp,
+                    color = Color.White.copy(alpha = 0.72f),
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(alpha = 0.14f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(21.dp),
+                )
+            }
+        }
+    }
+}
+
+/** Mockup section heading: 20sp title with a trailing accent link. */
+@Composable
+private fun V3SectionHeading(title: String, linkText: String, onLinkClick: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+    ) {
+        Text(
+            text = title,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = HomeV3.OnSurface,
+            modifier = Modifier.weight(1f),
+        )
+        SectionLink(text = linkText, onClick = onLinkClick)
+    }
+}
+
+/**
+ * Smart Tools — the single home for what used to be three separate Home sections.
+ *
+ * "Cong cu & tien ich" (Currency / Split bill / Translate), "Viet content" and "Quet tai lieu"
+ * each had their own header and their own card style, which made three unrelated-looking groups
+ * out of one family. This is one section over the SAME five destinations, reusing the existing
+ * [FeatureTile] and the labels each tool already ships: no tool is recreated, no navigation
+ * destination is added, and every callback is the one the shell already passes down.
+ *
+ * Games is deliberately absent, as it already was. `GamesScreen` embeds SuperTux in a WebView and
+ * that Emscripten/WASM build needs SharedArrayBuffer, which the Android WebView does not expose
+ * even when the page is correctly cross-origin isolated — on-device the engine reports its own
+ * unsupported message and the game never starts, after a ~246 MB asset download. `GamesRoute` and
+ * `GamesScreen` stay wired in `HomeTabHost`, so re-enabling remains a one-line change.
+ */
+@Composable
+private fun SmartToolsSection(
+    onOpenScan: () -> Unit,
+    onOpenScamShield: () -> Unit,
+    onOpenVietWriter: () -> Unit,
+    onOpenTranslate: () -> Unit,
+    onOpenSplitBill: () -> Unit,
+    onOpenCurrency: () -> Unit,
+    onOpenMusic: () -> Unit,
+    onOpenTappyTogether: () -> Unit,
+) {
+    // Same FeatureTile, same 2-up grid, same labels and callbacks the tools already shipped with —
+    // the rows are just built from a list now so the count can grow past a hand-written grid. Music
+    // library and Tappy Together join here rather than each keeping a section of their own.
+    val tools = listOf(
+        SmartTool(R.string.home_scan_title, R.string.home_scan_card_title, GradBlueSky, onOpenScan) {
+            Icon(Icons.Filled.QrCodeScanner, null, tint = Color(0xFF0284C7), modifier = Modifier.size(20.dp))
+        },
+        // Scam Shield — the safety tool the canonical shell routes to (ScamShieldRoute.Main). It
+        // joins the same tile grid with the same icon and tint it already shipped with; a tool is
+        // never dropped from Home to make room for the V3 layout.
+        SmartTool(R.string.home_scam_shield_title, R.string.home_scam_shield_desc, GradEmeraldTeal, onOpenScamShield) {
+            Icon(Icons.Filled.GppGood, null, tint = Color(0xFF0D9488), modifier = Modifier.size(20.dp))
+        },
+        SmartTool(R.string.home_content_writer_title, R.string.home_content_writer_card_title, GradOrangeAmber, onOpenVietWriter) {
+            Icon(Icons.Outlined.EditNote, null, tint = Color(0xFFEA580C), modifier = Modifier.size(20.dp))
+        },
+        SmartTool(R.string.home_translate_title, R.string.home_translate_desc, GradPrimaryAccent, onOpenTranslate) {
+            Text("🌐", fontSize = 20.sp)
+        },
+        SmartTool(R.string.home_split_title, R.string.home_split_desc, GradVioletPurple, onOpenSplitBill) {
+            Icon(Icons.Filled.Calculate, null, tint = Color(0xFF7C3AED), modifier = Modifier.size(20.dp))
+        },
+        SmartTool(R.string.home_currency_title, R.string.home_currency_desc, GradEmeraldTeal, onOpenCurrency) {
+            Icon(Icons.Filled.CurrencyExchange, null, tint = Color(0xFF059669), modifier = Modifier.size(20.dp))
+        },
+        // Moved in from the old two-card Recommendations+Music row, keeping its icon and tint.
+        SmartTool(R.string.home_music_title, R.string.home_music_desc, GradPinkOrange, onOpenMusic) {
+            Icon(Icons.Filled.MusicNote, null, tint = Color(0xFFDB2777), modifier = Modifier.size(20.dp))
+        },
+        // Moved in from its standalone featured card, keeping the 👥 mark it already used.
+        SmartTool(R.string.home_together_title, R.string.home_together_desc, GradVioletPurple, onOpenTappyTogether) {
+            Text("👥", fontSize = 20.sp)
+        },
+    )
+
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+        SectionHeader(title = stringResource(R.string.home_v3_smart_tools_title), showSparkle = true)
+        tools.chunked(2).forEach { row ->
+            Row(
+                modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min),
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+            ) {
+                row.forEach { tool ->
+                    FeatureTile(
+                        title = stringResource(tool.titleRes),
+                        description = stringResource(tool.descriptionRes),
+                        onClick = tool.onClick,
+                        iconGradient = tool.iconGradient,
+                        icon = tool.icon,
+                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                    )
+                }
+                // Keeps an odd-count final row aligned with the 2-up grid above.
+                if (row.size == 1) Spacer(modifier = Modifier.weight(1f))
+            }
+        }
+    }
+}
+
+/** One Smart Tools tile: an existing feature's own label, art and navigation callback. */
+private data class SmartTool(
+    @StringRes val titleRes: Int,
+    @StringRes val descriptionRes: Int,
+    val iconGradient: Brush,
+    val onClick: () -> Unit,
+    val icon: @Composable () -> Unit,
+)
+
+/**
+ * "Uu dai hom nay" — the V3 slot for partner offers, over the SAME daily pool the Deals screen
+ * reads ([HomeViewModel.dealsState] -> `DealsRepository.getDeals()`).
+ *
+ * What a card can honestly show is bounded by the [Deal] model, which carries title, category,
+ * source and an optional discount and nothing else — no image, price, rating or favourite state.
+ * So the card renders exactly those fields over a category-tinted panel; the tinted panel is
+ * decoration, not a stand-in for product photography, and no placeholder product, rating or price
+ * is invented to fill the space. An empty pool says so with the Deals screen's own wording rather
+ * than disappearing, which keeps the section's place in the V3 hierarchy visible.
+ */
+@Composable
+private fun V3DealsSection(state: UiState<List<Deal>>, onOpenDeals: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(Color(0xFFFF8A4C)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.LocalOffer,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(19.dp),
+                )
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.home_v3_deals_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = HomeV3.OnSurface,
+                )
+                Text(
+                    text = stringResource(R.string.home_v3_deals_subtitle),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = HomeV3.OnSurfaceVariant,
+                )
+            }
+            SectionLink(text = stringResource(R.string.home_v3_deals_see_all), onClick = onOpenDeals)
+        }
+
+        when (state) {
+            is UiState.Success -> {
+                val deals = state.data
+                // Reuses the Deals screen's own key helper: `Deal.url` is not guaranteed unique,
+                // and duplicate lazy keys crash the list at measure time.
+                val keys = remember(deals) { dealListKeys(deals) }
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+                    items(count = deals.size, key = { keys[it] }) { index ->
+                        V3DealCard(deal = deals[index], onClick = onOpenDeals)
+                    }
+                }
+            }
+            is UiState.Empty -> V3DealsEmpty()
+            // Loading and Error render nothing: Home is a launchpad, and a partner-offer rail is
+            // not worth a spinner or an error box at this position.
+            else -> Unit
+        }
+    }
+}
+
+@Composable
+private fun V3DealsEmpty() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, RoundedCornerShape(20.dp))
+            .padding(TappySpacing.xl),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+    ) {
+        Text(
+            text = stringResource(R.string.deals_empty_title),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = HomeV3.OnSurface,
+        )
+        Text(
+            text = stringResource(R.string.deals_empty_message),
+            style = MaterialTheme.typography.bodySmall,
+            color = HomeV3.OnSurfaceVariant,
+        )
+    }
+}
+
+@Composable
+private fun V3DealCard(deal: Deal, onClick: () -> Unit) {
+    val accent = dealAccent(deal.category)
+    Column(
+        modifier = Modifier
+            .width(200.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(HomeV3.Surface)
+            .border(1.dp, HomeV3.Outline, RoundedCornerShape(20.dp))
+            .clickable(onClickLabel = deal.title, onClick = onClick),
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .background(
+                    Brush.linearGradient(
+                        listOf(accent.copy(alpha = 0.5f), accent.copy(alpha = 0.12f)),
+                    ),
+                ),
+        ) {
+            Icon(
+                imageVector = Icons.Filled.LocalOffer,
+                contentDescription = null,
+                tint = Color.White.copy(alpha = 0.85f),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(start = 14.dp)
+                    .size(20.dp),
+            )
+            // Only rendered when the feed actually carries a promotion — most deals have none.
+            deal.discountLabel?.takeIf { it.isNotBlank() }?.let { discount ->
+                Text(
+                    text = discount,
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(999.dp))
+                        .background(Color.Black.copy(alpha = 0.55f))
+                        .padding(horizontal = 8.dp, vertical = 3.dp),
+                )
+            }
+        }
+        Column(
+            modifier = Modifier.padding(TappySpacing.lg),
+            verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+        ) {
+            Text(
+                text = deal.title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = HomeV3.OnSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                // "{category} · via {partner}" — composed from the Deals screen's own `via` string
+                // so the two surfaces attribute a partner in exactly the same words.
+                text = deal.category + " · " + stringResource(R.string.deals_via_source, deal.partnerName),
+                style = MaterialTheme.typography.labelSmall,
+                color = HomeV3.OnSurfaceVariant,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
+}
+
+/** Panel tint per deal category. Presentation only — the feed carries no colour or image.
+ *  Composable because the fallback tint is a V3 palette token, which follows light/dark. */
+@Composable
+@ReadOnlyComposable
+private fun dealAccent(category: String): Color = when (category.lowercase()) {
+    "food", "an uong", "food & drink" -> Color(0xFFFF8A4C)
+    "travel", "du lich" -> Color(0xFF3391FF)
+    "shopping", "mua sam" -> Color(0xFFFF5FA2)
+    "entertainment", "giai tri" -> Color(0xFF9B6BFF)
+    else -> HomeV3.Purple
 }
 
 private data class HomeCategory(val id: String, val emoji: String, val labelRes: Int)
@@ -613,171 +1237,6 @@ private fun FortuneSection(
     }
 }
 
-/** Web parity: the Home "For you" (Recommendations) + "Music library" pair — a 2-column grid, as
- *  in HomeView.tsx's Recommendations+Music section. Each tile opens its screen (already wired in
- *  HomeTabHost). */
-@Composable
-private fun RecommendationsAndMusicSection(
-    onOpenRecommendations: () -> Unit,
-    onOpenMusic: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Min),
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-    ) {
-        FeatureTile(
-            title = stringResource(R.string.home_recommendations_card_title),
-            description = stringResource(R.string.home_recommendations_card_desc),
-            onClick = onOpenRecommendations,
-            iconGradient = GradPrimaryAccent,
-            icon = { Icon(Icons.Filled.AutoAwesome, null, tint = Color(0xFF0062CC), modifier = Modifier.size(20.dp)) },
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
-        )
-        FeatureTile(
-            title = stringResource(R.string.home_music_title),
-            description = stringResource(R.string.home_music_desc),
-            onClick = onOpenMusic,
-            iconGradient = GradPinkOrange,
-            icon = { Icon(Icons.Filled.MusicNote, null, tint = Color(0xFFDB2777), modifier = Modifier.size(20.dp)) },
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
-        )
-    }
-}
-
-/** Web parity: the Home "Scan documents" section (HomeView.tsx §Scan) — a featured card opening the
- *  scan flow (📷 Chụp ảnh → AI trích xuất văn bản). */
-@Composable
-private fun ScanSection(onOpenScan: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
-        SectionHeader(
-            title = stringResource(R.string.home_scan_title),
-            action = { SectionLink(stringResource(R.string.home_action_open), onOpenScan) },
-        )
-        FeaturedCard(
-            emoji = "📷",
-            title = stringResource(R.string.home_scan_card_title),
-            description = stringResource(R.string.home_scan_card_desc),
-            onClick = onOpenScan,
-            // Web: from-teal-100 to-cyan-100
-            iconGradient = Brush.linearGradient(listOf(Color(0xFFCCFBF1), Color(0xFFCFFAFE))),
-            // Web card tint: from-teal-500/15 to-cyan-400/5
-            cardTint = Brush.linearGradient(
-                listOf(Color(0xFF14B8A6).copy(alpha = 0.15f), Color(0xFF22D3EE).copy(alpha = 0.05f)),
-            ),
-        )
-    }
-}
-
-/** Web parity: the Home "Tappy Together" section (HomeView.tsx §Tappy Together) — a headerless
- *  featured card opening the group-create flow (web `/group/new`). */
-@Composable
-private fun TappyTogetherSection(onOpenTappyTogether: () -> Unit) {
-    FeaturedCard(
-        emoji = "👥",
-        title = stringResource(R.string.home_together_title),
-        description = stringResource(R.string.home_together_desc),
-        onClick = onOpenTappyTogether,
-        // Web: from-violet-100 to-pink-100
-        iconGradient = Brush.linearGradient(listOf(Color(0xFFEDE9FE), Color(0xFFFCE7F3))),
-        // Web card tint: from-violet-500/15 to-pink-400/5
-        cardTint = Brush.linearGradient(
-            listOf(Color(0xFF8B5CF6).copy(alpha = 0.15f), Color(0xFFF472B6).copy(alpha = 0.05f)),
-        ),
-    )
-}
-
-/** Web parity: the Home "Handy tools" 2×2 grid (HomeView.tsx §Tools) — Currency, Split bill,
- *  Translate, Games, in the web's order. */
-@Composable
-private fun ToolsSection(
-    onOpenScamShield: () -> Unit,
-    onOpenCurrency: () -> Unit,
-    onOpenTranslate: () -> Unit,
-    onOpenGames: () -> Unit,
-    onOpenSplitBill: () -> Unit,
-) {
-    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-        SectionHeader(title = stringResource(R.string.home_tools_title))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-        ) {
-            FeatureTile(
-                title = stringResource(R.string.home_currency_title),
-                description = stringResource(R.string.home_currency_desc),
-                onClick = onOpenCurrency,
-                iconGradient = GradEmeraldTeal,
-                icon = { Icon(Icons.Filled.CurrencyExchange, null, tint = Color(0xFF059669), modifier = Modifier.size(20.dp)) },
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            )
-            FeatureTile(
-                title = stringResource(R.string.home_split_title),
-                description = stringResource(R.string.home_split_desc),
-                onClick = onOpenSplitBill,
-                iconGradient = GradVioletPurple,
-                icon = { Icon(Icons.Filled.Calculate, null, tint = Color(0xFF7C3AED), modifier = Modifier.size(20.dp)) },
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            )
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
-        ) {
-            FeatureTile(
-                title = stringResource(R.string.home_translate_title),
-                description = stringResource(R.string.home_translate_desc),
-                onClick = onOpenTranslate,
-                iconGradient = GradBlueSky,
-                icon = { Text("🌐", fontSize = 20.sp) },
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            )
-            // Games is HIDDEN from production (owner decision 2026-08-01, Finalization Sprint).
-            // GamesScreen embeds SuperTux in a WebView, and SuperTux is an Emscripten/WASM build
-            // that needs SharedArrayBuffer — which the Android WebView does not expose even when
-            // the page is correctly cross-origin isolated (the server does send COOP: same-origin
-            // + COEP: require-corp, and /games/supertux answers 200). On-device the WebView shows
-            // the engine's own "browser does not support SharedArrayBuffer" message and the game
-            // never starts, while the same URL runs in the device's Chrome — a WebView platform
-            // limitation, not a route bug. It also pulls a ~246 MB asset download, unacceptable
-            // behind a casual Home tile on mobile data.
-            //
-            // GamesScreen + GamesRoute are deliberately left wired in HomeTabHost so re-enabling
-            // is a one-line change once the WASM/SAB story is solved (native port or a lighter
-            // game).
-            //
-            // Scam Shield takes the slot Games vacated, which is also where the web puts it —
-            // second in the Translate row (HomeView.tsx §Tools). B09: mobile had no scam
-            // protection at all while the web treated a mis-scored link as a CRITICAL bug.
-            FeatureTile(
-                title = stringResource(R.string.home_scam_shield_title),
-                description = stringResource(R.string.home_scam_shield_desc),
-                onClick = onOpenScamShield,
-                iconGradient = GradEmeraldTeal,
-                icon = { Icon(Icons.Filled.GppGood, null, tint = Color(0xFF0D9488), modifier = Modifier.size(20.dp)) },
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxHeight(),
-            )
-        }
-    }
-}
-
 /** A compact vertical grid tile (title + description) used by the 2-column Recommendations+Music
  *  and Tools grids. The leading emoji is embedded in the title string, matching the web labels. */
 @Composable
@@ -827,112 +1286,186 @@ private val GradOrangeAmber = featureGradient(0xFFFFEDD5, 0xFFFEF3C7)
 private val GradPrimaryAccent = featureGradient(0xFFCCE3FF, 0xFFFFE9CC)
 private val GradPinkOrange = featureGradient(0xFFFCE7F3, 0xFFFFEDD5)
 
-/** The full-width featured card idiom used by Home's Scan / Tappy Together sections: leading emoji,
- *  title + description, trailing chevron (same shape as [ContentWriterSection]'s card). */
+/**
+ * "Video goi y cho ban" — a horizontal rail over the SAME community feed Explore reads.
+ *
+ * Data: [HomeViewModel.communityVideosState] → `ReviewsRepository.getFeed(...)`, filtered to
+ * items that carry playable media. No new endpoint, DTO or table exists for this rail, and no
+ * sample content is synthesised: an empty or failed load renders nothing rather than placeholder
+ * cards. Tapping a card or the trailing link opens the existing Explore tab, which owns review
+ * playback — this section adds no navigation destination of its own.
+ */
 @Composable
-private fun FeaturedCard(
-    emoji: String,
-    title: String,
-    description: String,
-    onClick: () -> Unit,
-    iconGradient: Brush? = null,
-    cardTint: Brush? = null,
+private fun CommunityVideosSection(
+    state: UiState<List<Review>>,
+    onOpenExplore: () -> Unit,
 ) {
-    // contentPadding=0 so an optional card-level gradient tint (web `bg-gradient-to-br from-X/15
-    // to-Y/5`) can fill the whole card; the padding moves onto the tinted Row.
-    TappyCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(TappyShapes.card)
-            .clickable(onClick = onClick),
-        contentPadding = PaddingValues(0.dp),
-    ) {
+    // Loading and empty both render nothing: Home is a launchpad, and a spinner or an empty box
+    // for a secondary discovery rail is noisier than simply not being there yet.
+    val videos = (state as? UiState.Success)?.data ?: return
+    if (videos.isEmpty()) return
+
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(if (cardTint != null) Modifier.background(cardTint) else Modifier)
-                .padding(TappySpacing.xl), // web p-4 = 16px
-            horizontalArrangement = Arrangement.spacedBy(TappySpacing.xl), // web gap-4 = 16px
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         ) {
-            // Web: colored gradient icon tile (w-14 h-14 rounded-2xl bg-gradient-to-br from-X-100…).
-            if (iconGradient != null) {
-                Box(
-                    modifier = Modifier
-                        .size(56.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(iconGradient),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(text = emoji, fontSize = 26.sp)
-                }
-            } else {
-                Text(text = emoji, style = MaterialTheme.typography.headlineSmall)
+            Box(
+                modifier = Modifier
+                    .size(36.dp)
+                    .clip(CircleShape)
+                    .background(VideoRailAccent),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.PlayArrow,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp),
+                )
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.titleSmall,
+                    text = stringResource(R.string.home_videos_title),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 Text(
-                    text = description,
+                    text = stringResource(R.string.home_videos_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            SectionLink(text = stringResource(R.string.home_videos_see_more), onClick = onOpenExplore)
+        }
+
+        // The rail scrolls horizontally inside Home's single vertical scroll — no nested
+        // vertical scrolling, so the outer gesture is never contended.
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
+        ) {
+            items(items = videos, key = { it.id }) { review ->
+                CommunityVideoCard(review = review, onClick = onOpenExplore)
+            }
         }
     }
 }
 
-/** A single featured card, mirroring the web's "Content writer" Home section (`✍️` icon, title,
- *  description, chevron) — not a quick-action tile, since the web places this as its own section
- *  rather than in the quick-actions grid. */
+/** One clip in the rail: thumbnail + like count, then title and the creator who posted it. */
 @Composable
-private fun ContentWriterSection(onOpenVietWriter: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
-        SectionHeader(
-            title = stringResource(R.string.home_content_writer_title),
-            action = { SectionLink(stringResource(R.string.home_action_open), onOpenVietWriter) },
-        )
-        TappyCard(
+private fun CommunityVideoCard(review: Review, onClick: () -> Unit) {
+    val creator = review.profiles?.fullName?.takeIf { it.isNotBlank() }
+
+    Column(
+        modifier = Modifier
+            .width(VideoCardWidth)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(onClick = onClick)
+            .padding(bottom = TappySpacing.sm),
+        verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+    ) {
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(TappyShapes.card)
-                .clickable(onClick = onOpenVietWriter),
+                .height(VideoThumbHeight)
+                .clip(RoundedCornerShape(16.dp))
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         ) {
+            TappyImage(
+                url = review.thumbnail ?: review.mediaUrl,
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+            )
+            // Engagement badge: the real like count the feed already returns, never a synthesised
+            // "views" number — the model carries no view counter.
+            // "12.4K" alone is meaningless to a screen reader, so the whole badge announces
+            // itself once with the localized label instead of icon-then-number.
+            val likesLabel = stringResource(R.string.home_videos_likes, compactCount(review.likeCount))
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(TappySpacing.sm)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(Color.Black.copy(alpha = 0.55f))
+                    .padding(horizontal = TappySpacing.sm, vertical = TappySpacing.xs)
+                    .clearAndSetSemantics { contentDescription = likesLabel },
                 verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
             ) {
-                Text(text = "✍️", style = MaterialTheme.typography.headlineSmall)
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = stringResource(R.string.home_content_writer_card_title),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    Text(
-                        text = stringResource(R.string.home_content_writer_card_desc),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    imageVector = Icons.Filled.Favorite,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                    tint = Color.White,
+                    modifier = Modifier.size(12.dp),
+                )
+                Text(
+                    text = compactCount(review.likeCount),
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color.White,
+                )
+            }
+        }
+
+        Text(
+            text = videoCardTitle(review),
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
+        )
+
+        if (creator != null) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+            ) {
+                TappyAvatar(
+                    name = creator,
+                    imageUrl = review.profiles?.avatarUrl,
+                    size = TappyAvatarSize.ListRow,
+                    modifier = Modifier.size(20.dp),
+                )
+                Text(
+                    text = creator,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
         }
     }
 }
+
+/**
+ * Title for one rail card.
+ *
+ * A video posted without an attached place comes back from the feed with [PLACELESS_VIDEO_LABEL]
+ * as its place name, so that value is a placeholder, not a title — left as-is, every place-less
+ * card in the rail reads identically. The review body carries what the clip is actually about, so
+ * it stands in for those. Presentation only: nothing here changes the response, the model or the
+ * stored record.
+ */
+private fun videoCardTitle(review: Review): String =
+    review.placeName.takeIf { it.isNotBlank() && it.trim() != PLACELESS_VIDEO_LABEL } ?: review.body
+
+/** The feed's own label for a place-less video. Compared against, never displayed. */
+private const val PLACELESS_VIDEO_LABEL = "Chia sẻ"
+
+/** 12400 -> "12.4K". Presentation only; the underlying count is untouched. */
+private fun compactCount(n: Int): String = when {
+    n >= 1_000_000 -> String.format(java.util.Locale.US, "%.1fM", n / 1_000_000f).replace(".0M", "M")
+    n >= 1_000 -> String.format(java.util.Locale.US, "%.1fK", n / 1_000f).replace(".0K", "K")
+    else -> n.toString()
+}
+
+private val VideoRailAccent = Color(0xFF7C5CFF)
+private val VideoCardWidth = 150.dp
+private val VideoThumbHeight = 190.dp
 
 @Composable
 private fun SectionHeader(

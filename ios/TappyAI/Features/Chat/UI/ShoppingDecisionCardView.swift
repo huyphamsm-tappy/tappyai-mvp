@@ -119,8 +119,15 @@ struct ShoppingDecisionCardView: View {
                 }
             }
 
-            ForEach(Array(entity.offers.enumerated()), id: \.offset) { _, offer in
-                offerRow(offer)
+            // The merchant handoffs the Commerce Capability Platform resolved for this product (web
+            // parity, components/chat/ShoppingDecision.tsx): DETAIL links are the buttons, the
+            // marketplaces' searches only stand in when no detail link exists. Seller offer rows (a
+            // Google Shopping redirect each) are kept only while no verified merchant handoff exists.
+            CommerceHandoffRow(handoffs: entity.commerceHandoffs, emphasised: true)
+            if entity.commerceHandoffs.detail.isEmpty {
+                ForEach(Array(entity.offers.enumerated()), id: \.offset) { _, offer in
+                    offerRow(offer)
+                }
             }
         }
         .padding(Spacing.sm)
@@ -148,6 +155,7 @@ struct ShoppingDecisionCardView: View {
             Text(priceText(entity))
                 .font(TappyFont.caption)
                 .foregroundStyle(TappyColor.textSecondary)
+            CommerceHandoffRow(handoffs: entity.commerceHandoffs, emphasised: false)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, Spacing.sm)
@@ -193,6 +201,64 @@ struct ShoppingDecisionCardView: View {
             high: entity.priceHigh,
             unknown: String(localized: "shoppingDecision.noPrice")
         )
+    }
+}
+
+/// The Shopping card's commerce handoffs — the SAME action the live place card renders, through
+/// the same label resolver ("Mua trên Điện Máy Xanh", with the login boundary stated when the
+/// merchant has one) and the same handoff beacon (opaque ids only). Nothing here composes a URL.
+private struct CommerceHandoffRow: View {
+    let handoffs: ShoppingCommerceHandoffs
+    let emphasised: Bool
+
+    private var actions: [PersistedPlaceAction] { (handoffs.detail + handoffs.search).map(\.asPlaceCardAction) }
+
+    var body: some View {
+        if !handoffs.isEmpty {
+            FlexibleRow(actions: actions, emphasised: emphasised)
+                .padding(.top, Spacing.xs)
+                .onAppear {
+                    let sink = DIContainer.shared.resolve(CommerceEventSink.self)
+                    for a in actions { if let c = a.commerce { CommerceHandoffReporter.rendered(c, sink: sink) } }
+                }
+        }
+    }
+
+    /// Two per row, like the place card's action row: a merchant label with its login boundary needs the width.
+    private struct FlexibleRow: View {
+        let actions: [PersistedPlaceAction]
+        let emphasised: Bool
+
+        var body: some View {
+            VStack(alignment: .leading, spacing: Spacing.xs) {
+                ForEach(chunks, id: \.first?.id) { row in
+                    HStack(spacing: Spacing.xs) {
+                        ForEach(row) { action in
+                            let detail = action.urlKind == "direct"
+                            Button {
+                                openPlaceAction(action)
+                            } label: {
+                                Text(placeActionLabel(labelKey: action.labelKey, urlKind: action.urlKind, platform: action.platform).text)
+                                    .font(.system(size: emphasised && detail ? 13 : 12, weight: detail ? .semibold : .medium))
+                                    .foregroundStyle(detail ? TappyColor.primary : TappyColor.textSecondary)
+                                    .padding(.horizontal, detail ? Spacing.sm : Spacing.xs)
+                                    .padding(.vertical, Spacing.xs)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(detail ? TappyColor.primary.opacity(0.35) : Color.clear, lineWidth: 1)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        Spacer(minLength: 0)
+                    }
+                }
+            }
+        }
+
+        private var chunks: [[PersistedPlaceAction]] {
+            stride(from: 0, to: actions.count, by: 2).map { Array(actions[$0..<min($0 + 2, actions.count)]) }
+        }
     }
 }
 

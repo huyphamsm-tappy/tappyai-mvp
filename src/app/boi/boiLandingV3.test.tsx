@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, cleanup, screen, within } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 
@@ -32,6 +33,10 @@ const copy = enCopy
 // 1 or 3 cards in a Past / Present / Future spread, and both birth-date readings
 // render Love / Career / Money / Health. The chips say that and only that.
 
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const renderHub = () => render(<BoiLandingView user={undefined} />)

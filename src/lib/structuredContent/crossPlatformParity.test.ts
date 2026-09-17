@@ -37,9 +37,18 @@ const has = (p: string) => existsSync(resolve(root, p))
  * understand strings containing `//`), which is fine: it is only used to narrow a
  * must-not-appear check, where a false negative costs nothing and a false positive would make
  * the guard unusable.
+ *
+ * 🚨 THE NEWLINE NORMALISATION IS LOAD-BEARING, NOT TIDINESS. These files are checked out with
+ * CRLF endings on Windows, and in a JavaScript regex `.` does not match a carriage return while
+ * a `$` without the `m` flag only matches the very end of the string — so the line-comment
+ * pattern matched NOTHING on a CRLF line and this function silently returned the source
+ * unchanged. The must-not-appear check below was therefore scanning full documentation on all
+ * three platforms, and fired on the very comment that records the rule it enforces. Normalising
+ * first makes the guard do what it always claimed to do: read CODE.
  */
 function stripComments(src: string): string {
   return src
+    .replace(/\r\n?/g, '\n')
     .replace(/\/\*[\s\S]*?\*\//g, '')
     .split('\n')
     .map(line => line.replace(/(^|\s)\/\/.*$/, '$1'))
@@ -170,6 +179,21 @@ describe('MUST MATCH — the action boundary (DD-006)', () => {
   })
 })
 
+describe('MUST MATCH — shopping owns its own decision surface (cross-platform UAT, 15 Sep 2026)', () => {
+  // A shopping turn renders the ShoppingDecision, not the product place cards: the two are mutually
+  // exclusive, or a turn shows its products twice (a Google-search place card ABOVE the verified
+  // merchant handoff). Web: `placeView && !shopView`. Android must guard PlaceCards the same way, or
+  // the CCP handoff ("Mua trên Shopee") is buried under a "Tìm trên Google" place card.
+  it('web gates PlaceDecision on the absence of a shopping view', () => {
+    expect(read('src/components/ChatInterface.tsx')).toMatch(/placeView && !shopView/)
+  })
+  it('android suppresses the place cards when a shopping decision is present', () => {
+    const src = stripComments(read('android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt'))
+    expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn')
+      .toMatch(/message\.shopping == null[\s\S]{0,700}PlaceCards\(/)
+  })
+})
+
 describe('MUST MATCH — the assistant comes first on every platform (DD-002 / P4-11)', () => {
   // The rule is an ORDER, so each platform is checked by the position of its own section calls.
   // The section NAMES legitimately differ; where they sit relative to each other does not.
@@ -206,11 +230,15 @@ describe('MUST MATCH — the assistant comes first on every platform (DD-002 / P
 
   it('android puts the assistant and Continue above the tools', () => {
     const src = read('android/app/src/main/java/com/tappyai/app/home/HomeScreen.kt')
-    const body = src.slice(src.indexOf('HomeHero('))
+    const heroAt = src.indexOf('V3HeroSection(')
+    expect(heroAt).toBeGreaterThan(-1)
+    const body = src.slice(heroAt)
+    // V3 canonical home: the ask bar IS the assistant; Continue is the recent-activity section;
+    // the tools are the SmartTools drawer, which the mockup puts last.
     const [suggestions, cont, tools] = order(body, [
-      'SuggestionsSection(',
+      'V3AskBar(',
       'RecentActivitySection(',
-      'FortuneSection(',
+      'SmartToolsSection(',
     ])
     expect(suggestions).toBeGreaterThan(-1)
     expect(suggestions).toBeLessThan(tools)

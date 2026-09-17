@@ -8,8 +8,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalDensity
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
@@ -53,6 +59,10 @@ fun HomeShellScreen(
     /** Navigates to the root graph's Login destination. The shell builds its own NavController
      *  for the tabs, so anything inside it needs this routed down from `AppNavHost`. */
     onSignIn: () -> Unit = {},
+    /** The resolved app theme, and the toggle for it, both owned by `MainActivity`. The Home
+     *  header renders the switch; nothing here decides or stores the theme. */
+    isDarkTheme: Boolean = false,
+    onToggleDarkTheme: () -> Unit = {},
     viewModel: HomeShellViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -72,9 +82,36 @@ fun HomeShellScreen(
     }
 
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentTab = HomeTab.entries.firstOrNull { tab ->
+    // Exact match, so it is null on a route that is not a tab; the nav bar's highlight and the
+    // standard app bar's title keep the long-standing fallback — a sub-route still reads as
+    // "inside Home", exactly as before V3.
+    val matchedTab = HomeTab.entries.firstOrNull { tab ->
         backStackEntry?.destination?.hasRoute(tab.route::class) == true
-    } ?: HomeTab.Home
+    }
+    val currentTab = matchedTab ?: HomeTab.Home
+
+    // Which tabs are currently showing a nested screen. See [ReportNestedScreen]: each tab's own
+    // host writes its entry, and a tab with no entry is simply not nested.
+    val nestedByTab = remember { mutableStateMapOf<HomeTab, Boolean>() }
+    val showsOwnHeader = nestedByTab[currentTab] == true
+
+    // The V3 chrome belongs to the Home LANDING alone. Matching the tab is not enough on its own:
+    // the Home tab owns a nested NavHost, so from out here Translate, Scan, Tarot, Games, Split
+    // Bill, Music, Recommendations… are all still `HomeRoute.Home`, and gating on the tab wrapped
+    // each of them in the dark palette while its own content stayed light. The SAME report the
+    // nested-screen mechanism already delivers answers this — Home's host reports `true` the
+    // moment anything is pushed above its landing — so no second "at landing" signal is needed.
+    val isHomeTab = matchedTab == HomeTab.Home && nestedByTab[HomeTab.Home] != true
+
+    /**
+     * True while Chat's voice-listening state owns the surface.
+     *
+     * The listening scene is a full-bleed dark environment (V3 mockup 05_50_23) and a light "Chat"
+     * title bar sitting on top of it belongs to neither design. Same shape as the nested-screen
+     * report: the child reports, the shell chooses its chrome. Deliberately NOT saveable — it must
+     * never survive a process restart into a state where the bar is gone and nothing is listening.
+     */
+    var chatImmersive by remember { mutableStateOf(false) }
 
     val isExpanded = currentWindowWidthClass() == TappyWindowWidthClass.Expanded
     // Read as a raw inset rather than the experimental WindowInsets.isImeVisible, so this does
@@ -101,7 +138,33 @@ fun HomeShellScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight(),
-            topBar = { TappyAppBar(title = currentTab.title()) },
+            // While the listening scene owns the surface it paints its own status-bar area, so the
+            // Scaffold must stop reserving one — otherwise a light strip sits above a full-bleed
+            // dark scene. Every other state keeps the default insets untouched.
+            contentWindowInsets = if (chatImmersive) WindowInsets(0, 0, 0, 0) else ScaffoldDefaults.contentWindowInsets,
+            // Home carries the V3 identity header (brand + theme toggle + search + notifications);
+            // every other tab keeps the standard app bar. The shell titles a TAB, and a nested
+            // screen already draws its own header with a back arrow and its real name, so the
+            // shell steps out of the way rather than stacking a second — and wrong — title above
+            // it. The listening scene draws its own top inset and runs to the status bar.
+            topBar = {
+                if (chatImmersive) Unit
+                else if (isHomeTab) {
+                    V3HomeTheme {
+                        HomeV3TopBar(
+                            isDarkTheme = isDarkTheme,
+                            onToggleDarkTheme = onToggleDarkTheme,
+                            // Explore owns `ReviewsRoute.Search`, Profile owns Notifications;
+                            // both sit in another tab's nested NavHost that this NavController
+                            // cannot address directly, so each button selects the owning tab.
+                            onOpenSearch = { navController.selectTab(HomeTab.Explore) },
+                            onOpenNotifications = { navController.selectTab(HomeTab.Profile) },
+                        )
+                    }
+                } else if (!showsOwnHeader) {
+                    TappyAppBar(title = currentTab.title())
+                }
+            },
             bottomBar = {
                 // Collapsed while the IME is up. The bar would be BEHIND the keyboard anyway
                 // (measured: bar at y=1360..1467, IME top at y=928), but Scaffold still reserves
@@ -110,11 +173,17 @@ fun HomeShellScreen(
                 // between the input and the keyboard. Nothing is lost by hiding a bar the user
                 // cannot see or reach, and the messages get that space back while typing.
                 if (!isExpanded && !imeVisible) {
-                    TappyBottomNavBar(
-                        items = navItems,
-                        selectedIndex = currentTab.ordinal,
-                        onSelect = { index -> navController.selectTab(HomeTab.entries[index]) },
-                    )
+                    // The same TappyBottomNavBar, same items, same tab architecture — only the
+                    // palette changes, and only while the Home landing is showing, so the other
+                    // tabs keep the app theme they have always had.
+                    val bar: @Composable () -> Unit = {
+                        TappyBottomNavBar(
+                            items = navItems,
+                            selectedIndex = currentTab.ordinal,
+                            onSelect = { index -> navController.selectTab(HomeTab.entries[index]) },
+                        )
+                    }
+                    if (isHomeTab) V3HomeTheme { bar() } else bar()
                 }
             },
         ) { innerPadding ->
@@ -126,6 +195,9 @@ fun HomeShellScreen(
                     TappyLoadingIndicator()
                 }
             } else {
+                CompositionLocalProvider(
+                    LocalNestedScreenReporter provides { tab, nested -> nestedByTab[tab] = nested },
+                ) {
                 NavHost(
                     navController = navController,
                     startDestination = HomeRoute.Home,
@@ -145,11 +217,18 @@ fun HomeShellScreen(
                             },
                         )
                     }
-                    composable<HomeRoute.Chat> { ChatScreen() }
+                    composable<HomeRoute.Chat> { ChatScreen(onImmersiveChanged = { chatImmersive = it }) }
                     composable<HomeRoute.Explore> {
                         ExploreTab(onEditProfile = { navController.selectTab(HomeTab.Profile) })
                     }
-                    composable<HomeRoute.Deals> { DealsScreen() }
+                    composable<HomeRoute.Deals> {
+                        // The Deals V3 "ask Tappy" affordances route through the SAME prefill
+                        // navigation Home already uses. Passing the existing callback is what makes
+                        // them real; without it the screen draws no CTA rather than a dead one.
+                        DealsScreen(
+                            onAskTappy = { prefill -> navController.navigateToChatWithPrefill(prefill) },
+                        )
+                    }
                     composable<HomeRoute.Profile> {
                         ProfileTab(
                             onOpenChat = { navController.selectTab(HomeTab.Chat) },
@@ -160,6 +239,7 @@ fun HomeShellScreen(
                             onSignIn = onSignIn,
                         )
                     }
+                }
                 }
             }
         }

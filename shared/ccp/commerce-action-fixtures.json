@@ -1,0 +1,339 @@
+{
+  "version": 1,
+  "_readme": [
+    "CANONICAL COMMERCE ACTION FIXTURES — one file, three consumers (cross-platform CCP, 14 Sep 2026).",
+    "",
+    "The Commerce Capability Platform resolves a user's intent into a Commerce Link ONCE, on the",
+    "server, and projects it as an ordinary Action: on the live place card (`8:` annotation,",
+    "LiveAction.commerce) and on the Shopping card ([TAPPY_SHOPPING], SynthesisCommerceView).",
+    "Web, Android and iOS each RENDER that action; none of them resolves, ranks, relabels or",
+    "rewrites it. These cases pin what every renderer must preserve from the same canonical action:",
+    "provider · capability · label key · depth · loginRequired · commerce facts · action id ·",
+    "handoff target — and what it must never do (turn TikTok Shop into Shopee, open a retired grammar).",
+    "",
+    "CONSUMERS (all three MUST pass every case):",
+    "  Web      src/lib/recommendation/crossPlatformCommerceContract.test.ts  (executes the resolver + validator)",
+    "  Android  android/app/src/test/java/com/tappyai/app/chat/CommerceActionContractTest.kt",
+    "  iOS      ios/TappyAITests/CommerceActionContractTests.swift",
+    "",
+    "`action` is the wire shape of LiveAction (labelKey already RESOLVED by the server).",
+    "`expect.labelKey` is the key each client must render — from its own dictionary, never re-derived.",
+    "A shopping view with no labelKey (a marker written before the field existed) is the one place the platforms differ on purpose: web re-resolves the key from the facts (expect.labelKey); a native client never re-derives and renders the honest fallback (expect.nativeLabelKey: view on / search on) — never a stronger verb.",
+    "`expect.labelVi` is the web dictionary's rendering; native dictionaries must say the same thing.",
+    "`expect.handoffBody` is what POST /api/commerce/handoff receives when the action is tapped",
+    "(opaque ids only; the client adds its own `platform`).",
+    "`retiredGrammars` are URL prefixes no client may ever open for these merchants."
+  ],
+  "commerceLabelKeys": [
+    "v3.action.purchase", "v3.action.purchaseOn", "v3.action.purchaseLoginOn", "v3.action.purchaseAppOn",
+    "v3.action.booking", "v3.action.bookingOn", "v3.action.bookingLoginOn", "v3.action.bookingAppOn",
+    "v3.action.reservation", "v3.action.reservationOn", "v3.action.reservationLoginOn", "v3.action.reservationAppOn",
+    "v3.action.ticket", "v3.action.ticketOn", "v3.action.ticketLoginOn", "v3.action.ticketAppOn",
+    "v3.action.order", "v3.action.orderOn", "v3.action.orderLoginOn", "v3.action.orderAppOn",
+    "v3.action.delivery", "v3.action.deliveryOn", "v3.action.deliveryLoginOn", "v3.action.deliveryAppOn",
+    "v3.action.viewOn",
+    "v3.action.searchOn", "v3.action.searchLoginOn", "v3.action.searchGeneric",
+    "v3.action.bookingSearch", "v3.action.ticketSearch", "v3.action.orderSearch"
+  ],
+  "retiredGrammars": [
+    "https://www.agoda.com/search?q=",
+    "https://www.agoda.com/vi-vn/search?textToSearch=",
+    "https://vexere.com/vi-VN/ket-qua-tim-kiem",
+    "https://food.grab.com/vn/en/s?searchKeyword=",
+    "https://shopeefood.vn/tim-kiem?q="
+  ],
+  "cases": [
+    {
+      "id": "S1-shopee-search-login",
+      "userText": "Mua iPhone trên Shopee",
+      "requestedProviderId": "shopee",
+      "intentType": "buy_product",
+      "action": {
+        "kind": "purchase", "urlKind": "search", "url": "https://shopee.vn/search?keyword=iPhone%2016%20Pro",
+        "labelKey": "v3.action.searchLoginOn", "platform": "Shopee",
+        "commerce": { "linkId": "a1b2c3d4e5f60718293a4b5c", "requestId": "0f2a7c1e-3b4d-4e5f-8a9b-0c1d2e3f4a5b", "providerId": "shopee", "depth": 2, "guestDepth": 2, "authRequiredAt": "before_selection", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_discovery", "primary": true }
+      },
+      "expect": { "host": "shopee.vn", "providerId": "shopee", "capability": "product_discovery", "labelKey": "v3.action.searchLoginOn", "labelVi": "Tìm trên Shopee · cần đăng nhập", "labelEn": "Search on Shopee · login required", "depth": 2, "loginRequired": true, "handoffBody": { "linkId": "a1b2c3d4e5f60718293a4b5c", "requestId": "0f2a7c1e-3b4d-4e5f-8a9b-0c1d2e3f4a5b" }, "forbiddenHosts": ["www.lazada.vn", "shop.tiktok.com"] }
+    },
+    {
+      "id": "S2-tiktokshop-detail-login",
+      "userText": "Mua iPhone 16 Pro trên TikTok Shop",
+      "requestedProviderId": "tiktokshop",
+      "intentType": "buy_product",
+      "action": {
+        "kind": "purchase", "urlKind": "direct", "url": "https://shop.tiktok.com/vn/pdp/iphone-16-pro-128gb/1730877187765799516",
+        "labelKey": "v3.action.purchaseLoginOn", "platform": "TikTok Shop",
+        "commerce": { "linkId": "b2c3d4e5f60718293a4b5c6d", "requestId": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d", "providerId": "tiktokshop", "depth": 3, "guestDepth": 3, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_detail", "primary": true }
+      },
+      "expect": { "host": "shop.tiktok.com", "providerId": "tiktokshop", "capability": "product_detail", "labelKey": "v3.action.purchaseLoginOn", "labelVi": "Mua trên TikTok Shop · cần đăng nhập", "labelEn": "Buy on TikTok Shop · login required", "depth": 3, "loginRequired": true, "handoffBody": { "linkId": "b2c3d4e5f60718293a4b5c6d", "requestId": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d" }, "forbiddenHosts": ["shopee.vn", "www.lazada.vn"] }
+    },
+    {
+      "id": "S3-lazada-search-no-login",
+      "userText": "Tìm iPhone 16 Pro trên Lazada",
+      "requestedProviderId": "lazada",
+      "intentType": "buy_product",
+      "action": {
+        "kind": "purchase", "urlKind": "search", "url": "https://www.lazada.vn/catalog/?q=iPhone%2016%20Pro%20128GB",
+        "labelKey": "v3.action.searchOn", "platform": "Lazada",
+        "commerce": { "linkId": "c3d4e5f60718293a4b5c6d7e", "requestId": "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e", "providerId": "lazada", "depth": 2, "guestDepth": 2, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_discovery", "primary": true }
+      },
+      "expect": { "host": "www.lazada.vn", "providerId": "lazada", "capability": "product_discovery", "labelKey": "v3.action.searchOn", "labelVi": "Tìm trên Lazada", "labelEn": "Search on Lazada", "depth": 2, "loginRequired": true, "handoffBody": { "linkId": "c3d4e5f60718293a4b5c6d7e", "requestId": "2b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e" }, "forbiddenHosts": ["shopee.vn"] }
+    },
+    {
+      "id": "S4-dmx-detail",
+      "userText": "Mua iPhone 16 Pro trên Điện Máy Xanh",
+      "requestedProviderId": "dmx",
+      "intentType": "buy_product",
+      "action": {
+        "kind": "purchase", "urlKind": "direct", "url": "https://www.dienmayxanh.com/dien-thoai/iphone-16-pro",
+        "labelKey": "v3.action.purchaseOn", "platform": "Điện Máy Xanh",
+        "commerce": { "linkId": "d4e5f60718293a4b5c6d7e8f", "requestId": "3c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f", "providerId": "dmx", "depth": 5, "guestDepth": 5, "authRequiredAt": "at_order", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_detail", "primary": true }
+      },
+      "expect": { "host": "www.dienmayxanh.com", "providerId": "dmx", "capability": "product_detail", "labelKey": "v3.action.purchaseOn", "labelVi": "Mua trên Điện Máy Xanh", "labelEn": "Buy on Điện Máy Xanh", "depth": 5, "loginRequired": false, "handoffBody": { "linkId": "d4e5f60718293a4b5c6d7e8f", "requestId": "3c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f" }, "forbiddenHosts": ["dienmaycholon.vn", "www.thegioididong.com"] }
+    },
+    {
+      "id": "S5-cellphones-search",
+      "userText": "Mua iPhone 16 Pro trên CellphoneS",
+      "requestedProviderId": "cellphones",
+      "intentType": "buy_product",
+      "action": {
+        "kind": "purchase", "urlKind": "search", "url": "https://cellphones.com.vn/catalogsearch/result?q=iPhone%2016%20Pro%20Max%20256GB",
+        "labelKey": "v3.action.searchOn", "platform": "CellphoneS",
+        "commerce": { "linkId": "e5f60718293a4b5c6d7e8f90", "requestId": "4d5e6f7a-8b9c-4d0e-9f2a-3b4c5d6e7f80", "providerId": "cellphones", "depth": 2, "guestDepth": 2, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_discovery", "primary": true }
+      },
+      "expect": { "host": "cellphones.com.vn", "providerId": "cellphones", "capability": "product_discovery", "labelKey": "v3.action.searchOn", "labelVi": "Tìm trên CellphoneS", "labelEn": "Search on CellphoneS", "depth": 2, "loginRequired": true, "handoffBody": { "linkId": "e5f60718293a4b5c6d7e8f90", "requestId": "4d5e6f7a-8b9c-4d0e-9f2a-3b4c5d6e7f80" }, "forbiddenHosts": ["shopee.vn"] }
+    },
+    {
+      "id": "F1-grabfood-search",
+      "userText": "Đặt phở giao tận nhà qua GrabFood ở Quận 1",
+      "requestedProviderId": "grabfood",
+      "intentType": "order_delivery",
+      "action": {
+        "kind": "delivery", "urlKind": "search", "url": "https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%2024",
+        "labelKey": "v3.action.orderSearch", "platform": "GrabFood",
+        "commerce": { "linkId": "f60718293a4b5c6d7e8f9001", "requestId": "5e6f7a8b-9c0d-4e1f-8a3b-4c5d6e7f8091", "providerId": "grabfood", "depth": 2, "guestDepth": 2, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "restaurant_discovery", "primary": true }
+      },
+      "expect": { "host": "food.grab.com", "providerId": "grabfood", "capability": "restaurant_discovery", "labelKey": "v3.action.orderSearch", "labelVi": "Tìm trên GrabFood", "labelEn": "Search on GrabFood", "depth": 2, "loginRequired": true, "handoffBody": { "linkId": "f60718293a4b5c6d7e8f9001", "requestId": "5e6f7a8b-9c0d-4e1f-8a3b-4c5d6e7f8091" }, "forbiddenHosts": ["shopeefood.vn"] }
+    },
+    {
+      "id": "F2-shopeefood-detail-app",
+      "userText": "Đặt phở giao tận nhà qua ShopeeFood ở Quận 1",
+      "requestedProviderId": "shopeefood",
+      "intentType": "order_delivery",
+      "action": {
+        "kind": "delivery", "urlKind": "direct", "url": "https://shopeefood.vn/ho-chi-minh/pho-24-nguyen-tri-phuong",
+        "labelKey": "v3.action.deliveryAppOn", "platform": "ShopeeFood",
+        "commerce": { "linkId": "0718293a4b5c6d7e8f900112", "requestId": "6f7a8b9c-0d1e-4f2a-9b4c-5d6e7f809102", "providerId": "shopeefood", "depth": 3, "guestDepth": 3, "authRequiredAt": "app_only", "loginRequired": false, "handoff": "app", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "restaurant_detail", "primary": true }
+      },
+      "expect": { "host": "shopeefood.vn", "providerId": "shopeefood", "capability": "restaurant_detail", "labelKey": "v3.action.deliveryAppOn", "labelVi": "Xem trên ShopeeFood · đặt giao trong ứng dụng", "labelEn": "View on ShopeeFood · order in the app", "depth": 3, "loginRequired": false, "handoffBody": { "linkId": "0718293a4b5c6d7e8f900112", "requestId": "6f7a8b9c-0d1e-4f2a-9b4c-5d6e7f809102" }, "forbiddenHosts": ["food.grab.com", "shopee.vn"] }
+    },
+    {
+      "id": "T1-tripcom-hotel-detail",
+      "userText": "Tìm khách sạn ở Đà Nẵng từ 10 đến 12 tháng 10 cho 2 người trên Trip.com",
+      "requestedProviderId": "tripcom",
+      "intentType": "book_hotel",
+      "action": {
+        "kind": "booking", "urlKind": "direct", "url": "https://vn.trip.com/hotels/detail/?hotelId=707332&checkIn=2026-10-10&checkOut=2026-10-12&adult=2&children=0&crn=1&locale=vi-VN&curr=VND",
+        "labelKey": "v3.action.bookingOn", "platform": "Trip.com",
+        "commerce": { "linkId": "18293a4b5c6d7e8f90011223", "requestId": "7a8b9c0d-1e2f-4a3b-8c5d-6e7f80910213", "providerId": "tripcom", "depth": 5, "guestDepth": 5, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-10T00:00:00.000Z", "tracked": false, "capability": "hotel_booking", "primary": true, "facts": { "source": "registry", "retrievedAt": "2026-09-14T05:37:00.000Z", "expiresAt": "2026-10-10T00:00:00.000Z", "freshnessType": "session", "availability": "unknown" } }
+      },
+      "expect": { "host": "vn.trip.com", "providerId": "tripcom", "capability": "hotel_booking", "labelKey": "v3.action.bookingOn", "labelVi": "Đặt phòng trên Trip.com", "labelEn": "Book on Trip.com", "depth": 5, "loginRequired": false, "handoffBody": { "linkId": "18293a4b5c6d7e8f90011223", "requestId": "7a8b9c0d-1e2f-4a3b-8c5d-6e7f80910213" }, "forbiddenHosts": ["www.booking.com", "www.agoda.com"], "params": ["hotelId=707332", "checkIn=2026-10-10", "checkOut=2026-10-12", "adult=2"] }
+    },
+    {
+      "id": "T2-booking-hotel-detail",
+      "userText": "Tìm khách sạn ở Đà Nẵng trên Booking.com",
+      "requestedProviderId": "booking",
+      "intentType": "book_hotel",
+      "action": {
+        "kind": "booking", "urlKind": "direct", "url": "https://www.booking.com/hotel/vn/dai-long.vi.html?checkin=2026-10-10&checkout=2026-10-12&group_adults=2&no_rooms=1&group_children=0",
+        "labelKey": "v3.action.bookingOn", "platform": "Booking.com",
+        "commerce": { "linkId": "293a4b5c6d7e8f9001122334", "requestId": "8b9c0d1e-2f3a-4b4c-9d6e-7f8091021324", "providerId": "booking", "depth": 4, "guestDepth": 4, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-10T00:00:00.000Z", "tracked": false, "capability": "hotel_booking", "primary": true }
+      },
+      "expect": { "host": "www.booking.com", "providerId": "booking", "capability": "hotel_booking", "labelKey": "v3.action.bookingOn", "labelVi": "Đặt phòng trên Booking.com", "labelEn": "Book on Booking.com", "depth": 4, "loginRequired": false, "handoffBody": { "linkId": "293a4b5c6d7e8f9001122334", "requestId": "8b9c0d1e-2f3a-4b4c-9d6e-7f8091021324" }, "forbiddenHosts": ["www.agoda.com", "vn.trip.com"], "params": ["checkin=2026-10-10", "checkout=2026-10-12", "group_adults=2", "no_rooms=1"] }
+    },
+    {
+      "id": "T3-agoda-hotel-observed",
+      "userText": "Tìm khách sạn ở Hội An trên Agoda",
+      "requestedProviderId": "agoda",
+      "intentType": "book_hotel",
+      "action": {
+        "kind": "booking", "urlKind": "direct", "url": "https://www.agoda.com/vi-vn/bed-station-hostel/hotel/hoi-an-vn.html?checkIn=2026-10-10&los=2&adults=2&rooms=1",
+        "labelKey": "v3.action.viewOn", "platform": "Agoda",
+        "commerce": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435", "providerId": "agoda", "depth": 3, "guestDepth": 3, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-10T00:00:00.000Z", "tracked": false, "capability": "hotel_detail", "primary": true }
+      },
+      "expect": { "host": "www.agoda.com", "providerId": "agoda", "capability": "hotel_detail", "labelKey": "v3.action.viewOn", "labelVi": "Xem trên Agoda", "labelEn": "View on Agoda", "depth": 3, "loginRequired": false, "handoffBody": { "linkId": "3a4b5c6d7e8f900112233445", "requestId": "9c0d1e2f-3a4b-4c5d-8e7f-809102132435" }, "forbiddenHosts": ["www.booking.com"], "params": ["adults=2", "rooms=1"] }
+    },
+    {
+      "id": "T4-traveloka-hotel-observed",
+      "userText": "Tìm khách sạn ở Đà Nẵng trên Traveloka",
+      "requestedProviderId": "traveloka",
+      "intentType": "book_hotel",
+      "action": {
+        "kind": "booking", "urlKind": "direct", "url": "https://www.traveloka.com/vi-vn/hotel/vietnam/oc-tien-sa-hotel-1000000504212",
+        "labelKey": "v3.action.viewOn", "platform": "Traveloka",
+        "commerce": { "linkId": "4b5c6d7e8f90011223344556", "requestId": "0d1e2f3a-4b5c-4d6e-9f80-910213243546", "providerId": "traveloka", "depth": 3, "guestDepth": 3, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "hotel_detail", "primary": true }
+      },
+      "expect": { "host": "www.traveloka.com", "providerId": "traveloka", "capability": "hotel_detail", "labelKey": "v3.action.viewOn", "labelVi": "Xem trên Traveloka", "labelEn": "View on Traveloka", "depth": 3, "loginRequired": false, "handoffBody": { "linkId": "4b5c6d7e8f90011223344556", "requestId": "0d1e2f3a-4b5c-4d6e-9f80-910213243546" }, "forbiddenHosts": ["www.booking.com", "www.agoda.com"] }
+    },
+    {
+      "id": "T5-tripcom-flight-fares",
+      "userText": "Tìm vé máy bay từ TP.HCM đi Hà Nội trên Trip.com",
+      "requestedProviderId": "tripcom",
+      "intentType": "book_flight",
+      "action": {
+        "kind": "ticket", "urlKind": "search", "url": "https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-20&flighttype=ow&class=y&quantity=2&locale=vi-VN&curr=VND",
+        "labelKey": "v3.action.ticketSearch", "platform": "Trip.com",
+        "commerce": { "linkId": "5c6d7e8f9001122334455667", "requestId": "1e2f3a4b-5c6d-4e7f-8091-021324354657", "providerId": "tripcom", "depth": 2, "guestDepth": 2, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-20T00:00:00.000Z", "tracked": false, "capability": "flight_booking", "primary": true, "facts": { "source": "registry", "retrievedAt": "2026-09-14T05:37:00.000Z", "expiresAt": "2026-10-20T00:00:00.000Z", "freshnessType": "session", "schedule": { "date": "2026-10-20" } } }
+      },
+      "expect": { "host": "vn.trip.com", "providerId": "tripcom", "capability": "flight_booking", "labelKey": "v3.action.ticketSearch", "labelVi": "Tìm vé trên Trip.com", "labelEn": "Find tickets on Trip.com", "depth": 2, "loginRequired": false, "handoffBody": { "linkId": "5c6d7e8f9001122334455667", "requestId": "1e2f3a4b-5c6d-4e7f-8091-021324354657" }, "forbiddenHosts": ["www.traveloka.com"], "params": ["dcity=sgn", "acity=han", "ddate=2026-10-20", "quantity=2"] }
+    },
+    {
+      "id": "T6-vietnamairlines-landing",
+      "userText": "Tìm vé Vietnam Airlines từ TP.HCM đi Hà Nội",
+      "requestedProviderId": "vietnamairlines",
+      "intentType": "book_flight",
+      "action": {
+        "kind": "ticket", "urlKind": "search", "url": "https://www.vietnamairlines.com/vn/vi/buy-tickets-other-products/booking-and-manage-bookings/book-tickets",
+        "labelKey": "v3.action.ticketSearch", "platform": "Vietnam Airlines",
+        "commerce": { "linkId": "6d7e8f900112233445566778", "requestId": "2f3a4b5c-6d7e-4f80-9102-132435465768", "providerId": "vietnamairlines", "depth": 1, "guestDepth": 1, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "flight_booking", "primary": true }
+      },
+      "expect": { "host": "www.vietnamairlines.com", "providerId": "vietnamairlines", "capability": "flight_booking", "labelKey": "v3.action.ticketSearch", "labelVi": "Tìm vé trên Vietnam Airlines", "labelEn": "Find tickets on Vietnam Airlines", "depth": 1, "loginRequired": false, "handoffBody": { "linkId": "6d7e8f900112233445566778", "requestId": "2f3a4b5c-6d7e-4f80-9102-132435465768" }, "forbiddenHosts": ["vn.trip.com", "www.traveloka.com", "www.vietjetair.com"] }
+    },
+    {
+      "id": "T7-vietjet-landing",
+      "userText": "Tìm vé Vietjet từ TP.HCM đi Hà Nội",
+      "requestedProviderId": "vietjet",
+      "intentType": "book_flight",
+      "action": {
+        "kind": "ticket", "urlKind": "search", "url": "https://www.vietjetair.com/vi",
+        "labelKey": "v3.action.ticketSearch", "platform": "Vietjet",
+        "commerce": { "linkId": "7e8f90011223344556677889", "requestId": "3a4b5c6d-7e8f-4091-8213-243546576879", "providerId": "vietjet", "depth": 1, "guestDepth": 1, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "flight_booking", "primary": true }
+      },
+      "expect": { "host": "www.vietjetair.com", "providerId": "vietjet", "capability": "flight_booking", "labelKey": "v3.action.ticketSearch", "labelVi": "Tìm vé trên Vietjet", "labelEn": "Find tickets on Vietjet", "depth": 1, "loginRequired": false, "handoffBody": { "linkId": "7e8f90011223344556677889", "requestId": "3a4b5c6d-7e8f-4091-8213-243546576879" }, "forbiddenHosts": ["www.vietnamairlines.com", "vn.trip.com"] }
+    },
+    {
+      "id": "T8-traveloka-flight-fares",
+      "userText": "Tìm vé máy bay trên Traveloka từ Đà Nẵng đi Hà Nội",
+      "requestedProviderId": "traveloka",
+      "intentType": "book_flight",
+      "action": {
+        "kind": "ticket", "urlKind": "search", "url": "https://www.traveloka.com/vi-VN/flight/fullsearch?ap=DAD.HAN&dt=21-10-2026.null&ps=1.0.0&sc=ECONOMY",
+        "labelKey": "v3.action.ticketSearch", "platform": "Traveloka",
+        "commerce": { "linkId": "8f9001122334455667788990", "requestId": "4b5c6d7e-8f90-4102-9324-35465768798a", "providerId": "traveloka", "depth": 2, "guestDepth": 2, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-21T00:00:00.000Z", "tracked": false, "capability": "flight_booking", "primary": true }
+      },
+      "expect": { "host": "www.traveloka.com", "providerId": "traveloka", "capability": "flight_booking", "labelKey": "v3.action.ticketSearch", "labelVi": "Tìm vé trên Traveloka", "labelEn": "Find tickets on Traveloka", "depth": 2, "loginRequired": false, "handoffBody": { "linkId": "8f9001122334455667788990", "requestId": "4b5c6d7e-8f90-4102-9324-35465768798a" }, "forbiddenHosts": ["vn.trip.com"], "params": ["ap=DAD.HAN", "dt=21-10-2026"] }
+    },
+    {
+      "id": "T9-vexere-route",
+      "userText": "Tìm xe khách từ TP.HCM đi Đà Lạt trên Vexere",
+      "requestedProviderId": "vexere",
+      "intentType": "book_transport",
+      "action": {
+        "kind": "ticket", "urlKind": "direct", "url": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html?date=18-10-2026",
+        "labelKey": "v3.action.ticketOn", "platform": "Vexere",
+        "commerce": { "linkId": "90011223344556677889900a", "requestId": "5c6d7e8f-9001-4213-8435-465768798a9b", "providerId": "vexere", "depth": 4, "guestDepth": 4, "authRequiredAt": "none", "loginRequired": false, "handoff": "guest", "authenticatedDepth": null, "freshnessType": "session", "expiresAt": "2026-10-18T00:00:00.000Z", "tracked": false, "capability": "transport_booking", "primary": true, "facts": { "source": "registry", "retrievedAt": "2026-09-14T05:37:00.000Z", "expiresAt": "2026-10-18T00:00:00.000Z", "freshnessType": "session", "schedule": { "date": "2026-10-18" } } }
+      },
+      "expect": { "host": "vexere.com", "providerId": "vexere", "capability": "transport_booking", "labelKey": "v3.action.ticketOn", "labelVi": "Mua vé trên Vexere", "labelEn": "Buy tickets on Vexere", "depth": 4, "loginRequired": false, "handoffBody": { "linkId": "90011223344556677889900a", "requestId": "5c6d7e8f-9001-4213-8435-465768798a9b" }, "forbiddenHosts": ["www.redbus.vn"], "params": ["date=18-10-2026"] }
+    },
+    {
+      "id": "T10-klook-activity-login",
+      "userText": "Tìm hoạt động vui chơi ở Đà Nẵng trên Klook",
+      "requestedProviderId": "klook",
+      "intentType": "book_activity",
+      "action": {
+        "kind": "ticket", "urlKind": "direct", "url": "https://www.klook.com/vi/activity/69492-mikazuki-water-park-ticket-in-da-nang/",
+        "labelKey": "v3.action.ticketLoginOn", "platform": "Klook",
+        "commerce": { "linkId": "011223344556677889900a0b", "requestId": "6d7e8f90-0112-4324-9546-5768798a9bac", "providerId": "klook", "depth": 4, "guestDepth": 4, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "activity_booking", "primary": true }
+      },
+      "expect": { "host": "www.klook.com", "providerId": "klook", "capability": "activity_booking", "labelKey": "v3.action.ticketLoginOn", "labelVi": "Mua vé trên Klook · cần đăng nhập", "labelEn": "Buy tickets on Klook · login required", "depth": 4, "loginRequired": true, "handoffBody": { "linkId": "011223344556677889900a0b", "requestId": "6d7e8f90-0112-4324-9546-5768798a9bac" }, "forbiddenHosts": ["food.grab.com"] }
+    },
+    {
+      "id": "E1-ticketbox-event-login",
+      "userText": "Tìm sự kiện âm nhạc sắp tới ở TP.HCM trên Ticketbox",
+      "requestedProviderId": "ticketbox",
+      "intentType": "buy_event_ticket",
+      "action": {
+        "kind": "ticket", "urlKind": "direct", "url": "https://ticketbox.vn/chao-show2026-25472",
+        "labelKey": "v3.action.ticketLoginOn", "platform": "Ticketbox",
+        "commerce": { "linkId": "1223344556677889900a0b0c", "requestId": "7e8f9001-1223-4435-8657-68798a9bacbd", "providerId": "ticketbox", "depth": 4, "guestDepth": 4, "authRequiredAt": "before_selection", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "event_detail", "primary": true, "facts": { "source": "merchant_page", "retrievedAt": "2026-09-14T05:37:00.000Z", "expiresAt": null, "freshnessType": "static", "schedule": { "date": "2026-09-15", "time": "12:00" } } }
+      },
+      "expect": { "host": "ticketbox.vn", "providerId": "ticketbox", "capability": "event_detail", "labelKey": "v3.action.ticketLoginOn", "labelVi": "Mua vé trên Ticketbox · cần đăng nhập", "labelEn": "Buy tickets on Ticketbox · login required", "depth": 4, "loginRequired": true, "handoffBody": { "linkId": "1223344556677889900a0b0c", "requestId": "7e8f9001-1223-4435-8657-68798a9bacbd" }, "forbiddenHosts": ["www.cgv.vn"], "schedule": { "date": "2026-09-15", "time": "12:00" } }
+    },
+    {
+      "id": "E2-cgv-film-login",
+      "userText": "Tìm phim Mưa Đỏ trên CGV",
+      "requestedProviderId": "cgv",
+      "intentType": "buy_ticket",
+      "action": {
+        "kind": "ticket", "urlKind": "direct", "url": "https://www.cgv.vn/default/mua-do.html",
+        "labelKey": "v3.action.ticketLoginOn", "platform": "CGV",
+        "commerce": { "linkId": "23344556677889900a0b0c0d", "requestId": "8f900112-2334-4546-9768-798a9bacbdce", "providerId": "cgv", "depth": 4, "guestDepth": 4, "authRequiredAt": "before_selection", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "film_detail", "primary": true }
+      },
+      "expect": { "host": "www.cgv.vn", "providerId": "cgv", "capability": "film_detail", "labelKey": "v3.action.ticketLoginOn", "labelVi": "Mua vé trên CGV · cần đăng nhập", "labelEn": "Buy tickets on CGV · login required", "depth": 4, "loginRequired": true, "handoffBody": { "linkId": "23344556677889900a0b0c0d", "requestId": "8f900112-2334-4546-9768-798a9bacbdce" }, "forbiddenHosts": ["ticketbox.vn"] }
+    },
+    {
+      "id": "SP1-klook-spa-login",
+      "userText": "Tìm spa ở Đà Nẵng trên Klook",
+      "requestedProviderId": "klook",
+      "intentType": "buy_spa_voucher",
+      "action": {
+        "kind": "purchase", "urlKind": "direct", "url": "https://www.klook.com/vi/activity/32296-clover-spa-massage-da-nang/",
+        "labelKey": "v3.action.purchaseLoginOn", "platform": "Klook",
+        "commerce": { "linkId": "344556677889900a0b0c0d0e", "requestId": "90011223-3445-4657-8879-8a9bacbdcedf", "providerId": "klook", "depth": 4, "guestDepth": 4, "authRequiredAt": "before_checkout", "loginRequired": true, "handoff": "merchant_login", "authenticatedDepth": 5, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "spa_voucher", "primary": true }
+      },
+      "expect": { "host": "www.klook.com", "providerId": "klook", "capability": "spa_voucher", "labelKey": "v3.action.purchaseLoginOn", "labelVi": "Mua trên Klook · cần đăng nhập", "labelEn": "Buy on Klook · login required", "depth": 4, "loginRequired": true, "handoffBody": { "linkId": "344556677889900a0b0c0d0e", "requestId": "90011223-3445-4657-8879-8a9bacbdcedf" }, "forbiddenHosts": [] }
+    }
+  ],
+  "shoppingCommerceViews": [
+    {
+      "id": "shopping-tiktok-detail",
+      "view": { "labelKey": "v3.action.purchaseLoginOn", "linkId": "b2c3d4e5f60718293a4b5c6d", "requestId": "1a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d", "providerId": "tiktokshop", "merchantName": "TikTok Shop", "url": "https://shop.tiktok.com/vn/pdp/iphone-16-pro-128gb/1730877187765799516", "depth": 3, "guestDepth": 3, "authRequiredAt": "before_checkout", "loginRequired": true, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_detail", "primary": true, "kind": "DETAIL_HANDOFF", "handoff": "merchant_login", "authenticatedDepth": 5 },
+      "expect": { "labelKey": "v3.action.purchaseLoginOn", "labelVi": "Mua trên TikTok Shop · cần đăng nhập", "isSearch": false, "host": "shop.tiktok.com" }
+    },
+    {
+      "id": "shopping-shopee-search",
+      "view": { "labelKey": "v3.action.searchLoginOn", "linkId": "a1b2c3d4e5f60718293a4b5c", "requestId": "0f2a7c1e-3b4d-4e5f-8a9b-0c1d2e3f4a5b", "providerId": "shopee", "merchantName": "Shopee", "url": "https://shopee.vn/search?keyword=iPhone%2016%20Pro", "depth": 2, "guestDepth": 2, "authRequiredAt": "before_selection", "loginRequired": true, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_discovery", "primary": true, "kind": "SEARCH_HANDOFF", "handoff": "merchant_login", "authenticatedDepth": 5 },
+      "expect": { "labelKey": "v3.action.searchLoginOn", "labelVi": "Tìm trên Shopee · cần đăng nhập", "isSearch": true, "host": "shopee.vn" }
+    },
+    {
+      "id": "shopping-legacy-marker-without-labelKey",
+      "view": { "linkId": "d4e5f60718293a4b5c6d7e8f", "requestId": "3c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f", "providerId": "dmx", "merchantName": "Điện Máy Xanh", "url": "https://www.dienmayxanh.com/dien-thoai/iphone-16-pro", "depth": 5, "guestDepth": 5, "authRequiredAt": "at_order", "loginRequired": false, "freshnessType": "static", "expiresAt": null, "tracked": false, "capability": "product_detail", "primary": true, "kind": "DETAIL_HANDOFF" },
+      "expect": { "labelKey": "v3.action.purchaseOn", "labelVi": "Mua trên Điện Máy Xanh", "nativeLabelKey": "v3.action.viewOn", "isSearch": false, "host": "www.dienmayxanh.com" }
+    }
+  ],
+  "modelCtaBlocks": [
+    {
+      "id": "cta-other-merchant-dropped-under-named-request",
+      "userText": "Mua iPhone 16 Pro trên TikTok Shop",
+      "requestedProviderId": "tiktokshop",
+      "input": "Mình tìm thấy iPhone 16 Pro trên TikTok Shop.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Mua trên TikTok Shop\",\"type\":\"booking\",\"url\":\"https://shop.tiktok.com/vn/pdp/iphone-16-pro-128gb/1730877187765799516\",\"primary\":true},{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=iPhone%2016%20Pro\"}]}\n[FOLLOWUPS]So sánh giá|Màu nào đẹp",
+      "expectVisibleContains": ["Mình tìm thấy iPhone 16 Pro trên TikTok Shop."],
+      "expectCtaLabels": ["🛒 Mua trên TikTok Shop"],
+      "expectCtaHosts": ["shop.tiktok.com"],
+      "expectForbiddenHosts": ["shopee.vn"],
+      "expectFollowups": ["So sánh giá", "Màu nào đẹp"]
+    },
+    {
+      "id": "cta-front-door-dropped-and-results-page-relabelled",
+      "userText": "Tìm khách sạn ở Phú Quốc trên Agoda",
+      "requestedProviderId": "agoda",
+      "input": "Đây là vài lựa chọn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Agoda - Phú Quốc\",\"type\":\"booking\",\"url\":\"https://www.agoda.com/vi-vn/\"},{\"label\":\"🏨 Đặt phòng Agoda\",\"type\":\"booking\",\"url\":\"https://www.agoda.com/vi-vn/sunset-beach-resort/hotel/phu-quoc-island-vn.html\"}]}",
+      "expectVisibleContains": ["Đây là vài lựa chọn."],
+      "expectCtaLabels": ["🏨 Đặt phòng Agoda"],
+      "expectCtaHosts": ["www.agoda.com"],
+      "expectForbiddenUrls": ["https://www.agoda.com/vi-vn/"],
+      "expectFollowups": []
+    },
+    {
+      "id": "cta-mislabelled-merchant-dropped",
+      "userText": "Tìm xe khách từ TP.HCM đi Đà Lạt trên Vexere",
+      "requestedProviderId": "vexere",
+      "input": "Có xe Phương Trang.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🚌 Vexere - Phương Trang\",\"type\":\"booking\",\"url\":\"https://www.redbus.vn/xe-khach/ho-chi-minh-di-da-lat\"},{\"label\":\"🚌 Xem tuyến trên Vexere\",\"type\":\"website\",\"url\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html?date=18-10-2026\"}]}",
+      "expectVisibleContains": ["Có xe Phương Trang."],
+      "expectCtaLabels": ["🚌 Xem tuyến trên Vexere"],
+      "expectCtaHosts": ["vexere.com"],
+      "expectForbiddenHosts": ["www.redbus.vn"],
+      "expectFollowups": []
+    }
+  ]
+}

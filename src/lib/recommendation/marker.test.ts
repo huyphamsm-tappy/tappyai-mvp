@@ -153,6 +153,24 @@ describe('the persistence policy is enforced, not remembered', () => {
     expect(p.id).toBe('place:google:ChIJ_g')
   })
 
+  it('🚨 a field the source never stated is ABSENT, not the unknown sentinel', () => {
+    // The entity records an unstated field as the string 'KHONG CO DU LIEU', so persisting it
+    // by a bare typeof check froze that sentence into the message as if it were the place's real
+    // address — and any client rendering the payload faithfully printed it. `liveView` guards its
+    // own projection the same way; absent must mean absent on both sides.
+    const bare = buildRecommendations([buildPlaceEntity(
+      { name: 'Quán Vỉa Hè', maps_link: 'https://maps.google.com/?q=10.78,106.69', lat: 10.78, lng: 106.69 },
+      { domain: 'food', source: 'osm' },
+    )])[0]
+    const p = toPersisted(bare)
+    expect(p.address).toBeUndefined()
+    expect(p.openingHours).toBeUndefined()
+    expect(JSON.stringify(p)).not.toContain('KHONG CO DU LIEU')
+    // What the row DID state still persists — the guard removes fabrications, not facts.
+    expect(p.name).toBe('Quán Vỉa Hè')
+    expect(p.actions.length).toBeGreaterThan(0)
+  })
+
   it('mayPersist names google_places and nothing else', () => {
     expect(mayPersist('google_places')).toBe(false)
     for (const s of ['osm', 'serper_shopping', 'serper_search', 'serper_images', 'travelpayouts', 'tappy_reviews', 'computed'] as const) {

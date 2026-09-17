@@ -14,6 +14,47 @@ export function getCache(key: string): unknown | null {
 }
 
 /**
+ * In-flight requests, keyed exactly like the cache above.
+ *
+ * The cache only helps once an answer exists. Two callers who ask the same question a few hundred
+ * milliseconds apart both miss it and both pay Google — and with a 100/day SearchText quota, two
+ * users typing the same thing at the same time is a real way to lose a call for nothing.
+ *
+ * Deliberately process-local, exactly like `cache`. Vercel runs several instances, so this cannot
+ * deduplicate across them; it is not pretending to. It removes the duplicate work inside one
+ * instance, which is where a burst of identical requests actually lands, and it needs no new
+ * infrastructure to do it.
+ */
+const inFlight = new Map<string, Promise<unknown>>()
+
+/**
+ * Runs `fn` for `key`, or joins the call already running for it.
+ *
+ * The entry is removed as soon as the promise settles — success OR failure. A rejected promise
+ * left in the map would hand the same error to every later caller for the life of the process,
+ * which is a far worse failure than the duplicate call this is trying to avoid.
+ */
+export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  const running = inFlight.get(key)
+  if (running) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'single_flight_join', key }))
+    return running as Promise<T>
+  }
+  const p = (async () => fn())()
+  inFlight.set(key, p)
+  try {
+    return await p
+  } finally {
+    inFlight.delete(key)
+  }
+}
+
+/** Test seam: how many requests are in flight. Never used by production code. */
+export function inFlightCount(): number {
+  return inFlight.size
+}
+
+/**
  * Empties the in-memory tool cache.
  *
  * A TEST SEAM, and named so it cannot be mistaken for product behaviour. The

@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { readFileSync } from 'node:fs'
 
@@ -27,6 +27,7 @@ import { derivePlans, type PlannerConversationRow } from '@/lib/planner/derivePl
 import { accountRows } from '@/app/profile/ProfileRows'
 import { vi as vi3, en as en3 } from '@/lib/i18n/v3/web'
 import { CalendarRange } from 'lucide-react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // ── V3 Web · AI Planner (My Plans) ──────────────────────────────────────────
 //
@@ -74,6 +75,10 @@ const user = { full_name: 'Huy', avatar_url: null, email: 'h@example.com' }
 const renderPlanner = (rows: PlannerConversationRow[]) =>
   render(<PlannerView user={user} plans={derivePlans(rows)} />)
 
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 describe('the Planner shows the plan the user actually received', () => {

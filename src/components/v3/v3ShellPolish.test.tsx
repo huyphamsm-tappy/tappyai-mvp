@@ -15,6 +15,7 @@ vi.mock('next/navigation', () => ({
 }))
 
 import V3Shell from './V3Shell'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // V3 Web · the visual polish pass.
 //
@@ -58,8 +59,13 @@ function matchMedia(dark: boolean) {
   })
 }
 
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+// setLocale persists the choice, so it must follow the clear, not precede it.
 beforeEach(() => {
   localStorage.clear()
+  setLocale('en')
   document.documentElement.classList.remove('dark')
   matchMedia(false)
 })

@@ -29,6 +29,7 @@ Object.defineProperty(window, 'matchMedia', {
 
 import HistoryView from './HistoryView'
 import { HISTORY_STORAGE_KEY } from '@/lib/scam-shield/history'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // ── V3 Web · History ────────────────────────────────────────────────────────
 //
@@ -82,7 +83,11 @@ const renderHistory = (over: { conversations?: unknown[]; videos?: unknown[]; bo
 const section = (id: string) => document.querySelector(`[data-history-section="${id}"]`) as HTMLElement | null
 const statsPanel = () => document.querySelector('[data-history-stats]') as HTMLElement
 
-beforeEach(() => { localStorage.clear() })
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+// setLocale persists the choice, so it must follow the clear, not precede it.
+beforeEach(() => { localStorage.clear(); setLocale('en') })
 afterEach(cleanup)
 
 describe('categories render only when they have real data', () => {

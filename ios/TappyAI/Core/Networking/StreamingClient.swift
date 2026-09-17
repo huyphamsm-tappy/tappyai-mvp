@@ -11,6 +11,14 @@ enum StreamFrame: Equatable, Sendable {
     /// `8:[…]` — message annotations; the `tappy.places.v1` recommendation rides here.
     case annotation(Data)
     case stepEnd
+    /// A message ANNOTATION (`8:`) carrying the turn's live place decision.
+    ///
+    /// 🚨 THE STREAM WAS NEVER TEXT-ONLY — THIS FRAME WAS ARRIVING AND FALLING INTO `.unknown`.
+    /// The server has sent the place decision here since web gained its place card; iOS parsed the
+    /// line, classified it as unknown and dropped it, so the same reply produced a rich decision
+    /// card in the browser and bare prose on the phone. Nothing about the server contract changes
+    /// to read it — the frame was always there.
+    case places(PlacesLiveView)
     case done
     case unknown(prefix: String, payload: Data)
 }
@@ -30,6 +38,14 @@ enum DataStreamLineParser {
             if let s = try? JSONDecoder().decode(String.self, from: payload) { return .text(s) }
             return .text(payloadString)
         case "f": return .messageStart(payload)
+        case "8":
+            // Gated on the annotation's own `kind`: the `8:` part is shared, and an annotation of
+            // another kind must fall through to `.unknown` rather than be read as a place set.
+            if let views = try? JSONDecoder().decode([PlacesLiveView].self, from: payload),
+               let view = views.first(where: { $0.kind == placesAnnotationKind && !$0.items.isEmpty }) {
+                return .places(view)
+            }
+            return .unknown(prefix: prefix, payload: payload)
         case "9": return .toolCall(payload)
         case "a": return .toolResult(payload)
         case "8": return .annotation(payload)

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { guardPlaceClaimsInText, type PlaceClaimEvidence } from './placeClaimGuard'
+import { guardPlaceClaimsInText, isOrderingClaim, type PlaceClaimEvidence } from './placeClaimGuard'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Both defects below were MEASURED on localhost with the retrieval in front of
@@ -136,5 +136,15 @@ describe('the guard never writes, and never empties the reply', () => {
   it('handles empty and whitespace input without throwing', () => {
     expect(guardPlaceClaimsInText('', ev()).text).toBe('')
     expect(guardPlaceClaimsInText('   ', ev()).redacted).toBe(0)
+  })
+})
+
+describe('a sentence that denies the capability is not an ordering claim (live UAT 14 Sep 2026)', () => {
+  it('keeps the honest "not supported" sentence and still removes a possession claim', () => {
+    expect(isOrderingClaim('Hiện TappyAI chưa hỗ trợ đặt bàn trực tuyến 😊')).toBe(false)
+    expect(isOrderingClaim('Mình không thể hỗ trợ đặt bàn qua ứng dụng.')).toBe(false)
+    expect(isOrderingClaim('Mình hiểu bạn muốn đặt bàn cho 4 người tối nay 🍽️')).toBe(false)
+    expect(isOrderingClaim('Quán có đặt bàn qua điện thoại.')).toBe(true)
+    expect(isOrderingClaim('Quán không có giao hàng.')).toBe(true)
   })
 })

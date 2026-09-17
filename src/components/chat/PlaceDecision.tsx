@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react'
 import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
+import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
 import type { LivePlace, PlaceFlag, PlacesLiveView } from '@/lib/recommendation/liveView'
 
 // ── The place decision, as the approved Food composition renders it ─────────
@@ -100,12 +101,16 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
     outdoorSeating: t('placeDecision.flagOutdoor'),
     vegetarian: t('placeDecision.flagVegetarian'),
   }
-  // Maps leads the action group; ordering follows; anything else becomes a
-  // secondary button. Every entry already has a real destination (liveView drops
-  // the rest), so nothing here can render a dead button.
-  const maps = p.actions.find(a => a.kind === 'maps' || a.kind === 'directions')
-  const orders = p.actions.filter(a => a.kind === 'order' || a.kind === 'delivery')
-  const others = p.actions.filter(a => a !== maps && !orders.includes(a))
+  // CCP Phase 8 (owner-like UAT R1, P2-2): the commerce handoff the user ASKED for — the
+  // action the canonical list already ranks first (priority −1) — leads the card too. The
+  // presentation used to put maps first and file the reservation among "others", which is
+  // how a verified reservation hold once rendered after two search links.
+  const lead = p.actions.find(a => a.commerce?.primary === true)
+  // Then maps, then ordering; anything else becomes a secondary button. Every entry already
+  // has a real destination (liveView drops the rest), so nothing here can render a dead button.
+  const maps = p.actions.find(a => a !== lead && (a.kind === 'maps' || a.kind === 'directions'))
+  const orders = p.actions.filter(a => a !== lead && (a.kind === 'order' || a.kind === 'delivery'))
+  const others = p.actions.filter(a => a !== lead && a !== maps && !orders.includes(a))
 
   return (
     <div
@@ -268,6 +273,18 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
       </div>
 
       <div className="space-y-2 px-3 pb-3">
+        {lead && (
+          <a
+            data-testid="commerce-lead"
+            href={lead.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => reportCommerceHandoff(lead)}
+            className="flex min-h-[40px] w-full items-center justify-center gap-2 rounded-xl border border-primary-300 bg-primary-50 text-sm font-semibold text-primary-800 transition-colors hover:bg-primary-100 dark:border-primary-700 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/40"
+          >
+            {actionLabel(lead, t)}
+          </a>
+        )}
         {maps && (
           <a
             href={maps.url}
@@ -286,6 +303,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
                 href={a.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={a.commerce ? () => reportCommerceHandoff(a) : undefined}
                 className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-rose-300 px-3 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/30"
               >
                 <Utensils size={12} aria-hidden="true" /> {actionLabel(a, t)}
@@ -301,6 +319,8 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
                   href={a.url}
                   target={isCall ? undefined : '_blank'}
                   rel={isCall ? undefined : 'noopener noreferrer'}
+                  // A commerce handoff reports its opaque ids on the way out (CCP event 6); every other action is untouched.
+                  onClick={a.commerce ? () => reportCommerceHandoff(a) : undefined}
                   className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   {isCall && <Phone size={12} aria-hidden="true" />}

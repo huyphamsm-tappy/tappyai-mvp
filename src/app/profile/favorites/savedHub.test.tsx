@@ -24,6 +24,7 @@ Object.defineProperty(window, 'matchMedia', {
 })
 
 import SavedView from './SavedView'
+import { setLocale } from '@/lib/i18n/useTranslation'
 
 // ── V3 Web · Saved ──────────────────────────────────────────────────────────
 //
@@ -57,7 +58,10 @@ function stubFetch(fav: unknown[] = FAVORITES, posts: unknown[] = SAVED_POSTS, o
   vi.stubGlobal('fetch', fetchMock)
 }
 
-beforeEach(() => { search = new URLSearchParams(); stubFetch() })
+// The assertions below read the EN catalogue, so the locale is STATED rather than inherited:
+// jsdom's `navigator.language` was never a product property. The product default is Vietnamese
+// (ADR-027), and a test that wants English must say so — same rule as the admin suites.
+beforeEach(() => { setLocale('en'); search = new URLSearchParams(); stubFetch() })
 afterEach(() => { cleanup(); vi.unstubAllGlobals() })
 
 const renderSaved = () => render(<SavedView user={USER} />)

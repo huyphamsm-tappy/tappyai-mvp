@@ -40,6 +40,15 @@ data class PlanItem(
     @SerialName("maps_link") val mapsLink: String? = null,
     @SerialName("booking_link") val bookingLink: String? = null,
     @SerialName("place_id") val placeId: String? = null,
+    /**
+     * A photo for THIS item's place, written into the plan JSON by the server
+     * (`streamEnrichment.ts::injectPlanPhotos`) after it matches the reply's places against the
+     * plan's item names — so the association is the server's, not a positional guess here.
+     * Android declared no such field, so `ignoreUnknownKeys` silently dropped it and the web
+     * showed a thumbnail per item while Android showed none. Optional: plans generated before the
+     * server started injecting photos, and items whose place had no photo, simply omit it.
+     */
+    @SerialName("photo_url") val photoUrl: String? = null,
 )
 
 /** The CTA button kinds the model emits, mirroring the web's `CTAButton['type']` union. */
@@ -105,6 +114,13 @@ data class ParsedAssistantReply(
     val segments: List<ReplySegment>,
     /** D1 — the decoded shopping decision, or null when the turn carried none. */
     val shopping: ShoppingDecisionView? = null,
+    /**
+     * The DURABLE place cards carried by `[TAPPY_PLACES]`, best first. Empty on every turn that
+     * carried none — which today is every turn, because the server emits the block only when
+     * `EMIT_TAPPY_PLACES` is on. Parsing it now is what lets that flag be flipped without the raw
+     * JSON reaching a user, which is how the same block leaked twice before.
+     */
+    val places: List<PersistedPlace> = emptyList(),
 )
 
 /**
@@ -212,6 +228,16 @@ object ChatResponseParser {
     // orphan strip rather than swallowing the rest of the reply.
     private val SHOPPING_PARTIAL_RE = Regex("""\[TAPPY_SHOPPING\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val SHOPPING_STRIP_RE = Regex("""\[/?TAPPY_SHOPPING\]""", RegexOption.IGNORE_CASE)
+    // The DURABLE place block. Same three layers every other marker needs, for the same reason:
+    // a closed block, an UNTERMINATED one at the tail of a streaming snapshot, and any orphan tag
+    // left behind by either. The bare form is located by BRACE MATCHING rather than an end anchor
+    // because the server composes prose + places + CTA — `[CTA_BUTTONS]` really does follow this
+    // block, and an end-anchored pattern would swallow it (shared fixture `places-then-cta`, and
+    // the production leak rule 3 was written for).
+    private val PLACES_RE = Regex("""\[TAPPY_PLACES\]([\s\S]*?)\[/TAPPY_PLACES\]""", RegexOption.IGNORE_CASE)
+    private const val PLACES_MARKER = "[TAPPY_PLACES]"
+    private val PLACES_PARTIAL_RE = Regex("""\[TAPPY_PLACES\][\s\S]*$""", RegexOption.IGNORE_CASE)
+    private val PLACES_STRIP_RE = Regex("""\[/?TAPPY_PLACES\]""", RegexOption.IGNORE_CASE)
     // Markdown image `![alt](url)` — TappyMarkdown drops images, so they render via segments
     // (mirrors the web formatMessage grouping place photos into a horizontal strip).
     private val IMAGE_RE = Regex("""!\[[^\]]*\]\((https?://[^\s)]+)\)""")
@@ -219,6 +245,20 @@ object ChatResponseParser {
     private val IMAGE_RUN_RE = Regex("""(?:!\[[^\]]*\]\(https?://[^\s)]+\)[ \t]*\n?)+""")
     // A PARTIAL trailing image markdown in a streaming snapshot (`![alt` or `![alt](https://part…`).
     private val PARTIAL_IMAGE_RE = Regex("""!\[[^\]]*(?:\]\([^\s)]*)?$""")
+    // A line that is ONLY an image — the shape the server's inline enrichment splices in.
+    private val IMAGE_ONLY_LINE_RE = Regex("""!\[[^\]]*\]\(https?://[^\s)]+\)""")
+    // A line that is ONLY markdown links joined by "·" — the injected order-link row.
+    private val LINK_ROW_RE =
+        Regex("""\[[^\]]+\]\(https?://[^\s)]+\)(?:\s*·\s*\[[^\]]+\]\(https?://[^\s)]+\))*""")
+    // Three or more newlines left behind once lines are removed.
+    private val BLANK_RUN_RE = Regex("\n{3,}")
+    private const val LF = "\n"
+    // The heading of the server's trailing fallback block ("📸 _Hình ảnh & link review:_" /
+    // "📸 _Images & review links:_"), and the bare bold product headings under it. Once the photo
+    // and link lines beneath them are removed, these are all that would be left: a label with
+    // nothing under it, and a column of names the card already lists.
+    private const val PHOTO_BLOCK_MARK = "📸"
+    private val BOLD_ONLY_LINE_RE = Regex("""\*\*[^*]+\*\*""")
 
     fun parse(content: String): ParsedAssistantReply {
         var text = content
@@ -296,28 +336,109 @@ object ChatResponseParser {
         text = SHOPPING_RE.replace(text, "")
         text = SHOPPING_PARTIAL_RE.replace(text, "")
 
+        // 5. The durable place cards.
+        //
+        // Decode and strip stay independent, in that order, like every step above: a block we
+        // cannot understand is still a block the user must not read. A payload whose `items` is
+        // missing or empty decodes to no places rather than to an empty card — the same answer
+        // web's `parsePlacesMarker` gives, so a turn cannot show a card on one platform and a
+        // blank frame on the other.
+        var placesPayload: String? = null
+        val placesTagMatch = PLACES_RE.find(text)
+        if (placesTagMatch != null) {
+            placesPayload = placesTagMatch.groupValues[1]
+            text = PLACES_RE.replace(text, "")
+        } else {
+            val span = findMarkerJson(text, PLACES_MARKER)
+            if (span != null) {
+                placesPayload = span.json
+                text = text.substring(0, span.start) + text.substring(span.end)
+            }
+        }
+        // Any FURTHER block is stripped without rendering: only the first carries the turn's
+        // decision, and a leftover second block would otherwise show as raw JSON.
+        var extraPlaces = findMarkerJson(text, PLACES_MARKER)
+        while (extraPlaces != null) {
+            text = text.substring(0, extraPlaces.start) + text.substring(extraPlaces.end)
+            extraPlaces = findMarkerJson(text, PLACES_MARKER)
+        }
+        // Whatever brace matching declined: a block whose payload never finished arriving.
+        text = PLACES_PARTIAL_RE.replace(text, "").trimEnd()
+
+        val places = placesPayload?.let { body ->
+            runCatching { json.decodeFromString<PlacesMarkerPayload>(body.trim()).items }.getOrNull()
+        } ?: emptyList()
+
         // Safety net: strip any orphan markers so implementation details never show. Every marker
         // the server owns is listed here — an entry missing from this line is a marker that leaks
         // the moment its block arrives in any shape the steps above did not match.
         text = PLAN_STRIP_RE.replace(text, "")
         text = CTA_STRIP_RE.replace(text, "")
         text = FOLLOWUPS_STRIP_RE.replace(text, "")
-        text = SHOPPING_STRIP_RE.replace(text, "").trim()
+        text = SHOPPING_STRIP_RE.replace(text, "")
+        text = PLACES_STRIP_RE.replace(text, "").trim()
 
-        // 4. Positional segmentation — each run of image lines becomes an inline gallery at its
+        // 6. Renderer precedence — SHOPPING ONLY.
+        //
+        // The server writes its own presentation INTO the prose on a shopping turn: a product photo
+        // per line and a merchant link row ("[Shopee](…) · [Lazada](…)") next to each product it
+        // recognises. That is the pre-V3 presentation, and when the `[TAPPY_SHOPPING]` block ALSO
+        // arrives the reply carries both — the same image once inline and once in the card, the same
+        // seller twice, one as a raw link and one as a real offer row. The card wins: it is the only
+        // one of the two that carries price, match verdict and reasons, so the inline copies are
+        // dropped here rather than left for the screen to draw underneath it.
+        //
+        // Gated on the SAME condition the card uses — at least one entity with a real product name —
+        // so a payload that renders nothing never takes the prose's content away with it.
+        //
+        // 🚨 PLACES ARE DELIBERATELY NOT GATED HERE. A place turn keeps its inline photo as a
+        // gallery segment next to the place card (ChatStreamWireReplayTest pins it, and Pixel_8
+        // verified it); the durable/live place projections are the server's decision and this
+        // parser adds no presentation rule of its own on top of them.
+        val shoppingCardWillRender = shopping?.entities?.any { it.displayName != null } == true
+        val presented = if (shoppingCardWillRender) stripInjectedEnrichment(text) else text
+
+        // 7. Positional segmentation — each run of image lines becomes an inline gallery at its
         // position (web formatMessage), and the clean text keeps its pre-segments shape for
         // copy/share/TTS/persistence.
         return ParsedAssistantReply(
-            text = IMAGE_RE.replace(text, "").trim(),
-            streamText = text,
+            text = IMAGE_RE.replace(presented, "").trim(),
+            streamText = presented,
             plan = plan,
             planJson = if (plan != null) planMatch?.groupValues?.get(1)?.trim() else null,
             ctaButtons = buttons,
             followups = followups,
-            segments = segment(text),
+            segments = segment(presented),
             shopping = shopping,
+            places = places,
         )
     }
+
+    /**
+     * Removes the server's inline product enrichment: the spliced photo lines and the merchant
+     * link rows beside them.
+     *
+     * Only these shapes are removed, and only as WHOLE lines:
+     *   · a line that is nothing but an `![…](http…)` image,
+     *   · a line that is nothing but markdown links joined by "·" (the order-link row),
+     *   · the "📸 …" heading of the trailing fallback block, and a bare bold-only heading line.
+     * A sentence that merely contains a link keeps it, because that is the model writing prose,
+     * not the enrichment writing UI.
+     */
+    internal fun stripInjectedEnrichment(text: String): String =
+        text.lineSequence()
+            .filterNot { line ->
+                val trimmed = line.trim()
+                trimmed.isNotEmpty() && (
+                    IMAGE_ONLY_LINE_RE.matches(trimmed) ||
+                        LINK_ROW_RE.matches(trimmed) ||
+                        trimmed.startsWith(PHOTO_BLOCK_MARK) ||
+                        BOLD_ONLY_LINE_RE.matches(trimmed)
+                    )
+            }
+            .joinToString(LF)
+            .replace(BLANK_RUN_RE, LF + LF)
+            .trim()
 
     /**
      * Splits [text] into ordered [ReplySegment]s: markdown between image runs, and each run of

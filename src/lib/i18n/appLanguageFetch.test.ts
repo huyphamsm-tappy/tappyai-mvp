@@ -93,6 +93,33 @@ describe('C29 — the chosen language is sent to our own API', () => {
     expect(captured.map((c) => c.language)).toEqual(['vi', 'en'])
   })
 
+  it('🚨 sends the product default when the user has never chosen a language', async () => {
+    // CHANGED BY ADR-027, deliberately. This used to assert `toBeNull()` — send nothing and let
+    // the browser's header speak — on the reasoning that the browser hint also seeded the UI, so
+    // the two agreed. The UI now settles on the product default instead, so silence made a visitor
+    // on an en-US browser READ Vietnamese and get ANSWERED in English, including by the AI
+    // (`/api/chat` resolves its reply language from this header when the text is ambiguous).
+    await freshInterceptor()
+
+    await window.fetch('/api/config')
+
+    expect(captured[0].language).toBe('vi')
+  })
+
+  it('🚨 /api/chat carries it too — this header decides the AI reply language', async () => {
+    // ADR-027 step 2. The chat route reads `Accept-Language` when the message text does not settle
+    // the language by itself, which is exactly what diacritic-free Vietnamese does not do. If this
+    // request ever goes out bare, that route falls back to the browser's own locale and a
+    // Vietnamese user typing "Tim quan bun bo ngon o TPHCM" is answered in English again.
+    await freshInterceptor()
+
+    await window.fetch('/api/chat', { method: 'POST', body: '{}' })
+    window.localStorage.setItem(STORAGE_KEY, 'en')
+    await window.fetch('/api/chat', { method: 'POST', body: '{}' })
+
+    expect(captured.map((c) => c.language)).toEqual(['vi', 'en'])
+  })
+
   it('applies to every call shape, not just string URLs', async () => {
     await freshInterceptor()
     window.localStorage.setItem(STORAGE_KEY, 'vi')
@@ -137,16 +164,6 @@ describe('C29 — what it must NOT touch', () => {
     await window.fetch('/api/config', { headers: { 'Accept-Language': 'ja' } })
 
     expect(captured[0].language).toBe('ja')
-  })
-
-  it('sends nothing when the user has never chosen a language', async () => {
-    // Then the browser's own header is the honest answer, and it is also what seeds the UI, so
-    // header and UI still agree.
-    await freshInterceptor()
-
-    await window.fetch('/api/config')
-
-    expect(captured[0].language).toBeNull()
   })
 
   it('preserves the rest of the request', async () => {

@@ -1,5 +1,6 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach, vi } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
 import { existsSync, readFileSync } from 'node:fs'
 
@@ -57,6 +58,10 @@ const user = { full_name: 'Huy', avatar_url: null, email: 'h@example.com' }
 const renderPlanner = (rows: PlannerConversationRow[]) => render(<PlannerView user={user} plans={derivePlans(rows)} />)
 const q = <T extends Element = HTMLElement>(sel: string) => document.querySelector(sel) as T | null
 
+// These assertions read the EN catalogue, so the locale is STATED rather than inherited: the
+// product default is Vietnamese (ADR-027, merged with feat/affiliate-cross-platform) and a test
+// that wants English must say so — the same rule the admin suites already follow.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 describe('the hero says what the page does, with the scooter Tappy', () => {

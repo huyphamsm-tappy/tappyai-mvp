@@ -1,0 +1,304 @@
+{
+  "generatedAt": "2026-09-13T10:00:00.000Z",
+  "note": "Fixture-driven run of the real Phase-6 seam; discovery answered by fixtures; no network.",
+  "tripcom": {
+    "provider": "tripcom",
+    "intentType": "book_hotel",
+    "dataSource": "registry:tripcom",
+    "freshness": {
+      "source": "registry:tripcom",
+      "retrievedAt": "2026-09-13T10:00:00.000Z",
+      "expiresAt": "2026-10-13T10:00:00.000Z",
+      "freshnessType": "static",
+      "confidence": 1
+    },
+    "url": "https://vn.trip.com/hotels/detail/?hotelId=10569789&checkIn=2026-10-10&checkOut=2026-10-12&adult=2&children=0&crn=1&curr=VND&locale=vi-VN",
+    "host": "vn.trip.com",
+    "path": "/hotels/detail/",
+    "params": {
+      "hotelId": "10569789",
+      "checkIn": "2026-10-10",
+      "checkOut": "2026-10-12",
+      "adult": "2",
+      "children": "0",
+      "crn": "1",
+      "curr": "VND",
+      "locale": "vi-VN"
+    },
+    "kind": "DIRECT_DEEP_LINK",
+    "depthLanding": 4,
+    "guestDepth": 5,
+    "authRequiredAt": "none",
+    "expiresAt": "2026-10-09T17:00:00.000Z",
+    "assumedParams": [
+      "adults"
+    ],
+    "tracked": false,
+    "limitations": [
+      "Chọn phòng trên trang; form đặt phòng chỉ cần tên, email và số điện thoại."
+    ],
+    "action": {
+      "kind": "booking",
+      "urlKind": "direct",
+      "platform": "Trip.com",
+      "priority": -1,
+      "loginRequired": false,
+      "label": "Đặt phòng trên Trip.com"
+    },
+    "cardRendersIt": true,
+    "cardChannel": "places live view (web annotation)",
+    "modelSeesMerchantUrl": false,
+    "modelSeesCapability": true,
+    "events": [
+      "commerce_request",
+      "commerce_provider_search",
+      "commerce_deep_link_resolved",
+      "commerce_deep_link_validated",
+      "commerce_provider_selected"
+    ],
+    "eventPayloadHasUrl": false
+  },
+  "pasgo_chat": {
+    "provider": "pasgo",
+    "intentType": "reserve_table",
+    "dataSource": "registry:pasgo",
+    "freshness": {
+      "source": "registry:pasgo",
+      "retrievedAt": "2026-09-13T10:00:00.000Z",
+      "expiresAt": "2026-09-20T10:00:00.000Z",
+      "freshnessType": "near_realtime",
+      "confidence": 1
+    },
+    "url": "https://pasgo.vn/nha-hang/nha-hang-qua-ngon-le-van-sy-1234",
+    "host": "pasgo.vn",
+    "path": "/nha-hang/nha-hang-qua-ngon-le-van-sy-1234",
+    "params": {},
+    "kind": "DETAIL_HANDOFF",
+    "depthLanding": 3,
+    "guestDepth": 5,
+    "authRequiredAt": "none",
+    "expiresAt": null,
+    "assumedParams": [],
+    "tracked": false,
+    "limitations": [
+      "Chọn số khách, ngày và giờ trên trang nhà hàng rồi bấm \"Đặt chỗ ngay\"."
+    ],
+    "action": {
+      "kind": "reservation",
+      "urlKind": "direct",
+      "platform": "PasGo",
+      "priority": -1,
+      "loginRequired": false,
+      "label": "Đặt bàn trên PasGo"
+    },
+    "cardRendersIt": true,
+    "cardChannel": "places live view (web annotation)",
+    "modelSeesMerchantUrl": false,
+    "modelSeesCapability": true,
+    "events": [
+      "commerce_request",
+      "commerce_provider_search",
+      "commerce_deep_link_resolved",
+      "commerce_deep_link_validated",
+      "commerce_provider_selected"
+    ],
+    "eventPayloadHasUrl": false
+  },
+  "pasgo_configured": {
+    "url": "https://pasgo.vn/dat-cho-ngay/1234?sfAdult=2&sfChild=0&sfDateFrom=20%2F09%2F2026&sfTimeFrom=19%3A00",
+    "params": {
+      "sfAdult": "2",
+      "sfChild": "0",
+      "sfDateFrom": "20/09/2026",
+      "sfTimeFrom": "19:00"
+    },
+    "kind": "CHECKOUT_HANDOFF",
+    "depth": 5,
+    "guestDepth": 5,
+    "authRequiredAt": "none",
+    "expiresAt": "2026-09-13T10:05:00.000Z",
+    "limitations": [
+      "Form giữ chỗ 5 phút; chỉ cần tên, số điện thoại và email. Khung giờ không phục vụ sẽ được báo ngay trên trang."
+    ]
+  },
+  "klook_entertainment": {
+    "provider": "klook",
+    "intentType": "book_activity",
+    "dataSource": "registry:klook",
+    "freshness": {
+      "source": "registry:klook",
+      "retrievedAt": "2026-09-13T10:00:00.000Z",
+      "expiresAt": "2026-09-20T10:00:00.000Z",
+      "freshnessType": "near_realtime",
+      "confidence": 1
+    },
+    "url": "https://www.klook.com/vi/activity/2734-vinwonders-nha-trang-ticket/",
+    "host": "www.klook.com",
+    "path": "/vi/activity/2734-vinwonders-nha-trang-ticket/",
+    "params": {},
+    "kind": "DETAIL_HANDOFF",
+    "depthLanding": 3,
+    "guestDepth": 4,
+    "authRequiredAt": "before_checkout",
+    "expiresAt": null,
+    "assumedParams": [],
+    "tracked": false,
+    "limitations": [
+      "Chọn gói, ngày và số lượng trên trang hoạt động.",
+      "Klook yêu cầu đăng nhập trước khi thanh toán; chọn xong trên trang rồi đăng nhập để tiếp tục."
+    ],
+    "action": {
+      "kind": "ticket",
+      "urlKind": "direct",
+      "platform": "Klook",
+      "priority": -1,
+      "loginRequired": true,
+      "label": "Mua vé trên Klook · cần đăng nhập"
+    },
+    "cardRendersIt": true,
+    "cardChannel": "places live view (web annotation)",
+    "modelSeesMerchantUrl": false,
+    "modelSeesCapability": true,
+    "events": [
+      "commerce_request",
+      "commerce_provider_search",
+      "commerce_deep_link_resolved",
+      "commerce_deep_link_validated",
+      "commerce_provider_selected"
+    ],
+    "eventPayloadHasUrl": false
+  },
+  "klook_spa": {
+    "provider": "klook",
+    "intentType": "buy_spa_voucher",
+    "dataSource": "registry:klook",
+    "freshness": {
+      "source": "registry:klook",
+      "retrievedAt": "2026-09-13T10:00:00.000Z",
+      "expiresAt": "2026-09-20T10:00:00.000Z",
+      "freshnessType": "near_realtime",
+      "confidence": 1
+    },
+    "url": "https://www.klook.com/vi/activity/43345-ha-spa-ho-chi-minh/",
+    "host": "www.klook.com",
+    "path": "/vi/activity/43345-ha-spa-ho-chi-minh/",
+    "params": {},
+    "kind": "DETAIL_HANDOFF",
+    "depthLanding": 3,
+    "guestDepth": 4,
+    "authRequiredAt": "before_checkout",
+    "expiresAt": null,
+    "assumedParams": [],
+    "tracked": false,
+    "limitations": [
+      "Chọn gói dịch vụ và số lượng trên trang; voucher mở, đặt lịch với spa sau khi mua (hiệu lực 14 ngày).",
+      "Klook yêu cầu đăng nhập trước khi thanh toán; chọn xong trên trang rồi đăng nhập để tiếp tục."
+    ],
+    "action": {
+      "kind": "purchase",
+      "urlKind": "direct",
+      "platform": "Klook",
+      "priority": -1,
+      "loginRequired": true,
+      "label": "Mua trên Klook · cần đăng nhập"
+    },
+    "cardRendersIt": true,
+    "cardChannel": "places live view (web annotation)",
+    "modelSeesMerchantUrl": false,
+    "modelSeesCapability": true,
+    "events": [
+      "commerce_request",
+      "commerce_provider_search",
+      "commerce_deep_link_resolved",
+      "commerce_deep_link_validated",
+      "commerce_provider_selected"
+    ],
+    "eventPayloadHasUrl": false
+  },
+  "dmx": {
+    "provider": "dmx",
+    "intentType": "buy_product",
+    "dataSource": "registry:dmx",
+    "freshness": {
+      "source": "registry:dmx",
+      "retrievedAt": "2026-09-13T10:00:00.000Z",
+      "expiresAt": "2026-09-14T10:00:00.000Z",
+      "freshnessType": "near_realtime",
+      "confidence": 1
+    },
+    "url": "https://www.dienmayxanh.com/dien-thoai/iphone-15-128gb",
+    "host": "www.dienmayxanh.com",
+    "path": "/dien-thoai/iphone-15-128gb",
+    "params": {},
+    "kind": "DETAIL_HANDOFF",
+    "depthLanding": 3,
+    "guestDepth": 5,
+    "authRequiredAt": "at_order",
+    "expiresAt": null,
+    "assumedParams": [],
+    "tracked": false,
+    "limitations": [
+      "Chọn màu/phiên bản và số lượng trên trang sản phẩm; bấm \"Mua ngay\" để vào giỏ và đặt hàng.",
+      "Điện Máy Xanh gửi mã OTP qua SMS khi bạn bấm đặt hàng."
+    ],
+    "action": {
+      "kind": "purchase",
+      "urlKind": "direct",
+      "platform": "Điện Máy Xanh",
+      "priority": -1,
+      "loginRequired": false,
+      "label": "Mua trên Điện Máy Xanh"
+    },
+    "cardRendersIt": false,
+    "cardChannel": "none (product lead → shopping card)",
+    "modelSeesMerchantUrl": true,
+    "modelSeesCapability": true,
+    "events": [
+      "commerce_request",
+      "commerce_provider_search",
+      "commerce_deep_link_resolved",
+      "commerce_deep_link_validated",
+      "commerce_provider_selected"
+    ],
+    "eventPayloadHasUrl": false
+  },
+  "cgv": {
+    "filmPage": {
+      "url": "https://www.cgv.vn/default/inside-out-2.html",
+      "kind": "DETAIL_HANDOFF",
+      "depth": 3,
+      "guestDepth": 4,
+      "authRequiredAt": "before_selection",
+      "validation": "grammar_ok",
+      "limitations": [
+        "Bấm \"Mua vé\" trên trang phim để chọn rạp, ngày và suất chiếu.",
+        "CGV yêu cầu đăng nhập trước khi chọn ghế/vé; sau khi đăng nhập bạn tiếp tục đến thanh toán."
+      ]
+    },
+    "partialSession_noFabrication": {
+      "url": "https://www.cgv.vn/default/inside-out-2.html",
+      "kind": "DETAIL_HANDOFF",
+      "depth": 3,
+      "guestDepth": 4,
+      "authRequiredAt": "before_selection",
+      "validation": "grammar_ok",
+      "limitations": [
+        "Bấm \"Mua vé\" trên trang phim để chọn rạp, ngày và suất chiếu.",
+        "CGV yêu cầu đăng nhập trước khi chọn ghế/vé; sau khi đăng nhập bạn tiếp tục đến thanh toán."
+      ]
+    },
+    "sessionUrl_observedGrammar": {
+      "url": "https://www.cgv.vn/default/cinemas/booking/tickets/site/074/seq/30101/dy/20260920/",
+      "kind": "DIRECT_DEEP_LINK",
+      "depth": 4,
+      "guestDepth": 4,
+      "authRequiredAt": "before_selection",
+      "validation": "grammar_unverified",
+      "limitations": [
+        "CGV yêu cầu đăng nhập trước khi chọn ghế/vé; sau khi đăng nhập bạn tiếp tục đến thanh toán.",
+        "Sau khi đăng nhập, CGV đưa bạn về đúng suất đã chọn."
+      ]
+    },
+    "adapterSupports": true
+  }
+}

@@ -8,6 +8,8 @@ sealed class ChatException(message: String) : Exception(message) {
     class DailyLimitReached(message: String) : ChatException(message)
     /** HTTP 401 with `error: "anon_limit_reached"` — anonymous daily question cap hit. */
     class AnonLimitReached(message: String) : ChatException(message)
+    /** 401 `auth_required` — the server refuses Chat to a visitor without an account. */
+    class AuthRequired(message: String) : ChatException(message)
     /** HTTP 413 — message payload too large. */
     class MessageTooLong(message: String) : ChatException(message)
     /** HTTP 502 with `error: "ai_error"` — upstream AI provider failure. */
