@@ -120,6 +120,44 @@ describe('G1 · guard keeps attributable evidence-backed claims (reproductions)'
   })
 })
 
+describe('G1 · comparison sentences (several venues by identity)', () => {
+  it('keeps a two-venue sentence whose numbers are each that venue\'s own, and counts it as multi', () => {
+    const t = turns['P15-r2']
+    const [a, b] = t.rows.filter(r => r.rating !== null && r.count !== null).slice(0, 2)
+    const text = `Ngoài ra còn có **${a.name}** (${a.rating}⭐, ${vi(a.count!)} đánh giá) hoặc **${b.name}** (${b.rating}⭐, ${vi(b.count!)} đánh giá).`
+    const r = guardPlaceClaimsInText(text, evidenceFor(t), v2(t))
+    expect(r.text).toBe(text)
+    expect(r.stats?.attribution.multi).toBeGreaterThan(0)
+  })
+  it('still removes a two-venue sentence whose count matches neither venue', () => {
+    const t = turns['P15-r2']
+    const [a, b] = t.rows.filter(r => r.rating !== null && r.count !== null).slice(0, 2)
+    const text = `Ngoài ra còn có **${a.name}** (${a.rating}⭐, 77.777 đánh giá) hoặc **${b.name}** (${b.rating}⭐, 88.888 đánh giá).`
+    const r = guardPlaceClaimsInText(text, evidenceFor(t), v2(t))
+    expect(r.text).not.toContain('77.777')
+  })
+  it("the pick's own phone in a later paragraph is identified by the number itself (v2)", () => {
+    const t = turns['P15-r2']; const p = row(t, t.pick!)
+    const text = `Mình chọn **${t.pick}** cho bạn.\n\nGiá thường 300.000-500.000đ.\n\nBạn có thể gọi trực tiếp **(${p.phone})** để hỏi giá chi tiết.`
+    const r = guardPlaceClaimsInText(text, evidenceFor(t), v2(t))
+    expect(r.text).toContain(p.phone!)
+    expect(r.text).not.toContain('TP. HCM')
+  })
+  it('never rewrites kept text ("TP.HCM" stays "TP.HCM")', () => {
+    const t = turns['P15-r2']
+    const text = `Bạn đang ở TP.HCM hay nơi khác?\n\nMình chọn **${t.pick}** — 1.0⭐ (3 đánh giá).\n\n[FOLLOWUPS]Xem spa khác ở TP.HCM|Spa quận khác[/FOLLOWUPS]`
+    const r = guardPlaceClaimsInText(text, evidenceFor(t), v2(t))
+    expect(r.text).toContain('Bạn đang ở TP.HCM hay nơi khác?')
+    expect(r.text).toContain('[FOLLOWUPS]Xem spa khác ở TP.HCM|Spa quận khác[/FOLLOWUPS]')
+  })
+  it('a price range is not a phone number (v1 and v2)', () => {
+    const t = turns['P15-r2']
+    const text = `Mình chọn **${t.pick}** — giá massage body khoảng 300.000-500.000đ, khá hợp lý.`
+    expect(guardPlaceClaimsInText(text, evidenceFor(t), v1).text).toBe(text)
+    expect(guardPlaceClaimsInText(text, evidenceFor(t), v2(t)).text).toBe(text)
+  })
+})
+
 describe('G1 · anti-fabrication invariant (unchanged)', () => {
   it('an attributed sentence whose rating matches no evidence is still removed', () => {
     const t = turns['P15-r1']

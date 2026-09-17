@@ -263,6 +263,26 @@ export function aliasesOf(name: string): { head: string | null; segments: string
  * that matches several is merely noisy and the next level is tried; nothing at any
  * level → null (unattributable).
  */
+/**
+ * EVERY venue a sentence names by identity (L1 full name, L2 head, L2′ segment) —
+ * for a comparison sentence ("A (4.3⭐, 9.369 đánh giá) hoặc B (4.9⭐, 3.869 đánh giá)")
+ * that `attributePlace` rightly refuses to pin on one venue. Verification-only: the
+ * guard checks each stated number against the union of these venues' evidence.
+ */
+export function placesNamedIn(sentence: string, names: readonly string[]): string[] {
+  const hay = foldForContainment(sentence)
+  if (!hay) return []
+  const out = new Set<string>()
+  for (const n of names) {
+    const f = foldForContainment(n)
+    if (f.length > 2 && identifying(n) && hay.includes(f)) { out.add(n); continue }
+    const { head, segments } = aliasesOf(n)
+    if (head && hay.includes(foldForContainment(head))) { out.add(n); continue }
+    if (segments.some(s => hay.includes(foldForContainment(s)))) out.add(n)
+  }
+  return [...out]
+}
+
 export function attributePlace(sentence: string, names: readonly string[]): PlaceAttribution | null {
   const hay = foldForContainment(sentence)
   if (!hay) return null

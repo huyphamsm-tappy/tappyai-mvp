@@ -24,7 +24,7 @@
 // removed with the whole sentence, and nothing is ever written.
 
 import { sentenceSpans, proseOnly } from './moneyGuard'
-import { placeTokensFor, textNamesPlace, attributePlace } from '@/lib/links/placeAttribution'
+import { placeTokensFor, textNamesPlace, attributePlace, placesNamedIn } from '@/lib/links/placeAttribution'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 
 /** What the turn actually retrieved, as the guard is allowed to read it. */
@@ -308,7 +308,11 @@ const REVIEW_COUNT_RE = /\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận x�
  * number the user will dial, and inventing one is the same harm as inventing a
  * landline. Measured on the phone UAT - it was not matched before.
  */
-const PHONE_RE = /(?:\+84|0)(?:[\s.-]?\d){8,10}|(?:1900|1800)(?:[\s.-]?\d){4,6}/u
+// 🚨 DIGIT BOUNDARIES. Without them "300.000-500.000" (a price range) matched from its
+// second character as the "phone" 00.000-500.000 and two sentences of a spa reply were
+// deleted for a number nobody dialled (2026-09-17 replay, run 2 #14). A phone starts
+// where no digit or separator precedes it and ends where no digit follows.
+const PHONE_RE = /(?<![\d.,])(?:\+84|0)(?:[\s.-]?\d){8,10}(?!\d)|(?<!\d)(?:1900|1800)(?:[\s.-]?\d){4,6}(?!\d)/u
 
 /**
  * The review counts a sentence states, parsed as COUNTS rather than decimals.
@@ -529,7 +533,7 @@ export interface PlaceClaimStats {
   chars_out: number
   reasons: Record<'quality' | 'popularity' | 'ordering' | 'ticket' | 'ticket_availability' | 'score' | 'review_count' | 'phone' | 'distance' | 'orphan' | 'cascade', number>
   unattributable_claims: number
-  attribution: Record<'L1' | 'L2' | 'L2p' | 'L3' | 'L4' | 'L5' | 'anaphora', number>
+  attribution: Record<'L1' | 'L2' | 'L2p' | 'L3' | 'L4' | 'L5' | 'anaphora' | 'multi', number>
   pick_attributable: boolean | null
 }
 
@@ -545,7 +549,7 @@ export function guardPlaceClaimsInText(
     sentences_in: 0, sentences_removed: 0, chars_in: text.length, chars_out: text.length,
     reasons: { quality: 0, popularity: 0, ordering: 0, ticket: 0, ticket_availability: 0, score: 0, review_count: 0, phone: 0, distance: 0, orphan: 0, cascade: 0 },
     unattributable_claims: 0,
-    attribution: { L1: 0, L2: 0, L2p: 0, L3: 0, L4: 0, L5: 0, anaphora: 0 },
+    attribution: { L1: 0, L2: 0, L2p: 0, L3: 0, L4: 0, L5: 0, anaphora: 0, multi: 0 },
     pick_attributable: null,
   }
   if (!text) return { text, redacted: 0, stats }
@@ -781,11 +785,17 @@ export function guardPlaceClaimsInText(
       // Fail-closed for the same reason as the verdict above: an unattributable
       // score has no venue to be a score OF.
       const named = placeNamedAt(i, spans) ?? placeByNumbers(prose)
+      // G1: a sentence that names SEVERAL venues by identity is a comparison. It is not
+      // pinned on one venue, but each number in it can still be checked against the
+      // union of those venues' own evidence (v2 only; v1 keeps the area-level rule).
+      const group = v2 && !named ? placesNamedIn(prose, names) : []
+      if (group.length >= 2) stats.attribution.multi++
       const pool = ratingsByEntity
-        ? (named ? [...(ratingsByEntity.get(named) ?? []), ...numbersIn(entityTexts?.get(named) ?? [])] : [])
+        ? (named ? [...(ratingsByEntity.get(named) ?? []), ...numbersIn(entityTexts?.get(named) ?? [])]
+          : group.length >= 2 ? group.flatMap(g => [...(ratingsByEntity.get(g) ?? []), ...numbersIn(entityTexts?.get(g) ?? [])]) : [])
         : ratingPool
       const stated = numbersOf(prose)
-      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'score'); if (!named) stats.unattributable_claims++; return }
+      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'score'); if (!named && group.length < 2) stats.unattributable_claims++; return }
     }
 
     /**
@@ -797,9 +807,10 @@ export function guardPlaceClaimsInText(
      */
     if (!ticketsOnly && REVIEW_COUNT_RE.test(prose)) {
       const named = placeNamedAt(i, spans) ?? placeByNumbers(prose)
-      const pool = named ? (reviewCountsByEntity?.get(named) ?? []) : []
+      const group = v2 && !named ? placesNamedIn(prose, names) : []
+      const pool = named ? (reviewCountsByEntity?.get(named) ?? []) : group.length >= 2 ? group.flatMap(g => reviewCountsByEntity?.get(g) ?? []) : []
       const stated = statedReviewCounts(prose)
-      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'review_count'); if (!named) stats.unattributable_claims++; return }
+      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'review_count'); if (!named && group.length < 2) stats.unattributable_claims++; return }
     }
 
     /**
@@ -812,9 +823,18 @@ export function guardPlaceClaimsInText(
      * immediately, so an unmatched or unattributable number is removed.
      */
     if (!ticketsOnly && PHONE_RE.test(prose)) {
-      const named = placeNamedAt(i, spans)
-      const own = (named ? (phonesByEntity?.get(named) ?? []) : []).map(phoneDigits)
       const stated = (prose.match(new RegExp(PHONE_RE, 'gu')) ?? []).map(phoneDigits)
+      let named = placeNamedAt(i, spans)
+      // G1 (v2): a number that is exactly ONE venue's own phone identifies that venue —
+      // the same number-identity rule as L5, and stronger (a phone is unique where a
+      // rating is not). "Bạn có thể gọi trực tiếp (+84 917 757 509)" in its own
+      // paragraph was the Pick's real number and was deleted as unattributable
+      // (replay run 2 #14). A fabricated number matches nobody and is still removed.
+      if (v2 && !named && phonesByEntity && stated.length > 0) {
+        const owners = [...phonesByEntity.entries()].filter(([, ps]) => stated.every(d => ps.map(phoneDigits).includes(d))).map(([n]) => n)
+        if (owners.length === 1) { named = owners[0]; stats.attribution.L5++ }
+      }
+      const own = (named ? (phonesByEntity?.get(named) ?? []) : []).map(phoneDigits)
       if (stated.length > 0 && !stated.every(d => own.includes(d))) { doomed.add(i); reasonOf.set(i, 'phone'); if (!named) stats.unattributable_claims++; return }
     }
 
@@ -962,14 +982,14 @@ export function guardPlaceClaimsInText(
       .join('')
       .replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
     if (!v2) return joined
-    // Paragraph hygiene (v2): no leading blanks, no letter-less paragraphs, and a
-    // space after a sentence end when the next sentence now follows directly.
+    // Paragraph hygiene (v2): no leading blanks, no letter-less paragraphs. Nothing
+    // INSIDE a kept span is ever rewritten — an earlier "space after a sentence end"
+    // rule turned "TP.HCM" into "TP. HCM" in prose and in [FOLLOWUPS] (replay run 2 #14).
     return joined
       .split(/\n\s*\n/)
       .map(p => p.replace(/^[ \t]+/gm, '').trim())
       .filter(p => /\p{L}/u.test(p))
       .join('\n\n')
-      .replace(/([.!?…])(\p{Lu})/gu, '$1 $2')
   }
   const isProse = (t: string): boolean => /\p{L}/u.test(t)
 

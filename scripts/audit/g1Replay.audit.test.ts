@@ -145,7 +145,7 @@ function fabricatedNumbers(r: Rec, input: string): string[] {
   const out: string[] = []
   for (const m of prose.matchAll(/\b(\d(?:[.,]\d)?)\s*(?:⭐|★|sao\b|\/\s*5|stars?\b)/giu)) { if (!allRatings.has(m[1].replace(',', '.'))) out.push(m[0]) }
   for (const m of prose.matchAll(/(\d[\d.,]*)\s*\+?\s*(?:đánh giá|danh gia|nhận xét|reviews?|ratings?)(?!\p{L})/giu)) { const n = parseInt(m[1].replace(/[.,]/g, ''), 10); if (Number.isFinite(n) && !allCounts.has(n)) out.push(m[0]) }
-  for (const m of prose.matchAll(/(?:\+84|0)(?:[\s.-]?\d){8,10}/g)) { if (!allPhones.has(m[0].replace(/\D/g, '').replace(/^84/, '0'))) out.push(m[0]) }
+  for (const m of prose.matchAll(/(?<![\d.,])(?:\+84|0)(?:[\s.-]?\d){8,10}(?!\d)/g)) { if (!allPhones.has(m[0].replace(/\D/g, '').replace(/^84/, '0'))) out.push(m[0]) }
   return out
 }
 
