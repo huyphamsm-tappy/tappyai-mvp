@@ -216,6 +216,21 @@ export function isRegistryFrontDoor(url: string): boolean {
  */
 const DISCONNECT_CLAIM = /(ch[ưu]a|kh[ôo]ng)\s+(k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)/iu
 
+// 🚨 A SECOND false-disconnect shape (cross-platform UAT, 15 Sep 2026): the model denies the
+// requested provider by OMISSION rather than negation — "bạn yêu cầu Trip.com nhưng hệ thống mình
+// CHỈ kết nối VỚI Booking.com và Agoda". The Trip.com card rendered correctly, so the limitation is
+// false. Matched only when the connectivity verb is followed by "với" (a connected-WITH scope claim,
+// not feature support like "chỉ hỗ trợ thẻ"); kept when the requested provider is itself in that list.
+const LIMITED_CONNECT = /ch[ỉi]\s+(?:hi[ệe]n\s+(?:t[ạa]i\s+)?)?(?:c[óo]\s+)?(?:k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)(?:\s+tr[ựu]c ti[ếe]p)?\s+v[ớo]i\b/iu
+
+function isFalseLimitationSentence(s: string, nameRe: RegExp): boolean {
+  const m = LIMITED_CONNECT.exec(s)
+  if (!m) return false
+  // If the requested provider is named AFTER "chỉ … với", it is IN the connected list — a true,
+  // positive statement ("chỉ kết nối với Trip.com") — never strip that.
+  return !nameRe.test(s.slice(m.index + m[0].length))
+}
+
 export function stripFalseDisconnectClaims(text: string, requestedProviderId?: string | null): string {
   if (!text || !requestedProviderId) return text
   const entry = PROVIDER_REGISTRY.find(e => e.providerId === requestedProviderId)
@@ -225,9 +240,31 @@ export function stripFalseDisconnectClaims(text: string, requestedProviderId?: s
   // Split into sentences at a "." / "!" / "?" that is FOLLOWED BY whitespace (so the "." inside
   // "Trip.com" never splits the name), and at newlines; keep every delimiter so a rejoin is lossless.
   const parts = text.split(/(?<=[.!?])(?=\s)|(?<=\S)(?=\n)/)
-  const kept = parts.filter(s => !(DISCONNECT_CLAIM.test(s) && nameRe.test(s)))
+  const kept = parts.filter(s => !(nameRe.test(s) && (DISCONNECT_CLAIM.test(s) || isFalseLimitationSentence(s, nameRe))))
   if (kept.length === parts.length) return text
   return kept.join('').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+/**
+ * 🚨 A markdown link WRAPPED in emphasis is untappable on Android (cross-platform UAT, 15 Sep 2026).
+ *
+ * The Android chat renderer (`TappyMarkdown`) is a single-pass scanner that does NOT recurse into
+ * bold/italic — its `**…**` handler appends the inner text verbatim — so `**[label](url)**` renders
+ * as raw, unclickable markdown there (the web parser handles it fine). The model wraps entertainment
+ * event/film handoff links in bold; a Ticketbox turn's `**[Chào Show…](ticketbox.vn/…)**` was dead on
+ * Android while the identical-shape, UN-bolded flight links tapped through. The canonical handoff must
+ * render on every client, so emphasis that surrounds a single markdown link is unwrapped here (the
+ * link, not the bold, is what matters). Only link-wrapping emphasis is touched; ordinary bold text is
+ * left alone.
+ */
+export function unemphasizeLinks(text: string): string {
+  if (!text) return text
+  const link = '\\[[^\\]\\n]+\\]\\([^)\\s]+\\)'
+  return text
+    .replace(new RegExp(`\\*\\*(${link})\\*\\*`, 'g'), '$1')
+    .replace(new RegExp(`(?<!\\*)\\*(${link})\\*(?!\\*)`, 'g'), '$1')
+    .replace(new RegExp(`__(${link})__`, 'g'), '$1')
+    .replace(new RegExp(`(?<!_)_(${link})_(?!_)`, 'g'), '$1')
 }
 
 /**

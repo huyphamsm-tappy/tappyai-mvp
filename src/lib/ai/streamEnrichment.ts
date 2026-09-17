@@ -13,7 +13,7 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
-import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims } from '@/lib/recommendation/ctaValidation'
+import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
@@ -1269,7 +1269,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // front door, a mislabelled destination — dropped; a promise on a results page — relabelled.
     // A false "chưa kết nối với <named provider>" claim is removed here too (the provider is in the
     // registry, so the claim is provably wrong — live UAT 15 Sep 2026, a Trip.com hotel turn).
-    const scaffoldStripped = stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId)
+    // …and any markdown link the model wrapped in bold/italic is un-emphasised, so Android's
+    // single-pass renderer (which does not recurse into `**…**`) still linkifies the handoff.
+    const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`

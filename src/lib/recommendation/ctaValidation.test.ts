@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { validateModelCtaButton, validateModelCtaButtons, promisedKind, unlinkMislabelledMerchantLinks, validateModelCtaBlock, isMisleadingModelCta, stripFalseDisconnectClaims } from './ctaValidation'
+import { validateModelCtaButton, validateModelCtaButtons, promisedKind, unlinkMislabelledMerchantLinks, validateModelCtaBlock, isMisleadingModelCta, stripFalseDisconnectClaims, unemphasizeLinks } from './ctaValidation'
 import { vi as viDict } from '@/lib/i18n/w5/placeDecision'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -217,5 +217,39 @@ describe('a false "chưa kết nối" claim about a connected provider is remove
   it('drops "không hỗ trợ Klook" when Klook was the named provider', () => {
     const out = stripFalseDisconnectClaims('Xin lỗi, mình không hỗ trợ Klook. Bạn thử cách khác nhé.', 'klook')
     expect(out).toBe('Bạn thử cách khác nhé.')
+  })
+  // 🚨 Denial by OMISSION: "chỉ kết nối với [other OTAs]" excludes the requested provider — false
+  // (its card renders). Live Android UAT T1, 15 Sep 2026.
+  it('drops "chỉ kết nối với Booking.com và Agoda" under a Trip.com request; keeps the rest', () => {
+    // Exact live phrasing (T1): "chỉ kết nối TRỰC TIẾP với …" — an adverb sits between verb and "với".
+    const text = 'Mình tìm được vài khách sạn ở Đà Nẵng cho ngày 10-12/10/2026. Tuy nhiên, bạn yêu cầu tìm trên Trip.com nhưng hệ thống mình chỉ kết nối trực tiếp với Booking.com và Agoda để xem giá phòng. Bạn bấm vào thẻ Trip.com bên dưới nhé.'
+    const out = stripFalseDisconnectClaims(text, 'tripcom')
+    expect(out).not.toContain('chỉ kết nối trực tiếp với Booking.com và Agoda')
+    expect(out).toContain('Mình tìm được vài khách sạn ở Đà Nẵng cho ngày 10-12/10/2026.')
+    expect(out).toContain('Bạn bấm vào thẻ Trip.com bên dưới nhé.')
+  })
+  it('KEEPS a true positive "chỉ kết nối với Trip.com" (requested provider is the one connected)', () => {
+    const text = 'Hiện mình chỉ kết nối với Trip.com cho khách sạn này.'
+    expect(stripFalseDisconnectClaims(text, 'tripcom')).toBe(text)
+  })
+  it('KEEPS "chỉ hỗ trợ thanh toán thẻ" — a feature limit, not a connectivity-scope claim', () => {
+    const text = 'Trip.com chỉ hỗ trợ thanh toán thẻ quốc tế.'
+    expect(stripFalseDisconnectClaims(text, 'tripcom')).toBe(text)
+  })
+})
+
+describe('a bold-wrapped markdown link is un-emphasised so Android linkifies it (cross-platform UAT, 15 Sep 2026)', () => {
+  it('unwraps **[label](url)** → [label](url) (the exact live Ticketbox shape); trailing prose untouched', () => {
+    const text = 'Mình tìm được: **[Chào Show - The Sound of Vietnam](https://ticketbox.vn/chao-show2026-25472)** — từ 19/9 đến 30/9.'
+    expect(unemphasizeLinks(text)).toBe('Mình tìm được: [Chào Show - The Sound of Vietnam](https://ticketbox.vn/chao-show2026-25472) — từ 19/9 đến 30/9.')
+  })
+  it('unwraps *italic*, __bold__ and _italic_ link wrappers', () => {
+    expect(unemphasizeLinks('*[a](https://x.vn/1)*')).toBe('[a](https://x.vn/1)')
+    expect(unemphasizeLinks('__[b](https://x.vn/2)__')).toBe('[b](https://x.vn/2)')
+    expect(unemphasizeLinks('_[c](https://x.vn/3)_')).toBe('[c](https://x.vn/3)')
+  })
+  it('leaves an UNwrapped link and ordinary bold text alone', () => {
+    expect(unemphasizeLinks('[Đặt vé Vietnam Airlines](https://www.vietnamairlines.com/)')).toBe('[Đặt vé Vietnam Airlines](https://www.vietnamairlines.com/)')
+    expect(unemphasizeLinks('Đây là **giá tốt nhất** cho bạn.')).toBe('Đây là **giá tốt nhất** cho bạn.')
   })
 })

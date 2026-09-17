@@ -186,6 +186,22 @@ describe('a NAMED merchant narrows the whole turn (Final local live UAT, 14 Sep 
     expect(result.agoda_link).toBe('https://www.agoda.com/vi-vn/')
   })
 
+  it('"… trên Traveloka" with only Agoda rows (Traveloka pages undiscoverable): the row\'s own Agoda URL is NOT a hint, so nothing resolves to Agoda (T5 leak regression, live UAT 15 Sep 2026)', async () => {
+    // The hotel rows come back as Agoda pages; Traveloka hotel pages are anti-bot, so discovery finds none.
+    // The row's own Agoda link must NOT be accepted as a hint under a Traveloka request (that was the leak).
+    const rows = [
+      { title: 'Oc Tien Sa Hotel Danang', link: 'https://www.agoda.com/vi-vn/oc-tien-sa-hotel-danang/hotel/da-nang-vn.html', snippet: '' },
+      { title: 'Dai Long Hotel Da Nang', link: 'https://www.agoda.com/vi-vn/dai-long-hotel-da-nang/hotel/da-nang-vn.html', snippet: '' },
+    ]
+    const result: Row = { search_results: rows, agoda_link: 'https://www.agoda.com/vi-vn/' }
+    await attachCommerceLinks('get_hotel_prices', result, { enabled: true, now: NOW, search: noSearch, location: 'Đà Nẵng', checkIn: '2026-10-10', checkOut: '2026-10-12', userTexts: ['Tìm khách sạn ở Đà Nẵng trên Traveloka nhận phòng 10/10/2026 trả phòng 12/10/2026'] })
+    const kept = result.search_results as Row[]
+    for (const r of kept) expect(links(r).filter(l => l.providerId === 'agoda')).toEqual([]) // no Agoda leak under a Traveloka request
+    for (const r of kept) expect(links(r)).toEqual([]) // and no fall-back to any other merchant either
+    expect(kept.every(r => r._tappy_requested_provider === 'traveloka')).toBe(true)
+    expect(result.agoda_link).toBeUndefined() // the result-level Agoda front door is dropped too
+  })
+
   it('"… qua ShopeeFood": the legacy GrabFood order link leaves the row; ShopeeFood\'s restaurant page is the handoff', async () => {
     const search = vi.fn(async (q: string) => q.includes('site:shopeefood.vn') ? [{ title: 'Phở 24 - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/pho-24-nguyen-tri-phuong', snippet: '' }] : [])
     const row = { name: 'Phở 24', address: 'Quận 1', order_links: [{ name: 'GrabFood', url: 'https://food.grab.com/vn/vi/restaurants?search=Ph%E1%BB%9F%2024' }, { name: 'BeFood', url: 'https://be.com.vn/' }] }
