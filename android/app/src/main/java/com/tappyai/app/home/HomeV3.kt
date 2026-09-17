@@ -88,8 +88,9 @@ private val V3DarkPalette = V3Palette(
     outline = Color(0xFF26314F),
     brandSpark = Color(0xFFFF9500),
     heroGlow = Color(0xFF3391FF).copy(alpha = 0.32f),
-    navIndicator = Color(0xFF2A2160),
-    navOnIndicator = Color(0xFFB9A6FF),
+    // The mockup's active pill: a saturated purple tint with a bright lavender glyph.
+    navIndicator = Color(0xFF3A2C86),
+    navOnIndicator = Color(0xFFDCD3FF),
     navContainer = Color(0xFF0A1020),
 )
 
@@ -308,8 +309,9 @@ private fun HeaderAction(
         modifier = Modifier
             .size(44.dp)
             .clip(CircleShape)
-            .background(HomeV3.Surface)
-            .border(1.dp, HomeV3.Outline, CircleShape)
+            // Lightweight: a translucent disc and a faint hairline, not three heavy buttons.
+            .background(HomeV3.Surface.copy(alpha = 0.55f))
+            .border(1.dp, HomeV3.Outline.copy(alpha = 0.6f), CircleShape)
             .clickable(onClickLabel = contentDescription, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {

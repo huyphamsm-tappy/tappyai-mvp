@@ -1,12 +1,15 @@
 package com.tappyai.app.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
@@ -21,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -32,6 +36,8 @@ import androidx.navigation.compose.rememberNavController
 import com.tappyai.app.chat.ChatScreen
 import com.tappyai.app.deals.DealsScreen
 import com.tappyai.app.explore.ExploreTab
+import com.tappyai.app.explore.ExploreFloatingDock
+import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.profile.ProfileTab
 import com.tappyai.core.common.UiState
 import com.tappyai.core.designsystem.component.TappyAppBar
@@ -93,6 +99,9 @@ fun HomeShellScreen(
     // Which tabs are currently showing a nested screen. See [ReportNestedScreen]: each tab's own
     // host writes its entry, and a tab with no entry is simply not nested.
     val nestedByTab = remember { mutableStateMapOf<HomeTab, Boolean>() }
+    // Explore reports "nested" even at its landing (it owns its header), so the immersive feed
+    // is told apart by the raw past-the-landing report instead.
+    val pastLandingByTab = remember { mutableStateMapOf<HomeTab, Boolean>() }
     val showsOwnHeader = nestedByTab[currentTab] == true
 
     // The V3 chrome belongs to the Home LANDING alone. Matching the tab is not enough on its own:
@@ -102,6 +111,14 @@ fun HomeShellScreen(
     // nested-screen mechanism already delivers answers this — Home's host reports `true` the
     // moment anything is pushed above its landing — so no second "at landing" signal is needed.
     val isHomeTab = matchedTab == HomeTab.Home && nestedByTab[HomeTab.Home] != true
+
+    /**
+     * The Explore LANDING (the feed) is immersive: the clip runs under the status bar and under
+     * the floating dock (reference "TappyAI — Immersive AI Discovery"). Nested Explore screens
+     * (profiles, search, the clip pager…) keep normal insets and sit above the dock. Same
+     * nested-screen report that [isHomeTab] reads.
+     */
+    val isExploreImmersive = currentTab == HomeTab.Explore && pastLandingByTab[HomeTab.Explore] != true
 
     /**
      * True while Chat's voice-listening state owns the surface.
@@ -141,7 +158,12 @@ fun HomeShellScreen(
             // While the listening scene owns the surface it paints its own status-bar area, so the
             // Scaffold must stop reserving one — otherwise a light strip sits above a full-bleed
             // dark scene. Every other state keeps the default insets untouched.
-            contentWindowInsets = if (chatImmersive) WindowInsets(0, 0, 0, 0) else ScaffoldDefaults.contentWindowInsets,
+            contentWindowInsets = if (chatImmersive || isExploreImmersive) WindowInsets(0, 0, 0, 0) else ScaffoldDefaults.contentWindowInsets,
+            // Explore is the V3 night surface from the status bar down (mockup 05_11_01). Its own
+            // header starts below the inset the Scaffold reserves, so the Scaffold paints that
+            // band in Explore's ground rather than the theme's — otherwise a grey strip sits above
+            // the brand header. Every other tab keeps the theme background it always had.
+            containerColor = if (currentTab == HomeTab.Explore) ExploreV3.Background else MaterialTheme.colorScheme.background,
             // Home carries the V3 identity header (brand + theme toggle + search + notifications);
             // every other tab keeps the standard app bar. The shell titles a TAB, and a nested
             // screen already draws its own header with a back arrow and its real name, so the
@@ -175,7 +197,10 @@ fun HomeShellScreen(
                 if (!isExpanded && !imeVisible) {
                     // The same TappyBottomNavBar, same items, same tab architecture — only the
                     // palette changes, and only while the Home landing is showing, so the other
-                    // tabs keep the app theme they have always had.
+                    // tabs keep the app theme they have always had. The Explore tab wears the
+                    // reference design's floating glass dock (same items, same indices, same
+                    // onSelect); on the feed it floats over the clip, on nested Explore screens
+                    // it floats over their ground.
                     val bar: @Composable () -> Unit = {
                         TappyBottomNavBar(
                             items = navItems,
@@ -183,7 +208,22 @@ fun HomeShellScreen(
                             onSelect = { index -> navController.selectTab(HomeTab.entries[index]) },
                         )
                     }
-                    if (isHomeTab) V3HomeTheme { bar() } else bar()
+                    when {
+                        currentTab == HomeTab.Explore -> ExploreFloatingDock(
+                            items = navItems,
+                            selectedIndex = currentTab.ordinal,
+                            onSelect = { index -> navController.selectTab(HomeTab.entries[index]) },
+                        )
+                        // Home wears the V3 palette and the mockup's hairline where the bar meets the
+                        // page; the bar itself (items, indices, onSelect) is the same component.
+                        isHomeTab -> V3HomeTheme {
+                            Column {
+                                HorizontalDivider(thickness = 1.dp, color = HomeV3.Outline)
+                                bar()
+                            }
+                        }
+                        else -> bar()
+                    }
                 }
             },
         ) { innerPadding ->
@@ -197,11 +237,14 @@ fun HomeShellScreen(
             } else {
                 CompositionLocalProvider(
                     LocalNestedScreenReporter provides { tab, nested -> nestedByTab[tab] = nested },
+                    LocalPastLandingReporter provides { tab, past -> pastLandingByTab[tab] = past },
                 ) {
                 NavHost(
                     navController = navController,
                     startDestination = HomeRoute.Home,
-                    modifier = Modifier.padding(innerPadding),
+                    // The immersive feed takes the whole surface and keeps its own clearance for
+                    // the dock (ExploreV3.DockClearance); every other screen is padded above it.
+                    modifier = if (isExploreImmersive) Modifier else Modifier.padding(innerPadding),
                 ) {
                     composable<HomeRoute.Home> {
                         HomeTabHost(
@@ -219,7 +262,13 @@ fun HomeShellScreen(
                     }
                     composable<HomeRoute.Chat> { ChatScreen(onImmersiveChanged = { chatImmersive = it }) }
                     composable<HomeRoute.Explore> {
-                        ExploreTab(onEditProfile = { navController.selectTab(HomeTab.Profile) })
+                        ExploreTab(
+                            onEditProfile = { navController.selectTab(HomeTab.Profile) },
+                            onSignIn = onSignIn,
+                            // ✦ Hỏi Tappy: the same Chat-with-prefill navigation Home and Deals
+                            // use — the native `/chat?q=` bridge, one prompt per clip.
+                            onAskTappy = { prefill -> navController.navigateToChatWithPrefill(prefill) },
+                        )
                     }
                     composable<HomeRoute.Deals> {
                         // The Deals V3 "ask Tappy" affordances route through the SAME prefill

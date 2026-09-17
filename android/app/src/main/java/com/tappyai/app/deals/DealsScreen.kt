@@ -475,12 +475,15 @@ private fun PlatformRail(deals: List<Deal>, onOpen: (Deal) -> Unit) {
  * The partner's mark, three-step fallback — BRAND_ASSETS.md §8, identical on every platform:
  *   1. the brand registry's official mark, which WINS for a known partner (Shopee, TikTok Shop,
  *      Grab…) — the marks the app is licensed to ship;
- *   2. the deal's own `logoImage` from the feed;
+ *   2. the deal's own `logoImage` from the feed — and, should that image fail to load, the
+ *      monogram below rather than a blank tile;
  *   3. a monogram tile in the category colour.
- * Never a brand logo the app does not have a licence to ship.
+ * Never a brand logo the app does not have a licence to ship. Shared with the Home "Ưu đãi hôm
+ * nay" rail (2026-09-14): one mark, the same three steps, on both surfaces the web's Deals card
+ * language reaches.
  */
 @Composable
-private fun PartnerMark(deal: Deal, size: androidx.compose.ui.unit.Dp) {
+internal fun PartnerMark(deal: Deal, size: androidx.compose.ui.unit.Dp) {
     if (hasBrandLogo(deal.partnerName)) {
         BrandLogo(partnerName = deal.partnerName, size = size, decorative = true)
         return
@@ -494,20 +497,24 @@ private fun PartnerMark(deal: Deal, size: androidx.compose.ui.unit.Dp) {
         contentAlignment = Alignment.Center,
     ) {
         val logo = deal.logoImage
-        if (logo != null) {
-            TappyImage(
-                url = logo,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier.fillMaxSize(),
-            )
-        } else {
+        val monogram: @Composable () -> Unit = {
             Text(
                 text = deal.partnerName.trim().take(1).uppercase(),
                 fontSize = (size.value * 0.42f).sp,
                 fontWeight = FontWeight.Bold,
                 color = colors.onContainer,
             )
+        }
+        if (logo != null) {
+            TappyImage(
+                url = logo,
+                contentDescription = null,
+                contentScale = ContentScale.Fit,
+                modifier = Modifier.fillMaxSize(),
+                onError = monogram,
+            )
+        } else {
+            monogram()
         }
     }
 }

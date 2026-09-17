@@ -138,9 +138,11 @@ describe('Android Deals renders the card the web renders', () => {
   it('shows a logo when there is one and an initial when there is not', () => {
     // Asserting that the string `deal.logoImage` merely APPEARS proves nothing — it appears inside
     // the image call too, so deleting the branch entirely still matches. These pin the branch.
-    expect(screen).toMatch(/val logo = deal\.logoImage\s*\n\s*if \(logo != null\) \{/)
-    expect(screen).toMatch(/TappyImage\(\s*url = logo,/)
+    expect(screen).toMatch(/val logo = deal\.logoImage/)
+    expect(screen).toMatch(/if \(logo != null\) \{\s*\n\s*TappyImage\(\s*url = logo,/)
+    // The monogram is hoisted into a lambda so it also serves as the image's onError fallback.
     expect(screen).toMatch(/deal\.partnerName\.trim\(\)\.take\(1\)\.uppercase\(\)/)
+    expect(screen).toMatch(/onError = monogram/)
   })
 
   it('reloads the feed when the app language changes', () => {

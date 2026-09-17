@@ -55,14 +55,6 @@
     <string name="home_games_title">🎮 Games</string>
     <string name="home_games_desc">Quick fun &amp; relaxation</string>
 
-    <string name="home_section_fortune">🔮 Fortune today</string>
-    <string name="home_fortune_tarot_title">Tarot</string>
-    <string name="home_fortune_tarot_description">Discover messages from the universe</string>
-    <string name="home_fortune_horoscope_title">Horoscope</string>
-    <string name="home_fortune_horoscope_description">Fortune by your zodiac year</string>
-    <string name="home_fortune_zodiac_title">Zodiac</string>
-    <string name="home_fortune_zodiac_description">Fortune by your birth date</string>
-
     <string name="home_tab_home">Home</string>
     <string name="home_tab_chat">Chat</string>
     <string name="home_tab_explore">Explore</string>
@@ -89,7 +81,7 @@
     <string name="home_v3_deals_see_all">See all</string>
     <string name="home_v3_deals_subtitle">Offers picked from Tappy partners</string>
     <string name="home_v3_deals_title">Deals today</string>
-    <string name="home_v3_greeting_generic">Hi there! \uD83D\uDC4B</string>
+    <string name="home_v3_greeting_generic">Hello! \uD83D\uDC4B</string>
     <string name="home_v3_greeting_named">Hi %1$s! \uD83D\uDC4B</string>
     <string name="home_v3_hero_tagline">What can TappyAI help you with today?</string>
     <string name="home_v3_notifications">Notifications</string>
@@ -99,6 +91,15 @@
     <string name="home_v3_quick_plan">Plan my weekend</string>
     <string name="home_v3_quick_plan_prompt">Help me plan this weekend</string>
     <string name="home_v3_quick_splitbill">Split a bill 4 ways</string>
+    <!-- Home V3 front page (owner mockup 2026-09-14): hero status pills + quick-suggestion blurbs -->
+    <string name="home_v3_status_ready">Always ready</string>
+    <string name="home_v3_status_traits">Fast · Accurate · Helpful</string>
+    <string name="home_v3_quick_cafe_desc">Hot spots for you</string>
+    <string name="home_v3_quick_translate_desc">Fast and accurate</string>
+    <string name="home_v3_quick_splitbill_desc">Quick and fair</string>
+    <string name="home_v3_quick_caption_desc">Creative, engaging</string>
+    <string name="home_v3_quick_travel_desc">Based on your taste</string>
+    <string name="home_v3_quick_plan_desc">A detailed itinerary</string>
     <string name="home_v3_quick_title">Quick suggestions</string>
     <string name="home_v3_quick_translate">Translate this text</string>
     <string name="home_v3_quick_travel">Travel spot ideas</string>
@@ -106,6 +107,35 @@
     <string name="home_v3_search">Search</string>
     <string name="home_v3_secondary_title">Tools &amp; extras</string>
     <string name="home_v3_smart_tools_title">Smart Tools</string>
+    <!-- Smart Tools (web /tools parity): the catalogue page and its cards. Labels mirror the web
+         registry (src/lib/tools/registry.ts + src/lib/i18n/v3/web.ts) one for one. -->
+    <string name="smart_tools_blurb">Useful utilities, built to help you every day</string>
+    <string name="smart_tools_search_hint">Find a tool…</string>
+    <string name="smart_tools_search_empty">No tool matches</string>
+    <string name="smart_tools_see_all">See all</string>
+    <string name="smart_tools_auth_hint">Sign-in required</string>
+    <string name="smart_tools_cta">Do more with TappyAI</string>
+    <string name="smart_tools_group_daily">Everyday</string>
+    <string name="smart_tools_group_discover">Discover</string>
+    <string name="smart_tools_group_fun">Fun</string>
+    <string name="smart_tool_scan">Scan Documents</string>
+    <string name="smart_tool_scan_desc">Photograph a document or receipt and extract it</string>
+    <string name="smart_tool_translate">Translate</string>
+    <string name="smart_tool_translate_desc">Fast translation in 100+ languages</string>
+    <string name="smart_tool_currency">Currency Converter</string>
+    <string name="smart_tool_currency_desc">Convert VND, USD, EUR, JPY and more</string>
+    <string name="smart_tool_split">Split the Bill</string>
+    <string name="smart_tool_split_desc">Split a bill evenly, by person or by item</string>
+    <string name="smart_tool_safety">Safety Check</string>
+    <string name="smart_tool_safety_desc">Check a link, website or QR code is safe</string>
+    <string name="smart_tool_together">Tappy Together</string>
+    <string name="smart_tool_together_desc">Find somewhere that suits the whole group</string>
+    <string name="smart_tool_music">Music Library</string>
+    <string name="smart_tool_music_desc">Find a soundtrack for your review</string>
+    <string name="smart_tool_fortune">Fortune Today</string>
+    <string name="smart_tool_fortune_desc">Today&#8217;s reading for your sign</string>
+    <string name="smart_tool_captions">Social Captions</string>
+    <string name="smart_tool_captions_desc">Write captions for FB, TikTok and Instagram</string>
     <string name="home_v3_theme_to_dark">Turn on dark mode</string>
     <string name="home_v3_theme_to_light">Turn off dark mode</string>
     <string name="home_videos_likes">%1$s likes</string>

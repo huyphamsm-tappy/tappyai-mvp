@@ -17,8 +17,8 @@ import java.io.File
  *
  * What changed at V3 is the SHAPE those rules take. The hero is `V3HeroSection` + `V3AskBar`
  * (not `HomeHero`); the tools that P4-11 kept as separate sections (Scan, Content Writer, Music,
- * Tappy Together) are now TILES of one `SmartToolsSection` at the foot of the page; and Fortune is
- * part of the discovery content in the middle of the page, not a tool. So this test asserts the
+ * Tappy Together) are now TILES of one `SmartToolsSection` at the foot of the page; and Fortune
+ * (2026-09-14) is a Smart Tools destination rather than a Home section. So this test asserts the
  * rules against the V3 sections and the V3 order, and no longer looks for the P4-11 section names.
  *
  * Asserted against the composable's source rather than through a Compose UI test, for the same
@@ -99,7 +99,7 @@ class HomeAiFirstTest {
         // The AI block and the content sections all sit above it — including Continue.
         for (section in listOf(
             "V3AskBar", "V3QuickSuggestionsSection", "V3RecommendationsSection",
-            "CategoryChipsSection", "FortuneSection", "SuggestionsSection", "RecentActivitySection",
+            "CategoryChipsSection", "SuggestionsSection", "RecentActivitySection",
         )) {
             val index = at(section)
             assertTrue("$section must exist", index >= 0)
@@ -108,20 +108,44 @@ class HomeAiFirstTest {
     }
 
     @Test
-    fun `personalization leads the content, and Fortune is discovery rather than a tool`() {
+    fun `personalization leads the content`() {
         val quick = at("V3QuickSuggestionsSection")
         val recommendations = at("V3RecommendationsSection")
-        val fortune = at("FortuneSection")
-        val tools = at("SmartToolsSection")
 
         // "Gợi ý dành cho bạn" is the first content section after the AI block: what Tappy has
         // picked for this person outranks any catalogue of features.
         assertTrue("recommendations must exist", recommendations >= 0)
         assertTrue("recommendations follow the AI block", quick < recommendations)
-        // Fortune stays on Home as part of the discovery run between the recommendations and the
-        // tools. It is deliberately NOT classed as a tool, so no ordering against Continue applies.
-        assertTrue("Fortune must exist", fortune >= 0)
-        assertTrue("Fortune sits inside the discovery content", fortune in (recommendations + 1) until tools)
+    }
+
+    @Test
+    fun `Fortune is a Smart Tools destination, not a Home section - Home flows from the categories into the suggestions`() {
+        // 2026-09-14: the "Xem bói hôm nay" tiles were removed from Home because the Fortune hub
+        // is already a Smart Tools destination; nothing on Home renders it any more.
+        assertEquals("no Fortune section call", -1, at("FortuneSection"))
+        assertTrue("no Fortune section definition", !source.contains("fun FortuneSection(") && !source.contains("class FortuneEntry("))
+        assertTrue("HomeScreen takes no Fortune callbacks", !Regex("""onOpen(Tarot|TuVi|Zodiac)""").containsMatchIn(source))
+        val order = renderOrder()
+        assertEquals("the categories lead straight into the suggestions", order.indexOf("CategoryChipsSection") + 1, order.indexOf("SuggestionsSection"))
+
+        // It is still reachable: the registry lists it, and the Home tab hosts the hub and its
+        // three readings on the same routes as before.
+        val registry = readSibling("SmartTools.kt")
+        assertTrue("the registry still exposes Fortune", registry.contains("SmartTool(SmartToolId.Fortune,"))
+        val host = readSibling("HomeTabHost.kt")
+        assertTrue("Smart Tools → Fortune hub", host.contains("SmartToolId.Fortune -> navController.navigate(FortuneRoute.Hub)"))
+        for (route in listOf("Hub", "Tarot", "TuVi", "Zodiac")) assertTrue("FortuneRoute.$route is hosted", host.contains("composable<FortuneRoute.$route>"))
+        assertTrue("the Home tab no longer wires the removed callbacks", !Regex("""onOpen(Tarot|TuVi|Zodiac) = \{ navController\.navigate\(FortuneRoute\.\w+\) \},\s*onOpenTranslate""").containsMatchIn(host))
+    }
+
+    private fun readSibling(name: String): String {
+        var dir: File? = File(".").absoluteFile
+        while (dir != null) {
+            val f = File(dir, "app/src/main/java/com/tappyai/app/home/$name")
+            if (f.isFile) return f.readText()
+            dir = dir.parentFile
+        }
+        error("$name not found")
     }
 
     // ── Rule 3: no tool was removed ─────────────────────────────────────────────────────────
@@ -130,20 +154,23 @@ class HomeAiFirstTest {
     fun `no tool was removed to make Home AI-first`() {
         // DD-002: the tools P4-11 kept as their own sections now live as tiles of one drawer. The
         // inventory is the same; a tidy-up that drops one fails here rather than in production.
+        // 2026-09-13: the drawer previews the registry's cards (SmartTools.kt), so a tool is named
+        // by its registry id here rather than by a string key — the inventory rule is unchanged.
         val drawer = definitionOf("SmartToolsSection")
         val required = mapOf(
-            "Scan" to "home_scan_title",
-            "Content Writer" to "home_content_writer_title",
-            "Music" to "home_music_title",
-            "Tappy Together" to "home_together_title",
+            "Scan" to "SmartToolId.Scan",
+            "Content Writer" to "SmartToolId.Captions",
+            "Music" to "SmartToolId.Music",
+            "Tappy Together" to "SmartToolId.Together",
             // Canonical since D-series: Home is the entry to Scam Shield, and it must stay one.
-            "Scam Shield" to "home_scam_shield_title",
+            "Scam Shield" to "SmartToolId.Safety",
         )
-        val missing = required.filter { (_, key) -> !drawer.contains("R.string.$key") }.keys.toList()
+        val missing = required.filter { (_, key) -> !drawer.contains(key) }.keys.toList()
         assertEquals("DD-002: tools are de-emphasised, never removed", emptyList<String>(), missing)
 
-        // The discovery sections P4-11 also promised to keep.
-        val missingSections = listOf("FortuneSection", "CategoryChipsSection").filter { at(it) < 0 }
+        // The discovery section P4-11 also promised to keep. (Fortune left Home on 2026-09-14 —
+        // not removed from the product: it is a Smart Tools destination, asserted below.)
+        val missingSections = listOf("CategoryChipsSection").filter { at(it) < 0 }
         assertEquals("discovery sections are kept", emptyList<String>(), missingSections)
     }
 

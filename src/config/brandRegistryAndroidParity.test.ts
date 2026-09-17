@@ -182,7 +182,10 @@ describe('the Deals card walks the §8 fallback chain', () => {
 
     const registryAt = screen.indexOf('hasBrandLogo(deal.partnerName)')
     const logoImageAt = screen.indexOf('if (logo != null)')
-    const initialAt = screen.indexOf('deal.partnerName.trim().take(1).uppercase()')
+    // The initial is declared as a lambda ABOVE the branch (it is also the image's onError
+    // fallback); what the chain guarantees is that it is used only when the image is absent or
+    // fails, so the order asserted is registry → image branch, then the fallback wiring.
+    const initialAt = screen.indexOf('onError = monogram')
     expect(registryAt).toBeGreaterThan(-1)
     expect(logoImageAt).toBeGreaterThan(registryAt)
     expect(initialAt).toBeGreaterThan(logoImageAt)

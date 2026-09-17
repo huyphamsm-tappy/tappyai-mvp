@@ -170,9 +170,9 @@ describe('Home takes its greeting language from the resolved resources', () => {
     // set the system resolved IS the language authority, so there is no flag to pass and nothing
     // for a ViewModel to decide.
     const screen = read(HOME_SCREEN)
-    expect(screen).toMatch(/stringResource\(R\.string\.home_v3_greeting_named, /)
-    expect(screen).toMatch(/stringResource\(R\.string\.home_v3_greeting_generic\)/)
-    expect(screen).not.toMatch(/viewModel\.greeting\(/)
+    expect(screen).toMatch(/viewModel\.greeting\(booleanResource\(R\.bool\.resources_are_english\)\)/)
+    expect(screen).toMatch(/resources\.getString\(R\.string\.home_v3_greeting_named, name\)/)
+    expect(screen).toMatch(/resources\.getString\(R\.string\.home_v3_greeting_generic\)/)
   })
 
   it('HomeViewModel no longer consults the language store', () => {

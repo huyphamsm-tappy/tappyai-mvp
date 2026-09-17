@@ -4,17 +4,32 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import com.tappyai.app.home.HomeV3
+import com.tappyai.app.tools.ToolBubble
+import com.tappyai.app.tools.ToolCard
+import com.tappyai.app.tools.ToolCta
+import com.tappyai.app.tools.ToolHero
+import com.tappyai.app.tools.ToolHue
+import com.tappyai.app.tools.ToolNote
+import com.tappyai.app.tools.ToolOrbit
+import com.tappyai.app.tools.ToolTextField
+import com.tappyai.app.tools.ToolV3Page
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.GppBad
@@ -22,7 +37,6 @@ import androidx.compose.material.icons.filled.GppGood
 import androidx.compose.material.icons.filled.GppMaybe
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +46,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -41,10 +54,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
-import com.tappyai.core.designsystem.component.TappyButton
-import com.tappyai.core.designsystem.component.TappyCard
-import com.tappyai.core.designsystem.component.TappyTextField
-import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappyShapes
 import com.tappyai.core.designsystem.theme.TappySpacing
 
@@ -76,66 +85,66 @@ fun ScamShieldScreen(
     onBack: () -> Unit,
     viewModel: ScamShieldViewModel = hiltViewModel(),
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
-                }
-                Text(stringResource(R.string.scam_shield_title), style = MaterialTheme.typography.titleLarge)
-            }
+    ToolV3Page(onBack = onBack) {
+        ToolHero(
+            hue = ToolHue.Navy,
+            eyebrow = stringResource(R.string.tool_scam_eyebrow),
+            title1 = stringResource(R.string.tool_scam_title1),
+            title2 = stringResource(R.string.tool_scam_title2),
+            body = stringResource(R.string.tool_scam_body),
+            mascotRes = R.drawable.tappy_recommendation,
+            scene = { ScamScene() },
+        )
 
-            Text(
-                text = stringResource(R.string.scam_shield_subtitle),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-
-            TappyTextField(
+        // The check card (`.v3-scam-input` + CTA): the url field with the link glyph, then the CTA.
+        ToolCard(title = stringResource(R.string.scam_shield_url_label), icon = Icons.Filled.Link) {
+            ToolTextField(
                 value = viewModel.url,
                 onValueChange = viewModel::onUrlChange,
-                label = stringResource(R.string.scam_shield_url_label),
                 placeholder = stringResource(R.string.scam_shield_url_placeholder),
                 keyboardType = KeyboardType.Uri,
-                enabled = viewModel.state !is ScamShieldUiState.Checking,
-                modifier = Modifier.fillMaxWidth(),
+                leadingIcon = { Icon(Icons.Filled.Link, contentDescription = null, tint = HomeV3.OnSurfaceVariant) },
             )
-
-            TappyButton(
+            ToolCta(
                 text = stringResource(
                     if (viewModel.state is ScamShieldUiState.Checking) R.string.scam_shield_checking
                     else R.string.scam_shield_check,
                 ),
+                hue = ToolHue.Navy,
+                icon = Icons.Filled.Shield,
                 onClick = viewModel::check,
                 enabled = viewModel.url.isNotBlank(),
                 loading = viewModel.state is ScamShieldUiState.Checking,
-                modifier = Modifier.fillMaxWidth(),
-            )
-
-            when (val state = viewModel.state) {
-                is ScamShieldUiState.Idle, is ScamShieldUiState.Checking -> Unit
-                is ScamShieldUiState.Result -> VerdictCard(state.result)
-                is ScamShieldUiState.Failed -> UnresolvedCard(state.failure)
-            }
-
-            Text(
-                text = stringResource(R.string.scam_shield_disclaimer),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+
+        when (val state = viewModel.state) {
+            is ScamShieldUiState.Idle, is ScamShieldUiState.Checking -> Unit
+            is ScamShieldUiState.Result -> VerdictCard(state.result)
+            is ScamShieldUiState.Failed -> UnresolvedCard(state.failure)
+        }
+
+        ToolNote(text = stringResource(R.string.scam_shield_disclaimer), icon = Icons.Outlined.Info)
     }
+}
+
+/** The hero scene: a shield glyph in a glowing ring with two link chips, as on the web. */
+@Composable
+private fun BoxScope.ScamScene() {
+    ToolOrbit(size = 220.dp, alignment = Alignment.Center, modifier = Modifier.offset(y = 6.dp))
+    Box(
+        modifier = Modifier
+            .align(Alignment.TopEnd)
+            .offset(x = (-30).dp, y = 4.dp)
+            .size(72.dp)
+            .clip(CircleShape)
+            .background(Brush.linearGradient(listOf(Color(0xFF7C3AED), Color(0xFF4F6BFF)))),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(Icons.Filled.Shield, contentDescription = null, tint = Color.White, modifier = Modifier.size(36.dp))
+    }
+    ToolBubble(text = "https://…", a = Color(0xFF1E293B), b = Color(0xFF334155), alignment = Alignment.TopStart, modifier = Modifier.offset(x = 6.dp, y = 10.dp))
+    ToolBubble(text = "✓ OK", a = Color(0xFF059669), b = Color(0xFF34D399), alignment = Alignment.CenterStart, modifier = Modifier.offset(x = 12.dp, y = 28.dp))
 }
 
 /**
@@ -165,12 +174,17 @@ private fun VerdictCard(result: ScamCheckResult) {
     val appearance = appearanceFor(result.level)
     var evidenceOpen by remember { mutableStateOf(false) }
 
-    TappyCard(modifier = Modifier.fillMaxWidth()) {
+    ToolCard(accent = true) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         ) {
-            Icon(appearance.icon, contentDescription = null, tint = appearance.color, modifier = Modifier.size(32.dp))
+            Box(
+                modifier = Modifier.size(52.dp).clip(RoundedCornerShape(16.dp)).background(appearance.color.copy(alpha = 0.18f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(appearance.icon, contentDescription = null, tint = appearance.color, modifier = Modifier.size(28.dp))
+            }
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = stringResource(appearance.labelRes),
@@ -283,19 +297,25 @@ private fun UnresolvedCard(failure: ScamCheckFailure) {
         ScamCheckFailure.Unknown -> stringResource(R.string.scam_shield_error_generic)
     }
 
-    TappyCard(modifier = Modifier.fillMaxWidth()) {
+    // Neutral slate, like the web's unresolved state: visibly not a verdict either way.
+    ToolCard {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         ) {
-            Icon(Icons.Filled.GppMaybe, contentDescription = null, tint = Color(0xFF64748B), modifier = Modifier.size(28.dp))
-            Column {
+            Box(
+                modifier = Modifier.size(52.dp).clip(RoundedCornerShape(16.dp)).background(Color(0x2E64748B)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(Icons.Filled.GppMaybe, contentDescription = null, tint = Color(0xFF94A3B8), modifier = Modifier.size(28.dp))
+            }
+            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = stringResource(R.string.scam_shield_unresolved_title),
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
                 )
-                Text(text = message, style = MaterialTheme.typography.bodySmall)
+                Text(text = message, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     }

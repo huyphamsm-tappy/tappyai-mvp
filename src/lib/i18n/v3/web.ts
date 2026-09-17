@@ -632,7 +632,8 @@ export const vi: Record<string, string> = {
   'v3.profile.statFollowing': 'Đang theo dõi',
   'v3.profile.statFollowers': 'Người theo dõi',
   'v3.profile.statLikes': 'Lượt thích',
-  // Tabs — one per dataset that has a real, safety-gated endpoint behind it.
+  // The five personal collections — the Android self profile's wording, in its order
+  // (Bài viết / Đã thích / Đã lưu / Đã ẩn / Đã share). Places is a separate surface.
   'v3.profile.tabPosts': 'Bài viết',
   'v3.profile.tabSaved': 'Đã lưu',
   'v3.profile.tabPlaces': 'Địa điểm',
@@ -667,6 +668,16 @@ export const vi: Record<string, string> = {
   'v3.profile.seeAll': 'Xem tất cả',
   'v3.profile.contentTitle': 'Nội dung của bạn',
   'v3.notifications.body': 'Quản lý thông báo đẩy, email và nhắc lịch trong phần cài đặt.',
+  // ── Profile collections (Android parity, integration/v3-canonical) ─────────
+  'v3.profile.tabLiked': 'Đã thích',
+  'v3.profile.tabHidden': 'Đã ẩn',
+  'v3.profile.tabShared': 'Đã share',
+  'v3.profile.emptyLiked': 'Bạn chưa thích bài viết nào.',
+  'v3.profile.emptyHidden': 'Bạn chưa ẩn bài viết nào.',
+  'v3.profile.emptyShared': 'Bạn chưa chia sẻ bài viết nào.',
+  'v3.profile.hiddenBadge': 'Đã ẩn',
+  'v3.profile.unhide': 'Hiện lại',
+  'v3.profile.retry': 'Thử lại',
 }
 
 export const en: Record<string, string> = {
@@ -1254,4 +1265,14 @@ export const en: Record<string, string> = {
   'v3.profile.seeAll': 'See all',
   'v3.profile.contentTitle': 'Your content',
   'v3.notifications.body': 'Manage push, email and reminders in settings.',
+  // ── Profile collections (Android parity, integration/v3-canonical) ─────────
+  'v3.profile.tabLiked': 'Liked',
+  'v3.profile.tabHidden': 'Hidden',
+  'v3.profile.tabShared': 'Shared',
+  'v3.profile.emptyLiked': "You haven't liked any posts yet.",
+  'v3.profile.emptyHidden': "You haven't hidden any posts.",
+  'v3.profile.emptyShared': "You haven't shared any posts yet.",
+  'v3.profile.hiddenBadge': 'Hidden',
+  'v3.profile.unhide': 'Show again',
+  'v3.profile.retry': 'Try again',
 }

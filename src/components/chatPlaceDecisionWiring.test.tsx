@@ -163,11 +163,14 @@ describe('the delivery channel stays the safe one', () => {
     expect(stream).toMatch(/const batchTikTok = cardOwnsEnrichment \? undefined :/)
   })
 
-  it('only the web surface is told to stop repeating the card facts', () => {
+  it('only the card-capable surfaces are told to stop repeating the card facts', () => {
     // The prompt is shared with clients that have no card; telling them the same
     // thing would delete the rating and the address from their only channel.
+    // Which surfaces are card-capable is decided in ONE place (decisionSurface.ts:
+    // web + android); the route reads the header through it and nowhere else.
     const route = read('src/app/api/chat/route.ts')
-    expect(route).toMatch(/x-tappy-surface'\) === 'web'/)
+    expect(route).toMatch(/const rendersDecisionCard = rendersDecisionCardFor\(surfaceHeader\)/)
+    expect(route).not.toMatch(/x-tappy-surface'\) === 'web'/)
     expect(route).toMatch(/rendersDecisionCard \? buildRenderedDecisionBlock\(\) : ''/)
   })
 })

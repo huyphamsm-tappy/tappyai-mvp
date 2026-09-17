@@ -1,6 +1,14 @@
 <resources>
     <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
     <string name="settings_title">Cài đặt</string>
+    <string name="settings_subtitle">Tùy chỉnh TappyAI theo cách bạn muốn</string>
+    <string name="settings_notifications_desc">Quản lý thông báo từ TappyAI</string>
+    <string name="settings_memory_desc">Xem và quản lý thông tin Tappy đã nhớ</string>
+    <string name="settings_language_desc">Chọn ngôn ngữ hiển thị</string>
+    <string name="settings_how_to_use_desc">Tìm hiểu cách sử dụng TappyAI</string>
+    <string name="settings_terms_of_service_desc">Xem điều khoản và điều kiện</string>
+    <string name="settings_privacy_policy_desc">Cách chúng tôi bảo vệ dữ liệu của bạn</string>
+    <string name="settings_delete_account_desc">Gửi yêu cầu xóa tài khoản và dữ liệu của bạn</string>
     <string name="settings_section_options">Tùy chọn</string>
     <string name="settings_notifications">Thông báo</string>
     <string name="settings_memory">Bộ nhớ</string>
@@ -39,6 +47,19 @@
     <string name="profile_settings_subtitle">Ngôn ngữ, thông báo, giao diện</string>
     <string name="profile_header_title">Hồ sơ của bạn</string>
     <string name="profile_header_subtitle">Đăng nhập để cá nhân hóa</string>
+    <string name="profile_v3_subtitle">Quản lý tài khoản và cá nhân hóa trải nghiệm của bạn với TappyAI</string>
+    <string name="profile_menu_account_desc">Quản lý thông tin cá nhân</string>
+    <string name="profile_menu_chat_history_desc">Xem và quản lý lịch sử</string>
+    <string name="profile_menu_bookings_desc">Quản lý các đặt chỗ của bạn</string>
+    <string name="profile_menu_preferences_desc">Nội dung và chủ đề bạn quan tâm</string>
+    <string name="profile_menu_saved_desc">Bài viết, địa điểm, ưu đãi đã lưu</string>
+    <string name="profile_menu_price_tracking_desc">Sản phẩm và dịch vụ bạn quan tâm</string>
+    <string name="profile_menu_tappy_knows_desc">Xem và quản lý thông tin Tappy đã nhớ</string>
+    <string name="profile_menu_app_connections_desc">Ứng dụng đã liên kết với tài khoản</string>
+    <string name="profile_menu_my_reviews_desc">Những đánh giá bạn đã đăng</string>
+    <string name="profile_menu_group_dining_desc">Cùng nhóm chọn địa điểm ăn uống</string>
+    <string name="profile_privacy_card_title">Quyền riêng tư &amp; Bảo mật</string>
+    <string name="profile_privacy_card_subtitle">An toàn dữ liệu, an tâm trải nghiệm</string>
     <string name="profile_qr_button_content_description">Hiển thị hồ sơ QR</string>
     <string name="profile_qr_default_name">Hồ sơ của tôi</string>
     <string name="profile_qr_scan_subtitle">Quét để xem hồ sơ</string>

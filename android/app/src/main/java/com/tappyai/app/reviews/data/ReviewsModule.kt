@@ -30,4 +30,8 @@ abstract class ReviewsBindModule {
     @Binds
     @Singleton
     abstract fun bindReviewsRepository(impl: RealReviewsRepository): ReviewsRepository
+
+    /** The Edit Profile avatar read, behind an interface so its ViewModel is testable. */
+    @Binds
+    abstract fun bindPickedImageReader(impl: ContentResolverImageReader): PickedImageReader
 }

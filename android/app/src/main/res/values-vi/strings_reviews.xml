@@ -102,6 +102,7 @@
     <string name="reviews_share_copied_label">Đã chép</string>
     <string name="reviews_share_copy_label">Sao chép</string>
     <string name="reviews_share_fallback_text">TappyAI Review</string>
+    <string name="reviews_share_preparing">Đang chuẩn bị chia sẻ…</string>
 
     <!-- Feed -->
     <string name="reviews_feed_title">Bài viết</string>
@@ -133,4 +134,43 @@
     <string name="reviews_post_error_too_long">Nội dung quá dài. Vui lòng rút gọn.</string>
     <string name="reviews_post_error_rate_limited">Bạn đã đăng quá nhiều bài hôm nay. Thử lại vào ngày mai nhé!</string>
     <string name="reviews_post_error_generic">Không thể đăng bài. Vui lòng thử lại.</string>
+
+    <!-- Khám phá → Hồ sơ của tôi (V3, mockup 05_17_48) -->
+    <string name="reviews_self_profile_open">Hồ sơ của tôi</string>
+    <string name="reviews_self_profile_title">Hồ sơ của tôi</string>
+    <string name="reviews_self_stat_following">Đang theo dõi</string>
+    <string name="reviews_self_stat_followers">Người theo dõi</string>
+    <string name="reviews_self_premium">Premium</string>
+    <string name="reviews_self_edit_profile">Sửa hồ sơ</string>
+    <string name="reviews_self_share_link">Chia sẻ liên kết hồ sơ</string>
+    <string name="reviews_self_new_post">Đăng bài mới</string>
+    <string name="reviews_self_tab_posts">Bài viết</string>
+    <string name="reviews_self_tab_saved">Đã lưu</string>
+    <string name="reviews_self_saved_empty_title">Chưa lưu bài nào</string>
+    <string name="reviews_self_saved_empty_message">Bài bạn lưu từ Khám phá sẽ hiển thị ở đây, chỉ mình bạn thấy.</string>
+    <string name="reviews_self_empty_title">Chưa có bài viết</string>
+    <string name="reviews_self_empty_message">Clip bạn đăng sẽ hiển thị ở đây.</string>
+    <string name="reviews_self_share_text">Hồ sơ TappyAI của mình: %1$s</string>
+    <!-- Khám phá → Hồ sơ của tôi → Sửa hồ sơ (V3) -->
+    <string name="reviews_self_edit_title">Sửa hồ sơ</string>
+    <string name="reviews_self_profile_sign_in_title">Đăng nhập để xem hồ sơ của bạn</string>
+    <string name="reviews_self_profile_sign_in_body">Bài viết, mục đã lưu và cài đặt hồ sơ gắn với tài khoản của bạn. Hãy đăng nhập để sử dụng.</string>
+    <string name="reviews_self_edit_save">Lưu</string>
+    <string name="reviews_self_edit_saved">Đã lưu hồ sơ</string>
+    <string name="reviews_self_edit_change_avatar">Đổi ảnh đại diện</string>
+    <string name="reviews_self_edit_name_label">Tên hiển thị</string>
+    <string name="reviews_self_edit_name_placeholder">Tên của bạn</string>
+    <string name="reviews_self_edit_name_required">Tên hiển thị không được để trống.</string>
+    <string name="reviews_self_edit_bio_label">Tiểu sử</string>
+    <string name="reviews_self_edit_bio_placeholder">Giới thiệu đôi chút về bạn</string>
+    <string name="reviews_self_edit_scope_note">@handle của bạn lấy từ tên hiển thị. Website và vị trí chưa hỗ trợ.</string>
+    <!-- Explore immersive feed (reference design "TappyAI — Immersive AI Discovery", 2026-09-13) -->
+    <string name="reviews_feed_tagline">Discover something better</string>
+    <string name="reviews_ask_tappy">Hỏi Tappy</string>
+    <string name="reviews_ask_tappy_prefill">Cho mình biết thêm về %1$s</string>
+    <string name="reviews_action_more">Thêm</string>
+    <string name="reviews_action_unsave">Bỏ lưu</string>
+    <string name="reviews_sound_original">Âm thanh gốc - %1$s</string>
+    <string name="reviews_sound_attached">Âm thanh đính kèm</string>
+    <string name="reviews_creator_open_profile">Mở hồ sơ %1$s</string>
 </resources>

@@ -22,6 +22,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.tappyai.core.designsystem.theme.TappyAITheme
@@ -50,10 +52,17 @@ fun TappyMenuRow(
     valueText: String? = null,
     showChevron: Boolean = true,
     danger: Boolean = false,
+    /** V3 (2026-09-14): a solid accent tile with a white glyph instead of the neutral tile.
+     *  Null keeps the neutral tile — every existing caller is unchanged. */
+    accent: Color? = null,
+    /** V3: the trailing value's colour (e.g. a green "On"). Null keeps the muted default. */
+    valueColor: Color? = null,
+    /** V3: the title's weight. Null keeps the default (regular). */
+    titleFontWeight: FontWeight? = null,
 ) {
     val colors = MaterialTheme.colorScheme
-    val tileBackground = if (danger) colors.errorContainer else colors.surfaceVariant
-    val iconTint = if (danger) colors.error else colors.onSurfaceVariant
+    val tileBackground = accent ?: if (danger) colors.errorContainer else colors.surfaceVariant
+    val iconTint = if (accent != null) Color.White else if (danger) colors.error else colors.onSurfaceVariant
     val titleColor = if (danger) colors.error else colors.onSurface
 
     Row(
@@ -79,7 +88,7 @@ fun TappyMenuRow(
             )
         }
         Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, style = MaterialTheme.typography.bodyLarge, color = titleColor)
+            Text(text = title, style = MaterialTheme.typography.bodyLarge, color = titleColor, fontWeight = titleFontWeight)
             if (subtitle != null) {
                 Text(
                     text = subtitle,
@@ -94,7 +103,8 @@ fun TappyMenuRow(
             Text(
                 text = valueText,
                 style = MaterialTheme.typography.bodyMedium,
-                color = colors.onSurfaceVariant,
+                color = valueColor ?: colors.onSurfaceVariant,
+                fontWeight = if (valueColor != null) FontWeight.SemiBold else null,
             )
         }
         if (showChevron) {

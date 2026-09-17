@@ -22,8 +22,8 @@ import ProfileView from './ProfileView'
 //
 // 🚨 THE AGGREGATES ARE COUNTS, NOT CONTENT. `like_count` and `content_type` are selected to be
 // summed and then discarded; no review body, photo or media URL is read here. Post CONTENT is
-// fetched by the client from `/api/reviews/mine`, `/api/reviews/saved` and `/api/favorites`,
-// which is deliberate: those routes carry the publication/safety gate and `stripUnservableMedia`,
+// fetched by the client from `/api/reviews/mine`, `/api/reviews/liked`, `/api/reviews/saved` and
+// `/api/reviews/shared`, which is deliberate: those routes carry the publication/safety gate and `stripUnservableMedia`,
 // and a direct read here would render held posts and unservable media that the gate exists to
 // withhold. Reusing them is not a convenience, it is the correctness boundary.
 
@@ -37,7 +37,12 @@ export default async function ProfilePage() {
   // "Me" is a primary nav tab, and ejecting guests there made the whole app
   // look sign-in-walled. Purely presentational — every linked destination keeps
   // its own server-side auth check, and no profile data is fetched here.
-  if (!user) return <GuestProfileView />
+  //
+  // 🚨 An ANONYMOUS Supabase session is a guest too (2026-09-17). `getUser()` returns a real
+  // user for the anonymous sign-in the chat quota runs on, so `!user` alone let that session
+  // render the personal hub — an empty one, with private collections it cannot have. The same
+  // rule the Android self profile applies (`selfProfileAccess`): signed in AND not anonymous.
+  if (!user || user.is_anonymous === true) return <GuestProfileView />
 
   const [
     { data: profile },
@@ -53,7 +58,7 @@ export default async function ProfilePage() {
     supabase.from('subscriptions').select('status').eq('user_id', user.id).maybeSingle(),
     // Counts only — see the note above. `like_count` is the denormalized column the
     // `update_review_like_count` trigger maintains, so this is the same number the post shows.
-    supabase.from('reviews').select('content_type, like_count').eq('user_id', user.id),
+    supabase.from('reviews').select('content_type, like_count, is_hidden').eq('user_id', user.id),
     supabase.from('review_saves').select('review_id', { count: 'exact', head: true }).eq('user_id', user.id),
     supabase.from('favorites').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
     supabase.from('user_follows').select('following_id').eq('follower_id', user.id).limit(FOLLOWING_PREVIEW),
@@ -68,7 +73,11 @@ export default async function ProfilePage() {
     ? await supabase.from('profiles').select('id, full_name, avatar_url').in('id', followingIds)
     : { data: [] as { id: string; full_name: string | null; avatar_url: string | null }[] }
 
-  const reviews = ownReviews ?? []
+  // 🚨 The header counts the PUBLIC posts only — the same number the Android self profile shows
+  // and the "Bài viết" tab lists. A post the author hid is still theirs (it sits under "Đã ẩn"),
+  // but it is not a post anyone can see, and a header that said "2" over a tab that showed 1 was
+  // the UAT finding that fixed this on Android.
+  const reviews = (ownReviews ?? []).filter((r) => r.is_hidden !== true)
   const stats = {
     posts: reviews.length,
     videos: reviews.filter((r) => r.content_type === 'video').length,

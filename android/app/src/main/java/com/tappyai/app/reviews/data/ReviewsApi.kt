@@ -130,6 +130,23 @@ interface ReviewsApi {
     @GET("api/reviews/mine")
     suspend fun getMine(): FeedResponseDto
 
+    /**
+     * The caller's saved (bookmarked) reviews — `review_saves` rows for the bearer's own user id,
+     * newest save first, hidden/held posts filtered out, up to 100. Self-only by construction: the
+     * route has no user parameter. The rows are REDUCED (id, place_name, body, photos, thumbnail,
+     * content_type, created_at, saved_at): enough for a grid tile, not for the player — the pager
+     * hydrates each through [getReview].
+     */
+    @GET("api/reviews/saved")
+    suspend fun getSaved(): FeedResponseDto
+
+    /**
+     * One review in full (`GET /api/reviews/[id]`: author profile, media, counts, liked_by_me /
+     * saved_by_me for the bearer). 404 when hidden, held or gone.
+     */
+    @GET("api/reviews/{id}")
+    suspend fun getReview(@Path("id") reviewId: String): ReviewDto
+
     @PATCH("api/reviews/{id}")
     suspend fun setHidden(@Path("id") reviewId: String, @Body body: SetHiddenRequestDto): OkResponseDto
 

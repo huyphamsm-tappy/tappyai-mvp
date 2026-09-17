@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.ui
 
 import android.content.Intent
+import android.graphics.Matrix
 import android.net.Uri
 import android.view.TextureView
 import android.webkit.WebView
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.common.VideoSize
 import androidx.media3.exoplayer.ExoPlayer
 import com.tappyai.app.reviews.data.ReviewSourceType
 import com.tappyai.core.designsystem.component.TappyImage
@@ -98,6 +100,11 @@ private fun ReviewUploadVideoSurface(
     // and already used by the YouTube and TikTok/Facebook branches; the native-upload branch was
     // the one that ignored it. The feed serves a thumbnail distinct from the video for every clip.
     var firstFrameRendered by remember(url) { mutableStateOf(false) }
+    // The clip's real size, for the centre-crop transform (see applyCenterCrop). A raw TextureView
+    // stretches the decoder output to its bounds; the transform restores the aspect and crops, so
+    // a 9:16 clip fills the full-bleed page edge to edge instead of being distorted (reference
+    // design 2026-09-13: the video is the canvas).
+    var videoSize by remember(url) { mutableStateOf<VideoSize?>(null) }
     val player = remember(url) {
         ExoPlayer.Builder(context).build().apply {
             repeatMode = Player.REPEAT_MODE_ONE
@@ -121,6 +128,10 @@ private fun ReviewUploadVideoSurface(
             // when a frame is actually on screen, which is exactly when the poster is redundant.
             override fun onRenderedFirstFrame() {
                 firstFrameRendered = true
+            }
+
+            override fun onVideoSizeChanged(size: VideoSize) {
+                videoSize = size
             }
         }
         player.addListener(listener)
@@ -147,10 +158,39 @@ private fun ReviewUploadVideoSurface(
             )
         }
         AndroidView(
-            factory = { ctx -> TextureView(ctx).also { player.setVideoTextureView(it) } },
+            factory = { ctx ->
+                TextureView(ctx).also { view ->
+                    player.setVideoTextureView(view)
+                    // Re-crop whenever the view's own bounds change (page size, insets).
+                    view.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ -> (v as TextureView).applyCenterCrop(videoSize) }
+                }
+            },
+            update = { view -> view.applyCenterCrop(videoSize) },
             modifier = Modifier.fillMaxSize(),
         )
     }
+}
+
+/**
+ * Centre-crop the decoder output inside this view. MediaCodec fills a TextureView's surface
+ * regardless of aspect, so a 9:16 clip in a taller page was stretched; scaling the short axis up
+ * by the aspect mismatch (about the centre) restores the picture and crops the overflow — what
+ * `PlayerView`'s `RESIZE_MODE_ZOOM` does, without adding the media3-ui dependency here.
+ */
+private fun TextureView.applyCenterCrop(video: VideoSize?) {
+    val vw = video?.width ?: return
+    val vh = video.height
+    if (vw <= 0 || vh <= 0 || width <= 0 || height <= 0) return
+    val pixelAspect = video.pixelWidthHeightRatio.takeIf { it > 0f } ?: 1f
+    val videoAspect = vw * pixelAspect / vh.toFloat()
+    val viewAspect = width / height.toFloat()
+    val matrix = Matrix()
+    if (videoAspect > viewAspect) {
+        matrix.setScale(videoAspect / viewAspect, 1f, width / 2f, height / 2f)
+    } else {
+        matrix.setScale(1f, viewAspect / videoAspect, width / 2f, height / 2f)
+    }
+    setTransform(matrix)
 }
 
 /** YouTube embed — a muted, looping, controls-less autoplay iframe in a WebView, mounted only while
