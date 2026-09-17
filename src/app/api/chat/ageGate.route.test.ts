@@ -1,14 +1,15 @@
 /**
- * The 18+ gate (main #251) in the merged V3 route — ORDER IS THE CONTRACT.
+ * The 18+ gate in the merged V3 route — ORDER IS THE CONTRACT.
  *
- *   getRequestUser → no account / anonymous ⇒ 401 `auth_required`
- *                  → getAgeEligibility ≠ eligible ⇒ 403 `age_*`
- *                  → (suspension gate) → V3 quota SPEND → context → model
+ *   getRequestUser → GUEST (no account / anonymous): device declaration
+ *                      none ⇒ 403 `age_declaration_required` · under 18 ⇒ 403 `age_ineligible`
+ *                      18+ ⇒ V3's lifetime trial quota (5) ⇒ model; 6th ⇒ 401 `anon_limit_reached`
+ *                  → ACCOUNT: getAgeEligibility ≠ eligible ⇒ 403 `age_*` (main #251)
+ *                  → (suspension gate) → quota SPEND → context → model
  *
- * Owner decision D1 (2026-09-17): chat requires an account. The guest quota path in
- * this route is therefore unreachable, and this file is the proof: a guest never
- * spends quota, never reads eligibility, never reaches the model or a tool. Every
- * refusal above is also proven to cost nothing (no spend, no model call).
+ * Owner decision D1, revised 2026-09-17: guests keep the trial AND the gate. Every
+ * refusal is proven to cost nothing (no eligibility read for a guest, no quota
+ * spend, no model, no tool), and identity failure fails CLOSED.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
@@ -19,6 +20,10 @@ const h = vi.hoisted(() => {
     eligibilityThrows: false,
     calls: { eligibility: 0, spend: 0, model: 0, tools: 0 },
     promptContextAgeBand: undefined as unknown,
+    /** When true the REAL quota module runs (in-process store) so the lifetime trial can be counted down. */
+    realQuota: false,
+    identityThrows: false,
+    headers: {} as Record<string, string>,
   }
   const builder = (): any => {
     const b: any = {
@@ -37,7 +42,7 @@ const h = vi.hoisted(() => {
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.client }))
 vi.mock('@/lib/auth/getRequestUser', () => ({
-  getRequestUser: () => Promise.resolve({ user: h.state.user, supabase: h.client }),
+  getRequestUser: () => h.state.identityThrows ? Promise.reject(new Error('auth down')) : Promise.resolve({ user: h.state.user, supabase: h.client }),
 }))
 vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/account/ageEligibility')>()),
@@ -47,10 +52,17 @@ vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
     return h.state.eligibility
   },
 }))
-vi.mock('@/lib/ai/quota/aiQuestionQuota', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('@/lib/ai/quota/aiQuestionQuota')>()),
-  consumeAiQuestion: async () => { h.state.calls.spend++; return { ok: true, remaining: 10, limit: 15 } },
-}))
+vi.mock('@/lib/ai/quota/aiQuestionQuota', async (importOriginal) => {
+  const real = await importOriginal<typeof import('@/lib/ai/quota/aiQuestionQuota')>()
+  return {
+    ...real,
+    consumeAiQuestion: async (identity: Parameters<typeof real.consumeAiQuestion>[0]) => {
+      h.state.calls.spend++
+      if (h.state.realQuota) return real.consumeAiQuestion(identity)
+      return { ok: true, remaining: 10, limit: 15 }
+    },
+  }
+})
 vi.mock('@/lib/ai/contextBuilder', async (importOriginal) => {
   const real = await importOriginal<typeof import('@/lib/ai/contextBuilder')>()
   return {
@@ -81,12 +93,14 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 
 const post = async () => {
   const req = {
     url: 'http://localhost/api/chat',
     nextUrl: new URL('http://localhost/api/chat'),
-    headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
+    headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web', ...h.state.headers }),
     json: () => Promise.resolve({ messages: [{ role: 'user', content: 'Tìm quán bún bò ngon ở Quận 1' }] }),
     signal: undefined,
   }
@@ -100,22 +114,72 @@ beforeEach(() => {
   h.state.eligibilityThrows = false
   h.state.calls = { eligibility: 0, spend: 0, model: 0, tools: 0 }
   h.state.promptContextAgeBand = undefined
+  h.state.realQuota = false
+  h.state.identityThrows = false
+  h.state.headers = {}
+  __resetAiQuestionQuotaLocal()
 })
 
-describe('18+ gate before quota and before any model call', () => {
-  it('guest (no account): 401 auth_required — no eligibility read, no quota spend, no model, no tool', async () => {
-    const res = await post()
-    expect(res.status).toBe(401)
-    expect(await body(res)).toMatchObject({ error: 'auth_required', upgradeUrl: '/login' })
-    expect(h.state.calls).toEqual({ eligibility: 0, spend: 0, model: 0, tools: 0 })
-  })
-  it('anonymous session: the same 401 — the guest quota path is unreachable (D1)', async () => {
+describe('GUEST — the trial behind a device self-declaration (D1 revised)', () => {
+  it('anonymous session, nothing declared: 403 age_declaration_required — no eligibility read, no spend, no model, no tool', async () => {
     h.state.user = { id: 'anon-1', is_anonymous: true }
     const res = await post()
-    expect(res.status).toBe(401)
-    expect((await body(res)).error).toBe('auth_required')
+    expect(res.status).toBe(403)
+    const b = await body(res)
+    expect(b).toMatchObject({ error: 'age_declaration_required', upgradeUrl: '/age-check' })
+    expect(typeof b.message).toBe('string')
     expect(h.state.calls).toEqual({ eligibility: 0, spend: 0, model: 0, tools: 0 })
   })
+  it('no verified identity at all, nothing declared: the same 403', async () => {
+    const res = await post()
+    expect(res.status).toBe(403)
+    expect((await body(res)).error).toBe('age_declaration_required')
+    expect(h.state.calls).toEqual({ eligibility: 0, spend: 0, model: 0, tools: 0 })
+  })
+  it('declared under 18 (cookie): 403 age_ineligible, nothing spent', async () => {
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    h.state.headers = { cookie: 'tappy_guest_age=2015-06-01' }
+    const res = await post()
+    expect(res.status).toBe(403)
+    expect((await body(res)).error).toBe('age_ineligible')
+    expect(h.state.calls).toEqual({ eligibility: 0, spend: 0, model: 0, tools: 0 })
+  })
+  it('declared 18+ (cookie): the trial quota is spent once, then the model runs — no account eligibility read, no age band in the prompt', async () => {
+    h.state.user = { id: 'anon-1', is_anonymous: true }
+    h.state.headers = { cookie: 'tappy_guest_age=1990-01-01' }
+    const res = await post()
+    expect(res.status).toBe(200)
+    expect(h.state.calls).toMatchObject({ eligibility: 0, spend: 1, model: 1 })
+    expect(h.state.promptContextAgeBand).toBeUndefined()
+  })
+  it('declared 18+ via the app header (Android): allowed', async () => {
+    h.state.user = { id: 'anon-2', is_anonymous: true }
+    h.state.headers = { 'x-tappy-age-declared': '18plus' }
+    expect((await post()).status).toBe(200)
+  })
+  it(`18+ guest gets exactly ${ANON_LIFETIME_LIMIT} answers, then the sign-in prompt (401 anon_limit_reached) with no model call`, async () => {
+    h.state.user = { id: 'anon-trial', is_anonymous: true }
+    h.state.headers = { cookie: 'tappy_guest_age=1990-01-01' }
+    h.state.realQuota = true
+    for (let i = 1; i <= ANON_LIFETIME_LIMIT; i++) expect((await post()).status, `answer ${i}`).toBe(200)
+    expect(h.state.calls.model).toBe(ANON_LIFETIME_LIMIT)
+    const res = await post()
+    expect(res.status).toBe(401)
+    expect(await body(res)).toMatchObject({ error: 'anon_limit_reached', upgradeUrl: '/login' })
+    expect(h.state.calls.model).toBe(ANON_LIFETIME_LIMIT)
+  })
+  it('identity resolution throwing does NOT ungate: no declaration ⇒ 403, a declaration ⇒ treated as a guest', async () => {
+    h.state.identityThrows = true
+    const refused = await post()
+    expect(refused.status).toBe(403)
+    expect((await body(refused)).error).toBe('age_declaration_required')
+    expect(h.state.calls.model).toBe(0)
+    h.state.headers = { cookie: 'tappy_guest_age=18plus' }
+    expect((await post()).status).toBe(200)
+  })
+})
+
+describe('ACCOUNT — 18+ gate before quota and before any model call (main #251)', () => {
   it('signed in, no date of birth on file: 403 age_verification_required, nothing spent', async () => {
     h.state.user = { id: 'u1' }
     h.state.eligibility = { status: 'unknown', ageBand: null, age: null, canSelfCorrect: true }

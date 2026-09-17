@@ -7,6 +7,7 @@ import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
+import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
@@ -286,6 +287,10 @@ export async function POST(req: Request) {
   /** True when an id WAS presented but did not resolve — the fail-safe path. */
   let priorEvidenceMissing = false
 
+  // True once the 18+ gate has admitted THIS request — the guest declaration or
+  // the account's eligibility. Checked again after the try/catch below, because
+  // that catch favours availability and must never mean "ungated".
+  let ageGatePassed = false
   try {
     const { user, supabase } = await getRequestUser(req)
     // The clip the user is asking about, read through THIS caller's client —
@@ -298,52 +303,64 @@ export async function POST(req: Request) {
     // key on. Guests are the majority web path and the one that fabricated.
     if (user) evidenceDb = supabase
 
-    // ── V3 User Data Foundation: product access requires an account, then 18+ ──
+    // ── The 18+ gate, BEFORE quota and before any model or tool call ──────────
     //
-    // Chat is product functionality, so it is gated. The check sits at the very
-    // top of the authenticated path — before memory, preferences, subscription,
-    // quota and any LLM or third-party call — so a refused turn costs nothing,
-    // the same discipline the Module 08 suspension gate already follows below.
+    // Chat is product functionality, so it is gated — at the very top of the
+    // path, before memory, preferences, subscription, quota and any LLM or
+    // third-party call, so a refused turn costs nothing (the discipline the
+    // Module 08 suspension gate below already follows).
     //
-    // 🚨 BEHAVIOUR CHANGE, stated plainly: anonymous sessions previously reached
-    //    the model under a daily quota. Under the instruction that Chat
-    //    constitutes actual TappyAI usage, they are now refused with
-    //    `auth_required`. The anonymous quota code below is deliberately left
-    //    intact and unreferenced by this branch — deleting it would be an
-    //    unrelated refactor, and it still governs any surface that stays
-    //    anonymous-accessible.
+    // Two populations, two sources of truth (owner decision D1, revised
+    // 2026-09-17: the guest trial stays, and so does the gate):
+    //   · GUEST (no account, or an anonymous session): a self-declaration stored
+    //     on the device — the `tappy_guest_age` cookie the web sets through
+    //     POST /api/age-declaration, or the `x-tappy-age-declared` header an
+    //     installed app sends. Evaluated server-side from the stored value on
+    //     every request (`lib/account/guestAgeDeclaration.ts`). Nothing declared
+    //     ⇒ 403 `age_declaration_required`; declared under 18 ⇒ 403
+    //     `age_ineligible`; 18+ ⇒ on to V3's lifetime trial quota below.
+    //   · ACCOUNT: main #251's `getAgeEligibility()` — a date of birth on file,
+    //     underage blocked, unknown withheld.
+    let ageBand: string | null = null
     if (!user || user.is_anonymous) {
-      return new Response(
-        JSON.stringify({
-          error: 'auth_required',
-          message: serverMessage('auth.chatAccountRequired', requestLocale(req)),
-          upgradeUrl: '/login',
-        }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
-
-    // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
-    // returns `unknown` on a read error, but an unexpected throw used to land in
-    // the "auth/quota resolution failed (proceeding unmetered)" catch below — and
-    // "unmetered" there also meant UNGATED: the turn reached the model with no
-    // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
-    // An unknown age withholds the model; it never admits.
-    const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
-      console.error('[chat] age eligibility threw — withholding:', e instanceof Error ? e.message : String(e))
-      return { status: 'unknown' as const, ageBand: null, age: null, canSelfCorrect: true }
-    })
-    if (ageGate.status !== 'eligible') {
-      return new Response(
-        JSON.stringify({
-          error: ageEligibilityCode(ageGate.status),
-          message: serverMessage(
-            ageGate.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
-            requestLocale(req)
-          ),
-        }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } }
-      )
+      const declaration = readGuestAgeDeclaration(req.headers)
+      if (declaration.status !== 'eligible') {
+        const ineligible = declaration.status === 'ineligible'
+        return new Response(
+          JSON.stringify({
+            error: ineligible ? 'age_ineligible' : GUEST_AGE_DECLARATION_REQUIRED,
+            message: serverMessage(ineligible ? 'age.ineligible' : 'age.declarationRequired', requestLocale(req)),
+            upgradeUrl: '/age-check',
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
+      ageGatePassed = true
+    } else {
+      // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
+      // returns `unknown` on a read error, but an unexpected throw used to land in
+      // the "auth/quota resolution failed (proceeding unmetered)" catch below — and
+      // "unmetered" there also meant UNGATED: the turn reached the model with no
+      // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
+      // An unknown age withholds the model; it never admits.
+      const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
+        console.error('[chat] age eligibility threw — withholding:', e instanceof Error ? e.message : String(e))
+        return { status: 'unknown' as const, ageBand: null, age: null, canSelfCorrect: true }
+      })
+      if (ageGate.status !== 'eligible') {
+        return new Response(
+          JSON.stringify({
+            error: ageEligibilityCode(ageGate.status),
+            message: serverMessage(
+              ageGate.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
+              requestLocale(req)
+            ),
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
+      ageGatePassed = true
+      ageBand = ageGate.ageBand
     }
 
     if (user?.is_anonymous) {
@@ -394,7 +411,7 @@ export async function POST(req: Request) {
       // must not spend — so it waits for `isPro`, one store round-trip after the batch.
       // The age band (main #251) rides into the prompt context; the gate itself returned above.
       const [chatContext, calendarBlock, subResult] = await Promise.all([
-        buildChatPromptContext(user.id, supabase, ageGate.ageBand),
+        buildChatPromptContext(user.id, supabase, ageBand),
         // Calendar keeps its own catch INSIDE the batch. Hoisting it without one
         // would let an integration outage reject the whole Promise.all and take
         // memory, subscription and quota down with it — which the sequential
@@ -463,6 +480,25 @@ export async function POST(req: Request) {
     // the daily cap for THIS request may be skipped. Log it so the fail-open is
     // observable rather than silent.
     console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+  }
+  // 🚨 "UNMETERED" MUST NEVER MEAN "UNGATED". If identity resolution threw before
+  // the gate above could run, the request is treated as a guest: the device
+  // declaration is the one thing that can be evaluated without identity, and
+  // without it the model is withheld. Fails closed (owner D1: never reach the
+  // model before the gate and quota checks pass).
+  if (!ageGatePassed) {
+    const declaration = readGuestAgeDeclaration(req.headers)
+    if (declaration.status !== 'eligible') {
+      const ineligible = declaration.status === 'ineligible'
+      return new Response(
+        JSON.stringify({
+          error: ineligible ? 'age_ineligible' : GUEST_AGE_DECLARATION_REQUIRED,
+          message: serverMessage(ineligible ? 'age.ineligible' : 'age.declarationRequired', requestLocale(req)),
+          upgradeUrl: '/age-check',
+        }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
   }
 
   // ── ADR-024: recover the PREVIOUS turn's evidence ─────────────────────────

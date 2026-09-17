@@ -37,8 +37,8 @@ function mockFetch(res: Response) {
 }
 
 describe('the code list is the single source of truth', () => {
-  it('covers exactly the two codes the server can return', () => {
-    expect([...AGE_GATE_CODES]).toEqual(['age_verification_required', 'age_ineligible'])
+  it('covers exactly the three codes the server can return (the third is the GUEST form, owner D1 revised 2026-09-17)', () => {
+    expect([...AGE_GATE_CODES]).toEqual(['age_verification_required', 'age_ineligible', 'age_declaration_required'])
   })
 
   it('recognises both, and nothing else', () => {

@@ -96,6 +96,13 @@ const MESSAGES = {
     vi: 'TappyAI chỉ dành cho người từ 18 tuổi trở lên.',
     en: 'TappyAI is only available to people aged 18 and over.',
   },
+  // A GUEST on the chat trial has not declared their age yet (owner D1 revised,
+  // 2026-09-17). Android shows this sentence verbatim in the error bubble, so it
+  // must read as the instruction, not as a refusal.
+  'age.declarationRequired': {
+    vi: 'Vui lòng xác nhận bạn đủ 18 tuổi để dùng thử Tappy.',
+    en: 'Please confirm you are 18 or older to try Tappy.',
+  },
   // The single self-correction has been used. Says what to do next rather than
   // restating the refusal.
   'age.correctionExhausted': {

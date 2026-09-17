@@ -49,6 +49,7 @@ const MUTATING = /export async function (POST|PUT|PATCH|DELETE)\b/
 const EXEMPT: Record<string, string> = {
   // ── The anonymous tier itself. Refusing anonymous here would refuse everything. ──
   'auth/anonymous': 'mints the anonymous session; rate-limited 5/min + 30/day per IP',
+  'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
   'auth/zalo/complete': 'sign-in completion, runs before any account exists',
 
