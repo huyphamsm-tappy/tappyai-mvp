@@ -76,6 +76,13 @@ const MESSAGES = {
     vi: 'Hãy đăng nhập để đăng bài, bình luận và theo dõi.',
     en: 'Sign in to post, comment and follow.',
   },
+  // Chat's own sign-in prompt (owner D1, 2026-09-17: chat requires an account). The social
+  // sentence above talks about posting and following, which is not what a guest asked Tappy;
+  // Android shows this sentence verbatim in the error bubble, so it must read as the prompt.
+  'auth.chatAccountRequired': {
+    vi: 'Hãy đăng nhập để trò chuyện với Tappy.',
+    en: 'Sign in to chat with Tappy.',
+  },
 
   // ── 18+ eligibility ────────────────────────────────────────────────────────
   // Two states, two sentences. "We need your date of birth" and "you may not use

@@ -140,7 +140,11 @@ describe('B07 — the rest of the Web surface only gets better', () => {
   // 513 → 497 when U04 moved the copyright policy into the legal dictionary. Lowered so the gain
   // is locked in: a ratchet left above the real number quietly re-opens room for the next
   // regression to fit inside.
-  const BASELINE = 497
+  // 497 → 498 in the origin/main → V3 merge (2026-09-17): main #251 added
+  // `src/app/age-check/AgeCheckView.tsx`, whose language toggle shows the endonym
+  // "Tiếng Việt" (the same hardcoded label LanguagePicker already carries). Merge
+  // arithmetic — V3's 497 plus main's one line — not new V3 text.
+  const BASELINE = 498
 
   it(`carries at most ${BASELINE} Vietnamese UI lines outside the sealed screens`, () => {
     const sealed = new Set([...SEALED, ...Object.keys(SEALED_WITH_PERSISTED_VALUES)])

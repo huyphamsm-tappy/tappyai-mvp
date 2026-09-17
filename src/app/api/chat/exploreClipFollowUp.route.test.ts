@@ -59,6 +59,13 @@ const h = vi.hoisted(() => {
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.client }))
+// The 18+ gate (main #251) runs before quota and before the model; these turns are about clip
+// context, so the account is an eligible adult. Without this the mocked `rpc` returns no row,
+// the gate fails closed (403) and no tool ever executes.
+vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/account/ageEligibility')>()),
+  getAgeEligibility: async () => ({ status: 'eligible', ageBand: '25_34', age: 30, canSelfCorrect: true }),
+}))
 vi.mock('@/lib/auth/getRequestUser', () => ({
   getRequestUser: () => Promise.resolve({ user: { id: 'u1' }, supabase: h.client }),
 }))

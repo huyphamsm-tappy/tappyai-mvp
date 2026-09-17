@@ -157,7 +157,8 @@ describe('the delivery channel stays the safe one', () => {
     const stream = read('src/lib/ai/streamEnrichment.ts')
     expect(stream).toMatch(/const decisionCardRenders = !!placesView \|\| !!collector\?\.shoppingMarker/)
     expect(stream).toMatch(/const cardOwnsEnrichment = decisionCardRenders && collector\?\.rendersDecisionCard === true/)
-    expect(stream).toMatch(/cardOwnsEnrichment \? mainText : injectPlaceEnrichment\(places, mainText, lang\)/)
+    // G3: the injector takes a placement option (MEDIA_PLACEMENT_V2); the card-owns gate is unchanged.
+    expect(stream).toMatch(/cardOwnsEnrichment \? mainText : injectPlaceEnrichment\(places, mainText, lang, \{ placement: mediaPlacementV2Enabled\(\) \? 'v2' : 'v1' \}\)/)
     // The batch TikTok line obeys the same rule.
     expect(stream).toMatch(/const batchTikTok = cardOwnsEnrichment \? undefined :/)
   })

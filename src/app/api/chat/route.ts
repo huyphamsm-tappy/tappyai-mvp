@@ -316,14 +316,23 @@ export async function POST(req: Request) {
       return new Response(
         JSON.stringify({
           error: 'auth_required',
-          message: serverMessage('auth.accountRequired', requestLocale(req)),
+          message: serverMessage('auth.chatAccountRequired', requestLocale(req)),
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
 
-    const ageGate = await getAgeEligibility(supabase)
+    // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
+    // returns `unknown` on a read error, but an unexpected throw used to land in
+    // the "auth/quota resolution failed (proceeding unmetered)" catch below — and
+    // "unmetered" there also meant UNGATED: the turn reached the model with no
+    // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
+    // An unknown age withholds the model; it never admits.
+    const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
+      console.error('[chat] age eligibility threw — withholding:', e instanceof Error ? e.message : String(e))
+      return { status: 'unknown' as const, ageBand: null, age: null, canSelfCorrect: true }
+    })
     if (ageGate.status !== 'eligible') {
       return new Response(
         JSON.stringify({
