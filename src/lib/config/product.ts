@@ -263,3 +263,23 @@ export const EMIT_PLACES_ANNOTATION = true
  * the choice of which is arbitrary.
  */
 export const SERVER_AUTHORED_CTA = false
+
+/**
+ * G1 — PLACE_GUARD_ATTRIBUTION_V2.
+ *
+ * Switches `guardPlaceClaimsInText` to the identity-first attribution ladder
+ * (`placeAttribution.ts` → `attributePlace`), the L5 number-identity check, the
+ * coherence pass and the evidence-only fallback sentence. Measured on the
+ * 2026-09-17 V3 baseline: with token-only attribution the guard deleted the
+ * decision sentence of chain names ("MASSAGE HẠ SPA QUẬN 1") and names carrying
+ * an address, leaving fragments or a one-line reply (13/36 turns; #15-r1 kept
+ * 46 chars of a 441-token answer).
+ *
+ * Read from the environment at call time so a regression can be rolled back
+ * by configuration rather than by redeploying code. Default OFF: production
+ * behaviour is byte-identical until the flag is set to `1`/`true`.
+ */
+export function placeGuardAttributionV2Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.PLACE_GUARD_ATTRIBUTION_V2
+  return v === '1' || v === 'true'
+}

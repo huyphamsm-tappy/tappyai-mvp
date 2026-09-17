@@ -9,7 +9,7 @@ import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
-import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA } from '@/lib/config/product'
+import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled } from '@/lib/config/product'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
 import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
@@ -872,6 +872,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const ratingsByEntity = new Map<string, number[]>()
   const reviewCountsByEntity = new Map<string, number[]>()
   const phonesByEntity = new Map<string, string[]>()
+  /** Today's opening hours per venue (G1b fallback sentence only; never a claim source). */
+  const hoursByEntity = new Map<string, string>()
   /**
    * Rating / distance evidence for `guardPlaceClaimsInText`, gathered the same
    * way and at the same moment as `snippetPrices`: read off the provider's own
@@ -1261,13 +1263,14 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const placeClaimScope: 'all' | 'tickets' =
       (hadPlaceSearch || placeIntent || travelIntent) ? 'all' : 'tickets'
-    const placeGuarded = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
+    // G1: the engine's Pick, by row name — for attribution telemetry and the fallback sentence.
+    const pickName = collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name ?? null
+    const guardV2 = placeGuardAttributionV2Enabled()
+    const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
       ? guardPlaceClaimsInText(foodGuarded, {
         ratings: placeRatings,
         distancesKm: placeDistancesKm,
         texts: placeTexts,
-        // Which retrieved prose named which place — so a popularity claim about
-        // one restaurant cannot rest on a listicle about the whole district.
         entityTexts: placeEntityTexts,
         placeNames: snippetPlaceNames,
         orderablePlaces,
@@ -1275,8 +1278,22 @@ export function applyPlaceEnrichmentStreamFilter(
         reviewCountsByEntity,
         phonesByEntity,
         ticketablePlaces,
-      }, { scope: placeClaimScope }).text
-      : foodGuarded
+      }, { scope: placeClaimScope, attributionV2: guardV2, pickName })
+      : null
+    const placeGuarded = placeGuardResult ? placeGuardResult.text : foodGuarded
+    // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
+    // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
+    // vocabulary is a privacy surface and is deliberately not extended here.
+    if (placeGuardResult?.stats) {
+      const st = placeGuardResult.stats
+      console.log(JSON.stringify({
+        type: 'tappyai_guard', guard: 'place_claim', v2: guardV2,
+        sentences_in: st.sentences_in, sentences_removed: st.sentences_removed,
+        chars_in: st.chars_in, chars_removed: Math.max(0, st.chars_in - st.chars_out), chars_kept: st.chars_out,
+        reasons: st.reasons, unattributable_claims: st.unattributable_claims, attribution: st.attribution,
+        pick_attributable: st.pick_attributable,
+      }))
+    }
     // Last point before the bytes leave the server: drop any provider tool-use
     // tags that leaked into the prose, so no client has to defend against them
     // (and so the end-anchored CTA fallback still matches).
@@ -1309,7 +1326,41 @@ export function applyPlaceEnrichmentStreamFilter(
       // is a recall turn" — and it stood down for both.
       { placeSearch: placeSearchStatus },
     )
-    const groundedProse = gated.text
+    /**
+     * G1b — EVIDENCE-ONLY FALLBACK (v2 only). When the guards have taken every body
+     * sentence and the engine did make a Pick with a retrieved rating, one sentence
+     * built from card fields replaces the empty body. Nothing here can be invented:
+     * name, rating, review count and hours are the row values the card renders.
+     * Never says "đang mở" — hours from a provider are a schedule, not a live state
+     * (owner rule). Vietnamese by default; English only when the user's message is
+     * confidently English (the language detector reads undiacriticked Vietnamese
+     * as English, so `lang` alone is not enough).
+     */
+    const fallbackSentence = (): string | null => {
+      if (!guardV2 || !pickName) return null
+      const rating = ratingsByEntity.get(pickName)?.[0]
+      if (typeof rating !== 'number') return null
+      const count = reviewCountsByEntity.get(pickName)?.[0]
+      const hours = hoursByEntity.get(pickName)
+      const confidentlyEnglish = lang === 'en'
+        && /\b(find|me|the|near|nearby|quiet|restaurant|please|want|looking|recommend|show|best|good|where|for|with)\b/i.test(userText)
+        && !/[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(userText)
+      const ratingText = confidentlyEnglish
+        ? `${rating}⭐${typeof count === 'number' ? ` (${count.toLocaleString('en-US')} Google Maps reviews)` : ''}`
+        : `${rating}⭐${typeof count === 'number' ? ` (${count.toLocaleString('vi-VN')} đánh giá Google Maps)` : ''}`
+      const hoursText = hours
+        ? (confidentlyEnglish ? `; opening hours per Google Maps: ${hours}` : `; giờ mở cửa theo Google Maps: ${hours}`)
+        : ''
+      return confidentlyEnglish
+        ? `I'd go with **${pickName}** — ${ratingText}${hoursText}.`
+        : `Mình chọn **${pickName}** — ${ratingText}${hoursText}.`
+    }
+    const releasedPrefix = flushedText ?? ''
+    const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
+    const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
+    const fallback = bodyLetters < 40 ? fallbackSentence() : null
+    if (fallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
+    const groundedProse = fallback ? `${gated.text.trimEnd()}\n\n${fallback}` : gated.text
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *
@@ -1627,6 +1678,9 @@ export function applyPlaceEnrichmentStreamFilter(
                 }
                 if (rowName && typeof row.phone === 'string' && row.phone) {
                   phonesByEntity.set(rowName, [...(phonesByEntity.get(rowName) ?? []), row.phone])
+                }
+                if (rowName && typeof row.opening_hours === 'string' && row.opening_hours && !hoursByEntity.has(rowName)) {
+                  hoursByEntity.set(rowName, row.opening_hours)
                 }
                 if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
                 for (const k of ['snippet', 'address', 'opening_hours']) {

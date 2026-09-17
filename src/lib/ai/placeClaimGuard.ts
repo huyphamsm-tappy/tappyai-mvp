@@ -24,7 +24,7 @@
 // removed with the whole sentence, and nothing is ever written.
 
 import { sentenceSpans } from './moneyGuard'
-import { placeTokensFor, textNamesPlace } from '@/lib/links/placeAttribution'
+import { placeTokensFor, textNamesPlace, attributePlace } from '@/lib/links/placeAttribution'
 import { isDirectEntityUrl } from '@/lib/links/directUrl'
 
 /** What the turn actually retrieved, as the guard is allowed to read it. */
@@ -263,6 +263,22 @@ export const isDirectTicketUrl = isDirectEntityUrl
 
 /** A stated score: "4.8 sao", "4,8/5", "4.5 stars". */
 const SCORE_RE = /\b\d(?:[.,]\d+)?\s*(?:\/\s*5|sao\b|stars?\b|điểm\b|diem\b)/iu
+/**
+ * G1 (v2 only): the same, plus the star glyphs the model actually writes — every
+ * rating in the 2026-09-17 baseline is "4.9⭐", which `SCORE_RE` never matched, so
+ * a fabricated "4.2⭐" beside a true review count passed unchecked. Kept out of
+ * v1 so the flag-off path stays byte-identical.
+ */
+const SCORE_RE_V2 = /\b\d(?:[.,]\d+)?\s*(?:\/\s*5|sao\b|stars?\b|điểm\b|diem\b|⭐|★)/iu
+/** The scores a sentence states — the number glued to each score marker, nothing else. */
+function statedScores(sentence: string, re: RegExp): number[] {
+  const out: number[] = []
+  for (const m of sentence.matchAll(new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g'))) {
+    const n = Number.parseFloat(m[0].replace(',', '.'))
+    if (Number.isFinite(n)) out.push(n)
+  }
+  return out
+}
 
 /**
  * A stated REVIEW COUNT: "1.200 đánh giá", "2,847 reviews", "hơn 500 nhận xét".
@@ -492,23 +508,85 @@ function trimStandsAlone(headRemoved: boolean, survivorNames: string | null): bo
  */
 export interface PlaceClaimOptions {
   scope?: 'all' | 'tickets'
+  /**
+   * G1 — PLACE_GUARD_ATTRIBUTION_V2. When true, a sentence is tied to a venue by
+   * the identity-first ladder in `placeAttribution.ts` (full name → unique alias
+   * → distinctive tokens → token set), score/review-count claims may additionally
+   * be verified against the ONE venue whose evidence carries exactly those numbers
+   * (L5), and the coherence pass removes the fragments a deletion would leave.
+   * Default false: byte-identical behaviour to before G1.
+   */
+  attributionV2?: boolean
+  /** The engine's Pick, for the `pick_attributable` telemetry signal only. */
+  pickName?: string | null
+}
+
+/** Per-turn counters for the `tappyai_guard` telemetry event. Never carries user text. */
+export interface PlaceClaimStats {
+  sentences_in: number
+  sentences_removed: number
+  chars_in: number
+  chars_out: number
+  reasons: Record<'quality' | 'popularity' | 'ordering' | 'ticket' | 'ticket_availability' | 'score' | 'review_count' | 'phone' | 'distance' | 'orphan' | 'cascade', number>
+  unattributable_claims: number
+  attribution: Record<'L1' | 'L2' | 'L2p' | 'L3' | 'L4' | 'L5' | 'anaphora', number>
+  pick_attributable: boolean | null
 }
 
 export function guardPlaceClaimsInText(
   text: string,
   evidence: PlaceClaimEvidence,
   opts: PlaceClaimOptions = {},
-): { text: string; redacted: number } {
+): { text: string; redacted: number; stats?: PlaceClaimStats } {
   const ticketsOnly = opts.scope === 'tickets'
-  if (!text) return { text, redacted: 0 }
+  const v2 = opts.attributionV2 === true
+  const scoreRe = v2 ? SCORE_RE_V2 : SCORE_RE
+  const stats: PlaceClaimStats = {
+    sentences_in: 0, sentences_removed: 0, chars_in: text.length, chars_out: text.length,
+    reasons: { quality: 0, popularity: 0, ordering: 0, ticket: 0, ticket_availability: 0, score: 0, review_count: 0, phone: 0, distance: 0, orphan: 0, cascade: 0 },
+    unattributable_claims: 0,
+    attribution: { L1: 0, L2: 0, L2p: 0, L3: 0, L4: 0, L5: 0, anaphora: 0 },
+    pick_attributable: null,
+  }
+  if (!text) return { text, redacted: 0, stats }
   const { ratings, distancesKm, texts, entityTexts, placeNames, orderablePlaces } = evidence
   const { ratingsByEntity, reviewCountsByEntity, phonesByEntity, ticketablePlaces } = evidence
   const retrievedNumbers = numbersIn(texts)
   const tokens = placeTokensFor(placeNames ?? [])
+  const names = placeNames ?? []
   /** The single place this sentence names, or null when it names none or several. */
   const placeNamedIn = (sentence: string): string | null => {
+    if (v2) {
+      const hit = attributePlace(sentence, names)
+      if (hit) { stats.attribution[hit.level]++; return hit.name }
+      return null
+    }
     const named = tokens.filter(t => textNamesPlace(sentence, '', t))
     return named.length === 1 ? named[0].name : null
+  }
+  if (v2 && opts.pickName) stats.pick_attributable = attributePlace(opts.pickName, names) !== null
+  /**
+   * G1 · L5 — verification-only attribution by the numbers themselves. Used ONLY for
+   * the score / review-count checks: the venue whose evidence carries the review
+   * count the sentence states (and the rating too, when one is stated). Rating
+   * alone is never enough (owner rule — dozens of venues share 4.8★); hours,
+   * phones, prices and quality words in the same sentence still need a normal
+   * attribution. A fabricated number cannot be rescued here: it matches nobody.
+   */
+  const placeByNumbers = (sentence: string): string | null => {
+    if (!v2 || !reviewCountsByEntity) return null
+    const counts = statedReviewCounts(sentence)
+    if (counts.length === 0) return null
+    const scores = statedScores(sentence, scoreRe)
+    // Identification is EXACT on the count: `near` (5%) would let 3.571 stand for
+    // 3.516 too (measured on P15-r2 — two spas, both 4.9★) and the venue would be
+    // ambiguous. The model copies the card's integer; a rounded count is not a match.
+    const hits = [...reviewCountsByEntity.entries()]
+      .filter(([, pool]) => counts.some(c => pool.includes(c)))
+      .filter(([name]) => scores.length === 0 || scores.some(s => near(s, ratingsByEntity?.get(name) ?? [])))
+      .map(([name]) => name)
+    if (hits.length === 1) { stats.attribution.L5++; return hits[0] }
+    return null
   }
   /**
    * The venue a sentence is ABOUT, following the subject across a paragraph.
@@ -524,10 +602,15 @@ export function guardPlaceClaimsInText(
     const paragraphStart = text.lastIndexOf('\n\n', spansIn[idx][0])
     for (let j = idx - 1; j >= 0 && spansIn[j][0] > paragraphStart; j--) {
       const prev = placeNamedIn(text.slice(spansIn[j][0], spansIn[j][1]))
-      if (prev) return prev
+      if (prev) { if (v2) stats.attribution.anaphora++; return prev }
     }
     return null
   }
+  /** Why a sentence was doomed — feeds the telemetry counters only. */
+  const reasonOf = new Map<number, keyof PlaceClaimStats['reasons']>()
+  const reasonForRegex = (re: RegExp): keyof PlaceClaimStats['reasons'] =>
+    re === QUALITY_RE ? 'quality' : re === POPULARITY_RE ? 'popularity' : re === ORDERING_RE ? 'ordering'
+      : re === TICKET_RE ? 'ticket' : 'ticket_availability'
   const distancePool = [...distancesKm, ...retrievedNumbers]
   const ratingPool = [...ratings, ...retrievedNumbers]
 
@@ -653,6 +736,8 @@ export function guardPlaceClaimsInText(
         trimmed.set(i, trim.text)
       } else {
         doomed.add(i)
+        reasonOf.set(i, reasonForRegex(violated[0]))
+        if (namedBefore === null) stats.unattributable_claims++
       }
       return
     }
@@ -674,15 +759,15 @@ export function guardPlaceClaimsInText(
      * retrieved text that NAMED it. Area text supports an unattributed sentence
      * and nothing else — the same rule the price guard already applies.
      */
-    if (!ticketsOnly && SCORE_RE.test(s)) {
+    if (!ticketsOnly && scoreRe.test(s)) {
       // Fail-closed for the same reason as the verdict above: an unattributable
       // score has no venue to be a score OF.
-      const named = placeNamedAt(i, spans)
+      const named = placeNamedAt(i, spans) ?? placeByNumbers(s)
       const pool = ratingsByEntity
         ? (named ? [...(ratingsByEntity.get(named) ?? []), ...numbersIn(entityTexts?.get(named) ?? [])] : [])
         : ratingPool
       const stated = numbersOf(s)
-      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); return }
+      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'score'); if (!named) stats.unattributable_claims++; return }
     }
 
     /**
@@ -693,10 +778,10 @@ export function guardPlaceClaimsInText(
      * business; with nothing structured for it, it cannot be stated.
      */
     if (!ticketsOnly && REVIEW_COUNT_RE.test(s)) {
-      const named = placeNamedAt(i, spans)
+      const named = placeNamedAt(i, spans) ?? placeByNumbers(s)
       const pool = named ? (reviewCountsByEntity?.get(named) ?? []) : []
       const stated = statedReviewCounts(s)
-      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); return }
+      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'review_count'); if (!named) stats.unattributable_claims++; return }
     }
 
     /**
@@ -712,13 +797,13 @@ export function guardPlaceClaimsInText(
       const named = placeNamedAt(i, spans)
       const own = (named ? (phonesByEntity?.get(named) ?? []) : []).map(phoneDigits)
       const stated = (s.match(new RegExp(PHONE_RE, 'gu')) ?? []).map(phoneDigits)
-      if (stated.length > 0 && !stated.every(d => own.includes(d))) { doomed.add(i); return }
+      if (stated.length > 0 && !stated.every(d => own.includes(d))) { doomed.add(i); reasonOf.set(i, 'phone'); if (!named) stats.unattributable_claims++; return }
     }
 
     // 3) A stated distance must trace to a computed distance or a retrieved one.
     if (!ticketsOnly && DISTANCE_RE.test(s)) {
       const stated = numbersOf(s)
-      if (stated.length > 0 && !stated.some(n => near(n, distancePool))) { doomed.add(i); return }
+      if (stated.length > 0 && !stated.some(n => near(n, distancePool))) { doomed.add(i); reasonOf.set(i, 'distance'); return }
     }
   })
 
@@ -805,13 +890,66 @@ export function guardPlaceClaimsInText(
     })
   }
 
-  if (doomed.size === 0 && orphaned.size === 0 && trimmed.size === 0) return { text, redacted: 0 }
+  stats.sentences_in = spans.length
+  /**
+   * G1 · COHERENCE PASS (v2 only). A deletion must not leave a fragment behind: the
+   * first surviving sentence of a paragraph that opens with a connective or an
+   * anaphor ("Ngoài ra", "Tuy nhiên", "Quán này", "Also", "It"), with a lowercase
+   * letter or punctuation, or that has fewer than four letters (a stranded emoji),
+   * follows its antecedent out. Counted separately as `cascade` so over-deletion
+   * stays visible in telemetry (owner rule).
+   */
+  const cascade = new Set<number>()
+  if (v2) {
+    const CONNECTIVE_RE = /^[\s*_>-]*(?:ngoài ra|ngoai ra|tuy nhiên|tuy nhien|còn\b|con\b|nếu (?:bạn )?muốn thêm|neu (?:ban )?muon them|bên cạnh đó|ben canh do|quán này|quan nay|nơi này|noi nay|chỗ này|cho nay|đây là|day la|nó\b|no\b|also\b|besides\b|however\b|if you want (?:more|another|something)|it\b|this (?:place|spot|one)|the (?:place|spot))/iu
+    const dropped = (i: number): boolean => doomed.has(i) || orphaned.has(i) || cascade.has(i)
+    let again = true
+    while (again) {
+      again = false
+      let prevDroppedInParagraph = false
+      let paragraphOpen = true
+      for (let i = 0; i < spans.length; i++) {
+        const [a, b] = spans[i]
+        const raw = trimmed.get(i) ?? text.slice(a, b)
+        const startsParagraph = i === 0 || /\n\s*\n/.test(text.slice(spans[i - 1][1], a))
+        if (startsParagraph) { paragraphOpen = true; prevDroppedInParagraph = false }
+        if (dropped(i)) { prevDroppedInParagraph = true; continue }
+        if (paragraphOpen) {
+          const body = raw.replace(/^[\s*_>-]+/, '')
+          const letters = (body.match(/\p{L}/gu) ?? []).length
+          const opensBadly = CONNECTIVE_RE.test(raw) || /^\p{Ll}/u.test(body) || /^[.,;:!?…)]/.test(body) || letters < 4
+          if (prevDroppedInParagraph && opensBadly) { cascade.add(i); again = true; prevDroppedInParagraph = true; continue }
+          paragraphOpen = false
+        }
+      }
+    }
+  }
+  const finish = (out: string, redacted: number): { text: string; redacted: number; stats: PlaceClaimStats } => {
+    stats.chars_out = out.length
+    for (const i of doomed) { const r = reasonOf.get(i); if (r) stats.reasons[r]++ }
+    stats.reasons.orphan = orphaned.size
+    stats.reasons.cascade = cascade.size
+    stats.sentences_removed = doomed.size + orphaned.size + cascade.size
+    return { text: out, redacted, stats }
+  }
 
-  const render = (drop: (i: number) => boolean): string =>
-    spans
+  if (doomed.size === 0 && orphaned.size === 0 && trimmed.size === 0 && cascade.size === 0) return { text, redacted: 0, stats }
+
+  const render = (drop: (i: number) => boolean): string => {
+    const joined = spans
       .map(([a, b], i) => (drop(i) ? '' : trimmed.get(i) ?? text.slice(a, b)))
       .join('')
       .replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
+    if (!v2) return joined
+    // Paragraph hygiene (v2): no leading blanks, no letter-less paragraphs, and a
+    // space after a sentence end when the next sentence now follows directly.
+    return joined
+      .split(/\n\s*\n/)
+      .map(p => p.replace(/^[ \t]+/gm, '').trim())
+      .filter(p => /\p{L}/u.test(p))
+      .join('\n\n')
+      .replace(/([.!?…])(\p{Lu})/gu, '$1 $2')
+  }
   const isProse = (t: string): boolean => /\p{L}/u.test(t)
 
   /**
@@ -828,11 +966,19 @@ export function guardPlaceClaimsInText(
    * original survive - the same last resort this guard always had, and in that
    * case there is no orphan left to dangle anyway.
    */
-  const full = render(i => doomed.has(i) || orphaned.has(i))
-  if (isProse(full)) return { text: full, redacted: doomed.size + orphaned.size + trimmed.size }
+  const full = render(i => doomed.has(i) || orphaned.has(i) || cascade.has(i))
+  if (isProse(full)) return finish(full, doomed.size + orphaned.size + trimmed.size + cascade.size)
 
   const claimsOnly = render(i => doomed.has(i))
-  if (isProse(claimsOnly)) return { text: claimsOnly, redacted: doomed.size + trimmed.size }
+  if (isProse(claimsOnly)) { cascade.clear(); orphaned.clear(); return finish(claimsOnly, doomed.size + trimmed.size) }
 
-  return { text, redacted: 0 }
+  /**
+   * G1 (v2): every sentence carried an unsupported claim. The v1 last resort
+   * hands the original back — a reply made only of claims nobody can support.
+   * Under the flag the guard returns what is left (usually nothing) and the
+   * stream's evidence-only fallback (G1b) writes the one sentence the card data
+   * can vouch for. Owner rule: never keep an unattributable claim.
+   */
+  if (v2) return finish(full, doomed.size + orphaned.size + trimmed.size + cascade.size)
+  return { text, redacted: 0, stats }
 }
