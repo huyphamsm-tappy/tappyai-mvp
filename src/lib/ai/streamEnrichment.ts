@@ -9,7 +9,7 @@ import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
-import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled } from '@/lib/config/product'
+import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
@@ -294,6 +294,55 @@ function placeMentionOffsets(places: PlaceLike[], dedupText: string, headers: He
   return offs
 }
 
+/**
+ * G3 (MEDIA_PLACEMENT_V2) — where an owned block may be INSERTED: the end of the
+ * markdown block that contains the mention, never inside it.
+ *
+ * 🚨 `boundaryAfter` below is the DEDUP WINDOW, not an insertion point. Using it
+ * for both spliced a photo into the middle of "… hoặc **B** …" whenever two venues
+ * shared a sentence — 13 of 69 blocks on the 2026-09-17 mobile-path replay. The
+ * window stays as it is; this decides the offset:
+ *   · paragraph            → after its last non-blank line
+ *   · unordered list item  → after that item's line (a following bullet starts fresh)
+ *   · ordered list item    → after the WHOLE ordered list, so the Android renderer
+ *                            never sees "1." … ⟨image⟩ … "2." and restarts the count
+ *   · table / block quote  → after the whole table / quote
+ *   · code fence           → after the closing fence
+ * Capped at `textEnd` (first structured marker / end of text). Owner rules, G3 Q1.
+ */
+const LIST_ITEM_RE = /^\s{0,3}(?:[-*+•]|\d{1,3}[.)])\s/
+const ORDERED_ITEM_RE = /^\s{0,3}\d{1,3}[.)]\s/
+const CONTINUATION_RE = /^\s{2,}\S/
+const TABLE_ROW_RE = /^\s*\|/
+const QUOTE_RE = /^\s{0,3}>/
+const FENCE_RE = /^\s{0,3}(?:```|~~~)/
+function blockEndAfter(text: string, idx: number, textEnd: number): number {
+  const scope = text.slice(0, textEnd)
+  const lines: Array<{ start: number; end: number; s: string }> = []
+  let pos = 0
+  for (const raw of scope.split('\n')) { lines.push({ start: pos, end: pos + raw.length, s: raw }); pos += raw.length + 1 }
+  let i = lines.findIndex(l => idx >= l.start && idx <= l.end)
+  if (i === -1) return textEnd
+  // Inside a code fence? Count fences above the mention.
+  let open = false, openAt = -1
+  for (let k = 0; k <= i; k++) if (FENCE_RE.test(lines[k].s)) { open = !open; openAt = k }
+  if (open) {
+    for (let k = openAt + 1; k < lines.length; k++) if (FENCE_RE.test(lines[k].s)) return Math.min(lines[k].end, textEnd)
+    return textEnd
+  }
+  const line = lines[i].s
+  const extend = (pred: (s: string) => boolean): number => { let k = i; while (k + 1 < lines.length && pred(lines[k + 1].s)) k++; return Math.min(lines[k].end, textEnd) }
+  if (TABLE_ROW_RE.test(line)) return extend(s => TABLE_ROW_RE.test(s))
+  if (QUOTE_RE.test(line)) return extend(s => QUOTE_RE.test(s))
+  if (ORDERED_ITEM_RE.test(line)) {
+    // walk back to the first item of this ordered list, then forward over the whole list
+    while (i > 0 && (ORDERED_ITEM_RE.test(lines[i - 1].s) || CONTINUATION_RE.test(lines[i - 1].s))) i--
+    return extend(s => ORDERED_ITEM_RE.test(s) || CONTINUATION_RE.test(s))
+  }
+  if (LIST_ITEM_RE.test(line)) return extend(s => CONTINUATION_RE.test(s))
+  return extend(s => s.trim() !== '' && !LIST_ITEM_RE.test(s) && !TABLE_ROW_RE.test(s) && !QUOTE_RE.test(s) && !FENCE_RE.test(s))
+}
+
 // End of a place's block = the nearest mentioned-place offset AFTER it (so its links
 // can't be attributed to a later place), capped at textEnd (first structured marker
 // / end of text).
@@ -461,7 +510,11 @@ function namesMatch(itemKey: string, placeKey: string): boolean {
   return placeKey.length >= 4 && (itemKey.includes(placeKey) || placeKey.includes(itemKey))
 }
 
-export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi'): string {
+/** G3: `placement: 'v2'` = block-end insertion (MEDIA_PLACEMENT_V2); omitted ⇒ byte-identical v1. */
+export interface InjectPlaceEnrichmentOptions { placement?: 'v1' | 'v2' }
+
+export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lang = 'vi', opts: InjectPlaceEnrichmentOptions = {}): string {
+  const v2 = opts.placement === 'v2'
   // A photo is no longer a precondition for enrichment. It used to be, which
   // meant a failed photo lookup silently took the order/platform links down with
   // it — nothing about an order link needs a photo to exist (B4 finding).
@@ -502,29 +555,38 @@ export function injectPlaceEnrichment(places: PlaceLike[], fullText: string, lan
   const mentioned = usable.filter(p => findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name)) !== -1)
   const chosen = (mentioned.length > 0 ? mentioned : usable).slice(0, 3)
 
-  const insertions: { offset: number; text: string }[] = []
+  const insertions: { offset: number; text: string; order: number }[] = []
   for (const p of chosen) {
     const ownIdx = findPlaceOffset(p.name as string, dedupText, headers, rivals.filter(n => n !== p.name))
     if (ownIdx === -1) continue
     const windowEnd = boundaryAfter(ownIdx, mentionOffsets, textEnd)
     const { lines } = placeContentLines(p, decodedText, dedupText, windowEnd)
     if (lines.length === 0) continue
-    // Insert at this place's block boundary. When the boundary is the NEXT place, snap back
-    // to the start of that place's header line so we never split its markdown header; when
-    // it's the CTA marker / end of text, insert exactly there (after this place's last line).
-    let offset = windowEnd
-    if (windowEnd < textEnd) {
-      const lineStart = text.lastIndexOf('\n', windowEnd - 1) + 1
-      if (lineStart > ownIdx) offset = lineStart
+    let offset: number
+    if (v2) {
+      // G3: the dedup window above is unchanged; the block itself lands at the end of
+      // the markdown block that mentions the venue (see blockEndAfter).
+      offset = blockEndAfter(text, ownIdx, textEnd)
+    } else {
+      // Insert at this place's block boundary. When the boundary is the NEXT place, snap back
+      // to the start of that place's header line so we never split its markdown header; when
+      // it's the CTA marker / end of text, insert exactly there (after this place's last line).
+      offset = windowEnd
+      if (windowEnd < textEnd) {
+        const lineStart = text.lastIndexOf('\n', windowEnd - 1) + 1
+        if (lineStart > ownIdx) offset = lineStart
+      }
     }
-    insertions.push({ offset, text: lines.join('\n') })
+    insertions.push({ offset, text: lines.join('\n'), order: insertions.length })
   }
   // Stripped the LLM's copies but couldn't place them positionally (names not found, etc.) —
   // re-add them as the trailing block so nothing is lost.
   if (insertions.length === 0) return appendTrailingBlock(usable, places, text, decodedText, lang)
 
   // Apply from the last boundary backwards so earlier offsets stay valid as we splice.
-  insertions.sort((a, b) => b.offset - a.offset)
+  // G3: blocks that share an offset (two venues in one paragraph) are applied in REVERSE
+  // mention order, so the finished text carries them in mention order (owner rule, Q2).
+  insertions.sort((a, b) => b.offset - a.offset || b.order - a.order)
   let out = text
   for (const ins of insertions) {
     const before = out.slice(0, ins.offset).replace(/\s+$/, '')
@@ -1197,7 +1259,7 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
-    const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)
+    const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,

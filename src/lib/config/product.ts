@@ -298,3 +298,19 @@ export function snippetPriceGuardV2Enabled(env: NodeJS.ProcessEnv = process.env)
   const v = env.SNIPPET_PRICE_GUARD_V2
   return v === '1' || v === 'true'
 }
+
+/**
+ * G3 — MEDIA_PLACEMENT_V2.
+ *
+ * `injectPlaceEnrichment` inserts a venue's photo / TikTok / order-link lines at
+ * the END OF THE BLOCK that mentions the venue (paragraph, list item, table,
+ * quote, code fence) instead of at the next venue's mention offset, which put
+ * the block mid-sentence whenever two venues shared a sentence (13 of 69 blocks
+ * on the 2026-09-17 mobile-path replay). Lines and markers are byte-identical;
+ * only the offset moves. Web is unaffected (the decision card owns enrichment).
+ * Same shape as the other flags: read at call time, default OFF.
+ */
+export function mediaPlacementV2Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.MEDIA_PLACEMENT_V2
+  return v === '1' || v === 'true'
+}

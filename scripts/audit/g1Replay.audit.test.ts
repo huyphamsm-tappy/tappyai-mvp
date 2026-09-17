@@ -150,10 +150,10 @@ function fabricatedNumbers(r: Rec, input: string): string[] {
 }
 
 /** Re-run the mobile-path injector and report where each inserted block landed relative to the sentence it follows. */
-function midSentenceInsertions(r: Rec): { inserted: number; mid_sentence: number; samples: string[] } {
+function midSentenceInsertions(r: Rec, placement: 'v1' | 'v2' = 'v1'): { inserted: number; mid_sentence: number; samples: string[] } {
   if (!r.placesFull || !r.stages.mainText) return { inserted: 0, mid_sentence: 0, samples: [] }
   const main = r.stages.mainText
-  const enriched = injectPlaceEnrichment(r.placesFull as never[], main, r.lang)
+  const enriched = injectPlaceEnrichment(r.placesFull as never[], main, r.lang, { placement })
   const mainLines = new Set(main.split('\n'))
   let inserted = 0, mid = 0
   const samples: string[] = []
@@ -168,7 +168,8 @@ function midSentenceInsertions(r: Rec): { inserted: number; mid_sentence: number
     const prev = (lines[j] ?? '').trimEnd()
     // Was that prose line cut? It is if the original text continued on the same line after it.
     const at = main.indexOf(prev)
-    const cut = at !== -1 && at + prev.length < main.length && main[at + prev.length] !== '\n'
+    let after = at + prev.length; while (after < main.length && (main[after] === ' ' || main[after] === '\t')) after++ // trailing blanks on the line
+    const cut = at !== -1 && after < main.length && main[after] !== '\n'
     if (cut) { mid++; if (samples.length < 3) samples.push(`…${prev.slice(-50)} ⟨${l.slice(0, 30)}…⟩ ${main.slice(at + prev.length, at + prev.length + 40).replace(/\n/g, '⏎')}…`) }
   }
   return { inserted, mid_sentence: mid, samples }
@@ -176,7 +177,7 @@ function midSentenceInsertions(r: Rec): { inserted: number; mid_sentence: number
 
 describe('G1 acceptance replay', () => {
   it('replays the captured pre-guard text through v1 and v2 and writes the metrics', () => {
-    const rows: Array<Record<string, unknown> & { run: number; ran_guard: boolean; v1: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[] }; v2: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[]; unattributable?: number; fallback_used: boolean; pick_attributable: boolean | null; attribution?: Record<string, number>; reasons?: Record<string, number>; cta_kept: boolean }; pick: string | null; fabricated_in_input: string[]; cta_in_input: boolean; cta_kept_v1: boolean; injection: { inserted: number; mid_sentence: number; samples: string[] } }> = []
+    const rows: Array<Record<string, unknown> & { run: number; ran_guard: boolean; v1: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[] }; v2: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[]; unattributable?: number; fallback_used: boolean; pick_attributable: boolean | null; attribution?: Record<string, number>; reasons?: Record<string, number>; cta_kept: boolean }; pick: string | null; fabricated_in_input: string[]; cta_in_input: boolean; cta_kept_v1: boolean; injection: { inserted: number; mid_sentence: number; samples: string[] }; injection_v2: { inserted: number; mid_sentence: number; samples: string[] } }> = []
     const notes: string[] = []
     for (const cap of CAPTURES) {
       if (!existsSync(cap.file)) { notes.push(`missing capture: ${cap.file}`); continue }
@@ -207,6 +208,7 @@ describe('G1 acceptance replay', () => {
           v2: { chars: v2final.length, ratio: ratio(v2final), removed: v2.stats?.sentences_removed, reasons: v2.stats?.reasons, attribution: v2.stats?.attribution, unattributable: v2.stats?.unattributable_claims, pick_attributable: v2.stats?.pick_attributable ?? null, fallback_used: !!v2fb, fragments: fragmentsIn(v2final, input), fabricated_surviving: fab.filter(f => v2final.includes(f)), cta_kept: v2final.includes('[CTA_BUTTONS]') },
           fabricated_in_input: fab,
           injection: midSentenceInsertions(r),
+          injection_v2: midSentenceInsertions(r, 'v2'),
           texts: { input, v1: v1.text, v2: v2final, server_v1: r.stages.placeGuarded },
         })
       })
@@ -244,6 +246,13 @@ describe('G1 acceptance replay', () => {
         blocks_mid_sentence: rows.reduce((n, r) => n + r.injection.mid_sentence, 0),
         turns_with_mid_sentence: rows.filter(r => r.injection.mid_sentence > 0).length,
         samples: rows.flatMap(r => r.injection.samples).slice(0, 6),
+      },
+      // G3 (MEDIA_PLACEMENT_V2): same rows, block-end insertion.
+      injection_mobile_path_replay_v2: {
+        blocks_inserted: rows.reduce((n, r) => n + r.injection_v2.inserted, 0),
+        blocks_mid_sentence: rows.reduce((n, r) => n + r.injection_v2.mid_sentence, 0),
+        turns_with_mid_sentence: rows.filter(r => r.injection_v2.mid_sentence > 0).length,
+        samples: rows.flatMap(r => r.injection_v2.samples).slice(0, 6),
       },
     }
     writeFileSync(`${AUDIT}/g1-replay.json`, JSON.stringify(rows, null, 2))
