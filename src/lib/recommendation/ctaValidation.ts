@@ -214,33 +214,54 @@ export function isRegistryFrontDoor(url: string): boolean {
  * a genuinely unsupported capability (table reservation, showtimes) names no registry provider and
  * so is never matched.
  */
-const DISCONNECT_CLAIM = /(ch[ưu]a|kh[ôo]ng)\s+(k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)/iu
+// Negation of connectivity/support (Vietnamese + English). A short gap is allowed so
+// "Trip.com KHÔNG nằm trong danh sách nền tảng mình KẾT NỐI" and "not directly CONNECTED to Trip.com"
+// both match; the gap never crosses a sentence boundary.
+const NEG_SUPPORT = /(?:ch[ưu]a|kh[ôo]ng)[^.!?\n]{0,45}?(?:k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)|\b(?:not|isn'?t|aren'?t|do(?:es)?n'?t|don'?t|can'?t|cannot|no longer)\b[^.!?\n]{0,45}?(?:support|connect|integrat|work with|handle|available on)/iu
 
-// 🚨 A SECOND false-disconnect shape (cross-platform UAT, 15 Sep 2026): the model denies the
-// requested provider by OMISSION rather than negation — "bạn yêu cầu Trip.com nhưng hệ thống mình
-// CHỈ kết nối VỚI Booking.com và Agoda". The Trip.com card rendered correctly, so the limitation is
-// false. Matched only when the connectivity verb is followed by "với" (a connected-WITH scope claim,
-// not feature support like "chỉ hỗ trợ thẻ"); kept when the requested provider is itself in that list.
-const LIMITED_CONNECT = /ch[ỉi]\s+(?:hi[ệe]n\s+(?:t[ạa]i\s+)?)?(?:c[óo]\s+)?(?:k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)(?:\s+tr[ựu]c ti[ếe]p)?\s+v[ớo]i\b/iu
+// An EXCLUSIVE "only … support/connect/search" scope (Vietnamese + English). Paired below with
+// "names ANOTHER registry merchant but not the requested one", so a genuine capability/feature limit
+// ("chỉ hỗ trợ thanh toán thẻ", "I can only provide a direct handoff") is never caught — it lists no
+// other registry merchant as the scope.
+// NOTE: `ch[ỉi]\s` (whitespace), NOT `\b` — JS `\b` is ASCII-based, and the accented "ỉ" in "chỉ" is a
+// non-word char, so `ch[ỉi]\b` silently only ever matched the un-accented "chi". "chỉ" (the word "only")
+// is always followed by whitespace.
+const ONLY_LIMIT = /ch[ỉi]\s[^.!?\n]{0,30}?(?:h[ỗo] tr[ợo]|k[ếe]t n[ốo]i|li[êe]n k[ếe]t|t[íi]ch h[ợo]p|t[ìi]m ki[ếe]m|t[ìi]m)|\b(?:only|can only|i only)\b[^.!?\n]{0,30}?(?:support|connect|integrat|work with|handle|search)/iu
 
-function isFalseLimitationSentence(s: string, nameRe: RegExp): boolean {
-  const m = LIMITED_CONNECT.exec(s)
-  if (!m) return false
-  // If the requested provider is named AFTER "chỉ … với", it is IN the connected list — a true,
-  // positive statement ("chỉ kết nối với Trip.com") — never strip that.
-  return !nameRe.test(s.slice(m.index + m[0].length))
-}
-
+/**
+ * 🚨 A CONNECTED PROVIDER IS NEVER "not connected" NOR "only Booking & Agoda" — in ANY language
+ * (final integrity pass, 17 Sep 2026, root-caused from the settle-path M2DIAG).
+ *
+ * `requestedProviderId` is only ever a REGISTRY (connected) provider, so a claim that TappyAI does not
+ * support it, or supports ONLY other platforms, is provably false. Rule 18b already tells the model this
+ * in words and it still violates it — in Vietnamese ("Trip.com không nằm trong danh sách nền tảng mình
+ * kết nối", "TappyAI chỉ hỗ trợ tìm khách sạn trên Booking.com và Agoda") AND English ("I only support
+ * hotel searches on Booking.com and Agoda", "I'm not connected to Trip.com"). Two sentence-level triggers:
+ *   (A) a negation/non-support that NAMES the requested provider; or
+ *   (B) an exclusive "only …" scope that lists ANOTHER registry merchant and EXCLUDES the requested one
+ *       (its name may sit BEFORE the "only" as the refused request; a name AFTER means it is IN the
+ *       connected list — a true statement — so keep).
+ * A genuine capability limit names no other registry merchant as its scope and does not negate the
+ * requested provider, so it survives: "only provide a direct handoff; pay on the merchant site",
+ * "Showtime data is unavailable", "TappyAI chưa hỗ trợ đặt bàn".
+ */
 export function stripFalseDisconnectClaims(text: string, requestedProviderId?: string | null): string {
   if (!text || !requestedProviderId) return text
   const entry = PROVIDER_REGISTRY.find(e => e.providerId === requestedProviderId)
   if (!entry) return text
-  const name = entry.merchantName
-  const nameRe = new RegExp(`(?<![\\p{L}\\p{N}])${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu')
+  const nameRe = new RegExp(`(?<![\\p{L}\\p{N}])${entry.merchantName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu')
+  const otherMerchantRes = MERCHANTS_BY_NAME.filter(m => m.name !== entry.merchantName).map(m => m.re)
   // Split into sentences at a "." / "!" / "?" that is FOLLOWED BY whitespace (so the "." inside
   // "Trip.com" never splits the name), and at newlines; keep every delimiter so a rejoin is lossless.
   const parts = text.split(/(?<=[.!?])(?=\s)|(?<=\S)(?=\n)/)
-  const kept = parts.filter(s => !(nameRe.test(s) && (DISCONNECT_CLAIM.test(s) || isFalseLimitationSentence(s, nameRe))))
+  const kept = parts.filter(s => {
+    // (A) A false negation / non-support of the REQUESTED provider.
+    if (nameRe.test(s) && NEG_SUPPORT.test(s)) return false
+    // (B) An exclusive "only …" scope listing ANOTHER registry merchant, excluding the requested one.
+    const m = ONLY_LIMIT.exec(s)
+    if (m && otherMerchantRes.some(re => re.test(s)) && !nameRe.test(s.slice(m.index + m[0].length))) return false
+    return true
+  })
   if (kept.length === parts.length) return text
   return kept.join('').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
 }

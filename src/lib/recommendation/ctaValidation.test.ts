@@ -236,6 +236,44 @@ describe('a false "chưa kết nối" claim about a connected provider is remove
     const text = 'Trip.com chỉ hỗ trợ thanh toán thẻ quốc tế.'
     expect(stripFalseDisconnectClaims(text, 'tripcom')).toBe(text)
   })
+
+  // 🚨 Final integrity pass (17 Sep 2026) — exact M2 terse-correction output, root-caused from M2DIAG.
+  it('drops BOTH M2 shapes: "chỉ hỗ trợ tìm khách sạn trên Booking.com và Agoda" and "Trip.com không nằm trong danh sách … kết nối"', () => {
+    const text = 'Mình hiểu, nhưng TappyAI chỉ hỗ trợ tìm khách sạn trên **Booking.com** và **Agoda** thôi. Trip.com không nằm trong danh sách nền tảng mình kết nối. Bạn có thể vào Trip.com trực tiếp để tìm khách sạn ở Đà Nẵng, được không? 🏨'
+    const out = stripFalseDisconnectClaims(text, 'tripcom')
+    expect(out).not.toContain('chỉ hỗ trợ tìm khách sạn trên')
+    expect(out).not.toContain('không nằm trong danh sách')
+    expect(out).toContain('Bạn có thể vào Trip.com trực tiếp') // the honest offer survives
+  })
+  // 🚨 English false limitation (objective #2) — the guard is now multilingual.
+  it('drops the English "I only support hotel searches on Booking.com and Agoda" under a Trip.com request', () => {
+    const text = 'I found some hotels in Da Nang. I only support hotel searches on Booking.com and Agoda. You can open Trip.com directly instead.'
+    const out = stripFalseDisconnectClaims(text, 'tripcom')
+    expect(out).not.toContain('I only support hotel searches on Booking.com and Agoda')
+    expect(out).toContain('I found some hotels in Da Nang.')
+    expect(out).toContain('You can open Trip.com directly instead.')
+  })
+  it('drops the English "I\'m not connected to Trip.com" (negation naming the requested provider)', () => {
+    const out = stripFalseDisconnectClaims("Sorry, I'm not connected to Trip.com. Try another platform.", 'tripcom')
+    expect(out).toBe('Try another platform.')
+  })
+  it('KEEPS a legitimate English capability limit ("only provide a direct handoff … pay on the merchant site")', () => {
+    const text = 'I can only provide a direct handoff to the merchant; payment must be completed on the merchant site.'
+    expect(stripFalseDisconnectClaims(text, 'tripcom')).toBe(text)
+    expect(stripFalseDisconnectClaims('Showtime data is unavailable.', 'cgv')).toBe('Showtime data is unavailable.')
+  })
+  it('KEEPS the true positive English "I only support Trip.com for this" (requested provider IS the scope)', () => {
+    const text = 'For this hotel I only support Trip.com right now.'
+    expect(stripFalseDisconnectClaims(text, 'tripcom')).toBe(text)
+  })
+  // 🚨 M2-C exact live shape (product correction): both false parts joined by an em-dash in ONE sentence.
+  it('drops the em-dash M2-C shape "chỉ hỗ trợ tìm kiếm trên Shopee và Lazada thôi — TikTok Shop chưa … kết nối" (TikTok Shop request)', () => {
+    const text = 'Bạn có thể vào TikTok Shop trực tiếp. TappyAI chỉ hỗ trợ tìm kiếm trên Shopee và Lazada thôi — TikTok Shop chưa nằm trong danh sách nền tảng mình kết nối.'
+    const out = stripFalseDisconnectClaims(text, 'tiktokshop')
+    expect(out).not.toContain('chỉ hỗ trợ tìm kiếm trên Shopee và Lazada')
+    expect(out).not.toContain('chưa nằm trong danh sách')
+    expect(out).toContain('Bạn có thể vào TikTok Shop trực tiếp.')
+  })
 })
 
 describe('a bold-wrapped markdown link is un-emphasised so Android linkifies it (cross-platform UAT, 15 Sep 2026)', () => {
@@ -251,5 +289,20 @@ describe('a bold-wrapped markdown link is un-emphasised so Android linkifies it 
   it('leaves an UNwrapped link and ordinary bold text alone', () => {
     expect(unemphasizeLinks('[Đặt vé Vietnam Airlines](https://www.vietnamairlines.com/)')).toBe('[Đặt vé Vietnam Airlines](https://www.vietnamairlines.com/)')
     expect(unemphasizeLinks('Đây là **giá tốt nhất** cho bạn.')).toBe('Đây là **giá tốt nhất** cho bạn.')
+  })
+  // 🚨 Final integrity pass (17 Sep 2026) — the four Ticketbox render shapes (objective #10), verified
+  // physically on Android (the unbolded shape D-row tapped through to ticketbox.vn).
+  it('C) a plain link surrounded by prose keeps its URL and stays tappable (unbolded shape)', () => {
+    const text = 'Mình sẽ tìm vé cho bạn.\n\n[Chao Show - The Sound of Vietnam](https://ticketbox.vn/chao-show2026-25472)\n\nShow diễn tại số 6 Nguyễn Siêu, TP.HCM.'
+    expect(unemphasizeLinks(text)).toBe(text) // unchanged — already tappable
+    expect(text).toContain('](https://ticketbox.vn/chao-show2026-25472)')
+  })
+  it('D) multiple links in one response — each preserved, bold ones unwrapped, URLs intact', () => {
+    const text = 'Vé: **[Chao Show](https://ticketbox.vn/chao-show2026-25472)** và [U-KNOW](https://ticketbox.vn/u-know-project-26-scene1-in-hcm-26405).'
+    expect(unemphasizeLinks(text)).toBe('Vé: [Chao Show](https://ticketbox.vn/chao-show2026-25472) và [U-KNOW](https://ticketbox.vn/u-know-project-26-scene1-in-hcm-26405).')
+  })
+  it('does not rewrite the URL when unwrapping (host + path preserved verbatim)', () => {
+    const out = unemphasizeLinks('**[X](https://ticketbox.vn/a/b?c=d&e=f)**')
+    expect(out).toBe('[X](https://ticketbox.vn/a/b?c=d&e=f)')
   })
 })
