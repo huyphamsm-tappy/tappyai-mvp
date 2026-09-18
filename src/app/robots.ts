@@ -20,6 +20,10 @@ export const DISALLOWED_PATHS = [
   '/access-denied',
   '/delete-account',
   '/share-target',
+  // G1 completion: the age gate and the back-office front door are reachable
+  // without auth but have nothing a search result should ever show.
+  '/age-check',
+  '/controller',
 ] as const
 
 export default function robots(): MetadataRoute.Robots {

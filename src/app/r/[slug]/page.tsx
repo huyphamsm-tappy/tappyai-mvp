@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation'
 import { getPublicSharedResult } from '@/lib/share/sharedResultStore'
 import { isValidSlug } from '@/lib/share/slug'
 import { buildSharedResultMetadata, sharedResultJsonLd } from '@/lib/share/sharedResultMetadata'
+import { breadcrumbJsonLd, homeCrumb, hubCrumb } from '@/lib/discovery/siteJsonLd'
+import { isHubDomain } from '@/lib/discovery/domainHubs'
 import PublicResultView from './PublicResultView'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -38,11 +40,19 @@ export default async function SharedResultPage({ params }: Props) {
   if (!row) notFound()
 
   const jsonLd = sharedResultJsonLd(row)
+  // Breadcrumb: Home › hub › this result, for a LISTED (indexable) share in a
+  // hub domain. It is the crawl-depth signal: a result is two clicks from the
+  // root. An anonymous-owned share is noindex and gets no trail.
+  const domain = row.payload.domain
+  const breadcrumb = row.owner_is_anonymous !== true && isHubDomain(domain)
+    ? breadcrumbJsonLd([homeCrumb(), hubCrumb(domain), { name: row.payload.title, path: `/r/${row.slug}` }])
+    : null
   return (
     <>
       {/* Structured data for search engines and AI answer engines: the question and the
           answer, as data. Built from the frozen payload only — the same text the page shows. */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {breadcrumb && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />}
       <PublicResultView result={row} />
     </>
   )

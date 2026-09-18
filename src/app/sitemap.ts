@@ -3,19 +3,19 @@ import { absoluteUrl } from '@/lib/share/openGraph'
 import { HUB_DOMAINS } from '@/lib/discovery/domainHubs'
 import { listPublicSharedResults } from '@/lib/share/sharedResultStore'
 
-// Sitemap: home, the five discovery hubs, the public legal/help pages, and the
-// newest public shared results. Regenerated hourly (ISR); one indexed read.
+// Sitemap: home, /about (entity layer), Scam Shield, the five discovery hubs,
+// the public legal/help pages, /startup, and the newest public shared results. Regenerated hourly (ISR); one indexed read.
 // Withdrawn shares drop out because the store lists `status = 'public'` only.
 
 export const revalidate = 3600
 
-const STATIC_PUBLIC_PATHS = ['/', '/scam-shield', '/how-to-use', '/privacy', '/terms'] as const
+const STATIC_PUBLIC_PATHS = ['/', '/about', '/scam-shield', '/how-to-use', '/privacy', '/terms', '/startup'] as const
 export const SITEMAP_SHARED_RESULTS_MAX = 2000
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const entries: MetadataRoute.Sitemap = [
-    ...STATIC_PUBLIC_PATHS.map((p) => ({ url: absoluteUrl(p), lastModified: now, changeFrequency: 'weekly' as const, priority: p === '/' ? 1 : 0.5 })),
+    ...STATIC_PUBLIC_PATHS.map((p) => ({ url: absoluteUrl(p), lastModified: now, changeFrequency: 'weekly' as const, priority: p === '/' ? 1 : p === '/about' || p === '/scam-shield' ? 0.8 : 0.5 })),
     ...HUB_DOMAINS.map((d) => ({ url: absoluteUrl(`/${d}`), lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 })),
   ]
   let results: Awaited<ReturnType<typeof listPublicSharedResults>> = []

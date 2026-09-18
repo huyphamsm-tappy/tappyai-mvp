@@ -30,6 +30,7 @@ export default function HubBody({ domain, results }: { domain: CategoryId; resul
                 {c.emoji} {t(`tag.${c.id}`)}
               </Link>
             ))}
+            <Link href="/about" className="text-gray-600 dark:text-gray-300">{t('hub.ui.about')}</Link>
           </nav>
         </div>
       </header>

@@ -37,10 +37,19 @@ describe('parseLandingAttribution — pure', () => {
 
   it('a search or AI-engine referrer is GEO discovery, even on a share path', () => {
     expect(parseLandingAttribution({ pathname: '/food', referrer: 'https://www.google.com/' }).source).toBe('geo_google')
-    expect(parseLandingAttribution({ pathname: '/r/AbCdEfGh12', referrer: 'https://www.bing.com/search?q=x' }).source).toBe('geo_google')
+    expect(parseLandingAttribution({ pathname: '/r/AbCdEfGh12', referrer: 'https://www.bing.com/search?q=x' }).source).toBe('bing_search')
+    expect(parseLandingAttribution({ pathname: '/', referrer: 'https://copilot.microsoft.com/' }).source).toBe('geo_chatgpt')
+    expect(parseLandingAttribution({ pathname: '/', referrer: 'https://www.bing.com.attacker.example/' }).source).toBe('direct')
     expect(parseLandingAttribution({ pathname: '/r/AbCdEfGh12', referrer: 'https://chatgpt.com/' }).source).toBe('geo_chatgpt')
     expect(parseLandingAttribution({ pathname: '/', referrer: 'https://www.perplexity.ai/search/x' }).source).toBe('geo_chatgpt')
     expect(parseLandingAttribution({ pathname: '/', referrer: 'https://evil.google.com.attacker.example/' }).source).toBe('direct')
+  })
+
+  it('an entry surface that knows what it is — the browser extension, a PWA shortcut — is honoured via ?src=', () => {
+    expect(parseLandingAttribution({ pathname: '/chat', search: '?q=x&src=browser_extension' }).source).toBe('browser_extension')
+    expect(parseLandingAttribution({ pathname: '/scam-shield', search: '?src=pwa_shortcut' }).source).toBe('pwa_shortcut')
+    // A google referrer never overrides an explicit entry source.
+    expect(parseLandingAttribution({ pathname: '/chat', search: '?src=browser_extension', referrer: 'https://www.google.com/' }).source).toBe('browser_extension')
   })
 
   it('everything else is direct', () => {

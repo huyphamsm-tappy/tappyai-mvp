@@ -119,6 +119,31 @@ describe('computeGrowthMetrics', () => {
     expect(m.shares.viewerToShare).toBeCloseTo(0.5)
   })
 
+  it('multi-generation attribution walks the parent chain: sh1 is generation 1, sh2 generation 2', () => {
+    expect(m.shares.byGeneration).toEqual({ 1: 1, 2: 1 })
+    expect(m.shares.maxGeneration).toBe(2)
+  })
+
+  it('a third generation and an out-of-window parent are both counted honestly', () => {
+    const more: GrowthEventRow[] = [
+      ...rows,
+      ev('share_created', { anon: V2 }, '2026-09-09T02:00:00Z', { source: 'share_out', share_id: 'sh3', slug: 'Qq3', parent_share_id: 'sh2' }),
+      ev('share_created', { anon: V2 }, '2026-09-09T03:00:00Z', { source: 'share_out', share_id: 'sh4', slug: 'Qq4', parent_share_id: 'sh-before-window' }),
+      ev('share_created', { anon: V2 }, '2026-09-09T04:00:00Z', { source: 'share_out', share_id: 'sh5', slug: 'Qq5', parent_share_id: 'sh5' }), // self-loop: must terminate
+    ]
+    const x = computeGrowthMetrics({ rows: more, links, from: FROM, to: TO, now: NOW })
+    expect(x.shares.byGeneration[3]).toBe(1) // sh3
+    expect(x.shares.byGeneration[2]).toBe(2) // sh2 + sh4 (unknown parent = at least generation 2)
+    expect(x.shares.byGeneration[1]).toBe(2) // sh1 + the self-loop, which stops where it stands
+    expect(x.shares.maxGeneration).toBe(3)
+    expect(Object.values(x.shares.byGeneration).reduce((a, b) => a + b, 0)).toBe(5)
+  })
+
+  it('acquisition: first queries in the period are broken down by source', () => {
+    // A (direct), B (qr_pos), V1 (share_out), V2 (direct). C's first query was before the period.
+    expect(m.acquisition.firstQueriesBySource).toEqual({ direct: 2, qr_pos: 1, share_out: 1 })
+  })
+
   it('k-factor = share-attributed NEW actives / actives', () => {
     // New in period with share attribution: V1 only (V2's first query was direct).
     expect(m.shares.kFactor).toBeCloseTo(1 / 5)

@@ -10,6 +10,18 @@ import { getAgeEligibility } from '@/lib/account/ageEligibility'
 import { redirect } from 'next/navigation'
 import { vietnamHeroClock } from '@/lib/home/heroGreeting'
 import { siteJsonLd } from '@/lib/discovery/siteJsonLd'
+import type { Metadata } from 'next'
+import { absoluteUrl } from '@/lib/share/openGraph'
+
+// The one canonical for the home page. The root layout's metadata carries the
+// title/OG for every page but deliberately no canonical (a layout-level
+// canonical would be inherited by /chat, /profile and every private route);
+// the home page states its own, and that a query string (`?src=qr_pos`, the
+// attribution entries) is never a second page.
+export const metadata: Metadata = {
+  alternates: { canonical: absoluteUrl('/') },
+  robots: { index: true, follow: true },
+}
 
 export default async function HomePage() {
   const supabase = createClient()

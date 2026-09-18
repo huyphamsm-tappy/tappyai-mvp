@@ -39,7 +39,8 @@ export interface Attribution {
 
 const SHARE_PATH_RE = /^\/r\/[A-Za-z0-9_-]+\/?$/
 
-const SEARCH_REFERRER_RE = /^https?:\/\/(?:[a-z0-9-]+\.)*(?:google\.[a-z]{2,6}(?:\.[a-z]{2})?|bing\.com|search\.yahoo\.com|duckduckgo\.com|coccoc\.com)(?:\/|$)/i
+const SEARCH_REFERRER_RE = /^https?:\/\/(?:[a-z0-9-]+\.)*(?:google\.[a-z]{2,6}(?:\.[a-z]{2})?|search\.yahoo\.com|duckduckgo\.com|coccoc\.com)(?:\/|$)/i
+const BING_REFERRER_RE = /^https?:\/\/(?:[a-z0-9-]+\.)*bing\.com(?:\/|$)/i
 const AI_REFERRER_RE = /^https?:\/\/(?:[a-z0-9-]+\.)*(?:chatgpt\.com|openai\.com|perplexity\.ai|copilot\.microsoft\.com|gemini\.google\.com|claude\.ai)(?:\/|$)/i
 
 /**
@@ -50,6 +51,10 @@ const AI_REFERRER_RE = /^https?:\/\/(?:[a-z0-9-]+\.)*(?:chatgpt\.com|openai\.com
 export function sourceFromReferrer(referrer: string | null | undefined): AnalyticsSource | null {
   if (!referrer) return null
   if (AI_REFERRER_RE.test(referrer)) return 'geo_chatgpt'
+  // Bing is its own index (and feeds Copilot/ChatGPT Search), so it is
+  // reported apart from Google; an AI Overview click is NOT separable from
+  // a Google blue link by referrer, so there is deliberately no 'google_ai'.
+  if (BING_REFERRER_RE.test(referrer)) return 'bing_search'
   if (SEARCH_REFERRER_RE.test(referrer)) return 'geo_google'
   return null
 }

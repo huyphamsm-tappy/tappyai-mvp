@@ -66,6 +66,19 @@ export interface GrowthMetrics {
     /** Distinct viewer identities that later created a share of their own. */
     viewersWhoShared: number
     viewerToShare: number | null
+    /**
+     * Multi-generation attribution, from the `share_created` chain in the
+     * window: generation 1 = no parent, 2 = parent is a root share, and so
+     * on. A parent created outside the window counts as generation 0 (the
+     * child is then generation 1 — the number is a lower bound, never a guess).
+     */
+    byGeneration: Record<number, number>
+    /** Deepest generation observed. 1 while nobody has re-shared. */
+    maxGeneration: number
+  }
+  /** Where FIRST queries in the period came from — acquisition by channel, one row per source. */
+  acquisition: {
+    firstQueriesBySource: Record<string, number>
   }
   actions: {
     total: number
@@ -189,6 +202,31 @@ export function computeGrowthMetrics(input: {
     if (e.type === 'share_created') viewersWhoShared.add(e.id)
   }
   const secondGeneration = created.filter(e => typeof e.meta.parent_share_id === 'string').length
+  // Generation depth: walk parent_share_id through the shares created in the window.
+  // Cycles are impossible by construction (a parent must exist before its child), but
+  // the walk tracks visited ids anyway — a metrics query must never hang or inflate
+  // on bad data; a revisit ends the walk where it stands.
+  const parentOf = new Map<string, string | null>()
+  for (const e of created) if (typeof e.meta.share_id === 'string') parentOf.set(e.meta.share_id, typeof e.meta.parent_share_id === 'string' ? e.meta.parent_share_id : null)
+  const generationOf = (id: string): number => {
+    const seen = new Set<string>([id])
+    let g = 1, cur = parentOf.get(id) ?? null
+    while (cur && parentOf.has(cur) && !seen.has(cur)) { seen.add(cur); g++; cur = parentOf.get(cur) ?? null }
+    // A parent outside the window is unknown depth: count one more generation and stop.
+    if (cur && !parentOf.has(cur)) g++
+    return g
+  }
+  const byGeneration: Record<number, number> = {}
+  let maxGeneration = created.length ? 1 : 0
+  for (const e of created) {
+    if (typeof e.meta.share_id !== 'string') continue
+    const g = generationOf(e.meta.share_id)
+    byGeneration[g] = (byGeneration[g] ?? 0) + 1
+    if (g > maxGeneration) maxGeneration = g
+  }
+  // Acquisition by channel: the source stamped on each identity's FIRST query in the period.
+  const firstQueriesBySource: Record<string, number> = {}
+  for (const fq of firstQueryInPeriod) { const src = String(fq.meta.source ?? 'direct'); firstQueriesBySource[src] = (firstQueriesBySource[src] ?? 0) + 1 }
   // k-factor: new active identities whose FIRST query is share-attributed, per active identity in period.
   const shareAttributedNew = firstQueryInPeriod.filter(fq => typeof fq.meta.share_id === 'string' || fq.meta.source === 'share_out' || fq.meta.source === 'zalo_link').length
 
@@ -224,7 +262,10 @@ export function computeGrowthMetrics(input: {
       secondGeneration,
       viewersWhoShared: viewersWhoShared.size,
       viewerToShare: ratio(viewersWhoShared.size, viewerIds.size),
+      byGeneration,
+      maxGeneration,
     },
+    acquisition: { firstQueriesBySource },
     actions: {
       total: actions.length,
       byType,

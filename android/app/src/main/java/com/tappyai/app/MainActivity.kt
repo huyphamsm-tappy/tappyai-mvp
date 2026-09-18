@@ -101,7 +101,9 @@ class MainActivity : AppCompatActivity() {
         // G1-F: an inbound system share (another app → Share → Tappy) has no data URI; it
         // carries its payload in extras. Handled before the deep-link path so the two never
         // compete — a share intent is never also a link intent.
-        if (intent.action == Intent.ACTION_SEND) {
+        // G1 completion: a text selection sent through the toolbar (ACTION_PROCESS_TEXT) is
+        // the same inbound shape — extras, no data URI — and takes the same path.
+        if (intent.action == Intent.ACTION_SEND || intent.action == Intent.ACTION_PROCESS_TEXT) {
             navHostViewModel.handleIncomingShare(intent)
             return
         }

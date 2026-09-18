@@ -141,6 +141,17 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
 
+            <!-- G1 completion — Android "Process Text": select text in ANY app → toolbar →
+                 "Ask Tappy". The Android counterpart of the browser extension's selection
+                 menu. Same parser, same chat-with-prefill destination, same quota; nothing
+                 runs before the person taps, and nothing is read but the selection Android
+                 hands over. Post-install utility, not acquisition. -->
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
             <!-- Shared group link (Group Dining). Custom scheme → no domain verification needed,
                  same as the OAuth callback above. Parsed by GroupDeepLinkParser into
                  AppRoute.GroupDetail. NOTE: the link actually shared with users is the public web

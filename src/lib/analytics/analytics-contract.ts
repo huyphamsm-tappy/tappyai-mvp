@@ -35,6 +35,17 @@ export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[number]
  * without a contract change, and nothing in G1 emits it. Only a first `query`
  * with `source: 'tgdd'` will ever count as TGDĐ activation — an APK install is
  * not activation.
+ *
+ * G1 completion added three values, each backed by a mechanism that actually
+ * sets it (a source that nothing can emit is a lie in a dashboard):
+ *   · `browser_extension` — the MV3 extension's deep links carry `?src=`.
+ *   · `bing_search`       — a bing.com referrer, split out of `geo_google`
+ *                            because the two engines index independently.
+ *   · `pwa_shortcut`      — the installed PWA's home-screen shortcuts.
+ * NOT added, on purpose: `google_ai` (an AI Overview click carries the same
+ * google.com referrer as a blue link — indistinguishable, so it would be a
+ * guess) and `android_deep_link` / `ios_*` (the native apps emit no G1
+ * events today; see docs/growth/SEARCH_DISCOVERY.md).
  */
 export const ANALYTICS_SOURCES = [
   'wedge_scam',
@@ -48,6 +59,9 @@ export const ANALYTICS_SOURCES = [
   'direct_share',
   'web_share_target',
   'direct',
+  'browser_extension',
+  'bing_search',
+  'pwa_shortcut',
 ] as const
 export type AnalyticsSource = (typeof ANALYTICS_SOURCES)[number]
 

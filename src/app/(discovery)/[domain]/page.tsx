@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { HUB_DOMAINS, hubCopy, isHubDomain } from '@/lib/discovery/domainHubs'
 import { listPublicSharedResults } from '@/lib/share/sharedResultStore'
 import { BRAND, absoluteUrl, brandedOgImage } from '@/lib/share/openGraph'
+import { breadcrumbJsonLd, homeCrumb, hubCrumb } from '@/lib/discovery/siteJsonLd'
 import HubBody from './HubBody'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -46,17 +47,20 @@ export default async function DomainHubPage({ params }: Props) {
 
   // Structured data in both languages: an FAQPage per locale, so an English
   // answer engine and a Vietnamese one each find the question in its language.
-  const jsonLd = (['vi', 'en'] as const).map((locale) => ({
+  const jsonLd: Array<Record<string, unknown> & { key: string }> = (['vi', 'en'] as const).map((locale) => ({
+    key: `faq-${locale}`,
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     inLanguage: locale,
     mainEntity: hubCopy(domain, locale).faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
   }))
+  // Breadcrumb: Home › hub. A hub is one click from the root, and the trail says so.
+  jsonLd.push({ key: 'breadcrumb', ...breadcrumbJsonLd([homeCrumb(), hubCrumb(domain)]) })
 
   return (
     <main className="min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
-      {jsonLd.map((ld) => (
-        <script key={ld.inLanguage} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      {jsonLd.map(({ key, ...ld }) => (
+        <script key={key} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
       ))}
       <HubBody domain={domain} results={results} />
     </main>

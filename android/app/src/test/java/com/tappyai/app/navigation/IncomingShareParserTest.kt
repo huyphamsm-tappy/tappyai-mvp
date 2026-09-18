@@ -14,6 +14,7 @@ import org.junit.Test
 class IncomingShareParserTest {
 
     private val SEND = IncomingShareParser.ACTION_SEND
+    private val PROCESS_TEXT = IncomingShareParser.ACTION_PROCESS_TEXT
 
     @Test
     fun `a shared URL with a subject asks about the link`() {
@@ -68,5 +69,30 @@ class IncomingShareParserTest {
         val route = IncomingShareParser.parse(SEND, "text/plain", "hi", null)!!
         assertNull(route.conversationId)
         assertNull(route.category)
+    }
+
+    // ── G1 completion — Process Text (selection toolbar) ─────────────────────────────
+
+    @Test
+    fun `a text selection from another app's toolbar is the question itself`() {
+        assertEquals(
+            HomeRoute.Chat(prefill = "iPhone 15 giá bao nhiêu"),
+            IncomingShareParser.parse(PROCESS_TEXT, "text/plain", "  iPhone 15 giá bao nhiêu ", null),
+        )
+    }
+
+    @Test
+    fun `a selected URL asks about the link, exactly like a share`() {
+        assertEquals(
+            IncomingShareParser.parse(SEND, "text/plain", "https://shopee.vn/x", null),
+            IncomingShareParser.parse(PROCESS_TEXT, "text/plain", "https://shopee.vn/x", null),
+        )
+    }
+
+    @Test
+    fun `an empty selection or a non-text process intent opens nothing`() {
+        assertNull(IncomingShareParser.parse(PROCESS_TEXT, "text/plain", "   ", null))
+        assertNull(IncomingShareParser.parse(PROCESS_TEXT, "image/png", "x", null))
+        assertNull(IncomingShareParser.parse(PROCESS_TEXT, null, "x", null))
     }
 }

@@ -3,7 +3,8 @@ package com.tappyai.app.navigation
 import com.tappyai.app.home.HomeRoute
 
 /**
- * G1-F — Android Direct Share (inbound). Maps a system share (`ACTION_SEND` of `text/plain`)
+ * G1-F — Android Direct Share (inbound). Maps a system share (`ACTION_SEND` of `text/plain`),
+ * or a text selection sent through the toolbar (`ACTION_PROCESS_TEXT`, G1 completion),
  * onto the shell destination that already exists for "ask Tappy about this":
  * [HomeRoute.Chat] with `prefill`, which the chat auto-sends on entry.
  *
@@ -24,6 +25,8 @@ import com.tappyai.app.home.HomeRoute
 object IncomingShareParser {
 
     const val ACTION_SEND = "android.intent.action.SEND"
+    /** Text selected in another app and sent through the selection toolbar (API 23+). */
+    const val ACTION_PROCESS_TEXT = "android.intent.action.PROCESS_TEXT"
     private const val MAX_PROMPT = 1000
     private val URL = Regex("https?://\\S+", RegexOption.IGNORE_CASE)
     private val CONTROL = Regex("[\\u0000-\\u0008\\u000B-\\u001F]")
@@ -34,7 +37,7 @@ object IncomingShareParser {
      */
     @JvmStatic
     fun parse(action: String?, type: String?, text: String?, subject: String?): HomeRoute.Chat? {
-        if (action != ACTION_SEND) return null
+        if (action != ACTION_SEND && action != ACTION_PROCESS_TEXT) return null
         if (type == null || !type.startsWith("text/")) return null
         val prompt = buildPrompt(subject = subject, text = text) ?: return null
         return HomeRoute.Chat(prefill = prompt)

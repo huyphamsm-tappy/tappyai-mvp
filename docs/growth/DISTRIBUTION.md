@@ -1,7 +1,7 @@
 # TappyAI Growth — Distribution surfaces (Android · Web · iOS · QR)
 
 **Date:** 2026-09-18 · **Status:** technical build, not deployed, not user-tested.
-Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement) and `G1_GROWTH_BUILD_REPORT.md` (this phase).
+Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_REPORT.md` (build phase) and `G1_COMPLETION_REPORT.md` (completion phase — rows marked *(completion)* below).
 
 ## Classification used everywhere
 
@@ -18,6 +18,7 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement) and `G1_GROWTH_BUI
 |---|---|---|---|
 | **Share-out of a chat result → public `/r/<slug>`** | B (→ A for the recipient) | **Yes (this phase)** | `SharedResultApi/Repository`, `SharePublicDialog`, `ChatViewModel.onSharePublic`. Preview → confirm → system share sheet with the public URL. Signed-in accounts; anonymous sessions are told to sign in (`account_required`). |
 | Receiving `ACTION_SEND text/plain` (Direct Share inbound) | C | Yes (G1) | `IncomingShareParser` → chat prefill. Images not claimed. |
+| **Process Text (`ACTION_PROCESS_TEXT`): select text in any app → toolbar → "TappyAI"** *(completion)* | C | **Yes** | Same parser, same chat-with-prefill destination, same quota. The Android twin of the browser extension's selection menu. |
 | System sharesheet for review media | C | Pre-existing | `ReviewShareSheet`. |
 | Custom-scheme deep links (`tappyai://auth-callback`, `tappyai://group/{id}`) | C | Pre-existing | No domain verification. |
 | **App Links for `https://www.tappyai.com/r/*`** | D | **Prepared server-side only** | `GET /.well-known/assetlinks.json` serves the statement once `ANDROID_APP_LINKS_SHA256` is set; the app manifest deliberately does NOT yet claim https links (no native public-result screen exists — a link must keep opening the web page, which is the acquisition surface). |
@@ -34,7 +35,11 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement) and `G1_GROWTH_BUI
 | **Second-generation sharing from the public page** | B (→ A) | **Yes (this phase)** | Anonymous child shares with `parentSlug`; noindex + unlisted until the owner signs up. |
 | Web Share API (ShareMenu: Facebook, Zalo, copy, OS sheet; now with `text`) | B | Yes | |
 | Web Share Target (`/share-target`) | C | Yes (G1) | Installed PWA only. |
+| **PWA home-screen shortcuts** ("Hỏi Tappy", "Scam Shield") *(completion)* | C | **Yes** | `public/manifest.json` `shortcuts`, attributed `?src=pwa_shortcut`. Installed PWA only. |
 | PWA install prompt | C | No | Retention; deferred. |
+| **Browser extension (MV3; selection / link / page → `/chat`, `/scam-shield`)** *(completion)* | B | **Yes — built, not published** | `extensions/browser/`; `activeTab` + `contextMenus` + `storage` only; attributed `?src=browser_extension`. See `BROWSER_EXTENSION.md`. Not a store listing. |
+| **Scam Shield deep link `/scam-shield?url=…` (prefill, never auto-check)** *(completion)* | B (enabler) | **Yes** | `src/lib/scam-shield/deepLink.ts`. |
+| **`/about` entity page + shared Organization node + BreadcrumbList + `/llms.txt`** *(completion)* | A (enabler) | **Yes** | See `SEARCH_DISCOVERY.md`. No claim of AI-engine appearance. |
 | GEO hubs `/food … /spa` (vi+en), sitemap, robots, referrer attribution | A (after indexing) | Yes (G1) | `/scam-shield` now in the sitemap. |
 | **WebSite `SearchAction` + Organization JSON-LD on `/`** | A (enabler) | **Yes (this phase)** | Points engines at `/chat?q=`. |
 | Canonical URLs, Twitter cards | A (enabler) | Yes | |

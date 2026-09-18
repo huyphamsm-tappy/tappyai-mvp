@@ -244,6 +244,8 @@ export const ROUTE_TITLES: Record<string, { vi: string; en: string }> = {
   '/terms': { en: 'Terms of Service — TappyAI', vi: 'Điều khoản dịch vụ — TappyAI' },
   '/viet-content': { en: 'Social media content writer — TappyAI', vi: 'Viết content mạng xã hội — TappyAI' },
   '/game/supertux': { en: 'SuperTux — TappyAI Games', vi: 'SuperTux — Trò chơi TappyAI' },
+  '/scam-shield': { en: 'Scam Shield — free scam link checker — TappyAI', vi: 'Scam Shield — kiểm tra link lừa đảo miễn phí — TappyAI' },
+  '/about': { en: 'About TappyAI — what it is and how it answers', vi: 'Giới thiệu TappyAI — Tappy là gì và trả lời như thế nào' },
 }
 
 /**

@@ -91,7 +91,7 @@ class AppNavHostViewModel @Inject constructor(
      * Unrecognized links are ignored.
      */
     /**
-     * G1-F — an inbound system share. Parsed by the pure [IncomingShareParser] into the
+     * G1-F — an inbound system share (or a Process-Text selection, G1 completion). Parsed by the pure [IncomingShareParser] into the
      * existing chat-with-prefill destination and handed to the shell exactly the way a
      * notification's chat link is ([PendingShellDestination] + [AppRoute.HomeShell]), so the
      * cold-start and authenticated-gating behaviour is the one already proven for deep links.
@@ -102,7 +102,10 @@ class AppNavHostViewModel @Inject constructor(
             IncomingShareParser.parse(
                 action = intent.action,
                 type = intent.type,
-                text = intent.getStringExtra(Intent.EXTRA_TEXT),
+                // ACTION_SEND carries EXTRA_TEXT; ACTION_PROCESS_TEXT carries the selection in
+                // EXTRA_PROCESS_TEXT (a CharSequence). Either is one plain string to the parser.
+                text = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?: intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString(),
                 subject = intent.getStringExtra(Intent.EXTRA_SUBJECT),
             )
         }.getOrNull() ?: return

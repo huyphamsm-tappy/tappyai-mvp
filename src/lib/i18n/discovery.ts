@@ -16,6 +16,7 @@ export const vi: Record<string, string> = {
   'hub.ui.faq': 'Câu hỏi thường gặp',
   'hub.ui.askAbout': 'Hỏi Tappy về {domain}',
   'hub.ui.domainsNav': 'Lĩnh vực',
+  'hub.ui.about': 'Giới thiệu',
 
   // Food
   'hub.food.title': 'Tìm quán ăn ngon với TappyAI — gợi ý theo nhu cầu, có bằng chứng',
@@ -86,6 +87,32 @@ export const vi: Record<string, string> = {
   'hub.spa.faq1.a': 'Tappy đưa số điện thoại hoặc link đặt lịch của cơ sở; bạn xác nhận trực tiếp với họ.',
   'hub.spa.faq2.q': 'Có cần đăng nhập không?',
   'hub.spa.faq2.a': 'Không. Bạn có thể hỏi thử ngay; đăng nhập miễn phí để hỏi nhiều hơn và lưu kết quả.',
+
+  // G1 completion — Scam Shield SEO + /about entity layer
+  'seo.scamShield.description': 'Dán link, quét mã QR hoặc tin nhắn đáng ngờ — Scam Shield của TappyAI kiểm tra dấu hiệu lừa đảo, đối chiếu danh sách cảnh báo và giải thích rõ vì sao. Miễn phí, không cần đăng nhập.',
+  'about.title': 'Giới thiệu TappyAI — Tappy là gì và trả lời như thế nào',
+  'about.description': 'TappyAI là trợ lý AI thuần Việt cho ăn uống, mua sắm, du lịch, giải trí và làm đẹp, kèm Scam Shield kiểm tra lừa đảo. Mỗi câu trả lời là một quyết định có lý do, có nguồn, có link.',
+  'about.h1': 'TappyAI là gì?',
+  'about.intro': 'TappyAI (gọi tắt là Tappy) là trợ lý AI cá nhân cho cuộc sống hằng ngày ở Việt Nam. Bạn hỏi bằng tiếng Việt hoặc tiếng Anh; Tappy đối chiếu dữ liệu công khai và trả lời bằng một lựa chọn rõ ràng — kèm lý do, nguồn và link để bạn tự kiểm tra.',
+  'about.whatTitle': 'Tappy làm được gì',
+  'about.whatDomains': 'Năm lĩnh vực: ăn uống, mua sắm, du lịch, giải trí, spa & làm đẹp. Mỗi lĩnh vực có một trang riêng với câu hỏi mẫu và kết quả mọi người đã chia sẻ.',
+  'about.whatScam': 'Scam Shield: kiểm tra link, mã QR hoặc tin nhắn đáng ngờ, đối chiếu danh sách cảnh báo và giải thích dấu hiệu lừa đảo. Miễn phí, không cần đăng nhập.',
+  'about.whatShare': 'Chia sẻ kết quả: mỗi câu trả lời có thể trở thành một trang công khai, ai cũng đọc được mà không cần cài app hay đăng nhập.',
+  'about.howTitle': 'Tappy trả lời như thế nào',
+  'about.howSources': 'Thông tin quán, giá, giờ mở cửa và đánh giá lấy từ dữ liệu bản đồ và danh sách công khai tại thời điểm hỏi. Tappy nêu nguồn cho từng thông tin và không tự bịa giá, giờ mở cửa hay số điện thoại.',
+  'about.howHonesty': 'Khi không có bằng chứng — không có link đặt, không có đánh giá — Tappy nói thẳng là chưa có, thay vì đoán.',
+  'about.howAffiliate': 'Một số link mua hàng hoặc đặt phòng là link liên kết. Điều đó không ảnh hưởng đến thứ tự gợi ý.',
+  'about.privacyTitle': 'Riêng tư',
+  'about.privacyBody': 'Trang kết quả công khai chỉ chứa nội dung bạn chọn chia sẻ, đã được lọc thông tin cá nhân. Bạn có thể gỡ bất kỳ trang nào đã chia sẻ.',
+  'about.whoTitle': 'Ai làm TappyAI',
+  'about.whoBody': 'TappyAI được xây dựng tại Việt Nam, cho người dùng Việt Nam, và phục vụ bằng cả tiếng Việt lẫn tiếng Anh. Liên hệ: {email}.',
+  'about.linksTitle': 'Xem thêm',
+  'about.linkHowTo': 'Hướng dẫn sử dụng',
+  'about.linkPrivacy': 'Chính sách bảo mật',
+  'about.linkTerms': 'Điều khoản dịch vụ',
+  'about.linkStartup': 'Câu chuyện TappyAI',
+  'about.linkScam': 'Scam Shield',
+  'about.cta': 'Hỏi Tappy ngay',
 }
 
 export const en: Record<string, string> = {
@@ -94,6 +121,7 @@ export const en: Record<string, string> = {
   'hub.ui.faq': 'Frequently asked questions',
   'hub.ui.askAbout': 'Ask Tappy about {domain}',
   'hub.ui.domainsNav': 'Domains',
+  'hub.ui.about': 'About',
 
   'hub.food.title': 'Find great food in Vietnam with TappyAI — evidence-backed picks',
   'hub.food.description': 'Ask Tappy "what to eat, where" in Vietnamese or English. Tappy cross-checks reviews, hours and price bands and gives one clear pick with Maps and ordering links.',
@@ -159,6 +187,32 @@ export const en: Record<string, string> = {
   'hub.spa.faq1.a': 'Tappy gives the venue’s phone or booking link; you confirm with them directly.',
   'hub.spa.faq2.q': 'Do I need an account?',
   'hub.spa.faq2.a': 'No. Try a question right away; sign in for free to ask more and keep your results.',
+
+  // G1 completion — Scam Shield SEO + /about entity layer
+  'seo.scamShield.description': 'Paste a link, scan a QR code or drop in a suspicious message — TappyAI’s Scam Shield checks for fraud signals, matches public warning lists and explains why. Free, no sign-in.',
+  'about.title': 'About TappyAI — what it is and how it answers',
+  'about.description': 'TappyAI is a Vietnamese-first AI assistant for food, shopping, travel, entertainment and beauty, with Scam Shield for fraud checks. Every answer is a reasoned decision with sources and links.',
+  'about.h1': 'What is TappyAI?',
+  'about.intro': 'TappyAI (Tappy for short) is a personal AI assistant for everyday life in Vietnam. Ask in Vietnamese or English; Tappy checks public data and answers with one clear pick — with the reason, the source and a link so you can verify it yourself.',
+  'about.whatTitle': 'What Tappy does',
+  'about.whatDomains': 'Five domains: food, shopping, travel, entertainment, spa & beauty. Each has its own page with example questions and results people have shared.',
+  'about.whatScam': 'Scam Shield: check a link, QR code or suspicious message against public warning lists, with the fraud signals explained. Free, no sign-in.',
+  'about.whatShare': 'Shareable results: any answer can become a public page that anyone can read without installing an app or signing in.',
+  'about.howTitle': 'How Tappy answers',
+  'about.howSources': 'Venue details, prices, opening hours and ratings come from map data and public listings at the time you ask. Tappy names the source for each fact and never invents a price, opening hour or phone number.',
+  'about.howHonesty': 'When there is no evidence — no booking link, no rating — Tappy says so instead of guessing.',
+  'about.howAffiliate': 'Some shopping or booking links are affiliate links. That never changes the order of recommendations.',
+  'about.privacyTitle': 'Privacy',
+  'about.privacyBody': 'A public result page contains only what you chose to share, with personal details filtered out. You can withdraw any page you shared.',
+  'about.whoTitle': 'Who makes TappyAI',
+  'about.whoBody': 'TappyAI is built in Vietnam, for people in Vietnam, and served in both Vietnamese and English. Contact: {email}.',
+  'about.linksTitle': 'See also',
+  'about.linkHowTo': 'How to use',
+  'about.linkPrivacy': 'Privacy policy',
+  'about.linkTerms': 'Terms of service',
+  'about.linkStartup': 'The TappyAI story',
+  'about.linkScam': 'Scam Shield',
+  'about.cta': 'Ask Tappy now',
 }
 
 export type HubLocale = 'vi' | 'en'

@@ -32,3 +32,18 @@ describe('Web Share Target', () => {
     expect(shareTargetDestination({ text: 'hi' })).toBe('/chat?q=hi')
   })
 })
+
+describe('PWA shortcuts — G1 completion', () => {
+  const manifest = JSON.parse(readFileSync(join(__dirname, '..', '..', '..', 'public', 'manifest.json'), 'utf8')) as {
+    id: string; start_url: string; shortcuts: Array<{ name: string; url: string; icons: Array<{ src: string }> }>
+  }
+  it('declares a stable id and two home-screen shortcuts, both attributed as pwa_shortcut', () => {
+    expect(manifest.id).toBe('/')
+    expect(manifest.shortcuts.map((s) => s.url)).toEqual(['/chat?src=pwa_shortcut', '/scam-shield?src=pwa_shortcut'])
+    for (const s of manifest.shortcuts) {
+      expect(s.name.trim().length).toBeGreaterThan(0)
+      expect(s.url.startsWith('/')).toBe(true)
+      for (const i of s.icons) expect(i.src).toBe('/branding/otter-logo.png')
+    }
+  })
+})
