@@ -280,7 +280,7 @@ fun ChatScreen(
                                     }
                                 }
                             }
-                            message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
+                            message.plan?.let { plan -> TripPlanCard(plan) }
                             // The place decision. Rendered only once generation is done, like every
                             // other structured block: a half-arrived card is not a card, and showing
                             // one mid-stream is how partial JSON reached users before.
@@ -295,21 +295,27 @@ fun ChatScreen(
                             // above already presents; those are dropped (TravelPlaceFilter) so one
                             // venue is one card. The projections themselves are untouched.
                             //
-                            // 🔑 SHOPPING OWNS ITS OWN DECISION SURFACE (cross-platform UAT, 15 Sep
-                            // 2026). Web renders PlaceDecision only when there is NO shopping view
-                            // (`placeView && !shopView`, ChatInterface.tsx) — the two are mutually
-                            // exclusive. Android rendered BOTH, so a shopping turn showed the
-                            // products twice: once as product place cards (a Google-search action)
-                            // ABOVE, burying the ShoppingDecisionCard's verified merchant handoff
-                            // ("Mua trên Shopee") below. Suppressing the place cards when a shopping
-                            // decision exists matches web and keeps the CCP handoff first.
-                            if (!isResponding && message.shopping == null) {
-                                val cards = message.livePlaces?.items
+                            // Web parity (`ChatInterface.tsx`): a turn that carries a SHOPPING
+                            // decision shows that card and not the places, and any model-written
+                            // CTA button that points at a page a place card already offers is a
+                            // duplicate and is dropped — at render, the message keeps every button.
+                            val placeCards = if (message.shopping == null) {
+                                message.livePlaces?.items
                                     ?.let { livePlacesOutsideItinerary(message.plan, it) }
                                     ?.map { it.toCardView() }
                                     ?: placesOutsideItinerary(message.plan, message.places)
                                         .mapNotNull { it.toCardView() }
-                                PlaceCards(cards, commerce = commerceCallbacks)
+                            } else emptyList()
+                            val placesMapsUrl = message.livePlaces?.mapsSearchUrl
+                            if (!isResponding) {
+                                PlaceDecisionSection(
+                                    places = placeCards,
+                                    // The durable block never carries `ranked`: it is written only
+                                    // from a ranked decision, so its order is a ranking.
+                                    ranked = message.livePlaces?.ranked != false,
+                                    mapsSearchUrl = placesMapsUrl,
+                                    commerce = commerceCallbacks,
+                                )
                             }
                             // D1 — the shopping DECISION. Rendered only once generation is done,
                             // like every other structured block: a half-arrived decision is not a
@@ -362,10 +368,6 @@ fun ChatScreen(
                                         onToggleFeedback = { type -> viewModel.onToggleFeedback(message.id, type) },
                                         onReport = { viewModel.onReportMessage(message.id) },
                                         onRegenerate = viewModel::onRegenerate,
-                                        placesView = message.placesView,
-                                        plan = message.plan,
-                                        planJson = message.planJson,
-                                        shareSubject = shareSubjectFor(messages, message),
                                     )
                                 }
                             }
@@ -408,10 +410,11 @@ fun ChatScreen(
                             }
                             // CTA buttons (maps/call/booking/internal_booking…) — web parity, shown
                             // under the reply once generation is done.
-                            if (message.ctaButtons.isNotEmpty() && !isResponding) {
+                            val ctaButtons = ctaButtonsOutsideCards(message.ctaButtons, placeCards, placesMapsUrl)
+                            if (ctaButtons.isNotEmpty() && !isResponding) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     ChatCtaButtons(
-                                        buttons = message.ctaButtons,
+                                        buttons = ctaButtons,
                                         onSaveFavorite = viewModel::addFavorite,
                                         onRemoveFavorite = viewModel::removeFavorite,
                                     )
@@ -773,6 +776,10 @@ private fun ChatComposer(
                 singleLine = false,
                 maxLines = 6,
                 modifier = Modifier.weight(1f),
+                // Enter sends, exactly as the send arrow does and under the same gate — web
+                // parity (Enter sends, Shift+Enter breaks the line). While a reply is still
+                // arriving Enter does nothing, like the arrow that is a Stop button then.
+                onSubmit = { if (canSend && !isResponding) onSend() },
             )
             // Emoji toggle — sits between the input and the mic, mirroring the web control order
             // (textarea → emoji → mic → send). Tinted while the panel is open (web accent state).
@@ -1188,18 +1195,6 @@ private fun rememberCursorBlink(): Boolean {
         }
     }
     return on
-}
-
-/**
- * The share subject for an assistant turn is the user's question that produced it (≤80 chars),
- * exactly like the web ChatInterface passes `subject` — so the brochure header reads
- * "TappyAI gợi ý: <what was asked>". Null when there is no preceding user turn.
- */
-private fun shareSubjectFor(messages: List<ChatMessage>, message: ChatMessage): String? {
-    val idx = messages.indexOfFirst { it.id == message.id }
-    if (idx <= 0) return null
-    val prev = messages.subList(0, idx).lastOrNull { it.role == TappyChatRole.User } ?: return null
-    return prev.text.trim().replace(Regex("\\s+"), " ").take(80).ifBlank { null }
 }
 
 /** Pre-first-token dots — web `pulseDot`: 6px circles, scale 0↔1 over 1.4s, staggered 0.2s/0.4s. */

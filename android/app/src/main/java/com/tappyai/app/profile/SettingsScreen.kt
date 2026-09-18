@@ -19,13 +19,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.filled.MenuBook
+import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.Shield
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,9 +55,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.app.home.HomeV3
+import com.tappyai.app.AppearanceMode
 import com.tappyai.app.home.V3HomeTheme
 import com.tappyai.app.language.AppLanguage
 import com.tappyai.core.designsystem.component.TappyBottomSheet
@@ -100,7 +106,9 @@ fun SettingsScreen(
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     var showLanguagePicker by remember { mutableStateOf(false) }
+    var showAppearancePicker by remember { mutableStateOf(false) }
     var confirmDeleteAccount by remember { mutableStateOf(false) }
+    val appearanceMode by viewModel.appearanceMode.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     V3HomeTheme {
@@ -172,6 +180,20 @@ fun SettingsScreen(
                             accent = AccentOrange,
                             titleFontWeight = FontWeight.SemiBold,
                             onClick = { showLanguagePicker = true },
+                        )
+                        SettingsDivider()
+                        // "Giao diện" (UAT 2026-09-17): the three-way appearance choice the Profile
+                        // hub's "Ngôn ngữ, thông báo, giao diện" row has always promised. SYSTEM is
+                        // the default and the only way back to it after the Home toggle pinned a side.
+                        TappyMenuRow(
+                            icon = Icons.Filled.DarkMode,
+                            title = stringResource(R.string.settings_appearance),
+                            subtitle = stringResource(R.string.settings_appearance_desc),
+                            valueText = stringResource(appearanceLabel(appearanceMode)),
+                            valueColor = HomeV3.OnSurface,
+                            accent = AccentPurple,
+                            titleFontWeight = FontWeight.SemiBold,
+                            onClick = { showAppearancePicker = true },
                         )
                     }
                 }
@@ -304,6 +326,24 @@ fun SettingsScreen(
         )
     }
 
+    if (showAppearancePicker) {
+        TappyBottomSheet(onDismiss = { showAppearancePicker = false }) {
+            Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+                Text(text = stringResource(R.string.settings_appearance), style = MaterialTheme.typography.titleMedium)
+                AppearanceMode.entries.forEach { option ->
+                    AppearanceOptionRow(
+                        option = option,
+                        selected = option == appearanceMode,
+                        onClick = {
+                            viewModel.selectAppearance(option)
+                            showAppearancePicker = false
+                        },
+                    )
+                }
+            }
+        }
+    }
+
     if (showLanguagePicker) {
         TappyBottomSheet(onDismiss = { showLanguagePicker = false }) {
             Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
@@ -370,6 +410,41 @@ private val AccentPurple = Color(0xFF7C5CFF)
 private val AccentGreen = Color(0xFF14B58A)
 private val AccentOrange = Color(0xFFF59E0B)
 private val AccentRed = Color(0xFFEF4444)
+
+/** The row label of a mode: Theo hệ thống / Sáng / Tối. */
+@StringRes
+internal fun appearanceLabel(mode: AppearanceMode): Int = when (mode) {
+    AppearanceMode.System -> R.string.settings_appearance_system
+    AppearanceMode.Light -> R.string.settings_appearance_light
+    AppearanceMode.Dark -> R.string.settings_appearance_dark
+}
+
+/** Same row as the language picker's, with the mode's glyph in place of a flag. */
+@Composable
+private fun AppearanceOptionRow(option: AppearanceMode, selected: Boolean, onClick: () -> Unit) {
+    val colors = MaterialTheme.colorScheme
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(TappyShapes.card)
+            .background(if (selected) colors.primaryContainer else colors.surfaceVariant)
+            .clickable(onClick = onClick)
+            .padding(TappySpacing.lg),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            imageVector = when (option) {
+                AppearanceMode.System -> Icons.Filled.BrightnessAuto
+                AppearanceMode.Light -> Icons.Filled.LightMode
+                AppearanceMode.Dark -> Icons.Filled.DarkMode
+            },
+            contentDescription = null,
+            tint = colors.onSurface,
+        )
+        Text(text = stringResource(appearanceLabel(option)), style = MaterialTheme.typography.bodyLarge)
+    }
+}
 
 @Composable
 private fun LanguageOptionRow(option: AppLanguage, selected: Boolean, onClick: () -> Unit) {

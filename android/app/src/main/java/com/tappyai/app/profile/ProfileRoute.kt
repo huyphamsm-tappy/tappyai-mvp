@@ -15,8 +15,18 @@ sealed interface ProfileRoute {
     @Serializable
     data object Settings : ProfileRoute
 
+    /** The push-preference screen (Settings → Notifications). */
     @Serializable
     data object Notifications : ProfileRoute
+
+    /** The Inbox (web `/profile/notifications`) — where Home's bell lands; Explore's bell hosts the
+     *  same screen in its own graph. */
+    @Serializable
+    data object Inbox : ProfileRoute
+
+    /** One user ↔ user conversation (the Inbox's Messages tab). `threadId` is read by name by `ThreadViewModel`. */
+    @Serializable
+    data class MessageThread(val threadId: String) : ProfileRoute
 
     @Serializable
     data object Membership : ProfileRoute
@@ -47,6 +57,32 @@ sealed interface ProfileRoute {
 
     @Serializable
     data object AppConnections : ProfileRoute
+
+    /** AI Planner (My Plans) — the web `/planner`; plans read out of the user's conversations. */
+    @Serializable
+    data object Planner : ProfileRoute
+
+    /** Following / Followers — the web `/social`. */
+    @Serializable
+    data object Social : ProfileRoute
+
+    /**
+     * The self profile's clip pager — the Explore feature's `ProfileClipsScreen`, re-hosted here
+     * like `AuthorProfile` is. 🚨 The argument NAMES AND TYPES mirror `ReviewsRoute.ProfileClips`
+     * exactly, because the pager's ViewModel resolves its source from the SavedStateHandle by those
+     * names (`sourceFrom`): `userId = null` pages the caller's own posts (`/mine`, hidden ones
+     * included — so a hidden clip opens too); `saved = true` pages the caller's saves (`/saved`).
+     */
+    @Serializable
+    data class ProfileClips(
+        val userId: String?,
+        val startReviewId: String,
+        val saved: Boolean = false,
+    ) : ProfileRoute
+
+    /** A clip's sound, from the pager — the same sheet the Explore graph hosts. */
+    @Serializable
+    data class SoundSheet(val trackId: String) : ProfileRoute
 
     @Serializable
     data object AccountGraph : ProfileRoute

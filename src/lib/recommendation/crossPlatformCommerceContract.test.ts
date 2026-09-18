@@ -227,7 +227,11 @@ describe('Android renders every listed key from the wire (no re-derivation)', ()
   })
   it('the card reads the commerce facts and reports the handoff with the opaque ids on tap', () => {
     const card = read(ANDROID_CARD)
-    expect(card).toContain('openPlaceAction(context, action, commerce)')
+    // Every button opens through the ONE function that reports a commerce handoff; the lead
+    // action, the ordering group and the secondary group all route through it.
+    expect(card).toContain('openPlaceAction(context, lead, commerce)')
+    expect(card).toContain('openPlaceAction(context, a, commerce)')
+    expect(card).not.toMatch(/onClick = \{ openUrl\(context, a\.url\) \}/)
     expect(card).toContain('callbacks.onHandoff(it, opened)')
     expect(read('android/app/src/main/java/com/tappyai/app/chat/PlacesLiveView.kt')).toContain('val commerce: LiveCommerceFacts? = null')
     const reporter = read('android/app/src/main/java/com/tappyai/app/chat/data/CommerceHandoffReporter.kt')

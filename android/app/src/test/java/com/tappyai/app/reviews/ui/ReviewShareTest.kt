@@ -95,7 +95,11 @@ class ReviewShareTest {
         assertTrue(fn.contains("clipData = ClipData.newUri(context.contentResolver, subject, stream.uri)"))
         assertEquals("the grant on the send intent AND on the chooser that launches the target", 2, Regex("""addFlags\(Intent\.FLAG_GRANT_READ_URI_PERMISSION\)""").findAll(fn).count())
         assertTrue("no media → the text form, never nothing", fn.contains("""type = "text/plain""""))
-        assertTrue(fn.contains("Intent.createChooser(send, context.getString(R.string.reviews_action_share))") && fn.contains("context.startActivity(chooser)"))
+        // 2026-09-15: the chooser carries the share-history IntentSender (ShareHistoryRecorder) as its
+        // third argument — the target and title are unchanged, the chooser still starts the chosen app.
+        val chooser = fn.substring(fn.indexOf("Intent.createChooser("), fn.indexOf(").apply {", fn.indexOf("Intent.createChooser(")))
+        assertTrue(chooser.contains("send,") && chooser.contains("context.getString(R.string.reviews_action_share)") && chooser.contains("ShareHistoryRecorder.chooserSender(context, review.id)"))
+        assertTrue(fn.contains("context.startActivity(chooser)"))
         assertTrue("the media is fetched before the sheet opens, with a hint", fn.contains("val stream = media?.let { fetchForShare(context, review.id, it) }") && fn.contains("R.string.reviews_share_preparing"))
     }
 

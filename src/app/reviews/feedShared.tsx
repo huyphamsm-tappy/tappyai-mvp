@@ -10,6 +10,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import ShareMenu from '@/components/share/ShareMenu'
+import { recordReviewShare } from '@/lib/share/recordReviewShare'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
@@ -286,6 +287,8 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
       title={reviewShareTitle(review)}
       open
       onClose={onClose}
+      // A completed share becomes a row of the self profile's "Đã share" history.
+      onShared={(channel) => { void recordReviewShare(review.id, channel) }}
     />
   )
 }

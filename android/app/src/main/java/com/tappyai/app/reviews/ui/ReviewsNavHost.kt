@@ -14,9 +14,12 @@ import com.tappyai.app.music.SoundSheet
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.home.HomeTab
+import com.tappyai.app.messaging.ThreadScreen
+import com.tappyai.app.notifications.InboxScreen
+import com.tappyai.app.notifications.NotificationsScreen
 import com.tappyai.app.home.ReportNestedScreen
 
-/** Nav-result key: a screen asks the feed to switch tab (see the Inbox digest banner). */
+/** Nav-result key: a screen higher in the stack asks the feed to switch tab. */
 private const val FEED_TYPE_RESULT = "reviews_feed_type"
 
 /**
@@ -40,7 +43,7 @@ fun ReviewsNavHost(
      * equivalent of the web's `/chat?q=` bridge (`bridge.promptEntity`). Null hides the action.
      */
     onAskTappy: ((String) -> Unit)? = null,
-    /** The self profile's sign-in state for a guest — routed up to the root graph's Login. Null hides the button. */
+    /** The Inbox's sign-in state for a guest — routed up to the root graph's Login. Null hides the button. */
     onSignIn: (() -> Unit)? = null,
 ) {
     val navController = rememberNavController()
@@ -59,8 +62,8 @@ fun ReviewsNavHost(
 
     NavHost(navController = navController, startDestination = ReviewsRoute.Feed) {
         composable<ReviewsRoute.Feed> { entry ->
-            // A screen higher in the stack (the Inbox digest banner) can ask the feed to switch tab
-            // by writing here before popping — the nav-result idiom. Cleared once applied.
+            // A screen higher in the stack can ask the feed to switch tab by writing here before
+            // popping — the nav-result idiom. Cleared once applied.
             val requested by entry.savedStateHandle
                 .getStateFlow<String?>(FEED_TYPE_RESULT, null)
                 .collectAsState()
@@ -215,33 +218,39 @@ fun ReviewsNavHost(
             ReviewComposerHost(onBack = { navController.popBackStack() })
         }
 
+        // The Inbox (V3, 2026-09-17): the same screen the Tôi tab hosts (`ProfileRoute.Inbox`), so
+        // the bell in Explore and the bell on Home open one Inbox. A row opens by its `entity_url`.
         composable<ReviewsRoute.Notifications> {
-            ReviewNotificationsScreen(
-                onNotificationClick = { notification ->
+            InboxScreen(
+                onBack = { navController.popBackStack() },
+                onOpenNotification = { notification ->
                     when {
                         notification.url.startsWith("/reviews/") -> {
-                            val reviewId = notification.url.removePrefix("/reviews/")
+                            val reviewId = notification.url.removePrefix("/reviews/").substringBefore('?')
                             navController.navigate(ReviewsRoute.Detail(reviewId = reviewId))
                         }
                         notification.url.startsWith("/profile/") -> {
-                            val userId = notification.url.removePrefix("/profile/")
+                            val userId = notification.url.removePrefix("/profile/").substringBefore('?')
                             navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
                         }
                         notification.url.startsWith("/users/") -> {
-                            val userId = notification.url.removePrefix("/users/")
+                            val userId = notification.url.removePrefix("/users/").substringBefore('?')
                             navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
                         }
                     }
                 },
-                onBack = { navController.popBackStack() },
-                // Web's digest banner hands off to the Following feed: hand the feed a nav result
-                // asking it to select that tab, then pop back to it.
-                onOpenDigest = {
-                    navController.previousBackStackEntry
-                        ?.savedStateHandle?.set(FEED_TYPE_RESULT, "following")
-                    navController.popBackStack()
-                },
+                onOpenSettings = { navController.navigate(ReviewsRoute.NotificationSettings) },
+                onSignIn = onSignIn,
+                onOpenThread = { threadId -> navController.navigate(ReviewsRoute.MessageThread(threadId)) },
             )
+        }
+
+        composable<ReviewsRoute.NotificationSettings> {
+            NotificationsScreen(onBack = { navController.popBackStack() })
+        }
+
+        composable<ReviewsRoute.MessageThread> {
+            ThreadScreen(onBack = { navController.popBackStack() })
         }
 
         composable<ReviewsRoute.Search> {

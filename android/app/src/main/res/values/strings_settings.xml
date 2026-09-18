@@ -14,6 +14,11 @@
     <string name="settings_notifications">Notifications</string>
     <string name="settings_memory">Memory</string>
     <string name="settings_language">Language</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_desc">Follow the system, or always light / dark</string>
+    <string name="settings_appearance_system">System</string>
+    <string name="settings_appearance_light">Light</string>
+    <string name="settings_appearance_dark">Dark</string>
     <string name="settings_section_other">Other</string>
     <string name="settings_how_to_use">How to use TappyAI</string>
     <string name="settings_terms_of_service">Terms of Service</string>
@@ -67,11 +72,16 @@
     <string name="profile_privacy_card_subtitle">Your data, protected — enjoy with peace of mind</string>
     <string name="profile_qr_button_content_description">Show QR profile</string>
     <string name="profile_qr_default_name">My profile</string>
-    <string name="profile_qr_scan_subtitle">Scan to see profile</string>
+    <string name="profile_qr_scan_subtitle">Scan this QR code to view my TappyAI profile</string>
     <string name="profile_qr_code_content_description">QR code linking to this profile</string>
     <string name="profile_qr_generate_error">Couldn\'t generate the QR code. Please try again.</string>
-    <string name="profile_qr_share_button">Share link</string>
+    <string name="profile_qr_share_button">Share profile</string>
     <string name="profile_qr_share_chooser_title">Share profile link</string>
+    <string name="profile_qr_title">Share profile</string>
+    <string name="profile_qr_download_button">Download QR</string>
+    <string name="profile_qr_save_hint">You can save or share this QR code.</string>
+    <string name="profile_qr_saved">QR code saved to Photos</string>
+    <string name="profile_qr_save_failed">Could not save the QR code</string>
 
     <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
     <string name="notif_title">Notifications</string>
@@ -79,6 +89,8 @@
     <string name="notif_push_on_description">On — Tappy will remind you at the right time</string>
     <string name="notif_push_off_description">Off — turn on to get reminders from Tappy</string>
     <string name="notif_toggle_content_description">Toggle push notifications</string>
+    <string name="notif_os_blocked">Your device is blocking TappyAI notifications. Allow them in system settings to receive reminders.</string>
+    <string name="notif_os_allow">Allow</string>
     <string name="notif_receive_header">WHAT YOU\'LL RECEIVE</string>
     <string name="notif_receive_morning_brief">A personalized morning brief at 7:30 AM</string>
     <string name="notif_receive_deals">Deals &amp; offers matched to your interests</string>

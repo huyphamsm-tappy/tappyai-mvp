@@ -94,6 +94,7 @@ export default function ShareMenu({
   title,
   open,
   onClose,
+  onShared,
 }: {
   /** The canonical artifact. When absent, `url` + `title` are shared as a link (Reviews). */
   artifact?: ShareArtifact
@@ -102,6 +103,12 @@ export default function ShareMenu({
   title?: string
   open: boolean
   onClose: () => void
+  /**
+   * A share COMPLETED through this channel (copy landed, native sheet resolved, an app or a
+   * mail client was handed the content, a file was saved, the inbox send succeeded). Cancelled
+   * or failed attempts never report. Reviews record it as their "Đã share" history.
+   */
+  onShared?: (channel: ShareTargetId | 'inbox' | 'download') => void
 }) {
   const { t, locale } = useTranslation()
   const [feedback, setFeedback] = useState<Feedback>(null)
@@ -178,6 +185,7 @@ export default function ShareMenu({
         case 'copy': {
           const ok = await copyText(a.text)
           setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (textIsMoreThanUrl ? t('share.copiedContent') : t('share.copied')) : t('share.copyFailed') })
+          if (ok) onShared?.('copy')
           return
         }
         case 'native': {
@@ -189,6 +197,7 @@ export default function ShareMenu({
               if (navigator.canShare({ files: [file] })) data.files = [file]
             }
             await navigator.share(data)
+            onShared?.('native')
             onClose()
           } catch {
             // A cancelled share is not an error; report only if genuinely unavailable.
@@ -209,15 +218,18 @@ export default function ShareMenu({
           if (id === 'email') {
             window.location.assign(handoff)
             setFeedback({ kind: 'ok', text: t('share.emailOpened') })
+            onShared?.(id)
             return
           }
           const opened = window.open(handoff, '_blank', 'noopener,noreferrer')
           if (id === 'viber') {
             setFeedback({ kind: copied ? 'ok' : 'error', text: copied ? t('share.copiedAndOpened', { app: appName(id) }) : t('share.appNotOpened', { app: appName(id) }) })
+            if (copied) onShared?.(id)
           } else {
             setFeedback(opened
               ? { kind: 'ok', text: t('share.openedWithText', { app: appName(id) }) }
               : { kind: 'error', text: t('share.unavailable') })
+            if (opened) onShared?.(id)
           }
           return
         }
@@ -235,9 +247,11 @@ export default function ShareMenu({
           if (image) {
             download(image, `tappyai-${stamp}.png`)
             setFeedback({ kind: 'ok', text: t('share.savedImage') })
+            onShared?.('download')
           } else {
             download(new Blob([a.text], { type: 'text/plain;charset=utf-8' }), `tappyai-${stamp}.txt`)
             setFeedback({ kind: 'ok', text: t('share.savedText') })
+            onShared?.('download')
           }
           return
         }
@@ -259,6 +273,7 @@ export default function ShareMenu({
             const copied = await copyText(a.text)
             window.open(handoff, '_blank', 'noopener,noreferrer')
             setFeedback({ kind: copied ? 'ok' : 'error', text: copied ? t('share.copiedAndOpened', { app: appName(id) }) : t('share.appNotOpened', { app: appName(id) }) })
+            if (copied) onShared?.(id)
             return
           }
           // The dialog can only carry the brand url; the brochure travels on the clipboard.
@@ -271,6 +286,7 @@ export default function ShareMenu({
               ? (copied ? t('share.copiedAndOpened', { app: appName(id) }) : t('share.copyFailed'))
               : t('share.opened', { app: appName(id) }),
           })
+          onShared?.(id)
           return
         }
       }
@@ -292,6 +308,7 @@ export default function ShareMenu({
       if (!r.ok) throw new Error(String(r.status))
       // The one target that may say "sent": the server just confirmed it.
       setFeedback({ kind: 'ok', text: t('share.inboxSent') })
+      onShared?.('inbox')
     } catch {
       setFeedback({ kind: 'error', text: t('share.inboxFailed') })
     }

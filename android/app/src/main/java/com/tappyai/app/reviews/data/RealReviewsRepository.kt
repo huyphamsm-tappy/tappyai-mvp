@@ -94,8 +94,20 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun toggleFollow(userId: String): NetworkResult<Boolean> =
         safeApiCall { api.toggleFollow(userId).following }
 
-    override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
-        safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
+    override suspend fun getNotifications(): NetworkResult<NotificationInbox> =
+        safeApiCall {
+            val page = api.getNotifications()
+            NotificationInbox(
+                groups = groupNotifications(page.notifications.map { it.toDomain() }),
+                unreadCount = page.unreadCount,
+            )
+        }
+
+    override suspend fun markAllNotificationsRead(): NetworkResult<Unit> =
+        safeApiCall { api.markAllNotificationsRead(); Unit }
+
+    override suspend fun getLikers(reviewId: String, before: String?): NetworkResult<LikersPage> =
+        safeApiCall { api.getLikers(reviewId, before).let { LikersPage(it.likers.map { l -> l.toDomain() }, it.nextCursor) } }
 
     override suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String> =
         safeApiCall {

@@ -19,6 +19,9 @@ data class Conversation(
 /** One stored turn, used only when resuming a conversation into Chat (see `ChatHistoryRepository.getConversationMessages`). */
 data class StoredChatMessage(val role: String, val content: String)
 
+/** One conversation row together with its stored turns — what the AI Planner derives plans from. */
+data class ConversationWithMessages(val conversation: Conversation, val messages: List<StoredChatMessage>)
+
 /** Category → emoji, mirroring the web `CATEGORIES` map (fallback 💬), for the left tile. */
 fun emojiForCategory(category: String): String = when (category) {
     "food" -> "🍜"

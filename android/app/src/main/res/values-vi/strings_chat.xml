@@ -136,6 +136,31 @@
     <string name="shopping_decision_options_title">Các lựa chọn phù hợp</string>
     <string name="shopping_decision_other_options">Lựa chọn khác</string>
     <string name="shopping_decision_view">Xem</string>
+    <!-- Shopping information parity (web w5/shoppingDecision.ts + reasonText.ts) -->
+    <string name="shopping_decision_rating_line">%1$s · %2$s đánh giá</string>
+    <string name="shopping_decision_rating_only">%1$s</string>
+    <string name="shopping_decision_view_on">Xem trên %1$s</string>
+    <string name="shopping_decision_view_on_search">Tìm trên %1$s</string>
+    <string name="shopping_spec_chip">%1$s</string>
+    <string name="shopping_spec_ram">%1$sGB RAM</string>
+    <string name="shopping_spec_storage">%1$sGB bộ nhớ</string>
+    <string name="shopping_spec_size">%1$s</string>
+    <string name="shopping_condition_dealer_official">Đại lý chính thức</string>
+    <string name="shopping_condition_warranty_official">Bảo hành chính hãng</string>
+    <string name="shopping_condition_genuine">Chính hãng</string>
+    <string name="shopping_condition_official">Chính thức</string>
+    <string name="shopping_condition_like_new">Như mới</string>
+    <string name="shopping_condition_refurbished">Tân trang</string>
+    <string name="shopping_condition_sealed">Nguyên seal</string>
+    <string name="shopping_condition_grade_high">Máy 99%</string>
+    <string name="shopping_condition_used">Đã qua sử dụng</string>
+    <string name="shopping_reason_rating">đánh giá %1$s</string>
+    <string name="shopping_reason_review_count">%1$s lượt đánh giá</string>
+    <string name="shopping_reason_price">giá %1$s</string>
+    <string name="shopping_reason_distance">cách %1$s km</string>
+    <string name="shopping_reason_stars">%1$s sao</string>
+    <string name="shopping_reason_eta">đón sau %1$s phút</string>
+    <string name="shopping_reason_direct_page">trang đặt trực tiếp</string>
 
     <!-- P4-06 — comparison (DD-005) and confirmation (DD-006). -->
     <string name="comparison_title">So sánh %1$d lựa chọn</string>
@@ -162,11 +187,11 @@
     <string name="place_card_rating_count">%1$d đánh giá</string>
     <string name="place_card_open_now">đang mở</string>
     <string name="place_card_closed_now">đang đóng</string>
-    <string name="place_card_away">cách bạn %1$s km</string>
+    <string name="place_card_away">%1$s km từ chỗ bạn</string>
     <string name="place_card_trade_off">Đánh đổi</string>
     <string name="place_action_maps">Xem bản đồ</string>
     <string name="place_action_directions">Chỉ đường</string>
-    <string name="place_action_website">Trang web</string>
+    <string name="place_action_website">Website</string>
     <string name="place_action_order">Đặt món</string>
     <string name="place_action_delivery">Đặt giao hàng</string>
     <string name="place_action_booking">Đặt phòng</string>
@@ -209,6 +234,21 @@
     <string name="place_card_flag_wifi">Có Wi-Fi</string>
     <string name="place_card_flag_outdoor">Chỗ ngồi ngoài trời</string>
     <string name="place_card_flag_vegetarian">Có món chay</string>
+    <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
+    <string name="place_filter_all">Tất cả (%1$d)</string>
+    <string name="place_filter_open">Đang mở cửa</string>
+    <string name="place_filter_rated">Đánh giá cao</string>
+    <string name="place_rank">#%1$d</string>
+    <string name="place_explore_map">Xem tất cả trên bản đồ</string>
+    <string name="place_explore_map_hint">Mở Google Maps để khám phá thêm địa điểm</string>
+    <string name="place_action_review_search_on">Tìm review trên %1$s</string>
+    <string name="place_action_review_on">Review trên %1$s</string>
+    <string name="place_action_review_search_generic">Tìm review</string>
+    <string name="place_action_booking_search_on">Tìm phòng trên %1$s</string>
+    <string name="place_action_ticket_search_on">Tìm vé trên %1$s</string>
+    <string name="place_pager_position">Địa điểm %1$d/%2$d</string>
+    <string name="place_card_tappy_rating">Tappy %1$s · %2$d đánh giá</string>
+    <string name="place_card_why">Vì sao</string>
 
     <!-- V3 (ported from A 77b0bb7): voice listening screen -->
     <string name="voice_listening_cancel">Hủy</string>

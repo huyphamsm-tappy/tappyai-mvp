@@ -22,21 +22,23 @@ class SettingsV3Test {
     private val screen get() = src("app/src/main/java/com/tappyai/app/profile/SettingsScreen.kt")
 
     @Test
-    fun `the eight rows, in order, keep their actions - and the sound toggle and language picker are the same calls`() {
+    fun `the nine rows, in order, keep their actions - and the sound toggle, language and appearance pickers are the same calls`() {
         val body = screen.substring(screen.indexOf("SettingsV3Header(onBack = onBack)"), screen.indexOf("if (confirmDeleteAccount) {"))
         val rows = Regex("""(?<!sub)title = stringResource\(R\.string\.(settings_\w+)\)""").findAll(body).map { it.groupValues[1] }.toList()
         assertEquals(
-            listOf("settings_notifications", "settings_memory", "settings_tappy_notification_sound", "settings_language",
+            // 2026-09-17: "Giao diện" (System / Light / Dark) joins the options card after Language.
+            listOf("settings_notifications", "settings_memory", "settings_tappy_notification_sound", "settings_language", "settings_appearance",
                 "settings_how_to_use", "settings_terms_of_service", "settings_privacy_policy", "settings_delete_account"),
             rows.filter { it != "settings_sign_out" && it != "settings_signing_out" },
         )
         for (cb in listOf("onOpenNotifications", "onOpenTappyKnows", "onOpenGuide", "onOpenTerms", "onOpenPrivacy")) assertTrue(cb, body.contains("onClick = $cb,"))
         assertTrue(body.contains("viewModel.setTappyNotificationSound(!viewModel.tappyNotificationSoundEnabled)"))
         assertTrue(body.contains("""valueText = "${'$'}{viewModel.language.flag} ${'$'}{viewModel.language.displayName}",""") && body.contains("onClick = { showLanguagePicker = true },"))
+        assertTrue(body.contains("valueText = stringResource(appearanceLabel(appearanceMode)),") && body.contains("onClick = { showAppearancePicker = true },"))
         assertTrue("delete stays a confirmed request", body.contains("onClick = { confirmDeleteAccount = true },") && screen.contains("""Uri.parse("mailto:${'$'}SUPPORT_EMAIL")""") && screen.contains("Intent(Intent.ACTION_SENDTO)"))
         assertTrue("version line", body.contains("R.string.settings_version, BuildConfig.VERSION_NAME"))
         assertTrue("guest → sign-in card with the existing Settings copy; account → sign-out", body.contains("if (viewModel.isAnonymous) {") && body.contains("SignInCard(onClick = onSignIn, subtitle = stringResource(R.string.settings_sign_in_desc))") && body.contains("onClick = viewModel::signOut,") && body.contains("R.string.settings_sign_out"))
-        assertEquals("every row is the design-system row", 9, Regex("""TappyMenuRow\(""").findAll(body).count())
+        assertEquals("every row is the design-system row", 10, Regex("""TappyMenuRow\(""").findAll(body).count())
         assertFalse(screen.contains("Switch("))
     }
 

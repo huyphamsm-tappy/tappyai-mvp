@@ -39,11 +39,6 @@
     <string name="tool_split_chip_tip">Custom tip</string>
     <string name="tool_split_chip_modes">Split evenly or by item</string>
 
-    <!-- Safety (/scam-shield) -->
-    <string name="tool_scam_eyebrow">Browse more safely</string>
-    <string name="tool_scam_title1">Check it is safe</string>
-    <string name="tool_scam_title2">before you open it</string>
-    <string name="tool_scam_body">Tappy helps you spot suspicious and fraudulent links and websites — check first, open later.</string>
 
     <!-- Group dining (/group/new) -->
     <string name="tool_group_eyebrow">Create a group with TappyAI</string>

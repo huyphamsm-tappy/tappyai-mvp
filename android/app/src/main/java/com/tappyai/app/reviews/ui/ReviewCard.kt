@@ -114,6 +114,11 @@ fun ReviewCard(
      * clip (`POST /api/users/{id}/follow`). Null hides the badge (Detail, previews).
      */
     onFollow: (() -> Unit)? = null,
+    /**
+     * The like COUNT's own tap (web `LikeListSheet`, 2026-09-17): who those people are. It is the
+     * number's control, never the heart's — the heart stays [onLike]. Null leaves the count inert.
+     */
+    onOpenLikes: (() -> Unit)? = null,
     /** Space kept free under the rail and the caption — the floating dock's height on the feed. */
     bottomClearance: Dp = 0.dp,
     // Feed video playback: [active] is true only for the current pager page (drives autoplay);
@@ -196,6 +201,7 @@ fun ReviewCard(
             onAvatarClick = onAvatarClick,
             onFollow = onFollow,
             onLike = onLike,
+            onOpenLikes = onOpenLikes,
             onComment = onComment,
             onAskTappy = onAskTappy,
             onShare = onShare,
@@ -376,6 +382,7 @@ private fun ReviewActionRail(
     onAvatarClick: () -> Unit,
     onFollow: (() -> Unit)?,
     onLike: () -> Unit,
+    onOpenLikes: (() -> Unit)?,
     onComment: () -> Unit,
     onAskTappy: (() -> Unit)?,
     onShare: () -> Unit,
@@ -396,6 +403,7 @@ private fun ReviewActionRail(
             label = compactCount(review.likeCount),
             tint = if (review.likedByMe) LikeRed else ReviewTextPrimary,
             onClick = onLike,
+            onLabelClick = onOpenLikes,
         )
 
         RailAction(
@@ -511,6 +519,8 @@ private fun RailAction(
     onClick: () -> Unit,
     iconModifier: Modifier = Modifier,
     accent: Boolean = false,
+    /** A tap on the LABEL alone, when the number has a behaviour of its own (the like list). */
+    onLabelClick: (() -> Unit)? = null,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -550,6 +560,9 @@ private fun RailAction(
             fontSize = 12.sp,
             fontWeight = FontWeight.SemiBold,
             maxLines = 1,
+            modifier = if (onLabelClick != null) Modifier
+                .clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClickLabel = label, onClick = onLabelClick)
+                .padding(horizontal = 6.dp) else Modifier,
         )
     }
 }

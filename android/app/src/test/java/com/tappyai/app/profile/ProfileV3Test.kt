@@ -26,16 +26,19 @@ class ProfileV3Test {
     fun `every destination is still there, in the web ProfileView order, wired to the callback it always had`() {
         val items = screen.substring(screen.indexOf("private val ACCOUNT_ITEMS = buildList {"), screen.indexOf("private val CardShape"))
         val order = Regex("""add\(ProfileMenuItem\.(\w+)\)""").findAll(items).map { it.groupValues[1] }.toList()
-        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "TappyKnows", "AppConnections", "MyReviews", "GroupDining", "UpgradeToPro"), order)
+        // 2026-09-15: Planner joins the row where the web's `accountRows()` has it, and Following
+        // (the web shell's `v3.nav.following`) sits beside it — Android has no nav row to host it.
+        assertEquals(listOf("Account", "ChatHistory", "Bookings", "Preferences", "Saved", "PriceTracking", "Planner", "Social", "TappyKnows", "AppConnections", "MyReviews", "GroupDining", "UpgradeToPro"), order)
         assertTrue("Pro stays gated exactly as before", items.contains("if (SHOW_PRO_UPGRADE) add(ProfileMenuItem.UpgradeToPro)") && screen.contains("private const val SHOW_PRO_UPGRADE = false"))
         val wiring = mapOf(
             "UpgradeToPro" to "onOpenMembership", "TappyKnows" to "onOpenTappyKnows", "ChatHistory" to "onOpenChatHistory",
             "Saved" to "onOpenSaved", "Bookings" to "onOpenBookings", "Preferences" to "onOpenPreferences", "MyReviews" to "onOpenMyReviews",
             "PriceTracking" to "onOpenPriceTracking", "GroupDining" to "onOpenGroupDining", "Account" to "onOpenAccount", "AppConnections" to "onOpenAppConnections",
+            "Planner" to "onOpenPlanner", "Social" to "onOpenSocial",
         )
         for ((item, cb) in wiring) assertTrue("$item → $cb", screen.contains("ProfileMenuItem.$item -> $cb"))
         assertTrue("Settings entry kept", screen.contains("R.string.profile_settings_row_title") && screen.contains("onClick = onOpenSettings"))
-        assertTrue("QR kept: real sheet with a user id, coming-soon without", screen.contains("if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName") && screen.contains("QrProfileSheet(userId = userId, name = null, onDismiss = { showQrSheet = false })"))
+        assertTrue("QR kept: real sheet with a user id, coming-soon without", screen.contains("if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName") && screen.contains("QrProfileSheet(userId = userId, name = viewModel.profile?.fullName, onDismiss = { showQrSheet = false })"))
         assertTrue("guests still get the sign-in card, with the existing copy and action", screen.contains("if (viewModel.isAnonymous) {") && screen.contains("SignInCard(onClick = onSignIn)") && screen.contains("R.string.settings_sign_in") && screen.contains("R.string.profile_sign_in_desc"))
     }
 
@@ -71,6 +74,9 @@ class ProfileV3Test {
         assertTrue(hero.contains("profile?.fullName?.takeIf { it.isNotBlank() }") && hero.contains("R.string.profile_header_title"))
         assertTrue(hero.contains("profile?.email?.takeIf { it.isNotBlank() }") && hero.contains("R.string.profile_header_subtitle"))
         assertTrue(hero.contains("imageUrl = profile.avatarUrl"))
+        // The guest card still shows nothing beyond name / email / avatar. (The signed-in hero,
+        // `ProfileHeroV3`, adds the REAL bio from `GET /api/profile` and the trigger-maintained
+        // follow counts from `GET /api/users/{me}` — see PersonalSurfacesV3Test.)
         assertFalse("no invented fields", Regex("""profile\??\.(handle|username|followers|points|level|bio|joinDate)""").containsMatchIn(hero))
         assertTrue("the QR action is the hero's action", hero.contains("Icons.Filled.QrCode2") && hero.contains("onClick = onShowQr"))
     }

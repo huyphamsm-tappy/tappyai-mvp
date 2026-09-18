@@ -195,8 +195,8 @@ class PlacesMarkerParseTest {
 
     @Test
     fun `the price band mirrors web, and an out-of-range level shows nothing`() {
-        assertEquals("đ", priceBand(1))
-        assertEquals("đđđđ", priceBand(4))
+        assertEquals("₫", priceBand(1))
+        assertEquals("₫₫₫₫", priceBand(4))
         assertNull(priceBand(0))
         assertNull(priceBand(5))
         assertNull(priceBand(null))
@@ -223,7 +223,7 @@ class PlacesMarkerParseTest {
         assertEquals("~50k", card.priceSignal)
         assertEquals(listOf("cafe", "bakery"), card.categories)
         assertEquals("Xa hơn 1km", card.tradeOff)
-        assertEquals("đđ", priceBand(card.priceLevel))
+        assertEquals("₫₫", priceBand(card.priceLevel))
     }
 
     @Test

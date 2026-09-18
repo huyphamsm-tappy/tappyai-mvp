@@ -77,11 +77,13 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.tappyai.app.notifications.InboxBadgeViewModel
+import com.tappyai.app.notifications.UnreadBadge
 import com.tappyai.app.R
 import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
-import com.tappyai.app.reviews.data.ReviewGroupedNotification
 import androidx.compose.runtime.saveable.listSaver
 import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyEmptyState
@@ -114,9 +116,15 @@ internal fun ReviewsFeedScreen(
      */
     onAskTappy: ((Review) -> Unit)? = null,
     viewModel: ReviewsFeedViewModel = hiltViewModel(),
+    inboxBadge: InboxBadgeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reviews = uiState.reviews
+    // The bell's unread count, re-read whenever the feed comes back to the front.
+    LifecycleResumeEffect(Unit) {
+        inboxBadge.refresh()
+        onPauseOrDispose { }
+    }
     val pagerState = rememberPagerState(pageCount = { reviews.size })
 
     LaunchedEffect(requestedFeedType) {
@@ -181,6 +189,7 @@ internal fun ReviewsFeedScreen(
                 onCompose = onCompose,
                 onSearch = onSearch,
                 onNotifications = onNotifications,
+                unreadCount = inboxBadge.unreadCount,
                 onProfile = onProfile,
             )
             FeedTabs(
@@ -399,6 +408,8 @@ private fun FeedTopBar(
     onNotifications: () -> Unit,
     onProfile: () -> Unit,
     modifier: Modifier = Modifier,
+    /** The Inbox's unread count for the bell's badge (web `V3Shell` bell); 0 draws nothing. */
+    unreadCount: Int = 0,
 ) {
     Row(
         modifier = modifier
@@ -443,7 +454,10 @@ private fun FeedTopBar(
             Icon(Icons.Filled.Search, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
         }
         ExploreHeaderAction(onClick = onNotifications, contentDescription = stringResource(R.string.reviews_notifications_label)) {
-            Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+            Box {
+                Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+                UnreadBadge(count = unreadCount)
+            }
         }
         ExploreHeaderAction(onClick = onProfile, contentDescription = stringResource(R.string.reviews_self_profile_open)) {
             Icon(Icons.Filled.PersonOutline, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
@@ -547,6 +561,9 @@ internal fun ReviewDetailScreen(
     val review = uiState.review
     // Id of the comment whose emoji picker is open (only one at a time), or null.
     var reactionPickerFor by rememberSaveable { mutableStateOf<String?>(null) }
+    // The like list (the count's tap), as on the pager.
+    var likesFor by rememberSaveable { mutableStateOf<String?>(null) }
+    likesFor?.let { id -> ReviewLikeListSheet(reviewId = id, onDismiss = { likesFor = null }) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -608,6 +625,7 @@ internal fun ReviewDetailScreen(
                             active = true,
                             audioUnlocked = true,
                             onLike = { viewModel.toggleLike() },
+                            onOpenLikes = { likesFor = review.id },
                             onSave = { viewModel.toggleSave() },
                             onComment = {},
                             onShare = { shareScope.launch { shareReview(context, review) } },
@@ -675,49 +693,6 @@ internal fun ReloadOnResume(onResume: () -> Unit) {
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-}
-
-@Composable
-internal fun ReviewNotificationsScreen(
-    onNotificationClick: (ReviewGroupedNotification) -> Unit,
-    onBack: () -> Unit,
-    onOpenDigest: () -> Unit = {},
-    viewModel: ReviewNotificationsViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val nowMillis = System.currentTimeMillis()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScreenBackground),
-    ) {
-        ScreenHeader(title = stringResource(R.string.reviews_notifications_label), onBack = onBack)
-        when {
-            uiState.isLoading && uiState.notifications.isEmpty() -> {
-                TappyLoadingIndicator()
-            }
-            uiState.error != null && uiState.notifications.isEmpty() -> {
-                TappyErrorState(
-                    title = stringResource(R.string.reviews_notifications_error_title),
-                    message = uiState.error,
-                    retryText = stringResource(R.string.common_try_again),
-                    onRetry = { viewModel.load() },
-                )
-            }
-            else -> {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    // Web parity: the AI-digest banner sits above the notification list.
-                    item(key = "inbox-digest-banner") { InboxDigestBanner(onClick = onOpenDigest) }
-                    reviewNotificationItems(
-                        notifications = uiState.notifications,
-                        nowMillis = nowMillis,
-                        onNotificationClick = onNotificationClick,
-                    )
-                }
-            }
-        }
     }
 }
 

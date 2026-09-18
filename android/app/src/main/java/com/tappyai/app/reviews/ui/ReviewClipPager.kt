@@ -70,6 +70,8 @@ internal fun ReviewClipPager(
     // next swipe is the next clip (web parity: CommentDrawer over the feed). Only the rail's comment
     // button lands here; a tap on the clip is play/pause.
     var commentsFor by rememberSaveable { mutableStateOf<String?>(null) }
+    // The clip whose like list is open (the like COUNT's tap), or null.
+    var likesFor by rememberSaveable { mutableStateOf<String?>(null) }
 
     // Watch-time analytics: when the settled clip changes (swipe or first load) finalize the previous
     // clip's watch (posts to /interact when ≥3s) and start timing the new one.
@@ -96,6 +98,8 @@ internal fun ReviewClipPager(
                 onVideoDuration = { viewModel.onVideoDuration(review.id, it) },
                 onRequestAudioUnlock = { audioUnlocked = true },
                 onLike = { viewModel.toggleLike(review) },
+                // The count opens the like list (web parity); the heart above stays the toggle.
+                onOpenLikes = { likesFor = review.id },
                 onSave = { viewModel.toggleSave(review) },
                 onComment = { commentsFor = review.id },
                 onShare = { shareScope.launch { shareReview(context, review) } },
@@ -110,6 +114,9 @@ internal fun ReviewClipPager(
                 onAskTappy = onAskTappy?.let { ask -> { ask(review) } },
                 bottomClearance = bottomClearance,
             )
+        }
+        likesFor?.let { reviewId ->
+            ReviewLikeListSheet(reviewId = reviewId, onDismiss = { likesFor = null })
         }
         commentsFor?.let { reviewId ->
             ReviewCommentSheet(

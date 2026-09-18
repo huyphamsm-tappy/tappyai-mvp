@@ -126,7 +126,7 @@
     <string name="smart_tool_currency_desc">Convert VND, USD, EUR, JPY and more</string>
     <string name="smart_tool_split">Split the Bill</string>
     <string name="smart_tool_split_desc">Split a bill evenly, by person or by item</string>
-    <string name="smart_tool_safety">Safety Check</string>
+    <string name="smart_tool_safety">Scam Shield</string>
     <string name="smart_tool_safety_desc">Check a link, website or QR code is safe</string>
     <string name="smart_tool_together">Tappy Together</string>
     <string name="smart_tool_together_desc">Find somewhere that suits the whole group</string>

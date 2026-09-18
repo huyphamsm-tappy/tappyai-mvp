@@ -8,6 +8,11 @@ sealed interface ReviewsRoute {
     @Serializable data class AuthorProfile(val userId: String) : ReviewsRoute
     @Serializable data object Composer : ReviewsRoute
     @Serializable data object Notifications : ReviewsRoute
+    /** The Inbox's settings control → the push-preference screen (`NotificationsScreen`), hosted here
+     *  so Explore's Inbox reaches the same preferences the Tôi tab's does. */
+    @Serializable data object NotificationSettings : ReviewsRoute
+    /** One user ↔ user conversation (the Inbox's Messages tab). `threadId` is read by name by `ThreadViewModel`. */
+    @Serializable data class MessageThread(val threadId: String) : ReviewsRoute
     @Serializable data object Search : ReviewsRoute
 
     /** The feed's music-disc bottom sheet — web parity `SoundSheet` (a compact `/sound/{id}`). */

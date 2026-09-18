@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.data
 
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -96,6 +97,16 @@ interface ReviewsApi {
 
     @GET("api/notifications")
     suspend fun getNotifications(): NotificationsResponseDto
+
+    /** `GET /api/reviews/{id}/likes` — who likes this review RIGHT NOW (`review_likes`), newest
+     *  first, paged with `before` (the last row's `created_at`). A public read, gated on the review. */
+    @GET("api/reviews/{id}/likes")
+    suspend fun getLikers(@Path("id") reviewId: String, @Query("before") before: String? = null): LikersResponseDto
+
+    /** `POST /api/notifications/read` with no body marks EVERY unread row of the caller read —
+     *  the Inbox's "Đánh dấu đã đọc". Scoped server-side to the bearer. */
+    @POST("api/notifications/read")
+    suspend fun markAllNotificationsRead(): MarkReadResponseDto
 
     @POST("api/reviews")
     suspend fun createReview(@Body body: CreateReviewRequestDto): CreateReviewResponseDto

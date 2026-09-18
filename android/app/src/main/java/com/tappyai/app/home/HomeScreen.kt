@@ -45,6 +45,8 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Explore
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.LocationOn
@@ -215,6 +217,10 @@ fun HomeScreen(
 
                 // ── REMAINING DISCOVERY CONTENT ───────────────────────────────────────────
                 V3DiscoverBanner(onClick = onOpenDeals)
+                // "Cảnh báo lừa đảo" (owner, 2026-09-17): its own section, IMMEDIATELY ABOVE
+                // "Ưu đãi hôm nay". The tool also stays in the Smart Tools drawer below, where
+                // the whole registry is catalogued (DD-002: no tool leaves the drawer).
+                V3ScamShieldSection(onOpenScamShield = onOpenScamShield)
                 V3DealsSection(state = deals, onOpenDeals = onOpenDeals)
                 CommunityVideosSection(
                     state = communityVideos,
@@ -883,6 +889,81 @@ private fun SmartToolsSection(
                 }
             },
         )
+    }
+}
+
+/**
+ * "Cảnh báo lừa đảo" — the Home section for Scam Shield (owner, 2026-09-17), on the same header
+ * rhythm as "Ưu đãi hôm nay" right below it: the 52dp gradient tile, the 21sp title, the one-line
+ * subtitle, the "see all" link — and one entry card (the web's identity row: the shield tile,
+ * "Kiểm tra link / website", the tagline) that opens the existing Scam Shield route. Nothing here
+ * checks anything; the section is a door, and the engine stays behind it.
+ */
+@Composable
+private fun V3ScamShieldSection(onOpenScamShield: () -> Unit) {
+    val label = stringResource(R.string.home_scam_shield_title)
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.lg)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(52.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(Brush.linearGradient(listOf(Color(0xFFF43F5E), Color(0xFFBE123C)))),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Shield,
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = label,
+                    fontSize = 21.sp,
+                    lineHeight = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = HomeV3.OnSurface,
+                )
+                Text(
+                    text = stringResource(R.string.home_scam_shield_desc),
+                    fontSize = 13.sp,
+                    lineHeight = 17.sp,
+                    color = HomeV3.OnSurfaceVariant,
+                )
+            }
+            V3SeeAll(text = stringResource(R.string.scam_shield_v3_cta), onClick = onOpenScamShield)
+        }
+
+        val shape = RoundedCornerShape(20.dp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape)
+                .background(HomeV3.Surface)
+                .border(1.dp, HomeV3.Outline, shape)
+                .clickable(onClickLabel = label, onClick = onOpenScamShield)
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Box(
+                modifier = Modifier.size(48.dp).clip(RoundedCornerShape(16.dp)).background(HomeV3.Purple.copy(alpha = 0.16f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(Icons.Filled.Shield, contentDescription = null, tint = HomeV3.Purple, modifier = Modifier.size(26.dp))
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = stringResource(R.string.scam_shield_v3_check_title), fontSize = 15.sp, lineHeight = 19.sp, fontWeight = FontWeight.Bold, color = HomeV3.OnSurface)
+                Text(text = stringResource(R.string.scam_shield_v3_tagline), fontSize = 12.5.sp, lineHeight = 16.sp, color = HomeV3.OnSurfaceVariant, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            }
+            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = HomeV3.OnSurfaceVariant, modifier = Modifier.size(22.dp))
+        }
     }
 }
 

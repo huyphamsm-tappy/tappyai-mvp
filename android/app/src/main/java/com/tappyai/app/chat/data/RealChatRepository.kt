@@ -20,6 +20,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -54,10 +55,7 @@ class RealChatRepository @Inject constructor(
         val body = json.encodeToString(ChatRequest(dtoMessages))
             .toRequestBody("application/json".toMediaType())
 
-        val request = Request.Builder()
-            .url("${baseUrl}api/chat")
-            .post(body)
-            .build()
+        val request = chatRequest(baseUrl, body)
 
         // The shared client's 30s readTimeout is an inter-byte idle limit — fine for normal
         // request/response, but too aggressive here. Before the first token, /api/chat runs
@@ -175,6 +173,28 @@ class RealChatRepository @Inject constructor(
         const val TAG = "RealChatRepository"
     }
 }
+
+/**
+ * The surface this app declares on `/api/chat`. The server reads `x-tappy-surface` to learn
+ * whether the client draws the place/shopping decision as a card under the reply
+ * (`src/lib/ai/decisionSurface.ts`); the web chat sends `web`. With it, the model is told the
+ * card shows photo / rating / address / hours / actions so the prose must not repeat them, and
+ * the per-place photo + `ShopeeFood · GrabFood · BeFood` block is not injected into the text.
+ *
+ * Measured on Pixel_8 (2026-09-12) before this header existed: the same query returned the same
+ * `8:` annotation, but the prose carried three injected images and three provider rows, and
+ * [com.tappyai.app.chat.PlaceDecisionSection] started on the third screen. Android renders that
+ * section (and the shopping decision) from the annotation, so it declares itself.
+ */
+internal const val SURFACE_HEADER = "x-tappy-surface"
+internal const val SURFACE_ANDROID = "android"
+
+/** The `/api/chat` request: the JSON body plus the surface header. Everything else is the shared client's. */
+internal fun chatRequest(baseUrl: String, body: RequestBody): Request = Request.Builder()
+    .url("${baseUrl}api/chat")
+    .header(SURFACE_HEADER, SURFACE_ANDROID)
+    .post(body)
+    .build()
 
 /**
  * Is this string something a human wrote, or a machine code?

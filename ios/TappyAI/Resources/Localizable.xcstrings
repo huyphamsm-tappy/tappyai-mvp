@@ -1483,6 +1483,198 @@
         }
       }
     },
+    "collections.empty.hidden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't hidden any posts."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa ẩn bài viết nào."
+          }
+        }
+      }
+    },
+    "collections.empty.liked": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't liked any posts yet."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa thích bài viết nào."
+          }
+        }
+      }
+    },
+    "collections.empty.posts": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't posted anything yet."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa đăng bài viết nào."
+          }
+        }
+      }
+    },
+    "collections.empty.saved": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't saved any posts yet."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa lưu bài viết nào."
+          }
+        }
+      }
+    },
+    "collections.empty.shared": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You haven't shared any posts yet."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chưa chia sẻ bài viết nào."
+          }
+        }
+      }
+    },
+    "collections.signInRequired.message": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your posts, likes, saves, hidden posts and shares are private to your account."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài viết, lượt thích, đã lưu, đã ẩn và đã share chỉ hiển thị với tài khoản của bạn."
+          }
+        }
+      }
+    },
+    "collections.signInRequired.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in to see your collections"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập để xem bộ sưu tập của bạn"
+          }
+        }
+      }
+    },
+    "collections.tab.hidden": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hidden"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã ẩn"
+          }
+        }
+      }
+    },
+    "collections.tab.liked": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liked"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã thích"
+          }
+        }
+      }
+    },
+    "collections.tab.posts": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Posts"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài viết"
+          }
+        }
+      }
+    },
+    "collections.tab.saved": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã lưu"
+          }
+        }
+      }
+    },
+    "collections.tab.shared": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã share"
+          }
+        }
+      }
+    },
     "common.all": {
       "localizations": {
         "en": {
@@ -8156,13 +8348,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "My posts"
+            "value": "Posts & collections"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bài viết của tôi"
+            "value": "Bài viết & bộ sưu tập"
           }
         }
       }
@@ -10590,13 +10782,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "My reviews"
+            "value": "Posts & collections"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bài đánh giá"
+            "value": "Bài viết & bộ sưu tập"
           }
         }
       }
@@ -10606,13 +10798,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "See the reviews you've written"
+            "value": "Your posts, likes, saves, hidden posts and shares"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xem các review bạn đã viết"
+            "value": "Bài viết, đã thích, đã lưu, đã ẩn, đã share của bạn"
           }
         }
       }

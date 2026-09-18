@@ -12,18 +12,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
-import com.tappyai.core.datastore.PreferencesDataSource
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
-/**
- * The user's explicit light/dark choice. Absent until they pick a side, which is what keeps
- * "follow the system" the default. Stored through the shared [PreferencesDataSource] — whose own
- * contract names "theme choice" as an intended use — so no second storage mechanism exists.
- */
-private const val PREF_DARK_THEME = "dark_theme"
 
 /**
  * Phase 1B: hosts the real [AppNavHost] instead of directly rendering the Design System
@@ -55,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var languageManager: com.tappyai.app.language.LanguageManager
 
     @Inject
-    lateinit var preferences: PreferencesDataSource
+    lateinit var appearance: AppearanceStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,23 +59,27 @@ class MainActivity : AppCompatActivity() {
         languageManager.applyDefaultIfUnset()
         enableEdgeToEdge()
         handleIntent(intent)
+        // Read once, before the first frame; an unreadable store degrades to "follow the system".
+        val initialMode = appearance.initialMode()
 
         setContent {
-            // Same shape as before — a nullable override in front of the system setting — but the
-            // override now lives in DataStore instead of `rememberSaveable`, so an explicit choice
-            // survives a full app restart rather than only a process death. Null until the store
-            // has been read, and null forever if the user never picks a side: both mean "follow
-            // the system". This stays the ONE place the app resolves light/dark; everything below,
-            // Home V3 included, reads the resolved value rather than asking the system again.
-            val storedDark by preferences.getBoolean(PREF_DARK_THEME)
-                .collectAsStateWithLifecycle(initialValue = null)
-            val isDark = storedDark ?: isSystemInDarkTheme()
+            // The appearance mode (see [AppearanceMode] / [AppearanceStore]): SYSTEM until the
+            // person picks Light or Dark — in Settings ("Giao diện") or with the Home top-bar
+            // toggle — and back to SYSTEM when they pick "Theo hệ thống" again. Kept in DataStore
+            // so it survives a full restart; in SYSTEM the OS setting keeps applying live. The
+            // first frame reads the store synchronously so an explicit choice is honoured from the
+            // first frame instead of flashing the system palette once. This stays the ONE place
+            // the app resolves light/dark; everything below, Home V3 included, reads the resolved
+            // value rather than asking the system again.
+            val mode by appearance.mode.collectAsStateWithLifecycle(initialValue = initialMode)
+            val isDark = resolveDarkTheme(mode = mode, systemDark = isSystemInDarkTheme())
 
             TappyAITheme(darkTheme = isDark) {
                 AppNavHost(
                     isDarkTheme = isDark,
+                    // The Home toggle is an explicit choice of the OTHER side, never a reset.
                     onToggleDarkTheme = {
-                        lifecycleScope.launch { preferences.setBoolean(PREF_DARK_THEME, !isDark) }
+                        lifecycleScope.launch { appearance.set(if (isDark) AppearanceMode.Light else AppearanceMode.Dark) }
                     },
                     viewModel = navHostViewModel,
                 )

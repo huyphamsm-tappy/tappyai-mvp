@@ -189,8 +189,11 @@ describe('MUST MATCH — shopping owns its own decision surface (cross-platform 
   })
   it('android suppresses the place cards when a shopping decision is present', () => {
     const src = stripComments(read('android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt'))
-    expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn')
-      .toMatch(/message\.shopping == null[\s\S]{0,700}PlaceCards\(/)
+    // The place list handed to the carousel is EMPTY on a shopping turn (`placeCards = if
+    // (message.shopping == null) … else emptyList()`), and the section renders nothing for an
+    // empty list — so the guard sits on the data, ahead of `PlaceDecisionSection(`.
+    expect(src, 'the place cards must be guarded by `message.shopping == null` on a shopping turn')
+      .toMatch(/message\.shopping == null[\s\S]{0,900}PlaceDecisionSection\(/)
   })
 })
 

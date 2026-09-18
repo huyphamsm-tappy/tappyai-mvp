@@ -13,6 +13,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { reviewShareTitle } from '@/lib/share/reviewShareTitle'
 import ShareMenu from '@/components/share/ShareMenu'
+import { recordReviewShare } from '@/lib/share/recordReviewShare'
 
 export default function ReviewShareButton({
   reviewId,
@@ -40,7 +41,16 @@ export default function ReviewShareButton({
 
   // `placeName` may be the composer's share-only sentinel ("Chia sẻ"); the title
   // helper never lets that reach the preview or the outgoing message.
-  const menu = <ShareMenu url={url} title={reviewShareTitle({ place_name: placeName, body })} open={open} onClose={() => setOpen(false)} />
+  const menu = (
+    <ShareMenu
+      url={url}
+      title={reviewShareTitle({ place_name: placeName, body })}
+      open={open}
+      onClose={() => setOpen(false)}
+      // A completed share becomes a row of the self profile's "Đã share" history.
+      onShared={(channel) => { void recordReviewShare(reviewId, channel) }}
+    />
+  )
 
   if (variant === 'bar') {
     return (

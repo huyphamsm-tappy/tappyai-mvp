@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.tappyai.app.notifications.InboxBadgeViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -73,6 +75,14 @@ fun HomeShellScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val navController = rememberNavController()
+    // The bell's unread count (web: `useNotifications().unreadCount` on the shell's bell) — one
+    // view model for the shell, re-read whenever the shell comes back to the front, so marking
+    // the Inbox read or a new notification arriving is reflected on return.
+    val inboxBadge: InboxBadgeViewModel = hiltViewModel()
+    LifecycleResumeEffect(Unit) {
+        inboxBadge.refresh()
+        onPauseOrDispose { }
+    }
 
     // P4-14 — a notification asked for a destination inside this shell.
     //
@@ -111,6 +121,9 @@ fun HomeShellScreen(
     // nested-screen mechanism already delivers answers this — Home's host reports `true` the
     // moment anything is pushed above its landing — so no second "at landing" signal is needed.
     val isHomeTab = matchedTab == HomeTab.Home && nestedByTab[HomeTab.Home] != true
+    // Also re-read the bell's count whenever the Home landing comes back into view from another
+    // tab (the Inbox lives under Tôi/Explore, and a tab switch does not resume the shell).
+    LaunchedEffect(isHomeTab) { if (isHomeTab) inboxBadge.refresh() }
 
     /**
      * The Explore LANDING (the feed) is immersive: the clip runs under the status bar and under
@@ -129,6 +142,9 @@ fun HomeShellScreen(
      * never survive a process restart into a state where the bar is gone and nothing is listening.
      */
     var chatImmersive by remember { mutableStateOf(false) }
+    // Home's bell → the Inbox, which lives in the Tôi tab's nested graph this controller cannot
+    // address directly: select the tab and hand it a one-shot request (consumed once opened).
+    var inboxRequested by remember { mutableStateOf(false) }
 
     val isExpanded = currentWindowWidthClass() == TappyWindowWidthClass.Expanded
     // Read as a raw inset rather than the experimental WindowInsets.isImeVisible, so this does
@@ -176,11 +192,13 @@ fun HomeShellScreen(
                         HomeV3TopBar(
                             isDarkTheme = isDarkTheme,
                             onToggleDarkTheme = onToggleDarkTheme,
-                            // Explore owns `ReviewsRoute.Search`, Profile owns Notifications;
-                            // both sit in another tab's nested NavHost that this NavController
-                            // cannot address directly, so each button selects the owning tab.
+                            unreadCount = inboxBadge.unreadCount,
+                            // Explore owns `ReviewsRoute.Search`, Profile hosts the Inbox; both
+                            // sit in another tab's nested NavHost that this NavController cannot
+                            // address directly, so each button selects the owning tab (and the
+                            // bell asks that tab to open the Inbox — web: the Inbox tab).
                             onOpenSearch = { navController.selectTab(HomeTab.Explore) },
-                            onOpenNotifications = { navController.selectTab(HomeTab.Profile) },
+                            onOpenNotifications = { inboxRequested = true; navController.selectTab(HomeTab.Profile) },
                         )
                     }
                 } else if (!showsOwnHeader) {
@@ -286,6 +304,10 @@ fun HomeShellScreen(
                                 navController.navigateToConversation(conversationId)
                             },
                             onSignIn = onSignIn,
+                            onOpenChatWithPrefill = { prefill -> navController.navigateToChatWithPrefill(prefill) },
+                            onOpenExplore = { navController.selectTab(HomeTab.Explore) },
+                            openInboxRequest = inboxRequested,
+                            onInboxRequestHandled = { inboxRequested = false },
                         )
                     }
                 }

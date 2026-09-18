@@ -195,21 +195,64 @@ data class UserProfileDto(
     @SerialName("is_self") val isSelf: Boolean = false,
 )
 
+/**
+ * `GET /api/notifications` — ADR-014 contract v1 (`src/lib/notifications/contract.ts`), the ONE
+ * shape every client reads. `unread_count` is the server-side unread total the web's badge and
+ * "N chưa đọc" pill show; it is not derived from the page.
+ */
 @Serializable
 data class NotificationsResponseDto(
     val notifications: List<NotificationDto> = emptyList(),
+    @SerialName("unread_count") val unreadCount: Int = 0,
 )
 
+/**
+ * One v1 row. 2026-09-17: this used to be decoded as the pre-ADR shape (`actor_name`, `text`,
+ * `url`), none of which the route has emitted since 2026-07-26 — every row decoded to blanks.
+ * The v1 fields: an `actor` object (null for a platform-originated row), `title` + `body`, the
+ * `category` the Inbox filters on (social | deal | explore | system), `entity_url` for the tap,
+ * and the server-side `read_at`.
+ */
 @Serializable
 data class NotificationDto(
     val id: String = "",
     val type: String = "",
-    @SerialName("actor_id") val actorId: String = "",
-    @SerialName("actor_name") val actorName: String = "",
-    @SerialName("actor_avatar") val actorAvatar: String? = null,
-    val text: String = "",
-    val url: String = "",
+    val category: String = "",
+    val title: String = "",
+    val body: String = "",
+    val actor: NotificationActorDto? = null,
+    @SerialName("entity_url") val entityUrl: String? = null,
+    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName("read_at") val readAt: String? = null,
     @SerialName("created_at") val createdAt: String = "",
+)
+
+/** `GET /api/reviews/{id}/likes` → `{ likers, next_cursor }` (`LikeListSheet.tsx`'s `LikesResponse`). */
+@Serializable
+data class LikersResponseDto(
+    val likers: List<LikerDto> = emptyList(),
+    @SerialName("next_cursor") val nextCursor: String? = null,
+)
+
+@Serializable
+data class LikerDto(
+    val id: String = "",
+    @SerialName("full_name") val fullName: String? = null,
+    @SerialName("avatar_url") val avatarUrl: String? = null,
+    @SerialName("created_at") val createdAt: String = "",
+)
+
+fun LikerDto.toDomain(): Liker = Liker(id = id, fullName = fullName, avatarUrl = avatarUrl, createdAt = createdAt)
+
+/** `POST /api/notifications/read` → `{ ok: true }`. */
+@Serializable
+data class MarkReadResponseDto(val ok: Boolean = false)
+
+@Serializable
+data class NotificationActorDto(
+    val id: String = "",
+    val name: String = "",
+    val avatar: String? = null,
 )
 
 /** POST /api/reviews request body. Place fields are camelCase inbound (backend contract). */
@@ -432,12 +475,15 @@ fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(
     id = id,
     type = type,
-    actorId = actorId,
-    actorName = actorName,
-    actorAvatar = actorAvatar,
-    text = text,
-    url = url,
+    category = category,
+    title = title,
+    actorId = actor?.id.orEmpty(),
+    actorName = actor?.name.orEmpty(),
+    actorAvatar = actor?.avatar,
+    text = body,
+    url = entityUrl.orEmpty(),
     createdAt = createdAt,
+    readAt = readAt,
 )
 
 private fun String?.toReviewContentType(): ReviewContentType? = when (this?.lowercase()) {

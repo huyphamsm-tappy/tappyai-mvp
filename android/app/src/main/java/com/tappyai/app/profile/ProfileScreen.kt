@@ -97,6 +97,10 @@ private enum class ProfileMenuItem(
     Preferences(Icons.Filled.Favorite, R.string.profile_menu_preferences, R.string.profile_menu_preferences_desc, Color(0xFFEF4462)),
     Saved(Icons.Filled.Bookmark, R.string.profile_menu_saved, R.string.profile_menu_saved_desc, Color(0xFF7C5CFF)),
     PriceTracking(Icons.AutoMirrored.Filled.TrendingUp, R.string.profile_menu_price_tracking, R.string.profile_menu_price_tracking_desc, Color(0xFF0E9F6E)),
+    /** The web's `accountRows()` entry for `/planner` (`v3.nav.planner` / `v3.planner.subtitle`). */
+    Planner(Icons.Filled.CalendarMonth, R.string.planner_nav_title, R.string.planner_subtitle, Color(0xFF8B5CF6)),
+    /** The web shell's `v3.nav.following` → `/social`; Android has no nav row, so it lives here. */
+    Social(Icons.Filled.Group, R.string.social_nav_title, R.string.social_tagline, Color(0xFF2563EB)),
     TappyKnows(Icons.Filled.Lightbulb, R.string.profile_menu_tappy_knows, R.string.profile_menu_tappy_knows_desc, Color(0xFFD9A50B)),
     AppConnections(Icons.Filled.Cable, R.string.profile_menu_app_connections, R.string.profile_menu_app_connections_desc, Color(0xFF06B6D4)),
     MyReviews(Icons.Filled.Star, R.string.profile_menu_my_reviews, R.string.profile_menu_my_reviews_desc, Color(0xFFF59E0B)),
@@ -120,6 +124,8 @@ private val ACCOUNT_ITEMS = buildList {
     add(ProfileMenuItem.Preferences)
     add(ProfileMenuItem.Saved)
     add(ProfileMenuItem.PriceTracking)
+    add(ProfileMenuItem.Planner)
+    add(ProfileMenuItem.Social)
     add(ProfileMenuItem.TappyKnows)
     add(ProfileMenuItem.AppConnections)
     add(ProfileMenuItem.MyReviews)
@@ -156,7 +162,18 @@ fun ProfileScreen(
     onOpenAppConnections: () -> Unit,
     /** The privacy card → `ProfileRoute.Privacy`, the privacy policy this graph always hosted. */
     onOpenPrivacy: () -> Unit = {},
+    /** AI Planner (web `/planner`) and Following / Followers (web `/social`). */
+    onOpenPlanner: () -> Unit = {},
+    onOpenSocial: () -> Unit = {},
+    /** The hero's "Chỉnh sửa hồ sơ" — the existing Account edit screen (web `/profile/edit`). */
+    onEditProfile: () -> Unit = onOpenAccount,
+    /** A tile in a collection → that clip in the collection's own pager / detail; a Following row → that creator. */
+    onOpenReview: (ProfileContentTab, String) -> Unit = { _, _ -> },
+    onOpenCreator: (String) -> Unit = {},
+    /** "Đăng bài mới" → the review composer this graph already hosts. */
+    onCompose: () -> Unit = onOpenMyReviews,
     viewModel: ProfileViewModel = hiltViewModel(),
+    contentViewModel: ProfileHubContentViewModel = hiltViewModel(),
 ) {
     var comingSoonFeature by remember { mutableStateOf<String?>(null) }
     var showQrSheet by remember { mutableStateOf(false) }
@@ -180,18 +197,36 @@ fun ProfileScreen(
                 ProfileV3Header()
 
                 val qrFeatureName = stringResource(R.string.profile_qr_feature_name)
-                ProfileHeroCard(
-                    profile = viewModel.profile,
-                    onShowQr = {
-                        if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName
-                    },
-                )
-
-                // Guests get a sign-in affordance right under the hero — the most discoverable
-                // point on the surface they already visit to see "who am I". Settings carries the
-                // same action, but two taps deeper. Authenticated users never see this card.
+                val onShowQr = { if (viewModel.userId != null) showQrSheet = true else comingSoonFeature = qrFeatureName }
                 if (viewModel.isAnonymous) {
+                    // Guests: the account card and, right under it, the sign-in affordance — the
+                    // web's `GuestProfileView`, which renders no content tabs and no stats.
+                    ProfileHeroCard(profile = viewModel.profile, onShowQr = onShowQr)
                     SignInCard(onClick = onSignIn)
+                } else {
+                    // Signed in: the web `/profile` hero, content tabs and side panels.
+                    ProfileHeroV3(
+                        profile = viewModel.profile,
+                        stats = contentViewModel.stats,
+                        likes = contentViewModel.likes,
+                        isPremium = contentViewModel.isPremium,
+                        onEditProfile = onEditProfile,
+                        onShowQr = onShowQr,
+                    )
+                    ProfileContentV3(
+                        tab = contentViewModel.tab,
+                        onSelectTab = contentViewModel::selectTab,
+                        posts = contentViewModel.posts,
+                        liked = contentViewModel.liked,
+                        saved = contentViewModel.saved,
+                        hidden = contentViewModel.hidden,
+                        shared = contentViewModel.shared,
+                        places = contentViewModel.places,
+                        loading = contentViewModel.tabLoading,
+                        failed = contentViewModel.tabFailed,
+                        onCompose = onCompose,
+                        onOpenReview = onOpenReview,
+                    )
                 }
 
                 Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
@@ -216,6 +251,8 @@ fun ProfileScreen(
                                     ProfileMenuItem.GroupDining -> onOpenGroupDining
                                     ProfileMenuItem.Account -> onOpenAccount
                                     ProfileMenuItem.AppConnections -> onOpenAppConnections
+                                    ProfileMenuItem.Planner -> onOpenPlanner
+                                    ProfileMenuItem.Social -> onOpenSocial
                                 },
                             )
                         }
@@ -236,6 +273,20 @@ fun ProfileScreen(
                         )
                     }
                 }
+
+                if (!viewModel.isAnonymous) {
+                    ProfileInfoCard(profile = viewModel.profile, onEdit = onEditProfile)
+                    ProfileStatsCard(
+                        posts = contentViewModel.posts?.size,
+                        videos = contentViewModel.videoCount,
+                        likes = contentViewModel.likes,
+                        savedPosts = contentViewModel.saved?.size,
+                        savedPlaces = contentViewModel.places?.size,
+                        conversations = contentViewModel.conversationCount,
+                    )
+                    ProfileFollowingCard(following = contentViewModel.following, onOpenPerson = onOpenCreator, onSeeAll = onOpenSocial)
+                    ProfileQrCard(onShowQr = onShowQr)
+                }
             }
         }
     }
@@ -250,7 +301,8 @@ fun ProfileScreen(
 
     val userId = viewModel.userId
     if (showQrSheet && userId != null) {
-        QrProfileSheet(userId = userId, name = null, onDismiss = { showQrSheet = false })
+        // The name as stored (web: `userInfo.full_name`), or the sheet's default.
+        QrProfileSheet(userId = userId, name = viewModel.profile?.fullName, onDismiss = { showQrSheet = false })
     }
 }
 

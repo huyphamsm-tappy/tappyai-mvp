@@ -67,7 +67,14 @@ interface ReviewsRepository {
      *  state. Caller adjusts the follower count locally (±1); the backend also returns the count. */
     suspend fun toggleFollow(userId: String): NetworkResult<Boolean>
 
-    suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
+    /** The Inbox: `GET /api/notifications` grouped the way the web groups it, plus the server's unread total. */
+    suspend fun getNotifications(): NetworkResult<NotificationInbox>
+
+    /** Marks every unread notification of the caller read (`POST /api/notifications/read`, no body). */
+    suspend fun markAllNotificationsRead(): NetworkResult<Unit>
+
+    /** The people who like [reviewId] right now, newest first; [before] pages further back. */
+    suspend fun getLikers(reviewId: String, before: String?): NetworkResult<LikersPage>
 
     /**
      * Uploads a single review photo (multipart `POST /api/reviews/upload`) and returns its public
