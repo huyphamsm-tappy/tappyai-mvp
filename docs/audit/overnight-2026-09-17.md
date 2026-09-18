@@ -258,3 +258,10 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
   secret), the parked profile-v2 / g1-growth copies (KEEP until the owner decides), the audit APK and AVD.
 - Execution steps for the owner are at the end of the plan; the plan itself ran no `git branch -d`, no
   `git worktree remove`, no `rm`.
+
+## FINAL — DONE
+- `docs/audit/overnight-summary-2026-09-17.md` (tiếng Việt): what was done, final branch/commit, test counts,
+  screenshots, eval pass rate, open decisions, what is left before release, machine state at stop.
+- The Step A capture (`stepA/web-after-A-guest-flags-on.*`) had been saved in the v3-phase4-design worktree only —
+  copied into this branch now. This log is also copied into the v3-phase4-design worktree (`docs/audit/`).
+- Servers: audit `:3101` left running (`audit-flags-on`); emulator-5558 left running. STOP.
