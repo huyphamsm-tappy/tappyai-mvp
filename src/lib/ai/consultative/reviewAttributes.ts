@@ -29,8 +29,9 @@ export interface AttributeEvidence {
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
 
 // Negation within a few words flips the sense: "không yên tĩnh" is not quiet.
-// "không gian" (space) is the noun, not a negation: "không gian yên tĩnh" IS quiet.
-const NEG = '(?:khong(?! gian)|ko|chang|not|no|never|isn\'t|wasn\'t)\\s+(?:\\w+\\s+){0,2}'
+// "không gian" (space) and "không khí" (atmosphere) are nouns, not negations:
+// "không gian yên tĩnh" / "không khí yên tĩnh" ARE quiet.
+const NEG = '\\b(?:khong(?! gian| khi)|ko|chang|not|no|never|isn\'t|wasn\'t)\\s+(?:\\w+\\s+){0,2}'
 
 const LEXICON: Array<[VenueAttribute, RegExp]> = [
   ['quiet', /\b(yen tinh|tinh lang|it on|khong on|quiet|peaceful|calm|nhe nhang|thanh binh)\b/],
@@ -105,6 +106,11 @@ export function hardConstraintGaps(hard: readonly Hard[], attrs: ReadonlyMap<str
   return gaps
 }
 
+/** The attribute a stated hard constraint asks for, if the lexicon has one. */
+export function attributeForHard(h: Hard): VenueAttribute | null {
+  return HARD_TO_ATTR[h] ?? null
+}
+
 /** The attribute that answers the situation's mood, if any. */
 export function moodAttribute(mood: Mood | null): VenueAttribute | null {
   return mood ? MOOD_TO_ATTR[mood] : null
@@ -134,20 +140,66 @@ const CLAIM_WORDS: Array<[VenueAttribute, RegExp]> = LEXICON.filter(([a]) =>
 export interface AtmosphereGuardResult {
   text: string
   removed: number
-  /** Unsupported claims found in the pick sentence and left in place. */
+  /** Unsupported claims found in the pick sentence: their clause was stripped, the sentence kept. */
   unsupportedInPick: number
+}
+
+/** Clause boundaries inside one sentence: commas, semicolons, dashes, " với ", " và " before a claim. */
+const CLAUSE_SPLIT = /(\s*[,;]\s*|\s+[—–-]\s+|\s+(?:với|và|va|voi)\s+)/
+
+/**
+ * The pick sentence keeps its decision and loses only the unsupported clause:
+ * "Mình chọn **X** — quán ăn chay sang trọng với không khí yên tĩnh, đúng vibe
+ * cho hẹn hò" → "Mình chọn **X** — quán ăn chay". A clause is dropped when it
+ * carries an unsupported attribute word, names no venue and holds no number (a
+ * number is row evidence and belongs to a different guard).
+ */
+function stripUnsupportedClauses(sentence: string, unsupported: readonly RegExp[], foldedNames: ReadonlyArray<readonly [string, string]>): { text: string; dropped: number } {
+  // The sentence terminator (". " / "! ") stays with the sentence, whichever clause carried it.
+  const term = sentence.match(/[.!?…]*\s*$/)?.[0] ?? ''
+  const body = sentence.slice(0, sentence.length - term.length)
+  const parts = body.split(CLAUSE_SPLIT)
+  // parts = [clause, sep, clause, sep, …]
+  const keep: string[] = []
+  let dropped = 0
+  for (let i = 0; i < parts.length; i += 2) {
+    const clause = parts[i]
+    const sep = i > 0 ? parts[i - 1] : ''
+    const f = fold(clause)
+    const hasName = foldedNames.some(([, fn]) => f.includes(fn))
+    const hasNumber = /\d/.test(clause)
+    const claims = unsupported.some(re => { const m = f.match(re); return !!m && !negated(f, m) })
+    if (claims && !hasName && !hasNumber && keep.length > 0) { dropped++; continue }
+    keep.push(keep.length === 0 ? clause : sep + clause)
+  }
+  if (dropped === 0) return { text: sentence, dropped: 0 }
+  // Tidy a dangling separator left by the cut, then restore the terminator.
+  const out = keep.join('').replace(/\s*[,;—–-]\s*$/, '') + term
+  return { text: out, dropped }
 }
 
 export function guardAtmosphereClaims(
   text: string,
-  ctx: { attrs: ReadonlyMap<string, AttributeEvidence[]>; names: readonly string[] },
+  ctx: {
+    attrs: ReadonlyMap<string, AttributeEvidence[]>
+    names: readonly string[]
+    /**
+     * Attributes the user ASKED for that no candidate carries evidence for. A
+     * sentence asserting one of them is unsupported whether or not it names a
+     * venue — "Không gian rộng rãi, có chỗ đậu xe ô tô mà bạn cần" (measured F4)
+     * is about the pick without saying so.
+     */
+    gapAttributes?: readonly VenueAttribute[]
+  },
 ): AtmosphereGuardResult {
-  if (!text || ctx.names.length === 0) return { text, removed: 0, unsupportedInPick: 0 }
+  if (!text || (ctx.names.length === 0 && !(ctx.gapAttributes && ctx.gapAttributes.length > 0))) return { text, removed: 0, unsupportedInPick: 0 }
   const prot = protectedSpans(text)
   const spans = sentenceSpans(text)
   const isMachine = (a: number, b: number) => prot.some(([pa, pb]) => pa === a && pb === b)
   const foldedNames = ctx.names.map(n => [n, fold(n)] as const).filter(([, f]) => f.length >= 3)
+  const gapWords = CLAIM_WORDS.filter(([a]) => ctx.gapAttributes?.includes(a))
   const doomed = new Set<number>()
+  const rewritten = new Map<number, string>()
   let unsupportedInPick = 0
   /** The PICK sentence: the first prose sentence that names a venue (a preamble does not count). */
   let pickIdx = -1
@@ -167,21 +219,31 @@ export function guardAtmosphereClaims(
       named = [...lastNamed]
     }
     if (named.length > 0) lastNamed = named
-    if (named.length === 0) return
-    // A wish attributed to the user is not a venue claim: "bạn muốn yên tĩnh".
-    if (/\b(ban (?:muon|can|thich|noi)|you (?:want|asked|said|need))\b/.test(f)) return
+    // A wish attributed to the user, or the honest gap sentence, is not a venue claim. The wish
+    // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
+    // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).
+    if (/(?:^|[,;—–-]\s*|\b(?:vi|neu|theo nhu|nhu|do)\s+)ban (?:muon|can|thich|noi)\b|\byou (?:want|asked|said|need)\b|chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|no evidence/.test(f)) return
+    const unsupported: RegExp[] = []
     for (const [attr, re] of CLAIM_WORDS) {
       const m = f.match(re)
       if (!m || negated(f, m)) continue
+      const isGap = gapWords.some(([g]) => g === attr)
+      if (named.length === 0 && !isGap) continue
       const supported = named.some(([n]) => (ctx.attrs.get(n) ?? []).some(e => e.attribute === attr))
       if (supported) continue
-      if (i === pickIdx) { unsupportedInPick++; continue }
-      doomed.add(i)
-      break
+      unsupported.push(re)
     }
+    if (unsupported.length === 0) return
+    if (i === pickIdx) {
+      unsupportedInPick += unsupported.length
+      const r = stripUnsupportedClauses(s, unsupported, foldedNames)
+      if (r.dropped > 0) rewritten.set(i, r.text)
+      return
+    }
+    doomed.add(i)
   })
-  if (doomed.size === 0) return { text, removed: 0, unsupportedInPick }
-  const out = spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join('')
+  if (doomed.size === 0 && rewritten.size === 0) return { text, removed: 0, unsupportedInPick }
+  const out = spans.map(([a, b], i) => doomed.has(i) ? '' : (rewritten.get(i) ?? text.slice(a, b))).join('')
   return {
     text: out.replace(/[ \t]+\n/g, '\n').replace(/(^|\n)[ \t]+/g, '$1').replace(/\n{3,}/g, '\n\n').trim(),
     removed: doomed.size,

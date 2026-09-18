@@ -46,7 +46,9 @@ export function priorVenuesIn(assistantText: string): PriorVenue[] {
   for (const m of prose.matchAll(/\*\*([^*\n]{2,60}?)\*\*/g)) {
     const raw = m[1].replace(/^[#\d.\s)-]+/, '').replace(/[:：]\s*$/, '').trim()
     if (!raw || /[:：]$/.test(m[1].trim())) continue
-    if (/^(luu y|goi y|ket luan|tom lai|note|tip|why|ly do|xem them|gia|dia chi|gio mo|mo cua)\b/.test(fold(raw))) continue
+    // A bolded number is not a name: "**4.8⭐ (2.106 đánh giá)**", "**10:30–21:30**", "**có khả năng khá đông**".
+    if (/⭐|danh gia|reviews?|\d\s*(?:sao|stars?)\b/.test(fold(raw)) || raw.replace(/[^\d]/g, '').length * 2 > raw.length) continue
+    if (/^(luu y|goi y|ket luan|tom lai|note|tip|why|ly do|xem them|gia|dia chi|gio mo|mo cua|co kha nang|co the|nen|khong nen)\b/.test(fold(raw))) continue
     const key = fold(raw)
     if (seen.has(key)) continue
     seen.add(key)
@@ -144,8 +146,8 @@ export function referencedVenues(refs: readonly Reference[]): PriorVenue[] {
  * crude but honest check on the prior prose, which is all a follow-up carries.
  * Unknown ⇒ false ⇒ the route may search by name once.
  */
-export function priorTextStates(priorText: string, venue: PriorVenue, fact: FactAsked): boolean {
-  const seg = venueSegment(priorText, venue)
+export function priorTextStates(priorText: string, venue: PriorVenue, fact: FactAsked, others: readonly PriorVenue[] = []): boolean {
+  const seg = venueSegment(priorText, venue, others)
   if (seg === null) return false
   switch (fact) {
     case 'hours': case 'open_now': return /\b\d{1,2}[:h]\d{0,2}\s*[-–]\s*\d{1,2}[:h]\d{0,2}\b|\b(mo cua|gio mo|open)\b.*\d/.test(seg)
@@ -164,15 +166,26 @@ export interface CarriedFacts {
   distanceKm: number | null
 }
 
-/** The venue's own paragraph in the prior prose (after its bolded name, up to the next name / blank line). */
-function venueSegment(priorText: string, venue: PriorVenue): string | null {
+/**
+ * The venue's own stretch of the prior prose: from its name to the next OTHER
+ * bolded venue name or the next blank line. Bold numbers ("**4.8⭐ (2.106 đánh
+ * giá)**") do not end it — measured F5, the hours after such a bold were missed
+ * and a needless re-search was asked for.
+ */
+function venueSegment(priorText: string, venue: PriorVenue, others: readonly PriorVenue[] = []): string | null {
   const f = fold(priorText)
   const n = fold(venue.name)
   const at = f.indexOf(n)
   if (at < 0) return null
   const rest = f.slice(at + n.length).replace(/^\*\*/, '')
-  const stop = rest.search(/\n\s*\n|\*\*/)
-  return rest.slice(0, stop > 0 ? stop : Math.min(rest.length, 600))
+  let stop = rest.search(/\n\s*\n/)
+  if (stop < 0) stop = Math.min(rest.length, 600)
+  for (const o of others) {
+    if (o.name === venue.name) continue
+    const i = rest.indexOf('**' + fold(o.name))
+    if (i >= 0 && i < stop) stop = i
+  }
+  return rest.slice(0, stop)
 }
 
 /**
@@ -186,7 +199,7 @@ function venueSegment(priorText: string, venue: PriorVenue): string | null {
 export function carriedFacts(priorText: string, venues: readonly PriorVenue[]): CarriedFacts[] {
   const out: CarriedFacts[] = []
   for (const v of venues) {
-    const seg = venueSegment(priorText, v)
+    const seg = venueSegment(priorText, v, venues)
     if (seg === null) continue
     const rating = seg.match(/\b([1-5](?:[.,]\d)?)\s*(?:⭐|sao\b|stars?\b|\/5)/)
     const count = seg.match(/\b(\d{1,3}(?:[.,]\d{3})*|\d+)\s*(?:danh gia|reviews?|luot danh gia|ratings?)\b/)

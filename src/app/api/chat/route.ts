@@ -1119,7 +1119,7 @@ export async function POST(req: Request) {
     const refs = resolveReferences(lastText, priorVenues)
     const referenced = referencedVenues(refs)
     const facts = factsAsked(lastText)
-    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f)))
+    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))
     console.log(JSON.stringify({
       type: 'tappyai_consultative_v1', step: 'frame',
       who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,

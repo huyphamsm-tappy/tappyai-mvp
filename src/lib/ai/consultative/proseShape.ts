@@ -104,11 +104,13 @@ export function guardProseShape(text: string, opts: ProseShapeOptions): { text: 
   const namesVenue = (s: string) => foldedNames.some(n => fold(s).includes(n))
   const pickIdx = prose.find(x => namesVenue(x.s))?.i ?? prose[0].i
 
-  // 1. Listings.
+  // 1. Listings — and a line that is nothing but a markdown link ("[website của quán](…)"):
+  //    the card carries the links, and the layout rule keeps them out of the prose.
   if (opts.rendersCard) {
     for (const x of prose) {
       if (x.i === pickIdx) continue
-      if (isListing(x.s, opts.venues)) { doomed.add(x.i); stats.listing_removed++ }
+      const linkOnly = /^\s*\[[^\]]+\]\([^)]+\)[\s.!,;:]*$/.test(x.s)
+      if (linkOnly || isListing(x.s, opts.venues)) { doomed.add(x.i); stats.listing_removed++ }
     }
   }
   // 2. One alternative.

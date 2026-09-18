@@ -110,3 +110,16 @@ describe('carriedFacts — the numbers the previous reply stated, per venue', ()
     expect(factsAsked('chỗ đó yên tĩnh không')).toEqual(['vibe'])
   })
 })
+
+describe('venue segment — a bold number does not end the venue paragraph (measured F5)', () => {
+  it('hours stated after a bold rating are still "already stated"', () => {
+    const prior = 'Mình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa 👍 Quán có **4.8⭐ (2.106 đánh giá)**, cách bạn 2.9km, mở từ 10:30–21:30 hàng ngày.\n\nNếu muốn gần hơn, **Quán Ăn Gia Đình Ngọc Hương** (2.4km) mở từ 15:00.'
+    const venues = priorVenuesIn(prior)
+    expect(venues.map(v => v.name)).toEqual(['Tám Riêu - Phan Xích Long', 'Quán Ăn Gia Đình Ngọc Hương'])
+    expect(priorTextStates(prior, venues[0], 'hours', venues)).toBe(true)
+    expect(priorTextStates(prior, venues[0], 'distance', venues)).toBe(true)
+    expect(carriedFacts(prior, venues)[0]).toEqual({ name: 'Tám Riêu - Phan Xích Long', rating: 4.8, reviewCount: 2106, distanceKm: 2.9 })
+    // …and the first venue's segment does not swallow the second venue's hours.
+    expect(priorTextStates(prior, venues[1], 'distance', venues)).toBe(true)
+  })
+})

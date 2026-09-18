@@ -59,11 +59,25 @@ describe('guardAtmosphereClaims', () => {
     expect(r.text).toContain('Cơm Niêu Sài Gòn')
     expect(r.text).toContain('Đi sớm nhé.')
   })
-  it('never cuts the pick sentence — counts instead', () => {
+  it('never cuts the pick sentence — an unsupported clause is stripped, the decision stays', () => {
     const r = guardAtmosphereClaims('Mình chọn **Ốc Đào** vì yên tĩnh.', { attrs, names })
     expect(r.removed).toBe(0)
     expect(r.unsupportedInPick).toBe(1)
+    // No clause boundary ⇒ nothing to strip ⇒ the sentence stands (counted).
     expect(r.text).toBe('Mình chọn **Ốc Đào** vì yên tĩnh.')
+    const clause = guardAtmosphereClaims('Mình chọn **Ốc Đào** cho bạn — quán ăn chay sang trọng với không khí yên tĩnh, lãng mạn, đúng vibe cho hẹn hò tối nay. Có 4.4⭐ (589 đánh giá).', { attrs, names })
+    expect(clause.removed).toBe(0)
+    // "sang trọng" (fancy) and "yên tĩnh" are both unsupported for Ốc Đào ⇒ both clauses go.
+    expect(clause.text).toBe('Mình chọn **Ốc Đào** cho bạn. Có 4.4⭐ (589 đánh giá).')
+  })
+  it('a stated constraint with no evidence anywhere is unsupported even in a nameless sentence (measured F4)', () => {
+    const text = 'Mình chọn **Cơm Niêu Sài Gòn** cho cả nhà. Không gian rộng rãi, phù hợp 6 người, và đặc biệt là có chỗ đậu xe ô tô mà bạn cần. Đi sớm nhé.'
+    const r = guardAtmosphereClaims(text, { attrs: new Map(), names: ['Cơm Niêu Sài Gòn'], gapAttributes: ['parking'] })
+    expect(r.removed).toBe(1)
+    expect(r.text).toBe('Mình chọn **Cơm Niêu Sài Gòn** cho cả nhà. Đi sớm nhé.')
+    // The honest gap sentence itself is never a claim.
+    const honest = 'Mình chọn **Cơm Niêu Sài Gòn**. Mình chưa thấy bằng chứng về chỗ đậu xe ở các quán này.'
+    expect(guardAtmosphereClaims(honest, { attrs: new Map(), names: ['Cơm Niêu Sài Gòn'], gapAttributes: ['parking'] }).removed).toBe(0)
   })
   it('the user\'s wish is not a venue claim; a sentence without a venue is untouched', () => {
     const text = 'Mình chọn **Cơm Niêu Sài Gòn**. Bạn muốn yên tĩnh nên **Ốc Đào** không hợp. Nhìn chung nên chọn chỗ yên tĩnh.'

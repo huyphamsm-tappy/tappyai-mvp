@@ -118,3 +118,14 @@ describe('flag ON', () => {
     expect(out2.match(/chưa thấy bằng chứng/g)).toHaveLength(1)
   })
 })
+
+describe('flag ON — a link-only line goes when the card renders', () => {
+  it('"[website của quán](…)." is dropped with a card and kept without', async () => {
+    const reply = 'Mình chọn **Cơm Niêu Sài Gòn** cho 2 người tối nay.\n\n[website của quán](http://www.example.com/).\n\nĐi sớm nhé.'
+    const withCard = prose((await run(reply, { v1: ON })).text)
+    expect(withCard).not.toContain('[website của quán]')
+    expect(withCard).toContain('Đi sớm nhé.')
+    const noCard = prose((await run(reply, { v1: { ...ON, rendersCard: false } })).text)
+    expect(noCard).toContain('[website của quán]')
+  })
+})

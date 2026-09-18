@@ -22,7 +22,8 @@ import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerce
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import { guardClarifications } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
-import { extractAttributes, guardAtmosphereClaims } from './consultative/reviewAttributes'
+import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
+import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
@@ -1554,7 +1555,8 @@ export function applyPlaceEnrichmentStreamFilter(
       if (!v1) return clarifiedBase
       const claims = guardSearchClaims(clarifiedBase, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames })
+      const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes })
       const shape = guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         venues: snippetPlaceNames.map(name => ({
@@ -1567,7 +1569,13 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       // A line the guards left with no letters or digits — a stranded emoji, a
       // lone dash — is not a sentence (measured F3: " 🍷" on its own line).
-      const tidy = shape.text.split('\n').filter(l => l.trim() === '' || /[\p{L}\p{N}]/u.test(l) || /^\s*\[/.test(l)).join('\n').replace(/\n{3,}/g, '\n\n')
+      // A line that is nothing but a markdown link ("[website của quán](…).") goes too when the
+      // card renders — the card carries the links, the layout rule keeps them out of the prose.
+      const machineLine = (l: string) => /^\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_PLAN|TAPPY_SHOPPING|TAPPY_PLACES|\/)/.test(l)
+      const linkOnlyLine = (l: string) => v1.rendersCard && /^\s*\[[^\]]+\]\([^)]+\)[\s.!,;:]*$/.test(l)
+      const tidy = shape.text.split('\n')
+        .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l)))
+        .join('\n').replace(/\n{3,}/g, '\n\n')
       /**
        * The evidence gap, said out loud. The prompt asks the model to name a
        * stated constraint it found no evidence for; measured 2026-09-18 (F3,
