@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T01:42:39.732Z",
+  "generatedAt": "2026-09-18T03:08:34.384Z",
   "note": "Direct function tests; no LLM/search; excluded from the 36-run cap. detectLang has no AMBIGUOUS return value.",
   "rows": [
     {
@@ -106,20 +106,20 @@
       "id": 11,
       "label": "no-diacritic Vietnamese",
       "input": "tim quan cafe gan day",
-      "detected": "en",
+      "detected": "vi",
       "explicitRequest": null,
       "expected": "vi",
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
     },
     {
       "id": 12,
       "label": "no-diacritic Vietnamese + brand",
       "input": "quan an gan Vincom",
-      "detected": "en",
+      "detected": "vi",
       "explicitRequest": null,
       "expected": "vi",
-      "verdict": "FAIL",
+      "verdict": "PASS",
       "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
     },
     {

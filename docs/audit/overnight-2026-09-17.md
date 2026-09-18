@@ -184,7 +184,7 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
   lost; the declaration persisted (DataStore) so the re-send worked.
 - Web **13 221 / 68 skipped**, Android **727 / 0**, tsc clean. LLM-run counter: **8 / 120**.
 
-## STEP E — AI CONSULTATIVE V1 (flag `CONSULTATIVE_V1`, default OFF) — BUILT, commit `__COMMIT__`
+## STEP E — AI CONSULTATIVE V1 (flag `CONSULTATIVE_V1`, default OFF) — BUILT, commit `8ad917a`
 - Design doc first: `docs/audit/consultative-v1-design.md` (§0 existing mechanisms/gaps → §10 test plan). Two deviations
   recorded in the doc as "as built": (1) the named re-search is made by the MODEL on the same single stream (the
   architecture lock forbids `toolChoice`/a second call, and a route-side prompt-only row would be cut by the G1 guard as
