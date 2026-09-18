@@ -1584,7 +1584,11 @@ export function applyPlaceEnrichmentStreamFilter(
       // gian chạy) để chọn…", measured S4), or one that opens lowercase mid-word after a paragraph
       // break — is not a sentence either. Machine lines and list items are never judged.
       const fragmentLine = (l: string) => {
-        if (machineLine(l) || /^\s*(?:[-*•]|\d+[.)])\s/.test(l)) return false
+        if (machineLine(l)) return false
+        // A list marker with nothing after it ("1.", "2.3." — the items were cut by an earlier
+        // guard, measured F6) is a fragment; a real list item is not judged.
+        if (/^\s*(?:\d+[.)]\s*)+$/.test(l) || /^\s*[-*•]\s*$/.test(l)) return true
+        if (/^\s*(?:[-*•]|\d+[.)])\s/.test(l)) return false
         const open = (l.match(/\(/g) ?? []).length
         const close = (l.match(/\)/g) ?? []).length
         if (close > open) return true

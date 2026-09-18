@@ -150,3 +150,12 @@ describe('flag ON — a budget-fit claim with no price on any row', () => {
     expect(out.match(/chưa có mức giá/g)).toHaveLength(1)
   })
 })
+
+describe('flag ON — empty list markers left by an earlier guard', () => {
+  it('"1.2.3." on its own line is dropped', async () => {
+    const reply = 'Mình chưa có thông tin về độ đông của **Cơm Niêu Sài Gòn**. Bạn có thể:\n\n1.2.3.\n\nBạn muốn mình tìm quán khác không?'
+    const out = prose((await run(reply, { v1: ON, tool: false })).text)
+    expect(out).not.toMatch(/^\s*1\.2\.3\.\s*$/m)
+    expect(out).toContain('Bạn muốn mình tìm quán khác không?')
+  })
+})
