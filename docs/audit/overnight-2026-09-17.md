@@ -248,3 +248,13 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
   G1 on multi-search; shopping prose naming the pick; open-subject questions; thousands-separated listing rule;
   model-authored CTA labels; re-search location = city).
 - Web **13 356 passed / 68 skipped (699 files)**, tsc clean; Android unchanged (727 / 0). LLM-run counter: **95 / 120**.
+
+## STEP G — CLEANUP PLAN ONLY — DONE (nothing deleted)
+- `docs/audit/cleanup-plan-2026-09-18.md`: 396 branches (KEEP 12 V3-line · KEEP-until-merged 18 `wip/*` · ARCHIVE 236
+  · DELETE-after-tag 130 — every DELETE is fully merged into `origin/main` and has its `archive/<branch>-2026-09-17`
+  tag), 91 worktrees (KEEP 6 · DELETE dir 21 on merged branches · ARCHIVE 64), plus the non-git artefacts: launch.json
+  port-3410 duplicates (DELETE), `hookv3.py` capture hook and the G1/G2/G3 replay evidence in the audit worktree
+  (ARCHIVE), eval runners copied into `scripts/audit/` (KEEP; they read the audit `.env.local` at runtime and print no
+  secret), the parked profile-v2 / g1-growth copies (KEEP until the owner decides), the audit APK and AVD.
+- Execution steps for the owner are at the end of the plan; the plan itself ran no `git branch -d`, no
+  `git worktree remove`, no `rm`.
