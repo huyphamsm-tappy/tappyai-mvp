@@ -74,9 +74,25 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
     // mapped by @ai-sdk/anthropic to separate `system` blocks, each carrying its
     // own cache_control, so this is a real breakpoint and not an approximation.
     // With a single system message the behaviour is unchanged.
+    //
+    // SECOND BREAKPOINT — the last user message (cost optimization, 2026-09-18).
+    // A tool turn is two requests: step 1 (system + history + user → tool call)
+    // and step 2 (the same prefix + the tool call + its result → the reply).
+    // With only the system breakpoint, step 2 re-pays the whole request-shaped
+    // system segment (measured 3.3k–5k tokens) and the history at the uncached
+    // rate. Marking the last user message caches the prefix that ENDS there, so
+    // step 2 reads it at 10% of the price; the write premium (+25% on that
+    // segment, once) is smaller than the read saving whenever the turn has a
+    // second step. A one-step turn pays the premium and gains nothing — accepted:
+    // ~65% of measured turns call a tool. Anthropic allows four breakpoints, so
+    // the two never conflict, and responses stay identical either way.
     decorateMessages: (messages: CoreMessage[]) => {
       let marked = false
-      return messages.map((m) => {
+      const lastUser = messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
+      return messages.map((m, i) => {
+        if (i === lastUser) {
+          return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
+        }
         if (m.role !== 'system' || marked) return m
         marked = true
         return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
