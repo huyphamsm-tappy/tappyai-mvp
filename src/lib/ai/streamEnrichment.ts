@@ -1576,8 +1576,18 @@ export function applyPlaceEnrichmentStreamFilter(
       // card renders — the card carries the links, the layout rule keeps them out of the prose.
       const machineLine = (l: string) => /^\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_PLAN|TAPPY_SHOPPING|TAPPY_PLACES|\/)/.test(l)
       const linkOnlyLine = (l: string) => v1.rendersCard && /^\s*\[[^\]]+\]\([^)]+\)[\s.!,;:]*$/.test(l)
+      // A FRAGMENT an earlier guard left behind — a line with more ")" than "(" ("Lau nhà, thời
+      // gian chạy) để chọn…", measured S4), or one that opens lowercase mid-word after a paragraph
+      // break — is not a sentence either. Machine lines and list items are never judged.
+      const fragmentLine = (l: string) => {
+        if (machineLine(l) || /^\s*(?:[-*•]|\d+[.)])\s/.test(l)) return false
+        const open = (l.match(/\(/g) ?? []).length
+        const close = (l.match(/\)/g) ?? []).length
+        if (close > open) return true
+        return /^\s*\p{Ll}/u.test(l) && /[.!?…]\s*$/.test(l) && l.trim().split(/\s+/).length <= 12
+      }
       const tidy = shape.text.split('\n')
-        .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l)))
+        .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')
       /**
        * The evidence gap, said out loud. The prompt asks the model to name a

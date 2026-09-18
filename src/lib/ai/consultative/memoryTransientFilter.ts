@@ -24,6 +24,8 @@ export interface TransientFilterStats {
   timing_dropped: boolean
   budget_dropped: number
   preferences_dropped: number
+  personality_dropped?: boolean
+  companions_dropped?: boolean
 }
 
 /**
@@ -43,6 +45,17 @@ export function filterTransientMemory(
   if (typeof out.timing === 'string' && out.timing && TRANSIENT_RE.test(fold(out.timing))) {
     delete out.timing
     stats.timing_dropped = true
+  }
+  // personality: "thích lãng mạn, yên tĩnh" from ONE date question is not a trait (measured T1:
+  // the next trip plan opened with "như sở thích trước đây"). Kept only when stated as a habit.
+  if (typeof out.personality === 'string' && out.personality && !habitual && (ATMOSPHERE_RE.test(fold(out.personality)) || TRANSIENT_RE.test(fold(out.personality)))) {
+    delete out.personality
+    stats.personality_dropped = true
+  }
+  // companions: "hay đi 2 người" is a habit; "2 người tối nay" is one outing.
+  if (typeof out.companions === 'string' && out.companions && !habitual && TRANSIENT_RE.test(fold(out.companions))) {
+    delete out.companions
+    stats.companions_dropped = true
   }
   // budget: only when the user stated it as a habit — a per-turn amount is not the durable budget.
   if (out.budget && typeof out.budget === 'object') {

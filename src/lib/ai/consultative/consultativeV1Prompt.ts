@@ -18,6 +18,8 @@ export interface ConsultativeV1PromptInput {
   /** True when the client renders the decision card (web / Android). */
   rendersCard: boolean
   lang: string
+  /** The request clock, for the assumed weekend stay. Defaults to now. */
+  now?: Date
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -26,8 +28,20 @@ const HARD_VI: Record<Hard, string> = {
   live_music: 'nhạc sống', wheelchair: 'tiếp cận xe lăn',
 }
 
+/** Next Saturday → Sunday from `now` (Vietnam local date), the stay V1 assumes when none is stated. */
+export function nextWeekendStay(now: Date): { checkIn: string; checkOut: string; nights: number } {
+  const vn = new Date(now.getTime() + 7 * 3600 * 1000)
+  const day = vn.getUTCDay() // 0 = Sunday
+  const untilSat = ((6 - day) + 7) % 7 || 7
+  const sat = new Date(Date.UTC(vn.getUTCFullYear(), vn.getUTCMonth(), vn.getUTCDate() + untilSat))
+  const sun = new Date(sat.getTime() + 24 * 3600 * 1000)
+  const iso = (d: Date) => d.toISOString().slice(0, 10)
+  return { checkIn: iso(sat), checkOut: iso(sun), nights: 1 }
+}
+
 export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): string {
   const { frame, hardGaps, rendersCard, lang } = input
+  const nextWeekend = nextWeekendStay(input.now ?? new Date())
   const gaps = hardGaps.length > 0
     ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua thay bang chung ve X" cho quan ban chon; KHONG khang dinh bua, KHONG bo qua im lang.`
     : ''
@@ -42,8 +56,9 @@ HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):
 1. CAU DAU: MOT lua chon chinh cho DUNG tinh huong tren + LY DO co bang chung (so lieu/that trong ket qua tool: diem, so luot danh gia, khoang cach, muc gia, trich review). Ten quan phai co trong _tappy_shortlist.
 2. MOT lua chon thay the (toi da 1) + danh doi that: "re hon nhung xa hon", "view dep nhung dong". Khong co danh doi that thi khong nhac.
 3. MOT luu y huu ich: gio mo/dong, nen dat ban, khoang cach/di chuyen — chi khi co trong du lieu.
-4. Neu co gia su (giả sử) o tren: noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi.
-5. TOI DA 1 cau hoi, va chi khi cau tra loi lam DOI lua chon. Khong hoi "ban muon an loai gi".
+4. Neu co gia su (giả sử) o tren: noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi. Gia su chi ve AI DI / KHI NAO / NGAN SACH / KHU VUC — KHONG BAO GIO gia su DOI TUONG (mua gi, an gi, di dau): neu user chua noi doi tuong ("mua gi bay gio", "di choi o dau"), hoi DUNG MOT cau ngan ve doi tuong va dung lai.
+5. TOI DA 1 cau hoi, va chi khi cau tra loi lam DOI lua chon. Khong hoi "ban muon an loai gi". KHONG hoi de lay thong tin ma ban co the GIA SU roi tim ngay (so dem, ngay di, so nguoi, uu tien).
+6. KHACH SAN / RESORT / CHUYEN DI ma user chua noi ngay: GIA SU di cuoi tuan toi — check-in ${nextWeekend.checkIn}, check-out ${nextWeekend.checkOut} (${nextWeekend.nights} dem) — noi ro la gia su, roi GOI tool tim ngay voi ngay do. KHONG hoi ngay/so dem truoc khi tim.
 ${rendersCard ? '- The (card) da hien anh/ten/diem/dia chi/gio/gia: KHONG liet ke lai. Con so chi xuat hien khi no la LY DO.' : '- Khong co the: neu ten, diem va gio mo ngan gon trong cau ly do, van khong liet ke.'}
 - _tappy_shortlist la nhung quan ban DUOC nhac; ban khong can nhac het. Chon 1 cho tinh huong; lua chon #1 cua he thong la mac dinh, chi doi khi co ly do gan voi tinh huong (dip/khong khi/dieu kien cung) va noi ro ly do do.
 - Tinh tu ve khong khi/doi tuong (yen tinh, view, hop gia dinh, hen ho, sang trong) CHI duoc noi ve mot quan khi evidence.attributes cua quan do co no. Mong muon cua user KHONG phai la thuoc tinh cua quan.

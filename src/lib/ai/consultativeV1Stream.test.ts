@@ -129,3 +129,13 @@ describe('flag ON — a link-only line goes when the card renders', () => {
     expect(noCard).toContain('[website của quán]')
   })
 })
+
+describe('flag ON — fragments left by earlier guards', () => {
+  it('a line with an unbalanced ")" and a short lowercase-opening line are dropped', async () => {
+    const reply = 'Mình chọn **Cơm Niêu Sài Gòn** cho 2 người tối nay.\n\nLau nhà, thời gian chạy) để chọn mô hình phù hợp nhất không?\n\nnên chọn 16GB RAM để tránh lag.\n\nĐi sớm nhé.'
+    const out = prose((await run(reply, { v1: ON })).text)
+    expect(out).not.toContain('thời gian chạy)')
+    expect(out).not.toContain('nên chọn 16GB')
+    expect(out).toContain('Đi sớm nhé.')
+  })
+})

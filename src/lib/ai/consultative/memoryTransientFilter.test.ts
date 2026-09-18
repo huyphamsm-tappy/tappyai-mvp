@@ -36,3 +36,15 @@ describe('filterTransientMemory', () => {
     expect(kept.memory.budget).toBeDefined()
   })
 })
+
+describe('filterTransientMemory — personality and companions from one outing are not traits', () => {
+  it('"thích lãng mạn, yên tĩnh" after one date question is dropped; a stated habit stays', () => {
+    const once = filterTransientMemory({ personality: 'thích lãng mạn, yên tĩnh', companions: 'đi 2 người tối nay' }, ['đi date với gấu tối nay chỗ nào lãng mạn yên tĩnh'])
+    expect(once.memory.personality).toBeUndefined()
+    expect(once.memory.companions).toBeUndefined()
+    expect(once.stats.personality_dropped).toBe(true)
+    const habit = filterTransientMemory({ personality: 'thích quán yên tĩnh', companions: 'hay đi 2 người' }, ['mình thích quán yên tĩnh, hay đi 2 người'])
+    expect(habit.memory.personality).toBe('thích quán yên tĩnh')
+    expect(habit.memory.companions).toBe('hay đi 2 người')
+  })
+})
