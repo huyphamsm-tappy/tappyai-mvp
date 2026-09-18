@@ -20,6 +20,7 @@ import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDiscon
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import { appendFileSync } from 'fs'
 import { guardClarifications } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
 import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
@@ -1702,6 +1703,11 @@ export function applyPlaceEnrichmentStreamFilter(
       // is a recall turn" — and it stood down for both.
       { placeSearch: placeSearchStatus },
     )
+    // AUDIT ONLY (env-gated, never in production): what the grounding gate cut and against which
+    // names, plus the pre-gate prose — the one place a "0 rows" / "all cut" verdict can be checked.
+    if (process.env.AUDIT_USAGE_LOG_FILE && gated.suppressed.length > 0) {
+      try { appendFileSync(process.env.AUDIT_USAGE_LOG_FILE, JSON.stringify({ type: 'tappyai_audit_grounding', suppressed: gated.suppressed, known: places.map(p => p.name || ''), placeSearch: placeSearchStatus ?? null, preGate: scaffoldStripped.slice(0, 2000) }) + '\n') } catch { /* audit only */ }
+    }
     /**
      * G1b — EVIDENCE-ONLY FALLBACK (v2 only). When the guards have taken every body
      * sentence and the engine did make a Pick with a retrieved rating, one sentence
