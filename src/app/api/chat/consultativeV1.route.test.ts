@@ -171,6 +171,15 @@ describe('flag ON', () => {
     expect(s).toContain('Điều kiện cứng: có chỗ đậu xe, phù hợp trẻ em (user nói)')
   })
 
+  it('a date question the decision frame reads as "inform / web_search" still carries the block — the situation decides', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await post([{ role: 'user', content: 'Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?' }])
+    const s = system()
+    expect(s).toContain('===== TINH HUONG (V1) =====')
+    expect(s).toContain('Dịp: hẹn hò (user nói)')
+    expect(s).toContain('Điều kiện cứng: yên tĩnh (user nói)')
+  })
+
   it('chitchat carries no V1 block at all', async () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
     await post([{ role: 'user', content: 'cảm ơn nhé' }])

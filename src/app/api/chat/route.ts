@@ -1098,11 +1098,19 @@ export async function POST(req: Request) {
   // tiếp khách 8 người …" all resolve to `domain: null` (no dish word), and the
   // follow-up "quán này mở mấy giờ?" to `forcedTool: web_search` — none was a
   // decision by `isDecisionDomain` alone, and V1 silently skipped them.
+  // …and "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?" reached
+  // the model as `goal: inform, domains: [], forcedTool: web_search`. The
+  // situation frame itself knows better: a stated who / occasion / mood / hard
+  // constraint / budget is a decision by definition.
   const v1PriorVenues = priorVenuesIn(lastAssistantText)
+  const frameSaysDecision = !!situation && (
+    situation.who !== null || situation.occasion !== null || situation.mood !== null || situation.hard.length > 0 || situation.budget !== null
+  )
   const v1Active = !!situation && !noToolTurn && (
     isDecisionDomain
     || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
     || forcedTool === 'search_places'
+    || frameSaysDecision
     || v1PriorVenues.length > 0
   )
   const v1Block = (() => {
