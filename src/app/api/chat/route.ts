@@ -69,6 +69,7 @@ import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTe
 import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
+import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -1163,7 +1164,11 @@ export async function POST(req: Request) {
     const refetchLines = refetch.length > 0
       ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
       : ''
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date() })
+    // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
+    // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
+    const searchNow = deriveSearchNow({ text: lastText, situation, frame: decisionFrame, forcedTool, isFirstReply, movieRecommend })
+    if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type }))
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 

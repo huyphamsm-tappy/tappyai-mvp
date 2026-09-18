@@ -20,6 +20,8 @@ export interface ConsultativeV1PromptInput {
   lang: string
   /** The request clock, for the assumed weekend stay. Defaults to now. */
   now?: Date
+  /** The concrete first tool call for a vague place request (searchNow.ts), or null. */
+  searchNow?: { query: string; type: string } | null
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -45,6 +47,9 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   const gaps = hardGaps.length > 0
     ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua thay bang chung ve X" cho quan ban chon; KHONG khang dinh bua, KHONG bo qua im lang.`
     : ''
+  const searchNow = input.searchNow
+    ? `\n- LENH LUOT NAY (bat buoc, lam TRUOC khi viet bat ky chu nao): goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user ngay o buoc 1. KHONG hoi "ban thich loai gi", KHONG hoi "phai khong". Sau khi co ket qua: viet theo hinh dang tren, mo dau bang lua chon.`
+    : ''
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
     : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'
@@ -63,7 +68,7 @@ HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):
 ${rendersCard ? '- The (card) da hien anh/ten/diem/dia chi/gio/gia: KHONG liet ke lai. Con so chi xuat hien khi no la LY DO.' : '- Khong co the: neu ten, diem va gio mo ngan gon trong cau ly do, van khong liet ke.'}
 - _tappy_shortlist la nhung quan ban DUOC nhac; ban khong can nhac het. Chon 1 cho tinh huong; lua chon #1 cua he thong la mac dinh, chi doi khi co ly do gan voi tinh huong (dip/khong khi/dieu kien cung/gio) va noi ro ly do do. Quan DONG CUA vao luc user dinh di (vd "an toi" ma gio mo chi den 13:30) KHONG duoc chon lam lua chon chinh — chon quan dang mo vao gio do.
 - Tinh tu ve khong khi/doi tuong (yen tinh, view, hop gia dinh, hen ho, sang trong) CHI duoc noi ve mot quan khi evidence.attributes cua quan do co no. Mong muon cua user KHONG phai la thuoc tinh cua quan.
-- KHONG noi "minh da kiem tra / da tim lai / da goi" tru khi luot nay thuc su co ket qua tool.${gaps}
+- KHONG noi "minh da kiem tra / da tim lai / da goi" tru khi luot nay thuc su co ket qua tool.${gaps}${searchNow}
 ${langLine}
 =====================================`
 }
