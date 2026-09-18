@@ -70,6 +70,7 @@ import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/a
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
+import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
 
@@ -1132,6 +1133,8 @@ export async function POST(req: Request) {
     || frameSaysDecision
     || v1PriorVenues.length > 0
   )
+  /** Cost optimization item 8: a follow-up fully answerable from the carried facts, or null. */
+  let cannedFollowUp: string | null = null
   const v1Block = (() => {
     if (!situation || !v1Active) return ''
     const priorVenues = v1PriorVenues
@@ -1139,6 +1142,9 @@ export async function POST(req: Request) {
     const referenced = referencedVenues(refs)
     const facts = factsAsked(lastText)
     const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))
+    if (refetch.length === 0 && !clipContext) {
+      cannedFollowUp = cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+    }
     console.log(JSON.stringify({
       type: 'tappyai_consultative_v1', step: 'frame',
       who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
@@ -1278,6 +1284,32 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * collector, so one conversation can never spend another's allowance.
    */
   const placesBudget = createPlacesBudget(planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+
+  /**
+   * NO-MODEL TURNS (cost optimization item 8, 2026-09-18). A pure greeting / thanks /
+   * acknowledgement, or a follow-up that asks one concrete fact (hours, phone, address) the
+   * previous reply already stated about one referenced venue, is answered deterministically in
+   * the same data-stream shape the clients parse. Quota was spent above exactly as before; the
+   * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
+   * fact the prior prose lacks — still reaches the model, which may re-search by name.
+   */
+  const canned = (intent === 'chitchat' ? cannedChitchat(lastText, lang) : null) ?? cannedFollowUp
+  if (canned) {
+    const kind = intent === 'chitchat' ? 'chitchat' : 'carried_fact'
+    console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
+    const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+    if (auditFile) {
+      try {
+        appendFileSync(auditFile, JSON.stringify({
+          turn: auditTurn, at: new Date().toISOString(), type: 'tappyai_usage_canned', intent, finishReason: 'canned',
+          promptTokens: 0, completionTokens: 0, totalTokens: 0, cacheReadTokens: 0, cacheCreationTokens: 0, llmCalls: 0, memoryExtract: 0, toolCalls: 0,
+          elapsedMs: Date.now() - startTime, serper: serperDelta(serperAtStart), canned: kind,
+          flags: { consultativeV1: consultativeV1Enabled(), v1Active }, sections: { sharedChars: 0, dynamicChars: 0, consultativeChars: 0, v1Chars: 0, memoryChars: 0, prefChars: 0, historyChars: 0, lastUserChars: lastText.length, toolResultChars: 0 },
+        }) + '\n')
+      } catch { /* audit only */ }
+    }
+    return cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
+  }
 
   let result
   try {

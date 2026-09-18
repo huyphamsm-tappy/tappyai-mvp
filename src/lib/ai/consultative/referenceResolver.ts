@@ -150,7 +150,7 @@ export function priorTextStates(priorText: string, venue: PriorVenue, fact: Fact
   const seg = venueSegment(priorText, venue, others)
   if (seg === null) return false
   switch (fact) {
-    case 'hours': case 'open_now': return /\b\d{1,2}[:h]\d{0,2}\s*[-–]\s*\d{1,2}[:h]\d{0,2}\b|\b(mo cua|gio mo|open)\b.*\d/.test(seg)
+    case 'hours': case 'open_now': return /\b\d{1,2}[:h]\d{0,2}\s*(?:[-–]|den|to|toi)\s*\d{1,2}[:h]\d{0,2}\b|\b(mo cua|gio mo|open)\b.*\d/.test(seg)
     case 'price': return /\d\s*(?:k|nghin|tr|trieu|d|vnd|₫)\b|₫|\bdong\b/.test(seg)
     case 'phone': return /(?:\+84|0)\d[\d .]{7,}\d/.test(seg)
     case 'address': return /\b(duong|street|quan|q\.?\s?\d|phuong|district)\b/.test(seg)
@@ -164,6 +164,12 @@ export interface CarriedFacts {
   rating: number | null
   reviewCount: number | null
   distanceKm: number | null
+  /** Opening hours as the prior reply stated them ("10:30–21:30"), or null. */
+  hours: string | null
+  /** Phone number as stated, or null. */
+  phone: string | null
+  /** Street address as stated (original casing/diacritics), or null. */
+  address: string | null
 }
 
 /**
@@ -210,7 +216,25 @@ export function carriedFacts(priorText: string, venues: readonly PriorVenue[]): 
       const n = Number(raw)
       return Number.isFinite(n) ? n : null
     }
-    out.push({ name: v.name, rating: num(rating, false), reviewCount: num(count, true), distanceKm: num(dist, false) })
+    // Concrete facts a follow-up can be answered with, verbatim (cost optimization item 8).
+    const hoursM = seg.match(/\b(\d{1,2}[:h]\d{0,2})\s*(?:[–-]|den|to|toi)\s*(\d{1,2}[:h]\d{0,2})\b/)
+    const clock = (t: string) => t.replace('h', ':').replace(/:$/, ':00')
+    const hours = hoursM ? `${clock(hoursM[1])}–${clock(hoursM[2])}` : null
+    const phoneM = seg.match(/(?:\+84|0)\d[\d .]{7,}\d/)
+    const phone = phoneM ? phoneM[0].trim() : null
+    // Address: read off the ORIGINAL text (diacritics intact) at the same offsets — normalizeVN
+    // preserves length on NFC input; when it does not, the address is left null rather than wrong.
+    let address: string | null = null
+    if (normalizeVN(priorText).length === priorText.length) {
+      const f = fold(priorText)
+      const at = f.indexOf(fold(v.name))
+      const segStart = at + fold(v.name).length
+      const raw = priorText.slice(segStart, segStart + seg.length + 2)
+      const addrM = raw.match(/(?:[Đđ]ịa chỉ|[Aa]ddress)\s*[:：]?\s*([^.\n;]{8,90})/)
+        ?? raw.match(/\b(\d{1,4}[A-Za-z]?(?:\/\d+)?\s+[^,.\n;]{3,40},\s*(?:Quận|Q\.|Phường|Huyện|District)[^.\n;]{1,40})/)
+      if (addrM) address = addrM[1].trim().replace(/[,\s]+$/, '')
+    }
+    out.push({ name: v.name, rating: num(rating, false), reviewCount: num(count, true), distanceKm: num(dist, false), hours, phone, address })
   }
   return out
 }

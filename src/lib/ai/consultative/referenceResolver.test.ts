@@ -96,13 +96,13 @@ describe('carriedFacts — the numbers the previous reply stated, per venue', ()
   it('reads rating / review count / distance from each venue\'s own paragraph', () => {
     const prior = 'Mình chọn **Hải Sản Hoàng Gia** — 4.7⭐ từ 961 đánh giá, cách bạn 1.9km.\n\nNếu gần hơn thì **Quán Bụi** (4.5⭐, 1.188 đánh giá) chỉ 0.7km.'
     const facts = carriedFacts(prior, priorVenuesIn(prior))
-    expect(facts).toEqual([
+    expect(facts.map(({ name, rating, reviewCount, distanceKm }) => ({ name, rating, reviewCount, distanceKm }))).toEqual([
       { name: 'Hải Sản Hoàng Gia', rating: 4.7, reviewCount: 961, distanceKm: 1.9 },
       { name: 'Quán Bụi', rating: 4.5, reviewCount: 1188, distanceKm: 0.7 },
     ])
   })
   it('a venue with no numbers carries nulls; no venues ⇒ empty', () => {
-    expect(carriedFacts('**Ốc Đào** hợp đi nhóm.', priorVenuesIn('**Ốc Đào** hợp đi nhóm.'))).toEqual([{ name: 'Ốc Đào', rating: null, reviewCount: null, distanceKm: null }])
+    expect(carriedFacts('**Ốc Đào** hợp đi nhóm.', priorVenuesIn('**Ốc Đào** hợp đi nhóm.'))).toEqual([{ name: 'Ốc Đào', rating: null, reviewCount: null, distanceKm: null, hours: null, phone: null, address: null }])
     expect(carriedFacts('không có', [])).toEqual([])
   })
   it('crowd / vibe questions are facts a re-search can answer or honestly deny', () => {
@@ -118,7 +118,7 @@ describe('venue segment — a bold number does not end the venue paragraph (meas
     expect(venues.map(v => v.name)).toEqual(['Tám Riêu - Phan Xích Long', 'Quán Ăn Gia Đình Ngọc Hương'])
     expect(priorTextStates(prior, venues[0], 'hours', venues)).toBe(true)
     expect(priorTextStates(prior, venues[0], 'distance', venues)).toBe(true)
-    expect(carriedFacts(prior, venues)[0]).toEqual({ name: 'Tám Riêu - Phan Xích Long', rating: 4.8, reviewCount: 2106, distanceKm: 2.9 })
+    expect(carriedFacts(prior, venues)[0]).toMatchObject({ name: 'Tám Riêu - Phan Xích Long', rating: 4.8, reviewCount: 2106, distanceKm: 2.9, hours: '10:30–21:30' })
     // …and the first venue's segment does not swallow the second venue's hours.
     expect(priorTextStates(prior, venues[1], 'distance', venues)).toBe(true)
   })

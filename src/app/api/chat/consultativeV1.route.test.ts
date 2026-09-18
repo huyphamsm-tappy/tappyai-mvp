@@ -226,12 +226,33 @@ describe('flag ON', () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
     await post([
       { role: 'user', content: Q },
-      { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, mở 08:00–22:00. Ngoài ra **Ốc Đào** rẻ hơn.' },
-      { role: 'user', content: 'quán này mở mấy giờ?' },
+      { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, tầm 50-70k/phần. Ngoài ra **Ốc Đào** rẻ hơn.' },
+      { role: 'user', content: 'quán này giá sao?' },
     ])
     const s = system()
     expect(s).toContain('REFERENCED (user đang nói về): #1 Cơm Niêu Sài Gòn')
     expect(s).not.toContain('THIEU DU LIEU')
+  })
+
+  it('a follow-up answerable from the carried prose is answered without the model (cost item 8)', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    h.state.streamOptions = null
+    const res = await post([
+      { role: 'user', content: Q },
+      { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, mở từ 08:00 đến 22:00, gọi 028 1234 5678. Ngoài ra **Ốc Đào** rẻ hơn.' },
+      { role: 'user', content: 'quán này mở mấy giờ?' },
+    ])
+    expect(res.status).toBe(200)
+    expect(res.headers.get('x-vercel-ai-data-stream')).toBe('v1')
+    expect(await res.text()).toContain('**Cơm Niêu Sài Gòn** mở cửa 08:00–22:00.')
+    expect(h.state.streamOptions).toBeNull()
+  })
+
+  it('a pure greeting is answered without the model (cost item 8)', async () => {
+    h.state.streamOptions = null
+    const res = await post([{ role: 'user', content: 'xin chào' }])
+    expect(await res.text()).toContain('Mình là Tappy')
+    expect(h.state.streamOptions).toBeNull()
   })
 
   it('still exactly one AI.stream() call and no forced tool choice', async () => {
