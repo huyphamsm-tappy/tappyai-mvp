@@ -59,6 +59,10 @@ function escapeRe(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, '
  */
 function isListing(sentence: string, venues: readonly CardVenue[]): boolean {
   const f = fold(sentence)
+  // A labelled card field with a value and no reason — "Địa chỉ: 290/28 Nam Kỳ Khởi Nghĩa,
+  // Quận 3." — is a listing however the provider formatted the value (measured F3: the model
+  // shortened the row's address, so value matching alone missed it).
+  if (/^\s*(?:dia chi|address|gio mo(?: cua)?|mo cua|hours|opening hours|sdt|so dien thoai|dien thoai|phone|hotline)\s*[:：]/.test(f) && /\d/.test(f) && !REASON_RE.test(f)) return true
   // The venue is identified by its name OR by one of its own card values — a
   // bare "Địa chỉ: 585 Huỳnh Tấn Phát" line names nobody and is still a listing.
   const v = venues.find(x => x.name && f.includes(fold(x.name)))

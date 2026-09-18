@@ -75,3 +75,13 @@ describe('guardProseShape — one alternative, cap of six, pick kept', () => {
     expect(guardProseShape('', { rendersCard: true, venues }).text).toBe('')
   })
 })
+
+describe('guardProseShape — a labelled card field is a listing however the value is formatted', () => {
+  it('"Địa chỉ: 290/28 Nam Kỳ Khởi Nghĩa, Quận 3." goes with a card even when the row address is longer', () => {
+    const text = 'Mình chọn **Padme Chay** vì 1.643 đánh giá cho 2 người tối nay. Địa chỉ: 290/28 Nam Kỳ Khởi Nghĩa, Quận 3. Quán mở 10:00–22:00 nên tối nay vẫn kịp.'
+    const r = guardProseShape(text, { rendersCard: true, venues: [{ name: 'Padme Chay', address: '290/28 Nam Kỳ Khởi Nghĩa, Phường 8, Quận 3, TP.HCM' }] })
+    expect(r.text).not.toContain('Địa chỉ:')
+    expect(r.text).toContain('tối nay vẫn kịp')
+    expect(r.stats.listing_removed).toBe(1)
+  })
+})

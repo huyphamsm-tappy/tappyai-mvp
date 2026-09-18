@@ -1043,6 +1043,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const phonesByEntity = new Map<string, string[]>()
   /** Today's opening hours per venue (G1b fallback sentence only; never a claim source). */
   const hoursByEntity = new Map<string, string>()
+  /** Consultative V1: the row's own address per venue, so a bare "Địa chỉ: …" line reads as a card listing. */
+  const addressesByEntity = new Map<string, string>()
   /** G2: the provider's own price band per venue (`price_range_text` / `price_range`) — entity-level price evidence. */
   const priceBandsByEntity = new Map<string, PriceBand>()
   /**
@@ -1564,6 +1566,7 @@ export function applyPlaceEnrichmentStreamFilter(
           rating: ratingsByEntity.get(name)?.[0] ?? null,
           reviewCount: reviewCountsByEntity.get(name)?.[0] ?? null,
           hours: hoursByEntity.get(name) ?? null,
+          address: addressesByEntity.get(name) ?? null,
           phone: phonesByEntity.get(name)?.[0] ?? null,
         })),
       })
@@ -2072,6 +2075,9 @@ export function applyPlaceEnrichmentStreamFilter(
                 }
                 if (rowName && typeof row.opening_hours === 'string' && row.opening_hours && !hoursByEntity.has(rowName)) {
                   hoursByEntity.set(rowName, row.opening_hours)
+                }
+                if (rowName && typeof row.address === 'string' && row.address && !addressesByEntity.has(rowName)) {
+                  addressesByEntity.set(rowName, row.address)
                 }
                 if (rowName && !priceBandsByEntity.has(rowName)) {
                   const band = bandFromRow(row)
