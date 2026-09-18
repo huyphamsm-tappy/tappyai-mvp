@@ -53,7 +53,13 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
     : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'
-  return `${buildSituationBlock(frame)}
+  // The concrete first call goes FIRST, before the situation: measured, the same line at the end of
+  // the block moved "ăn gì ngon giờ" to a search but "đi chơi ở đâu" still asked "bạn muốn chơi gì?".
+  const searchFirst = input.searchNow
+    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\nGoi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 dia diem tu ket qua va noi ro "minh gia su ...".
+=====================================`
+    : ''
+  return `${searchFirst}${buildSituationBlock(frame)}
 
 ===== TU VAN V1 — GHI DE CAC LUAT SAU =====
 Khoi nay GHI DE R1(a) "dua 2-4 lua chon", R1b "neu 2 viet 2 / neu 3 viet toi da 3", R2 "toi da 3 bullet", R7(b) "goi y 2-3 lua chon roi hoi", va gioi han 3 dong. Cac luat khac giu nguyen.
