@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tappyai.app.R
 import com.tappyai.app.chat.data.ChatException
+import com.tappyai.app.chat.data.GuestAgeStore
 import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.CommerceHandoffReporter
 import com.tappyai.app.chat.data.ChatStreamEvent
@@ -55,6 +56,7 @@ class ChatViewModel @Inject constructor(
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
     private val commerceHandoffReporter: CommerceHandoffReporter,
+    private val guestAgeStore: GuestAgeStore,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
@@ -426,6 +428,25 @@ class ChatViewModel @Inject constructor(
 
     fun onMoodSelected(mood: MoodChip) = sendUserMessage(mood.prompt)
 
+    /**
+     * The guest's 18+ self-declaration (owner decision D1 revised): persist the value on this
+     * device, then re-send the turn the refusal interrupted. `birthYear` wins over `adult` when
+     * both are given; an under-18 year is stored too — the refusal must stick on this device —
+     * and the re-send then shows the server's ineligible message.
+     */
+    fun onDeclareAge(birthYear: Int?, adult: Boolean) {
+        val value = birthYear?.let { GuestAgeStore.valueForBirthYear(it) } ?: (if (adult) GuestAgeStore.ADULT else null) ?: return
+        viewModelScope.launch {
+            guestAgeStore.declare(value)
+            // Drop the declaration bubble and retry the same history (exactly what Regenerate does).
+            val current = _messages.value
+            val lastAssistantIndex = current.indexOfLast { it.role == TappyChatRole.Assistant }
+            val history = if (lastAssistantIndex != -1 && current[lastAssistantIndex].isError) current.take(lastAssistantIndex) else current
+            _messages.value = history
+            if (history.lastOrNull()?.role == TappyChatRole.User) streamAssistantReply(history)
+        }
+    }
+
     fun onQuickPromptSelected(prompt: String) = sendUserMessage(prompt)
 
     fun onFollowupSelected(followup: String) = sendUserMessage(followup)
@@ -638,12 +659,21 @@ class ChatViewModel @Inject constructor(
                 // User tapped Stop — suppress the indicator via onStop(); just rethrow.
                 throw e
             } catch (e: ChatException) {
+                // A refusal with a remedy renders as a bubble the user can act on (never a dead
+                // error line): sign in, or declare 18+ on this device. Everything else keeps the
+                // server's sentence as before.
+                val action = when (e) {
+                    is ChatException.AuthRequired, is ChatException.AnonLimitReached -> ChatErrorAction.SignIn
+                    is ChatException.AgeDeclarationRequired -> ChatErrorAction.DeclareAge
+                    else -> null
+                }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
                         role = TappyChatRole.Assistant,
                         text = e.message ?: stringProvider.get(R.string.chat_error_generic),
                         isError = true,
+                        errorAction = action,
                     )
                 }
             } catch (e: Exception) {

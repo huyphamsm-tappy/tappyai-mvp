@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -199,6 +200,17 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         variant = TappyButtonVariant.Secondary,
                         enabled = !isLoading,
                     )
+                    // DEBUG builds only: a guest entry for emulator runs (AuthRepository.enterDebugGuest).
+                    // `isDebug` is the app's BuildConfig.DEBUG — this block does not exist in a release build.
+                    if (viewModel.isDebug) {
+                        TappyButton(
+                            text = stringResource(R.string.auth_debug_guest),
+                            onClick = viewModel::onDebugGuestClick,
+                            modifier = Modifier.fillMaxWidth().testTag("auth-debug-guest"),
+                            variant = TappyButtonVariant.Ghost,
+                            enabled = !isLoading,
+                        )
+                    }
 
                     if (SHOW_EMAIL_LOGIN) {
                         Text(

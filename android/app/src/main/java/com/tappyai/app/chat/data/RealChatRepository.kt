@@ -8,6 +8,8 @@ import com.tappyai.app.chat.ChatMessage
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.designsystem.component.TappyChatRole
 import com.tappyai.core.logging.LoggerProvider
+import com.tappyai.core.security.JwtDecoder
+import com.tappyai.core.security.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -36,7 +38,17 @@ class RealChatRepository @Inject constructor(
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: Context,
+    private val tokenProvider: TokenProvider,
+    private val guestAge: GuestAgeStore,
+    private val location: ChatLocationSource,
 ) : ChatRepository {
+
+    /** A visitor with no account: no session at all, or a Supabase anonymous session. */
+    private fun isGuest(): Boolean {
+        val token = tokenProvider.getAccessToken()
+        if (token.isNullOrBlank()) return true
+        return JwtDecoder.decode(token)?.isAnonymous == true
+    }
 
     override fun streamReply(messages: List<ChatMessage>): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
@@ -52,10 +64,12 @@ class RealChatRepository @Inject constructor(
         val dtoMessages = withContext(Dispatchers.IO) {
             messages.filterNot { it.isError }.map { msg -> msg.toDto() }
         }
-        val body = json.encodeToString(ChatRequest(dtoMessages))
+        // The device's last known position rides along when the user granted it (see
+        // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
+        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown()))
             .toRequestBody("application/json".toMediaType())
 
-        val request = chatRequest(baseUrl, body)
+        val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)
 
         // The shared client's 30s readTimeout is an inter-byte idle limit — fine for normal
         // request/response, but too aggressive here. Before the first token, /api/chat runs
@@ -189,10 +203,15 @@ class RealChatRepository @Inject constructor(
 internal const val SURFACE_HEADER = "x-tappy-surface"
 internal const val SURFACE_ANDROID = "android"
 
-/** The `/api/chat` request: the JSON body plus the surface header. Everything else is the shared client's. */
-internal fun chatRequest(baseUrl: String, body: RequestBody): Request = Request.Builder()
+/**
+ * The `/api/chat` request: the JSON body, the surface header and — for a GUEST that has declared
+ * on this device — the `x-tappy-age-declared` header (`GuestAgeStore`). Everything else is the
+ * shared client's (the Bearer, when there is a session, comes from its interceptor).
+ */
+internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String? = null): Request = Request.Builder()
     .url("${baseUrl}api/chat")
     .header(SURFACE_HEADER, SURFACE_ANDROID)
+    .apply { if (!ageDeclared.isNullOrBlank()) header(GuestAgeStore.HEADER, ageDeclared) }
     .post(body)
     .build()
 
@@ -255,6 +274,10 @@ internal fun chatErrorFor(code: Int, dto: ChatErrorDto?, strings: StringProvider
             ChatException.AnonLimitReached(message)
         code == 401 && dto?.error == "auth_required" ->
             ChatException.AuthRequired(strings.get(R.string.chat_error_login_required))
+        code == 403 && dto?.error == "age_declaration_required" ->
+            ChatException.AgeDeclarationRequired(message)
+        code == 403 && (dto?.error == "age_ineligible" || dto?.error == "age_verification_required") ->
+            ChatException.AgeGate(dto.error, message)
         code == 413 ->
             ChatException.MessageTooLong(strings.get(R.string.chat_error_message_too_long))
         code == 502 ->

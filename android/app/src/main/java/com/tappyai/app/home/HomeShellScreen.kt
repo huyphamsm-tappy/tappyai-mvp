@@ -278,7 +278,7 @@ fun HomeShellScreen(
                             },
                         )
                     }
-                    composable<HomeRoute.Chat> { ChatScreen(onImmersiveChanged = { chatImmersive = it }) }
+                    composable<HomeRoute.Chat> { ChatScreen(onImmersiveChanged = { chatImmersive = it }, onSignIn = onSignIn) }
                     composable<HomeRoute.Explore> {
                         ExploreTab(
                             onEditProfile = { navController.selectTab(HomeTab.Profile) },

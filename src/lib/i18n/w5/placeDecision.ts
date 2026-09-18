@@ -29,6 +29,7 @@ export const vi: Record<string, string> = {
   'placeDecision.stars': 'Khách sạn {count} sao',
   'placeDecision.referencePrice': 'Giá tham khảo',
   'placeDecision.tappyRating': 'Tappy {avg} · {count} đánh giá',
+  'placeDecision.carousel': 'Các địa điểm gợi ý',
   'placeDecision.why': 'Vì sao',
 
   'v3.action.maps': 'Xem bản đồ',
@@ -99,6 +100,7 @@ export const en: Record<string, string> = {
   'placeDecision.stars': '{count}-star hotel',
   'placeDecision.referencePrice': 'Reference price',
   'placeDecision.tappyRating': 'Tappy {avg} · {count} reviews',
+  'placeDecision.carousel': 'Suggested places',
   'placeDecision.why': 'Why',
 
   'v3.action.maps': 'Open in Maps',

@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Deliberately does **not** navigate away on a successful Google/Facebook sign-in — the
@@ -37,7 +38,11 @@ class LoginViewModel @Inject constructor(
     private val navigator: TappyNavigator,
     private val networkErrorMessages: NetworkErrorMessages,
     private val stringProvider: StringProvider,
+    @Named("isDebug") val isDebug: Boolean,
 ) : ViewModel() {
+
+    /** Debug builds only — see [AuthRepository.enterDebugGuest]. A no-op in release. */
+    fun onDebugGuestClick() = authRepository.enterDebugGuest()
 
     var email by mutableStateOf("")
         private set

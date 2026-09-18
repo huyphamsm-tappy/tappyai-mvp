@@ -28,7 +28,12 @@ import type { LivePlace, PlaceFlag, PlacesLiveView } from '@/lib/recommendation/
 // NOTHING: no dash, no zero, no "chưa rõ", because a placeholder inside a
 // recommendation reads as a fact about the place.
 
-/** How many cards the row shows at once. The payload carries the rest for the filters. */
+/**
+ * The row is a HORIZONTAL, SWIPEABLE carousel (owner decision 2026-09-17, web + Android): every
+ * row the active filter admits is a card, in the engine's order, one card per snap stop with the
+ * next one peeking in. The filter chips stay above it. `VISIBLE` is how many cards fit a desktop
+ * viewport before scrolling — it only decides when the chip row must show a count.
+ */
 const VISIBLE = 3
 /** Enough Google ratings that "popular" is a description rather than a flourish. */
 const POPULAR_MIN_RATINGS = 100
@@ -348,7 +353,7 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
   const filter = filters.find(f => f.id === active) ?? filters[0]
   // Filtering NEVER reorders: it removes rows the chip excludes and the engine's
   // order carries through whatever is left.
-  const shown = items.filter(filter.match).slice(0, VISIBLE)
+  const shown = items.filter(filter.match)
 
   return (
     <div className="mt-3 animate-fade-in" data-testid="place-decision" data-domain={view.domain}>
@@ -375,8 +380,17 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
         </div>
       )}
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {shown.map((p) => <PlaceCard key={p.id} p={p} position={items.indexOf(p)} ranked={view.ranked !== false} />)}
+      <div
+        data-testid="place-carousel"
+        role="list"
+        aria-label={t('placeDecision.carousel')}
+        className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-1 pb-2 [scrollbar-width:thin]"
+      >
+        {shown.map((p) => (
+          <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
+            <PlaceCard p={p} position={items.indexOf(p)} ranked={view.ranked !== false} />
+          </div>
+        ))}
       </div>
 
       {view.mapsSearchUrl && (

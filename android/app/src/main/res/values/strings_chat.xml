@@ -75,6 +75,11 @@
     <string name="chat_error_message_too_long">Message is too long. Please try again with shorter content.</string>
     <string name="chat_error_ai_service_down">The AI service is temporarily having issues. Please try again later.</string>
     <string name="chat_error_login_required">Sign in to keep chatting with Tappy.</string>
+    <string name="chat_error_sign_in_cta">Sign in</string>
+    <string name="chat_age_declaration_hint">Tappy is for people 18 and over. Tell us your birth year, or confirm you are an adult.</string>
+    <string name="chat_age_declaration_year_placeholder">Birth year</string>
+    <string name="chat_age_declaration_confirm_year">Continue</string>
+    <string name="chat_age_declaration_adult">I am 18 or older</string>
 
     <string name="chat_followup_food_1">Find another place</string>
     <string name="chat_followup_food_2">See menu prices</string>

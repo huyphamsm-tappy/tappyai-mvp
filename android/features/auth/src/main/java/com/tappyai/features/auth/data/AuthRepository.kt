@@ -25,7 +25,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
+import javax.inject.Named
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -56,8 +59,27 @@ class AuthRepository @Inject constructor(
     // build AnonymousAuthApi — a genuine Dagger dependency cycle. Deferring resolution to first
     // use breaks it, and costs nothing: by the time any anonymous call runs, the graph is built.
     private val anonymousAuthApi: Lazy<AnonymousAuthApi>,
+    /** `BuildConfig.DEBUG` of the app module (`AppModule.provideIsDebug`). Never true in a release build. */
+    @Named("isDebug") private val isDebug: Boolean,
 ) : SessionRefresher {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    /**
+     * DEBUG-ONLY guest entry (overnight 2026-09-17, for the emulator layout/eval runs).
+     *
+     * The audit Supabase project has Anonymous Sign-ins disabled, so `ensureAnonymousSession()`
+     * fails open and the app lands on the sign-in wall with no way to reach Chat as a guest —
+     * while the server's guest path (5-question trial behind the 18+ declaration) is exactly
+     * what needs to be exercised. With this flag a `NotAuthenticated` SDK status is REPORTED as
+     * [AuthSessionState.Anonymous]: the shell opens, no token exists, so every request goes out
+     * without a Bearer and the server treats it as the identity-less guest it is (IP-keyed
+     * quota). Nothing is minted, nothing is stored, and the flag cannot be set in a release
+     * build (`isDebug` gates the setter and the mapping).
+     */
+    private val debugGuest = MutableStateFlow(false)
+    val debugGuestActive: Boolean get() = isDebug && debugGuest.value
+    fun enterDebugGuest() { if (isDebug) debugGuest.value = true }
+    fun exitDebugGuest() { debugGuest.value = false }
 
     // Guards session restoration so it runs at most once per process, even when
     // WhileSubscribed(5_000) restarts the cold sessionState flow after a long background pause.
@@ -117,7 +139,10 @@ class AuthRepository @Inject constructor(
         // sessionStatus is a StateFlow — replays the current value immediately, so there is no
         // gap between importSession completing and the first AuthSessionState emission.
         emitAll(
-            supabaseClient.auth.sessionStatus.map { status ->
+            combine(supabaseClient.auth.sessionStatus, debugGuest) { status, guest -> status to guest }.map { (status, guest) ->
+                if (isDebug && guest && (status is SessionStatus.NotAuthenticated || status is SessionStatus.RefreshFailure)) {
+                    return@map AuthSessionState.Anonymous
+                }
                 when (status) {
                     // An anonymous session is `Authenticated` as far as the SDK is concerned —
                     // it is a real auth.users row with a real JWT. The token's `is_anonymous`

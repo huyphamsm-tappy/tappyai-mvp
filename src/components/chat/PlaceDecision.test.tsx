@@ -171,10 +171,16 @@ describe('PlaceDecision — filters come from the data, and only filter', () => 
     expect(screen.getAllByTestId('place-card').map(c => c.getAttribute('data-rank'))).toEqual(['1', '2'])
   })
 
-  it('shows at most three cards, however many the payload carries', () => {
+  it('is a horizontal snap carousel carrying every admitted card, in the engine order', () => {
+    // Owner decision 2026-09-17: a swipeable carousel on web AND Android. Nothing is cut at three
+    // any more — the next card peeks in and the row scrolls; the chip row still shows the count.
     const many = Array.from({ length: 8 }, (_, i) => place(`Quán ${i}`, { rank: i, ...(i === 0 ? { recommended: true as const } : {}) }))
     render(<PlaceDecision view={view({ items: many })} />)
-    expect(screen.getAllByTestId('place-card')).toHaveLength(3)
+    const rail = screen.getByTestId('place-carousel')
+    expect(rail.className).toMatch(/snap-x/)
+    expect(rail.className).toMatch(/overflow-x-auto/)
+    expect(screen.getAllByTestId('place-card')).toHaveLength(8)
+    expect(screen.getAllByTestId('place-card').map(c => c.getAttribute('data-rank'))).toEqual(['1', '2', '3', '4', '5', '6', '7', '8'])
     expect(within(screen.getByTestId('place-filters')).getAllByRole('button')[0].textContent).toMatch(/\(8\)/)
   })
 })

@@ -89,6 +89,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -119,7 +120,24 @@ fun ChatScreen(
      * while it is up. Always reset to false when this screen leaves composition.
      */
     onImmersiveChanged: (Boolean) -> Unit = {},
+    /**
+     * Opens the app's sign-in flow. An `auth_required` / `anon_limit_reached` refusal renders a
+     * bubble with a TAPPABLE sign-in (owner decision 2026-09-17) instead of a dead error line.
+     */
+    onSignIn: () -> Unit = {},
 ) {
+    // Location: the first chat send asks ONCE for coarse location. Granted → the repository sends
+    // the last known position with every turn (ChatLocationSource) and the cards carry a distance;
+    // denied → nothing changes (the search stays centred on the named destination). No fix is
+    // requested here; this is only the permission prompt, which must come from a screen.
+    val locationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+    val context = LocalContext.current
+    val askLocationOnce = remember {
+        {
+            val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            if (!granted) locationLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+        }
+    }
     // Lifecycle-aware: an AI reply streams a token at a time, and plain collectAsState() keeps
     // recomposing this (invisible) tree on every token while the app is backgrounded. Pausing at
     // STOPPED stops that churn; the ViewModel's own stream is unaffected either way.
@@ -400,13 +418,26 @@ fun ChatScreen(
                             // onRegenerate() already handles "last message is an error" correctly
                             // (drops it and re-sends the same history), this was just never reachable.
                             if (!isResponding && message.isError && isLast) {
-                                TappyButton(
-                                    text = stringResource(R.string.chat_action_regenerate),
-                                    onClick = viewModel::onRegenerate,
-                                    variant = TappyButtonVariant.Ghost,
-                                    size = TappyButtonSize.Small,
-                                    leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
-                                )
+                                when (message.errorAction) {
+                                    // The remedy the server named, as a tap target — never a dead line.
+                                    ChatErrorAction.SignIn -> TappyButton(
+                                        text = stringResource(R.string.chat_error_sign_in_cta),
+                                        onClick = onSignIn,
+                                        size = TappyButtonSize.Small,
+                                        modifier = Modifier.testTag("chat-error-sign-in"),
+                                    )
+                                    ChatErrorAction.DeclareAge -> GuestAgeDeclaration(
+                                        onDeclare = viewModel::onDeclareAge,
+                                        modifier = Modifier.testTag("chat-age-declaration"),
+                                    )
+                                    null -> TappyButton(
+                                        text = stringResource(R.string.chat_action_regenerate),
+                                        onClick = viewModel::onRegenerate,
+                                        variant = TappyButtonVariant.Ghost,
+                                        size = TappyButtonSize.Small,
+                                        leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                    )
+                                }
                             }
                             // CTA buttons (maps/call/booking/internal_booking…) — web parity, shown
                             // under the reply once generation is done.
@@ -466,7 +497,7 @@ fun ChatScreen(
             hasPendingImage = viewModel.pendingImageUri != null,
             onInputChange = viewModel::onInputChange,
             onEmojiPicked = viewModel::onEmojiPicked,
-            onSend = viewModel::onSend,
+            onSend = { askLocationOnce(); viewModel.onSend() },
             onStop = viewModel::onStop,
             isListening = isListening,
             onVoice = {

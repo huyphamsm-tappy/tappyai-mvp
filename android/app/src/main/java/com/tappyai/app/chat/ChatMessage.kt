@@ -8,6 +8,8 @@ import com.tappyai.core.designsystem.component.TappyChatRole
  *  [imageUri] is a locally-picked photo attached to a user turn (vision input, mirrors the
  *  web's `experimental_attachments`) — display-only here; [ChatRepository] reads and
  *  base64-encodes it at send time, it is never persisted as base64 in this model. */
+enum class ChatErrorAction { SignIn, DeclareAge }
+
 data class ChatMessage(
     val id: Long,
     val role: TappyChatRole,
@@ -37,6 +39,12 @@ data class ChatMessage(
     // live-only and is never persisted.
     val placesView: com.tappyai.app.share.PlacesLiveView? = null,
     val isError: Boolean = false,
+    /**
+     * What an error bubble OFFERS, when the refusal has a remedy the user can tap
+     * (owner decision 2026-09-17): sign in for `auth_required` / `anon_limit_reached`, the 18+
+     * self-declaration step for `age_declaration_required`. Null = a plain error line.
+     */
+    val errorAction: ChatErrorAction? = null,
     val imageUri: Uri? = null,
     /**
      * The assistant's reply EXACTLY as it arrived, markers included.

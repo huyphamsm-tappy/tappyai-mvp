@@ -73,6 +73,11 @@
     <string name="chat_error_generic_with_code">Có lỗi xảy ra (mã %1$d)</string>
     <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
     <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="chat_error_sign_in_cta">Đăng nhập</string>
+    <string name="chat_age_declaration_hint">Tappy dành cho người từ 18 tuổi. Cho Tappy biết năm sinh của bạn, hoặc xác nhận bạn đã đủ 18 tuổi.</string>
+    <string name="chat_age_declaration_year_placeholder">Năm sinh</string>
+    <string name="chat_age_declaration_confirm_year">Tiếp tục</string>
+    <string name="chat_age_declaration_adult">Tôi đủ 18 tuổi</string>
     <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
     <string name="chat_followup_food_1">Tìm quán khác</string>

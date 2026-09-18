@@ -18,6 +18,7 @@ import { cityForName, cityInText, isSameCity, type VietnamCity } from './vietnam
 import { usableOverpass } from './overpassResponse'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 import { serperPlaces, serperPlaceToRow } from './serperPlaces'
+import { serperMapsQuery } from './serperLocation'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 
 export async function getNews(query: string, lang = 'vi') {
@@ -652,7 +653,9 @@ async function searchPlacesSerper(
         ? { lat: locationBias.lat, lng: locationBias.lng }
         : null
 
-  const sq = location ? query + ' ' + location : query
+  // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
+  // `priceLevel` consistently — see serperLocation.ts for the measurement. Serper only.
+  const sq = serperMapsQuery(query, location)
   const records = await serperPlaces(sq, centre)
   if (!records || records.length === 0) return null
 

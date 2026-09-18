@@ -13,6 +13,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Chat: "gần đây" is measured from the phone when granted (userLocation on /api/chat). Optional. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <!-- Android 13+ delivers no notification at all without this. Undeclared, the permission can
