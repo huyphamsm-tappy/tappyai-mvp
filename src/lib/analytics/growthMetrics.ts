@@ -29,6 +29,9 @@ export interface GrowthEventRow {
 
 export interface IdentityLink { anon_id: string; user_id: string }
 
+/** The extension's post-install page (EXTENSION_WELCOME_PATH); a first_visit landing here is an install. */
+export const EXTENSION_WELCOME_LANDING = '/extension/welcome'
+
 export interface GrowthMetrics {
   definitionsVersion: number
   period: { from: string; to: string }
@@ -79,6 +82,19 @@ export interface GrowthMetrics {
   /** Where FIRST queries in the period came from — acquisition by channel, one row per source. */
   acquisition: {
     firstQueriesBySource: Record<string, number>
+  }
+  /**
+   * Browser extension: install → first use, with NO telemetry in the extension.
+   * A fresh install opens /extension/welcome once; a `first_visit` landing there
+   * is a NEW-TO-TAPPY install (an existing user installing is not counted — the
+   * acquisition question is about new people). `firstQueries` are first queries
+   * attributed `browser_extension`; `installToFirstQuery` is the share of those
+   * new installs that asked anything afterwards.
+   */
+  extension: {
+    newInstallLandings: number
+    firstQueries: number
+    installToFirstQuery: number | null
   }
   actions: {
     total: number
@@ -227,6 +243,15 @@ export function computeGrowthMetrics(input: {
   // Acquisition by channel: the source stamped on each identity's FIRST query in the period.
   const firstQueriesBySource: Record<string, number> = {}
   for (const fq of firstQueryInPeriod) { const src = String(fq.meta.source ?? 'direct'); firstQueriesBySource[src] = (firstQueriesBySource[src] ?? 0) + 1 }
+  // Extension installs: first_visit landings on the welcome page (new-to-Tappy installs only).
+  const installLanding = new Map<string, number>()
+  for (const e of period) {
+    if (e.type !== 'first_visit') continue
+    const lp = typeof e.meta.landing_path === 'string' ? e.meta.landing_path : ''
+    if (lp === EXTENSION_WELCOME_LANDING || lp.startsWith(`${EXTENSION_WELCOME_LANDING}/`)) if (!installLanding.has(e.id)) installLanding.set(e.id, e.at)
+  }
+  const installedThenQueried = new Set<string>()
+  for (const e of events) { const t0 = installLanding.get(e.id); if (t0 !== undefined && e.type === 'query' && e.at >= t0) installedThenQueried.add(e.id) }
   // k-factor: new active identities whose FIRST query is share-attributed, per active identity in period.
   const shareAttributedNew = firstQueryInPeriod.filter(fq => typeof fq.meta.share_id === 'string' || fq.meta.source === 'share_out' || fq.meta.source === 'zalo_link').length
 
@@ -266,6 +291,11 @@ export function computeGrowthMetrics(input: {
       maxGeneration,
     },
     acquisition: { firstQueriesBySource },
+    extension: {
+      newInstallLandings: installLanding.size,
+      firstQueries: firstQueriesBySource.browser_extension ?? 0,
+      installToFirstQuery: ratio(installedThenQueried.size, installLanding.size),
+    },
     actions: {
       total: actions.length,
       byType,

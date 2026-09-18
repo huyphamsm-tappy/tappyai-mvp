@@ -9,13 +9,13 @@ import { listPublicSharedResults } from '@/lib/share/sharedResultStore'
 
 export const revalidate = 3600
 
-const STATIC_PUBLIC_PATHS = ['/', '/about', '/scam-shield', '/how-to-use', '/privacy', '/terms', '/startup'] as const
+const STATIC_PUBLIC_PATHS = ['/', '/about', '/scam-shield', '/extension', '/extension/privacy', '/how-to-use', '/privacy', '/terms', '/startup'] as const
 export const SITEMAP_SHARED_RESULTS_MAX = 2000
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date()
   const entries: MetadataRoute.Sitemap = [
-    ...STATIC_PUBLIC_PATHS.map((p) => ({ url: absoluteUrl(p), lastModified: now, changeFrequency: 'weekly' as const, priority: p === '/' ? 1 : p === '/about' || p === '/scam-shield' ? 0.8 : 0.5 })),
+    ...STATIC_PUBLIC_PATHS.map((p) => ({ url: absoluteUrl(p), lastModified: now, changeFrequency: 'weekly' as const, priority: p === '/' ? 1 : p === '/about' || p === '/scam-shield' || p === '/extension' ? 0.8 : 0.5 })),
     ...HUB_DOMAINS.map((d) => ({ url: absoluteUrl(`/${d}`), lastModified: now, changeFrequency: 'daily' as const, priority: 0.8 })),
   ]
   let results: Awaited<ReturnType<typeof listPublicSharedResults>> = []

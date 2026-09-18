@@ -14,6 +14,7 @@
 //     same as typing the address.
 import { readSettings } from './src/settings.js'
 import { MENU, destinationFor } from './src/menu.js'
+import { welcomeUrl } from './src/links.js'
 
 function installMenus() {
   chrome.contextMenus.removeAll(() => {
@@ -24,7 +25,16 @@ function installMenus() {
   })
 }
 
-chrome.runtime.onInstalled.addListener(installMenus)
+chrome.runtime.onInstalled.addListener(async (details) => {
+  installMenus()
+  // A fresh install (not an update, not a browser update) opens the welcome
+  // page once: how to use it, and the one attributed landing the web app can
+  // count as "an install happened". Nothing is sent from here.
+  if (details?.reason === 'install') {
+    const settings = await readSettings()
+    chrome.tabs.create({ url: welcomeUrl({ origin: settings.origin }) })
+  }
+})
 chrome.runtime.onStartup.addListener(installMenus)
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {

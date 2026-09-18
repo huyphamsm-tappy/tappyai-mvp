@@ -71,6 +71,7 @@ export default function AboutBody() {
           <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm">
             <li><Link href="/how-to-use" className="underline">{t('about.linkHowTo')}</Link></li>
             <li><Link href="/scam-shield" className="underline">{t('about.linkScam')}</Link></li>
+            <li><Link href="/extension" className="underline">{t('about.linkExtension')}</Link></li>
             <li><Link href="/startup" className="underline">{t('about.linkStartup')}</Link></li>
             <li><Link href="/privacy" className="underline">{t('about.linkPrivacy')}</Link></li>
             <li><Link href="/terms" className="underline">{t('about.linkTerms')}</Link></li>

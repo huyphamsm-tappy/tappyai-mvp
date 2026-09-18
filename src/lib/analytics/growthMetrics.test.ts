@@ -139,6 +139,23 @@ describe('computeGrowthMetrics', () => {
     expect(Object.values(x.shares.byGeneration).reduce((a, b) => a + b, 0)).toBe(5)
   })
 
+  it('extension: a first_visit landing on /extension/welcome is a new install; a later query is first use', () => {
+    const more: GrowthEventRow[] = [
+      ...rows,
+      ev('first_visit', { anon: 'x1' }, '2026-09-09T01:00:00Z', { source: 'browser_extension', landing_path: '/extension/welcome' }),
+      ev('query', { anon: 'x1' }, '2026-09-09T01:05:00Z', { source: 'browser_extension' }),
+      ev('first_visit', { anon: 'x2' }, '2026-09-09T02:00:00Z', { source: 'browser_extension', landing_path: '/extension/welcome' }),
+      // x3 queried BEFORE its "install" landing — an existing visitor; not install→first use.
+      ev('query', { anon: 'x3' }, '2026-09-09T02:30:00Z', { source: 'direct' }),
+      ev('first_visit', { anon: 'x3' }, '2026-09-09T03:00:00Z', { source: 'browser_extension', landing_path: '/extension/welcome' }),
+    ]
+    const x = computeGrowthMetrics({ rows: more, links, from: FROM, to: TO, now: NOW })
+    expect(x.extension.newInstallLandings).toBe(3)
+    expect(x.extension.firstQueries).toBe(1) // x1 (x3's first query was direct)
+    expect(x.extension.installToFirstQuery).toBeCloseTo(1 / 3)
+    expect(m.extension).toEqual({ newInstallLandings: 0, firstQueries: 0, installToFirstQuery: null })
+  })
+
   it('acquisition: first queries in the period are broken down by source', () => {
     // A (direct), B (qr_pos), V1 (share_out), V2 (direct). C's first query was before the period.
     expect(m.acquisition.firstQueriesBySource).toEqual({ direct: 2, qr_pos: 1, share_out: 1 })

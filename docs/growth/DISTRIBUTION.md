@@ -40,6 +40,11 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 | **Browser extension (MV3; selection / link / page → `/chat`, `/scam-shield`)** *(completion)* | B | **Yes — built, not published** | `extensions/browser/`; `activeTab` + `contextMenus` + `storage` only; attributed `?src=browser_extension`. See `BROWSER_EXTENSION.md`. Not a store listing. |
 | **Scam Shield deep link `/scam-shield?url=…` (prefill, never auto-check)** *(completion)* | B (enabler) | **Yes** | `src/lib/scam-shield/deepLink.ts`. |
 | **`/about` entity page + shared Organization node + BreadcrumbList + `/llms.txt`** *(completion)* | A (enabler) | **Yes** | See `SEARCH_DISCOVERY.md`. No claim of AI-engine appearance. |
+| **IndexNow push of new listed `/r/*` pages** *(free-acquisition)* | A (enabler, Bing family) | **Yes — env-gated** | `INDEXNOW_KEY`; key file at `/.well-known/indexnow/<key>.txt`. Google does not participate. |
+| **`/extension` landing + `/extension/privacy` + `/extension/welcome` install flow** *(free-acquisition)* | B | **Yes** | Store buttons only when store URLs are configured. `store/LISTING.md` prepared. |
+| **OpenSearch address-bar engine** (`/opensearch.xml`) *(free-acquisition)* | C | **Yes** | Attributed `browser_search`. |
+| **Atom feed of listed public results** (`/feed.xml`) *(free-acquisition)* | B | **Yes** | Listed pages only. |
+| **Organization `sameAs`** from `ORGANIZATION_SAME_AS` *(free-acquisition)* | A (entity enabler) | **Yes — env-gated** | Owner-verified profiles only. |
 | GEO hubs `/food … /spa` (vi+en), sitemap, robots, referrer attribution | A (after indexing) | Yes (G1) | `/scam-shield` now in the sitemap. |
 | **WebSite `SearchAction` + Organization JSON-LD on `/`** | A (enabler) | **Yes (this phase)** | Points engines at `/chat?q=`. |
 | Canonical URLs, Twitter cards | A (enabler) | Yes | |

@@ -24,9 +24,23 @@ export function organizationId(env: NodeJS.ProcessEnv = process.env): string {
   return `${absoluteUrl('/', env)}#organization`
 }
 
+/**
+ * Official profile URLs for `sameAs`, from `ORGANIZATION_SAME_AS` (comma-separated,
+ * https only). Owner-supplied on purpose: a sameAs that points at a profile the
+ * organization does not actually own is worse for entity resolution than none.
+ * Empty until the owner sets it.
+ */
+export function organizationSameAs(env: NodeJS.ProcessEnv = process.env): string[] {
+  return (env.ORGANIZATION_SAME_AS ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => /^https:\/\/[^\s/]+\.[^\s/]+\/\S*$/.test(s))
+}
+
 /** The single Organization entity. `@id` lets every page reference the same node. */
 export function organizationJsonLd(env: NodeJS.ProcessEnv = process.env): Record<string, unknown> {
   const home = absoluteUrl('/', env)
+  const sameAs = organizationSameAs(env)
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -42,6 +56,7 @@ export function organizationJsonLd(env: NodeJS.ProcessEnv = process.env): Record
     founder: { '@type': 'Person', name: 'Huy Pham', sameAs: FOUNDER_LINKEDIN_URL },
     areaServed: { '@type': 'Country', name: 'Vietnam' },
     knowsLanguage: ['vi', 'en'],
+    ...(sameAs.length ? { sameAs } : {}),
   }
 }
 

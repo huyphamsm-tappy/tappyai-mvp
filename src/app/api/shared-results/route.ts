@@ -8,6 +8,7 @@ import { SHARE_DAILY_LIMIT_PER_IP } from '@/lib/config/product'
 import { parseShareRequest, resolveShareSource } from '@/lib/share/shareRequest'
 import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { createSharedResult, SharedResultError } from '@/lib/share/sharedResultStore'
+import { notifyIndexNow } from '@/lib/discovery/indexNow'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -62,6 +63,9 @@ export async function POST(req: NextRequest) {
       parentId: policy.parentId,
     })
     const path = `/r/${row.slug}`
+    // A LISTED page (real-account owner) is pushed to the IndexNow engines; an
+    // anonymous-owned share is noindex and is never submitted. Fire-and-forget.
+    if (!row.owner_is_anonymous) notifyIndexNow([path])
     return NextResponse.json({
       id: row.id,
       slug: row.slug,

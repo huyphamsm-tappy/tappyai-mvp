@@ -42,6 +42,7 @@ export type AnalyticsEvent = (typeof ANALYTICS_EVENTS)[number]
  *   · `bing_search`       — a bing.com referrer, split out of `geo_google`
  *                            because the two engines index independently.
  *   · `pwa_shortcut`      — the installed PWA's home-screen shortcuts.
+ *   · `browser_search`    — the OpenSearch address-bar engine (/opensearch.xml).
  * NOT added, on purpose: `google_ai` (an AI Overview click carries the same
  * google.com referrer as a blue link — indistinguishable, so it would be a
  * guess) and `android_deep_link` / `ios_*` (the native apps emit no G1
@@ -62,6 +63,7 @@ export const ANALYTICS_SOURCES = [
   'browser_extension',
   'bing_search',
   'pwa_shortcut',
+  'browser_search',
 ] as const
 export type AnalyticsSource = (typeof ANALYTICS_SOURCES)[number]
 

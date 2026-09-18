@@ -43,6 +43,10 @@ No `tabs`, no `history`, no `webNavigation`, no `webRequest`, no `scripting`, no
 - Nothing is stored. A URL is built, opened in a new tab, and forgotten.
 - A Scam Shield deep link **prefills** the input; the check runs only when the person presses Check (`src/lib/scam-shield/deepLink.ts`). A crafted link cannot spend a visitor's quota.
 
+## Acquisition chain (added by the free-acquisition phase)
+
+`/extension` (indexable landing, SoftwareApplication JSON-LD, env-gated store buttons) → store listing (owner publishes; `store/LISTING.md` has every field) → install → `/extension/welcome?src=browser_extension` opened once by `onInstalled(reason: "install")` → first query. `computeGrowthMetrics().extension` reports new-install landings, first queries attributed `browser_extension`, and install→first-query — with no telemetry in the extension. `/extension/privacy` is the store-required policy. Store buttons appear only once `NEXT_PUBLIC_EXTENSION_URL_CHROME` / `_EDGE` / `_FIREFOX` hold real store URLs. See `FREE_ACQUISITION_RESEARCH.md` §3.
+
 ## Files
 
 ```
@@ -55,6 +59,7 @@ extensions/browser/
   src/settings.js        the one stored key (tested)
   _locales/vi, _locales/en
   icons/                 16/32/48/128 px, resized from public/branding/otter-logo.png
+  store/LISTING.md       store submission kit (copy, justifications, disclosure, packaging)
 ```
 
 ## Installing an unpacked build (development / UAT)
@@ -68,7 +73,7 @@ To point it at a local or staging build during UAT, set `tappy_settings.origin` 
 ## What is deliberately NOT built
 
 - No store submission, listing, screenshots, or promotion — an owner decision, and store review is not something this repo can claim.
-- No Firefox build. The code is MV3-standard and would need only a `browser_specific_settings` block; not added until Chrome is real.
+- No Firefox *listing* yet; the manifest now carries `browser_specific_settings.gecko` so the same zip can be submitted to AMO (free).
 - No "generate a public result" from inside the extension: creating a public result requires a signed-in account (share policy) and happens on the web page where the person can see the preview — the extension takes them there.
 - No page-content extraction (would need `scripting`/content scripts). The extension sends what Chrome hands it — selection, link, page URL/title — and nothing else.
 

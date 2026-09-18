@@ -132,3 +132,13 @@ export function scamCheckUrl(target, opts = {}) {
 export function homeUrl(opts = {}) {
   return build(opts.origin ?? DEFAULT_ORIGIN, '/', {})
 }
+
+/**
+ * The page opened ONCE right after install ("here is how to use it"). Its
+ * landing path is the web app's install signal — no telemetry in the
+ * extension itself. Mirrors EXTENSION_WELCOME_PATH in the web repo.
+ * @param {{ origin?: string }} [opts]
+ */
+export function welcomeUrl(opts = {}) {
+  return build(opts.origin ?? DEFAULT_ORIGIN, '/extension/welcome', {})
+}

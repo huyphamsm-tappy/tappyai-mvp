@@ -13,11 +13,11 @@ describe('G1 analytics contract — enums', () => {
     expect([...ANALYTICS_EVENTS]).toEqual(['first_visit', 'query', 'result_action', 'share_created', 'share_viewed', 'signup', 'return'])
   })
 
-  it('has the fourteen canonical sources, tgdd reserved but present', () => {
+  it('has the fifteen canonical sources, tgdd reserved but present', () => {
     expect([...ANALYTICS_SOURCES]).toEqual([
       'wedge_scam', 'share_out', 'zalo_mini', 'zalo_link', 'qr_pos', 'tgdd',
       'geo_google', 'geo_chatgpt', 'direct_share', 'web_share_target', 'direct',
-      'browser_extension', 'bing_search', 'pwa_shortcut',
+      'browser_extension', 'bing_search', 'pwa_shortcut', 'browser_search',
     ])
     expect(isAnalyticsSource('tgdd')).toBe(true)
   })
