@@ -1581,7 +1581,10 @@ export function applyPlaceEnrichmentStreamFilter(
         late_open: ['giờ mở khuya', 'late opening'], view: ['view', 'a view'],
       }
       const said = normalizeVN(tidy.toLowerCase())
-      const unsaid = v1.hardGaps.filter(g => gapWords[g] && !said.includes(normalizeVN(gapWords[g][0])) && !/chua (?:thay|co) bang chung|khong tim thay bang chung|no evidence/.test(said))
+      // "Said" means the gap was ACKNOWLEDGED, not that the word appears — measured F3, the pick
+      // sentence claimed "yên tĩnh" with no evidence, which is the opposite of naming the gap.
+      const acknowledged = /chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|chua xac nhan duoc|no evidence|could not (?:find|confirm)/.test(said)
+      const unsaid = acknowledged ? [] : v1.hardGaps.filter(g => gapWords[g])
       const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay) (?:muc )?gia|khong co (?:muc )?gia|no price/.test(said)
       const headsUp: string[] = []
       if (unsaid.length > 0) {
