@@ -1,4 +1,5 @@
 import { getCache, setCache, sanitizeUrlForMarkdown } from './common'
+import { recordSerperCall } from './serperMeter'
 import { serperPlacesCacheKey } from './cacheKeys'
 
 // ── SERPER /maps — THE STRUCTURED PLACE SOURCE ───────────────────────────────
@@ -138,11 +139,11 @@ export async function serperPlaces(
 async function fetchSerperMaps(apiKey: string, body: Record<string, unknown>): Promise<SerperPlaceRecord[] | null> {
   try {
     const resp = await Promise.race([
-      fetch('https://google.serper.dev/maps', {
+      (recordSerperCall('maps'), fetch('https://google.serper.dev/maps', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
-      }),
+      })),
       // 8s, matching `/shopping`: a 20-row response is measurably slower than
       // `/search`'s 8 organic rows, and 6s was cutting it off.
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),

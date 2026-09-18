@@ -1,6 +1,8 @@
 import { tool } from 'ai'
 import { z } from 'zod'
 import { randomUUID } from 'crypto'
+import { appendFileSync } from 'fs'
+import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
@@ -60,7 +62,7 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
 import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
-import { consultativeV1Enabled } from '@/lib/config/product'
+import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
@@ -71,6 +73,9 @@ export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
+  /** Audit cost sink (env `AUDIT_USAGE_LOG_FILE`): Serper calls attributed to this turn. */
+  const serperAtStart = serperSnapshot()
+  const auditTurn = req.headers.get('x-audit-turn')
 
   // ── P1-3: deliver whatever the previous request buffered ───────────────────
   //
@@ -1249,6 +1254,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    */
   let planEmitted: boolean | null = null
   /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
+  /** Audit cost sink: bytes of tool results the model read this turn. */
+  let auditToolResultChars = 0
   let usageAcct: {
     finishReason: string
     promptTokens: number | null; completionTokens: number | null; totalTokens: number | null
@@ -1632,6 +1639,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // enrichment tail lands in the SAME record instead of being missed.
       modelFinishAt = Date.now()
       if (planningIntent) planEmitted = /\[TAPPY_PLAN\][\s\S]*\[\/TAPPY_PLAN\]/.test(text)
+      auditToolResultChars = (steps ?? []).reduce((n, s) => n + (s.toolResults ?? []).reduce((m, r) => m + JSON.stringify((r as { result?: unknown }).result ?? null).length, 0), 0)
       usageAcct = {
         finishReason,
         promptTokens: usage?.promptTokens ?? null,
@@ -1864,6 +1872,39 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       frameDomains: decisionFrame.domains,
       frameClarify: decisionFrame.clarify?.about ?? null,
     }))
+    /**
+     * AUDIT COST SINK — cost-optimization measurement (2026-09-18). Active only when
+     * `AUDIT_USAGE_LOG_FILE` is set (never in production); appends one JSON line per turn with the
+     * usage record, the Serper calls this turn made, and the SIZE of every prompt section, so a
+     * per-section token breakdown can be derived offline. Nothing here changes the reply; a write
+     * failure is swallowed.
+     */
+    const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+    if (auditFile) {
+      try {
+        const historyChars = modelMessages.slice(0, -1).reduce((n, m) => n + (typeof m.content === 'string' ? m.content.length : JSON.stringify(m.content).length), 0)
+        appendFileSync(auditFile, JSON.stringify({
+          turn: auditTurn, at: new Date().toISOString(), ...usageEvent,
+          serper: serperDelta(serperAtStart),
+          flags: { consultativeV1: consultativeV1Enabled(), v1Active, placeGuardV2: placeGuardAttributionV2Enabled(), snippetV2: snippetPriceGuardV2Enabled(), mediaV2: mediaPlacementV2Enabled() },
+          sections: {
+            sharedChars: systemShared?.length ?? 0,
+            dynamicChars: (built ? built.dynamic.length : 0),
+            simpleSystemChars: built ? 0 : systemPrompt.length,
+            styleChars: styleBlock.length,
+            consultativeChars: consultativeBlock.length,
+            v1Chars: v1Block.length,
+            memoryChars: memoryBlock.length,
+            prefChars: prefBlock.length,
+            historyChars,
+            lastUserChars: lastText.length,
+            toolResultChars: auditToolResultChars,
+            noToolTurn,
+            maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+          },
+        }) + '\n')
+      } catch { /* audit only */ }
+    }
   }
   const timedBody = finalResponse.body
     ? finalResponse.body.pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))

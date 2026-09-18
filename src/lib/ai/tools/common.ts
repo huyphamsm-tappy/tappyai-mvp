@@ -1,4 +1,5 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { recordSerperCall } from './serperMeter'
 import { messages } from '@/lib/ai/messages'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
 
@@ -335,11 +336,11 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
   }
   try {
     const resp = await Promise.race([
-      fetch('https://google.serper.dev/images', {
+      (recordSerperCall('images'), fetch('https://google.serper.dev/images', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 8 }),
-      }),
+      })),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
     ])
     if (!(resp as Response).ok) {
@@ -486,11 +487,11 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   if (!apiKey) return null
   try {
     const resp = await Promise.race([
-      fetch('https://google.serper.dev/search', {
+      (recordSerperCall('search'), fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 8 })
-      }),
+      })),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
     ])
     if (!(resp as Response).ok) return null
@@ -575,7 +576,7 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
   if (!apiKey) return null
   try {
     const resp = await Promise.race([
-      fetch('https://google.serper.dev/shopping', {
+      (recordSerperCall('shopping'), fetch('https://google.serper.dev/shopping', {
         method: 'POST',
         headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
         // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
@@ -583,7 +584,7 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
         // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
         // and 6s was measured cutting it off.
         body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num }),
-      }),
+      })),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
     ])
     if (!(resp as Response).ok) return null

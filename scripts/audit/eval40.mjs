@@ -76,7 +76,7 @@ async function turn(id) {
   const t0 = Date.now()
   const res = await fetch(BASE + '/api/chat', {
     method: 'POST',
-    headers: { 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi', Authorization: 'Bearer ' + env.AUDIT_TEST_USER_BEARER },
+    headers: { 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi', 'x-audit-turn': id, Authorization: 'Bearer ' + env.AUDIT_TEST_USER_BEARER },
     body: JSON.stringify(body),
   })
   const status = res.status
