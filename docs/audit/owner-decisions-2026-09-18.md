@@ -1,6 +1,6 @@
 # BÁO CÁO — QUYẾT ĐỊNH OWNER (cost report mục 4) + MEMORY DRIFT (2026-09-18)
 
-Nhánh `merge/main-into-v3`, 13 commit local từ `3983b49` → `0662bb2` (xem `git log`). Không push, không deploy,
+Nhánh `merge/main-into-v3`, 13 commit local từ `3983b49` → `0662bb2` (code) + docs `2382e32` (xem `git log`). Không push, không deploy,
 không xoá. Ngân sách LLM/search: **200 / 200** (đã dùng hết — xem mục 9). Test: web **13 441 passed / 69 skipped
 (700 file, `npm test` gồm cả db)**, `tsc` sạch, Android unit **727 / 0**.
 
@@ -224,7 +224,7 @@ Tức là với ~2–5 % lượt tạo 1 chuyển đổi trung bình $0.6–1.2 
 - **LLM/search: 200/200** — 20 replay memory + 13 probe (hotel/S2/T5/F7) + 40 gate1 + 40 gate2 + 7 probe memory-lớn
   + 40 gate3 + 40 final. Hết đúng lúc final xong ⇒ **E1 fix chưa chạy live**, F8 lead-in fix chưa chạy live (chỉ unit test).
 - Test: `npm test` 13 441 passed / 69 skipped (700 file), `tsc -p tsconfig.json` sạch, Android unit 727/0.
-- Backend audit `:3101` cấu hình `audit-flags-on` (mọi cờ ON, không sink), worktree `audit-nonprod` @ `0662bb2`;
+- Backend audit `:3101` cấu hình `audit-flags-on` (mọi cờ ON, không sink), worktree `audit-nonprod` @ `2382e32` (code cuối `0662bb2`, docs `2382e32`);
   emulator-5558 + APK debug (trỏ `10.0.2.2:3101`, build 12:58 — backend đổi nhưng APK không cần build lại).
 - Mở / cần owner: (a) chạy lại E1/F8 live khi có ngân sách (2 run); (b) enum `get_transport_options.mode` cùng lớp rủi
   ro; (c) Google Places 403 trên audit env; (d) S4 thẻ NÊN CHỌN chọn sản phẩm DƯỚI ngân sách (5-7tr → 4.5tr) — ranker
