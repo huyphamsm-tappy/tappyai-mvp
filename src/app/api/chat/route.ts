@@ -1307,7 +1307,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
     // so actual output is smaller — this raised ceiling is headroom, not the norm.
-    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+    // Completion cap (cost optimization item 7, 2026-09-18): measured on 38 audit turns with
+    // CONSULTATIVE_V1 on, the longest reply was 821 completion tokens (a two-step tool turn
+    // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
+    // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
+    // generated, so this changes no cost on a normal reply — it bounds a runaway one.
+    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
@@ -1906,7 +1911,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+            maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
           },
         }) + '\n')
       } catch { /* audit only */ }
