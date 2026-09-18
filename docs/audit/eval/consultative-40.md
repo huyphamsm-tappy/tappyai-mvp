@@ -180,3 +180,15 @@ weekend), E1 (card, no inline media), F6 (re-search by name + honest crowd answe
 and T4 ask "bạn muốn ăn gì" once the audit user's memory holds ~30 turns of preferences and pick again after
 `clearmem` — grades are taken with the memory cleared, as the pass protocol says. Cost per turn in this pass:
 $0.0247 steady-state (`docs/audit/cost-report.md`).
+
+
+## Re-run 2026-09-18 (owner decisions job) — memory drift fix, hotels, S2/T5
+
+Two new runs on the same 40, all flags ON, code `0662bb2` (E1/F8 fixes landed after the runs):
+- **Gate — LARGE pre-seeded memory** (`scripts/audit/seedmem.mjs`, `runs-owner2/gate-largemem3/`): **38/40**
+  (27 ✅ · 11 ⚠️ · ❌ S5 deferred, E1 tool-argument error). Zero memory-driven questions.
+- **Final — memory cleared** (`runs-owner2/final40/`): **38/40** (26 ✅ · 12 ⚠️ · ❌ S5, E1). Per-turn grades, notes and
+  cost: `docs/audit/owner-decisions-2026-09-18.md` §6. Baseline Step F: 34/40.
+Recovered vs Step F: T2, T8 (hotel rows are evidence), T5 (search-now directive), T6 (body survives), S2 (stated pick).
+New failure found and fixed after the run: E1 (`search_places.type` outside the enum → SDK error → empty reply);
+`placeType.ts` makes the argument tolerant. Not re-run live (budget 200/200).

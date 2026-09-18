@@ -38,7 +38,9 @@ Với MỖI câu hỏi, đối chiếu **card** (thẻ) với **prose** (đoạn
 | 9 | **Ngôn ngữ** | Gõ không dấu ("tim quan bun bo ngon o q1") ⇒ trả lời tiếng Việt có dấu. Gõ tiếng Anh ⇒ trả lời tiếng Anh. |
 | 10 | **Không mảnh vụn** | Không có câu cụt, dòng "1.2.3.", emoji lẻ, ngoặc thừa, link trơ trọi trong prose. |
 | 11 | **Câu hỏi** | Tối đa 1 câu hỏi/lượt, chỉ khi thiếu ĐỐI TƯỢNG (mua gì/ăn gì/đi đâu). Có ai đi/khi nào/ngân sách thì bot tự giả sử và nói rõ "mình giả sử…", không hỏi lại. |
-| 12 | **Chào hỏi** | "xin chào", "cảm ơn", "ok" ⇒ trả lời ngay (không gọi model), có chip gợi ý. |
+| 12 | **Chào hỏi** | "xin chào", "cảm ơn", "ok" ⇒ trả lời ngay (không gọi model), có chip gợi ý. **Không trừ quota** (kiểm với guest 5 câu: chào + hỏi giờ quán đã nêu không làm giảm số câu còn lại). |
+| 13 | **Memory không hỏi lại** | Với tài khoản đã chat nhiều (memory đã có sở thích), câu mơ hồ "ăn gì ngon giờ" / "đi chơi ở đâu" ⇒ bot TÌM và CHỌN ngay, không hỏi "bạn muốn ăn gì/loại nào". |
+| 14 | **Khách sạn** | "khach san da nang gan bien duoi 1tr/dem" ⇒ card khách sạn (Serper Maps) + prose chọn 1 khách sạn với ⭐/số đánh giá thật; nói rõ "chưa có giá" thay vì bịa; không hỏi ngày trước khi tìm. |
 
 Riêng **Mua sắm**: quyết định nằm trong thẻ "NÊN CHỌN" (giá, ⭐, số review, đánh đổi); prose có thể ngắn — kiểm tra thẻ đúng sản phẩm, nút "Xem" mở đúng sàn, "Theo dõi giá" hoạt động. Riêng **Du lịch/khách sạn**: trên audit env `get_hotel_prices` đang trả 0 dòng (đang chờ kiểm key) — nếu bot nói "chưa có kết quả" là đúng hành vi, nếu bịa tên khách sạn là LỖI.
 
