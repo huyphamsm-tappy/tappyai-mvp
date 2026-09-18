@@ -200,9 +200,16 @@ export function buildSituationBlock(frame: SituationFrame): string {
   if (frame.budget) lines.push('- Ngân sách: như user nói (xem khối nhu cầu)')
   if (frame.mood) lines.push(`- Không khí muốn: ${MOOD_VI[frame.mood]} (user nói)`)
   if (frame.hard.length > 0) lines.push(`- Điều kiện cứng: ${frame.hard.map(h => HARD_VI[h]).join(', ')} (user nói)`)
-  for (const a of frame.assumptions) lines.push(`- ${a} (giả sử — nói rõ với user là mình giả sử, KHÔNG hỏi lại)`)
+  for (const a of frame.assumptions) lines.push(`- ${a} (giả sử — nêu ngắn "mình giả sử …" rồi TÌM NGAY; KHÔNG hỏi xác nhận, KHÔNG "phải không?")`)
+  // Measured 2026-09-18 (F7 "ăn gì ngon giờ", T5 "đi chơi ở đâu"): "nói rõ là giả sử, không hỏi lại" was
+  // read as "state the assumption, then ask whether it is right" — one line ending in "phải không?"
+  // and no tool ran. Low confidence is not a reason to ask: a wrong assumption costs the user one
+  // correction; a question costs the whole turn.
+  const lowConfidence = frame.assumptions.length > 0 && frame.confidence < 0.5
+    ? '\nĐộ chắc thấp KHÔNG phải lý do để hỏi: GỌI tool tìm ngay trong lượt này với các giả sử trên, rồi chọn; user sửa sau nếu sai.'
+    : ''
   return `\n\n===== TINH HUONG (V1) =====
 ${lines.join('\n')}
-Độ chắc: ${Math.round(frame.confidence * 100)}%. Chọn cho ĐÚNG tình huống này; các quán khác chỉ nhắc khi có lý do gắn với tình huống.
+Độ chắc: ${Math.round(frame.confidence * 100)}%. Chọn cho ĐÚNG tình huống này; các quán khác chỉ nhắc khi có lý do gắn với tình huống.${lowConfidence}
 =====================================`
 }
