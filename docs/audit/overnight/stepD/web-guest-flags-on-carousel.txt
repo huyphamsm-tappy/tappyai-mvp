@@ -4,9 +4,11 @@ Tappy đang dùng trí nhớ của bạn để trả lời · Xem & quản lý
 Tìm quán ăn tối ngon gần Quận 1 cho 2 người
 Tôi sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn.
 
-Mình chọn Hải Sản Hoàng Gia cho bữa tối của bạn 🦞 Quán có 4.7⭐ (961 đánh giá Google Maps) — con số này đủ mạnh để khẳng định chất lượng. Mở cửa đến 00:00 nên hoàn hảo cho bữa tối, và hải sản tươi sống luôn là lựa chọn lý tưởng cho 2 người.
+Mình chọn Hải Sản Hoàng Gia cho bạn 🦞 — quán này có 4.7⭐ (961 đánh giá Google Maps), chuyên hải sản tươi sống, phục vụ tối đến 00:00 nên hoàn hảo cho bữa tối 2 người. Quán đang mở cửa.
 
-Nếu muốn thử món Việt ngon, Quán Bụi cũng rất đáng xem với 1.188 đánh giá và 4.5⭐, chuyên phục vụ bữa tối với không gian ấm cúng.
+Nếu muốn thử ẩm thực Việt truyền thống, Quán Bụi cũng là lựa chọn tuyệt vời với 4.5⭐ (1.188 đánh giá), nổi tiếng với các món nướng và phở, mở đến 23:00.
+
+*TappyAI dựa trên đánh giá thực từ Google Maps để gợi ý
 Tất cả (8)
 Đang mở cửa
 Đánh giá cao
@@ -23,6 +25,8 @@ Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1
 
 08:00–00:00
 · đang mở
+
+Trên 1 Tr ₫
 
 Nhà hàng
 Nhà hàng hải sản
@@ -47,6 +51,8 @@ Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1
 06:30–21:30
 · đang mở
 
+1-100.000 ₫
+
 Nhà hàng Trung Quốc
 Xem bản đồ
 Tìm trên GrabFood
@@ -65,10 +71,11 @@ Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine
 07:00–23:00
 · đang mở
 
+200-600 N ₫
+
 Nhà hàng Việt Nam
 Nhà hàng món nướng
 Xem bản đồ
-Đặt món
 Tìm trên GrabFood
 Tìm review trên YouTube
 Website
@@ -85,6 +92,8 @@ Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine
 
 07:00–23:00
 · đang mở
+
+100-600 N ₫
 
 Nhà hàng Việt Nam
 Nhà hàng món nướng
@@ -123,6 +132,8 @@ Hẻm 60A Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam
 08:00–21:45
 · đang mở
 
+1-100.000 ₫
+
 Quán mì
 Xem bản đồ
 Tìm trên GrabFood
@@ -138,6 +149,8 @@ CƠM TẤM NGON 3 MIỀN QUẬN 1
 
 08:00–22:00
 · đang mở
+
+1-100.000 ₫
 
 Quán ăn nhỏ
 Xem bản đồ
@@ -157,6 +170,8 @@ Quán ăn ngon Sài Gòn
 08:00–22:30
 · đang mở
 
+200-300 N ₫
+
 Nhà hàng
 Xem bản đồ
 Tìm trên GrabFood
@@ -170,9 +185,9 @@ Mở Google Maps để khám phá thêm địa điểm
 
 Một số gợi ý khác cho bạn:
 
-Hải sản nào ngon nhất ở đây
-Quán Bụi có gì đặc biệt
-Tìm quán ăn vừa túi tiền
+Quán nào khác gần đây?
+Có quán ăn chay không?
+Giá bao nhiêu một bàn?
 📍 Tìm quanh đây
 🌙 Tappy Tối Nay
 ✈️ Lên kế hoạch trip

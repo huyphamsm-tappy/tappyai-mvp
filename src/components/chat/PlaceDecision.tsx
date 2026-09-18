@@ -384,7 +384,7 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
         data-testid="place-carousel"
         role="list"
         aria-label={t('placeDecision.carousel')}
-        className="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth px-1 pb-2 [scrollbar-width:thin]"
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:thin]"
       >
         {shown.map((p) => (
           <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
