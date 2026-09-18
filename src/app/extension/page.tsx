@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: PAGE_URL },
-  robots: { index: true, follow: true },
+  robots: { index: true, follow: true, 'max-image-preview': 'large' },
   openGraph: { type: 'website', siteName: BRAND.name, url: PAGE_URL, locale: 'vi_VN', alternateLocale: ['en_US'], title: TITLE, description: DESCRIPTION, images: [brandedOgImage()] },
   twitter: { card: 'summary_large_image', title: TITLE, description: DESCRIPTION, images: [brandedOgImage().url] },
 }

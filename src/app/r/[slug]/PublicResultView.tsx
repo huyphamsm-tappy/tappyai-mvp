@@ -91,6 +91,10 @@ export default function PublicResultView({ result }: { result: PublicSharedResul
               ? <Link href="/scam-shield?src=share_out" className="underline">{t('publicResult.checkAnotherLink')}</Link>
               : <Link href={`/${payload.domain === 'general' ? '' : payload.domain}`} className="underline">{t('publicResult.moreResults')}</Link>}
           </p>
+          {/* Extension discovery on the page unaware people actually land on: a recipient
+              who found this answer useful is the person most likely to want it in their
+              browser. One internal link; the landing page carries the honest store state. */}
+          <p className="mt-1"><Link href="/extension" className="underline" data-testid="public-result-extension">{t('publicResult.extensionHint')}</Link></p>
         </footer>
       </article>
     </main>

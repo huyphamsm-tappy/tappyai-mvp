@@ -34,7 +34,7 @@ export function generateMetadata({ params }: Props): Metadata {
     title: copy.title,
     description: copy.description,
     alternates: { canonical: url },
-    robots: { index: true, follow: true },
+    robots: { index: true, follow: true, 'max-image-preview': 'large' },
     openGraph: { type: 'website', siteName: BRAND.name, url, locale: 'vi_VN', title: copy.title, description: copy.description, images: [brandedOgImage()] },
     twitter: { card: 'summary_large_image', title: copy.title, description: copy.description, images: [brandedOgImage().url] },
   }

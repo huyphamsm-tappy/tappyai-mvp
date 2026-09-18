@@ -75,7 +75,7 @@ describe('the install signal — welcome page contract shared by extension and w
 describe('/extension — the public landing page', () => {
   it('is indexable with a canonical, SoftwareApplication + BreadcrumbList, vi SSR → en', () => {
     expect(extMetadata.alternates?.canonical).toBe('https://www.tappyai.com/extension')
-    expect(extMetadata.robots).toEqual({ index: true, follow: true })
+    expect(extMetadata.robots).toEqual({ index: true, follow: true, 'max-image-preview': 'large' })
     const { container } = render(<ExtensionPage />)
     expect(jsonLdOf(container).map((l) => l['@type'])).toEqual(['SoftwareApplication', 'BreadcrumbList'])
     expect(container.querySelector('h1')?.textContent).toBe(dictVi['ext.h1'])

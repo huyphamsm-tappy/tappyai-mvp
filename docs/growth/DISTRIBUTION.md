@@ -45,6 +45,10 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 | **OpenSearch address-bar engine** (`/opensearch.xml`) *(free-acquisition)* | C | **Yes** | Attributed `browser_search`. |
 | **Atom feed of listed public results** (`/feed.xml`) *(free-acquisition)* | B | **Yes** | Listed pages only. |
 | **Organization `sameAs`** from `ORGANIZATION_SAME_AS` *(free-acquisition)* | A (entity enabler) | **Yes — env-gated** | Owner-verified profiles only. |
+| **Official scam-scenario pages** `/scam-shield/kich-ban` + 25 `/<id>` pages *(complete)* | **A** | **Yes** | The Bộ Công an 2026 dataset as indexable pages; Article + BreadcrumbList; same `ScenarioDetail` renderer as Scam Shield. |
+| **oEmbed provider** `/api/oembed` + discovery tag on `/r/*` *(complete)* | B | **Yes** | CMS/forum embeds of a pasted public result. |
+| **Google Discover eligibility** (`max-image-preview: large`) *(complete)* | B | **Yes** | On `/r/*` (listed), hubs, scam pages, `/about`, `/extension`. |
+| **Extension links on landing surfaces** (`/r/*` footer, hubs, scam pages) *(complete)* | B | **Yes** | Recipients meet `/extension`. |
 | GEO hubs `/food … /spa` (vi+en), sitemap, robots, referrer attribution | A (after indexing) | Yes (G1) | `/scam-shield` now in the sitemap. |
 | **WebSite `SearchAction` + Organization JSON-LD on `/`** | A (enabler) | **Yes (this phase)** | Points engines at `/chat?q=`. |
 | Canonical URLs, Twitter cards | A (enabler) | Yes | |

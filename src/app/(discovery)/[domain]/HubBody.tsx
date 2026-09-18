@@ -91,6 +91,7 @@ export default function HubBody({ domain, results }: { domain: CategoryId; resul
           <Link href={`/chat?category=${domain}`} className="inline-block rounded-2xl bg-interactive px-6 py-3 font-semibold text-white">
             {t('hub.ui.askAbout', { domain: t(`tag.${domain}`).toLowerCase() })}
           </Link>
+          <p className="mt-4 text-sm"><Link href="/extension" className="underline" data-testid="hub-extension">{t('hub.ui.extension')}</Link></p>
         </div>
       </article>
     </>

@@ -78,7 +78,7 @@ describe('entity layer — ONE Organization node across /, /about and /startup',
 
   it('/about metadata: canonical, indexable, bilingual OG locales, title from the route table', () => {
     expect(aboutMetadata.alternates?.canonical).toBe('https://www.tappyai.com/about')
-    expect(aboutMetadata.robots).toEqual({ index: true, follow: true })
+    expect(aboutMetadata.robots).toEqual({ index: true, follow: true, 'max-image-preview': 'large' })
     expect(aboutMetadata.title).toBe(ROUTE_TITLES['/about'].vi)
     expect(aboutPageJsonLd({ title: 't', description: 'd' }, ENV).url).toBe('https://www.tappyai.com/about')
   })

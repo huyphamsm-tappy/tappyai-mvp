@@ -12,6 +12,7 @@
 import { BRAND, absoluteUrl } from '@/lib/share/openGraph'
 import { HUB_DOMAINS, hubCopy } from '@/lib/discovery/domainHubs'
 import { hubText } from '@/lib/i18n/discovery'
+import { SCAM_KB_PATH } from '@/lib/scam-shield/knowledgePages'
 
 /** Pages an answer engine may cite. Exactly the crawlable set in sitemap.ts, minus the per-share pages. */
 export function llmsTxt(env: NodeJS.ProcessEnv = process.env): string {
@@ -32,6 +33,8 @@ export function llmsTxt(env: NodeJS.ProcessEnv = process.env): string {
     '## Tools',
     '',
     `- [Scam Shield](${absoluteUrl('/scam-shield', env)}): ${hubText('en', 'seo.scamShield.description')}`,
+    `- [25 scam scenarios of 2026](${absoluteUrl(SCAM_KB_PATH, env)}): ${hubText('en', 'kb.index.description')}`,
+    `- [Browser extension](${absoluteUrl('/extension', env)}): ${hubText('en', 'ext.description')}`,
     '',
     '## About',
     '',

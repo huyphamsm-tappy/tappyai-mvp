@@ -9,6 +9,7 @@
 import type { Metadata } from 'next'
 import { BRAND, OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH, absoluteUrl } from './openGraph'
 import type { PublicSharedResult } from './sharedResult'
+import { oembedDiscoveryUrl } from './oembed'
 
 export function sharedResultPath(slug: string): string {
   return `/r/${slug}`
@@ -43,8 +44,12 @@ export function buildSharedResultMetadata(row: PublicSharedResult, env: NodeJS.P
   return {
     title,
     description,
-    alternates: { canonical: url },
-    robots: listed ? { index: true, follow: true } : { index: false, follow: true },
+    // `types` renders <link rel="alternate" type="application/json+oembed">: the oEmbed
+    // discovery tag, so a CMS that meets this link can embed the answer as a card.
+    alternates: { canonical: url, types: { 'application/json+oembed': oembedDiscoveryUrl(row.slug, env) } },
+    // `max-image-preview: large` is the one directive Google Discover needs beyond
+    // indexing (the per-share OG card is 1200×630). It changes nothing for an unlisted page.
+    robots: listed ? { index: true, follow: true, 'max-image-preview': 'large' } : { index: false, follow: true },
     openGraph: {
       type: 'article',
       siteName: BRAND.name,

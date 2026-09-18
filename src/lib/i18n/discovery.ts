@@ -17,6 +17,7 @@ export const vi: Record<string, string> = {
   'hub.ui.askAbout': 'Hỏi Tappy về {domain}',
   'hub.ui.domainsNav': 'Lĩnh vực',
   'hub.ui.about': 'Giới thiệu',
+  'hub.ui.extension': 'Hỏi Tappy về bất kỳ trang nào — cài tiện ích trình duyệt',
 
   // Food
   'hub.food.title': 'Tìm quán ăn ngon với TappyAI — gợi ý theo nhu cầu, có bằng chứng',
@@ -162,6 +163,22 @@ export const vi: Record<string, string> = {
   'ext.privacyContactTitle': 'Liên hệ',
   'ext.privacyContact': 'Câu hỏi về chính sách này: {email}.',
   'ext.privacyUpdated': 'Cập nhật: {date}.',
+
+  // Complete free acquisition — official scam-scenario pages + extension hints on public pages
+  'kb.index.title': '25 kịch bản lừa đảo trên không gian mạng 2026 — nhận biết và phòng tránh | Scam Shield · TappyAI',
+  'kb.index.description': 'Danh sách 25 kịch bản lừa đảo năm 2026 theo cảnh báo của Bộ Công an: giả danh cơ quan nhà nước, Deepfake, việc nhẹ lương cao, mua bán online, đánh cắp dữ liệu. Mỗi kịch bản có dấu hiệu nhận biết và cách xử lý.',
+  'kb.index.h1': '25 kịch bản lừa đảo trên không gian mạng năm 2026',
+  'kb.index.intro': 'Bộ Công an đã cảnh báo 25 kịch bản lừa đảo phổ biến trong năm 2026, chia thành 5 nhóm. TappyAI giữ nguyên nội dung chính thức, bổ sung dấu hiệu nhận biết và hướng dẫn xử lý cho từng kịch bản, và kèm link tới nguồn gốc để bạn tự đối chiếu.',
+  'kb.index.crumb': 'Kịch bản lừa đảo',
+  'kb.index.sourceLine': 'Nguồn chính thức: {org} — {title}',
+  'kb.index.countLine': '{n} kịch bản · nội dung tiếng Việt như nguồn công bố',
+  'kb.page.descriptionSuffix': 'Dấu hiệu nhận biết, kẻ lừa đảo thường yêu cầu gì, nên làm gì — theo cảnh báo của {org}.',
+  'kb.page.checkTitle': 'Nhận được link hoặc tin nhắn đáng ngờ?',
+  'kb.page.checkBody': 'Dán vào Scam Shield để kiểm tra dấu hiệu lừa đảo — miễn phí, không cần đăng nhập.',
+  'kb.page.checkCta': 'Kiểm tra với Scam Shield',
+  'kb.page.backToIndex': 'Xem cả 25 kịch bản',
+  'kb.page.otherInGroup': 'Kịch bản khác cùng nhóm',
+  'kb.page.extensionLine': 'Cài tiện ích TappyAI để kiểm tra link ngay từ trình duyệt.',
 }
 
 export const en: Record<string, string> = {
@@ -171,6 +188,7 @@ export const en: Record<string, string> = {
   'hub.ui.askAbout': 'Ask Tappy about {domain}',
   'hub.ui.domainsNav': 'Domains',
   'hub.ui.about': 'About',
+  'hub.ui.extension': 'Ask Tappy about any page — get the browser extension',
 
   'hub.food.title': 'Find great food in Vietnam with TappyAI — evidence-backed picks',
   'hub.food.description': 'Ask Tappy "what to eat, where" in Vietnamese or English. Tappy cross-checks reviews, hours and price bands and gives one clear pick with Maps and ordering links.',
@@ -311,6 +329,22 @@ export const en: Record<string, string> = {
   'ext.privacyContactTitle': 'Contact',
   'ext.privacyContact': 'Questions about this policy: {email}.',
   'ext.privacyUpdated': 'Updated: {date}.',
+
+  // Complete free acquisition — official scam-scenario pages + extension hints on public pages
+  'kb.index.title': '25 online scam scenarios of 2026 — how to recognise and avoid them | Scam Shield · TappyAI',
+  'kb.index.description': 'The 25 scam scenarios of 2026 warned by Vietnam’s Ministry of Public Security: impersonating authorities, Deepfake, easy-money jobs, online trading, data theft. Each with warning signs and what to do.',
+  'kb.index.h1': '25 online scam scenarios of 2026',
+  'kb.index.intro': 'Vietnam’s Ministry of Public Security warned of 25 common scam scenarios for 2026, in 5 groups. TappyAI keeps the official text as published, adds warning signs and guidance for each scenario, and links the original source so you can check it yourself.',
+  'kb.index.crumb': 'Scam scenarios',
+  'kb.index.sourceLine': 'Official source: {org} — {title}',
+  'kb.index.countLine': '{n} scenarios · content in Vietnamese as published by the source',
+  'kb.page.descriptionSuffix': 'Warning signs, what scammers ask for, what to do — per the warning by {org}.',
+  'kb.page.checkTitle': 'Received a suspicious link or message?',
+  'kb.page.checkBody': 'Paste it into Scam Shield to check for fraud signals — free, no sign-in.',
+  'kb.page.checkCta': 'Check with Scam Shield',
+  'kb.page.backToIndex': 'See all 25 scenarios',
+  'kb.page.otherInGroup': 'Other scenarios in this group',
+  'kb.page.extensionLine': 'Install the TappyAI extension to check links right from your browser.',
 }
 
 export type HubLocale = 'vi' | 'en'
