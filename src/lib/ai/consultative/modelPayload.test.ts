@@ -33,6 +33,18 @@ describe('trimPlacesForModel', () => {
     expect((three.results as unknown[]).length).toBe(3)
     expect(three.results_note).toBeUndefined()
   })
+  it('trims hotel_list the same way when asked (get_hotel_prices)', () => {
+    const hotels = Array.from({ length: 18 }, (_, i) => ({ ...row(i), name: `Hotel ${i}` }))
+    const out = trimPlacesForModel({ hotel_list: hotels, booking_link: 'x', _tappy_shortlist: [{ id: 'p9', name: 'Hotel 9' }] }, 'hotel_list') as Record<string, unknown>
+    const rows = out.hotel_list as Array<Record<string, unknown>>
+    expect(rows).toHaveLength(MODEL_ROWS_MAX)
+    expect(rows[0].name).toBe('Hotel 9')
+    expect(rows[0]).not.toHaveProperty('photo_url')
+    expect(rows[0]).not.toHaveProperty('lat')
+    expect(out.results_note).toMatch(/5\/18/)
+    expect(out.booking_link).toBe('x')
+  })
+
   it('leaves non-place results and empty results alone', () => {
     expect(trimPlacesForModel({ results: [] })).toEqual({ results: [] })
     expect(trimPlacesForModel('x')).toBe('x')

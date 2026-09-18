@@ -957,7 +957,7 @@ export async function POST(req: Request) {
     // in `search_results` and there is no `shopping_results` at all. Naming only the latter meant
     // the live shopping path was reordered by nothing.
     const keys = toolName === 'search_places' ? ['results']
-      : toolName === 'get_hotel_prices' ? ['search_results']
+      : toolName === 'get_hotel_prices' ? ['search_results', 'hotel_list']
         : ['shopping_results', 'search_results']
     for (const key of keys) {
       if (!Array.isArray(r[key])) continue
@@ -1612,9 +1612,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           turnPlaceLocation = location
           await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
-          return forModel('get_hotel_prices', withTravelEditorial(pick
+          // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
+          // from the full list above. Same trim as places (cost item 4).
+          return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial))
+            : result, editorial)), 'hotel_list')
         }
       }),
       get_transport_options: tool({

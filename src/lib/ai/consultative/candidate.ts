@@ -332,7 +332,15 @@ export function normalizeTransport(toolResult: unknown): Candidate[] {
  * Two sources with very different evidence quality:
  *   `search_results` — Serper web results (title/link/snippet). The ONLY structured
  *      signal is whether the link is a specific hotel page, derived from the URL.
- *   `hotel_list` — OSM nodes, which do carry stars and distance.
+ *   `hotel_list` — Serper `/maps` records (Phase 4: the primary source — name, address,
+ *      `google_rating`, `rating_value`/`rating_count`, phone, price band, photo) or, as the
+ *      fallback, OSM nodes, which carry stars and distance only.
+ *
+ * 🚨 Measured 2026-09-18 (T2/T8 of CONSULTATIVE-40): `/maps` returned 18 real Đà Nẵng hotels
+ * with ratings, and this function read only `distance_km`/`stars` from them — so no hotel
+ * carried evidence, the shortlist was empty, the model had no pick, and G1 cut every sentence
+ * that named a hotel. The provider was fine; the candidate was blind. The `/maps` rating is
+ * read here exactly as `normalizePlaces` reads it.
  *
  * The room price is visible in snippet text ("Từ 393.582 VND/đêm") and is
  * deliberately NOT read. `applyBudgetFilter` already uses snippet text for the
@@ -368,12 +376,18 @@ export function normalizeHotels(toolResult: unknown): Candidate[] {
     if (!name) continue
 
     const attrs: CandidateAttrs = {}
+    // `/maps` shape — same formatted string `normalizePlaces` parses; absent on an OSM node.
+    const { rating, reviewCount } = parseGoogleRating(r.google_rating)
+    put(attrs, 'rating', rating)
+    put(attrs, 'reviewCount', reviewCount)
+    put(attrs, 'priceHighVnd', priceBandHigh(r))
+    // OSM shape
     put(attrs, 'distanceKm', typeof r.distance_km === 'number' ? r.distance_km : undefined)
     const starsRaw = str(r.stars).trim()
     if (/^[1-5]$/.test(starsRaw)) put(attrs, 'stars', parseInt(starsRaw, 10))
 
     out.push({
-      id: str(r.maps_link) || name,
+      id: str(r.place_id) || str(r.maps_link) || name,
       name,
       domain: 'hotel',
       attrs,

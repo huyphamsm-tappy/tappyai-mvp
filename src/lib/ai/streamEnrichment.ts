@@ -2037,6 +2037,54 @@ export function applyPlaceEnrichmentStreamFilter(
               }
               if (typeof r.vexere_link === 'string' && !systemLinkUrls.has(r.vexere_link)) { systemLinkUrls.add(r.vexere_link); systemLinks.push({ name: 'Vexere', url: r.vexere_link }) }
             }
+            // Same rows, two more kinds of evidence — see placeClaimGuard. Shared with the hotel
+            // branch below: a Serper `/maps` hotel row carries the same fields as a place row.
+            const readRowEvidence = (row: Record<string, unknown>) => {
+              // 🚨 THE RATING EVIDENCE WAS ALWAYS EMPTY. The Google and Serper rows carry the
+              // number as `rating_value` (`google_rating` is the FORMATTED STRING the prompt
+              // reads), so `row.rating ?? row.google_rating` was never a number and
+              // `ratingsByEntity` stayed empty on every real turn. Nobody noticed because v1
+              // never read "4.9⭐" as a score; the G1 replay on the 2026-09-17 capture did
+              // (15/15 turns, `ratingsByEntity: {}` beside a full `reviewCountsByEntity`).
+              const rating = typeof row.rating_value === 'number' ? row.rating_value : (row.rating ?? row.google_rating)
+              const rowName = typeof row.name === 'string' ? row.name : ''
+              if (rowName) snippetPlaceNames.push(rowName)
+              if (typeof rating === 'number') placeRatings.push(rating)
+              // The same facts, keyed by the venue they actually describe.
+              if (rowName && typeof rating === 'number') {
+                ratingsByEntity.set(rowName, [...(ratingsByEntity.get(rowName) ?? []), rating])
+              }
+              if (rowName && typeof row.rating_count === 'number') {
+                reviewCountsByEntity.set(rowName, [...(reviewCountsByEntity.get(rowName) ?? []), row.rating_count])
+              }
+              if (rowName && typeof row.website_uri === 'string' && isDirectTicketUrl(row.website_uri)) {
+                ticketablePlaces.add(rowName)
+              }
+              if (rowName && typeof row.phone === 'string' && row.phone) {
+                phonesByEntity.set(rowName, [...(phonesByEntity.get(rowName) ?? []), row.phone])
+              }
+              if (rowName && typeof row.opening_hours === 'string' && row.opening_hours && !hoursByEntity.has(rowName)) {
+                hoursByEntity.set(rowName, row.opening_hours)
+              }
+              if (rowName && typeof row.address === 'string' && row.address && !addressesByEntity.has(rowName)) {
+                addressesByEntity.set(rowName, row.address)
+              }
+              // Consultative V1: the row's own category text is evidence for category-level
+              // attributes — "Khu vui chơi trẻ em" IS kid-friendly (measured E8: the heads-up
+              // said no evidence of kids for a children's playground).
+              if (rowName) {
+                const cat = [rowName, row.type, row.amenity, row.cuisine, ...(Array.isArray(row.types) ? row.types : [])].filter((x): x is string => typeof x === 'string' && x.length > 0).join(' · ')
+                if (cat) placeEntityTexts.set(rowName, [...(placeEntityTexts.get(rowName) ?? []), cat])
+              }
+              if (rowName && !priceBandsByEntity.has(rowName)) {
+                const band = bandFromRow(row)
+                if (band) priceBandsByEntity.set(rowName, band)
+              }
+              if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
+              for (const k of ['snippet', 'address', 'opening_hours']) {
+                if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
+              }
+            }
             let newPlaces: PlaceLike[] = []
             if (toolName === 'search_places') {
               const results = res.result?.results
@@ -2091,53 +2139,7 @@ export function applyPlaceEnrichmentStreamFilter(
               for (const o of res.result?.order_search_results ?? []) {
                 if (o.evidence_scope === 'entity' && o.evidence_about) orderablePlaces.add(o.evidence_about)
               }
-              // Same rows, two more kinds of evidence — see placeClaimGuard.
-              for (const row of (Array.isArray(results) ? results : []) as Array<Record<string, unknown>>) {
-                // 🚨 THE RATING EVIDENCE WAS ALWAYS EMPTY. The Google and Serper rows carry the
-                // number as `rating_value` (`google_rating` is the FORMATTED STRING the prompt
-                // reads), so `row.rating ?? row.google_rating` was never a number and
-                // `ratingsByEntity` stayed empty on every real turn. Nobody noticed because v1
-                // never read "4.9⭐" as a score; the G1 replay on the 2026-09-17 capture did
-                // (15/15 turns, `ratingsByEntity: {}` beside a full `reviewCountsByEntity`).
-                const rating = typeof row.rating_value === 'number' ? row.rating_value : (row.rating ?? row.google_rating)
-                const rowName = typeof row.name === 'string' ? row.name : ''
-                if (rowName) snippetPlaceNames.push(rowName)
-                if (typeof rating === 'number') placeRatings.push(rating)
-                // The same facts, keyed by the venue they actually describe.
-                if (rowName && typeof rating === 'number') {
-                  ratingsByEntity.set(rowName, [...(ratingsByEntity.get(rowName) ?? []), rating])
-                }
-                if (rowName && typeof row.rating_count === 'number') {
-                  reviewCountsByEntity.set(rowName, [...(reviewCountsByEntity.get(rowName) ?? []), row.rating_count])
-                }
-                if (rowName && typeof row.website_uri === 'string' && isDirectTicketUrl(row.website_uri)) {
-                  ticketablePlaces.add(rowName)
-                }
-                if (rowName && typeof row.phone === 'string' && row.phone) {
-                  phonesByEntity.set(rowName, [...(phonesByEntity.get(rowName) ?? []), row.phone])
-                }
-                if (rowName && typeof row.opening_hours === 'string' && row.opening_hours && !hoursByEntity.has(rowName)) {
-                  hoursByEntity.set(rowName, row.opening_hours)
-                }
-                if (rowName && typeof row.address === 'string' && row.address && !addressesByEntity.has(rowName)) {
-                  addressesByEntity.set(rowName, row.address)
-                }
-                // Consultative V1: the row's own category text is evidence for category-level
-                // attributes — "Khu vui chơi trẻ em" IS kid-friendly (measured E8: the heads-up
-                // said no evidence of kids for a children's playground).
-                if (rowName) {
-                  const cat = [rowName, row.type, row.amenity, row.cuisine, ...(Array.isArray(row.types) ? row.types : [])].filter((x): x is string => typeof x === 'string' && x.length > 0).join(' · ')
-                  if (cat) placeEntityTexts.set(rowName, [...(placeEntityTexts.get(rowName) ?? []), cat])
-                }
-                if (rowName && !priceBandsByEntity.has(rowName)) {
-                  const band = bandFromRow(row)
-                  if (band) priceBandsByEntity.set(rowName, band)
-                }
-                if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
-                for (const k of ['snippet', 'address', 'opening_hours']) {
-                  if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
-                }
-              }
+              for (const row of (Array.isArray(results) ? results : []) as Array<Record<string, unknown>>) readRowEvidence(row)
               if (Array.isArray(priceSnips)) {
                 for (const r of priceSnips) placeTexts.push(`${r.title ?? ''} ${r.snippet ?? ''}`)
               }
@@ -2197,6 +2199,20 @@ export function applyPlaceEnrichmentStreamFilter(
                     const key = r?.link || r?.title
                     if (!key || !productRecords.some(e => (e.link || e.title) === key)) productRecords.push(r)
                   }
+                }
+              }
+              /**
+               * 🚨 Phase 4 hotels arrive in `hotel_list`, name-shaped, from Serper `/maps` — and
+               * when `/maps` answers there is NO `search_results` at all. Measured 2026-09-18
+               * (T2/T8): 18 real hotels with ratings landed here, this branch read none of them,
+               * so every sentence naming a hotel was cut as fabricated and the reply degraded to
+               * "bạn định check-in ngày nào?". The rows ARE the evidence; read them.
+               */
+              if (toolName === 'get_hotel_prices') {
+                const hotelList = (res.result as { hotel_list?: PlaceLike[] } | undefined)?.hotel_list
+                if (Array.isArray(hotelList) && hotelList.length > 0) {
+                  newPlaces = [...newPlaces, ...hotelList.filter(h => typeof h?.name === 'string' && h.name)]
+                  for (const row of hotelList as Array<Record<string, unknown>>) readRowEvidence(row)
                 }
               }
             }

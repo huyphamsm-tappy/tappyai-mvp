@@ -22,10 +22,11 @@ const ROW_DROP = new Set(['lat', 'lng', 'opening_hours_week', 'photo_url', 'phot
 /** How many rows the model reads when there is no shortlist to go by. */
 export const MODEL_ROWS_MAX = 5
 
-export function trimPlacesForModel(result: unknown): unknown {
+/** @param key the array the rows live in: `results` (search_places) or `hotel_list` (get_hotel_prices) */
+export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results'): unknown {
   if (!result || typeof result !== 'object' || Array.isArray(result)) return result
   const r = result as Record<string, unknown>
-  const rows = r.results
+  const rows = r[key]
   if (!Array.isArray(rows) || rows.length === 0) return result
   const shortlist = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ id?: unknown; name?: unknown }>) : []
   const keepIds = new Set(shortlist.map(s => String(s.id ?? '')).filter(Boolean))
@@ -49,7 +50,7 @@ export function trimPlacesForModel(result: unknown): unknown {
   const total = rows.length
   return {
     ...r,
-    results: slim,
+    [key]: slim,
     // The model is told what it is looking at: the decision set, not the whole search.
     ...(total > slim.length ? { results_note: `Hien thi ${slim.length}/${total} ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user.` } : {}),
   }
