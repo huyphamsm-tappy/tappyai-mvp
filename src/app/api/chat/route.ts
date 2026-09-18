@@ -69,6 +69,7 @@ import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTe
 import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
+import { compactHistory } from '@/lib/ai/historyCompaction'
 
 export const maxDuration = 60
 
@@ -1034,7 +1035,7 @@ export async function POST(req: Request) {
   // BEFORE the model sees them — the model cannot echo what it cannot read.
   // Applied ONLY to the messages fed to the LLM: the memory extractor below
   // still uses raw `trimmedMessages` because it summarizes what happened.
-  const modelMessages = trimmedMessages.map((m) => {
+  const modelMessages = compactHistory(trimmedMessages.map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
       return { ...m, content: sanitizePriorAssistantContent(m.content) }
@@ -1050,7 +1051,7 @@ export async function POST(req: Request) {
       return { ...m, content: parts as typeof m.content }
     }
     return m
-  })
+  }))
 
   // Split so the provider can cache the invariant rulebook and leave everything
   // request-shaped (clock, language, memory, prefs, budget, GPS, style) after
