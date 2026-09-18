@@ -79,3 +79,14 @@ describe('V1 pick backstop on the stream (G1 attribution ON)', () => {
     expect(out).not.toContain('Mình chọn')
   })
 })
+
+describe('V1 pick backstop — a plain mention of a retrieved venue is "named" too', () => {
+  let saved: string | undefined
+  beforeAll(() => { saved = process.env.PLACE_GUARD_ATTRIBUTION_V2; process.env.PLACE_GUARD_ATTRIBUTION_V2 = '1' })
+  afterAll(() => { if (saved === undefined) delete process.env.PLACE_GUARD_ATTRIBUTION_V2; else process.env.PLACE_GUARD_ATTRIBUTION_V2 = saved })
+  it('does not prepend a pick when the body names the venue without bold (measured E4)', async () => {
+    const out = await run('Mình chưa tìm thấy thông tin về chỗ đậu xe của Ốc Đào trong kết quả. Bạn có thể gọi trực tiếp quán để hỏi về dịch vụ giữ xe nhé.')
+    expect(out).not.toContain('Mình chọn')
+    expect(out).toContain('chỗ đậu xe của Ốc Đào')
+  })
+})

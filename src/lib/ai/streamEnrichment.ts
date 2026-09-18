@@ -1760,6 +1760,10 @@ export function applyPlaceEnrichmentStreamFilter(
       if (known.length === 0) return null
       const bold = [...body.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => normalizeHeading(m[1]))
       if (bold.some(b => isGrounded(b, known))) return null
+      // A plain (un-bolded) mention counts too — measured E4 "chỗ đó có giữ xe không?": the body
+      // said "Dollhouse bar HCMC" without bold and got a second, redundant pick sentence on top.
+      const bodyFolded = normalizeVN(body.toLowerCase())
+      if (known.some(n => n.length >= 4 && bodyFolded.includes(n))) return null
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
       // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
       const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
