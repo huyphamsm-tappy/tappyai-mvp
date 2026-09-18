@@ -289,13 +289,14 @@ class PlaceDecisionSectionTest {
     private val open = placeFilters(six).first { it.id == PlaceFilterId.Open }
 
     @Test
-    fun `19-22 six merchants page through the first three in server order, the count chip says six`() {
+    fun `19-22 six merchants page through ALL six in server order, the count chip says six`() {
+        // Owner decision 2026-09-17: the carousel carries every admitted card (web parity) — a
+        // swipe reveals the rest; nothing is cut at three any more.
         val pages = carouselPlaces(six, all)
         assertEquals(3, PLACES_VISIBLE)
-        assertEquals(listOf("P0", "P1", "P2"), pages.map { it.name })
-        assertEquals(listOf(1, 2, 3), pages.map { placeCardFacts(it, six.indexOf(it), true).rankLabel })
+        assertEquals(listOf("P0", "P1", "P2", "P3", "P4", "P5"), pages.map { it.name })
+        assertEquals(listOf(1, 2, 3, 4, 5, 6), pages.map { placeCardFacts(it, six.indexOf(it), true).rankLabel })
         assertSame("the objects are the server's, untouched", six[2], pages[2])
-        // The other three are reachable through the chips and the map footer — web's rule.
         assertTrue(showsFilterRow(six, placeFilters(six)))
     }
 
@@ -305,9 +306,8 @@ class PlaceDecisionSectionTest {
         assertEquals(listOf("P0", "P2", "P4"), pages.map { it.name })
         // #1, #3, #5 — not #1, #2, #3: hiding a merchant does not promote the next one.
         assertEquals(listOf(1, 3, 5), pages.map { placeCardFacts(it, six.indexOf(it), true).rankLabel })
-        // Never sorted by rating: P5 has the best rating and is NOT promoted into the three pages
-        // under All — server order, first three, exactly web's `slice(0, VISIBLE)`.
-        assertEquals(listOf("P0", "P1", "P2"), carouselPlaces(six, all).map { it.name })
+        // Never sorted by rating: P5 has the best rating and stays LAST under All — server order.
+        assertEquals(listOf("P0", "P1", "P2", "P3", "P4", "P5"), carouselPlaces(six, all).map { it.name })
     }
 
     @Test
@@ -331,7 +331,8 @@ class PlaceDecisionSectionTest {
         assertTrue("position dots", src.contains("PagerDots(count = pages.size, current = pagerState.currentPage)"))
         assertTrue("a chip restarts at the first admitted merchant", src.contains("LaunchedEffect(active.id) { if (pagerState.currentPage != 0) pagerState.scrollToPage(0) }"))
         assertFalse("no vertical stack of cards", src.contains(".forEach { place ->"))
-        assertTrue("web's visible-3 cap", src.contains("items.filter(filter.matches).take(PLACES_VISIBLE)"))
+        assertTrue("every admitted card pages (web parity)", src.contains("List<PlaceCardView> =\n    items.filter(filter.matches)\n"))
+        assertFalse("no visible-3 cap on the pages any more", src.contains(".take(PLACES_VISIBLE)"))
         val pager = src.indexOf("HorizontalPager(")
         val footer = src.indexOf("ExploreMapFooter(onClick")
         assertTrue("the map CTA is composed after the pager", pager in 1 until footer)

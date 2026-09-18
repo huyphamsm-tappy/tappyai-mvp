@@ -147,12 +147,12 @@ internal fun placeFilters(items: List<PlaceCardView>): List<PlaceFilter> {
 }
 
 /**
- * The pages of the carousel: the rows the chip admits, in SERVER order, the first
- * [PLACES_VISIBLE] of them — exactly web's `items.filter(match).slice(0, VISIBLE)`. The count
- * chip says how many there are; the map footer is where the rest live.
+ * The pages of the carousel: EVERY row the chip admits, in SERVER order — web parity with the
+ * horizontal carousel (owner decision 2026-09-17): a swipe reveals the next card, nothing is cut
+ * at three. [PLACES_VISIBLE] only decides when the chip row must show the count.
  */
 internal fun carouselPlaces(items: List<PlaceCardView>, filter: PlaceFilter): List<PlaceCardView> =
-    items.filter(filter.matches).take(PLACES_VISIBLE)
+    items.filter(filter.matches)
 
 /**
  * Web parity: the chip row shows when a chip can actually change the result, and also when the
