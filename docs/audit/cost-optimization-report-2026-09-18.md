@@ -1,6 +1,6 @@
 # BÁO CÁO TỐI ƯU CHI PHÍ — /api/chat (2026-09-18)
 
-Nhánh `merge/main-into-v3`, commit cuối ghi ở cuối file. Chỉ commit local — không push, không deploy, không xoá.
+Nhánh `merge/main-into-v3` @ `19a4463` (+ commit này). Chỉ commit local — không push, không deploy, không xoá.
 Giữ nguyên: layout (prose + carousel, các trường card, thứ tự CTA, Tappy rating), thu thập dữ liệu (Serper-first, số
 dòng, ảnh, link review, bán kính). Số liệu chi tiết: `docs/audit/cost-report.md`; dữ liệu thô `docs/audit/eval/cost/`.
 
