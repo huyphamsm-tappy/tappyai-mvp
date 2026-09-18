@@ -60,10 +60,11 @@ class TappyShareTest {
         assertTrue(out.contains("tappyai.com"))
     }
 
+    /** Zalo has no standalone web share URL (its SDK hands links to the app via ACTION_SEND — the package path here). */
     @Test
-    fun `zalo receives the canonical url encoded`() {
-        val out = TappyShare.buildShareUrl(TappyShare.Target.ZALO, review)
-        assertTrue(out!!.contains("zalo.me"))
+    fun `zalo has no web handoff url`() {
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.ZALO, review))
+        assertEquals("com.zing.zalo", TappyShare.packageFor(TappyShare.Target.ZALO))
     }
 
     /** Messenger's own share deep link — a scheme, so the caller copies first. */

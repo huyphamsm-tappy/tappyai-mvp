@@ -148,6 +148,40 @@ export function extractBudget(userMessage: string): Budget | null {
   return null
 }
 
+/**
+ * The TOTAL budget of a plan, when the turn is a planning request.
+ *
+ * `extractBudget` names a per-item ceiling and, by design, refuses a bare
+ * amount ("2 người, 5 triệu" must not become a budget in a shopping turn). A
+ * plan is different: the amount a person states for an evening or a trip is
+ * the whole envelope, and the shapes they use — "budget 5 triệu", "trong 5
+ * triệu", "tầm 5 triệu", "dưới 5 triệu", "5 triệu cho 2 người", "20 triệu" —
+ * all mean that envelope. So on a planning turn every `extractBudget` form is
+ * accepted first (its band/ceiling becomes the total), then "trong / với /
+ * cho / có N triệu", then a bare amount with a money UNIT — the unit is the
+ * guard: "3 ngày" and "2 người" carry none and cannot become money.
+ *
+ * Returns the total in VND, or null when the message states no amount at all.
+ * Callers use it ONLY when `detectPlanningIntent` fired; nothing else reads it.
+ */
+export function extractPlanTotalBudget(userMessage: string): number | null {
+  const stated = extractBudget(userMessage)
+  if (stated) return stated.type === 'around' ? Math.round((stated.min + stated.max) / 2) : stated.max
+  const t = normalizeVN(userMessage.toLowerCase())
+  const N = '([\\d][\\d.,]*)'
+  // A full VND figure carries its own unit ("1.500.000đ", "1500000 vnd"); after
+  // normalizeVN the đ is a bare "d". Such a figure parses as-is (parseMoneyAmount
+  // strips the dots), so it is admitted here — never in the per-item extractor.
+  const UNIT = '(k|tr|trieu|ngan|nghin|m|mil|million|d|dong|vnd)\\b'
+  const withinRe = new RegExp(`\\b(?:trong|voi|co|chi co|tam|khoang|cho)\\s+${N}\\s*${UNIT}`)
+  const bareRe = new RegExp(`${N}\\s*${UNIT}`)
+  const m = t.match(withinRe) ?? t.match(bareRe)
+  if (!m) return null
+  const amount = parseMoneyAmount(m[1], m[2] || '')
+  // Below 100k is not a plan envelope ("2k" in a nickname, "50k" for one dish).
+  return amount !== null && amount >= 100_000 ? amount : null
+}
+
 function fmtBudget(budget: Budget): string {
   const f = (n: number) => n >= 1_000_000
     ? (n / 1_000_000 % 1 === 0 ? n / 1_000_000 : (n / 1_000_000).toFixed(1)) + ' triệu'

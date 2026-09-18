@@ -79,6 +79,11 @@ const BASE: Record<string, number> = {
   outdoor: 0.2,
   vegetarian: 0.2,
   cuisine: 0.3,
+  // No base weight: "open now" and a price band only count when the request
+  // is time-bound / budget-bound (a stated priority), so an unrelated attribute
+  // can never make a candidate "best" on its own.
+  openNow: 0,
+  priceBand: 0,
 }
 
 const clamp01 = (n: number) => (n < 0 ? 0 : n > 1 ? 1 : n)
@@ -96,7 +101,7 @@ const BOOLEAN_ATTRS: ReadonlyArray<[string, keyof CandidateAttrs]> = [
 ]
 
 /** Every attribute the ranker can score, for missing-evidence bookkeeping. */
-const SCOREABLE = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'eta', 'wifi', 'outdoor', 'vegetarian', 'cuisine']
+const SCOREABLE = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'eta', 'wifi', 'outdoor', 'vegetarian', 'cuisine', 'openNow', 'priceBand']
 
 function hasEvidenceFor(attrs: CandidateAttrs, key: string): boolean {
   switch (key) {
@@ -110,6 +115,8 @@ function hasEvidenceFor(attrs: CandidateAttrs, key: string): boolean {
     case 'outdoor': return attrs.outdoorSeating !== undefined
     case 'vegetarian': return attrs.vegetarian !== undefined
     case 'cuisine': return attrs.cuisine !== undefined
+    case 'openNow': return attrs.openNow !== undefined
+    case 'priceBand': return attrs.priceHighVnd !== undefined
     default: return false
   }
 }
@@ -166,6 +173,20 @@ function scoreOne(
   if (a.priceVnd !== undefined && priceCeiling !== null && priceCeiling > 0) {
     add('price', clamp01((priceCeiling - a.priceVnd) / priceCeiling), `${a.priceVnd} VND`, { priceVnd: a.priceVnd })
   } else if (a.priceVnd === undefined && priorityWeight(need, 'price') > 0) missing.push('price')
+
+  // ── Place price band: the bound fits the budget, or it does not ───────────
+  // Only against a STATED budget (there is no set-wide ceiling for bands) and
+  // only when price is a priority; a band under budget is evidence FOR, one
+  // over it is evidence AGAINST, and no band is simply unknown.
+  if (a.priceHighVnd !== undefined && need.budget && need.budget.max > 0 && priorityWeight(need, 'price') > 0) {
+    const fits = a.priceHighVnd <= need.budget.max
+    add('priceBand', fits ? 1 : -1, fits ? `price band up to ${a.priceHighVnd} VND fits the budget` : `price band up to ${a.priceHighVnd} VND is over the budget`, { priceHighVnd: a.priceHighVnd })
+  }
+
+  // ── Open now: only for a time-bound request ("trưa nay", "đang mở") ───────
+  if (a.openNow !== undefined) {
+    if (priorityWeight(need, 'openNow') > 0) add('openNow', a.openNow ? 1 : -1, a.openNow ? 'open now' : 'closed now')
+  } else if (priorityWeight(need, 'openNow') > 0) missing.push('openNow')
 
   // ── Hotel stars ───────────────────────────────────────────────────────────
   if (a.stars !== undefined) add('stars', clamp01((a.stars - 1) / 4), `${a.stars}-star`, { stars: a.stars })

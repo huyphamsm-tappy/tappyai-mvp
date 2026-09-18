@@ -1,10 +1,11 @@
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
-import { guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { extractMoneyClaims, guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
+import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { safeFlushPoint } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
@@ -19,6 +20,7 @@ import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDiscon
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import { guardClarifications } from './clarificationGuard'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -1368,7 +1370,24 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
-    const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
+    const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
+    /**
+     * PLAN PRICE PROVENANCE. Every money guard below reads `proseOnly(text)`, so
+     * the [TAPPY_PLAN] block — the one structured payload the client renders as
+     * money — was never judged. Measured 2026-09-14 on OSM rows with no price
+     * field: 4 of 5 delivered plans carried "800,000 – 1,200,000 VND (estimated)"
+     * per item. Runs after `injectPlanPhotos` (same parse/re-serialize shape,
+     * so the photo fields it added are kept) and before the prose guards, which
+     * skip the block anyway. Evidence is the rows this turn retrieved plus the
+     * user's own numbers; nothing is fetched and nothing is computed.
+     */
+    const planEvidence = {
+      byEntity: planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity),
+      userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
+    }
+    const enriched = enrichedProse.includes('[TAPPY_PLAN]')
+      ? guardPlanPrices(enrichedProse, planEvidence, lang).text
+      : enrichedProse
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -1484,6 +1503,15 @@ export function applyPlaceEnrichmentStreamFilter(
     // prose and must therefore see prose; the scaffolding strip removes non-prose tags and must
     // be last, because anything that runs after it could reintroduce a tag. Taking either side of
     // this conflict alone would have silently dropped one of the two.
+    /**
+     * CLARIFICATION BACKSTOP. The decision frame told the model whether a
+     * question was worth asking; measured 2026-09-15 the model still closed
+     * with "bạn thích ăn gì?" on turns where the frame said recommend-or-say-so.
+     * Reflex taste/type questions go under `no_reflex`; decision-critical ones
+     * (where, when, how many, budget, which item) always stay; at most one
+     * question survives either way. Prose only — machine blocks untouched.
+     */
+    const clarified = guardClarifications(placeGuarded, collector?.clarificationPolicy ?? 'allow').text
     // A model link whose label names a registry merchant but whose URL is another site is unmade
     // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").
     const systemPlaced = new Set<string>(systemLinkUrls)
@@ -1495,7 +1523,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // registry, so the claim is provably wrong — live UAT 15 Sep 2026, a Trip.com hotel turn).
     // …and any markdown link the model wrapped in bold/italic is un-emphasised, so Android's
     // single-pass renderer (which does not recurse into `**…**`) still linkifies the handoff.
-    const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))
+    const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(clarified), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`
@@ -1834,6 +1862,7 @@ export function applyPlaceEnrichmentStreamFilter(
                 /** Food/spa price snippets (title/link/snippet) — A5 evidence: a price
                  *  the reply states must trace to one of these, else it's fabricated. */
                 price_search_results?: Array<{ title?: string; snippet?: string; link?: string; evidence_scope?: string; evidence_about?: string }>
+                travel_editorial?: Array<{ title?: string; summary?: string; extract?: string }>
                 /** Direct ordering pages, each attributed to the place its own text named. */
                 order_search_results?: Array<{ evidence_scope?: string; evidence_about?: string }>
                 /** The tool's own verdict on retrieval — see `PlaceSearchStatus`. */
@@ -1973,6 +2002,16 @@ export function applyPlaceEnrichmentStreamFilter(
                 for (const k of ['snippet', 'title']) {
                   if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
                 }
+              }
+            }
+            // VnExpress editorial (`travel_editorial`, any travel tool): retrieved TEXT, the
+            // same standing as a hotel snippet for the place guard — a quality or distance
+            // the article states may be restated. It is NOT a price source: `travelFares`
+            // and `snippetPrices` are not read from it, so a fare or fee in an article
+            // stays exactly as unsupported as it was — the guards redact it.
+            for (const e of (res.result?.travel_editorial ?? []) as Array<Record<string, unknown>>) {
+              for (const k of ['title', 'summary', 'extract']) {
+                if (typeof e[k] === 'string') placeTexts.push(e[k] as string)
               }
             }
             if (toolName === 'get_hotel_prices' || toolName === 'search_products') {

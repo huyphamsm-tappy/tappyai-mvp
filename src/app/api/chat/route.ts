@@ -14,6 +14,7 @@ import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
+import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
 import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
 import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
@@ -22,12 +23,13 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
@@ -45,7 +47,7 @@ import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decision
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
-import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
+import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -175,6 +177,12 @@ export async function POST(req: Request) {
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
+  // A plan's budget is the WHOLE envelope, and its searches are the activities
+  // the user named — both decided here, deterministically, so the planning block
+  // can state the total and list exactly the searches to run (see promptBuilder).
+  const planning = planningIntent
+    ? { totalBudget: extractPlanTotalBudget(lastText), activities: detectPlanActivities(lastText) }
+    : undefined
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
@@ -650,6 +658,51 @@ export async function POST(req: Request) {
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
 
+  /**
+   * The decision frame — what the user is trying to DO, decided before any tool
+   * runs: goal, occasion, criteria and the evidence a recommendation needs. The
+   * ranker still orders against `needProfile`; the frame decides which ranked
+   * rows may be recommended at all, what the model is told to search for, and
+   * what to do when the evidence does not come back. Deterministic; no call.
+   */
+  const decisionFrame = deriveDecisionFrame({
+    messages,
+    need: needProfile,
+    planningIntent,
+    forcedTool,
+    hasGps: !!userLocation,
+    storedPreferences: storedPrefs,
+    now: new Date(),
+  })
+
+  /**
+   * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
+   *
+   * Gated on the frame, deterministically: a TRAVEL turn whose goal is inform /
+   * recommend / plan, with a destination the city table knows — from the tool's
+   * own `location` argument when it has one, else the user's text. Anything else
+   * (shopping, food-at-home, a hotel PRICE lookup without a city, an unknown
+   * place) asks VnExpress for nothing at all.
+   *
+   * It runs INSIDE the tool's execute(), alongside the live call, so the model
+   * reads it in the same single reasoning pass; it never fails the turn (the
+   * module resolves every failure to an empty list, and an empty list attaches
+   * nothing). The live providers stay authoritative for every dynamic fact — the
+   * items are REVIEW_SUPPORTED and carry no structured field a guard would read.
+   *
+   * ONE retrieval per destination per turn: the SDK runs a step's tool calls
+   * concurrently and a planning turn has up to 8 steps, so several tools may ask
+   * for the supplement — they share one in-flight promise (`createTurnEditorial`).
+   */
+  const turnEditorial = createTurnEditorial()
+  const travelEditorialFor = async (toolLocation?: string | null): Promise<TravelEditorialItem[]> => {
+    const gate = editorialGate(decisionFrame, toolLocation, lastText)
+    if (!gate) return []
+    const travel_editorial = await turnEditorial(gate.destination.term, gate.intent, lang)
+    if (travel_editorial.length) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'vnexpress_travel', destination: gate.destination.term, count: travel_editorial.length }))
+    return travel_editorial
+  }
+
   // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
   // it models what the user wants from the PRODUCT, not what they want from us —
   // and only the route knows which message is the current one.
@@ -772,15 +825,33 @@ export async function POST(req: Request) {
     // reference the 1–3 top-of-decision entries + their role. Never
     // manufactures a third slot; dedupes on canonical id.
     if (toolName === 'search_places' || toolName === 'get_hotel_prices') {
-      const sl = shortlistCandidates(ranked.ranked, 3)
+      // Only candidates that carry evidence for THIS decision may take a slot;
+      // the rest stay in `results` as what they are — search results.
+      const sl = shortlistCandidates(ranked.ranked, 3, e => qualifiesFor(decisionFrame, e))
       if (sl.selected.length > 0) {
         (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
           rank: idx,
           id: s.entry.candidate.id,
           name: s.entry.candidate.name,
           role: s.role,
+          // The evidence the recommendation may rest on — real fields only — and
+          // the reasons the ranker actually counted, so the model reasons over the
+          // same numbers the engine ordered by instead of over the row's absence.
+          evidence: evidenceSummary(s.entry.candidate.attrs),
+          why: s.entry.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => r.detail),
+          missing: missingFor(decisionFrame, s.entry),
         }))
       }
+      // What the reply may do with this evidence. The OpenStreetMap fallback
+      // carries no rating, price, hours or reviews for any row, so a repeat
+      // search there cannot help; a Google/Serper result can.
+      const providerCanImprove = typeof r.source === 'string' && !/openstreetmap/i.test(r.source)
+      const gap = evidenceGap(decisionFrame, ranked.ranked, providerCanImprove)
+      ;(result as Record<string, unknown>)._tappy_evidence_gap = gap
+      // A recommendation that is possible, or a gap no question can close,
+      // leaves no room for a reflex "what kind?" — only a bounded retry does.
+      enrichment.setClarificationPolicy(gap.action === 'search_again' ? 'allow' : 'no_reflex')
+      console.log(JSON.stringify({ type: 'tappyai_evidence_gap', tool: toolName, ...gap, goal: decisionFrame.goal, criteria: decisionFrame.criteria.map(c => c.key) }))
     }
 
     // ADR-024: the rows that survive the shortlist, as CANDIDATES. The evidence
@@ -916,9 +987,13 @@ export async function POST(req: Request) {
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
+  // A planning turn runs the place searches the ranker orders, so it carries the
+  // ranking instruction even when the multi-activity wording resolved to no
+  // single domain — measured 2026-09-14: "ăn chơi nhảy múa" → `domain: null`.
   const isDecisionDomain = needProfile.domain === 'places'
     || needProfile.domain === 'hotel'
     || needProfile.domain === 'shopping'
+    || planningIntent !== null
 
   // The transport-mode stage is decided HERE, deterministically, not by the
   // model noticing it should ask. resolveTripContext folds the history, so the
@@ -946,6 +1021,10 @@ export async function POST(req: Request) {
     // rule that a clip address stands in for the missing GPS/city. Absent on
     // every turn that did not come from the button, so generic chat is unchanged.
     clipContext ? buildExploreClipBlock(clipContext, lang) : '',
+    // The frame first: what the user is trying to do, what to search for and
+    // what evidence settles it — read before the ranking/pick instructions that
+    // explain how to present the result.
+    buildDecisionFrameBlock(decisionFrame, needProfile),
     isDecisionDomain ? buildRankingInstructionBlock() : '',
     isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
@@ -979,6 +1058,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const built = noToolTurn ? null : buildSystem(
     budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
     consultativeBlock || undefined,
+    planning,
   )
   const systemShared = built?.shared
   const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
@@ -1026,6 +1106,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }
   /** Set once at onFinish: absolute ms of model generation complete (T9). */
   let modelFinishAt: number | null = null
+  /**
+   * Planning contract, measured: whether a turn that ran in planning mode
+   * actually produced the `[TAPPY_PLAN]` block. Null on non-planning turns.
+   * The route cannot safely force the block (one model call, streamed), so the
+   * gap is made visible instead of silent — see promptBuilder's planning rules.
+   */
+  let planEmitted: boolean | null = null
   /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
   let usageAcct: {
     finishReason: string
@@ -1124,7 +1211,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // location the model DID name still wins; this only fills a blank.
           const location = modelLocation ?? exploreClipLocationHint(clipContext)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
-          let r: unknown = await searchPlaces(query, location, type, lang, userLocation, placesBudget)
+          // The editorial supplement runs beside the live search, not after it.
+          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget), travelEditorialFor(location)])
+          let r: unknown = placesResult
           // Explore clip: "this place" is ONE venue. The tool just returned the
           // 8-10 places around the address — as it must for discovery — so the
           // rows are narrowed HERE, deterministically, to the one(s) that carry
@@ -1204,9 +1293,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
           enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
-          return forModel('search_places', pick
+          return forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
+            : result, editorial))
         }
       }) }),
       get_news: tool({
@@ -1279,12 +1368,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
         execute: async ({ query }) => {
-          const r = await webSearch(query, lang)
+          // A travel turn that reaches for the general search still gets the editorial supplement.
+          const [r, editorial] = await Promise.all([webSearch(query, lang), travelEditorialFor(null)])
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as
           // `event_links` (when CCP is on); the result is untouched otherwise.
           await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
-          return r
+          return withTravelEditorial(r, editorial)
         }
       }),
       get_weather: tool({
@@ -1324,16 +1414,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
         }),
         execute: async ({ location, checkIn, checkOut }) => {
-          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
+          const [r, editorial] = await Promise.all([getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
           const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
           await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
-          return forModel('get_hotel_prices', pick
+          return forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
+            : result, editorial))
         }
       }),
       get_transport_options: tool({
@@ -1345,10 +1435,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
         }),
         execute: async ({ origin, destination, mode, date }) => {
-          const r = await getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
+          const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
           await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
-          return r
+          return withTravelEditorial(r, editorial)
         }
       }),
       ...(authedUserId ? {
@@ -1406,6 +1496,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // client-emit transform (logUsage / timeClientEmit) so a buffered turn's
       // enrichment tail lands in the SAME record instead of being missed.
       modelFinishAt = Date.now()
+      if (planningIntent) planEmitted = /\[TAPPY_PLAN\][\s\S]*\[\/TAPPY_PLAN\]/.test(text)
       usageAcct = {
         finishReason,
         promptTokens: usage?.promptTokens ?? null,
@@ -1622,6 +1713,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       retryCount: 'unknown',
       worthExtract,
       forcedTool,
+      planningIntent,
+      planEmitted,
+      frameGoal: decisionFrame.goal,
+      frameDomains: decisionFrame.domains,
+      frameClarify: decisionFrame.clarify?.about ?? null,
     }))
   }
   const timedBody = finalResponse.body

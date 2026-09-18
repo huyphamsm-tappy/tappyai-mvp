@@ -322,7 +322,10 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
   if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
-  if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
+  // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
+  // and it used to route an evening-out request to shopping. A negative
+  // lookbehind on "nhay " keeps the verb and drops the dance.
+  if (/(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
   if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
   if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
@@ -540,26 +543,98 @@ export function detectDecisionStage(
   return null
 }
 
+/**
+ * EXPLICIT planning language, Vietnamese and English. Any of these is the user
+ * asking for a PLAN — not for a list — and is what activates the planning
+ * workflow (`buildPlanningBlock`, the `planning` model role, `maxSteps 8`).
+ *
+ * 🚨 MEASURED GAP (2026-09-14). The detector fired only on "tối nay + activity"
+ * and "destination + N ngày" shapes, so "lập kế hoạch đi chơi cuối tuần",
+ * "giúp tôi sắp xếp tối nay đi đâu làm gì", "tối ưu trong 5 triệu" and every
+ * English phrasing ("plan an evening out in Saigon") returned null — and a
+ * short one of those then read as a "simple" query and ran on the FAST model.
+ * The phrases below are the ones a person uses to ask for a plan; each is
+ * anchored on a word boundary against diacritic-stripped text (normalizeVN).
+ */
+const PLAN_REQUEST_RE = /\b(lap|len)\s+(ke\s*hoach|plan)\b|\bplan\s+(cho|for|an?|the|my|our|a)\b|\bhelp me plan\b|\bplan (an?\s+)?(evening|night|day|weekend|trip|date)\b|\bsap xep\b.{0,30}\b(di dau|lam gi|toi nay|cuoi tuan|ngay mai|buoi)\b|\bdi dau lam gi\b|\btoi uu\b.{0,20}\b(trieu|tr|k|budget|ngan sach)\b|\bgoi y lich\b/
+
+/**
+ * The activities a plan request names, in the vocabulary of `search_places`'s
+ * `type` parameter — so the planning block can say exactly which searches to
+ * run and the model never has to guess a tool per activity. "ăn chơi nhảy múa"
+ * → restaurant + bar; "ăn tối rồi xem phim" → restaurant + cinema. Order is the
+ * order the words appear in, which is usually the order of the evening.
+ *
+ * Deliberately a lexicon, not a model call: it decides WHICH tools run, and
+ * that decision must be the same on every platform and cost nothing.
+ */
+export type PlanActivity = 'restaurant' | 'cafe' | 'bar' | 'cinema' | 'spa' | 'attraction' | 'hotel'
+
+const PLAN_ACTIVITY_RE: ReadonlyArray<[RegExp, PlanActivity]> = [
+  [/\ban\b|\ban uong\b|\ban toi\b|\ban trua\b|\bnha hang\b|\bquan an\b|\bbua toi\b|\bdinner\b|\blunch\b|\beat\b|\bfood\b|\bhai san\b|\bnhau\b|\bbuffet\b/, 'restaurant'],
+  [/\bcafe\b|\bca phe\b|\bcoffee\b|\btra sua\b|\bdessert\b/, 'cafe'],
+  [/\bbar\b|\bpub\b|\bclub\b|\bnhay mua\b|\bnightlife\b|\bnight out\b|\bdancing\b|\bdance\b|\bbia\b|\bbeer\b|\bcocktail\b|\blounge\b|\bkaraoke\b|\bnhay\b/, 'bar'],
+  [/\bxem phim\b|\bphim\b|\brap\b|\bcinema\b|\bmovie\b/, 'cinema'],
+  [/\bspa\b|\bmassage\b|\blam dep\b|\bnail\b/, 'spa'],
+  [/\btham quan\b|\bdi choi\b|\bvui choi\b|\bcheck in\b|\bdanh lam\b|\bbao tang\b|\bthang canh\b|\bsightseeing\b|\bthings to do\b|\bactivities\b|\bhoat dong\b/, 'attraction'],
+  [/\bkhach san\b|\bhotel\b|\bresort\b|\bhomestay\b|\bo dau\b.{0,10}\bdem\b|\bstay\b/, 'hotel'],
+]
+
+export function detectPlanActivities(text: string): PlanActivity[] {
+  const t = normalizeVN(text.toLowerCase())
+  const found: Array<[number, PlanActivity]> = []
+  for (const [re, activity] of PLAN_ACTIVITY_RE) {
+    const m = re.exec(t)
+    if (m) found.push([m.index, activity])
+  }
+  // "ăn chơi" is one idiom for going out, not "eat + sightsee": when it is the
+  // only attraction cue, the outing is dinner + wherever the other words point.
+  const attractionOnlyFromAnChoi = found.some(([, a]) => a === 'attraction') && !/\btham quan\b|\bvui choi\b|\bcheck in\b|\bdanh lam\b|\bbao tang\b|\bthang canh\b|\bsightseeing\b|\bthings to do\b|\bactivities\b|\bhoat dong\b/.test(t)
+  return found
+    .sort((a, b) => a[0] - b[0])
+    .map(([, a]) => a)
+    .filter(a => !(a === 'attraction' && attractionOnlyFromAnChoi))
+}
+
+const EVENING_RE = /\btoi nay\b|\bbuoi toi\b|\bchieu toi\b|\bdem nay\b|\btonight\b|\bthis evening\b|\bevening\b|\bnight out\b|\ba night\b|\bdate night\b/
+const MULTI_DAY_RE = /\d+\s*(ngay|dem|night|day)s?\b|\bcuoi tuan\b|\bweekend\b|\bdu lich\b|\btrip\b|\bchuyen di\b|\btour\b/
+
+/**
+ * The bare NOUNS. "kế hoạch" / "lịch trình" / "itinerary" count as a plan
+ * keyword only next to a time or destination cue (the rules below), never on
+ * their own: "kế hoạch của Vingroup năm nay là gì" is a question about a
+ * company, and the audit of 2026-09-14 caught the bare noun routing it into
+ * planning mode. A REQUEST form (`PLAN_REQUEST_RE`) stands on its own.
+ */
+const PLAN_NOUN_RE = /\bke hoach\b|\blich trinh\b|\bitinerary\b/
+
 export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   const t = normalizeVN(text.toLowerCase())
 
+  const hasPlanRequest = PLAN_REQUEST_RE.test(t)
+  const hasPlanKeyword = hasPlanRequest || PLAN_NOUN_RE.test(t)
+  const isEvening = EVENING_RE.test(t)
+
   // Evening: "tối nay" + multi-activity OR explicit plan request
-  const hasToiNay = t.includes('toi nay')
-  const hasEvening = t.includes('buoi toi') || t.includes('chieu toi')
   const hasMultiActivity =
-    (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau')) &&
-    (t.includes('an') || t.includes('cafe') || t.includes('ca phe'))
-  const hasPlanKeyword = t.includes('lich trinh') || t.includes('ke hoach') || t.includes('lap ke') || t.includes('goi y lich')
-  if ((hasToiNay || hasEvening) && (hasMultiActivity || hasPlanKeyword)) return 'evening'
+    (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau') || t.includes('nhay mua') || t.includes('club')) &&
+    (/\ban\b/.test(t) || t.includes('cafe') || t.includes('ca phe') || t.includes('dinner') || t.includes('eat'))
+  if (isEvening && (hasMultiActivity || hasPlanKeyword)) return 'evening'
 
   // Trip: destination + (days/nights pattern OR budget pattern OR trip keyword)
   const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
   const hasBudget = t.includes('budget') || t.includes('ngan sach') || /\d+\s*(trieu|tr\b|million)/.test(t)
-  const hasDestination = /(da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul)/.test(t)
+  const hasDestination = /(da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|sai gon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul)/.test(t)
   const hasTripKw = t.includes('trip') || t.includes('du lich') || t.includes('di choi') || t.includes('chuyen di') || hasPlanKeyword
 
   if (hasDays && (hasDestination || hasBudget || hasTripKw)) return 'trip'
   if (hasTripKw && hasDestination) return 'trip'
+
+  // An explicit plan request with no evening cue and no destination: the two
+  // existing plan types are the only ones the clients render, so it maps to the
+  // closest one — multi-day / weekend / travel wording → trip; otherwise evening
+  // (a single outing: "lập kế hoạch ăn chơi cho 2 người", "help me plan for 2").
+  if (hasPlanRequest) return MULTI_DAY_RE.test(t) ? 'trip' : 'evening'
 
   return null
 }

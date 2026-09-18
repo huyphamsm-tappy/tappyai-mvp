@@ -1,5 +1,5 @@
 import { type Budget } from './budget'
-import { type DecisionStage } from './intent'
+import { type DecisionStage, type PlanActivity } from './intent'
 import { fenceUntrusted } from './security/fence'
 import { renderEvidencePolicyBlock } from './consultative/evidenceProvenance'
 import { marketplaceSearchTemplates, searchTemplates } from '@/lib/ccp/adapters'
@@ -41,10 +41,37 @@ export interface UserPrefs {
 // English. Naming Vietnamese makes the guards unnecessary instead of load-bearing.
 const LANG_NAMES: Record<string, string> = { vi: 'Vietnamese', en: 'English', ja: 'Japanese', ko: 'Korean', zh: 'Chinese', ar: 'Arabic', th: 'Thai' }
 
-export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): string {
-  const toolsNeeded = planType === 'trip'
-    ? `- get_hotel_prices → tìm khách sạn phù hợp budget\n- search_places (type=restaurant) → tìm nhà hàng ngon ở điểm đến\n- search_places (type=attraction) → tìm điểm tham quan, thắng cảnh, hoạt động thú vị ở điểm đến\n- get_weather → thời tiết nếu biết ngày đi`
-    : `- search_places (type=spa) → nếu user muốn spa\n- search_places (type=restaurant) → tìm nhà hàng cho tối\n- search_places (type=cinema hoặc bar) → tìm giải trí tùy nhu cầu`
+/** What a plan request carries besides its type — read by `buildPlanningBlock`. */
+export interface PlanningContext {
+  /** The whole envelope for the plan in VND, when the user stated one. */
+  totalBudget?: number | null
+  /** The activities the request names, in `search_places` `type` vocabulary. */
+  activities?: readonly PlanActivity[]
+}
+
+const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
+  restaurant: '- search_places (type=restaurant) → nhà hàng / quán ăn cho bữa chính',
+  cafe: '- search_places (type=cafe) → cafe / trà sữa / tráng miệng',
+  bar: '- search_places (type=bar) → bar / pub / club / lounge — nhảy múa, nhậu, nightlife',
+  cinema: '- search_places (type=cinema) → rạp phim',
+  spa: '- search_places (type=spa) → spa / massage',
+  attraction: '- search_places (type=attraction) → điểm tham quan, thắng cảnh, hoạt động',
+  hotel: '- get_hotel_prices → khách sạn phù hợp budget',
+}
+
+export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi', ctx: PlanningContext = {}): string {
+  // The searches are decided HERE from the activities the user named — one per
+  // activity, in parallel, and nothing else. A request that names none gets the
+  // plan type's sensible default; a request that names three gets three. The
+  // model never has to guess a tool per activity, and never runs every tool.
+  const named = ctx.activities && ctx.activities.length > 0 ? [...new Set(ctx.activities)] : null
+  const defaults: PlanActivity[] = planType === 'trip' ? ['hotel', 'restaurant', 'attraction'] : ['restaurant', 'bar']
+  const activities = named ?? defaults
+  const toolsNeeded = activities.map(a => PLAN_TOOL_LINES[a]).join('\n')
+    + (planType === 'trip' ? '\n- get_weather → thời tiết nếu biết ngày đi' : '')
+  const totalBudgetLine = ctx.totalBudget
+    ? `TỔNG NGÂN SÁCH của cả kế hoạch: ${ctx.totalBudget.toLocaleString('vi-VN')} VND (cho TẤT CẢ các bước cộng lại — KHÔNG phải mỗi bước). Khối "BUDGET FILTER" ở nơi khác trong prompt (nếu có) nói về từng lựa chọn; với KẾ HOẠCH thì con số này mới là ràng buộc.`
+    : `TỔNG NGÂN SÁCH: user chưa nêu — KHÔNG bịa. Ước tính tổng từ giá thực trong kết quả tool và nêu rõ đó là ước tính.`
 
   // langReminder is deliberately placed as the LAST line before the closing marker — the
   // spot the model reads immediately before generating [TAPPY_PLAN] content. The block's
@@ -58,26 +85,31 @@ export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi'): s
     ? `\n⚠️ NGON NGU: title, description, va share_text trong JSON, cung nhu cau tom tat/gia dinh viet sau block, PHAI viet bang ${langName} — KHONG dung tieng Viet. Cac ten field (title, people, budget_total, days, items...) GIU NGUYEN vi la ma may tinh, khong dich.\n`
     : ''
 
-  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC =====
-User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT.
+  return `\n\n===== CHẾ ĐỘ LÊN KẾ HOẠCH ${planType === 'trip' ? 'CHUYẾN ĐI' : 'TỐI NAY'} - BẮT BUỘC, ƯU TIÊN CAO NHẤT =====
+User đang yêu cầu lên KẾ HOẠCH HOÀN CHỈNH. Đây là nhiệm vụ QUAN TRỌNG NHẤT của lượt này. Một yêu cầu có thể gồm NHIỀU hoạt động (ăn + bar + phim...) — kế hoạch phải bao trọn TẤT CẢ hoạt động user nêu, KHÔNG dừng lại sau một hoạt động, KHÔNG bắt user chọn "lĩnh vực" trước.
+${totalBudgetLine}
 
-BƯỚC 1 - GỌI TOOL (bắt buộc, gọi song song nếu có thể):
+BƯỚC 1 - GỌI TOOL: gọi ĐÚNG các tìm kiếm dưới đây, SONG SONG trong cùng một bước, mỗi hoạt động một lần, KHÔNG gọi thêm tool khác, KHÔNG gọi trùng:
 ${toolsNeeded}
+(Không dùng search_products trừ khi user nói rõ muốn MUA món đồ gì.)
 
 BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format sau (không thêm text thừa trước block). Mọi giá trị text (title/description/price/share_text...) viết bằng NGÔN NGỮ của câu trả lời cho user — các mô tả trong ngoặc vuông dưới đây chỉ là HƯỚNG DẪN CẤU TRÚC, không phải văn mẫu để chép:
 
 [TAPPY_PLAN]
-{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng budget ước tính]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language]","price":"[giá ước tính]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá]"},"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
+{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng ngân sách dạng CHUỖI có đơn vị, vd 5.000.000 VND: đúng con số user nêu nếu có, nếu không thì tổng ước tính từ giá thực]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language: what it is + the real rating/hours/price signal from the tool when present]","price":"[CHUỖI: giá ước tính TỪ TOOL cho bước này, có đơn vị; nếu tool không có giá → ghi đúng 'chưa có giá' (hoặc tương đương trong ngôn ngữ trả lời)]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá dạng chuỗi có đơn vị, hoặc 'chưa có giá']"},"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
 [/TAPPY_PLAN]
 
 QUY TẮC BẮT BUỘC:
-1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực)
-2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri)
-3. budget_total phải chia rõ trong cost_breakdown
-4. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
-5. Sau [/TAPPY_PLAN], viết 1 câu ngắn tóm tắt và CTA_BUTTONS như thường
-6. KHÔNG đặt word limit cho reply này — kế hoạch cần đầy đủ
-7. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt (nói rõ số người/ngân sách bạn đang giả định, và mời user chỉnh lại nếu khác) — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
+1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực). Mỗi hoạt động user nêu → ít nhất MỘT bước trong kế hoạch, theo thứ tự hợp lý trong ${planType === 'trip' ? 'ngày' : 'buổi tối'}.
+2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri). booking_link chỉ khi tool có.
+3. NGÂN SÁCH LÀ TỔNG: budget_total là tổng cho cả kế hoạch. cost_breakdown liệt kê từng bước; TỔNG cost_breakdown PHẢI ≤ budget_total. Giá từng bước lấy từ kết quả tool (price_range / price_level / giá món / giá vé / giá phòng). KHÔNG bịa giá, KHÔNG "ước lượng cho tròn" để phép cộng khớp: bước nào tool không có giá → ghi "chưa có giá" và KHÔNG cộng vào tổng. Sau block, nêu tổng ước tính và phần còn dư so với ngân sách (hoặc nói rõ tổng đang ước tính vì thiếu giá).
+4. GIỜ GIẤC THẬT: nếu tool có opening_hours / open_now → dùng để xếp giờ và nhắc giờ mở/đóng. Nếu không có → giờ trong "time" chỉ là gợi ý sắp xếp, KHÔNG khẳng định quán mở/đóng lúc đó.
+5. THÔNG TIN QUYẾT ĐỊNH: mỗi bước ghi vào description điều giúp user quyết định — rating (google_rating), khoảng giá, khoảng cách (distance_km), giờ mở cửa, loại hình — CHỈ những trường thật sự có trong kết quả tool. Không có thì không nhắc.
+6. share_text phải hấp dẫn, ngắn, kèm emoji và #TappyAI
+7. Sau [/TAPPY_PLAN]: 2-4 câu — vì sao chọn các điểm này cho đúng yêu cầu (số người, ngân sách, hoạt động), tổng/còn dư, 1 phương án thay thế nếu có, rồi CTA_BUTTONS như thường.
+8. KHÔNG áp dụng giới hạn số từ cho reply này — kế hoạch cần đầy đủ. Các khối "WORD LIMIT" khác không áp dụng ở lượt này.
+9. KHÔNG HỎI LẠI KHI ĐÃ ĐỦ: đã có địa điểm/khu vực + thời điểm (hoặc "tối nay") + hoạt động là ĐỦ để lập kế hoạch. TUYỆT ĐỐI KHÔNG hỏi "bạn muốn ăn loại gì" hay hỏi sở thích thay vì lập kế hoạch. Chọn mặc định theo thứ tự: (1) điều user nói trong cuộc trò chuyện này, (2) sở thích/kiêng cữ/thói quen trong MEMORY và PREFERENCES ở trên (ví dụ món hay ăn, đi mấy người, hay đi tối), (3) lựa chọn phổ biến hợp lý tại địa phương. Nêu giả định bằng MỘT câu ngắn và mời user chỉnh. Chỉ hỏi ĐÚNG MỘT câu khi thiếu điều không thể mặc định (không biết thành phố/khu vực và không có GPS/memory) — và khi đó vẫn đưa kế hoạch sơ bộ nếu có thể.
+10. MINH BACH GIẢ ĐỊNH: nếu user CHƯA nói rõ số người / ngân sách / ngày đi, hãy NÊU RÕ giả định của bạn bằng MỘT câu ngắn tự nhiên trong câu tóm tắt — viết bằng ngôn ngữ của câu trả lời, không chép mẫu có sẵn. Kế hoạch là của user để điều chỉnh, KHÔNG quyết thay user.
 ${langReminder}==========================================================`
 }
 
@@ -111,6 +143,13 @@ R1b: KET QUA TU TOOL — QUYET DINH LA DETERMINISTIC ENGINE, KHONG PHAI BAN
      - DECISION-FIRST OPENING (BAT BUOC): NEU shortlist[0].role = 'best_overall' HOAC shortlist chi co 1 item, CAU DAU TIEN cua reply PHAI la mot cau CHON — mo dau bang CU THE mot lua chon co ten (vi du "Minh chon X vi Y" / "X la lua chon minh nghieng ve nhat" / "Neu la minh thi minh chon X"). TUYET DOI KHONG mo dau bang "Minh tim duoc vai quan..." / "Day la vai lua chon..." / "Co the ban thich..." khi shortlist da co pick ro rang.
      - RULE 1-2-3 KHONG PHAI QUOTA UI: KHONG duoc bia phuong an C chi de dam bao co "3 lua chon". Neu shortlist chi co 1..2, tra loi 1..2 — do la thiet ke, khong phai thieu sot.
      - EVIDENCE → REASONING (NOT DUMPING): khi giai thich vi sao chon, PHAI ket noi bang chung voi context user da noi. Vi du KHONG duoc noi "4.9⭐ 355 danh gia" don thuan; NOI "Vi ban uu tien chat luong mon an, 4.9⭐ tu 355 danh gia khien X la lua chon minh nghieng ve nhat." Neu user chua noi uu tien cu the, dung ly do to lon cua rating count nhu bang chung xa hoi manh ("355 danh gia Google Maps la bang chung du manh de recommend X").
+     - Moi item shortlist co 'evidence' (cac truong THAT: rating, reviews, distance_km, price_vnd, opening_hours, cuisine, wifi...), 'why' (ly do engine da tinh) va 'missing' (bang chung con thieu). GIAI THICH bang dung nhung truong do. Truong nao KHONG co trong 'evidence' thi KHONG duoc noi ve no.
+   Neu tool ket qua co truong '_tappy_evidence_gap' (he thong da doi chieu bang chung voi KHUNG QUYET DINH):
+     - action='recommend': chi ung vien trong '_tappy_shortlist' co du bang chung. Goi y DUNG so do (1 cung duoc), KHONG them ung vien khac tu 'results' "cho du 3", KHONG ke ten quan khong co bang chung nhu mot goi y.
+     - action='search_again': chua ung vien nao co bang chung cho tieu chi. Goi search_places THEM DUNG MOT LAN voi cach dien dat khac (mon/loai quan cu the hon, hoac 'nha hang' thay 'quan an', hoac khu vuc hep hon), roi tra loi tu ket qua tot nhat cua CA HAI lan. KHONG goi lan thu ba.
+     - action='insufficient': noi THANG (bang ngon ngu cua cau tra loi) rang hien chua co danh gia/gia/gio mo dang tin cho cac quan tim duoc o khu vuc nay, co the ke TEN 1-3 quan gan nhat kem link Google Maps ('google_maps_search') de user tu kiem tra — KHONG mo ta khong gian, chat luong, vibe; KHONG danh gia quan nao la "tot", "kha tot", "dang thu", "ngon" (khong co bang chung thi khong co phan xet); KHONG goi do la goi y; KHONG hoi "ban thich an gi" — ket thuc bang loi khuyen kiem tra tren Maps, khong hoi.
+   MO TA DIA DIEM CHI TU DU LIEU THAT: chi noi nhung gi co trong truong that cua ung vien (rating, so danh gia, gio mo/dang mo, gia hoac khoang gia, cuisine, wifi, ngoai troi, dia chi, khoang cach, snippet/review). Khong co truong thi KHONG viet "khong gian thoai mai", "soi dong", "chat luong", "ly tuong de...", "noi tieng" hay bat ky tinh tu nao ve quan — do la bia. Mot quan chi co ten + ban do thi chi duoc neu ten + ban do.
+   KHONG HOI "ban muon an loai gi / thich loai nao?" nhu mot phan xa: khi da co khu vuc (hoac GPS) va co ung vien du bang chung, GOI Y TRUOC theo tieu chi trong KHUNG QUYET DINH (ngon = rating cao + nhieu danh gia; gan = distance_km; re = gia). Cau hoi (neu co) chi o cuoi, chi MOT, va chi khi cau tra loi thay doi khuyen nghi.
    Neu tool ket qua co truong '_tappy_relaxation':
      - Nghia la KHONG co ung vien nao dat toan bo rang buoc user. Do la ket qua ZERO — KHONG duoc am tham "noi long".
      - PHAI trinh bay cho user rang khong tim thay lua chon dat het rang buoc, RA cac option relaxation tu '_tappy_relaxation.options[]' (moi option co axis + detail + new_value).
@@ -164,11 +203,13 @@ NGUYEN TAC BAT BUOC:
    - Neu type='intercity': neu co 'bus_search_results' hoac 'train_search_results' khong rong, PHAI tom tat NGAY cac lua chon xe khach/tau (nha xe/tuyen, gia, gio chay neu co trong tieu de/snippet) tu cac ket qua do. Neu mot ket qua co 'link' rieng den trang tuyen/nha xe cu the (trang cua nha xe hoac trang tuyen tren san ve xe), PHAI gan ten nha xe/chuyen do thanh link markdown toi 'link' nay - day la link xem/dat ve TRUC TIEP, uu tien cao nhat. Cuoi cau tra loi dua them link tong hop [Xem them ve xe tren Vexere](vexere_link) (COPY nguyen van 'vexere_link'; neu co '_tappy_commerce' thi day la trang tuyen dung ngay, khong tu sua) va [Dat ve tau](train_booking_link)
    - Neu type='taxi': PHAI tra loi NGAY khoang cach uoc tinh ('distance_km' km) va khoang gia tham khao ('estimated_fare_vnd', VND), noi ro day la GIA UOC TINH khong phai gia chinh xac tu app, kem link cac app dat xe (Grab/Xanh SM/Be tu 'apps') de user tu mo app xem gia thuc te va dat xe
    - Neu tool tra ve 'error', dua cac link con lai ('vexere_link'/'train_booking_link'/'apps') va goi y user thu lai voi dia diem ro hon
+16c) Voi 'travel_editorial' (bai bao du lich VnExpress kem theo ket qua tool, chi o luot DU LICH): day la BANG CHUNG BIEN TAP (muc REVIEW/tham khao), KHONG phai du lieu song. Dung no de noi ve DAC DIEM diem den, mua nao dep, choi dau, an gi (mon/dac san), kinh nghiem, di chuyen chung — va KHI DUNG thi PHAI dan nguon ngay trong cau bang markdown link theo dung mau: theo [VnExpress: <title>](url) (<dated>) — 'url' va 'dated' lay nguyen tu item, khong tu che. Quy tac tuoi: item 'freshness' = 'stable' hoac 'historical' la kien thuc bien tap, luon kem (<dated>); item 'time_sensitive' (dong cua, sat lo, le hoi, su kien, canh bao) chi la tin THOI DIEM do — noi ro ngay va khuyen user kiem tra lai. TUYET DOI KHONG lay gia, phi, gio mo cua, lich chay, tinh trang con cho, quy dinh visa/nhap canh tu bai bao lam su that hien tai — nhung thu do CHI tu tool song (get_hotel_prices, get_flight_prices, search_places, get_weather, get_transport_options) hoac noi la chua co. Quan/khach san CU THE de goi y van phai co trong 'results'/'search_results' cua tool; bai bao chi bo sung boi canh. Khong co 'travel_editorial' hoac mang rong thi KHONG nhac den VnExpress, khong noi "VnExpress khong co thong tin" — cu tu van tu bang chung dang co.
 16b) 🚨 KHU VUC PHAI CO THAT. TUYET DOI KHONG tu chon mot thanh pho/khu vuc roi goi tool voi no. Chi duoc dung khu vuc khi: (a) user vua noi trong luot nay, (b) user da noi o luot truoc va van dang cung mot yeu cau, hoac (c) he thong cung cap vi tri thiet bi. Neu KHONG co nguon nao trong ba nguon do: KHONG goi search_places / get_hotel_prices / get_weather voi mot thanh pho tu doan, KHONG noi "o Ha Noi" / "gan ban" / "troi o day...", ma HOI user muon tim o khu vuc nao. Vi tri trong bo nho ("Vi tri thuong dung") KHONG phai la yeu cau cua luot nay: neu dung no thi PHAI noi ro dang dung khu vuc do va cho user doi.
 17) TUYET DOI KHONG noi (bang bat ky ngon ngu nao) rang TappyAI DA thuc hien dat cho/mua hang/dat phong/order thay user — vd tieng Viet: "Tappy da dat", "da book", "da mua", "da order". TappyAI chi TIM KIEM, GOI Y va cung cap LINK de user tu quyet dinh va tu dat/mua — dien dat theo huong "Tappy tim duoc...", "Day la link de dat...", "Ban co the dat tai...", "Minh goi y...", "Ban co the order qua..." bang NGON NGU cua cau tra loi (day la vi du y nghia bang tieng Viet, khong phai van mau co dinh).
 18) CHI DUNG LINK TU CAC NEN TANG CHINH THUC DA CO TRONG HE THONG: giao do an: chi trang TIM KIEM GrabFood (link quan cu the tren ShopeeFood/GrabFood do HE THONG giai quyet — ShopeeFood KHONG co trang tim kiem, KHONG tu che URL ShopeeFood), BeFood (be.com.vn); mua sam: chi cac trang TIM KIEM cua ${MARKETPLACE_NAMES} (link san pham cua Shopee/TikTok Shop/Lazada/Dien May Xanh/CellphoneS do HE THONG giai quyet — xem 18a; TUYET DOI KHONG tu che URL san pham hay URL TikTok Shop); du lich/khach san: chi trang TIM KIEM Booking.com (link khach san cu the tren cac OTA do HE THONG giai quyet — xem 18a; Agoda KHONG co trang tim kiem theo ten, KHONG tu che URL Agoda); ve may bay/xe khach: chi cac link trong 'booking_links'/'vexere_link' tool tra ve; nguon review uu tien: video Tappy, YouTube, Website chinh thuc, Google Maps, Facebook Page (neu co), va TikTok KHI VA CHI KHI he thong da xac thuc (xem quy tac TikTok ben duoi). TUYET DOI khong tao link cho Expedia, Amazon, eBay hay bat ky ngoai trang dat cho/mua hang nao khac ngoai danh sach tren.
 18b) NEN TANG HE THONG DA KET NOI (CCP): ${CCP_PROVIDER_NAMES}. Khi user NEU TEN mot nen tang trong danh sach nay ("tren Klook", "tren Agoda", "ve Vietjet", "tren TikTok Shop"...), van goi tool tim kiem BINH THUONG theo linh vuc (search_places cho hoat dong/spa/giai tri/an uong, get_hotel_prices cho khach san, get_flight_prices cho ve may bay, get_transport_options cho xe khach, search_products cho mua sam, web_search cho su kien/phim): he thong se tu gan link DUNG nen tang user neu ten (has_direct_handoff / booking_links / event_links). TUYET DOI KHONG tra loi "chua ket noi voi X" hay "khong ho tro X" cho cac nen tang trong danh sach; KHONG tu che URL cua chung. Neu ket qua khong co link cua nen tang do, noi ro chua tim thay trang phu hop tren nen tang do (khong doi sang nen tang khac). Khi user da NEU TEN nen tang: KHONG tao nut/link tim kiem cho nen tang KHAC (vd user hoi TikTok Shop thi khong them nut Shopee/Lazada), va KHONG tu viet link cho nen tang do trong prose (he thong da gan). SUAT CHIEU/GHE TRONG: he thong KHONG co nguon lich chieu — khong bia suat chieu, khong bia ghe trong; chi dan toi trang phim do he thong hien (neu co).
 18a) LINK DAT/MUA TRUC TIEP TREN MERCHANT — HE THONG TU GIAI QUYET, BAN KHONG VIET: he thong co nen tang thuong mai rieng (CCP) tu tim va xac thuc link dat phong / dat ban / mua ve / mua hang TRUC TIEP tren trang merchant, va tu hien nut cho user. Khi mot ket qua co 'has_direct_handoff' = true nghia la nut do DA co: ban chi duoc noi ngan gon rang co the dat/mua truc tiep (vd "co the dat truc tiep"), TUYET DOI KHONG tu viet URL cho merchant do, KHONG doan ten merchant, KHONG mo ta buoc thanh toan. Khi khong co 'has_direct_handoff', ap dung dung quy tac 18 (chi cac link tim kiem trong danh sach). Link merchant KHONG BAO GIO duoc ghep tu ten san pham/khach san/quan. DAT BAN NHA HANG: he thong HIEN KHONG ho tro dat ban truc tuyen (khong co nen tang dat ban nao duoc ket noi). Neu user muon dat ban: noi ro TappyAI chua ho tro dat ban, TUYET DOI KHONG tu che link dat ban, KHONG noi "co the dat ban truc tiep"; van gioi thieu quan tu ket qua tim kiem va, neu quan co so dien thoai/website trong du lieu, chi user tu lien he. Ve, hoat dong vui choi, cong vien, spa: KHONG bao gio gan link Booking.com / Agoda / Traveloka (do la nen tang khach san — khong ban ve, khong ban goi spa); neu he thong khong co 'has_direct_handoff' thi noi ro chua co link mua truc tiep, KHONG tu che nut.
+18c) BAI BAO VNEXPRESS: CHI dan link bai bao khi 'url' nam trong 'travel_editorial' cua tool (muc 16c); KHONG tu che URL bao chi.
 18b) REVIEW & SOCIAL LINK — DUNG TRUONG 'review_actions' TU TOOL, KHONG TU CHE URL:
 Moi ket qua search_places co truong 'review_actions' — mot mang cac hanh dong review/social duoc HE THONG tinh san theo do uu tien (TikTok da xac thuc → YouTube da xac thuc → Facebook → Google Maps → website chinh thuc → link TIM KIEM YouTube). Moi item co:
    - 'kind' (loai nguon)
@@ -294,6 +335,8 @@ export function buildSystem(
    * consultative behaviour needs it gone. D3's own closing block is additive and sits after it.
    */
   pickBlock?: string,
+  /** Total budget + named activities of a planning turn; ignored when `planningIntent` is null. */
+  planning?: PlanningContext,
 ): SystemPrompt {
   const now = new Date()
   const vnDateTime = now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' })
@@ -332,7 +375,15 @@ LUAT 2: CAM HOAN TOAN de cap bat ky khach san thuong hieu quoc te hoac 4-5 sao n
 LUAT 3: Neu khong con option nao trong tam gia, hay noi ro (bang NGON NGU cua cau tra loi, KHONG chep mau co san) rang trong tam ${budget.min > 0 ? budget.min.toLocaleString('vi-VN') + '-' : 'duoi '}${budget.max.toLocaleString('vi-VN')} VND chua tim duoc lua chon phu hop, va hoi user co muon nang ngan sach len khoang ${Math.round(budget.max * 1.2 / 1000) * 1000 >= 1000000 ? (Math.round(budget.max * 1.2 / 100000) / 10).toFixed(1) + ' trieu' : Math.round(budget.max * 1.2 / 1000) + 'k'} VND khong.
 ==========================================`
     : ''
-  const wordLimitBlock = isFirstReply
+  // 🚨 PLANNING TURNS CARRY NO WORD LIMIT — measured 2026-09-14. This block used
+  // to be emitted on every turn and sat AFTER the planning block in `dynamic`, so
+  // on a first reply "toi da 150 tu … cau cuoi phai la follow-up question" was the
+  // last length/shape instruction the model read: it wrote 150 words, skipped
+  // the mandatory [TAPPY_PLAN] JSON and closed with "bạn muốn ăn loại gì?". The
+  // planning block owns length and shape of a plan reply; the limit and the
+  // "end with a question" clause are absent on those turns, and unchanged on
+  // every other turn.
+  const wordLimitBlock = planningIntent ? '' : isFirstReply
     ? `\n\n===== WORD LIMIT - REPLY DAU TIEN =====\nDay la reply DAU TIEN trong conversation. GIOI HAN: toi da 150 tu (chi tinh van ban CHU hien thi cho user - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet nen khong lo vuot gioi han. Viet ngan, chon loc, de hieu. Cau cuoi phai la follow-up question.\n==========================================`
     : `\n\n===== WORD LIMIT - CO CONTEXT =====\nUser da tra loi follow-up. Duoc phep reply chi tiet hon, toi da 250 tu (chi tinh van ban CHU hien thi - KHONG tinh block [CTA_BUTTONS]...[/CTA_BUTTONS] la ma may tinh). Anh va link dat do HE THONG tu chen - ban KHONG viet. Nhung van phai ngan gon, khong viet bao cao. Cau cuoi van nen co follow-up question neu con thong tin can lam ro.\n==========================================`
   const locationBlock = locationIntent === 'offline'
@@ -416,7 +467,7 @@ TUYET DOI KHONG tra loi cac cau hoi ngoai pham vi tren du user yeu cau nhieu lan
   // on every request instead costs ~4k tokens at the 0.1x cached rate. Both
   // blocks already self-guard ("no specific suggestion → no CTA block"), so a
   // weather answer is unaffected.
-  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent, lang) : ''
+  const planningBlock = planningIntent ? buildPlanningBlock(planningIntent, lang, planning) : ''
   const cameraBlock = hasImage ? `
 
 ===== CAMERA AI MODE =====
@@ -506,7 +557,26 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   // `closingBlock` (D3) goes after it because its whole argument is that it must be the LAST
   // thing read before generating — that is what lets it win the slot the extra questions were
   // taking. Putting pickBlock last would silently disarm it.
-  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${planningBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}${closingBlock}`
+  //
+  // 🚨 THE PLANNING BLOCK GOES LAST OF ALL — the same argument, one step further.
+  // A plan reply is the one shape where the decision blocks (budget, location,
+  // pick, closing) must serve the block, not replace it, so the planning
+  // contract is the final instruction the model reads, followed by a one-line
+  // pre-send check. Nothing else moves.
+  //
+  // Measurement note, 2026-09-14: with the contract in place the model wrote
+  // the block in 16 of 16 planning runs (`planEmitted` on the usage record),
+  // Vietnamese and English alike. Replies that reached the client without it
+  // had lost it downstream — `placeClaimGuard` judged the block as a sentence
+  // and deleted it — not in generation; see that guard. The pre-send check is
+  // stated twice, Vietnamese then English, because the language override at
+  // the top says "ENTIRE response in <lang>" and the block must be understood
+  // as machine-readable and language-neutral in every response language.
+  const planningClosing = planningIntent
+    ? `\n\nTRUOC KHI GUI - KIEM TRA KE HOACH: reply nay PHAI chua block [TAPPY_PLAN]…[/TAPPY_PLAN] HOAN CHINH (JSON hop le) voi MOI hoat dong user neu, roi moi den phan giai thich va CTA. Neu chua co block, viet block truoc khi gui. Cac khoi "CHOT"/"NGHIENG VE"/"Tappy's Pick" o tren chi dung de CHON dia diem cho tung buoc — khong thay the ke hoach.
+(The [TAPPY_PLAN] JSON block is machine-readable and required in every response language — the language override applies to its VALUES, never to the block itself.)`
+    : ''
+  const dynamic = `\n\n${langBlock}${timeBlock}${memoryBlock ? '\n\n' + memoryBlock : ''}${prefBlock ? '\n\n' + prefBlock : ''}${stageBlock}${cameraBlock}${wordLimitBlock}${budgetBlock}${locationBlock}${gpsBlock}${pickBlock || ''}${closingBlock}${planningBlock}${planningClosing}`
 
   return { shared, dynamic }
 }

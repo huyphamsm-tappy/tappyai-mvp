@@ -14,10 +14,21 @@
 //
 // Honesty rules baked in — each button's label and its result say what actually
 // happened, and nothing more:
-//  - a URL handoff (Facebook, Zalo) cannot carry the recommendation, because a
+//  - a URL handoff (Facebook, Messenger) cannot carry a recommendation, because a
 //    recommendation has no public page (Places data is live-only). The brochure
 //    is COPIED first, the platform's dialog opens with the brand url, and the
 //    result says "copied — opened X, paste to send". Never "sent".
+//  - 🚨 A PUBLISHED PLAN IS A LINK. Once `/plan/<shareId>` exists, every target
+//    carries THAT url and nothing else of substance: the page is the brochure,
+//    the social card comes from its OG tags, and Copy copies the exact url. The
+//    long text itinerary is used only while there is no link (signed out, or the
+//    publish failed) — and then the menu says so and offers Retry; the url
+//    handoffs are disabled rather than quietly sent with the brand root.
+//  - Zalo publishes no standalone web share URL, and its official web Share
+//    Button cannot run here (it needs an Official Account id and its widget host
+//    does not resolve — see canHandoffToZalo). A phone's browser hands the link
+//    to the app with Zalo's own intent/scheme; a desktop tile is LABELLED as
+//    "copy link" and copies the plan url — it never pretends to be a Zalo share.
 //  - a text handoff (Email, Viber, LINE) carries the brochure in the URI. Viber
 //    is a custom scheme that fails silently when the app is absent, so the text
 //    is copied first as insurance and the result says so.
@@ -40,10 +51,10 @@ import { useEffect, useState } from 'react'
 import { Copy, Check, Share2, X, Mail, Inbox, Download } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
-  WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canOpenMessenger, isShareableUrl, type ShareTargetId,
+  WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canHandoffToZalo, canOpenMessenger, isShareableUrl, zaloMobileHandoff, type ShareTargetId,
 } from '@/lib/share/shareTargets'
 import { shareBrandMark } from '@/lib/share/shareBrands'
-import { inboxBody, withPlanShareUrl, type ShareArtifact } from '@/lib/share/shareArtifact'
+import { inboxBody, planLinkArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
 import { renderArtifactImage } from '@/lib/share/renderCardImage'
 import { planBrochureStrings } from '@/lib/i18n/planBrochure'
 import { PLAN_SHARE_ID_RE, planShareUrl } from '@/lib/plans/share/planShare'
@@ -114,27 +125,37 @@ export default function ShareMenu({
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [canNativeShare, setCanNativeShare] = useState(false)
   const [messengerApp, setMessengerApp] = useState(false)
+  const [zaloApp, setZaloApp] = useState(false)
   const [inboxOpen, setInboxOpen] = useState(false)
   const [busy, setBusy] = useState<ShareTargetId | null>(null)
 
   const [planLink, setPlanLink] = useState<PlanLink>({ state: 'idle' })
+  // Bumped by Retry: the publish effect keys on it, so a failed mint can be asked for again.
+  const [attempt, setAttempt] = useState(0)
 
   const base: ShareArtifact = artifact ?? urlArtifact(url ?? '', title)
-  // A plan whose link has been minted shares ITS OWN page; until then, and for
-  // everything else, the artifact is used as built.
-  const a: ShareArtifact = planLink.state === 'url' ? withPlanShareUrl(base, planLink.url) : base
-  // A recommendation shares the BRAND url; a review shares its own page. Only
-  // the former needs the brochure copied alongside a url handoff.
-  const textIsMoreThanUrl = a.text.trim() !== a.url.trim()
+  // A plan whose link has been minted shares ITS OWN page — as a link; until
+  // then, and for everything else, the artifact is used as built.
+  const a: ShareArtifact = planLink.state === 'url' ? planLinkArtifact(base, planLink.url) : base
+  // A recommendation shares the BRAND url and needs the brochure copied
+  // alongside a url handoff; a review, or a published plan, IS its url — the
+  // dialog carries everything, nothing rides on the clipboard.
+  const linkOnly = a.text.trim() === a.url.trim() || a.planLink === true
+  const textIsMoreThanUrl = !linkOnly
   const planSnapshot = base.kind === 'plan' ? base.plan : undefined
+  // A plan without a link has nothing honest to hand to a url-only platform:
+  // the brand root is not the plan. Those tiles wait for the link, or for Retry.
+  const planUnlinked = !!planSnapshot && planLink.state !== 'url'
+  const needsLink = (id: ShareTargetId) => planUnlinked && (id === 'facebook' || id === 'zalo' || id === 'messenger' || id === 'tiktok')
 
   useEffect(() => {
     setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function')
     setMessengerApp(typeof navigator !== 'undefined' && canOpenMessenger(navigator.userAgent))
+    setZaloApp(typeof navigator !== 'undefined' && canHandoffToZalo(navigator.userAgent))
   }, [])
 
   useEffect(() => {
-    if (!open) { setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }) }
+    if (!open) { setFeedback(null); setInboxOpen(false); setBusy(null); setPlanLink({ state: 'idle' }); setAttempt(0) }
   }, [open])
 
   // Publish the plan the moment the menu opens on one. The snapshot goes up in
@@ -152,7 +173,7 @@ export default function ShareMenu({
     const snapshot = JSON.parse(planKey) as { summary?: string }
     void publishPlan({ ...snapshot, share_text: snapshot.summary }).then(link => { if (!cancelled) setPlanLink(link) })
     return () => { cancelled = true }
-  }, [open, planKey])
+  }, [open, planKey, attempt])
 
   if (!open) return null
 
@@ -183,15 +204,19 @@ export default function ShareMenu({
     try {
       switch (id) {
         case 'copy': {
-          const ok = await copyText(a.text)
-          setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (textIsMoreThanUrl ? t('share.copiedContent') : t('share.copied')) : t('share.copyFailed') })
+          // A published plan copies its canonical url and nothing around it — what
+          // Android and iOS "Copy link" do — so a paste anywhere is the plan page.
+          const ok = await copyText(a.planLink ? a.url : a.text)
+          setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (a.planLink ? t('share.copiedLink') : textIsMoreThanUrl ? t('share.copiedContent') : t('share.copied')) : t('share.copyFailed') })
           if (ok) onShared?.('copy')
           return
         }
         case 'native': {
           try {
-            const data: ShareData = { title: a.subject, text: a.text }
-            if (!textIsMoreThanUrl) data.url = a.url
+            const data: ShareData = a.planLink
+              ? { title: a.subject, text: a.subject, url: a.url }
+              : { title: a.subject, text: a.text }
+            if (!a.planLink && !textIsMoreThanUrl) data.url = a.url
             if (a.image && typeof navigator.canShare === 'function') {
               const file = new File([a.image], 'tappyai.png', { type: 'image/png' })
               if (navigator.canShare({ files: [file] })) data.files = [file]
@@ -259,12 +284,30 @@ export default function ShareMenu({
         case 'zalo':
         case 'messenger':
         case 'tiktok': {
+          // A plan with no link yet: refuse out loud rather than hand off the brand root.
+          if (needsLink(id)) { setFeedback({ kind: 'error', text: planStrings.linkRequired }); return }
           if (!shareable) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
+          if (id === 'zalo') {
+            // Zalo's own SDK contract: a phone's browser hands the url to the app;
+            // a desktop has no share URL to open, so the link is copied and said so.
+            const mobile = zaloMobileHandoff(a.url, navigator.userAgent)
+            if (mobile) {
+              window.location.assign(mobile)
+              setFeedback({ kind: 'ok', text: t('share.opened', { app: appName(id) }) })
+              onShared?.(id)
+              return
+            }
+            const ok = await copyText(a.planLink ? a.url : a.text)
+            setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.zaloHint') : t('share.copyFailed') })
+            if (ok) onShared?.(id)
+            return
+          }
           const handoff = buildShareUrl(id, a.url)
           if (!handoff) {
             // TikTok lands here by design — copy and tell the user what to do.
-            const ok = await copyText(a.text)
+            const ok = await copyText(a.planLink ? a.url : a.text)
             setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.tiktokHint') : t('share.copyFailed') })
+            if (ok) onShared?.(id)
             return
           }
           if (id === 'messenger') {
@@ -318,8 +361,12 @@ export default function ShareMenu({
   // scheme can resolve — see canOpenMessenger.
   const apps = WEB_SHARE_TARGETS.filter(x =>
     (x.kind === 'url-handoff' || x.kind === 'text-handoff' || x.id === 'tiktok') && (x.id !== 'messenger' || messengerApp))
-  const buttonLabel = (id: ShareTargetId, kind: string) =>
-    kind === 'url-handoff' && textIsMoreThanUrl && id !== 'tiktok' ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
+  const buttonLabel = (id: ShareTargetId, kind: string) => {
+    // Desktop Zalo: no app to hand to and no working web widget, so the tile says
+    // what it does — copy the link (or the content) — under Zalo's mark.
+    if (id === 'zalo' && !zaloApp) return textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')
+    return kind === 'url-handoff' && textIsMoreThanUrl && id !== 'tiktok' ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
+  }
 
   return (
     <>
@@ -351,6 +398,15 @@ export default function ShareMenu({
             {planSnapshot && planLink.state === 'signIn' && (
               <p role="status" className="mt-2 text-xs text-amber-600 dark:text-amber-400" data-plan-link="sign-in">{planStrings.linkSignIn}</p>
             )}
+            {/* A failed mint is said plainly and can be retried; it is never dressed up as published. */}
+            {planSnapshot && planLink.state === 'failed' && (
+              <p role="status" className="mt-2 flex items-center gap-2 text-xs text-red-600 dark:text-red-400" data-plan-link="failed">
+                <span>{planStrings.linkFailed}</span>
+                <button type="button" onClick={() => setAttempt(n => n + 1)} data-testid="share-plan-retry" className="rounded-md border border-current px-2 py-0.5 font-medium">
+                  {planStrings.linkRetry}
+                </button>
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-3 gap-2 mb-3">
@@ -359,8 +415,10 @@ export default function ShareMenu({
                 key={target.id}
                 data-testid={`share-target-${target.id}`}
                 onClick={() => handle(target.id)}
-                disabled={!!busy || linkPending}
-                title={buttonLabel(target.id, target.kind)}
+                disabled={!!busy || linkPending || needsLink(target.id)}
+                aria-disabled={needsLink(target.id) || undefined}
+                data-needs-link={needsLink(target.id) ? 'true' : undefined}
+                title={needsLink(target.id) ? planStrings.linkRequired : buttonLabel(target.id, target.kind)}
                 className="flex flex-col items-center gap-1.5 py-2.5 px-1 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary active:scale-95 transition disabled:opacity-60"
               >
                 {(() => {
@@ -388,12 +446,15 @@ export default function ShareMenu({
               <Inbox size={18} className="text-orange-500" />
               <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.inbox')}</span>
             </button>
-            <button data-testid="share-target-save" onClick={() => handle('save')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
-              <Download size={18} className="text-gray-500" />
-              <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.save')}</span>
-            </button>
+            {/* A published plan is a link: the page carries the photos, so no rendered card to save (Android/iOS hide it too). */}
+            {!a.planLink && (
+              <button data-testid="share-target-save" onClick={() => handle('save')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
+                <Download size={18} className="text-gray-500" />
+                <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.save')}</span>
+              </button>
+            )}
             <button data-testid="share-target-copy" onClick={() => handle('copy')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
-              {feedback?.text === t('share.copiedContent') || feedback?.text === t('share.copied')
+              {feedback?.text === t('share.copiedContent') || feedback?.text === t('share.copied') || feedback?.text === t('share.copiedLink')
                 ? <Check size={18} className="text-green-500" />
                 : <Copy size={18} className="text-gray-500" />}
               <span className="text-sm text-gray-800 dark:text-gray-100">{textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')}</span>

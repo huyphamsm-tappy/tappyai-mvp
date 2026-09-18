@@ -43,7 +43,7 @@ describe('ShareMenu → onShared (the history boundary)', () => {
 
   it('copy: fires with "copy" only when the clipboard write resolved', async () => {
     const onShared = renderMenu()
-    fireEvent.click(screen.getByText('share.copyLink'))
+    fireEvent.click(screen.getByTestId('share-target-copy'))
     await waitFor(() => expect(onShared).toHaveBeenCalledWith('copy'))
     expect(onShared).toHaveBeenCalledTimes(1)
   })
@@ -51,7 +51,7 @@ describe('ShareMenu → onShared (the history boundary)', () => {
   it('copy: a failed clipboard write records nothing', async () => {
     ;(navigator.clipboard.writeText as any).mockRejectedValueOnce(new Error('denied'))
     const onShared = renderMenu()
-    fireEvent.click(screen.getByText('share.copyLink'))
+    fireEvent.click(screen.getByTestId('share-target-copy'))
     await screen.findByText('share.copyFailed')
     expect(onShared).not.toHaveBeenCalled()
   })
@@ -72,10 +72,13 @@ describe('ShareMenu → onShared (the history boundary)', () => {
 
   it('hand-off: fires with the target when the window opened, nothing when the popup was blocked', async () => {
     const onShared = renderMenu()
-    fireEvent.click(screen.getByText('share.facebook'))
+    fireEvent.click(screen.getByTestId('share-target-facebook'))
     await waitFor(() => expect(onShared).toHaveBeenCalledWith('facebook'))
     ;(window.open as any).mockReturnValueOnce(null)
-    fireEvent.click(screen.getByText('share.zalo'))
+    // The same Facebook tile with the popup blocked: on a desktop UA the Zalo tile is a
+    // copy-link tile by design, Messenger is left out (nothing handles fb-messenger://) and
+    // TikTok copies — Facebook is the one brand dialog that can be blocked here.
+    fireEvent.click(screen.getByTestId('share-target-facebook'))
     await screen.findByText('share.unavailable')
     expect(onShared).toHaveBeenCalledTimes(1)
   })

@@ -173,12 +173,17 @@ export function buildShareUrl(
   switch (id) {
     case 'facebook':
       return `https://www.facebook.com/sharer/sharer.php?u=${encoded}`
-    case 'zalo':
-      return `https://sp.zalo.me/plugins/share?url=${encoded}`
     // Messenger's own share deep link (developers.facebook.com/docs/sharing/messenger).
     // A custom scheme, so the caller copies first — nothing reports whether the app opened.
     case 'messenger':
       return `fb-messenger://share?link=${encoded}`
+    // 🚨 Zalo publishes NO standalone web share URL. the former `sp.zalo.me` plugin url
+    // was a guess: it answers 200 with an EMPTY document (measured 2026-09-14, curl
+    // and Chromium alike), so the tab opened blank and nothing was shared. Zalo's
+    // own sdk.js draws an inline iframe widget on desktop and, on a phone, hands
+    // the link straight to the app — see `zaloMobileHandoff`. Desktop callers copy
+    // the link and say so, the same honest answer as TikTok.
+    case 'zalo':
     // TikTok: no public web share endpoint exists. Saying so is the feature.
     // Text, inbox, save, clipboard and native are not url handoffs at all.
     case 'tiktok':
@@ -193,6 +198,44 @@ export function buildShareUrl(
     case 'native':
       return null
   }
+}
+
+/**
+ * Zalo on a PHONE'S browser: the two URIs Zalo's own web SDK uses to hand a link
+ * to the installed app (`sp.zalo.me/plugins/sdk.js`, `shareOnMobile`, read
+ * 2026-09-14 — not guessed): an Android SEND intent aimed at `zaloapp.com`, and
+ * the iOS share-extension scheme. The app then unfurls the url itself, so the
+ * recipient gets the plan page's own card. Null on desktop, where the SDK has
+ * only an in-page widget and no URL a page could open.
+ */
+export function zaloMobileHandoff(
+  canonicalUrl: string,
+  userAgent: string,
+  env: NodeJS.ProcessEnv = process.env
+): string | null {
+  if (!isShareableUrl(canonicalUrl, env)) return null
+  const encoded = encodeURIComponent(canonicalUrl)
+  if (/android/i.test(userAgent)) {
+    return `intent://zaloapp.com/#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=;S.android.intent.extra.TEXT=${encoded};B.hidePostFeed=false;B.backToSource=true;end`
+  }
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
+    return `zaloshareext://shareext?url=${encoded}&type=8&version=1`
+  }
+  return null
+}
+
+/**
+ * Whether this browser can hand a link to the Zalo app at all — a phone. On a
+ * desktop the Zalo tile is honest about what it does: it copies the link.
+ *
+ * Why not the official web Share Button on desktop: it needs an Official
+ * Account id (`data-oaid`, the SDK refuses without one) and its widget host,
+ * `button-share.zalo.me`, does not resolve in public DNS (NXDOMAIN, measured
+ * 2026-09-14 while `button-follow`/`button-call.zalo.me` resolve) — the iframe
+ * it builds loads zero bytes. Nothing a page can embed opens a Zalo composer.
+ */
+export function canHandoffToZalo(userAgent: string | undefined): boolean {
+  return !!userAgent && (/android/i.test(userAgent) || /iPad|iPhone|iPod/.test(userAgent))
 }
 
 /**

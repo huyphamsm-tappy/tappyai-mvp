@@ -13,7 +13,16 @@ export const vi: Record<string, string> = {
   // Media tabs
   'reviewNew.tabPhoto': 'Ảnh',
   'reviewNew.tabVideo': 'Video',
-  'reviewNew.tabLink': 'Link',
+  'reviewNew.tabLink': 'YouTube',
+  'reviewNew.tabPhotoHint': 'Chia sẻ hình ảnh',
+  'reviewNew.tabVideoHint': 'Đăng video ngắn',
+  'reviewNew.tabLinkHint': 'Chia sẻ video YouTube',
+  'reviewNew.chooseFile': 'Chọn file',
+  'reviewNew.back': 'Quay lại',
+  'reviewNew.heroTitle1': 'POST',
+  'reviewNew.heroTitle2': 'UPLOAD',
+  'reviewNew.visibilityLabel': 'Ai có thể xem?',
+  'reviewNew.visibilityPublic': 'Công khai',
 
   // Photo tab
   'reviewNew.addPhoto': 'Thêm ảnh',
@@ -97,7 +106,16 @@ export const en: Record<string, string> = {
   // Media tabs
   'reviewNew.tabPhoto': 'Photo',
   'reviewNew.tabVideo': 'Video',
-  'reviewNew.tabLink': 'Link',
+  'reviewNew.tabLink': 'YouTube',
+  'reviewNew.tabPhotoHint': 'Share photos',
+  'reviewNew.tabVideoHint': 'Post a short video',
+  'reviewNew.tabLinkHint': 'Share a YouTube video',
+  'reviewNew.chooseFile': 'Choose a file',
+  'reviewNew.back': 'Back',
+  'reviewNew.heroTitle1': 'POST',
+  'reviewNew.heroTitle2': 'UPLOAD',
+  'reviewNew.visibilityLabel': 'Who can see this?',
+  'reviewNew.visibilityPublic': 'Public',
 
   // Photo tab
   'reviewNew.addPhoto': 'Add photos',

@@ -91,6 +91,13 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
+  // 🚨 MULTI-ACTIVITY OUTINGS — measured gap, 2026-09-14. "ăn chơi nhảy múa
+  // tối nay" names no venue noun the SUBJECTS lexicon knows, so an evening
+  // plan resolved to `domain: null` and lost the ranking-instruction block on
+  // exactly the turn that runs the most place searches. Nightlife and outing
+  // words are place-seeking by definition; a false positive still lands on
+  // `places`, which is where every one of them belongs.
+  [/\ban choi\b|\bnhay mua\b|\bnightlife\b|\bnight out\b|\bclub\b|\bpub\b|\bvui choi\b|\bdi choi\b|\bhen ho\b|\bdate night\b/, 'places'],
   // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
   // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
   // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú
@@ -148,7 +155,10 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   // phrase set a storage priority the user never expressed.
   [/dung luong(?! pin)|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
   [/man hinh|\bscreen\b|\bdisplay\b|\boled\b/, 'screen', false],
-  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b/, 'rating', true],
+  // "ngon" / "chất lượng" / "tốt nhất" name the same axis the rating scores — the
+  // measured 2026-09-15 lunch request ("ăn gì cho ngon") stated its one criterion
+  // and the ranker heard nothing.
+  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b|\bngon\b|ngon nhat|chat luong|\btot nhat\b|\bdelicious\b|\btasty\b/, 'rating', true],
   [/\bgan\b|\bnear\b|\bclose to\b|gan day|gan toi|khoang cach|\bdistance\b/, 'distance', true],
   // Transport pickup speed. Phrases are deliberately specific ("toi nhanh", not
   // bare "nhanh") so a laptop "xu ly nhanh" query still resolves to performance.
@@ -157,6 +167,9 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   [/gan bien|\bbeach\b|view bien|beachfront/, 'beach', true],
   [/trung tam|\bcentral\b|\bdowntown\b|city cent(er|re)/, 'central', true],
   [/\bwifi\b|\bwi-fi\b/, 'wifi', true],
+  // Time-bound: "trưa nay", "tối nay", "đang mở", "bây giờ" make being open a
+  // stated criterion, scored only when the row says whether it is open.
+  [/dang mo|con mo|\bmo cua\b|open now|\bbay gio\b|\bright now\b|trua nay|toi nay|sang nay|chieu nay|\btonight\b/, 'openNow', true],
   [/ngoai troi|\boutdoor\b|san vuon/, 'outdoor', true],
 ]
 

@@ -24,6 +24,7 @@ import {
   canOpenMessenger,
   isShareableUrl,
   shareTarget,
+  zaloMobileHandoff,
   type ShareTargetId,
 } from './shareTargets'
 
@@ -114,10 +115,23 @@ describe('buildShareUrl', () => {
     expect(out).toBe(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(REVIEW)}`)
   })
 
-  it('sends Zalo the canonical URL, encoded', () => {
-    const out = buildShareUrl('zalo', REVIEW)
-    expect(out).toContain('zalo.me')
-    expect(out).toContain(encodeURIComponent(REVIEW))
+  // 🚨 Zalo publishes no standalone web share URL: the former `sp.zalo.me` plugin url
+  // answers an empty page. Its own SDK hands the link to the app on a phone and
+  // draws an in-page widget on desktop, so the builder says so with null.
+  it('builds no web handoff for Zalo — the old sp.zalo.me endpoint is gone for good', () => {
+    expect(buildShareUrl('zalo', REVIEW)).toBeNull()
+  })
+
+  it('zaloMobileHandoff: Zalo’s own app handoff on a phone’s browser, carrying the canonical URL; nothing on desktop', () => {
+    const android = zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Linux; Android 14; Pixel 8) Mobile Safari/537.36')
+    expect(android).toBe(`intent://zaloapp.com/#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=;S.android.intent.extra.TEXT=${encodeURIComponent(REVIEW)};B.hidePostFeed=false;B.backToSource=true;end`)
+    const ios = zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Mobile/15E148')
+    expect(ios).toBe(`zaloshareext://shareext?url=${encodeURIComponent(REVIEW)}&type=8&version=1`)
+    expect(zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128')).toBeNull()
+    expect(zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) Safari/605.1')).toBeNull()
+    // The same guard as every handoff: an unshareable url gets nothing.
+    expect(zaloMobileHandoff('https://www.tappyai.com/chat/abc', 'Android')).toBeNull()
+    expect(zaloMobileHandoff('http://www.tappyai.com/reviews/abc', 'iPhone')).toBeNull()
   })
 
   // The honest answer: TikTok has no public web share endpoint.
@@ -133,7 +147,7 @@ describe('buildShareUrl', () => {
   )
 
   it('produces https handoff URLs', () => {
-    for (const id of ['facebook', 'zalo'] as ShareTargetId[]) {
+    for (const id of ['facebook'] as ShareTargetId[]) {
       expect(buildShareUrl(id, REVIEW)).toMatch(/^https:\/\//)
     }
   })
@@ -279,7 +293,7 @@ describe('private chat is not shareable', () => {
     'Ngày 1 - Đến & Khám phá',
   ])('no message text can appear in a handoff URL: %s', (secret) => {
     const url = `${SITE}/reviews/abc`
-    const out = [buildShareUrl('facebook', url, env), buildShareUrl('zalo', url, env)].join(' ')
+    const out = [buildShareUrl('facebook', url, env), zaloMobileHandoff(url, 'Android', env), zaloMobileHandoff(url, 'iPhone', env)].join(' ')
     expect(out).not.toContain(secret)
     expect(out).not.toContain(encodeURIComponent(secret))
   })

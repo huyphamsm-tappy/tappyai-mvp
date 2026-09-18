@@ -18,6 +18,7 @@ const h = vi.hoisted(() => ({
   rpcCalls: 0,
   captured: [] as Array<{ element: unknown; options: Record<string, unknown> }>,
   font: new ArrayBuffer(8) as ArrayBuffer | null,
+  mark: 'data:image/png;base64,AAAA' as string | null,
 }))
 vi.mock('@/lib/supabase/server', () => ({
   createClient: () => ({ rpc: () => { h.rpcCalls++; return Promise.resolve({ data: h.row ? [h.row] : [], error: null }) } }),
@@ -31,6 +32,8 @@ vi.mock('next/og', () => ({
   },
 }))
 vi.mock('./ogFont', () => ({ ogFont: () => Promise.resolve(h.font), OG_FONT_FAMILY: 'Be Vietnam Pro' }))
+// The shipped mark, fetched once per instance from the canonical origin (see ogMark.ts) — mocked here.
+vi.mock('./ogMark', () => ({ ogMark: () => Promise.resolve(h.mark) }))
 
 import OgImage, { size, contentType, runtime } from './opengraph-image'
 import * as twitter from './twitter-image'
@@ -39,7 +42,7 @@ import { planOgCard, planOgContent } from './planOgCard'
 const ID = 'AbCdEfGhIjK1'
 const PHOTO = 'https://lh3.googleusercontent.com/p/AF1QipM-a=s1360'
 
-beforeEach(() => { h.row = null; h.rpcCalls = 0; h.captured = []; h.font = new ArrayBuffer(8) })
+beforeEach(() => { h.row = null; h.rpcCalls = 0; h.captured = []; h.font = new ArrayBuffer(8); h.mark = 'data:image/png;base64,AAAA' })
 
 const published = () => {
   const snap = toPlanShareSnapshot({ type: 'trip', title: 'Quy Nhơn 3 ngày 2 đêm', people: 2, days: [
@@ -75,7 +78,12 @@ describe('the composition handed to the rasteriser', () => {
     expect(html).toMatch(new RegExp(`<img src="${PHOTO.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*width="1200" height="630"`))
     expect(html.indexOf('<img')).toBeLessThan(html.indexOf('Tappy Plan')) // photo is behind the copy
     expect(html).toMatch(/Tappy Plan[\s\S]*Quy Nhơn 3 ngày 2 đêm[\s\S]*2 ngày  ·  4 điểm dừng/)
-    expect(html).toContain('TAPPY')
+    // 🚨 BRANDING: "Tappy" white + "AI" blue, and the shipped mark when it was loaded — never "TAPPY".
+    expect(html).not.toContain('TAPPY')
+    expect(html).toMatch(/<span style="color:#FFFFFF">Tappy<\/span><span style="color:#3391FF">AI<\/span>/)
+    const withMark = renderToStaticMarkup(planOgCard({ eyebrow: 'Tappy Plan', title: 'Quy Nhơn 3 ngày 2 đêm', line: '', photo: PHOTO }, 'Be Vietnam Pro', 'data:image/png;base64,AAAA'))
+    expect(withMark).toMatch(/<img src="data:image\/png;base64,AAAA"[^>]*style="[^"]*border-radius:11px;object-fit:cover/)
+    expect(withMark.indexOf('data:image/png;base64,AAAA')).toBeLessThan(withMark.indexOf('>Tappy<'))
     expect(html).toContain('font-family:Be Vietnam Pro')
     expect(html).not.toContain('tappyai-v2.png')
   })
@@ -108,6 +116,7 @@ describe('opengraph-image route', () => {
     const { element, options } = h.captured[0]
     const html = renderToStaticMarkup(element as never)
     expect(html).toContain(PHOTO)
+    expect(html).toContain('<img src="data:image/png;base64,AAAA"')
     expect(html).toContain('Quy Nhơn 3 ngày 2 đêm')
     expect(html).toContain('font-family:Be Vietnam Pro')
     expect(options).toMatchObject({ width: 1200, height: 630 })
@@ -121,8 +130,19 @@ describe('opengraph-image route', () => {
     const { element, options } = h.captured[0]
     const html = renderToStaticMarkup(element as never)
     expect(html).toContain('TappyAI')
-    expect(html).not.toContain('<img')
+    // No photo — but the brand mark still draws (it is the lockup, not a plan image).
+    expect(html).not.toMatch(/<img src="https?:/)
+    expect(html).toContain('<img src="data:image/png;base64,AAAA"')
     expect(html).toContain('font-family:sans-serif')
     expect(options.fonts).toBeUndefined()
+  })
+
+  it('renders the lockup as the wordmark alone when the mark could not be fetched — the preview never fails for a logo', async () => {
+    h.mark = null
+    published()
+    await OgImage({ params: { shareId: ID } })
+    const html = renderToStaticMarkup(h.captured[0].element as never)
+    expect(html).not.toContain('data:image/png')
+    expect(html).toMatch(/<span style="color:#FFFFFF">Tappy<\/span><span style="color:#3391FF">AI<\/span>/)
   })
 })

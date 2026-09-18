@@ -356,8 +356,16 @@ const HAS_LETTER = /\p{L}/u
 /** Hedges that only exist to introduce the amount, so they go with it. */
 const HEDGE_BEFORE = /(?:\b(?:khoảng|tầm|chừng|cỡ|độ|around|about|approximately|roughly|only|chỉ|từ|from)\b|~)\s*$/iu
 
-/** Spans that are machine payload, not prose — never removed, never split on. */
-function protectedSpans(text: string): Array<[number, number]> {
+/**
+ * Spans that are machine payload, not prose — never removed, never split on.
+ *
+ * Exported so every guard that walks `sentenceSpans` can tell a machine block
+ * from a sentence: `sentenceSpans` keeps each of these whole as ONE span, and a
+ * guard that judges that span as prose deletes the whole block. Measured
+ * 2026-09-14 in `placeClaimGuard` — a complete [TAPPY_PLAN] deleted because a
+ * Google-Maps longitude inside its `maps_link` read as a phone number.
+ */
+export function protectedSpans(text: string): Array<[number, number]> {
   const spans: Array<[number, number]> = []
   for (const m of text.matchAll(NON_PROSE_RE)) spans.push([m.index!, m.index! + m[0].length])
   return spans

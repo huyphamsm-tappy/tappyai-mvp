@@ -128,7 +128,16 @@ describe('the page', () => {
     // CTA to THIS plan's canonical url, and the attribution.
     expect(out).toMatch(new RegExp(`<a href="https://www\\.tappyai\\.com/plan/${ID}" class="v3-pb-cta" data-pb-cta[^>]*>Xem kế hoạch đầy đủ trên Tappy`))
     expect(out).not.toMatch(/data-pb-cta[^>]*href="[^"]*\/(planner|chat|explore)/)
-    expect(out).toMatch(/data-pb-foot[\s\S]*Được tạo bởi <strong>TAPPY<\/strong>/)
+    expect(out).toMatch(/data-pb-foot[\s\S]*Được tạo bởi <span[^>]*data-tappy-wordmark[^>]*>Tappy<span[^>]*>AI<\/span><\/span>/)
+    // 🚨 BRANDING: the shipped lockup — the app icon (otter-logo.png, 22% radius, cover) with
+    // "Tappy" white and "AI" blue — in the bar; never "TAPPY" as text, never /logo.svg.
+    expect(out).toMatch(/data-pb-bar[\s\S]*?<a href="\/" class="v3-pb-brand"[^>]*>[\s\S]*?data-tappy-lockup/)
+    expect(out).toMatch(/<img src="\/branding\/otter-logo\.png"[^>]*data-tappy-mark/)
+    expect(out).toMatch(/border-radius:22%;object-fit:cover/)
+    expect(out).toMatch(/<span[^>]*style="[^"]*color:#FFFFFF[^"]*"[^>]*data-tappy-wordmark[^>]*>Tappy</)
+    expect(out).toMatch(/<span[^>]*style="[^"]*color:#3391FF[^"]*"[^>]*data-tappy-wordmark-ai[^>]*>AI</)
+    expect(out).not.toContain('/logo.svg')
+    expect(out.replace(/<[^>]+>/g, ' ')).not.toMatch(/\bTAPPY\b/)
     // Share reuses the same canonical url.
     expect(out).toContain(`data-url="https://www.tappyai.com/plan/${ID}"`)
     // Always the dark treatment.
@@ -185,7 +194,7 @@ describe('the page', () => {
     expect(out).toContain('Itinerary')
     expect(out).toContain('See the full plan on Tappy')
     expect(out).toContain('2 days')
-    expect(out).toContain('Created by <strong>TAPPY</strong>')
+    expect(out).toMatch(/Created by <span[^>]*data-tappy-wordmark/)
   })
 
   it('exposes nothing but the snapshot: no owner, no conversation, no place ids', async () => {
@@ -205,6 +214,13 @@ describe('metadata + social image', () => {
     expect(m.alternates?.canonical).toBe(`https://www.tappyai.com/plan/${ID}`)
     expect(m.openGraph).toMatchObject({ title: 'Quy Nhơn 3 ngày 2 đêm | Tappy Plan', url: `https://www.tappyai.com/plan/${ID}`, siteName: 'TappyAI', type: 'article', locale: 'vi_VN' })
     expect(m.twitter).toMatchObject({ card: 'summary_large_image', title: 'Quy Nhơn 3 ngày 2 đêm | Tappy Plan' })
+    // 🚨 The description is THE PLAN'S summary — the exact share_text line, not the brand tagline.
+    expect(m.description).toBe('Biển xanh, ẩm thực ngon, nhịp sống bình yên.')
+    expect(m.openGraph).toMatchObject({ description: 'Biển xanh, ẩm thực ngon, nhịp sống bình yên.' })
+    expect(m.twitter).toMatchObject({ description: 'Biển xanh, ẩm thực ngon, nhịp sống bình yên.' })
+    // No app-root or generic metadata: the url is the plan, the site card is not declared.
+    expect(m.openGraph && 'images' in m.openGraph ? m.openGraph.images : undefined).toBeUndefined()
+    expect(JSON.stringify(m)).not.toContain('https://www.tappyai.com"')
     // The generic site card is NOT declared here: the file-based opengraph-image / twitter-image win.
     expect(JSON.stringify(m)).not.toContain('tappyai-v2.png')
     expect(existsSync('src/app/plan/[shareId]/opengraph-image.tsx')).toBe(true)
