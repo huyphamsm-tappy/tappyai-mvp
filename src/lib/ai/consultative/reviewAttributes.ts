@@ -160,7 +160,13 @@ function stripUnsupportedClauses(sentence: string, unsupported: readonly RegExp[
   // The sentence terminator (". " / "! ") stays with the sentence, whichever clause carried it.
   const term = sentence.match(/[.!?…]*\s*$/)?.[0] ?? ''
   const body = sentence.slice(0, sentence.length - term.length)
-  const parts = body.split(CLAUSE_SPLIT)
+  // A bolded venue name is atomic: "**Tám Riêu - Phan Xích Long**" must not split on its own
+  // dash (measured 2026-09-18: the pick became "Mình chọn **Tám Riêu."). Bold spans are swapped
+  // for placeholders before the split and restored after.
+  const bolds: string[] = []
+  const shielded = body.replace(/\*\*[^*\n]+\*\*/g, (m) => { bolds.push(m); return ` ${bolds.length - 1} ` })
+  const unshield = (s: string) => s.replace(/ (\d+) /g, (_, i) => bolds[Number(i)])
+  const parts = shielded.split(CLAUSE_SPLIT).map(unshield)
   // parts = [clause, sep, clause, sep, …]
   const keep: string[] = []
   let dropped = 0

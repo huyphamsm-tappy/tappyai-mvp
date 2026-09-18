@@ -114,3 +114,11 @@ describe('guardAtmosphereClaims — the pick is the first sentence that NAMES a 
     expect(r.text).not.toContain('Lil Sago')
   })
 })
+
+describe('guardAtmosphereClaims — a bolded name with a dash is atomic', () => {
+  it('"**Tám Riêu - Phan Xích Long**" survives the clause strip (measured: "Mình chọn **Tám Riêu.")', () => {
+    const text = 'Mình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình — không gian yên tĩnh, có chỗ đậu xe. Đi sớm nhé.'
+    const r = guardAtmosphereClaims(text, { attrs: new Map(), names: ['Tám Riêu - Phan Xích Long'], gapAttributes: ['parking', 'quiet'] })
+    expect(r.text).toBe('Mình chọn **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình. Đi sớm nhé.')
+  })
+})
