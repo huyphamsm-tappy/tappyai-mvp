@@ -268,3 +268,50 @@ describe('opening hours — a schedule is not a live state', () => {
     expect(t.minutes).toBe(9 * 60)
   })
 })
+
+describe('serperPlaces — priceLevel is non-deterministic upstream, so an empty answer is asked once more', () => {
+  // Measured 2026-09-18 on the audit env: the IDENTICAL request alternated 19/20 → 0/20 → 19/20 → 0/20
+  // rows with `priceLevel`, seconds apart, same venues. Owner-approved exception: one retry, never two.
+  const row = (priceLevel?: string) => ({ title: 'Quán A', address: 'Quận 1', rating: 4.5, ratingCount: 10, ...(priceLevel ? { priceLevel } : {}) })
+  const answers = (...pages: Array<Array<Record<string, unknown>>>) => {
+    let n = 0
+    const calls: string[] = []
+    vi.stubGlobal('fetch', vi.fn(async (_input: unknown, init?: { body?: string }) => {
+      calls.push(String(init?.body))
+      const page = pages[Math.min(n++, pages.length - 1)]
+      return new Response(JSON.stringify({ places: page }), { status: 200 })
+    }))
+    return calls
+  }
+
+  it('an answer with a band on some row is taken as is — one call', async () => {
+    const calls = answers([row('100-200 N ₫'), row()])
+    const out = await serperPlaces('quán ăn ngon Ho Chi Minh City', { lat: 10.7769, lng: 106.7009 })
+    expect(calls).toHaveLength(1)
+    expect(out?.[0].priceLevel).toBe('100-200 N ₫')
+  })
+
+  it('no band on any row → the SAME request once more, and the answer with bands wins', async () => {
+    const calls = answers([row(), row()], [row('100-200 N ₫'), row('Trên 1 Tr ₫')])
+    const out = await serperPlaces('quán ăn ngon Ho Chi Minh City', { lat: 10.7769, lng: 106.7009 })
+    expect(calls).toHaveLength(2)
+    expect(calls[0]).toBe(calls[1])
+    expect(out?.map(r => r.priceLevel)).toEqual(['100-200 N ₫', 'Trên 1 Tr ₫'])
+  })
+
+  it('both answers without bands → the first is kept, and there is never a third call', async () => {
+    const calls = answers([row(), row()], [row(), row()])
+    const out = await serperPlaces('quán ăn ngon Ho Chi Minh City', { lat: 10.7769, lng: 106.7009 })
+    expect(calls).toHaveLength(2)
+    expect(out).toHaveLength(2)
+    expect(out?.every(r => r.priceLevel === undefined)).toBe(true)
+  })
+
+  it('the winning answer is what the 30-minute cache holds', async () => {
+    const calls = answers([row(), row()], [row('100-200 N ₫'), row()])
+    await serperPlaces('quán ăn ngon Ho Chi Minh City', { lat: 10.7769, lng: 106.7009 })
+    const again = await serperPlaces('quán ăn ngon Ho Chi Minh City', { lat: 10.7769, lng: 106.7009 })
+    expect(calls).toHaveLength(2)
+    expect(again?.[0].priceLevel).toBe('100-200 N ₫')
+  })
+})

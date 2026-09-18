@@ -108,6 +108,34 @@ export async function serperPlaces(
   const body: Record<string, unknown> = { q: query, gl: 'vn', hl: 'vi' }
   if (ll) body.ll = `@${ll.lat},${ll.lng},${ll.zoom ?? 14}z`
 
+  // 🚨 `priceLevel` IS NON-DETERMINISTIC UPSTREAM. Measured 2026-09-18 on the audit env: the
+  // IDENTICAL request ("quán ăn tối ngon Ho Chi Minh City", same ll) answered 19/20 rows with
+  // `priceLevel`, then 0/20, then 19/20, then 0/20 — alternating, seconds apart, same rows,
+  // same ratings. The string form is not the cause (owner's first hypothesis; see
+  // serperLocation.ts, kept for its own sake). So when an answer carries NO band on ANY row,
+  // the same request is made ONCE more and the answer WITH bands wins; both answers are the
+  // same venues, so nothing else changes. One extra credit only in the empty case, never a
+  // third call. Owner-approved exception ("so priceLevel is returned consistently").
+  let out = await fetchSerperMaps(apiKey, body)
+  if (out && out.length > 0 && !out.some(r => r.priceLevel)) {
+    const again = await fetchSerperMaps(apiKey, body)
+    if (again && again.length > 0 && again.some(r => r.priceLevel)) {
+      console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'price_level_retry', won: true }))
+      out = again
+    } else {
+      console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'price_level_retry', won: false }))
+    }
+  }
+  if (out === null) return null
+  // Only a non-empty result is stored, so a timeout never becomes a hole in the
+  // data — the same rule every other Serper cache here follows. TTL matches the
+  // existing place cache; nothing is persisted beyond it (Maps/Serper terms).
+  if (out.length > 0) setCache(cacheKey, out, 30 * 60 * 1000)
+  return out
+}
+
+/** One `/maps` request → parsed records, or null on a failed/timed-out call. */
+async function fetchSerperMaps(apiKey: string, body: Record<string, unknown>): Promise<SerperPlaceRecord[] | null> {
   try {
     const resp = await Promise.race([
       fetch('https://google.serper.dev/maps', {
@@ -169,11 +197,6 @@ export async function serperPlaces(
         set('position', num(r.position))
         return rec
       })
-
-    // Only a non-empty result is stored, so a timeout never becomes a hole in the
-    // data — the same rule every other Serper cache here follows. TTL matches the
-    // existing place cache; nothing is persisted beyond it (Maps/Serper terms).
-    if (out.length > 0) setCache(cacheKey, out, 30 * 60 * 1000)
     return out
   } catch {
     return null

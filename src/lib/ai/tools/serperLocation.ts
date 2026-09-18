@@ -4,13 +4,19 @@ import { VIETNAM_CITY_ENTRIES } from './vietnamCities'
 /**
  * The place string that goes into a Serper `/maps` query.
  *
- * Serper answers `priceLevel` CONSISTENTLY only when the place part reads like a Google Maps
- * query. Measured 2026-09-17 on the audit environment — same `ll`, same venues, minutes apart:
- * "quán ăn ngon Quận 1 Ho Chi Minh" → 18/20 rows carried `priceLevel`; "quán ăn ngon Quận 1,
- * TP HCM" → 0/20. The model writes the `location` argument freely, so the CITY part is rewritten
- * to the canonical English name the city table already carries (without ", Vietnam"), the part
- * before it (a district, a ward) is kept as written, and commas go. Nothing else about the
- * request changes: same endpoint, same `ll`, same rows, same fields.
+ * The model writes the `location` argument freely ("Quận 1, TP HCM", "Q.1 TP.HCM", "Quận 1, Hồ Chí
+ * Minh"). The CITY part is rewritten to the canonical English name the city table already carries
+ * (without ", Vietnam"), the part before it (a district, a ward) is kept as written, and commas
+ * go — one stable, Maps-shaped string per (query, city), which also makes the 30-minute place
+ * cache hit across the model's spellings. Nothing else about the request changes: same endpoint,
+ * same `ll`, same rows, same fields.
+ *
+ * 🚨 This was first thought to be why `priceLevel` came back for one spelling and not another
+ * (2026-09-17: "Quận 1 Ho Chi Minh" 18/20, "Quận 1, TP HCM" 0/20). Re-measured 2026-09-18 with
+ * the IDENTICAL string: the answer alternates 19/20 → 0/20 → 19/20, seconds apart — the bands are
+ * non-deterministic upstream regardless of spelling. The consistency fix is therefore the single
+ * retry in `serperPlaces` (an answer with no band on any row is asked once more); this file only
+ * keeps the query canonical.
  *
  * Owner-approved 2026-09-17 ("location-string normalization for Serper so priceLevel is returned
  * consistently"). An unknown place is passed through as written (commas removed) — this never

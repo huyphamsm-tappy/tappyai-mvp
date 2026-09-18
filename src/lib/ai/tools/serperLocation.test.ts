@@ -2,17 +2,14 @@ import { describe, it, expect } from 'vitest'
 import { normalizeSerperLocation, serperMapsQuery } from './serperLocation'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Serper `/maps` returns `priceLevel` CONSISTENTLY only for a query whose place
-// string reads like a Google Maps query. Measured 2026-09-17 on the audit env,
-// same `ll`, same venues, minutes apart:
-//   "quán ăn ngon Quận 1 Ho Chi Minh"  → 18 / 20 rows with priceLevel
-//   "quán ăn ngon Quận 1, TP HCM"      →  0 / 20
 // The model writes the `location` argument freely ("Quận 1, TP HCM", "Q.1 TP.HCM",
 // "Quận 1, Hồ Chí Minh"), so the string is normalised before it is joined to the
 // query — the CITY part becomes the canonical English name the city table already
-// carries, the district part is kept as written, commas go. Owner-approved
-// (overnight 2026-09-17: "location-string normalization for Serper so priceLevel
-// is returned consistently").
+// carries, the district part is kept as written, commas go: one Maps-shaped string
+// per (query, city), which the 30-minute place cache then hits across spellings.
+// Owner-approved (overnight 2026-09-17). The `priceLevel` consistency itself is the
+// single retry in serperPlaces.ts — the bands proved non-deterministic upstream for
+// an IDENTICAL request (2026-09-18), so spelling was never the cause.
 //
 // Data acquisition is otherwise untouched: same endpoint, same `ll`, same rows.
 // ─────────────────────────────────────────────────────────────────────────────
