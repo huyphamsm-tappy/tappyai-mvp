@@ -174,6 +174,8 @@ const MESSAGES = {
   'content.badFormat': { vi: 'Kết quả không đúng định dạng, vui lòng thử lại.', en: 'The result came back malformed — please try again.' },
 
   // Per-feature rate limits. `{n}` is the daily allowance.
+  'share.notShareable': { vi: 'Kết quả này chưa thể chia sẻ công khai.', en: 'This result cannot be shared publicly.' },
+  'chat.shareFollowUpLimit': { vi: 'Bạn đã hỏi đủ số câu cho kết quả này hôm nay. Đăng nhập để hỏi Tappy thoải mái hơn nhé.', en: "You've asked all the follow-ups this result allows today. Sign in to keep asking Tappy." },
   'rate.tooFast': { vi: 'Bạn thao tác quá nhanh, vui lòng thử lại sau giây lát.', en: "You're going a bit fast — please try again in a moment." },
   'rate.postLimit': { vi: 'Bạn đã đăng quá {n} bài hôm nay. Thử lại vào ngày mai nhé.', en: "You've posted {n} times today. Please try again tomorrow." },
   'rate.uploadLimit': { vi: 'Bạn đã tải lên {n} ảnh hôm nay. Thử lại vào ngày mai nhé.', en: "You've uploaded {n} images today. Please try again tomorrow." },

@@ -9,6 +9,7 @@ import { getDemographics, toPromptGender } from '@/lib/account/demographics'
 import { getAgeEligibility } from '@/lib/account/ageEligibility'
 import { redirect } from 'next/navigation'
 import { vietnamHeroClock } from '@/lib/home/heroGreeting'
+import { siteJsonLd } from '@/lib/discovery/siteJsonLd'
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -94,13 +95,19 @@ export default async function HomePage() {
   }))
 
   return (
-    <HomeV3
-      user={!!user}
-      userInfo={userInfo}
-      firstName={firstName}
-      suggestions={SUGGESTIONS}
-      conversations={convList}
-      hero={hero}
-    />
+    <>
+      {/* G1 GEO: WebSite (SearchAction → /chat?q=) + Organization. Static data, no user fields. */}
+      {siteJsonLd().map((ld, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      ))}
+      <HomeV3
+        user={!!user}
+        userInfo={userInfo}
+        firstName={firstName}
+        suggestions={SUGGESTIONS}
+        conversations={convList}
+        hero={hero}
+      />
+    </>
   )
 }

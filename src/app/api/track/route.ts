@@ -5,6 +5,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { randomUUID } from 'crypto'
 import { ANALYTICS_FORBIDDEN_KEYS, stripForbiddenKeys } from '@/lib/account/userDataClassification'
+import { G1_KNOWN_EVENT_TYPES } from '@/lib/analytics/analytics-contract'
+import { applyG1SideEffects } from '@/lib/analytics/g1Ingestion'
 
 // Unified analytics ingestion (Analytics v1.1 §8A). Accepts authenticated AND
 // anonymous events, dedups on the client-generated event_id, and is
@@ -22,6 +24,8 @@ const KNOWN_TYPES = new Set([
   // Explore → the Ask-Tappy-about-this-place CTA. Phase `click` from the three CTAs, phase
   // `target` from the chat route with the resolved/ambiguous/unresolved verdict.
   'ask_tappy_place',
+  // G1 growth contract (src/lib/analytics/analytics-contract.ts) — the seven canonical events.
+  ...G1_KNOWN_EVENT_TYPES,
 ])
 const REBUILD_SIGNALS = new Set(['chat_search', 'review_search', 'hide', 'not_interested', 'report'])
 
@@ -149,6 +153,10 @@ export async function POST(req: NextRequest) {
     if (user && rows.some((r) => REBUILD_SIGNALS.has(r.event_type))) {
       rebuildProfile(user.id, supabase).catch(() => {})
     }
+
+    // G1 side effects (anon→user stitching, shared-result counters). Best-effort
+    // and after the insert, so an analytics write never blocks on them.
+    applyG1SideEffects(admin, rows.map((r) => ({ event_type: r.event_type, user_id: r.user_id, anon_id: r.anon_id, metadata: r.metadata }))).catch(() => {})
   }
 
   return NextResponse.json({ ok: true })

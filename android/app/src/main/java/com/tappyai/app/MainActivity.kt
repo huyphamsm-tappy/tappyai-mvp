@@ -97,7 +97,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        val uri = intent?.data ?: return
+        if (intent == null) return
+        // G1-F: an inbound system share (another app → Share → Tappy) has no data URI; it
+        // carries its payload in extras. Handled before the deep-link path so the two never
+        // compete — a share intent is never also a link intent.
+        if (intent.action == Intent.ACTION_SEND) {
+            navHostViewModel.handleIncomingShare(intent)
+            return
+        }
+        val uri = intent.data ?: return
         if (uri.scheme == "tappyai") {
             navHostViewModel.handleDeepLink(intent)
         }

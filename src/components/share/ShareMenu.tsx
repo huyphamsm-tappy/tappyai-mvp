@@ -48,7 +48,7 @@
 // Other apps), so a real mark can never be mistaken for a generic one.
 
 import { useEffect, useState } from 'react'
-import { Copy, Check, Share2, X, Mail, Inbox, Download } from 'lucide-react'
+import { Copy, Check, Share2, X, Mail, Inbox, Download, Link2 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
   WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canHandoffToZalo, canOpenMessenger, isShareableUrl, zaloMobileHandoff, type ShareTargetId,
@@ -106,6 +106,7 @@ export default function ShareMenu({
   open,
   onClose,
   onShared,
+  onPublicLink,
 }: {
   /** The canonical artifact. When absent, `url` + `title` are shared as a link (Reviews). */
   artifact?: ShareArtifact
@@ -120,6 +121,12 @@ export default function ShareMenu({
    * or failed attempts never report. Reviews record it as their "Đã share" history.
    */
   onShared?: (channel: ShareTargetId | 'inbox' | 'download') => void
+  /**
+   * G1 "Public link": offered by the chat action bar for a persisted turn. Opens the
+   * sanitized-preview flow that publishes a frozen /r/<slug> page. A row IN this menu —
+   * never a replacement for the artifact share above it.
+   */
+  onPublicLink?: () => void
 }) {
   const { t, locale } = useTranslation()
   const [feedback, setFeedback] = useState<Feedback>(null)
@@ -446,6 +453,12 @@ export default function ShareMenu({
               <Inbox size={18} className="text-orange-500" />
               <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.inbox')}</span>
             </button>
+            {onPublicLink && (
+              <button data-testid="share-target-public-link" onClick={() => onPublicLink()} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
+                <Link2 size={18} className="text-primary-600" />
+                <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.publicResult')}</span>
+              </button>
+            )}
             {/* A published plan is a link: the page carries the photos, so no rendered card to save (Android/iOS hide it too). */}
             {!a.planLink && (
               <button data-testid="share-target-save" onClick={() => handle('save')} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">

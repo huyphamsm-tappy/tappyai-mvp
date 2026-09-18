@@ -55,6 +55,9 @@ import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext, buildIdentityBlock } from '@/lib/ai/contextBuilder'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { guardShareFollowUp } from '@/lib/share/followUpGuard'
+import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
+import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
@@ -137,9 +140,11 @@ export async function POST(req: Request) {
 
   const messages = validated.messages
   const rawUserPrefs = validated.preferences
-  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = (rawBody ?? {}) as {
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle, shareSlug: rawShareSlug } = (rawBody ?? {}) as {
     userLocation?: { lat?: unknown; lng?: unknown; address?: string }
     responseStyle?: unknown
+    /** G1: set only by the public shared-result page's follow-up box. Validated in the guard. */
+    shareSlug?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -607,6 +612,45 @@ export async function POST(req: Request) {
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
+  }
+
+  // ── G1-E: per-Zalo-identity daily cap ────────────────────────────────────
+  //
+  // A request from the Zalo Mini App carries a SERVER-SIGNED identity cookie
+  // (see src/lib/zalo/identity.ts). It is an additional rate-limit key over the
+  // canonical quota above — never an authentication, never a bypass. A forged or
+  // absent cookie simply means this cap does not apply and the ordinary anonymous
+  // quota does. Same number as the anonymous tier (ANON_LIFETIME_LIMIT), applied
+  // per VN day to the Zalo identity — one place to change it.
+  const zaloHash = readZaloIdentity(req.headers.get('cookie'), zaloIdentitySecret())
+  if (zaloHash) {
+    const zrl = await publicDailyRateLimit(`chat-zalo:${zaloHash}`, ANON_LIFETIME_LIMIT)
+    if (!zrl.ok) {
+      return new Response(
+        JSON.stringify({ error: 'anon_limit_reached', message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }), upgradeUrl: '/login' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } },
+      )
+    }
+  }
+
+  // ── G1: anonymous follow-up from a public shared result ──────────────────
+  //
+  // Same pipeline, two additions (see src/lib/share/followUpGuard.ts): a per-slug
+  // daily cap keyed on the strongest identity we have, and a short PUBLIC context
+  // line so the model knows which shared result the question refers to. Runs
+  // AFTER the identity/quota resolution above (the lifetime anonymous tier and
+  // the guest 18+ declaration have already been enforced) and BEFORE any model
+  // or tool work, so a refused request costs nothing.
+  let shareContextBlock = ''
+  if (rawShareSlug !== undefined) {
+    const decision = await guardShareFollowUp(req, rawShareSlug, authedUserId)
+    if (!decision.ok) {
+      return new Response(
+        JSON.stringify({ error: 'share_follow_up_limit', message: serverMessage('chat.shareFollowUpLimit', requestLocale(req)) }),
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(decision.retryAfter || 3600) } },
+      )
+    }
+    shareContextBlock = decision.contextBlock
   }
 
   // Inject freeform user preferences from client request body
@@ -1184,7 +1228,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     planning,
   )
   const systemShared = built?.shared
-  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //

@@ -14,6 +14,9 @@ import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard from '@/components/TripPlanCard'
 import { parsePlan } from '@/lib/structuredContent/parsePlan'
+import { parseCTA } from '@/lib/structuredContent/parseCta'
+import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
+import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
 import ComparisonBlock from '@/components/chat/structured/ComparisonBlock'
 import ConfirmationPrompt from '@/components/chat/structured/ConfirmationPrompt'
@@ -74,12 +77,7 @@ const QUICK_PROMPTS_EN: Record<string, string[]> = {
   general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
 }
 
-interface CTAButton {
-  label: string
-  type: 'maps' | 'call' | 'zalo' | 'website' | 'booking' | 'search' | 'internal_booking'
-  url: string
-  primary: boolean
-}
+type CTAButton = import('@/lib/structuredContent/parseCta').CTAButton
 
 /**
  * Where the opening question came from, when it did not come from the keyboard.
@@ -101,89 +99,11 @@ interface ChatInterfaceProps {
   onSave?: (messages: SavedMessage[], title: string) => void | Promise<void>
 }
 
-const CTA_MARKER = '[CTA_BUTTONS]'
-
-/**
- * Locates the `{…}` payload that follows `marker`, by matching braces.
- *
- * Brace matching rather than a regex because the block's POSITION is not fixed. The bare form
- * used to be anchored to end-of-content (`\[CTA_BUTTONS\](\{[\s\S]*\})\s*$`), which is how the
- * raw block reached users: the model emits `[FOLLOWUPS]` after the CTA block, and followups are
- * parsed after this step, so something still trailed the block, the anchor failed, and nothing
- * was stripped — leaving the JSON orphaned in the visible text once the followups line went.
- *
- * The obvious loosening (dropping the `$`) is worse, not better: `\{[\s\S]*\}` runs greedily to
- * the LAST brace in the message and swallows trailing prose. Braces inside JSON strings are
- * skipped, and `\"` is honoured, so a `}` in a label or URL cannot end the scan early.
- */
-function findMarkerJson(content: string, marker: string): { start: number; end: number; json: string } | null {
-  const start = content.toLowerCase().indexOf(marker.toLowerCase())
-  if (start < 0) return null
-
-  let open = start + marker.length
-  while (open < content.length && /\s/.test(content[open])) open++
-  if (content[open] !== '{') return null
-
-  let depth = 0
-  let inString = false
-  let escaped = false
-  for (let i = open; i < content.length; i++) {
-    const c = content[i]
-    if (escaped) { escaped = false; continue }
-    if (inString) {
-      if (c === '\\') escaped = true
-      else if (c === '"') inString = false
-      continue
-    }
-    if (c === '"') inString = true
-    else if (c === '{') depth++
-    else if (c === '}' && --depth === 0) return { start, end: i + 1, json: content.slice(open, i + 1) }
-  }
-  return null // payload still arriving — braces do not balance yet
-}
-
-export function parseCTA(content: string): { text: string; buttons: CTAButton[] } {
-  const withTag = /\[CTA_BUTTONS\]([\s\S]*?)\[\/CTA_BUTTONS\]/i
-
-  let text = content
-  let payload: string | null = null
-
-  const tagged = text.match(withTag)
-  if (tagged) {
-    payload = tagged[1]
-    text = text.replace(withTag, '')
-  } else {
-    const span = findMarkerJson(text, CTA_MARKER)
-    if (span) {
-      payload = span.json
-      text = text.slice(0, span.start) + text.slice(span.end)
-    }
-  }
-
-  // Any further block is stripped without rendering: only the first has ever produced buttons,
-  // and a leftover second block would otherwise show as raw JSON.
-  for (let span = findMarkerJson(text, CTA_MARKER); span; span = findMarkerJson(text, CTA_MARKER)) {
-    text = text.slice(0, span.start) + text.slice(span.end)
-  }
-  // A marker whose payload has not finished arriving; then orphan tags; then the marker itself
-  // still being typed out character by character (`…[CTA_BU`), so none of it flickers mid-stream.
-  text = text
-    .replace(/\[CTA_BUTTONS\][\s\S]*$/i, '')
-    .replace(/\[\/?CTA_BUTTONS\]/gi, '')
-    .replace(/\[C(?:T(?:A(?:_(?:B(?:U(?:T(?:T(?:O(?:N(?:S)?)?)?)?)?)?)?)?)?)?$/i, '')
-
-  if (text === content) return { text: content, buttons: [] }
-  text = text.trimEnd()
-  if (payload === null) return { text, buttons: [] }
-
-  try {
-    const parsed = JSON.parse(payload.trim())
-    const buttons: CTAButton[] = Array.isArray(parsed.buttons) ? parsed.buttons : []
-    return { text, buttons }
-  } catch {
-    return { text, buttons: [] }
-  }
-}
+// 🔑 THE CTA PARSER MOVED, THE EXPORT DID NOT. `parseCTA` now lives in
+// `@/lib/structuredContent/parseCta` so the G1 shared-result sanitizer can read the same
+// persisted buttons on the server (precedent: `parsePlan`). Re-exported here so the render
+// path and the existing tests are unchanged. One wire format, one reader.
+export { parseCTA }
 
 /**
  * The same parse, with every model-authored button checked against its own URL.
@@ -222,26 +142,9 @@ export function parseCTAValidated(
 // 🚨 DO NOT re-implement it here or anywhere else. One wire format, one reader.
 export { parsePlan }
 
-// Optional follow-up suggestions the model may emit at the very end.
-// Rendered as tappable chips (only on the latest reply) — a helpful next step,
-// never a push. MFS 2.7.
-export function parseFollowups(content: string): { text: string; followups: string[] } {
-  // The model is meant to emit a single-line [FOLLOWUPS]a|b|c[/FOLLOWUPS] block,
-  // but it sometimes omits/malforms the closing tag (and stream enrichment appends
-  // an image block after it). Bound extraction to the followups LINE so a missing
-  // close tag can never leak the raw marker or swallow trailing content.
-  const m = content.match(/\[FOLLOWUPS\]([^\n]*?)(?:\[\/FOLLOWUPS\]|\n|$)/i)
-  let followups: string[] = []
-  let text = content
-  if (m) {
-    followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
-    text = content.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/i, '')
-  }
-  // Safety net: strip any stray/orphan markers so implementation details are
-  // never visible to the user, even on malformed output.
-  text = text.replace(/\[\/?FOLLOWUPS\]/gi, '').trimEnd()
-  return { text, followups }
-}
+// 🔑 `parseFollowups` moved to `@/lib/structuredContent/parseFollowups` (same reason as
+// `parseCTA` above). Re-exported; not re-implemented.
+export { parseFollowups }
 
 function parsePlaceFromUrl(url: string) {
   try {
@@ -822,6 +725,11 @@ export default function ChatInterface({
     void ensureAnonymousSession()
   }, [])
 
+  // G1: the per-turn result id (see onResponse/onFinish). Map keyed by the
+  // assistant message id, so the action bar and the CTA clicks under a turn
+  // can name the result they act on.
+  const pendingResultIdRef = useRef<string | null>(null)
+  const resultIdsRef = useRef<Map<string, string>>(new Map())
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     /**
@@ -847,9 +755,20 @@ export default function ChatInterface({
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
+      // G1 canonical `query` — one per accepted request, with a fresh result id
+      // that the finished assistant turn adopts below so `result_action` can
+      // point back at it. Not tied to any UI entry point: every path that sends
+      // a message (form, Enter, chips, follow-ups, initial prompt) lands here.
+      const rid = (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now())
+      pendingResultIdRef.current = rid
+      emitQuery({ domain: category, result_id: rid })
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
     onFinish: async (message) => {
+      if (pendingResultIdRef.current) {
+        resultIdsRef.current.set(message.id, pendingResultIdRef.current)
+        pendingResultIdRef.current = null
+      }
       // Latest committed messages (includes the user's turn) + the authoritative
       // final assistant message, deduped by id — never the stale `messages` closure.
       const all = [...messagesRef.current.filter(m => m.id !== message.id), message]
@@ -1373,6 +1292,19 @@ export default function ChatInterface({
                 setZoomedImage((target as HTMLImageElement).src)
               }
             }}
+            // G1 `result_action`: one delegated listener covers the CTA row, the
+            // decision cards' offer/maps/review links and any link in the prose.
+            // Classification is by CTA type (data attribute) then by host; a
+            // click that G1 does not count returns null and emits nothing.
+            onClickCapture={(e) => {
+              const a = (e.target as HTMLElement).closest?.('a[href]') as HTMLAnchorElement | null
+              if (!a) return
+              const href = a.getAttribute('href') ?? ''
+              const action = classifyOutboundAction(a.dataset.ctaType, href)
+              if (!action) return
+              const msgId = (a.closest('[data-msg-id]') as HTMLElement | null)?.dataset.msgId
+              emitResultAction({ action_type: action, result_id: msgId ? resultIdsRef.current.get(msgId) : undefined, target_host: hostOf(href) })
+            }}
           >
             {messages.map((msg, msgIdx) => {
               if (msg.role === 'assistant') {
@@ -1438,7 +1370,7 @@ export default function ChatInterface({
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
                 return (
-                  <div key={msg.id} className="animate-slide-up flex gap-3">
+                  <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
@@ -1520,6 +1452,8 @@ export default function ChatInterface({
                                   : undefined
                               })(),
                             }}
+                            resultId={resultIdsRef.current.get(msg.id)}
+                            domain={category}
                           />
                         </div>
                       )}
@@ -1532,6 +1466,7 @@ export default function ChatInterface({
                               <div key={i} className="inline-flex items-center gap-1">
                                 <a
                                   href={btn.url}
+                                  data-cta-type={btn.type}
                                   target={btn.type === 'internal_booking' ? undefined : '_blank'}
                                   rel={btn.type === 'internal_booking' ? undefined : 'noopener noreferrer'}
                                   onClick={(e) => {
@@ -1587,7 +1522,7 @@ export default function ChatInterface({
                             <button
                               key={i}
                               type="button"
-                              onClick={() => { posthog.capture('followup_clicked'); append({ role: 'user', content: f }) }}
+                              onClick={() => { posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f }) }}
                               style={{ animationDelay: `${i * 70}ms` }}
                               className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >

@@ -13,6 +13,7 @@ import {
 } from '@/lib/scam-shield/history'
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
+import { getAttribution, setSessionSource } from '@/lib/analytics/attribution'
 import ScamShieldResult, { LEVEL_TONE, LEVEL_KEY } from './ScamShieldResult'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
 import ScamKnowledgeSection from './ScamKnowledgeSection'
@@ -150,6 +151,9 @@ export default function ScamShieldView() {
    * state: a first-time visitor genuinely has no history.
    */
   useEffect(() => { setHistory(readHistory()) }, [])
+  // G1 wedge attribution: a session that STARTED on Scam Shield (no more specific
+  // source captured) is a wedge_scam entry. Never overrides a share/GEO/QR source.
+  useEffect(() => { if (getAttribution().source === 'direct') setSessionSource('wedge_scam') }, [])
 
   /** The one place a history row is created, and only from a result the engine actually returned. */
   const remember = useCallback((checked: CheckResult) => {

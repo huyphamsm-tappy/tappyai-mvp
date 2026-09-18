@@ -115,6 +115,7 @@ const EXEMPT: Record<string, string> = {
   // allowance — plus a per-IP burst cap; the deterministic link checks it runs are the same ones
   // scam-shield/check already serves anonymously. See lib/scam-shield/message/quota.ts.
   'scam-shield/analyze': 'anonymous AI analysis is a product feature; 2/day per IP via the shared limiter, burst-capped',
+  'scam-shield/share': 'publishes a SERVER-generated verdict page (no user content); burst + per-IP daily cap; G1 wedge',
   'translate': 'anonymous tool; rate-limited',
   'scan': 'anonymous tool',
   'viet-content': 'anonymous tool; rate-limited',
@@ -130,6 +131,7 @@ const EXEMPT: Record<string, string> = {
   'deals/[id]/click': 'click analytics, no user content',
   'track': 'analytics, no user content',
   'commerce/handoff': 'CCP handoff counter (event 6) — body is two opaque ids the server minted, no user content, no URL; rate-limited 60/min per IP; dropped while CCP_ENABLED is false',
+  'zalo/mini/verify': 'exchanges a Zalo token for a server-signed rate-limit cookie; no user content, rate-limited 20/min per IP',
 
   // ── Machine-to-machine. No end user is present at all. ──
   'iap/apple/notifications': 'Apple server-to-server notification',

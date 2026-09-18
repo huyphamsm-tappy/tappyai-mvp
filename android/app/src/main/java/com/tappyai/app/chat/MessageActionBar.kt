@@ -78,6 +78,12 @@ fun MessageActionBar(
     // The plan block verbatim — what a plan share publishes. Null when the turn has no plan.
     planJson: String? = null,
     shareSubject: String? = null,
+    /**
+     * G1 "Public link" — a persisted turn as a frozen, sanitized public page (/r/<slug>).
+     * Offered as a row INSIDE the artifact share sheet, never instead of it. Returns true when
+     * the flow was opened; false (unsaved chat / error bubble) leaves the sheet as it is.
+     */
+    onSharePublic: () -> Boolean = { false },
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -143,7 +149,13 @@ fun MessageActionBar(
         ) {
             Icon(Icons.Filled.Share, contentDescription = shareLabel, modifier = iconSize, tint = tint)
         }
-        shareArtifact?.let { a -> TappyShareSheet(artifact = a, onDismiss = { shareArtifact = null }) }
+        shareArtifact?.let { a ->
+            TappyShareSheet(
+                artifact = a,
+                onDismiss = { shareArtifact = null },
+                onPublicLink = { if (onSharePublic()) shareArtifact = null },
+            )
+        }
 
         // Like — toggle/switch semantics live in the ViewModel, matching the web's handleLike.
         IconButton(

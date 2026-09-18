@@ -15,6 +15,7 @@ import { buildPlacesArtifact, buildPlanArtifact, buildProseArtifact, type ShareA
 import type { PlacesLiveView } from '@/lib/recommendation/liveView'
 import type { TappyPlan } from '@/components/TripPlanCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import SharePreviewDialog from '@/components/share/SharePreviewDialog'
 
 interface Props {
   msgId: string
@@ -46,6 +47,9 @@ interface Props {
    * recommendation; the prose is commentary on it.
    */
   share?: { placeView?: PlacesLiveView | null; plan?: TappyPlan | null; subject?: string }
+  /** G1: the client-side result id the `query` event carried for this turn, if known. */
+  resultId?: string
+  domain?: string
 }
 
 const SPEED_OPTIONS = [1, 1.5, 2]
@@ -72,6 +76,8 @@ export default function MessageActionBar({
   onSpeak, onTTSPause, onTTSSkipBack, onTTSSkipForward, onTTSSpeedChange, onTTSStop,
   onRegenerate,
   share,
+  resultId,
+  domain,
 }: Props) {
   const [liked, setLiked] = useState(false)
   const [disliked, setDisliked] = useState(false)
@@ -133,6 +139,10 @@ export default function MessageActionBar({
    */
   const [shareOpen, setShareOpen] = useState(false)
   const [artifact, setArtifact] = useState<ShareArtifact | null>(null)
+  // G1 "Public link": the same turn as a frozen, sanitized /r/<slug> page. Offered as a
+  // row inside the artifact ShareMenu (never instead of it) and only for a persisted turn,
+  // because the server reads the answer back from the caller's own conversation.
+  const [publicOpen, setPublicOpen] = useState(false)
   const { t, locale } = useTranslation()
   const shareLang = locale === 'en' ? 'en' : 'vi'
   const handleShare = () => {
@@ -356,7 +366,22 @@ export default function MessageActionBar({
         </div>
       )}
       {artifact && (
-        <ShareMenu artifact={artifact} open={shareOpen} onClose={() => setShareOpen(false)} />
+        <ShareMenu
+          artifact={artifact}
+          open={shareOpen}
+          onClose={() => setShareOpen(false)}
+          onPublicLink={conversationId ? () => { setShareOpen(false); setPublicOpen(true) } : undefined}
+        />
+      )}
+      {conversationId && (
+        <SharePreviewDialog
+          open={publicOpen}
+          onClose={() => setPublicOpen(false)}
+          conversationId={conversationId}
+          messageIndex={messageIndex}
+          resultId={resultId}
+          domain={domain}
+        />
       )}
     </div>
   )
