@@ -1091,10 +1091,23 @@ export async function POST(req: Request) {
    * as `named_refetch` when it happens. The stream filter's search-claim guard
    * removes any "I have checked" claim on a turn where no tool ran at all.
    */
-  const v1Active = !!situation && isDecisionDomain && !noToolTurn
+  // Active on every turn that is a decision — by need-profile domain, by the
+  // decision frame's goal, or because the previous reply named venues the user
+  // is now asking about. Measured 2026-09-18 on the CONSULTATIVE-40 pass: "Cả
+  // nhà 6 người … ăn trưa … Phú Nhuận", "Đi date với gấu …", "Sinh nhật sếp,
+  // tiếp khách 8 người …" all resolve to `domain: null` (no dish word), and the
+  // follow-up "quán này mở mấy giờ?" to `forcedTool: web_search` — none was a
+  // decision by `isDecisionDomain` alone, and V1 silently skipped them.
+  const v1PriorVenues = priorVenuesIn(lastAssistantText)
+  const v1Active = !!situation && !noToolTurn && (
+    isDecisionDomain
+    || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
+    || forcedTool === 'search_places'
+    || v1PriorVenues.length > 0
+  )
   const v1Block = (() => {
     if (!situation || !v1Active) return ''
-    const priorVenues = priorVenuesIn(lastAssistantText)
+    const priorVenues = v1PriorVenues
     const refs = resolveReferences(lastText, priorVenues)
     const referenced = referencedVenues(refs)
     const facts = factsAsked(lastText)

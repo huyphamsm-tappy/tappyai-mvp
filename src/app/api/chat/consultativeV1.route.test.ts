@@ -163,6 +163,14 @@ describe('flag ON', () => {
     expect(s).not.toContain('THAM CHIEU (V1)')
   })
 
+  it('a decision turn with no dish word (domain null) still carries the block — the frame goal decides', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await post([{ role: 'user', content: 'Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận' }])
+    const s = system()
+    expect(s).toContain('===== TINH HUONG (V1) =====')
+    expect(s).toContain('Điều kiện cứng: có chỗ đậu xe, phù hợp trẻ em (user nói)')
+  })
+
   it('chitchat carries no V1 block at all', async () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
     await post([{ role: 'user', content: 'cảm ơn nhé' }])
