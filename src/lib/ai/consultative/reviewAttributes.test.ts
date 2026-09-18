@@ -88,3 +88,15 @@ describe('guardAtmosphereClaims — anaphora', () => {
     expect(guardAtmosphereClaims(text, { attrs, names: ['Nhà Hàng Du Ký'] }).removed).toBe(0)
   })
 })
+
+describe('guardAtmosphereClaims — the pick is the first sentence that NAMES a venue', () => {
+  it('a preamble before the pick does not make the pick cuttable (measured F3)', () => {
+    const attrs = extractAttributes(new Map([['Padme Chay', ['chay']]]))
+    const text = 'Mình tìm những quán lãng mạn yên tĩnh ở Quận 3 cho bạn nhé.\n\nMình chọn **Padme Chay** — không gian yên tĩnh, 4.9⭐.\n\nNếu muốn gần hơn, **Lil Sago** cũng yên tĩnh.'
+    const r = guardAtmosphereClaims(text, { attrs, names: ['Padme Chay', 'Lil Sago'] })
+    expect(r.text).toContain('Mình chọn **Padme Chay**')
+    expect(r.unsupportedInPick).toBe(1)
+    expect(r.removed).toBe(1)
+    expect(r.text).not.toContain('Lil Sago')
+  })
+})

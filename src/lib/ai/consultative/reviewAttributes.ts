@@ -149,16 +149,17 @@ export function guardAtmosphereClaims(
   const foldedNames = ctx.names.map(n => [n, fold(n)] as const).filter(([, f]) => f.length >= 3)
   const doomed = new Set<number>()
   let unsupportedInPick = 0
-  let firstProse = -1
+  /** The PICK sentence: the first prose sentence that names a venue (a preamble does not count). */
+  let pickIdx = -1
   /** The venue the previous prose sentence named — "Quán có sân vườn yên tĩnh" is about it. */
   let lastNamed: ReadonlyArray<readonly [string, string]> = []
   spans.forEach(([a, b], i) => {
     if (isMachine(a, b)) return
     const s = text.slice(a, b)
     if (!s.trim()) return
-    if (firstProse < 0) firstProse = i
     const f = fold(s)
     let named = foldedNames.filter(([, fn]) => f.includes(fn))
+    if (pickIdx < 0 && named.length > 0) pickIdx = i
     // Anaphora: a nameless sentence that opens with "quán / chỗ / nhà hàng (này|đó) / nó / it /
     // the place" continues the previous sentence's venue (measured F8: "Quán có phòng riêng, …
     // sân vườn yên tĩnh" right after the named pick).
@@ -174,7 +175,7 @@ export function guardAtmosphereClaims(
       if (!m || negated(f, m)) continue
       const supported = named.some(([n]) => (ctx.attrs.get(n) ?? []).some(e => e.attribute === attr))
       if (supported) continue
-      if (i === firstProse) { unsupportedInPick++; continue }
+      if (i === pickIdx) { unsupportedInPick++; continue }
       doomed.add(i)
       break
     }
