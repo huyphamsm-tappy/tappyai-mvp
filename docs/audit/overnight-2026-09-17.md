@@ -183,3 +183,38 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
   (a crash-consent dialog blocked headless boot twice). BACK in chat navigates to Home (known trap) — the transcript is
   lost; the declaration persisted (DataStore) so the re-send worked.
 - Web **13 221 / 68 skipped**, Android **727 / 0**, tsc clean. LLM-run counter: **8 / 120**.
+
+## STEP E — AI CONSULTATIVE V1 (flag `CONSULTATIVE_V1`, default OFF) — BUILT, commit `__COMMIT__`
+- Design doc first: `docs/audit/consultative-v1-design.md` (§0 existing mechanisms/gaps → §10 test plan). Two deviations
+  recorded in the doc as "as built": (1) the named re-search is made by the MODEL on the same single stream (the
+  architecture lock forbids `toolChoice`/a second call, and a route-side prompt-only row would be cut by the G1 guard as
+  unsupported); (2) the RANKER is untouched (re-ordering = card data under the guardrail) — the model chooses for the
+  situation among the shortlist and must say why.
+- **Language (applies with the flag OFF — detector bug):** `intent.ts` folded content lexicon; undiacriticked Vietnamese
+  is `vi` when ≥2 lexicon words, more than English function words, and ≥ half of the non-proper-noun words
+  ("Good bun bo spots" stays `en`; "Hội An walking tour" stays `en` because capitalised place names are ignored).
+  `intentLangNoDiacritics.test.ts` 34 cases + the 106 existing `intent.test.ts` cases green.
+- **Modules** (`src/lib/ai/consultative/`, each with tests): `situationFrame` (who/partySize/occasion/time/place/budget/
+  hard/mood/assumptions/confidence over the last 3 user turns; block `===== TINH HUONG (V1) =====` with `(user nói)` /
+  `(giả sử)`), `referenceResolver` (bolded names of the prior reply → this/ordinal/count/all/name; `factsAsked`;
+  `priorTextStates`; `THAM CHIEU (V1)` block + one-time search-by-name instruction), `searchClaimGuard` ("mình đã
+  kiểm tra / tìm lại / I've checked" removed when no tool ran), `reviewAttributes` (14 attributes from entity-scoped
+  snippets with evidence snippet; `hardConstraintGaps`; `guardAtmosphereClaims` — pick sentence counted, never cut),
+  `proseShape` (card re-listing dropped when the card renders, one alternative, cap 6, pick never cut),
+  `memoryTransientFilter` (tonight/500k/yên tĩnh never become traits unless stated as a habit),
+  `consultativeV1Prompt` (overrides R1(a), R1b, R2, R7(b), 3-line cap; language line), `shortlistMax()` 3→5 under flag.
+- **Wiring**: route derives the frame after the decision frame; the block is appended after the ADR-024 evidence
+  block on decision-domain tool turns only; `_tappy_shortlist[].evidence.attributes` + `_tappy_hard_gaps` on the
+  `search_places` result; collector `setConsultativeV1`; stream filter buffers the V1 turn (progressive flush off) and
+  runs search-claim → atmosphere → prose-shape after the clarification backstop, telemetry `tappyai_guard
+  guard:'consultative_v1'`; memory post-filter after `extractMemoryFromConversation` (same single extraction call).
+  Contract tests: `consultativeV1.route.test.ts` (flag OFF byte-identical prompt / no attributes / shortlist ≤3; ON:
+  block, references, refetch instruction, five, gaps, one stream call, no toolChoice) and `consultativeV1Stream.test.ts`.
+- **Cost**: no extra LLM call, no extra Serper call (attributes come from snippets already fetched). The V1 block is
+  ≈2.1–2.5 k chars ≈ **700–820 prompt tokens/turn** (measured on the built block; the design's 250–350 was low) in the
+  uncached dynamic part — on Haiku ≈ $0.0007–0.0008 per turn. Haiku stays default.
+- Fixed in passing: `serperCostGates.test.ts` was red since the Step D priceLevel retry (fixture row had no band ⇒ the
+  approved one retry fired ⇒ 2 `/maps` hits); fixture now carries `priceLevel`, contract "one structured request when
+  a band is present" pinned. (Step D's "13 221 green" was measured before `780c35f`.)
+- 🔶 Open owner decisions: ranker soft-signals from attributes/price band (would reorder cards); pick-first-in-carousel.
+- Web **13 336 passed / 68 skipped (699 files)** after two re-pins (`chatLanguagePriority` test 2 now expects the detector itself to read undiacriticked VI as `vi`; a route COMMENT with accented Vietnamese tripped the UI-string ratchet 466→467 — de-accented), tsc clean, Android unchanged (727 / 0). LLM-run counter still **8 / 120**.

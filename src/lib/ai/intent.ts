@@ -86,6 +86,40 @@ const VI_FUNCTION_WORDS = new Set([
   'cung', 'nhieu', 'rat', 'sao', 'uong', 'kiem', 'phai', 'chac', 'nua', 'luon',
 ])
 
+/**
+ * 🚨 NO-DIACRITIC VIETNAMESE IS VIETNAMESE (Consultative V1, 2026-09-18).
+ *
+ * Measured on the branch: 13 of 14 undiacriticked queries a phone user actually types
+ * ("tim quan an toi ngon gan quan 1 cho 2 nguoi", "spa nao tot re o da nang") detected as
+ * ENGLISH — the only Vietnamese evidence was accented letters plus the 30-word function list
+ * above, and an undiacriticked sentence has neither. This is the CONTENT lexicon: common
+ * Vietnamese words, diacritic-folded, that are not English words. `an`, `co`, `do`, `to`,
+ * `me`, `so`, `no`, `ok`, `view`, `cafe`, `spa`, `budget`, `chill`, `ban`, `be`, `may`, `con`,
+ * `la`, `ma`, `de`, `den`, `hen`, `yen`, `tram`, `sang`, `tour` are deliberately absent — they
+ * are English words or loanwords and would score both ways ("Good bun bo spots" is English).
+ *
+ * Scoring (countViContentWords): capitalised words after the first are proper nouns ("Hội An",
+ * "Đà Nẵng", "TP.HCM") and are ignored on both sides of the ratio — a place name is not
+ * grammar. The lexicon must carry at least half of the remaining words: "bun bo" inside an
+ * English sentence is a dish, "quan bun bo ngon o q1" is a sentence.
+ */
+const VI_CONTENT_WORDS = new Set([
+  'quan', 'ngon', 'gan', 'nguoi', 'tim', 'kiem', 'mua', 'tot', 'dep', 'nao', 'dau', 'day',
+  'nay', 'choi', 'xem', 'phim', 'hay', 'vui', 'minh', 'duoi', 'tren', 'trieu', 'nghin',
+  'khach', 'san', 'phong', 'dem', 'ngay', 'trua', 'chieu', 'toi', 'khuya', 'tuan', 'thang',
+  'bun', 'pho', 'com', 'lau', 'nuong', 'hai', 'oc', 'che', 'tra', 'sua', 'banh', 'mon', 'mi',
+  'nha', 'tiem', 'cho', 'duong', 'khu', 'thanh', 'tinh', 'huyen', 'phuong', 'xa',
+  'chon', 'tien', 'khac', 'nua', 'roi', 'chua', 'khong', 'ko', 'hok', 'dc', 'duoc',
+  'vat', 'gia', 'dinh', 'nhau', 'hoi', 'bao', 'nhieu', 'bnhieu',
+  'sinh', 'nhat', 'ky', 'niem', 'tiep', 'sep', 'dong', 'nghiep',
+  'dat', 'xe', 'lanh', 'ngoai', 'troi', 'chay', 'thit', 'ca', 'ga', 'bo', 'heo',
+  'ruou', 'bia', 've', 'bai', 'bien', 'nui', 'suoi', 'tai', 'nghe', 'di', 'o', 're',
+  'yen', 'hen', 'ho',
+  'lam', 'giup', 'goi', 'thu', 'thich', 'muon', 'nen', 'cung', 'voi', 'cua',
+  'va', 'hoac', 'nhung', 'thi', 'thoi', 'luon', 'qua', 'rat', 'kha',
+  'moi', 'cu', 'trung', 'tam', 'gio', 'tu',
+])
+
 // The mirror of VI_FUNCTION_WORDS: ENGLISH evidence.
 //
 // Until now the detector only ever scored Vietnamese-ness, so a short mixed query had no way to
@@ -120,6 +154,34 @@ const EN_FUNCTION_WORDS = new Set([
 // KNOWN LIMITATION (unchanged by either fix): Vietnamese typed with no
 // diacritics at all ("cho toi xem menu") carries no signal here and reads as
 // English — accepted, since the same input is genuinely ambiguous.
+/**
+ * Diacritic-folded content-word evidence for undiacriticked Vietnamese.
+ * `vi` = words found in the lexicon; `pool` = the words judged (proper nouns excluded).
+ * Vietnamese when `vi >= floor`, `vi > enFunctionWords` and `vi` is at least half of `pool`.
+ */
+function countViContentWords(words: readonly string[]): { vi: number; pool: number } {
+  let vi = 0
+  let pool = 0
+  words.forEach((w, i) => {
+    // A capital letter after the first word is a proper noun: "Hội An walking tour".
+    if (i > 0 && /^[A-ZÀ-Ỹ]/.test(w)) return
+    const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z0-9]/g, '')
+    if (!bare) return
+    pool++
+    if (VI_CONTENT_WORDS.has(bare) || VI_FUNCTION_WORDS.has(bare)) vi++
+    // District shorthand a phone user writes: q1, q3, q10.
+    else if (/^q\d{1,2}$/.test(bare)) vi++
+  })
+  return { vi, pool }
+}
+
+function isUndiacriticizedVi(
+  words: readonly string[], enFunctionWords: number, floor: number,
+): boolean {
+  const { vi, pool } = countViContentWords(words)
+  return vi >= floor && vi > enFunctionWords && vi * 2 >= pool
+}
+
 export function detectLang(text: string): string {
   // Encoding-safe: never short-circuits mid-loop for scripts that must scan to
   // completion (Chinese text with fullwidth punctuation still resolves to 'zh').
@@ -201,7 +263,11 @@ export function detectLang(text: string): string {
   // Real Vietnamese vocabulary plus Vietnamese grammar words, even when tone
   // marks are sparse.
   if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
-  // An unambiguous English question/request word settles it. Reached only after the two rules
+  // Undiacriticked Vietnamese: content words that are not English, outnumbering the English
+  // function words and carrying at least half the sentence. Two is the floor so "quan nay"
+  // alone does not decide a mixed sentence.
+  if (isUndiacriticizedVi(words, enFunctionWords, 2)) return 'vi'
+  // An unambiguous English question/request word settles it. Reached only after the rules
   // above, so a sentence with real Vietnamese grammar still wins first.
   if (enFunctionWords > 0) return 'en'
   // The ratio judges only the LOWERCASE words, on both sides of the division.
@@ -268,6 +334,9 @@ export function detectLangConfident(text: string): string | null {
   // Vietnamese, on the same evidence detectLang already trusts most.
   if (accentedWords > 0 && accentedWords === words.length) return 'vi'
   if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
+  // Undiacriticked Vietnamese, confidently: three or more content words and more of them than
+  // English function words — "cho toi 3 quan bun bo ngon o q1" is not a doubt.
+  if (isUndiacriticizedVi(words, enFunctionWords, 3)) return 'vi'
   // English needs TWO function words. One ("best", "the") appears constantly inside Vietnamese
   // sentences about products, and a single loanword must not decide the turn.
   if (enFunctionWords >= 2 && lowercaseAccentedWords === 0) return 'en'

@@ -354,3 +354,16 @@ export function mediaPlacementV2Enabled(env: NodeJS.ProcessEnv = process.env): b
   const v = env.MEDIA_PLACEMENT_V2
   return v === '1' || v === 'true'
 }
+
+/**
+ * AI CONSULTATIVE V1 (overnight 2026-09-18, design in docs/audit/consultative-v1-design.md).
+ *
+ * Situation frame + no-diacritic Vietnamese detection + reference resolution with named re-search
+ * + evidence-only attributes + shortlist of 3–5 + prose-shape guard + transient-memory filter.
+ * Everything behind this flag; OFF = byte-identical pipeline. Same shape as the other flags:
+ * read at call time, default OFF.
+ */
+export function consultativeV1Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.CONSULTATIVE_V1
+  return v === '1' || v === 'true'
+}

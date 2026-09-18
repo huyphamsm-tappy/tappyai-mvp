@@ -1,4 +1,4 @@
-import { SHOPPING_SHORTLIST } from '@/lib/config/product'
+import { SHOPPING_SHORTLIST, consultativeV1Enabled } from '@/lib/config/product'
 import type { Candidate } from './candidate'
 import type { RankedEntry } from './rank'
 
@@ -72,6 +72,16 @@ export function shortlistShopping<T>(
 // This is the "no fake Hidden Gem" rule from the task.
 
 export const RULE_OF_ONE_TO_THREE_MAX = 3
+/**
+ * Consultative V1: the shortlist is what the MODEL may talk about, not what the
+ * card shows (the carousel renders every admitted row either way). Under the
+ * flag it widens to five — the three roles plus two unlabelled runners-up — so
+ * the model can pick for the situation from more than the engine's top three.
+ */
+export const CONSULTATIVE_V1_SHORTLIST_MAX = 5
+export function shortlistMax(): number {
+  return consultativeV1Enabled() ? CONSULTATIVE_V1_SHORTLIST_MAX : RULE_OF_ONE_TO_THREE_MAX
+}
 
 /**
  * Role tag on a selected candidate. Assigned only when the ranked reasons
@@ -102,7 +112,7 @@ export interface CandidateShortlist {
  */
 export function shortlistCandidates(
   ranked: readonly RankedEntry[],
-  max: number = RULE_OF_ONE_TO_THREE_MAX,
+  max: number = shortlistMax(),
   /**
    * 🚨 EVIDENCE THRESHOLD — measured 2026-09-15. The cap was the only rule, so a
    * set where ONE row carried one wifi flag was "rankable" and the shortlist
@@ -114,7 +124,7 @@ export function shortlistCandidates(
    */
   qualifies?: (entry: RankedEntry) => boolean,
 ): CandidateShortlist {
-  const cap = Math.max(0, Math.min(max, RULE_OF_ONE_TO_THREE_MAX))
+  const cap = Math.max(0, Math.min(max, shortlistMax()))
   const totalRanked = ranked.length
   if (cap === 0 || totalRanked === 0) {
     return { selected: [], totalRanked, duplicatesDropped: 0 }

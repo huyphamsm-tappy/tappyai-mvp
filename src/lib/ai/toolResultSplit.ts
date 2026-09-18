@@ -157,6 +157,21 @@ export interface EnrichmentCollector {
    */
   clarificationPolicy?: 'allow' | 'no_reflex'
   setClarificationPolicy(policy: 'allow' | 'no_reflex'): void
+  /**
+   * Consultative V1 (flag CONSULTATIVE_V1). Set by the route on a decision-domain
+   * turn; the stream filter then runs the V1 prose guards (search-claim,
+   * atmosphere-claim, prose-shape) and buffers the turn so they can. Undefined
+   * with the flag OFF — nothing in the filter changes.
+   */
+  consultativeV1?: ConsultativeV1Context
+  setConsultativeV1(ctx: ConsultativeV1Context): void
+}
+
+export interface ConsultativeV1Context {
+  on: true
+  rendersCard: boolean
+  /** Venues the route asked the model to re-search by name this turn. */
+  namedRefetch: string[]
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */
@@ -340,6 +355,8 @@ export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },
     clarificationPolicy: 'allow' as 'allow' | 'no_reflex',
     setClarificationPolicy(policy: 'allow' | 'no_reflex') { this.clarificationPolicy = policy },
+    consultativeV1: undefined as ConsultativeV1Context | undefined,
+    setConsultativeV1(ctx: ConsultativeV1Context) { this.consultativeV1 = ctx },
     placesRecommendations: undefined as Recommendation[] | undefined,
     placesProducer: undefined as ProducerSubject | undefined,
     setPlacesRecommendations(recs, producer) {

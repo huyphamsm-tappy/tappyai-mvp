@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest'
-import { shortlistShopping, shortlistCandidates, identityKey, RULE_OF_ONE_TO_THREE_MAX } from './shortlist'
+import { describe, it, expect, vi } from 'vitest'
+import { shortlistShopping, shortlistCandidates, identityKey, RULE_OF_ONE_TO_THREE_MAX, CONSULTATIVE_V1_SHORTLIST_MAX, shortlistMax } from './shortlist'
 import { rankCandidates, type Candidate, type RankedEntry } from './rank'
 import type { NeedProfile } from './needProfile'
 
@@ -153,5 +153,30 @@ describe('role assignment — only when truthful', () => {
     ], DISTANCE_FIRST)
     const s = shortlistCandidates(ranked.ranked)
     for (const sel of s.selected.slice(1)) expect(sel.role).not.toBe('value_gem')
+  })
+})
+
+// ── Consultative V1 — the shortlist widens to five under the flag ────────────
+describe('shortlistCandidates under CONSULTATIVE_V1', () => {
+  const ten = () => Array.from({ length: 10 }, (_, i) =>
+    place(`p${i}`, `n${i}`, { rating: 4.5 - i * 0.05, reviewCount: 1000 - i * 50, distanceKm: i + 1 }))
+
+  it('flag OFF: still three; flag ON: five, the roles unchanged, runners-up unlabelled', () => {
+    vi.stubEnv('CONSULTATIVE_V1', '')
+    expect(shortlistMax()).toBe(RULE_OF_ONE_TO_THREE_MAX)
+    expect(shortlistCandidates(rankCandidates(ten(), DISTANCE_FIRST).ranked).selected).toHaveLength(3)
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    expect(shortlistMax()).toBe(CONSULTATIVE_V1_SHORTLIST_MAX)
+    const s = shortlistCandidates(rankCandidates(ten(), DISTANCE_FIRST).ranked)
+    expect(s.selected).toHaveLength(5)
+    expect(s.selected[0].role).toBe('best_overall')
+    expect(s.selected[3].role).toBeNull()
+    expect(s.selected[4].role).toBeNull()
+    vi.unstubAllEnvs()
+  })
+  it('an explicit smaller max still wins', () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    expect(shortlistCandidates(rankCandidates(ten(), DISTANCE_FIRST).ranked, 2).selected).toHaveLength(2)
+    vi.unstubAllEnvs()
   })
 })

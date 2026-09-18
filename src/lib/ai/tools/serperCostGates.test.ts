@@ -26,6 +26,10 @@ const MAPS_ROW = {
   address: '585 Huỳnh Tấn Phát, Quận 7, Hồ Chí Minh',
   latitude: 10.74105, longitude: 106.72996,
   rating: 4.4, ratingCount: 589,
+  // A row WITH a price band: the only owner-approved second /maps call is the one retry when
+  // NO row carries a band (upstream non-determinism, pinned in serperPlaces.test.ts). With the
+  // band present the turn must still buy exactly one structured request.
+  priceLevel: '₫₫',
   type: 'Quán ăn nhỏ', types: ['Quán ăn nhỏ'],
   phoneNumber: '+84 917 607 088',
   openingHours: { 'Thứ Năm': '06:00–20:00' },

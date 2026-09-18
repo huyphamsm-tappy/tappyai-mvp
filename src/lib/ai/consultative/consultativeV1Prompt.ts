@@ -1,0 +1,53 @@
+// ── CONSULTATIVE V1 — the prompt block ──────────────────────────────────────
+//
+// One block, appended after the decision frame and the rendered-card block,
+// that (a) states the situation (§1) and (b) OVERRIDES the listed rulebook
+// rules that conflict with one-pick consulting — R1(a) "2-4 lựa chọn", R1b
+// counts, R2 bullets, R7(b) "gợi ý 2-3 rồi hỏi", the 3-line cap (§7). Every
+// other rule (tools, links, CCP, evidence gap, safety) is untouched. Unaccented
+// like the rest of the rulebook; the situation lines carry diacritics because
+// they are echoed to the user. ≈ 250–350 prompt tokens per turn.
+
+import { buildSituationBlock, type SituationFrame } from './situationFrame'
+import type { Hard } from './situationFrame'
+
+export interface ConsultativeV1PromptInput {
+  frame: SituationFrame
+  /** Hard constraints with no supporting evidence on any candidate (§4). */
+  hardGaps: readonly Hard[]
+  /** True when the client renders the decision card (web / Android). */
+  rendersCard: boolean
+  lang: string
+}
+
+const HARD_VI: Record<Hard, string> = {
+  quiet: 'yên tĩnh', parking: 'chỗ đậu xe', kids: 'phù hợp trẻ em', vegetarian: 'món chay', outdoor: 'ngoài trời',
+  private_room: 'phòng riêng', late_open: 'mở khuya', delivery: 'giao hàng', air_con: 'máy lạnh', view: 'view',
+  live_music: 'nhạc sống', wheelchair: 'tiếp cận xe lăn',
+}
+
+export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): string {
+  const { frame, hardGaps, rendersCard, lang } = input
+  const gaps = hardGaps.length > 0
+    ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua thay bang chung ve X" cho quan ban chon; KHONG khang dinh bua, KHONG bo qua im lang.`
+    : ''
+  const langLine = lang === 'en'
+    ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
+    : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'
+  return `${buildSituationBlock(frame)}
+
+===== TU VAN V1 — GHI DE CAC LUAT SAU =====
+Khoi nay GHI DE R1(a) "dua 2-4 lua chon", R1b "neu 2 viet 2 / neu 3 viet toi da 3", R2 "toi da 3 bullet", R7(b) "goi y 2-3 lua chon roi hoi", va gioi han 3 dong. Cac luat khac giu nguyen.
+HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):
+1. CAU DAU: MOT lua chon chinh cho DUNG tinh huong tren + LY DO co bang chung (so lieu/that trong ket qua tool: diem, so luot danh gia, khoang cach, muc gia, trich review). Ten quan phai co trong _tappy_shortlist.
+2. MOT lua chon thay the (toi da 1) + danh doi that: "re hon nhung xa hon", "view dep nhung dong". Khong co danh doi that thi khong nhac.
+3. MOT luu y huu ich: gio mo/dong, nen dat ban, khoang cach/di chuyen — chi khi co trong du lieu.
+4. Neu co gia su (giả sử) o tren: noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi.
+5. TOI DA 1 cau hoi, va chi khi cau tra loi lam DOI lua chon. Khong hoi "ban muon an loai gi".
+${rendersCard ? '- The (card) da hien anh/ten/diem/dia chi/gio/gia: KHONG liet ke lai. Con so chi xuat hien khi no la LY DO.' : '- Khong co the: neu ten, diem va gio mo ngan gon trong cau ly do, van khong liet ke.'}
+- _tappy_shortlist la nhung quan ban DUOC nhac; ban khong can nhac het. Chon 1 cho tinh huong; lua chon #1 cua he thong la mac dinh, chi doi khi co ly do gan voi tinh huong (dip/khong khi/dieu kien cung) va noi ro ly do do.
+- Tinh tu ve khong khi/doi tuong (yen tinh, view, hop gia dinh, hen ho, sang trong) CHI duoc noi ve mot quan khi evidence.attributes cua quan do co no. Mong muon cua user KHONG phai la thuoc tinh cua quan.
+- KHONG noi "minh da kiem tra / da tim lai / da goi" tru khi luot nay thuc su co ket qua tool.${gaps}
+${langLine}
+=====================================`
+}

@@ -1,0 +1,72 @@
+// ── CONSULTATIVE V1 — durable memory keeps habits, not tonight ──────────────
+//
+// `extractMemoryFromConversation` (one LLM call, unchanged) summarises what the
+// user said into durable traits. Measured on the branch it turns a single turn
+// into a trait: "tối nay" became `timing`, "yên tĩnh" a food preference, and
+// "500k cho tối nay" the user's budget. This deterministic post-filter drops
+// the transient values, and lets a budget or an atmosphere preference through
+// only when the USER's own words state it as a habit ("mình thường…", "budget
+// của mình là…", "mình thích / hay…"). See consultative-v1-design.md §8.
+
+import { normalizeVN } from '../intent'
+import type { UserMemory } from '@/lib/memory/memoryService'
+
+const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
+
+/** Words that describe THIS occasion, never a habit. */
+const TRANSIENT_RE = /\b(toi nay|trua nay|sang nay|hom nay|dem nay|cuoi tuan nay|tuan nay|thang nay|ngay mai|mai|bay gio|luc nay|lan nay|gan day|o day|cho nay|hien tai|tonight|today|this (?:weekend|week|evening|afternoon|time)|right now|tomorrow|nearby|around here)\b/
+/** Atmosphere / mood words that are a wish for this outing unless stated as a habit. */
+const ATMOSPHERE_RE = /\b(yen tinh|chill|soi dong|lang man|view|sang trong|binh dan|re|nhe nhang|thu gian|quiet|lively|romantic|fancy|cheap|cozy|am cung)\b/
+/** The user says it is a habit. */
+const HABITUAL_RE = /\b(minh|toi|tui|em|i)\s+(?:thuong|hay|luon|thich|ua|chuong|khoai|usually|always|often|prefer|like|love)\b|\b(?:thuong|hay|luon)\s+(?:di|an|chon|uong|ghe)\b|\bbudget cua (?:minh|toi|tui|em)\b|\bngan sach cua (?:minh|toi)\b|\bthuong (?:chi|xai|tieu)\b|\bmy (?:usual|normal|typical) budget\b|\bi usually spend\b/
+
+export interface TransientFilterStats {
+  timing_dropped: boolean
+  budget_dropped: number
+  preferences_dropped: number
+}
+
+/**
+ * @param extracted  what the LLM extracted this turn
+ * @param userTexts  the user's own turns (raw), so habit markers are read from the source
+ */
+export function filterTransientMemory(
+  extracted: Partial<UserMemory>,
+  userTexts: readonly string[],
+): { memory: Partial<UserMemory>; stats: TransientFilterStats } {
+  const stats: TransientFilterStats = { timing_dropped: false, budget_dropped: 0, preferences_dropped: 0 }
+  const out: Partial<UserMemory> = { ...extracted }
+  const said = fold(userTexts.join('\n'))
+  const habitual = HABITUAL_RE.test(said)
+
+  // timing: "hay đi cuối tuần" is a habit; "tối nay" is a plan.
+  if (typeof out.timing === 'string' && out.timing && TRANSIENT_RE.test(fold(out.timing))) {
+    delete out.timing
+    stats.timing_dropped = true
+  }
+  // budget: only when the user stated it as a habit — a per-turn amount is not the durable budget.
+  if (out.budget && typeof out.budget === 'object') {
+    const keys = Object.keys(out.budget)
+    if (keys.length > 0 && !habitual) {
+      stats.budget_dropped = keys.length
+      delete out.budget
+    }
+  }
+  // preferences: transient words and atmosphere wishes go unless stated as a habit.
+  if (out.preferences && typeof out.preferences === 'object') {
+    const prefs: UserMemory['preferences'] = {}
+    for (const [k, list] of Object.entries(out.preferences)) {
+      if (!Array.isArray(list)) continue
+      const kept = list.filter(v => {
+        const f = fold(String(v))
+        if (TRANSIENT_RE.test(f)) { stats.preferences_dropped++; return false }
+        if (ATMOSPHERE_RE.test(f) && !habitual) { stats.preferences_dropped++; return false }
+        return true
+      })
+      if (kept.length > 0) prefs[k] = kept
+    }
+    if (Object.keys(prefs).length > 0) out.preferences = prefs
+    else delete out.preferences
+  }
+  return { memory: out, stats }
+}

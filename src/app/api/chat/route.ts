@@ -59,6 +59,13 @@ import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
 import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
+// Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
+import { consultativeV1Enabled } from '@/lib/config/product'
+import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
+import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
+import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock } from '@/lib/ai/consultative/referenceResolver'
+import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 
 export const maxDuration = 60
 
@@ -676,6 +683,21 @@ export async function POST(req: Request) {
   })
 
   /**
+   * Consultative V1 — the situation frame (who / occasion / when / mood / hard
+   * constraints), read from the user's own words the same way the need profile
+   * is, and null with the flag OFF so nothing below can consult it by accident.
+   * Deterministic; still exactly ONE AI.stream() call per turn.
+   */
+  const consultativeV1 = consultativeV1Enabled()
+  const situation: SituationFrame | null = consultativeV1
+    ? deriveSituation(
+      messages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),
+      needProfile,
+      { hasGps: !!userLocation },
+    )
+    : null
+
+  /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
    *
    * Gated on the frame, deterministically: a TRAVEL turn whose goal is inform /
@@ -759,6 +781,20 @@ export async function POST(req: Request) {
     budget ?? budgetFromHistory(messages, extractBudget),
   )
 
+  /** Consultative V1: the entity-scoped snippet text per venue, off the tool result as returned. */
+  const entityTextsOf = (result: unknown): Map<string, string[]> => {
+    const out = new Map<string, string[]>()
+    const snips = (result as { price_search_results?: unknown }).price_search_results
+    if (!Array.isArray(snips)) return out
+    for (const r of snips as Array<{ title?: string; snippet?: string; evidence_scope?: string; evidence_about?: string }>) {
+      if (r.evidence_scope !== 'entity' || !r.evidence_about) continue
+      const bucket = out.get(r.evidence_about) ?? []
+      bucket.push(`${r.title ?? ''} ${r.snippet ?? ''}`)
+      out.set(r.evidence_about, bucket)
+    }
+    return out
+  }
+
   const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
     const r = result as Record<string, unknown>
@@ -827,7 +863,14 @@ export async function POST(req: Request) {
     if (toolName === 'search_places' || toolName === 'get_hotel_prices') {
       // Only candidates that carry evidence for THIS decision may take a slot;
       // the rest stay in `results` as what they are — search results.
-      const sl = shortlistCandidates(ranked.ranked, 3, e => qualifiesFor(decisionFrame, e))
+      // Consultative V1 widens the cap to five (`shortlistMax`); the default is the Rule of 1–3.
+      const sl = shortlistCandidates(ranked.ranked, undefined, e => qualifiesFor(decisionFrame, e))
+      // Consultative V1: atmosphere / audience attributes from the text this
+      // turn ALREADY fetched (entity-scoped snippets) — zero new calls. They
+      // ride the shortlist evidence as the only such words the model may use.
+      const v1Attrs = situation && toolName === 'search_places'
+        ? extractAttributes(entityTextsOf(result))
+        : null
       if (sl.selected.length > 0) {
         (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
           rank: idx,
@@ -837,10 +880,19 @@ export async function POST(req: Request) {
           // The evidence the recommendation may rest on — real fields only — and
           // the reasons the ranker actually counted, so the model reasons over the
           // same numbers the engine ordered by instead of over the row's absence.
-          evidence: evidenceSummary(s.entry.candidate.attrs),
+          evidence: v1Attrs
+            ? { ...evidenceSummary(s.entry.candidate.attrs), attributes: attributeSummary(v1Attrs.get(s.entry.candidate.name ?? '') ?? []) }
+            : evidenceSummary(s.entry.candidate.attrs),
           why: s.entry.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => r.detail),
           missing: missingFor(decisionFrame, s.entry),
         }))
+      }
+      if (situation && v1Attrs) {
+        // A stated hard constraint no candidate carries evidence for is an
+        // evidence gap the reply must name — never silently dropped.
+        const gaps = hardConstraintGaps(situation.hard, v1Attrs)
+        if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
+        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps }))
       }
       // What the reply may do with this evidence. The OpenStreetMap fallback
       // carries no rating, price, hours or reviews for any row, so a repeat
@@ -1016,6 +1068,40 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
 
+  /**
+   * Consultative V1 — the prompt block and the follow-up references.
+   *
+   * Only on a decision-domain tool turn. The references are resolved against
+   * the venues the PREVIOUS reply named (its bolded names — the only durable
+   * record of a place turn); a fact the carried prose lacks is asked for as a
+   * real `search_places` call BY NAME, one venue, made by the model on this
+   * same single stream (the architecture lock forbids a forced tool choice and
+   * a second model call, see consultativeArchitecture.test.ts), and reported
+   * as `named_refetch` when it happens. The stream filter's search-claim guard
+   * removes any "I have checked" claim on a turn where no tool ran at all.
+   */
+  const v1Active = !!situation && isDecisionDomain && !noToolTurn
+  const v1Block = (() => {
+    if (!situation || !v1Active) return ''
+    const priorVenues = priorVenuesIn(lastAssistantText)
+    const refs = resolveReferences(lastText, priorVenues)
+    const referenced = referencedVenues(refs)
+    const facts = factsAsked(lastText)
+    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f)))
+    console.log(JSON.stringify({
+      type: 'tappyai_consultative_v1', step: 'frame',
+      who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
+      assumptions: situation.assumptions.length, confidence: situation.confidence,
+      prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
+    }))
+    enrichment.setConsultativeV1({ on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name) })
+    const refetchLines = refetch.length > 0
+      ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
+      : ''
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang })
+      + renderReferencedBlock(referenced, []) + refetchLines
+  })()
+
   const consultativeBlock = [
     // Explore clip → "this place" is the clip's place. Fenced row values plus the
     // rule that a clip address stands in for the missing GPS/city. Absent on
@@ -1042,6 +1128,8 @@ export async function POST(req: Request) {
     // them does; there is no third branch that leaves the model guessing.
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
     priorEvidenceMissing ? renderMissingEvidenceBlock() : '',
+    // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
+    v1Block,
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
     // Movie/show recommendation turn: the place tool is already dropped above, so
     // the model answers from film knowledge. This keeps that answer grounded —
@@ -1520,7 +1608,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             })),
             { role: 'assistant', content: text },
           ]
-          const extracted = await extractMemoryFromConversation(convMessages, existingMemory)
+          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory)
+          // Consultative V1: what was said about TONIGHT is not a trait — the
+          // deterministic post-filter drops transient timing / per-turn budget /
+          // atmosphere wishes unless the user stated them as a habit.
+          const extracted = situation
+            ? (() => {
+              const { memory, stats } = filterTransientMemory(extractedRaw, convMessages.filter(m => m.role === 'user').map(m => m.content))
+              console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'memory_filter', ...stats }))
+              return memory
+            })()
+            : extractedRaw
           if (Object.keys(extracted).length > 0) {
             // Write with the admin client (pinned user_id) so the upsert works
             // under Bearer-token (native) auth — a fresh cookie client would

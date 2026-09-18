@@ -27,10 +27,16 @@ describe('chat response language priority', () => {
   })
 
   it('2. Vietnamese locale + diacritic-free Vietnamese stays Vietnamese', () => {
-    // The regression this whole change exists for. detectLang alone says English.
-    expect(detectLang('Tim quan bun bo ngon o TPHCM')).toBe('en')
-    expect(detectLangConfident('Tim quan bun bo ngon o TPHCM')).toBeNull()
+    // The regression this whole change exists for. When this file was written detectLang alone
+    // said English; since Consultative V1 (2026-09-18, folded content lexicon in intent.ts) the
+    // detector itself reads undiacriticked Vietnamese as Vietnamese — and the locale priority
+    // still holds on top of it, so the outcome is the same from both directions.
+    expect(detectLang('Tim quan bun bo ngon o TPHCM')).toBe('vi')
+    expect(detectLangConfident('Tim quan bun bo ngon o TPHCM')).toBe('vi')
     expect(pick('Tim quan bun bo ngon o TPHCM', 'vi-VN')).toBe('vi')
+    // A genuinely ambiguous two-word fragment is still the locale's call.
+    expect(detectLangConfident('quan nay')).toBeNull()
+    expect(pick('quan nay', 'vi-VN')).toBe('vi')
   })
 
   it('3. Vietnamese locale + a clear English question answers in English', () => {

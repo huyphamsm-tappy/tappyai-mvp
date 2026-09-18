@@ -21,6 +21,9 @@ import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
 import { guardClarifications } from './clarificationGuard'
+import { guardSearchClaims } from './consultative/searchClaimGuard'
+import { extractAttributes, guardAtmosphereClaims } from './consultative/reviewAttributes'
+import { guardProseShape } from './consultative/proseShape'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -1053,6 +1056,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const placeTexts: string[] = []
   /** True once a search_places (food/spa/places) tool result was seen this turn. */
   let hadPlaceSearch = false
+  /** Consultative V1: any tool call at all this turn (a `9:` frame). */
+  let anyToolCalled = false
   // Travel-intent turns ALWAYS buffer, so the fail-closed guard can inspect and
   // redact a fabricated fare BEFORE any byte reaches the client — even when the
   // model answered from memory with no tool call at all.
@@ -1063,6 +1068,9 @@ export function applyPlaceEnrichmentStreamFilter(
   // no-retrieval turns — short conversational replies, where the cost is small and the exposure
   // is highest.
   if (placeIntent) bufferMode = true
+  // Consultative V1: a decision turn buffers whether or not a tool runs, so the
+  // search-claim guard can judge "mình đã kiểm tra" on a no-tool follow-up.
+  if (collector?.consultativeV1) bufferMode = true
   /**
    * 🚨 A TICKET QUESTION MUST BE GUARDED EVEN WHEN NO PLACE TOOL RUNS.
    *
@@ -1106,7 +1114,10 @@ export function applyPlaceEnrichmentStreamFilter(
    * Stops the moment a place tool appears: after that, `injectPlaceEnrichment` rewrites the text
    * to position photos, and text already sent cannot be repositioned.
    */
-  const progressive = (placeIntent || ticketIntent) && !travelIntent
+  // Consultative V1: its guards judge sentences that carry no money claim (a search claim, an
+  // atmosphere adjective, a card re-listing), so "provably not redactable" no longer holds for
+  // a money-free sentence — the V1 turn keeps the whole reply until the guards have run.
+  const progressive = (placeIntent || ticketIntent) && !travelIntent && !collector?.consultativeV1
   let placeToolSeen = false
   /**
    * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
@@ -1511,7 +1522,40 @@ export function applyPlaceEnrichmentStreamFilter(
      * (where, when, how many, budget, which item) always stay; at most one
      * question survives either way. Prose only — machine blocks untouched.
      */
-    const clarified = guardClarifications(placeGuarded, collector?.clarificationPolicy ?? 'allow').text
+    const clarifiedBase = guardClarifications(placeGuarded, collector?.clarificationPolicy ?? 'allow').text
+    /**
+     * Consultative V1 (flag): three prose guards, in this order, on prose only.
+     *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
+     *   atmosphere    — an adjective about a named venue that its fetched text
+     *                   does not support (the pick sentence is counted, not cut).
+     *   prose-shape   — no card re-listing, one alternative, ≤ 6 sentences.
+     * With the flag OFF `collector.consultativeV1` is undefined and this is the
+     * identity — the string is untouched, byte for byte.
+     */
+    const clarified = (() => {
+      const v1 = collector?.consultativeV1
+      if (!v1) return clarifiedBase
+      const claims = guardSearchClaims(clarifiedBase, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
+      const v1Attrs = extractAttributes(placeEntityTexts)
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames })
+      const shape = guardProseShape(atmosphere.text, {
+        rendersCard: v1.rendersCard,
+        venues: snippetPlaceNames.map(name => ({
+          name,
+          rating: ratingsByEntity.get(name)?.[0] ?? null,
+          reviewCount: reviewCountsByEntity.get(name)?.[0] ?? null,
+          hours: hoursByEntity.get(name) ?? null,
+          phone: phonesByEntity.get(name)?.[0] ?? null,
+        })),
+      })
+      console.log(JSON.stringify({
+        type: 'tappyai_guard', guard: 'consultative_v1',
+        search_claims_removed: claims.removed, any_tool_called: anyToolCalled,
+        atmosphere_removed: atmosphere.removed, atmosphere_unsupported_in_pick: atmosphere.unsupportedInPick,
+        ...shape.stats,
+      }))
+      return shape.text
+    })()
     // A model link whose label names a registry merchant but whose URL is another site is unmade
     // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").
     const systemPlaced = new Set<string>(systemLinkUrls)
@@ -1823,6 +1867,7 @@ export function applyPlaceEnrichmentStreamFilter(
           try {
             const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
+            anyToolCalled = true
             if (call.toolName && PLACE_TOOLS.has(call.toolName)) {
               // The pre-tool segment is now COMPLETE, so its final sentence is a real sentence end
               // and may be released — the usual "the last one might still be arriving" caution no
