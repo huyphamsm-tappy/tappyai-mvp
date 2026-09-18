@@ -878,9 +878,11 @@ export async function POST(req: Request) {
       // Consultative V1: atmosphere / audience attributes from the text this
       // turn ALREADY fetched (entity-scoped snippets) — zero new calls. They
       // ride the shortlist evidence as the only such words the model may use.
-      const v1Attrs = situation && toolName === 'search_places'
-        ? extractAttributes(entityTextsOf(result))
-        : null
+      // Never fails the turn: a V1 extraction error is logged and the turn runs as before.
+      const v1Attrs = (() => {
+        if (!situation || toolName !== 'search_places') return null
+        try { return extractAttributes(entityTextsOf(result)) } catch (e) { console.error('[consultative-v1] attributes failed:', e); return null }
+      })()
       if (sl.selected.length > 0) {
         (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
           rank: idx,
@@ -897,7 +899,7 @@ export async function POST(req: Request) {
           missing: missingFor(decisionFrame, s.entry),
         }))
       }
-      if (situation && v1Attrs) {
+      if (situation && v1Attrs) try {
         // A stated hard constraint no candidate carries evidence for is an
         // evidence gap the reply must name — never silently dropped. Same for a
         // stated budget when no row carries a price: "trong tầm giá" is then a
@@ -914,7 +916,7 @@ export async function POST(req: Request) {
         const ctx = enrichment.consultativeV1
         if (ctx) { ctx.hardGaps = [...gaps]; ctx.budgetGap = budgetGap }
         console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps, budget_gap: budgetGap }))
-      }
+      } catch (e) { console.error('[consultative-v1] gaps failed:', e) }
       // What the reply may do with this evidence. The OpenStreetMap fallback
       // carries no rating, price, hours or reviews for any row, so a repeat
       // search there cannot help; a Google/Serper result can.
