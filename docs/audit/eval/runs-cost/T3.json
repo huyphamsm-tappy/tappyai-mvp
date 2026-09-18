@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 5959,
+  "evidenceId": "84d8e5f2-feb6-4899-a6ae-8319d62d6712",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có kết quả tìm kiếm cụ thể từ lần trước để biết khách sạn thứ hai là cái nào và có bao gồm ăn sáng không 😅\n\nBạn có thể cho mình biết tên khách sạn đó không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Giá phòng tham khảo trên các nền tảng có thể khác tùy loại phòng và ngày cụ thể — bạn nên kiểm tra trực tiếp trên Booking.com hoặc Agoda để xem giá chính xác và có thể so sánh các gói khác nhau.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Hanami Hotel Danang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Hanami+Hotel+Danang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào bạn thích nhất?|Bạn muốn ở bao nhiêu đêm?|Cần gợi ý quán ăn gần biển không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có kết quả tìm kiếm cụ thể từ lần trước để biết khách sạn thứ hai là cái nào và có bao gồm ăn sáng không 😅\n\nBạn có thể cho mình biết tên khách sạn đó không?"
+    }
+  ]
+}

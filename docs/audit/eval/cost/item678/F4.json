@@ -1,0 +1,159 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 19330,
+  "evidenceId": "800f7828-f36c-4282-bb2d-5008ad7740f0",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn gia đình trưa Phú Nhuận có chỗ đậu xe",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Lý Chính Thắng",
+      "rating": 4.8,
+      "count": 1290,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:30",
+      "distance_km": 2.1,
+      "address": "140a Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.8,
+      "count": 2106,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:30",
+      "distance_km": 2.9,
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "rating": 4.6,
+      "count": 238,
+      "price": "200-300 N ₫",
+      "hours": "11:00–23:00",
+      "distance_km": 2.8,
+      "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "price": "100-200 N ₫",
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 404,
+      "price": "100-200 N ₫",
+      "hours": "08:00–22:00",
+      "distance_km": 2.5,
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Tám Riêu - Lý Chính Thắng",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1290,
+        "distance_km": 2.1,
+        "open_now": true,
+        "opening_hours": "10:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 2106,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "10:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 238,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "11:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": false,
+        "opening_hours": "15:00–05:00",
+        "attributes": [
+          "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+        ]
+      }
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 404,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "08:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình gợi ý **Tám Riêu - Lý Chính Thắng** cho bữa trưa gia đình bạn 👨‍👩‍👧‍👦 Quán có **4.8⭐ (1.290 đánh giá)**, cách bạn khoảng 2.1km, mở cửa từ 10:30 đến 21:30 nên hoàn hảo cho trưa cuối tuần. Quán có website riêng để xem menu chi tiết.\n\nNếu muốn thay thế, **Tám Riêu - Phan Xích Long** cũng 4.8⭐ nhưng xa hơn (2.9km) và có nhiều đánh giá hơn (2.106 reviews).\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ GrabFood - Tám Riêu Lý Chính Thắng\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+L%C3%BD+Ch%C3%ADnh+Th%E1%BA%AFng+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10880845782038429541\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn cho 6 người|Xem menu trên website|Kiểm tra chỗ đậu xe trên Maps[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Tám Riêu - Lý Chính Thắng** cho bữa trưa gia đình bạn 👨‍👩‍👧‍👦 Quán có **4.8⭐ (1.290 đánh giá)**, cách bạn khoảng 2.1km, mở cửa từ 10:30 đến 21:30 nên hoàn hảo cho trưa cuối tuần. Quán có website riêng để xem menu chi tiết.\n\nNếu muốn thay thế, **Tám Riêu - Phan Xích Long** cũng 4.8⭐ nhưng xa hơn (2.9km) và có nhiều đánh giá hơn (2.106 reviews).\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ GrabFood - Tám Riêu Lý Chính Thắng\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+L%C3%BD+Ch%C3%ADnh+Th%E1%BA%AFng+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10880845782038429541\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn cho 6 người|Xem menu trên website|Kiểm tra chỗ đậu xe trên Maps[/FOLLOWUPS]"
+    }
+  ]
+}

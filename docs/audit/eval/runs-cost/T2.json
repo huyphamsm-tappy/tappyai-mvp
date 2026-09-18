@@ -1,0 +1,44 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 15073,
+  "evidenceId": "fd926722-eb38-410f-99d7-558cbdf96ba9",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items"
+        ]
+      }
+    ]
+  ],
+  "prose": "Giá phòng tham khảo trên các nền tảng có thể khác tùy loại phòng và ngày cụ thể — bạn nên kiểm tra trực tiếp trên Booking.com hoặc Agoda để xem giá chính xác và có thể so sánh các gói khác nhau.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Hanami Hotel Danang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Hanami+Hotel+Danang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào bạn thích nhất?|Bạn muốn ở bao nhiêu đêm?|Cần gợi ý quán ăn gần biển không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Giá phòng tham khảo trên các nền tảng có thể khác tùy loại phòng và ngày cụ thể — bạn nên kiểm tra trực tiếp trên Booking.com hoặc Agoda để xem giá chính xác và có thể so sánh các gói khác nhau.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Hanami Hotel Danang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Hanami+Hotel+Danang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào bạn thích nhất?|Bạn muốn ở bao nhiêu đêm?|Cần gợi ý quán ăn gần biển không?[/FOLLOWUPS]"
+    }
+  ]
+}

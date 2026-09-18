@@ -1,0 +1,120 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 20264,
+  "evidenceId": "ccfb80e6-5cf0-41b9-9857-cdf635b626a5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hải Sản Hoàng Gia Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hải Sản Hoàng Gia",
+      "rating": 4.8,
+      "count": 1245,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 0.7,
+      "address": "192 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 710200, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+      "rating": 4.6,
+      "count": 1694,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 0.3,
+      "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 960,
+      "price": "Trên 1 Tr ₫",
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hải Sản Hoàng Gia",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1245,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 37 Lý Tự Trọng Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1694,
+        "distance_km": 0.3,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 960,
+        "distance_km": 1.9,
+        "open_now": true,
+        "opening_hours": "08:00–00:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình cần tìm thêm thông tin về tình trạng đông của **Hải Sản Hoàng Gia** nhé.\n\nTheo kết quả tìm kiếm, **Hải Sản Hoàng Gia** có **4.8⭐ (1.245 đánh giá Google Maps)** — rất được yêu thích! Tuy nhiên, mình không tìm thấy thông tin cụ thể về tình trạng đông/vắng lúc này trong dữ liệu.\n\nNhưng dựa vào số lượng đánh giá khổng lồ (1.245 reviews), đây là quán rất nổi tiếng và thường khá đông, đặc biệt vào giờ tối. Quán mở đến 00:00 nên bạn có thời gian linh hoạt.\n\nNgoài ra, chi nhánh **37 Lý Tự Trọng** còn gần hơn (chỉ 0.3km) nếu bạn muốn chọn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hải Sản Hoàng Gia\",\"type\":\"website\",\"url\":\"https://haisanhoanggia.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5587965731067952908\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé.\n\nMình chọn **Izakaya Choioinoodle** cho bạn 🍜 — nhà hàng Nhật với **4.8⭐ (201 đánh giá Google Maps)**, chỉ cách bạn 0.9km, mở đến 22:00 nên hoàn hảo cho bữa tối. Mì ramen ngon, không gian ấm cúng, giá khoảng 100-200k/người rất hợp lý cho 2 người.\n\nNếu muốn hải sản cao cấp hơn, **Hải Sản Hoàng Gia** cũng tuyệt vời với 4.7⭐ (960 đánh giá) nhưng xa hơn 1.9km và giá trên 1 triệu/bữa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Izakaya Choioinoodle\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+Choioinoodle+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có gì đặc biệt?|Quán Bụi ở đâu?|Có quán nào gần hơn không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần tìm thêm thông tin về tình trạng đông của **Hải Sản Hoàng Gia** nhé.\n\nTheo kết quả tìm kiếm, **Hải Sản Hoàng Gia** có **4.8⭐ (1.245 đánh giá Google Maps)** — rất được yêu thích! Tuy nhiên, mình không tìm thấy thông tin cụ thể về tình trạng đông/vắng lúc này trong dữ liệu.\n\nNhưng dựa vào số lượng đánh giá khổng lồ (1.245 reviews), đây là quán rất nổi tiếng và thường khá đông, đặc biệt vào giờ tối. Quán mở đến 00:00 nên bạn có thời gian linh hoạt.\n\nNgoài ra, chi nhánh **37 Lý Tự Trọng** còn gần hơn (chỉ 0.3km) nếu bạn muốn chọn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hải Sản Hoàng Gia\",\"type\":\"website\",\"url\":\"https://haisanhoanggia.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5587965731067952908\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

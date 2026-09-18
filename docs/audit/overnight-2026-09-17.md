@@ -265,3 +265,12 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
 - The Step A capture (`stepA/web-after-A-guest-flags-on.*`) had been saved in the v3-phase4-design worktree only —
   copied into this branch now. This log is also copied into the v3-phase4-design worktree (`docs/audit/`).
 - Servers: audit `:3101` left running (`audit-flags-on`); emulator-5558 left running. STOP.
+
+## COST OPTIMIZATION (2026-09-18, follow-on job) — DONE
+- Report (vi): `docs/audit/cost-optimization-report-2026-09-18.md`; numbers: `docs/audit/cost-report.md`; UAT:
+  `docs/audit/uat-checklist.md`. Applied: cache breakpoint on the last user message, model payload = decision set,
+  history compaction, maxTokens 2048, no-model turns (greetings, carried-fact follow-ups). Reverted: item 2 (eval
+  drop traced to memory state, kept reverted anyway). Not applied (riskier than described): item 3 (domain-scoped
+  rules), item 5 (durable Serper cache — Maps terms, open_now freshness, DDL). Per turn $0.0300 → $0.0247; eval
+  34/40 = baseline. Web 13 374 / 68, tsc clean, Android 727/0. LLM budget 93/120. APK rebuilt + installed; backend
+  `:3101` flags ON left running.

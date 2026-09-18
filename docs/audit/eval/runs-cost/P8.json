@@ -1,0 +1,151 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 15257,
+  "evidenceId": "fb2d987e-a7cd-484c-ae85-18ee5d2ebb2b",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa mở khuya sau 22h Quận 3",
+        "location": "Quận 3, TP HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "rating": 4.9,
+      "count": 1122,
+      "hours": "11:00–21:30",
+      "distance_km": 2.5,
+      "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 586,
+      "hours": "09:00–19:00",
+      "distance_km": 1.1,
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 244,
+      "hours": "09:00–21:00",
+      "distance_km": 2.6,
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–20:30",
+      "distance_km": 2.8,
+      "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "rating": 4.9,
+      "count": 1455,
+      "hours": "09:30–20:30",
+      "distance_km": 3.3,
+      "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1122,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "11:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 586,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "09:00–19:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 244,
+        "distance_km": 2.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 845,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "10:00–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1455,
+        "distance_km": 3.3,
+        "open_now": true,
+        "opening_hours": "09:30–20:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "late_open"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Không có spa nào mở sau 22h ở khu vực này.\n\nNếu bạn muốn gội đầu dưỡng sinh khuya, **Mela Spa** là lựa chọn tốt nhất với **5⭐ (244 đánh giá)**, chuyên gội đầu dưỡng sinh, mở đến 21:00.\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Mela Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3343172557095439827\",\"primary\":true},{\"label\":\"🌐 Website Nara Spa\",\"type\":\"website\",\"url\":\"https://www.naraspasaigon.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Không có spa nào mở sau 22h ở khu vực này.\n\nNếu bạn muốn gội đầu dưỡng sinh khuya, **Mela Spa** là lựa chọn tốt nhất với **5⭐ (244 đánh giá)**, chuyên gội đầu dưỡng sinh, mở đến 21:00.\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Mela Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3343172557095439827\",\"primary\":true},{\"label\":\"🌐 Website Nara Spa\",\"type\":\"website\",\"url\":\"https://www.naraspasaigon.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

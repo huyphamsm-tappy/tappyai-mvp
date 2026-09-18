@@ -112,4 +112,57 @@ tables. Anonymous users skip memory extraction, so their turns are ≈$0.004 che
 Results per item are appended below as they are applied.
 
 ## Phase 2 — measured after each item
-_(appended per item)_
+
+Method: after every item the same 6-turn subset (F4 → F5 follow-up, S2, P2, E1, T4) was run on the audit env with
+all flags ON (`docs/audit/eval/cost/usage-<item>.jsonl`, replies in `cost/<item>/`), memory cleared before each run;
+at the end the full CONSULTATIVE-40 (`usage-final40.jsonl`, replies in `docs/audit/eval/runs-cost/`). Costs below are
+STEADY-STATE (the static prefix warm; the per-turn dynamic segment write that item 1 introduces is counted as a real
+cost). Budget spent in this job: **93 / 120** LLM runs (20 measurement + 24 per-item + 40 final + 9 re-runs).
+
+| after item | tool turn $ | follow-up $ | subset avg $ | cache hit (warm turns) | note |
+|---|---|---|---|---|---|
+| baseline (V1 ON) | 0.0368 | 0.0142 | 0.0300 | 68–84 % | 10-turn measurement, Phase 1 |
+| 1 cache breakpoint on last user msg | 0.0301 | – | 0.0301 | 85–90 % | uncached input on a tool turn 15–20k → 5–11k tokens: step 2 reads the request prefix; a write of ≈3–5k tokens per turn is the price |
+| 2 rules V1 overrides removed | (with 4) | | | | **REVERTED** — see below |
+| 4 model payload = decision set | 0.0308 | 0.0117 | 0.0245 | 80–86 % | tool result 8–10k → 4.5–6k tokens; uncached input per tool turn ≈ 5k; the first cut trimmed BEFORE the enrichment carve and starved the photo collector (5 `/images` calls per turn — caught by the Serper meter, fixed) |
+| 6 history compaction | 0.0303 | | | | 0 on this sample (short threads); bounds long threads (older assistant replies ≤ 420 chars) |
+| 7 maxTokens 3072 → 2048 | 0.0303 | | | | 0 by construction (max observed 821); guard only |
+| 8 no-model turns | 0.0303 | **0.0000** (carried-fact follow-up) | 0.0221 | | F5 answered from the carried hours in 449 ms, $0; greetings likewise |
+| **final 40 (all items)** | **0.0293** | 0.0123 | **0.0247** | **73 %** overall (baseline 55 %) | 191 Serper credits / 40 turns |
+
+**Per-turn cost: $0.0300 → $0.0247 steady-state on the full 40 (−18 %); tool turns $0.0368 → $0.0293 (−20 %);
+a carried-fact follow-up $0.0113 → $0.** Uncached input tokens per tool turn: ≈19k → ≈5k (−74 %); the bill is now
+dominated by cache reads (10 %), Serper credits and the memory-extraction call.
+
+Monthly (steady-state, V1 ON, mix as in the 40): **1k turns/day ≈ $740** (was ≈ $900) · **10k ≈ $7 400** (was
+≈ $9 000) · **100k ≈ $74 000** (was ≈ $90 000).
+
+### Items not applied, and why
+- **2 — delete the rules V1 overrides.** Applied as a flag-conditional removal (R1(a), R1b 1..3 wording, R1b
+  "viết 1/2/3", R2, R7(b); byte-identical with the flag OFF, pinned by test), then the 40-run pass dropped to 30/40
+  with four turns asking a question instead of recommending (F7, F8, S2, T4) → reverted per the rule (`d10a7e9`).
+  Re-running those turns after the revert did NOT recover them; clearing the audit user's memory did (F7, T4 pick
+  again). So the drop was memory state accumulated across the 40-run pass, not item 2 — but the item stays reverted:
+  its saving is ≈150 cached tokens/turn (≈$0.00002) and the eval could not attribute it cleanly.
+- **3 — domain-scoped rules.** Riskier than described, not applied: the vertical-specific static text (link rules
+  18/18a/18b/19 ≈1.9k tokens, review block ≈1.7k, CTA block ≈2.4k) sits in the CACHED prefix at $0.10/M, so the
+  measured saving is ≤ $0.0012 per tool turn (≈4 %) — while it multiplies the cache lineages (5 verticals × the
+  tool-set variants already observed) and drops rules on multi-domain turns (a plan needs food + stay + attraction +
+  transport; "ăn gì" needs food + shopping links). Not worth the quality risk at this cost.
+- **5 — shared Serper cache 6–24 h surviving restarts.** Riskier than described, not applied: (a) the code already
+  records that Serper/Maps content is not persisted beyond the 30-min in-process cache because of Google Places
+  terms (`serperPlaces.ts`, `product.ts` EMIT_TAPPY_PLACES note) — a durable 6–24 h store of Maps rows is a terms
+  decision for the owner; (b) `open_now` is computed at fetch time, so a 6–24 h row would say "đang mở" from
+  yesterday unless the cache stored raw records and re-mapped on read (a data-acquisition change); (c) the durable
+  store itself (a Supabase table) needs DDL the owner must apply. Expected reduction if approved: Serper is
+  $0.005–0.010 per tool turn (191 credits / 40 turns here); the saving equals the share of repeated
+  (query, location) pairs across users within the TTL — unknown without production traffic; in this eval every
+  query was distinct, so the in-process cache saved 0 and a durable one would have too.
+
+### Cache-friendliness note (item 1)
+The prompt order was already static-first (`systemShared` = rulebook + tools, then the request-shaped segment). What
+the measurement found instead: the cached prefix has FOUR variants (21 327 / 21 179 / 21 450 / 21 452 tokens)
+because the tool SET changes per turn (`search_products` dropped on an "offline" location intent, `search_places` on
+a film-recommendation turn). Each variant is its own cache lineage and its own write when cold. Not changed —
+dropping a tool deterministically is a quality mechanism — but worth knowing: on a quiet deployment the first turn of
+each variant pays ≈$0.027.

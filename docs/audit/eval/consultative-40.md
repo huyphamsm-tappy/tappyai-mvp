@@ -173,3 +173,10 @@ with venues · budget-fit claim removal.
 6. Listing rule: thousands-separated counts (`1.008` vs `1008`) — Android F2.
 7. Model-authored CTA labels ("Tìm phòng trên …" for a restaurant) — `SERVER_AUTHORED_CTA` flag exists, off.
 8. Named re-search with `location = district` finds nothing on Serper (F5 Android) — suggest the city in the instruction.
+
+## Re-run after COST OPTIMIZATION (2026-09-18, all items applied, flags ON) — `runs-cost/`
+**34 / 40 — equal to the baseline.** FAIL: S2, S5, T2, T5, T6, T8. Recovered vs Step F: T1 (plans with the assumed
+weekend), E1 (card, no inline media), F6 (re-search by name + honest crowd answer). Memory-state effect measured: F7
+and T4 ask "bạn muốn ăn gì" once the audit user's memory holds ~30 turns of preferences and pick again after
+`clearmem` — grades are taken with the memory cleared, as the pass protocol says. Cost per turn in this pass:
+$0.0247 steady-state (`docs/audit/cost-report.md`).

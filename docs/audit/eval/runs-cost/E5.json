@@ -1,0 +1,25 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 4112,
+  "evidenceId": "ed150686-3907-4a6c-be22-329e16d8142f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cuối tuần này bạn muốn làm gì? 😊 Mình có thể gợi ý:\n\n- **Ăn uống**: bún bò ngon ở Quận 1, hay quán nào khác?\n- **Giai trí**: bar nhạc sống (bạn hay đi lúc sau 22h), rạp phim, karaoke?\n- **Spa/Làm đẹp**: spa mở khuya để thư giãn?\n- **Mua sắm**: cần gì không?\n\nBạn muốn tìm cái gì cụ thể nhất?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Cuối tuần này bạn muốn làm gì? 😊 Mình có thể gợi ý:\n\n- **Ăn uống**: bún bò ngon ở Quận 1, hay quán nào khác?\n- **Giai trí**: bar nhạc sống (bạn hay đi lúc sau 22h), rạp phim, karaoke?\n- **Spa/Làm đẹp**: spa mở khuya để thư giãn?\n- **Mua sắm**: cần gì không?\n\nBạn muốn tìm cái gì cụ thể nhất?"
+    }
+  ]
+}
