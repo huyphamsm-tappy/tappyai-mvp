@@ -47,7 +47,7 @@ async function run(reply: string, opts: { v1?: ConsultativeV1Context; tool?: boo
   } finally { console.log = orig }
 }
 const prose = (stream: string): string => stream.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
-const ON: ConsultativeV1Context = { on: true, rendersCard: true, namedRefetch: [] }
+const ON: ConsultativeV1Context = { on: true, rendersCard: true, namedRefetch: [], carried: [], hardGaps: [], budgetGap: false }
 
 describe('flag OFF — identity', () => {
   it('a no-tool follow-up streams straight through, search claim and all', async () => {
@@ -88,5 +88,33 @@ describe('flag ON', () => {
     expect(withCard).not.toContain('mở 08:00–22:00')
     const noCard = prose((await run(reply, { v1: { ...ON, rendersCard: false } })).text)
     expect(noCard).toContain('mở 08:00–22:00')
+  })
+
+  it('a no-tool follow-up may quote the numbers the previous reply stated (carried evidence)', async () => {
+    const reply = '**Ốc Đào** có 4.4⭐ từ 589 đánh giá và cách bạn 1.2km, nên cuối tuần thường đông.'
+    const carried = [{ name: 'Ốc Đào', rating: 4.4, reviewCount: 589, distanceKm: 1.2 }]
+    const { text, logs } = await run(reply, { v1: { ...ON, carried }, tool: false })
+    expect(prose(text)).toContain('4.4⭐ từ 589 đánh giá')
+    expect(logs.find(l => l.includes('"guard":"consultative_v1"'))).toContain('"carried":1')
+  })
+
+  it('an orphan emoji line left by a removed sentence is dropped', async () => {
+    const reply = `Mình chọn **Cơm Niêu Sài Gòn** vì yên tĩnh hợp 2 người tối nay.\n\nNgoài ra **Ốc Đào** rất lãng mạn.\n\n 🍷\n\n${FOLLOWUPS}`
+    const out = prose((await run(reply, { v1: ON })).text)
+    expect(out).not.toMatch(/\n\s*🍷\s*\n/)
+    expect(out).toContain('[FOLLOWUPS]')
+  })
+
+  it('names an unaddressed evidence gap and a missing price itself, before the machine blocks', async () => {
+    const reply = `Mình chọn **Cơm Niêu Sài Gòn** cho cả nhà trưa cuối tuần vì 1.200 đánh giá.\n\n${FOLLOWUPS}`
+    const { text } = await run(reply, { v1: { ...ON, hardGaps: ['parking', 'kids'], budgetGap: true } })
+    const out = prose(text)
+    expect(out).toContain('Mình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này')
+    expect(out).toContain('Kết quả chưa có mức giá')
+    expect(out.indexOf('chưa thấy bằng chứng')).toBeLessThan(out.indexOf('[FOLLOWUPS]'))
+    // Already said ⇒ not repeated.
+    const said = `Mình chọn **Cơm Niêu Sài Gòn**. Mình chưa thấy bằng chứng về chỗ đậu xe hay phù hợp trẻ em, nên gọi hỏi trước.\n\n${FOLLOWUPS}`
+    const out2 = prose((await run(said, { v1: { ...ON, hardGaps: ['parking', 'kids'] } })).text)
+    expect(out2.match(/chưa thấy bằng chứng/g)).toHaveLength(1)
   })
 })

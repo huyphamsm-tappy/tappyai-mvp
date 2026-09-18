@@ -172,6 +172,17 @@ export interface ConsultativeV1Context {
   rendersCard: boolean
   /** Venues the route asked the model to re-search by name this turn. */
   namedRefetch: string[]
+  /**
+   * The numbers the PREVIOUS reply stated about the venues it named (rating,
+   * review count, distance). On a follow-up that runs no tool this is the
+   * turn's only place evidence; the place-claim guard reads it instead of an
+   * empty row set. Empty on a first turn.
+   */
+  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null }>
+  /** Stated hard constraints no candidate carried evidence for — set at tool time. */
+  hardGaps: string[]
+  /** The user stated a budget and no row carried a price — set at tool time. */
+  budgetGap: boolean
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { priorVenuesIn, resolveReferences, factsAsked, referencedVenues, priorTextStates, renderReferencedBlock } from './referenceResolver'
+import { priorVenuesIn, resolveReferences, factsAsked, referencedVenues, priorTextStates, renderReferencedBlock, carriedFacts } from './referenceResolver'
 
 // Consultative V1 §3 — "quán này / quán số 2 / 3 quán này / Quán X" resolve to
 // venues the previous reply NAMED, deterministically; never to a new search.
@@ -68,7 +68,8 @@ describe('factsAsked + priorTextStates — when a real re-search by name is warr
     expect(factsAsked('what time does it close')).toContain('hours')
   })
   it('"gia đình" is not a price question; "cách đặt bàn" is not a distance question', () => {
-    expect(factsAsked('quán này hợp gia đình không')).toEqual([])
+    expect(factsAsked('quán này hợp gia đình không')).toEqual(['vibe'])
+    expect(factsAsked('quán này có menu gia đình')).toEqual(['menu'])
     expect(factsAsked('cách đặt bàn')).toEqual(['booking'])
   })
   it('the prior prose already states hours and price for the pick, but nothing for Ốc Đào', () => {
@@ -88,5 +89,24 @@ describe('renderReferencedBlock', () => {
     expect(b).toContain('KHÔNG có kết quả')
     expect(b).toContain('mình không tìm thấy')
     expect(renderReferencedBlock([], [])).toBe('')
+  })
+})
+
+describe('carriedFacts — the numbers the previous reply stated, per venue', () => {
+  it('reads rating / review count / distance from each venue\'s own paragraph', () => {
+    const prior = 'Mình chọn **Hải Sản Hoàng Gia** — 4.7⭐ từ 961 đánh giá, cách bạn 1.9km.\n\nNếu gần hơn thì **Quán Bụi** (4.5⭐, 1.188 đánh giá) chỉ 0.7km.'
+    const facts = carriedFacts(prior, priorVenuesIn(prior))
+    expect(facts).toEqual([
+      { name: 'Hải Sản Hoàng Gia', rating: 4.7, reviewCount: 961, distanceKm: 1.9 },
+      { name: 'Quán Bụi', rating: 4.5, reviewCount: 1188, distanceKm: 0.7 },
+    ])
+  })
+  it('a venue with no numbers carries nulls; no venues ⇒ empty', () => {
+    expect(carriedFacts('**Ốc Đào** hợp đi nhóm.', priorVenuesIn('**Ốc Đào** hợp đi nhóm.'))).toEqual([{ name: 'Ốc Đào', rating: null, reviewCount: null, distanceKm: null }])
+    expect(carriedFacts('không có', [])).toEqual([])
+  })
+  it('crowd / vibe questions are facts a re-search can answer or honestly deny', () => {
+    expect(factsAsked('quán số 2 có đông không?')).toEqual(['crowd'])
+    expect(factsAsked('chỗ đó yên tĩnh không')).toEqual(['vibe'])
   })
 })

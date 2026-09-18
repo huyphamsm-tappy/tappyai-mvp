@@ -1476,6 +1476,23 @@ export function applyPlaceEnrichmentStreamFilter(
     // G1: the engine's Pick, by row name — for attribution telemetry and the fallback sentence.
     const pickName = collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name ?? null
     const guardV2 = placeGuardAttributionV2Enabled()
+    /**
+     * Consultative V1: a follow-up that ran no tool answers about the venues the
+     * PREVIOUS reply named, with the numbers that reply stated. Without this the
+     * guard reads an empty row set and cuts the very figures the user is asking
+     * about (measured 2026-09-18, F6: 4 of 11 sentences removed, reply reduced to
+     * a fragment). Seeded only when this turn retrieved nothing itself, so real
+     * rows always win over carried prose.
+     */
+    if (collector?.consultativeV1 && !hadPlaceSearch) {
+      for (const c of collector.consultativeV1.carried) {
+        if (!c.name) continue
+        snippetPlaceNames.push(c.name)
+        if (c.rating !== null) { placeRatings.push(c.rating); ratingsByEntity.set(c.name, [...(ratingsByEntity.get(c.name) ?? []), c.rating]) }
+        if (c.reviewCount !== null) reviewCountsByEntity.set(c.name, [...(reviewCountsByEntity.get(c.name) ?? []), c.reviewCount])
+        if (c.distanceKm !== null) placeDistancesKm.push(c.distanceKm)
+      }
+    }
     const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
       ? guardPlaceClaimsInText(foodGuarded, {
         ratings: placeRatings,
@@ -1548,13 +1565,50 @@ export function applyPlaceEnrichmentStreamFilter(
           phone: phonesByEntity.get(name)?.[0] ?? null,
         })),
       })
+      // A line the guards left with no letters or digits — a stranded emoji, a
+      // lone dash — is not a sentence (measured F3: " 🍷" on its own line).
+      const tidy = shape.text.split('\n').filter(l => l.trim() === '' || /[\p{L}\p{N}]/u.test(l) || /^\s*\[/.test(l)).join('\n').replace(/\n{3,}/g, '\n\n')
+      /**
+       * The evidence gap, said out loud. The prompt asks the model to name a
+       * stated constraint it found no evidence for; measured 2026-09-18 (F3,
+       * F4) it did not. So the sentence is appended here, from the frame and
+       * the row set, exactly like the G1b fallback: server-authored, placed
+       * before the machine blocks, never a claim about the venue.
+       */
+      const gapWords: Record<string, [string, string]> = {
+        quiet: ['yên tĩnh', 'quiet'], parking: ['chỗ đậu xe', 'parking'], kids: ['phù hợp trẻ em', 'kid-friendliness'],
+        vegetarian: ['món chay', 'vegetarian options'], outdoor: ['chỗ ngồi ngoài trời', 'outdoor seating'],
+        late_open: ['giờ mở khuya', 'late opening'], view: ['view', 'a view'],
+      }
+      const said = normalizeVN(tidy.toLowerCase())
+      const unsaid = v1.hardGaps.filter(g => gapWords[g] && !said.includes(normalizeVN(gapWords[g][0])) && !/chua (?:thay|co) bang chung|khong tim thay bang chung|no evidence/.test(said))
+      const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay) (?:muc )?gia|khong co (?:muc )?gia|no price/.test(said)
+      const headsUp: string[] = []
+      if (unsaid.length > 0) {
+        headsUp.push(lang === 'en'
+          ? `I found no evidence about ${unsaid.map(g => gapWords[g][1]).join(', ')} for these places — worth a call before you go.`
+          : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`)
+      }
+      if (budgetUnsaid) {
+        headsUp.push(lang === 'en'
+          ? 'None of these results carries a price, so I cannot confirm they fit your budget.'
+          : 'Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.')
+      }
+      const withHeadsUp = headsUp.length === 0 ? tidy : (() => {
+        const at = earliestMarker(tidy)
+        const head = tidy.slice(0, at).replace(/\s+$/, '')
+        const tail = tidy.slice(at)
+        return `${head}${head ? '\n\n' : ''}${headsUp.join(' ')}${tail ? `\n\n${tail}` : ''}`
+      })()
       console.log(JSON.stringify({
         type: 'tappyai_guard', guard: 'consultative_v1',
         search_claims_removed: claims.removed, any_tool_called: anyToolCalled,
         atmosphere_removed: atmosphere.removed, atmosphere_unsupported_in_pick: atmosphere.unsupportedInPick,
-        ...shape.stats,
+        ...shape.stats, orphan_lines_removed: shape.text.split('\n').length - tidy.split('\n').length,
+        heads_up: headsUp.length, gaps_unsaid: unsaid, budget_unsaid: budgetUnsaid,
+        carried: collector?.consultativeV1?.carried.length ?? 0,
       }))
-      return shape.text
+      return withHeadsUp
     })()
     // A model link whose label names a registry merchant but whose URL is another site is unmade
     // here, at the same last point (live UAT 14 Sep 2026: "[Điện Máy Xanh](dienmaycholon.vn)").

@@ -28,6 +28,7 @@ export interface Reference {
 
 export type FactAsked =
   | 'hours' | 'price' | 'phone' | 'address' | 'open_now' | 'parking' | 'booking' | 'menu' | 'distance'
+  | 'crowd' | 'vibe'
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
 
@@ -117,6 +118,9 @@ const FACTS: Array<[FactAsked, RegExp]> = [
   ['booking', /\b(dat ban|dat cho|dat truoc|book|reserve|reservation|can dat)\b/],
   ['menu', /\b(menu|thuc don|co mon gi|mon gi|dac san|best dish|what to order)\b/],
   ['distance', /\b(xa khong|bao xa|cach (?:day|do|xa|bao|toi|minh)|far|how far|distance|gan khong)\b/],
+  // Attribute questions: the answer is evidence or "no data", never a guess.
+  ['crowd', /\b(dong khong|co dong|dong ko|dong lam khong|xep hang|cho lau khong|crowded|busy|wait long)\b/],
+  ['vibe', /\b(yen tinh khong|on khong|co view|view (?:dep|ok) khong|khong gian (?:the nao|sao|ra sao)|lang man khong|sang khong|hop (?:gia dinh|tre em|hen ho|date) khong|atmosphere|vibe)\b/],
 ]
 
 /** The fact(s) this turn asks about the referenced venue(s). */
@@ -141,14 +145,8 @@ export function referencedVenues(refs: readonly Reference[]): PriorVenue[] {
  * Unknown ⇒ false ⇒ the route may search by name once.
  */
 export function priorTextStates(priorText: string, venue: PriorVenue, fact: FactAsked): boolean {
-  const f = fold(priorText)
-  const at = f.indexOf(fold(venue.name))
-  if (at < 0) return false
-  // The venue's own paragraph: from its name to the next bolded name or blank line.
-  // Skip the name and its closing `**`, then stop at the next bolded name or blank line.
-  const rest = f.slice(at + fold(venue.name).length).replace(/^\*\*/, '')
-  const stop = rest.search(/\n\s*\n|\*\*/)
-  const seg = rest.slice(0, stop > 0 ? stop : Math.min(rest.length, 600))
+  const seg = venueSegment(priorText, venue)
+  if (seg === null) return false
   switch (fact) {
     case 'hours': case 'open_now': return /\b\d{1,2}[:h]\d{0,2}\s*[-–]\s*\d{1,2}[:h]\d{0,2}\b|\b(mo cua|gio mo|open)\b.*\d/.test(seg)
     case 'price': return /\d\s*(?:k|nghin|tr|trieu|d|vnd|₫)\b|₫|\bdong\b/.test(seg)
@@ -157,6 +155,51 @@ export function priorTextStates(priorText: string, venue: PriorVenue, fact: Fact
     case 'distance': return /\b\d+(?:[.,]\d+)?\s*(?:km|m|phut|min)\b/.test(seg)
     default: return false
   }
+}
+
+export interface CarriedFacts {
+  name: string
+  rating: number | null
+  reviewCount: number | null
+  distanceKm: number | null
+}
+
+/** The venue's own paragraph in the prior prose (after its bolded name, up to the next name / blank line). */
+function venueSegment(priorText: string, venue: PriorVenue): string | null {
+  const f = fold(priorText)
+  const n = fold(venue.name)
+  const at = f.indexOf(n)
+  if (at < 0) return null
+  const rest = f.slice(at + n.length).replace(/^\*\*/, '')
+  const stop = rest.search(/\n\s*\n|\*\*/)
+  return rest.slice(0, stop > 0 ? stop : Math.min(rest.length, 600))
+}
+
+/**
+ * The numbers the PREVIOUS reply stated about each venue — rating, review count,
+ * distance — as the user read them. On a follow-up that runs no tool this is the
+ * only evidence the turn has; the place-claim guard otherwise reads an empty row
+ * set and cuts the very numbers the user is asking about (measured 2026-09-18,
+ * F6: 4 of 11 sentences removed, the reply reduced to a fragment). REVIEW-level,
+ * only for venues the prior reply named.
+ */
+export function carriedFacts(priorText: string, venues: readonly PriorVenue[]): CarriedFacts[] {
+  const out: CarriedFacts[] = []
+  for (const v of venues) {
+    const seg = venueSegment(priorText, v)
+    if (seg === null) continue
+    const rating = seg.match(/\b([1-5](?:[.,]\d)?)\s*(?:⭐|sao\b|stars?\b|\/5)/)
+    const count = seg.match(/\b(\d{1,3}(?:[.,]\d{3})*|\d+)\s*(?:danh gia|reviews?|luot danh gia|ratings?)\b/)
+    const dist = seg.match(/\b(\d+(?:[.,]\d+)?)\s*km\b/)
+    const num = (m: RegExpMatchArray | null, thousands: boolean) => {
+      if (!m) return null
+      const raw = thousands ? m[1].replace(/[.,]/g, '') : m[1].replace(',', '.')
+      const n = Number(raw)
+      return Number.isFinite(n) ? n : null
+    }
+    out.push({ name: v.name, rating: num(rating, false), reviewCount: num(count, true), distanceKm: num(dist, false) })
+  }
+  return out
 }
 
 /** The prompt line that tells the model exactly which venues the user means. */

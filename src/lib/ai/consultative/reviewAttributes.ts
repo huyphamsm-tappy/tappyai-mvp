@@ -150,13 +150,22 @@ export function guardAtmosphereClaims(
   const doomed = new Set<number>()
   let unsupportedInPick = 0
   let firstProse = -1
+  /** The venue the previous prose sentence named — "Quán có sân vườn yên tĩnh" is about it. */
+  let lastNamed: ReadonlyArray<readonly [string, string]> = []
   spans.forEach(([a, b], i) => {
     if (isMachine(a, b)) return
     const s = text.slice(a, b)
     if (!s.trim()) return
     if (firstProse < 0) firstProse = i
     const f = fold(s)
-    const named = foldedNames.filter(([, fn]) => f.includes(fn))
+    let named = foldedNames.filter(([, fn]) => f.includes(fn))
+    // Anaphora: a nameless sentence that opens with "quán / chỗ / nhà hàng (này|đó) / nó / it /
+    // the place" continues the previous sentence's venue (measured F8: "Quán có phòng riêng, …
+    // sân vườn yên tĩnh" right after the named pick).
+    if (named.length === 0 && lastNamed.length > 0 && /^\s*(?:quan|cho|nha hang|tiem|khach san|spa|no|day|it|this place|the place|they)\b(?:\s+(?:nay|do|kia|ay))?\b/.test(f)) {
+      named = [...lastNamed]
+    }
+    if (named.length > 0) lastNamed = named
     if (named.length === 0) return
     // A wish attributed to the user is not a venue claim: "bạn muốn yên tĩnh".
     if (/\b(ban (?:muon|can|thich|noi)|you (?:want|asked|said|need))\b/.test(f)) return

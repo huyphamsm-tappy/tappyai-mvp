@@ -74,3 +74,17 @@ describe('guardAtmosphereClaims', () => {
     expect(guardAtmosphereClaims(s, { attrs, names: [] }).text).toBe(s)
   })
 })
+
+describe('guardAtmosphereClaims — anaphora', () => {
+  const attrs = extractAttributes(new Map([['Nhà Hàng Du Ký', ['hải sản tươi']]]))
+  it('"Quán có … yên tĩnh" right after the named pick is about the pick and is unsupported', () => {
+    const text = 'Mình gợi ý **Nhà Hàng Du Ký** — 4.7⭐. Quán có phòng riêng, không khí sân vườn yên tĩnh. Với 8 người là hợp lý.'
+    const r = guardAtmosphereClaims(text, { attrs, names: ['Nhà Hàng Du Ký'] })
+    expect(r.removed).toBe(1)
+    expect(r.text).toBe('Mình gợi ý **Nhà Hàng Du Ký** — 4.7⭐. Với 8 người là hợp lý.')
+  })
+  it('a nameless sentence that does not open with an anaphor is left alone', () => {
+    const text = 'Mình gợi ý **Nhà Hàng Du Ký**. Nhìn chung khu này khá yên tĩnh buổi tối.'
+    expect(guardAtmosphereClaims(text, { attrs, names: ['Nhà Hàng Du Ký'] }).removed).toBe(0)
+  })
+})

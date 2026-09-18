@@ -63,7 +63,7 @@ import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } fro
 import { consultativeV1Enabled } from '@/lib/config/product'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
-import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock } from '@/lib/ai/consultative/referenceResolver'
+import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
 import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 
@@ -889,10 +889,21 @@ export async function POST(req: Request) {
       }
       if (situation && v1Attrs) {
         // A stated hard constraint no candidate carries evidence for is an
-        // evidence gap the reply must name — never silently dropped.
+        // evidence gap the reply must name — never silently dropped. Same for a
+        // stated budget when no row carries a price: "trong tầm giá" is then a
+        // guess, and the stream filter appends the honest sentence itself.
         const gaps = hardConstraintGaps(situation.hard, v1Attrs)
         if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
-        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps }))
+        const rows = (result as { results?: unknown }).results
+        const anyPrice = Array.isArray(rows) && rows.some(row => {
+          const x = row as Record<string, unknown>
+          return !!(x.price_range_text || x.price_range || x.price_level || typeof x.price === 'number')
+        })
+        const budgetGap = !!situation.budget && !anyPrice
+        if (budgetGap) (result as Record<string, unknown>)._tappy_budget_evidence = false
+        const ctx = enrichment.consultativeV1
+        if (ctx) { ctx.hardGaps = [...gaps]; ctx.budgetGap = budgetGap }
+        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps, budget_gap: budgetGap }))
       }
       // What the reply may do with this evidence. The OpenStreetMap fallback
       // carries no rating, price, hours or reviews for any row, so a repeat
@@ -1094,7 +1105,10 @@ export async function POST(req: Request) {
       assumptions: situation.assumptions.length, confidence: situation.confidence,
       prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
     }))
-    enrichment.setConsultativeV1({ on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name) })
+    enrichment.setConsultativeV1({
+      on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
+      carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
+    })
     const refetchLines = refetch.length > 0
       ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
       : ''
