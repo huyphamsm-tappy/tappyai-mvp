@@ -70,6 +70,7 @@ import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/a
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
+import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -1402,9 +1403,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // centre" and picked 'attraction' instead - measured on "Trung tam mua sam
           // lon Sai Gon", which then searched tourist attractions and produced a reply
           // that told the user its own results were wrong.
-          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction', 'mall']).optional()
+          // A free string, coerced in execute (placeType.ts): an off-enum value from the model
+          // ("entertainment") used to fail SDK validation and end the whole turn with an error.
+          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall')
         }),
-        execute: async ({ query, location: modelLocation, type }) => {
+        execute: async ({ query, location: modelLocation, type: rawType }) => {
+          const type = coercePlaceType(rawType)
+          if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))
           // Explore clip: when the model names no area, the clip's own address is
           // the area — the author wrote it, and `searchPlaces` already knows how to
           // read a city out of free text and how to refuse when it cannot. A
