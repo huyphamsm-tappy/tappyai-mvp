@@ -68,6 +68,7 @@ import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Pr
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
 import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
+import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 
 export const maxDuration = 60
 
@@ -1435,9 +1436,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mapsUrl = (result as Record<string, unknown>).google_maps_search
             ?? (result as Record<string, unknown>).search_url
           enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
-          return forModel('search_places', withTravelEditorial(pick
+          // The model reads the decision set only (cost optimization item 4); the card above
+          // was built from the full result and is unaffected. See `modelPayload.ts`.
+          return forModel('search_places', withTravelEditorial(trimPlacesForModel(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial))
+            : result), editorial))
         }
       }) }),
       get_news: tool({

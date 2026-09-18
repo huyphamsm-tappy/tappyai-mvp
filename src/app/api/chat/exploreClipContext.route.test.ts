@@ -280,7 +280,12 @@ describe('TEST A · generic discovery unchanged — 10 rows stay 10 rows', () =>
     h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW, venue('Bún Bò Huế Nam Giao', '1 Lê Lai, Quận 1, TP.HCM'), venue('Bún Bò Gánh', '2 Lê Lai, Quận 1, TP.HCM')]
     await post({ messages: [{ role: 'user', content: 'Quán bún bò ngon ở TP.HCM' }] })
     const out = await toolResult({ query: 'quán bún bò ngon', location: 'TP.HCM' })
-    expect((out.results as unknown[]).length).toBe(10)
+    // Cost optimization item 4 (2026-09-18): the MODEL reads the decision set (≤5 rows) with a note
+    // naming the total; the recommendation flow was fed the full result before the trim, and
+    // `count` still says how many the search returned — that is "no narrowing".
+    expect((out.results as unknown[]).length).toBe(5)
+    expect(out.count).toBe(10)
+    expect(out.results_note).toContain('5/10')
     expect('_tappy_clip_target' in out).toBe(false)
     expect(system()).not.toContain('source=explore_clip')
     expect(h.state.reviewQueries).toHaveLength(0)
@@ -292,7 +297,8 @@ describe('TEST B · generic SPECIFIC-place question unchanged — no Explore bra
     h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
     await post({ messages: [{ role: 'user', content: 'GÓC HUẾ Nguyễn Thái Bình có gì?' }] })
     const out = await toolResult({ query: 'GÓC HUẾ Nguyễn Thái Bình' })
-    expect((out.results as unknown[]).length).toBe(8)
+    expect((out.results as unknown[]).length).toBe(5)
+    expect(out.count).toBe(8)
     expect('_tappy_clip_target' in out).toBe(false)
     expect(h.state.placeCalls[0].location).toBeUndefined()
   })
