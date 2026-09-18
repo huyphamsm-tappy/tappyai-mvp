@@ -319,6 +319,24 @@ export async function POST(req: Request) {
   // True once a VERIFIED identity (anonymous session or account) has been metered above; the
   // identity-less fallback below then stays out of the way.
   let quotaMetered = false
+  /**
+   * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
+   * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
+   * not charged to the AI-question quota (owner decision, 2026-09-18). Decided HERE, before the
+   * quota is spent, from the same pure inputs the canned path below reads; the later canned check
+   * reuses this value, so "not charged" and "not modelled" can never disagree.
+   */
+  const cannedEarly: string | null = (() => {
+    if (intent === 'chitchat') return cannedChitchat(lastText, lang)
+    if (!consultativeV1Enabled() || clipContext || decisionStage === 'confirmation') return null
+    const priorVenues = priorVenuesIn(lastAssistantText)
+    if (priorVenues.length === 0) return null
+    const referenced = referencedVenues(resolveReferences(lastText, priorVenues))
+    const facts = factsAsked(lastText)
+    if (referenced.some(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
+    return cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+  })()
+  const quotaExempt = cannedEarly !== null
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -421,7 +439,7 @@ export async function POST(req: Request) {
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
       quotaMetered = true
-      const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+      const spend = quotaExempt ? { ok: true } : await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
       if (!spend.ok) {
         return new Response(
           JSON.stringify({
@@ -518,7 +536,7 @@ export async function POST(req: Request) {
       // One question from the shared daily pool. Same pool every AI feature draws on, so a
       // Cảnh báo lừa đảo analysis earlier today is already counted here.
       quotaMetered = true
-      if (!isPro && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
+      if (!isPro && !quotaExempt && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
         return new Response(
           JSON.stringify({
             error: 'free_limit_reached',
@@ -611,7 +629,7 @@ export async function POST(req: Request) {
   // mint failed. Metered as the lifetime anonymous tier keyed by IP: the same five, once. The
   // previous cookie counter is gone — a counter the client carries is a counter the client resets.
   if (!quotaMetered) {
-    const spend = await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
+    const spend = quotaExempt ? { ok: true } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
     if (!spend.ok) {
       return new Response(
         JSON.stringify({
@@ -1313,7 +1331,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = (intent === 'chitchat' ? cannedChitchat(lastText, lang) : null) ?? cannedFollowUp
+  const canned = cannedEarly ?? cannedFollowUp
   if (canned) {
     const kind = intent === 'chitchat' ? 'chitchat' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))

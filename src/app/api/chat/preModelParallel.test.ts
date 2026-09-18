@@ -133,8 +133,10 @@ describe('calendar cannot take the batch down with it', () => {
 
 describe('isPro semantics for the quota are unchanged', () => {
   it('spends from the shared pool only when the user is not Pro, and only after isPro is known', () => {
-    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*!\(await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)\)\.ok\s*\)/)
-    const spend = CODE.indexOf('!isPro && !(await consumeAiQuestion')
+    // `!quotaExempt` (a $0 canned turn is not charged — owner decision 2026-09-18) sits between
+    // the Pro check and the spend; the ordering this guard pins is unchanged.
+    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*!quotaExempt\s*&&\s*!\(await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)\)\.ok\s*\)/)
+    const spend = CODE.indexOf('!isPro && !quotaExempt && !(await consumeAiQuestion')
     expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))
     expect(batchBlock()).not.toContain('consumeAiQuestion')
   })

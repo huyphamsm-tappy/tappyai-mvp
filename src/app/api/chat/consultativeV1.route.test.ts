@@ -15,7 +15,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { __resetAiQuestionQuotaLocal, aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 
 const h = vi.hoisted(() => {
   const state = {
@@ -253,6 +253,21 @@ describe('flag ON', () => {
     const res = await post([{ role: 'user', content: 'xin chào' }])
     expect(await res.text()).toContain('Mình là Tappy')
     expect(h.state.streamOptions).toBeNull()
+  })
+
+  it('a canned turn is not charged to the AI-question quota; a modelled turn is (owner decision 2026-09-18)', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    const identity = aiQuotaIdentity({ id: 'u1', is_anonymous: false } as never, '127.0.0.1')
+    const before = (await peekAiQuestionQuota(identity)).used
+    await post([{ role: 'user', content: 'xin chào' }])
+    await post([
+      { role: 'user', content: Q },
+      { role: 'assistant', content: 'Mình chọn **Cơm Niêu Sài Gòn**, mở từ 08:00 đến 22:00. Ngoài ra **Ốc Đào** rẻ hơn.' },
+      { role: 'user', content: 'quán này mở mấy giờ?' },
+    ])
+    expect((await peekAiQuestionQuota(identity)).used).toBe(before)
+    await post([{ role: 'user', content: Q }])
+    expect((await peekAiQuestionQuota(identity)).used).toBe((before ?? 0) + 1)
   })
 
   it('still exactly one AI.stream() call and no forced tool choice', async () => {
