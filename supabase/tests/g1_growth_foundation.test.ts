@@ -28,7 +28,7 @@ const ANCESTRY_ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/
 
 const ALICE = '11111111-1111-4111-8111-111111111111'
 const BOB = '22222222-2222-4222-8222-222222222222'
-const PORT = 54379
+const PORT = 54385 // 54379 belongs to plan_shares_boundary (RC); unique per suite, see portAllocation.test.ts
 
 const PRELUDE = `
   DO $$ BEGIN
