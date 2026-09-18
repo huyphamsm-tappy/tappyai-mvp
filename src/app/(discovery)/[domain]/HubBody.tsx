@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { hubCopy } from '@/lib/discovery/domainHubs'
 import { CATEGORIES, type CategoryId } from '@/lib/utils'
 import type { PublicSharedResultSummary } from '@/lib/share/sharedResult'
+import PublicFooter from '@/components/discovery/PublicFooter'
 
 // The hub's content, in the visitor's language.
 //
@@ -94,6 +95,7 @@ export default function HubBody({ domain, results }: { domain: CategoryId; resul
           <p className="mt-4 text-sm"><Link href="/extension" className="underline" data-testid="hub-extension">{t('hub.ui.extension')}</Link></p>
         </div>
       </article>
+      <PublicFooter />
     </>
   )
 }

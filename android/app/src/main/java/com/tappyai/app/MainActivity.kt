@@ -10,8 +10,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.tappyai.app.growth.PublicLinkOpener
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
+import com.tappyai.app.navigation.PublicWebLinks
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -110,6 +112,13 @@ class MainActivity : AppCompatActivity() {
         val uri = intent.data ?: return
         if (uri.scheme == "tappyai") {
             navHostViewModel.handleDeepLink(intent)
+            return
+        }
+        // App Links (prepared, off by default): a verified https://<origin>/r/<slug> arrives here
+        // only when the PublicLinkActivity alias is enabled. The public page is the product — show
+        // it in a session-bound Custom Tab. If no browser offers Custom Tabs, the app simply opens.
+        if (PublicWebLinks.isPublicResultLink(uri.toString(), BuildConfig.WEB_APP_URL)) {
+            PublicLinkOpener.open(this, uri)
         }
     }
 }

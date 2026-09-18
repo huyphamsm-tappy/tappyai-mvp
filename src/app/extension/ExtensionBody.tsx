@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { CATEGORIES } from '@/lib/utils'
 import { EXTENSION_PRIVACY_PATH, type ExtensionStore } from '@/lib/growth/extensionListing'
+import PublicFooter from '@/components/discovery/PublicFooter'
 
 // The landing page content, in the visitor's language. Server-rendered in the
 // product locale, reconciled after hydration (the app-wide pattern; see
@@ -95,6 +96,7 @@ export default function ExtensionBody({ stores }: { stores: Array<{ store: Exten
           </dl>
         </section>
       </article>
+      <PublicFooter />
     </>
   )
 }

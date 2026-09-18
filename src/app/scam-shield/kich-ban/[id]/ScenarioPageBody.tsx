@@ -5,6 +5,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { scenariosIn, type ScamScenario } from '@/lib/scam-shield/knowledge'
 import { SCAM_KB_PATH, scenarioPath } from '@/lib/scam-shield/knowledgePages'
 import { ScenarioDetail } from '@/app/scam-shield/ScamKnowledgeSection'
+import PublicFooter from '@/components/discovery/PublicFooter'
 
 // One scenario as a page. The detail block is the SAME component the Scam
 // Shield knowledge section renders (official text / TappyAI guidance / source
@@ -56,6 +57,7 @@ export default function ScenarioPageBody({ scenario }: { scenario: ScamScenario 
 
         <p className="mt-10 text-sm"><Link href={SCAM_KB_PATH} className="underline">{t('kb.page.backToIndex')}</Link></p>
       </article>
+      <PublicFooter />
     </>
   )
 }

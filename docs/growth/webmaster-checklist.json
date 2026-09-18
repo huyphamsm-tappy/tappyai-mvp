@@ -1,0 +1,122 @@
+{
+  "canonical_origin": "https://www.tappyai.com",
+  "requires_redirect": {
+    "from": "https://tappyai.com",
+    "to": "https://www.tappyai.com",
+    "status": 308,
+    "where": "Vercel domain settings (not in repo)"
+  },
+  "env_production_only": {
+    "INDEXNOW_KEY": "<32 hex chars, owner-generated>",
+    "ORGANIZATION_SAME_AS": "<comma-separated https URLs of official profiles, or empty>",
+    "NEXT_PUBLIC_SITE_URL": "https://www.tappyai.com"
+  },
+  "sitemap": "https://www.tappyai.com/sitemap.xml",
+  "robots": "https://www.tappyai.com/robots.txt",
+  "llms": "https://www.tappyai.com/llms.txt",
+  "feed": "https://www.tappyai.com/feed.xml",
+  "opensearch": "https://www.tappyai.com/opensearch.xml",
+  "indexnow_key_file_template": "https://www.tappyai.com/.well-known/indexnow/<KEY>.txt",
+  "inspection_targets": [
+    "https://www.tappyai.com/",
+    "https://www.tappyai.com/about",
+    "https://www.tappyai.com/scam-shield",
+    "https://www.tappyai.com/scam-shield/kich-ban",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-01",
+    "https://www.tappyai.com/food",
+    "https://www.tappyai.com/extension"
+  ],
+  "coccoc_submit_urls": [
+    "https://www.tappyai.com/",
+    "https://www.tappyai.com/about",
+    "https://www.tappyai.com/scam-shield",
+    "https://www.tappyai.com/scam-shield/kich-ban",
+    "https://www.tappyai.com/food",
+    "https://www.tappyai.com/shopping",
+    "https://www.tappyai.com/travel",
+    "https://www.tappyai.com/entertainment",
+    "https://www.tappyai.com/spa",
+    "https://www.tappyai.com/extension"
+  ],
+  "all_static_indexable": [
+    "https://www.tappyai.com/",
+    "https://www.tappyai.com/about",
+    "https://www.tappyai.com/startup",
+    "https://www.tappyai.com/food",
+    "https://www.tappyai.com/shopping",
+    "https://www.tappyai.com/travel",
+    "https://www.tappyai.com/entertainment",
+    "https://www.tappyai.com/spa",
+    "https://www.tappyai.com/scam-shield",
+    "https://www.tappyai.com/scam-shield/kich-ban",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-01",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-02",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-03",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-04",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-05",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-06",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-07",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-08",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-09",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-10",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-11",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-12",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-13",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-14",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-15",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-16",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-17",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-18",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-19",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-20",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-21",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-22",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-23",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-24",
+    "https://www.tappyai.com/scam-shield/kich-ban/bca-2026-25",
+    "https://www.tappyai.com/extension",
+    "https://www.tappyai.com/extension/privacy",
+    "https://www.tappyai.com/how-to-use",
+    "https://www.tappyai.com/privacy",
+    "https://www.tappyai.com/terms"
+  ],
+  "noindex_by_design": [
+    "https://www.tappyai.com/extension/welcome",
+    "anonymous-owned /r/<slug>"
+  ],
+  "steps": {
+    "google_search_console": [
+      "Add Domain property tappyai.com",
+      "DNS TXT verification at the DNS provider",
+      "Submit sitemap https://www.tappyai.com/sitemap.xml",
+      "URL Inspection → Request indexing for inspection_targets",
+      "T+7: Pages report; T+7/14/30: AI_SEARCH_VALIDATION_PLAN.md"
+    ],
+    "bing_webmaster": [
+      "Add site (or import from GSC)",
+      "Verify (DNS / BingSiteAuth.xml / meta)",
+      "Submit sitemap https://www.tappyai.com/sitemap.xml",
+      "Set INDEXNOW_KEY in Vercel Production; confirm in IndexNow panel",
+      "URL Inspection for inspection_targets",
+      "T+14: AI Performance report"
+    ],
+    "coccoc": [
+      "coccoc.com/search/console → Submit URL for coccoc_submit_urls (captcha)",
+      "Sitemap is discovered from the robots.txt Sitemap: line (already present)"
+    ],
+    "indexnow": [
+      "openssl rand -hex 16",
+      "Vercel Production env INDEXNOW_KEY",
+      "Deploy",
+      "GET indexnow_key_file_template returns the key",
+      "Create one public share → URL appears in Bing IndexNow insights"
+    ],
+    "same_as": [
+      "Create official profiles (LinkedIn company, Crunchbase, GitHub org)",
+      "Set ORGANIZATION_SAME_AS (Production)",
+      "Verify JSON-LD on /about shows sameAs"
+    ]
+  },
+  "generated": "2026-09-18",
+  "nothing_submitted": true
+}

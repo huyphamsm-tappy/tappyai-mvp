@@ -169,6 +169,33 @@
             </intent-filter>
         </activity>
 
+        <!-- App Links (PREPARED, OFF BY DEFAULT). An alias of MainActivity that claims
+             https://<web origin>/r/<slug> — public shared results — with autoVerify, so that once
+             the owner (a) publishes the release signing fingerprint to
+             /.well-known/assetlinks.json and (b) builds with -PTAPPYAI_APP_LINKS_ENABLED=true, a
+             shared link opens the app when it is installed. The app has no native result screen
+             on purpose: MainActivity shows the same public page in a session-bound Custom Tab
+             (growth/PublicLinkOpener), which keeps the navigation in the tab instead of looping.
+             android:enabled is bound to a resValue that is FALSE unless that property is set, so
+             this block changes nothing for any current build; an unverified claim would otherwise
+             only make Android 12+ ignore it and open the browser, never break a link. The host is
+             a manifest placeholder derived from TAPPYAI_WEB_APP_URL so it cannot drift from the
+             origin the app already uses for share links. -->
+        <activity-alias
+            android:name=".PublicLinkActivity"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="@bool/tappy_app_links_enabled">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="${tappyPublicHost}" />
+                <data android:pathPrefix="/r/" />
+            </intent-filter>
+        </activity-alias>
+
         <!-- Share sheet: exposes ONLY the rendered share card (cache/share/) to the receiving
              app via a content:// URI, so an image can travel with the brochure text. -->
         <!-- Shared review media (ReviewShare.kt): a clip or photo fetched into cacheDir/share/ is

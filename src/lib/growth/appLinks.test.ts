@@ -22,3 +22,21 @@ describe('App Links / Universal Links association files — inert until configur
     for (const p of UNIVERSAL_LINK_PATHS) expect(p).not.toMatch(/^\/(chat|api|admin|profile|login)/)
   })
 })
+
+describe('App Links — the Android side is prepared and matches the server statement', () => {
+  const fs = require('node:fs') as typeof import('node:fs')
+  const manifest = fs.readFileSync('android/app/src/main/AndroidManifest.xml', 'utf8')
+  const gradle = fs.readFileSync('android/app/build.gradle.kts', 'utf8')
+  it('the package the statement names is the applicationId the app builds with', () => {
+    expect(gradle).toContain('applicationId = "com.tappyai.app"')
+    expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))![0]).toMatchObject({ target: { package_name: 'com.tappyai.app' } })
+  })
+  it('the app claims /r/ only, through an alias that is disabled unless the build enables it', () => {
+    const alias = manifest.split('<activity-alias')[1]?.split('</activity-alias>')[0] ?? ''
+    expect(alias).toContain('android:autoVerify="true"')
+    expect(alias).toContain('android:pathPrefix="/r/"')
+    expect(alias).toContain('android:enabled="@bool/tappy_app_links_enabled"')
+    expect(gradle).toMatch(/resValue\("bool", "tappy_app_links_enabled", \(project\.findProperty\("TAPPYAI_APP_LINKS_ENABLED"\)\?\.toString\(\) == "true"\)\.toString\(\)\)/)
+    expect(UNIVERSAL_LINK_PATHS[0]).toBe('/r/*')
+  })
+})

@@ -14,7 +14,8 @@
     "architecture:check": "node scripts/architecture/check.mjs",
     "check:sql-grants": "node scripts/architecture/check-sql-grants.mjs",
     "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts",
-    "test:raw": "vitest run"
+    "test:raw": "vitest run",
+    "extension:package": "node scripts/extension/package.mjs"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^1.0.0",

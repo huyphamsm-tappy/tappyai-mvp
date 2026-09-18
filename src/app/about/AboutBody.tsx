@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { CATEGORIES } from '@/lib/utils'
 import { SUPPORT_EMAIL } from '@/components/landing/config'
+import PublicFooter from '@/components/discovery/PublicFooter'
 
 // The /about content, in the visitor's language. A client component on
 // purpose and still fully server-rendered: during SSR `useTranslation` reports
@@ -84,6 +85,7 @@ export default function AboutBody() {
           </Link>
         </div>
       </article>
+      <PublicFooter />
     </>
   )
 }

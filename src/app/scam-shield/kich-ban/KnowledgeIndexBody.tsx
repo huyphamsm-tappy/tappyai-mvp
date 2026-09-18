@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { KNOWLEDGE_DATASETS, KNOWLEDGE_CATEGORIES, scenariosIn } from '@/lib/scam-shield/knowledge'
 import { scenarioPath } from '@/lib/scam-shield/knowledgePages'
+import PublicFooter from '@/components/discovery/PublicFooter'
 
 // The index body: five official groups, each with its scenarios linked to
 // their own page. Group labels and descriptions are the dataset's official
@@ -65,6 +66,7 @@ export default function KnowledgeIndexBody() {
           <p className="mt-3 text-sm"><Link href="/extension" className="underline">{t('kb.page.extensionLine')}</Link></p>
         </section>
       </article>
+      <PublicFooter />
     </>
   )
 }

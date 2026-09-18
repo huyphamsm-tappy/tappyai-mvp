@@ -15,6 +15,40 @@
 
 Note on Vietnam: Samsung, Xiaomi and OPPO dominate Android shipments; Galaxy Store and GetApps are pre-installed alternatives to Play on those devices — free listings that reach a Play-less discovery surface. (Market-share claim: HYPOTHESIS from general knowledge; verify with current data before prioritising.)
 
+## Release facts (from the repository, verified)
+
+| Item | Value | Where |
+|---|---|---|
+| applicationId | `com.tappyai.app` | `android/app/build.gradle.kts` |
+| versionCode / versionName | 8 / 0.1.3 (6 and 7 are spent; Play rejects reuse) | same |
+| minSdk / targetSdk / compileSdk | 26 / 36 / 36 | same |
+| Play account | **exists** — a vc6 artifact was released to the closed *Alpha* track on 2026-08-16 (build.gradle.kts note) | Play Console |
+| Release signing | `signingConfigs.release` reads `TAPPYAI_RELEASE_KEYSTORE_PATH/_PASSWORD/_KEY_ALIAS/_KEY_PASSWORD` gradle properties; keystore never committed | same (build.gradle.kts refers to `docs/release/ANDROID_RELEASE_CONFIGURATION.md`, which is **not present in this tree** — the gradle properties above are the source of truth) |
+| Release API/web config | `TAPPYAI_SUPABASE_URL`, `TAPPYAI_SUPABASE_ANON_KEY`, `TAPPYAI_GOOGLE_WEB_CLIENT_ID`, `TAPPYAI_WEB_APP_URL`, `TAPPYAI_API_BASE_URL_RELEASE` — the build refuses a release artifact with placeholder values | same |
+| Build command | `./gradlew :app:bundleRelease -P<the properties above>` → `app/build/outputs/bundle/release/app-release.aab` | — |
+| App Links flag (optional) | `-PTAPPYAI_APP_LINKS_ENABLED=true` once `ANDROID_APP_LINKS_SHA256` is served (see `APP_LINKS.md`) | — |
+
+## Assets
+
+| Asset | Status | Path |
+|---|---|---|
+| Icon 512×512 (Play/Galaxy/AppGallery) | READY | `android/store/icon-512.png` (from the brand logo) |
+| Feature graphic 1024×500 | READY | `android/store/feature-graphic-1024x500.png` (existing `public/feature-graphic.png`) |
+| Phone screenshots (Play: 2–8, 16:9/9:16, ≥320px) | **OWNER** | real captures from the Pixel_8 emulator or a device; not generated |
+| Privacy policy URL | READY | https://www.tappyai.com/privacy |
+| Data safety answers | outline below (owner completes the form) | — |
+
+## Readiness matrix
+
+| Store | Repository side | Owner action | Fee | Verdict |
+|---|---|---|---|---|
+| Google Play | READY (copy, icon, feature graphic, signing config, version) | build + sign AAB with the release properties; upload to the existing Play listing (new track/version); screenshots; data-safety form; content rating | account already paid (one-time US$25) | **OWNER ACTION** |
+| Samsung Galaxy Store | READY (same copy/assets; APK or AAB) | Seller Portal sign-up (no fee found); upload; screenshots | none found | **OWNER ACTION** |
+| Huawei AppGallery | READY (copy/assets) — note: the app uses Firebase Messaging + Google Sign-In; HMS-only devices may lack them (not a store blocker, a UX caveat to test) | free developer registration; upload; screenshots | none | **OWNER ACTION** |
+| Xiaomi GetApps | READY (copy/assets) | Mi Developer registration (fee not stated); upload | unknown | **OWNER ACTION** |
+| Apple App Store | — | — | US$99/yr; needs macOS | **BLOCKED** |
+| APK aggregator sites | — | — | — | **NOT APPLICABLE** (rejected) |
+
 ## Canonical listing copy (must match `/about` and the extension listing)
 
 | Field | Value |

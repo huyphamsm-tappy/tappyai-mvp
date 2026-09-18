@@ -86,11 +86,34 @@ Same fields; Partner Center registration has **no fee** (learn.microsoft.com, "R
 
 Same zip works (MV3 with `browser_specific_settings.gecko`). Listing is free (extensionworkshop.com, "Submitting an add-on"). Note for reviewers: no remote code; no content scripts; source is plain unminified JS.
 
-## Packaging
+## Packaging (READY — automated and tested)
 
 ```bash
-cd extensions/browser && zip -r ../tappyai-extension-0.1.0.zip . -x "store/*" "README.md"
+npm run extension:package
+# → extensions/browser/dist/tappyai-extension-0.1.0.zip  (14 runtime files, deterministic, store/ and docs excluded)
 ```
+`scripts/extension/package.mjs` validates the manifest (MV3, the three permissions, no host permissions, no content scripts) before zipping; `scripts/extension/package.test.mjs` pins the file list and determinism. The same zip is uploaded to all three stores.
+
+## Assets (READY / OWNER)
+
+| Asset | Status | Path |
+|---|---|---|
+| Store icon 128×128 | READY | `store/assets/store-icon-128.png` (from the brand logo) |
+| Small promo tile 440×280 | READY | `store/assets/small-promo-tile-440x280.png` (brand logo on white — a real asset, not a mock screenshot) |
+| Screenshots 1280×800 (min 1) | **OWNER** | real captures of the real extension only; suggested: context menu on a selection · popup · Scam Shield prefilled · an answer |
+| Marquee 1400×560 | optional | not made |
+| Privacy policy URL | READY | https://www.tappyai.com/extension/privacy |
+| Support URL / site | READY | support@tappyai.com · https://www.tappyai.com/extension |
+
+## Readiness matrix
+
+| Store | Repository side | Owner action | Fee |
+|---|---|---|---|
+| Chrome Web Store | READY (zip, copy, justifications, data disclosure, icon, tile) | register developer account, upload zip, paste fields, screenshots, submit for review; then `NEXT_PUBLIC_EXTENSION_URL_CHROME` | **one-time US$5 registration — not recurring; do not pay until the owner decides** |
+| Edge Add-ons | READY (same) | Partner Center (free), upload same zip; then `NEXT_PUBLIC_EXTENSION_URL_EDGE` | none |
+| Firefox AMO | READY (manifest carries `browser_specific_settings.gecko`) | Developer Hub (free), upload same zip; then `NEXT_PUBLIC_EXTENSION_URL_FIREFOX` | none |
+| Cốc Cốc browser (Vietnam) | covered by the Chrome listing (Chromium; installs CWS extensions — verify at publication) | — | — |
+| Safari | NOT APPLICABLE now (Xcode + Apple Developer Program) | — | US$99/yr |
 
 ## Owner actions (not done by this repo)
 

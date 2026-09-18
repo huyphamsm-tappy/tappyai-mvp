@@ -18,6 +18,10 @@ export const vi: Record<string, string> = {
   'hub.ui.domainsNav': 'Lĩnh vực',
   'hub.ui.about': 'Giới thiệu',
   'hub.ui.extension': 'Hỏi Tappy về bất kỳ trang nào — cài tiện ích trình duyệt',
+  'footer.explore': 'Khám phá',
+  'footer.about': 'Về TappyAI',
+  'footer.aboutTappy': 'Giới thiệu TappyAI',
+  'footer.extension': 'Tiện ích trình duyệt',
 
   // Food
   'hub.food.title': 'Tìm quán ăn ngon với TappyAI — gợi ý theo nhu cầu, có bằng chứng',
@@ -189,6 +193,10 @@ export const en: Record<string, string> = {
   'hub.ui.domainsNav': 'Domains',
   'hub.ui.about': 'About',
   'hub.ui.extension': 'Ask Tappy about any page — get the browser extension',
+  'footer.explore': 'Explore',
+  'footer.about': 'About',
+  'footer.aboutTappy': 'About TappyAI',
+  'footer.extension': 'Browser extension',
 
   'hub.food.title': 'Find great food in Vietnam with TappyAI — evidence-backed picks',
   'hub.food.description': 'Ask Tappy "what to eat, where" in Vietnamese or English. Tappy cross-checks reviews, hours and price bands and gives one clear pick with Maps and ordering links.',
