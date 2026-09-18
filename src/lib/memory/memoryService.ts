@@ -127,9 +127,11 @@ export function buildMemoryBlock(
     /** Consultative V1: the capped block whose instruction is "use it to choose, never to ask"
      *  (`consultative/memoryBlock.ts`). Off, this legacy block renders byte-identically. */
     consultative?: boolean
+    /** Consultative V1: the turn's decision-frame domains (memoryBlock.ts). */
+    domains?: readonly string[]
   } = {},
 ): string {
-  if (opts.consultative) return buildConsultativeMemoryBlock(memory, forcedTool)
+  if (opts.consultative) return buildConsultativeMemoryBlock(memory, forcedTool, { domains: opts.domains })
   const infoOnly = forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
   const locationAndHistory = forcedTool === 'get_news'
 

@@ -703,6 +703,15 @@ export async function POST(req: Request) {
    * Deterministic; still exactly ONE AI.stream() call per turn.
    */
   const consultativeV1 = consultativeV1Enabled()
+  // Consultative V1: the memory block was built before the decision frame existed (the parallel
+  // context load); now that the domains are known, the unscoped block is swapped for the one that
+  // renders only this turn's categories (memoryBlock.ts). Same values, fewer of them; the identity
+  // and calendar blocks appended after it are untouched.
+  if (consultativeV1 && existingMemory && decisionFrame.domains.length > 0) {
+    const unscoped = buildMemoryBlock(existingMemory, forcedTool, { consultative: true })
+    const scoped = buildMemoryBlock(existingMemory, forcedTool, { consultative: true, domains: decisionFrame.domains })
+    if (unscoped !== scoped && memoryBlock.includes(unscoped)) memoryBlock = memoryBlock.replace(unscoped, scoped)
+  }
   const situation: SituationFrame | null = consultativeV1
     ? deriveSituation(
       messages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),

@@ -1719,12 +1719,12 @@ export function applyPlaceEnrichmentStreamFilter(
      * confidently English (the language detector reads undiacriticked Vietnamese
      * as English, so `lang` alone is not enough).
      */
-    const fallbackSentence = (): string | null => {
-      if (!guardV2 || !pickName) return null
-      const rating = ratingsByEntity.get(pickName)?.[0]
+    const fallbackSentence = (name: string | null = pickName): string | null => {
+      if (!guardV2 || !name) return null
+      const rating = ratingsByEntity.get(name)?.[0]
       if (typeof rating !== 'number') return null
-      const count = reviewCountsByEntity.get(pickName)?.[0]
-      const hours = hoursByEntity.get(pickName)
+      const count = reviewCountsByEntity.get(name)?.[0]
+      const hours = hoursByEntity.get(name)
       const confidentlyEnglish = lang === 'en'
         && /\b(find|me|the|near|nearby|quiet|restaurant|please|want|looking|recommend|show|best|good|where|for|with)\b/i.test(userText)
         && !/[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(userText)
@@ -1735,8 +1735,8 @@ export function applyPlaceEnrichmentStreamFilter(
         ? (confidentlyEnglish ? `; opening hours per Google Maps: ${hours}` : `; giờ mở cửa theo Google Maps: ${hours}`)
         : ''
       return confidentlyEnglish
-        ? `I'd go with **${pickName}** — ${ratingText}${hoursText}.`
-        : `Mình chọn **${pickName}** — ${ratingText}${hoursText}.`
+        ? `I'd go with **${name}** — ${ratingText}${hoursText}.`
+        : `Mình chọn **${name}** — ${ratingText}${hoursText}.`
     }
     const releasedPrefix = flushedText ?? ''
     const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
@@ -1760,7 +1760,10 @@ export function applyPlaceEnrichmentStreamFilter(
       if (known.length === 0) return null
       const bold = [...body.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => normalizeHeading(m[1]))
       if (bold.some(b => isGrounded(b, known))) return null
-      const place = fallbackSentence()
+      // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
+      // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
+      const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
+      const place = fallbackSentence(pickName ?? engineFirst)
       if (place) return { sentence: place, kind: 'place' as const }
       if (shopping) return { sentence: shopping.sentence, kind: 'shopping' as const }
       return null

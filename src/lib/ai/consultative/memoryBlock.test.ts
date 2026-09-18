@@ -103,3 +103,21 @@ describe('buildConsultativeMemoryBlock — informs the pick, never the question'
     expect(legacy).toContain('an uong: bún bò, phở, lẩu, hải sản, cơm tấm, bánh mì, sushi, bò né')
   })
 })
+
+describe('buildConsultativeMemoryBlock — scoped to the turn\'s domains', () => {
+  it('a food turn renders food (+ avoid) only; a travel turn renders trip budget and no tastes; unknown keeps all', () => {
+    const food = buildConsultativeMemoryBlock(LEGACY_LARGE, null, { domains: ['food'] })
+    expect(food).toContain('an uong: cơm tấm, bánh mì, sushi, bò né')
+    expect(food).toContain('KHONG thich / kieng: hải sản (dị ứng)')
+    expect(food).not.toContain('mua sam')
+    expect(food).not.toContain('giai tri')
+    expect(food).toContain('- Budget thuong dung: food: duoi 80.000d')
+    expect(food).not.toContain('shopping: 5.000.000')
+    const travel = buildConsultativeMemoryBlock(LEGACY_LARGE, null, { domains: ['travel'] })
+    expect(travel).not.toContain('an uong')
+    expect(travel).toContain('trip: duoi 6.000.000d')
+    expect(travel).toContain('KHONG thich / kieng')
+    const all = buildConsultativeMemoryBlock(LEGACY_LARGE, null, { domains: [] })
+    expect(all).toBe(buildConsultativeMemoryBlock(LEGACY_LARGE))
+  })
+})

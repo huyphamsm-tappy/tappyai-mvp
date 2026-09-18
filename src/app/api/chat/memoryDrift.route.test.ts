@@ -187,3 +187,14 @@ describe('flag OFF — legacy behaviour, byte-identical', () => {
     expect(h.state.generateCalls).toHaveLength(1)
   })
 })
+
+describe('flag ON — the block is scoped to the turn\'s domains once the frame is known', () => {
+  it('a food request carries food tastes but not the shopping list', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await post([{ role: 'user', content: PLAIN }])
+    const sys = system()
+    expect(sys).toContain('cơm tấm, bánh mì, sushi, bò né')
+    expect(sys).not.toContain('nồi chiên không dầu')
+    expect(sys.match(/THONG TIN VE USER NAY/g)).toHaveLength(1)
+  })
+})

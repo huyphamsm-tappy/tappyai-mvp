@@ -55,10 +55,27 @@ const PREF_LABEL: Record<string, string> = {
   food: 'an uong', spa: 'spa', entertainment: 'giai tri', shopping: 'mua sam', avoid: 'KHONG thich / kieng',
 }
 
-export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: string | null): string {
+/** Which preference / budget keys matter for a decision-frame domain. Unknown domain → all. */
+const DOMAIN_KEYS: Record<string, readonly string[]> = {
+  food: ['food'], spa: ['spa'], entertainment: ['entertainment'], shopping: ['shopping'], travel: ['trip', 'travel'],
+}
+
+export interface ConsultativeMemoryOptions {
+  /**
+   * The decision frame's domains for THIS turn. Measured 2026-09-18 with a large legacy row
+   * (F8, T4): the model read the whole taste list ("sushi, bò né, hải sản, gà nướng…") as a menu
+   * and asked "bạn muốn ăn gì?" — on a trip question it listed food/spa/park. Only the categories
+   * of the current domains are rendered (+ `avoid`, always); an empty/unknown domain keeps all.
+   */
+  domains?: readonly string[]
+}
+
+export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: string | null, opts: ConsultativeMemoryOptions = {}): string {
   const infoOnly = forcedTool === 'get_weather' || forcedTool === 'get_gold_price'
   const locationAndHistory = forcedTool === 'get_news'
   const parts: string[] = []
+  const scoped = (opts.domains ?? []).flatMap(d => DOMAIN_KEYS[d] ?? [])
+  const inScope = (key: string) => key === 'avoid' || scoped.length === 0 || scoped.includes(key)
 
   if (memory.location_base) parts.push(`- Khu vuc thuong o (noi song/hay o): ${clip(memory.location_base, VALUE_CHARS)}`)
 
@@ -75,7 +92,7 @@ export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: st
     const keys = ['avoid', ...Object.keys(prefs).filter(k => k !== 'avoid')]
     for (const k of keys) {
       const list = prefs[k]
-      if (!Array.isArray(list) || list.length === 0) continue
+      if (!Array.isArray(list) || list.length === 0 || !inScope(k)) continue
       if (prefParts.length >= CAT_CAP) break
       const vals = dedupe(list.map(v => clip(String(v), VALUE_CHARS))).slice(-PREF_CAP)
       if (vals.length === 0) continue
@@ -86,6 +103,7 @@ export function buildConsultativeMemoryBlock(memory: UserMemory, forcedTool?: st
     const budgets = memory.budget || {}
     const budgetParts: string[] = []
     for (const [cat, range] of Object.entries(budgets)) {
+      if (!inScope(cat)) continue
       if (range?.max) {
         const label = range.min > 0
           ? `${range.min.toLocaleString('vi-VN')}-${range.max.toLocaleString('vi-VN')}d`

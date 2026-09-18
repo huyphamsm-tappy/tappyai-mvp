@@ -85,3 +85,25 @@ describe('guardProseShape — a labelled card field is a listing however the val
     expect(r.stats.listing_removed).toBe(1)
   })
 })
+
+describe('guardProseShape — rule 4: a subject question after a pick is removed', () => {
+  // Measured 2026-09-18 with a large legacy memory (F8, T4): the reply picked a venue with
+  // evidence AND asked "bạn muốn ăn gì? (sushi, bò né, hải sản…)" — the list being the remembered
+  // preferences. Rules 4/5: once a pick exists, that question is never asked.
+  it('drops "bạn muốn ăn gì? (…, hay loại nào khác?)" when the reply has a real pick', () => {
+    const text = 'Mình giả sử bạn cần tìm quán ăn gần đây ở Quận 1 hôm nay. Để gợi ý đúng ý, mình cần biết: **bạn muốn ăn gì?** (sushi, bò né, hải sản, hay loại nào khác?)\n\nMình thấy **Bún Bò Huế Bến Ngự** là lựa chọn tốt nhất — 4.5⭐ (1.200 đánh giá), cách bạn 0.8km.'
+    const r = guardProseShape(text, { rendersCard: true, venues })
+    expect(r.text).not.toContain('bạn muốn ăn gì')
+    expect(r.text).not.toContain('hay loại nào khác')
+    expect(r.text).toContain('Mình thấy **Bún Bò Huế Bến Ngự** là lựa chọn tốt nhất')
+    expect(r.text).toContain('Mình giả sử bạn cần tìm quán ăn')
+    expect(r.stats.subject_questions_removed).toBe(1)
+  })
+  it('keeps the question when the reply has no pick (the subject really is missing), and keeps other questions', () => {
+    const noPick = guardProseShape('Mình cần biết bạn muốn ăn gì để tìm cho đúng?', { rendersCard: true, venues })
+    expect(noPick.text).toContain('bạn muốn ăn gì')
+    const other = guardProseShape('Mình chọn **Bún Bò Huế Bến Ngự** — 4.5⭐. Bạn muốn đặt bàn trước không?', { rendersCard: true, venues })
+    expect(other.text).toContain('Bạn muốn đặt bàn trước không?')
+    expect(other.stats.subject_questions_removed).toBeUndefined()
+  })
+})
