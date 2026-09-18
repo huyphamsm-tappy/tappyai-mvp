@@ -1,6 +1,6 @@
 # TỔNG KẾT OVERNIGHT JOB — 2026-09-17 → 18
 
-Nhánh cuối: **`merge/main-into-v3`**, commit cuối **`999045b`** (worktree `.claude/worktrees/g1-place-guard`).
+Nhánh cuối: **`merge/main-into-v3`**, commit cuối **`d88590b`** (+ commit này: `overnight-summary` sửa hash) (worktree `.claude/worktrees/g1-place-guard`).
 Chỉ commit local — **không push, không deploy, không đụng production, không xoá gì**. Nhật ký chi tiết từng bước:
 `docs/audit/overnight-2026-09-17.md`.
 
