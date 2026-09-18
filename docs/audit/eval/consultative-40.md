@@ -84,4 +84,92 @@ after P2, E4 after E3); everything else is a fresh thread. Android runs 10 of th
 question as web): F1, F2, F3, F5(after F4), S1, T1, P2, P6, E1, E3.
 
 ## Results
-_(filled in by the run — see below)_
+
+Runs: pass 1 (E build) → fixes → pass 2/3 re-runs. Grades are on the LATEST run of each turn (`runs/<id>.json`;
+earlier runs archived in `runs/pass1/`, `runs/pass2/`). LLM/search runs spent: **95 / 120** (8 Step D + 87 here:
+40 first-pass web + 37 web re-runs + 10 Android). Memory cleared before pass 1 and before pass 3.
+
+Legend: ✅ PASS · ⚠️ PASS with a note · ❌ FAIL. Criteria C1–C9 as above; a turn PASSES when C1–C9 all pass
+(⚠️ counts as PASS).
+
+### Web (40 turns, all flags ON)
+| id | verdict | notes |
+|---|---|---|
+| F1 | ✅ | pick 4.7⭐/961 + open-late heads-up + one alt with distance trade-off; ⚠️ model CTA label "Tìm phòng trên Haisanhoanggia" for a seafood restaurant (model-authored `[CTA_BUTTONS]`, pre-existing) |
+| F2 | ✅ | undiacriticked → Vietnamese; budget with no price on rows → honest price line; fit-claim sentence now removed (commit after this run) |
+| F3 | ✅ | after fixes: pick keeps its decision, unsupported "yên tĩnh/lãng mạn" clause stripped, gap sentence, one alt with trade-off, one question |
+| F4 | ✅ | parking/kids gaps named; alt with hours trade-off |
+| F5 | ✅ | follow-up "quán này" → pick; hours answered from the carried prose, no re-search needed |
+| F6 | ✅ | "quán số 2" resolved; `crowd` fact → real re-search by name (`tappyai_tool_called` query = venue name); honest "dữ liệu không cho thấy mức độ đông"; phone from the row |
+| F7 | ✅ | vague → assumptions stated ("Mình giả sử bạn đang ở Quận 1… trưa… 1-2 người") then pick |
+| F8 | ⚠️ | two options without an explicit pick sentence in the last run (first run had a pick); private_room has no evidence lexicon → no gap sentence. Budget honesty ✓ |
+| S1 | ⚠️ | decision lives in the shopping card (Phase 9 design): card NÊN CHỌN 79k/4.9⭐/17 reviews + trade-off; prose does not NAME the pick ("Đây là lựa chọn cực kỳ tiết kiệm…") — open item (shopping prose under V1) |
+| S2 | ⚠️ | `search_products` fell back to web listicles (no priced rows); the reply quotes 4.49tr/4.9⭐/63 from snippets — unverifiable (C5 unknown); a clause-cut fragment "nhiều tab), nên chọn" — now removed by the fragment rule |
+| S3 | ✅ | follow-up "cái rẻ nhất" resolved from ADR-024 evidence; honest trade-off (8GB RAM); one question |
+| S4 | ⚠️ | card decision ✓; prose fragment "Lau nhà, thời gian chạy) …" (pre-existing guard clause cut) — now removed by the fragment rule |
+| S5 | ❌ | asks the gift category (with bullets) instead of assuming + searching. Open: gift queries should search by the frame (who=couple) |
+| S6 | ✅ | subject never assumed: one short question "bạn định mua cái gì" (first run had assumed FOOD — fixed) |
+| S7 | ⚠️ | results mixed air-conditioners with purifiers; the model asked one clarifying question (acceptable: changes the pick) |
+| S8 | ⚠️ | card ✓; prose names only the alternative (Sunhouse) + one question |
+| T1 | ❌ | trip planner asked "ưu tiên hoạt động gì" and made no plan / no tool call; first run also leaked a memory trait ("như sở thích trước đây") — personality filter added. Open: the planner's clarification stage vs V1 assume-and-go (owner) |
+| T2 | ❌ | `get_hotel_prices` returned 0 rows on the audit env (both runs); the model invented hotels → G1 cut 4 sentences, leaving "Mình tìm được vài khách sạn…" (false framing). Data gap: hotel provider empty on the audit env |
+| T3 | ✅ | honest: no prior venues → asks which hotel (T2 produced none) |
+| T4 | ✅ | family + kids: pick + kids-area alternative + one question |
+| T5 | ❌ | assumption stated then "phải không?" — asked instead of searching (both runs) |
+| T6 | ❌ | two searches + weather; every venue sentence cut by G1 → fallback sentence, no pick in prose (G1 over-cut on a multi-search planning turn — not V1) |
+| T7 | ⚠️ | flight tool empty → honest + validated booking links (links in prose: flights have no card) |
+| T8 | ❌ | assumed weekend dates and CALLED the hotel tool (rule 7 ✓) but rows = 0 (provider) → vague "Resort này…" + still asked dates |
+| P1 | ⚠️ | pick 5⭐/3.147 + alt; "gần vị trí bạn hiện tại" is wrong (user GPS is HCMC, venue in Đà Nẵng; no km figure so the distance guard did not fire) |
+| P2 | ✅ | pick + 2 alts + honest "chưa tìm thấy giá" (server line not duplicated after the regex fix) |
+| P3 | ✅ | booking fact → re-search by name ran; answer grounded in website/phone presence; ⚠️ G1b fallback sentence appended although the body survived |
+| P4 | ✅ | quiet gap named; pick + alt with hours trade-off |
+| P5 | ⚠️ | one-word query → one location question + stated assumptions |
+| P6 | ✅ | pick + 2 alts (one sentence) |
+| P7 | ✅ | near-me with GPS → pick 1 km + one question |
+| P8 | ✅ | honest "hầu hết đóng trước 22h", one pick open to 22:00, gap sentence |
+| E1 | ✅ | after the slot-admission fix ("ở Quận 1" ≠ quán): card renders, one search, karaoke pick for 5 friends + alt with closing-time trade-off. First run: no card + inline media (FAIL) |
+| E2 | ✅ | cinema pick 0.2 km + alts + one question |
+| E3 | ⚠️ | pick + alt; "Không gian chill, nhạc sống hay" nameless claim survived (live_music attribute added after this run) |
+| E4 | ✅ | parking fact → re-search by name; honest "chưa tìm thấy"; phone from row; ⚠️ Maps link in prose |
+| E5 | ⚠️ | subject-less → one question, but with bullets (shape guard skipped without venues) |
+| E6 | ✅ | karaoke pick 4.9⭐/6.371, price band present, group booking heads-up |
+| E7 | ✅ | film recommendation: 3 titles with why (first run was cut to one by the cap — fixed) |
+| E8 | ✅ | kids: tiNiWorld pick + zoo alternative; kids gap sentence (row category text now counts as evidence — after this run) |
+
+**Web pass rate: 34 / 40 PASS (⚠️ included), 6 FAIL** (S5, T1, T2, T5, T6, T8). Of the 6: T2/T8 are the hotel
+provider returning nothing on the audit env; T1/T6 are the planner's own stages (clarify / multi-search G1 cut);
+S5/T5 are "asked instead of assumed" on genuinely open questions.
+
+### Android (10 turns, emulator-5558, debug guest, unaccented input; screenshots in `android/`)
+| id | verdict | notes |
+|---|---|---|
+| F1 | ⚠️ | layout ✓ (prose → filters → carousel), VI from unaccented ✓; pick was a lunch-only place (open to 13:30) for "ăn tối" — flagged by the model, not swapped. Prompt rule added after |
+| F2 | ⚠️ | ✓ pick/alt; an orphan bold "4.9⭐ (1.008 đánh giá)" line above the pick (listing rule misses `1.008` vs `1008` — open) |
+| F3 | ✅ | pick + gap sentence; unsupported clause stripped |
+| F4 | ⚠️ | ✓ pick/alt/gap sentence; one clause-cut tail "liên hệ trực tiếp…" (fragment rule widened after) |
+| F5 | ✅ | re-search by name ran (Serper → nothing → OSM), honest "chưa tìm thấy giờ mở cửa" |
+| S1 | ❌ | shopping card ✓ but prose starts mid-argument ("Tuy số lượt đánh giá chưa nhiều…") — pick sentence cut by a pre-V1 shopping guard |
+| T1 | ❌ | planner asked activities (same as web) |
+| P2 | ❌ | asked massage duration instead of picking (budget gap → "search_again" policy); rule 6 added after |
+| E1 | ❌→✅ | first run: no card + inline media (slot admission); fixed, the web re-run confirms the card |
+| Age gate | ✅ | fresh guest: location prompt → 18+ declaration → auto re-send (`android/F4-*`) |
+
+**Android pass rate: 6 / 10** on the runs as captured (3 of the 4 FAILs have fixes landed after the capture; not re-run — budget).
+
+### Fixes landed during STEP F (all committed, tests green)
+carried evidence on follow-ups · evidence-gap and missing-price heads-up sentences · orphan/fragment lines ·
+anaphora + gap-attribute enforcement · pick keeps its decision (clause strip) · venue segment survives bold numbers ·
+link-only lines with a card · "ở Quận 1" slot-admission bug · V1 active on frame goal / forced tool / prior venues /
+the situation itself · assumed weekend stay for hotel/trip · subject never assumed · pick even without price ·
+personality/companions transient filter · live_music attribute · row category text as evidence · shape guard only
+with venues · budget-fit claim removal.
+
+### Open (not fixed tonight)
+1. Hotel provider returns 0 rows on the audit env (T2/T8) — verify `get_hotel_prices` keys/config on the audit project.
+2. Trip planner clarification stage vs V1 "assume and go" (T1) — owner decision.
+3. Multi-search planning turns: G1 cuts every venue sentence (T6) — G1 attribution across two result sets.
+4. Shopping prose does not name the pick (S1/S8) — the card does; decide whether V1's shape applies to shopping prose.
+5. Gift / open-subject queries (S5, T5, E5): one question with bullets; consider searching by the frame.
+6. Listing rule: thousands-separated counts (`1.008` vs `1008`) — Android F2.
+7. Model-authored CTA labels ("Tìm phòng trên …" for a restaurant) — `SERVER_AUTHORED_CTA` flag exists, off.
+8. Named re-search with `location = district` finds nothing on Serper (F5 Android) — suggest the city in the instruction.

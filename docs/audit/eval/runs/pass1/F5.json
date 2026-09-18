@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 5732,
+  "evidenceId": "4d5cf1c5-a7c4-4ad3-ba5a-d768632fa91c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Quán **Cơm Khay Gỗ** mở từ **10h - 21h** hàng ngày, nên bạn hoàn toàn có thể đi ăn trưa cuối tuần vào lúc 11h-14h mà không lo đóng cửa 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Cơm Khay Gỗ\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m+Khay+G%E1%BB%97+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/C%C6%A1m+Khay+G%E1%BB%97+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần Phú Nhuận|Chỗ ăn lãng mạn cho cặp đôi|Quán bún bò ngon[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn trưa ở Phú Nhuận cho gia đình 6 người với chỗ đậu xe nhé.Mình chọn **Cơm Khay Gỗ** cho bữa trưa gia đình bạn 👍 **4.8⭐ (932 đánh giá Google Maps)**\n\nQuán này là lựa chọn tuyệt vời cho 6 người vì có không gian rộng rãi, phục vụ cơm, lẩu, mì — đa dạng để cả gia đình chọn. Mở từ 10h-21h, cách bạn ~3.8km.\n\nNgoài ra, **Tiệm Cơm Vị Nhà** (4.8⭐, 2.9km) cũng là lựa chọn tốt, gần hơn và cũng có rating cao.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Cơm Khay Gỗ\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A0m+Khay+G%E1%BB%96+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận chỗ đậu xe|Tìm quán khác gần hơn|Quán nào tốt cho con nít|[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Quán **Cơm Khay Gỗ** mở từ **10h - 21h** hàng ngày, nên bạn hoàn toàn có thể đi ăn trưa cuối tuần vào lúc 11h-14h mà không lo đóng cửa 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Cơm Khay Gỗ\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m+Khay+G%E1%BB%97+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/C%C6%A1m+Khay+G%E1%BB%97+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần Phú Nhuận|Chỗ ăn lãng mạn cho cặp đôi|Quán bún bò ngon[/FOLLOWUPS]"
+    }
+  ]
+}

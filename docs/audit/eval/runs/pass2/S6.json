@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 5483,
+  "evidenceId": "813b767f-8e25-403a-9c9d-3cb0f6e8192a",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn ăn gì đó gần đây ngay bây giờ, đúng không? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn gì đó gần đây ngay bây giờ, đúng không? 😊"
+    }
+  ]
+}

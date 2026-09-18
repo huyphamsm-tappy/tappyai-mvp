@@ -1,0 +1,34 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8406,
+  "evidenceId": "c95033cf-b085-488f-b9f7-58ec4383546e",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-09-21"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm giá vé máy bay rẻ nhất từ Sài Gòn đến Hà Nội cho tuần sau.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 21/9, nhưng bạn có thể tìm giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây. Thường **Vietjet và Vietnam Airlines** có giá cạnh tranh, đặc biệt nếu bạn đặt sớm 🛫\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-21&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=21-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-21)\n\nBạn muốn bay ngày cụ thể nào trong tuần sau để mình tìm giá tốt nhất?\n\n[FOLLOWUPS]Giá vé ngày khác|Chuyến bay sáng hay chiều|Hà Nội bao lâu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm giá vé máy bay rẻ nhất từ Sài Gòn đến Hà Nội cho tuần sau.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 21/9, nhưng bạn có thể tìm giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây. Thường **Vietjet và Vietnam Airlines** có giá cạnh tranh, đặc biệt nếu bạn đặt sớm 🛫\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-21&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=21-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-21)\n\nBạn muốn bay ngày cụ thể nào trong tuần sau để mình tìm giá tốt nhất?\n\n[FOLLOWUPS]Giá vé ngày khác|Chuyến bay sáng hay chiều|Hà Nội bao lâu[/FOLLOWUPS]"
+    }
+  ]
+}

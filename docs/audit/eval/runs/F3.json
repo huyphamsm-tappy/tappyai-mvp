@@ -1,0 +1,197 @@
+{
+  "id": "F3",
+  "text": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+  "parent": null,
+  "status": 200,
+  "ms": 19844,
+  "evidenceId": "98281c45-5d6c-4e53-b4e8-e1f37752a6af",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Padme Chay",
+      "rating": 4.9,
+      "count": 1643,
+      "price": "200-500 N ₫",
+      "hours": "10:00–22:00",
+      "distance_km": 2.3,
+      "address": "290/28 Nam Kỳ Khởi Nghĩa, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Le Monde Steak Cao Thắng",
+      "rating": 4.6,
+      "count": 1556,
+      "price": "200-300 N ₫",
+      "hours": "10:00–22:00",
+      "distance_km": 2.2,
+      "address": "78B Cao Thắng, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Côn Sơn",
+      "rating": 4.6,
+      "count": 872,
+      "hours": "07:00–22:00",
+      "distance_km": 1.9,
+      "address": "80-84 Trần Quốc Thảo, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "La Maison Wine Dining",
+      "rating": 4.5,
+      "count": 555,
+      "hours": "10:00–22:00",
+      "distance_km": 2,
+      "address": "201b Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1152,
+      "price": "200-300 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Lúa Về | Nhà Hàng Hải Sản Ngon Quận 3 |Quán Nhậu Ngon Trường Sa",
+      "rating": 4.5,
+      "count": 35,
+      "price": "200-300 N ₫",
+      "hours": "10:00–02:00",
+      "distance_km": 2.3,
+      "address": "812 Trường Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ẩm Thực Quê Nhà Quận 3",
+      "rating": 4,
+      "count": 2436,
+      "price": "300-800 N ₫",
+      "hours": "09:00–23:00",
+      "distance_km": 1.1,
+      "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tiệm cơm, cafe Hoa Giấy",
+      "rating": 4,
+      "count": 547,
+      "price": "100-300 N ₫",
+      "hours": "08:00–22:00",
+      "distance_km": 1.9,
+      "address": "19 Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trạm Hầm Quận 3",
+      "rating": 4.9,
+      "count": 1659,
+      "hours": "17:00–23:00",
+      "distance_km": 3.8,
+      "address": "540/17 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "casa FONTANA",
+      "rating": 4.9,
+      "count": 51,
+      "hours": "11:00–22:00",
+      "distance_km": 2.1,
+      "address": "280 Nam Kỳ Khởi Nghĩa, Ward 8, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Padme Chay",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1643,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Le Monde Steak Cao Thắng",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1556,
+        "distance_km": 2.2,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nhà Hàng Côn Sơn",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 872,
+        "distance_km": 1.9,
+        "open_now": true,
+        "opening_hours": "07:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "La Maison Wine Dining",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 555,
+        "distance_km": 2,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.1,
+        "reviews": 1152,
+        "distance_km": 0.4,
+        "open_now": true,
+        "opening_hours": "08:00–22:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "quiet"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Padme Chay** cho bạn với 4.9⭐ (1.643 đánh giá Google Maps). Địa chỉ: 290/28 Nam Kỳ Khởi Nghĩa, Quận 3. Quán đang mở cửa (10:00–22:00), cách bạn khoảng 2.3km.\n\nNếu muốn không khí Pháp sang trọng hơn, **Le Maison Wine Dining** cũng hay — 4.5⭐, chuyên rượu vang & ẩm thực Pháp, cách 2km.\nBạn muốn mình tìm thêm quán khác hay đặt bàn ở Padme Chay?\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Google Maps — Padme Chay\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2542551492682746290\",\"primary\":true},{\"label\":\"🌐 Website — Padme Chay\",\"type\":\"website\",\"url\":\"http://www.padmechay.net/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần Quận 3|Đặt bàn Padme Chay|Quán nướng lãng mạn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Padme Chay** cho bạn với 4.9⭐ (1.643 đánh giá Google Maps). Địa chỉ: 290/28 Nam Kỳ Khởi Nghĩa, Quận 3. Quán đang mở cửa (10:00–22:00), cách bạn khoảng 2.3km.\n\nNếu muốn không khí Pháp sang trọng hơn, **Le Maison Wine Dining** cũng hay — 4.5⭐, chuyên rượu vang & ẩm thực Pháp, cách 2km.\nBạn muốn mình tìm thêm quán khác hay đặt bàn ở Padme Chay?\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Google Maps — Padme Chay\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2542551492682746290\",\"primary\":true},{\"label\":\"🌐 Website — Padme Chay\",\"type\":\"website\",\"url\":\"http://www.padmechay.net/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần Quận 3|Đặt bàn Padme Chay|Quán nướng lãng mạn[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 9103,
+  "evidenceId": "879c618d-a786-469c-8329-90f6e67733bd",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Dollhouse bar HCMC parking chỗ đậu xe",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1383,
+      "hours": "19:00–03:00",
+      "distance_km": 0.5,
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin về chỗ đậu xe ở Dollhouse bar HCMC cho bạn.\n\nMình chưa tìm thấy thông tin cụ thể về chỗ đậu xe ở Dollhouse bar trong kết quả tìm kiếm. Bạn có thể gọi trực tiếp quán qua số **+84 762 903 161** hoặc xem thêm trên [Google Maps](https://maps.google.com/?cid=12322941922998073283) để hỏi chi tiết về dịch vụ giữ xe.\n\nĐịa chỉ quán là **8a/11d1 Thái Văn Lung, Quận 1** — khu vực trung tâm Sài Gòn, nên bạn cũng có thể tìm chỗ đậu xe công cộng gần đó nếu quán không có.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình gợi ý **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.383 đánh giá Google Maps, cách bạn chỉ 0.5km, mở đến 3h sáng nên rất phù hợp để tụ tập sau 22h. Không gian chill, nhạc sống hay, và được rất nhiều người yêu thích 👍\n\nNếu muốn gần hơn, **Loop 1 - Cocktail Bar & Kitchen** chỉ cách 0.3km (gần nhất), 4.8⭐ với 2.475 đánh giá, mở từ 17h đến 1h sáng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps — Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website — Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin về chỗ đậu xe ở Dollhouse bar HCMC cho bạn.\n\nMình chưa tìm thấy thông tin cụ thể về chỗ đậu xe ở Dollhouse bar trong kết quả tìm kiếm. Bạn có thể gọi trực tiếp quán qua số **+84 762 903 161** hoặc xem thêm trên [Google Maps](https://maps.google.com/?cid=12322941922998073283) để hỏi chi tiết về dịch vụ giữ xe.\n\nĐịa chỉ quán là **8a/11d1 Thái Văn Lung, Quận 1** — khu vực trung tâm Sài Gòn, nên bạn cũng có thể tìm chỗ đậu xe công cộng gần đó nếu quán không có."
+    }
+  ]
+}

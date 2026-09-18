@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4162,
+  "evidenceId": "3b27643d-cdc5-4355-b038-2f6388429c06",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình cần xem lại thông tin chi tiết của khách sạn để trả lời chính xác. Bạn có thể cho mình biết tên khách sạn \"thứ hai\" mà bạn đang xem xét không? 🏨",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Gia tham khảo trên Booking/Agoda có thể khác theo loại phòng & ngày cụ thể — bạn nên kiểm tra trực tiếp để xác nhận giá chính xác. Bạn có định check-in ngày nào không? 🏖️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Santa Luxury Hotel\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Santa+Luxury+Hotel\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần xem lại thông tin chi tiết của khách sạn để trả lời chính xác. Bạn có thể cho mình biết tên khách sạn \"thứ hai\" mà bạn đang xem xét không? 🏨"
+    }
+  ]
+}

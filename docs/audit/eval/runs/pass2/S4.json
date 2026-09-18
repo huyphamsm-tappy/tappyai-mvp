@@ -1,0 +1,69 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 13743,
+  "evidenceId": "a023659a-f1e8-44e4-b3e0-e18ce353ce32",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "robot hút bụi nhà có chó 5 7 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Robot hút bụi quét nhà iRobot Roomba 621",
+      "rating": 4.7,
+      "count": 333,
+      "price": 2800000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Roborock Q7 Pro Max",
+      "rating": 4.7,
+      "count": 52,
+      "price": 4990000
+    },
+    {
+      "name": "Robot Hút Bụi BlueStone RVB-9731",
+      "rating": 5,
+      "count": 2,
+      "price": 5800000
+    },
+    {
+      "name": "Robot hút bụi lau nhà tự động Mibot X",
+      "rating": 4.9,
+      "count": 62,
+      "price": 6870000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Roborock Q7TF52-00",
+      "rating": 4.3,
+      "count": 707,
+      "price": 4390000
+    },
+    {
+      "name": "Robot hút bụi lau nhà Roborock Q10 VF",
+      "rating": 4.4,
+      "count": 811,
+      "price": 5900000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi quét nhà iRobot Roomba 621\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":2800000,\"priceHigh\":2800000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRkmcpenqVBdu1veuWy3dRFu8y11irVWRlqB8_7MDG1IKrv92xxh8PUt5SvUnJMPklzLA_Cra_SNqyQtSb7qIaI3p97Jten4jJUOuP4U-_RpivQkEwXgnNOGA\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:2722298997970698715,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2800000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":333}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 Pro Max\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4990000,\"priceHigh\":4990000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSdl1ErfNy19p0oAUszr_aG6a2K_z4Ibd9GJlKfFrXoxrX43uCIf-Ho85xvTVSCYX2gvmV33NM5kQe6sJlwCvIjIhWokJ2eGVnN-g2lbYto7FUPZjurh3Mx\",\"offers\":[{\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:9430940422767565225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":52}]},{\"key\":\"uncertain:2\",\"name\":\"Robot Hút Bụi BlueStone RVB-9731\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5800000,\"priceHigh\":5800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA\",\"offers\":[{\"seller\":\"VietMart thegioidodung.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:3\",\"name\":\"Robot hút bụi lau nhà tự động Mibot X\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6870000,\"priceHigh\":6870000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR-fvZ2kTDvsPbEVI7Xt0CgP2Owjy5BOD37RisOzQfWxjSXjRsQBd_F7gx6i8N1DSfvuWDTfXmMD4lF-KzKGF7Kjdo9L658NzTR7Ha55kdHwHzV19nxzWKtkA\",\"offers\":[{\"seller\":\"META.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5949329847924577017,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6870000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":62}]},{\"key\":\"uncertain:4\",\"name\":\"Robot hút bụi lau nhà Roborock Q7TF52-00\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4390000,\"priceHigh\":4390000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQk3kZdTibTgXByYaWBHEhAodjPljwDm9cM_zjkxVebMDe-gY86n8gNCPjU_ga_3-fZiYqGBZTiVH0yg5sMm0fD3cijQzOEydL5LqgG5CS517NNncIZP9bH8vM\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:16775896300607618392,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":707}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi lau nhà Roborock Q10 VF\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRxpUrWgA3H1Y-QrBV_kkazUI5U_iRueFaI2bufGmKX3dBd1gyskFbak-AI4N4pRYCiBBwWP7hapZJTqJRIhGDz6i1767KXxurgQ8K8JQf5VAtKSV8qTrw3iw\",\"offers\":[{\"seller\":\"Phong Vũ\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:2758997610500719627,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":811}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"2800000 VND\",\"params\":{\"priceVnd\":2800000}},{\"attribute\":\"reviewCount\",\"evidence\":\"333 reviews\",\"params\":{\"count\":333}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nLau nhà, thời gian chạy) để chọn mô hình phù hợp nhất không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3\",\"primary\":false}]}[/CTA_BUTTONS]\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế — bạn tự so sánh & quyết định mua. TappyAI không quảng cáo trả tiền, chỉ dẫn bạn đến các sàn để tự chọn.*",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Robot hút bụi quét nhà iRobot Roomba 621\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":2800000,\"priceHigh\":2800000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRkmcpenqVBdu1veuWy3dRFu8y11irVWRlqB8_7MDG1IKrv92xxh8PUt5SvUnJMPklzLA_Cra_SNqyQtSb7qIaI3p97Jten4jJUOuP4U-_RpivQkEwXgnNOGA\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:2722298997970698715,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2800000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":333}]},{\"key\":\"uncertain:1\",\"name\":\"Robot hút bụi lau nhà Roborock Q7 Pro Max\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4990000,\"priceHigh\":4990000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSdl1ErfNy19p0oAUszr_aG6a2K_z4Ibd9GJlKfFrXoxrX43uCIf-Ho85xvTVSCYX2gvmV33NM5kQe6sJlwCvIjIhWokJ2eGVnN-g2lbYto7FUPZjurh3Mx\",\"offers\":[{\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:9430940422767565225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":52}]},{\"key\":\"uncertain:2\",\"name\":\"Robot Hút Bụi BlueStone RVB-9731\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5800000,\"priceHigh\":5800000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA\",\"offers\":[{\"seller\":\"VietMart thegioidodung.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5800000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:3\",\"name\":\"Robot hút bụi lau nhà tự động Mibot X\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6870000,\"priceHigh\":6870000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR-fvZ2kTDvsPbEVI7Xt0CgP2Owjy5BOD37RisOzQfWxjSXjRsQBd_F7gx6i8N1DSfvuWDTfXmMD4lF-KzKGF7Kjdo9L658NzTR7Ha55kdHwHzV19nxzWKtkA\",\"offers\":[{\"seller\":\"META.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5949329847924577017,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6870000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":62}]},{\"key\":\"uncertain:4\",\"name\":\"Robot hút bụi lau nhà Roborock Q7TF52-00\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":4390000,\"priceHigh\":4390000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQk3kZdTibTgXByYaWBHEhAodjPljwDm9cM_zjkxVebMDe-gY86n8gNCPjU_ga_3-fZiYqGBZTiVH0yg5sMm0fD3cijQzOEydL5LqgG5CS517NNncIZP9bH8vM\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:16775896300607618392,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":4390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":707}]},{\"key\":\"uncertain:5\",\"name\":\"Robot hút bụi lau nhà Roborock Q10 VF\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":5900000,\"priceHigh\":5900000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRxpUrWgA3H1Y-QrBV_kkazUI5U_iRueFaI2bufGmKX3dBd1gyskFbak-AI4N4pRYCiBBwWP7hapZJTqJRIhGDz6i1767KXxurgQ8K8JQf5VAtKSV8qTrw3iw\",\"offers\":[{\"seller\":\"Phong Vũ\",\"url\":\"https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+7+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:2758997610500719627,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5900000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":811}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.7\",\"params\":{\"value\":4.7}},{\"attribute\":\"price\",\"evidence\":\"2800000 VND\",\"params\":{\"priceVnd\":2800000}},{\"attribute\":\"reviewCount\",\"evidence\":\"333 reviews\",\"params\":{\"count\":333}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nLau nhà, thời gian chạy) để chọn mô hình phù hợp nhất không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3\",\"primary\":false}]}[/CTA_BUTTONS]\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế — bạn tự so sánh & quyết định mua. TappyAI không quảng cáo trả tiền, chỉ dẫn bạn đến các sàn để tự chọn.*"
+    }
+  ]
+}

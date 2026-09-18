@@ -1,0 +1,189 @@
+{
+  "id": "P2",
+  "text": "spa massage chan gan q1 duoi 300k",
+  "parent": null,
+  "status": 200,
+  "ms": 15945,
+  "evidenceId": "f46bf0dd-de8c-4350-b2e6-6affe27c65d4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage chân",
+        "location": "Quận 1, TP HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 100,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 189,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 532,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "rating": 4.8,
+      "count": 71,
+      "hours": "01:30–01:00",
+      "distance_km": 1,
+      "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3518,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vĩnh Khang Spa - Foot Massage - Body Massage",
+      "rating": 4.9,
+      "count": 820,
+      "hours": "10:00–22:00",
+      "distance_km": 2,
+      "address": "143D Trần Quang Khải, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Golden",
+      "rating": 4.5,
+      "count": 86,
+      "hours": "09:00–05:00",
+      "distance_km": 0.4,
+      "address": "25 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Dora 1 spa | nail quận 1 | mi quận 1 | massage quận 1",
+      "rating": 4.8,
+      "count": 28,
+      "hours": "10:00–23:30",
+      "distance_km": 1.3,
+      "address": "219A Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+      "rating": 4.9,
+      "count": 32,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.7,
+      "address": "166 Đ. Cống Quỳnh, quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Charm Spa | Massage Foot Quận 1",
+      "rating": 1.8,
+      "count": 31,
+      "hours": "09:00–00:00",
+      "distance_km": 0.6,
+      "address": "153 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 100,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "CHẠM SPA",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 189,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "10:00–19:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 532,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 71,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "01:30–01:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3518,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa massage chân gần Quận 1 cho bạn nhé.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và mở đến 21:00 nên rất tiện nếu bạn muốn đi tối. Spa này chuyên massage chân, body massage và gội đầu dưỡng sinh.\n\nNếu muốn lựa chọn khác, **CHẠM SPA** cách 1.3km cũng rất tốt với 4.9⭐ (189 đánh giá), hoặc **RELAX SPA** cách 1.2km có 4.8⭐ từ 532 đánh giá — nơi này mở đến 22:00 nên linh hoạt hơn nếu bạn muốn đi muộn.\n\nCả ba đều nằm trong Quận 1 và gần vị trí bạn. Tuy nhiên, mình chưa tìm thấy giá cụ thể trên các trang tìm kiếm — bạn có thể gọi trực tiếp hoặc ghé website để hỏi giá dịch vụ massage chân nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gói combo rẻ?|Có spa nào mở 24h không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 cho bạn nhé.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và mở đến 21:00 nên rất tiện nếu bạn muốn đi tối. Spa này chuyên massage chân, body massage và gội đầu dưỡng sinh.\n\nNếu muốn lựa chọn khác, **CHẠM SPA** cách 1.3km cũng rất tốt với 4.9⭐ (189 đánh giá), hoặc **RELAX SPA** cách 1.2km có 4.8⭐ từ 532 đánh giá — nơi này mở đến 22:00 nên linh hoạt hơn nếu bạn muốn đi muộn.\n\nCả ba đều nằm trong Quận 1 và gần vị trí bạn. Tuy nhiên, mình chưa tìm thấy giá cụ thể trên các trang tìm kiếm — bạn có thể gọi trực tiếp hoặc ghé website để hỏi giá dịch vụ massage chân nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gói combo rẻ?|Có spa nào mở 24h không?[/FOLLOWUPS]"
+    }
+  ]
+}

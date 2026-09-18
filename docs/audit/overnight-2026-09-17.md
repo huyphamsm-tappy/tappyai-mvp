@@ -218,3 +218,33 @@ uncommitted; resumed from this log, state verified intact — no markers, dedupe
   a band is present" pinned. (Step D's "13 221 green" was measured before `780c35f`.)
 - 🔶 Open owner decisions: ranker soft-signals from attributes/price band (would reorder cards); pick-first-in-carousel.
 - Web **13 336 passed / 68 skipped (699 files)** after two re-pins (`chatLanguagePriority` test 2 now expects the detector itself to read undiacriticked VI as `vi`; a route COMMENT with accented Vietnamese tripped the UI-string ratchet 466→467 — de-accented), tsc clean, Android unchanged (727 / 0). LLM-run counter still **8 / 120**.
+
+## STEP F — EVAL + RELEASE GATE — DONE, commits `dc8293e` … `16af9e8` (11 fix commits) + eval artifacts
+- Eval set + per-turn grades: `docs/audit/eval/consultative-40.md` (40 web + 10 Android, criteria C1–C9). Raw
+  runs `docs/audit/eval/runs/*.json` (latest) with `runs/pass1/`, `runs/pass2/` archives; Android screenshots
+  `docs/audit/eval/android/`. Runner: scratchpad `eval40.mjs` (authed as the audit user via bearer, `x-tappy-surface:
+  web`, GPS = Quận 1) and `andeval.py` (adb, emulator-5558, debug guest).
+- **Result: web 34/40 PASS, Android 6/10 on the runs as captured** (3 of the 4 Android FAILs have fixes landed after
+  the capture). The 6 web FAILs: hotel provider empty on the audit env (T2, T8), planner clarification stage (T1), G1
+  over-cut on a multi-search planning turn (T6), "asked instead of assumed" (S5, T5).
+- What the eval found and the fixes (each measured → fixed → unit-pinned → re-run): follow-ups lost their numbers to
+  the place-claim guard (empty row set) → carried evidence; the model never named a stated constraint it had no evidence
+  for → server heads-up sentence (hard gaps + missing price); a pick sentence claiming "yên tĩnh" with no evidence →
+  clause strip (never the decision); nameless "có chỗ đậu xe mà bạn cần" → gap-attribute enforcement + anaphora;
+  V1 silently inactive on turns the decision frame read as `inform/web_search` ("Đi date với gấu…", "Cả nhà 6
+  người…") → active on frame goal / forced place tool / prior venues / the situation itself; **slot-admission bug:
+  "ở Quận 1" folded to "quan" = quán ⇒ FOOD asked ⇒ entertainment card refused ⇒ inline media on web AND Android**
+  (`slotAdmission.ts`, pinned); hotel/trip turns asked for dates → assumed next-weekend stay + tool call; "mua gì bây
+  giờ" assumed FOOD → subject never assumed; one-outing traits leaking into memory ("như sở thích trước đây", "5
+  người như thường lệ") → personality/companions need a habit marker; film list cut by the sentence cap → shape guard
+  only with venues; fragments from earlier guards ("Lau nhà, thời gian chạy) …", " 🍷") → line filter; budget-fit
+  claims with no price ("đều dưới 80k") → removed; row category text ("Khu vui chơi trẻ em") now counts as evidence.
+- Named re-search by name works end to end (F6, P3, E4, Android F5): `tappyai_tool_called query=<venue name>`, then
+  either the row's fact or an honest "chưa tìm thấy".
+- Dev-server trap (recorded so nobody repeats it): the audit server runs from the `audit-nonprod` worktree, so a fix
+  is live only after `git checkout --detach merge/main-into-v3` THERE, and Next recompiles `/api/chat` lazily — the
+  first request after a checkout can still hit the stale bundle; warm with `POST /api/chat {}` (400) first.
+- 🔶 Open decisions / items: see "Open" in `consultative-40.md` (hotel provider on audit env; planner clarify stage;
+  G1 on multi-search; shopping prose naming the pick; open-subject questions; thousands-separated listing rule;
+  model-authored CTA labels; re-search location = city).
+- Web **13 356 passed / 68 skipped (699 files)**, tsc clean; Android unchanged (727 / 0). LLM-run counter: **95 / 120**.

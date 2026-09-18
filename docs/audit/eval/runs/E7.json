@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5797,
+  "evidenceId": "3daa9ef1-4c51-4eca-8603-b518cff9fbce",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời. Kết hợp giữa hài hước và kịch tính rất cân bằng 🎬\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, lãng mạn với cảm xúc sâu sắc, đây là lựa chọn phù hợp. Phim có nội dung nhẹ nhàng nhưng rất ấn tượng.\n\n**Alien: Romulus** — nếu bạn thích kinh dị, khoa học viễn tưởng với những cảnh quay căng thẳng, bộ phim này sẽ không làm bạn thất vọng.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời. Kết hợp giữa hài hước và kịch tính rất cân bằng 🎬\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, lãng mạn với cảm xúc sâu sắc, đây là lựa chọn phù hợp. Phim có nội dung nhẹ nhàng nhưng rất ấn tượng.\n\n**Alien: Romulus** — nếu bạn thích kinh dị, khoa học viễn tưởng với những cảnh quay căng thẳng, bộ phim này sẽ không làm bạn thất vọng."
+    }
+  ]
+}
