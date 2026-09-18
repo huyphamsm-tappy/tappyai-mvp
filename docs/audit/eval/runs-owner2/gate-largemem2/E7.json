@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5173,
+  "evidenceId": "a4d8c6c4-10ff-49ad-af47-b813079e466d",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời. Kết hợp giữa hài hước và kịch tính rất cân bằng.\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, rùng rợn với cốt truyện cuốn hút, đây là lựa chọn hay. Phim có không khí ám ảnh nhưng rất hấp dẫn.\n\n**Wicked** — nếu bạn thích nhạc kịch, âm nhạc hay và câu chuyện cảm động, bộ phim này sẽ làm bạn thích thú. Phim có những bài hát hay lắm.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời. Kết hợp giữa hài hước và kịch tính rất cân bằng.\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, rùng rợn với cốt truyện cuốn hút, đây là lựa chọn hay. Phim có không khí ám ảnh nhưng rất hấp dẫn.\n\n**Wicked** — nếu bạn thích nhạc kịch, âm nhạc hay và câu chuyện cảm động, bộ phim này sẽ làm bạn thích thú. Phim có những bài hát hay lắm."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

@@ -1,0 +1,27 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 3548,
+  "evidenceId": "fcab23c5-bf26-45d4-b0df-698684fa9b62",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cuối tuần này bạn muốn làm gì? Mình có thể giúp bạn tìm:\n\n🎬 **Rạp phim** - xem phim mới hay\n🍽️ **Quán ăn/cafe** - ăn gì ngon, uống gì chill\n🧖 **Spa/massage** - thư giãn, massage chân hay gội đầu dưỡng sinh (bạn hay thích những dịch vụ này)\n🎉 **Giai trí** - bar, karaoke, khu vui chơi\n🏖️ **Du lịch** - đi đâu chơi gần Sài Gòn\n\nBạn định đi một mình, với gia đình hay với bạn bè? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Cuối tuần này bạn muốn làm gì? Mình có thể giúp bạn tìm:\n\n🎬 **Rạp phim** - xem phim mới hay\n🍽️ **Quán ăn/cafe** - ăn gì ngon, uống gì chill\n🧖 **Spa/massage** - thư giãn, massage chân hay gội đầu dưỡng sinh (bạn hay thích những dịch vụ này)\n🎉 **Giai trí** - bar, karaoke, khu vui chơi\n🏖️ **Du lịch** - đi đâu chơi gần Sài Gòn\n\nBạn định đi một mình, với gia đình hay với bạn bè? 😊"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

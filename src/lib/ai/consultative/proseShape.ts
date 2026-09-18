@@ -135,9 +135,16 @@ export function guardProseShape(text: string, opts: ProseShapeOptions): { text: 
   }
   // 4. A subject question after a pick (rule 5) — only when a real pick sentence exists.
   if (namesVenue(prose.find(x => x.i === pickIdx)?.s ?? '')) {
-    for (const x of prose) {
+    for (let k = 0; k < prose.length; k++) {
+      const x = prose[k]
       if (doomed.has(x.i) || x.i === pickIdx) continue
-      if (/\?/.test(x.s) && SUBJECT_Q_RE.test(fold(x.s))) { doomed.add(x.i); stats.subject_questions_removed = (stats.subject_questions_removed ?? 0) + 1 }
+      if (/\?/.test(x.s) && SUBJECT_Q_RE.test(fold(x.s))) {
+        doomed.add(x.i); stats.subject_questions_removed = (stats.subject_questions_removed ?? 0) + 1
+        // The lead-in that introduced it ("Để gợi ý chính xác, mình cần biết:") is a promise the
+        // reply no longer keeps (measured F8 after the rule: the colon line stayed above the pick).
+        const prev = prose[k - 1]
+        if (prev && !doomed.has(prev.i) && prev.i !== pickIdx && /(?:can biet|cho minh biet|cho minh hoi)[^:]*:\s*$/.test(fold(prev.s))) doomed.add(prev.i)
+      }
     }
   }
   // 3. Cap: drop the least informative first, never the pick.

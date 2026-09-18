@@ -1,0 +1,1006 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 12895,
+  "evidenceId": "d025896c-460e-4792-9ea4-52b6a2c47e34",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa mở khuya sau 22h Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "rating": 4.9,
+      "count": 1122,
+      "hours": "11:00–21:30",
+      "distance_km": 2.5,
+      "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 586,
+      "hours": "09:00–19:00",
+      "distance_km": 1.1,
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 245,
+      "hours": "09:00–21:00",
+      "distance_km": 2.6,
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–20:30",
+      "distance_km": 2.8,
+      "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "rating": 4.9,
+      "count": 1455,
+      "hours": "09:30–20:30",
+      "distance_km": 3.3,
+      "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1122,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "11:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 586,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "09:00–19:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 245,
+        "distance_km": 2.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 845,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "10:00–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1455,
+        "distance_km": 3.3,
+        "open_now": true,
+        "opening_hours": "09:30–20:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "late_open"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình thấy các spa ở Quận 3 đều đóng cửa trước 22h.\n\nNếu bạn linh hoạt được thời gian, **Nara Spa** là lựa chọn tốt nhất với **4.9⭐ (1.122 đánh giá)**, cách bạn 2.5km, chuyên massage & gội đầu dưỡng sinh.\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Nara Spa\",\"type\":\"website\",\"url\":\"https://www.naraspasaigon.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Nara Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12215552414407479876\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy các spa ở Quận 3 đều đóng cửa trước 22h.\n\nNếu bạn linh hoạt được thời gian, **Nara Spa** là lựa chọn tốt nhất với **4.9⭐ (1.122 đánh giá)**, cách bạn 2.5km, chuyên massage & gội đầu dưỡng sinh.\n\nMình chưa thấy bằng chứng về giờ mở khuya ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Nara Spa\",\"type\":\"website\",\"url\":\"https://www.naraspasaigon.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Nara Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12215552414407479876\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 3, TP.HCM",
+      "results": [
+        {
+          "name": "Nara Spa | Massage & Hair Spa Quận 3",
+          "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 369 750 993",
+          "website_uri": "https://www.naraspasaigon.com/",
+          "place_id": "ChIJLfHQTlkvdTERRFLsOzNchqk",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (1.122 đánh giá Google Maps)",
+          "rating_count": 1122,
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Spa sức khỏe",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12215552414407479876",
+          "booking_links": [
+            "https://www.fresha.com/book-now/nara-spa-kp5jmv1e/all-offer?id=671554&pId=629871&rwg_token=AE37R_hgkBdeVwicc6XAnWgu4j2t5RQqmaG7NGpfDggueqGw3yCcvTyslH1Sn0Z2U8m0VPv8CmeW9DZSa-9TqXXUcKJJzknsYWWKXdUATI2wurnI30CQwYM%3D"
+          ],
+          "opening_hours": "11:00–21:30",
+          "open_now": true,
+          "distance_km": 2.5,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Nara Spa | Massage & Hair Spa Quận 3",
+              "url": "https://maps.google.com/?cid=12215552414407479876",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Nara Spa | Massage & Hair Spa Quận 3",
+              "url": "https://www.naraspasaigon.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Nara%20Spa%20%7C%20Massage%20%26%20Hair%20Spa%20Qu%E1%BA%ADn%203%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Massage Trị Liệu Lụa Spa Quận 3",
+          "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 989 753 506",
+          "website_uri": "http://luaspa.vn/",
+          "place_id": "ChIJYT6lpfYvdTERrprstDkEANA",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (586 đánh giá Google Maps)",
+          "rating_count": 586,
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14987984205784062638",
+          "booking_links": [
+            "https://zalo.me/0989753506"
+          ],
+          "opening_hours": "09:00–19:00",
+          "open_now": true,
+          "distance_km": 1.1,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Massage Trị Liệu Lụa Spa Quận 3",
+              "url": "https://maps.google.com/?cid=14987984205784062638",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Massage Trị Liệu Lụa Spa Quận 3",
+              "url": "http://luaspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Massage%20Tr%E1%BB%8B%20Li%E1%BB%87u%20L%E1%BB%A5a%20Spa%20Qu%E1%BA%ADn%203%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+          "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 582 221 568",
+          "website_uri": "https://melaspa.vn/",
+          "place_id": "ChIJuc-JcbcvdTER0w2CULpVZS4",
+          "rating_value": 5,
+          "google_rating": "5⭐ (245 đánh giá Google Maps)",
+          "rating_count": 245,
+          "place_types": [
+            "Spa",
+            "Spa ban ngày",
+            "Spa đá nóng",
+            "Spa mát xa",
+            "Cơ sở chăm sóc da"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3343172557095439827",
+          "booking_links": [
+            "https://docs.google.com/forms/d/e/1FAIpQLSdB4TS_3sv77oR4vbgBv_cP8mPWnUhri9e-hp_5c33wgWtdig/viewform?usp=sharing&ouid=103321642271843149864"
+          ],
+          "opening_hours": "09:00–21:00",
+          "open_now": true,
+          "distance_km": 2.6,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+              "url": "https://maps.google.com/?cid=3343172557095439827",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+              "url": "https://melaspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Mela%20Spa%20-%20Massage%20g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%203%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+          "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 989 611 854",
+          "website_uri": "https://tinhthucspa.com/",
+          "place_id": "ChIJdd_8-GgvdTERrzhTtANxplM",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (845 đánh giá Google Maps)",
+          "rating_count": 845,
+          "place_types": [
+            "Spa",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa mát xa",
+            "Câu lạc bộ spa và sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6027629412006181039",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/46813-tinh-thuc-spa-experience-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_h4-njn3esuohwwam3h-32gatzeukKIqW-06HUof_rej1QlWMIOjKkzX6QylDC2bFXpj9gl35r0ALvhRXFCMDkdIMNjRzKYO3Qr8rDF-UJXddVHpxs%3D",
+            "https://www.fresha.com/book-now/tinh-thuc-spa-b2uiirol/all-offer?id=3118266&pId=3017221&rwg_token=AE37R_ijs8xrm6MshI2wPCzUjZ_f5spzQmM_nY6HYus_lkkvRrOjMniPX3ZgaFFSQd73FfgXVevcnZhH0qPKwzcAYqsS5dINgE7SuaTLm_RRjz06seqB028%3D"
+          ],
+          "opening_hours": "10:00–20:30",
+          "open_now": true,
+          "distance_km": 2.8,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+              "url": "https://maps.google.com/?cid=6027629412006181039",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+              "url": "https://tinhthucspa.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=T%E1%BB%89nh%20Th%E1%BB%A9c%20Spa%20-%20Spa%20Qu%E1%BA%ADn%203%20-%20Body%20Massage%20%7C%20Facial%20Care%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+          "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 901 096 986",
+          "website_uri": "https://www.facebook.com/mocnangspa/?mibextid=LQQJ4d",
+          "place_id": "ChIJ0VB73usvdTERCwGZiUOeatQ",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (1.455 đánh giá Google Maps)",
+          "rating_count": 1455,
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15306220296480555275",
+          "opening_hours": "09:30–20:30",
+          "open_now": true,
+          "distance_km": 3.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — MỘC NẮNG SPA - Chi Nhánh 1",
+              "url": "https://maps.google.com/?cid=15306220296480555275",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — MỘC NẮNG SPA - Chi Nhánh 1",
+              "url": "https://www.facebook.com/mocnangspa/?mibextid=LQQJ4d",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=M%E1%BB%98C%20N%E1%BA%AENG%20SPA%20-%20Chi%20Nh%C3%A1nh%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=spa%20m%E1%BB%9F%20khuya%20sau%2022h%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJLfHQTlkvdTERRFLsOzNchqk",
+          "name": "Nara Spa | Massage & Hair Spa Quận 3",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 1122,
+            "distance_km": 2.5,
+            "open_now": true,
+            "opening_hours": "11:00–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "2.5km away",
+            "1122 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJYT6lpfYvdTERrprstDkEANA",
+          "name": "Massage Trị Liệu Lụa Spa Quận 3",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 586,
+            "distance_km": 1.1,
+            "open_now": true,
+            "opening_hours": "09:00–19:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "1.1km away",
+            "586 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJuc-JcbcvdTER0w2CULpVZS4",
+          "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 245,
+            "distance_km": 2.6,
+            "open_now": true,
+            "opening_hours": "09:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "2.6km away",
+            "245 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJdd_8-GgvdTERrzhTtANxplM",
+          "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 845,
+            "distance_km": 2.8,
+            "open_now": true,
+            "opening_hours": "10:00–20:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "2.8km away",
+            "845 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJ0VB73usvdTERCwGZiUOeatQ",
+          "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 1455,
+            "distance_km": 3.3,
+            "open_now": true,
+            "opening_hours": "09:30–20:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "3.3km away",
+            "1455 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "late_open"
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.76641,106.68068",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Nara Spa | Massage & Hair Spa Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3A3CVBRjjiVITerwT9kn5CJ3WVJrs_Q2rsMThLNMlLs62p3cwb3tdN7N3r0nYt2JSJI03vGXJ8-2AayRmXsrKsqAXJFX2-vv9h3HQ4enp3oK7-vOQb8nUqgvxZVN1HmoMtYjKPwKyzrbA",
+            "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1122,
+            "openingHours": "11:00–21:30",
+            "openNow": true,
+            "phone": "+84 369 750 993",
+            "openingHoursWeek": {
+              "Thứ Sáu": "11:00–21:30",
+              "Thứ Bảy": "11:00–21:30",
+              "Chủ Nhật": "11:00–21:30",
+              "Thứ Hai": "11:00–21:30",
+              "Thứ Ba": "11:00–21:30",
+              "Thứ Tư": "11:00–21:30",
+              "Thứ Năm": "11:00–21:30"
+            },
+            "distanceKm": 2.5,
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa sức khỏe",
+              "Spa"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.naraspasaigon.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12215552414407479876",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84369750993",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nara%20Spa%20%7C%20Massage%20%26%20Hair%20Spa%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78509,106.69453",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Massage Trị Liệu Lụa Spa Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1TP8oeJo1J2KoL9g8ZadVIthUZ3BHz_-dXKHF00iDsAq-_u0iWcsaRIFJAe8s016cu64GsIvn4s_WFuQLGPrN7YjW9ZfWKE5WncHDBoGFFRnIXgDd_37T0k9BSlQNNS7UTivt",
+            "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 586,
+            "openingHours": "09:00–19:00",
+            "openNow": true,
+            "phone": "+84 989 753 506",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–19:00",
+              "Thứ Bảy": "09:00–19:00",
+              "Chủ Nhật": "09:00–19:00",
+              "Thứ Hai": "09:00–19:00",
+              "Thứ Ba": "09:00–19:00",
+              "Thứ Tư": "09:00–19:00",
+              "Thứ Năm": "09:00–19:00"
+            },
+            "distanceKm": 1.1,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14987984205784062638",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84989753506",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Massage%20Tr%E1%BB%8B%20Li%E1%BB%87u%20L%E1%BB%A5a%20Spa%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76919,106.67862",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkECXp_phoYRgywUUh0YzrMZrrU7fuuc7BmAkg_pyRbOaxG4i1lR9WLi5Lw2D1FfiDyfvlfOoXEi0iJylsPB1aibKCGHNzB10zlJm_OWfu1h9qB6segEyfbrUQxkTVXwuHrWUKEE_3LU70",
+            "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 245,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 582 221 568",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–21:00",
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00"
+            },
+            "distanceKm": 2.6,
+            "categories": [
+              "Spa",
+              "Spa ban ngày",
+              "Spa đá nóng",
+              "Spa mát xa",
+              "Cơ sở chăm sóc da"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://melaspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3343172557095439827",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84582221568",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Mela%20Spa%20-%20Massage%20g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79031,106.67943",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnUhzTQs31LLNRaJrFsbJT6ZN6VG1t7p1Ucq0vPJhxSF3wuJydqv--pj3hbmZ7eaxN7YeVMi7F8i8Nbg28U3U9zCTvbK7pxcC6ALoHk25_jbEx3RsE6ncAxArn-G_FBwB4_qNYDaw",
+            "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 845,
+            "openingHours": "10:00–20:30",
+            "openNow": true,
+            "phone": "+84 989 611 854",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–20:30",
+              "Thứ Bảy": "10:00–20:30",
+              "Chủ Nhật": "10:00–20:30",
+              "Thứ Hai": "10:00–20:30",
+              "Thứ Ba": "10:00–20:30",
+              "Thứ Tư": "10:00–20:30",
+              "Thứ Năm": "10:00–20:30"
+            },
+            "distanceKm": 2.8,
+            "categories": [
+              "Spa",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa mát xa",
+              "Câu lạc bộ spa và sức khỏe"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://tinhthucspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@tinhthuc.spa/video/7628225392356199700",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6027629412006181039",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84989611854",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=T%E1%BB%89nh%20Th%E1%BB%A9c%20Spa%20-%20Spa%20Qu%E1%BA%ADn%203%20-%20Body%20Massage%20%7C%20Facial%20Care%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78980,106.67397",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaIyP3jg6lKP9J9L2_TjzYltBSZxtXYpt2pJJZ-FFtHCU7c5YnWUXtaD4yhVjbAaWUncJjdoKJDOWDe-k2eEPDkHZiqODHwohydVQN7LJFJbIFOCVOLtuL_un_lmhhpsUXWiA",
+            "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1455,
+            "openingHours": "09:30–20:30",
+            "openNow": true,
+            "phone": "+84 901 096 986",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:30–20:30",
+              "Thứ Bảy": "09:30–20:30",
+              "Chủ Nhật": "09:30–20:30",
+              "Thứ Hai": "09:30–20:30",
+              "Thứ Ba": "09:30–20:30",
+              "Thứ Tư": "09:30–20:30",
+              "Thứ Năm": "09:30–20:30"
+            },
+            "distanceKm": 3.3,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/mocnangspa/?mibextid=LQQJ4d",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15306220296480555275",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84901096986",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BB%98C%20N%E1%BA%AENG%20SPA%20-%20Chi%20Nh%C3%A1nh%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77931,106.68199",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4PDt6kbwiKKMgRBdWdnk5jnOgva9e7196clcr3RoqA9dtRVA14aBHfiyAhBRGSKOdzzyxeoLVzv4AqQJoc1t9hZ4tL5M0pJYg1TBGzTFGLH8ZJdNy5sCmxAoUiOcOdGUIrLOVHH5j967J",
+            "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 667,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 332 640 156",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–21:00",
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14932093717601110897",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84332640156",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Win%20Win%20Spa%20%7C%20D%C6%B0%E1%BB%A1ng%20Sinh%20%C4%90%C3%B4ng%20Y%20Qu%E1%BA%ADn%203%20%7C%20Massage%20Body%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76653,106.68201",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Queen Spa Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWko1j93vtB88lfEExziIcwCFNXscsd-VTiaWMtthDcOzx71SI9p1-t1aTW8jB3TuvKSC57NqdGI70zwq7-pamVzorZEVeymFSZalbeEPhMEX2aVQ91Zefs3-0F4fx9B5cWP2vo",
+            "address": "12 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 182,
+            "openingHours": "09:00–19:30",
+            "openNow": true,
+            "phone": "+84 779 892 929",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–19:30",
+              "Thứ Bảy": "09:00–19:30",
+              "Chủ Nhật": "09:00–19:30",
+              "Thứ Hai": "09:00–19:30",
+              "Thứ Ba": "09:00–19:30",
+              "Thứ Tư": "09:00–19:30",
+              "Thứ Năm": "09:00–19:30"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://queenspa.com.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6922909701908552825",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84779892929",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Queen%20Spa%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78826,106.68595",
+            "domain": "spa",
+            "kind": "place",
+            "name": "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlsar2G1Hl_GMQf5mprcdQMnHlIQHZ5Zku9YbQg6C7lAQI-1JjOIweG54VbXYLQ-ssNLGz1-diY92u66Qpk3_PriPqLHT7cZbHTRXjthKyuLZOmhGugWIlGU9Yb17z8RwYnLQU",
+            "address": "274/1 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72120, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 490,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 799 776 668",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:00",
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Spa",
+              "Spa sức khỏe"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://anmienspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@anmienthuduc/video/7636990168431349013",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3705289139708686899",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84799776668",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=AN%20MI%C3%8AN%20SPA%20-%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20TH%E1%BA%A2O%20D%C6%AF%E1%BB%A2C%20%26%20MASSAGE%20QU%E1%BA%ACN%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20m%E1%BB%9F%20khuya%20sau%2022h%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

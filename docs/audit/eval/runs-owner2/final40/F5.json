@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 466,
+  "evidenceId": "a6cc49a6-35b8-4ca7-a8db-4c6d64022777",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu - Lý Chính Thắng** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Tám Riêu - Lý Chính Thắng** cho bữa trưa gia đình hôm nay 👍 Quán có **4.8⭐ (1.290 đánh giá Google Maps)**, cách bạn chỉ 2.1km, mở từ 10:30–21:30 nên hoàn hợp lý tưởng.\n\nQuán có website riêng để xem menu chi tiết.\n\n*TappyAI dựa trên đánh giá thực tế từ Google Maps để gợi ý\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Tám Riêu - Lý Chính Thắng\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+L%C3%BD+Ch%C3%ADnh+Th%E1%BA%AFng\",\"primary\":true},{\"label\":\"📍 Maps - Tám Riêu - Lý Chính Thắng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10880845782038429541\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đó|Ăn gì khác cho con nít|Chỗ khác có view đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu - Lý Chính Thắng** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

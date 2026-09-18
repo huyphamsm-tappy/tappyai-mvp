@@ -1,0 +1,61 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 9827,
+  "evidenceId": "cfcd3c74-959e-4eb2-a053-3d75350e5332",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "quà sinh nhật cho bạn gái 1 triệu đồng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng hôm nay ở gần Quận 1 nhé. Để gợi ý đúng ý bạn, mình cần biết: **bạn gái thích loại quà gì?** (ví dụ: đồ trang sức, mỹ phẩm, phụ kiện, công nghệ, hay cái gì khác?)\n\nCơ sở dữ liệu chưa có kết quả cụ thể cho quà sinh nhật. Bạn có thể tìm trên **Shopee** hoặc **Lazada** với các gợi ý phổ biến:\n\n- **Trang sức** (vòng tay, dây chuyền bạc/vàng)\n- **Mỹ phẩm** (son, kem dưỡng, mặt nạ cao cấp)\n- **Phụ kiện** (túi xách nhỏ, ví, khăn lụa)\n- **Công nghệ** (tai nghe, pin dự phòng, đèn LED)\n\nBạn nên chọn dựa trên sở thích của bạn gái.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng hôm nay ở gần Quận 1 nhé. Để gợi ý đúng ý bạn, mình cần biết: **bạn gái thích loại quà gì?** (ví dụ: đồ trang sức, mỹ phẩm, phụ kiện, công nghệ, hay cái gì khác?)\n\nCơ sở dữ liệu chưa có kết quả cụ thể cho quà sinh nhật. Bạn có thể tìm trên **Shopee** hoặc **Lazada** với các gợi ý phổ biến:\n\n- **Trang sức** (vòng tay, dây chuyền bạc/vàng)\n- **Mỹ phẩm** (son, kem dưỡng, mặt nạ cao cấp)\n- **Phụ kiện** (túi xách nhỏ, ví, khăn lụa)\n- **Công nghệ** (tai nghe, pin dự phòng, đèn LED)\n\nBạn nên chọn dựa trên sở thích của bạn gái.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "quà sinh nhật cho bạn gái 1 triệu đồng",
+      "source": "Google Shopping (Serper)",
+      "search_results": [],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20cho%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=qu%C3%A0%20sinh%20nh%E1%BA%ADt%20cho%20b%E1%BA%A1n%20g%C3%A1i%201%20tri%E1%BB%87u%20%C4%91%E1%BB%93ng"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget 800k-1.2 triệu VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_constraint_unmet": {
+        "budget": {
+          "max": 1200000,
+          "type": "around"
+        },
+        "excluded_by": {
+          "budget": 1
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

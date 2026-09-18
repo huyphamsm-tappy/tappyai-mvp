@@ -1,0 +1,35 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 2865,
+  "evidenceId": "00bc6dd6-28e9-4018-881d-933236f44b9f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin về khả năng đặt trước của Hyan Spa từ kết quả tìm kiếm. Bạn nên gọi trực tiếp hoặc kiểm tra trên Google Maps/website của spa để hỏi về đặt chỗ trước nhé.\n\nBạn muốn mình tìm thêm thông tin chi tiết về Hyan Spa, hay muốn xem các spa khác có hỗ trợ đặt trước?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, gội đầu dưỡng sinh — đúng những gì bạn cần.\nHai lựa chọn khác cũng rất tốt: **CHẠM SPA** (4.9⭐, 189 đánh giá, 1.3km) hoặc **RELAX SPA** (4.8⭐, 532 đánh giá, 1.2km) nếu bạn muốn so sánh thêm. Cả ba đều mở cửa bây giờ và nằm gần Quận 1.\n\nLưu ý: Mình chưa tìm thấy giá cụ thể trên kết quả tìm kiếm, bạn nên gọi hoặc vào website để xác nhận giá massage chân có phù hợp ngân sách dưới 300k không nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gội đầu dưỡng sinh?|Có spa couple gần đây không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin về khả năng đặt trước của Hyan Spa từ kết quả tìm kiếm. Bạn nên gọi trực tiếp hoặc kiểm tra trên Google Maps/website của spa để hỏi về đặt chỗ trước nhé.\n\nBạn muốn mình tìm thêm thông tin chi tiết về Hyan Spa, hay muốn xem các spa khác có hỗ trợ đặt trước?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

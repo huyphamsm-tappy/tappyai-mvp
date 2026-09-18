@@ -107,3 +107,14 @@ describe('guardProseShape — rule 4: a subject question after a pick is removed
     expect(other.stats.subject_questions_removed).toBeUndefined()
   })
 })
+
+describe('guardProseShape — rule 4 also drops the lead-in the removed question hung on', () => {
+  it('"Để gợi ý chính xác, mình cần biết:" goes with its question; the pick stays', () => {
+    const text = 'Mình giả sử tìm nhà hàng có phòng riêng ở Quận 1 hôm nay. Để gợi ý chính xác, mình cần biết:\n**Bạn muốn ăn món gì?** (lẩu, bò nướng, hải sản?)\n\n**Bún Bò Huế Bến Ngự** là lựa chọn mình nghiêng về nhất — 4.4⭐ (589 đánh giá), cách bạn 1km.'
+    const r = guardProseShape(text, { rendersCard: true, venues })
+    expect(r.text).not.toContain('mình cần biết')
+    expect(r.text).not.toContain('Bạn muốn ăn món gì')
+    expect(r.text).toContain('Mình giả sử tìm nhà hàng có phòng riêng')
+    expect(r.text).toContain('**Bún Bò Huế Bến Ngự** là lựa chọn')
+  })
+})

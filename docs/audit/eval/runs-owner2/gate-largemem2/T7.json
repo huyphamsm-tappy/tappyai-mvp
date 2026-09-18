@@ -1,0 +1,55 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8498,
+  "evidenceId": "58336396-91d2-4d8b-a1b6-ea5fd4a619cf",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-09-22"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn tìm vé rẻ nhất cho tuần sau (từ 22-28/9), đi 1-2 người. Để tìm chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn bay?** (ví dụ: 22/9, 25/9...) và **có về cùng ngày hay ở lại Hà Nội vài ngày?**\n\nMình sẽ tìm ngay khi bạn cho biết 😊\n\nMình chưa lấy được giá vé trực tiếp\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-22&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=22-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-22)\n\nThường vé rẻ nhất là **chiều thứ 2-4 sáng sớm hoặc tối muộn**. Bạn nên kiểm tra cả tuần để so sánh 👍\n\n[FOLLOWUPS]Vé về khi nào?|Muốn bay lúc mấy giờ?|Đi mấy người?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm vé rẻ nhất cho tuần sau (từ 22-28/9), đi 1-2 người. Để tìm chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn bay?** (ví dụ: 22/9, 25/9...) và **có về cùng ngày hay ở lại Hà Nội vài ngày?**\n\nMình sẽ tìm ngay khi bạn cho biết 😊\n\nMình chưa lấy được giá vé trực tiếp\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-22&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=22-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-22)\n\nThường vé rẻ nhất là **chiều thứ 2-4 sáng sớm hoặc tối muộn**. Bạn nên kiểm tra cả tuần để so sánh 👍\n\n[FOLLOWUPS]Vé về khi nào?|Muốn bay lúc mấy giờ?|Đi mấy người?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "error": "Chua cau hinh API gia ve may bay",
+      "booking_links": [
+        {
+          "name": "Trip.com",
+          "url": "https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-22&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND"
+        },
+        {
+          "name": "Traveloka",
+          "url": "https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=22-09-2026.null&ps=1.0.0&sc=ECONOMY"
+        },
+        {
+          "name": "Google Flights",
+          "url": "https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-22"
+        }
+      ],
+      "note": "Tim chuyen bay tren cac nen tang tren"
+    }
+  ],
+  "frames8Raw": []
+}

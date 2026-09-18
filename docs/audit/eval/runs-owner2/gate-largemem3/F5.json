@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 2750,
+  "evidenceId": "38227ba0-ae83-4c31-9298-1b320d8b6ee9",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình không có thông tin chi tiết về giờ mở cửa của **FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1** trong dữ liệu hiện tại. \n\nĐể chắc chắn, bạn có thể:\n- Gọi trực tiếp quán\n- Xem trên [Google Maps](https://www.google.com/maps/search/FAST+SUSHI+Phú+Nhuận+chi+nhánh+1) — thường có giờ mở cửa và số điện thoại\n- Hoặc mình có thể tìm quán khác ở Phú Nhuận nếu bạn muốn so sánh thêm?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác nhất, mình sẽ tìm ngay.\n\nMình chọn **FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1** — **4.9⭐ (1.872 đánh giá Google Maps)** vì có rating cao nhất, gần nhất (2.5km), mở cửa trưa.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍣 GrabFood - FAST SUSHI PHÚ NHUẬN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=FAST+SUSHI+PHU+NHUAN\",\"primary\":true},{\"label\":\"📍 Maps - FAST SUSHI PHÚ NHUẬN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16255983368168617903\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình không có thông tin chi tiết về giờ mở cửa của **FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1** trong dữ liệu hiện tại. \n\nĐể chắc chắn, bạn có thể:\n- Gọi trực tiếp quán\n- Xem trên [Google Maps](https://www.google.com/maps/search/FAST+SUSHI+Phú+Nhuận+chi+nhánh+1) — thường có giờ mở cửa và số điện thoại\n- Hoặc mình có thể tìm quán khác ở Phú Nhuận nếu bạn muốn so sánh thêm?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}
