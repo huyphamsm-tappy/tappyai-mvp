@@ -18,7 +18,7 @@ import type { Hard, Mood } from './situationFrame'
 
 export type VenueAttribute =
   | 'quiet' | 'lively' | 'view' | 'family' | 'date' | 'fancy' | 'cheap' | 'crowded' | 'slow_service'
-  | 'late_open' | 'parking' | 'outdoor' | 'vegetarian' | 'kids'
+  | 'late_open' | 'parking' | 'outdoor' | 'vegetarian' | 'kids' | 'live_music'
 
 export interface AttributeEvidence {
   attribute: VenueAttribute
@@ -49,6 +49,7 @@ const LEXICON: Array<[VenueAttribute, RegExp]> = [
   ['outdoor', /\b(ngoai troi|san vuon|outdoor|open air|patio|terrace|khong gian mo|san thuong|rooftop)\b/],
   ['vegetarian', /\b(chay|vegetarian|vegan|thuan chay|mon chay)\b/],
   ['kids', /\b(tre em|con nit|kids?|children|khu vui choi|kid[- ]friendly|choi cho be|cac be|em be)\b/],
+  ['live_music', /\b(nhac song|live music|acoustic|live band|ban nhac|nhac live)\b/],
 ]
 
 function negated(f: string, m: RegExpMatchArray): boolean {
@@ -85,6 +86,7 @@ export function extractAttributes(entityTexts: ReadonlyMap<string, readonly stri
 /** Which situation words a venue attribute answers. */
 const HARD_TO_ATTR: Partial<Record<Hard, VenueAttribute>> = {
   quiet: 'quiet', parking: 'parking', kids: 'kids', vegetarian: 'vegetarian', outdoor: 'outdoor', late_open: 'late_open', view: 'view',
+  live_music: 'live_music',
 }
 const MOOD_TO_ATTR: Record<Mood, VenueAttribute> = {
   chill: 'quiet', lively: 'lively', romantic: 'date', fancy: 'fancy', cheap_good: 'cheap',
@@ -119,7 +121,7 @@ export function moodAttribute(mood: Mood | null): VenueAttribute | null {
 const ATTR_VI: Record<VenueAttribute, string> = {
   quiet: 'yên tĩnh', lively: 'sôi động', view: 'có view', family: 'hợp gia đình', date: 'hợp hẹn hò', fancy: 'sang trọng',
   cheap: 'giá mềm', crowded: 'thường đông', slow_service: 'phục vụ chậm', late_open: 'mở khuya', parking: 'có chỗ đậu xe',
-  outdoor: 'ngoài trời', vegetarian: 'có món chay', kids: 'hợp trẻ em',
+  outdoor: 'ngoài trời', vegetarian: 'có món chay', kids: 'hợp trẻ em', live_music: 'có nhạc sống',
 }
 
 /** One line per venue for the shortlist evidence: `yên tĩnh ("…snippet…"); có view ("…")`. */
@@ -135,7 +137,7 @@ export function attributeSummary(list: readonly AttributeEvidence[]): string[] {
 // would leave a reply with no decision). That case is counted, not cut.
 
 const CLAIM_WORDS: Array<[VenueAttribute, RegExp]> = LEXICON.filter(([a]) =>
-  a === 'quiet' || a === 'lively' || a === 'view' || a === 'family' || a === 'date' || a === 'fancy' || a === 'kids' || a === 'outdoor' || a === 'late_open' || a === 'parking')
+  a === 'quiet' || a === 'lively' || a === 'view' || a === 'family' || a === 'date' || a === 'fancy' || a === 'kids' || a === 'outdoor' || a === 'late_open' || a === 'parking' || a === 'live_music')
 
 export interface AtmosphereGuardResult {
   text: string

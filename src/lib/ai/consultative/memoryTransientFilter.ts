@@ -48,12 +48,14 @@ export function filterTransientMemory(
   }
   // personality: "thích lãng mạn, yên tĩnh" from ONE date question is not a trait (measured T1:
   // the next trip plan opened with "như sở thích trước đây"). Kept only when stated as a habit.
-  if (typeof out.personality === 'string' && out.personality && !habitual && (ATMOSPHERE_RE.test(fold(out.personality)) || TRANSIENT_RE.test(fold(out.personality)))) {
+  // Measured E5: "hội bạn 5 người" from ONE outing came back as "đi cùng 5 người như thường lệ".
+  // A trait about company or taste is durable only when the user's own words say it is a habit.
+  if (typeof out.personality === 'string' && out.personality && !habitual) {
     delete out.personality
     stats.personality_dropped = true
   }
   // companions: "hay đi 2 người" is a habit; "2 người tối nay" is one outing.
-  if (typeof out.companions === 'string' && out.companions && !habitual && TRANSIENT_RE.test(fold(out.companions))) {
+  if (typeof out.companions === 'string' && out.companions && !habitual) {
     delete out.companions
     stats.companions_dropped = true
   }

@@ -1559,7 +1559,11 @@ export function applyPlaceEnrichmentStreamFilter(
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
       const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes })
-      const shape = guardProseShape(atmosphere.text, {
+      // The shape rules are about a card-backed decision. A turn with no venues (a film
+      // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
+      // films two and three as "least informative".
+      const hasVenues = snippetPlaceNames.length > 0 || v1.carried.length > 0
+      const shape = !hasVenues ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         venues: snippetPlaceNames.map(name => ({
           name,
@@ -1606,7 +1610,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // sentence claimed "yên tĩnh" with no evidence, which is the opposite of naming the gap.
       const acknowledged = /chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|chua xac nhan duoc|no evidence|could not (?:find|confirm)/.test(said)
       const unsaid = acknowledged ? [] : v1.hardGaps.filter(g => gapWords[g])
-      const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay) (?:muc )?gia|khong co (?:muc )?gia|no price/.test(said)
+      const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay|tim thay) (?:duoc )?(?:muc |thong tin )?gia|khong (?:co|tim thay) (?:muc |thong tin )?gia|no price/.test(said)
       const headsUp: string[] = []
       if (unsaid.length > 0) {
         headsUp.push(lang === 'en'
@@ -2088,6 +2092,13 @@ export function applyPlaceEnrichmentStreamFilter(
                 }
                 if (rowName && typeof row.address === 'string' && row.address && !addressesByEntity.has(rowName)) {
                   addressesByEntity.set(rowName, row.address)
+                }
+                // Consultative V1: the row's own category text is evidence for category-level
+                // attributes — "Khu vui chơi trẻ em" IS kid-friendly (measured E8: the heads-up
+                // said no evidence of kids for a children's playground).
+                if (rowName) {
+                  const cat = [rowName, row.type, row.amenity, row.cuisine, ...(Array.isArray(row.types) ? row.types : [])].filter((x): x is string => typeof x === 'string' && x.length > 0).join(' · ')
+                  if (cat) placeEntityTexts.set(rowName, [...(placeEntityTexts.get(rowName) ?? []), cat])
                 }
                 if (rowName && !priceBandsByEntity.has(rowName)) {
                   const band = bandFromRow(row)

@@ -25,7 +25,10 @@ describe('filterTransientMemory', () => {
     expect(stats.budget_dropped).toBe(0)
   })
   it('untouched fields pass through; an empty extraction stays empty', () => {
+    // A companion trait survives only with a habit marker in the user's words (measured E5).
     expect(filterTransientMemory({ location_base: 'Quận 1', companions: 'hay đi 2 người' }, ['x']).memory)
+      .toEqual({ location_base: 'Quận 1' })
+    expect(filterTransientMemory({ location_base: 'Quận 1', companions: 'hay đi 2 người' }, ['mình hay đi 2 người']).memory)
       .toEqual({ location_base: 'Quận 1', companions: 'hay đi 2 người' })
     expect(filterTransientMemory({}, []).memory).toEqual({})
   })

@@ -784,6 +784,16 @@ export async function POST(req: Request) {
   /** Consultative V1: the entity-scoped snippet text per venue, off the tool result as returned. */
   const entityTextsOf = (result: unknown): Map<string, string[]> => {
     const out = new Map<string, string[]>()
+    // The row's own category text counts too ("Khu vui chơi trẻ em", "Nhà hàng chay").
+    const rows = (result as { results?: unknown }).results
+    if (Array.isArray(rows)) {
+      for (const row of rows as Array<Record<string, unknown>>) {
+        const name = typeof row.name === 'string' ? row.name : ''
+        if (!name) continue
+        const cat = [name, row.type, row.amenity, row.cuisine, ...(Array.isArray(row.types) ? row.types : [])].filter((x): x is string => typeof x === 'string' && x.length > 0).join(' · ')
+        if (cat) out.set(name, [...(out.get(name) ?? []), cat])
+      }
+    }
     const snips = (result as { price_search_results?: unknown }).price_search_results
     if (!Array.isArray(snips)) return out
     for (const r of snips as Array<{ title?: string; snippet?: string; evidence_scope?: string; evidence_about?: string }>) {
