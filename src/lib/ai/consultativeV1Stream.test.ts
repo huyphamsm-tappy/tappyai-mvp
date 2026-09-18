@@ -139,3 +139,14 @@ describe('flag ON — fragments left by earlier guards', () => {
     expect(out).toContain('Đi sớm nhé.')
   })
 })
+
+describe('flag ON — a budget-fit claim with no price on any row', () => {
+  it('"Cả hai quán đều dưới 80k/bát" goes; the pick stays; the honest price line is added once', async () => {
+    const reply = 'Mình chọn **Cơm Niêu Sài Gòn** cho 2 người tối nay vì 1.200 đánh giá.\n\nNgoài ra **Ốc Đào** cũng ngon.\n\nCả hai quán đều dưới 80k/bát bún bò.\n\nĐi sớm nhé.'
+    const out = prose((await run(reply, { v1: { ...ON, budgetGap: true } })).text)
+    expect(out).not.toContain('đều dưới 80k')
+    expect(out).toContain('Mình chọn **Cơm Niêu Sài Gòn**')
+    expect(out).toContain('Đi sớm nhé.')
+    expect(out.match(/chưa có mức giá/g)).toHaveLength(1)
+  })
+})

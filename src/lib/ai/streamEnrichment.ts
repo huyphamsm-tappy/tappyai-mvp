@@ -1,7 +1,7 @@
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
-import { extractMoneyClaims, guardMoneyClaimsInText, type EvidenceRecord } from './moneyGuard'
+import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText } from './travelGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
@@ -1606,7 +1606,31 @@ export function applyPlaceEnrichmentStreamFilter(
         vegetarian: ['món chay', 'vegetarian options'], outdoor: ['chỗ ngồi ngoài trời', 'outdoor seating'],
         late_open: ['giờ mở khuya', 'late opening'], view: ['view', 'a view'],
       }
-      const said = normalizeVN(tidy.toLowerCase())
+      /**
+       * A budget-FIT claim with no price on any row — "Cả hai quán đều dưới 80k/bát", "hoàn
+       * toàn vừa tầm", "trong tầm giá" (measured F2) — is a guess dressed as a fact. The money
+       * guard lets it through because the amount echoes the user's own number; here, with the
+       * budget gap known, the sentence goes (never the pick sentence — the price line below says
+       * the honest thing once).
+       */
+      const fitClaim = /\b(?:deu |hoan toan |chac chan |van )?(?:duoi|trong tam(?: gia)?|vua tam|nam trong|hop (?:tui tien|ngan sach)|vua (?:voi )?ngan sach|dung ngan sach|khong vuot|re hon ngan sach|within (?:your )?budget|under your budget)\b/
+      const tidyBudget = !v1.budgetGap ? tidy : (() => {
+        const protB = protectedSpans(tidy)
+        const spansB = sentenceSpans(tidy)
+        let seenPick = false
+        let removed = 0
+        const kept = spansB.map(([a, b]) => {
+          const s = tidy.slice(a, b)
+          if (protB.some(([pa, pb]) => pa === a && pb === b) || !s.trim()) return s
+          const f = normalizeVN(s.toLowerCase())
+          const namesVenue = snippetPlaceNames.some(n => n && f.includes(normalizeVN(n.toLowerCase())))
+          if (!seenPick && namesVenue) { seenPick = true; return s }
+          if (fitClaim.test(f) && /\d/.test(f) && !/chua|khong (?:co|thay)|not/.test(f)) { removed++; return '' }
+          return s
+        }).join('')
+        return removed === 0 ? tidy : kept.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
+      })()
+      const said = normalizeVN(tidyBudget.toLowerCase())
       // "Said" means the gap was ACKNOWLEDGED, not that the word appears — measured F3, the pick
       // sentence claimed "yên tĩnh" with no evidence, which is the opposite of naming the gap.
       const acknowledged = /chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|chua xac nhan duoc|no evidence|could not (?:find|confirm)/.test(said)
@@ -1623,10 +1647,10 @@ export function applyPlaceEnrichmentStreamFilter(
           ? 'None of these results carries a price, so I cannot confirm they fit your budget.'
           : 'Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.')
       }
-      const withHeadsUp = headsUp.length === 0 ? tidy : (() => {
-        const at = earliestMarker(tidy)
-        const head = tidy.slice(0, at).replace(/\s+$/, '')
-        const tail = tidy.slice(at)
+      const withHeadsUp = headsUp.length === 0 ? tidyBudget : (() => {
+        const at = earliestMarker(tidyBudget)
+        const head = tidyBudget.slice(0, at).replace(/\s+$/, '')
+        const tail = tidyBudget.slice(at)
         return `${head}${head ? '\n\n' : ''}${headsUp.join(' ')}${tail ? `\n\n${tail}` : ''}`
       })()
       console.log(JSON.stringify({
