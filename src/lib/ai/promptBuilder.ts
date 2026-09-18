@@ -4,7 +4,6 @@ import { fenceUntrusted } from './security/fence'
 import { renderEvidencePolicyBlock } from './consultative/evidenceProvenance'
 import { marketplaceSearchTemplates, searchTemplates } from '@/lib/ccp/adapters'
 import { PROVIDER_REGISTRY } from '@/lib/ccp'
-import { consultativeV1Enabled } from '@/lib/config/product'
 
 // Owner decision 14 Sep 2026: the shopping CTA template is projected from the Commerce Capability
 // Platform's registry (the marketplaces' declared SEARCH grammars). No marketplace host is spelled
@@ -314,32 +313,6 @@ export interface SystemPrompt {
   dynamic: string
 }
 
-/**
- * The rules the CONSULTATIVE_V1 block overrides (cost optimization item 2, 2026-09-18). With the
- * flag ON they are dead weight in the cached prefix AND contradict the V1 shape ("2-4 lựa chọn"
- * vs one pick; "tối đa 3 bullet" vs no bullets; "gợi ý 2-3 rồi hỏi" vs assume-and-go; the
- * 1..3 shortlist vs 1..5), so they are removed from the rulebook when V1 is on. With the flag
- * OFF the rulebook is byte-identical to before. Anti-fabrication rules are never touched: the
- * lines are matched by their exact leading text and nothing else. Evaluated per process — the
- * flag is a deployment setting, so the cached prefix stays stable.
- */
-export const RULES_OVERRIDDEN_BY_CONSULTATIVE_V1: ReadonlyArray<{ id: string; startsWith: string; replace?: string }> = [
-  { id: 'R1(a) 2-4 options', startsWith: '   (a) SO LUONG: dua 2-4 lua chon phu hop nhat' },
-  { id: 'R1b shortlist 1..3', startsWith: "     - '_tappy_shortlist' la MANG 1..3 ung vien", replace: "     - '_tappy_shortlist' la MANG 1..5 ung vien duoc chon deterministic bang scoring engine. Moi item co { rank, id, name, role }." },
-  { id: 'R1b write 1/2/3', startsWith: '     - Neu shortlist co 1 item: viet 1 recommendation cu the. Neu 2: viet 2. Neu 3: viet toi da 3.' },
-  { id: 'R2 3 bullets', startsWith: 'R2: Toi da 3 bullet points trong 1 reply.' },
-  { id: 'R7(b) suggest 2-3 then ask', startsWith: '   (b) THIEU MOT PHAN nhung van goi y duoc -> cu goi y 2-3 lua chon truoc' },
-]
-
-export function systemBase(v1 = consultativeV1Enabled()): string {
-  if (!v1) return SYSTEM_BASE
-  return SYSTEM_BASE.split('\n').flatMap((line) => {
-    const rule = RULES_OVERRIDDEN_BY_CONSULTATIVE_V1.find((r) => line.startsWith(r.startsWith))
-    if (!rule) return [line]
-    return rule.replace ? [rule.replace] : []
-  }).join('\n')
-}
-
 export function buildSystem(
   budget?: Budget | null,
   locationIntent?: 'offline' | 'online' | 'unknown',
@@ -569,7 +542,7 @@ User chi dang xac nhan/dong y. Tra loi NGAN, tu nhien, tiep noi viec vua lam. KH
   // A5.1: the evidence-provenance policy rides the SHARED (cached) prompt so it is
   // byte-identical across requests and costs nothing after the first.
   const evidenceBlock = `\n\n${renderEvidencePolicyBlock()}`
-  const shared = `${systemBase()}${reviewBlock}${ctaBlock}${scopeBlock}${safetyBlock}${evidenceBlock}`
+  const shared = `${SYSTEM_BASE}${reviewBlock}${ctaBlock}${scopeBlock}${safetyBlock}${evidenceBlock}`
 
   // Request-shaped, and deliberately AFTER the rulebook: it sits past the
   // provider's cache breakpoint, so a new minute or a different user no longer
