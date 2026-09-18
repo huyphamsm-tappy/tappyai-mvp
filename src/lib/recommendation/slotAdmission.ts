@@ -70,9 +70,16 @@ export function askedSubjects(text: string): Set<AskedSubject> {
   // already folded them off `t`, so "bún bò" arrives as "bun bo".
   if (/ve may bay|chuyen bay|\bmay bay\b|\bbay tu\b|\bbay den\b|hang khong|vietjet|bamboo airways|vietnam airlines|\bflight\b|airfare/.test(t)) out.add('flight')
   if (/khach san|\bhotel\b|resort|homestay|nha nghi|dat phong|gia phong|\bmotel\b|villa|phong nghi/.test(t)) out.add('stay')
-  if (/quan an|nha hang|\bquan\b|\ban uong\b|do an|mon an|bun |pho |com |banh |\bcafe\b|ca phe|\bfood\b|restaurant|\bnhau\b|lau |buffet/.test(t)) out.add('food')
+  // 🚨 "quận" and "quán" both fold to "quan": "ở Quận 1" is a district, not an eatery. Measured
+  // 2026-09-18 (CONSULTATIVE-40 E1): "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1" read as a
+  // FOOD turn, the entertainment producer was refused, and the reply fell back to inline media
+  // with no card on web and Android alike. Only the bare word not followed by a number counts.
+  if (/quan an|nha hang|\bquan\b(?!\s*\d)|\ban uong\b|do an|mon an|bun |pho |com |banh |\bcafe\b|ca phe|\bfood\b|restaurant|\bnhau\b|lau |buffet/.test(t)) out.add('food')
   if (/\bspa\b|massage|lam dep|duong da|cham soc da|\bnail\b|\bgoi dau\b|tham my/.test(t)) out.add('spa')
   if (/\brap\b|rap phim|rap chieu|cinema|\bcgv\b|lotte cinema|\bbhd\b|xem phim|karaoke|\bbar\b|\bpub\b|club dem|suat chieu|lich chieu/.test(t)) out.add('entertainment')
+  // "đi chơi / vui chơi / giải trí" is a generic outing: entertainment or an attraction, never a
+  // refusal of either.
+  if (/\bdi choi\b|vui choi|giai tri|\bchoi gi\b|hang ?out/.test(t)) { out.add('entertainment'); out.add('attraction') }
   if (/trung tam thuong mai|trung tam mua sam|\bmall\b|sieu thi|mua sam|shopping|cua hang|\bshop\b/.test(t)) out.add('shopping')
   if (/diem tham quan|tham quan|danh lam|thang canh|diem den|check in|\bmuseum\b|bao tang|cong vien|\bchua\b|\bbien\b|\bnui\b/.test(t)) out.add('attraction')
   if (/xe khach|tau hoa|tau lua|duong sat|\bve xe\b|\bve tau\b|\btaxi\b|\bgrab\b|xe cong nghe/.test(t)) out.add('transport')

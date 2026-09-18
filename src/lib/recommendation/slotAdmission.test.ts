@@ -111,3 +111,15 @@ describe('a generic `place` producer follows the turn, and never smuggles a hote
     expect(admitsProducer('khách sạn Đà Nẵng giá rẻ', 'place')).toBe(false)
   })
 })
+
+describe('"ở Quận 1" is a district, not an eatery (CONSULTATIVE-40 E1, 2026-09-18)', () => {
+  const t = 'Tối nay đi chơi gì với hội bạn 5 người ở Quận 1'
+  it('an outing question admits the entertainment and attraction producers', () => {
+    expect(admitsProducer(t, 'entertainment')).toBe(true)
+    expect(admitsProducer(t, 'place')).toBe(true)
+    expect(askedSubjects(t).has('food')).toBe(false)
+  })
+  it('"quán" without a number is still food', () => {
+    expect(askedSubjects('quán nào ngon ở Quận 1').has('food')).toBe(true)
+  })
+})
