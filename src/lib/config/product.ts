@@ -15,6 +15,26 @@ export const FREE_DAILY_LIMIT = 15
 /** Anonymous visitors: questions per VN day (httpOnly cookie `tappy_anon`). */
 export const ANON_DAILY_LIMIT = 5
 
+// ── G1 growth: share-out + anonymous follow-up policy ───────────────────────
+//
+// One place for every number the growth loop enforces or advertises. The
+// anonymous AI quota above (`ANON_DAILY_LIMIT`) stays THE hard cap for a
+// visitor asking from a public result — G1 adds no second AI budget.
+/** Public shares one identity may create per VN day. Abuse ceiling, not a product limit. */
+export const SHARE_DAILY_LIMIT = 20
+/** Public shares one IP may create per VN day (covers identity churn). */
+export const SHARE_DAILY_LIMIT_PER_IP = 60
+/**
+ * After this many anonymous questions the chat shows a SOFT signup prompt
+ * (dismissable, non-blocking). The HARD stop remains `ANON_DAILY_LIMIT`. Kept
+ * strictly below it so the nudge always precedes the wall.
+ */
+export const ANON_SOFT_SIGNUP_GATE_AFTER = 3
+/** Anonymous follow-ups from one public result per VN day, per identity — a viral
+ * share landing in a 500-person group must not become 500 × ANON_DAILY_LIMIT calls
+ * against one slug. */
+export const SHARE_FOLLOW_UP_DAILY_LIMIT_PER_IDENTITY = 3
+
 /**
  * How many ranked shopping listings reach the model — the decision set, not the search dump.
  *

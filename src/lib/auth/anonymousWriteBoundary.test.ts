@@ -123,6 +123,7 @@ const EXEMPT: Record<string, string> = {
   'reviews/[id]/interact': "the caller's own watch row; rate-limited 10/min, values clamped, one view per user per review",
   'deals/[id]/click': 'click analytics, no user content',
   'track': 'analytics, no user content',
+  'zalo/mini/verify': 'exchanges a Zalo token for a server-signed rate-limit cookie; no user content, rate-limited 20/min per IP',
 
   // ── Machine-to-machine. No end user is present at all. ──
   'iap/apple/notifications': 'Apple server-to-server notification',

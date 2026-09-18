@@ -119,6 +119,17 @@
                     android:host="auth-callback" />
             </intent-filter>
 
+            <!-- G1-F Android Direct Share (inbound): "another app → Share → Tappy". Text and
+                 links only; the payload is parsed by IncomingShareParser into the existing
+                 chat-with-prefill destination. image/* is deliberately not claimed — see the
+                 parser. Post-install utility, not acquisition: nothing here runs before the
+                 app is installed. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
             <!-- Shared group link (Group Dining). Custom scheme → no domain verification needed,
                  same as the OAuth callback above. Parsed by GroupDeepLinkParser into
                  AppRoute.GroupDetail. NOTE: the link actually shared with users is the public web

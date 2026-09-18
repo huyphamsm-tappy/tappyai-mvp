@@ -10,6 +10,7 @@ import {
 import { cn } from '@/lib/utils'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import SharePreviewDialog from '@/components/share/SharePreviewDialog'
 
 interface Props {
   msgId: string
@@ -31,6 +32,9 @@ interface Props {
   // always re-runs the LAST turn). Omitting it on older messages hides the button so
   // the user can't click "Tạo lại" on turn 2 and silently regenerate turn 5.
   onRegenerate?: () => void
+  /** G1: the client-side result id the `query` event carried for this turn, if known. */
+  resultId?: string
+  domain?: string
 }
 
 const SPEED_OPTIONS = [1, 1.5, 2]
@@ -55,9 +59,12 @@ export default function MessageActionBar({
   msgId, messageIndex, conversationId, text,
   isThisSpeaking, isPaused, ttsElapsed, ttsTotal, ttsSpeed,
   onSpeak, onTTSPause, onTTSSkipBack, onTTSSkipForward, onTTSSpeedChange, onTTSStop,
-  onRegenerate,
+  onRegenerate, resultId, domain,
 }: Props) {
   const [liked, setLiked] = useState(false)
+  // G1 share-out: a PERSISTED turn can become a public result; the preview
+  // dialog is the explicit step. An unsaved turn keeps the plain-text share.
+  const [shareOpen, setShareOpen] = useState(false)
   const [disliked, setDisliked] = useState(false)
   const [copyState, setCopyState] = useState<'idle' | 'copied'>('idle')
   const [idCopyState, setIdCopyState] = useState<'idle' | 'copied'>('idle')
@@ -104,8 +111,12 @@ export default function MessageActionBar({
   }
 
   const handleShare = async () => {
-    const plain = stripMd(text)
     posthog.capture('message_action', { action: 'share' })
+    if (conversationId) {
+      setShareOpen(true)
+      return
+    }
+    const plain = stripMd(text)
     if (typeof navigator !== 'undefined' && navigator.share) {
       try { await navigator.share({ text: plain, title: 'TappyAI' }); return } catch {}
     }
@@ -167,6 +178,16 @@ export default function MessageActionBar({
 
   return (
     <div className="mt-1.5">
+      {conversationId && (
+        <SharePreviewDialog
+          open={shareOpen}
+          onClose={() => setShareOpen(false)}
+          conversationId={conversationId}
+          messageIndex={messageIndex}
+          resultId={resultId}
+          domain={domain}
+        />
+      )}
       {/* Action row */}
       <div className="flex items-center gap-0.5">
         {/* Copy */}
