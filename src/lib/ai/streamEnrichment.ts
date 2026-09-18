@@ -1588,7 +1588,8 @@ export function applyPlaceEnrichmentStreamFilter(
         const open = (l.match(/\(/g) ?? []).length
         const close = (l.match(/\)/g) ?? []).length
         if (close > open) return true
-        return /^\s*\p{Ll}/u.test(l) && /[.!?…]\s*$/.test(l) && l.trim().split(/\s+/).length <= 12
+        // (measured Android F4: a 16-word tail "liên hệ trực tiếp qua số điện thoại …" left by a clause cut)
+        return /^\s*\p{Ll}/u.test(l) && /[.!?…]\s*$/.test(l) && l.trim().split(/\s+/).length <= 24
       }
       const tidy = shape.text.split('\n')
         .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
