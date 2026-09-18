@@ -10,6 +10,7 @@ import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2, ShieldCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 
 interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
 interface Conv { id: string; title: string; messageCount: number; updated_at: string }
@@ -23,43 +24,24 @@ interface Conv { id: string; title: string; messageCount: number; updated_at: st
  */
 export interface ForYouItem { href: string; title: string; image?: string | null }
 
-// English hero greetings by VN-hour slot. Vietnamese keeps the server-computed
-// text (passed in) so its full weekday/weekend variety is preserved; EN is
-// computed here client-side when the user switches language.
-const HERO_EN: { range: [number, number]; weekday: string[]; weekend?: string[] }[] = [
-  { range: [0, 5], weekday: ['Still up? 🌙<br />Tappy is here — need anything?', 'Late night —<br />but Tappy is ready 🌛'] },
-  { range: [5, 9], weekday: ['Good morning!<br />What sounds good today? ☀️', 'A new day begins —<br />Tappy is here to help! 🌅'], weekend: ['Weekend morning!<br />Rest, or somewhere fun? ☀️', 'Weekend’s on —<br />want a good brunch spot? 🥞'] },
-  { range: [9, 11], weekday: ['The morning is rolling —<br />what do you need? ⚡', 'Tappy here!<br />Ask anything, instant answers 🚀'] },
-  { range: [11, 14], weekday: ['Hungry?<br />Tappy finds a great lunch spot! 🍚', 'Lunch o’clock —<br />let Tappy pick for you 🥢'] },
-  { range: [14, 17], weekday: ['Afternoon —<br />coffee or a relaxing spa? ☕', 'Afternoon slump?<br />Tappy’s got a few ideas 💡'] },
-  { range: [17, 20], weekday: ['Off work!<br />Where to eat tonight? 🎊', 'Prime evening —<br />Tappy suggests a great spot! 🍜'], weekend: ['Weekend evening!<br />Out, or something tasty? 🎊', 'Weekend prime time —<br />let Tappy find a spot! 🍜'] },
-  { range: [20, 24], weekday: ['Lovely night —<br />where’s worth going? Ask Tappy 🌃', 'End of the day —<br />let Tappy help you unwind! 🛁'] },
-]
-
-function heroEN(hour: number, isWeekend: boolean, dom: number): string {
-  const slot = HERO_EN.find((s) => hour >= s.range[0] && hour < s.range[1]) ?? HERO_EN[1]
-  const texts = isWeekend && slot.weekend ? slot.weekend : slot.weekday
-  return texts[dom % texts.length]
-}
+// The hero greeting comes from the one shared engine (src/lib/home/heroGreeting.ts);
+// this view only renders its two lines. It used to keep its own English pool here.
 
 export default function HomeView({
-  user, userInfo, firstName, heroTextVi, heroHour, heroIsWeekend, heroDom, suggestions, conversations,
+  user, userInfo, firstName, hero, suggestions, conversations,
   forYou,
 }: {
   user: boolean
   userInfo: ComponentProps<typeof Header>['user']
   firstName: string
-  heroTextVi: string
-  heroHour: number
-  heroIsWeekend: boolean
-  heroDom: number
+  hero: HeroClock
   suggestions: Suggestion[]
   conversations: Conv[]
   /** ND-001 — existing V3-available content only. Omitted today, so the section is hidden. */
   forYou?: ForYouItem[]
 }) {
   const { t, locale } = useTranslation()
-  const heroText = locale === 'en' ? heroEN(heroHour, heroIsWeekend, heroDom) : heroTextVi
+  const [heroLine1, heroLine2] = heroGreeting(hero, locale === 'en' ? 'en' : 'vi')
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 md:bg-transparent md:dark:bg-transparent pb-20">
@@ -75,7 +57,7 @@ export default function HomeView({
             <p className="text-white/80 text-sm font-medium mb-1">
               {user ? t('home.greetingUser', { name: firstName || t('home.friend') }) : t('home.greetingGuest')}
             </p>
-            <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-5" dangerouslySetInnerHTML={{ __html: heroText }} />
+            <h1 className="text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight mb-5">{heroLine1}<br />{heroLine2}</h1>
             <SearchBar variant="hero" />
           </div>
         </div>

@@ -146,9 +146,10 @@ describe('B07 — the rest of the Web surface only gets better', () => {
   // regression to fit inside.
   // 497 → 498 in the origin/main → V3 merge (2026-09-17): main #251 added
   // `src/app/age-check/AgeCheckView.tsx`, whose language toggle shows the endonym
-  // "Tiếng Việt" (the same hardcoded label LanguagePicker already carries). Merge
-  // arithmetic — V3's 497 plus main's one line — not new V3 text.
-  const BASELINE = 498
+  // "Tiếng Việt" (the same hardcoded label LanguagePicker already carries).
+  // 498 → 466 when the Home hero greeting pools moved out of `(home)/page.tsx` into the one
+  // shared engine under src/lib/home (heroGreeting.ts), where product copy is allowed to live.
+  const BASELINE = 466
 
   it(`carries at most ${BASELINE} Vietnamese UI lines outside the sealed screens`, () => {
     const sealed = new Set([...SEALED, ...Object.keys(SEALED_WITH_PERSISTED_VALUES)])

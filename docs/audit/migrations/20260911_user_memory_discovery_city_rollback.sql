@@ -1,0 +1,23 @@
+-- ============================================================================
+-- ROLLBACK for supabase/migrations/20260911_user_memory_discovery_city.sql
+-- user_memory.discovery_city — the destination / discovery interest column.
+--
+-- NOT applied automatically. Kept beside the migration so the rollback is a
+-- rehearsed file rather than something improvised during an incident
+-- (same discipline as 20260908_user_demographics_foundation_rollback.sql).
+--
+-- !! DESTRUCTIVE. Dropping the column discards every discovery city written by
+--    onboarding or by chat extraction since the forward migration ran. Nothing
+--    else is touched: `location_base` and every other user_memory column stay,
+--    the table's grants and RLS are unchanged (the forward migration changed
+--    none of them either).
+--
+-- Only the code that reads the column must be gone (or tolerate 42703) before
+-- this runs: `memoryService` reads it through the single gateway, and V3's
+-- schema-bridge fallbacks cover a missing column on read, but a write with the
+-- column absent fails.
+--
+-- `IF EXISTS` so it is safe to re-run.
+-- ============================================================================
+ALTER TABLE public.user_memory
+  DROP COLUMN IF EXISTS discovery_city;

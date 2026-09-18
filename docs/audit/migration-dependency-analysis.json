@@ -1,0 +1,3414 @@
+{
+  "file_count_sql": 81,
+  "dated": 59,
+  "undated": 22,
+  "first_undated_position": 60,
+  "files_in_filename_order": [
+    "20260620_place_photos.sql",
+    "20260621_notification_subscriptions.sql",
+    "20260627_user_memory.sql",
+    "20260703_add_reviews_update_policy.sql",
+    "20260703_fix_comment_count_trigger.sql",
+    "20260703_fix_like_count_trigger.sql",
+    "20260703_fix_save_count_trigger.sql",
+    "20260704_add_music_module.sql",
+    "20260704_add_reviews_music_column.sql",
+    "20260704_backfill_review_counters.sql",
+    "20260704_tighten_music_constraints.sql",
+    "20260705_seed_music_demo_catalog.sql",
+    "20260706_add_music_saved_and_type.sql",
+    "20260706b_add_music_count_fns.sql",
+    "20260706c_repoint_music_audio_local.sql",
+    "20260711_anon_chat_usage.sql",
+    "20260711_music_ugc_combined.sql",
+    "20260712_prod_baseline_and_review_saves_indexes.sql",
+    "20260713_analytics_envelope_foundation.sql",
+    "20260713_auth_daily_rollup.sql",
+    "20260713_backoffice_phase0.sql",
+    "20260713_user_acquisition_dimension.sql",
+    "20260714_activation_daily_rollup.sql",
+    "20260714_activation_dimension.sql",
+    "20260714_device_context.sql",
+    "20260720_comment_replies_reactions.sql",
+    "20260722_notification_realtime.sql",
+    "20260724_partner_deals.sql",
+    "20260724_partner_deals_hardening.sql",
+    "20260724_partner_deals_metadata.sql",
+    "20260725_notifications_unification.sql",
+    "20260731_partner_deal_translations.sql",
+    "20260803_platform_owner.sql",
+    "20260807_audit_chain.sql",
+    "20260807_platform_hardening_phase0.sql",
+    "20260807_platform_owner_revoke_public_execute.sql",
+    "20260807b_sync_last_login_revoke_public_execute.sql",
+    "20260808_anon_chat_usage_acl_hardening.sql",
+    "20260808b_anon_claim_conversations.sql",
+    "20260808c_handle_new_user_skip_anonymous.sql",
+    "20260813_c8_event_outbox.sql",
+    "20260814_c11_session_security.sql",
+    "20260817_content_safety_gate.sql",
+    "20260818_publication_boundary_rls.sql",
+    "20260818b_music_tracks_publication_boundary.sql",
+    "20260819_m08_account_status.sql",
+    "20260820_b8_owner_recovery.sql",
+    "20260820_m01_daily_snapshots.sql",
+    "20260820_m04_cohort_metrics.sql",
+    "20260821_anon_chat_usage_read.sql",
+    "20260821_m08_user_notes.sql",
+    "20260821_m09_moderation_queue.sql",
+    "20260822_k2_platform_settings.sql",
+    "20260824_decision_evidence_state.sql",
+    "20260830_push_credential_ownership.sql",
+    "20260901_marketing_governance_foundation.sql",
+    "20260905_chat_messaging_phase1.sql",
+    "20260906_phase6_messenger_reachability.sql",
+    "20260913_plan_shares.sql",
+    "add_billing_customers_isolation.sql",
+    "add_counter_security_definer.sql",
+    "add_event_type_check.sql",
+    "add_explore_upgrade.sql",
+    "add_gatea_db_hardening.sql",
+    "add_group_members_auth.sql",
+    "add_groups.sql",
+    "add_memory_columns.sql",
+    "add_message_feedback.sql",
+    "add_music_attribution.sql",
+    "add_original_sound_ugc.sql",
+    "add_phase4.sql",
+    "add_phase4_hardening.sql",
+    "add_preferences.sql",
+    "add_price_watches.sql",
+    "add_profile_edit.sql",
+    "add_profiles_email_isolation.sql",
+    "add_review_social.sql",
+    "add_social_week2.sql",
+    "add_tracking_integrations.sql",
+    "add_user_language_preference.sql",
+    "add_user_preference_profile.sql"
+  ],
+  "per_file": [
+    {
+      "file": "20260620_place_photos.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.place_photos"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260621_notification_subscriptions.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.notification_subscriptions"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_notification_subscriptions_updated_at"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260627_user_memory.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.user_events"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.user_preferences",
+          "via": [
+            "alter"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260703_add_reviews_update_policy.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "policy"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260703_fix_comment_count_trigger.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_review_comment_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260703_fix_like_count_trigger.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_review_like_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260703_fix_save_count_trigger.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_review_save_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260704_add_music_module.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.music_providers",
+        "public.music_categories",
+        "public.music_tracks",
+        "public.music_usage"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260704_add_reviews_music_column.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260704_backfill_review_counters.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.review_comments",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.review_likes",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.review_saves",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260704_tighten_music_constraints.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260705_seed_music_demo_catalog.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260706_add_music_saved_and_type.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.music_saved",
+        "public.music_followed"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.music_increment_play"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260706b_add_music_count_fns.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.music_followed_count",
+        "public.music_saved_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260706c_repoint_music_audio_local.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260711_anon_chat_usage.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.anon_chat_usage"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.anon_chat_usage_increment"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260711_music_ugc_combined.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.music_saved",
+        "public.music_followed",
+        "public.music_track_reports"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.music_increment_play"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "select",
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260712_prod_baseline_and_review_saves_indexes.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.review_saves",
+        "public.subscriptions"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260713_analytics_envelope_foundation.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260713_auth_daily_rollup.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.auth_daily_rollup"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_rollup_auth_daily",
+        "public.fn_sync_last_login"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "ua.last_login_at",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260713_backoffice_phase0.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.admin_roles",
+        "public.admin_permissions",
+        "public.audit_log",
+        "public.system_health_log"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [
+        "public.admin_role"
+      ],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.pg_type",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260713_user_acquisition_dimension.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.user_acquisition"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_upsert_user_acquisition"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk",
+            "select"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260714_activation_daily_rollup.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.activation_daily_rollup"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_rollup_activation_daily"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260714_activation_dimension.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_upsert_activation"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260714_device_context.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260720_comment_replies_reactions.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.comment_reactions"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.review_comments",
+          "via": [
+            "alter",
+            "fk",
+            "index"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260722_notification_realtime.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.pg_publication_tables",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260724_partner_deals.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.partner_deals"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.partner_deals_touch_updated_at"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260724_partner_deals_hardening.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.increment_deal_click",
+        "public.partner_deals_slug_immutable"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "old.partner_slug",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260724_partner_deals_metadata.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260725_notifications_unification.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.notifications"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.pg_policies",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.pg_publication_tables",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260731_partner_deal_translations.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.partner_deal_translations"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.partner_deal_translations_touch_updated_at"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260803_platform_owner.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.platform_owner"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_grant_admin_role",
+        "public.fn_is_platform_owner",
+        "public.fn_revoke_admin_role"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.the",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260807_audit_chain.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_audit_log_chain",
+        "public.fn_audit_part",
+        "public.fn_audit_row_hash",
+        "public.fn_audit_ts",
+        "public.fn_verify_audit_chain"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.pg_trigger",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.v_expected",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "r.row_hash",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260807_platform_hardening_phase0.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260807_platform_owner_revoke_public_execute.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260807b_sync_last_login_revoke_public_execute.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260808_anon_chat_usage_acl_hardening.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260808b_anon_claim_conversations.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_claim_anonymous_conversations"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.conversations",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260808c_handle_new_user_skip_anonymous.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.handle_new_user"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "insert"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260813_c8_event_outbox.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.event_outbox"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_outbox_claim",
+        "public.fn_outbox_publish",
+        "public.fn_outbox_settle"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.claimed",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.service_role",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260814_c11_session_security.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_session_inventory",
+        "public.fn_session_revoke",
+        "public.fn_session_revoke_all",
+        "public.fn_session_subject"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260817_content_safety_gate.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.content_reports"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.a",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter",
+            "fk",
+            "index"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.the",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260818_publication_boundary_rls.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260818b_music_tracks_publication_boundary.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_original_sound_is_servable"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260819_m08_account_status.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.account_status"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260820_b8_owner_recovery.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.platform_owner_recovery"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_owner_recovery_arm",
+        "public.fn_owner_recovery_audit",
+        "public.fn_owner_recovery_cancel",
+        "public.fn_owner_recovery_execute"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk",
+            "select"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260820_m01_daily_snapshots.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.daily_snapshots"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_finalize_daily_snapshots",
+        "public.fn_rollup_daily_snapshots"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.activity",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.days",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.signup",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260820_m04_cohort_metrics.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.cohort_metrics"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_rollup_cohort_metrics"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.activity",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.computed",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.days",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.signup",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260821_anon_chat_usage_read.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.anon_chat_usage_today"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260821_m08_user_notes.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.user_notes"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260821_m09_moderation_queue.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.moderation_queue",
+        "public.moderation_actions"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.fn_ingest_moderation_reports"
+      ],
+      "creates_types": [
+        "public.moderation_type",
+        "public.moderation_status",
+        "public.moderation_action_type"
+      ],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260822_k2_platform_settings.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.platform_settings"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "fk"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260824_decision_evidence_state.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.decision_evidence"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.decision_evidence_load",
+        "public.decision_evidence_save"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260830_push_credential_ownership.sql",
+      "dated": true,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.disown_push_credential",
+        "public.notification_subscriptions_enforce_single_owner",
+        "public.push_credential"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.any",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.ranked",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "20260901_marketing_governance_foundation.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.marketing_consent",
+        "public.marketing_campaigns",
+        "public.notification_deliveries"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260905_chat_messaging_phase1.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.chat_threads",
+        "public.chat_participants",
+        "public.chat_messages",
+        "public.chat_reads"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.chat_create_group",
+        "public.chat_is_participant",
+        "public.chat_start_direct",
+        "public.chat_thread_summaries",
+        "public.chat_touch_thread"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_policies",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.pg_publication_tables",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260906_phase6_messenger_reachability.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.chat_blocks",
+        "public.chat_settings"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.chat_can_reach",
+        "public.chat_start_direct",
+        "public.chat_thread_blocked"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_policies",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.user_follows",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "20260913_plan_shares.sql",
+      "dated": true,
+      "creates_tables": [
+        "public.plan_shares"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.plan_share_public"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.pg_policies",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.public",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_billing_customers_isolation.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.billing_customers"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.anon",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_counter_security_definer.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.sync_review_watch_stats",
+        "public.update_follow_counts",
+        "public.update_review_comment_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.review_comments",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.review_interactions",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "update"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.user_follows",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_event_type_check.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.pg_constraint",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_explore_upgrade.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.review_interactions"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_review_save_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter",
+            "fk",
+            "index",
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_gatea_db_hardening.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.anon",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.function",
+          "via": [
+            "grant"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "index"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_group_members_auth.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.a",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.group_members",
+          "via": [
+            "alter",
+            "drop_policy",
+            "index"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_groups.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.groups",
+        "public.group_members"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.a",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_memory_columns.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.user_memory",
+          "via": [
+            "alter",
+            "index"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_message_feedback.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.message_feedback"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_music_attribution.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_original_sound_ugc.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.music_track_reports"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_phase4.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.review_milestones"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.increment_review_view"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter",
+            "fk",
+            "index",
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_phase4_hardening.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.get_interaction_avgs"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_preferences.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.user_preferences"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_price_watches.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.price_watches"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_profile_edit.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "alter"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_profiles_email_isolation.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [
+        "public.handle_new_user"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.anon",
+          "via": [
+            "select"
+          ],
+          "weak": true
+        },
+        {
+          "object": "public.profiles",
+          "via": [
+            "insert"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_review_social.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.review_likes"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_review_like_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter",
+            "fk",
+            "index",
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_social_week2.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.user_follows",
+        "public.review_comments"
+      ],
+      "creates_views": [],
+      "creates_functions": [
+        "public.update_follow_counts",
+        "public.update_review_comment_count"
+      ],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "alter",
+            "update"
+          ],
+          "weak": false
+        },
+        {
+          "object": "public.reviews",
+          "via": [
+            "alter",
+            "fk",
+            "update"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_tracking_integrations.sql",
+      "dated": false,
+      "creates_tables": [
+        "public.user_events",
+        "public.user_integrations"
+      ],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.user_memory",
+          "via": [
+            "alter"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": true,
+      "begin_commit": false
+    },
+    {
+      "file": "add_user_language_preference.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [
+        {
+          "object": "public.profiles",
+          "via": [
+            "alter"
+          ],
+          "weak": false
+        }
+      ],
+      "idempotent_create": false,
+      "begin_commit": false
+    },
+    {
+      "file": "add_user_preference_profile.sql",
+      "dated": false,
+      "creates_tables": [],
+      "creates_views": [],
+      "creates_functions": [],
+      "creates_types": [],
+      "extensions": [],
+      "references_missing_at_this_point": [],
+      "idempotent_create": false,
+      "begin_commit": false
+    }
+  ],
+  "tables_created_first_by": {
+    "public.place_photos": "20260620_place_photos.sql",
+    "public.notification_subscriptions": "20260621_notification_subscriptions.sql",
+    "public.user_events": "20260627_user_memory.sql",
+    "public.music_providers": "20260704_add_music_module.sql",
+    "public.music_usage": "20260704_add_music_module.sql",
+    "public.music_tracks": "20260704_add_music_module.sql",
+    "public.music_categories": "20260704_add_music_module.sql",
+    "public.music_saved": "20260706_add_music_saved_and_type.sql",
+    "public.music_followed": "20260706_add_music_saved_and_type.sql",
+    "public.anon_chat_usage": "20260711_anon_chat_usage.sql",
+    "public.music_track_reports": "20260711_music_ugc_combined.sql",
+    "public.subscriptions": "20260712_prod_baseline_and_review_saves_indexes.sql",
+    "public.review_saves": "20260712_prod_baseline_and_review_saves_indexes.sql",
+    "public.auth_daily_rollup": "20260713_auth_daily_rollup.sql",
+    "public.audit_log": "20260713_backoffice_phase0.sql",
+    "public.admin_permissions": "20260713_backoffice_phase0.sql",
+    "public.admin_roles": "20260713_backoffice_phase0.sql",
+    "public.system_health_log": "20260713_backoffice_phase0.sql",
+    "public.user_acquisition": "20260713_user_acquisition_dimension.sql",
+    "public.activation_daily_rollup": "20260714_activation_daily_rollup.sql",
+    "public.comment_reactions": "20260720_comment_replies_reactions.sql",
+    "public.partner_deals": "20260724_partner_deals.sql",
+    "public.notifications": "20260725_notifications_unification.sql",
+    "public.partner_deal_translations": "20260731_partner_deal_translations.sql",
+    "public.platform_owner": "20260803_platform_owner.sql",
+    "public.event_outbox": "20260813_c8_event_outbox.sql",
+    "public.content_reports": "20260817_content_safety_gate.sql",
+    "public.account_status": "20260819_m08_account_status.sql",
+    "public.platform_owner_recovery": "20260820_b8_owner_recovery.sql",
+    "public.daily_snapshots": "20260820_m01_daily_snapshots.sql",
+    "public.cohort_metrics": "20260820_m04_cohort_metrics.sql",
+    "public.user_notes": "20260821_m08_user_notes.sql",
+    "public.moderation_actions": "20260821_m09_moderation_queue.sql",
+    "public.moderation_queue": "20260821_m09_moderation_queue.sql",
+    "public.platform_settings": "20260822_k2_platform_settings.sql",
+    "public.decision_evidence": "20260824_decision_evidence_state.sql",
+    "public.marketing_consent": "20260901_marketing_governance_foundation.sql",
+    "public.marketing_campaigns": "20260901_marketing_governance_foundation.sql",
+    "public.notification_deliveries": "20260901_marketing_governance_foundation.sql",
+    "public.chat_reads": "20260905_chat_messaging_phase1.sql",
+    "public.chat_threads": "20260905_chat_messaging_phase1.sql",
+    "public.chat_messages": "20260905_chat_messaging_phase1.sql",
+    "public.chat_participants": "20260905_chat_messaging_phase1.sql",
+    "public.chat_blocks": "20260906_phase6_messenger_reachability.sql",
+    "public.chat_settings": "20260906_phase6_messenger_reachability.sql",
+    "public.plan_shares": "20260913_plan_shares.sql",
+    "public.billing_customers": "add_billing_customers_isolation.sql",
+    "public.review_interactions": "add_explore_upgrade.sql",
+    "public.group_members": "add_groups.sql",
+    "public.groups": "add_groups.sql",
+    "public.message_feedback": "add_message_feedback.sql",
+    "public.review_milestones": "add_phase4.sql",
+    "public.user_preferences": "add_preferences.sql",
+    "public.price_watches": "add_price_watches.sql",
+    "public.review_likes": "add_review_social.sql",
+    "public.review_comments": "add_social_week2.sql",
+    "public.user_follows": "add_social_week2.sql",
+    "public.user_integrations": "add_tracking_integrations.sql"
+  },
+  "functions_created_first_by": {
+    "public.update_notification_subscriptions_updated_at": "20260621_notification_subscriptions.sql",
+    "public.update_review_comment_count": "20260703_fix_comment_count_trigger.sql",
+    "public.update_review_like_count": "20260703_fix_like_count_trigger.sql",
+    "public.update_review_save_count": "20260703_fix_save_count_trigger.sql",
+    "public.music_increment_play": "20260706_add_music_saved_and_type.sql",
+    "public.music_followed_count": "20260706b_add_music_count_fns.sql",
+    "public.music_saved_count": "20260706b_add_music_count_fns.sql",
+    "public.anon_chat_usage_increment": "20260711_anon_chat_usage.sql",
+    "public.fn_rollup_auth_daily": "20260713_auth_daily_rollup.sql",
+    "public.fn_sync_last_login": "20260713_auth_daily_rollup.sql",
+    "public.fn_upsert_user_acquisition": "20260713_user_acquisition_dimension.sql",
+    "public.fn_rollup_activation_daily": "20260714_activation_daily_rollup.sql",
+    "public.fn_upsert_activation": "20260714_activation_dimension.sql",
+    "public.partner_deals_touch_updated_at": "20260724_partner_deals.sql",
+    "public.increment_deal_click": "20260724_partner_deals_hardening.sql",
+    "public.partner_deals_slug_immutable": "20260724_partner_deals_hardening.sql",
+    "public.partner_deal_translations_touch_updated_at": "20260731_partner_deal_translations.sql",
+    "public.fn_grant_admin_role": "20260803_platform_owner.sql",
+    "public.fn_is_platform_owner": "20260803_platform_owner.sql",
+    "public.fn_revoke_admin_role": "20260803_platform_owner.sql",
+    "public.fn_audit_log_chain": "20260807_audit_chain.sql",
+    "public.fn_audit_part": "20260807_audit_chain.sql",
+    "public.fn_audit_row_hash": "20260807_audit_chain.sql",
+    "public.fn_audit_ts": "20260807_audit_chain.sql",
+    "public.fn_verify_audit_chain": "20260807_audit_chain.sql",
+    "public.fn_claim_anonymous_conversations": "20260808b_anon_claim_conversations.sql",
+    "public.handle_new_user": "20260808c_handle_new_user_skip_anonymous.sql",
+    "public.fn_outbox_claim": "20260813_c8_event_outbox.sql",
+    "public.fn_outbox_publish": "20260813_c8_event_outbox.sql",
+    "public.fn_outbox_settle": "20260813_c8_event_outbox.sql",
+    "public.fn_session_inventory": "20260814_c11_session_security.sql",
+    "public.fn_session_revoke": "20260814_c11_session_security.sql",
+    "public.fn_session_revoke_all": "20260814_c11_session_security.sql",
+    "public.fn_session_subject": "20260814_c11_session_security.sql",
+    "public.fn_original_sound_is_servable": "20260818b_music_tracks_publication_boundary.sql",
+    "public.fn_owner_recovery_arm": "20260820_b8_owner_recovery.sql",
+    "public.fn_owner_recovery_audit": "20260820_b8_owner_recovery.sql",
+    "public.fn_owner_recovery_cancel": "20260820_b8_owner_recovery.sql",
+    "public.fn_owner_recovery_execute": "20260820_b8_owner_recovery.sql",
+    "public.fn_finalize_daily_snapshots": "20260820_m01_daily_snapshots.sql",
+    "public.fn_rollup_daily_snapshots": "20260820_m01_daily_snapshots.sql",
+    "public.fn_rollup_cohort_metrics": "20260820_m04_cohort_metrics.sql",
+    "public.anon_chat_usage_today": "20260821_anon_chat_usage_read.sql",
+    "public.fn_ingest_moderation_reports": "20260821_m09_moderation_queue.sql",
+    "public.decision_evidence_load": "20260824_decision_evidence_state.sql",
+    "public.decision_evidence_save": "20260824_decision_evidence_state.sql",
+    "public.disown_push_credential": "20260830_push_credential_ownership.sql",
+    "public.notification_subscriptions_enforce_single_owner": "20260830_push_credential_ownership.sql",
+    "public.push_credential": "20260830_push_credential_ownership.sql",
+    "public.chat_create_group": "20260905_chat_messaging_phase1.sql",
+    "public.chat_is_participant": "20260905_chat_messaging_phase1.sql",
+    "public.chat_start_direct": "20260905_chat_messaging_phase1.sql",
+    "public.chat_thread_summaries": "20260905_chat_messaging_phase1.sql",
+    "public.chat_touch_thread": "20260905_chat_messaging_phase1.sql",
+    "public.chat_can_reach": "20260906_phase6_messenger_reachability.sql",
+    "public.chat_thread_blocked": "20260906_phase6_messenger_reachability.sql",
+    "public.plan_share_public": "20260913_plan_shares.sql",
+    "public.sync_review_watch_stats": "add_counter_security_definer.sql",
+    "public.update_follow_counts": "add_counter_security_definer.sql",
+    "public.increment_review_view": "add_phase4.sql",
+    "public.get_interaction_avgs": "add_phase4_hardening.sql"
+  },
+  "referenced_but_never_created_in_migrations": {
+    "old.partner_slug": [
+      {
+        "file": "20260724_partner_deals_hardening.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.a": [
+      {
+        "file": "20260817_content_safety_gate.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_group_members_auth.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_groups.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.activity": [
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.anon": [
+      {
+        "file": "add_billing_customers_isolation.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_gatea_db_hardening.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_profiles_email_isolation.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.any": [
+      {
+        "file": "20260830_push_credential_ownership.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.claimed": [
+      {
+        "file": "20260813_c8_event_outbox.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.computed": [
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.conversations": [
+      {
+        "file": "20260808b_anon_claim_conversations.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      }
+    ],
+    "public.days": [
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.function": [
+      {
+        "file": "20260706_add_music_saved_and_type.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260706b_add_music_count_fns.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260711_anon_chat_usage.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260711_music_ugc_combined.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260724_partner_deals_hardening.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260803_platform_owner.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260807_platform_hardening_phase0.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260807_platform_owner_revoke_public_execute.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260807b_sync_last_login_revoke_public_execute.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260808_anon_chat_usage_acl_hardening.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260808b_anon_claim_conversations.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260813_c8_event_outbox.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260814_c11_session_security.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260818b_music_tracks_publication_boundary.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260820_b8_owner_recovery.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260821_anon_chat_usage_read.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260821_m09_moderation_queue.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260824_decision_evidence_state.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260830_push_credential_ownership.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260905_chat_messaging_phase1.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260906_phase6_messenger_reachability.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260913_plan_shares.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_counter_security_definer.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_gatea_db_hardening.sql",
+        "via": [
+          "grant"
+        ],
+        "weak": false
+      }
+    ],
+    "public.pg_constraint": [
+      {
+        "file": "20260706_add_music_saved_and_type.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260711_music_ugc_combined.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260713_analytics_envelope_foundation.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260813_c8_event_outbox.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_event_type_check.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.pg_policies": [
+      {
+        "file": "20260725_notifications_unification.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260905_chat_messaging_phase1.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260906_phase6_messenger_reachability.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260913_plan_shares.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.pg_publication_tables": [
+      {
+        "file": "20260722_notification_realtime.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260725_notifications_unification.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260905_chat_messaging_phase1.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.pg_trigger": [
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.pg_type": [
+      {
+        "file": "20260713_backoffice_phase0.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.profiles": [
+      {
+        "file": "20260711_music_ugc_combined.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260712_prod_baseline_and_review_saves_indexes.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260713_backoffice_phase0.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260713_user_acquisition_dimension.sql",
+        "via": [
+          "fk",
+          "select"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260803_platform_owner.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260808c_handle_new_user_skip_anonymous.sql",
+        "via": [
+          "insert"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260819_m08_account_status.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260820_b8_owner_recovery.sql",
+        "via": [
+          "fk",
+          "select"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260821_m08_user_notes.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260821_m09_moderation_queue.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260822_k2_platform_settings.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_billing_customers_isolation.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_counter_security_definer.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_profile_edit.sql",
+        "via": [
+          "alter"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_profiles_email_isolation.sql",
+        "via": [
+          "insert"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_social_week2.sql",
+        "via": [
+          "alter",
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_user_language_preference.sql",
+        "via": [
+          "alter"
+        ],
+        "weak": false
+      }
+    ],
+    "public.public": [
+      {
+        "file": "20260711_anon_chat_usage.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260807_platform_hardening_phase0.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260807_platform_owner_revoke_public_execute.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260807b_sync_last_login_revoke_public_execute.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260808_anon_chat_usage_acl_hardening.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260808b_anon_claim_conversations.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260813_c8_event_outbox.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260814_c11_session_security.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260818b_music_tracks_publication_boundary.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260819_m08_account_status.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_b8_owner_recovery.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260821_anon_chat_usage_read.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260821_m08_user_notes.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260821_m09_moderation_queue.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260822_k2_platform_settings.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260824_decision_evidence_state.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260830_push_credential_ownership.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260901_marketing_governance_foundation.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260905_chat_messaging_phase1.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260906_phase6_messenger_reachability.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260913_plan_shares.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.ranked": [
+      {
+        "file": "20260830_push_credential_ownership.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.reviews": [
+      {
+        "file": "20260703_add_reviews_update_policy.sql",
+        "via": [
+          "policy"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260703_fix_comment_count_trigger.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260703_fix_like_count_trigger.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260703_fix_save_count_trigger.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260704_add_reviews_music_column.sql",
+        "via": [
+          "alter"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260704_backfill_review_counters.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260711_music_ugc_combined.sql",
+        "via": [
+          "select",
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260712_prod_baseline_and_review_saves_indexes.sql",
+        "via": [
+          "fk"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260817_content_safety_gate.sql",
+        "via": [
+          "alter",
+          "fk",
+          "index"
+        ],
+        "weak": false
+      },
+      {
+        "file": "20260818b_music_tracks_publication_boundary.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "add_counter_security_definer.sql",
+        "via": [
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_explore_upgrade.sql",
+        "via": [
+          "alter",
+          "fk",
+          "index",
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_gatea_db_hardening.sql",
+        "via": [
+          "index"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_phase4.sql",
+        "via": [
+          "alter",
+          "fk",
+          "index",
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_review_social.sql",
+        "via": [
+          "alter",
+          "fk",
+          "index",
+          "update"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_social_week2.sql",
+        "via": [
+          "alter",
+          "fk",
+          "update"
+        ],
+        "weak": false
+      }
+    ],
+    "public.service_role": [
+      {
+        "file": "20260813_c8_event_outbox.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.signup": [
+      {
+        "file": "20260820_m01_daily_snapshots.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260820_m04_cohort_metrics.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.the": [
+      {
+        "file": "20260803_platform_owner.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      },
+      {
+        "file": "20260817_content_safety_gate.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "public.user_memory": [
+      {
+        "file": "add_memory_columns.sql",
+        "via": [
+          "alter",
+          "index"
+        ],
+        "weak": false
+      },
+      {
+        "file": "add_tracking_integrations.sql",
+        "via": [
+          "alter"
+        ],
+        "weak": false
+      }
+    ],
+    "public.v_expected": [
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "r.row_hash": [
+      {
+        "file": "20260807_audit_chain.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ],
+    "ua.last_login_at": [
+      {
+        "file": "20260713_auth_daily_rollup.sql",
+        "via": [
+          "select"
+        ],
+        "weak": true
+      }
+    ]
+  },
+  "extensions_required": [],
+  "types_created": [
+    "public.admin_role",
+    "public.moderation_action_type",
+    "public.moderation_status",
+    "public.moderation_type"
+  ]
+}

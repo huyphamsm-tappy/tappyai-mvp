@@ -7,6 +7,7 @@ import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
+import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatRelativeTime, cn } from '@/lib/utils'
@@ -70,6 +71,8 @@ export interface HomeV3Props {
   firstName: string
   suggestions: Suggestion[]
   conversations: Conv[]
+  /** The Vietnam-clock facts the server rendered with — the greeting is a pure function of them. */
+  hero: HeroClock
 }
 
 /** The prompt generator emits exactly these five categories. Three already had labels on the
@@ -255,8 +258,12 @@ const QUICK_CHIPS: { key: string; icon: typeof Search; tone: string }[] = [
 // naming: `SHOW_SCAM_SHIELD` finally reaches this page, and Home can no longer drift from the
 // sidebar or from /tools, because none of the three keeps its own copy any more.
 
-export default function HomeV3({ user, userInfo, firstName, suggestions, conversations }: HomeV3Props) {
+export default function HomeV3({ user, userInfo, firstName, suggestions, conversations, hero }: HomeV3Props) {
   const { t, locale } = useTranslation()
+  // The production hero: seven time slots, weekend pools, a template per day of month —
+  // resolved from the server's clock facts, in the client's language. No Date here, so
+  // server and client render the same markup; no timer, as production has none.
+  const [heroLine1, heroLine2] = heroGreeting(hero, locale === 'en' ? 'en' : 'vi')
   const router = useRouter()
   const [draft, setDraft] = useState('')
 
@@ -410,10 +417,20 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
               {t('v3.home.eyebrow')}
             </p>
 
-            <h2 className="mt-4 text-[30px] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[42px] lg:text-[50px] 2xl:text-[56px]" style={{ color: 'var(--v3-fg)' }}>
+            {/* The name line, as production's small "Xin chào, {name} 👋" above its hero — the
+                one place the display name appears, so the contextual copy below stays verbatim. */}
+            <p className="mt-4 text-[15px] font-medium sm:text-[16px]" style={{ color: 'var(--v3-fg-secondary)' }} data-home-greet-name>
               {user ? t('v3.home.greetUser', { name: firstName || t('v3.profile.you') }) : t('v3.home.greetGuest')}{' '}
               <span aria-hidden="true">👋</span>
-              <span className="mt-1 block" style={{ color: 'var(--v3-accent)' }}>{t('v3.home.askHeadline')}</span>
+            </p>
+
+            {/* 🔑 THE CONTEXTUAL GREETING — the production/App copy, two lines as everywhere
+                else. This used to be a static "Hi {name}! / What would you like to do today?";
+                now morning, noon, afternoon, evening, night and the weekend read differently,
+                exactly as on production Web and on Android (see src/lib/home/heroGreeting.ts). */}
+            <h2 className="mt-1.5 text-[30px] font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[42px] lg:text-[50px] 2xl:text-[56px]" style={{ color: 'var(--v3-fg)' }} data-home-greeting>
+              <span className="block" data-home-greeting-line="1">{heroLine1}</span>
+              <span className="mt-1 block" style={{ color: 'var(--v3-accent)' }} data-home-greeting-line="2">{heroLine2}</span>
             </h2>
 
             <p className="mt-3.5 max-w-[62ch] text-[15px] font-light leading-relaxed" style={{ color: 'var(--v3-fg-secondary)' }}>

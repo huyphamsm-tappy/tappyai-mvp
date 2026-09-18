@@ -1,0 +1,146 @@
+{
+  "generatedAt": "2026-09-18T01:23:12.722Z",
+  "note": "Direct function tests; no LLM/search; excluded from the 36-run cap. detectLang has no AMBIGUOUS return value.",
+  "rows": [
+    {
+      "id": 1,
+      "label": "Vietnamese + English brand",
+      "input": "Tìm quán cafe Highlands Coffee gần đây",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 2,
+      "label": "Vietnamese + English place",
+      "input": "Có quán ăn nào ngon gần Landmark 81 không?",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 3,
+      "label": "Vietnamese + English restaurant term",
+      "input": "Tìm nhà hàng buffet seafood ở Quận 1",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 4,
+      "label": "Vietnamese + URL",
+      "input": "Quán này có ngon không https://shopeefood.vn/ho-chi-minh/quan-abc",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 5,
+      "label": "Vietnamese + product name",
+      "input": "Tìm cho tôi tai nghe Sony WH-1000XM5 giá tốt",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 6,
+      "label": "short Vietnamese 1-3 words",
+      "input": "quán cafe đẹp",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 7,
+      "label": "normal Vietnamese",
+      "input": "Cuối tuần này đi đâu chơi được nhỉ?",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 8,
+      "label": "clearly English",
+      "input": "Find me a quiet Japanese restaurant nearby.",
+      "detected": "en",
+      "explicitRequest": null,
+      "expected": "en",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 9,
+      "label": "mixed Vietnamese/English",
+      "input": "Find giúp tôi một quán cafe chill gần đây.",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 10,
+      "label": "Vietnamese + English proper noun",
+      "input": "Tối nay đi Bitexco Sky Deck có gì vui không?",
+      "detected": "vi",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "PASS",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 11,
+      "label": "no-diacritic Vietnamese",
+      "input": "tim quan cafe gan day",
+      "detected": "en",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "FAIL",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 12,
+      "label": "no-diacritic Vietnamese + brand",
+      "input": "quan an gan Vincom",
+      "detected": "en",
+      "explicitRequest": null,
+      "expected": "vi",
+      "verdict": "FAIL",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 13,
+      "label": "single loanword: menu",
+      "input": "menu",
+      "detected": "en",
+      "explicitRequest": null,
+      "expected": "AMBIGUOUS",
+      "verdict": "AMBIGUOUS-EXPECTED / IMPL-RETURNS-EN",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    },
+    {
+      "id": 14,
+      "label": "single loanword: spa",
+      "input": "spa",
+      "detected": "en",
+      "explicitRequest": null,
+      "expected": "AMBIGUOUS",
+      "verdict": "AMBIGUOUS-EXPECTED / IMPL-RETURNS-EN",
+      "path": "route.ts: detectExplicitLangRequest(lastText) ?? detectLang(lastText)  [src/lib/ai/intent.ts]"
+    }
+  ]
+}

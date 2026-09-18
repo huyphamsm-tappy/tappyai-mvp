@@ -50,7 +50,7 @@ const stripComments = (src: string) =>
 
 describe('Home → Chat handoff carries the prompt', () => {
   it('a prompt chip navigates to /chat with the question as ?q=', () => {
-    const { container } = render(<HomeV3 user={false} userInfo={undefined} firstName="Huy" suggestions={[]} conversations={[]} />)
+    const { container } = render(<HomeV3 user={false} userInfo={undefined} firstName="Huy" suggestions={[]} conversations={[]} hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }} />)
     const chip = [...container.querySelectorAll('button.v3-chip')][0] as HTMLButtonElement
     expect(chip, 'Home renders prompt chips').toBeTruthy()
 
@@ -64,7 +64,7 @@ describe('Home → Chat handoff carries the prompt', () => {
   })
 
   it('the composer sends what the user typed, and refuses to send nothing', () => {
-    const { container } = render(<HomeV3 user={false} userInfo={undefined} firstName="Huy" suggestions={[]} conversations={[]} />)
+    const { container } = render(<HomeV3 user={false} userInfo={undefined} firstName="Huy" suggestions={[]} conversations={[]} hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }} />)
     const form = container.querySelector('form') as HTMLFormElement
     const input = form.querySelector('input') as HTMLInputElement
 
@@ -88,6 +88,7 @@ describe('Home → Chat handoff carries the prompt', () => {
         firstName="Huy"
         suggestions={suggestions as never}
         conversations={[]}
+        hero={{ hour: 10, isWeekend: false, dayOfMonth: 1 }}
       />
     )
     const cards = [...container.querySelectorAll('[data-suggested-card]')]

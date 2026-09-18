@@ -121,7 +121,6 @@ export const vi: Record<string, string> = {
   // The eyebrow, the headline question and the two-line promise. Together they say what the
   // product IS before the user has to work it out from a grid of cards.
   'v3.home.eyebrow': 'Trợ lý AI cá nhân của bạn',
-  'v3.home.askHeadline': 'Bạn muốn làm gì hôm nay?',
   'v3.home.askSub': 'Nói cho Tappy biết bạn cần gì. Tappy sẽ giúp bạn tìm, lên kế hoạch và thực hiện.',
   'v3.home.askHint': 'Ví dụ: tìm quán cà phê gần đây, lên kế hoạch du lịch, chia hóa đơn…',
   'v3.home.tryAsking': 'Thử hỏi Tappy',
@@ -818,7 +817,6 @@ export const en: Record<string, string> = {
   'v3.home.askAria': 'Ask TappyAI',
   // ── Home · AI-first hero ────────────────────────────────────────────────
   'v3.home.eyebrow': 'Your personal AI agent',
-  'v3.home.askHeadline': 'What would you like to do today?',
   'v3.home.askSub': 'Tell Tappy what you need. Tappy will find it, plan it and help you do it.',
   'v3.home.askHint': 'For example: find a cafe nearby, plan a trip, split a bill…',
   'v3.home.tryAsking': 'Try asking Tappy',

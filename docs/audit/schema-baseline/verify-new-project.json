@@ -1,0 +1,132 @@
+{
+  "generatedAt": "2026-09-17T06:25:46.239Z",
+  "production": "fwznnobrdctuskgrvuik",
+  "new": "zdaprdfgpbpnxyofagmc",
+  "result": {
+    "tables": {
+      "production": 70,
+      "new": 70,
+      "match": true
+    },
+    "columns": {
+      "production": 619,
+      "new": 619,
+      "match": true
+    },
+    "functions_non_ext": {
+      "production": 66,
+      "new": 66,
+      "match": true
+    },
+    "security_definer": {
+      "production": 50,
+      "new": 50,
+      "match": true
+    },
+    "constraints": {
+      "production": 244,
+      "new": 244,
+      "match": true
+    },
+    "foreign_keys": {
+      "production": 83,
+      "new": 83,
+      "match": true
+    },
+    "indexes_all": {
+      "production": 211,
+      "new": 211,
+      "match": true
+    },
+    "triggers": {
+      "production": 16,
+      "new": 16,
+      "match": true
+    },
+    "trigger_on_auth_users": {
+      "production": "on_auth_user_created",
+      "new": "on_auth_user_created",
+      "match": true
+    },
+    "policies": {
+      "production": 95,
+      "new": 95,
+      "match": true
+    },
+    "rls_enabled": {
+      "production": 70,
+      "new": 70,
+      "match": true
+    },
+    "enums": {
+      "production": 4,
+      "new": 4,
+      "match": true
+    },
+    "extension_vector": {
+      "production": "0.8.0",
+      "new": "0.8.2",
+      "match": false
+    },
+    "publication_tables": {
+      "production": 6,
+      "new": 6,
+      "match": true
+    },
+    "user_memory_columns": {
+      "production": "id,user_id,location_base,preferences,budget,history,updated_at,companions,timing,personality,behavior_summary,discovery_city",
+      "new": "id,user_id,location_base,preferences,budget,history,updated_at,companions,timing,personality,behavior_summary,discovery_city",
+      "match": true
+    },
+    "subscriptions_columns": {
+      "production": "id*,user_id*,stripe_customer_id,stripe_sub_id,plan*,status*,current_period_end,cancel_at_period_end,created_at,updated_at",
+      "new": "id*,user_id*,stripe_customer_id,stripe_sub_id,plan*,status*,current_period_end,cancel_at_period_end,created_at,updated_at",
+      "match": true
+    },
+    "reviews_column_count": {
+      "production": 28,
+      "new": 28,
+      "match": true
+    },
+    "reviews_policies": {
+      "production": "Owners can see own reviews | Read visible reviews | Users can update own reviews | Users delete own reviews | Users manage own reviews | reviews_publication_boundary",
+      "new": "Owners can see own reviews | Read visible reviews | Users can update own reviews | Users delete own reviews | Users manage own reviews | reviews_publication_boundary",
+      "match": true
+    },
+    "rpc_decision_evidence": {
+      "production": "decision_evidence_load(p_id uuid) | decision_evidence_save(p_id uuid, p_evidence jsonb)",
+      "new": "decision_evidence_load(p_id uuid) | decision_evidence_save(p_id uuid, p_evidence jsonb)",
+      "match": true
+    },
+    "handle_new_user_secdef": {
+      "production": "true",
+      "new": "true",
+      "match": true
+    },
+    "platform_owner_service_role_dml": {
+      "production": "REFERENCES,SELECT,TRIGGER,TRUNCATE",
+      "new": "REFERENCES,SELECT,TRIGGER,TRUNCATE",
+      "match": true
+    },
+    "fn_grant_admin_role_execute": {
+      "production": "postgres,service_role",
+      "new": "postgres,service_role",
+      "match": true
+    },
+    "required_tables_present": {
+      "production": 14,
+      "new": 14,
+      "match": true
+    },
+    "auth_users_rows": {
+      "production": "not queried",
+      "new": 0,
+      "match": null
+    },
+    "public_row_total": {
+      "production": "not queried",
+      "new": "0",
+      "match": null
+    }
+  }
+}
