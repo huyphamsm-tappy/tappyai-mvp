@@ -1437,10 +1437,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             ?? (result as Record<string, unknown>).search_url
           enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
           // The model reads the decision set only (cost optimization item 4); the card above
-          // was built from the full result and is unaffected. See `modelPayload.ts`.
-          return forModel('search_places', withTravelEditorial(trimPlacesForModel(pick
+          // was built from the full result and is unaffected. Trimmed AFTER `forModel` carved the
+          // enrichment (photos, links) off the FULL row set — trimming first starved the collector
+          // of photos and the late resolver bought five /images calls per turn (measured). See
+          // `modelPayload.ts`.
+          return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result), editorial))
+            : result, editorial)))
         }
       }) }),
       get_news: tool({
