@@ -9,6 +9,7 @@
 // của mình là…", "mình thích / hay…"). See consultative-v1-design.md §8.
 
 import { normalizeVN } from '../intent'
+import { DESTINATION_SIGNAL } from '../memoryGate'
 import type { UserMemory } from '@/lib/memory/memoryService'
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
@@ -26,6 +27,7 @@ export interface TransientFilterStats {
   preferences_dropped: number
   personality_dropped?: boolean
   companions_dropped?: boolean
+  discovery_city_dropped?: boolean
 }
 
 /**
@@ -41,10 +43,20 @@ export function filterTransientMemory(
   const said = fold(userTexts.join('\n'))
   const habitual = HABITUAL_RE.test(said)
 
-  // timing: "hay đi cuối tuần" is a habit; "tối nay" is a plan.
-  if (typeof out.timing === 'string' && out.timing && TRANSIENT_RE.test(fold(out.timing))) {
+  // timing: "hay đi cuối tuần" is a habit; "tối nay" is a plan. Measured 2026-09-18 (replay of the
+  // first 20 eval turns): the transient-word test alone let "tối" (from "quán ăn tối"), "cuối tuần"
+  // and "3 ngày 2 đêm" through as "Thoi gian hay di" — so, like companions and personality, timing
+  // is durable only when the user's own words state a habit.
+  if (typeof out.timing === 'string' && out.timing && (!habitual || TRANSIENT_RE.test(fold(out.timing)))) {
     delete out.timing
     stats.timing_dropped = true
+  }
+  // discovery_city: a district in a food query ("gần Quận 1" → "Diem den dang quan tam: Quận 1")
+  // is not a destination. Kept only when the user is planning a trip or a stay — the same
+  // evidence that earns the extraction call in the first place (memoryGate.DESTINATION_SIGNAL).
+  if (typeof out.discovery_city === 'string' && out.discovery_city && !DESTINATION_SIGNAL.test(said)) {
+    delete out.discovery_city
+    stats.discovery_city_dropped = true
   }
   // personality: "thích lãng mạn, yên tĩnh" from ONE date question is not a trait (measured T1:
   // the next trip plan opened with "như sở thích trước đây"). Kept only when stated as a habit.
@@ -67,7 +79,12 @@ export function filterTransientMemory(
       delete out.budget
     }
   }
-  // preferences: transient words and atmosphere wishes go unless stated as a habit.
+  // preferences: a search subject is not a taste. Measured 2026-09-18: one "tim quan bun bo" became
+  // `food: bún bò` and was echoed back on every later extraction; "nồi chiên không dầu 5L loại nào
+  // tốt" became `shopping: nồi chiên không dầu`; "cần chỗ đậu xe" became `entertainment: chỗ đậu xe
+  // ô tô`. Those lists are what the model later read as "sở thích" and asked about. A preference
+  // is kept only when the user's own words state it as a habit or a liking — except `avoid`
+  // (dietary constraints, dislikes), which the extractor only fills from an explicit statement.
   if (out.preferences && typeof out.preferences === 'object') {
     const prefs: UserMemory['preferences'] = {}
     for (const [k, list] of Object.entries(out.preferences)) {
@@ -75,6 +92,7 @@ export function filterTransientMemory(
       const kept = list.filter(v => {
         const f = fold(String(v))
         if (TRANSIENT_RE.test(f)) { stats.preferences_dropped++; return false }
+        if (k !== 'avoid' && !habitual) { stats.preferences_dropped++; return false }
         if (ATMOSPHERE_RE.test(f) && !habitual) { stats.preferences_dropped++; return false }
         return true
       })

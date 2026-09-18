@@ -106,6 +106,7 @@ async function turn(id) {
     frames8: frames8.map(f => Array.isArray(f) ? f.map(x => ({ type: x?.type, n: x?.places?.length ?? x?.view?.places?.length, keys: Object.keys(x ?? {}) })) : { keys: Object.keys(f ?? {}) }),
     prose, other,
     thread: [...messages, { role: 'assistant', content: prose }],
+    ...(args.includes('--raw') ? { toolResults: toolResults.map(r => r.result), frames8Raw: frames8 } : {}),
   }
   writeFileSync(`${OUT}/${id}.json`, JSON.stringify(record, null, 2))
   console.log(`${id} ${status} ${ms}ms tools=${toolCalls.map(c => c.toolName).join(',') || '-'} rows=${rows.length} shortlist=${shortlist.length} prose=${prose.length}ch`)

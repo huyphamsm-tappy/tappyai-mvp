@@ -10,7 +10,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
-import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
+import { buildMemoryBlock, extractMemoryFromConversation, lastMemoryExtractionUsage, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
@@ -68,6 +68,7 @@ import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Pr
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
 import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
+import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -229,8 +230,10 @@ export async function POST(req: Request) {
   // Whether this turn earns a third LLM call for memory extraction. Was
   // `lastText.length > 20`, which measured wrong in both directions: it fired on
   // weather/gold/news lookups that store nothing, and dropped "Tôi ăn chay."
-  // (12 chars) — a hard dietary constraint. See memoryGate.ts.
-  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
+  // (12 chars) — a hard dietary constraint. See memoryGate.ts. Consultative V1 flips the
+  // default to NO (measured: ordinary requests yield nothing the transient filter keeps) and the
+  // topic of a plain request is written to `history` below without a model call.
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled() })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
   // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
@@ -479,7 +482,9 @@ export async function POST(req: Request) {
       ])
 
       existingMemory = chatContext.memory
-      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
+      // Consultative V1: the capped block whose instruction is "use it to choose, never to ask"
+      // (memoryBlock.ts). Flag OFF: the legacy block, byte-identical.
+      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool, { consultative: consultativeV1Enabled() })
 
       // V3 User Data Foundation — the canonical identity block (preferred name,
       // city, age band, gender). Appended to the memory block for the same
@@ -1707,13 +1712,20 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             })),
             { role: 'assistant', content: text },
           ]
-          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory)
+          // Consultative V1 reads the LATEST user turn only (earlier turns were extracted on
+          // their own turn); the habit markers the filter needs are read from the same text.
+          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation })
+          const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+          if (auditFile) {
+            try { appendFileSync(auditFile, JSON.stringify({ turn: auditTurn, type: 'tappyai_usage_memory', ...(lastMemoryExtractionUsage() ?? {}) }) + '\n') } catch { /* audit only */ }
+          }
           // Consultative V1: what was said about TONIGHT is not a trait — the
           // deterministic post-filter drops transient timing / per-turn budget /
           // atmosphere wishes unless the user stated them as a habit.
           const extracted = situation
             ? (() => {
-              const { memory, stats } = filterTransientMemory(extractedRaw, convMessages.filter(m => m.role === 'user').map(m => m.content))
+              const userTexts = convMessages.filter(m => m.role === 'user').map(m => m.content)
+              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1))
               console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'memory_filter', ...stats }))
               return memory
             })()
@@ -1735,6 +1747,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           }
         } catch (e) {
           console.error('Memory extract/save error:', e)
+        }
+      } else if (authedUserId && situation) {
+        // Consultative V1: the plain request that did not earn an extraction call still leaves
+        // its topic in `history` — deterministically, from the user's own words, no model call.
+        const topic = plainRequestTopic({ text: lastText, intent, isFirstReply })
+        if (topic) {
+          try {
+            await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, createAdminClient())
+          } catch (e) {
+            console.error('Memory history save error:', e)
+          }
         }
       }
     },
