@@ -19,6 +19,11 @@ abstract class ChatModule {
     @Binds
     abstract fun bindMessageFeedbackRepository(impl: RealMessageFeedbackRepository): MessageFeedbackRepository
 
+    /** G1 share-out (public result pages) — same wiring shape as message feedback. */
+    @Singleton
+    @Binds
+    abstract fun bindSharedResultRepository(impl: RealSharedResultRepository): SharedResultRepository
+
     @Singleton
     @Binds
     abstract fun bindSuggestedPromptsRepository(impl: RealSuggestedPromptsRepository): SuggestedPromptsRepository
@@ -38,6 +43,11 @@ object ChatNetworkModule {
     @Singleton
     fun provideMessageFeedbackApi(retrofit: Retrofit): MessageFeedbackApi =
         retrofit.create(MessageFeedbackApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSharedResultApi(retrofit: Retrofit): SharedResultApi =
+        retrofit.create(SharedResultApi::class.java)
 
     @Provides
     @Singleton

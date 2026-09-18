@@ -25,12 +25,15 @@ type Feedback = { kind: 'ok' | 'error'; text: string } | null
 export default function ShareMenu({
   url,
   title,
+  text,
   open,
   onClose,
 }: {
   /** Canonical public URL. Anything else is refused by isShareableUrl. */
   url: string
   title?: string
+  /** Optional one-line text for the OS share sheet (SMS/email/apps that ignore OG). */
+  text?: string
   open: boolean
   onClose: () => void
 }) {
@@ -75,7 +78,7 @@ export default function ShareMenu({
 
     if (id === 'native') {
       try {
-        await navigator.share({ title, url })
+        await navigator.share({ title, ...(text ? { text } : {}), url })
         onClose()
       } catch {
         // A cancelled share is not an error; only report if sharing is truly

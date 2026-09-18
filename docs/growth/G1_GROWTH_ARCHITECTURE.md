@@ -48,6 +48,7 @@ signup (first-touch attribution) · return (D5–9) · share again
 | G1-H | QR / POS entry | `src/lib/growth/qrEntry.ts`, `src/app/api/qr/entry/route.ts` |
 | G1-I | GEO: hubs, robots, sitemap | `src/app/(discovery)/[domain]/page.tsx`, `src/lib/discovery/domainHubs.ts`, `src/app/robots.ts`, `src/app/sitemap.ts` |
 | G1-J | Metrics + gates + admin report | `src/lib/analytics/growthMetrics.ts`, `growthReportService.ts`, `src/app/api/admin/analytics/growth/route.ts` |
+| G1-B2 (growth build) | Scam-verdict share-out (wedge artifact), anonymous second-generation sharing with ancestry, Android share-out parity, WebSite SearchAction JSON-LD, native share text, App/Universal Links prep | `src/lib/share/{scamSharePayload,sharePolicy}.ts`, `src/app/api/scam-shield/share/route.ts`, `src/app/scam-shield/ScamShareButton.tsx`, `src/app/r/[slug]/PublicResultClient.tsx`, `android/.../chat/data/{SharedResultApi,SharedResultRepository}.kt`, `android/.../chat/SharePublicDialog.kt`, `src/lib/discovery/siteJsonLd.ts`, `src/lib/growth/appLinks.ts`, `src/app/.well-known/*`, `supabase/migrations/20260918_g1b_share_ancestry.sql` — see `docs/growth/DISTRIBUTION.md` and `G1_GROWTH_BUILD_REPORT.md` |
 | DB | Migration + rollback + RLS/ACL test | `supabase/migrations/20260913_g1_growth_foundation.sql`, `rollback/…`, `supabase/tests/g1_growth_foundation.test.ts` |
 
 Moved (not duplicated) so the server can read them: `parseCTA` → `src/lib/structuredContent/parseCta.ts`, `parseFollowups` → `parseFollowups.ts` (re-exported from `ChatInterface`, same precedent as `parsePlan`).
@@ -61,6 +62,8 @@ Moved (not duplicated) so the server can read them: `parseCTA` → `src/lib/stru
 * **TGDĐ** — `source: 'tgdd'` is reserved in the enum; nothing emits it; an install is not activation.
 * **Identity** — `anon_id` or `user_id`; `anon_identity_map` stitches them so a person is counted once across signup. Historical events are never rewritten.
 * **k-factor (v1)** — share-attributed *new* active identities ÷ active identities in the period.
+* **Second generation** — a `share_created` carrying `parent_share_id`; `viewerToShare` = distinct viewers who later created a share ÷ distinct viewers. Share ancestry is stored in `shared_results.parent_id`.
+* **Anonymous publishing rule** — an anonymous session may publish only a *child* of a public share (`sharePolicy.ts`, cap `SHARE_DAILY_LIMIT_ANON`) and only Scam Shield verdicts (server-generated content); both produce pages that are public but `noindex` and unlisted (`owner_is_anonymous`) until the owner has an account.
 
 Gates (`G1_GATES`): Gate 0 activation ≥ 50 % (fail < 30 %, n 30–50) · Gate 1 D7 ≥ 20 % (fail < 10 %, n ≥ 300) · Gate 2 k ≥ 0.2 (fail < 0.1). The report answers `insufficient_sample` below n rather than a false rate.
 
@@ -114,7 +117,8 @@ The preview dialog shows the exact sanitized payload; nothing is published witho
 
 ## 7. Not done / deferred (explicit)
 
-* TGDĐ — enum only, by design.
+* TGDĐ — enum only, by design. Zalo Mini App — boundary only, untouched in the growth build by instruction.
+* Android/iOS App Links: association files are served once configured; neither app claims https links yet (no native public-result screen — the web page must stay the recipient surface).
 * Zalo Mini App project itself (needs registration; boundary + docs done).
 * Image shares on Android (`image/*` not claimed — picker safety) and Web Share Target files (needs a service worker).
 * Affiliate `click_id`: the contract carries `click_id` on `result_action`; the current outbound builders do not issue one, so it is `undefined` today. Attribution is preserved via `result_id` + `anon_id`.

@@ -36,11 +36,15 @@ export function buildSharedResultMetadata(row: PublicSharedResult, env: NodeJS.P
   const description = summarize(payload.body) || payload.query
   const url = absoluteUrl(sharedResultPath(row.slug), env)
   const image = { url: sharedResultOgImageUrl(row, env), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: payload.title }
+  // An anonymous-owned (second-generation) share is public to open but never
+  // indexed or listed: an anonymous session must not be able to mint search
+  // surface. It becomes indexable only once its owner is a real account.
+  const listed = row.owner_is_anonymous !== true
   return {
     title,
     description,
     alternates: { canonical: url },
-    robots: { index: true, follow: true },
+    robots: listed ? { index: true, follow: true } : { index: false, follow: true },
     openGraph: {
       type: 'article',
       siteName: BRAND.name,

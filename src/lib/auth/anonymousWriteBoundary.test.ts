@@ -109,6 +109,7 @@ const EXEMPT: Record<string, string> = {
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
+  'scam-shield/share': 'publishes a SERVER-generated verdict page (no user content); burst + per-IP daily cap; G1 wedge',
   'translate': 'anonymous tool; rate-limited',
   'scan': 'anonymous tool',
   'viet-content': 'anonymous tool; rate-limited',

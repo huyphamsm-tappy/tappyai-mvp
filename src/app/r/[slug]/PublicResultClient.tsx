@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useChat } from 'ai/react'
 import { Share2, Send } from 'lucide-react'
 import ShareMenu from '@/components/share/ShareMenu'
+import SharePreviewDialog from '@/components/share/SharePreviewDialog'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { loginPathFor } from '@/lib/auth/returnTo'
@@ -67,6 +68,13 @@ export default function PublicResultClient({
   const [hardGate, setHardGate] = useState<string | null>(null)
   const askCountRef = useRef(0)
   const publicUrl = absoluteUrl(`/r/${slug}`)
+  // Second-generation sharing: the follow-up thread is persisted through the
+  // SAME conversations API the chat uses (anonymous sessions own their rows),
+  // so a reply here can be shared with `parentSlug` — the server reads the
+  // answer back from the caller's own conversation, never from this client.
+  const conversationIdRef = useRef<string | null>(null)
+  const [conversationId, setConversationId] = useState<string | null>(null)
+  const [shareTurn, setShareTurn] = useState<{ index: number } | null>(null)
 
   // Attribution first, then the view — so the view already carries the share.
   useEffect(() => {
@@ -95,6 +103,20 @@ export default function PublicResultClient({
     api: '/api/chat',
     headers: { 'x-tappy-surface': 'web' },
     body: { shareSlug: slug },
+    onFinish: async (message) => {
+      const all = [...messages.filter(m => m.id !== message.id), message].map(m => ({ role: m.role, content: m.content }))
+      try {
+        const id = conversationIdRef.current
+        const res = await fetch('/api/conversations', {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(id ? { id, title: title.slice(0, 50), messages: all } : { title: title.slice(0, 50), category: 'general', messages: all }),
+        })
+        if (!res.ok) return
+        const saved = await res.json().catch(() => null)
+        if (!id && saved?.id) { conversationIdRef.current = saved.id; setConversationId(saved.id) }
+      } catch { /* the thread simply cannot be shared this session */ }
+    },
   })
 
   useEffect(() => {
@@ -142,11 +164,21 @@ export default function PublicResultClient({
         </button>
       </div>
       <ShareMenu url={publicUrl} title={title} open={shareOpen} onClose={() => setShareOpen(false)} />
+      {conversationId && shareTurn && (
+        <SharePreviewDialog
+          open
+          onClose={() => setShareTurn(null)}
+          conversationId={conversationId}
+          messageIndex={shareTurn.index}
+          resultId={shareId}
+          parentSlug={slug}
+        />
+      )}
 
       {/* Follow-up thread */}
       {messages.length > 0 && (
         <div className="mt-6 space-y-4">
-          {messages.map((m) => {
+          {messages.map((m, i) => {
             if (m.role === 'user') {
               return <p key={m.id} className="ml-auto max-w-[85%] rounded-2xl bg-interactive px-4 py-2 text-sm text-white">{m.content}</p>
             }
@@ -160,6 +192,15 @@ export default function PublicResultClient({
                       <a key={b.url} href={b.url} target="_blank" rel="noopener noreferrer nofollow" className="rounded-lg border border-primary-300 px-3 py-1 text-xs font-medium text-primary-600">{b.label}</a>
                     ))}
                   </div>
+                )}
+                {conversationId && !(isLoading && i === messages.length - 1) && (
+                  <button
+                    type="button"
+                    onClick={() => setShareTurn({ index: i })}
+                    className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-primary-600 underline"
+                  >
+                    <Share2 size={12} /> {t('publicResult.shareAnswer')}
+                  </button>
                 )}
               </div>
             )

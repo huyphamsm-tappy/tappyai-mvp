@@ -20,6 +20,10 @@ import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
+import com.tappyai.app.chat.data.PublishedShare
+import com.tappyai.app.chat.data.SharePreview
+import com.tappyai.app.chat.data.ShareOutcome
+import com.tappyai.app.chat.data.SharedResultRepository
 import com.tappyai.app.chat.data.MessageLanguage
 import com.tappyai.app.chat.data.SuggestedPromptsRepository
 import com.tappyai.app.chat.data.VoiceLanguageRepository
@@ -50,6 +54,7 @@ class ChatViewModel @Inject constructor(
     private val chatRepository: ChatRepository,
     private val chatHistoryRepository: ChatHistoryRepository,
     private val messageFeedbackRepository: MessageFeedbackRepository,
+    private val sharedResultRepository: SharedResultRepository,
     private val suggestedPromptsRepository: SuggestedPromptsRepository,
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
@@ -700,6 +705,60 @@ class ChatViewModel @Inject constructor(
         }
     }
 
+    // ── G1 share-out: a turn → public result page (parity with the web's SharePreviewDialog) ──
+
+    private val _sharePublic = MutableStateFlow<SharePublicState>(SharePublicState.Idle)
+    val sharePublic: StateFlow<SharePublicState> = _sharePublic.asStateFlow()
+
+    /** The share language: the app's language, which is also what the server would infer. */
+    private val shareLocale: String
+        get() = if (languageManager.current == AppLanguage.English) "en" else "vi"
+
+    /**
+     * Opens the preview for a finished, PERSISTED assistant turn. Returns false when the turn
+     * cannot be shared publicly yet (unsaved chat or an error bubble) so the caller falls back to
+     * the plain-text share — the same branch the web takes on `!conversationId`.
+     */
+    fun onSharePublic(messageId: Long): Boolean {
+        val id = conversationId ?: return false
+        val index = persistedIndexOf(messageId) ?: return false
+        _sharePublic.value = SharePublicState.Loading
+        viewModelScope.launch {
+            _sharePublic.value = when (val outcome = sharedResultRepository.preview(id, index, shareLocale)) {
+                is ShareOutcome.Success -> SharePublicState.Preview(id, index, outcome.data, outcome.data.title)
+                else -> SharePublicState.Failed(outcome.toFailure())
+            }
+        }
+        return true
+    }
+
+    fun onSharePublicTitleChange(title: String) {
+        val current = _sharePublic.value as? SharePublicState.Preview ?: return
+        _sharePublic.value = current.copy(title = title.take(120))
+    }
+
+    fun onConfirmSharePublic() {
+        val current = _sharePublic.value as? SharePublicState.Preview ?: return
+        _sharePublic.value = SharePublicState.Publishing
+        viewModelScope.launch {
+            _sharePublic.value = when (val outcome = sharedResultRepository.publish(current.conversationId, current.messageIndex, current.title, shareLocale)) {
+                is ShareOutcome.Success -> SharePublicState.Published(outcome.data)
+                else -> SharePublicState.Failed(outcome.toFailure())
+            }
+        }
+    }
+
+    fun onDismissSharePublic() {
+        _sharePublic.value = SharePublicState.Idle
+    }
+
+    private fun ShareOutcome<*>.toFailure(): SharePublicFailure = when (this) {
+        is ShareOutcome.AccountRequired -> SharePublicFailure.AccountRequired
+        is ShareOutcome.RateLimited -> SharePublicFailure.RateLimited
+        is ShareOutcome.NotShareable -> SharePublicFailure.NotShareable
+        else -> SharePublicFailure.Network
+    }
+
     /** Reports a message — matches the web's `saveFeedback('report', 'user_reported')`; one-way,
      *  no un-report affordance on either platform. */
     fun onReportMessage(messageId: Long) {
@@ -777,3 +836,15 @@ class ChatViewModel @Inject constructor(
         const val REPORT_REASON = "user_reported"
     }
 }
+
+/** The share-out flow, mirrored from the web dialog's stages: loading → preview → publishing → published. */
+sealed interface SharePublicState {
+    data object Idle : SharePublicState
+    data object Loading : SharePublicState
+    data class Preview(val conversationId: String, val messageIndex: Int, val preview: SharePreview, val title: String) : SharePublicState
+    data object Publishing : SharePublicState
+    data class Published(val share: PublishedShare) : SharePublicState
+    data class Failed(val reason: SharePublicFailure) : SharePublicState
+}
+
+enum class SharePublicFailure { AccountRequired, RateLimited, NotShareable, Network }

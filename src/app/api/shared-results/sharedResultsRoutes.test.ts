@@ -16,7 +16,7 @@ vi.mock('@/lib/share/sharedResultStore', () => ({
   createSharedResult: (...a: unknown[]) => store.createSharedResult(...a),
   SharedResultError: class extends Error { constructor(public code: string, m?: string) { super(m ?? code) } },
 }))
-const auth = { user: null as null | { id: string } }
+const auth = { user: null as null | { id: string; is_anonymous?: boolean } }
 vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: async () => ({ user: auth.user, supabase: {} }) }))
 vi.mock('@/lib/security/publicRateLimit', () => ({ publicDailyRateLimit: async () => ({ ok: true, retryAfter: 0, scope: 'instance' }) }))
 vi.mock('@/lib/share/shareRequest', async (orig) => {
@@ -28,7 +28,7 @@ import { GET, DELETE } from './[slug]/route'
 import { POST as CREATE } from './route'
 
 const req = (url: string, init?: RequestInit & { ip?: string }) => new NextRequest(new Request(`https://www.tappyai.com${url}`, init), {})
-const row = { id: 'id1', slug: 'AbCdEfGh12', query: 'q', payload: { v: 1, title: 'T' }, domain: 'food', locale: 'vi', og_version: 1, view_count: 3, ask_count: 0, created_at: '2026-09-13T00:00:00.000Z' }
+const row = { id: 'id1', slug: 'AbCdEfGh12', query: 'q', payload: { v: 1, title: 'T' }, domain: 'food', locale: 'vi', og_version: 1, view_count: 3, ask_count: 0, created_at: '2026-09-13T00:00:00.000Z', parent_id: null, owner_is_anonymous: false }
 
 beforeEach(() => { vi.clearAllMocks(); auth.user = null })
 
@@ -48,6 +48,7 @@ describe('GET /api/shared-results/[slug]', () => {
     expect(res.status).toBe(200)
     const body = await res.json()
     expect(Object.keys(body).sort()).toEqual(['created_at', 'og_version', 'payload', 'slug'])
+    expect(JSON.stringify(body)).not.toContain('LEAK')
     expect(res.headers.get('cache-control')).toMatch(/s-maxage=3600/)
   })
 })
@@ -75,6 +76,30 @@ describe('POST /api/shared-results', () => {
     auth.user = { id: 'u1' }
     expect((await CREATE(req('/api/shared-results', { method: 'POST', body: '{"conversationId":"x"}' }))).status).toBe(400)
     expect(store.createSharedResult).not.toHaveBeenCalled()
+  })
+  it('refuses an anonymous session publishing from scratch (403 account_required)', async () => {
+    auth.user = { id: 'a1', is_anonymous: true }
+    const res = await CREATE(req('/api/shared-results', { method: 'POST', body }))
+    expect(res.status).toBe(403)
+    expect((await res.json()).error).toBe('account_required')
+    expect(store.createSharedResult).not.toHaveBeenCalled()
+  })
+  it('lets an anonymous session share a CHILD of an existing public share — unlisted, with ancestry', async () => {
+    auth.user = { id: 'a1', is_anonymous: true }
+    store.getPublicSharedResult.mockResolvedValueOnce(row) // the parent resolves
+    store.createSharedResult.mockResolvedValueOnce({ ...row, id: 'child', slug: 'ZzZzZzZzZ2', parent_id: 'id1', owner_is_anonymous: true })
+    const res = await CREATE(req('/api/shared-results', { method: 'POST', body: JSON.stringify({ conversationId: '11111111-1111-4111-8111-111111111111', messageIndex: 1, parentSlug: 'AbCdEfGh12' }) }))
+    expect(res.status).toBe(201)
+    const out = await res.json()
+    expect(out).toMatchObject({ slug: 'ZzZzZzZzZ2', parent_id: 'id1', listed: false })
+    expect(store.createSharedResult).toHaveBeenCalledWith(expect.objectContaining({ ownerId: 'a1', ownerIsAnonymous: true, parentId: 'id1' }))
+  })
+  it('404s a child share whose parent does not resolve — for accounts too', async () => {
+    auth.user = { id: 'u1' }
+    store.getPublicSharedResult.mockResolvedValueOnce(null)
+    const res = await CREATE(req('/api/shared-results', { method: 'POST', body: JSON.stringify({ conversationId: '11111111-1111-4111-8111-111111111111', messageIndex: 1, parentSlug: 'ZzZzZzZzZ9' }) }))
+    expect(res.status).toBe(404)
+    expect((await res.json()).error).toBe('parent_not_found')
   })
   it('creates and returns the public URL + slug, owner attached server-side', async () => {
     auth.user = { id: 'u1' }

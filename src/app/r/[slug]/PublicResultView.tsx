@@ -87,7 +87,9 @@ export default function PublicResultView({ result }: { result: PublicSharedResul
         <footer className="mt-10 border-t border-gray-100 dark:border-gray-800 pt-4 text-xs text-gray-500 dark:text-gray-400">
           <p>{t('publicResult.poweredBy')}</p>
           <p className="mt-1">
-            <Link href={`/${payload.domain === 'general' ? '' : payload.domain}`} className="underline">{t('publicResult.moreResults')}</Link>
+            {payload.domain === 'scam'
+              ? <Link href="/scam-shield?src=share_out" className="underline">{t('publicResult.checkAnotherLink')}</Link>
+              : <Link href={`/${payload.domain === 'general' ? '' : payload.domain}`} className="underline">{t('publicResult.moreResults')}</Link>}
           </p>
         </footer>
       </article>

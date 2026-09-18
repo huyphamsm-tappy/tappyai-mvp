@@ -33,6 +33,8 @@ export interface Attribution {
   share_id?: string
   /** ISO timestamp of when this attribution was captured. */
   at: string
+  /** A per-landing nonce so "is this landing the first touch?" is exact, not a timestamp comparison. */
+  n?: string
 }
 
 const SHARE_PATH_RE = /^\/r\/[A-Za-z0-9_-]+\/?$/
@@ -111,12 +113,15 @@ export function captureAttribution(): Attribution | null {
   if (typeof window === 'undefined') return null
   const existing = readJson<Attribution>(sessionStorage, SESSION_ATTR_KEY)
   if (existing) return existing
-  const attr = parseLandingAttribution({
-    pathname: location.pathname,
-    search: location.search,
-    referrer: document.referrer,
-    userAgent: navigator.userAgent,
-  })
+  const attr: Attribution = {
+    ...parseLandingAttribution({
+      pathname: location.pathname,
+      search: location.search,
+      referrer: document.referrer,
+      userAgent: navigator.userAgent,
+    }),
+    n: Math.random().toString(36).slice(2, 10),
+  }
   writeJson(sessionStorage, SESSION_ATTR_KEY, attr)
   if (!readJson<Attribution>(localStorage, FIRST_ATTR_KEY)) writeJson(localStorage, FIRST_ATTR_KEY, attr)
   return attr
@@ -139,8 +144,13 @@ export function setSessionSource(source: AnalyticsSource): Attribution | null {
   const next: Attribution = { ...current, source }
   writeJson(sessionStorage, SESSION_ATTR_KEY, next)
   const first = readJson<Attribution>(localStorage, FIRST_ATTR_KEY)
-  if (!first || first.at === current.at) writeJson(localStorage, FIRST_ATTR_KEY, next)
+  if (!first || isSameLanding(first, current)) writeJson(localStorage, FIRST_ATTR_KEY, next)
   return next
+}
+
+/** True when the first-touch record was written by THIS landing (same nonce, or legacy same timestamp). */
+function isSameLanding(first: Attribution, current: Attribution): boolean {
+  return first.n && current.n ? first.n === current.n : first.at === current.at
 }
 
 /** The first-touch attribution for this browser, if any. */
@@ -163,11 +173,12 @@ export function setShareAttribution(shareId: string, source?: AnalyticsSource): 
     source: source ?? (current.source === 'direct' ? 'share_out' : current.source),
     share_id: current.share_id ?? shareId,
     at: current.at,
+    ...(current.n ? { n: current.n } : {}),
   }
   writeJson(sessionStorage, SESSION_ATTR_KEY, next)
   // First touch gains the share id only when THIS landing is the first touch
   // (same capture timestamp). An earlier first touch is never rewritten.
   const first = readJson<Attribution>(localStorage, FIRST_ATTR_KEY)
-  if (!first || (!first.share_id && first.at === current.at)) writeJson(localStorage, FIRST_ATTR_KEY, next)
+  if (!first || (!first.share_id && isSameLanding(first, current))) writeJson(localStorage, FIRST_ATTR_KEY, next)
   return next
 }

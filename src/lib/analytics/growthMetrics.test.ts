@@ -42,6 +42,8 @@ const rows: GrowthEventRow[] = [
   ev('query', { anon: V1 }, '2026-09-08T03:05:00Z', { source: 'share_out', share_id: 'sh1', is_follow_up: true }, 's3'),
   ev('result_action', { anon: V1 }, '2026-09-08T03:05:01Z', { source: 'share_out', share_id: 'sh1', action_type: 'follow_up_query' }, 's3'),
   ev('signup', { user: 'u-V1', anon: V1 }, '2026-09-08T03:10:00Z', { source: 'share_out', first_source: 'share_out', first_share_id: 'sh1' }, 's3'),
+  // V1 then shares the answer it got — a second-generation share.
+  ev('share_created', { user: 'u-V1', anon: V1 }, '2026-09-08T03:12:00Z', { source: 'share_out', share_id: 'sh2', slug: 'ZzZzZzZzZ2', parent_share_id: 'sh1' }, 's3'),
   // V2 views once and leaves. A query BEFORE viewing must not count as viewer→query.
   ev('query', { anon: V2 }, '2026-09-08T00:00:00Z', { source: 'direct' }),
   ev('share_viewed', { anon: V2 }, '2026-09-09T01:00:00Z', { source: 'zalo_link', share_id: 'sh1', slug: 'AbCdEfGh12' }),
@@ -99,9 +101,9 @@ describe('computeGrowthMetrics', () => {
   it('views are deduplicated per (share, viewer): 3 refreshes by V1 are one unique view', () => {
     expect(m.shares.rawViewEvents).toBe(4)
     expect(m.shares.uniqueViews).toBe(2)
-    expect(m.shares.created).toBe(1)
-    expect(m.shares.viewsPerShare).toBe(2)
-    expect(m.shares.shareRate).toBeCloseTo(1 / 5)
+    expect(m.shares.created).toBe(2)
+    expect(m.shares.viewsPerShare).toBe(1)
+    expect(m.shares.shareRate).toBeCloseTo(2 / 5)
   })
 
   it('viewer → query / signup counts only events AFTER the first view', () => {
@@ -109,6 +111,12 @@ describe('computeGrowthMetrics', () => {
     expect(m.shares.viewersWhoSignedUp).toBe(1)
     expect(m.shares.viewerToQuery).toBeCloseTo(0.5)
     expect(m.shares.viewerToSignup).toBeCloseTo(0.5)
+  })
+
+  it('second-generation shares and viewer→share are counted from share ancestry', () => {
+    expect(m.shares.secondGeneration).toBe(1)
+    expect(m.shares.viewersWhoShared).toBe(1) // V1
+    expect(m.shares.viewerToShare).toBeCloseTo(0.5)
   })
 
   it('k-factor = share-attributed NEW actives / actives', () => {

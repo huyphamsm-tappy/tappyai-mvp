@@ -67,6 +67,12 @@ fun MessageActionBar(
     onToggleFeedback: (MessageFeedback) -> Unit,
     onReport: () -> Unit,
     onRegenerate: () -> Unit,
+    /**
+     * G1 share-out. Returns true when it took the tap (a persisted turn → public result preview);
+     * false means "not shareable as a page yet" and the plain-text share below runs instead —
+     * the same fallback the web's action bar makes on `!conversationId`.
+     */
+    onSharePublic: () -> Boolean = { false },
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -115,10 +121,11 @@ fun MessageActionBar(
             )
         }
 
-        // Share — plain text only (markdown stripped), no URL, matching the web's navigator.share()
-        // call (`{ text, title: 'TappyAI' }`, no `url` field).
+        // Share — the public result page when the turn is persisted (G1); otherwise plain text
+        // only (markdown stripped), no URL, matching the web's navigator.share() fallback.
         IconButton(
             onClick = {
+                if (onSharePublic()) return@IconButton
                 val plain = stripMarkdown(text)
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"

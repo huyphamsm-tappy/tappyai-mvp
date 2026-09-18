@@ -25,6 +25,15 @@ export const SHARE_DAILY_LIMIT = 20
 /** Public shares one IP may create per VN day (covers identity churn). */
 export const SHARE_DAILY_LIMIT_PER_IP = 60
 /**
+ * Second-generation shares an ANONYMOUS session may create per VN day. An
+ * anonymous visitor may only share an answer reached from an existing public
+ * share (child share); the page is public but noindex/unlisted until the owner
+ * signs up. Deliberately small: it is a loop continuation, not a publishing tool.
+ */
+export const SHARE_DAILY_LIMIT_ANON = 3
+/** Scam Shield verdict shares per IP per VN day (server-generated content; anonymous allowed). */
+export const SCAM_SHARE_DAILY_LIMIT_PER_IP = 30
+/**
  * After this many anonymous questions the chat shows a SOFT signup prompt
  * (dismissable, non-blocking). The HARD stop remains `ANON_DAILY_LIMIT`. Kept
  * strictly below it so the nudge always precedes the wall.

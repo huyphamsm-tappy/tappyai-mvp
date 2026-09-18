@@ -61,6 +61,11 @@ export interface GrowthMetrics {
     viewerToSignup: number | null
     /** New (share-attributed) active identities per active identity. */
     kFactor: number | null
+    /** Shares created FROM a share (`parent_share_id` present) — the loop's second generation. */
+    secondGeneration: number
+    /** Distinct viewer identities that later created a share of their own. */
+    viewersWhoShared: number
+    viewerToShare: number | null
   }
   actions: {
     total: number
@@ -175,12 +180,15 @@ export function computeGrowthMetrics(input: {
   for (const e of viewEvents) if (!viewerFirstView.has(e.id)) viewerFirstView.set(e.id, e.at)
   const viewersWhoQueried = new Set<string>()
   const viewersWhoSignedUp = new Set<string>()
+  const viewersWhoShared = new Set<string>()
   for (const e of period) {
     const t0 = viewerFirstView.get(e.id)
     if (t0 === undefined || e.at < t0) continue
     if (e.type === 'query') viewersWhoQueried.add(e.id)
     if (e.type === 'signup') viewersWhoSignedUp.add(e.id)
+    if (e.type === 'share_created') viewersWhoShared.add(e.id)
   }
+  const secondGeneration = created.filter(e => typeof e.meta.parent_share_id === 'string').length
   // k-factor: new active identities whose FIRST query is share-attributed, per active identity in period.
   const shareAttributedNew = firstQueryInPeriod.filter(fq => typeof fq.meta.share_id === 'string' || fq.meta.source === 'share_out' || fq.meta.source === 'zalo_link').length
 
@@ -213,6 +221,9 @@ export function computeGrowthMetrics(input: {
       viewerToQuery: ratio(viewersWhoQueried.size, viewerIds.size),
       viewerToSignup: ratio(viewersWhoSignedUp.size, viewerIds.size),
       kFactor,
+      secondGeneration,
+      viewersWhoShared: viewersWhoShared.size,
+      viewerToShare: ratio(viewersWhoShared.size, viewerIds.size),
     },
     actions: {
       total: actions.length,

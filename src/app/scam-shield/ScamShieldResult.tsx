@@ -8,6 +8,7 @@ import {
   ChevronDown, ChevronUp, Globe,
 } from 'lucide-react'
 import { useState } from 'react'
+import ScamShareButton from './ScamShareButton'
 
 /**
  * The appearance of every risk level, in the V3 palette. Exported because the history rows in
@@ -259,6 +260,8 @@ export default function ScamShieldResult({ result }: { result: CheckResult }) {
       <div className="px-4 pb-4 sm:px-5 sm:pb-5">
         {result.officialMatch && <OfficialSection entity={result.officialMatch} />}
         <ActionsSection actions={result.actions} locale={locale} />
+        {/* G1 wedge: one tap turns the verdict into a public page the group can be warned with. */}
+        <ScamShareButton result={result} />
         <EvidenceSection items={result.evidence.items} />
       </div>
     </section>

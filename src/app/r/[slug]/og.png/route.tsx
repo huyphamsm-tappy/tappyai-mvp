@@ -50,7 +50,7 @@ async function inlineImage(url: string): Promise<string | null> {
 }
 
 // Domain chip: the product's own category labels, never a second copy of them.
-const domainLabel = (d: string) => CATEGORIES.find((c) => c.id === d)?.label ?? BRAND.name
+const domainLabel = (d: string) => d === 'scam' ? 'Scam Shield' : (CATEGORIES.find((c) => c.id === d)?.label ?? BRAND.name)
 
 export async function GET(req: Request, { params }: { params: { slug: string } }) {
   if (!isValidSlug(params.slug)) return new Response('Not found', { status: 404 })

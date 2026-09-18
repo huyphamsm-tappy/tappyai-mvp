@@ -40,6 +40,12 @@ export const vi = {
   'share.published': 'Đã tạo liên kết công khai',
   'share.previewFailed': 'Không thể tạo bản xem trước lúc này',
   'share.publishFailed': 'Không thể tạo liên kết lúc này',
+  // G1 wedge — Scam Shield verdict share-out
+  'share.scam.button': 'Cảnh báo cho mọi người',
+  'share.scam.hint': 'Tạo trang công khai với kết quả kiểm tra để gửi vào nhóm Zalo, Messenger…',
+  'share.scam.title': 'Kiểm tra lừa đảo: {host} — TappyAI',
+  'share.scam.checkAnother': 'Kiểm tra một link khác',
+  'share.unlistedNotice': 'Bạn chưa đăng nhập: liên kết vẫn mở được cho mọi người nhưng không xuất hiện trên tìm kiếm cho đến khi bạn tạo tài khoản.',
 }
 
 export const en = {
@@ -71,6 +77,11 @@ export const en = {
   'share.published': 'Public link created',
   'share.previewFailed': 'Could not prepare a preview right now',
   'share.publishFailed': 'Could not create the link right now',
+  'share.scam.button': 'Warn your group',
+  'share.scam.hint': 'Creates a public page with this verdict to send into Zalo, Messenger…',
+  'share.scam.title': 'Scam check: {host} — TappyAI',
+  'share.scam.checkAnother': 'Check another link',
+  'share.unlistedNotice': 'You are not signed in: the link opens for anyone but stays out of search until you create an account.',
 }
 
 // ── G1 public shared result (/r/<slug>) ──────────────────────────────────────
@@ -96,6 +107,8 @@ export const publicResultVi = {
   'publicResult.viewsLabel': 'lượt xem',
   'publicResult.moreResults': 'Xem thêm kết quả từ Tappy',
   'publicResult.retry': 'Thử lại',
+  'publicResult.checkAnotherLink': 'Kiểm tra một link khác với Tappy',
+  'publicResult.shareAnswer': 'Chia sẻ câu trả lời này',
 }
 export const publicResultEn = {
   'publicResult.askedTappy': 'Asked Tappy',
@@ -115,6 +128,8 @@ export const publicResultEn = {
   'publicResult.viewsLabel': 'views',
   'publicResult.moreResults': 'More results from Tappy',
   'publicResult.retry': 'Retry',
+  'publicResult.checkAnotherLink': 'Check another link with Tappy',
+  'publicResult.shareAnswer': 'Share this answer',
 }
 
 /** Server-side lookup in the share's own locale. */

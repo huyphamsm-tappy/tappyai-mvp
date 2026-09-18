@@ -34,6 +34,10 @@ export class SharedResultError extends Error {
 export interface CreateSharedResultInput {
   ownerId: string | null
   payload: SharedResultPayload
+  /** True when the owner is a Supabase anonymous session → page is noindex + unlisted. */
+  ownerIsAnonymous?: boolean
+  /** The share this one was made from (second-generation sharing). */
+  parentId?: string | null
 }
 
 /**
@@ -58,6 +62,8 @@ export async function createSharedResult(input: CreateSharedResultInput): Promis
         payload: input.payload,
         domain: input.payload.domain,
         locale: input.payload.locale,
+        owner_is_anonymous: input.ownerIsAnonymous === true,
+        parent_id: input.parentId ?? null,
       })
       .select(PUBLIC_SHARED_RESULT_COLUMNS)
       .single()
@@ -86,7 +92,10 @@ export async function getPublicSharedResult(slug: string): Promise<PublicSharedR
   return data as unknown as PublicSharedResult
 }
 
-/** Newest public results, optionally per domain — for hubs and the sitemap. */
+/**
+ * Newest LISTED public results, optionally per domain — for hubs and the sitemap.
+ * Anonymous-owned pages are public but never listed (see the ancestry migration).
+ */
 export async function listPublicSharedResults(opts: { domain?: string; limit?: number; offset?: number } = {}): Promise<PublicSharedResultSummary[]> {
   let admin: ReturnType<typeof createAdminClient>
   try { admin = createAdminClient() } catch { return [] } // hubs and the sitemap still render their static content
@@ -95,6 +104,7 @@ export async function listPublicSharedResults(opts: { domain?: string; limit?: n
     .from('shared_results')
     .select('slug, query, domain, locale, created_at, payload->title, payload->images')
     .eq('status', 'public')
+    .eq('owner_is_anonymous', false)
     .order('created_at', { ascending: false })
     .range(opts.offset ?? 0, (opts.offset ?? 0) + limit - 1)
   if (opts.domain) q = q.eq('domain', opts.domain)

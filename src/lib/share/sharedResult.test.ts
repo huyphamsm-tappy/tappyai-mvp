@@ -90,7 +90,7 @@ describe('shareRequest', () => {
 })
 
 describe('sharedResultMetadata', () => {
-  const row = { id: 'id1', slug: 'AbCdEfGh12', query: base.query, payload: base, domain: 'food' as const, locale: 'vi' as const, og_version: 3, view_count: 0, ask_count: 0, created_at: '2026-09-13T00:00:00.000Z' }
+  const row = { id: 'id1', slug: 'AbCdEfGh12', query: base.query, payload: base, domain: 'food' as const, locale: 'vi' as const, og_version: 3, view_count: 0, ask_count: 0, created_at: '2026-09-13T00:00:00.000Z', parent_id: null, owner_is_anonymous: false }
   const env = { NEXT_PUBLIC_SITE_URL: "https://www.tappyai.com" } as unknown as NodeJS.ProcessEnv
   it('canonical URL is bare; OG image is absolute and versioned', () => {
     const m = buildSharedResultMetadata(row, env)
@@ -98,6 +98,15 @@ describe('sharedResultMetadata', () => {
     expect(sharedResultOgImageUrl(row, env)).toBe('https://www.tappyai.com/r/AbCdEfGh12/og.png?v=3')
     expect((m.openGraph as { images: { url: string }[] }).images[0].url).toBe('https://www.tappyai.com/r/AbCdEfGh12/og.png?v=3')
     expect(m.robots).toEqual({ index: true, follow: true })
+  })
+  it('an anonymous-owned (second-generation) share is public but noindex', () => {
+    const m = buildSharedResultMetadata({ ...row, owner_is_anonymous: true, parent_id: 'p1' }, env)
+    expect(m.robots).toEqual({ index: false, follow: true })
+    expect(m.alternates?.canonical).toBe('https://www.tappyai.com/r/AbCdEfGh12')
+  })
+  it('accepts the scam domain and the scam_check kind; rejects an unknown kind', () => {
+    expect(validateSharedResultPayload({ ...base, domain: 'scam', kind: 'scam_check' })).toBeNull()
+    expect(validateSharedResultPayload({ ...base, kind: 'weird' })).toBe('bad_kind')
   })
   it('description and JSON-LD come from the frozen payload only', () => {
     expect(summarize('**Ba** quán đáng thử', 10)).toBe('Ba quán…')

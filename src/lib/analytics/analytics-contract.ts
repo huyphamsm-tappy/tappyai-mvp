@@ -137,6 +137,8 @@ export interface ShareCreatedProps extends G1BaseProps {
   domain?: string
   result_id?: string
   channel?: string
+  /** The share this one was made from — second-generation sharing (share ancestry). */
+  parent_share_id?: string
 }
 
 export interface ShareViewedProps extends G1BaseProps {

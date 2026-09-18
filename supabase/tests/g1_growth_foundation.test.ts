@@ -23,6 +23,8 @@ import type { Client } from 'pg'
 const REPO = join(__dirname, '..', '..')
 const MIGRATION = readFileSync(join(REPO, 'supabase/migrations/20260913_g1_growth_foundation.sql'), 'utf8')
 const ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260913_g1_growth_foundation_rollback.sql'), 'utf8')
+const ANCESTRY = readFileSync(join(REPO, 'supabase/migrations/20260918_g1b_share_ancestry.sql'), 'utf8')
+const ANCESTRY_ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260918_g1b_share_ancestry_rollback.sql'), 'utf8')
 
 const ALICE = '11111111-1111-4111-8111-111111111111'
 const BOB = '22222222-2222-4222-8222-222222222222'
@@ -97,12 +99,14 @@ beforeEach(async () => {
   await db.query('DROP SCHEMA IF EXISTS auth CASCADE; DROP SCHEMA public CASCADE; CREATE SCHEMA public;')
   await db.query(PRELUDE)
   await db.query(MIGRATION)
+  await db.query(ANCESTRY)
   await asSession(null)
 })
 
 describe('migration', () => {
-  it('is idempotent', async () => {
+  it('is idempotent (both files)', async () => {
     await expect(db.query(MIGRATION)).resolves.toBeDefined()
+    await expect(db.query(ANCESTRY)).resolves.toBeDefined()
   })
   it('creates the objects with their indexes and RLS on', async () => {
     const { rows } = await db.query(`SELECT relname, relrowsecurity FROM pg_class WHERE relname IN ('shared_results','anon_identity_map') ORDER BY relname`)
@@ -217,8 +221,40 @@ describe('anon_identity_map', () => {
   })
 })
 
+describe('share ancestry (G1-B)', () => {
+  it('adds parent_id (self-FK, SET NULL) and owner_is_anonymous (default false) with their indexes', async () => {
+    await seedShare('AbCdEfGh12', ALICE)
+    await db.query(`INSERT INTO public.shared_results (slug, owner_id, query, payload, parent_id, owner_is_anonymous)
+      SELECT 'ZzZzZzZzZ2', NULL, 'q', $1::jsonb, id, true FROM public.shared_results WHERE slug='AbCdEfGh12'`, [PAYLOAD])
+    const child = await db.query(`SELECT owner_is_anonymous, parent_id IS NOT NULL AS has_parent FROM public.shared_results WHERE slug='ZzZzZzZzZ2'`)
+    expect(child.rows[0]).toEqual({ owner_is_anonymous: true, has_parent: true })
+    const def = await db.query(`SELECT owner_is_anonymous FROM public.shared_results WHERE slug='AbCdEfGh12'`)
+    expect(def.rows[0].owner_is_anonymous).toBe(false)
+    // Deleting the parent orphans the child rather than deleting it (attribution history kept).
+    await db.query(`DELETE FROM public.shared_results WHERE slug='AbCdEfGh12'`)
+    const orphan = await db.query(`SELECT parent_id FROM public.shared_results WHERE slug='ZzZzZzZzZ2'`)
+    expect(orphan.rows[0].parent_id).toBeNull()
+    const idx = await db.query(`SELECT indexname FROM pg_indexes WHERE tablename='shared_results'`)
+    expect(idx.rows.map(r => r.indexname)).toEqual(expect.arrayContaining(['shared_results_parent_idx', 'shared_results_listed_idx']))
+  })
+  it('a client role still cannot INSERT or edit ancestry (write path unchanged)', async () => {
+    await asSession(ALICE)
+    await seedShare('AbCdEfGh12', ALICE)
+    expect((await asRole('authenticated', `UPDATE public.shared_results SET owner_is_anonymous=true WHERE slug='AbCdEfGh12'`)).code).toBe('42501')
+    expect((await asRole('anon', `INSERT INTO public.shared_results (slug, query, payload, owner_is_anonymous) VALUES ('ZzZzZzZzZ3','q','${PAYLOAD}'::jsonb, true)`)).code).toBe('42501')
+  })
+  it('its rollback removes exactly the two columns and two indexes', async () => {
+    await db.query(ANCESTRY_ROLLBACK)
+    const cols = await db.query(`SELECT column_name FROM information_schema.columns WHERE table_name='shared_results' AND column_name IN ('parent_id','owner_is_anonymous')`)
+    expect(cols.rows).toHaveLength(0)
+    const still = await db.query(`SELECT 1 FROM public.shared_results`)
+    expect(still.rowCount).toBe(0)
+  })
+})
+
 describe('rollback', () => {
   it('drops exactly what the migration created', async () => {
+    await db.query(ANCESTRY_ROLLBACK)
     await db.query(ROLLBACK)
     const { rows } = await db.query(`SELECT relname FROM pg_class WHERE relname IN ('shared_results','anon_identity_map')`)
     expect(rows).toHaveLength(0)

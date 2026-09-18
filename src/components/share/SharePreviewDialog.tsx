@@ -22,7 +22,7 @@ import { emitResultAction, emitShareCreated } from '@/lib/analytics/g1Events'
 type Stage = 'loading' | 'preview' | 'publishing' | 'published' | 'error'
 
 export default function SharePreviewDialog({
-  open, onClose, conversationId, messageIndex, resultId, domain,
+  open, onClose, conversationId, messageIndex, resultId, domain, parentSlug,
 }: {
   open: boolean
   onClose: () => void
@@ -31,6 +31,8 @@ export default function SharePreviewDialog({
   /** The client-side result id the `query` event carried, so share_created links to it. */
   resultId?: string
   domain?: string
+  /** The public share this answer was reached from — enables anonymous second-generation sharing. */
+  parentSlug?: string
 }) {
   const { t, locale } = useTranslation()
   const [stage, setStage] = useState<Stage>('loading')
@@ -38,6 +40,7 @@ export default function SharePreviewDialog({
   const [title, setTitle] = useState('')
   const [errorText, setErrorText] = useState<string | null>(null)
   const [published, setPublished] = useState<{ url: string; slug: string; id: string } | null>(null)
+  const [listed, setListed] = useState(true)
   const [menuOpen, setMenuOpen] = useState(false)
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function SharePreviewDialog({
     fetch('/api/shared-results/preview', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ conversationId, messageIndex, locale }),
+      body: JSON.stringify({ conversationId, messageIndex, locale, ...(parentSlug ? { parentSlug } : {}) }),
     })
       .then(async (res) => {
         const body = await res.json().catch(() => null)
@@ -59,6 +62,7 @@ export default function SharePreviewDialog({
         }
         setPayload(body.payload as SharedResultPayload)
         setTitle((body.payload as SharedResultPayload).title)
+        setListed(body.listed !== false)
         setStage('preview')
       })
       .catch(() => { if (!cancelled) { setErrorText(t('share.previewFailed')); setStage('error') } })
@@ -74,7 +78,7 @@ export default function SharePreviewDialog({
       const res = await fetch('/api/shared-results', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ conversationId, messageIndex, title: title.trim() || undefined, locale }),
+        body: JSON.stringify({ conversationId, messageIndex, title: title.trim() || undefined, locale, ...(parentSlug ? { parentSlug } : {}) }),
       })
       const body = await res.json().catch(() => null)
       if (!res.ok || !body?.url) {
@@ -83,7 +87,7 @@ export default function SharePreviewDialog({
         return
       }
       setPublished({ url: body.url, slug: body.slug, id: body.id })
-      emitShareCreated({ share_id: body.id, slug: body.slug, domain: body.domain ?? domain, result_id: resultId })
+      emitShareCreated({ share_id: body.id, slug: body.slug, domain: body.domain ?? domain, result_id: resultId, ...(body.parent_id ? { parent_share_id: body.parent_id } : {}) })
       emitResultAction({ action_type: 'share', result_id: resultId })
       setStage('published')
       setMenuOpen(true)
@@ -134,6 +138,7 @@ export default function SharePreviewDialog({
               </p>
             </div>
             <p className="mt-3 text-xs text-gray-500 dark:text-gray-400">{t('share.previewPrivacy')}</p>
+            {!listed && <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">{t('share.unlistedNotice')}</p>}
             <div className="mt-4 flex gap-2">
               <button onClick={onClose} className="flex-1 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-medium">{t('share.cancel')}</button>
               <button onClick={confirm} disabled={stage === 'publishing'} className="flex-1 rounded-xl bg-interactive px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-60">
@@ -157,7 +162,7 @@ export default function SharePreviewDialog({
           </div>
         )}
       </div>
-      {published && <ShareMenu url={published.url} title={title} open={menuOpen} onClose={() => setMenuOpen(false)} />}
+      {published && <ShareMenu url={published.url} title={title} text={payload?.query} open={menuOpen} onClose={() => setMenuOpen(false)} />}
     </div>
   )
 }

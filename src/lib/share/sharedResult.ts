@@ -23,7 +23,15 @@ import type { EntityDomain } from '@/lib/recommendation/entity'
 
 export const SHARED_RESULT_PAYLOAD_VERSION = 1 as const
 
-export type SharedResultDomain = EntityDomain | 'general'
+/** The five product domains, plus 'general' (untyped chat) and 'scam' (a Scam Shield verdict). */
+export type SharedResultDomain = EntityDomain | 'general' | 'scam'
+
+/**
+ * What produced the payload. 'answer' (default) is a chat turn the user chose
+ * to publish; 'scam_check' is a deterministic Scam Shield verdict built
+ * server-side (no user prose), which is why it may be shared anonymously.
+ */
+export type SharedResultKind = 'answer' | 'scam_check'
 export type SharedResultLocale = 'vi' | 'en'
 
 /** An outbound action a viewer can take. Only https (or tel:) URLs survive sanitization. */
@@ -36,6 +44,8 @@ export interface PublicButton {
 
 export interface SharedResultPayload {
   v: typeof SHARED_RESULT_PAYLOAD_VERSION
+  /** Absent means 'answer' (payloads written before the field existed). */
+  kind?: SharedResultKind
   /** Public headline. User-editable in the preview; PII-redacted server-side regardless. */
   title: string
   /** The public form of the question. Redacted; never the raw prompt. */
@@ -101,7 +111,8 @@ export function findForbiddenKey(value: unknown, path = ''): string | null {
   return null
 }
 
-const DOMAINS: ReadonlySet<string> = new Set(['food', 'shopping', 'travel', 'entertainment', 'spa', 'general'])
+const DOMAINS: ReadonlySet<string> = new Set(['food', 'shopping', 'travel', 'entertainment', 'spa', 'general', 'scam'])
+const KINDS: ReadonlySet<string> = new Set(['answer', 'scam_check'])
 const BUTTON_TYPES: ReadonlySet<string> = new Set(['maps', 'website', 'booking', 'search', 'call'])
 
 export function isSharedResultDomain(v: unknown): v is SharedResultDomain {
@@ -129,6 +140,7 @@ export function validateSharedResultPayload(p: unknown): string | null {
   if (!p || typeof p !== 'object') return 'not_an_object'
   const x = p as Record<string, unknown>
   if (x.v !== SHARED_RESULT_PAYLOAD_VERSION) return 'bad_version'
+  if (x.kind !== undefined && !KINDS.has(String(x.kind))) return 'bad_kind'
   if (typeof x.title !== 'string' || !x.title.trim() || x.title.length > PUBLIC_PAYLOAD_LIMITS.title) return 'bad_title'
   if (typeof x.query !== 'string' || !x.query.trim() || x.query.length > PUBLIC_PAYLOAD_LIMITS.query) return 'bad_query'
   if (!isSharedResultDomain(x.domain)) return 'bad_domain'
@@ -163,6 +175,10 @@ export interface PublicSharedResult {
   view_count: number
   ask_count: number
   created_at: string
+  /** The share this one was made from (second-generation sharing), if any. */
+  parent_id: string | null
+  /** True while the owner is an anonymous session: the page is public but noindex and unlisted. */
+  owner_is_anonymous: boolean
 }
 
 /** A hub/sitemap listing row. Public fields only — safe for a client component to type against. */
@@ -177,4 +193,4 @@ export interface PublicSharedResultSummary {
 }
 
 /** The columns a public read is allowed to project. `owner_id`/`status` are deliberately absent. */
-export const PUBLIC_SHARED_RESULT_COLUMNS = 'id, slug, query, payload, domain, locale, og_version, view_count, ask_count, created_at'
+export const PUBLIC_SHARED_RESULT_COLUMNS = 'id, slug, query, payload, domain, locale, og_version, view_count, ask_count, created_at, parent_id, owner_is_anonymous'

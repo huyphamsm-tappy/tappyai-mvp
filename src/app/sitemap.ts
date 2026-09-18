@@ -9,7 +9,7 @@ import { listPublicSharedResults } from '@/lib/share/sharedResultStore'
 
 export const revalidate = 3600
 
-const STATIC_PUBLIC_PATHS = ['/', '/how-to-use', '/privacy', '/terms'] as const
+const STATIC_PUBLIC_PATHS = ['/', '/scam-shield', '/how-to-use', '/privacy', '/terms'] as const
 export const SITEMAP_SHARED_RESULTS_MAX = 2000
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

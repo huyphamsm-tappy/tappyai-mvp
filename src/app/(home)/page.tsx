@@ -5,6 +5,7 @@ import { getMemory } from '@/lib/memory/memoryService'
 // pre-V3 single-column composition) is retained in the tree unreferenced so the
 // old layout stays available for comparison during the visual review gate.
 import HomeV3 from '../HomeV3'
+import { siteJsonLd } from '@/lib/discovery/siteJsonLd'
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -144,12 +145,18 @@ export default async function HomePage() {
   }))
 
   return (
-    <HomeV3
-      user={!!user}
-      userInfo={userInfo}
-      firstName={firstName}
-      suggestions={SUGGESTIONS}
-      conversations={convList}
-    />
+    <>
+      {/* G1 GEO: WebSite (SearchAction → /chat?q=) + Organization. Static data, no user fields. */}
+      {siteJsonLd().map((ld, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      ))}
+      <HomeV3
+        user={!!user}
+        userInfo={userInfo}
+        firstName={firstName}
+        suggestions={SUGGESTIONS}
+        conversations={convList}
+      />
+    </>
   )
 }

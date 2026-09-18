@@ -83,7 +83,7 @@ export function emitResultAction(props: {
   return emitG1('result_action', props)
 }
 
-export function emitShareCreated(props: { share_id: string; slug: string; domain?: string; result_id?: string; channel?: string }): boolean {
+export function emitShareCreated(props: { share_id: string; slug: string; domain?: string; result_id?: string; channel?: string; parent_share_id?: string }): boolean {
   return emitG1('share_created', props)
 }
 

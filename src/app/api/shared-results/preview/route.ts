@@ -4,6 +4,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { apiError } from '@/lib/http/apiError'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { parseShareRequest, resolveShareSource } from '@/lib/share/shareRequest'
+import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { validateSharedResultPayload } from '@/lib/share/sharedResult'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -20,18 +21,23 @@ export async function POST(req: NextRequest) {
   if (!rateLimit(`share-preview:${clientIp(req)}`, 60, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user, supabase } = await getRequestUser(req)
   if (!user) return apiError(req, 'unauthorized', 'auth.required', 401)
-  // A public page is public content: the anonymous tier may READ and ASK, never publish.
-  const anonRefusal = refuseAnonymousSocialWrite(req, user)
-  if (anonRefusal) return anonRefusal
 
   let body: unknown
   try { body = await req.json() } catch { return apiError(req, 'invalid_request', 'validation.missingFields', 400) }
   const parsed = parseShareRequest(body)
   if (parsed === 'invalid_request') return apiError(req, 'invalid_request', 'validation.missingFields', 400)
 
+  // Same policy as the create route, so a preview never promises a share the
+  // create will refuse (anonymous sessions: child shares only).
+  const policy = await decideSharePolicy(user, parsed.parentSlug)
+  if (!policy.ok) {
+    if (policy.code === 'parent_not_found') return apiError(req, 'parent_not_found', 'server.notFound', 404)
+    return refuseAnonymousSocialWrite(req, user) ?? apiError(req, 'account_required', 'auth.accountRequired', 403)
+  }
+
   const resolved = await resolveShareSource(supabase, user.id, parsed)
   if (!resolved.ok) return apiError(req, resolved.code, 'server.notFound', 404)
   const reason = validateSharedResultPayload(resolved.payload)
   if (reason) return NextResponse.json({ error: 'not_shareable', reason, message: serverMessage('share.notShareable', requestLocale(req)) }, { status: 422 })
-  return NextResponse.json({ payload: resolved.payload })
+  return NextResponse.json({ payload: resolved.payload, listed: !policy.ownerIsAnonymous })
 }

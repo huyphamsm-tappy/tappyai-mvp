@@ -12,12 +12,15 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { buildPublicPayload } from './publicSanitizer'
 import { PUBLIC_PAYLOAD_LIMITS, type SharedResultPayload } from './sharedResult'
+import { isValidSlug } from './slug'
 
 export interface ShareRequestBody {
   conversationId: string
   messageIndex: number
   title?: string
   locale?: 'vi' | 'en'
+  /** The public share this answer was reached from (second-generation sharing). */
+  parentSlug?: string
 }
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -30,7 +33,8 @@ export function parseShareRequest(body: unknown): ShareRequestBody | 'invalid_re
   if (typeof b.messageIndex !== 'number' || !Number.isInteger(b.messageIndex) || b.messageIndex < 0 || b.messageIndex > 500) return 'invalid_request'
   const title = typeof b.title === 'string' ? b.title.slice(0, PUBLIC_PAYLOAD_LIMITS.title) : undefined
   const locale = b.locale === 'en' ? 'en' : b.locale === 'vi' ? 'vi' : undefined
-  return { conversationId: b.conversationId, messageIndex: b.messageIndex, title, locale }
+  if (b.parentSlug !== undefined && !isValidSlug(b.parentSlug)) return 'invalid_request'
+  return { conversationId: b.conversationId, messageIndex: b.messageIndex, title, locale, ...(isValidSlug(b.parentSlug) ? { parentSlug: b.parentSlug } : {}) }
 }
 
 export type ResolveResult =

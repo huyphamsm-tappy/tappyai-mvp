@@ -2,7 +2,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import {
   FIRST_ATTR_KEY, SESSION_ATTR_KEY, captureAttribution, getAttribution, getFirstTouchAttribution,
-  isZaloUserAgent, parseLandingAttribution, setShareAttribution,
+  isZaloUserAgent, parseLandingAttribution, setSessionSource, setShareAttribution,
 } from './attribution'
 
 const ZALO_UA = 'Mozilla/5.0 (Linux; Android 13) AppleWebKit/537.36 Chrome/112 Mobile Safari/537.36 Zalo/23.05.01'
@@ -80,11 +80,26 @@ describe('attribution persistence — survives the loop', () => {
     expect(getFirstTouchAttribution()?.share_id).toBe('first')
   })
 
+  it('setSessionSource: an entry surface names itself (wedge_scam, web_share_target) and first touch follows only on the first landing', () => {
+    history.replaceState(null, '', '/scam-shield')
+    captureAttribution()
+    expect(setSessionSource('wedge_scam')?.source).toBe('wedge_scam')
+    expect(getAttribution().source).toBe('wedge_scam')
+    expect(getFirstTouchAttribution()?.source).toBe('wedge_scam')
+    // A later session on the same browser does not rewrite first touch.
+    sessionStorage.clear()
+    history.replaceState(null, '', '/share-target')
+    captureAttribution()
+    setSessionSource('web_share_target')
+    expect(getAttribution().source).toBe('web_share_target')
+    expect(getFirstTouchAttribution()?.source).toBe('wedge_scam')
+  })
+
   it('stores no PII and no user identifiers', () => {
     history.replaceState(null, '', '/r/AbCdEfGh12')
     captureAttribution(); setShareAttribution('s1')
     const raw = `${sessionStorage.getItem(SESSION_ATTR_KEY)}${localStorage.getItem(FIRST_ATTR_KEY)}`
-    expect(Object.keys(JSON.parse(sessionStorage.getItem(SESSION_ATTR_KEY)!)).sort()).toEqual(['at', 'share_id', 'source'])
+    expect(Object.keys(JSON.parse(sessionStorage.getItem(SESSION_ATTR_KEY)!)).sort()).toEqual(['at', 'n', 'share_id', 'source'])
     expect(raw).not.toMatch(/user_id|anon_id|session_id|email|phone/)
   })
 })
