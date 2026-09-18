@@ -21,7 +21,7 @@ export interface ConsultativeV1PromptInput {
   /** The request clock, for the assumed weekend stay. Defaults to now. */
   now?: Date
   /** The concrete first tool call for a vague place request (searchNow.ts), or null. */
-  searchNow?: { query: string; type: string } | null
+  searchNow?: { query: string; type: string; exact: boolean } | null
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -47,8 +47,16 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   const gaps = hardGaps.length > 0
     ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua thay bang chung ve X" cho quan ban chon; KHONG khang dinh bua, KHONG bo qua im lang.`
     : ''
+  const call = input.searchNow
+    ? (input.searchNow.type === 'hotel'
+      ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
+      : input.searchNow.exact
+        ? `goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user`
+        : `goi search_places NGAY voi query dat theo yeu cau cua user (vd "${input.searchNow.query}") va type phu hop`)
+    : ''
   const searchNow = input.searchNow
-    ? `\n- LENH LUOT NAY (bat buoc, lam TRUOC khi viet bat ky chu nao): goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user ngay o buoc 1. KHONG hoi "ban thich loai gi", KHONG hoi "phai khong". Sau khi co ket qua: viet theo hinh dang tren, mo dau bang lua chon.`
+    ? `
+- LENH LUOT NAY (bat buoc, lam TRUOC khi viet bat ky chu nao): ${call} ngay o buoc 1. KHONG hoi "ban thich loai gi", KHONG hoi "phai khong", KHONG hoi gio/so nguoi/mon truoc khi tim. Sau khi co ket qua: viet theo hinh dang tren, mo dau bang lua chon.`
     : ''
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
@@ -56,7 +64,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // The concrete first call goes FIRST, before the situation: measured, the same line at the end of
   // the block moved "ăn gì ngon giờ" to a search but "đi chơi ở đâu" still asked "bạn muốn chơi gì?".
   const searchFirst = input.searchNow
-    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\nGoi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 dia diem tu ket qua va noi ro "minh gia su ...".
+    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)} NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 dia diem tu ket qua va noi ro "minh gia su ...".
 =====================================`
     : ''
   return `${searchFirst}${buildSituationBlock(frame)}

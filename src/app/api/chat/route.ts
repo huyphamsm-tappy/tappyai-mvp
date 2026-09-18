@@ -1175,8 +1175,8 @@ export async function POST(req: Request) {
       : ''
     // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
-    const searchNow = deriveSearchNow({ text: lastText, situation, frame: decisionFrame, forcedTool, isFirstReply, movieRecommend })
-    if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type }))
+    const searchNow = deriveSearchNow({ text: lastText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply, movieRecommend })
+    if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
     return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()

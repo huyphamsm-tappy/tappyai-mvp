@@ -1,4 +1,4 @@
-// ── CONSULTATIVE V1 — the concrete first step for a vague place request ──────
+// ── CONSULTATIVE V1 — the concrete first step for a place request ───────────
 //
 // Measured 2026-09-18 (F7 "ăn gì ngon giờ", T5 "đi chơi ở đâu", both with GPS): three separate
 // prompt rules said "assume and search now, never ask", and the reply was still one line —
@@ -8,39 +8,88 @@
 // call the model must make first, with arguments derived here from the frames — deterministic,
 // no model involved in deciding it.
 //
-// Only for the VAGUE first turn: a place decision, no clarification pending, a low-confidence
-// situation (assumptions made), a short message the forced-tool detector already read as a place
-// search, and no movie-recommendation turn (its place tool is dropped on purpose).
+// Measured again with a LARGE legacy memory (gate-largemem2): the same "ask instead of search"
+// appeared on SPECIFIED first turns too ("Karaoke cho 10 người…", "rạp phim nào gần q1", "Sinh
+// nhật sếp, tiếp khách 8 người…"), run to run. So every V1 first-turn place decision without a
+// pending clarification carries the directive: exact arguments when the request is vague, a
+// suggested query the model may sharpen when it is specified. Never on a movie-recommendation
+// turn (its place tool is dropped on purpose) and never when the frame asks for a location.
 
 import type { DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
+import type { NeedProfile } from './needProfile'
+import { normalizeVN } from '../intent'
 
-export interface SearchNow { query: string; type: 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' }
+export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel'
+export interface SearchNow {
+  query: string
+  type: SearchNowType
+  /** true → the arguments are the call (vague request); false → a suggestion the model may sharpen. */
+  exact: boolean
+}
 
 const MEAL_QUERY: Record<NonNullable<DecisionFrame['occasion']['meal']>, string> = {
   breakfast: 'quán ăn sáng ngon', lunch: 'quán ăn trưa ngon', dinner: 'quán ăn tối ngon', late: 'quán ăn khuya',
 }
+const HARD_QUERY: Partial<Record<SituationFrame['hard'][number], string>> = {
+  private_room: 'phòng riêng', kids: 'có khu trẻ em', parking: 'có chỗ đậu xe', quiet: 'yên tĩnh', outdoor: 'ngoài trời',
+  vegetarian: 'chay', late_open: 'mở khuya', view: 'có view', live_music: 'nhạc sống',
+}
 
 export const VAGUE_MAX_CHARS = 30
+
+type Domain = 'food' | 'spa' | 'entertainment' | 'travel' | 'hotel' | null
+
+function domainOf(frame: DecisionFrame, need: NeedProfile | null, situation: SituationFrame, text: string): Domain {
+  const t = normalizeVN(text.toLowerCase())
+  if (need?.domain === 'hotel' || /\b(resort|khach san|homestay|hotel)\b/.test(t)) return 'hotel'
+  if (frame.domains.includes('food')) return 'food'
+  if (frame.domains.includes('spa')) return 'spa'
+  if (frame.domains.includes('entertainment')) return 'entertainment'
+  if (frame.domains.includes('travel')) return 'travel'
+  // The classifiers missed the domain (measured F8 "sinh nhật sếp, tiếp khách…", T4 "gia đình 4
+  // người đi đâu"): the user's verb decides first — "đi đâu / đi chơi / làm gì" with no food word
+  // is an outing — then the occasion: a meal-shaped occasion is food, a hangout is entertainment.
+  if (/\b(di dau|di choi|choi gi|lam gi|choi o dau)\b/.test(t) && !/\b(an|com|nha hang|quan|bua|tiec)\b/.test(t)) return 'entertainment'
+  switch (situation.occasion) {
+    case 'date': case 'birthday': case 'business': case 'family_meal': case 'quick_bite': case 'celebration': return 'food'
+    case 'hangout': return 'entertainment'
+    default: return null
+  }
+}
 
 export function deriveSearchNow(input: {
   text: string
   situation: SituationFrame | null
   frame: DecisionFrame
+  need?: NeedProfile | null
   forcedTool: string | null
   isFirstReply: boolean
   movieRecommend: boolean
 }): SearchNow | null {
   const { situation, frame } = input
   if (!situation || !input.isFirstReply || input.movieRecommend) return null
-  if (!frame.placeDecision || frame.clarify) return null
-  if (input.forcedTool !== 'search_places') return null
-  if (situation.assumptions.length === 0 || situation.confidence >= 0.5) return null
-  if (input.text.trim().length > VAGUE_MAX_CHARS) return null
+  if (frame.clarify) return null
+  if (frame.domains.includes('shopping') && !frame.placeDecision) return null
+  if (!situation.place.text && !situation.place.nearMe) return null
+  const domain = domainOf(frame, input.need ?? null, situation, input.text)
+  if (!domain) return null
+  // A hotel turn has its own tool: rule 7 (assume next weekend) — measured T8 twice: the model
+  // still asked for the dates. The directive names the call; the prompt fills the assumed dates.
+  if (domain === 'hotel') return { query: situation.place.text ?? '', type: 'hotel', exact: false }
+  const decision = frame.placeDecision || input.forcedTool === 'search_places'
+    || situation.who !== null || situation.occasion !== null || situation.hard.length > 0 || situation.budget !== null
+  if (!decision) return null
 
-  if (frame.domains.includes('food')) return { query: frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : 'quán ăn ngon', type: 'restaurant' }
-  if (frame.domains.includes('spa')) return { query: 'spa massage', type: 'spa' }
-  if (frame.domains.includes('entertainment')) return { query: 'địa điểm vui chơi giải trí', type: 'attraction' }
-  if (frame.domains.includes('travel')) return { query: 'điểm tham quan', type: 'attraction' }
-  return null
+  const vague = situation.assumptions.length > 0 && situation.confidence < 0.5 && input.text.trim().length <= VAGUE_MAX_CHARS
+  const hard = situation.hard.map(h => HARD_QUERY[h]).filter((x): x is string => !!x)
+  const withHard = (q: string) => [q, ...hard].join(' ')
+  if (domain === 'food') {
+    const base = frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : situation.time === 'tonight' ? 'quán ăn tối ngon' : 'quán ăn ngon'
+    const occasion = situation.occasion === 'business' || situation.occasion === 'birthday' || situation.occasion === 'celebration' ? 'nhà hàng ' : ''
+    return { query: withHard(occasion ? `${occasion}${base.replace(/^quán ăn /, '')}` : base), type: 'restaurant', exact: vague }
+  }
+  if (domain === 'spa') return { query: withHard('spa massage'), type: 'spa', exact: vague }
+  if (domain === 'entertainment') return { query: withHard('địa điểm vui chơi giải trí'), type: 'attraction', exact: vague }
+  return { query: withHard('điểm tham quan'), type: 'attraction', exact: vague }
 }
