@@ -19,7 +19,8 @@ import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
-import { suppressUngroundedVenues, type PlaceSearchStatus } from './groundingGate'
+import { suppressUngroundedVenues, isGrounded, normalizeHeading, type PlaceSearchStatus } from './groundingGate'
+import { shoppingPickFromMarker } from './consultative/pickBackstop'
 import { appendFileSync } from 'fs'
 import { guardClarifications } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
@@ -1740,13 +1741,42 @@ export function applyPlaceEnrichmentStreamFilter(
     const releasedPrefix = flushedText ?? ''
     const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
     const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
-    const fallback = bodyLetters < 40 ? fallbackSentence() : null
-    if (fallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
+    const g1bFallback = bodyLetters < 40 ? fallbackSentence() : null
+    if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
+    /**
+     * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the
+     * CONSULTATIVE-40: with rows and an engine pick in hand the model still wrote "bạn ưu tiên cái
+     * gì nhất — giá rẻ, hiệu năng hay pin?" (S2) and named nothing — a prompt rule does not stop
+     * that. When the body names NO retrieved venue/product at all, the pick sentence is built from
+     * card fields (the same evidence-only sentence G1b uses; for shopping, the decision card's
+     * recommended entity) and placed at the top. The model's own text is not removed.
+     */
+    const v1PickBackstop = (() => {
+      if (g1bFallback || !collector?.consultativeV1?.on) return null
+      const body = bodyAfterGuards.replace(/\[(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\][\s\S]*?\[\/(?:CTA_BUTTONS|TAPPY_SHOPPING|TAPPY_PLACES|TAPPY_PLAN)\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '')
+      const shopping = shoppingPickFromMarker(collector.shoppingMarker)
+      const known = [...places.map(p => p.name || ''), ...(shopping ? [shopping.name] : [])]
+        .map(n => normalizeVN(n.trim().toLowerCase())).filter(Boolean)
+      if (known.length === 0) return null
+      const bold = [...body.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => normalizeHeading(m[1]))
+      if (bold.some(b => isGrounded(b, known))) return null
+      const place = fallbackSentence()
+      if (place) return { sentence: place, kind: 'place' as const }
+      if (shopping) return { sentence: shopping.sentence, kind: 'shopping' as const }
+      return null
+    })()
+    if (v1PickBackstop) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', kind: v1PickBackstop.kind, body_letters: bodyLetters }))
+    const fallback = g1bFallback ?? v1PickBackstop?.sentence ?? null
     // The sentence goes where the body was — BEFORE the first structured block. Appending
     // it after [CTA_BUTTONS]/[FOLLOWUPS] put it below the buttons (measured on the
     // 2026-09-17 replay, run 2 #11), where the client renders it as an orphan line.
     const groundedProse = (() => {
       if (!fallback) return gated.text
+      // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows.
+      if (v1PickBackstop && !g1bFallback) {
+        const head = gated.text.startsWith(releasedPrefix) ? releasedPrefix : ''
+        return `${head}${fallback}\n\n${bodyAfterGuards.replace(/^\s+/, '')}`
+      }
       const at = earliestMarker(gated.text)
       const head = gated.text.slice(0, at).replace(/\s+$/, '')
       const tail = gated.text.slice(at)
