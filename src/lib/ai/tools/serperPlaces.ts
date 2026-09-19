@@ -98,6 +98,15 @@ const num = (v: unknown): number | undefined =>
 export async function serperPlaces(
   query: string,
   ll?: { lat: number; lng: number; zoom?: number } | null,
+  opts: {
+    /**
+     * Item 5 (2026-09-19): the price-band retry below is paid only when price is part of the
+     * decision (a stated budget / a price question). Measured over 61 card turns: bands on 16 % of
+     * items, the retry firing on ~70 % of turns and winning 1 in 7 — three credits for a field the
+     * user did not ask for. Default true: every other caller keeps the old behaviour.
+     */
+    priceRetry?: boolean
+  } = {},
 ): Promise<SerperPlaceRecord[] | null> {
   const cacheKey = serperPlacesCacheKey(query, ll ?? null)
   const cached = getCache(cacheKey)
@@ -118,7 +127,10 @@ export async function serperPlaces(
   // same venues, so nothing else changes. One extra credit only in the empty case, never a
   // third call. Owner-approved exception ("so priceLevel is returned consistently").
   let out = await fetchSerperMaps(apiKey, body)
-  if (out && out.length > 0 && !out.some(r => r.priceLevel)) {
+  if (opts.priceRetry === false && out && out.length > 0 && !out.some(r => r.priceLevel)) {
+    console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'price_level_retry', skipped: 'no_price_signal' }))
+  }
+  if (opts.priceRetry !== false && out && out.length > 0 && !out.some(r => r.priceLevel)) {
     const again = await fetchSerperMaps(apiKey, body)
     if (again && again.length > 0 && again.some(r => r.priceLevel)) {
       console.log(JSON.stringify({ type: 'tappyai_places_debug', provider: 'serper_maps', step: 'price_level_retry', won: true }))

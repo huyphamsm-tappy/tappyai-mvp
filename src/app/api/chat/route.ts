@@ -25,7 +25,7 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -1475,8 +1475,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // location the model DID name still wins; this only fills a blank.
           const location = modelLocation ?? exploreClipLocationHint(clipContext)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
+          // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
+          // a stated budget (this turn or the thread) or a price word in the request.
+          const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
           // The editorial supplement runs beside the live search, not after it.
-          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget), travelEditorialFor(location)])
+          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry }), travelEditorialFor(location)])
           let r: unknown = placesResult
           // A type the lexicon could not place ran as a type-less search — said so, not swallowed.
           if (rawType !== undefined && rawType !== null && String(rawType).trim() !== '' && type === undefined && r && typeof r === 'object') {

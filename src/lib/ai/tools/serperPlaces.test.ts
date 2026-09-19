@@ -122,6 +122,24 @@ describe('serperPlaces — every field the provider sends is kept', () => {
     expect(captured).toHaveLength(0)
   })
 
+  // Item 5 (2026-09-19): the price-band retry is a second /maps call (three credits) that wins
+  // one time in seven; it is paid only when price is part of the decision.
+  it('retries /maps once when no row carries priceLevel — by default, and not when priceRetry is off', async () => {
+    const noBand = { ...LIVE_ROW, priceLevel: undefined }
+    stub({ places: [noBand] })
+    await serperPlaces('bún bò', { lat: 10.77, lng: 106.7 })
+    expect(captured).toHaveLength(2)
+    __clearToolCache()
+    stub({ places: [noBand] })
+    await serperPlaces('bún bò', { lat: 10.77, lng: 106.7 }, { priceRetry: false })
+    expect(captured).toHaveLength(1)
+    __clearToolCache()
+    // A row WITH a band never triggers the retry, whatever the flag.
+    stub({ places: [LIVE_ROW] })
+    await serperPlaces('bún bò', { lat: 10.77, lng: 106.7 })
+    expect(captured).toHaveLength(1)
+  })
+
   it('caches, so the same query is not billed twice in one turn', async () => {
     stub({ places: [LIVE_ROW] })
     await serperPlaces('bún bò', { lat: 10.77, lng: 106.7 })

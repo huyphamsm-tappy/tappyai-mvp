@@ -642,6 +642,7 @@ async function searchPlacesSerper(
   lang: string,
   locationBias: { lat: number; lng: number } | null | undefined,
   scope: { destination: VietnamCity | null; remote: boolean },
+  priceRetry = true,
 ): Promise<Record<string, unknown> | null> {
   const { destination, remote } = scope
   const centeredOnUser = !!locationBias && !remote
@@ -656,7 +657,7 @@ async function searchPlacesSerper(
   // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
   // `priceLevel` consistently — see serperLocation.ts for the measurement. Serper only.
   const sq = serperMapsQuery(query, location)
-  const records = await serperPlaces(sq, centre)
+  const records = await serperPlaces(sq, centre, { priceRetry })
   if (!records || records.length === 0) return null
 
   const rows = records
@@ -698,6 +699,7 @@ async function searchPlacesSerper(
 async function searchPlacesUncached(
   query: string, location?: string, type?: string, lang = 'vi',
   locationBias?: { lat: number; lng: number } | null,
+  priceRetry = true,
 ): Promise<{ result: unknown; googleOk: boolean }> {
   const key = process.env.GOOGLE_PLACES_API_KEY
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
@@ -904,7 +906,7 @@ async function searchPlacesUncached(
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result) {
-    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination })
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry)
     if (result) googleOk = true
   }
   if (!result) {
@@ -1018,9 +1020,17 @@ async function searchPlacesUncached(
       const wantsPriceDetail = /gia|giá|bao nhieu|bao nhiêu|re |rẻ |dat |đắt |chi phi|chi phí|menu|thuc don|thực đơn|bang gia|bảng giá|budget|price|cost|combo|khuyen mai|khuyến mãi/i
         .test(normalizeVN(query.toLowerCase()) + ' ' + query.toLowerCase())
       const suffix = isFood ? 'gia menu thuc don' : isSpa ? 'gia dich vu bang gia spa massage' : 'gia ve dich vu'
+      /**
+       * Item 5 (2026-09-19): the order-page search ("… site:shopeefood.vn OR site:food.grab.com OR
+       * site:baemin.vn", one credit on EVERY food turn) is no longer issued. Measured over 30 food
+       * turns / 230 food cards (2026-09-18 + 19): not one card received a direct order page from
+       * it — the results never attributed to a retrieved venue — and the card's order action is
+       * the GrabFood search built from the name. `order_search_results` stays absent; every reader
+       * of it already handles absence.
+       */
       const [priceResults, orderResults, tiktokResults] = await Promise.all([
         wantsPriceDetail ? serperSearch(query + ' ' + (location || '') + ' ' + suffix) : Promise.resolve(null),
-        isFood ? serperSearch(query + ' ' + (location || '') + ' (site:shopeefood.vn OR site:food.grab.com OR site:baemin.vn)') : Promise.resolve(null),
+        Promise.resolve(null as Awaited<ReturnType<typeof serperSearch>> | null),
         // TikTok review discovery (consultative only, product decision 2026-08-16). Same shape as
         // the order-link search above: a real provider query, whose results are then VALIDATED —
         // nothing here is constructed from the place name, so a place with no coverage simply
@@ -1232,6 +1242,10 @@ export async function searchPlaces(
   query: string, location?: string, type?: string, lang = 'vi',
   locationBias?: { lat: number; lng: number } | null,
   budget?: PlacesBudget,
+  opts: {
+    /** Item 5: pay the `/maps` price-band retry only when price is part of this decision. */
+    priceRetry?: boolean
+  } = {},
 ) {
   const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
   const cached = getCache(cacheKey)
@@ -1265,7 +1279,7 @@ export async function searchPlaces(
     }
 
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_attempt', placeType: type ?? null }))
-    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias)
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false)
     if (googleOk) {
       setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
       console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))
