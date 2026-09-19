@@ -740,6 +740,16 @@ const weakWhereRe = /\bo\s+dau\b|\bcho\s+nao\b/
  *  hint and nothing more, and detectForcedTool already accepts the same ambiguity. */
 const purchaseRe = /\bmua\b|\bco ban\b|san pham|dat hang|order hang|\bbuy\b|\bpurchase\b/
 
+/**
+ * Item 8 (2026-09-19): the physical-store prompt block ("dùng search_places, KHÔNG search_products")
+ * only matters when a PURCHASE is in play — it rode every turn that named a district, including
+ * "Tìm quán ăn tối gần Quận 1" (measured F8, E1): 130 tokens steering a choice that did not exist.
+ */
+export function isPurchaseShaped(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase().trim())
+  return purchaseRe.test(t) || /\bcua\s*hang\b|\btiem\b|\bshop\b|\bsieu\s*thi\b|\bmall\b|\bplaza\b|\bchi\s*nhanh\b/.test(t)
+}
+
 export function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
   const t = normalizeVN(text.toLowerCase().trim())
   // Online signals

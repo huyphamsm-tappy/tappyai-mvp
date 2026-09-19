@@ -25,7 +25,7 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -1282,8 +1282,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
 =====================================` : '',
   ].filter(Boolean).join('')
 
+  // Item 8: the physical-store steer block is a SHOPPING block; a district name on a food turn does
+  // not need it. The tool set still reads the raw `locationIntent` (search_products dropped offline).
+  const storeIntent = locationIntent === 'offline' && !isPurchaseShaped(lastText) ? 'unknown' : locationIntent
   const built = noToolTurn ? null : buildSystem(
-    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
+    budget, storeIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
     consultativeBlock || undefined,
     planning,
   )

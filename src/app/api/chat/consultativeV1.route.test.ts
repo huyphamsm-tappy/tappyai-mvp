@@ -332,3 +332,42 @@ describe('flag ON — clarify before search (item 1)', () => {
     expect(h.state.streamOptions).not.toBeNull()
   })
 })
+
+/**
+ * Item 8 (2026-09-19) — vertical-only prompt blocks travel only on their vertical, and each one is
+ * asserted PRESENT on its own vertical (a wrong condition would starve the model silently).
+ */
+describe('item 8 — conditional blocks: present on their vertical, absent elsewhere', () => {
+  const postLoc = async (text: string) => {
+    const req = {
+      url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
+      headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
+      json: () => Promise.resolve({ messages: [{ role: 'user', content: text }], userLocation: { lat: 10.7769, lng: 106.7009 } }),
+      signal: undefined,
+    }
+    return POST(req as never)
+  }
+  it('shopping evidence blocks (MUA SAM / TU VAN MUA SAM) ride a shopping turn and not a food turn', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await postLoc('mua laptop van phong duoi 15tr')
+    expect(system()).toContain('===== MUA SAM: CAN CU CUA TUNG CAU =====')
+    expect(system()).toContain('===== TU VAN MUA SAM: 2 TANG')
+    await postLoc('Tìm quán ăn tối yên tĩnh cho 2 người gần Quận 1')
+    expect(system()).not.toContain('===== MUA SAM: CAN CU CUA TUNG CAU =====')
+    expect(system()).not.toContain('===== TU VAN MUA SAM: 2 TANG')
+  })
+  it('the physical-store steer block rides a purchase-shaped turn that names a place, not a food turn that names a district', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await postLoc('mua tai nghe bluetooth ở cửa hàng gần Quận 1')
+    expect(system()).toContain('===== VI TRI: CUA HANG VAT LY - LUAT BAT BUOC =====')
+    await postLoc('Tìm quán ăn tối yên tĩnh cho 2 người gần Quận 1')
+    expect(system()).not.toContain('===== VI TRI: CUA HANG VAT LY - LUAT BAT BUOC =====')
+  })
+  it('the budget block rides a budgeted turn only', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await postLoc('tim quan bun bo ngon o q1 duoi 80k')
+    expect(system()).toContain('===== BUDGET FILTER - LUAT BAT BUOC =====')
+    await postLoc('Tìm quán ăn tối yên tĩnh cho 2 người gần Quận 1')
+    expect(system()).not.toContain('===== BUDGET FILTER - LUAT BAT BUOC =====')
+  })
+})
