@@ -85,7 +85,7 @@
 | L4.4 | Scam Shield public surfaces: `/scam-shield` (metadata), `/scam-shield/kich-ban` + 25 scenario pages | `/scam-shield` LIVE (old version) · scenarios PREPARED | `/scam-shield` 200 in prod; `kich-ban` 404 | LIVE at release |
 | L4.5 | `/extension`, `/extension/welcome` (noindex), `/extension/privacy` | PREPARED | prod 404 | LIVE at release |
 | L4.6 | `PublicFooter` on the discovery cluster | PREPARED | — | LIVE at release |
-| L4.7 | Home footer link row (`HOME_FOOTER_DECISION.md`, one import + one line) | **OWNER DECISION PENDING** | Home unchanged | Option A: implement the documented one-line change + flip `publicFooter.test.tsx` assertion, in the release. Option B: decline, Home stays. **No third option; no redesign** |
+| L4.7 | Home footer link row (`HOME_FOOTER_DECISION.md`, one import + one line) | PREPARED — **Option A approved by owner 2026-09-19**, implemented | `HomeV3.tsx` +2 lines; `publicFooter.test.tsx` pins exactly one mount below the last section | LIVE at release |
 | L4.8 | Scam Shield public utility `/kiem-tra` (`feat/scam-shield-public-utility @ 153035d`) | PREPARED — **separate branch, not in this checklist** | `SCAM_SHIELD_PUBLIC_UTILITY.md` | owner reviews independently; not merged automatically |
 
 **Count:** 39 rows in L1–L4 = the 34 passing mechanisms of `COMPLETE_FREE_ACQUISITION.md` Part B, split where the owner action differs per store or engine (e.g. four Android stores, three extension stores), plus the separate `/kiem-tra` row; the 5 L0 rows are the instrument, not mechanisms. No row may be added before the T+14 review.
@@ -134,4 +134,5 @@ Only: P0 / security / outage fixes · genuine release blockers · keeping measur
 
 ## Change log
 
-- 2026-09-19 — ledger created from the G1 close-out; production probed; all release-dependent rows PREPARED; L4.7 awaiting owner decision; L4.8 tracked but out of scope.
+- 2026-09-19 — ledger created from the G1 close-out; production probed; all release-dependent rows PREPARED; L4.8 tracked but out of scope.
+- 2026-09-19 — owner decisions: Home footer Option A (implemented, L4.7); fast-forward `feat/g1-completion` into `rc/web-uat` approved; `/kiem-tra` branch stays separate for independent review.

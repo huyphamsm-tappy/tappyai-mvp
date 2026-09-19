@@ -1,4 +1,4 @@
-# HOME FOOTER — OWNER DECISION REQUIRED
+# HOME FOOTER — OWNER DECISION: OPTION A (approved 2026-09-19, implemented as documented below)
 
 ## The finding
 

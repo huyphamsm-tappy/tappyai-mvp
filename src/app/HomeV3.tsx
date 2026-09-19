@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
+import PublicFooter from '@/components/discovery/PublicFooter'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
@@ -786,6 +787,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </div>
           )}
         </section>
+        <PublicFooter />
       </div>
     </V3Shell>
   )

@@ -34,13 +34,18 @@ describe('PublicFooter — the crawlable link block on discovery pages', () => {
     expect(container.textContent).toContain(dictEn['footer.explore'])
     expect(container.textContent).toContain(dictEn['footer.aboutTappy'])
   })
-  it('is mounted on /about, /extension, every hub and the scam index — and NOT on the owner-locked Home', async () => {
+  it('is mounted on /about, /extension, every hub, the scam index — and, by owner decision (2026-09-19, Option A), on Home', async () => {
     for (const el of [<AboutPage key="a" />, <ExtensionPage key="e" />, <ScamKnowledgeIndexPage key="k" />, await DomainHubPage({ params: { domain: 'food' } })]) {
       const { container } = render(el)
       expect(container.querySelector('[data-testid="public-footer"]')).not.toBeNull()
       cleanup()
     }
-    const home = readFileSync('src/app/(home)/page.tsx', 'utf8') + readFileSync('src/app/HomeV3.tsx', 'utf8')
-    expect(home).not.toContain('PublicFooter')
+    // HOME_FOOTER_DECISION.md: exactly one import and one mount in HomeV3.tsx, below the last
+    // section, inside the existing scroll container — nothing in the shell nav, nothing on page.tsx.
+    const home = readFileSync('src/app/HomeV3.tsx', 'utf8')
+    expect(home.match(/<PublicFooter \/>/g)).toHaveLength(1)
+    expect(home).toContain("import PublicFooter from '@/components/discovery/PublicFooter'")
+    expect(home).toMatch(/<\/section>\s*<PublicFooter \/>\s*<\/div>\s*<\/V3Shell>/)
+    expect(readFileSync('src/app/(home)/page.tsx', 'utf8')).not.toContain('PublicFooter')
   })
 })
