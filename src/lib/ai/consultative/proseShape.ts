@@ -70,7 +70,7 @@ const SUBJECT_Q_RE = /\b(?:muon|thich|can|dinh|uu tien) (?:an|mua|choi|di|xem|du
  * question that asks the user to CHOOSE or SPECIFY ("… hay …?", "muốn … gì / nào / thêm / khác?");
  * an offer ("Bạn muốn đặt bàn trước không?") is not a clarification and stays.
  */
-const TRAILING_Q_RE = /^(?:ban|you|do you|would you)\b.*\b(?:hay|or)\b.*\?\s*$|\b(?:muon|thich|can|prefer|want)\b.*\b(?:gi|nao|them|khac|loai|kieu|which|more)\b.*\?\s*$/
+const TRAILING_Q_RE = /^(?:ban|you|do you|would you)\b.*\b(?:hay|or|nao|gi|which)\b.*\?\s*$|\b(?:muon|thich|can|prefer|want)\b.*\b(?:gi|nao|them|khac|loai|kieu|which|more)\b.*\?\s*$/
 const SITUATION_RE = /\b(toi nay|trua|sang|khuya|cuoi tuan|2 nguoi|hai nguoi|gia dinh|hen ho|date|sinh nhat|tiep khach|nhom|ban be|yen tinh|soi dong|view|lang man|sang trong|re|ngan sach|budget|tonight|family|couple|group|quiet|lively|romantic|cheap)\b/
 
 function escapeRe(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
@@ -161,9 +161,15 @@ export function guardProseShape(text: string, opts: ProseShapeOptions): { text: 
   }
   // 4b. A closing question after a real pick — the reply ends on the recommendation.
   if (namesVenue(prose.find(x => x.i === pickIdx)?.s ?? '')) {
-    const last = [...prose].reverse().find(x => !doomed.has(x.i))
-    if (last && last.i !== pickIdx && /\?\s*$/.test(last.s.trim()) && TRAILING_Q_RE.test(fold(last.s))) {
-      doomed.add(last.i); stats.trailing_question_removed = (stats.trailing_question_removed ?? 0) + 1
+    // A closing emoji ("… hợp hơn? 🏨") splits off as its own span and does not make the question
+    // less of one: skip wordless trailers to find the last real sentence, and drop them with it.
+    const alive = [...prose].reverse().filter(x => !doomed.has(x.i))
+    const trailers = alive.filter((x, k) => alive.slice(0, k + 1).every(y => !/[\p{L}\p{N}]/u.test(y.s)))
+    const last = alive.find(x => /[\p{L}\p{N}]/u.test(x.s))
+    const tail = last ? last.s.trim().replace(/[^\p{L}\p{N}?]+$/u, '') : ''
+    if (last && last.i !== pickIdx && /\?$/.test(tail) && TRAILING_Q_RE.test(fold(tail))) {
+      doomed.add(last.i); for (const t of trailers) doomed.add(t.i)
+      stats.trailing_question_removed = (stats.trailing_question_removed ?? 0) + 1
     }
   }
   // 3. Cap: drop the least informative first, never the pick.

@@ -136,6 +136,10 @@ describe('guardProseShape — rule 4b: a closing question that asks the user to 
     const b = guardProseShape('Mình chọn **Cơm Niêu Sài Gòn** cho bạn — 4.6⭐. Bạn có muốn biết thêm về quán nào không?', { rendersCard: true, venues })
     expect(b.text).not.toContain('biết thêm về quán nào')
     expect(b.stats.trailing_question_removed).toBe(1)
+    // B5 live: "Bạn chọn cái nào hợp hơn? 🏨" after two hotels were named.
+    const c = guardProseShape('Mình gợi ý **Cơm Niêu Sài Gòn** — 4.6⭐, có hồ bơi. Cả hai đều gần biển. Bạn chọn cái nào hợp hơn? 🏨', { rendersCard: true, venues })
+    expect(c.text).not.toContain('Bạn chọn cái nào')
+    expect(c.stats.trailing_question_removed).toBe(1)
   })
   it('an offer is not a clarification: "Bạn muốn đặt bàn trước không?" stays; no pick ⇒ nothing removed; a question mid-reply stays', () => {
     const offer = guardProseShape('Mình chọn **Bún Bò Huế Bến Ngự** — 4.5⭐. Bạn muốn đặt bàn trước không?', { rendersCard: true, venues })
