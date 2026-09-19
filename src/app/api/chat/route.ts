@@ -71,6 +71,7 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
+import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -1661,10 +1662,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({
           origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
           destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
-          mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
+          // A free string, coerced in execute (transportMode.ts): same class as search_places.type —
+          // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
+          mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
           date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
         }),
-        execute: async ({ origin, destination, mode, date }) => {
+        execute: async ({ origin, destination, mode: rawMode, date }) => {
+          const mode = coerceTransportMode(rawMode)
+          if (rawMode !== undefined && mode !== rawMode) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(rawMode).slice(0, 40), to: mode ?? null }))
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
           await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
