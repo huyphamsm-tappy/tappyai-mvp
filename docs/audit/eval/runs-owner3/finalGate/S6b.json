@@ -1,0 +1,305 @@
+{
+  "id": "S6b",
+  "text": "tai nghe bluetooth",
+  "parent": "S6",
+  "status": 200,
+  "ms": 10433,
+  "evidenceId": "46e35ccc-b88f-40ec-8a3f-c62c1a18338c",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Redmi Buds 8 Active",
+      "rating": 4.8,
+      "count": 744,
+      "price": 670000
+    },
+    {
+      "name": "Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C",
+      "rating": 4.9,
+      "count": 17,
+      "price": 79000
+    },
+    {
+      "name": "tai nghe bluetooth havit life 04t đen",
+      "rating": 4.9,
+      "count": 26,
+      "price": 260000
+    },
+    {
+      "name": "Defunc True Go Slim Wireless Headphones",
+      "rating": 4.7,
+      "count": 385,
+      "price": 159000
+    },
+    {
+      "name": "Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim",
+      "rating": 4.7,
+      "count": 385,
+      "price": 159000
+    },
+    {
+      "name": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+      "rating": 4.7,
+      "count": 447,
+      "price": 689000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Redmi Buds 8 Active\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":670000,\"priceHigh\":670000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTfLRoF9RMz7k-Fi6arjRolo9_0sORugdEiyhHZ1fMy7l3yU8Yczga4-QLEvqW8IC8_SerXRM5t1D77D7j64lKiHHczuiqSi6x9dJ82OX5b1DPuFPrTf5lMdw\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:5537509563614353316,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":670000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":744}]},{\"key\":\"uncertain:1\",\"name\":\"Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":79000,\"priceHigh\":79000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSztjOvQPBXgzRk-seNmYzjO_NALHzBcoGibrjxIC9_UeXoaw42ZAf9zUSfHtFW3WGNdl4CrZwFa65Zmgs55UdsgjnijbDsLo8ZJAuQiqSxaxfT4bBOnuhk\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:13789089761181226225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":79000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":17}]},{\"key\":\"uncertain:2\",\"name\":\"tai nghe bluetooth havit life 04t đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":260000,\"priceHigh\":260000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQyLMY6XkjYExLi5YPD5XyN2YOkdP1aW0dXEbuyGxy7NeDNKD0Wlo1s_inWfjymzOqU9EZn22Lkb3O8ctq-pDLjDgYABsgxg28hVyRkyGg4RpT40c2FdRfmCQ\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10014887414934385428,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":260000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":26}]},{\"key\":\"uncertain:3\",\"name\":\"Defunc True Go Slim Wireless Headphones\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":159000,\"priceHigh\":159000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSmoNrnM9wymCeK5xx0wYwJbUnHMmnGwDLbeStLRH2W0GZ_pqdtQwM4vdy4Ep1_M-x74_aresroDD7Kynpr3FXRPhcmRIOkfycZ5rAyOo309PD2e-utybU0\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:7600920263191396113,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":159000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":385}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":159000,\"priceHigh\":159000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSmoNrnM9wymCeK5xx0wYwJbUnHMmnGwDLbeStLRH2W0GZ_pqdtQwM4vdy4Ep1_M-x74_aresroDD7Kynpr3FXRPhcmRIOkfycZ5rAyOo309PD2e-utybU0\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10335219115051317413,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":159000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":385}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":689000,\"priceHigh\":689000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSoWzc-5nOac2rAVkdcs3IKMIFQxBSOC9WF-fnD707jsgNRsN3BJSFdxjtmwxln3yZ-5dInk1I2AUimWwHzU5a4Pd7SL1vmIvjlTPdz523XBK6KA1OOSybZ\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":689000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":447}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"670000 VND\",\"params\":{\"priceVnd\":670000}},{\"attribute\":\"reviewCount\",\"evidence\":\"744 reviews\",\"params\":{\"count\":744}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Redmi Buds 8 Active** — 670.000₫, 4.8⭐ (744 đánh giá), tại Thế Giới Di Động — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình giả sử bạn cần tai nghe Bluetooth dùng hôm nay, tầm giá phổ thông, và mình sẽ tìm ngay cho bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "tai nghe bluetooth"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Redmi Buds 8 Active\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":670000,\"priceHigh\":670000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTfLRoF9RMz7k-Fi6arjRolo9_0sORugdEiyhHZ1fMy7l3yU8Yczga4-QLEvqW8IC8_SerXRM5t1D77D7j64lKiHHczuiqSi6x9dJ82OX5b1DPuFPrTf5lMdw\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:5537509563614353316,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":670000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":744}]},{\"key\":\"uncertain:1\",\"name\":\"Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":79000,\"priceHigh\":79000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSztjOvQPBXgzRk-seNmYzjO_NALHzBcoGibrjxIC9_UeXoaw42ZAf9zUSfHtFW3WGNdl4CrZwFa65Zmgs55UdsgjnijbDsLo8ZJAuQiqSxaxfT4bBOnuhk\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:13789089761181226225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":79000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":17}]},{\"key\":\"uncertain:2\",\"name\":\"tai nghe bluetooth havit life 04t đen\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":260000,\"priceHigh\":260000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQyLMY6XkjYExLi5YPD5XyN2YOkdP1aW0dXEbuyGxy7NeDNKD0Wlo1s_inWfjymzOqU9EZn22Lkb3O8ctq-pDLjDgYABsgxg28hVyRkyGg4RpT40c2FdRfmCQ\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10014887414934385428,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":260000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":26}]},{\"key\":\"uncertain:3\",\"name\":\"Defunc True Go Slim Wireless Headphones\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":159000,\"priceHigh\":159000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSmoNrnM9wymCeK5xx0wYwJbUnHMmnGwDLbeStLRH2W0GZ_pqdtQwM4vdy4Ep1_M-x74_aresroDD7Kynpr3FXRPhcmRIOkfycZ5rAyOo309PD2e-utybU0\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:7600920263191396113,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":159000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":385}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":159000,\"priceHigh\":159000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSmoNrnM9wymCeK5xx0wYwJbUnHMmnGwDLbeStLRH2W0GZ_pqdtQwM4vdy4Ep1_M-x74_aresroDD7Kynpr3FXRPhcmRIOkfycZ5rAyOo309PD2e-utybU0\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10335219115051317413,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":159000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":385}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":689000,\"priceHigh\":689000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSoWzc-5nOac2rAVkdcs3IKMIFQxBSOC9WF-fnD707jsgNRsN3BJSFdxjtmwxln3yZ-5dInk1I2AUimWwHzU5a4Pd7SL1vmIvjlTPdz523XBK6KA1OOSybZ\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":689000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":447}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"670000 VND\",\"params\":{\"priceVnd\":670000}},{\"attribute\":\"reviewCount\",\"evidence\":\"744 reviews\",\"params\":{\"count\":744}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Redmi Buds 8 Active** — 670.000₫, 4.8⭐ (744 đánh giá), tại Thế Giới Di Động — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình giả sử bạn cần tai nghe Bluetooth dùng hôm nay, tầm giá phổ thông, và mình sẽ tìm ngay cho bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "tai nghe bluetooth",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Redmi Buds 8 Active",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:5537509563614353316,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 670000,
+          "price_vnd": 670000,
+          "source": "Thế Giới Di Động",
+          "rating": 4.8,
+          "rating_count": 744,
+          "product_id": "5537509563614353316",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:13789089761181226225,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 79000,
+          "price_vnd": 79000,
+          "source": "Shopee",
+          "rating": 4.9,
+          "rating_count": 17,
+          "product_id": "13789089761181226225",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "tai nghe bluetooth havit life 04t đen",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10014887414934385428,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 260000,
+          "price_vnd": 260000,
+          "source": "Thế Giới Di Động",
+          "rating": 4.9,
+          "rating_count": 26,
+          "product_id": "10014887414934385428",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Defunc True Go Slim Wireless Headphones",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:7600920263191396113,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 159000,
+          "price_vnd": 159000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.7,
+          "rating_count": 385,
+          "product_id": "7600920263191396113",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10335219115051317413,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 159000,
+          "price_vnd": 159000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.7,
+          "rating_count": 385,
+          "product_id": "10335219115051317413",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+          "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:4943106745882779357,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 689000,
+          "price_vnd": 689000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.7,
+          "rating_count": 447,
+          "product_id": "4943106745882779357",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=tai%20nghe%20bluetooth"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=tai%20nghe%20bluetooth"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 39,
+      "_tappy_ranking": {
+        "pick": "Redmi Buds 8 Active",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8 - Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C: rated 4.9 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "price",
+            "evidence": "670000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "744 reviews"
+          }
+        ],
+        "not_chosen": "Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 4.9"
+        },
+        "conditional": true
+      },
+      "_tappy_evidence": "\n\n===== BANG CHUNG QUYET DINH (DU LIEU THAT, DA CHOT) =====\nHe thong da chon tu du lieu that. Moi con so ben duoi da duoc chot.\n\nDA CHON: Redmi Buds 8 Active\n  - noi ban: Thế Giới Di Động\n  - gia: 670000 VND\n  - danh gia san pham: 4.8   so luot: 744\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n\nPHUONG AN 2: Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C\n  - noi ban: Shopee\n  - gia: 79000 VND\n  - danh gia san pham: 4.9   so luot: 17\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n  - hon o diem: rating — rated 4.9\n\nCAC LUA CHON KHAC (chenh lech gia so voi lua chon da chon, con so that):\n  - tai nghe bluetooth havit life 04t đen | Thế Giới Di Động | 260000 VND | chenh: -410000 VND\n  - Defunc True Go Slim Wireless Headphones | Fptshop.com.vn | 159000 VND | chenh: -511000 VND\n  - Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim | Fptshop.com.vn | 159000 VND | chenh: -511000 VND\n  - Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC | Fptshop.com.vn | 689000 VND | chenh: 19000 VND\n\nLY DO DA CHON: rating — rated 4.8; price — 670000 VND; reviewCount — 744 reviews\nKHOANG CACH RAT NHO: dien dat thanh cau nghieng ve co dieu kien, khong khang dinh tuyet doi.\n\nTONG SO TIN DANG TIM DUOC: 39 (danh sach tren la phan da chon loc).\n\nUSER HOI CAU HINH: chip=KHONG CO DU LIEU, RAM=KHONG CO DU LIEU, dung luong=KHONG CO DU LIEU\nCHUA DU BANG CHUNG de khang dinh tin dang nay dung cau hinh user hoi. PHAI noi ro la tieu de khong ghi du, KHONG duoc coi nhu khop.\n\nCHI DUOC NOI NHUNG DIEU SAU (ngoai ra khong duoc khang dinh them thuoc tinh nao):\n  - ten tin dang: Redmi Buds 8 Active\n  - noi ban: Thế Giới Di Động\n  - gia: 670000 VND (con so chinh xac, KHONG lam tron sang \"khoang\")\n  - danh gia san pham: 4.8 (KHONG phai Google Maps)\n  - so luot danh gia: 744\n\nKHONG CO DU LIEU VE: RAM, dung luong, chip, tinh trang/nguon goc (chinh hang, like new, cu, sealed, refurb), bao hanh.\nLUAT CUNG:\n- Nhung muc ghi \"KHONG CO DU LIEU\" nghia la KHONG AI NOI — KHONG phai bang 0, KHONG phai la \"khong co\".\n  TUYET DOI KHONG doan, KHONG suy ra tu ten shop, ten mien, uy tin, gia, thuong hieu, hay tin dang khac.\n- Neu user hoi ve mot muc KHONG CO DU LIEU: noi thang la nguon hien tai khong ghi.\n- Gia phai doc dung con so tren, KHONG duoc noi \"khoang\", KHONG duoc lam tron.\n- Danh gia o tren la danh gia SAN PHAM. KHONG duoc goi no la Google Maps hay bat ky nguon nao khac.\n- Chenh lech gia phai dung dung con so \"chenh\" o tren, KHONG duoc uoc luong.\n- Neu khong co diem nao chung minh duoc phuong an 2 hon: noi thang la khong co danh doi nao duoc chung minh,\n  TUYET DOI KHONG bia ra mot diem tru.\n==========================================",
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Redmi Buds 8 Active",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 670000,
+            "priceHigh": 670000,
+            "sellers": [
+              "Thế Giới Di Động"
+            ],
+            "recommended": true,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai Nghe Bluetooth Không Dây B01 Phím Cơ Kết Nối Được 2 Điện Thoại Pin Cực Trâu, Bass Lớn Sạc Type C",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 79000,
+            "priceHigh": 79000,
+            "sellers": [
+              "Shopee"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "tai nghe bluetooth havit life 04t đen",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 260000,
+            "priceHigh": 260000,
+            "sellers": [
+              "Thế Giới Di Động"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Defunc True Go Slim Wireless Headphones",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 159000,
+            "priceHigh": 159000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe Bluetooth nhét tai Defunc TRUE GO Slim",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 159000,
+            "priceHigh": 159000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Tai nghe Bluetooth True Wireless Baseus Bass BS1 NC",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 689000,
+            "priceHigh": 689000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": {
+          "noi_ban": "Thế Giới Di Động",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.8",
+              "params": {
+                "value": 4.8
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "670000 VND",
+              "params": {
+                "priceVnd": 670000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "744 reviews",
+              "params": {
+                "count": 744
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "rating",
+            "evidence": "rated 4.9",
+            "params": {
+              "value": 4.9
+            }
+          },
+          "nghieng_ve": true
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

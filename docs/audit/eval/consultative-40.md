@@ -239,3 +239,14 @@ the see-card line. The same label-as-venue cut hit T1/T6 section labels ("Bữa 
 Verified by: live runs on the audit server (:3101, worktree `audit-nonprod` @ 5f67dfc, flags ON), graded by reading
 `showrun.mjs` output against the rubric above and the tool rows in each `<id>.json`; cost from the usage sink via
 `costseg.mjs`. Budget: 194 of 200 runs counted (canned $0 turns included), 175 modelled.
+
+## 2026-09-19 FINAL JOB — single gate on `43d37d2` (`runs-owner3/finalGate*`)
+
+Phase 1 fixes (label headings, dashed names, follow-up backstop, model-chooses + `upscale`) then ONE gate:
+**38/40** raw (✅+⚠️), ❌ T1 and P8 → reruns 2×: T1 ✓✓ (variance), P8 ✗✓ (1/2 — not deterministic by
+the 2/2 rule; 2/3 today; attributed to 1.4 + `late_open` not row-checked, see the report). **Zero
+deterministic fails. T8 class passes** (Ocean Bay Resort & Spa, no guest house). Clarify answers 6/8
+first pass (S5b men's perfume, E2b pick cut) → reruns pass; memory pass 5/6 (F8 no pick) → F8 reruns ✓✓.
+Differentiation metric, unit cost table (a)–(e) and the open findings: `docs/audit/final-job-report-2026-09-19.md`.
+Cost cold: $1.2015 / 34 conversations = $0.0353; T2 warm measured $0.0218/turn. Runs 56/70.
+

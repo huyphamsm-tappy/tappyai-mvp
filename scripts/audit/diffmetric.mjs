@@ -28,7 +28,7 @@ for (const id of ORDER.filter(i => files.includes(i))) {
   const canned = (r.toolCalls?.length ?? 0) === 0 && /Để chọn đúng|mình cần biết/.test(r.prose) && r.ms < 2000
   // A bold span is a NAME candidate when it reads like one: no label colon, no rating / phone /
   // amount, at most 7 words, and not a clause (function words such as "bạn nên", "về", "trong").
-  const nameLike = h => h.split(/\s+/).length <= 7 && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không)\b/i.test(h)
+  const nameLike = h => /^\p{Lu}/u.test(h) && h.split(/\s+/).length <= 7 && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b|\.(?:com|vn|net)\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không)\b/i.test(h) && !/^(?:Gợi ý|Phư?ơng án|Lưu ý|Mẹo|Tổng|Tham quan|Thay thế|Kết luận|Lịch trình|Ngày \d|Bữa|Buổi|Sáng|Trưa|Chiều|Tối)\b/i.test(h)
   const bold = [...prose.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => m[1]).filter(raw => !/[:：]\s*$/.test(raw.trim())).map(h => h.replace(/^\s*\d+[.)]\s*/, '').replace(/\s*\([^)]*\)\s*$/, '').replace(/[:：,;.!?\-–—\s]+$/, '').trim()).filter(h => h && nameLike(h))
   const namedGrounded = new Set(), namedUngrounded = new Set()
   for (const h of bold) (grounded(fold(h), known) ? namedGrounded : namedUngrounded).add(h)

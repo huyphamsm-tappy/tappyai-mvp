@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T08:33:48.785Z",
+  "generatedAt": "2026-09-19T09:45:45.749Z",
   "note": "Pure-function reproduction of route.ts pre-model classification. No LLM/search. Setup queries use a placeholder assistant turn ONLY to set hasPriorAssistantTurn; nothing else is fabricated.",
   "rows": [
     {

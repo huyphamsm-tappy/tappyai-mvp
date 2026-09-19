@@ -1,0 +1,936 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 13839,
+  "evidenceId": "278ac111-3c35-4815-8e25-47c265a7fbba",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa couple massage 2 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nàng Sen Message - Quận 1 Sài Gòn",
+      "rating": 4.8,
+      "count": 492,
+      "hours": "09:00–23:00",
+      "distance_km": 0.8,
+      "address": "74 Nguyễn Công Trứ, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3519,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3110,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Senva Spa - Quận 1",
+      "rating": 4.9,
+      "count": 855,
+      "hours": "09:30–23:00",
+      "distance_km": 1,
+      "address": "153 Ký Con, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1820,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+      "rating": 4.6,
+      "count": 19,
+      "hours": "10:00–00:00",
+      "distance_km": 0.9,
+      "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi nhánh Bến Thành",
+      "rating": 4.6,
+      "count": 49,
+      "hours": "10:00–02:00",
+      "distance_km": 1.3,
+      "address": "19D Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Charm Spa Garden",
+      "rating": 4.9,
+      "count": 217,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "22Spa & Massage",
+      "rating": 4.6,
+      "count": 3057,
+      "hours": "10:00–22:30",
+      "distance_km": 1.5,
+      "address": "100 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 190,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm spa massage thư giãn cho cặp đôi, tầm giá phổ thông. Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần Quận 1 đang mở tối nay.\n\nMình chọn **Massage Hạ Spa Quận 1** cho bạn — spa này có **4.9⭐ từ 3.519 đánh giá Google Maps** với dịch vụ chất lượng cao. Mở đến 22:30 tối nay, cách Quận 1 khoảng 2.3km, tầm giá phổ thông và được rất nhiều cặp đôi yêu thích 👍\n\n**Lựa chọn thay thế:** Nàng Sen Message (gần nhất, chỉ 0.8km, mở đến 23:00) nếu bạn muốn tiện lợi hơn, hoặc Massage Cổ Phong Q1 (4.9⭐, 1.3km) nếu thích phong cách Trung Hoa truyền thống.\n\n*TappyAI dưa bạn đến các nền tảng chính thức để đặt dịch vụ — gợi ý dựa trên đánh giá thực & mục phù hợp, không phải quảng cáo trả tiền; quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nàng Sen Message gần hơn|Massage Cổ Phong Q1 phong cách Trung Hoa|Charm Spa Garden có không gian xanh[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm spa massage thư giãn cho cặp đôi, tầm giá phổ thông. Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần Quận 1 đang mở tối nay.\n\nMình chọn **Massage Hạ Spa Quận 1** cho bạn — spa này có **4.9⭐ từ 3.519 đánh giá Google Maps** với dịch vụ chất lượng cao. Mở đến 22:30 tối nay, cách Quận 1 khoảng 2.3km, tầm giá phổ thông và được rất nhiều cặp đôi yêu thích 👍\n\n**Lựa chọn thay thế:** Nàng Sen Message (gần nhất, chỉ 0.8km, mở đến 23:00) nếu bạn muốn tiện lợi hơn, hoặc Massage Cổ Phong Q1 (4.9⭐, 1.3km) nếu thích phong cách Trung Hoa truyền thống.\n\n*TappyAI dưa bạn đến các nền tảng chính thức để đặt dịch vụ — gợi ý dựa trên đánh giá thực & mục phù hợp, không phải quảng cáo trả tiền; quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nàng Sen Message gần hơn|Massage Cổ Phong Q1 phong cách Trung Hoa|Charm Spa Garden có không gian xanh[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Nàng Sen Message - Quận 1 Sài Gòn",
+          "place_id": "ChIJ4SIVDgAvdTERJ8zPIjUkeQc",
+          "address": "74 Nguyễn Công Trứ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 798 112 255",
+          "google_rating": "4.8⭐ (492 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 492,
+          "distance_km": 0.8,
+          "open_now": true,
+          "opening_hours": "09:00–23:00",
+          "place_types": [
+            "Câu lạc bộ spa và sức khỏe",
+            "Chương trình chăm sóc sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=538501441083395111",
+          "website_uri": "http://nangsen.net/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=538501441083395111",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "MASSAGE HẠ SPA QUẬN 1",
+          "place_id": "ChIJHW16QcUvdTERm0lIAkAWOU0",
+          "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 945 705 000",
+          "google_rating": "4.9⭐ (3.519 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 3519,
+          "distance_km": 2.3,
+          "open_now": true,
+          "opening_hours": "09:30–22:30",
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Bác sĩ trị liệu xoa bóp",
+            "Câu lạc bộ spa và sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5564503278764968347",
+          "booking_links": [
+            "https://haspamassage.vn/",
+            "https://www.fresha.com/book-now/ha-spa-massage-dgcon1r3/all-offer?id=1530289&pId=1453251&rwg_token=AE37R_hqGzeBzjsjAYjYUXMKBOY-oSiv-2JxafYH13z1KofWYNjzoofyQEk3O9N15lhVkZjDC02oB7sHDdMWMYI8RqodKFcg2p-Zb-JpYyKkjw4FOkvrn20%3D"
+          ],
+          "website_uri": "https://haspamassage.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5564503278764968347",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Massage Cổ Phong Q1",
+          "place_id": "ChIJ26mU5xsvdTERtQCiqyht7S4",
+          "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 832 222 292",
+          "google_rating": "4.9⭐ (3.110 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 3110,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "09:00–22:30",
+          "place_types": [
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3381478916670750901",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/215744-co-phong-spa-traditional-chinese-style-massage/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_iabTdFZeHJYlw3aXdNpIAAhoiEDwm5l0bznvtr6H8GycROjI-ittBLRluhamiPSUnErAEd6tBuCTfVBIPswnINpk-5C4C-JXBxob1EuqGDKM81twI%3D"
+          ],
+          "website_uri": "https://massagecophongquan1.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3381478916670750901",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Senva Spa - Quận 1",
+          "place_id": "ChIJz778NwAvdTER7x-dpsi6STA",
+          "address": "153 Ký Con, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 768 333 868",
+          "google_rating": "4.9⭐ (855 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 855,
+          "distance_km": 1,
+          "open_now": true,
+          "opening_hours": "09:30–23:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3479517558071959535",
+          "booking_links": [
+            "http://wa.me/+84768333868"
+          ],
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3479517558071959535",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+          "place_id": "ChIJm3FQSgAvdTERIpXosgH-Uwk",
+          "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.9⭐ (1.820 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 1820,
+          "distance_km": 1.7,
+          "open_now": true,
+          "opening_hours": "10:00–22:15",
+          "place_types": [
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=672160052658345250",
+          "booking_links": [
+            "https://sizspa.com/dat-cho/",
+            "https://wa.me/+84775271878",
+            "https://bookingpage.ai/redirect?url=https://sizspa.com/dat-cho/&tenant_id=1eb3a16f-01a9-4f57-a01d-4adb3c729984&business_name=SIZ+SPA&rwg_token=AE37R_j1tJZBNgRz6S3KhC8Nr2WbupxIHcmzboB1VfCrMyEe-xCjMgTjItinE6e7phrqQX5bmNV-p10JHmlis_xmZUCqBrZJPU3NKlKhK6wyfcXnzi5sLGQ%3D",
+            "https://www.instagram.com/sizspa.footandbody/"
+          ],
+          "website_uri": "https://sizspa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=672160052658345250",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+          "place_id": "ChIJaUVRDmYvdTERaPz-6A3qSDI",
+          "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 383 118 479",
+          "google_rating": "4.6⭐ (19 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 19,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "10:00–00:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3623403245684063336",
+          "booking_links": [
+            "https://zalo.me/0704063569"
+          ],
+          "website_uri": "https://www.facebook.com/profile.php?id=61586404466407",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3623403245684063336",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Passion Spa Quận 1 - Chi nhánh Bến Thành",
+          "place_id": "ChIJs1u9ZksvdTERGPHZlkgAUQo",
+          "address": "19D Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 704 063 569",
+          "google_rating": "4.6⭐ (49 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 49,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "10:00–02:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=743375725261353240",
+          "booking_links": [
+            "https://zalo.me/0704063569"
+          ],
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=743375725261353240",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Charm Spa Garden",
+          "place_id": "ChIJJ5PQXQMvdTERg6uN4ZfL5C8",
+          "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 339 499 889",
+          "google_rating": "4.9⭐ (217 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 217,
+          "distance_km": 2.1,
+          "open_now": true,
+          "opening_hours": "10:00–00:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3451107067657300867",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_itxr0tuYPjc_gkFk5a5ytju316cM4cPTCWqtJYyw0D2OVg8GNfzKNvjp2E6Y0ch5k63US-uGyOUunOkNJy1Zh1G5KWGwOITDLuaSYyyDbgRhCgVac%3D",
+            "https://zalo.me/0339499889"
+          ],
+          "website_uri": "https://charmspa.com.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3451107067657300867",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "22Spa & Massage",
+          "place_id": "ChIJs6IqGwcvdTERLkHgWg6Tk3M",
+          "address": "100 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 355 666 722",
+          "google_rating": "4.6⭐ (3.057 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 3057,
+          "distance_km": 1.5,
+          "open_now": true,
+          "opening_hours": "10:00–22:30",
+          "place_types": [
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8328161825801650478",
+          "booking_links": [
+            "https://www.22spa.com/booking",
+            "https://wa.me/+84355666722",
+            "https://bookingpage.ai/redirect?url=https://22spa.com/en/booking&tenant_id=ada406d1-010d-4c20-823a-79b7fc2a1e5a&business_name=22Spa&rwg_token=AE37R_j9Nc07LuIFT7SmugxGKZ2d5ywdA_p6YOdx8jRKcpFwjz8TiGVOEJlQd2A-mqoOWcc_qPtH5SN_LRdakr2h8OW9VXYMJ_69Pc8gCup1CtlS6LY-F-M%3D",
+            "https://pf.kakao.com/_Txflxfj"
+          ],
+          "website_uri": "http://22spa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8328161825801650478",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "CHẠM SPA",
+          "place_id": "ChIJN2bNbbYvdTER8omz4l4i03A",
+          "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam",
+          "phone": "+84 986 837 471",
+          "google_rating": "4.9⭐ (190 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 190,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "10:00–19:30",
+          "place_types": [
+            "Spa",
+            "Spa mặt",
+            "Bác sĩ trị liệu xoa bóp"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8129879543259564530",
+          "booking_links": [
+            "https://www.fresha.com/book-now/cham-spa-pb9j4tne/all-offer?id=3106941&pId=3006513&rwg_token=AE37R_jjOG6GwlbFkWJohJBrPeJ8fyzYlJTA8jVw_QihqdOH6UP0YcSumsRo16iQziOwPAklfzZ-6W_XC1fsqhQA5cV9gPf3PXYbaPDfiMmn41YWeqwPul8%3D",
+            "https://zalo.me/0986837471"
+          ],
+          "website_uri": "https://chamspa.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8129879543259564530",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "openingHours",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.76813,106.69747",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Senva Spa - Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmdkR9ViTqFXTUzHBn8DFti_-wTy2vREWBVSoE9gsgO7C5XxtVJLNzmvHJTivB8fZwL_QXTuFUpVlA3Nt64PhrGBZb1Ze30NQJvni-q7OA-lymZKAlf65j4ky7GdUvyh6z-rLXv19w5O5Q",
+            "address": "153 Ký Con, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 855,
+            "openingHours": "09:30–23:00",
+            "openNow": true,
+            "phone": "+84 768 333 868",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–23:00",
+              "Chủ Nhật": "09:30–23:00",
+              "Thứ Hai": "09:30–23:00",
+              "Thứ Ba": "09:30–23:00",
+              "Thứ Tư": "09:30–23:00",
+              "Thứ Năm": "09:30–23:00",
+              "Thứ Sáu": "09:30–23:00"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "1km away"
+              },
+              {
+                "attribute": "openNow",
+                "evidence": "open now"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "reviewCount",
+              "evidence": "3110 reviews"
+            },
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3479517558071959535",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768333868",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Senva%20Spa%20-%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76981,106.70311",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Nàng Sen Message - Quận 1 Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnX2xDwuOfHlLmF9kLrTXJeOhaCu1LzH0FGJHgxcof3mRiZiWcmxSfOwj2jpViEwoeQqg5U-CCcUmg-PReVn70hxxOt65Qn-Y6xAKfBcY029mWiXAu_pNPvmu6982P9IxCn8ts4hOTXulO7",
+            "address": "74 Nguyễn Công Trứ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 492,
+            "openingHours": "09:00–23:00",
+            "openNow": true,
+            "phone": "+84 798 112 255",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:00",
+              "Chủ Nhật": "09:00–23:00",
+              "Thứ Hai": "09:00–23:00",
+              "Thứ Ba": "09:00–23:00",
+              "Thứ Tư": "09:00–23:00",
+              "Thứ Năm": "09:00–23:00",
+              "Thứ Sáu": "09:00–23:00"
+            },
+            "distanceKm": 0.8,
+            "categories": [
+              "Câu lạc bộ spa và sức khỏe",
+              "Chương trình chăm sóc sức khỏe"
+            ],
+            "rank": 0,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=538501441083395111",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84798112255",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=N%C3%A0ng%20Sen%20Message%20-%20Qu%E1%BA%ADn%201%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76618,106.68293",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MASSAGE HẠ SPA QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2bsMKqeBLBH_a5_nDbiS5aHwHzIQ-5cJy4WCaus6LYoDedfomAjAM6IlfO62V-aLBpgxSplKtM0UglElDgxUW60Xp8ZhSg7SlKKHh0Sdv4qR1Z5LPQi-xCcC19s5Y7d-83e6eFnarK8Oc",
+            "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3519,
+            "openingHours": "09:30–22:30",
+            "openNow": true,
+            "phone": "+84 945 705 000",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–22:30",
+              "Chủ Nhật": "09:30–22:30",
+              "Thứ Hai": "09:30–22:30",
+              "Thứ Ba": "09:30–22:30",
+              "Thứ Tư": "09:30–22:30",
+              "Thứ Năm": "09:30–22:30",
+              "Thứ Sáu": "09:30–22:30"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Bác sĩ trị liệu xoa bóp",
+              "Câu lạc bộ spa và sức khỏe"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haspamassage.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5564503278764968347",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84945705000",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=MASSAGE%20H%E1%BA%A0%20SPA%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77126,106.69041",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Massage Cổ Phong Q1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpAL44pSuMVhZQTq3U2lXx2Gn1DT7AzYeYSFlZpIOrMYgCfLQV7L21tR3WFBWCB7232MZJtpPsyCJ_osO4gnf_E42hbJcveY0oZqogqqvCkdwfN38ozJFMTaEI5v-Qe7ZJOu9lY2XtgDay",
+            "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3110,
+            "openingHours": "09:00–22:30",
+            "openNow": true,
+            "phone": "+84 832 222 292",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:30",
+              "Chủ Nhật": "09:00–22:30",
+              "Thứ Hai": "09:00–22:30",
+              "Thứ Ba": "09:00–22:30",
+              "Thứ Tư": "09:00–22:30",
+              "Thứ Năm": "09:00–22:30",
+              "Thứ Sáu": "09:00–22:30"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 2,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://massagecophongquan1.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@cobidimassage/video/7534701041246293255",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3381478916670750901",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84832222292",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Massage%20C%E1%BB%95%20Phong%20Q1%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76597,106.68983",
+            "domain": "spa",
+            "kind": "place",
+            "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWka4Ur7hTeQCiotJs9sx_arQ442FBoWk9Fdb2uIb0pWDihyzq3VcNfC0AZH51Z0m4MtS0ev8GjnS3nVBCoLQMUM_IAjqM4uvw5klseT6gHq3BOID2kZgbSL4Z3BwkcldnkocyWSW7sOqFlq",
+            "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1820,
+            "openingHours": "10:00–22:15",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:15",
+              "Chủ Nhật": "10:00–22:15",
+              "Thứ Hai": "10:00–22:15",
+              "Thứ Ba": "10:00–22:15",
+              "Thứ Tư": "10:00–22:15",
+              "Thứ Năm": "10:00–22:15",
+              "Thứ Sáu": "10:00–22:15"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 4,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://sizspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=672160052658345250",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=SIZ%20SPA%20-%20Best%20Massage%20Spa%20and%20Packages%20-%20District%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76954,106.69736",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktTispb0QlNJgJjAYHcJ6SYPwc3Cf_ZfrBUAi1dtgsdaea5yFgAyjdYop_u7hfRMUFM1THSgGGZtAlBreMb1w8qaru8ke0-_7H7Hyt-LEjSk9WOv5rbu4AKUTvpSnpBpn98VY6CJMPMQap",
+            "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 19,
+            "openingHours": "10:00–00:00",
+            "openNow": true,
+            "phone": "+84 383 118 479",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–00:00",
+              "Chủ Nhật": "10:00–00:00",
+              "Thứ Hai": "10:00–00:00",
+              "Thứ Ba": "10:00–00:00",
+              "Thứ Tư": "10:00–00:00",
+              "Thứ Năm": "10:00–00:00",
+              "Thứ Sáu": "10:00–00:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=61586404466407",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3623403245684063336",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84383118479",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Passion%20Spa%20Qu%E1%BA%ADn%201%20-%20Chi%20Nh%C3%A1nh%20%C4%90%E1%BA%B7ng%20Th%E1%BB%8B%20Nhu%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77186,106.69047",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Passion Spa Quận 1 - Chi nhánh Bến Thành",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhIpUh5BwqkswBWybUz4zsmZtGhveQpKWJMO-MdEgASAjl6YZZTYxmuIPKdQC0TTmdDpSCJrV9XwUipDV6GAxyACFbsXy6E6c39v3To-MTMLi1l98tcoGoS5O8g7JQkpj50eXs",
+            "address": "19D Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 49,
+            "openingHours": "10:00–02:00",
+            "openNow": true,
+            "phone": "+84 704 063 569",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–02:00",
+              "Chủ Nhật": "10:00–02:00",
+              "Thứ Hai": "10:00–02:00",
+              "Thứ Ba": "10:00–02:00",
+              "Thứ Tư": "10:00–02:00",
+              "Thứ Năm": "10:00–02:00",
+              "Thứ Sáu": "10:00–02:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa mát xa",
+              "Spa sức khỏe"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=743375725261353240",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84704063569",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Passion%20Spa%20Qu%E1%BA%ADn%201%20-%20Chi%20nh%C3%A1nh%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76216,106.68915",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Charm Spa Garden",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4540f3ixVxHI0Bv4yNhW__0gD_BiKGYOsnzib2ZGHjSGTCqUEDT2MdGhbh04TD-X7hmcsDUubXKjEyxNEaK1OVMR2ASzwuQm-rsfmPXd4q5GhwasBqpbtZsbJ-Vm-VwX0ogqIl0dBqvAG",
+            "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 217,
+            "openingHours": "10:00–00:00",
+            "openNow": true,
+            "phone": "+84 339 499 889",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–00:00",
+              "Chủ Nhật": "10:00–00:00",
+              "Thứ Hai": "10:00–00:00",
+              "Thứ Ba": "10:00–00:00",
+              "Thứ Tư": "10:00–00:00",
+              "Thứ Năm": "10:00–00:00",
+              "Thứ Sáu": "10:00–00:00"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Spa mát xa",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Spa"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://charmspa.com.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@cobidimassage/video/7651924040256441620",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3451107067657300867",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84339499889",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Charm%20Spa%20Garden%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20couple%20massage%202%20ng%C6%B0%E1%BB%9Di%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.76618,106.68293",
+          "place:osm:10.77126,106.69041",
+          "place:osm:10.76216,106.68915"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}
