@@ -766,11 +766,18 @@ export async function POST(req: Request) {
     const scoped = buildMemoryBlock(existingMemory, forcedTool, { consultative: true, domains: decisionFrame.domains })
     if (unscoped !== scoped && memoryBlock.includes(unscoped)) memoryBlock = memoryBlock.replace(unscoped, scoped)
   }
+  // 🚨 A TASK SWITCH STARTS THE FRAME OVER. The frame folds the last three user turns so
+  // "cho 2 người" said earlier still holds — but only within ONE consultation. Android E2E
+  // turn 5 (2026-09-19): "tim resort o phu quoc sang chut cho 2 nguoi" right after "spa nao
+  // mo khuya sau 22h o quan 3" was classified new_consultation (food/spa → hotel), yet the
+  // frame still carried `late_open` and `time: late_night` from the spa turn, the hotel rows
+  // had no hours, and the reply hedged "chưa thấy bằng chứng về giờ mở khuya" about resorts
+  // nobody asked to be open late. On new_consultation the window is the current turn only.
   const situation: SituationFrame | null = consultativeV1
     ? deriveSituation(
       framingMessages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),
       needProfile,
-      { hasGps: !!userLocation },
+      { hasGps: !!userLocation, ...(turnIntent === 'new_consultation' ? { window: 1 } : {}) },
     )
     : null
 
