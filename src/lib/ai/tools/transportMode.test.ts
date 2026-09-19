@@ -2,33 +2,30 @@ import { describe, it, expect } from 'vitest'
 import { coerceTransportMode } from './transportMode'
 
 // Same class as E1 (placeType.ts): an off-enum `mode` used to fail SDK validation before
-// execute() ran and cost the whole turn. Any word the model writes must map or be dropped.
+// execute() ran and cost the whole turn. Any value the model writes must map, or come back as an
+// explicit unknown that still carries what the model wrote — never a silent default.
 describe('coerceTransportMode', () => {
   it('keeps a known mode as is', () => {
-    expect(coerceTransportMode('intercity')).toBe('intercity')
-    expect(coerceTransportMode('taxi')).toBe('taxi')
-    expect(coerceTransportMode(' Taxi ')).toBe('taxi')
-    expect(coerceTransportMode('inter-city')).toBe('intercity')
+    expect(coerceTransportMode('intercity')).toEqual({ mode: 'intercity', raw: 'intercity', coerced: false })
+    expect(coerceTransportMode('taxi')).toEqual({ mode: 'taxi', raw: 'taxi', coerced: false })
+    expect(coerceTransportMode(' Taxi ')).toMatchObject({ mode: 'taxi', coerced: true })
+    expect(coerceTransportMode('inter-city')).toMatchObject({ mode: 'intercity' })
   })
   it('maps the synonyms the model actually writes', () => {
-    expect(coerceTransportMode('bus')).toBe('intercity')
-    expect(coerceTransportMode('train')).toBe('intercity')
-    expect(coerceTransportMode('xe khách')).toBe('intercity')
-    expect(coerceTransportMode('xe khách giường nằm')).toBe('intercity')
-    expect(coerceTransportMode('tàu hỏa')).toBe('intercity')
-    expect(coerceTransportMode('limousine')).toBe('intercity')
-    expect(coerceTransportMode('grab')).toBe('taxi')
-    expect(coerceTransportMode('Xanh SM')).toBe('taxi')
-    expect(coerceTransportMode('xe công nghệ')).toBe('taxi')
-    expect(coerceTransportMode('ride_hailing')).toBe('taxi')
-    expect(coerceTransportMode('xe ôm')).toBe('taxi')
-    expect(coerceTransportMode('be')).toBe('taxi')
+    for (const [v, m] of [['bus', 'intercity'], ['train', 'intercity'], ['xe khách', 'intercity'], ['xe khách giường nằm', 'intercity'],
+      ['tàu hỏa', 'intercity'], ['limousine', 'intercity'], ['grab', 'taxi'], ['Xanh SM', 'taxi'], ['xe công nghệ', 'taxi'],
+      ['ride_hailing', 'taxi'], ['xe ôm', 'taxi'], ['be', 'taxi']] as const) {
+      expect(coerceTransportMode(v), v).toMatchObject({ mode: m, raw: v, coerced: true })
+    }
   })
-  it('drops what it cannot place (the tool then infers from the route)', () => {
-    expect(coerceTransportMode('bell')).toBeUndefined()
-    expect(coerceTransportMode('zzz')).toBeUndefined()
-    expect(coerceTransportMode('')).toBeUndefined()
-    expect(coerceTransportMode(undefined)).toBeUndefined()
-    expect(coerceTransportMode(3)).toBeUndefined()
+  it('omitted / empty ⇒ the tool default (undefined), never an unknown', () => {
+    expect(coerceTransportMode(undefined)).toEqual({ mode: undefined, raw: undefined, coerced: false })
+    expect(coerceTransportMode(null)).toEqual({ mode: undefined, raw: undefined, coerced: false })
+    expect(coerceTransportMode('')).toEqual({ mode: undefined, raw: undefined, coerced: false })
+  })
+  it('a value that names neither kind of trip is an explicit unknown carrying the original', () => {
+    expect(coerceTransportMode('bell')).toEqual({ mode: 'unknown', raw: 'bell', coerced: false })
+    expect(coerceTransportMode('zzz')).toEqual({ mode: 'unknown', raw: 'zzz', coerced: false })
+    expect(coerceTransportMode(3)).toEqual({ mode: 'unknown', raw: '3', coerced: false })
   })
 })

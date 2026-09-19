@@ -73,6 +73,7 @@ import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/mem
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
+import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
@@ -1445,6 +1446,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget), travelEditorialFor(location)])
           let r: unknown = placesResult
+          // A type the lexicon could not place ran as a type-less search — said so, not swallowed.
+          if (rawType !== undefined && rawType !== null && String(rawType).trim() !== '' && type === undefined && r && typeof r === 'object') {
+            (r as Record<string, unknown>)._tappy_type_note = `type "${String(rawType).slice(0, 40)}" khong nam trong danh sach loai; da tim KHONG loc theo loai.`
+          }
           // Explore clip: "this place" is ONE venue. The tool just returned the
           // 8-10 places around the address — as it must for discovery — so the
           // rows are narrowed HERE, deterministically, to the one(s) that carry
@@ -1630,10 +1635,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
           departDate: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
           returnDate: z.string().optional().describe('Ngay ve dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
-          passengers: z.number().int().min(1).max(9).optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc)'),
+          // No min/max in the schema: `.max(9)` was validated by the SDK before execute() and a
+          // party of ten ended the turn. The cap is applied below, with a message, never silently.
+          passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
         }),
-        execute: async ({ origin, destination, departDate, returnDate, passengers }) => {
-          const r = await getFlightPrices(origin, destination, lang, departDate)
+        execute: async ({ origin, destination, departDate, returnDate, passengers: rawPassengers }) => {
+          const { passengers, note: passengersNote } = clampPassengers(rawPassengers, lang)
+          if (passengersNote) console.warn(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_flight_prices', step: 'passengers_clamped', from: rawPassengers, to: passengers }))
+          const r0 = await getFlightPrices(origin, destination, lang, departDate)
+          const r = passengersNote && r0 && typeof r0 === 'object' ? { ...(r0 as Record<string, unknown>), passengers_note: passengersNote } : r0
           const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
           // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
           // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
@@ -1675,8 +1685,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
         }),
         execute: async ({ origin, destination, mode: rawMode, date }) => {
-          const mode = coerceTransportMode(rawMode)
-          if (rawMode !== undefined && mode !== rawMode) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(rawMode).slice(0, 40), to: mode ?? null }))
+          const m = coerceTransportMode(rawMode)
+          if (m.coerced) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(m.raw).slice(0, 40), to: m.mode }))
+          if (m.mode === 'unknown') {
+            // Not a silent default: the tool would have run the intercity branch for a word that
+            // names neither kind of trip. The model gets the value back and asks the user.
+            console.warn(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_unknown', mode_received: m.raw.slice(0, 40) }))
+            return {
+              error: 'mode_unknown', mode_received: m.raw, origin, destination,
+              accepted_modes: ['intercity', 'taxi'],
+              ask: lang === 'en'
+                ? `"${m.raw}" is not a trip kind I know. Ask the user ONE short question: intercity bus/train, or taxi/ride-hailing within the city?`
+                : `"${m.raw}" khong phai loai di chuyen minh biet. Hoi user MOT cau ngan: xe khach/tau giua 2 tinh, hay taxi/xe cong nghe trong thanh pho?`,
+            }
+          }
+          const mode = m.mode
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
           await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
