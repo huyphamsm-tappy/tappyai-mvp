@@ -21,7 +21,7 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 | **Process Text (`ACTION_PROCESS_TEXT`): select text in any app → toolbar → "TappyAI"** *(completion)* | C | **Yes** | Same parser, same chat-with-prefill destination, same quota. The Android twin of the browser extension's selection menu. |
 | System sharesheet for review media | C | Pre-existing | `ReviewShareSheet`. |
 | Custom-scheme deep links (`tappyai://auth-callback`, `tappyai://group/{id}`) | C | Pre-existing | No domain verification. |
-| **App Links for `https://www.tappyai.com/r/*`** | D | **Prepared server-side only** | `GET /.well-known/assetlinks.json` serves the statement once `ANDROID_APP_LINKS_SHA256` is set; the app manifest deliberately does NOT yet claim https links (no native public-result screen exists — a link must keep opening the web page, which is the acquisition surface). |
+| **App Links for `https://www.tappyai.com/r/*`** | D | **Prepared end-to-end, OFF by default** *(completion)* | `GET /.well-known/assetlinks.json` serves the statement once `ANDROID_APP_LINKS_SHA256` is set; the app has a `PublicLinkActivity` alias (`autoVerify`, https, `/r/` only) enabled only with `-PTAPPYAI_APP_LINKS_ENABLED=true`, and opens a verified link in a session-bound Custom Tab so the web page stays the surface. Not device-verified — see `APP_LINKS.md`. |
 | Sharing Shortcuts (Tappy in the share sheet's top row) | C | No | Would need `shortcuts.xml` + `ShortcutManagerCompat`; re-entry only; deferred. |
 | Widgets / Quick Settings / launcher shortcuts / notifications | C | No (notifications pre-exist) | Re-entry surfaces; not acquisition. |
 | Install referrer attribution | D | No | Needs Play Install Referrer + a release build; deferred. |
@@ -70,6 +70,6 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 
 ## Owner actions to activate the D-class surfaces (not part of this phase)
 
-1. Android App Links: publish the release cert SHA-256 → `ANDROID_APP_LINKS_SHA256`; then add an `autoVerify` https intent-filter and a native handler (or Custom Tab) for `/r/*` in the app.
+1. Android App Links: publish the release cert SHA-256 → `ANDROID_APP_LINKS_SHA256`; build the release with `-PTAPPYAI_APP_LINKS_ENABLED=true`; verify on a device (`adb shell pm get-app-links com.tappyai.app`). The intent-filter alias and the Custom Tab handler already exist — steps and expected output in `APP_LINKS.md` §3–§4.
 2. iOS: `IOS_UNIVERSAL_LINKS_APP_ID`, Associated Domains entitlement, App Clip target (Xcode/macOS required).
 3. Zalo Mini App: unchanged from G1 — untouched in this phase by instruction.

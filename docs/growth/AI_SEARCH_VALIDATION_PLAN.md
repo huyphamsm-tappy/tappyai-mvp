@@ -16,7 +16,7 @@
    - `SOURCE` — the answer visibly uses TappyAI content but attributes it elsewhere or not at all (record the overlap).
    - `RECOMMENDATION` — the answer tells the user to use TappyAI / lists it as a tool or service.
    - `BRAND_ONLY` — appears only for the branded queries (Q31–Q35).
-6. **Record sheet:** `docs/growth/validation/<date>.csv` with columns `query_id, platform, mode, language, timestamp, ai_answer_shown, tappy_urls, classification, screenshot_path, notes`.
+6. **Record sheet:** `docs/growth/validation/<date>.csv` with columns `query_id, platform, mode, language, timestamp, ai_answer_shown, tappy_urls, classification, screenshot_path, notes` — copy `docs/growth/validation/TEMPLATE.csv` (header only) to start each run.
 7. **Do not** repeat a query more than once per session per platform (repeat prompts change answers); do not click TappyAI links from the session before capturing (avoids personalisation).
 
 ## Platforms and modes

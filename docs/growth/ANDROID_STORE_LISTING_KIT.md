@@ -61,15 +61,15 @@ Note on Vietnam: Samsung, Xiaomi and OPPO dominate Android shipments; Galaxy Sto
 | Privacy policy URL | https://www.tappyai.com/privacy |
 | Website | https://www.tappyai.com |
 | Support email | support@tappyai.com |
-| Icon | `public/branding/otter-logo.png` (512×512 export needed) |
-| Feature graphic | `public/feature-graphic.png` (1024×500 check) |
+| Icon | `android/store/icon-512.png` (512×512, exported from `public/branding/otter-logo.png`) |
+| Feature graphic | `android/store/feature-graphic-1024x500.png` (1024×500, verified) |
 | Screenshots | real device captures only — the ones under `public/landing/screen-*.webp` are web captures; Android captures are an owner task (Pixel_8 emulator exists) |
-| Data safety (Play) | declare: account data (email), user content (queries), location (optional, for local results), analytics (first-party `user_events` + PostHog). No selling. Encryption in transit. Deletion via `/delete-account`. |
+| Data safety (Play) | declare: account data (email), user content (queries), location (optional, for local results), analytics (first-party `user_events` + PostHog). No selling. Encryption in transit. Deletion: request-based (in-app "Request account deletion" → email to support), documented at `/delete-account` — declare it as such, not as self-service. |
 
 ## After publication (code-side, prepared)
 
 - Add the Play listing to `public/manifest.json` `related_applications` (`platform: "play"`, `id: "com.tappyai.app"`) — keep `prefer_related_applications: false` so the PWA remains installable.
-- Android App Links: publish the release signing cert SHA-256 → `ANDROID_APP_LINKS_SHA256` (server statement already served at `/.well-known/assetlinks.json`), then add the `autoVerify` https intent-filter and a native `/r/*` handler (see `DISTRIBUTION.md`).
+- Android App Links: publish the release signing cert SHA-256 → `ANDROID_APP_LINKS_SHA256` (server statement already served at `/.well-known/assetlinks.json`), build with `-PTAPPYAI_APP_LINKS_ENABLED=true` and verify on a device — the `autoVerify` alias and the Custom Tab handler for `/r/*` already exist (see `APP_LINKS.md`).
 - Attribution: Play Install Referrer is not wired (FUTURE); first-run web deep links from the app carry no `src` today.
 
 ## Do not

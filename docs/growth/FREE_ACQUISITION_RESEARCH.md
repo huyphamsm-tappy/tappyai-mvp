@@ -230,7 +230,7 @@ Classes: A TRUE · B ASSISTED · C RETENTION · D FUTURE/BLOCKED.
 | `/llms.txt` | built (prev. phase) | B (convention) | yes | $0 | — | DONE |
 | PWA shortcuts / Web Share Target | built | C | yes | $0 | install | DONE |
 | Android Process Text / Direct Share | built | C | yes | $0 | install | DONE |
-| Android App Links `/r/*` | server-prepared | D | yes | $0 | cert SHA-256 + native handler | PREPARED |
+| Android App Links `/r/*` | server + native alias/Custom Tab prepared, OFF by default | D | yes | $0 | cert SHA-256 + build flag + device verification | PREPARED |
 | Android widget / Quick Settings tile | not built | C | yes | $0 | — | NOT BUILT (retention only; deprioritised) |
 | iOS App Clip / Universal Links / Share Extension / App Intents / Siri | doc-only | D | Apple dev fee | >$0 | macOS + Apple account | BLOCKED (no Mac) |
 | Share-out loop (web + Android) + N-generation | built | A for recipient | yes | $0 | real users | DONE |

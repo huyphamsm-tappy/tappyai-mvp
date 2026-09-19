@@ -82,7 +82,7 @@ Grouped by category. "Prev." = already built in G1 / completion / free-acquisiti
 |---|---|---|---|
 | 44 | Sharesheet / Direct Share inbound | RETENTION | Prev. built |
 | 45 | ACTION_PROCESS_TEXT | RETENTION | Prev. built |
-| 46 | App Links (`https://www.tappyai.com/r/*` opens the app) | RETENTION for installed users; server statement prepared | needs release cert SHA-256 + a native `/r/*` handler → owner |
+| 46 | App Links (`https://www.tappyai.com/r/*` opens the app) | RETENTION for installed users; server statement + native alias/Custom Tab handler prepared, OFF by default | needs release cert SHA-256 + build flag + device verification → owner (`APP_LINKS.md`) |
 | 47 | Custom-scheme deep links | RETENTION | pre-existing |
 | 48 | Static launcher shortcuts (`shortcuts.xml`) | RETENTION | not built (rule: retention is not inflated into acquisition) |
 | 49 | Widgets / Quick Settings tile / notifications | RETENTION | not built |
@@ -251,7 +251,7 @@ Not on the list (deliberately): anything retention-only, anything needing a stor
 | Pinterest Rich Pins | `/r/*` emits `og:type=article` + `article:published_time` | validate one URL at developers.pinterest.com/tools/url-debugger |
 | Directories / profiles | `DIRECTORY_SUBMISSION_KIT.md` (canonical copy; VN additions) | LinkedIn, Crunchbase, Product Hunt (post-release), 2–3 AI/VN directories; then `ORGANIZATION_SAME_AS` |
 | GitHub repo for the extension | self-contained folder | decide whether to publish |
-| Android App Links | AASA/assetlinks routes env-gated | release cert SHA-256 + native `/r/*` handler |
+| Android App Links | AASA/assetlinks routes env-gated; native alias + Custom Tab handler built, OFF by default | release cert SHA-256 → `ANDROID_APP_LINKS_SHA256`, build with `-PTAPPYAI_APP_LINKS_ENABLED=true`, device verification (`APP_LINKS.md`) |
 | Home footer links (hubs · About · Scam Shield · extension) | recommendation | owner UI decision (Home is locked) |
 
 ---
