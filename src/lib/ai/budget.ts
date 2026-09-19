@@ -260,7 +260,11 @@ export function applyBudgetFilter(result: unknown, budget: Budget, category: str
     r.flights = after
   }
 
-  if (budget.max < LUXURY_PRICE_FLOOR) {
+  // Item 6 (2026-09-19): this is a HOTEL rule (luxury hotel brands vs a low nightly budget). It used
+  // to ride every budgeted tool result — a restaurant search, a product search, a flight — as 160
+  // tokens of hotel text the model had no use for on that turn. Measured F8 ("nhà hàng … 500k/người"):
+  // the food result carried the Pullman/Marriott ban. Hotel results only.
+  if (budget.max < LUXURY_PRICE_FLOOR && /khach san|hotel/i.test(category)) {
     r._LENH_BAT_BUOC = `⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget ${fmtBudget(budget)} VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.`
   }
 

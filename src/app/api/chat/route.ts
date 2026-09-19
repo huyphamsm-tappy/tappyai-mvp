@@ -1571,7 +1571,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // `modelPayload.ts`.
           return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)))
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard })
         }
       }) }),
       get_news: tool({

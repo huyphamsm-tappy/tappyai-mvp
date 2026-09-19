@@ -38,14 +38,21 @@ function compactRow(row: unknown): unknown {
   const x = row as Record<string, unknown>
   const out: Record<string, unknown> = {}
   for (const k of ROW_KEEP) if (x[k] !== undefined && x[k] !== null && x[k] !== '') out[k] = x[k]
+  // Item 6: the formatted `google_rating` ("4.7⭐ (659 đánh giá Google Maps)") is what the model
+  // cites; the numeric twins beside it are for the ranker and the guards, which read the FULL row.
+  if (typeof out.google_rating === 'string' && out.google_rating) { delete out.rating_value; delete out.rating_count }
   // Rule 18b reads `review_actions[0]` when the user asks for a review link; one entry, three fields.
   const ra = Array.isArray(x.review_actions) ? x.review_actions[0] as Record<string, unknown> | undefined : undefined
   if (ra && typeof ra.url === 'string') out.review_actions = [{ kind: ra.kind, url: ra.url, attributed: ra.attributed === true }]
   return out
 }
 
-/** @param key the array the rows live in: `results` (search_places) or `hotel_list` (get_hotel_prices) */
-export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results'): unknown {
+/**
+ * @param key the array the rows live in: `results` (search_places) or `hotel_list` (get_hotel_prices)
+ * @param opts.rendersCard the client renders the decision card — the model is told not to write the
+ *   aggregate Maps link, so the link itself need not travel (item 6).
+ */
+export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results', opts: { rendersCard?: boolean } = {}): unknown {
   if (!result || typeof result !== 'object' || Array.isArray(result)) return result
   const r = result as Record<string, unknown>
   const rows = r[key]
@@ -61,8 +68,10 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
   const others = rows.filter(row => !shortlisted(row as Record<string, unknown>))
   const all = [...members, ...others].slice(0, MODEL_ROWS_MAX)
   const total = rows.length
+  const top: Record<string, unknown> = { ...r }
+  if (opts.rendersCard) delete top.google_maps_search
   return {
-    ...r,
+    ...top,
     [key]: all.map(compactRow),
     results_note: total > all.length
       ? `Hien thi ${all.length}/${total} ket qua (rut gon: chi cac truong de chon); the (card) cua user co day du.`
