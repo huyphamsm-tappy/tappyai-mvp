@@ -181,6 +181,8 @@ export interface ConsultativeV1Context {
   carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null }>
   /** Stated hard constraints no candidate carried evidence for — set at tool time. */
   hardGaps: string[]
+  /** ASSUME_PRESENT constraints (air_con…) some fetched text argues AGAINST — set at tool time. */
+  hardContrary?: string[]
   /** The user stated a budget and no row carried a price — set at tool time. */
   budgetGap: boolean
 }

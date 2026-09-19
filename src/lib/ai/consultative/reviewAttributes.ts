@@ -15,6 +15,7 @@
 import { normalizeVN } from '../intent'
 import { sentenceSpans, protectedSpans } from '../moneyGuard'
 import type { Hard, Mood } from './situationFrame'
+import { HARD_TO_ATTR } from './hardConstraints'
 
 export type VenueAttribute =
   | 'quiet' | 'lively' | 'view' | 'family' | 'date' | 'fancy' | 'cheap' | 'crowded' | 'slow_service'
@@ -83,48 +84,13 @@ export function extractAttributes(entityTexts: ReadonlyMap<string, readonly stri
   return out
 }
 
-/** Which situation words a venue attribute answers. */
-const HARD_TO_ATTR: Partial<Record<Hard, VenueAttribute>> = {
-  quiet: 'quiet', parking: 'parking', kids: 'kids', vegetarian: 'vegetarian', outdoor: 'outdoor', late_open: 'late_open', view: 'view',
-  live_music: 'live_music',
-}
 const MOOD_TO_ATTR: Record<Mood, VenueAttribute> = {
   chill: 'quiet', lively: 'lively', romantic: 'date', fancy: 'fancy', cheap_good: 'cheap',
 }
 
-/**
- * Hard constraints the user stated for which NO candidate carries supporting
- * evidence — reported as an evidence gap, never silently dropped.
- *
- * A constraint the review lexicon cannot read at all (private_room, air_con,
- * wheelchair, delivery) is a gap unless the caller found row-level evidence for
- * it (`rowSupported`, e.g. delivery from `has_delivery`). Measured 2026-09-19
- * (F8 "phòng riêng", 4 runs): skipping such a constraint left the prompt with no
- * "BANG CHUNG THIEU" line and the model asserted "có không gian riêng" for a
- * venue whose rows and reviews said nothing about a private room.
- */
-export function hardConstraintGaps(hard: readonly Hard[], attrs: ReadonlyMap<string, AttributeEvidence[]>, rowSupported: Iterable<Hard> = []): Hard[] {
-  const fromRows = new Set(rowSupported)
-  const gaps: Hard[] = []
-  for (const h of hard) {
-    if (fromRows.has(h)) continue
-    const want = HARD_TO_ATTR[h]
-    let supported = false
-    if (want) for (const list of attrs.values()) if (list.some(a => a.attribute === want)) { supported = true; break }
-    if (!supported) gaps.push(h)
-  }
-  return gaps
-}
-
-/** Hard constraints a result row can vouch for on its own (no review text needed). */
-export function rowSupportedHards(rows: readonly unknown[]): Hard[] {
-  const out = new Set<Hard>()
-  for (const row of rows) {
-    const x = (row ?? {}) as Record<string, unknown>
-    if (x.has_delivery === true || x.has_order === true) out.add('delivery')
-  }
-  return [...out]
-}
+// What a stated hard constraint means when nothing vouches for it lives in ONE table
+// (hardConstraints.ts): group, supporting attribute, and the words that name the gap.
+export { hardConstraintGaps, rowSupportedHards, classifyHardGaps } from './hardConstraints'
 
 /** The attribute a stated hard constraint asks for, if the lexicon has one. */
 export function attributeForHard(h: Hard): VenueAttribute | null {

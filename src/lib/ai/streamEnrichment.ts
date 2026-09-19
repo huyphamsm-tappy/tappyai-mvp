@@ -25,6 +25,8 @@ import { appendFileSync } from 'fs'
 import { guardClarifications } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
 import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
+import { HARD_GAP_WORDS } from './consultative/hardConstraints'
+import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
@@ -1607,11 +1609,9 @@ export function applyPlaceEnrichmentStreamFilter(
        * the row set, exactly like the G1b fallback: server-authored, placed
        * before the machine blocks, never a claim about the venue.
        */
-      const gapWords: Record<string, [string, string]> = {
-        quiet: ['yên tĩnh', 'quiet'], parking: ['chỗ đậu xe', 'parking'], kids: ['phù hợp trẻ em', 'kid-friendliness'],
-        vegetarian: ['món chay', 'vegetarian options'], outdoor: ['chỗ ngồi ngoài trời', 'outdoor seating'],
-        late_open: ['giờ mở khuya', 'late opening'], view: ['view', 'a view'],
-      }
+      // One word list for every constraint (hardConstraints.ts) — a gap the route computed can no
+      // longer be invisible here (this list used to know 7 of the 12 and filtered the rest away).
+      const gapWords: Record<string, [string, string]> = HARD_GAP_WORDS
       /**
        * A budget-FIT claim with no price on any row — "Cả hai quán đều dưới 80k/bát", "hoàn
        * toàn vừa tầm", "trong tầm giá" (measured F2) — is a guess dressed as a fact. The money
@@ -1641,6 +1641,9 @@ export function applyPlaceEnrichmentStreamFilter(
       // sentence claimed "yên tĩnh" with no evidence, which is the opposite of naming the gap.
       const acknowledged = /chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|chua xac nhan duoc|no evidence|could not (?:find|confirm)/.test(said)
       const unsaid = acknowledged ? [] : v1.hardGaps.filter(g => gapWords[g])
+      // A gap with no words is a table hole, never a silent skip.
+      for (const g of v1.hardGaps) if (!gapWords[g]) console.warn(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'gap_without_words', hard: g }))
+      const contraryUnsaid = (v1.hardContrary ?? []).filter(g => gapWords[g] && !/khong (?:co|thay)|kem|lacks?|no (?:ac|air)/.test(said))
       const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay|tim thay) (?:duoc )?(?:muc |thong tin )?gia|khong (?:co|tim thay) (?:muc |thong tin )?gia|no price/.test(said)
       const headsUp: string[] = []
       if (unsaid.length > 0) {
@@ -1648,23 +1651,32 @@ export function applyPlaceEnrichmentStreamFilter(
           ? `I found no evidence about ${unsaid.map(g => gapWords[g][1]).join(', ')} for these places — worth a call before you go.`
           : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`)
       }
+      if (contraryUnsaid.length > 0) {
+        headsUp.push(lang === 'en'
+          ? `Some reviews say ${contraryUnsaid.map(g => gapWords[g][1]).join(', ')} is lacking here — worth checking before you go.`
+          : `Có đánh giá nói ${contraryUnsaid.map(g => gapWords[g][0]).join(', ')} ở đây không tốt — nên hỏi trước khi đi.`)
+      }
       if (budgetUnsaid) {
         headsUp.push(lang === 'en'
           ? 'None of these results carries a price, so I cannot confirm they fit your budget.'
           : 'Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.')
       }
-      const withHeadsUp = headsUp.length === 0 ? tidyBudget : (() => {
+      const withHeadsUpRaw = headsUp.length === 0 ? tidyBudget : (() => {
         const at = earliestMarker(tidyBudget)
         const head = tidyBudget.slice(0, at).replace(/\s+$/, '')
         const tail = tidyBudget.slice(at)
         return `${head}${head ? '\n\n' : ''}${headsUp.join(' ')}${tail ? `\n\n${tail}` : ''}`
       })()
+      // At most two hedges; beyond that they are merged into one sentence (hedgeCap.ts).
+      const hedged = capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
+      const withHeadsUp = hedged.text
       console.log(JSON.stringify({
         type: 'tappyai_guard', guard: 'consultative_v1',
         search_claims_removed: claims.removed, any_tool_called: anyToolCalled,
         atmosphere_removed: atmosphere.removed, atmosphere_unsupported_in_pick: atmosphere.unsupportedInPick,
         ...shape.stats, orphan_lines_removed: shape.text.split('\n').length - tidy.split('\n').length,
-        heads_up: headsUp.length, gaps_unsaid: unsaid, budget_unsaid: budgetUnsaid,
+        heads_up: headsUp.length, gaps_unsaid: unsaid, contrary_unsaid: contraryUnsaid, budget_unsaid: budgetUnsaid,
+        hedges: hedged.hedges, hedges_merged: hedged.merged,
         carried: collector?.consultativeV1?.carried.length ?? 0,
       }))
       return withHeadsUp

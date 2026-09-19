@@ -66,7 +66,8 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
-import { extractAttributes, hardConstraintGaps, rowSupportedHards, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { extractAttributes, classifyHardGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { evidenceNote } from '@/lib/ai/consultative/hardConstraints'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -948,8 +949,14 @@ export async function POST(req: Request) {
         // stated budget when no row carries a price: "trong tầm giá" is then a
         // guess, and the stream filter appends the honest sentence itself.
         const rows = (result as { results?: unknown }).results
-        const gaps = hardConstraintGaps(situation.hard, v1Attrs, rowSupportedHards(Array.isArray(rows) ? rows : []))
+        // Each constraint lands in exactly one bucket (hardConstraints.ts) — the log names all of them.
+        const report = classifyHardGaps(situation.hard, v1Attrs, { rows: Array.isArray(rows) ? rows : [], texts: entityTextsOf(result) })
+        const gaps = report.gaps
         if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
+        if (report.contrary.length > 0) (result as Record<string, unknown>)._tappy_hard_contrary = report.contrary
+        // The system block was built before this tool ran, so the instruction rides the result.
+        const note = evidenceNote(report, lang)
+        if (note) (result as Record<string, unknown>)._tappy_evidence_note = note
         const anyPrice = Array.isArray(rows) && rows.some(row => {
           const x = row as Record<string, unknown>
           return !!(x.price_range_text || x.price_range || x.price_level || typeof x.price === 'number')
@@ -957,8 +964,8 @@ export async function POST(req: Request) {
         const budgetGap = !!situation.budget && !anyPrice
         if (budgetGap) (result as Record<string, unknown>)._tappy_budget_evidence = false
         const ctx = enrichment.consultativeV1
-        if (ctx) { ctx.hardGaps = [...gaps]; ctx.budgetGap = budgetGap }
-        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps, budget_gap: budgetGap }))
+        if (ctx) { ctx.hardGaps = [...gaps]; ctx.hardContrary = [...report.contrary]; ctx.budgetGap = budgetGap }
+        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps, hard_contrary: report.contrary, hard_assumed: report.assumed, hard_row_backed: report.rowBacked, hard_unclassified: report.unclassified, budget_gap: budgetGap }))
       } catch (e) { console.error('[consultative-v1] gaps failed:', e) }
       // What the reply may do with this evidence. The OpenStreetMap fallback
       // carries no rating, price, hours or reviews for any row, so a repeat

@@ -15,6 +15,8 @@ export interface ConsultativeV1PromptInput {
   frame: SituationFrame
   /** Hard constraints with no supporting evidence on any candidate (§4). */
   hardGaps: readonly Hard[]
+  /** ASSUME_PRESENT constraints some fetched text argues against (hardConstraints.ts). */
+  hardContrary?: readonly Hard[]
   /** True when the client renders the decision card (web / Android). */
   rendersCard: boolean
   lang: string
@@ -44,9 +46,11 @@ export function nextWeekendStay(now: Date): { checkIn: string; checkOut: string;
 export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): string {
   const { frame, hardGaps, rendersCard, lang } = input
   const nextWeekend = nextWeekendStay(input.now ?? new Date())
-  const gaps = hardGaps.length > 0
-    ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua thay bang chung ve X" cho quan ban chon; KHONG khang dinh bua, KHONG bo qua im lang.`
-    : ''
+  const gaps = (hardGaps.length > 0
+    ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua xac nhan duoc X, nen goi hoi truoc" cho quan ban chon — MOT cau gop cho tat ca; KHONG khang dinh bua, KHONG bo qua im lang.`
+    : '') + ((input.hardContrary?.length ?? 0) > 0
+    ? `\n- BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
+    : '')
   const call = input.searchNow
     ? (input.searchNow.type === 'hotel'
       ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
