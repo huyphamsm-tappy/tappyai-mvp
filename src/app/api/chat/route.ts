@@ -66,9 +66,10 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
-import { extractAttributes, classifyHardGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
-import { evidenceNote } from '@/lib/ai/consultative/hardConstraints'
-import { admitsForUpscale } from '@/lib/ai/consultative/upscale'
+import { extractAttributes, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/hardConstraintGate'
+import { admitsForHard } from '@/lib/ai/consultative/upscale'
+import { closesLate } from '@/lib/ai/consultative/hardConstraints'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer } from '@/lib/ai/consultative/actionability'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
@@ -857,29 +858,6 @@ export async function POST(req: Request) {
     budget ?? budgetFromHistory(messages, extractBudget),
   )
 
-  /** Consultative V1: the entity-scoped snippet text per venue, off the tool result as returned. */
-  const entityTextsOf = (result: unknown): Map<string, string[]> => {
-    const out = new Map<string, string[]>()
-    // The row's own category text counts too ("Khu vui chơi trẻ em", "Nhà hàng chay").
-    const rows = (result as { results?: unknown }).results
-    if (Array.isArray(rows)) {
-      for (const row of rows as Array<Record<string, unknown>>) {
-        const name = typeof row.name === 'string' ? row.name : ''
-        if (!name) continue
-        const cat = [name, row.type, row.amenity, row.cuisine, ...(Array.isArray(row.types) ? row.types : [])].filter((x): x is string => typeof x === 'string' && x.length > 0).join(' · ')
-        if (cat) out.set(name, [...(out.get(name) ?? []), cat])
-      }
-    }
-    const snips = (result as { price_search_results?: unknown }).price_search_results
-    if (!Array.isArray(snips)) return out
-    for (const r of snips as Array<{ title?: string; snippet?: string; evidence_scope?: string; evidence_about?: string }>) {
-      if (r.evidence_scope !== 'entity' || !r.evidence_about) continue
-      const bucket = out.get(r.evidence_about) ?? []
-      bucket.push(`${r.title ?? ''} ${r.snippet ?? ''}`)
-      out.set(r.evidence_about, bucket)
-    }
-    return out
-  }
 
   const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
@@ -952,11 +930,17 @@ export async function POST(req: Request) {
       // Consultative V1 widens the cap to five (`shortlistMax`); the default is the Rule of 1–3.
       // An upscale request never shortlists a guest house / hostel (upscale.ts, owner T8 2026-09-19);
       // the exclusion is logged so a row leaving the shortlist is never a silent drop.
+      // A.2: under `late_open` the same rule keeps rows with no late-closing evidence off the
+      // shortlist whenever some row has it (upscale.ts `admitsForHard`).
+      const anyRowClosesLate = ranked.ranked.some(e => closesLate(((e.candidate.raw ?? {}) as Record<string, unknown>).opening_hours) === true)
       const sl = shortlistCandidates(ranked.ranked, undefined, e => {
         if (!qualifiesFor(decisionFrame, e)) return false
-        if (situation && !admitsForUpscale(situation.hard, e.candidate)) {
-          console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'shortlist_excluded_upscale', name: e.candidate.name }))
-          return false
+        if (situation) {
+          const verdict = admitsForHard(situation.hard, e.candidate, { anyRowClosesLate })
+          if (!verdict.admitted) {
+            console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'shortlist_excluded', reason: verdict.reason, name: e.candidate.name }))
+            return false
+          }
         }
         return true
       })
@@ -964,8 +948,10 @@ export async function POST(req: Request) {
       // turn ALREADY fetched (entity-scoped snippets) — zero new calls. They
       // ride the shortlist evidence as the only such words the model may use.
       // Never fails the turn: a V1 extraction error is logged and the turn runs as before.
+      // A.3: hotels get the same review-attribute evidence as places (hotel_list rows are read by
+      // the shared `entityTextsOf`).
       const v1Attrs = (() => {
-        if (!situation || toolName !== 'search_places') return null
+        if (!situation) return null
         try { return extractAttributes(entityTextsOf(result)) } catch (e) { console.error('[consultative-v1] attributes failed:', e); return null }
       })()
       if (sl.selected.length > 0) {
@@ -991,30 +977,10 @@ export async function POST(req: Request) {
             .map(s => ({ name: s.name, role: s.role, attributes: s.evidence.attributes ?? null })),
         }))
       }
-      if (situation && v1Attrs) try {
-        // A stated hard constraint no candidate carries evidence for is an
-        // evidence gap the reply must name — never silently dropped. Same for a
-        // stated budget when no row carries a price: "trong tầm giá" is then a
-        // guess, and the stream filter appends the honest sentence itself.
-        const rows = (result as { results?: unknown }).results
-        // Each constraint lands in exactly one bucket (hardConstraints.ts) — the log names all of them.
-        const report = classifyHardGaps(situation.hard, v1Attrs, { rows: Array.isArray(rows) ? rows : [], texts: entityTextsOf(result) })
-        const gaps = report.gaps
-        if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
-        if (report.contrary.length > 0) (result as Record<string, unknown>)._tappy_hard_contrary = report.contrary
-        // The system block was built before this tool ran, so the instruction rides the result.
-        const note = evidenceNote(report, lang)
-        if (note) (result as Record<string, unknown>)._tappy_evidence_note = note
-        const anyPrice = Array.isArray(rows) && rows.some(row => {
-          const x = row as Record<string, unknown>
-          return !!(x.price_range_text || x.price_range || x.price_level || typeof x.price === 'number')
-        })
-        const budgetGap = !!situation.budget && !anyPrice
-        if (budgetGap) (result as Record<string, unknown>)._tappy_budget_evidence = false
-        const ctx = enrichment.consultativeV1
-        if (ctx) { ctx.hardGaps = [...gaps]; ctx.hardContrary = [...report.contrary]; ctx.budgetGap = budgetGap }
-        console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'attributes', venues_with_attributes: v1Attrs.size, hard: situation.hard, hard_gaps: gaps, hard_contrary: report.contrary, hard_assumed: report.assumed, hard_row_backed: report.rowBacked, hard_unclassified: report.unclassified, budget_gap: budgetGap }))
-      } catch (e) { console.error('[consultative-v1] gaps failed:', e) }
+      // The hard-constraint / budget gate no longer lives here (A.3, 2026-09-19): it runs once
+      // for EVERY tool result in `gateTools`, on the copy the model reads — see
+      // `hardConstraintGate.ts`. Keeping it inside one tool's branch is how the hotel path
+      // went ungated.
       // What the reply may do with this evidence. The OpenStreetMap fallback
       // carries no rating, price, hours or reviews for any row, so a repeat
       // search there cannot help; a Google/Serper result can.
@@ -1362,6 +1328,32 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     return tools
   }
+  /**
+   * 🚨 THE HARD-CONSTRAINT GATE, AT THE ONE POINT EVERY TOOL PASSES THROUGH (A.3, 2026-09-19).
+   * Wraps each tool's execute() by NAME: the result the tool returns (the model's copy) is judged
+   * against the stated hard constraints and budget, annotated, and the stream context updated.
+   * A tool the gate does not apply to is logged with the constraints it could not judge — never
+   * ungated in silence. Only Consultative V1 turns (`situation` set) are judged.
+   */
+  const gateTools = <T extends Record<string, unknown>>(tools: T): T => {
+    for (const [name, t] of Object.entries(tools)) {
+      const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
+      const orig = def.execute
+      if (typeof orig !== 'function') continue
+      def.execute = async (...a: unknown[]) => {
+        const out = await orig(...a)
+        const gate = applyHardConstraintGate(name, out, situation, lang)
+        const ctx = enrichment.consultativeV1
+        if (gate.applicable && gate.report && ctx) {
+          ctx.hardGaps = [...gate.report.gaps]
+          ctx.hardContrary = [...gate.report.contrary]
+          ctx.budgetGap = gate.budgetGap
+        }
+        return out
+      }
+    }
+    return tools
+  }
   /** Set once at onFinish: absolute ms of model generation complete (T9). */
   let modelFinishAt: number | null = null
   /**
@@ -1480,7 +1472,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: noToolTurn ? undefined : timeTools({
+    tools: noToolTurn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
@@ -1804,7 +1796,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           }
         }),
       } : {}),
-    }),
+    })),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level

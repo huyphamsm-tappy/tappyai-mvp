@@ -25,6 +25,8 @@ const ROW_KEEP = [
   'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
   'price_range_text', 'price_range', 'price_level', 'price',
   'distance_km', 'open_now', 'opening_hours', 'place_types', 'cuisine', 'attributes', 'stars',
+  // Row flags the hard-constraint gate vouches from (A.3: the gate reads THIS copy).
+  'has_delivery', 'has_order',
   'tappy_rating', 'tappy_rating_count',
   // The URL fields the CTA and review-link rules read; nothing else the model could invent from.
   'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review',
