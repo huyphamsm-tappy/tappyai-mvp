@@ -1,0 +1,1062 @@
+{
+  "id": "F3",
+  "text": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+  "parent": null,
+  "status": 200,
+  "ms": 23536,
+  "evidenceId": "5af1df7d-613f-43a3-a3d4-e2e2521e48a5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hoa Túc Saigon",
+      "rating": 4.8,
+      "count": 482,
+      "price": "200-600 N ₫",
+      "hours": "11:00–22:00",
+      "distance_km": 1.2,
+      "address": "29 Ngô Thời Nhiệm, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "a thăng eatery",
+      "rating": 4.8,
+      "count": 221,
+      "price": "200-300 N ₫",
+      "hours": "11:00–14:00, 17:00–21:00",
+      "distance_km": 2,
+      "address": "184/28 Lý Chính Thắng, Quận 3, Hồ Chí Minh 95000, Việt Nam"
+    },
+    {
+      "name": "casa FONTANA",
+      "rating": 4.9,
+      "count": 51,
+      "hours": "11:00–22:00",
+      "distance_km": 2.1,
+      "address": "280 Nam Kỳ Khởi Nghĩa, Ward 8, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "La Maison Wine Dining",
+      "rating": 4.5,
+      "count": 555,
+      "hours": "10:00–22:00",
+      "distance_km": 2,
+      "address": "201b Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1152,
+      "price": "200-300 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hoa Túc Saigon",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 482,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "11:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "a thăng eatery",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 221,
+        "distance_km": 2,
+        "open_now": true,
+        "opening_hours": "11:00–14:00, 17:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "casa FONTANA",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 51,
+        "distance_km": 2.1,
+        "open_now": true,
+        "opening_hours": "11:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "La Maison Wine Dining",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 555,
+        "distance_km": 2,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.1,
+        "reviews": 1152,
+        "distance_km": 0.4,
+        "open_now": true,
+        "opening_hours": "08:00–22:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "quiet"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Hoa Túc Saigon** cho bạn — quán có rating 4.8⭐ (482 đánh giá), cách bạn chỉ 1.2km, đang mở cửa tới 22:00 nên hoàn hảo cho tối nay. Không gian quán được biết đến với không khí ấm cúng, phù hợp cho hẹn hò 💕\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps — Hoa Túc Saigon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15232113852516085210\",\"primary\":true},{\"label\":\"🌐 Website — Hoa Túc Saigon\",\"type\":\"website\",\"url\":\"http://hoatuc.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hoa Túc Saigon** cho bạn — quán có rating 4.8⭐ (482 đánh giá), cách bạn chỉ 1.2km, đang mở cửa tới 22:00 nên hoàn hảo cho tối nay. Không gian quán được biết đến với không khí ấm cúng, phù hợp cho hẹn hò 💕\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps — Hoa Túc Saigon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15232113852516085210\",\"primary\":true},{\"label\":\"🌐 Website — Hoa Túc Saigon\",\"type\":\"website\",\"url\":\"http://hoatuc.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 3, TP.HCM",
+      "results": [
+        {
+          "name": "Hoa Túc Saigon",
+          "address": "29 Ngô Thời Nhiệm, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3825 1676",
+          "website_uri": "http://hoatuc.com/",
+          "place_id": "ChIJcxRJ3a0vdTER2i2HfdhWY9M",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (482 đánh giá Google Maps)",
+          "rating_count": 482,
+          "price_range_text": "200-600 N ₫",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15232113852516085210",
+          "opening_hours": "11:00–22:00",
+          "open_now": true,
+          "distance_km": 1.2,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Hoa Túc Saigon",
+              "url": "https://maps.google.com/?cid=15232113852516085210",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Hoa Túc Saigon",
+              "url": "http://hoatuc.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Hoa%20T%C3%BAc%20Saigon%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "a thăng eatery",
+          "address": "184/28 Lý Chính Thắng, Quận 3, Hồ Chí Minh 95000, Việt Nam",
+          "phone": "+84 963 455 038",
+          "website_uri": "https://www.facebook.com/share/18UgDqJW2b/",
+          "place_id": "ChIJiz1MaQAvdTERTk_Ipzinygw",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (221 đánh giá Google Maps)",
+          "rating_count": 221,
+          "price_range_text": "200-300 N ₫",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=921732935525617486",
+          "opening_hours": "11:00–14:00, 17:00–21:00",
+          "open_now": true,
+          "distance_km": 2,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — a thăng eatery",
+              "url": "https://maps.google.com/?cid=921732935525617486",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — a thăng eatery",
+              "url": "https://www.facebook.com/share/18UgDqJW2b/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=a%20th%C4%83ng%20eatery%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "casa FONTANA",
+          "address": "280 Nam Kỳ Khởi Nghĩa, Ward 8, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3622 2280",
+          "website_uri": "https://lavelasaigon.com/dining/casa-fontana/",
+          "place_id": "ChIJ80Uj0vwvdTERl_bdVGCR-4w",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (51 đánh giá Google Maps)",
+          "rating_count": 51,
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10158873227391006359",
+          "opening_hours": "11:00–22:00",
+          "open_now": true,
+          "distance_km": 2.1,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — casa FONTANA",
+              "url": "https://maps.google.com/?cid=10158873227391006359",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — casa FONTANA",
+              "url": "https://lavelasaigon.com/dining/casa-fontana/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=casa%20FONTANA%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "La Maison Wine Dining",
+          "address": "201b Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 904 903 230",
+          "website_uri": "http://www.lamaison.vn/",
+          "place_id": "ChIJubktZfMvdTER5B19MiTkJrk",
+          "rating_value": 4.5,
+          "google_rating": "4.5⭐ (555 đánh giá Google Maps)",
+          "rating_count": 555,
+          "place_types": [
+            "Nhà hàng Pháp",
+            "Nhà hàng lai Á",
+            "Nhà hàng hỗn hợp"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13341601790248689124",
+          "booking_links": [
+            "https://lamaison.vn/en/booking.html",
+            "https://www.google.com/maps/reserve/v/dine/c/uKGr7TH_1Mk?source=pa&opi=79508299"
+          ],
+          "opening_hours": "10:00–22:00",
+          "open_now": true,
+          "distance_km": 2,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — La Maison Wine Dining",
+              "url": "https://maps.google.com/?cid=13341601790248689124",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — La Maison Wine Dining",
+              "url": "http://www.lamaison.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=La%20Maison%20Wine%20Dining%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Quán ăn ngon Sài Gòn",
+          "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3825 7179",
+          "website_uri": "https://quanngonsaigon.com.vn/",
+          "place_id": "ChIJydiqMDgvdTERxllzoN0cLwM",
+          "rating_value": 4.1,
+          "google_rating": "4.1⭐ (1.152 đánh giá Google Maps)",
+          "rating_count": 1152,
+          "price_range_text": "200-300 N ₫",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=229433844224448966",
+          "opening_hours": "08:00–22:30",
+          "open_now": true,
+          "distance_km": 0.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Quán ăn ngon Sài Gòn",
+              "url": "https://maps.google.com/?cid=229433844224448966",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Quán ăn ngon Sài Gòn",
+              "url": "https://quanngonsaigon.com.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20ngon%20S%C3%A0i%20G%C3%B2n%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20l%C3%A3ng%20m%E1%BA%A1n%20y%C3%AAn%20t%C4%A9nh%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJcxRJ3a0vdTER2i2HfdhWY9M",
+          "name": "Hoa Túc Saigon",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 482,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "11:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.8",
+            "1.2km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJiz1MaQAvdTERTk_Ipzinygw",
+          "name": "a thăng eatery",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 221,
+            "distance_km": 2,
+            "open_now": true,
+            "opening_hours": "11:00–14:00, 17:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.8",
+            "2km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJ80Uj0vwvdTERl_bdVGCR-4w",
+          "name": "casa FONTANA",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 51,
+            "distance_km": 2.1,
+            "open_now": true,
+            "opening_hours": "11:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.9",
+            "2.1km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJubktZfMvdTER5B19MiTkJrk",
+          "name": "La Maison Wine Dining",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 555,
+            "distance_km": 2,
+            "open_now": true,
+            "opening_hours": "10:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.5",
+            "2km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJydiqMDgvdTERxllzoN0cLwM",
+          "name": "Quán ăn ngon Sài Gòn",
+          "role": null,
+          "evidence": {
+            "rating": 4.1,
+            "reviews": 1152,
+            "distance_km": 0.4,
+            "open_now": true,
+            "opening_hours": "08:00–22:30",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.1",
+            "0.4km away"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "quiet"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: yên tĩnh. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co.",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance",
+          "openingHours"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Hoa Túc Saigon",
+        "decided_by": [
+          {
+            "attribute": "openNow",
+            "evidence": "open now"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "1.2km away"
+          }
+        ],
+        "not_chosen": "a thăng eatery",
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78062,106.69018",
+            "domain": "food",
+            "kind": "place",
+            "name": "Hoa Túc Saigon",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnrbGQME5db5zJ_WiQQdnSB7GX4GUHCQj5awggDkYn0gunhqbDqdmY0ANUW6WPI3farOnnVbW0y7C4yuUbwecDfp1GMdn5S7lrfgHA0Xw08BMZ7ON09gdUohOioQUO0T9VcA3M6fdFhQJM",
+            "address": "29 Ngô Thời Nhiệm, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 482,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 3825 1676",
+            "priceRangeText": "200-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "11:00–22:00",
+              "Thứ Năm": "11:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "openNow",
+                "evidence": "open now"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "1.2km away"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@jensenliang/video/7668224389485268242",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Hoa%20T%C3%BAc%20Saigon%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15232113852516085210",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838251676",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hoa%20T%C3%BAc%20Saigon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78394,106.68371",
+            "domain": "food",
+            "kind": "place",
+            "name": "a thăng eatery",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmUIbsJG6kcsSHkaT59qR3kD5EX38Esc_8cmcQmzHaWMfxXL3iJ5ydsmvv1d82nrJFQhne78v5Xud9aduc4HNWP8T8IVWgO1KqdqkP1XFajS3b209DYS7CFwnn4xrHNkrQqYeLtmr-wsbzR",
+            "address": "184/28 Lý Chính Thắng, Quận 3, Hồ Chí Minh 95000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 221,
+            "openingHours": "11:00–14:00, 17:00–21:00",
+            "openNow": true,
+            "phone": "+84 963 455 038",
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–14:00, 17:00–21:00",
+              "Chủ Nhật": "11:00–14:00, 17:00–21:00",
+              "Thứ Hai": "11:00–14:00, 17:00–21:00",
+              "Thứ Ba": "11:00–14:00, 17:00–21:00",
+              "Thứ Tư": "11:00–14:00, 17:00–21:00",
+              "Thứ Năm": "11:00–14:00, 17:00–21:00",
+              "Thứ Sáu": "11:00–14:00, 17:00–21:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@qmthau/video/7602869510445501704",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=a%20th%C4%83ng%20eatery%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=921732935525617486",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/share/18UgDqJW2b/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84963455038",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=a%20th%C4%83ng%20eatery%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78867,106.68547",
+            "domain": "food",
+            "kind": "place",
+            "name": "casa FONTANA",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkfUmCP30N55omybh6aqcrd99kKR58B9js3xnE3m93QNXR-tPerq2g0_V4OFQ05RI3IHhSqVGxrcWp6LULMhjEUDhe9Cm3Zqw9X-q6OKtb63nJS_HFJnqZtrQbvTR2cot1cU48zF-yK-tV6",
+            "address": "280 Nam Kỳ Khởi Nghĩa, Ward 8, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 51,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 3622 2280",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "11:00–22:00",
+              "Thứ Năm": "11:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=casa%20FONTANA%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10158873227391006359",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=casa%20FONTANA%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://lavelasaigon.com/dining/casa-fontana/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842836222280",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78740,106.68622",
+            "domain": "food",
+            "kind": "place",
+            "name": "La Maison Wine Dining",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmn0NjN00HGkoZtV3y8kdOwz8RfvTqvDujBXtVIJ3p9h-QQn_gy7ObdT6iP8wobfKv8Bo2LZAVnsfYvk0bvl5uQwtBjramtqB09QxioQBkYy440yT02-a3GwlwTnDRSwo65pQtpHQ",
+            "address": "201b Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 555,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 904 903 230",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng Pháp",
+              "Nhà hàng lai Á",
+              "Nhà hàng hỗn hợp"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=La%20Maison%20Wine%20Dining%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13341601790248689124",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=La%20Maison%20Wine%20Dining%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84904903230",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77757,106.69754",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán ăn ngon Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkyzPmfPy5NyQZitGcTZu7m1uymyfKBWMM3WBX36xT_MsFoKgFTF5XJQfKc3LHPN9Ptq7joKwU9rfKmS0CwxrSOX23kHpd8kVNMcjBDLJBXa7LmnoQyDnNHJgD2tREbwGUtn5a6tcA_nXOw",
+            "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 1152,
+            "openingHours": "08:00–22:30",
+            "openNow": true,
+            "phone": "+84 28 3825 7179",
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–22:30",
+              "Chủ Nhật": "08:00–22:30",
+              "Thứ Hai": "08:00–22:30",
+              "Thứ Ba": "08:00–22:30",
+              "Thứ Tư": "08:00–22:30",
+              "Thứ Năm": "08:00–22:30",
+              "Thứ Sáu": "08:00–22:30"
+            },
+            "distanceKm": 0.4,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%83n%20ngon%20S%C3%A0i%20G%C3%B2n%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=229433844224448966",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20ngon%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://quanngonsaigon.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838257179",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78818,106.68289",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Lúa Về | Nhà Hàng Hải Sản Ngon Quận 3 |Quán Nhậu Ngon Trường Sa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkvcvShnt7ViyYOYV55Qjy2Zg1p2asdWKRtoDDyEJDFE34nW-G679La8FyNZ6ojTCuCw-IFeWoFkdFWk6e0vveEUPOmXrHtewwUbTu3P_Yh2CcVvZmCREFDMzCcZyh2M8sh1PnPegSKmbg",
+            "address": "812 Trường Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 35,
+            "openingHours": "10:00–02:00",
+            "openNow": true,
+            "priceRangeText": "200-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–02:00",
+              "Chủ Nhật": "10:00–02:00",
+              "Thứ Hai": "10:00–02:00",
+              "Thứ Ba": "10:00–02:00",
+              "Thứ Tư": "10:00–02:00",
+              "Thứ Năm": "10:00–02:00",
+              "Thứ Sáu": "10:00–02:00"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20L%C3%BAa%20V%E1%BB%81%20%7C%20Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20Ngon%20Qu%E1%BA%ADn%203%20%7CQu%C3%A1n%20Nh%E1%BA%ADu%20Ngon%20Tr%C6%B0%E1%BB%9Dng%20Sa%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5538541276688273400",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20L%C3%BAa%20V%E1%BB%81%20%7C%20Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20Ngon%20Qu%E1%BA%ADn%203%20%7CQu%C3%A1n%20Nh%E1%BA%ADu%20Ngon%20Tr%C6%B0%E1%BB%9Dng%20Sa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78454,106.69403",
+            "domain": "food",
+            "kind": "place",
+            "name": "Ẩm Thực Quê Nhà Quận 3",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlf053iCPRh0JNVj6Jbych8zDBm6nyeNLXebWfU9UaME6AOKpGztyF-gCv5w8iPuyz5xPtiyDOZfbbPLGMxn7aetPDu4Ei0MJu8ra2F7toftgebhBXBAIhvlpx-abDDE3OHaUvxIA",
+            "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4,
+            "ratingCount": 2437,
+            "openingHours": "09:00–23:00",
+            "openNow": true,
+            "phone": "+84 938 226 166",
+            "priceRangeText": "300-800 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:00",
+              "Chủ Nhật": "09:00–23:00",
+              "Thứ Hai": "09:00–23:00",
+              "Thứ Ba": "09:00–23:00",
+              "Thứ Tư": "09:00–23:00",
+              "Thứ Năm": "09:00–23:00",
+              "Thứ Sáu": "09:00–23:00"
+            },
+            "distanceKm": 1.1,
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=%E1%BA%A8m%20Th%E1%BB%B1c%20Qu%C3%AA%20Nh%C3%A0%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13954616740709857054",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%E1%BA%A8m%20Th%E1%BB%B1c%20Qu%C3%AA%20Nh%C3%A0%20Qu%E1%BA%ADn%203%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84938226166",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77472,106.68278",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Mây Bốn Phương",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmwlOknDTVRd1rZj1hYtS23l2mDowrCqs_wkUMOLs1-ePMRk4kVms3sGXX3ZjkOYKRxHcS0iGR_judNDQXplpXFn6470Vi8Zqoqeqm5FEJAku_hXi6s7Hn9jVV6WK-52yfEMkDj",
+            "address": "132/6 Vườn Chuối, 6 Đ. Vườn Chuối, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 435,
+            "openingHours": "11:00–14:00, 16:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 3833 4743",
+            "priceRangeText": "100-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–14:00, 16:00–22:00",
+              "Chủ Nhật": "11:00–14:00, 16:00–22:00",
+              "Thứ Hai": "11:00–14:00, 16:00–22:00",
+              "Thứ Ba": "11:00–14:00, 16:00–22:00",
+              "Thứ Tư": "11:00–14:00, 16:00–22:00",
+              "Thứ Năm": "11:00–14:00, 16:00–22:00",
+              "Thứ Sáu": "11:00–14:00, 16:00–22:00"
+            },
+            "distanceKm": 2,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20M%C3%A2y%20B%E1%BB%91n%20Ph%C6%B0%C6%A1ng%20Qu%E1%BA%ADn%203%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8920039903594825509",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20M%C3%A2y%20B%E1%BB%91n%20Ph%C6%B0%C6%A1ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://bluetechx.vn/maybonphuong",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838334743",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20l%C3%A3ng%20m%E1%BA%A1n%20y%C3%AAn%20t%C4%A9nh%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

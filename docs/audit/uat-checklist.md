@@ -1,11 +1,13 @@
-# UAT CHECKLIST — TappyAI V3 + Consultative V1 (bản audit, 2026-09-18)
+# UAT CHECKLIST — TappyAI V3 + Consultative V1 (bản audit, cập nhật 2026-09-19)
 
 Mọi thứ dưới đây chạy trên **môi trường audit** (project `zdaprdfgpbpnxyofagmc`), không đụng production.
+
+**Mới ngày 2026-09-19 (job 8 mục):** lượt hỏi-rõ trước khi tìm (mục 1), **3 card + "Xem thêm N chỗ"** (mục 2), trang test ảnh card (mục 3), link TikTok (mục 4), `get_transport_options.mode` lạ ⇒ hỏi lại thay vì crash (mục 0.3). Các dòng kiểm mới: **15–19** ở bảng dưới và câu **11–14** ở danh sách câu hỏi. Dòng 11 và 13 của bảng đã viết lại theo cơ chế mới.
 
 ## 1. Khởi động
 
 **Web + backend (cờ ON: G1/G2/G3 + `CONSULTATIVE_V1`)**
-- Worktree backend: `.claude/worktrees/audit-nonprod` (đã checkout `merge/main-into-v3` @ commit cuối trong report).
+- Worktree backend: `.claude/worktrees/audit-nonprod` (đã checkout `merge/main-into-v3` @ commit cuối trong report — 2026-09-19: `766d31a`; nếu `git -C .claude/worktrees/audit-nonprod log -1` khác thì `git checkout --detach merge/main-into-v3` ở đó rồi khởi động lại server + `curl -X POST localhost:3101/api/chat -d '{}'` phải trả 400).
 - Trong Claude Code (worktree `v3-phase4-design`): Preview → chọn cấu hình **`audit-flags-on`** (port 3101). Hoặc chạy tay:
   ```bash
   cd D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\audit-nonprod && set PLACE_GUARD_ATTRIBUTION_V2=1&& set SNIPPET_PRICE_GUARD_V2=1&& set MEDIA_PLACEMENT_V2=1&& set CONSULTATIVE_V1=1&& npm run dev -- --port 3101
@@ -14,11 +16,11 @@ Mọi thứ dưới đây chạy trên **môi trường audit** (project `zdaprd
 - Kiểm tra nhanh backend sống: `curl http://localhost:3101/api/version` → `{"v":"dev"}`.
 
 **Android (emulator)**
-- Emulator `Pixel_8_uat` (`emulator-5558`) đang chạy; nếu không: `emulator -avd Pixel_8_uat -no-window -no-metrics` (hoặc có cửa sổ để xem).
-- APK debug đã build trỏ về `http://10.0.2.2:3101/` và đã cài: `android/app/build/outputs/apk/debug/app-debug.apk` (cài lại: `adb -s emulator-5558 install -r <apk>`).
+- Emulator `Pixel_8_uat` đang chạy CÓ CỬA SỔ (serial hiện tại `emulator-5554`; kiểm bằng `adb devices`); nếu không: `emulator -avd Pixel_8_uat -no-metrics`.
+- APK debug build 2026-09-19 15:38 từ `766d31a`, trỏ về `http://10.0.2.2:3101/` + Supabase audit, ĐÃ cài và mở được màn đăng nhập (guest identity đã `pm clear`): `android/app/build/outputs/apk/debug/app-debug.apk` (cài lại: `adb -s emulator-5554 install -r <apk>`).
 - Mở app → màn đăng nhập có nút **"Dùng thử không đăng nhập (bản debug)"** (chỉ có ở bản debug) → tab **Chat**.
 - Lần gửi đầu: app xin quyền vị trí → chọn "While using the app"; sau đó hộp **khai báo 18+** → bấm "Tôi đủ 18 tuổi" → app tự gửi lại.
-- Guest chỉ có 5 câu: hết thì `adb shell pm clear com.tappyai.app.debug` để có identity mới.
+- Guest chỉ có 5 câu (lượt hỏi-rõ và chào hỏi KHÔNG tính): hết thì `adb shell pm clear com.tappyai.app.debug` để có identity mới.
 - Gõ tiếng Việt: emulator gõ không dấu cũng được (backend hiểu không dấu = tiếng Việt).
 
 ## 2. Kiểm tra theo từng vertical (Food · Mua sắm · Du lịch · Spa · Giải trí)
@@ -37,10 +39,15 @@ Với MỖI câu hỏi, đối chiếu **card** (thẻ) với **prose** (đoạn
 | 8 | **Follow-up** | Hỏi tiếp "quán này mở mấy giờ?", "quán số 2 có đông không?", "chỗ đó có giữ xe không?" → trả lời đúng quán đang nói; nếu thiếu dữ liệu thì nói "mình không tìm thấy" (có thể tự tìm lại theo tên — thấy dòng `search_places` với tên quán trong log backend), KHÔNG được nói "mình đã kiểm tra" khi không tìm. Giờ/SĐT/địa chỉ đã nêu ở lượt trước ⇒ trả lời tức thì (không gọi model). |
 | 9 | **Ngôn ngữ** | Gõ không dấu ("tim quan bun bo ngon o q1") ⇒ trả lời tiếng Việt có dấu. Gõ tiếng Anh ⇒ trả lời tiếng Anh. |
 | 10 | **Không mảnh vụn** | Không có câu cụt, dòng "1.2.3.", emoji lẻ, ngoặc thừa, link trơ trọi trong prose. |
-| 11 | **Câu hỏi** | Tối đa 1 câu hỏi/lượt, chỉ khi thiếu ĐỐI TƯỢNG (mua gì/ăn gì/đi đâu). Có ai đi/khi nào/ngân sách thì bot tự giả sử và nói rõ "mình giả sử…", không hỏi lại. |
-| 12 | **Chào hỏi** | "xin chào", "cảm ơn", "ok" ⇒ trả lời ngay (không gọi model), có chip gợi ý. **Không trừ quota** (kiểm với guest 5 câu: chào + hỏi giờ quán đã nêu không làm giảm số câu còn lại). |
-| 13 | **Memory không hỏi lại** | Với tài khoản đã chat nhiều (memory đã có sở thích), câu mơ hồ "ăn gì ngon giờ" / "đi chơi ở đâu" ⇒ bot TÌM và CHỌN ngay, không hỏi "bạn muốn ăn gì/loại nào". |
+| 11 | **Hỏi rõ TRƯỚC khi tìm (mục 1)** | Câu KHÔNG có tín hiệu chọn ("ăn gì ngon giờ", "đi chơi ở đâu", "mua gì bây giờ", "mua quà cho mẹ") ⇒ lượt trả lời TỨC THÌ (không gọi model, không tốn quota) bắt đầu bằng **"Để chọn đúng chỗ, mình cần biết thêm:"** (mua sắm: "Để chọn đúng, mình cần biết:"), tối đa 3 ý, kèm **chip bấm được** (ngân sách/không khí/khu vực…). Bấm chip hoặc gõ trả lời ⇒ lượt sau TÌM NGAY và chọn; **không bao giờ hỏi lần 2** cho cùng câu. Câu ĐÃ có tín hiệu ("Sinh nhật sếp… phòng riêng… Quận 1", "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1") ⇒ KHÔNG hỏi, tìm luôn. Trong prose model: tối đa 1 câu hỏi, ở cuối, chỉ khi đổi được lựa chọn. |
+| 12 | **Chào hỏi** | "xin chào", "cảm ơn", "ok" ⇒ trả lời ngay (không gọi model), có chip gợi ý. **Không trừ quota** (kiểm với guest 5 câu: chào + hỏi giờ quán đã nêu + lượt hỏi-rõ không làm giảm số câu còn lại). |
+| 13 | **Memory mở khoá câu mơ hồ** | Với tài khoản đã chat nhiều (memory đã có ngân sách/sở thích), "ăn gì ngon giờ" ⇒ bot **không hỏi rõ** mà TÌM và CHỌN ngay (log backend `tappyai_clarify_gate … unblocked_by: memory.budget.food`). Với tài khoản mới ⇒ hỏi rõ (dòng 11). |
 | 14 | **Khách sạn** | "khach san da nang gan bien duoi 1tr/dem" ⇒ card khách sạn (Serper Maps) + prose chọn 1 khách sạn với ⭐/số đánh giá thật; nói rõ "chưa có giá" thay vì bịa; không hỏi ngày trước khi tìm. |
+| 15 | **3 card + "Xem thêm" (mục 2)** | Carousel chỉ hiện **3 card** (quán được chọn + phương án thay thế lên trước, theo thứ tự nhắc trong prose). Có nút **"Xem thêm N chỗ"** (Android: "Show N more"/"Xem thêm") mở phần còn lại, "Thu gọn" gập lại. Nút **"Xem tất cả trên bản đồ"** mở Google Maps tìm theo câu hỏi + khu vực (không phải danh sách đúng N quán của mình — chấp nhận). Câu "quán số 4…" sau khi mở "Xem thêm" ⇒ vẫn trả lời đúng quán. |
+| 16 | **Ảnh card (mục 3)** | Mở `docs/audit/photo-test-2026-09-19.html` (hoặc `http://localhost:3199/photo-test-2026-09-19.html` khi chạy cấu hình `audit-static-docs`) trong trình duyệt THẬT. Ghi lại: cột nào hiện ảnh, cột nào vỡ. Kỳ vọng: cột `referrerPolicy="no-referrer"` hiện đủ; cột mặc định có thể vỡ (lh3 `gps-cs-s` trả 429 khi có Referer). Trong chat web: card không có ảnh hoặc ảnh lỗi ⇒ dải ảnh **gập lại** (card thấp hơn), KHÔNG được là ô xám trống 128px. Android (Coil, không gửi Referer) ⇒ ảnh phải hiện; nếu lỗi thì hiện ô trống 160dp (đã biết, chưa sửa — ghi lại nếu gặp). |
+| 17 | **Link TikTok (mục 4)** | Card có nút "Review trên TikTok" khi tìm được clip đúng tên quán (≈1/3 card); card không có ⇒ nút "Tìm review trên YouTube/TikTok" (không bao giờ thiếu nút review). Bấm nút TikTok ⇒ clip nói về ĐÚNG quán đó (tên quán nằm trong tiêu đề). |
+| 18 | **Di chuyển (mục 0.3)** | "đi từ Quận 1 ra sân bay bằng xe khách/tàu…" — nếu model gọi `get_transport_options` với mode lạ (log `step: 'mode_unknown'`) ⇒ bot hỏi lại MỘT câu "xe khách/tàu giữa 2 tỉnh, hay taxi/xe công nghệ trong thành phố?" thay vì báo lỗi hay im lặng. `get_flight_prices` với >9 hành khách ⇒ bot nói rõ đã tính cho 9 người/lần đặt. |
+| 19 | **Bằng chứng theo nhóm (mục 0.1)** | Điều kiện "máy lạnh" ⇒ KHÔNG bị liệt kê là "chưa thấy bằng chứng" (giả định có); "giao hàng" ⇒ dựa vào cờ trên dòng dữ liệu; các điều kiện khác (yên tĩnh, phòng riêng, đậu xe, trẻ em, thú cưng, mở khuya…) ⇒ có câu heads-up gộp **tối đa 2 ý** ("Mình chưa thấy bằng chứng về phòng riêng và đậu xe…"), không rải 3–4 câu "chưa rõ" rời rạc. |
 
 Riêng **Mua sắm**: quyết định nằm trong thẻ "NÊN CHỌN" (giá, ⭐, số review, đánh đổi); prose có thể ngắn — kiểm tra thẻ đúng sản phẩm, nút "Xem" mở đúng sàn, "Theo dõi giá" hoạt động. Riêng **Du lịch/khách sạn**: trên audit env `get_hotel_prices` đang trả 0 dòng (đang chờ kiểm key) — nếu bot nói "chưa có kết quả" là đúng hành vi, nếu bịa tên khách sạn là LỖI.
 
@@ -56,6 +63,10 @@ Riêng **Mua sắm**: quyết định nằm trong thẻ "NÊN CHỌN" (giá, ⭐
 8. `Karaoke cho 10 người tầm 100k/người Gò Vấp` (mức giá có trên card).
 9. `Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn` (không được nói "chưa thấy bằng chứng trẻ em" với khu vui chơi trẻ em).
 10. `xin chào` rồi `cảm ơn` (trả lời tức thì, có chip).
+11. `ăn gì ngon giờ` (tài khoản MỚI/guest) ⇒ lượt hỏi-rõ tức thì + chip → bấm chip `tầm 100–200k` (hoặc gõ `tầm 150k, gần đây`) ⇒ tìm ngay, 3 card, không hỏi lại. Lặp với `đi chơi ở đâu`, `mua gì bây giờ`.
+12. `quà sinh nhật cho bạn gái tầm 1tr` ⇒ hỏi rõ (loại quà/sở thích) → trả lời `nước hoa` ⇒ thẻ sản phẩm nước hoa (không phải quán ăn), không hỏi thêm "hương gì".
+13. `Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1` ⇒ KHÔNG hỏi; 3 card + "Xem thêm N chỗ"; heads-up gộp về phòng riêng (đã biết: model đôi khi vẫn viết "có không gian riêng" rồi heads-up mâu thuẫn — ghi lại nếu gặp).
+14. `Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu` ⇒ planner; đã biết: model đôi khi KHÔNG phát `[TAPPY_PLAN]` mà chỉ viết vài bullet + hỏi "tập trung vào hoạt động nào?" (hôm nay ≈4/15 có plan) — ghi lại tỉ lệ gặp.
 
 ## 4. Ghi nhận lỗi
 Ghi: câu hỏi → nền tảng (web/Android) → điều thấy → điều mong đợi → ảnh chụp. Log backend có các dòng

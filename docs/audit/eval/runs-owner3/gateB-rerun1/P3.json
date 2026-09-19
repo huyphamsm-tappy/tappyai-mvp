@@ -1,0 +1,35 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 4697,
+  "evidenceId": "2e70e4ba-6b12-43e5-8d62-3a1cecef17d3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin đặt trước trực tuyến cho Hyan Spa từ các nền tảng chính. Để chắc chắn, bạn nên:\n\n• **Gọi trực tiếp** — xem số điện thoại trên Google Maps hoặc website của spa\n• **Nhắn Facebook** — nếu Hyan Spa có fanpage\n• **Ghé trực tiếp** — vì spa ở gần (0.9km), bạn có thể đến xem và đặt ngay\n\nHyan Spa mở đến 21:00 hôm nay nên bạn còn thời gian.\n[FOLLOWUPS]Gọi Hyan Spa để đặt|Xem spa khác có đặt online|Cần spa nào khác gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, mở cửa đến 21:00 hôm nay. Đây là lựa chọn gần nhất với chất lượng tuyệt vời 👍\n\nNếu muốn thêm lựa chọn: **CHẠM SPA** (1.3km, 4.9⭐, 190 đánh giá) hoặc **RELAX SPA** (1.2km, 4.8⭐, 532 đánh giá) cũng đều tốt và gần.\n\nCả ba đều chưa có giá cụ thể trên Google, nhưng bạn có thể gọi hoặc vào website để hỏi giá massage chân.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gói combo rẻ?|Cần đặt chỗ trước không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin đặt trước trực tuyến cho Hyan Spa từ các nền tảng chính. Để chắc chắn, bạn nên:\n\n• **Gọi trực tiếp** — xem số điện thoại trên Google Maps hoặc website của spa\n• **Nhắn Facebook** — nếu Hyan Spa có fanpage\n• **Ghé trực tiếp** — vì spa ở gần (0.9km), bạn có thể đến xem và đặt ngay\n\nHyan Spa mở đến 21:00 hôm nay nên bạn còn thời gian.\n[FOLLOWUPS]Gọi Hyan Spa để đặt|Xem spa khác có đặt online|Cần spa nào khác gần đây[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

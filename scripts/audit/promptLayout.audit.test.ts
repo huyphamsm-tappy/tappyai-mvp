@@ -105,6 +105,10 @@ describe('AUDIT — prompt layout (records only)', () => {
       const dyn = String(o.system ?? '')
       const full = shared + dyn
       const tools = Object.keys((o.tools as object) ?? {})
+      if (id === 'F8' || id === 'S2') writeFileSync(join(process.cwd(), 'docs', 'audit', `prompt-dump-${id}.txt`), `<<<SHARED ${shared.length} chars>>>
+${shared}
+<<<DYNAMIC ${dyn.length} chars>>>
+${dyn}`)
       const found = DIRECTIVES.map(([name, re]) => {
         const all = [...full.matchAll(new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g'))].map(m => m.index ?? -1)
         return { name, count: all.length, offsets: all, segment: all.map(a => (a < shared.length ? 'shared' : 'dynamic')) }

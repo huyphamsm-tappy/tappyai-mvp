@@ -337,3 +337,32 @@ Repeated identical queries in one server session hit the in-process Serper cache
 6–9 credits as on 2026-09-18. A new prompt (first run after a code change) pays the cache write (46 % hit), later
 runs read it (83–93 %). No memory extraction call fired on any of the 12 turns (neither prompt carries a durable
 or destination signal).
+
+## 2026-09-19 eight-item job — GATE A vs GATE B (same sink; segments `gateA`, `gateB`, `smoke*`)
+
+Every number below is COLD CACHE: the audit server was restarted before each segment (in-process Serper cache
+empty), memory cleared once at the start of each gate. Prices unchanged (Haiku 4.5; Serper $0.001/credit).
+Prompt-cache write/read is the first-prompt-of-a-shape effect and is inside the numbers.
+
+| segment | commit | turns | $/turn | LLM $/turn | Serper $/turn | credits | cache hit | uncached tok/tool turn |
+|---|---|---|---|---|---|---|---|---|
+| final40 baseline (2026-09-18) | 0662bb2 | 40 | $0.0287 | — | — | — | — | — |
+| GATE A (item 1 landed) | ef404dd | 48 (9 canned $0) | $0.0268 | $0.0212 | $0.0054 | 259 | 71 % | 3 592 |
+| GATE B (items 2·5·6·8·7-batch-1) | 5f67dfc | 48 (9 canned $0) | **$0.0255** | $0.0212 | $0.0041 | **197** | 71 % | 3 946 |
+
+- Per SET: GATE B $1.222 vs GATE A $1.284 (−4.8 %) vs baseline $1.148 (+6.4 %, with 8 extra free turns).
+  The 40 original turns alone: $0.98 ⇒ $0.0246/turn (8 of them are now $0 clarify turns).
+- Serper −24 % (259 → 197 credits): item 5 (order-page search removed, price retry gated) and item 2 (one TikTok batch).
+- LLM flat ($0.0212 both gates): item 2's larger model payload (+375…+2 926 uncached tokens on tool turns; T1 +2.9k)
+  is offset by items 6/8/7 (hotel-order block only on hotel results, physical-store block only on purchase turns,
+  rulebook batch 1 −630 cached tokens). Cache write per new prompt: F8 25 485 → 24 421 tokens.
+- Per CONVERSATION (the acceptance number) for the 8 clarify queries in GATE B: F7 $0.0475 · S5 $0.0174 · S6 $0.0242 ·
+  T5 $0.0217 · P5 $0.0262 · P7 $0.0213 · E2 $0.0516 · E5 $0.0218 (clarify turn $0 + one answer turn). F7/E2 are
+  cache-WRITE turns (first prompt of that shape, 46 % hit); steady state ≈ $0.02–0.026. Baseline same queries:
+  $0.0263 / .0072 / .0258 / — / .0266 / .0255 / .0251 / .0057. ⇒ a clarified conversation costs about what one
+  unclarified search turn cost; the extra turn is free.
+- Smoke set (F8 P2 E1 T1, cold, first of two runs each): item 1 $0.0572 → item 2 $0.0566 → item 5 $0.0551 →
+  items 6+8 $0.0553 → item 7 batch 1 $0.0573 (cache write of the new rulebook) → batch 2 $0.0432 (reverted).
+  Smoke turns are cold-cache first prompts (45–46 % hit), so their $/turn is ~2× the gate average.
+- Item 2 payload alone (measured, cold, uncached step-2 tokens): F8 3 879 → 4 400, P2 4 324 → 4 699, E1 2 357 → 3 146,
+  T1 6 927 → 9 853 — the only item that raised a per-turn number; kept for the owner's decision (A/B/C in the report).

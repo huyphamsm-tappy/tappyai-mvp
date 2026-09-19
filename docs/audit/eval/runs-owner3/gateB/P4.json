@@ -1,0 +1,1074 @@
+{
+  "id": "P4",
+  "text": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7",
+  "parent": null,
+  "status": 200,
+  "ms": 12065,
+  "evidenceId": "c9be3754-2549-4a4d-9a37-e30d0df88c68",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage yên tĩnh sạch sẽ Quận 7",
+        "location": "Quận 7, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "HANA SPA",
+      "rating": 4.8,
+      "count": 118,
+      "hours": "09:00–23:00",
+      "distance_km": 0.7,
+      "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mộc An Nail & Spa",
+      "rating": 5,
+      "count": 101,
+      "hours": "09:00–20:00",
+      "distance_km": 3.4,
+      "address": "60/56 Lâm Văn Bền, Quận 7, Hồ Chí Minh 756000, Việt Nam"
+    },
+    {
+      "name": "HANNIE SPA",
+      "rating": 4.9,
+      "count": 434,
+      "hours": "09:30–20:30",
+      "distance_km": 3.5,
+      "address": "43A Đ. Lâm Văn Bền, Tân Thuận, Hồ Chí Minh 72910, Việt Nam"
+    },
+    {
+      "name": "SIAM Beauty & Spa",
+      "rating": 4.9,
+      "count": 144,
+      "hours": "09:00–21:00",
+      "distance_km": 2.9,
+      "address": "465 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Chloe Beauty Spa Quận 7",
+      "rating": 5,
+      "count": 206,
+      "hours": "09:30–19:30",
+      "distance_km": 4.2,
+      "address": "17/5 Tân Thuận Tây, Quận 7, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ôliu Spa | Gội đầu dưỡng sinh thảo mộc, massage thư giãn, và nối mi Quận 7",
+      "rating": 5,
+      "count": 336,
+      "hours": "09:00–22:00",
+      "distance_km": 4.6,
+      "address": "156 Bùi Văn Ba, Tân Thuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mộc Hạ Beauty Spa",
+      "rating": 5,
+      "count": 20,
+      "hours": "09:30–20:00",
+      "distance_km": 3,
+      "address": "675/54 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Yose Boutique - Cơ sở quận 7",
+      "rating": 5,
+      "count": 33,
+      "hours": "08:00–18:00",
+      "distance_km": 3.7,
+      "address": "111 Đ. 14A, Tân Thuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Lalaland Home Spa - Điều Trị Mụn & Chăm Sóc Da Quận 7",
+      "rating": 5,
+      "count": 27,
+      "hours": "10:00–20:00",
+      "distance_km": 4.7,
+      "address": "180/3 Bùi Văn Ba, quận 7, Hồ Chí Minh 72917, Việt Nam"
+    },
+    {
+      "name": "Lá Sen Spa",
+      "rating": 4.8,
+      "count": 551,
+      "hours": "10:00–20:00",
+      "distance_km": 4.8,
+      "address": "104a Xuân Thủy, An Khánh, Hồ Chí Minh 71107, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "HANA SPA",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 118,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "09:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mộc An Nail & Spa",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 101,
+        "distance_km": 3.4,
+        "open_now": true,
+        "opening_hours": "09:00–20:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "HANNIE SPA",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 434,
+        "distance_km": 3.5,
+        "open_now": true,
+        "opening_hours": "09:30–20:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "SIAM Beauty & Spa",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 144,
+        "distance_km": 2.9,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Chloe Beauty Spa Quận 7",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 206,
+        "distance_km": 4.2,
+        "open_now": true,
+        "opening_hours": "09:30–19:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "quiet"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm spa massage thư giãn, 1-2 người, tầm giá phổ thông.\nMình chọn **HANA SPA** cho bạn — **4.8⭐ (118 đánh giá Google Maps)**, cách bạn chỉ 0.7km, mở đến 23:00 nên cuối tuần rất tiện. Spa này có dịch vụ massage, chăm sóc da, đá nóng đầy đủ, phù hợp để thư giãn cùng mẹ 💆‍♀️\n\nNếu muốn chọn khác, **Mộc An Nail & Spa** cũng tốt (5⭐, 101 đánh giá) nhưng xa hơn 3.4km.\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - HANA SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3334509728689370412\",\"primary\":true},{\"label\":\"🌐 Website - HANA SPA\",\"type\":\"website\",\"url\":\"https://massageenjoy.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem review HANA SPA|Spa khác gần Quận 1|Giá dịch vụ massage bao nhiêu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm spa massage thư giãn, 1-2 người, tầm giá phổ thông.\nMình chọn **HANA SPA** cho bạn — **4.8⭐ (118 đánh giá Google Maps)**, cách bạn chỉ 0.7km, mở đến 23:00 nên cuối tuần rất tiện. Spa này có dịch vụ massage, chăm sóc da, đá nóng đầy đủ, phù hợp để thư giãn cùng mẹ 💆‍♀️\n\nNếu muốn chọn khác, **Mộc An Nail & Spa** cũng tốt (5⭐, 101 đánh giá) nhưng xa hơn 3.4km.\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - HANA SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3334509728689370412\",\"primary\":true},{\"label\":\"🌐 Website - HANA SPA\",\"type\":\"website\",\"url\":\"https://massageenjoy.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem review HANA SPA|Spa khác gần Quận 1|Giá dịch vụ massage bao nhiêu[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 7, TP.HCM",
+      "results": [
+        {
+          "name": "HANA SPA",
+          "place_id": "ChIJt81bfPQvdTERLDWdZu6ORi4",
+          "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 939 810 508",
+          "google_rating": "4.8⭐ (118 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 118,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "09:00–23:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa đá nóng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3334509728689370412",
+          "website_uri": "https://massageenjoy.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3334509728689370412",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Mộc An Nail & Spa",
+          "place_id": "ChIJob0R3H0vdTERMuRVAIcM-5s",
+          "address": "60/56 Lâm Văn Bền, Quận 7, Hồ Chí Minh 756000, Việt Nam",
+          "phone": "+84 924 405 858",
+          "google_rating": "5⭐ (101 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 101,
+          "distance_km": 3.4,
+          "open_now": true,
+          "opening_hours": "09:00–20:00",
+          "place_types": [
+            "Chuyên gia làm đẹp"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11239591068998951986",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=11239591068998951986",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "HANNIE SPA",
+          "place_id": "ChIJBYVMo_QvdTERis826e79UgU",
+          "address": "43A Đ. Lâm Văn Bền, Tân Thuận, Hồ Chí Minh 72910, Việt Nam",
+          "phone": "+84 909 229 477",
+          "google_rating": "4.9⭐ (434 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 434,
+          "distance_km": 3.5,
+          "open_now": true,
+          "opening_hours": "09:30–20:30",
+          "place_types": [
+            "Tiệm chăm sóc móng",
+            "Tiệm làm mi",
+            "Spa sức khỏe",
+            "Dịch vụ tẩy lông bằng la-de",
+            "Spa mát xa",
+            "Cơ sở chăm sóc da"
+          ],
+          "maps_link": "https://maps.google.com/?cid=383648120836640650",
+          "booking_links": [
+            "https://www.klook.com/vi/activity/44561-ba-den-cable-car-ticket-in-tay-ninh/?aid=30843&aff_adid=648625&aff_label1=c%C3%A1p%20treo%20n%C3%BAi%20b%C3%A0%20%C4%91en&aff_label2=&aff_label3=&aff_pid=&aff_sid=&utm_medium=affiliate-alwayson&utm_source=non-network&utm_campaign=30843&utm_term=&utm_content=&aff_klick_id=27215729981-30843-648625-0243be5"
+          ],
+          "website_uri": "https://www.facebook.com/HannieSpaNailBeauty",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=383648120836640650",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "SIAM Beauty & Spa",
+          "place_id": "ChIJCbNrzWYvdTERlVhD59TV810",
+          "address": "465 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 777 335 555",
+          "google_rating": "4.9⭐ (144 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 144,
+          "distance_km": 2.9,
+          "open_now": true,
+          "opening_hours": "09:00–21:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6769989775257720981",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6769989775257720981",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Chloe Beauty Spa Quận 7",
+          "place_id": "ChIJp4qzRd4udTER24vZ2crR_gI",
+          "address": "17/5 Tân Thuận Tây, Quận 7, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 779 198 878",
+          "google_rating": "5⭐ (206 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 206,
+          "distance_km": 4.2,
+          "open_now": true,
+          "opening_hours": "09:30–19:30",
+          "place_types": [
+            "Thẩm mỹ viện"
+          ],
+          "maps_link": "https://maps.google.com/?cid=215840501328874459",
+          "website_uri": "http://www.chloebeautyspa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=215840501328874459",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Ôliu Spa | Gội đầu dưỡng sinh thảo mộc, massage thư giãn, và nối mi Quận 7",
+          "place_id": "ChIJQ-hgRQAldTERCXn_DZuHhL0",
+          "address": "156 Bùi Văn Ba, Tân Thuận, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 707 575 585",
+          "google_rating": "5⭐ (336 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 336,
+          "distance_km": 4.6,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13656189070118713609",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13656189070118713609",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Mộc Hạ Beauty Spa",
+          "place_id": "ChIJMfauTQAvdTERagCIY7YpTfU",
+          "address": "675/54 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 362 325 099",
+          "google_rating": "5⭐ (20 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 20,
+          "distance_km": 3,
+          "open_now": true,
+          "opening_hours": "09:30–20:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17675829975829708906",
+          "website_uri": "https://www.facebook.com/mochabeauty2025",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=17675829975829708906",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Yose Boutique - Cơ sở quận 7",
+          "place_id": "ChIJf9WA-NwvdTERgKHdGavg5YY",
+          "address": "111 Đ. 14A, Tân Thuận, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 768 315 543",
+          "google_rating": "5⭐ (33 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 33,
+          "distance_km": 3.7,
+          "open_now": true,
+          "opening_hours": "08:00–18:00",
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9720422396227068288",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9720422396227068288",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Lalaland Home Spa - Điều Trị Mụn & Chăm Sóc Da Quận 7",
+          "place_id": "ChIJ08YIIOwldTERecixSsh8Jcs",
+          "address": "180/3 Bùi Văn Ba, quận 7, Hồ Chí Minh 72917, Việt Nam",
+          "phone": "+84 899 920 919",
+          "google_rating": "5⭐ (27 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 27,
+          "distance_km": 4.7,
+          "open_now": true,
+          "opening_hours": "10:00–20:00",
+          "place_types": [
+            "Cơ sở chăm sóc da",
+            "Cửa hàng mỹ phẩm",
+            "Spa mặt"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14638243363526133881",
+          "website_uri": "https://www.facebook.com/share/1PFxqZLdvW/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14638243363526133881",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Lá Sen Spa",
+          "place_id": "ChIJ4ZvJUxcmdTER-8QvZIaq8h4",
+          "address": "104a Xuân Thủy, An Khánh, Hồ Chí Minh 71107, Việt Nam",
+          "phone": "+84 967 017 595",
+          "google_rating": "4.8⭐ (551 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 551,
+          "distance_km": 4.8,
+          "open_now": true,
+          "opening_hours": "10:00–20:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa sức khỏe",
+            "Vườn spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2230032259685008635",
+          "website_uri": "http://spalasen.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2230032259685008635",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJt81bfPQvdTERLDWdZu6ORi4",
+          "name": "HANA SPA",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 118,
+            "distance_km": 0.7,
+            "open_now": true,
+            "opening_hours": "09:00–23:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "0.7km away",
+            "118 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJob0R3H0vdTERMuRVAIcM-5s",
+          "name": "Mộc An Nail & Spa",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 101,
+            "distance_km": 3.4,
+            "open_now": true,
+            "opening_hours": "09:00–20:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "3.4km away",
+            "101 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJBYVMo_QvdTERis826e79UgU",
+          "name": "HANNIE SPA",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 434,
+            "distance_km": 3.5,
+            "open_now": true,
+            "opening_hours": "09:30–20:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "3.5km away",
+            "434 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJCbNrzWYvdTERlVhD59TV810",
+          "name": "SIAM Beauty & Spa",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 144,
+            "distance_km": 2.9,
+            "open_now": true,
+            "opening_hours": "09:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "2.9km away",
+            "144 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJp4qzRd4udTER24vZ2crR_gI",
+          "name": "Chloe Beauty Spa Quận 7",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 206,
+            "distance_km": 4.2,
+            "open_now": true,
+            "opening_hours": "09:30–19:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "4.2km away",
+            "206 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "quiet"
+      ],
+      "_tappy_evidence_note": "KHONG quan nao trong ket qua co bang chung ve: yên tĩnh. Noi ro trong MOT cau \"minh chua xac nhan duoc X, nen goi hoi truoc\"; KHONG khang dinh co.",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance",
+          "openingHours"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "HANA SPA",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8 - Mộc An Nail & Spa: rated 5 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "0.7km away"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "118 reviews"
+          }
+        ],
+        "not_chosen": "Mộc An Nail & Spa",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 5"
+        },
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78110,106.70524",
+            "domain": "spa",
+            "kind": "place",
+            "name": "HANA SPA",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlR6WXD6y7eezWmwRv8ZEFhdkLVxP4zXFcOougCnuw9mrQFq_oCel4uuKD8nOAhLRb-IVZWe7sd-L-MspQZbr-t-U0LOSjBRpjzePqJ0yedf2uvDt9Tw9WX-MVzLr5YDeiq_IeFCJfN2-Sg",
+            "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 118,
+            "openingHours": "09:00–23:00",
+            "openNow": true,
+            "phone": "+84 939 810 508",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–23:00",
+              "Chủ Nhật": "09:00–23:00",
+              "Thứ Hai": "09:00–23:00",
+              "Thứ Ba": "09:00–23:00",
+              "Thứ Tư": "09:00–23:00",
+              "Thứ Năm": "09:00–23:00",
+              "Thứ Sáu": "09:00–23:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Spa mát xa",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa đá nóng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.7km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "118 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "rating",
+              "evidence": "rated 5"
+            },
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://massageenjoy.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@hanaspamassage2/video/7668214992369372424",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3334509728689370412",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84939810508",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=HANA%20SPA%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.74878,106.71334",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Mộc An Nail & Spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnMvi9rAkPT4jp7tZIaUl6AwEfrqVOHx9XsCi3YaiDunUS9TPd-FKruyTPzSfu6--KmeBgabaWazULRSuyVQ5fcjaxNiWeplZYgg1zCGWAtpIJOyxTIM5ozOjH0_H_tPqyQPY9mqZrr1Sbc",
+            "address": "60/56 Lâm Văn Bền, Quận 7, Hồ Chí Minh 756000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 101,
+            "openingHours": "09:00–20:00",
+            "openNow": true,
+            "phone": "+84 924 405 858",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–20:00",
+              "Chủ Nhật": "09:00–20:00",
+              "Thứ Hai": "09:00–20:00",
+              "Thứ Ba": "09:00–20:00",
+              "Thứ Tư": "09:00–20:00",
+              "Thứ Năm": "09:00–20:00",
+              "Thứ Sáu": "09:00–20:00"
+            },
+            "distanceKm": 3.4,
+            "categories": [
+              "Chuyên gia làm đẹp"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11239591068998951986",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84924405858",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20An%20Nail%20%26%20Spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.74895,106.71595",
+            "domain": "spa",
+            "kind": "place",
+            "name": "HANNIE SPA",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktLhic1EDMCtP8zEcx8qtaJb5rmgBsEaO4ObJXZ4S7QCbdac0VRgw4HiA2BajsaIBkUWREIF5so6QX-b88hUuW--3RGg8TwQu9p8aOmx1Z5hCnIlRktgcdRT4XX31K4ni9U4zs",
+            "address": "43A Đ. Lâm Văn Bền, Tân Thuận, Hồ Chí Minh 72910, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 434,
+            "openingHours": "09:30–20:30",
+            "openNow": true,
+            "phone": "+84 909 229 477",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–20:30",
+              "Chủ Nhật": "09:30–20:30",
+              "Thứ Hai": "09:30–20:30",
+              "Thứ Ba": "09:30–20:30",
+              "Thứ Tư": "09:30–20:30",
+              "Thứ Năm": "09:30–20:30",
+              "Thứ Sáu": "09:30–20:30"
+            },
+            "distanceKm": 3.5,
+            "categories": [
+              "Tiệm chăm sóc móng",
+              "Tiệm làm mi",
+              "Spa sức khỏe",
+              "Dịch vụ tẩy lông bằng la-de",
+              "Spa mát xa",
+              "Cơ sở chăm sóc da"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/HannieSpaNailBeauty",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=383648120836640650",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909229477",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=HANNIE%20SPA%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.75172,106.70761",
+            "domain": "spa",
+            "kind": "place",
+            "name": "SIAM Beauty & Spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmT91Y61K9Q0b-zym-iFdJKb8nnOeFdYWOQW68q4eIKzwL7A0ffXsTDZixEGOTWVwcNV-tRB5MiCMkJfu3TlqWHaTNZhtXHFtBxWAbPdSY34N7l5ZPx5wnV6aEhujxIH_hIPeQK3hb3G820",
+            "address": "465 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 144,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 777 335 555",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00",
+              "Thứ Sáu": "09:00–21:00"
+            },
+            "distanceKm": 2.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6769989775257720981",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84777335555",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=SIAM%20Beauty%20%26%20Spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.74930,106.72773",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Chloe Beauty Spa Quận 7",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmwSibnMeVyTbBAoApnJccgKIm5Pb285RB43Jckkl7UQ5W7VsRg_W5kBEmXbydqu0aPIwg7nD6ETECyF7nFnDQ1Vm4rJ22zmK0_ebg692SsCss7CYmml0gkGtzqR8wuUce6MBVmpE6dGUm_",
+            "address": "17/5 Tân Thuận Tây, Quận 7, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 206,
+            "openingHours": "09:30–19:30",
+            "openNow": true,
+            "phone": "+84 779 198 878",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–19:30",
+              "Chủ Nhật": "09:30–19:30",
+              "Thứ Hai": "09:30–19:30",
+              "Thứ Ba": "09:30–19:30",
+              "Thứ Tư": "09:30–19:30",
+              "Thứ Năm": "09:30–19:30",
+              "Thứ Sáu": "09:30–19:30"
+            },
+            "distanceKm": 4.2,
+            "categories": [
+              "Thẩm mỹ viện"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=215840501328874459",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84779198878",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Chloe%20Beauty%20Spa%20Qu%E1%BA%ADn%207%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.75033,106.73345",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Ôliu Spa | Gội đầu dưỡng sinh thảo mộc, massage thư giãn, và nối mi Quận 7",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlz2ZenE0-o0oHlGKT0pKze32FdBCEQipelMdEtU6tbST4rn5dL1U3tHi-RPzpsi8lLpYDno94c5XOf5g9pUPycrirQaZzcrWUXDngDoPgNIRJwi4Jd73EuZsgcZ6W0RILEtgeUvNgM6ovg",
+            "address": "156 Bùi Văn Ba, Tân Thuận, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 336,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 707 575 585",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00",
+              "Thứ Sáu": "09:00–22:00"
+            },
+            "distanceKm": 4.6,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13656189070118713609",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84707575585",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%C3%94liu%20Spa%20%7C%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20th%E1%BA%A3o%20m%E1%BB%99c%2C%20massage%20th%C6%B0%20gi%C3%A3n%2C%20v%C3%A0%20n%E1%BB%91i%20mi%20Qu%E1%BA%ADn%207%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.74998,106.70291",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Mộc Hạ Beauty Spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnfgyGKbWAKFUMI10ZFLevE8MFK6B7FlSer9JZDvqXXf95YNih7KBsV4DCXgmxfsvQCuy6Tj7MC5TSdGQSOyWZz6rSGJ3_7teo8AvooPqy9VVWMtURJqbICDvjn_6wTKBuZOtze9yRB0PVI",
+            "address": "675/54 Trần Xuân Soạn, Tân Hưng, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 20,
+            "openingHours": "09:30–20:00",
+            "openNow": true,
+            "phone": "+84 362 325 099",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–20:00",
+              "Chủ Nhật": "09:30–20:00",
+              "Thứ Hai": "09:30–20:00",
+              "Thứ Ba": "09:30–20:00",
+              "Thứ Tư": "09:30–20:00",
+              "Thứ Năm": "09:30–20:00",
+              "Thứ Sáu": "09:30–20:00"
+            },
+            "distanceKm": 3,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/mochabeauty2025",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17675829975829708906",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84362325099",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20H%E1%BA%A1%20Beauty%20Spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.74832,106.71841",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Yose Boutique - Cơ sở quận 7",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl_vdVOJCeCda9_2QtU-bq5nsyF4ipU3LeoMDBovVcyA6TdMAmrw6mMuYaubO78wz9JOuRHHN9Uwp4lKI2bOBV6rZVkmnHx6sWIFx6WKDIRiPlwJPcpdWRstiTWVCLUDYyBozZxQQ",
+            "address": "111 Đ. 14A, Tân Thuận, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 33,
+            "openingHours": "08:00–18:00",
+            "openNow": true,
+            "phone": "+84 768 315 543",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–18:00",
+              "Chủ Nhật": "Đóng cửa",
+              "Thứ Hai": "08:00–18:00",
+              "Thứ Ba": "08:00–18:00",
+              "Thứ Tư": "08:00–18:00",
+              "Thứ Năm": "08:00–18:00",
+              "Thứ Sáu": "08:00–18:00"
+            },
+            "distanceKm": 3.7,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9720422396227068288",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768315543",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Yose%20Boutique%20-%20C%C6%A1%20s%E1%BB%9F%20qu%E1%BA%ADn%207%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20massage%20y%C3%AAn%20t%C4%A9nh%20s%E1%BA%A1ch%20s%E1%BA%BD%20Qu%E1%BA%ADn%207%20Qu%E1%BA%ADn%207%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.78110,106.70524",
+          "place:osm:10.74878,106.71334",
+          "place:osm:10.74895,106.71595"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

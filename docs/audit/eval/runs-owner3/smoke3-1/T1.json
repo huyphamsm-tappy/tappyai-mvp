@@ -1,0 +1,1427 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 20844,
+  "evidenceId": "4253b359-47d4-49b8-806d-d107269d055e",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-09-26",
+        "checkOut": "2026-09-28"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng ăn tối Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan du lịch Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "XÓM MỚI GARDEN",
+      "rating": 4.9,
+      "count": 10274,
+      "price": "100-600 N ₫",
+      "hours": "10:00–22:00",
+      "address": "222 Trần Phú, Hải Châu, Đà Nẵng 552760, Việt Nam"
+    },
+    {
+      "name": "Mộc quán Seafood Đà Nẵng",
+      "rating": 4.8,
+      "count": 29648,
+      "hours": "10:30–22:30",
+      "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+      "rating": 4.9,
+      "count": 2135,
+      "price": "100-600 N ₫",
+      "hours": "09:00–22:30",
+      "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ăn Thôi",
+      "rating": 4.8,
+      "count": 8052,
+      "hours": "10:30–21:30",
+      "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+      "rating": 4.8,
+      "count": 3170,
+      "hours": "06:00–23:00",
+      "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+      "rating": 4.9,
+      "count": 557,
+      "price": "100-300 N ₫",
+      "hours": "10:00–22:00",
+      "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cơm nhà vui",
+      "rating": 4.8,
+      "count": 2198,
+      "price": "100-200 N ₫",
+      "hours": "10:00–22:00",
+      "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam"
+    },
+    {
+      "name": "Cơm Nhà Vui",
+      "rating": 4.7,
+      "count": 2911,
+      "price": "100-200 N ₫",
+      "hours": "10:00–22:00",
+      "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam"
+    },
+    {
+      "name": "Ngon Hà Nội Xưa Restaurant",
+      "rating": 4.7,
+      "count": 1265,
+      "price": "100-200 N ₫",
+      "hours": "09:30–22:00",
+      "address": "291 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Nhà Gỗ Việt Đà Nẵng",
+      "rating": 4.6,
+      "count": 2539,
+      "price": "100-300 N ₫",
+      "hours": "09:00–21:00",
+      "address": "49 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công ty Du lịch Bản Địa Đà Nẵng",
+      "rating": 5,
+      "count": 11,
+      "hours": "Mở cửa cả ngày",
+      "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công viên Biển Đông",
+      "rating": 4.6,
+      "count": 2577,
+      "hours": "Mở cửa cả ngày",
+      "address": "Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cầu Rồng",
+      "rating": 4.5,
+      "count": 9464,
+      "hours": "Mở cửa cả ngày",
+      "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Tượng Cá Chép Hóa Rồng",
+      "rating": 4.5,
+      "count": 1432,
+      "hours": "Mở cửa cả ngày",
+      "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+      "rating": 4.6,
+      "count": 217,
+      "address": "364F+2C5, Bạch Đằng, Hòa Cường, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công Viên APEC",
+      "rating": 4.4,
+      "count": 1905,
+      "address": "Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo Tàng Đà Nẵng",
+      "rating": 4.3,
+      "count": 3691,
+      "hours": "08:00–17:00",
+      "address": "31 Trần Phú, P, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+      "rating": 4.2,
+      "count": 8190,
+      "hours": "07:00–17:00",
+      "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)",
+      "rating": 4.4,
+      "count": 140,
+      "hours": "Mở cửa cả ngày",
+      "address": "26 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Làng Bích họa Đà Nẵng",
+      "rating": 3.9,
+      "count": 890,
+      "hours": "08:00–21:30",
+      "address": "75 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **XÓM MỚI GARDEN** — 4.9⭐ (10.274 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–22:00.\n\nMình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh cho 3 ngày 2 đêm.\n\nTrong khi đó, mình sẽ tìm khách sạn, nhà hàng và điểm tham quan phù hợp với ngân sách của bạn.\n\nTuyệt vời!\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **XÓM MỚI GARDEN** — 4.9⭐ (10.274 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–22:00.\n\nMình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh cho 3 ngày 2 đêm.\n\nTrong khi đó, mình sẽ tìm khách sạn, nhà hàng và điểm tham quan phù hợp với ngân sách của bạn.\n\nTuyệt vời!\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới."
+    }
+  ],
+  "toolResults": [
+    {
+      "location": "Da Nang",
+      "country": "Vietnam",
+      "temp_C": "28",
+      "feels_like_C": "32",
+      "condition": "Patchy rain nearby",
+      "humidity_percent": "79",
+      "wind_kmph": "17",
+      "today_max_C": "28",
+      "today_min_C": "25",
+      "chance_of_rain_percent": "20",
+      "source": "wttr.in"
+    },
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Đà Nẵng",
+      "results": [
+        {
+          "name": "XÓM MỚI GARDEN",
+          "place_id": "ChIJjaiK7LgZQjERSQvPDP9gnVQ",
+          "address": "222 Trần Phú, Hải Châu, Đà Nẵng 552760, Việt Nam",
+          "phone": "+84 931 951 004",
+          "google_rating": "4.9⭐ (10.274 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 10274,
+          "price_range_text": "100-600 N ₫",
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6097136119077342025",
+          "booking_links": [
+            "http://pf.kakao.com/_xdVQxnG"
+          ],
+          "website_uri": "https://www.xommoigarden.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6097136119077342025",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Mộc quán Seafood Đà Nẵng",
+          "place_id": "ChIJx6-KGnIXQjER7x-T0zeOlBw",
+          "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 905 665 058",
+          "google_rating": "4.8⭐ (29.648 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 29648,
+          "open_now": true,
+          "opening_hours": "10:30–22:30",
+          "place_types": [
+            "Nhà hàng hải sản",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2059427300039139311",
+          "booking_links": [
+            "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE",
+            "http://pf.kakao.com/_AxcgZxj/chat"
+          ],
+          "website_uri": "https://mocseafood.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2059427300039139311",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+          "place_id": "ChIJ8QPkSI8XQjERpb_q7VVX14k",
+          "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 387 979 043",
+          "google_rating": "4.9⭐ (2.135 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 2135,
+          "price_range_text": "100-600 N ₫",
+          "open_now": true,
+          "opening_hours": "09:00–22:30",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9932503529764339621",
+          "booking_links": [
+            "https://ngondanangrestaurant.com/reservation/",
+            "https://wa.me/qr/QR4A56WCIJBHN1"
+          ],
+          "website_uri": "https://ngondanangrestaurant.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9932503529764339621",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Ăn Thôi",
+          "place_id": "ChIJYVPRIUkZQjERH-v3yrc3lt0",
+          "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 987 824 285",
+          "google_rating": "4.8⭐ (8.052 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 8052,
+          "open_now": true,
+          "opening_hours": "10:30–21:30",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15967010791412460319",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15967010791412460319",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+          "place_id": "ChIJfb2A754ZQjERwntwhqY2_nQ",
+          "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 906 430 707",
+          "google_rating": "4.8⭐ (3.170 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 3170,
+          "open_now": true,
+          "opening_hours": "06:00–23:00",
+          "place_types": [
+            "Nhà hàng hải sản",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8430235641332136898",
+          "booking_links": [
+            "https://book.chope.co/booking?source=google_dining&rid=nhahanghaisan2608vn&rwg_token=AE37R_ie32ZXQBXsRXzrRvpgYxzos0YBE1ogittaY-HjxNm3sJgz_5XbRYEmf5zBd1-WAipeyaR_C_LdezNNdrzwQe68SpALsEmhtWRlVqf03ju-1Ne1kEE%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/m4xfEt_j85g?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://www.nhahangokia.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8430235641332136898",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+          "place_id": "ChIJ2ZdrF8oXQjER4J4jlXINS70",
+          "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 812 641 316",
+          "google_rating": "4.9⭐ (557 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 557,
+          "price_range_text": "100-300 N ₫",
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13640010682201251552",
+          "booking_links": [
+            "https://ngonphoda.com/",
+            "https://book.chope.co/booking?source=google_dining&rid=ngonphoda2605vn&rwg_token=AE37R_ipgnzttNXxZgTNFYvnN11i0QOJ672y0Vz0TZNKSMT0eKYQACWUHEtktkRHGtUq1Uk7yKP9AVyMqm7DTLwh5MGFAMJn6KQxUnnLXhi3VwUYL2TGpdA%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/hwMPchKIpUM?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://ngonphoda.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13640010682201251552",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Cơm nhà vui",
+          "place_id": "ChIJi5XzTqsZQjERn5HbwcdvD5Y",
+          "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam",
+          "phone": "+84 933 865 786",
+          "google_rating": "4.8⭐ (2.198 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 2198,
+          "price_range_text": "100-200 N ₫",
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10812984134081417631",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10812984134081417631",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Cơm Nhà Vui",
+          "place_id": "ChIJ0StZHnMXQjER_lRXOuoD1Mw",
+          "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam",
+          "phone": "+84 931 886 133",
+          "google_rating": "4.7⭐ (2.911 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 2911,
+          "price_range_text": "100-200 N ₫",
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14759426183335990526",
+          "website_uri": "https://www.facebook.com/comngondanang133",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14759426183335990526",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Ngon Hà Nội Xưa Restaurant",
+          "place_id": "ChIJudJGqugXQjERsl6V0UdDF1I",
+          "address": "291 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 868 891 563",
+          "google_rating": "4.7⭐ (1.265 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1265,
+          "price_range_text": "100-200 N ₫",
+          "open_now": true,
+          "opening_hours": "09:30–22:00",
+          "place_types": [
+            "Nhà hàng",
+            "Cửa hàng bán thực phẩm đặc sản",
+            "Nhà hàng phở"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5915270611312402098",
+          "booking_links": [
+            "https://www.google.com/maps/reserve/v/dine/c/qETenCcliWA?source=pa&opi=79508299"
+          ],
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5915270611312402098",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà hàng Nhà Gỗ Việt Đà Nẵng",
+          "place_id": "ChIJYytdRW4ZQjER6149Azrswq8",
+          "address": "49 Nguyễn Thái Học, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 342 454 487",
+          "google_rating": "4.6⭐ (2.539 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2539,
+          "price_range_text": "100-300 N ₫",
+          "open_now": true,
+          "opening_hours": "09:00–21:00",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12664944836025868011",
+          "booking_links": [
+            "https://m.me/531019130075275",
+            "https://wa.me/84342454487"
+          ],
+          "website_uri": "https://nhagoviet.imweb.me/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=12664944836025868011",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20%C4%83n%20t%E1%BB%91i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "XÓM MỚI GARDEN",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "10274 reviews"
+          }
+        ],
+        "not_chosen": "Mộc quán Seafood Đà Nẵng",
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    },
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Đà Nẵng",
+      "results": [
+        {
+          "name": "Công ty Du lịch Bản Địa Đà Nẵng",
+          "place_id": "ChIJGWbtI-4ZQjERtuLYPLVWVMI",
+          "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 818 433 579",
+          "google_rating": "5⭐ (11 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 11,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Đại lý du lịch tham quan",
+            "Nhà điều hành du lịch",
+            "Trung tâm thông tin du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14002912477811630774",
+          "website_uri": "https://mytour.danang.vn/"
+        },
+        {
+          "name": "Công viên Biển Đông",
+          "place_id": "ChIJ32G8gRcXQjER-IRfiq9vI4g",
+          "address": "Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "4.6⭐ (2.577 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2577,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9809807213074547960"
+        },
+        {
+          "name": "Cầu Rồng",
+          "place_id": "ChIJL1GKWJYZQjERLrEGqlK2kwQ",
+          "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "4.5⭐ (9.464 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 9464,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Cầu",
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=329807663884316974"
+        },
+        {
+          "name": "Tượng Cá Chép Hóa Rồng",
+          "place_id": "ChIJ4QBQgowZQjERs200POAfAZs",
+          "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "4.5⭐ (1.432 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 1432,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11169243598798745011"
+        },
+        {
+          "name": "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+          "place_id": "ChIJ6UAZeAAZQjERzK3T81riZmo",
+          "address": "364F+2C5, Bạch Đằng, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "4.6⭐ (217 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 217,
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Khu vực đi bộ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7667064295910518220"
+        },
+        {
+          "name": "Công Viên APEC",
+          "place_id": "ChIJzX1dFjAZQjERswowf61V1fk",
+          "address": "Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "4.4⭐ (1.905 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 1905,
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=18002389289134983859"
+        },
+        {
+          "name": "Bảo Tàng Đà Nẵng",
+          "place_id": "ChIJEymIkTYYQjERWO-pgjkKGMk",
+          "address": "31 Trần Phú, P, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3886 236",
+          "google_rating": "4.3⭐ (3.691 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 3691,
+          "open_now": true,
+          "opening_hours": "08:00–17:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Bảo tàng lịch sử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14490343043186159448",
+          "website_uri": "http://baotangdanang.vn/"
+        },
+        {
+          "name": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+          "place_id": "ChIJLWoAs80ZQjERLKHDYD-ZymI",
+          "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3572 935",
+          "google_rating": "4.2⭐ (8.190 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 8190,
+          "open_now": true,
+          "opening_hours": "07:00–17:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Bảo tàng di sản",
+            "Bảo tàng điêu khắc"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7118670658497913132",
+          "website_uri": "http://chammuseum.vn/"
+        },
+        {
+          "name": "Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)",
+          "place_id": "ChIJe8ah9rsZQjER6VQTZMzcGTw",
+          "address": "26 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 796 768 636",
+          "google_rating": "4.4⭐ (140 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 140,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4330735287103870185",
+          "website_uri": "https://duthuyensonghan.vn/"
+        },
+        {
+          "name": "Làng Bích họa Đà Nẵng",
+          "place_id": "ChIJkatEeMwZQjERnAUKgmrbNgQ",
+          "address": "75 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "google_rating": "3.9⭐ (890 đánh giá Google Maps)",
+          "rating_value": 3.9,
+          "rating_count": 890,
+          "open_now": true,
+          "opening_hours": "08:00–21:30",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=303671275388798364"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20du%20l%E1%BB%8Bch%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_budget_evidence": false,
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "Công ty Du lịch Bản Địa Đà Nẵng",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 5"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "11 reviews - Công viên Biển Đông: 2577 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "Công viên Biển Đông",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "2577 reviews"
+        },
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    },
+    {
+      "location": "Đà Nẵng",
+      "source": "Serper Maps",
+      "hotel_list": [
+        {
+          "name": "M Hotel Da Nang",
+          "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+          "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3816 868",
+          "google_rating": "4.8⭐ (2.824 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 2824,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+          "website_uri": "https://mhotel.vn/property/m-hotel-da-nang/"
+        },
+        {
+          "name": "Seahorse",
+          "place_id": "ChIJEa410zMYQjER3f11TKinbkU",
+          "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3589 888",
+          "google_rating": "4.8⭐ (1.835 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1835,
+          "place_types": [
+            "Khách sạn",
+            "Khách sạn nghỉ dưỡng",
+            "Căn hộ được phục vụ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5003120577334345181",
+          "website_uri": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland"
+        },
+        {
+          "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+          "place_id": "ChIJN75cdYQXQjERBUnemtIubGM",
+          "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3913 999",
+          "google_rating": "4.7⭐ (4.419 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 4419,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Quán cà phê",
+            "Trung tâm hội thảo",
+            "Spa sức khỏe",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7164152589315885317",
+          "website_uri": "https://nalod.com.vn/"
+        },
+        {
+          "name": "Sala Danang Beach Hotel",
+          "place_id": "ChIJMeyhoXgXQjERqCs6CuNR5yI",
+          "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3658 555",
+          "google_rating": "4.7⭐ (3.792 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 3792,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2515068952480721832",
+          "website_uri": "https://salahotelgroup.com/en/saladanangbeachhotel/"
+        },
+        {
+          "name": "Nhu Minh Plaza Danang Hotel",
+          "place_id": "ChIJrxxvlNsXQjERy-eJcpABRJA",
+          "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3555 666",
+          "google_rating": "4.7⭐ (2.715 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 2715,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10395435559786506187",
+          "website_uri": "http://www.nhuminhplazahotel.com/"
+        },
+        {
+          "name": "Khách sạn Novotel Đà Nẵng",
+          "place_id": "ChIJLaS0-joYQjERNTjoKJ6-LdU",
+          "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3929 999",
+          "google_rating": "4.6⭐ (8.679 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 8679,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15361143490531047477",
+          "website_uri": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=8287&merchantid=seo-maps-VN-8287&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps"
+        },
+        {
+          "name": "Khách sạn San Marino Boutique Danang",
+          "place_id": "ChIJ1zS44n8XQjERQTwAzzObvLo",
+          "address": "161 Võ Văn Kiệt, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3985 777",
+          "google_rating": "4.7⭐ (1.610 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1610,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13455800433494735937",
+          "website_uri": "http://sanmarinodanang.com/"
+        },
+        {
+          "name": "Khách Sạn Avatar Đà Nẵng",
+          "place_id": "ChIJkQZZEGUXQjER34_Ct2Z5aVA",
+          "address": "02 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 943 683 777",
+          "google_rating": "4.7⭐ (1.225 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1225,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5794295877665460191",
+          "website_uri": "https://www.agoda.com/avatar-hotel_2/hotel/da-nang-vn.html?countryId=38&finalPriceView=1&isShowMobileAppPrice=false&cid=1948475&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-08-11&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&isFreeOccSearch=false&los=1&searchrequestid=4f4af986-6ebc-4fa4-a096-3adef9efefc3&ds=HkNokBHSp6OE70jx"
+        },
+        {
+          "name": "HAIAN Beach Hotel & Spa",
+          "place_id": "ChIJW7iIXnoXQjERwzVF2LpQ_m4",
+          "address": "278 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 2228 666",
+          "google_rating": "4.6⭐ (4.075 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 4075,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7997918751679133123",
+          "website_uri": "http://haianbeachhotelspa.com/"
+        },
+        {
+          "name": "DLG Hotel Danang",
+          "place_id": "ChIJUeabB3kXQjERFP2JL7c8YCg",
+          "address": "258 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3925 888",
+          "google_rating": "4.6⭐ (2.776 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2776,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2909392116755594516",
+          "website_uri": "https://dlghoteldanang.com/"
+        }
+      ],
+      "booking_link": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-28",
+      "agoda_link": "https://www.agoda.com/vi-vn/",
+      "note": "Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 20,
+        "needed": [
+          "price"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "M Hotel Da Nang",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "2824 reviews"
+          }
+        ],
+        "not_chosen": "Seahorse",
+        "conditional": true
+      },
+      "results_note": "Hien thi 10/20 ket qua (rut gon: chi cac truong de chon); the (card) cua user co day du."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:16.06351,108.22322",
+            "domain": "food",
+            "kind": "place",
+            "name": "XÓM MỚI GARDEN",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlu3-5NhhYs1SAQ_Njm7VS1218izpnQOGFGHQkJuYNkfjOBxCYcAyXIsItOUyv1eibaoUdVRZo8d-p90LYDek56Ucy1hwhIHKEEhkTuXn84RsHP0tk6IieNw_6rR8vniCWr8hrTsATRu8Hg",
+            "address": "222 Trần Phú, Hải Châu, Đà Nẵng 552760, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 10274,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 931 951 004",
+            "priceRangeText": "100-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 0,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "10274 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=X%C3%93M%20M%E1%BB%9AI%20GARDEN%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6097136119077342025",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=X%C3%93M%20M%E1%BB%9AI%20GARDEN%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.xommoigarden.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84931951004",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06403,108.24156",
+            "domain": "food",
+            "kind": "place",
+            "name": "Mộc quán Seafood Đà Nẵng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnWrQn1z9Hh2yF4OaSTZAEQYE4ppDwycUkWLyZ0595gxSgFtL0gUarjNqrIkyH-Y5hgZDf_fY373nSBcbZljT_rSYj7_Fsm_XHctiNlQ1zG1_zTSZHmwjAOdU-PbZuOOCujyP5g",
+            "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 29648,
+            "openingHours": "10:30–22:30",
+            "openNow": true,
+            "phone": "+84 905 665 058",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:30",
+              "Chủ Nhật": "10:30–22:30",
+              "Thứ Hai": "10:30–22:30",
+              "Thứ Ba": "10:30–22:30",
+              "Thứ Tư": "10:30–22:30",
+              "Thứ Năm": "10:30–22:30",
+              "Thứ Sáu": "10:30–22:30"
+            },
+            "categories": [
+              "Nhà hàng hải sản",
+              "Nhà hàng"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2059427300039139311",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://mocseafood.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84905665058",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.04950,108.24565",
+            "domain": "food",
+            "kind": "place",
+            "name": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm2qZmZl8xcwmhss4mRpF6E2u07IMQn5qAlLu2-UDFbTduAN97KcESRHLixw_n_15gRtIG5zL3I2BbggeHVJTdRNDlSUMnimzWPezdrEmXo9hRcOPsIj9a3CHbplPY6VXr2nOZWDMFraaAO",
+            "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 2135,
+            "openingHours": "09:00–22:30",
+            "openNow": true,
+            "phone": "+84 387 979 043",
+            "priceRangeText": "100-600 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:30",
+              "Chủ Nhật": "09:00–22:30",
+              "Thứ Hai": "09:00–22:30",
+              "Thứ Ba": "09:00–22:30",
+              "Thứ Tư": "09:00–22:30",
+              "Thứ Năm": "09:00–22:30",
+              "Thứ Sáu": "09:00–22:30"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=NGON%20DA%20NANG%20-%20VIETNAMESE%20CUISINE%20RESTAURANT%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9932503529764339621",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=NGON%20DA%20NANG%20-%20VIETNAMESE%20CUISINE%20RESTAURANT%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://ngondanangrestaurant.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84387979043",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06825,108.22481",
+            "domain": "food",
+            "kind": "place",
+            "name": "Ăn Thôi",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnlilPSoSvHMYeHd-sm1Dagj4c6glBkV1eLIRNxiAkYWrpME0STRleEiIfB2Gwj9FlCZZkM3CUvAzZaKEpcSWFyCUUqfn6e8izw4Bc2miCjTOxgzqFzmt8os5HKFzOORY1dKd4zUXm-gd0Z",
+            "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 8052,
+            "openingHours": "10:30–21:30",
+            "openNow": true,
+            "phone": "+84 987 824 285",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–21:30",
+              "Chủ Nhật": "10:30–21:30",
+              "Thứ Hai": "10:30–21:30",
+              "Thứ Ba": "10:30–21:30",
+              "Thứ Tư": "10:30–21:30",
+              "Thứ Năm": "10:30–21:30",
+              "Thứ Sáu": "10:30–21:30"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=%C4%82n%20Th%C3%B4i%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15967010791412460319",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%C4%82n%20Th%C3%B4i%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84987824285",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.08011,108.22310",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQtklHG6bB8E_rdEuvs_KdYz4TvzqeVkIdxrs9RBQ5wlaKvPR6uqrsvePe-WeGFWlDrxyC4O_29fHihfYGNC_bTZ71rcrUkVeBfRJeiFA0qNflrBE7S-MnWqE6cxqBQkUWk6phY0jegfVu",
+            "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 3170,
+            "openingHours": "06:00–23:00",
+            "openNow": true,
+            "phone": "+84 906 430 707",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–23:00",
+              "Chủ Nhật": "06:00–23:00",
+              "Thứ Hai": "06:00–23:00",
+              "Thứ Ba": "06:00–23:00",
+              "Thứ Tư": "06:00–23:00",
+              "Thứ Năm": "06:00–23:00",
+              "Thứ Sáu": "06:00–23:00"
+            },
+            "categories": [
+              "Nhà hàng hải sản",
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8430235641332136898",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.nhahangokia.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906430707",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.04943,108.24857",
+            "domain": "food",
+            "kind": "place",
+            "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk97IMoV1gs1ahDMtyP56KARKE4z3XgXDnJRF1sgr4jT-0gGuvZ49FNIEbc9p5SlkkwGajE7m0Y90vkkpMXDI8D-EJpiTc3y_Tc3AsZ_01b-YFeChuDvi6qAhh5Zyv_Z1QwhJFba0hgvA4J",
+            "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 557,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 812 641 316",
+            "priceRangeText": "100-300 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Ngon%20Ph%E1%BB%91%20%C4%90%C3%A0%20-%20Homey%20Authentic%20Vietnamese%20Cuisine%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13640010682201251552",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ngon%20Ph%E1%BB%91%20%C4%90%C3%A0%20-%20Homey%20Authentic%20Vietnamese%20Cuisine%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84812641316",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.05662,108.22207",
+            "domain": "food",
+            "kind": "place",
+            "name": "Cơm nhà vui",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmYSZU8zktTO--B3-rVs59qCcGy78Q7ixDYT-TXbFwCWz_QYwmaEpY-5lHArglZBvnm8gqwc8ECC656KohPgts0NLFIA_fPHnA-f2PuHzuwYPF17-MW8H6LLZDGvPDpurJAh7w",
+            "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2198,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 933 865 786",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20nh%C3%A0%20vui%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10812984134081417631",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20nh%C3%A0%20vui%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933865786",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06592,108.24454",
+            "domain": "food",
+            "kind": "place",
+            "name": "Cơm Nhà Vui",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmYSZU8zktTO--B3-rVs59qCcGy78Q7ixDYT-TXbFwCWz_QYwmaEpY-5lHArglZBvnm8gqwc8ECC656KohPgts0NLFIA_fPHnA-f2PuHzuwYPF17-MW8H6LLZDGvPDpurJAh7w",
+            "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 2911,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 931 886 133",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20Nh%C3%A0%20Vui%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14759426183335990526",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Nh%C3%A0%20Vui%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/comngondanang133",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84931886133",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20%C4%83n%20t%E1%BB%91i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+        "picked": [
+          "place:osm:16.06351,108.22322",
+          "place:osm:16.06403,108.24156",
+          "place:osm:16.04950,108.24565"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

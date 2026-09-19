@@ -192,3 +192,50 @@ Two new runs on the same 40, all flags ON, code `0662bb2` (E1/F8 fixes landed af
 Recovered vs Step F: T2, T8 (hotel rows are evidence), T5 (search-now directive), T6 (body survives), S2 (stated pick).
 New failure found and fixed after the run: E1 (`search_places.type` outside the enum → SDK error → empty reply);
 `placeType.ts` makes the argument tolerant. Not re-run live (budget 200/200).
+
+## 2026-09-19 eight-item job — rubric change, re-scored baseline, GATE A, GATE B (`runs-owner3/`)
+
+**Rubric change (item 1.0, frozen in `actionability.test.ts`):** 8 of the 40 are NOT actionable (F7 S5 S6 T5 P5 P7 E2 E5 —
+no budget/mood/hard/area signal beyond a bare subject) and must get ONE server-authored clarify turn ($0, quota-exempt,
+tappable chips) before any search; the other 32 must search without asking. A query that searched when it should have
+asked, or asked twice, is ❌. Each of the 8 gets a fixed answer turn (`F7b`…`E5b`, 48 turns per gate).
+**Re-scored baseline** (`runs-owner2/final40` under the new rubric): 38 − 5 (F7 T5 P5 P7 E2 searched immediately) + 1
+(S5 asked once) = **34/40**.
+
+| gate | commit | ✅+⚠️ / 40 | ❌ | clarify conversations | memory pass |
+|---|---|---|---|---|---|
+| GATE A (item 1) | ef404dd → reruns on 14dc211 | **38/40** | S5, T5 (asked AGAIN after the answer) → fixed 14dc211, reruns 4/4 | 8/8 | 6/6 (`gateA-mem`) |
+| GATE B (all items, final) | 5f67dfc | **36/40** | T2, T8, P3, E6 → reruns 2× each: T2 2/2 ✓, P3 2/2 ✓, E6 2/2 ✓, **T8 0/2** | 8/8 (6 ✅ · 2 ⚠️) | 4/4 searched, F8 ⚠️ (`gateB-mem`) |
+
+GATE B per-turn: F1–F8 ✅ (F4 ⚠️ unbacked "có điều kiện đậu xe" beside the heads-up); S1–S8 pass (S1/S8 ⚠️ orphan
+fragment after a shopping-guard cut — pre-existing class, seen in GATE A S1 and the baseline S8; S2 ⚠️ inline search
+links; S4/S7 ⚠️ "ưu tiên gì" question); T1 ✅ (plan emitted), T3/T4/T5 ✅, T6 ⚠️ (body cut to the see-card line), T7 ⚠️;
+P2/P5/P7/P8 ✅, P1/P4/P6 ⚠️ (P4 picks a Quận 1 spa for a Quận 7 query — row 1 from Serper, same in GATE A and the
+baseline, BUG-011 class); E1/E2/E4/E5/E8 ✅, E3 ⚠️ (orphan alternative sentence), E7 ⚠️ (films from model knowledge, no tool
+— as before).
+
+The four ❌ and what the reruns showed (warm cache, memory as GATE B left it):
+- **T2** — the model wrote a question list after "mình cần biết:" and a hotel line list; the guards cut both and left
+  fragments. Reruns: pick + honest "chưa có giá" (✅), then a backstop pick + one question (⚠️). Variance.
+- **P3** — the model re-searched with "Hyan Spa Quận 1 đặt trước booking" (not by name) → Serper returned unrelated
+  spas → the pick backstop chose "AN's spa" for a question about Hyan Spa. Reruns: honest no-tool answer (✅), by-name
+  re-search with phone/website (✅). Variance in the model's query; the backstop naming a different venue on a
+  follow-up is a weakness to note.
+- **E6** — the snippet-price clause cut started at the " - " INSIDE the bold venue name "Karaoke ICOOL - Trần Não …"
+  and removed the name tail with the closing `**` (pre-existing guard, `snippetPriceGuard.ts` R3′; the clause start
+  pattern treats a dash inside a name as a clause boundary). Reruns 2/2 clean. Bug filed in the report.
+- **T8** — "Resort Phú Quốc … sang chút": 3/3 runs today pick **Rio Guest House** (5⭐/138) because the engine's
+  rating-first shortlist names it `best_overall` (it was not in the Serper rows on GATE A's run; today it is row 0) and
+  "sang" is not a modelled constraint. The model then asserts luxury amenities without evidence. CONFIRMED FAIL,
+  not variance; not attributable to any of the eight items (the row set changed on Serper's side; the shortlist rule is
+  pre-existing). Filed as an open item.
+
+Memory pass on the final commit (`seedmem.mjs`, `gateB-mem`, 4 queries): F7 and P5 search immediately (memory
+budget unblocks the gate, `unblocked_by`), T4 ✅, F8 ⚠️ — the model wrote the hedge under a bold "**Lưu ý:**" heading
+and the grounding gate treated that heading as an ungrounded venue, cut the paragraph (hedge included) and appended
+the see-card line. The same label-as-venue cut hit T1/T6 section labels ("Bữa trưa:", "Khám phá phố cổ:", "Thời tiết
+…:") in GATE B — pre-existing, filed in the report.
+
+Verified by: live runs on the audit server (:3101, worktree `audit-nonprod` @ 5f67dfc, flags ON), graded by reading
+`showrun.mjs` output against the rubric above and the tool rows in each `<id>.json`; cost from the usage sink via
+`costseg.mjs`. Budget: 194 of 200 runs counted (canned $0 turns included), 175 modelled.

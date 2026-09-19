@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-09-18T05:58:11.843Z",
+  "generatedAt": "2026-09-19T08:33:52.432Z",
   "sizes_chars": {
-    "shared": 45918,
-    "dynamic_places_first_reply_web": 4191,
-    "dynamic_shopping_first_reply_web": 12121,
+    "shared": 44713,
+    "dynamic_places_first_reply_web": 3794,
+    "dynamic_shopping_first_reply_web": 11724,
     "simple_chitchat_prompt": 964
   },
   "shared_block_headers_in_order": [
@@ -15,11 +15,10 @@
   ],
   "dynamic_places_block_headers_in_order": [
     "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-    "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:58 Thứ Sáu, 18 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-18. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+    "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 15:33 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
     "WORD LIMIT - REPLY DAU TIEN",
     "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-    "GIAO DIEN DA HIEN THI THE THONG TIN",
-    "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca."
+    "GIAO DIEN DA HIEN THI THE THONG TIN"
   ],
   "shared_rule_ids": [
     "R1",
@@ -29,7 +28,6 @@
     "R4",
     "R5",
     "R6",
-    "R7",
     "1",
     "2",
     "3",
@@ -69,7 +67,7 @@
     "PHAI / BAT BUOC (mandates)": 41,
     "LUON (always)": 8,
     "liet ke / tom tat (list/summarise verbs)": 15,
-    "nghieng ve / vi sao / ly do (lean/why/reason)": 20,
-    "hoi (ask) mentions": 43
+    "nghieng ve / vi sao / ly do (lean/why/reason)": 19,
+    "hoi (ask) mentions": 32
   }
 }
