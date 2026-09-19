@@ -214,15 +214,31 @@ function priceOnlyResidue(clause: string, claimStart: number, claimEnd: number):
 }
 
 /**
+ * 🚨 A DELIMITER INSIDE A BOLD VENUE NAME IS NOT A CLAUSE BOUNDARY. Measured E6 2026-09-19:
+ * "Mình chọn **Karaoke ICOOL - Trần Não Vòng Xoay Thủ Thiêm** cho nhóm bạn — …, giá khoảng
+ * 100-200k/người và mở cửa cả ngày" — the price clause was opened at the " - " INSIDE the name,
+ * so the cut took the name's tail and the closing `**` with it: "**Karaoke ICOOL và mở cửa cả
+ * ngày". Names carry " - ", " – ", " — ", "(", "," ("Quán Ăn Ngon - Phan Bội Châu", "Nhà hàng
+ * (Chi nhánh 2)"); a marker that falls inside `**…**` is skipped as a start AND as an end.
+ */
+function boldSpans(sentence: string): Array<[number, number]> {
+  const out: Array<[number, number]> = []
+  for (const m of sentence.matchAll(/\*\*[^*\n]+\*\*/g)) out.push([m.index!, m.index! + m[0].length])
+  return out
+}
+const insideAny = (spans: Array<[number, number]>, i: number): boolean => spans.some(([a, b]) => i > a && i < b)
+
+/**
  * The span of `sentence` to remove for one unsupported claim, or null when no
  * price-only clause contains it. Tried innermost first: a parenthetical, then a
  * comma segment inside it, then the punctuation/connector-bounded clause.
  */
 function priceClauseSpan(sentence: string, s: number, e: number): [number, number] | null {
+  const bold = boldSpans(sentence)
   // 1) parenthetical
   const open = sentence.lastIndexOf('(', s)
   const close = sentence.indexOf(')', e)
-  if (open !== -1 && close !== -1 && !sentence.slice(open + 1, s).includes(')') && !sentence.slice(e, close).includes('(')) {
+  if (open !== -1 && close !== -1 && !insideAny(bold, open) && !insideAny(bold, close) && !sentence.slice(open + 1, s).includes(')') && !sentence.slice(e, close).includes('(')) {
     const inner = sentence.slice(open + 1, close)
     if (priceOnlyResidue(inner, s - open - 1, e - open - 1)) {
       let a = open; while (a > 0 && /\s/.test(sentence[a - 1])) a--
@@ -249,10 +265,15 @@ function priceClauseSpan(sentence: string, s: number, e: number): [number, numbe
   //    while the residue stays connector-only and stops at the first marker that
   //    would pull other content in.
   CLAUSE_END_RE.lastIndex = e
-  const endM = CLAUSE_END_RE.exec(sentence)
+  let endM = CLAUSE_END_RE.exec(sentence)
+  while (endM && endM[0].length > 0 && insideAny(bold, endM.index)) endM = CLAUSE_END_RE.exec(sentence)
   const end = endM ? endM.index : sentence.length
   const starts: Array<{ at: number; len: number }> = [{ at: 0, len: 0 }]
-  for (const m of sentence.matchAll(CLAUSE_START_RE)) { if (m.index! >= s) break; starts.push({ at: m.index!, len: m[0].length }) }
+  for (const m of sentence.matchAll(CLAUSE_START_RE)) {
+    if (m.index! >= s) break
+    if (insideAny(bold, m.index!)) continue   // " - " inside **Karaoke ICOOL - Trần Não** is part of the name
+    starts.push({ at: m.index!, len: m[0].length })
+  }
   let chosen: { at: number; len: number } | null = null
   for (let k = starts.length - 1; k >= 0; k--) {
     const { at, len } = starts[k]

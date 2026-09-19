@@ -438,7 +438,32 @@ export function mayRedactPlaceClaim(sentence: string): boolean {
  * removal in the first place (POLICY R3) — the two rules agree rather than
  * compete.
  */
-const CLAUSE_SPLIT = /(\s*[—–]\s*|\s+-\s+|\s*;\s*|\s*,\s+|\s+và\s+|\s+and\s+)/u
+const CLAUSE_SPLIT = /(\s*[—–]\s*|\s+-\s+|\s*;\s*|\s*,\s+|\s+và\s+|\s+and\s+)/gu
+
+/**
+ * 🚨 A CONNECTIVE INSIDE A BOLD VENUE NAME IS NOT A CLAUSE BOUNDARY. Measured E6 2026-09-19:
+ * "Mình chọn **Karaoke ICOOL - Trần Não Vòng Xoay Thủ Thiêm** cho nhóm bạn — 4.7⭐ (2.122 đánh
+ * giá), cách 3.4km và mở cửa cả ngày…" was split at the " - " INSIDE the name; the clauses
+ * carrying the unsupported claims went, and so did the name's tail with its closing `**`:
+ * "Mình chọn **Karaoke ICOOL và mở cửa cả ngày". Names carry " - ", " – ", " — " and ", "
+ * ("Quán Ăn Ngon - Phan Bội Châu", "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1"); a match
+ * that falls inside `**…**` is part of the name. Same shape as `String.split` with a capturing
+ * group: [clause, sep, clause, sep, …].
+ */
+function splitClauses(core: string): string[] {
+  const bold: Array<[number, number]> = []
+  for (const m of core.matchAll(/\*\*[^*\n]+\*\*/g)) bold.push([m.index!, m.index! + m[0].length])
+  const parts: string[] = []
+  let last = 0
+  for (const m of core.matchAll(CLAUSE_SPLIT)) {
+    const at = m.index!
+    if (bold.some(([a, b]) => at > a && at < b)) continue
+    parts.push(core.slice(last, at), m[0])
+    last = at + m[0].length
+  }
+  parts.push(core.slice(last))
+  return parts
+}
 
 /**
  * Drop just the clauses that carry an unsupported claim, keeping the rest.
@@ -465,16 +490,19 @@ const CLAUSE_SPLIT = /(\s*[—–]\s*|\s+-\s+|\s*;\s*|\s*,\s+|\s+và\s+|\s+and\s
 function stripOffendingClauses(sentence: string, offenders: readonly RegExp[]): { text: string; headRemoved: boolean } | null {
   const tail = /([.!?]*\s*)$/.exec(sentence)?.[1] ?? ''
   const core = sentence.slice(0, sentence.length - tail.length)
-  const parts = core.split(CLAUSE_SPLIT)
+  const parts = splitClauses(core)
   // Fewer than 3 parts means one clause: there is nothing to isolate.
   if (parts.length < 3) return null
 
+  // A bold venue name is never a claim: "**Cơm Tấm Sài Gòn - Giao Hàng Tận Nơi**" carries the
+  // word, not the assertion. Offenders are judged on the clause with its bold spans blanked.
+  const unbold = (t: string) => t.replace(/\*\*[^*\n]+\*\*/g, ' ')
   const kept: string[] = []
   let removed = false
   let headRemoved = false
   for (let i = 0; i < parts.length; i += 2) {
     const clause = parts[i]
-    if (offenders.some(re => re.test(clause))) {
+    if (offenders.some(re => re.test(unbold(clause)))) {
       removed = true
       if (i === 0) headRemoved = true
       continue
@@ -488,7 +516,7 @@ function stripOffendingClauses(sentence: string, offenders: readonly RegExp[]): 
   const out = (kept.join('') + tail)
   // The survivor must still be prose, and must no longer make the claim.
   if (!/\p{L}/u.test(out)) return null
-  if (offenders.some(re => re.test(out))) return null
+  if (offenders.some(re => re.test(unbold(out)))) return null
   return { text: out, headRemoved }
 }
 
