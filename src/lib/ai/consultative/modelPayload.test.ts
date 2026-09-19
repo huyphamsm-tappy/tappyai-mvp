@@ -25,17 +25,17 @@ describe('trimPlacesForModel (stage 1: every row, compact)', () => {
       // Dropped: what the card renders and the model never argues with.
       for (const k of ['lat', 'lng', 'opening_hours_week', 'photo_url', 'photo_urls', 'has_maps', 'has_phone', 'has_photo']) expect(r, k).not.toHaveProperty(k)
       // Kept: the evidence a pick is argued with + the URL fields the CTA / review rules read.
-      for (const k of ['address', 'phone', 'google_rating', 'price_range_text', 'distance_km', 'open_now', 'opening_hours', 'place_types', 'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review']) expect(r, k).toHaveProperty(k)
-      // Item 6: the formatted rating is cited; its numeric twins stay with the full row (ranker, guards).
-      expect(r).not.toHaveProperty('rating_value'); expect(r).not.toHaveProperty('rating_count')
+      for (const k of ['address', 'phone', 'google_rating', 'rating_value', 'rating_count', 'price_range_text', 'distance_km', 'open_now', 'opening_hours', 'place_types', 'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review']) expect(r, k).toHaveProperty(k)
+      // The numeric rating twins MUST travel: the stream guard reads its rating evidence from this
+      // copy (measured smoke68 2026-09-19 — without them the pick sentence was cut as unsupported).
       expect(r.review_actions).toEqual([{ kind: 'tiktok', url: 'https://www.tiktok.com/@x/video/1', attributed: true }])
     }
     expect(String(out.results_note)).toMatch(/TOAN BO 10 ket qua/)
     expect(out.google_maps_search).toBe('https://maps')
   })
-  it('item 6: numeric rating twins stay when there is no formatted string; the aggregate maps link leaves when the card renders', () => {
-    const out = trimPlacesForModel({ results: [{ name: 'A', rating: 4.4, user_ratings_total: 200, rating_value: 4.4, rating_count: 200 }], google_maps_search: 'https://maps' }) as Record<string, unknown>
-    expect((out.results as Array<Record<string, unknown>>)[0]).toMatchObject({ rating: 4.4, user_ratings_total: 200, rating_value: 4.4, rating_count: 200 })
+  it('item 6: every rating spelling stays; the aggregate maps link leaves only when the card renders', () => {
+    const out = trimPlacesForModel({ results: [{ name: 'A', rating: 4.4, user_ratings_total: 200, rating_value: 4.4, rating_count: 200, google_rating: '4.4⭐ (200 đánh giá)' }], google_maps_search: 'https://maps' }) as Record<string, unknown>
+    expect((out.results as Array<Record<string, unknown>>)[0]).toMatchObject({ rating: 4.4, user_ratings_total: 200, rating_value: 4.4, rating_count: 200, google_rating: '4.4⭐ (200 đánh giá)' })
     expect(out.google_maps_search).toBe('https://maps')
     const card = trimPlacesForModel({ results: ten, google_maps_search: 'https://maps' }, 'results', { rendersCard: true }) as Record<string, unknown>
     expect(card).not.toHaveProperty('google_maps_search')

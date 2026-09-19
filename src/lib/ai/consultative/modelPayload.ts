@@ -38,9 +38,10 @@ function compactRow(row: unknown): unknown {
   const x = row as Record<string, unknown>
   const out: Record<string, unknown> = {}
   for (const k of ROW_KEEP) if (x[k] !== undefined && x[k] !== null && x[k] !== '') out[k] = x[k]
-  // Item 6: the formatted `google_rating` ("4.7⭐ (659 đánh giá Google Maps)") is what the model
-  // cites; the numeric twins beside it are for the ranker and the guards, which read the FULL row.
-  if (typeof out.google_rating === 'string' && out.google_rating) { delete out.rating_value; delete out.rating_count }
+  // Item 6 tried to drop the numeric twins beside the formatted `google_rating` — REVERTED the same
+  // day: the stream-side grounding guard reads rating evidence from the tool-result frame the
+  // SDK emits, i.e. THIS copy, not the full row. Without them every "5⭐ (100 đánh giá)" pick
+  // sentence lost its evidence and was cut (measured smoke68: P2, E1, F8 lost the pick).
   // Rule 18b reads `review_actions[0]` when the user asks for a review link; one entry, three fields.
   const ra = Array.isArray(x.review_actions) ? x.review_actions[0] as Record<string, unknown> | undefined : undefined
   if (ra && typeof ra.url === 'string') out.review_actions = [{ kind: ra.kind, url: ra.url, attributed: ra.attributed === true }]
