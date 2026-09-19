@@ -45,6 +45,8 @@ export interface ProseShapeStats {
   capped: number
   /** Rule 4: "bạn muốn ăn gì / loại nào?" asked although the reply already picked. */
   subject_questions_removed?: number
+  /** Rule 4b: the reply picked and then ENDED with a question to the user ("Bạn muốn … hay …?"). */
+  trailing_question_removed?: number
 }
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
@@ -59,6 +61,16 @@ const REASON_RE = /\b(vi|boi vi|nen|la bang chung|du manh|dang tin|chung to|cho 
  * pick exists. Folded text.
  */
 const SUBJECT_Q_RE = /\b(?:muon|thich|can|dinh|uu tien) (?:an|mua|choi|di|xem|dung|thu|lam|tim) (?:gi|loai|kieu|mon|hoat dong|the loai)\b|\b(?:loai|kieu|mon|hoat dong|the loai) (?:nao|gi)\b|\bhay (?:loai|thu|cai|mon|hoat dong) (?:nao |gi )?khac\b|\bthich (?:hoat dong|loai|mon|kieu) (?:nao|gi)\b|\bwhat (?:kind|type) of\b|\bwhich (?:kind|type|cuisine)\b/
+/**
+ * Rule 4b — a closing question addressed to the user after the pick ("Bạn muốn massage body hay
+ * foot massage?", "Bạn có muốn biết thêm về quán nào không?"). R4 says a reply ends with the
+ * recommendation, not a question; measured Android 2026-09-19 (B3/B4): the trailing question made
+ * the intent gate read the NEXT broad query as an answer to it, which skipped the clarify gate, and
+ * the model then asked instead of searching. Folded text; only the LAST prose sentence, and only a
+ * question that asks the user to CHOOSE or SPECIFY ("… hay …?", "muốn … gì / nào / thêm / khác?");
+ * an offer ("Bạn muốn đặt bàn trước không?") is not a clarification and stays.
+ */
+const TRAILING_Q_RE = /^(?:ban|you|do you|would you)\b.*\b(?:hay|or)\b.*\?\s*$|\b(?:muon|thich|can|prefer|want)\b.*\b(?:gi|nao|them|khac|loai|kieu|which|more)\b.*\?\s*$/
 const SITUATION_RE = /\b(toi nay|trua|sang|khuya|cuoi tuan|2 nguoi|hai nguoi|gia dinh|hen ho|date|sinh nhat|tiep khach|nhom|ban be|yen tinh|soi dong|view|lang man|sang trong|re|ngan sach|budget|tonight|family|couple|group|quiet|lively|romantic|cheap)\b/
 
 function escapeRe(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') }
@@ -145,6 +157,13 @@ export function guardProseShape(text: string, opts: ProseShapeOptions): { text: 
         const prev = prose[k - 1]
         if (prev && !doomed.has(prev.i) && prev.i !== pickIdx && /(?:can biet|cho minh biet|cho minh hoi)[^:]*:\s*$/.test(fold(prev.s))) doomed.add(prev.i)
       }
+    }
+  }
+  // 4b. A closing question after a real pick — the reply ends on the recommendation.
+  if (namesVenue(prose.find(x => x.i === pickIdx)?.s ?? '')) {
+    const last = [...prose].reverse().find(x => !doomed.has(x.i))
+    if (last && last.i !== pickIdx && /\?\s*$/.test(last.s.trim()) && TRAILING_Q_RE.test(fold(last.s))) {
+      doomed.add(last.i); stats.trailing_question_removed = (stats.trailing_question_removed ?? 0) + 1
     }
   }
   // 3. Cap: drop the least informative first, never the pick.

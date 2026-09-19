@@ -1393,7 +1393,8 @@ export function applyPlaceEnrichmentStreamFilter(
         .map(x => x.r)
       const seen = new Set(named)
       const fill = recsForCard.filter(r => !seen.has(r))
-      const unmatched = named.length === 0 && headers.length > 0
+      // Only when there ARE rows to match: a no-tool turn with bold section titles is not this error.
+      const unmatched = recsForCard.length > 0 && named.length === 0 && headers.length > 0
       if (unmatched) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'pick_unmatched', headers: headers.slice(0, 5).map(h => h.norm), rows: allNames.slice(0, 8) }))
       return {
         pickedRecs: [...named, ...fill].slice(0, CARDS_SHOWN),

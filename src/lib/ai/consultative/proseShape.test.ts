@@ -59,10 +59,15 @@ describe('guardProseShape — one alternative, cap of six, pick kept', () => {
     ].join(' ')
     const r = guardProseShape(text, { rendersCard: true, venues })
     expect(r.stats.sentences_out).toBe(6)
-    expect(r.stats.capped).toBe(3)
+    // Rule 4b takes the closing "xe máy hay ô tô?" first (a choose-question after the pick); the cap
+    // then drops two more.
+    expect(r.stats.trailing_question_removed).toBe(1)
+    expect(r.stats.capped).toBe(2)
+    expect(r.text).not.toContain('xe máy hay ô tô')
     expect(r.text).toContain('Mình chọn **Cơm Niêu Sài Gòn**')
     expect(r.text).toContain('4.6⭐ từ 1200')
-    expect(r.text).not.toContain('Hôm nay trời đẹp')
+    // Ties go to the later sentence: the two closing fillers leave, the opening one stays.
+    expect(r.text).not.toContain('Chúc bạn ngon miệng')
     expect(r.text).not.toContain('Có gì cứ hỏi mình')
   })
   it('machine blocks are neither counted nor touched', () => {
@@ -116,5 +121,30 @@ describe('guardProseShape — rule 4 also drops the lead-in the removed question
     expect(r.text).not.toContain('Bạn muốn ăn món gì')
     expect(r.text).toContain('Mình giả sử tìm nhà hàng có phòng riêng')
     expect(r.text).toContain('**Bún Bò Huế Bến Ngự** là lựa chọn')
+  })
+})
+
+describe('guardProseShape — rule 4b: a closing question that asks the user to choose is removed after a pick', () => {
+  // Measured Android 2026-09-19 (B3 → B4): "Bạn muốn massage body thư giãn hay foot massage?" closed a
+  // reply that had already picked; the intent gate then read the next broad query ("cuối tuần làm
+  // gì") as the ANSWER to it, the clarify gate was skipped, and the model asked instead of searching.
+  it('drops "… hay …?" and "muốn biết thêm về quán nào?" at the end of a reply with a real pick', () => {
+    const a = guardProseShape('Mình chọn **Bún Bò Huế Bến Ngự** — 4.4⭐ (589 đánh giá), cách bạn 0.9km. Bạn muốn massage body thư giãn hay foot massage?', { rendersCard: true, venues })
+    expect(a.text).not.toContain('hay foot massage')
+    expect(a.text).toContain('Mình chọn **Bún Bò Huế Bến Ngự**')
+    expect(a.stats.trailing_question_removed).toBe(1)
+    const b = guardProseShape('Mình chọn **Cơm Niêu Sài Gòn** cho bạn — 4.6⭐. Bạn có muốn biết thêm về quán nào không?', { rendersCard: true, venues })
+    expect(b.text).not.toContain('biết thêm về quán nào')
+    expect(b.stats.trailing_question_removed).toBe(1)
+  })
+  it('an offer is not a clarification: "Bạn muốn đặt bàn trước không?" stays; no pick ⇒ nothing removed; a question mid-reply stays', () => {
+    const offer = guardProseShape('Mình chọn **Bún Bò Huế Bến Ngự** — 4.5⭐. Bạn muốn đặt bàn trước không?', { rendersCard: true, venues })
+    expect(offer.text).toContain('Bạn muốn đặt bàn trước không?')
+    expect(offer.stats.trailing_question_removed).toBeUndefined()
+    const noPick = guardProseShape('Mình chưa tìm được quán nào mở giờ này. Bạn muốn ăn phở hay cơm?', { rendersCard: true, venues })
+    expect(noPick.text).toContain('phở hay cơm?')
+    const mid = guardProseShape('Bạn muốn ăn cay hay thanh? Mình chọn **Bún Bò Huế Bến Ngự** — 4.4⭐, nước dùng đậm.', { rendersCard: true, venues })
+    expect(mid.text).toContain('Mình chọn **Bún Bò Huế Bến Ngự**')
+    expect(mid.stats.trailing_question_removed).toBeUndefined()
   })
 })
