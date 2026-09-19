@@ -78,6 +78,15 @@ describe('V1 pick backstop on the stream (G1 attribution ON)', () => {
     const out = await run('Để gợi ý đúng ý, mình cần biết thêm: bạn ưu tiên món Việt hay món Nhật, và có cần chỗ đậu xe không?', { v1: false })
     expect(out).not.toContain('Mình chọn')
   })
+  // Measured GATE A rerun 2026-09-19 (T5b ×2, S5b): the guards cut the pick sentence and the body
+  // kept only "Nếu muốn chỗ ngoài trời hơn, **Công viên Tao Đàn**…" — alternatives to a choice never
+  // made. A venue named only inside an alternative sentence is not a pick.
+  it('fires when every venue mention sits in an alternative sentence (the pick was cut)', async () => {
+    const reply = 'Mình giả sử bạn đi 5 người hôm nay.\n\nNếu muốn chỗ ngoài trời hơn, **Ốc Đào** cách 1km cũng rất tốt. Hoặc **Cơm Niêu Sài Gòn** nếu thích yên tĩnh.'
+    const out = await run(reply)
+    expect(out.startsWith('Mình chọn **Cơm Niêu Sài Gòn** — 4.6⭐')).toBe(true)
+    expect(out).toContain('Nếu muốn chỗ ngoài trời hơn, **Ốc Đào**')
+  })
 })
 
 describe('V1 pick backstop — a plain mention of a retrieved venue is "named" too', () => {

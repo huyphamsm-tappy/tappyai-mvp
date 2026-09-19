@@ -1770,12 +1770,21 @@ export function applyPlaceEnrichmentStreamFilter(
       const known = [...places.map(p => p.name || ''), ...(shopping ? [shopping.name] : [])]
         .map(n => normalizeVN(n.trim().toLowerCase())).filter(Boolean)
       if (known.length === 0) return null
-      const bold = [...body.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => normalizeHeading(m[1]))
-      if (bold.some(b => isGrounded(b, known))) return null
-      // A plain (un-bolded) mention counts too — measured E4 "chỗ đó có giữ xe không?": the body
-      // said "Dollhouse bar HCMC" without bold and got a second, redundant pick sentence on top.
-      const bodyFolded = normalizeVN(body.toLowerCase())
-      if (known.some(n => n.length >= 4 && bodyFolded.includes(n))) return null
+      // A venue named only inside an ALTERNATIVE sentence ("Nếu muốn…", "Ngoài ra…", "Hoặc…") is
+      // not a pick — measured GATE A rerun 2026-09-19 (T5b ×2, S5b): the guards cut the pick
+      // sentence and the body kept "Nếu muốn chỗ ngoài trời hơn, **Công viên Tao Đàn**…" alone,
+      // so the reply offered alternatives to a choice it never made. A plain (un-bolded) mention
+      // still counts (measured E4: "Dollhouse bar HCMC" without bold got a redundant pick on top).
+      const ALT = /^\s*(?:n[eế]u|ngo[àa]i ra|ho[ặa]c|c[òo]n|thay v[àa]o [dđ][óo]|if you|or\b|alternatively|otherwise)/iu
+      const namesKnown = (s: string) => {
+        const f = normalizeVN(s.toLowerCase())
+        return known.some(n => n.length >= 4 && f.includes(n)) || [...s.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].some(m => isGrounded(normalizeHeading(m[1]), known))
+      }
+      const sentences = sentenceSpans(body).map(([a, b]) => body.slice(a, b)).filter(s => s.trim())
+      const hasPickSentence = sentences.some(s => namesKnown(s) && !ALT.test(s))
+      if (hasPickSentence) return null
+      const altOnly = sentences.some(s => namesKnown(s))
+      if (altOnly) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: 'alternatives_only' }))
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
       // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
       const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
