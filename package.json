@@ -10,6 +10,8 @@
     "check:env": "node scripts/check-env.mjs",
     "start": "next start",
     "lint": "next lint",
+    "check:control-bytes": "node scripts/controlBytes.mjs",
+    "pretest": "node scripts/controlBytes.mjs",
     "test": "vitest run --reporter=default --reporter=json --outputFile.json=vitest-report.json && node scripts/requiredSuites.mjs vitest-report.json",
     "architecture:check": "node scripts/architecture/check.mjs",
     "check:sql-grants": "node scripts/architecture/check-sql-grants.mjs",
