@@ -191,13 +191,24 @@ describe('flag ON', () => {
     // A plain "ngon" turn: the evidence threshold (`qualifiesFor`) admits every rated row, so the
     // cap is what decides the length.
     await post([{ role: 'user', content: 'Tìm quán ăn tối ngon cho 2 người gần Quận 1' }])
-    const out = await runPlaceTool({ query: 'quán ăn tối ngon', location: 'Quận 1' })
-    const sl = out._tappy_shortlist as Array<{ name: string; evidence: { attributes?: string[] } }>
+    // 1.4 (owner 2026-09-19): under V1 the engine's shortlist is SERVER-SIDE evidence (card
+    // emphasis, backstop, evidence gap) and never travels to the model — the model reads every row
+    // in provider order and chooses itself. The shortlist is observed through its log line.
+    const logs: string[] = []
+    const spy = vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { logs.push(a.map(String).join(' ')) })
+    let out: Record<string, unknown>
+    try { out = await runPlaceTool({ query: 'quán ăn tối ngon', location: 'Quận 1' }) } finally { spy.mockRestore() }
+    expect('_tappy_shortlist' in out).toBe(false)
+    expect('_tappy_ranking' in out).toBe(false)
+    expect(String(out.results_note)).toMatch(/thu tu nha cung cap/)
+    const line = logs.find(l => l.includes('"step":"shortlist"'))
+    expect(line).toBeTruthy()
+    const sl = (JSON.parse(line!) as { selected: Array<{ name: string; attributes: string[] | null }> }).selected
     expect(sl).toHaveLength(5)
     const comNieu = sl.find(s => s.name === 'Cơm Niêu Sài Gòn')!
-    expect(comNieu.evidence.attributes).toEqual(expect.arrayContaining([expect.stringMatching(/^yên tĩnh \("/), expect.stringMatching(/^có chỗ đậu xe \("/)]))
+    expect(comNieu.attributes).toEqual(expect.arrayContaining([expect.stringMatching(/^yên tĩnh \("/), expect.stringMatching(/^có chỗ đậu xe \("/)]))
     const pho = sl.find(s => s.name === 'Phở Hòa')
-    if (pho) expect(pho.evidence.attributes).toEqual([])
+    if (pho) expect(pho.attributes).toEqual([])
     expect('_tappy_hard_gaps' in out).toBe(false)
   })
 

@@ -16,11 +16,12 @@ const row = (i: number, extra: Record<string, unknown> = {}) => ({
 const ten = Array.from({ length: 10 }, (_, i) => row(i))
 
 describe('trimPlacesForModel (stage 1: every row, compact)', () => {
-  it('keeps the shortlist members first, then every other row, each with the citable fields only', () => {
+  it('flag OFF (default): keeps the shortlist members first, then every other row, each with the citable fields only', () => {
     const out = trimPlacesForModel({ results: ten, _tappy_shortlist: [{ id: 'p7', name: 'Quán 7' }, { id: 'p0', name: 'Quán 0' }], google_maps_search: 'https://maps' }) as Record<string, unknown>
     const rows = out.results as Array<Record<string, unknown>>
     expect(rows).toHaveLength(10)
     expect(rows.map(r => r.name)).toEqual(['Quán 0', 'Quán 7', 'Quán 1', 'Quán 2', 'Quán 3', 'Quán 4', 'Quán 5', 'Quán 6', 'Quán 8', 'Quán 9'])
+    expect(out).toHaveProperty('_tappy_shortlist')
     for (const r of rows) {
       // Dropped: what the card renders and the model never argues with.
       for (const k of ['lat', 'lng', 'opening_hours_week', 'photo_url', 'photo_urls', 'has_maps', 'has_phone', 'has_photo']) expect(r, k).not.toHaveProperty(k)
@@ -39,6 +40,17 @@ describe('trimPlacesForModel (stage 1: every row, compact)', () => {
     expect(out.google_maps_search).toBe('https://maps')
     const card = trimPlacesForModel({ results: ten, google_maps_search: 'https://maps' }, 'results', { rendersCard: true }) as Record<string, unknown>
     expect(card).not.toHaveProperty('google_maps_search')
+  })
+  // 1.4 (owner 2026-09-19, T8): under Consultative V1 the model reads PROVIDER order, no
+  // shortlist-first, and the engine's shortlist / ranking do not travel — it chooses itself.
+  it('modelChooses (V1): every row in provider order; _tappy_shortlist and _tappy_ranking stay behind', () => {
+    const out = trimPlacesForModel({ results: ten, _tappy_shortlist: [{ id: 'p7', name: 'Quán 7' }, { id: 'p0', name: 'Quán 0' }], _tappy_ranking: { id: 'p7', name: 'Quán 7' }, google_maps_search: 'https://maps' }, 'results', { modelChooses: true }) as Record<string, unknown>
+    const rows = out.results as Array<Record<string, unknown>>
+    expect(rows.map(r => r.name)).toEqual(['Quán 0', 'Quán 1', 'Quán 2', 'Quán 3', 'Quán 4', 'Quán 5', 'Quán 6', 'Quán 7', 'Quán 8', 'Quán 9'])
+    expect(out).not.toHaveProperty('_tappy_shortlist')
+    expect(out).not.toHaveProperty('_tappy_ranking')
+    expect(String(out.results_note)).toMatch(/thu tu nha cung cap, KHONG phai thu tu uu tien/)
+    for (const r of rows) expect(r).toHaveProperty('rating_value')
   })
   it('caps at the provider ceiling and says so', () => {
     const twelve = Array.from({ length: 12 }, (_, i) => row(i))

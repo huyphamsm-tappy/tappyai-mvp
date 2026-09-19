@@ -68,6 +68,7 @@ import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Pr
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
 import { extractAttributes, classifyHardGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { evidenceNote } from '@/lib/ai/consultative/hardConstraints'
+import { admitsForUpscale } from '@/lib/ai/consultative/upscale'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer } from '@/lib/ai/consultative/actionability'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
@@ -949,7 +950,16 @@ export async function POST(req: Request) {
       // Only candidates that carry evidence for THIS decision may take a slot;
       // the rest stay in `results` as what they are — search results.
       // Consultative V1 widens the cap to five (`shortlistMax`); the default is the Rule of 1–3.
-      const sl = shortlistCandidates(ranked.ranked, undefined, e => qualifiesFor(decisionFrame, e))
+      // An upscale request never shortlists a guest house / hostel (upscale.ts, owner T8 2026-09-19);
+      // the exclusion is logged so a row leaving the shortlist is never a silent drop.
+      const sl = shortlistCandidates(ranked.ranked, undefined, e => {
+        if (!qualifiesFor(decisionFrame, e)) return false
+        if (situation && !admitsForUpscale(situation.hard, e.candidate)) {
+          console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'shortlist_excluded_upscale', name: e.candidate.name }))
+          return false
+        }
+        return true
+      })
       // Consultative V1: atmosphere / audience attributes from the text this
       // turn ALREADY fetched (entity-scoped snippets) — zero new calls. They
       // ride the shortlist evidence as the only such words the model may use.
@@ -972,6 +982,13 @@ export async function POST(req: Request) {
             : evidenceSummary(s.entry.candidate.attrs),
           why: s.entry.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => r.detail),
           missing: missingFor(decisionFrame, s.entry),
+        }))
+        // The engine's shortlist is server-side evidence only under V1 (1.4: it no longer travels
+        // to the model), so it is logged here — the one place its content can be checked.
+        console.log(JSON.stringify({
+          type: 'tappyai_consultative_v1', step: 'shortlist', tool: toolName, v1: v1Active,
+          selected: (result as { _tappy_shortlist: Array<{ name: string; role: string | null; evidence: { attributes?: string[] } }> })._tappy_shortlist
+            .map(s => ({ name: s.name, role: s.role, attributes: s.evidence.attributes ?? null })),
         }))
       }
       if (situation && v1Attrs) try {
@@ -1024,8 +1041,18 @@ export async function POST(req: Request) {
     // has two paths that collide on a key: when Serper /shopping answers, its structured rows land
     // in `search_results` and there is no `shopping_results` at all. Naming only the latter meant
     // the live shopping path was reordered by nothing.
-    const keys = toolName === 'search_places' ? ['results']
-      : toolName === 'get_hotel_prices' ? ['search_results', 'hotel_list']
+    //
+    // 🚨 PLACES AND HOTELS ARE NO LONGER REORDERED (owner decision 2026-09-19, T8). The ranker's
+    // order is rating-first; handing the model the rows in that order — with the top-rated one
+    // first and a `_tappy_shortlist` naming it `best_overall` — is the code-side selection the
+    // two-stage design exists to remove, only invisible. Measured T8: a 5⭐/138 guest house sat
+    // at row 0 for "resort … sang chút" and was chosen. The rows now stay in the PROVIDER's order
+    // (Google relevance, not our score); the model chooses among all of them. The ranker still
+    // runs: its Pick and shortlist feed the card's emphasis, the server-authored backstop
+    // sentence and the evidence gap — never the model's reading order. With the flag OFF the
+    // pre-V1 product is byte-identical: the rows are still ranked for its shortlist rulebook.
+    const keys = toolName === 'search_places' ? (v1Active ? [] : ['results'])
+      : toolName === 'get_hotel_prices' ? (v1Active ? [] : ['search_results', 'hotel_list'])
         : ['shopping_results', 'search_results']
     for (const key of keys) {
       if (!Array.isArray(r[key])) continue
@@ -1575,7 +1602,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // `modelPayload.ts`.
           return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active })
         }
       }) }),
       get_news: tool({
@@ -1710,7 +1737,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list')
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active })
         }
       }),
       get_transport_options: tool({

@@ -52,12 +52,38 @@ function compactRow(row: unknown): unknown {
  * @param key the array the rows live in: `results` (search_places) or `hotel_list` (get_hotel_prices)
  * @param opts.rendersCard the client renders the decision card — the model is told not to write the
  *   aggregate Maps link, so the link itself need not travel (item 6).
+ * @param opts.modelChooses Consultative V1 (1.4, owner 2026-09-19): the model reads the rows in the
+ *   PROVIDER's order with no `_tappy_shortlist` and no `_tappy_ranking`, and chooses itself. Off
+ *   (the pre-V1 product, byte-identical): shortlist members first, both engine fields travel.
  */
-export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results', opts: { rendersCard?: boolean } = {}): unknown {
+export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results', opts: { rendersCard?: boolean; modelChooses?: boolean } = {}): unknown {
   if (!result || typeof result !== 'object' || Array.isArray(result)) return result
   const r = result as Record<string, unknown>
   const rows = r[key]
   if (!Array.isArray(rows) || rows.length === 0) return result
+  const total = rows.length
+  const top: Record<string, unknown> = { ...r }
+  if (opts.rendersCard) delete top.google_maps_search
+  if (opts.modelChooses) {
+    /**
+     * 🚨 THE MODEL'S ORDER IS THE PROVIDER'S ORDER, AND IT GETS NO PRE-MADE PICK (owner decision
+     * 2026-09-19, T8). Until today the copy put the `_tappy_shortlist` members first and carried
+     * the shortlist and `_tappy_ranking` (the engine's rating-first Pick) — so the model read
+     * "row 0 = best_overall" and echoed it: a 5⭐/138 guest house for "resort … sang chút". Both
+     * fields stay on the server result (card emphasis, backstop sentence, evidence gap); they do
+     * not travel to the model, whose job in the two-stage design is to choose among ALL rows.
+     */
+    const all = rows.slice(0, MODEL_ROWS_MAX)
+    delete top._tappy_shortlist
+    delete top._tappy_ranking
+    return {
+      ...top,
+      [key]: all.map(compactRow),
+      results_note: total > all.length
+        ? `Hien thi ${all.length}/${total} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien (rut gon: chi cac truong de chon); the (card) cua user co day du.`
+        : `Day la TOAN BO ${all.length} ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`,
+    }
+  }
   const shortlist = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ id?: unknown; name?: unknown }>) : []
   const keepIds = new Set(shortlist.map(s => String(s.id ?? '')).filter(Boolean))
   const keepNames = new Set(shortlist.map(s => String(s.name ?? '')).filter(Boolean))
@@ -68,9 +94,6 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
   const members = rows.filter(row => shortlisted(row as Record<string, unknown>))
   const others = rows.filter(row => !shortlisted(row as Record<string, unknown>))
   const all = [...members, ...others].slice(0, MODEL_ROWS_MAX)
-  const total = rows.length
-  const top: Record<string, unknown> = { ...r }
-  if (opts.rendersCard) delete top.google_maps_search
   return {
     ...top,
     [key]: all.map(compactRow),

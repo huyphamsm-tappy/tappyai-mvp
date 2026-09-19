@@ -23,7 +23,7 @@ export type Occasion = 'date' | 'birthday' | 'business' | 'family_meal' | 'hango
 export type TimeSlot = 'now' | 'tonight' | 'lunch' | 'breakfast' | 'late_night' | 'weekend' | 'tomorrow'
 export type Hard =
   | 'quiet' | 'parking' | 'kids' | 'vegetarian' | 'outdoor' | 'private_room' | 'late_open'
-  | 'delivery' | 'air_con' | 'view' | 'live_music' | 'wheelchair'
+  | 'delivery' | 'air_con' | 'view' | 'live_music' | 'wheelchair' | 'upscale'
 export type Mood = 'chill' | 'lively' | 'romantic' | 'fancy' | 'cheap_good'
 
 export interface SituationFrame {
@@ -78,6 +78,13 @@ const TIME: Array<[TimeSlot, RegExp]> = [
   ['weekend', /\b(cuoi tuan|weekend|thu 7|thu bay|chu nhat|saturday|sunday|t7|cn)\b/],
 ]
 
+/**
+ * Upscale intent — one regex for the hard constraint and the `fancy` mood. "sang" alone is a verb
+ * ("sang Quận 1"), so only the qualified forms count. Owner 2026-09-19 (T8): "sang chút / xịn hơn /
+ * sang trọng / đẹp hơn" is a HARD constraint on the CLASS of place, not a flavour word.
+ */
+export const UPSCALE_RE = /\b(sang (?:trong|chanh|chut|xin|hon|mot chut|hon chut|hon xiu|xiu)|hoi sang|chut sang|xin (?:hon|xo|so|chut)|dep hon|cao cap|fancy|fine dining|dang cap|luxury|luxurious|upscale|(?:4|5) sao)\b/
+
 const HARD: Array<[Hard, RegExp]> = [
   ['quiet', /\b(yen tinh|im lang|quiet|khong on|it on|nhe nhang|tinh lang)\b/],
   ['parking', /\b(dau xe|do xe|giu xe|bai xe|parking|o to|xe hoi|xe oto)\b/],
@@ -91,11 +98,12 @@ const HARD: Array<[Hard, RegExp]> = [
   ['view', /\b(view|ngam canh|nhin ra|huong bien|huong song|tam nhin|cao tang)\b/],
   ['live_music', /\b(nhac song|live music|acoustic|ban nhac|live band)\b/],
   ['wheelchair', /\b(xe lan|wheelchair|khuyet tat|accessible)\b/],
+  ['upscale', UPSCALE_RE],
 ]
 
 const MOOD: Array<[Mood, RegExp]> = [
   ['romantic', /\b(lang man|romantic|hen ho|date|candle)\b/],
-  ['fancy', /\b(sang trong|sang chanh|fancy|cao cap|fine dining|xin xo|dang cap|luxury|upscale|5 sao)\b/],
+  ['fancy', UPSCALE_RE],
   ['cheap_good', /\b(re|binh dan|gia re|ngon re|ngon bo re|re ma ngon|via he|le duong|cheap|budget|affordable|hop tui tien|sinh vien)\b/],
   ['lively', /\b(soi dong|nhon nhip|vui|nao nhiet|lively|dong vui|party|dj|bar|pub|club)\b/],
   ['chill', /\b(chill|thu gian|nhe nhang|relax|thanh tinh|yen tinh|tinh lang|cozy|am cung)\b/],
@@ -183,7 +191,7 @@ const MOOD_VI: Record<Mood, string> = {
 const HARD_VI: Record<Hard, string> = {
   quiet: 'yên tĩnh', parking: 'có chỗ đậu xe', kids: 'phù hợp trẻ em', vegetarian: 'có món chay', outdoor: 'ngoài trời',
   private_room: 'phòng riêng', late_open: 'mở khuya', delivery: 'giao hàng / mang về', air_con: 'máy lạnh', view: 'có view',
-  live_music: 'nhạc sống', wheelchair: 'tiếp cận xe lăn',
+  live_music: 'nhạc sống', wheelchair: 'tiếp cận xe lăn', upscale: 'sang trọng / cao cấp',
 }
 
 /**

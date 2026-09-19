@@ -27,6 +27,9 @@ export const HARD_GROUP: Record<Hard, HardGroup> = {
   quiet: 'EVIDENCE_REQUIRED', parking: 'EVIDENCE_REQUIRED', kids: 'EVIDENCE_REQUIRED', vegetarian: 'EVIDENCE_REQUIRED',
   outdoor: 'EVIDENCE_REQUIRED', private_room: 'EVIDENCE_REQUIRED', late_open: 'EVIDENCE_REQUIRED', view: 'EVIDENCE_REQUIRED',
   live_music: 'EVIDENCE_REQUIRED', wheelchair: 'EVIDENCE_REQUIRED',
+  // "sang chút" (T8, owner 2026-09-19): a class-of-place constraint — a guest house is wrong, and
+  // "sang trọng" said of a row with no fancy evidence is the fabrication the gap sentence prevents.
+  upscale: 'EVIDENCE_REQUIRED',
   air_con: 'ASSUME_PRESENT',
   delivery: 'ROW_FLAG_BACKED',
 }
@@ -34,7 +37,7 @@ export const HARD_GROUP: Record<Hard, HardGroup> = {
 /** The review attribute that supports a constraint, when the lexicon has one. */
 export const HARD_TO_ATTR: Partial<Record<Hard, VenueAttribute>> = {
   quiet: 'quiet', parking: 'parking', kids: 'kids', vegetarian: 'vegetarian', outdoor: 'outdoor', late_open: 'late_open', view: 'view',
-  live_music: 'live_music',
+  live_music: 'live_music', upscale: 'fancy',
 }
 
 /** How the gap is named to the user — vi / en. One list for prompt and stream. */
@@ -44,6 +47,7 @@ export const HARD_GAP_WORDS: Record<Hard, [string, string]> = {
   private_room: ['phòng riêng', 'a private room'], late_open: ['giờ mở khuya', 'late opening'],
   delivery: ['giao hàng / mang về', 'delivery or takeaway'], air_con: ['máy lạnh', 'air conditioning'], view: ['view', 'a view'],
   live_music: ['nhạc sống', 'live music'], wheelchair: ['tiếp cận xe lăn', 'wheelchair access'],
+  upscale: ['mức sang trọng', 'how upscale it is'],
 }
 
 // Contrary evidence for ASSUME_PRESENT constraints, on folded fetched text.

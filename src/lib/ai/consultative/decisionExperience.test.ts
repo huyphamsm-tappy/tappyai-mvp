@@ -222,8 +222,9 @@ describe('the route applies the shortlist to shopping only', () => {
     expect(route).toMatch(/\['shopping_results', 'search_results'\]/)
   })
 
-  it('leaves places whole', () => {
+  it('leaves places whole (and, under V1, in provider order — 1.4)', () => {
     expect(route).toMatch(/toolName === 'search_products'\)? ?\{?[\s\S]{0,200}?shortlistShopping/)
     expect(route).toMatch(/r\[key\] = \[\.\.\.sorted, \.\.\.untouched\]/)
+    expect(route).toMatch(/toolName === 'search_places' \? \(v1Active \? \[\] : \['results'\]\)/)
   })
 })
