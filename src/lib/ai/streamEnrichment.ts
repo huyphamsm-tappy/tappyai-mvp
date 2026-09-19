@@ -1360,16 +1360,28 @@ export function applyPlaceEnrichmentStreamFilter(
      * fewer. Only those three get the per-venue enrichment (TikTok here, photos above for the
      * named ones); the rest stay in the payload for "Xem thêm" and the filter row.
      */
-    const pickedRecs = (() => {
+    /**
+     * 🚨 "NAMED" IS THE PIPELINE'S LOCATOR, NOT A WHOLE-NAME `indexOf`. Provider rows carry
+     * compound names ("Béo Ơi Quán - Món ngon Hà Nội", "A Tùng Bánh mì bò nướng bơ Campuchia")
+     * and the model writes the head ("Béo Ơi Quán"). A whole-name substring test found none of
+     * the three venues the reply named (Android E2E turn 3, 2026-09-19: named_in_prose 0), so
+     * the fold filled from the engine's order and card #1 was a venue the reply never mentioned.
+     * `findPlaceOffset` is what photo placement already uses — bold header ⊂ tool name, exact,
+     * distinctive segment, guarded token overlap — with the other rows as competitors so an
+     * ambiguous header is refused rather than guessed.
+     */
+    const { pickedRecs, namedInProse } = (() => {
       const folded = normName(mainText)
+      const headers = proseHeaders(folded)
+      const allNames = recsForCard.map(r => r.entity.identity.name)
       const named = recsForCard
-        .map(r => ({ r, at: (() => { const n = normName(r.entity.identity.name); return n.length >= 4 ? folded.indexOf(n) : -1 })() }))
+        .map(r => ({ r, at: findPlaceOffset(r.entity.identity.name, folded, headers, allNames.filter(n => n !== r.entity.identity.name)) }))
         .filter(x => x.at >= 0)
         .sort((a, b) => a.at - b.at)
         .map(x => x.r)
       const seen = new Set(named)
       const fill = recsForCard.filter(r => !seen.has(r))
-      return [...named, ...fill].slice(0, CARDS_SHOWN)
+      return { pickedRecs: [...named, ...fill].slice(0, CARDS_SHOWN), namedInProse: Math.min(named.length, CARDS_SHOWN) }
     })()
     if (resolveTikTok && recsForCard.length > 0) {
       try {
@@ -1391,7 +1403,7 @@ export function applyPlaceEnrichmentStreamFilter(
         shown: CARDS_SHOWN,
       })
       : null
-    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: pickedRecs.filter(r => normName(mainText).includes(normName(r.entity.identity.name))).length }))
+    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse }))
 
     /**
      * \u{1F6A8} THE SAME CONTENT TWICE WAS THE BUG. `injectPlaceEnrichment` writes the
