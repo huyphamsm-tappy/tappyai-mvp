@@ -13,7 +13,7 @@ import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
-import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
+import { buildPlacesLiveView, alignEmphasisToModelPick } from '@/lib/recommendation/liveView'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
@@ -1416,6 +1416,11 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     }
 
+    // B.2 (2026-09-19): "Vì sao" / `recommended` follow the MODEL's pick (card #1), never the
+    // engine's — or nothing, when there is no model pick. Logged as `emphasis` below.
+    const aligned = alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
+    if (aligned.outcome === 'none' && recsForCard.some(r => r.recommended)) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'emphasis_dropped_no_model_pick', engine_pick: recsForCard.find(r => r.recommended)?.entity.identity.name ?? null }))
+    recsForCard = aligned.recs
     const placesView = (EMIT_PLACES_ANNOTATION && recsForCard.length)
       ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), {
         mapsSearchUrl: collector?.placesMapsUrl,
@@ -1424,7 +1429,7 @@ export function applyPlaceEnrichmentStreamFilter(
         pickUnmatched,
       })
       : null
-    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched }))
+    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched, emphasis: aligned.outcome }))
 
     /**
      * \u{1F6A8} THE SAME CONTENT TWICE WAS THE BUG. `injectPlaceEnrichment` writes the

@@ -486,3 +486,46 @@ export function placesRenderOrder(view: Pick<PlacesLiveView, 'items' | 'picked' 
   const n = typeof view.shown === 'number' && view.shown > 0 ? Math.min(view.shown, ordered.length) : ordered.length
   return { visible: ordered.slice(0, n), hidden: ordered.slice(n) }
 }
+
+/**
+ * "VÌ SAO" FOLLOWS THE SAME PICK AS CARD #1 (release close-out B.2, 2026-09-19).
+ *
+ * `recommended` / `reasons` / `tradeOff` come from the ENGINE's `derivePick`, while card #1 is the
+ * venue the MODEL named (`picked[0]`). When the two differ the screen shows venue A first with an
+ * explanation written for venue B — the fourth silent consumer of the engine ordering found on the
+ * render path. So, before the view is built:
+ *  - same entity: unchanged;
+ *  - different: the engine's emphasis is removed and the model's pick gets `recommended` with
+ *    reasons built from ITS OWN row values, in the ranker's own wording (`rated 4.8`, `320 reviews`,
+ *    `0.9km away`) — nothing is transplanted from the other venue; the trade-off (written about the
+ *    engine's runner-up) is dropped;
+ *  - no model pick at all (nothing named, or nothing matched): no card carries emphasis — never a
+ *    mismatched pair. Logged so the fallback is visible.
+ * Returns new objects; never mutates the input.
+ */
+export function alignEmphasisToModelPick(
+  recs: readonly Recommendation[],
+  modelPickId: string | null,
+): { recs: Recommendation[]; outcome: 'same' | 'rehomed' | 'none' | 'rehomed_no_evidence' } {
+  const engine = recs.find(r => r.recommended)
+  if (!modelPickId) {
+    return { recs: recs.map(r => (r.recommended || r.reasons.length || r.tradeOff) ? { ...r, recommended: false, reasons: [], tradeOff: null } : r), outcome: 'none' }
+  }
+  if (engine && engine.entity.id === modelPickId) return { recs: [...recs], outcome: 'same' }
+  const pick = recs.find(r => r.entity.id === modelPickId)
+  if (!pick) {
+    return { recs: recs.map(r => (r.recommended || r.reasons.length || r.tradeOff) ? { ...r, recommended: false, reasons: [], tradeOff: null } : r), outcome: 'none' }
+  }
+  const e = pick.entity
+  const reasons: RecommendationReason[] = []
+  const rating = num(e.quality.rating.value)
+  const count = num(e.quality.ratingCount.value)
+  if (rating !== undefined) reasons.push({ attribute: 'rating', evidence: `rated ${rating}` })
+  if (count !== undefined) reasons.push({ attribute: 'reviewCount', evidence: `${count} reviews` })
+  if (e.location.distanceKm !== null && e.location.distanceKm !== undefined) reasons.push({ attribute: 'distance', evidence: `${e.location.distanceKm}km away` })
+  const out = recs.map(r => {
+    if (r.entity.id === modelPickId) return reasons.length > 0 ? { ...r, recommended: true, reasons, tradeOff: null } : { ...r, recommended: false, reasons: [], tradeOff: null }
+    return (r.recommended || r.reasons.length || r.tradeOff) ? { ...r, recommended: false, reasons: [], tradeOff: null } : r
+  })
+  return { recs: out, outcome: reasons.length > 0 ? 'rehomed' : 'rehomed_no_evidence' }
+}
