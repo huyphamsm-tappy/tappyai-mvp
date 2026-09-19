@@ -48,11 +48,15 @@ export function nextWeekendStay(now: Date): { checkIn: string; checkOut: string;
 export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): string {
   const { frame, hardGaps, rendersCard, lang } = input
   const nextWeekend = nextWeekendStay(input.now ?? new Date())
-  const gaps = (hardGaps.length > 0
-    ? `\n- BANG CHUNG THIEU: user can "${hardGaps.map(h => HARD_VI[h]).join(', ')}" nhung KHONG quan nao trong ket qua co bang chung ve dieu do. Noi ro "minh chua xac nhan duoc X, nen goi hoi truoc" cho quan ban chon — MOT cau gop cho tat ca; KHONG khang dinh bua, KHONG bo qua im lang.`
-    : '') + ((input.hardContrary?.length ?? 0) > 0
-    ? `\n- BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
-    : '')
+  // Item 7 batch 1 (2026-09-19): the "BANG CHUNG THIEU" line is gone — it was dead (the block is
+  // built BEFORE the tool runs, so `hardGaps` was always []); the evidence instruction rides the
+  // tool result as `_tappy_evidence_note` (hardConstraints.ts). `hardGaps` stays in the input type
+  // for callers; only the contrary line (also tool-time) is kept here for the same reason.
+  void hardGaps
+  const gaps = (input.hardContrary?.length ?? 0) > 0
+    ? `
+- BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
+    : ''
   const call = input.searchNow
     ? (input.searchNow.type === 'product'
       ? `goi search_products({ query: "${input.searchNow.query}" })`
@@ -67,10 +71,10 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   const afterClarify = input.afterClarify
     ? `\nUSER VUA TRA LOI cau hoi lam ro cua ban o luot truoc. Luot nay TUYET DOI KHONG hoi them bat ky dieu gi ("ban muon choi gi / huong gi / uu tien gi / loai nao" deu bi CAM). Phan user chua noi: GIA SU va noi ro. Goi tool ngay, roi CHON.`
     : ''
-  const searchNow = input.searchNow
-    ? `
-- LENH LUOT NAY (bat buoc, lam TRUOC khi viet bat ky chu nao): ${call} ngay o buoc 1. KHONG hoi "ban thich loai gi", KHONG hoi "phai khong", KHONG hoi gio/so nguoi/mon truoc khi tim. Sau khi co ket qua: viet theo hinh dang tren, mo dau bang lua chon.`
-    : ''
+  // Item 7 batch 1: the second copy of the call ("- LENH LUOT NAY …" at the bottom of the block) is
+  // gone — BUOC 1 at the top carries the same instruction (measured 2026-09-18: the top block is
+  // the one that moved "đi chơi ở đâu" to a search; the bottom line predates it).
+  const searchNow = ''
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
     : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'
@@ -85,7 +89,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   return `${searchFirst}${buildSituationBlock(frame)}
 
 ===== TU VAN V1 — GHI DE CAC LUAT SAU =====
-Khoi nay GHI DE R1(a) "dua 2-4 lua chon", R1b "neu 2 viet 2 / neu 3 viet toi da 3", R2 "toi da 3 bullet", R7(b) "goi y 2-3 lua chon roi hoi", va gioi han 3 dong. Cac luat khac giu nguyen.
+Khoi nay GHI DE R1(a) "dua 2-4 lua chon", R1b "neu 2 viet 2 / neu 3 viet toi da 3", R2 "toi da 3 bullet", va gioi han 3 dong. Cac luat khac giu nguyen.
 HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):
 1. CAU DAU: MOT lua chon chinh cho DUNG tinh huong tren + LY DO co bang chung (so lieu/that trong ket qua tool: diem, so luot danh gia, khoang cach, muc gia, trich review). Ten quan phai co trong _tappy_shortlist.
 2. MOT lua chon thay the (toi da 1) + danh doi that: "re hon nhung xa hon", "view dep nhung dong". Khong co danh doi that thi khong nhac.

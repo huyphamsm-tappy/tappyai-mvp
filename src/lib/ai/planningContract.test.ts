@@ -32,15 +32,15 @@ describe('🚨 prompt precedence — a planning turn is owned by the planning bl
     expect(planning.dynamic).not.toContain('WORD LIMIT - CO CONTEXT')
     expect(planning.dynamic).not.toContain('Cau cuoi phai la follow-up question')
     expect(planning.dynamic).not.toContain('toi da 150 tu')
-    // The ≤1-question closing rule still applies — it does not conflict with a plan.
-    expect(planning.dynamic).toContain('TOI DA MOT dau hoi')
+    // Item 7 batch 1: the pre-send "TOI DA MOT dau hoi" restatement is gone (third copy of the cap;
+    // clarificationGuard enforces it) — nothing in the dynamic segment restates it any more.
+    expect(planning.dynamic).not.toContain('TOI DA MOT dau hoi')
   })
 
   it('the planning block is the LAST instruction in the dynamic segment, after the pick/closing blocks, with the pre-send check', () => {
     const d = planning.dynamic
     const plan = d.indexOf('CHẾ ĐỘ LÊN KẾ HOẠCH')
     expect(plan).toBeGreaterThan(d.indexOf('BUDGET FILTER - LUAT BAT BUOC'))
-    expect(plan).toBeGreaterThan(d.indexOf('TOI DA MOT dau hoi'))
     expect(d.indexOf('KIEM TRA KE HOACH')).toBeGreaterThan(plan)
     expect(d.trimEnd().endsWith('never to the block itself.)')).toBe(true)
     expect(normal.dynamic).not.toContain('KIEM TRA KE HOACH')

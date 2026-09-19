@@ -252,7 +252,7 @@ describe('THE PROMPT — the frame reaches the model, the rulebook stays cache-s
     const a = buildSystem(null, 'unknown', true, '', 'vi', '', null, null, false, null)
     const b = buildSystem(null, 'unknown', false, '', 'en', 'prefs', null, null, false, null)
     expect(a.shared).toBe(b.shared)
-    for (const pin of ["action='recommend'", "action='search_again'", "action='insufficient'", 'THEM DUNG MOT LAN', 'KHONG goi lan thu ba', 'MO TA DIA DIEM CHI TU DU LIEU THAT', 'KHONG HOI "ban muon an loai gi']) {
+    for (const pin of ["action='recommend'", "action='search_again'", "action='insufficient'", 'THEM DUNG MOT LAN', 'KHONG goi lan thu ba', 'MO TA DIA DIEM CHI TU DU LIEU THAT', 'KHONG hoi "ban muon loai nao / an gi / uu tien gi"']) {
       expect(a.shared).toContain(pin)
     }
   })
