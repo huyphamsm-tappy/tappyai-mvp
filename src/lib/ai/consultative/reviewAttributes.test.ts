@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { extractAttributes, hardConstraintGaps, guardAtmosphereClaims, attributeSummary, moodAttribute } from './reviewAttributes'
+import { extractAttributes, hardConstraintGaps, rowSupportedHards, guardAtmosphereClaims, attributeSummary, moodAttribute } from './reviewAttributes'
 
 // Consultative V1 §4 — attributes come from FETCHED text only, keep their
 // evidence snippet, and a claim about a named venue with no supporting
@@ -39,7 +39,18 @@ describe('extractAttributes', () => {
 describe('hardConstraintGaps + moodAttribute', () => {
   const attrs = extractAttributes(texts)
   it('a stated hard constraint with no supporting evidence anywhere is a gap', () => {
-    expect(hardConstraintGaps(['quiet', 'parking', 'wheelchair', 'vegetarian'], attrs)).toEqual(['vegetarian'])
+    // wheelchair has no review-lexicon entry and no row flag: nothing can vouch for it ⇒ gap.
+    expect(hardConstraintGaps(['quiet', 'parking', 'wheelchair', 'vegetarian'], attrs)).toEqual(['wheelchair', 'vegetarian'])
+  })
+  // Measured 2026-09-19 (F8 "phòng riêng", 4 runs): a constraint outside the lexicon was
+  // skipped, no BANG CHUNG THIEU line reached the prompt, and the model asserted a private
+  // room for a venue nothing vouched for.
+  it('a constraint the lexicon cannot read is a gap, unless a row flag vouches for it', () => {
+    expect(hardConstraintGaps(['private_room'], attrs)).toEqual(['private_room'])
+    expect(hardConstraintGaps(['delivery'], attrs)).toEqual(['delivery'])
+    expect(hardConstraintGaps(['delivery'], attrs, rowSupportedHards([{ name: 'A', has_delivery: true }]))).toEqual([])
+    expect(hardConstraintGaps(['delivery', 'private_room'], attrs, rowSupportedHards([{ has_order: true }]))).toEqual(['private_room'])
+    expect(rowSupportedHards([{ has_delivery: false }, null, 'x'])).toEqual([])
   })
   it('maps moods to the attribute that answers them', () => {
     expect(moodAttribute('romantic')).toBe('date')

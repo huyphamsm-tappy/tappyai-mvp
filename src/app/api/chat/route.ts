@@ -66,7 +66,7 @@ import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuar
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
-import { extractAttributes, hardConstraintGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { extractAttributes, hardConstraintGaps, rowSupportedHards, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -947,9 +947,9 @@ export async function POST(req: Request) {
         // evidence gap the reply must name — never silently dropped. Same for a
         // stated budget when no row carries a price: "trong tầm giá" is then a
         // guess, and the stream filter appends the honest sentence itself.
-        const gaps = hardConstraintGaps(situation.hard, v1Attrs)
-        if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
         const rows = (result as { results?: unknown }).results
+        const gaps = hardConstraintGaps(situation.hard, v1Attrs, rowSupportedHards(Array.isArray(rows) ? rows : []))
+        if (gaps.length > 0) (result as Record<string, unknown>)._tappy_hard_gaps = gaps
         const anyPrice = Array.isArray(rows) && rows.some(row => {
           const x = row as Record<string, unknown>
           return !!(x.price_range_text || x.price_range || x.price_level || typeof x.price === 'number')

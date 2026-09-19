@@ -95,17 +95,35 @@ const MOOD_TO_ATTR: Record<Mood, VenueAttribute> = {
 /**
  * Hard constraints the user stated for which NO candidate carries supporting
  * evidence — reported as an evidence gap, never silently dropped.
+ *
+ * A constraint the review lexicon cannot read at all (private_room, air_con,
+ * wheelchair, delivery) is a gap unless the caller found row-level evidence for
+ * it (`rowSupported`, e.g. delivery from `has_delivery`). Measured 2026-09-19
+ * (F8 "phòng riêng", 4 runs): skipping such a constraint left the prompt with no
+ * "BANG CHUNG THIEU" line and the model asserted "có không gian riêng" for a
+ * venue whose rows and reviews said nothing about a private room.
  */
-export function hardConstraintGaps(hard: readonly Hard[], attrs: ReadonlyMap<string, AttributeEvidence[]>): Hard[] {
+export function hardConstraintGaps(hard: readonly Hard[], attrs: ReadonlyMap<string, AttributeEvidence[]>, rowSupported: Iterable<Hard> = []): Hard[] {
+  const fromRows = new Set(rowSupported)
   const gaps: Hard[] = []
   for (const h of hard) {
+    if (fromRows.has(h)) continue
     const want = HARD_TO_ATTR[h]
-    if (!want) continue
     let supported = false
-    for (const list of attrs.values()) if (list.some(a => a.attribute === want)) { supported = true; break }
+    if (want) for (const list of attrs.values()) if (list.some(a => a.attribute === want)) { supported = true; break }
     if (!supported) gaps.push(h)
   }
   return gaps
+}
+
+/** Hard constraints a result row can vouch for on its own (no review text needed). */
+export function rowSupportedHards(rows: readonly unknown[]): Hard[] {
+  const out = new Set<Hard>()
+  for (const row of rows) {
+    const x = (row ?? {}) as Record<string, unknown>
+    if (x.has_delivery === true || x.has_order === true) out.add('delivery')
+  }
+  return [...out]
 }
 
 /** The attribute a stated hard constraint asks for, if the lexicon has one. */
