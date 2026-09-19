@@ -312,3 +312,28 @@ Per-turn, gate 3 (large memory):
  "memoryAvgPromptTokens": 1190.5,
  "memoryAvgCompletionTokens": 89.5
 }
+
+## 2026-09-19 E1/F8 live confirmation — 12 turns, $0.2867 total (sink `docs/audit/eval/cost/usage-owner3.jsonl`)
+
+Segments `e1f8-run1..5` (E1 + F8 each, memory cleared before every run) and `f8gap-run1..2` (F8 after the
+hard-constraint-gap fix `4758f7b`). Report: `docs/audit/live-e1-f8-2026-09-19.md`.
+
+| turn | LLM calls | uncached in | cache write | cache read | out | hit | Serper credits | LLM $ | Serper $ | total $ |
+|---|---|---|---|---|---|---|---|---|---|---|
+| E1 run1 | 2 | 4880 | 26009 | 26009 | 712 | 46% | 9 | $0.0436 | $0.0090 | $0.0526 |
+| F8 run1 | 2 | 4474 | 25485 | 25485 | 579 | 46% | 6 | $0.0418 | $0.0060 | $0.0478 |
+| E1 run2 | 2 | 4884 | 4831 | 47187 | 737 | 83% | 0 | $0.0193 | $0.0000 | $0.0193 |
+| F8 run2 (asked, no tool) | 1 | 3 | 4184 | 21301 | 168 | 84% | 0 | $0.0082 | $0.0000 | $0.0082 |
+| E1 run3 | 2 | 4908 | 4831 | 47187 | 686 | 83% | 1 | $0.0191 | $0.0010 | $0.0201 |
+| F8 run3 | 2 | 4474 | 4184 | 46786 | 540 | 84% | 0 | $0.0171 | $0.0000 | $0.0171 |
+| E1 run4 | 2 | 4911 | 0 | 52018 | 705 | 91% | 0 | $0.0136 | $0.0000 | $0.0136 |
+| F8 run4 | 2 | 4474 | 4184 | 46786 | 636 | 84% | 0 | $0.0176 | $0.0000 | $0.0176 |
+| E1 run5 | 2 | 4880 | 4831 | 47187 | 671 | 83% | 0 | $0.0190 | $0.0000 | $0.0190 |
+| F8 run5 | 2 | 4474 | 0 | 50970 | 546 | 92% | 0 | $0.0123 | $0.0000 | $0.0123 |
+| F8 gap run1 | 2 | 3817 | 25056 | 25056 | 675 | 46% | 6 | $0.0410 | $0.0060 | $0.0470 |
+| F8 gap run2 | 2 | 3817 | 0 | 50112 | 656 | 93% | 0 | $0.0121 | $0.0000 | $0.0121 |
+
+Repeated identical queries in one server session hit the in-process Serper cache (0 credits); a cold turn costs
+6–9 credits as on 2026-09-18. A new prompt (first run after a code change) pays the cache write (46 % hit), later
+runs read it (83–93 %). No memory extraction call fired on any of the 12 turns (neither prompt carries a durable
+or destination signal).
