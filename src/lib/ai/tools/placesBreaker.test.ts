@@ -52,9 +52,11 @@ beforeEach(() => {
   __resetPlacesBreaker()
   __clearToolCache()
   process.env.GOOGLE_PLACES_API_KEY = 'test-key-not-a-real-secret'
+  // The breaker guards the Google path, which runs only under PLACES_PROVIDER=google (2026-09-19).
+  process.env.PLACES_PROVIDER = 'google'
   delete process.env.SERPER_API_KEY
 })
-afterEach(() => { vi.unstubAllGlobals() })
+afterEach(() => { vi.unstubAllGlobals(); delete process.env.PLACES_PROVIDER })
 
 describe('🚨 a refusal is not bought twice', () => {
   it('429 (quota exhausted) arms the breaker on the SECOND refusal, never the first', async () => {

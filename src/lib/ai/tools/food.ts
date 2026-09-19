@@ -19,6 +19,7 @@ import { usableOverpass } from './overpassResponse'
 import { classifyEvidence } from '@/lib/ai/consultative/evidenceProvenance'
 import { serperPlaces, serperPlaceToRow } from './serperPlaces'
 import { serperMapsQuery } from './serperLocation'
+import { placesProvider } from './placesProvider'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 
 export async function getNews(query: string, lang = 'vi') {
@@ -717,9 +718,13 @@ async function searchPlacesUncached(
    * answers none at all.
    */
   let googleOk = false
+  // 🚨 THE PROVIDER IS A SETTING, NOT A SECRET'S PRESENCE (placesProvider.ts, 2026-09-19): Google
+  // runs only under PLACES_PROVIDER=google. With the default (serper) a valid key changes nothing.
+  const provider = placesProvider()
+  console.log(JSON.stringify({ type: 'tappyai_places_provider', provider, hasKey: !!key }))
   // The breaker is asked here, inside the uncached path: a refusal Google will repeat for the next
   // ten minutes must not be paid for again, and the wrapper above has no business knowing why.
-  if (key && googlePlacesLikelyAvailable()) {
+  if (provider === 'google' && key && googlePlacesLikelyAvailable()) {
     try {
       const sq = location ? query + ' ' + location : query
       // Map legacy type values to Places API (New) includedType names
@@ -905,7 +910,7 @@ async function searchPlacesUncached(
    * exactly like a Google one (`googleOk` below reads as "a structured provider answered";
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
-  if (!result) {
+  if (!result && provider !== 'osm') {
     result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry)
     if (result) googleOk = true
   }
@@ -1278,7 +1283,7 @@ export async function searchPlaces(
       }
     }
 
-    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_attempt', placeType: type ?? null }))
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'provider_attempt', provider: placesProvider(), placeType: type ?? null }))
     const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false)
     if (googleOk) {
       setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi

@@ -323,7 +323,9 @@ describe('BUG-011 · 9 — the Google path is scoped too', () => {
   let n = 0
   const uniqueQuery = () => `cong vien case ${++n}`
 
-  beforeEach(() => vi.stubEnv('GOOGLE_PLACES_API_KEY', 'test-key'))
+  // These tests exercise the Google path itself; since 2026-09-19 that path runs only under
+  // PLACES_PROVIDER=google (placesProvider.ts) — a key alone never selects it.
+  beforeEach(() => { vi.stubEnv('GOOGLE_PLACES_API_KEY', 'test-key'); vi.stubEnv('PLACES_PROVIDER', 'google') })
 
   it('drops the GPS locationBias for a remote destination', async () => {
     stubFetch({ places: [googlePlace('Quy Nhon park', 'Quy Nhơn, Bình Định')] })
