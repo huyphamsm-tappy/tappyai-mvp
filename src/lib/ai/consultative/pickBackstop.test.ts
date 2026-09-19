@@ -99,3 +99,52 @@ describe('V1 pick backstop — a plain mention of a retrieved venue is "named" t
     expect(out).toContain('chỗ đậu xe của Ốc Đào')
   })
 })
+
+// ── 1.3 (2026-09-19, measured P3 GATE B): a follow-up about ONE venue is never answered about another ──
+//
+// "chỗ đó có đặt trước được không?" referred to Hyan Spa. The model re-searched with a broad query,
+// ten unrelated spas came back, the body named none, and the backstop wrote "Mình chọn **AN's spa**"
+// at the top — wrong information stated as the answer. With `referenced` set, a server-authored pick
+// may name a row that matches the referenced venue and nothing else.
+describe('V1 pick backstop on a follow-up: only the referenced venue, or nothing', () => {
+  let saved: string | undefined
+  beforeAll(() => { saved = process.env.PLACE_GUARD_ATTRIBUTION_V2; process.env.PLACE_GUARD_ATTRIBUTION_V2 = '1' })
+  afterAll(() => { if (saved === undefined) delete process.env.PLACE_GUARD_ATTRIBUTION_V2; else process.env.PLACE_GUARD_ATTRIBUTION_V2 = saved })
+
+  async function runRef(reply: string, referenced: string[], rows = ROWS) {
+    const collector = createEnrichmentCollector('chỗ đó có đặt trước được không?')
+    collector.setConsultativeV1({ ...ON, referenced })
+    const toolResult = { results: rows, place_search_status: 'has_results' }
+    collector.setPlacesRecommendations(placeRecommendations(toolResult, 'TP.HCM', { name: rows[0].name }), 'food')
+    const lines = [
+      '9:{"toolCallId":"t1","toolName":"search_places","args":{}}',
+      `a:{"toolCallId":"t1","result":${JSON.stringify(toolResult)}}`,
+      '0:' + JSON.stringify(reply),
+      'd:{"finishReason":"stop"}',
+    ]
+    const logs: string[] = []
+    const orig = console.log
+    console.log = (...a: unknown[]) => { logs.push(a.map(String).join(' ')) }
+    try {
+      const res = applyPlaceEnrichmentStreamFilter(new Response(lines.join('\n') + '\n'), 'vi', collector, undefined, undefined, undefined, false, 'chỗ đó có đặt trước được không?', true)
+      return { out: prose(await new Response(res.body).text()), logs }
+    } finally { console.log = orig }
+  }
+
+  it('the P3 shape: the rows do not contain the referenced venue ⇒ NO pick sentence is written, and the skip is logged', async () => {
+    const { out, logs } = await runRef('Mình tìm thông tin đặt trước cho Hyan Spa ngay.', ['Hyan Spa'])
+    expect(out).not.toContain('Mình chọn')
+    expect(out).not.toContain('Cơm Niêu Sài Gòn')
+    expect(logs.some(l => l.includes('"step":"skipped_referenced"'))).toBe(true)
+  })
+  it('the rows contain the referenced venue ⇒ the pick sentence names THAT venue, not the engine pick', async () => {
+    const rows = [ROWS[0], { ...ROWS[1], name: 'Hyan Spa | Foot Spa | Body Massage', rating_value: 5, rating_count: 100, google_rating: '⭐ 5 (100 đánh giá)', opening_hours: '10:00–21:00' }]
+    const { out } = await runRef('Để gợi ý đúng ý, mình cần biết thêm: bạn muốn massage bao lâu?', ['Hyan Spa'], rows)
+    expect(out.startsWith('Mình chọn **Hyan Spa | Foot Spa | Body Massage** — 5⭐ (100 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–21:00.')).toBe(true)
+    expect(out).not.toContain('**Cơm Niêu Sài Gòn**')
+  })
+  it('a first turn (no referenced venue) keeps the engine pick as before', async () => {
+    const { out } = await runRef('Để gợi ý đúng ý, mình cần biết thêm: bạn ưu tiên món Việt hay món Nhật?', [])
+    expect(out.startsWith('Mình chọn **Cơm Niêu Sài Gòn**')).toBe(true)
+  })
+})

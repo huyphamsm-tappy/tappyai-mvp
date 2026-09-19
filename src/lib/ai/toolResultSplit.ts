@@ -173,6 +173,13 @@ export interface ConsultativeV1Context {
   /** Venues the route asked the model to re-search by name this turn. */
   namedRefetch: string[]
   /**
+   * The prior venues the user's message REFERS to ("chỗ đó", "quán số 2", the name) — the
+   * subject of a follow-up. When set, a server-authored pick sentence may name one of these
+   * and nothing else (measured P3 2026-09-19: asked about Hyan Spa, the backstop named AN's spa
+   * from an unrelated re-search). Empty on a first turn.
+   */
+  referenced?: string[]
+  /**
    * The numbers the PREVIOUS reply stated about the venues it named (rating,
    * review count, distance). On a follow-up that runs no tool this is the
    * turn's only place evidence; the place-claim guard reads it instead of an

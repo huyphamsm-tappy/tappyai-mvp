@@ -1226,6 +1226,7 @@ export async function POST(req: Request) {
     }))
     enrichment.setConsultativeV1({
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
+      referenced: referenced.map(v => v.name),
       carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
     })
     const refetchLines = refetch.length > 0

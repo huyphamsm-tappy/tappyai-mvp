@@ -1778,7 +1778,26 @@ export function applyPlaceEnrichmentStreamFilter(
     const releasedPrefix = flushedText ?? ''
     const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
     const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
-    const g1bFallback = bodyLetters < 40 ? fallbackSentence() : null
+    /**
+     * 🚨 A FOLLOW-UP ABOUT ONE VENUE MAY ONLY EVER BE ANSWERED ABOUT THAT VENUE. Measured P3
+     * 2026-09-19: "chỗ đó có đặt trước được không?" referred to Hyan Spa; the model re-searched with
+     * "Hyan Spa Quận 1 đặt trước booking", Serper returned ten unrelated spas, the body named none,
+     * and the backstop put "Mình chọn **AN's spa**" at the top — wrong information, stated as the
+     * answer. When the route resolved the user's reference to prior venues (`referenced`), a
+     * server-authored pick sentence is allowed ONLY for a row that matches one of them; when no
+     * row does, no sentence is written (the honest "không tìm thấy" is the model's — the refetch
+     * block asks for it) and the skip is logged.
+     */
+    const referenced = (collector?.consultativeV1?.referenced ?? []).map(n => normalizeVN(n.trim().toLowerCase())).filter(Boolean)
+    const subjectOnly = (candidate: string | null): string | null => {
+      if (referenced.length === 0) return candidate
+      const matchesSubject = (name: string) => isGrounded(normalizeVN(name.trim().toLowerCase()), referenced)
+      if (candidate && matchesSubject(candidate)) return candidate
+      const inRows = places.map(p => p.name || '').find(n => n && matchesSubject(n)) ?? null
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', step: inRows ? 'subject_row' : 'skipped_referenced', candidate: candidate ?? null, subject: inRows }))
+      return inRows
+    }
+    const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickName)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
     /**
      * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the
@@ -1813,7 +1832,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // The engine's Pick, or — when derivePick made none (measured T8: five shortlisted hotels,
       // no pick) — the engine's #1, which V1 rule 8 already names as the default choice.
       const engineFirst = collector?.placesRecommendations?.[0]?.entity.identity.name ?? null
-      const place = fallbackSentence(pickName ?? engineFirst)
+      const place = fallbackSentence(subjectOnly(pickName ?? engineFirst))
       if (place) return { sentence: place, kind: 'place' as const }
       if (shopping) return { sentence: shopping.sentence, kind: 'shopping' as const }
       return null
