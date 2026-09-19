@@ -252,3 +252,65 @@ describe('a lead-in at the end of prose still goes', () => {
     expect(out.text).not.toContain('Bạn có thể xem thêm:')
   })
 })
+
+// ── G1 RECURRING (measured 2026-09-19, 7× in one day): a bold LABEL is not a venue ──────────
+//
+// "**Lưu ý:** Mình chưa xác nhận được quán nào có phòng riêng…" was read as a venue called
+// "Lưu ý", found in no row, and the paragraph — the hedge — was cut. Same for the itinerary
+// labels "**Bữa trưa:**", "**Khám phá phố cổ:**", "**Thời tiết 26-28/9:**".
+describe('a bold segment ending in a colon is a label, never a venue name', () => {
+  const ROWS = ['Izakaya Unatoto Việt Nam', 'The Street Nguyễn Thái Bình']
+  const HEDGE = 'Mình chưa xác nhận được quán nào có phòng riêng từ danh sách, nên bạn nên gọi trước.'
+  const pick = 'Mình chọn **Izakaya Unatoto Việt Nam** với 4.9⭐ (7.110 đánh giá), cách bạn 0.7km.'
+
+  it.each([
+    ['**Lưu ý:**'], ['**Bữa trưa:**'], ['**Gợi ý:**'], ['**Tổng kết:**'], ['**Thời tiết 26-28/9:**'], ['**Khám phá phố cổ:**'],
+  ])('%s keeps its paragraph (the measured F8 memory-pass cut)', (label) => {
+    const text = `${pick}\n\n${label} ${HEDGE}`
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual([])
+    expect(out.text).toBe(text)
+    expect(out.text).toContain(HEDGE)
+  })
+
+  it('**Lưu ý** without a colon is a label too (closed lexicon)', () => {
+    const text = `${pick}\n\n**Lưu ý** ${HEDGE}`
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual([])
+    expect(out.text).toContain(HEDGE)
+  })
+
+  it('a real bold venue name is STILL matched — grounded stays, ungrounded goes', () => {
+    const text = [
+      '**Izakaya Unatoto Việt Nam** — 4.9⭐, phòng riêng cho 8 người.',
+      '',
+      '**Quán Bịa Đặt** — 5⭐, cũng có phòng riêng.',
+      '',
+      '**Lưu ý:** ' + HEDGE,
+    ].join('\n')
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Bịa Đặt'])
+    expect(out.text).toContain('Izakaya Unatoto Việt Nam')
+    expect(out.text).not.toContain('Quán Bịa Đặt')
+    expect(out.text).toContain(HEDGE)
+  })
+
+  it('a label ends the block before it: the ungrounded venue above loses only its own paragraph', () => {
+    const text = ['**Quán Bịa Đặt** — 5⭐.', '', '**Lưu ý:** ' + HEDGE].join('\n')
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Bịa Đặt'])
+    expect(out.text).toContain(HEDGE)
+  })
+
+  it('labels alone are not grounded venues: when every venue was cut the honest line still appears', () => {
+    const text = ['**Quán Bịa Đặt** — 5⭐.', '', '**Lưu ý:** gọi trước.'].join('\n')
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.text).toContain('nằm ở thẻ bên dưới')
+  })
+
+  it('a venue whose name merely CONTAINS a label word is a venue ("Quán Gợi Ý Ngon" is not "Gợi ý:")', () => {
+    const text = '**Quán Gợi Ý Ngon** — 4.5⭐.'
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Gợi Ý Ngon'])
+  })
+})

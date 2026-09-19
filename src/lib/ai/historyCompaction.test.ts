@@ -20,6 +20,12 @@ describe('compactOldAssistant', () => {
     expect(compactOldAssistant('Ok.')).toBe('Ok.')
     expect(compactOldAssistant('x'.repeat(MAX_OLD_ASSISTANT_CHARS))).toBe('x'.repeat(MAX_OLD_ASSISTANT_CHARS))
   })
+  // 2026-09-19: a bold label is not a venue the reply suggested (the grounding gate's rule, shared).
+  it('a bold label ("**Lưu ý:**") is not listed among the suggested venues', () => {
+    const out = compactOldAssistant(LONG + '\n\n**Lưu ý:** gọi trước khi đi. ' + 'x'.repeat(50))
+    expect(out).toContain('(đã gợi ý: **Hải Sản Hoàng Gia**, **Quán Bụi - Lê Thánh Tôn**)')
+    expect(out).not.toContain('**Lưu ý:**')
+  })
 })
 
 describe('compactHistory', () => {

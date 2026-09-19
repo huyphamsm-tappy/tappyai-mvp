@@ -31,6 +31,26 @@ const MARKERS = ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPIN
 const HEADING = /\*\*([^*\n]{3,60})\*\*/g
 
 /**
+ * 🚨 A BOLD SEGMENT ENDING IN A COLON IS A LABEL, NEVER A VENUE. Measured 2026-09-19, seven
+ * times in one day: "**Lưu ý:** Mình chưa xác nhận được quán nào có phòng riêng…" was read as a
+ * venue called "Lưu ý", found in no row, and the whole paragraph — the hedge the reply existed
+ * for — was cut; "**Bữa trưa:**" / "**Khám phá phố cổ:**" / "**Thời tiết 26-28/9:**" emptied
+ * two itineraries the same way. A label still ENDS the block before it (the text under it is
+ * not about the previous venue) but is never itself cut, and it does not count as a grounded
+ * venue either — a reply left with only labels still gets the honest fallback line.
+ *
+ * The colon is the rule. The word list below covers the same labels written WITHOUT a colon
+ * ("**Lưu ý**", "**Tổng kết**") — a closed lexicon on purpose, so a real venue that happens to
+ * end a line can never be mistaken for a label.
+ */
+const LABEL_WORDS = /^(?:luu y|goi y|meo|tong ket|ket luan|tom tat|thay the|phuong an(?: thay the| khac)?|lich trinh|chi phi|tong(?: cong| chi phi| uoc tinh)?|thoi tiet|bua (?:sang|trua|toi|xe)|buoi (?:sang|trua|chieu|toi)|(?:sang|trua|chieu|toi)(?: som| muon)?|ngay \d+|note|tips?|summary|alternative|itinerary|budget|weather|day \d+|breakfast|lunch|dinner|morning|afternoon|evening)$/
+export function isLabelHeading(shown: string): boolean {
+  const s = shown.trim()
+  if (/[:：]\s*$/.test(s)) return true
+  return LABEL_WORDS.test(normalizeHeading(s))
+}
+
+/**
  * Normalise a displayed heading to the form matching compares on.
  *
  * Strips list numbering and trailing punctuation the heading carries, exactly
@@ -155,7 +175,7 @@ export function suppressUngroundedVenues(
   const tail = text.slice(limit)
 
   // Every heading with its offset, in order — the block boundaries.
-  const heads: { shown: string; start: number; end: number }[] = []
+  const heads: { shown: string; start: number; end: number; label: boolean }[] = []
   for (const m of prose.matchAll(HEADING)) {
     const at = m.index ?? 0
     // A block starts at the beginning of the heading's own line, so the removal
@@ -168,7 +188,7 @@ export function suppressUngroundedVenues(
     // version of this loop. Only a list bullet or numbering may precede it.
     const before = prose.slice(lineStart, at)
     if (!/^\s*(?:[-*+•]\s*|\d+[.)]\s*)?$/.test(before)) continue
-    heads.push({ shown: m[1], start: lineStart, end: prose.length })
+    heads.push({ shown: m[1], start: lineStart, end: prose.length, label: isLabelHeading(m[1]) })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }
@@ -177,6 +197,8 @@ export function suppressUngroundedVenues(
   const cuts: { start: number; end: number }[] = []
   let groundedRemain = 0
   for (const h of heads) {
+    // A label ("**Lưu ý:**") is never a venue claim: kept, and not a grounded venue either.
+    if (h.label) continue
     if (isGrounded(normalizeHeading(h.shown), knownNorm)) { groundedRemain++; continue }
     suppressed.push(h.shown.trim())
     cuts.push({ start: h.start, end: h.end })

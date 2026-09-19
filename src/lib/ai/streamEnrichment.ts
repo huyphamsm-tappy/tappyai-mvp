@@ -20,7 +20,7 @@ import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
-import { suppressUngroundedVenues, isGrounded, normalizeHeading, type PlaceSearchStatus } from './groundingGate'
+import { suppressUngroundedVenues, isGrounded, normalizeHeading, isLabelHeading, type PlaceSearchStatus } from './groundingGate'
 import { shoppingPickFromMarker } from './consultative/pickBackstop'
 import { appendFileSync } from 'fs'
 import { guardClarifications } from './clarificationGuard'
@@ -845,6 +845,8 @@ export function ungroundedNamesIn(
 
   const out: string[] = []
   for (const m of text.matchAll(/\*\*([^*\n]{3,60})\*\*/g)) {
+    // A bold label ("**Lưu ý:**") is not a venue claim — same rule as the gate (2026-09-19).
+    if (isLabelHeading(m[1])) continue
     // Strip list numbering and trailing punctuation the heading carries.
     const shown = m[1].replace(/^\s*\d+[.)]\s*/, '').replace(/[:：\-–—\s]+$/, '').trim()
     if (!shown) continue

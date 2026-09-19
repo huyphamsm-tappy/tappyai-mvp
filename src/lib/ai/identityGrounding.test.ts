@@ -42,6 +42,17 @@ describe('the detector catches the identity fabrication that was measured', () =
     expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toHaveLength(FABRICATED.length)
   })
 
+  // 2026-09-19: a bold LABEL is not a venue claim (the grounding gate's rule, shared).
+  it('a bold label ("**Lưu ý:**", "**Bữa trưa:**") is never reported as a fabricated name', () => {
+    const reply = [
+      '**Cà Phê Acoustic** – không gian yên tĩnh.',
+      '**Lưu ý:** mình chưa xác nhận được quán nào yên tĩnh, nên gọi hỏi trước.',
+      '**Bữa trưa:** ghé quán lúc 11h30.',
+      '**Soo Kafe** – góc ấm cúng.',
+    ].join('\n\n')
+    expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toEqual(['Soo Kafe'])
+  })
+
   it('reports nothing when every named option came from the tool', () => {
     const reply = '**Cà Phê Acoustic** – yên tĩnh.\n\n**Cà Phê Sỏi Đá** – rộng.'
     expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toEqual([])

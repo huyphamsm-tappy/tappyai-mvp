@@ -13,6 +13,8 @@
 // and the list of venues it bolded — the two things a later "quán số 2 …" or
 // "so với quán đầu tiên" can refer back to — capped at `MAX_OLD_ASSISTANT_CHARS`.
 
+import { isLabelHeading } from './groundingGate'
+
 export const MAX_OLD_ASSISTANT_CHARS = 420
 /** How many most-recent messages stay verbatim (the current user turn + the last exchange). */
 export const VERBATIM_TAIL = 3
@@ -25,7 +27,8 @@ export function compactOldAssistant(text: string): string {
   const names: string[] = []
   for (const m of text.matchAll(BOLD_RE)) {
     const n = m[1].trim()
-    if (!/^\d|⭐|đánh giá|reviews?/i.test(n) && !names.includes(n)) names.push(n)
+    // A bold label ("**Lưu ý:**") is not a venue the reply suggested (same rule as the grounding gate).
+    if (!/^\d|⭐|đánh giá|reviews?/i.test(n) && !isLabelHeading(n) && !names.includes(n)) names.push(n)
   }
   const head = first.length > MAX_OLD_ASSISTANT_CHARS ? first.slice(0, MAX_OLD_ASSISTANT_CHARS).replace(/\s+\S*$/, '') + '…' : first
   const tail = names.length > 0 ? `\n(đã gợi ý: ${names.map(n => `**${n}**`).join(', ')})` : ''
