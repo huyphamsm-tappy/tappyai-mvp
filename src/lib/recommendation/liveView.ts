@@ -157,6 +157,13 @@ export interface PlacesLiveView {
    * expander and the filter row — no new turn, no new search. Absent: render all.
    */
   shown?: number
+  /**
+   * The reply named venues and NONE matched a row (A.4, 2026-09-19): `picked` is empty and the
+   * order the client renders is the engine's, not the model's. Emitted so the fallback is never
+   * silent — the server logs `tappyai_cards_error pick_unmatched` at the same time. Absent: no
+   * such error on this turn.
+   */
+  pickUnmatched?: true
 }
 
 /** The provider already caps a place search at 8 rows; this is the same ceiling. */
@@ -361,14 +368,15 @@ function primaryOf(recs: readonly Recommendation[]): Recommendation | undefined 
  */
 export function buildPlacesLiveView(
   recs: readonly Recommendation[],
-  opts: { mapsSearchUrl?: string; picked?: readonly string[]; shown?: number } = {},
+  opts: { mapsSearchUrl?: string; picked?: readonly string[]; shown?: number; pickUnmatched?: boolean } = {},
 ): PlacesLiveView | null {
-  const extras = (items: LivePlace[]): Pick<PlacesLiveView, 'picked' | 'shown'> => {
+  const extras = (items: LivePlace[]): Pick<PlacesLiveView, 'picked' | 'shown' | 'pickUnmatched'> => {
     const ids = new Set(items.map(i => i.id))
     const picked = (opts.picked ?? []).filter(id => ids.has(id))
     return {
       ...(picked.length > 0 ? { picked } : {}),
       ...(typeof opts.shown === 'number' && opts.shown > 0 ? { shown: Math.min(opts.shown, items.length) } : {}),
+      ...(opts.pickUnmatched === true ? { pickUnmatched: true as const } : {}),
     }
   }
   if (!Array.isArray(recs) || recs.length === 0) return null
@@ -458,6 +466,7 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
       ...(isHttpUrl(candidate.mapsSearchUrl) ? { mapsSearchUrl: candidate.mapsSearchUrl } : {}),
       ...(Array.isArray(candidate.picked) ? { picked: candidate.picked.filter((x): x is string => typeof x === 'string') } : {}),
       ...(typeof candidate.shown === 'number' && candidate.shown > 0 ? { shown: candidate.shown } : {}),
+      ...(candidate.pickUnmatched === true ? { pickUnmatched: true as const } : {}),
     }
   }
   return null

@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
 import { placeRecommendations } from '@/lib/recommendation/fromToolResult'
@@ -92,15 +92,43 @@ describe('the cards above the fold are the venues the reply named', () => {
   })
 
   it('a whole-name mention still works exactly as before', async () => {
-    const { picked } = await turn('Mình chọn **Ốc Đào** (4.5⭐) — ốc tươi, giá mềm. Thay thế: **Cơm Tấm Ba Ghiền**.')
-    expect(picked).toEqual(['Ốc Đào', 'Cơm Tấm Ba Ghiền', 'Quán ăn ngon Sài Gòn'])
+    const { picked, aboveFold } = await turn('Mình chọn **Ốc Đào** (4.5⭐) — ốc tươi, giá mềm. Thay thế: **Cơm Tấm Ba Ghiền**.')
+    expect(picked).toEqual(['Ốc Đào', 'Cơm Tấm Ba Ghiền'])
+    expect(aboveFold).toEqual(['Ốc Đào', 'Cơm Tấm Ba Ghiền', 'Quán ăn ngon Sài Gòn'])
   })
 
-  it('names the reply did not mention fill from the engine order, never displacing a named one', async () => {
-    const { picked, aboveFold } = await turn('Mình chọn **A Mà Kitchen** — món Hoa, sạch sẽ.')
-    expect(picked[0]).toBe('A Mà Kitchen')
+  it('names the reply did not mention fill the fold from the engine order — but are NEVER in `picked`', async () => {
+    const { picked, aboveFold, view } = await turn('Mình chọn **A Mà Kitchen** — món Hoa, sạch sẽ.')
+    // A.4: `picked` is the model's, and only the model's. The two fill cards come from `items` order
+    // at the client; they are not presented as picks.
+    expect(picked).toEqual(['A Mà Kitchen'])
     expect(aboveFold).toHaveLength(3)
     expect(aboveFold[0]).toBe('A Mà Kitchen')
+    expect(view.pickUnmatched).toBeUndefined()
+  })
+
+  it('🚨 A.4: the reply names venues and none matches a row ⇒ an ERROR is logged and the payload says so — never a silent engine order', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { picked, view } = await turn('Mình chọn **Quán Bà Sáu Chợ Lớn** — cơm tấm sườn bì, 45k. Thay thế: **Hủ Tiếu Mực Ông Già**.')
+      expect(picked).toEqual([])
+      expect(view.pickUnmatched).toBe(true)
+      const line = err.mock.calls.map(c => String(c[0])).find(l => l.includes('tappyai_cards_error'))
+      expect(line).toBeTruthy()
+      const parsed = JSON.parse(line!)
+      expect(parsed.reason).toBe('pick_unmatched')
+      expect(parsed.headers).toContain('quan ba sau cho lon')
+    } finally { err.mockRestore() }
+  })
+
+  it('a reply that names no venue at all is not that error (nothing to match)', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const { picked, view } = await turn('Mình chưa xác nhận được quán nào mở sau 22h từ dữ liệu hiện có.')
+      expect(picked).toEqual([])
+      expect(view.pickUnmatched).toBeUndefined()
+      expect(err.mock.calls.some(c => String(c[0]).includes('tappyai_cards_error'))).toBe(false)
+    } finally { err.mockRestore() }
   })
 
   it('an ambiguous head is refused, not guessed: two rows sharing a head do not both claim the mention', async () => {
@@ -108,7 +136,6 @@ describe('the cards above the fold are the venues the reply named', () => {
     const { picked } = await turn('Mình chọn **Phở Hòa** — nước dùng trong, mở sớm. Thay thế: **Bún Bò Huế Cô Ba**.', names)
     // "Phở Hòa" fits both rows equally: neither may be the pick by that header alone; the
     // unambiguous alternative is named, and the fold fills from the engine's order.
-    expect(picked[0]).toBe('Bún Bò Huế Cô Ba')
-    expect(picked).toHaveLength(3)
+    expect(picked).toEqual(['Bún Bò Huế Cô Ba'])
   })
 })

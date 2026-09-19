@@ -394,7 +394,7 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
   const hiddenCount = folded ? order.hidden.filter(filter.match).length : 0
 
   return (
-    <div className="mt-3 animate-fade-in" data-testid="place-decision" data-domain={view.domain}>
+    <div className="mt-3 animate-fade-in" data-testid="place-decision" data-domain={view.domain} data-pick-unmatched={view.pickUnmatched ? 'true' : undefined}>
       {/* The row shows when a chip can actually change the result, and also when
           the payload holds more rows than fit — the count is then the honest
           answer to "is this all of them?". */}
@@ -426,7 +426,9 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
       >
         {shown.map((p) => (
           <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
-            <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false} />
+            {/* A.4 (2026-09-19): when the reply named venues and none matched a row, the order is the
+                engine's, not the model's — no "#1" and no lead, exactly as an unranked set. */}
+            <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false && !view.pickUnmatched} />
           </div>
         ))}
       </div>

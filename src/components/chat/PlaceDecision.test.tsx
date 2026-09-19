@@ -220,6 +220,16 @@ describe('🚨 unranked results render as a card, without rank claims', () => {
     expect(screen.queryByText('#1')).toBeNull()
   })
 
+  it('🚨 A.4: `pickUnmatched` (the reply named venues, none matched a row) renders like an unranked set and is surfaced on the root', () => {
+    render(<PlaceDecision view={view({ pickUnmatched: true })} />)
+    expect(screen.getByTestId('place-decision').getAttribute('data-pick-unmatched')).toBe('true')
+    for (const card of screen.getAllByTestId('place-card')) {
+      expect(card.getAttribute('data-rank')).toBeNull()
+      expect(card.getAttribute('data-lead')).toBeNull()
+    }
+    expect(screen.queryByText('#1')).toBeNull()
+  })
+
   it('a RANKED set is unchanged — badges and lead stay', () => {
     render(<PlaceDecision view={view()} />)
     const cards = screen.getAllByTestId('place-card')

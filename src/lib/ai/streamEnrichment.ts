@@ -1370,7 +1370,19 @@ export function applyPlaceEnrichmentStreamFilter(
      * distinctive segment, guarded token overlap — with the other rows as competitors so an
      * ambiguous header is refused rather than guessed.
      */
-    const { pickedRecs, namedInProse } = (() => {
+    /**
+     * 🚨🚨 CARD #1 IS THE MODEL'S PICK OR IT IS AN ERROR — NEVER THE ENGINE'S ROW IN DISGUISE.
+     * Three times a silent fallback re-introduced provider ordering at the display layer (the
+     * ranker's rating-first order, the whole-name match above, and the fill below). So:
+     *  - `picked` on the wire holds ONLY the venues the reply named. The engine-order fill is used
+     *    here for the per-venue enrichment of the three cards (TikTok, photos) and by the clients to
+     *    complete the fold, but it is never presented as a pick.
+     *  - When the reply names venues (bold headers) and NONE matches a row, that is an error: it is
+     *    logged as `tappyai_cards_error pick_unmatched` (console.error) and the payload carries
+     *    `pickUnmatched: true` so a client can show that the order is the engine's, not the model's.
+     *    A reply with no bold venue at all ("chưa xác nhận được…") is not that case.
+     */
+    const { pickedRecs, namedRecs, namedInProse, pickUnmatched } = (() => {
       const folded = normName(mainText)
       const headers = proseHeaders(folded)
       const allNames = recsForCard.map(r => r.entity.identity.name)
@@ -1381,7 +1393,14 @@ export function applyPlaceEnrichmentStreamFilter(
         .map(x => x.r)
       const seen = new Set(named)
       const fill = recsForCard.filter(r => !seen.has(r))
-      return { pickedRecs: [...named, ...fill].slice(0, CARDS_SHOWN), namedInProse: Math.min(named.length, CARDS_SHOWN) }
+      const unmatched = named.length === 0 && headers.length > 0
+      if (unmatched) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'pick_unmatched', headers: headers.slice(0, 5).map(h => h.norm), rows: allNames.slice(0, 8) }))
+      return {
+        pickedRecs: [...named, ...fill].slice(0, CARDS_SHOWN),
+        namedRecs: named.slice(0, CARDS_SHOWN),
+        namedInProse: Math.min(named.length, CARDS_SHOWN),
+        pickUnmatched: unmatched,
+      }
     })()
     if (resolveTikTok && recsForCard.length > 0) {
       try {
@@ -1399,11 +1418,12 @@ export function applyPlaceEnrichmentStreamFilter(
     const placesView = (EMIT_PLACES_ANNOTATION && recsForCard.length)
       ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), {
         mapsSearchUrl: collector?.placesMapsUrl,
-        picked: pickedRecs.map(r => r.entity.id),
+        picked: namedRecs.map(r => r.entity.id),
         shown: CARDS_SHOWN,
+        pickUnmatched,
       })
       : null
-    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse }))
+    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched }))
 
     /**
      * \u{1F6A8} THE SAME CONTENT TWICE WAS THE BUG. `injectPlaceEnrichment` writes the
