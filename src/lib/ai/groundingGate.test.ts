@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { suppressUngroundedVenues, isGrounded, normalizeHeading, stripCtaButtonsFor } from './groundingGate'
+import { suppressUngroundedVenues, isGrounded, normalizeHeading, stripCtaButtonsFor, isVenueHeading } from './groundingGate'
 
 // ── BUG 1 — a venue the application never retrieved must never be recommended ─
 //
@@ -314,3 +314,68 @@ describe('a bold segment ending in a colon is a label, never a venue name', () =
     expect(out.suppressed).toEqual(['Quán Gợi Ý Ngon'])
   })
 })
+
+// ── A.1 (owner 2026-09-19): the venue-name test is INVERTED — a bold segment is a venue heading only
+// when it is PRESENTED as one (positive shape), never because it failed a list of labels.
+describe('A.1 — a bold segment is a venue heading only by positive shape', () => {
+  const ROWS = ['Izakaya Unatoto Việt Nam', 'The Street Nguyễn Thái Bình', 'Cơm Niêu Sài Gòn']
+  const HEDGE = 'Mình chưa xác nhận được quán nào có phòng riêng từ danh sách, nên bạn nên gọi trước.'
+  const pick = 'Mình chọn **Izakaya Unatoto Việt Nam** với 4.9⭐ (7.110 đánh giá), cách bạn 0.7km.'
+
+  it.each([
+    ['**Lưu ý:**'], ['**Gợi ý?**'], ['**Bữa trưa:**'], ['**Tổng kết**'], ['**Bạn muốn ăn gì?**'], ['**Ưu tiên chính của bạn là gì?**'],
+    ['**Điểm cộng lớn nhất**'],   // bold text with no colon or question mark, above ordinary prose
+  ])('%s is prose: its paragraph survives and nothing is suppressed', (label) => {
+    const text = `${pick}
+
+${label} ${HEDGE}
+
+Bạn nên đặt bàn trước cho 8 người.`
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual([])
+    expect(out.text).toBe(text)
+  })
+
+  it('a real bold venue name presented as a heading MUST still match — grounded stays, invented goes', () => {
+    const text = ['**The Street Nguyễn Thái Bình** — 4.8⭐ (1.833 đánh giá), 0.8km.', '', '**Quán Bịa Đặt** — 5⭐, phòng riêng.', '', '**Lưu ý:** ' + HEDGE].join('\n')
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Bịa Đặt'])
+    expect(out.text).toContain('**The Street Nguyễn Thái Bình**')
+    expect(out.text).toContain(HEDGE)
+  })
+
+  it.each([
+    ['**the street nguyen thai binh** — 4.8⭐'],          // casing + no diacritics
+    ['**The  Street Nguyễn Thái Bình** — 4.8⭐'],         // whitespace
+    ['**Nhà hàng The Street Nguyễn Thái Bình** — 4.8⭐'], // venue-type prefix
+    ['**Cơm Niêu** — 4.6⭐ (1.200 đánh giá)'],            // shortened form
+  ])('a real venue written differently from the row (%s) still matches', (line) => {
+    const out = suppressUngroundedVenues(line, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual([])
+    expect(out.text).toBe(line)
+  })
+
+  it('an invented venue in every heading shape is still caught (the gate is not a no-op)', () => {
+    for (const text of [
+      '**The Workshop Coffee** – 27 Ngô Đức Kế, Bến Nghé, Quận 1.',
+      '- **Soo Kafe** – góc ấm cúng.',
+      '**Masstige Coffee**\n4.7⭐ (312 đánh giá) · 12 Lê Lợi',
+      '**Po Cafe** cách bạn 0.5km, mở đến 22:00.',
+    ]) {
+      const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+      expect(out.suppressed.length, text).toBe(1)
+    }
+  })
+
+  it('isVenueHeading — the positive shape, directly', () => {
+    expect(isVenueHeading('Cơm Niêu Sài Gòn', ' — 4.6⭐')).toBe(true)
+    expect(isVenueHeading('Cơm Niêu Sài Gòn', '', '4.6⭐ (1.200 đánh giá)')).toBe(true)
+    expect(isVenueHeading('Cơm Niêu Sài Gòn', ' cách bạn 0.5km')).toBe(true)
+    expect(isVenueHeading('Lưu ý:', ' mình chưa xác nhận')).toBe(false)
+    expect(isVenueHeading('Gợi ý?', ' bạn nên')).toBe(false)
+    expect(isVenueHeading('Tổng kết', '', 'Mình nghĩ bạn nên chọn quán 4.5⭐.')).toBe(false)
+    expect(isVenueHeading('Điểm cộng lớn nhất', ' là vị trí.')).toBe(false)
+    expect(isVenueHeading('Bạn muốn ăn gì?', '')).toBe(false)
+  })
+})
+

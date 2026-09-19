@@ -18,9 +18,24 @@ describe('priorVenuesIn', () => {
     expect(priorVenuesIn(PRIOR)[2].index).toBe(3)
   })
   it('dedupes a name mentioned twice and returns nothing for prose without names', () => {
-    expect(priorVenuesIn('**A** rồi lại **A**').length).toBe(1)
+    // (The old fixture "**A** rồi lại **A**" passed by accident: the 2–60-char regex matched the
+    // text BETWEEN the two A's — "rồi lại" — as the one "name". The shape rule rejects that.)
+    expect(priorVenuesIn('**Ốc Đào** rồi lại **Ốc Đào**').map(v => v.name)).toEqual(['Ốc Đào'])
     expect(priorVenuesIn('không có quán nào')).toEqual([])
     expect(priorVenuesIn('')).toEqual([])
+  })
+  // A.1 (2026-09-19): the positive proper-noun shape — a bold sentence or section title is never a venue.
+  it('a bold label or sentence in any spelling is not a prior venue; real names in any spelling are', () => {
+    const text = [
+      'Mình chọn **Hải Sản Hoàng Gia** cho tối nay.',
+      '**Lưu ý:** cuối tuần đông. **Gợi ý?** gọi trước. **Bữa trưa:** ghé sớm. **Tổng kết** nên đi sớm.',
+      '**Bạn muốn ăn gì?** **Điểm cộng lớn nhất** là vị trí.',
+      'Hoặc **Nhà hàng Nam Phương** và **Quán  Ăn Ngon** cũng được.',
+    ].join('\n\n')
+    expect(priorVenuesIn(text).map(v => v.name)).toEqual(['Hải Sản Hoàng Gia', 'Nhà hàng Nam Phương', 'Quán  Ăn Ngon'])
+  })
+  it('limitation, stated: a name the model wrote all-lowercase is not written like a name and is not seen — no row set exists at follow-up time to match it against', () => {
+    expect(priorVenuesIn('Hoặc **nhà hàng nam phương** cũng được.')).toEqual([])
   })
 })
 

@@ -46,8 +46,66 @@ const HEADING = /\*\*([^*\n]{3,60})\*\*/g
 const LABEL_WORDS = /^(?:luu y|goi y|meo|tong ket|ket luan|tom tat|thay the|phuong an(?: thay the| khac)?|lich trinh|chi phi|tong(?: cong| chi phi| uoc tinh)?|thoi tiet|bua (?:sang|trua|toi|xe)|buoi (?:sang|trua|chieu|toi)|(?:sang|trua|chieu|toi)(?: som| muon)?|ngay \d+|note|tips?|summary|alternative|itinerary|budget|weather|day \d+|breakfast|lunch|dinner|morning|afternoon|evening)$/
 export function isLabelHeading(shown: string): boolean {
   const s = shown.trim()
-  if (/[:：]\s*$/.test(s)) return true
+  if (/[:：?？!]\s*$/.test(s)) return true
   return LABEL_WORDS.test(normalizeHeading(s))
+}
+
+/**
+ * 🚨 THE TEST IS INVERTED (owner 2026-09-19, the third G1 recurrence): a bold segment is a VENUE
+ * HEADING only when it is PRESENTED as one — a positive shape, not a list of things it is not.
+ * Two labels were patched one after the other (":" then "?") and the next one would have been
+ * next week's cut. What a venue heading positively looks like, in the model's own output:
+ *
+ *   `**Name** — 4.5⭐ (2.106 đánh giá), 12 Lê Lợi`      title, then a separator and facts
+ *   `- **Name** – góc ấm cúng.`                        list item, separator, description
+ *   `**Name**` alone on its line, facts on the next     title line of a block
+ *
+ *   `**Maison Sen Buffet** buffet cao cấp với hơn 200 món.`  (the pinned production case)
+ *
+ * So the bold TEXT must be a PROPER NOUN: no sentence punctuation inside (":", "?", "!"), at
+ * most ten words, and written the way Vietnamese and English venue names are written — most
+ * words capitalised ("Hải Sản Hoàng Gia", "Nhà hàng Nam Phương", "Đường sách Thành phố Hồ Chí
+ * Minh", "The Workshop Coffee": ≥ 60 % of the words start with a capital). A bold SENTENCE or
+ * section title is written like prose — one capital, the rest lowercase: "Tổng kết", "Bữa trưa",
+ * "Điểm cộng lớn nhất", "Bạn muốn ăn gì" — and fails the shape whatever it says. A ONE-word bold
+ * is a name only when presented as a title (a separator after it, or a venue fact on its line
+ * or the next): "**Daikin** — 4.7⭐" yes, "**Mẹo** bạn nên…" no. The closed label lexicon stays
+ * as a last lock for a Title-Cased section label ("Kết Luận").
+ *
+ * WHY NOT "matches a fetched row" HERE: this gate exists to find the names the model INVENTED,
+ * which by definition match no row; a row-match rule would make the gate a no-op. The positive
+ * rule is about SHAPE (is this presented as a venue?), and row-matching stays the grounding test.
+ */
+const VENUE_FACT_RE = /⭐|★|\bđánh giá\b|\bdanh gia\b|\breviews?\b|\d+(?:[.,]\d+)?\s*km\b|\b\d{1,2}[:h]\d{2}\b|\b\d{1,4}[a-zA-Z]?\s+(?:đường|duong|phố|pho|ngõ|hẻm|hem|street|st\.?)\b|\b\d{1,4}[a-zA-Z]?(?:\/\d+)?\s+\p{Lu}\p{L}+\s+\p{Lu}\p{L}+/u
+const SEPARATOR_AFTER_RE = /^\s*(?:[—–\-:,(·|.]|$)/
+/** Words that count toward the proper-noun test; connectors ("-", "&", "và", "of") are skipped. */
+const NAME_TOKEN_RE = /[\p{L}\p{N}]/u
+const CONNECTOR_RE = /^(?:&|và|and|of|the|de|la|le|du|-|–|—|\/|\|)$/iu
+/**
+ * The TEXT half of the shape — is this bold string written like a venue name? Shared with the
+ * parsers that have no row set to match against (referenceResolver, historyCompaction).
+ * 'name' = proper noun of ≥2 words · 'single' = one capitalised word (a name only when presented
+ * as a title — the caller decides with the line context) · 'prose' = not a name.
+ */
+export function properNounShape(shown: string): 'name' | 'single' | 'prose' {
+  const s = shown.trim().replace(/^\s*\d+[.)]\s*/, '')
+  if (!/\p{L}/u.test(s)) return 'prose'
+  if (/[:：?？!]/.test(s)) return 'prose'
+  const tokens = s.split(/\s+/).filter(t => NAME_TOKEN_RE.test(t) && !CONNECTOR_RE.test(t))
+  if (tokens.length === 0 || tokens.length > 10) return 'prose'
+  if (LABEL_WORDS.test(normalizeHeading(s))) return 'prose'
+  const capitalised = tokens.filter(t => /^[\p{Lu}\p{N}]/u.test(t)).length
+  if (tokens.length >= 2) return capitalised / tokens.length >= 0.6 ? 'name' : 'prose'
+  return capitalised === 1 ? 'single' : 'prose'
+}
+export function isVenueHeading(shown: string, restOfLine: string, nextLine = ''): boolean {
+  const shape = properNounShape(shown)
+  if (shape === 'prose') return false
+  if (shape === 'name') return true
+  // One word: a name only when presented as a title.
+  const rest = restOfLine.replace(/\s+$/, '')
+  if (SEPARATOR_AFTER_RE.test(rest)) return rest.trim() !== '' || VENUE_FACT_RE.test(nextLine)
+  return VENUE_FACT_RE.test(rest)
 }
 
 /**
@@ -188,7 +246,12 @@ export function suppressUngroundedVenues(
     // version of this loop. Only a list bullet or numbering may precede it.
     const before = prose.slice(lineStart, at)
     if (!/^\s*(?:[-*+•]\s*|\d+[.)]\s*)?$/.test(before)) continue
-    heads.push({ shown: m[1], start: lineStart, end: prose.length, label: isLabelHeading(m[1]) })
+    const lineEnd = prose.indexOf('\n', at) === -1 ? prose.length : prose.indexOf('\n', at)
+    const restOfLine = prose.slice(at + m[0].length, lineEnd)
+    const nextLine = prose.slice(lineEnd + 1).split('\n').find(l => l.trim() !== '') ?? ''
+    // A bold segment that is not PRESENTED as a venue (isVenueHeading) is prose: it still ends
+    // the block before it, is never cut, and is not a grounded venue either.
+    heads.push({ shown: m[1], start: lineStart, end: prose.length, label: !isVenueHeading(m[1], restOfLine, nextLine) })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }

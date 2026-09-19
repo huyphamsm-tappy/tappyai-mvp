@@ -14,6 +14,7 @@
 // Deterministic, diacritic-folded, no calls. See consultative-v1-design.md §3.
 
 import { normalizeVN } from '../intent'
+import { properNounShape } from '../groundingGate'
 
 export interface PriorVenue {
   /** 1-based position in the prior reply, the way the user counted them. */
@@ -35,7 +36,16 @@ const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').tr
 /**
  * Venue names the prior reply bolded — `**Tên quán**` — in order of first
  * mention. Headings, machine blocks and bolded non-names ("**Lưu ý:**") are
- * skipped by shape: a name has no trailing colon and is 2–60 characters.
+ * skipped by the POSITIVE proper-noun shape shared with the grounding gate
+ * (A.1, 2026-09-19): a name is written like one — most words capitalised, no
+ * sentence punctuation.
+ *
+ * 🚨 WHY NOT "matches the fetched rows" HERE: nothing durable records the
+ * previous turn's rows for PLACES — the card rides an annotation frame, the
+ * `[TAPPY_PLACES]` marker is flag-gated off, and decision evidence is
+ * shopping-only — so at follow-up time there is no row set to match against.
+ * The shape rule is the best positive test available until place rows are
+ * persisted per turn (the store shopping already has).
  */
 export function priorVenuesIn(assistantText: string): PriorVenue[] {
   if (!assistantText) return []
@@ -49,6 +59,8 @@ export function priorVenuesIn(assistantText: string): PriorVenue[] {
     // A bolded number is not a name: "**4.8⭐ (2.106 đánh giá)**", "**10:30–21:30**", "**có khả năng khá đông**".
     if (/⭐|danh gia|reviews?|\d\s*(?:sao|stars?)\b/.test(fold(raw)) || raw.replace(/[^\d]/g, '').length * 2 > raw.length) continue
     if (/^(luu y|goi y|ket luan|tom lai|note|tip|why|ly do|xem them|gia|dia chi|gio mo|mo cua|co kha nang|co the|nen|khong nen)\b/.test(fold(raw))) continue
+    // Positive shape: a proper noun (one capitalised word counts — "Daikin"), never a bold sentence.
+    if (properNounShape(raw) === 'prose') continue
     const key = fold(raw)
     if (seen.has(key)) continue
     seen.add(key)
