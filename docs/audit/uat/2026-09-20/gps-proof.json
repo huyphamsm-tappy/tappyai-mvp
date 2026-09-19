@@ -1,0 +1,12 @@
+{
+  "at": "2026-09-19T15:13:49.605Z",
+  "note": "dry-run capture (0 model calls) from the UAT APK on the emulator, 2026-09-19 22:13 — the request the server received",
+  "surface": "android",
+  "userLocation": {
+    "lat": 10.7769,
+    "lng": 106.7009,
+    "address": ""
+  },
+  "ageHeader": "18plus",
+  "lastUserText": "quan pho ngon o quan 1 cho 2 nguoi"
+}

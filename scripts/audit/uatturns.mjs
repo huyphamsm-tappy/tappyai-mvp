@@ -42,7 +42,8 @@ for (const o of sink) {
 // capture.jsonl → surface + GPS + text (model turns only: a canned turn never reaches the capture)
 const caps = read('capture.jsonl').map(J).filter(Boolean)
 let ci = 0
-const cost = s => s.canned ? 0 : ((s.prompt ?? 0) * 3 + (s.cacheWrite ?? 0) * 3.75 + (s.cacheRead ?? 0) * 0.3 + (s.out ?? 0) * 15) / 1e6 + (s.credits ?? 0) * 0.001
+// Same price table as costseg.mjs (per token: in 1, cache write 1.25, cache read 0.1, out 5 — $/M; Serper $0.001/credit).
+const cost = s => s.canned ? 0 : ((s.prompt ?? 0) * 1 + (s.cacheWrite ?? 0) * 1.25 + (s.cacheRead ?? 0) * 0.1 + (s.out ?? 0) * 5) / 1e6 + (s.credits ?? 0) * 0.001
 
 const rows = turns.map((t, i) => {
   const s = sinkTurns[i]
