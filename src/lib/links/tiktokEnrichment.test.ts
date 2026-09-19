@@ -295,6 +295,16 @@ describe('cost: one request, for the card only', () => {
     expect(tiktokQueryName('Ann - Quán')).toBe('Ann - Quán')
   })
 
+  // The street-number strip had a literal 0x08 byte where `\b` was meant (commit 28e1d7d, a
+  // heredoc turned "\b" into backspace) — the regex could never match, so a name with no dash
+  // before its address kept the whole address and was never attributed.
+  it('strips a street number that follows the name without a dash', () => {
+    expect(tiktokQueryName('Bánh Mì Huỳnh Hoa Số 26 Lê Thị Riêng')).toBe('Bánh Mì Huỳnh Hoa')
+    expect(tiktokQueryName('Bun Cha Huong Lien so 24 Le Van Huu')).toBe('Bun Cha Huong Lien')
+    // A trailing digit with no "số" is part of the name.
+    expect(tiktokQueryName('Cơm Tấm Phúc Lộc Thọ 1')).toBe('Cơm Tấm Phúc Lộc Thọ 1')
+  })
+
   it('falls back to full names when trimming would merge two branches', async () => {
     const search = vi.fn(async (_q: string) => [])
     await enrichWithTikTok(['GÓC HUẾ - Kỳ Đồng', 'GÓC HUẾ - An Dương Vương'], 'TP.HCM', search)

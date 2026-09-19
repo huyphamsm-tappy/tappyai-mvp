@@ -164,8 +164,8 @@ function stripUnsupportedClauses(sentence: string, unsupported: readonly RegExp[
   // dash (measured 2026-09-18: the pick became "Mình chọn **Tám Riêu."). Bold spans are swapped
   // for placeholders before the split and restored after.
   const bolds: string[] = []
-  const shielded = body.replace(/\*\*[^*\n]+\*\*/g, (m) => { bolds.push(m); return ` ${bolds.length - 1} ` })
-  const unshield = (s: string) => s.replace(/ (\d+) /g, (_, i) => bolds[Number(i)])
+  const shielded = body.replace(/\*\*[^*\n]+\*\*/g, (m) => { bolds.push(m); return `\u0000${bolds.length - 1}\u0000` })
+  const unshield = (s: string) => s.replace(/\u0000(\d+)\u0000/g, (_, i) => bolds[Number(i)])
   const parts = shielded.split(CLAUSE_SPLIT).map(unshield)
   // parts = [clause, sep, clause, sep, …]
   const keep: string[] = []

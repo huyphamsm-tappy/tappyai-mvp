@@ -762,7 +762,7 @@ describe('SPEC-GUARD-26 — line structure survives clause surgery', () => {
   })
 
   it('a single-line reply is unchanged in shape', () => {
-    // Comma-separated, because the clause splitter's `và` cannot fire: JS
+    // Comma-separated, because the clause splitter's `\bvà\b` cannot fire: JS
     // word boundaries are ASCII, so there is none after the 'à'. A sentence it
     // cannot split is removed whole — a pre-existing limit, not this test's subject.
     const one = '**Dell 15 DC15250** giá 17 triệu, rất nhẹ.'

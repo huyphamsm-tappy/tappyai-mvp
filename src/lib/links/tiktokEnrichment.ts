@@ -96,7 +96,7 @@ export function tiktokQueryName(name: string): string {
   const raw = (name || '').trim()
   let out = raw.split(/\s+[-–—]\s+/)[0]
   out = out.split(',')[0]
-  out = out.replace(/(số|so)\s*[\d].*$/i, '')
+  out = out.replace(/\b(số|so)\s*[\d].*$/i, '')
   out = out.replace(/\s{2,}/g, ' ').trim()
   return out.split(/\s+/).filter(w => w.length >= 2).length >= 2 ? out : raw
 }

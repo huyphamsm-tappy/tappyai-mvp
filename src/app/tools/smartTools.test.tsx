@@ -85,7 +85,7 @@ describe('it is a utility shelf, not a marketplace', () => {
     // 🔑 A PRICE IS A NUMBER WITH A CURRENCY, NOT THE WORD. Currency Converter's real
     // description legitimately names VND, USD and JPY — banning the token would ban the tool's
     // own copy. What must never appear is an AMOUNT, or a rating dressed as a statistic.
-    expect(text, 'no price').not.toMatch(/\d[\d.,]*\s*(₫|VND|USD|đ)/)
+    expect(text, 'no price').not.toMatch(/\d[\d.,]*\s*(₫|VND|USD|\bđ\b)/)
     expect(text, 'no rating').not.toMatch(/\d+(\.\d+)?\s*(★|\/5)/)
   })
 
