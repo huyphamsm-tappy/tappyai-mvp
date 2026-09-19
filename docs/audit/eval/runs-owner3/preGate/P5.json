@@ -1,0 +1,27 @@
+{
+  "id": "P5",
+  "text": "massage",
+  "parent": null,
+  "status": 200,
+  "ms": 428,
+  "evidenceId": "43ee622e-5d55-4aff-bcc0-0df983092d2c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

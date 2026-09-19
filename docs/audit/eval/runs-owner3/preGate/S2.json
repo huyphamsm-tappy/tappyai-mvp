@@ -1,0 +1,307 @@
+{
+  "id": "S2",
+  "text": "mua laptop van phong duoi 15tr",
+  "parent": null,
+  "status": 200,
+  "ms": 14801,
+  "evidenceId": "2125d677-2947-4ed4-a18e-6afcc43a8c57",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "laptop văn phòng dưới 15 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+      "rating": 5,
+      "count": 3,
+      "price": 12790000
+    },
+    {
+      "name": "Laptop Aspire Lite 14",
+      "rating": 5,
+      "count": 10,
+      "price": 14099000
+    },
+    {
+      "name": "Máy tính xách tay/ Laptop HP",
+      "rating": 4.9,
+      "count": 63,
+      "price": 14790000
+    },
+    {
+      "name": "Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black",
+      "rating": 4.3,
+      "count": 124,
+      "price": 8790000
+    },
+    {
+      "name": "Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn",
+      "rating": 4.3,
+      "count": 124,
+      "price": 13500000
+    },
+    {
+      "name": "Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK",
+      "rating": 4.3,
+      "count": 124,
+      "price": 13500000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":12790000,\"priceHigh\":12790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQX1Ws_--ZB1DsUXGi4BuF1RyR8xFmEb-mm1MfDQNmfmLIs1iGHeleRchR6beAAebtWWPyIcJyC0lpX_4B-hJp-S5scoYDWLPIhS1aop7RSC76CGflYiI8o\",\"offers\":[{\"seller\":\"Thành Nhân TNC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12790000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop Aspire Lite 14\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14099000,\"priceHigh\":14099000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQJslJDNQ4Qv-jz5TwHbAyEFapVD9j6dFIeHUhzjduoAvEJ7nfuAGxVbIouf0k57hB6_lwZfMKshSP9HnGMFFeH7eiFTHru\",\"offers\":[{\"seller\":\"lapvip.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:12010975738975843811,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14099000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":10}]},{\"key\":\"uncertain:2\",\"name\":\"Máy tính xách tay/ Laptop HP\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14790000,\"priceHigh\":14790000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4YEew9zSu2fo9IC9wloXQj6KAUQ2hLyNMJt-mxumZPPymVEDtC0sbQqgs-Ki5yvcP1Ke66AlvgttdrxjjGB7cpNjeVyWEjZ_EmsPgSZM\",\"offers\":[{\"seller\":\"truonggiang.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:146514091579321267,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":63}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black\",\"config\":\"512GB · 15 inch\",\"specs\":[{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8790000,\"priceHigh\":8790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQw6Nh9xPzy06QaTk2sQnyPo3eGsXeAihIDpJB79DpZ9TulwokIn7OluLgyMJm7bFGfsgQ5Zrt4E18Kx1YbEG-_BrbbJEPiHU2SG4RypxL1xUwz68VTbm4Y4A\",\"offers\":[{\"seller\":\"vitinhhoanglong.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:389249002655143658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13500000,\"priceHigh\":13500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQR7sIfDkkqVPmmEW0JAP-3z7TaWZMsuDFTcd9wAS83fe8mB9R_e-oTC5ianv793EF7kKSZekOTn64JiJxKwU7OWJ8RKo4vV2HcI2d7XFKrJpYl8Enbl288\",\"offers\":[{\"seller\":\"surfacecity.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17298807719778699851,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13500000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]},{\"key\":\"uncertain:5\",\"name\":\"Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK\",\"config\":\"512GB\",\"specs\":[{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13500000,\"priceHigh\":13500000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSVkAr_9Rj5BQI9NDxpKQMvtkPg2ZFBW3Sezx1SKZcnTW4HE8OYrMH9UP6OBsPFuJtcPsNc41ru6tNMmwEbAKb7sI1FViowrf2UkHJwPMx58hbBsrIm-iB6\",\"offers\":[{\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:6478392534614786144,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13500000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thành Nhân TNC\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"12790000 VND\",\"params\":{\"priceVnd\":12790000}},{\"attribute\":\"reviewCount\",\"evidence\":\"3 reviews\",\"params\":{\"count\":3}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"10 reviews\",\"params\":{\"count\":10}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)** — 12.790.000₫, 5⭐ (3 đánh giá), tại Thành Nhân TNC — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMáy này có bộ xử lý Ryzen 7 khá mạnh, đủ để xử lý các tác vụ văn phòng, lướt web, video call mượt mà.\n\nGia tham khảo từ kết quả tìm kiếm — bạn nên kiểm tra lại trên Shopee/Lazada để xem giá hiện tại và chọn nơi mua uy tín nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Laptop+Acer+Aspire+Lite+15+Ryzen+7+5700U\"},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Laptop+Acer+Aspire+Lite+15+Ryzen+7+5700U\"}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dell Vostro i5 giá nào|Laptop chơi game dưới 15tr|Laptop nhẹ dưới 15tr[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua laptop van phong duoi 15tr"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":12790000,\"priceHigh\":12790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQX1Ws_--ZB1DsUXGi4BuF1RyR8xFmEb-mm1MfDQNmfmLIs1iGHeleRchR6beAAebtWWPyIcJyC0lpX_4B-hJp-S5scoYDWLPIhS1aop7RSC76CGflYiI8o\",\"offers\":[{\"seller\":\"Thành Nhân TNC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12790000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:1\",\"name\":\"Laptop Aspire Lite 14\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14099000,\"priceHigh\":14099000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQJslJDNQ4Qv-jz5TwHbAyEFapVD9j6dFIeHUhzjduoAvEJ7nfuAGxVbIouf0k57hB6_lwZfMKshSP9HnGMFFeH7eiFTHru\",\"offers\":[{\"seller\":\"lapvip.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:12010975738975843811,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14099000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":10}]},{\"key\":\"uncertain:2\",\"name\":\"Máy tính xách tay/ Laptop HP\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":14790000,\"priceHigh\":14790000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR4YEew9zSu2fo9IC9wloXQj6KAUQ2hLyNMJt-mxumZPPymVEDtC0sbQqgs-Ki5yvcP1Ke66AlvgttdrxjjGB7cpNjeVyWEjZ_EmsPgSZM\",\"offers\":[{\"seller\":\"truonggiang.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:146514091579321267,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":14790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":63}]},{\"key\":\"uncertain:3\",\"name\":\"Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black\",\"config\":\"512GB · 15 inch\",\"specs\":[{\"key\":\"storage\",\"value\":512},{\"key\":\"size\",\"value\":\"15 inch\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8790000,\"priceHigh\":8790000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQw6Nh9xPzy06QaTk2sQnyPo3eGsXeAihIDpJB79DpZ9TulwokIn7OluLgyMJm7bFGfsgQ5Zrt4E18Kx1YbEG-_BrbbJEPiHU2SG4RypxL1xUwz68VTbm4Y4A\",\"offers\":[{\"seller\":\"vitinhhoanglong.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:389249002655143658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]},{\"key\":\"uncertain:4\",\"name\":\"Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn\",\"config\":\"8GB · 512GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13500000,\"priceHigh\":13500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQR7sIfDkkqVPmmEW0JAP-3z7TaWZMsuDFTcd9wAS83fe8mB9R_e-oTC5ianv793EF7kKSZekOTn64JiJxKwU7OWJ8RKo4vV2HcI2d7XFKrJpYl8Enbl288\",\"offers\":[{\"seller\":\"surfacecity.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17298807719778699851,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13500000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]},{\"key\":\"uncertain:5\",\"name\":\"Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK\",\"config\":\"512GB\",\"specs\":[{\"key\":\"storage\",\"value\":512}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13500000,\"priceHigh\":13500000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSVkAr_9Rj5BQI9NDxpKQMvtkPg2ZFBW3Sezx1SKZcnTW4HE8OYrMH9UP6OBsPFuJtcPsNc41ru6tNMmwEbAKb7sI1FViowrf2UkHJwPMx58hbBsrIm-iB6\",\"offers\":[{\"seller\":\"Eco-Mart Siêu Thị Điện Máy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:6478392534614786144,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13500000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":124}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thành Nhân TNC\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"12790000 VND\",\"params\":{\"priceVnd\":12790000}},{\"attribute\":\"reviewCount\",\"evidence\":\"3 reviews\",\"params\":{\"count\":3}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"10 reviews\",\"params\":{\"count\":10}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)** — 12.790.000₫, 5⭐ (3 đánh giá), tại Thành Nhân TNC — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMáy này có bộ xử lý Ryzen 7 khá mạnh, đủ để xử lý các tác vụ văn phòng, lướt web, video call mượt mà.\n\nGia tham khảo từ kết quả tìm kiếm — bạn nên kiểm tra lại trên Shopee/Lazada để xem giá hiện tại và chọn nơi mua uy tín nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Laptop+Acer+Aspire+Lite+15+Ryzen+7+5700U\"},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Laptop+Acer+Aspire+Lite+15+Ryzen+7+5700U\"}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dell Vostro i5 giá nào|Laptop chơi game dưới 15tr|Laptop nhẹ dưới 15tr[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "laptop văn phòng dưới 15 triệu",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:4085269306331750520,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 12790000,
+          "price_vnd": 12790000,
+          "source": "Thành Nhân TNC",
+          "rating": 5,
+          "rating_count": 3,
+          "product_id": "4085269306331750520",
+          "ram_gb": 8,
+          "storage_gb": 512,
+          "spec_source": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Aspire Lite 14",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:12010975738975843811,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 14099000,
+          "price_vnd": 14099000,
+          "source": "lapvip.com.vn",
+          "rating": 5,
+          "rating_count": 10,
+          "product_id": "12010975738975843811",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy tính xách tay/ Laptop HP",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,catalogid:146514091579321267,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 14790000,
+          "price_vnd": 14790000,
+          "source": "truonggiang.vn",
+          "rating": 4.9,
+          "rating_count": 63,
+          "product_id": "146514091579321267",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:389249002655143658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 8790000,
+          "price_vnd": 8790000,
+          "source": "vitinhhoanglong.com",
+          "rating": 4.3,
+          "rating_count": 124,
+          "product_id": "389249002655143658",
+          "storage_gb": 512,
+          "spec_source": "Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:17298807719778699851,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 13500000,
+          "price_vnd": 13500000,
+          "source": "surfacecity.vn",
+          "rating": 4.3,
+          "rating_count": 124,
+          "product_id": "17298807719778699851",
+          "ram_gb": 8,
+          "storage_gb": 512,
+          "spec_source": "Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK",
+          "link": "https://www.google.com/search?ibp=oshop&q=laptop+v%C4%83n+ph%C3%B2ng+d%C6%B0%E1%BB%9Bi+15+tri%E1%BB%87u+*+*+*+*&prds=localAnnotatedOfferId:1,productid:6478392534614786144,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 13500000,
+          "price_vnd": 13500000,
+          "source": "Eco-Mart Siêu Thị Điện Máy",
+          "rating": 4.3,
+          "rating_count": 124,
+          "product_id": "6478392534614786144",
+          "storage_gb": 512,
+          "spec_source": "Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=laptop%20v%C4%83n%20ph%C3%B2ng%20d%C6%B0%E1%BB%9Bi%2015%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 13,
+      "_tappy_ranking": {
+        "pick": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 5"
+          },
+          {
+            "attribute": "price",
+            "evidence": "12790000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "3 reviews - Laptop Aspire Lite 14: 10 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "Laptop Aspire Lite 14",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "10 reviews"
+        },
+        "conditional": true
+      },
+      "_tappy_evidence": "\n\n===== BANG CHUNG QUYET DINH (DU LIEU THAT, DA CHOT) =====\nHe thong da chon tu du lieu that. Moi con so ben duoi da duoc chot.\n\nDA CHON: Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\n  - noi ban: Thành Nhân TNC\n  - gia: 12790000 VND\n  - danh gia san pham: 5   so luot: 3\n  - RAM: 8GB   dung luong: 512GB\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n\nPHUONG AN 2: Laptop Aspire Lite 14\n  - noi ban: lapvip.com.vn\n  - gia: 14099000 VND\n  - danh gia san pham: 5   so luot: 10\n  - RAM: KHONG CO DU LIEU   dung luong: KHONG CO DU LIEU\n  - chip: KHONG CO DU LIEU\n  - tinh trang/nguon goc: KHONG CO DU LIEU\n  - bao hanh: KHONG CO DU LIEU\n  - hon o diem: reviewCount — 10 reviews\n\nCAC LUA CHON KHAC (chenh lech gia so voi lua chon da chon, con so that):\n  - Máy tính xách tay/ Laptop HP | truonggiang.vn | 14790000 VND | chenh: 2000000 VND\n  - Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black | vitinhhoanglong.com | 8790000 VND | chenh: -4000000 VND\n  - Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn | surfacecity.vn | 13500000 VND | chenh: 710000 VND\n  - Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK | Eco-Mart Siêu Thị Điện Máy | 13500000 VND | chenh: 710000 VND\n\nLY DO DA CHON: rating — rated 5; price — 12790000 VND; reviewCount — 3 reviews\nKHOANG CACH RAT NHO: dien dat thanh cau nghieng ve co dieu kien, khong khang dinh tuyet doi.\n\nTONG SO TIN DANG TIM DUOC: 13 (danh sach tren la phan da chon loc).\n\nUSER HOI CAU HINH: chip=KHONG CO DU LIEU, RAM=KHONG CO DU LIEU, dung luong=KHONG CO DU LIEU\nCHUA DU BANG CHUNG de khang dinh tin dang nay dung cau hinh user hoi. PHAI noi ro la tieu de khong ghi du, KHONG duoc coi nhu khop.\n\nCHI DUOC NOI NHUNG DIEU SAU (ngoai ra khong duoc khang dinh them thuoc tinh nao):\n  - ten tin dang: Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)\n  - noi ban: Thành Nhân TNC\n  - gia: 12790000 VND (con so chinh xac, KHONG lam tron sang \"khoang\")\n  - danh gia san pham: 5 (KHONG phai Google Maps)\n  - so luot danh gia: 3\n  - RAM: 8GB\n  - dung luong: 512GB\n\nKHONG CO DU LIEU VE: chip, tinh trang/nguon goc (chinh hang, like new, cu, sealed, refurb), bao hanh.\nLUAT CUNG:\n- Nhung muc ghi \"KHONG CO DU LIEU\" nghia la KHONG AI NOI — KHONG phai bang 0, KHONG phai la \"khong co\".\n  TUYET DOI KHONG doan, KHONG suy ra tu ten shop, ten mien, uy tin, gia, thuong hieu, hay tin dang khac.\n- Neu user hoi ve mot muc KHONG CO DU LIEU: noi thang la nguon hien tai khong ghi.\n- Gia phai doc dung con so tren, KHONG duoc noi \"khoang\", KHONG duoc lam tron.\n- Danh gia o tren la danh gia SAN PHAM. KHONG duoc goi no la Google Maps hay bat ky nguon nao khac.\n- Chenh lech gia phai dung dung con so \"chenh\" o tren, KHONG duoc uoc luong.\n- Neu khong co diem nao chung minh duoc phuong an 2 hon: noi thang la khong co danh doi nao duoc chung minh,\n  TUYET DOI KHONG bia ra mot diem tru.\n==========================================",
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Laptop Acer Aspire Lite 15 AL15-41P-R3QL NX.J54SV.001 (Ryzen 7 5700U/ Ram 8GB/ SSD 512GB/ Windows 11 Home/ 1Y/ Bạc)",
+            "config": "8GB · 512GB",
+            "offerCount": 1,
+            "priceLow": 12790000,
+            "priceHigh": 12790000,
+            "sellers": [
+              "Thành Nhân TNC"
+            ],
+            "recommended": true,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Aspire Lite 14",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 14099000,
+            "priceHigh": 14099000,
+            "sellers": [
+              "lapvip.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy tính xách tay/ Laptop HP",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 14790000,
+            "priceHigh": 14790000,
+            "sellers": [
+              "truonggiang.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Dell Vostro 3520 i3-1215U|15.6 inch FHD|8GB|SSD 512GB|Black",
+            "config": "512GB · 15 inch",
+            "offerCount": 1,
+            "priceLow": 8790000,
+            "priceHigh": 8790000,
+            "sellers": [
+              "vitinhhoanglong.com"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Laptop Dell Vostro 15 3520 i5 1235U/8GB/512GB/120Hz - Surfacecity.vn",
+            "config": "8GB · 512GB",
+            "offerCount": 1,
+            "priceLow": 13500000,
+            "priceHigh": 13500000,
+            "sellers": [
+              "surfacecity.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy tính xách tay Dell Vostro 15 3520 ( Intel Core i5.1235U/16GB DDR4/SSD 512GB/Intel Iris Xe Graphics/15.6inchFHD/Win11/Đen,NK) V3520 I516G512BLK",
+            "config": "512GB",
+            "offerCount": 1,
+            "priceLow": 13500000,
+            "priceHigh": 13500000,
+            "sellers": [
+              "Eco-Mart Siêu Thị Điện Máy"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": {
+          "noi_ban": "Thành Nhân TNC",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 5",
+              "params": {
+                "value": 5
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "12790000 VND",
+              "params": {
+                "priceVnd": 12790000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "3 reviews",
+              "params": {
+                "count": 3
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "reviewCount",
+            "evidence": "10 reviews",
+            "params": {
+              "count": 10
+            }
+          },
+          "nghieng_ve": true
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

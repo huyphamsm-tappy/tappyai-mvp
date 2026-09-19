@@ -1,0 +1,801 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 12736,
+  "evidenceId": "694032d9-8f7e-4aa2-8c53-6febcca19887",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí cuối tuần",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "tiNiWorld Thiso Mall Sala",
+      "rating": 4.7,
+      "count": 804,
+      "hours": "09:30–21:30",
+      "distance_km": 2.3,
+      "address": "TTTM Thiso Sala, 10 Mai Chí Thọ, An Khánh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36815,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+      "rating": 4.2,
+      "count": 377,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "tiNiWorld",
+      "rating": 4.7,
+      "count": 896,
+      "hours": "09:30–21:30",
+      "distance_km": 6,
+      "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1507,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10464,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Jump Arena Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 609,
+      "hours": "09:00–22:00",
+      "distance_km": 4,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Vincom Đồng Khởi",
+      "rating": 5,
+      "count": 972,
+      "hours": "10:00–22:00",
+      "distance_km": 0.1,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27371,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm địa điểm vui chơi gần vị trí hiện tại (Quận 1) vào cuối tuần này. Để gợi ý đúng ý, mình cần tìm kiếm ngay.\n\nMình chọn **Timezone Vincom Đồng Khởi** cho bạn — nó cực gần (chỉ 100m từ vị trí bạn), mở cửa đến 22:00 nên hoàn hảo cho cuối tuần, và có **5⭐ từ 972 đánh giá** là bằng chứng mạnh về chất lượng. Nơi đây có arcade, bowling, VR — vừa vui vừa không quá tốn thời gian.\n\nNếu muốn chọn khác: **Timezone Estella Place** (5.9km) cũng 4.9⭐ với 1.507 đánh giá, nhưng xa hơn.\n\nTimezone Vincom mở từ 10:00 sáng, nên bạn có thể ghé vào bất kỳ lúc nào cuối tuần này.\n\n[FOLLOWUPS]Xem thêm địa điểm khác|Quán ăn gần đó|Thời tiết hôm nay[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết - Timezone Vincom\",\"type\":\"website\",\"url\":\"https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/\",\"primary\":true},{\"label\":\"📍 Chỉ đường - Timezone Vincom\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm địa điểm vui chơi gần vị trí hiện tại (Quận 1) vào cuối tuần này. Để gợi ý đúng ý, mình cần tìm kiếm ngay.\n\nMình chọn **Timezone Vincom Đồng Khởi** cho bạn — nó cực gần (chỉ 100m từ vị trí bạn), mở cửa đến 22:00 nên hoàn hảo cho cuối tuần, và có **5⭐ từ 972 đánh giá** là bằng chứng mạnh về chất lượng. Nơi đây có arcade, bowling, VR — vừa vui vừa không quá tốn thời gian.\n\nNếu muốn chọn khác: **Timezone Estella Place** (5.9km) cũng 4.9⭐ với 1.507 đánh giá, nhưng xa hơn.\n\nTimezone Vincom mở từ 10:00 sáng, nên bạn có thể ghé vào bất kỳ lúc nào cuối tuần này.\n\n[FOLLOWUPS]Xem thêm địa điểm khác|Quán ăn gần đó|Thời tiết hôm nay[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết - Timezone Vincom\",\"type\":\"website\",\"url\":\"https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/\",\"primary\":true},{\"label\":\"📍 Chỉ đường - Timezone Vincom\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "tiNiWorld Thiso Mall Sala",
+          "place_id": "ChIJ_fugrpsvdTERcc2XvdIqAAc",
+          "address": "TTTM Thiso Sala, 10 Mai Chí Thọ, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 906 366 857",
+          "google_rating": "4.7⭐ (804 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 804,
+          "distance_km": 2.3,
+          "open_now": true,
+          "opening_hours": "09:30–21:30",
+          "place_types": [
+            "Trung tâm vui chơi dành cho trẻ em",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=504450242877836657",
+          "website_uri": "https://tiniworld.com/"
+        },
+        {
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "place_id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1425",
+          "google_rating": "4.3⭐ (36.815 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 36815,
+          "distance_km": 1.2,
+          "open_now": false,
+          "opening_hours": "07:00–18:30",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Vườn bách thú"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5600618488004010382",
+          "website_uri": "https://s.shopee.vn/8V7uC7gWA0"
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "place_id": "ChIJp-SfCAAvdTERzLubTbe7EoI",
+          "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 766 011 411",
+          "google_rating": "3.6⭐ (133 đánh giá Google Maps)",
+          "rating_value": 3.6,
+          "rating_count": 133,
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "17:00–22:00",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9372760170466884556"
+        },
+        {
+          "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+          "place_id": "ChIJpQAOYm8vdTERHQxSmos76dM",
+          "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 909 338 002",
+          "google_rating": "4.2⭐ (377 đánh giá Google Maps)",
+          "rating_value": 4.2,
+          "rating_count": 377,
+          "distance_km": 3.5,
+          "open_now": true,
+          "opening_hours": "09:30–22:00",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15269801482351938589",
+          "website_uri": "https://bigfun.com.vn/"
+        },
+        {
+          "name": "tiNiWorld",
+          "place_id": "ChIJbxI50MEndTERfAUMCCuTNfM",
+          "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 909 650 828",
+          "google_rating": "4.7⭐ (896 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 896,
+          "distance_km": 6,
+          "open_now": true,
+          "opening_hours": "09:30–21:30",
+          "place_types": [
+            "Trung tâm vui chơi dành cho trẻ em",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17525075338010035580",
+          "website_uri": "https://tiniworld.com/"
+        },
+        {
+          "name": "Timezone Estella Place - Arcade, VR & Parties",
+          "place_id": "ChIJYYbJ_zIndTERIJOcMGU6Y7M",
+          "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 7300 7790",
+          "google_rating": "4.9⭐ (1.507 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 1507,
+          "distance_km": 5.9,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Trung tâm vui chơi giải trí",
+            "Sàn chơi bô-linh",
+            "Cửa hàng trò chơi điện tử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12926239561765131040",
+          "website_uri": "https://www.timezonegames.com/vi-vn/dia-diem/timezone-estella-place-hcmc-est?utm_source=google&utm_medium=organic&utm_campaign=Google+My+Business&utm_term=plcid_10638312601158007886&utm_content=Timezone+Estella+Place+-+10-Pin+Mini+Bowling+and+Arcade+-+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh"
+        },
+        {
+          "name": "Công viên 23 tháng 9",
+          "place_id": "ChIJu4YK_j4vdTERfSn0egKOyug",
+          "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.4⭐ (10.464 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 10464,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16774375903398734205",
+          "website_uri": "https://congvien23thang9.com/"
+        },
+        {
+          "name": "Jump Arena Lê Thị Riêng",
+          "place_id": "ChIJacTdgFsvdTER_aIXqZFc4M0",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 1900 636808",
+          "google_rating": "4.5⭐ (609 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 609,
+          "distance_km": 4,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Sân chơi trong nhà"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14834958953235325693",
+          "website_uri": "https://jumparena.vn/"
+        },
+        {
+          "name": "Timezone Vincom Đồng Khởi",
+          "place_id": "ChIJvf8DDwAvdTERrEL5b0-5xbE",
+          "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 7300 0972",
+          "google_rating": "5⭐ (972 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 972,
+          "distance_km": 0.1,
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Trung tâm vui chơi giải trí",
+            "Sàn chơi bô-linh",
+            "Cửa hàng trò chơi điện tử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12809848465957405356",
+          "website_uri": "https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/"
+        },
+        {
+          "name": "Phố đi bộ Bùi Viện",
+          "place_id": "ChIJCdzLBRYvdTERpsMyNScNwPE",
+          "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.3⭐ (27.371 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 27371,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17419937820716483494"
+        }
+      ],
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77783,106.70184",
+            "domain": "food",
+            "kind": "place",
+            "name": "Timezone Vincom Đồng Khởi",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl196PzJdY7fhg9eh__LMVU5GjmsYCzbh5qdAHbXy4ZlZWjBPlDr5B_gkBp1pbSUequTZQPVsYhtVd-hTRl4XdwO1gWifb_hSnnDkkxumx9RPdTQoF_a-0nWu_ot3XIgG_SrIilUjVPDUy3",
+            "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 972,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 7300 0972",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 0.1,
+            "categories": [
+              "Trung tâm vui chơi giải trí",
+              "Sàn chơi bô-linh",
+              "Cửa hàng trò chơi điện tử"
+            ],
+            "rank": 8,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12809848465957405356",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@timezonevn/video/7535824910002785554",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842873000972",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Timezone%20Vincom%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77198,106.72106",
+            "domain": "food",
+            "kind": "place",
+            "name": "tiNiWorld Thiso Mall Sala",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn3l-mxphkfA6hRQcrxV1eyfMJla6dBbtOjDdqHkFdyQzZChgIqvnvyThn5w8yGUtv19HEfV1PmDhKKmTdwQVBAw3K0xupK8OGwTEzQmYPZcLVyHbakITGmPr11geIf-b54yPxK3aL0xagq",
+            "address": "TTTM Thiso Sala, 10 Mai Chí Thọ, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 804,
+            "openingHours": "09:30–21:30",
+            "openNow": true,
+            "phone": "+84 906 366 857",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–21:30",
+              "Chủ Nhật": "09:30–21:30",
+              "Thứ Hai": "10:00–21:30",
+              "Thứ Ba": "10:00–21:30",
+              "Thứ Tư": "10:00–21:30",
+              "Thứ Năm": "10:00–21:30",
+              "Thứ Sáu": "10:00–21:30"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Trung tâm vui chơi dành cho trẻ em",
+              "Nhà hàng"
+            ],
+            "rank": 0,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=504450242877836657",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://tiniworld.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=tiNiWorld%20Thiso%20Mall%20Sala%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906366857",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78733,106.70506",
+            "domain": "food",
+            "kind": "place",
+            "name": "Thảo Cầm Viên Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnn-hZ8GRwC5P1G22AfkBTOdFGCFfZq1tSYtkOvlnIZyutJK0QMvu_6UT5qyfbZqbO5M_xFwlsCipMch-pPhMoXuTn2e1msPXMxCjVM2p_E0aL3FH5emvahsuI_SeQgKc7vMwby9Q",
+            "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 36815,
+            "openingHours": "07:00–18:30",
+            "openNow": false,
+            "phone": "+84 28 3829 1425",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–18:30",
+              "Chủ Nhật": "07:00–18:30",
+              "Thứ Hai": "07:00–18:30",
+              "Thứ Ba": "07:00–18:30",
+              "Thứ Tư": "07:00–18:30",
+              "Thứ Năm": "07:00–18:30",
+              "Thứ Sáu": "07:00–18:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Vườn bách thú"
+            ],
+            "rank": 1,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5600618488004010382",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://s.shopee.vn/8V7uC7gWA0",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Th%E1%BA%A3o%20C%E1%BA%A7m%20Vi%C3%AAn%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291425",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77826,106.71171",
+            "domain": "food",
+            "kind": "place",
+            "name": "Khu công viên giải trí D-Joy",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkGJdFoWZMcJMVbpL9DdAzhRIv7rVoXOHG6tYc6bqI_Zu0vvctW3pd0YDANk4FbULmbzNKZzi5_g2AEtYJJdy2aGYczGtbYvSZV2OlRjzD8b3qgq2G9XV7o2FsrEiV0k1mBkvU",
+            "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam",
+            "rating": 3.6,
+            "ratingCount": 133,
+            "openingHours": "17:00–22:00",
+            "openNow": true,
+            "phone": "+84 766 011 411",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–22:00",
+              "Chủ Nhật": "17:00–22:00",
+              "Thứ Hai": "17:00–22:00",
+              "Thứ Ba": "17:00–22:00",
+              "Thứ Tư": "17:00–22:00",
+              "Thứ Năm": "17:00–22:00",
+              "Thứ Sáu": "17:00–22:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Sân chơi"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9372760170466884556",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Khu%20c%C3%B4ng%20vi%C3%AAn%20gi%E1%BA%A3i%20tr%C3%AD%20D-Joy%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84766011411",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77045,106.66994",
+            "domain": "food",
+            "kind": "place",
+            "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm3qnWVOKC9KZTg5d43LUIru6_wZ1Ic3OmxnV8Vrq4OlVcYrEyst7s5Tb1flxZZQaMa6bt_RjqSgcGlwUqUS4ZxqrzrDdGBgwPMD08-mpfsezy8gNd-oCf7O6cV8VtVEl1HZrn9",
+            "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 377,
+            "openingHours": "09:30–22:00",
+            "openNow": true,
+            "phone": "+84 909 338 002",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–22:00",
+              "Chủ Nhật": "09:30–22:00",
+              "Thứ Hai": "09:30–22:00",
+              "Thứ Ba": "09:30–22:00",
+              "Thứ Tư": "09:30–22:00",
+              "Thứ Năm": "09:30–22:00",
+              "Thứ Sáu": "09:30–22:00"
+            },
+            "distanceKm": 3.5,
+            "categories": [
+              "Sân chơi"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15269801482351938589",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://bigfun.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=KHU%20VUI%20CH%C6%A0I%20TR%E1%BA%BA%20EM%20BIGFUN%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909338002",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80197,106.74904",
+            "domain": "food",
+            "kind": "place",
+            "name": "tiNiWorld",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnNHCHPPr8bUt7sUsfKBhvovekNJLvhT1MiICD5cFNn67WajvJK4cZ_tqClel5ehlVOFNl-QQj-XdybrRMOyynUNllOmG1079NDHMkGjl9B0zTzzWH9oL38GKpjW_VW_Q",
+            "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 896,
+            "openingHours": "09:30–21:30",
+            "openNow": true,
+            "phone": "+84 909 650 828",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–21:30",
+              "Chủ Nhật": "09:30–21:30",
+              "Thứ Hai": "14:00–21:30",
+              "Thứ Ba": "09:30–21:30",
+              "Thứ Tư": "09:30–21:30",
+              "Thứ Năm": "09:30–21:30",
+              "Thứ Sáu": "09:30–21:30"
+            },
+            "distanceKm": 6,
+            "categories": [
+              "Trung tâm vui chơi dành cho trẻ em",
+              "Nhà hàng"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17525075338010035580",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://tiniworld.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=tiNiWorld%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909650828",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80199,106.74878",
+            "domain": "food",
+            "kind": "place",
+            "name": "Timezone Estella Place - Arcade, VR & Parties",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkx6iwmj8Q4p-KX-pW8flrNLx0cnRdjMUOwZu6doBND8KzOUq-wWEGxjMdxQASkMed8DXbZwcI1OXggGKVJEfRsYMV9tWFWJsa1K_IREnIcWJmn2-zKYdsHn5c1edWp6jv0N3cl",
+            "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1507,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 7300 7790",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 5.9,
+            "categories": [
+              "Trung tâm vui chơi giải trí",
+              "Sàn chơi bô-linh",
+              "Cửa hàng trò chơi điện tử"
+            ],
+            "rank": 5,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12926239561765131040",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.timezonegames.com/vi-vn/dia-diem/timezone-estella-place-hcmc-est?utm_source=google&utm_medium=organic&utm_campaign=Google+My+Business&utm_term=plcid_10638312601158007886&utm_content=Timezone+Estella+Place+-+10-Pin+Mini+Bowling+and+Arcade+-+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Timezone%20Estella%20Place%20-%20Arcade%2C%20VR%20%26%20Parties%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842873007790",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76871,106.69234",
+            "domain": "food",
+            "kind": "place",
+            "name": "Công viên 23 tháng 9",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn3Qp0PovJl084PR_QYdzgRGwrgE8EChRb0rjqs1VuuHTitf9GRCf5H9btoUexuorQRD0VuFaJh5cmV4hVuxJCZeDxne7DfnNtVP54gD6r2uJ3jnQLlY1bKZNtPL-wegwyxGgNROA",
+            "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 10464,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Công viên"
+            ],
+            "rank": 6,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16774375903398734205",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://congvien23thang9.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%2023%20th%C3%A1ng%209%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20vui%20ch%C6%A1i%20gi%E1%BA%A3i%20tr%C3%AD%20cu%E1%BB%91i%20tu%E1%BA%A7n%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.77783,106.70184",
+          "place:osm:10.80199,106.74878",
+          "place:osm:10.76871,106.69234"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

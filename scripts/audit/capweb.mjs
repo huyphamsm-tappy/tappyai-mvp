@@ -9,7 +9,7 @@ if (env.NEXT_PUBLIC_SUPABASE_URL.includes('fwznnobrdctuskgrvuik')) throw new Err
 const [q, a, ...flags] = process.argv.slice(2)
 const anon = flags.includes('--anon'); const noloc = flags.includes('--noloc')
 const BASE = 'http://localhost:3101'
-const headers = { 'content-type': 'application/json', 'x-tappy-surface': anon ? 'android' : 'web', 'accept-language': 'vi', ...(anon ? { 'x-tappy-age-declared': 'adult' } : { Authorization: 'Bearer ' + env.AUDIT_TEST_USER_BEARER }) }
+const headers = { 'content-type': 'application/json', 'x-tappy-surface': anon ? 'android' : 'web', 'accept-language': 'vi', ...(anon ? { 'x-tappy-age-declared': '18plus' } : { Authorization: 'Bearer ' + env.AUDIT_TEST_USER_BEARER }) }
 const loc = noloc ? {} : { userLocation: anon ? { lat: 10.7769, lng: 106.7009 } : { lat: 10.7769, lng: 106.7009, address: 'Quận 1, TP.HCM' } }
 async function post(messages) {
   const res = await fetch(BASE + '/api/chat', { method: 'POST', headers, body: JSON.stringify({ messages, ...loc }) })
