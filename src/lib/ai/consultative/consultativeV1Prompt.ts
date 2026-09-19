@@ -68,8 +68,11 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
     : ''
   // The answer turn after a clarify (item 1): the user has just answered the ONE question allowed;
   // measured GATE A (T5b "3–5 người", S5b "nước hoa") the model asked a second one instead of calling.
+  // The model no longer sees the clarify turn itself (route.ts collapseClarifyTurns — the request
+  // and the answer reach it as one user message), so the directive speaks of the request, not of
+  // "your question".
   const afterClarify = input.afterClarify
-    ? `\nUSER VUA TRA LOI cau hoi lam ro cua ban o luot truoc. Luot nay TUYET DOI KHONG hoi them bat ky dieu gi ("ban muon choi gi / huong gi / uu tien gi / loai nao" deu bi CAM). Phan user chua noi: GIA SU va noi ro. Goi tool ngay, roi CHON.`
+    ? `\nHE THONG DA HOI user MOT lan va user DA BO SUNG (phan sau dau " — " trong tin nhan). Luot nay TUYET DOI KHONG hoi them bat ky dieu gi ("ban muon choi gi / an gi / huong gi / uu tien gi / loai nao" deu bi CAM). Phan user chua noi: GIA SU va noi ro. Goi tool ngay, roi CHON.`
     : ''
   // Item 7 batch 1: the second copy of the call ("- LENH LUOT NAY …" at the bottom of the block) is
   // gone — BUOC 1 at the top carries the same instruction (measured 2026-09-18: the top block is

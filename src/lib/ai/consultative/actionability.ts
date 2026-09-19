@@ -174,6 +174,43 @@ export function mergeClarifyAnswer<T extends { role: string; content: unknown }>
 }
 
 /**
+ * The MODEL-FACING thread: every answered canned clarify collapsed, anywhere in the history.
+ *
+ * 🚨 THE MODEL IMITATES ITS OWN HISTORY. Android E2E 2026-09-19 (session 2): after the canned
+ * clarify and the user's chip, the model asked instead of searching, then asked again on the next
+ * two turns — the third time in the canned clarify's own format ("Để gợi ý đúng ý, mình cần biết:
+ * • Mấy người?"). A rule ("never ask twice") loses to an example that sits in the history as an
+ * assistant turn that asked a question with options. So the model never sees that turn: the
+ * canned clarify is dropped and the request + the answer become ONE complete user message, exactly
+ * as `mergeClarifyAnswer` already builds it for the deterministic readers — and here for EVERY
+ * answered clarify, not only the last one, so the example is gone on later turns too.
+ *
+ * Model history and UI history are allowed to differ: the clarify turn stays in the transcript
+ * the clients render and in the raw thread the memory extractor summarises; this applies only to
+ * what route.ts feeds the LLM (`modelMessages`). An UNANSWERED clarify (last message) is kept —
+ * there is nothing to fold it into.
+ */
+export function collapseClarifyTurns<T extends { role: string; content: unknown }>(messages: T[]): T[] {
+  const out: T[] = []
+  for (let i = 0; i < messages.length; i++) {
+    const m = messages[i]
+    const next = messages[i + 1]
+    const prev = out[out.length - 1]
+    if (
+      m.role === 'assistant' && isClarifyReply(typeof m.content === 'string' ? m.content : '')
+      && next && next.role === 'user' && typeof next.content === 'string'
+      && prev && prev.role === 'user' && typeof prev.content === 'string'
+    ) {
+      out[out.length - 1] = { ...prev, content: `${prev.content}${CLARIFY_JOIN}${next.content}` }
+      i++ // the answer is folded into the request
+      continue
+    }
+    out.push(m)
+  }
+  return out
+}
+
+/**
  * Memory as a signal (owner decision 2026-09-18: "memory is used to CHOOSE, never to ask"): a
  * returning user whose memory already holds a budget for the domain, tastes in the domain, or
  * usual companions has given the signal a stranger would be asked for. Evaluated by the route

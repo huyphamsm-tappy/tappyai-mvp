@@ -70,7 +70,7 @@ import { extractAttributes, attributeSummary } from '@/lib/ai/consultative/revie
 import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/hardConstraintGate'
 import { admitsForHard } from '@/lib/ai/consultative/upscale'
 import { closesLate } from '@/lib/ai/consultative/hardConstraints'
-import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer } from '@/lib/ai/consultative/actionability'
+import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns } from '@/lib/ai/consultative/actionability'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -1106,7 +1106,12 @@ export async function POST(req: Request) {
   // BEFORE the model sees them — the model cannot echo what it cannot read.
   // Applied ONLY to the messages fed to the LLM: the memory extractor below
   // still uses raw `trimmedMessages` because it summarizes what happened.
-  const modelMessages = compactHistory(trimmedMessages.map((m) => {
+  //
+  // 🚨 THE CANNED CLARIFY NEVER REACHES THE MODEL ONCE ANSWERED (collapseClarifyTurns, P1
+  // 2026-09-19): the model imitated that assistant turn — a question with options — and asked
+  // again instead of searching, three turns in a row on Android. Request + answer become one
+  // user message for the model; the UI transcript and the memory extractor keep the real thread.
+  const modelMessages = compactHistory(collapseClarifyTurns(trimmedMessages).map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
       return { ...m, content: sanitizePriorAssistantContent(m.content) }
