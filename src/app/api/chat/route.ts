@@ -1,6 +1,6 @@
 import { tool } from 'ai'
 import { z } from 'zod'
-import { randomUUID } from 'crypto'
+import { randomUUID, createHash } from 'crypto'
 import { appendFileSync } from 'fs'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
@@ -1415,6 +1415,37 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       } catch { /* audit only */ }
     }
     return cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
+  }
+
+  /**
+   * AUDIT MODEL-REQUEST CAPTURE (pre-release P1 diagnosis, 2026-09-19). Active only when
+   * `AUDIT_MODEL_REQUEST_FILE` is set (never in production): appends, BEFORE the model is called,
+   * exactly what this turn is about to send — the validated client messages, the model-facing
+   * history, both system prompt parts, the tool names and the request facts that differ between
+   * clients (surface, locale, auth, GPS, age header) — so two clients' requests for the same
+   * conversation can be diffed field by field. With `AUDIT_DRY_RUN=1` the turn ends here with a
+   * canned frame instead of a model call, so a capture costs no run. A write failure is swallowed.
+   */
+  const captureFile = process.env.AUDIT_MODEL_REQUEST_FILE
+  if (captureFile) {
+    try {
+      appendFileSync(captureFile, JSON.stringify({
+        at: new Date().toISOString(), auditTurn,
+        request: {
+          surface: surfaceHeader, acceptLanguage: req.headers.get('accept-language'), hasAuth: !!req.headers.get('authorization'),
+          ageHeader: req.headers.get('x-tappy-age-declared'), userLocation: userLocation ?? null, messageCount: messages.length,
+          messages: messages.map((m: { role: string; content: unknown }) => ({ role: m.role, content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) })),
+        },
+        gate: { turnIntent, decisionStage, assistantAskedClarification, forcedTool, intent, clarifyGate: clarifyGate ? 'fired' : null, cannedEarly: cannedEarly !== null, v1Active, noToolTurn, role },
+        model: {
+          systemSharedChars: systemShared?.length ?? 0, systemSharedSha: systemShared ? createHash('sha256').update(systemShared).digest('hex').slice(0, 12) : null,
+          system: systemPrompt, messages: modelMessages,
+          tools: noToolTurn ? [] : [...(movieRecommend ? [] : ['search_places']), 'get_news', ...(locationIntent !== 'offline' ? ['search_products'] : []), 'web_search', 'get_weather', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options'],
+          memoryChars: memoryBlock.length, v1Chars: v1Block.length, consultativeChars: consultativeBlock.length,
+        },
+      }) + '\n')
+    } catch { /* audit only */ }
+    if (process.env.AUDIT_DRY_RUN === '1') return cannedDataStreamResponse('[audit dry-run — no model call]', { 'X-Decision-Evidence-Id': evidenceId })
   }
 
   let result
