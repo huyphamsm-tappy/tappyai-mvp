@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T09:46:03.272Z",
+  "generatedAt": "2026-09-19T10:39:56.946Z",
   "note": "Direct function tests; no LLM/search; excluded from the 36-run cap. detectLang has no AMBIGUOUS return value.",
   "rows": [
     {
