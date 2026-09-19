@@ -27,7 +27,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
-import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
+import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
@@ -768,17 +768,14 @@ export async function POST(req: Request) {
   }
   // 🚨 A TASK SWITCH STARTS THE FRAME OVER. The frame folds the last three user turns so
   // "cho 2 người" said earlier still holds — but only within ONE consultation. Android E2E
-  // turn 5 (2026-09-19): "tim resort o phu quoc sang chut cho 2 nguoi" right after "spa nao
-  // mo khuya sau 22h o quan 3" was classified new_consultation (food/spa → hotel), yet the
-  // frame still carried `late_open` and `time: late_night` from the spa turn, the hotel rows
-  // had no hours, and the reply hedged "chưa thấy bằng chứng về giờ mở khuya" about resorts
-  // nobody asked to be open late. On new_consultation the window is the current turn only.
+  // turns 5–6 (2026-09-19): "tim resort o phu quoc sang chut cho 2 nguoi" right after "spa nao
+  // mo khuya sau 22h o quan 3" was classified new_consultation (places → hotel), yet the frame
+  // still carried `late_open` and `time: late_night` from the spa turn — and so did the
+  // "goi y them" refinement after it. The hotel rows have no hours, so the reply hedged "chưa
+  // thấy bằng chứng về giờ mở khuya" about resorts nobody asked to be open late. The fold now
+  // reads only the user turns since the last task switch (consultationUserTexts).
   const situation: SituationFrame | null = consultativeV1
-    ? deriveSituation(
-      framingMessages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),
-      needProfile,
-      { hasGps: !!userLocation, ...(turnIntent === 'new_consultation' ? { window: 1 } : {}) },
-    )
+    ? deriveSituation(consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
     : null
 
   /**
