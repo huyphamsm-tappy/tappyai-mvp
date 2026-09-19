@@ -87,6 +87,42 @@ function Chip({ children }: { children: React.ReactNode }) {
   )
 }
 
+/** The Google Places photo CDN. A size suffix makes a second, smaller request that is not a cache hit. */
+const LH3_RE = /^https:\/\/lh3\.googleusercontent\.com\//
+export const PHOTO_RETRY_SUFFIX = '=w400-h300'
+export const PHOTO_RETRY_DELAY_MS = 1200
+
+/**
+ * The card photo, with ONE proportionate retry.
+ *
+ * Measured 2026-09-18/19 (pre-release A.4): the `lh3.googleusercontent.com/gps-cs-s` photos loaded
+ * 100 % from Node, from headless Chromium (6 loads × 30 images, with and without Referer) and from
+ * the desktop pane today, while the day before the same pane got 5–12 of 16 with intermittent
+ * 429s that cleared after ~30 s. The failures track bursts from one address over time, not the
+ * Referer (Referer set to our origin: 80/80 → 200). So the fix is cause-agnostic: on error, retry
+ * ONCE after a short delay with the "=w400-h300" size suffix — a distinct URL (never a cached
+ * failure) and ~40 % fewer bytes — and only then collapse the band. No referrer policy is changed:
+ * the evidence does not support one.
+ */
+function CardPhoto({ src }: { src: string }) {
+  const [attempt, setAttempt] = useState<0 | 1 | 2>(0)
+  if (attempt === 2) return <div className="h-6 w-full" data-testid="place-photo-failed" />
+  const url = attempt === 1 && LH3_RE.test(src) && !/=[ws]\d/.test(src) ? src + PHOTO_RETRY_SUFFIX : src
+  return (
+    <img
+      src={url}
+      alt=""
+      loading="lazy"
+      data-attempt={attempt}
+      onError={() => {
+        if (attempt === 0 && LH3_RE.test(src) && !/=[ws]\d/.test(src)) setTimeout(() => setAttempt(1), PHOTO_RETRY_DELAY_MS)
+        else setAttempt(2)
+      }}
+      className="h-32 w-full object-cover"
+    />
+  )
+}
+
 /** One ranked merchant card: photo, identity, the facts, then the actions. */
 /**
  * 🚨 `ranked` DECIDES WHETHER A POSITION MEANS ANYTHING.
@@ -130,13 +166,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
     >
       <div className="relative">
         {p.image ? (
-          <img
-            src={p.image}
-            alt=""
-            loading="lazy"
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-            className="h-32 w-full object-cover"
-          />
+          <CardPhoto src={p.image} />
         ) : (
           // No photo collapses to a plain band rather than a grey box pretending
           // something is still loading.

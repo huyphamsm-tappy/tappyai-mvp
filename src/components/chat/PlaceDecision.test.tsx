@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach } from 'vitest'
-import { render, screen, cleanup, within, fireEvent } from '@testing-library/react'
-import PlaceDecision from './PlaceDecision'
+import { describe, it, expect, afterEach, vi } from 'vitest'
+import { render, screen, cleanup, within, fireEvent, act } from '@testing-library/react'
+import PlaceDecision, { PHOTO_RETRY_DELAY_MS, PHOTO_RETRY_SUFFIX } from './PlaceDecision'
 import { PLACES_ANNOTATION_KIND, type PlacesLiveView, type LivePlace } from '@/lib/recommendation/liveView'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -272,5 +272,41 @@ describe('item 2 — three cards, picks first, the rest behind "Xem thêm"', () 
     fireEvent.click(within(screen.getByTestId('place-filters')).getByText('Đang mở cửa'))
     expect(screen.getAllByTestId('place-card')).toHaveLength(4)
     expect(screen.queryByTestId('place-show-more')).toBeNull()
+  })
+})
+
+// ── pre-release A.4 — the card photo retries ONCE (size suffix, distinct URL), then collapses ──
+describe('A.4 — card photo: one proportionate retry, then the documented fallback', () => {
+  const LH3 = 'https://lh3.googleusercontent.com/gps-cs-s/AHRPTWabc123'
+  it('a Google Places photo that errors is retried once after a delay with the size suffix, and collapses only on the second error', () => {
+    vi.useFakeTimers()
+    try {
+      render(<PlaceDecision view={view({ items: [place('AnAn', { image: LH3 })] })} />)
+      const card = screen.getByTestId('place-card')
+      const img = card.querySelector('img') as HTMLImageElement
+      expect(img.getAttribute('src')).toBe(LH3)
+      fireEvent.error(img)
+      // not yet: the retry waits
+      expect(card.querySelector('img')?.getAttribute('src')).toBe(LH3)
+      act(() => { vi.advanceTimersByTime(PHOTO_RETRY_DELAY_MS + 10) })
+      const retried = card.querySelector('img') as HTMLImageElement
+      expect(retried.getAttribute('src')).toBe(LH3 + PHOTO_RETRY_SUFFIX)
+      expect(retried.getAttribute('data-attempt')).toBe('1')
+      fireEvent.error(retried)
+      expect(card.querySelector('img')).toBeNull()
+      expect(within(card).getByTestId('place-photo-failed')).toBeTruthy()
+    } finally { vi.useRealTimers() }
+  })
+  it('a non-Google photo, or one that already carries a size suffix, is not retried — it collapses on the first error', () => {
+    render(<PlaceDecision view={view({ items: [place('AnAn', { image: 'https://img/anan.jpg' })] })} />)
+    const img = screen.getByTestId('place-card').querySelector('img') as HTMLImageElement
+    fireEvent.error(img)
+    expect(screen.getByTestId('place-card').querySelector('img')).toBeNull()
+  })
+  it('a photo that loads is left exactly as given (no suffix, no referrer policy attribute)', () => {
+    render(<PlaceDecision view={view({ items: [place('AnAn', { image: LH3 })] })} />)
+    const img = screen.getByTestId('place-card').querySelector('img') as HTMLImageElement
+    expect(img.getAttribute('src')).toBe(LH3)
+    expect(img.getAttribute('referrerpolicy')).toBeNull()
   })
 })
