@@ -1234,9 +1234,10 @@ export async function POST(req: Request) {
     // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
-    const searchNow = deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || isClarifyReply(lastAssistantText), movieRecommend })
+    const afterClarify = isClarifyReply(lastAssistantText)
+    const searchNow = deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify, movieRecommend, afterClarify })
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow, afterClarify })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 

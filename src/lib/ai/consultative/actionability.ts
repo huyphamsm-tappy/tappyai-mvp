@@ -161,13 +161,16 @@ export function assessActionability(input: {
  * goal, the domain and the party size are read from "ăn gì ngon giờ — 2 người", not from
  * "2 người". The model still receives the real thread.
  */
+/** The separator mergeClarifyAnswer puts between the request and the answer. */
+export const CLARIFY_JOIN = ' — '
+
 export function mergeClarifyAnswer<T extends { role: string; content: unknown }>(messages: T[]): T[] {
   const n = messages.length
   if (n < 3) return messages
   const answer = messages[n - 1], clarify = messages[n - 2], request = messages[n - 3]
   if (answer.role !== 'user' || clarify.role !== 'assistant' || request.role !== 'user') return messages
   if (typeof answer.content !== 'string' || typeof request.content !== 'string' || !isClarifyReply(String(clarify.content))) return messages
-  return [...messages.slice(0, n - 3), { ...request, content: `${request.content} — ${answer.content}` }]
+  return [...messages.slice(0, n - 3), { ...request, content: `${request.content}${CLARIFY_JOIN}${answer.content}` }]
 }
 
 /**

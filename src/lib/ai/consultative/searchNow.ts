@@ -19,8 +19,9 @@ import type { DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
 import { normalizeVN } from '../intent'
+import { CLARIFY_JOIN } from './actionability'
 
-export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel'
+export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product'
 export interface SearchNow {
   query: string
   type: SearchNowType
@@ -58,6 +59,8 @@ function domainOf(frame: DecisionFrame, need: NeedProfile | null, situation: Sit
   }
 }
 
+const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
+
 export function deriveSearchNow(input: {
   text: string
   situation: SituationFrame | null
@@ -66,11 +69,26 @@ export function deriveSearchNow(input: {
   forcedTool: string | null
   isFirstReply: boolean
   movieRecommend: boolean
+  /** Item 1: the previous assistant turn was the clarify — the answer turn must call now, exactly. */
+  afterClarify?: boolean
 }): SearchNow | null {
   const { situation, frame } = input
   if (!situation || !input.isFirstReply || input.movieRecommend) return null
   if (frame.clarify) return null
+  // Shopping after a clarify (measured GATE A S5b: "nước hoa" → the model asked about the scent
+  // instead of searching; and with no subject the occasion "sinh nhật" would have routed the call to
+  // RESTAURANTS): the product the user just named IS the call — the need profile's subject when it
+  // read one, else the answer text itself.
+  if (input.afterClarify) {
+    const [request, ...rest] = input.text.split(CLARIFY_JOIN)
+    const answer = rest.join(CLARIFY_JOIN).trim()
+    const shopping = (frame.domains.includes('shopping') && !frame.placeDecision) || input.need?.domain === 'shopping' || SHOP_REQUEST.test(normalizeVN(request.toLowerCase()))
+    if (shopping) return answer || input.need?.subject ? { query: input.need?.subject ?? answer, type: 'product', exact: true } : null
+  }
   if (frame.domains.includes('shopping') && !frame.placeDecision) return null
+  // A purchase / gift request with no place domain is never a place call: "quà sinh nhật cho bạn
+  // gái" carries the occasion "birthday", which the occasion fallback below would read as FOOD.
+  if (SHOP_REQUEST.test(normalizeVN(input.text.toLowerCase())) && !frame.placeDecision && !frame.domains.some(d => d === 'food' || d === 'spa' || d === 'entertainment' || d === 'travel')) return null
   if (!situation.place.text && !situation.place.nearMe) return null
   const domain = domainOf(frame, input.need ?? null, situation, input.text)
   if (!domain) return null
@@ -81,7 +99,9 @@ export function deriveSearchNow(input: {
     || situation.who !== null || situation.occasion !== null || situation.hard.length > 0 || situation.budget !== null
   if (!decision) return null
 
-  const vague = situation.assumptions.length > 0 && situation.confidence < 0.5 && input.text.trim().length <= VAGUE_MAX_CHARS
+  // After a clarify the request was vague by construction: the arguments are the call (measured GATE A
+  // T5b: with a suggested query the model still asked "bạn muốn chơi gì?").
+  const vague = !!input.afterClarify || (situation.assumptions.length > 0 && situation.confidence < 0.5 && input.text.trim().length <= VAGUE_MAX_CHARS)
   const hard = situation.hard.map(h => HARD_QUERY[h]).filter((x): x is string => !!x)
   const withHard = (q: string) => [q, ...hard].join(' ')
   if (domain === 'food') {

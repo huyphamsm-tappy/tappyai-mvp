@@ -24,6 +24,8 @@ export interface ConsultativeV1PromptInput {
   now?: Date
   /** The concrete first tool call for a vague place request (searchNow.ts), or null. */
   searchNow?: { query: string; type: string; exact: boolean } | null
+  /** Item 1: the previous assistant turn was the clarify question — asking again is forbidden. */
+  afterClarify?: boolean
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -52,11 +54,18 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
     ? `\n- BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
     : '')
   const call = input.searchNow
-    ? (input.searchNow.type === 'hotel'
-      ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
-      : input.searchNow.exact
-        ? `goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user`
-        : `goi search_places NGAY voi query dat theo yeu cau cua user (vd "${input.searchNow.query}") va type phu hop`)
+    ? (input.searchNow.type === 'product'
+      ? `goi search_products({ query: "${input.searchNow.query}" })`
+      : input.searchNow.type === 'hotel'
+        ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
+        : input.searchNow.exact
+          ? `goi search_places({ query: "${input.searchNow.query}", type: "${input.searchNow.type}" }) quanh vi tri user`
+          : `goi search_places NGAY voi query dat theo yeu cau cua user (vd "${input.searchNow.query}") va type phu hop`)
+    : ''
+  // The answer turn after a clarify (item 1): the user has just answered the ONE question allowed;
+  // measured GATE A (T5b "3–5 người", S5b "nước hoa") the model asked a second one instead of calling.
+  const afterClarify = input.afterClarify
+    ? `\nUSER VUA TRA LOI cau hoi lam ro cua ban o luot truoc. Luot nay TUYET DOI KHONG hoi them bat ky dieu gi ("ban muon choi gi / huong gi / uu tien gi / loai nao" deu bi CAM). Phan user chua noi: GIA SU va noi ro. Goi tool ngay, roi CHON.`
     : ''
   const searchNow = input.searchNow
     ? `
@@ -68,9 +77,11 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // The concrete first call goes FIRST, before the situation: measured, the same line at the end of
   // the block moved "ăn gì ngon giờ" to a search but "đi chơi ở đâu" still asked "bạn muốn chơi gì?".
   const searchFirst = input.searchNow
-    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)} NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 dia diem tu ket qua va noi ro "minh gia su ...".
+    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)} NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 ${input.searchNow.type === 'product' ? 'san pham' : 'dia diem'} tu ket qua va noi ro "minh gia su ...".${afterClarify}
 =====================================`
-    : ''
+    : afterClarify
+      ? `\n\n===== LUOT SAU CAU HOI LAM RO =====${afterClarify}\n=====================================`
+      : ''
   return `${searchFirst}${buildSituationBlock(frame)}
 
 ===== TU VAN V1 — GHI DE CAC LUAT SAU =====

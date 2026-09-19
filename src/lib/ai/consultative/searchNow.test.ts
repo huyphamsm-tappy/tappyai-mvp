@@ -12,12 +12,12 @@ import { detectForcedTool, detectMovieRecommendationIntent } from '../intent'
 // and hotel turns get nothing.
 
 const GPS = { lat: 10.7769, lng: 106.7009 }
-function derive(text: string, opts: { gps?: boolean; isFirstReply?: boolean; now?: Date } = {}) {
+function derive(text: string, opts: { gps?: boolean; isFirstReply?: boolean; now?: Date; afterClarify?: boolean } = {}) {
   const hasGps = opts.gps !== false
   const need = deriveNeedProfile([{ role: 'user', content: text }], hasGps ? { gps: GPS as never } : {})
   const situation = deriveSituation([text], need, { hasGps })
   const frame = deriveDecisionFrame({ messages: [{ role: 'user', content: text }], need, planningIntent: null, forcedTool: detectForcedTool(text), hasGps, storedPreferences: null, now: opts.now ?? new Date('2026-09-18T12:30:00+07:00') } as never)
-  return deriveSearchNow({ text, situation, frame, need, forcedTool: detectForcedTool(text), isFirstReply: opts.isFirstReply ?? true, movieRecommend: detectMovieRecommendationIntent(text) })
+  return deriveSearchNow({ text, situation, frame, need, forcedTool: detectForcedTool(text), isFirstReply: opts.isFirstReply ?? true, movieRecommend: detectMovieRecommendationIntent(text), afterClarify: opts.afterClarify })
 }
 
 describe('deriveSearchNow — the concrete first call for a place request', () => {
@@ -42,5 +42,13 @@ describe('deriveSearchNow — the concrete first call for a place request', () =
   })
   it("shopping without a product is the model's question, not a search", () => {
     expect(derive('mua gì bây giờ')).toBeNull()
+  })
+  // Item 1, measured GATE A: after the clarify the model asked a second question (T5b "bạn muốn chơi
+  // gì?", S5b "hương gì?"). The answer turn's arguments are the call, and shopping gets one too.
+  it('after a clarify the call is EXACT, and a shopping answer becomes a search_products call', () => {
+    expect(derive('đi chơi ở đâu — 3–5 người', { afterClarify: true })).toEqual({ query: 'địa điểm vui chơi giải trí', type: 'attraction', exact: true })
+    expect(derive('đi chơi ở đâu — 3–5 người')).toMatchObject({ exact: false })
+    expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa', { afterClarify: true })).toEqual({ query: 'nước hoa', type: 'product', exact: true })
+    expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa')).toBeNull()
   })
 })
