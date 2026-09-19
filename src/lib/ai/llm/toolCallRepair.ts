@@ -9,15 +9,26 @@
 // field, the value before and after; a call that cannot be repaired is logged and returned to
 // the SDK unchanged (it then fails as before — visibly, not silently).
 
-import type { JSONSchema7, JSONSchema7Definition } from '@ai-sdk/provider'
+/**
+ * The slice of a JSON Schema this file reads. Structural on purpose: the vendor SDK's
+ * `JSONSchema7` type lives behind the provider layer (architecture rule
+ * `no-vendor-sdk-imports`), and the SDK hands the schema in as a plain object anyway.
+ */
+export interface JsonSchemaLike {
+  type?: string | string[]
+  properties?: Record<string, JsonSchemaLike | boolean>
+  required?: string[]
+  anyOf?: Array<JsonSchemaLike | boolean>
+  oneOf?: Array<JsonSchemaLike | boolean>
+}
 
 export interface RepairLog { tool: string; field: string; from: unknown; to: unknown; how: string }
 
-const prop = (schema: JSONSchema7, key: string): JSONSchema7 | null => {
-  const p = schema.properties?.[key] as JSONSchema7Definition | undefined
+const prop = (schema: JsonSchemaLike, key: string): JsonSchemaLike | null => {
+  const p = schema.properties?.[key]
   return p && typeof p === 'object' ? p : null
 }
-const typeOf = (s: JSONSchema7): string[] => (Array.isArray(s.type) ? s.type : s.type ? [s.type] : (s.anyOf ?? s.oneOf ?? []).flatMap((x: JSONSchema7Definition) => (typeof x === 'object' && x.type ? [x.type as string] : [])))
+const typeOf = (s: JsonSchemaLike): string[] => (Array.isArray(s.type) ? s.type : s.type ? [s.type] : (s.anyOf ?? s.oneOf ?? []).flatMap((x) => (typeof x === 'object' && x.type ? (Array.isArray(x.type) ? x.type : [x.type]) : [])))
 
 /** A number written the Vietnamese way ("2.000.000", "1,5tr", "500k") or plainly. */
 export function parseLooseNumber(raw: unknown): number | null {
@@ -40,7 +51,7 @@ export function parseLooseNumber(raw: unknown): number | null {
  * Coerces `args` toward `schema` field by field. Returns the repaired args and what changed;
  * `changed` empty means nothing could be done.
  */
-export function repairArgs(tool: string, args: Record<string, unknown>, schema: JSONSchema7): { args: Record<string, unknown>; changed: RepairLog[] } {
+export function repairArgs(tool: string, args: Record<string, unknown>, schema: JsonSchemaLike): { args: Record<string, unknown>; changed: RepairLog[] } {
   const out: Record<string, unknown> = { ...args }
   const changed: RepairLog[] = []
   const required = new Set(schema.required ?? [])
@@ -84,7 +95,7 @@ export function repairArgs(tool: string, args: Record<string, unknown>, schema: 
 export async function repairToolCall(options: {
   toolCall: { toolCallType: 'function'; toolCallId: string; toolName: string; args: string }
   tools: Record<string, unknown>
-  parameterSchema: (o: { toolName: string }) => JSONSchema7
+  parameterSchema: (o: { toolName: string }) => JsonSchemaLike
   error: { name?: string; message?: string }
 }) {
   const { toolCall } = options
