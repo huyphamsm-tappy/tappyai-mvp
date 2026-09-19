@@ -394,6 +394,45 @@ class PlaceDecisionSectionTest {
         assertTrue(repo.contains(".header(SURFACE_HEADER, SURFACE_ANDROID)"))
     }
 
+    // ── ITEM 2 (2026-09-19): three cards above the fold, the model's picks first ────────────────
+
+    @Test
+    fun `item 2 - renderOrder puts the picked ids first in prose order and never drops a row`() {
+        val items = (0 until 6).map { LivePlace(id = "id$it", name = "P$it", rank = it) }
+        val view = PlacesLiveView(kind = PLACES_ANNOTATION_KIND, items = items, picked = listOf("id4", "id1", "zzz"), shown = 3)
+        assertEquals(listOf("P4", "P1", "P0", "P2", "P3", "P5"), view.renderOrder().map { it.name })
+        // No picks: the engine's order, unchanged.
+        assertEquals(listOf("P0", "P1", "P2", "P3", "P4", "P5"), view.copy(picked = emptyList()).renderOrder().map { it.name })
+    }
+
+    @Test
+    fun `item 2 - foldedPlaces pages three under All, reveals the rest on expand, and a chip shows every admitted row`() {
+        val (folded, hidden) = foldedPlaces(six, shown = 3, expanded = false, filter = all)
+        assertEquals(listOf("P0", "P1", "P2"), folded.map { it.name })
+        assertEquals(3, hidden)
+        val (opened, hiddenOpened) = foldedPlaces(six, shown = 3, expanded = true, filter = all)
+        assertEquals(6, opened.size)
+        assertEquals(0, hiddenOpened)
+        // A chip never folds: every admitted row pages, the fold button has nothing to reveal.
+        val (chip, hiddenChip) = foldedPlaces(six, shown = 3, expanded = false, filter = open)
+        assertEquals(listOf("P0", "P2", "P4"), chip.map { it.name })
+        assertEquals(0, hiddenChip)
+        // Older payloads (no `shown`): everything, as before.
+        assertEquals(6, foldedPlaces(six, shown = null, expanded = false, filter = all).first.size)
+    }
+
+    @Test
+    fun `item 2 - the section renders the fold button from the strings both locales carry`() {
+        val src = File(findSrc("app/src/main/java/com/tappyai/app/chat/PlaceCard.kt")).readText().replace(Regex("(?m)^\\s*//.*$"), "")
+        assertTrue(src.contains("R.string.place_show_more"))
+        assertTrue(src.contains("R.string.place_show_less"))
+        for (rel in listOf("app/src/main/res/values/strings_chat.xml", "app/src/main/res/values-vi/strings_chat.xml")) {
+            val xml = File(findSrc(rel)).readText()
+            assertTrue(rel, xml.contains("name=\"place_show_more\""))
+            assertTrue(rel, xml.contains("name=\"place_show_less\""))
+        }
+    }
+
     private fun findSrc(rel: String): String {
         var dir: File? = File(".").absoluteFile
         while (dir != null) {

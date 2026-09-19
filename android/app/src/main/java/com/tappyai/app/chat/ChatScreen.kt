@@ -318,7 +318,8 @@ fun ChatScreen(
                             // CTA button that points at a page a place card already offers is a
                             // duplicate and is dropped — at render, the message keeps every button.
                             val placeCards = if (message.shopping == null) {
-                                message.livePlaces?.items
+                                // Item 2: the model's picks first (renderOrder), engine order after.
+                                message.livePlaces?.renderOrder()
                                     ?.let { livePlacesOutsideItinerary(message.plan, it) }
                                     ?.map { it.toCardView() }
                                     ?: placesOutsideItinerary(message.plan, message.places)
@@ -333,6 +334,8 @@ fun ChatScreen(
                                     ranked = message.livePlaces?.ranked != false,
                                     mapsSearchUrl = placesMapsUrl,
                                     commerce = commerceCallbacks,
+                                    // Item 2: three above the fold when the server says so.
+                                    shown = message.livePlaces?.shown,
                                 )
                             }
                             // D1 — the shopping DECISION. Rendered only once generation is done,

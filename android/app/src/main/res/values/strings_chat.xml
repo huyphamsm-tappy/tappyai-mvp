@@ -244,6 +244,8 @@
     <string name="place_card_flag_vegetarian">Vegetarian options</string>
     <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
     <string name="place_filter_all">All (%1$d)</string>
+    <string name="place_show_more">Show %1$d more</string>
+    <string name="place_show_less">Show fewer</string>
     <string name="place_filter_open">Open now</string>
     <string name="place_filter_rated">Top rated</string>
     <string name="place_rank">#%1$d</string>

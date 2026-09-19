@@ -240,8 +240,8 @@ describe('F · the observed bug: Tappy asked for an area, the user typed one', (
     await post({ messages: askedForArea() })
     expect(system()).not.toContain('source=explore_clip')
     const out = await toolResult({ query: 'bún bò Huế', location: 'Quận 1' })
-    // Model view = decision set (≤5, cost optimization item 4); `count` = every stranger came back.
-    expect((out.results as unknown[]).length).toBe(5)
+    // Item 2 (2026-09-19): the model reads every row, compact; `count` = every stranger came back.
+    expect((out.results as unknown[]).length).toBe(NEIGHBOURS.length)
     expect(out.count).toBe(NEIGHBOURS.length)
     expect('_tappy_clip_target' in out).toBe(false)
   })
@@ -283,6 +283,7 @@ describe('C · explicit alternatives: exactly what was asked for, framed as alte
     h.state.providerRows = [...NEIGHBOURS, GOC_HUE_ROW]
     await post({ messages: thread('cho mình 5 chỗ khác'), context: CTX })
     const out = await toolResult({ query: 'bún bò Huế' })
+    // The explicit-alternatives flow narrows to the FIVE asked for upstream of the model trim.
     expect((out.results as unknown[]).length).toBe(5)
     expect(out._tappy_clip_alternatives).toEqual({ of: GOC_HUE_REVIEW.place_name, requested: 5 })
   })
@@ -328,7 +329,7 @@ describe('H · ordinary chat is untouched', () => {
     expect(system()).not.toContain('source=explore_clip')
     expect(h.state.reviewQueries).toHaveLength(0)
     const out = await toolResult({ query: 'bún bò', location: 'Quận 1' })
-    expect((out.results as unknown[]).length).toBe(5)
+    expect((out.results as unknown[]).length).toBe(NEIGHBOURS.length + 1)
     expect(out.count).toBe(NEIGHBOURS.length + 1)
     expect('_tappy_clip_target' in out).toBe(false)
     expect('_tappy_clip_alternatives' in out).toBe(false)

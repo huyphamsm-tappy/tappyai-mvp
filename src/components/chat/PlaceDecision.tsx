@@ -5,7 +5,7 @@ import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } fr
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
 import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
-import type { LivePlace, PlaceFlag, PlacesLiveView } from '@/lib/recommendation/liveView'
+import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
 
 // ── The place decision, as the approved Food composition renders it ─────────
 //
@@ -347,13 +347,21 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
   const items = useMemo(() => view?.items ?? [], [view])
   const filters = useMemo(() => buildFilters(items, t), [items, t])
   const [active, setActive] = useState<FilterId>('all')
+  // Item 2 (2026-09-19): three cards above the fold — the model's picks first (pick, then its
+  // alternatives, in prose order), then the engine's order. The rest of the payload stays behind
+  // "Xem thêm": opening it is a client action, never a new turn or a new search.
+  const [expanded, setExpanded] = useState(false)
+  const order = useMemo(() => (view ? placesRenderOrder(view) : { visible: [], hidden: [] }), [view])
 
   if (!view || items.length === 0) return null
 
   const filter = filters.find(f => f.id === active) ?? filters[0]
-  // Filtering NEVER reorders: it removes rows the chip excludes and the engine's
-  // order carries through whatever is left.
-  const shown = items.filter(filter.match)
+  // A filter shows every admitted row (a chip that could only choose among three is decoration);
+  // "all" shows the fold. Filtering never reorders beyond the picks-first order.
+  const ordered = [...order.visible, ...order.hidden]
+  const folded = active === 'all' && !expanded && order.hidden.length > 0
+  const shown = (folded ? order.visible : ordered).filter(filter.match)
+  const hiddenCount = folded ? order.hidden.filter(filter.match).length : 0
 
   return (
     <div className="mt-3 animate-fade-in" data-testid="place-decision" data-domain={view.domain}>
@@ -388,10 +396,22 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
       >
         {shown.map((p) => (
           <div key={p.id} role="listitem" className="w-[85%] flex-none snap-start sm:w-[320px]">
-            <PlaceCard p={p} position={items.indexOf(p)} ranked={view.ranked !== false} />
+            <PlaceCard p={p} position={ordered.indexOf(p)} ranked={view.ranked !== false} />
           </div>
         ))}
       </div>
+
+      {(hiddenCount > 0 || (expanded && order.hidden.length > 0 && active === 'all')) && (
+        <button
+          type="button"
+          data-testid="place-show-more"
+          aria-expanded={expanded}
+          onClick={() => setExpanded(v => !v)}
+          className="mt-2 w-full rounded-xl border border-dashed border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-800"
+        >
+          {expanded ? t('placeDecision.showLess') : t('placeDecision.showMore', { count: String(hiddenCount) })}
+        </button>
+      )}
 
       {view.mapsSearchUrl && (
         <a

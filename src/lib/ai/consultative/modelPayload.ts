@@ -1,26 +1,48 @@
-// ── The model-facing place payload (cost optimization item 4, 2026-09-18) ────
+// ── The model-facing place payload — stage 1 of the two-stage card design ────
 //
-// Measured on the audit env: a `search_places` result reaches the model as
-// 16–22k characters (≈8–10k tokens, the single largest uncached item of a
-// tool turn) — ten rows, each with its 7-day hours object, coordinates and
-// fields the model never cites, plus everything the CARD needs. The card is
-// built from the FULL result before this runs (`setPlacesRecommendations`),
-// the annotation frame comes from the collector, and the ranking / evidence
-// gap were computed on the full ranked set — so the model's copy can be the
-// decision set only: the rows it MAY recommend (the shortlist, ≤5) plus the
-// fields it needs to pick and explain. Nothing the card renders changes.
+// Cost optimization item 4 (2026-09-18) cut the model's copy to the decision set (≤5 rows) with
+// every field those rows carried. Item 2 (2026-09-19, owner design) turns that around: the model
+// must see EVERY retrieved row — code picking the five by rating would be the rating-ranked
+// behaviour item 1 removed, only hidden — but in COMPACT form: identity, the evidence a pick is
+// argued with (rating + count, price band, distance, today's hours, open-now, category, the
+// review-attribute summary on the shortlist), and the few URL fields the CTA rules read
+// (`maps_link`, `booking_links`, `website_uri`, `review_actions[0]`) so the model can never be
+// tempted to invent one. Everything the CARD renders on its own and the model never argues with
+// — address, phone, the 7-day hours object, coordinates, photos, capability booleans, the other
+// review actions — stays out. Measured on GATE A payloads: 8 compact rows ≈ 5.9k chars vs the
+// old 5 rich rows ≈ 8.4k (−2.5k chars ≈ −780 tokens per tool turn).
 //
-// Kept per row: identity (name, place_id, address, phone, website_uri,
-// maps_link, booking_links), the evidence the rulebook cites (google_rating,
-// rating_value, rating_count, price_range_text, opening_hours, open_now,
-// distance_km, place_types, cuisine/attributes, tappy_* fields, snippets), and
-// the capability booleans. Dropped: lat/lng, opening_hours_week, photo fields
-// (already carved), and any row past the decision set.
+// Stage 2 is the model's reply: the venues it names become the three cards above the fold
+// (streamEnrichment.ts `pickedRecs`, liveView `picked` / `shown`); the rest stay in the payload.
 
-const ROW_DROP = new Set(['lat', 'lng', 'opening_hours_week', 'photo_url', 'photo_urls', 'photo_names', 'thumbnail'])
+/** Row fields the model reads. Order is the order they are emitted (name first). */
+const ROW_KEEP = [
+  // Identity + the facts a follow-up asks for by name ("ở đâu?", "số điện thoại?") — the model
+  // answers those from the row when the prior prose never stated them.
+  'name', 'place_id', 'address', 'phone',
+  // Rating under every provider's spelling (Serper: rating_value/rating_count; Google/OSM rows:
+  // rating/user_ratings_total/review_count), price, distance, hours, category, stated attributes.
+  'google_rating', 'rating_value', 'rating_count', 'rating', 'user_ratings_total', 'review_count',
+  'price_range_text', 'price_range', 'price_level', 'price',
+  'distance_km', 'open_now', 'opening_hours', 'place_types', 'cuisine', 'attributes', 'stars',
+  'tappy_rating', 'tappy_rating_count',
+  // The URL fields the CTA and review-link rules read; nothing else the model could invent from.
+  'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review',
+] as const
 
-/** How many rows the model reads when there is no shortlist to go by. */
-export const MODEL_ROWS_MAX = 5
+/** The provider caps a place search at 10 rows; the model reads at most that many. */
+export const MODEL_ROWS_MAX = 10
+
+function compactRow(row: unknown): unknown {
+  if (!row || typeof row !== 'object') return row
+  const x = row as Record<string, unknown>
+  const out: Record<string, unknown> = {}
+  for (const k of ROW_KEEP) if (x[k] !== undefined && x[k] !== null && x[k] !== '') out[k] = x[k]
+  // Rule 18b reads `review_actions[0]` when the user asks for a review link; one entry, three fields.
+  const ra = Array.isArray(x.review_actions) ? x.review_actions[0] as Record<string, unknown> | undefined : undefined
+  if (ra && typeof ra.url === 'string') out.review_actions = [{ kind: ra.kind, url: ra.url, attributed: ra.attributed === true }]
+  return out
+}
 
 /** @param key the array the rows live in: `results` (search_places) or `hotel_list` (get_hotel_prices) */
 export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list' = 'results'): unknown {
@@ -31,27 +53,19 @@ export function trimPlacesForModel(result: unknown, key: 'results' | 'hotel_list
   const shortlist = Array.isArray(r._tappy_shortlist) ? (r._tappy_shortlist as Array<{ id?: unknown; name?: unknown }>) : []
   const keepIds = new Set(shortlist.map(s => String(s.id ?? '')).filter(Boolean))
   const keepNames = new Set(shortlist.map(s => String(s.name ?? '')).filter(Boolean))
-  // Rows are already in ranked order (the route reorders `results` by candidate identity), so
-  // "the first N" is the engine's order. A shortlist member is always kept, wherever it sits.
   const shortlisted = (x: Record<string, unknown>) =>
     keepIds.has(String(x.place_id ?? x.maps_link ?? x.name ?? '')) || keepNames.has(String(x.name ?? ''))
-  const limit = Math.max(MODEL_ROWS_MAX, shortlist.length)
-  // Shortlist members first (a member can sit past the top five when earlier rows failed the
-  // evidence threshold), then the engine's order fills up to the limit.
+  // Shortlist members first (a member can sit past the top rows when earlier rows failed the
+  // evidence threshold), then the engine's order — every row, compact.
   const members = rows.filter(row => shortlisted(row as Record<string, unknown>))
   const others = rows.filter(row => !shortlisted(row as Record<string, unknown>))
-  const decision = [...members, ...others].slice(0, limit)
-  const slim = decision.map(row => {
-    const x = row as Record<string, unknown>
-    const out: Record<string, unknown> = {}
-    for (const [k, v] of Object.entries(x)) if (!ROW_DROP.has(k)) out[k] = v
-    return out
-  })
+  const all = [...members, ...others].slice(0, MODEL_ROWS_MAX)
   const total = rows.length
   return {
     ...r,
-    [key]: slim,
-    // The model is told what it is looking at: the decision set, not the whole search.
-    ...(total > slim.length ? { results_note: `Hien thi ${slim.length}/${total} ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user.` } : {}),
+    [key]: all.map(compactRow),
+    results_note: total > all.length
+      ? `Hien thi ${all.length}/${total} ket qua (rut gon: chi cac truong de chon); the (card) cua user co day du.`
+      : `Day la TOAN BO ${all.length} ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong.`,
   }
 }

@@ -146,6 +146,17 @@ export interface PlacesLiveView {
   items: LivePlace[]
   /** The provider's own map search for this query, when the tool returned one. */
   mapsSearchUrl?: string
+  /**
+   * Item 2 (2026-09-19): the ids of the places the MODEL named in its reply, pick first, in prose
+   * order — the "3 picks" of the two-stage design. The UI renders these first, then the engine's
+   * order; `items` itself is untouched. Absent on older payloads: render in `items` order.
+   */
+  picked?: string[]
+  /**
+   * How many cards to render before "Xem thêm" (item 2: 3). The rest stay in `items` for the
+   * expander and the filter row — no new turn, no new search. Absent: render all.
+   */
+  shown?: number
 }
 
 /** The provider already caps a place search at 8 rows; this is the same ceiling. */
@@ -350,8 +361,16 @@ function primaryOf(recs: readonly Recommendation[]): Recommendation | undefined 
  */
 export function buildPlacesLiveView(
   recs: readonly Recommendation[],
-  opts: { mapsSearchUrl?: string } = {},
+  opts: { mapsSearchUrl?: string; picked?: readonly string[]; shown?: number } = {},
 ): PlacesLiveView | null {
+  const extras = (items: LivePlace[]): Pick<PlacesLiveView, 'picked' | 'shown'> => {
+    const ids = new Set(items.map(i => i.id))
+    const picked = (opts.picked ?? []).filter(id => ids.has(id))
+    return {
+      ...(picked.length > 0 ? { picked } : {}),
+      ...(typeof opts.shown === 'number' && opts.shown > 0 ? { shown: Math.min(opts.shown, items.length) } : {}),
+    }
+  }
   if (!Array.isArray(recs) || recs.length === 0) return null
 
   /**
@@ -379,13 +398,15 @@ export function buildPlacesLiveView(
   const usable = recs.filter(r => r.entity.kind !== 'product' && r.entity.identity.name.trim())
   if (usable.length === 0) return null
   if (!lead || !lead.entity.identity.name.trim()) {
+    const items = usable.map(r => toLive(r, MAX_ACTIONS)).slice(0, MAX_ITEMS)
     return {
       kind: PLACES_ANNOTATION_KIND,
       v: 1,
       domain: usable[0].entity.domain,
       ranked: false,
-      items: usable.map(r => toLive(r, MAX_ACTIONS)).slice(0, MAX_ITEMS),
+      items,
       ...(isHttpUrl(opts.mapsSearchUrl) ? { mapsSearchUrl: opts.mapsSearchUrl } : {}),
+      ...extras(items),
     }
   }
 
@@ -396,13 +417,15 @@ export function buildPlacesLiveView(
     .filter(r => r !== lead && r.entity.identity.name.trim() && r.entity.kind !== 'product')
     .sort((a, b) => a.rank - b.rank)
 
+  const items = [lead, ...rest].slice(0, MAX_ITEMS).map(r => toLive(r, MAX_ACTIONS))
   return {
     kind: PLACES_ANNOTATION_KIND,
     v: 1,
     domain: lead.entity.domain,
     ranked: true,
-    items: [lead, ...rest].slice(0, MAX_ITEMS).map(r => toLive(r, MAX_ACTIONS)),
+    items,
     ...(isHttpUrl(opts.mapsSearchUrl) ? { mapsSearchUrl: opts.mapsSearchUrl } : {}),
+    ...extras(items),
   }
 }
 
@@ -433,7 +456,24 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
       ranked: candidate.ranked !== false,
       items,
       ...(isHttpUrl(candidate.mapsSearchUrl) ? { mapsSearchUrl: candidate.mapsSearchUrl } : {}),
+      ...(Array.isArray(candidate.picked) ? { picked: candidate.picked.filter((x): x is string => typeof x === 'string') } : {}),
+      ...(typeof candidate.shown === 'number' && candidate.shown > 0 ? { shown: candidate.shown } : {}),
     }
   }
   return null
+}
+
+/**
+ * The render order the client uses: the model's picks first (prose order), then the engine's
+ * order for the rest — `items` itself is never mutated. `shown` says how many go above the
+ * "Xem thêm" fold; absent means all.
+ */
+export function placesRenderOrder(view: Pick<PlacesLiveView, 'items' | 'picked' | 'shown'>): { visible: LivePlace[]; hidden: LivePlace[] } {
+  const picked = view.picked ?? []
+  const byId = new Map(view.items.map(i => [i.id, i]))
+  const first = picked.map(id => byId.get(id)).filter((x): x is LivePlace => !!x)
+  const seen = new Set(first.map(i => i.id))
+  const ordered = [...first, ...view.items.filter(i => !seen.has(i.id))]
+  const n = typeof view.shown === 'number' && view.shown > 0 ? Math.min(view.shown, ordered.length) : ordered.length
+  return { visible: ordered.slice(0, n), hidden: ordered.slice(n) }
 }

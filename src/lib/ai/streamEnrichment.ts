@@ -14,7 +14,8 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGu
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView } from '@/lib/recommendation/liveView'
-import { MAX_TIKTOK_ENTITIES as TIKTOK_CARD_CEILING } from '@/lib/links/tiktokEnrichment'
+/** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
+const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
@@ -1346,10 +1347,27 @@ export function applyPlaceEnrichmentStreamFilter(
      * search, it names the venues, which is why it returns attributable results.
      */
     let recsForCard = collector?.placesRecommendations ?? []
+    /**
+     * Item 2 (2026-09-19) — THREE CARDS, THE MODEL'S. Stage 1 gave the model every row in compact
+     * form (modelPayload.ts); stage 2 is its reply, and the venues it NAMED — pick first, in prose
+     * order — are the cards above the fold. The engine's order fills up to three when it named
+     * fewer. Only those three get the per-venue enrichment (TikTok here, photos above for the
+     * named ones); the rest stay in the payload for "Xem thêm" and the filter row.
+     */
+    const pickedRecs = (() => {
+      const folded = normName(mainText)
+      const named = recsForCard
+        .map(r => ({ r, at: (() => { const n = normName(r.entity.identity.name); return n.length >= 4 ? folded.indexOf(n) : -1 })() }))
+        .filter(x => x.at >= 0)
+        .sort((a, b) => a.at - b.at)
+        .map(x => x.r)
+      const seen = new Set(named)
+      const fill = recsForCard.filter(r => !seen.has(r))
+      return [...named, ...fill].slice(0, CARDS_SHOWN)
+    })()
     if (resolveTikTok && recsForCard.length > 0) {
       try {
-        const cardNames = recsForCard
-          .slice(0, TIKTOK_CARD_CEILING)
+        const cardNames = pickedRecs
           .map(r => r.entity.identity.name)
           .filter(Boolean)
         const found = await resolveTikTok(cardNames, tiktokLocation)
@@ -1361,8 +1379,13 @@ export function applyPlaceEnrichmentStreamFilter(
     }
 
     const placesView = (EMIT_PLACES_ANNOTATION && recsForCard.length)
-      ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), { mapsSearchUrl: collector?.placesMapsUrl })
+      ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), {
+        mapsSearchUrl: collector?.placesMapsUrl,
+        picked: pickedRecs.map(r => r.entity.id),
+        shown: CARDS_SHOWN,
+      })
       : null
+    if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: pickedRecs.filter(r => normName(mainText).includes(normName(r.entity.identity.name))).length }))
 
     /**
      * \u{1F6A8} THE SAME CONTENT TWICE WAS THE BUG. `injectPlaceEnrichment` writes the

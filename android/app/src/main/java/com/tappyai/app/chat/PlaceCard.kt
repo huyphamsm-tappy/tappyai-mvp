@@ -35,6 +35,8 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.ui.platform.testTag
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -153,6 +155,19 @@ internal fun placeFilters(items: List<PlaceCardView>): List<PlaceFilter> {
  */
 internal fun carouselPlaces(items: List<PlaceCardView>, filter: PlaceFilter): List<PlaceCardView> =
     items.filter(filter.matches)
+
+/**
+ * Item 2 (2026-09-19): the cards above the fold. With [shown] set and the "All" chip active and the
+ * fold closed, only the first [shown] cards page; a chip shows every admitted row (a chip that
+ * could only choose among three is decoration). Opening the fold is a client action — never a
+ * new turn, never a new search. Web parity: `PlaceDecision.tsx`.
+ */
+internal fun foldedPlaces(items: List<PlaceCardView>, shown: Int?, expanded: Boolean, filter: PlaceFilter): Pair<List<PlaceCardView>, Int> {
+    val folded = shown != null && shown > 0 && !expanded && filter.id == PlaceFilterId.All && items.size > shown
+    val pages = carouselPlaces(if (folded) items.take(shown!!) else items, filter)
+    val hidden = if (folded) items.drop(shown!!).count(filter.matches) else 0
+    return pages to hidden
+}
 
 /**
  * Web parity: the chip row shows when a chip can actually change the result, and also when the
@@ -406,13 +421,16 @@ fun PlaceDecisionSection(
     mapsSearchUrl: String?,
     modifier: Modifier = Modifier,
     commerce: CommerceActionCallbacks = CommerceActionCallbacks(),
+    /** Item 2: cards above the fold (server `shown`); null renders every card. */
+    shown: Int? = null,
 ) {
     if (places.isEmpty()) return
     val context = LocalContext.current
     val filters = remember(places) { placeFilters(places) }
     var activeId by rememberSaveable(places) { mutableStateOf(PlaceFilterId.All) }
+    var expanded by rememberSaveable(places) { mutableStateOf(false) }
     val active = filters.firstOrNull { it.id == activeId } ?: filters.first()
-    val pages = remember(places, active) { carouselPlaces(places, active) }
+    val (pages, hiddenCount) = remember(places, active, shown, expanded) { foldedPlaces(places, shown, expanded, active) }
     // The pager reads the CURRENT page list: a chip changes it, and a state built over the first
     // list would keep counting pages that no longer exist.
     val currentPages = rememberUpdatedState(pages)
@@ -460,6 +478,19 @@ fun PlaceDecisionSection(
             }
             if (pages.size > 1) {
                 PagerDots(count = pages.size, current = pagerState.currentPage)
+            }
+        }
+
+        val foldable = shown != null && shown > 0 && places.size > shown && active.id == PlaceFilterId.All
+        if (foldable && (hiddenCount > 0 || expanded)) {
+            TextButton(
+                onClick = { expanded = !expanded },
+                modifier = Modifier.fillMaxWidth().testTag("place-show-more"),
+            ) {
+                Text(
+                    if (expanded) stringResource(R.string.place_show_less)
+                    else stringResource(R.string.place_show_more, hiddenCount),
+                )
             }
         }
 

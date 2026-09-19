@@ -1,50 +1,54 @@
 import { describe, it, expect } from 'vitest'
 import { trimPlacesForModel, MODEL_ROWS_MAX } from './modelPayload'
 
-// Cost optimization item 4: the model reads the decision set (shortlist ∪ top rows, ≤5) with the
-// fields it cites; the card keeps the full result (built before this runs).
+// Item 2 (2026-09-19): stage 1 — the model reads EVERY row (up to the provider's 10) in compact
+// form; the card keeps the full result (built before this runs).
 
 const row = (i: number, extra: Record<string, unknown> = {}) => ({
   name: `Quán ${i}`, place_id: `p${i}`, address: `${i} Nguyễn Huệ`, lat: 10.7, lng: 106.7, phone: '028',
   website_uri: 'https://x', maps_link: `https://maps.google.com/?cid=${i}`, google_rating: '4.5⭐ (100 đánh giá)', rating_value: 4.5,
   rating_count: 100, price_range_text: '100-200 N ₫', opening_hours: '08:00–22:00', open_now: true,
   opening_hours_week: { 'Thứ Hai': '08:00–22:00', 'Thứ Ba': '08:00–22:00' }, distance_km: 1.2, place_types: ['Nhà hàng'],
-  photo_url: 'https://img', photo_urls: ['https://img'], has_tiktok_review: false, ...extra,
+  photo_url: 'https://img', photo_urls: ['https://img'], has_tiktok_review: false, has_maps: true, has_phone: true, has_photo: true,
+  review_actions: [{ kind: 'tiktok', label: '🎵 Review', url: 'https://www.tiktok.com/@x/video/1', attributed: true }, { kind: 'google_maps', label: 'Maps', url: 'https://maps.google.com/?cid=1', attributed: true }],
+  booking_links: ['https://book/x'], ...extra,
 })
 const ten = Array.from({ length: 10 }, (_, i) => row(i))
 
-describe('trimPlacesForModel', () => {
-  it('keeps the shortlist members first, fills to five, drops the rest and the un-cited fields', () => {
+describe('trimPlacesForModel (stage 1: every row, compact)', () => {
+  it('keeps the shortlist members first, then every other row, each with the citable fields only', () => {
     const out = trimPlacesForModel({ results: ten, _tappy_shortlist: [{ id: 'p7', name: 'Quán 7' }, { id: 'p0', name: 'Quán 0' }], google_maps_search: 'https://maps' }) as Record<string, unknown>
     const rows = out.results as Array<Record<string, unknown>>
-    expect(rows).toHaveLength(MODEL_ROWS_MAX)
-    expect(rows.map(r => r.name)).toEqual(['Quán 0', 'Quán 7', 'Quán 1', 'Quán 2', 'Quán 3'])
+    expect(rows).toHaveLength(10)
+    expect(rows.map(r => r.name)).toEqual(['Quán 0', 'Quán 7', 'Quán 1', 'Quán 2', 'Quán 3', 'Quán 4', 'Quán 5', 'Quán 6', 'Quán 8', 'Quán 9'])
     for (const r of rows) {
-      expect(r).not.toHaveProperty('lat'); expect(r).not.toHaveProperty('opening_hours_week'); expect(r).not.toHaveProperty('photo_url')
-      expect(r).toHaveProperty('google_rating'); expect(r).toHaveProperty('opening_hours'); expect(r).toHaveProperty('maps_link'); expect(r).toHaveProperty('phone')
+      // Dropped: what the card renders and the model never argues with.
+      for (const k of ['lat', 'lng', 'opening_hours_week', 'photo_url', 'photo_urls', 'has_maps', 'has_phone', 'has_photo']) expect(r, k).not.toHaveProperty(k)
+      // Kept: the evidence a pick is argued with + the URL fields the CTA / review rules read.
+      for (const k of ['address', 'phone', 'google_rating', 'rating_value', 'rating_count', 'price_range_text', 'distance_km', 'open_now', 'opening_hours', 'place_types', 'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review']) expect(r, k).toHaveProperty(k)
+      expect(r.review_actions).toEqual([{ kind: 'tiktok', url: 'https://www.tiktok.com/@x/video/1', attributed: true }])
     }
-    expect(out.results_note).toContain('5/10')
+    expect(String(out.results_note)).toMatch(/TOAN BO 10 ket qua/)
     expect(out.google_maps_search).toBe('https://maps')
   })
-  it('a five-member shortlist keeps all five; fewer rows than the limit keeps them all with no note', () => {
-    const five = trimPlacesForModel({ results: ten, _tappy_shortlist: ten.slice(0, 5).map(r => ({ id: r.place_id, name: r.name })) }) as Record<string, unknown>
-    expect((five.results as unknown[]).length).toBe(5)
-    const three = trimPlacesForModel({ results: ten.slice(0, 3) }) as Record<string, unknown>
-    expect((three.results as unknown[]).length).toBe(3)
-    expect(three.results_note).toBeUndefined()
+  it('caps at the provider ceiling and says so', () => {
+    const twelve = Array.from({ length: 12 }, (_, i) => row(i))
+    const out = trimPlacesForModel({ results: twelve }) as Record<string, unknown>
+    expect((out.results as unknown[]).length).toBe(MODEL_ROWS_MAX)
+    expect(String(out.results_note)).toMatch(/10\/12/)
   })
   it('trims hotel_list the same way when asked (get_hotel_prices)', () => {
-    const hotels = Array.from({ length: 18 }, (_, i) => ({ ...row(i), name: `Hotel ${i}` }))
+    const hotels = Array.from({ length: 18 }, (_, i) => ({ ...row(i), name: `Hotel ${i}`, stars: 3 }))
     const out = trimPlacesForModel({ hotel_list: hotels, booking_link: 'x', _tappy_shortlist: [{ id: 'p9', name: 'Hotel 9' }] }, 'hotel_list') as Record<string, unknown>
     const rows = out.hotel_list as Array<Record<string, unknown>>
     expect(rows).toHaveLength(MODEL_ROWS_MAX)
     expect(rows[0].name).toBe('Hotel 9')
+    expect(rows[0]).toHaveProperty('stars')
     expect(rows[0]).not.toHaveProperty('photo_url')
     expect(rows[0]).not.toHaveProperty('lat')
-    expect(out.results_note).toMatch(/5\/18/)
+    expect(String(out.results_note)).toMatch(/10\/18/)
     expect(out.booking_link).toBe('x')
   })
-
   it('leaves non-place results and empty results alone', () => {
     expect(trimPlacesForModel({ results: [] })).toEqual({ results: [] })
     expect(trimPlacesForModel('x')).toBe('x')

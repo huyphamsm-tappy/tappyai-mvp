@@ -241,6 +241,8 @@
     <string name="place_card_flag_vegetarian">Có món chay</string>
     <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
     <string name="place_filter_all">Tất cả (%1$d)</string>
+    <string name="place_show_more">Xem thêm %1$d chỗ</string>
+    <string name="place_show_less">Thu gọn</string>
     <string name="place_filter_open">Đang mở cửa</string>
     <string name="place_filter_rated">Đánh giá cao</string>
     <string name="place_rank">#%1$d</string>

@@ -154,7 +154,26 @@ data class PlacesLiveView(
     val ranked: Boolean? = null,
     val items: List<LivePlace> = emptyList(),
     val mapsSearchUrl: String? = null,
+    /**
+     * Item 2 (2026-09-19): the ids of the places the MODEL named in its reply, pick first, in
+     * prose order — rendered first; `items` itself keeps the engine's order. Empty on older
+     * payloads. Web parity: `liveView.ts` `picked`.
+     */
+    val picked: List<String> = emptyList(),
+    /** How many cards sit above "Xem thêm" (item 2: 3). Null: every card, as before. */
+    val shown: Int? = null,
 )
+
+/**
+ * The render order (web parity: `placesRenderOrder`): the model's picks first, then the engine's
+ * order for the rest. Never mutates [PlacesLiveView.items].
+ */
+fun PlacesLiveView.renderOrder(): List<LivePlace> {
+    val byId = items.associateBy { it.id }
+    val first = picked.mapNotNull { byId[it] }
+    val seen = first.map { it.id }.toSet()
+    return first + items.filter { it.id !in seen }
+}
 
 /**
  * The annotation's own type tag, verbatim from the server (`liveView.ts`). Checked before the

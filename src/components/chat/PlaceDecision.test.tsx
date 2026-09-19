@@ -234,3 +234,43 @@ describe('🚨 unranked results render as a card, without rank claims', () => {
     expect(screen.getAllByTestId('place-card')[0].getAttribute('data-rank')).toBe('1')
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Item 2 (owner decision 2026-09-19): THREE cards above the fold — the model's picks first — and
+// the rest behind "Xem thêm", a client action that is never a new turn or a new search. The filter
+// row still counts every row; the map link still opens the provider's full search.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('item 2 — three cards, picks first, the rest behind "Xem thêm"', () => {
+  const many = Array.from({ length: 8 }, (_, i) => place(`Quán ${i}`, { rank: i, ...(i === 0 ? { recommended: true as const } : {}) }))
+  const ids = many.map(p => p.id)
+
+  it('renders the three picked cards (prose order), then reveals the other five on tap', () => {
+    render(<PlaceDecision view={view({ items: many, picked: [ids[4], ids[1]], shown: 3 })} />)
+    const names = () => screen.getAllByTestId('place-card').map(c => within(c).getByRole('heading').textContent)
+    expect(names()).toEqual(['Quán 4', 'Quán 1', 'Quán 0'])
+    expect(screen.getAllByTestId('place-card').map(c => c.getAttribute('data-rank'))).toEqual(['1', '2', '3'])
+    expect(within(screen.getByTestId('place-filters')).getAllByRole('button')[0].textContent).toMatch(/\(8\)/)
+    const more = screen.getByTestId('place-show-more')
+    expect(more.textContent).toBe('Xem thêm 5 chỗ')
+    fireEvent.click(more)
+    expect(screen.getAllByTestId('place-card')).toHaveLength(8)
+    expect(names().slice(0, 3)).toEqual(['Quán 4', 'Quán 1', 'Quán 0'])
+    expect(screen.getByTestId('place-show-more').textContent).toBe('Thu gọn')
+    expect(screen.getByTestId('place-map-explore').getAttribute('href')).toBe('https://www.google.com/maps/search/cafe+quan+1')
+  })
+
+  it('a payload without `shown` renders every card (older servers) and no "Xem thêm"', () => {
+    render(<PlaceDecision view={view({ items: many })} />)
+    expect(screen.getAllByTestId('place-card')).toHaveLength(8)
+    expect(screen.queryByTestId('place-show-more')).toBeNull()
+  })
+
+  it('a filter chip shows every admitted row, folded or not', () => {
+    const mixed = many.map((p, i) => ({ ...p, openNow: i % 2 === 0 }))
+    render(<PlaceDecision view={view({ items: mixed, shown: 3 })} />)
+    fireEvent.click(within(screen.getByTestId('place-filters')).getByText('Đang mở cửa'))
+    expect(screen.getAllByTestId('place-card')).toHaveLength(4)
+    expect(screen.queryByTestId('place-show-more')).toBeNull()
+  })
+})
