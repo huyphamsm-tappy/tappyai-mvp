@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { classifyHardGaps, hardConstraintGaps, hardGroupOf, evidenceNote, HARD_GROUP, HARD_GAP_WORDS, rowSupportedHards } from './hardConstraints'
+import { classifyHardGaps, hardConstraintGaps, hardGroupOf, evidenceNote, HARD_GROUP, HARD_GAP_WORDS, rowSupportedHards, closesLate } from './hardConstraints'
 import { extractAttributes } from './reviewAttributes'
 import type { Hard } from './situationFrame'
 
@@ -59,6 +59,47 @@ describe('classifyHardGaps — ROW_FLAG_BACKED', () => {
     expect(classifyHardGaps(['delivery'], attrs, { rows: [{ has_order: true }] })).toMatchObject({ gaps: [], rowBacked: ['delivery'] })
     expect(classifyHardGaps(['delivery'], attrs, { rows: [{ has_delivery: false }, null, 'x'] })).toMatchObject({ gaps: ['delivery'], rowBacked: [] })
     expect(rowSupportedHards([{ has_delivery: false }])).toEqual([])
+  })
+
+  // A.2 (owner 2026-09-19, P8): "mở khuya" is answered by the row's own opening_hours.
+  it('closesLate reads every provider spelling; unparseable is null, never a guess', () => {
+    expect(closesLate('09:00–22:00')).toBe(false)
+    expect(closesLate('08:00–23:30')).toBe(true)
+    expect(closesLate('10:00–05:00')).toBe(true)          // past midnight
+    expect(closesLate('Mở cửa cả ngày')).toBe(true)
+    expect(closesLate('Open 24 hours')).toBe(true)
+    expect(closesLate('Mo-Su 08:00-22:00')).toBe(false)   // OSM spelling
+    expect(closesLate('12:00–00:00')).toBe(true)
+    expect(closesLate('')).toBeNull()
+    expect(closesLate(undefined)).toBeNull()
+    expect(closesLate('Đóng cửa')).toBeNull()
+  })
+  it('late_open is ROW_FLAG_BACKED: vouched only by rows that close late, and the report names WHICH rows', () => {
+    expect(HARD_GROUP.late_open).toBe('ROW_FLAG_BACKED')
+    const rows = [
+      { name: 'Massage Cổ Phong Q3', opening_hours: '09:00–22:00' },
+      { name: 'Charm Spa Garden', opening_hours: '10:00–00:00' },
+      { name: 'AN MIÊN SPA', opening_hours: '09:00–22:00' },
+    ]
+    const r = classifyHardGaps(['late_open'], attrs, { rows })
+    expect(r.gaps).toEqual([]); expect(r.rowBacked).toEqual(['late_open']); expect(r.fieldMissing).toEqual([])
+    expect(r.rowBackedBy.late_open).toEqual(['Charm Spa Garden'])
+    expect(evidenceNote(r, 'vi')).toContain('CHI cac quan nay co bang chung ve giờ mở khuya: Charm Spa Garden')
+    expect(evidenceNote(r, 'en')).toContain('Only these results carry evidence of late opening: Charm Spa Garden')
+  })
+  it('late_open with hours that all close early is a gap (hours are known — they say no)', () => {
+    const r = classifyHardGaps(['late_open'], attrs, { rows: [{ name: 'A', opening_hours: '09:00–22:00' }, { name: 'B', opening_hours: '08:00–21:30' }] })
+    expect(r.gaps).toEqual(['late_open']); expect(r.fieldMissing).toEqual([])
+    expect(evidenceNote(r, 'vi')).toContain('KHONG quan nao trong ket qua co bang chung ve: giờ mở khuya')
+  })
+  it('late_open with NO opening_hours on any row is a gap AND reported as the field missing — never a substitute signal', () => {
+    const r = classifyHardGaps(['late_open'], attrs, { rows: [{ name: 'A', open_now: true }, { name: 'B' }] })
+    expect(r.gaps).toEqual(['late_open']); expect(r.fieldMissing).toEqual(['late_open']); expect(r.rowBacked).toEqual([])
+  })
+  it('a "mở khuya" review word alone does NOT vouch for late_open any more (the attribute is only for the atmosphere guard)', () => {
+    const lateText = extractAttributes(new Map([['Quán X', ['quán mở khuya tới 2h sáng, nhạc hay']]]))
+    const r = classifyHardGaps(['late_open'], lateText, { rows: [{ name: 'Quán X' }] })
+    expect(r.gaps).toEqual(['late_open'])
   })
 })
 

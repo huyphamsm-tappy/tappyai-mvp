@@ -12,6 +12,7 @@
 
 import { normalizeVN } from '../intent'
 import type { Hard } from './situationFrame'
+import { closesLate } from './hardConstraints'
 
 /** Budget-lodging words, on folded text (name + category words). */
 export const BUDGET_LODGING_RE = /\b(guest ?house|nha nghi|nha tro|hostel|dorm(?:itory)?|motel|backpackers?|phong tro|homestay gia re|bui)\b/
@@ -32,3 +33,23 @@ export function admitsForUpscale(hard: readonly Hard[], candidate: { name: strin
     .filter((t): t is string => typeof t === 'string')
   return !isBudgetLodging(candidate.name, types)
 }
+
+/**
+ * A.2 (owner 2026-09-19, P8): under `late_open`, a row whose own `opening_hours` does NOT show a
+ * late closing never takes a shortlist slot when some other row does — the engine's pick for
+ * "mở khuya sau 22h" must be a place with evidence of being open late. When NO row carries late
+ * evidence nothing is excluded (the gap sentence says the hours are unconfirmed instead).
+ */
+export function admitsForLateOpen(hard: readonly Hard[], candidate: { name: string; raw?: unknown }, anyRowClosesLate: boolean): boolean {
+  if (!hard.includes('late_open') || !anyRowClosesLate) return true
+  const raw = (candidate.raw ?? {}) as Record<string, unknown>
+  return closesLate(raw.opening_hours) === true
+}
+
+/** Every hard-constraint admission rule in one call — the route's shortlist predicate. */
+export function admitsForHard(hard: readonly Hard[], candidate: { name: string; raw?: unknown }, ctx: { anyRowClosesLate: boolean }): { admitted: boolean; reason: 'upscale' | 'late_open' | null } {
+  if (!admitsForUpscale(hard, candidate)) return { admitted: false, reason: 'upscale' }
+  if (!admitsForLateOpen(hard, candidate, ctx.anyRowClosesLate)) return { admitted: false, reason: 'late_open' }
+  return { admitted: true, reason: null }
+}
+
