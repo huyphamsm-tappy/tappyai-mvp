@@ -1,4 +1,5 @@
 import { normalizeVN } from './intent'
+import { sentenceSpans } from './moneyGuard'
 
 // ── THE GROUNDING GATE — detection turned into enforcement ───────────────────
 //
@@ -19,10 +20,14 @@ import { normalizeVN } from './intent'
 // that runs after generation can guarantee the reply names nothing the
 // application did not retrieve.
 //
-// 🔑 WHY IT REMOVES BLOCKS, NOT WORDS. Deleting a name alone would leave the
-// sentences around it — "is a great vegetarian buffet option with delivery
-// available" — now attached to nothing, or worse, read as describing the venue
-// above. The claim and its subject are removed together.
+// 🔑 WHY IT REMOVES THE CARRYING SENTENCE, NOT A WORD AND NOT A BLOCK. Deleting
+// the name alone would leave its claim — "is a great vegetarian buffet option
+// with delivery available" — attached to nothing, or read as describing the
+// venue above: the claim and its subject go together. Removing the whole block
+// (heading → next heading), which this gate did until 2026-09-19, is how a
+// single false positive emptied an itinerary and removed the hedge a reply
+// existed for — three fixes of the same bug. The action is now proportional:
+// exactly the sentence that carries the ungrounded name (owner rule A.1).
 
 /** A marker block is machine content the gate must never cut into. */
 const MARKERS = ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']
@@ -233,7 +238,7 @@ export function suppressUngroundedVenues(
   const tail = text.slice(limit)
 
   // Every heading with its offset, in order — the block boundaries.
-  const heads: { shown: string; start: number; end: number; label: boolean }[] = []
+  const heads: { shown: string; at: number; start: number; end: number; grounded: boolean; label: boolean }[] = []
   for (const m of prose.matchAll(HEADING)) {
     const at = m.index ?? 0
     // A block starts at the beginning of the heading's own line, so the removal
@@ -249,29 +254,54 @@ export function suppressUngroundedVenues(
     const lineEnd = prose.indexOf('\n', at) === -1 ? prose.length : prose.indexOf('\n', at)
     const restOfLine = prose.slice(at + m[0].length, lineEnd)
     const nextLine = prose.slice(lineEnd + 1).split('\n').find(l => l.trim() !== '') ?? ''
-    // A bold segment that is not PRESENTED as a venue (isVenueHeading) is prose: it still ends
-    // the block before it, is never cut, and is not a grounded venue either.
-    heads.push({ shown: m[1], start: lineStart, end: prose.length, label: !isVenueHeading(m[1], restOfLine, nextLine) })
+    // POSITIVE MATCH FIRST (owner 2026-09-19): a bold that matches a fetched row is a venue name
+    // whatever its spelling ("**bún bò Huế cô Ba**" lowercase is still the row). Only an
+    // UNMATCHED bold is judged by the presentation shape — and a bold that is not presented as a
+    // venue is prose: it still ends the block before it and is never cut.
+    const grounded = isGrounded(normalizeHeading(m[1]), knownNorm)
+    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && !isVenueHeading(m[1], restOfLine, nextLine) })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }
 
+  /**
+   * 🚨 THE ACTION IS PROPORTIONAL (owner 2026-09-19, after three fixes of the same bug): an
+   * ungrounded name removes ONLY the sentence that carries it — never the paragraph, never the
+   * block down to the next heading. A false positive (a Title-Cased section label the shape rule
+   * reads as a name) now costs at most that one sentence instead of the rest of the reply
+   * (measured T6: an entire itinerary; F8 memory pass: the hedge the reply existed for). When the
+   * carrying sentence cannot be determined the text is KEPT and the case is logged — never cut
+   * wide.
+   */
+  const spans = sentenceSpans(prose)
   const suppressed: string[] = []
   const cuts: { start: number; end: number }[] = []
   let groundedRemain = 0
   for (const h of heads) {
-    // A label ("**Lưu ý:**") is never a venue claim: kept, and not a grounded venue either.
     if (h.label) continue
-    if (isGrounded(normalizeHeading(h.shown), knownNorm)) { groundedRemain++; continue }
+    if (h.grounded) { groundedRemain++; continue }
+    const span = spans.find(([a, b]) => h.at >= a && h.at < b)
+    if (!span) {
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'grounding_gate', step: 'kept_no_sentence', heading: h.shown.trim() }))
+      continue
+    }
     suppressed.push(h.shown.trim())
-    cuts.push({ start: h.start, end: h.end })
+    // The carrying sentence, from the start of its line (a list bullet goes with it) to its end —
+    // and never past the block boundary the next heading starts.
+    const lineStart = prose.lastIndexOf('\n', span[0]) + 1
+    cuts.push({ start: Math.min(h.start, lineStart), end: Math.min(span[1], h.end) })
   }
   if (suppressed.length === 0) return { text, suppressed: [] }
 
   // Apply back-to-front so earlier offsets stay valid.
   let out = prose
   for (const c of cuts.reverse()) out = out.slice(0, c.start) + out.slice(c.end)
-  out = out.replace(/\n{3,}/g, '\n\n').trimEnd()
+  out = out.replace(/[ \t]+\n/g, '\n').replace(/(^|\n)[ \t]+/g, '$1').replace(/\n{3,}/g, '\n\n').trimEnd()
+  // With sentence-level cuts a grounded venue can be named mid-sentence rather than as a
+  // heading ("Mình chọn **Cơm Niêu** …"); the honest fallback line is for a reply with NO
+  // grounded venue left anywhere, not for one whose pick simply was not a heading.
+  const outNorm = normalizeVN(out.toLowerCase())
+  if (groundedRemain === 0 && knownNorm.some(k => k.length >= 4 && outNorm.includes(k))) groundedRemain = 1
 
   // 🚨 A BUTTON FOR A VENUE THAT DOES NOT EXIST IS THE SAME LIE AS A SENTENCE.
   // While the model still authors [CTA_BUTTONS] (SERVER_AUTHORED_CTA is off), a

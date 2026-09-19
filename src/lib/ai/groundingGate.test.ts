@@ -379,3 +379,62 @@ Bạn nên đặt bàn trước cho 8 người.`
   })
 })
 
+// ── PRE-RELEASE A.1 (owner 2026-09-19): the gate's action is PROPORTIONAL ─────────────────────
+//
+// An ungrounded name removes only the sentence that carries it — never the paragraph, never the
+// block. A false positive (a Title-Cased section label the shape rule reads as a name) costs at
+// most that sentence. Row match comes first: a lowercase bold that IS a row is a name.
+describe('A.1 — proportional action: only the carrying sentence, never the paragraph', () => {
+  const ROWS = ['bún bò Huế cô Ba', 'Cơm Niêu Sài Gòn']
+  const PARA = (name: string) => `Mình chọn **Cơm Niêu Sài Gòn** cho tối nay.\n\n**${name}** quán này mở đến 22h, ăn ngon, cách bạn 1km. Không gian rộng. Giá vừa phải. Nên đặt bàn trước.\n\nBạn nhớ mang theo áo khoác.`
+
+  it('an ungrounded name inside a 4-sentence paragraph removes that sentence and leaves the other 3 intact', () => {
+    const out = suppressUngroundedVenues(PARA('Quán Bịa Đặt'), ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Bịa Đặt'])
+    expect(out.text).not.toContain('Quán Bịa Đặt')
+    expect(out.text).not.toContain('mở đến 22h')
+    for (const s of ['Không gian rộng.', 'Giá vừa phải.', 'Nên đặt bàn trước.', 'Bạn nhớ mang theo áo khoác.', 'Mình chọn **Cơm Niêu Sài Gòn**']) expect(out.text).toContain(s)
+    expect(out.text).not.toContain('thẻ bên dưới')   // a grounded pick is still named — no fallback line
+  })
+
+  it.each([
+    ['Bữa Trưa', 'prose (lexicon)'], ['Lưu Ý', 'prose (lexicon)'], ['Tổng Kết', 'prose (lexicon)'],
+  ])('the owner strings — %s is %s: nothing is cut', (label) => {
+    const text = PARA(label)
+    expect(suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' }).text).toBe(text)
+  })
+
+  it.each([['Gợi Ý Thêm'], ['Món Ngon Hôm Nay']])('the owner strings — a Title-Cased label the shape reads as a name (%s) costs at most its own sentence', (label) => {
+    const out = suppressUngroundedVenues(PARA(label), ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual([label])
+    for (const s of ['Không gian rộng.', 'Giá vừa phải.', 'Nên đặt bàn trước.', 'Bạn nhớ mang theo áo khoác.']) expect(out.text).toContain(s)
+  })
+
+  it('the owner strings — a real row venue written lowercase (**bún bò Huế cô Ba**) is recognised as a name: grounded, kept, and counted', () => {
+    const text = '**bún bò Huế cô Ba** — 4.6⭐ (300 đánh giá), 12 Lê Lợi.\n\n**Quán Bịa Đặt** — 5⭐.'
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Quán Bịa Đặt'])
+    expect(out.text).toContain('**bún bò Huế cô Ba**')
+    expect(out.text).not.toContain('thẻ bên dưới')   // the grounded lowercase venue still stands
+  })
+
+  it('a fabricated title line above its own description costs the title line only (the description is kept, logged nowhere else)', () => {
+    const text = '**Masstige Coffee**\nquán nhỏ ở phố cổ, 4.7⭐ (312 đánh giá).\n\n**Cây Si** quán nhỏ.'
+    const out = suppressUngroundedVenues(text, ['Cây Si'], 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Masstige Coffee'])
+    expect(out.text).not.toContain('Masstige Coffee')
+    expect(out.text).toContain('quán nhỏ ở phố cổ')
+    expect(out.text).toContain('**Cây Si**')
+  })
+
+  it('worst case, measured: a false positive at the top of a 6-sentence reply loses ONE sentence, not the reply', () => {
+    const text = '**Món Ngon Hôm Nay** mình gợi ý ba chỗ.\n\n**Cơm Niêu Sài Gòn** — 4.6⭐, cách bạn 1km.\n\nKhông gian rộng. Giá vừa phải. Nên đặt bàn trước. Nhớ mang áo khoác.'
+    const out = suppressUngroundedVenues(text, ROWS, 'vi', { placeSearch: 'has_results' })
+    expect(out.suppressed).toEqual(['Món Ngon Hôm Nay'])
+    const lost = text.length - out.text.length
+    expect(lost).toBeLessThanOrEqual('**Món Ngon Hôm Nay** mình gợi ý ba chỗ.\n\n'.length)
+    expect(out.text).toContain('**Cơm Niêu Sài Gòn**')
+    expect(out.text).toContain('Nhớ mang áo khoác.')
+  })
+})
+
