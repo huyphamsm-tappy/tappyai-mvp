@@ -1676,7 +1676,7 @@ export function applyPlaceEnrichmentStreamFilter(
         atmosphere_removed: atmosphere.removed, atmosphere_unsupported_in_pick: atmosphere.unsupportedInPick,
         ...shape.stats, orphan_lines_removed: shape.text.split('\n').length - tidy.split('\n').length,
         heads_up: headsUp.length, gaps_unsaid: unsaid, contrary_unsaid: contraryUnsaid, budget_unsaid: budgetUnsaid,
-        hedges: hedged.hedges, hedges_merged: hedged.merged,
+        hedges: hedged.hedges, hedges_merged: hedged.merged, hedges_unmergeable: hedged.unmergeable,
         carried: collector?.consultativeV1?.carried.length ?? 0,
       }))
       return withHeadsUp
