@@ -68,10 +68,20 @@ const Q = {
   P7b: ['1–2 người', 'P7'],
   E2b: ['dưới 200k/người', 'E2'],
   E5b: ['đi chơi / giải trí', 'E5'],
+  // SHORT JOB probe (2026-09-19, Phase B) — never part of `all` / `all40`.
+  PB_LATE1: ['Spa nào mở khuya sau 22h ở Quận 3'],
+  PB_LATE2: ['quán ăn nào gần Quận 1 còn mở giờ này không'],
+  PB_UP1: ['Resort Phú Quốc cho kỷ niệm 1 năm, sang chút'],
+  PB_UP2: ['khách sạn Đà Nẵng xịn hơn chút gần biển'],
+  PB_UP3: ['nhà hàng sang trọng cho tiệc công ty ở Quận 1'],
+  PB_LABEL: ['Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1'],
+  PB_HOTEL1: ['khách sạn Đà Nẵng có view biển, sang chút'],
+  PB_HOTEL2: ['resort Phú Quốc có chỗ đậu xe cho gia đình 4 người, cần phòng riêng'],
 }
-/** `all` = the 40 + the 8 clarify answers (48 turns); `all40` = the original 40 only. */
+/** `all` = the 40 + the 8 clarify answers (48 turns); `all40` = the original 40 only. Probe ids (PB_*) only by name. */
 const named = args.filter(a => !a.startsWith('--') && a !== opt('--out'))
-const ids = named.includes('all') ? Object.keys(Q) : named.includes('all40') ? Object.keys(Q).filter(k => !k.endsWith('b')) : named.filter(a => Q[a])
+const evalIds = Object.keys(Q).filter(k => !k.startsWith('PB_'))
+const ids = named.includes('all') ? evalIds : named.includes('all40') ? evalIds.filter(k => !k.endsWith('b')) : named.filter(a => Q[a])
 
 const HCMC = { lat: 10.7769, lng: 106.7009, address: 'Quận 1, TP.HCM' }
 
