@@ -93,6 +93,6 @@ describe('the situation frame, as routed', () => {
 
   it('route.ts derives the frame from consultationUserTexts — the wiring, not just the helper', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(route).toMatch(/deriveSituation\(consultationUserTexts\(framingMessages\)/)
+    expect(route).toMatch(/deriveSituation\(ownDomainSwitch \? consultationUserTexts\(framingMessages\)\.slice\(-1\) : consultationUserTexts\(framingMessages\)/)
   })
 })

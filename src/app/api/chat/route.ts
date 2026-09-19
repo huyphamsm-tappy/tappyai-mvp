@@ -70,7 +70,7 @@ import { extractAttributes, attributeSummary } from '@/lib/ai/consultative/revie
 import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/hardConstraintGate'
 import { admitsForHard } from '@/lib/ai/consultative/upscale'
 import { closesLate } from '@/lib/ai/consultative/hardConstraints'
-import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns } from '@/lib/ai/consultative/actionability'
+import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation } from '@/lib/ai/consultative/actionability'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -295,6 +295,13 @@ export async function POST(req: Request) {
   // short-circuited. With the lexicon fixed (needProfile DOMAIN_HINTS) the
   // detector works, so the real value is read here — a food → hotel switch is a
   // new consultation, not a follow-up to the meal.
+  // 🚨 A broad turn of ANOTHER domain is a new consultation too (Android re-test B4/B9,
+  // 2026-09-19): "cuối tuần đi chơi đâu" after a food consultation has no venue noun, so
+  // `taskSwitched` saw no switch; the thread's budget and area then made the clarify gate call it
+  // actionable for FOOD, no clarify fired, and the model asked instead of searching. The gate's own
+  // domain reading of the turn alone decides (turnStartsNewConsultation); when it fires, the
+  // intent gate, the clarify gate and the situation frame all read the turn as a first turn.
+  const ownDomainSwitch = consultativeV1Enabled() && turnStartsNewConsultation({ messages, hasGps: !!userLocation, lang })
   const turnIntent = classifyTurnIntent({
     stage: decisionStage,
     hasPriorAssistantTurn,
@@ -303,7 +310,7 @@ export async function POST(req: Request) {
     // storedPreferences (cuisine/dietary/budget) nor gps (location) participates
     // in domain detection. Passing them would also cross a temporal dead zone —
     // `storedPrefs` is not assigned until the memory load further down.
-    taskSwitched: taskSwitched(messages),
+    taskSwitched: taskSwitched(messages) || ownDomainSwitch,
     assistantAskedClarification,
   })
   console.log(JSON.stringify({ type: 'tappyai_intent_gate', turnIntent, decisionStage, hasPriorAssistantTurn, assistantAskedClarification }))
@@ -356,8 +363,10 @@ export async function POST(req: Request) {
    */
   let clarifyGate = (() => {
     if (cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
-    const a = assessActionability({ messages, hasGps: !!userLocation, lang, lastAssistantText, planningIntent, forcedTool, movieRecommend })
-    console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q) }))
+    // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
+    const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
+    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
+    console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
     return a.actionable ? null : a
   })()
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
@@ -775,7 +784,7 @@ export async function POST(req: Request) {
   // thấy bằng chứng về giờ mở khuya" about resorts nobody asked to be open late. The fold now
   // reads only the user turns since the last task switch (consultationUserTexts).
   const situation: SituationFrame | null = consultativeV1
-    ? deriveSituation(consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
+    ? deriveSituation(ownDomainSwitch ? consultationUserTexts(framingMessages).slice(-1) : consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
     : null
 
   /**

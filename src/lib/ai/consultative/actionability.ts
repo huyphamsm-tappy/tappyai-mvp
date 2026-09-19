@@ -247,3 +247,24 @@ function buildReply(questions: ClarifyQuestion[], lead: string, en: boolean): st
   const fu = chips.length ? `\n\n[FOLLOWUPS]${chips.join('|')}[/FOLLOWUPS]` : ''
   return `${lead}\n${lines.join('\n')}\n${tail}${fu}`
 }
+
+/**
+ * Does the LAST user turn, read on its own, belong to a different domain than the thread it sits
+ * in? The need profile only detects a task switch on a venue noun ("khách sạn", "quán ăn"), so a
+ * broad "cuối tuần đi chơi đâu" after a food consultation kept the thread's domain and its budget
+ * and area — the gate then judged it actionable for FOOD, no clarify fired, no search-now
+ * directive fired, and the model asked ("bạn thích chơi gì?") instead of searching (Android
+ * re-test B4 / B9, 2026-09-19, 2/2). Here the turn's own domain (the gate's own reading, which
+ * knows "đi chơi") is compared with the thread's; when both exist and differ, the turn starts a
+ * new consultation: the gate, the situation frame and the intent gate all read the turn alone.
+ * Never fires on an answer chip, a refinement or a follow-up (those have no domain of their own).
+ */
+export function turnStartsNewConsultation(input: { messages: Array<{ role: string; content: unknown }>; hasGps: boolean; lang: string }): boolean {
+  const users = input.messages.filter(m => m && m.role === 'user')
+  if (users.length < 2) return false
+  const last = users[users.length - 1]
+  if (typeof last.content !== 'string') return false
+  const thread = assessActionability({ messages: input.messages, hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
+  const own = assessActionability({ messages: [last], hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
+  return !!own.domain && !!thread.domain && own.domain !== thread.domain
+}
