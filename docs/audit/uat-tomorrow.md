@@ -1,4 +1,6 @@
-# UAT 2026-09-20 — kịch bản chạy từ trên xuống (LOCALHOST, code `16e7ffd` + log-only `61a0e9c`)
+# UAT 2026-09-20 — kịch bản chạy từ trên xuống (LOCALHOST, code `61a0e9c`)
+
+**Commit đề xuất để deploy: `61a0e9c`** (không phải `16e7ffd`). Delta `16e7ffd..61a0e9c` trong `src/`: đúng 1 file `streamEnrichment.ts`, 8 dòng — (1) `enginePickName` được đọc TRƯỚC khi rehome, dùng ở 2 chỗ log; (2) `tappyai_cards` thêm `card1` / `model_pick` / `engine_pick` (tên quán từ row provider, không phải dữ liệu người dùng); (3) điều kiện log lỗi `emphasis_dropped_no_model_pick` đổi từ `recsForCard.some(recommended)` sang `enginePickName` (tương đương). **Không nhánh nào đọc 3 trường mới để ra quyết định** (grep: chỉ xuất hiện trong `console.log`; `uatturns.mjs` đọc offline). Ba trường này nằm trong danh sách quan sát 48 h sau release ⇒ nên có trên production. Phần còn lại của delta là docs + script audit.
 
 **Server:** launch config `uat-owner` → `http://localhost:3101` (đã bật tối 19/9, warm). Env: `PLACES_PROVIDER=serper`, `CONSULTATIVE_V1=1`, `PLACE_GUARD_ATTRIBUTION_V2=1`, `SNIPPET_PRICE_GUARD_V2=1`, `MEDIA_PLACEMENT_V2=1` (= production sau deploy).
 **Log mỗi lượt:** `docs/audit/uat/2026-09-20/` → `server.log` (console), `usage.jsonl` (cost/Serper/cắt grounding), `capture.jsonl` (request: surface, GPS, câu user). Bảng theo số lượt:
@@ -14,6 +16,18 @@ node scripts/audit/uatturns.mjs docs/audit/uat/2026-09-20 --md
 **Android:** APK debug build từ `16e7ffd` đã cài (`com.tappyai.app.debug`, backend `10.0.2.2:3101`, đã kiểm 1 request tới server tối 19/9: surface android, GPS 10.7769/106.7009). Trước lượt đầu: `bash scripts/audit/uat-android-gps.sh` → phải in `fused 10.776900,106.700900`; sau lượt model đầu tiên, cột GPS trong bảng `uatturns` phải là `10.7769,106.7009` — **nếu là 37.42,-122.08 thì dừng, GPS sai (lỗi đã tốn một job)**.
 
 Ký hiệu: **Gõ** · **Đúng** · **Sai** = tiêu chí rớt.
+
+## WEB — GUEST PATH (chạy TRƯỚC khi đăng nhập; trình duyệt ẩn danh, `http://localhost:3101`)
+
+Ba dòng này đo đường khách vãng lai: khai báo 18+, một câu thật, và trần 5 câu/lifetime (`ANON_LIFETIME_LIMIT`). Local không có KV nên bộ đếm nằm TRONG PROCESS — **sau G3 phải restart `uat-owner`** (Browser pane → stop → start `uat-owner`) để quota về 0 cho phần còn lại; log vẫn ghi nối tiếp vào cùng file.
+
+| # | Gõ | Đúng | Sai |
+|---|---|---|---|
+| G1 | mở chat, gõ `quán phở ngon ở Quận 1 cho 2 người` | Trang chat mở bình thường (không hỏi tuổi khi chỉ mở trang); **lúc gửi câu đầu** server trả 403 `age_declaration_required` → trong chat hiện bong bóng 18+ với nút → `/age-check` dạng **guest** (form ngày sinh, KHÔNG đòi đăng nhập) → nhập ngày ≥18 tuổi → quay lại chat, gửi lại câu; từ đó không hỏi lại (cookie `tappy_guest_age`) | `/age-check` bắt đăng nhập (dead end); spinner vô tận; bong bóng lỗi chung "thử lại" thay vì gate; hỏi lại tuổi ở câu sau; hoặc không hề hỏi mà trả lời luôn |
+| G2 | (cùng câu trên đã đi qua) | Trả lời **y như user đã đăng nhập**: search, pick, 3 card, ảnh, "Vì sao" — bảng `uatturns`: lượt có `surface web`, toolCalls 1, không có memory block | trả lời rỗng; thiếu card; lỗi 4xx/5xx; nội dung "đăng nhập để dùng" |
+| G3 | hỏi thêm 4 câu bất kỳ (tổng 5 câu model, canned không tính) rồi câu **thứ 6**: `spa nào gần đây` | Câu 6 bị chặn **gọn**: thông báo hết 5 câu dùng thử + nút/link đăng nhập (`upgradeUrl /login`), HTTP 401 `anon_limit_reached` trong server.log; các câu 1–5 vẫn bình thường | HTTP 500; bong bóng trống; chặn từ câu <6; hoặc không chặn ở câu 6 (đếm sai) |
+
+**Restart `uat-owner` ngay sau G3**, rồi đăng nhập audit user và chạy tiếp Session A.
 
 ## WEB — Session A (memory đã xoá, đăng nhập audit user)
 
