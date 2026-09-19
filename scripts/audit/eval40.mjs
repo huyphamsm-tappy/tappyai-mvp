@@ -57,8 +57,21 @@ const Q = {
   E6: ['Karaoke cho 10 người tầm 100k/người Gò Vấp'],
   E7: ['Xem phim gì hay tối nay'],
   E8: ['Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn'],
+  // Item 1 (2026-09-19): the 8 NOT-actionable queries get ONE clarify turn; these are the user's
+  // (partial) answers — a tapped chip or a short free-text reply — and the answer turn is graded.
+  // Classification frozen in src/lib/ai/consultative/actionability.test.ts (26 A / 8 N / 6 follow-ups).
+  F7b: ['dưới 100k/người', 'F7'],
+  S5b: ['nước hoa', 'S5'],
+  S6b: ['tai nghe bluetooth', 'S6'],
+  T5b: ['3–5 người', 'T5'],
+  P5b: ['dưới 300k', 'P5'],
+  P7b: ['1–2 người', 'P7'],
+  E2b: ['dưới 200k/người', 'E2'],
+  E5b: ['đi chơi / giải trí', 'E5'],
 }
-const ids = args.filter(a => !a.startsWith('--') && a !== opt('--out') ).includes('all') ? Object.keys(Q) : args.filter(a => Q[a])
+/** `all` = the 40 + the 8 clarify answers (48 turns); `all40` = the original 40 only. */
+const named = args.filter(a => !a.startsWith('--') && a !== opt('--out'))
+const ids = named.includes('all') ? Object.keys(Q) : named.includes('all40') ? Object.keys(Q).filter(k => !k.endsWith('b')) : named.filter(a => Q[a])
 
 const HCMC = { lat: 10.7769, lng: 106.7009, address: 'Quận 1, TP.HCM' }
 

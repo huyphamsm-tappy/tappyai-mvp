@@ -81,7 +81,7 @@ const post = async (text: string) => {
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
-    json: () => Promise.resolve({ messages: [{ role: 'user', content: text }], location: { lat: 10.7769, lng: 106.7009 } }),
+    json: () => Promise.resolve({ messages: [{ role: 'user', content: text }], userLocation: { lat: 10.7769, lng: 106.7009 } }),
     signal: undefined,
   }
   return POST(req as never)
@@ -96,9 +96,11 @@ describe('AUDIT — prompt layout (records only)', () => {
     const out: Record<string, unknown> = { generatedAt: new Date().toISOString(), flag: 'CONSULTATIVE_V1=1', queries: {} }
     for (const [id, text] of Object.entries(QUERIES)) {
       vi.spyOn(console, 'log').mockImplementation(() => {})
+      h.state.streamOptions = null
       await post(text)
       vi.restoreAllMocks()
-      const o = h.state.streamOptions ?? {}
+      if (!h.state.streamOptions) { (out.queries as Record<string, unknown>)[id] = { text, modelled: false, note: 'server-authored turn (canned / clarify gate) — no prompt' }; continue }
+      const o = (h.state.streamOptions ?? {}) as Record<string, unknown>
       const shared = String(o.systemShared ?? '')
       const dyn = String(o.system ?? '')
       const full = shared + dyn

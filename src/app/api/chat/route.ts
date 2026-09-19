@@ -68,6 +68,7 @@ import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Pr
 import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
 import { extractAttributes, classifyHardGaps, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
 import { evidenceNote } from '@/lib/ai/consultative/hardConstraints'
+import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer } from '@/lib/ai/consultative/actionability'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -194,7 +195,13 @@ export async function POST(req: Request) {
     (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
   )
 
-  const intent = classifyIntent(lastText)
+  // Item 1: after a clarify turn the deterministic readers (intent, need profile, decision frame,
+  // situation, search-now) see the original request and the answer as ONE user turn
+  // (actionability.ts) — "2 người" alone would classify as chitchat and drop the tools. The model
+  // receives the real thread.
+  const framingMessages = mergeClarifyAnswer(messages)
+  const framingText: string = (() => { const last = framingMessages[framingMessages.length - 1]; return typeof last?.content === 'string' ? last.content : lastText })()
+  const intent = classifyIntent(framingText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
   const planningIntent = detectPlanningIntent(lastText)
@@ -339,7 +346,20 @@ export async function POST(req: Request) {
     if (referenced.some(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
     return cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
   })()
-  const quotaExempt = cannedEarly !== null
+  /**
+   * Item 1 (owner decision 2026-09-19): a request too broad to advise on is answered with ONE
+   * clarify turn — server-authored, no tool, no model, not charged — from the single gate in
+   * actionability.ts. Decided here, beside the canned decision and before the quota is spent,
+   * from the thread and GPS only (memory loads after the quota branch).
+   */
+  let clarifyGate = (() => {
+    if (cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
+    const a = assessActionability({ messages, hasGps: !!userLocation, lang, lastAssistantText, planningIntent, forcedTool, movieRecommend })
+    console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q) }))
+    return a.actionable ? null : a
+  })()
+  // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
+  let quotaExempt = cannedEarly !== null || clarifyGate !== null
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -527,6 +547,16 @@ export async function POST(req: Request) {
       // at its declaration, so `+=` needs no null guard.
       memoryBlock += buildIdentityBlock(chatContext.identity)
       if (chatContext.prefs) { prefBlock = buildPrefBlock(chatContext.prefs); storedPrefs = chatContext.prefs }
+      // Item 1: memory is a signal — a returning user's stored budget / tastes / companions unblock
+      // a request a stranger would be asked about (owner 2026-09-18: memory chooses, never asks).
+      if (clarifyGate) {
+        const unblockedBy = memorySignal(existingMemory, storedPrefs, clarifyGate)
+        if (unblockedBy) {
+          console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: true, unblocked_by: unblockedBy, domain: clarifyGate.domain }))
+          clarifyGate = null
+          quotaExempt = cannedEarly !== null
+        }
+      }
       // Appended AFTER the memory block is built, exactly as the sequential
       // version did — calendar events extend the memory block, never replace it.
       if (calendarBlock) memoryBlock = (memoryBlock || '') + calendarBlock
@@ -696,7 +726,7 @@ export async function POST(req: Request) {
   // ranker orders against and what the Pick is FOR; without it there is nothing
   // user-specific to rank by. Derived here because durable preferences (a
   // low-weight prior) are only loaded above.
-  const needProfile = deriveNeedProfile(messages, {
+  const needProfile = deriveNeedProfile(framingMessages, {
     storedPreferences: storedPrefs,
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
@@ -709,7 +739,7 @@ export async function POST(req: Request) {
    * what to do when the evidence does not come back. Deterministic; no call.
    */
   const decisionFrame = deriveDecisionFrame({
-    messages,
+    messages: framingMessages,
     need: needProfile,
     planningIntent,
     forcedTool,
@@ -736,7 +766,7 @@ export async function POST(req: Request) {
   }
   const situation: SituationFrame | null = consultativeV1
     ? deriveSituation(
-      messages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),
+      framingMessages.filter((m: { role: string; content: unknown }) => m.role === 'user' && typeof m.content === 'string').map((m: { content: unknown }) => m.content as string),
       needProfile,
       { hasGps: !!userLocation },
     )
@@ -1203,7 +1233,8 @@ export async function POST(req: Request) {
       : ''
     // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
-    const searchNow = deriveSearchNow({ text: lastText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply, movieRecommend })
+    // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
+    const searchNow = deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || isClarifyReply(lastAssistantText), movieRecommend })
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
     return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow })
       + renderReferencedBlock(referenced, []) + refetchLines
@@ -1340,9 +1371,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
    * fact the prior prose lacks — still reaches the model, which may re-search by name.
    */
-  const canned = cannedEarly ?? cannedFollowUp
+  const canned = cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
   if (canned) {
-    const kind = intent === 'chitchat' ? 'chitchat' : 'carried_fact'
+    const kind = intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
     const auditFile = process.env.AUDIT_USAGE_LOG_FILE
     if (auditFile) {

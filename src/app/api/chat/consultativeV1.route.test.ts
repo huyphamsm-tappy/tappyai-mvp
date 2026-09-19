@@ -277,3 +277,58 @@ describe('flag ON', () => {
     expect('toolChoice' in (h.state.streamOptions ?? {})).toBe(false)
   })
 })
+
+/**
+ * Item 1 (owner decision 2026-09-19) — clarify BEFORE search. A request too broad to advise on
+ * gets ONE server-authored clarify turn: no model, no tool, not charged; the next turn searches.
+ */
+describe('flag ON — clarify before search (item 1)', () => {
+  const postLoc = async (messages: unknown[]) => {
+    const req = {
+      url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
+      headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
+      json: () => Promise.resolve({ messages, userLocation: { lat: 10.7769, lng: 106.7009 } }),
+      signal: undefined,
+    }
+    return POST(req as never)
+  }
+  const BROAD = 'ăn gì ngon giờ'
+
+  it('a broad place request (GPS known, no budget / occasion / constraint) is answered with the clarify turn — no model, no tool, no quota', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    const identity = aiQuotaIdentity({ id: 'u1', is_anonymous: false } as never, '127.0.0.1')
+    const before = (await peekAiQuestionQuota(identity)).used
+    const res = await postLoc([{ role: 'user', content: BROAD }])
+    const body = await res.text()
+    expect(body).toContain('Để chọn đúng chỗ, mình cần biết thêm:')
+    expect(body).toContain('Tầm giá?')
+    expect(body).toContain('[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]')
+    expect(h.state.streamOptions).toBeNull()
+    expect(h.state.placeCalls).toEqual([])
+    expect((await peekAiQuestionQuota(identity)).used).toBe(before)
+  })
+
+  it('the turn after the clarify goes to the model with tools and the search-now directive — never asks twice', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    const first = await (await postLoc([{ role: 'user', content: BROAD }])).text()
+    const clarify = JSON.parse(first.split('\n')[0].slice(2)) as string
+    h.state.streamOptions = null
+    await postLoc([{ role: 'user', content: BROAD }, { role: 'assistant', content: clarify }, { role: 'user', content: '2 người' }])
+    const opts = h.state.streamOptions as Record<string, unknown> | null
+    expect(opts).not.toBeNull()
+    expect(Object.keys((opts?.tools as object) ?? {})).toContain('search_places')
+    expect(String(opts?.system)).toContain('BUOC 1 CUA LUOT NAY')
+  })
+
+  it('an already-actionable request is not gated (search straight away)', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await postLoc([{ role: 'user', content: 'quán Nhật yên tĩnh Quận 1 dưới 500k cho 2 người' }])
+    expect(h.state.streamOptions).not.toBeNull()
+  })
+
+  it('flag OFF: the same broad request goes to the model as before', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '')
+    await postLoc([{ role: 'user', content: BROAD }])
+    expect(h.state.streamOptions).not.toBeNull()
+  })
+})

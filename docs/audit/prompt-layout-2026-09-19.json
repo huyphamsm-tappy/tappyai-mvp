@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T04:56:31.975Z",
+  "generatedAt": "2026-09-19T05:15:32.499Z",
   "flag": "CONSULTATIVE_V1=1",
   "queries": {
     "F8": {
@@ -16,9 +16,9 @@
         "save_price_watch"
       ],
       "sharedChars": 45918,
-      "dynamicChars": 7293,
-      "totalChars": 53211,
-      "approxTokens": 14781,
+      "dynamicChars": 7660,
+      "totalChars": 53578,
+      "approxTokens": 14883,
       "blocks": [
         {
           "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
@@ -51,7 +51,7 @@
           "segment": "dynamic"
         },
         {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:15 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
           "at": 46363,
           "segment": "dynamic"
         },
@@ -76,23 +76,28 @@
           "segment": "dynamic"
         },
         {
-          "header": "BUOC 1 CUA LUOT NAY (bat buoc)",
+          "header": "VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM)",
           "at": 48589,
           "segment": "dynamic"
         },
         {
+          "header": "BUOC 1 CUA LUOT NAY (bat buoc)",
+          "at": 48956,
+          "segment": "dynamic"
+        },
+        {
           "header": "TINH HUONG (V1)",
-          "at": 49004,
+          "at": 49371,
           "segment": "dynamic"
         },
         {
           "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 49479,
+          "at": 49846,
           "segment": "dynamic"
         },
         {
           "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 52777,
+          "at": 53144,
           "segment": "dynamic"
         }
       ],
@@ -161,7 +166,7 @@
           "name": "pre-send: TOI DA MOT dau hoi",
           "count": 1,
           "offsets": [
-            52816
+            53183
           ],
           "segment": [
             "dynamic"
@@ -171,7 +176,7 @@
           "name": "V1 BUOC 1 (search-now, top of block)",
           "count": 1,
           "offsets": [
-            48589
+            48956
           ],
           "segment": [
             "dynamic"
@@ -181,7 +186,7 @@
           "name": "V1 LENH LUOT NAY (search-now, bottom of block)",
           "count": 1,
           "offsets": [
-            52363
+            52730
           ],
           "segment": [
             "dynamic"
@@ -191,7 +196,7 @@
           "name": "V1 rule 4 gia su, KHONG hoi",
           "count": 1,
           "offsets": [
-            50233
+            50600
           ],
           "segment": [
             "dynamic"
@@ -201,7 +206,7 @@
           "name": "V1 rule 5 TOI DA 1 cau hoi",
           "count": 1,
           "offsets": [
-            50781
+            51148
           ],
           "segment": [
             "dynamic"
@@ -211,403 +216,13 @@
     },
     "F7": {
       "text": "ăn gì ngon giờ",
-      "tools": [
-        "search_places",
-        "get_news",
-        "search_products",
-        "web_search",
-        "get_weather",
-        "get_gold_price",
-        "get_flight_prices",
-        "get_hotel_prices",
-        "get_transport_options",
-        "save_price_watch"
-      ],
-      "sharedChars": 45918,
-      "dynamicChars": 8337,
-      "totalChars": 54255,
-      "approxTokens": 15071,
-      "blocks": [
-        {
-          "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
-          "at": 33897,
-          "segment": "shared"
-        },
-        {
-          "header": "CTA ACTION BUTTONS - BAT BUOC",
-          "at": 37564,
-          "segment": "shared"
-        },
-        {
-          "header": "PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM",
-          "at": 42640,
-          "segment": "shared"
-        },
-        {
-          "header": "AN TOAN & TRUNG THUC - LUAT CUNG",
-          "at": 43790,
-          "segment": "shared"
-        },
-        {
-          "header": "DANH GIA BANG CHUNG (evidence provenance) - LUAT CUNG",
-          "at": 44725,
-          "segment": "shared"
-        },
-        {
-          "header": "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-          "at": 45920,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
-          "at": 46363,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THONG TIN NGUOI DUNG",
-          "at": 46909,
-          "segment": "dynamic"
-        },
-        {
-          "header": "WORD LIMIT - REPLY DAU TIEN",
-          "at": 46962,
-          "segment": "dynamic"
-        },
-        {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
-          "at": 47367,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 47753,
-          "segment": "dynamic"
-        },
-        {
-          "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 49066,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TINH HUONG (V1)",
-          "at": 50155,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 50874,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 53821,
-          "segment": "dynamic"
-        }
-      ],
-      "directives": [
-        {
-          "name": "R7 ladder (a)(b)(c)",
-          "count": 1,
-          "offsets": [
-            9448
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7(c) thieu thong tin quyet dinh → hoi",
-          "count": 1,
-          "offsets": [
-            9824
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7 LUAT CUNG toi da mot cau hoi",
-          "count": 1,
-          "offsets": [
-            10023
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R4 ket thuc bang khuyen nghi",
-          "count": 1,
-          "offsets": [
-            8473
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "KHONG HOI \"ban muon an loai gi\" (rulebook)",
-          "count": 1,
-          "offsets": [
-            7410
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "relaxation: HOI user chon option TRUOC KHI de xuat",
-          "count": 1,
-          "offsets": [
-            8091
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "pre-send: TOI DA MOT dau hoi",
-          "count": 1,
-          "offsets": [
-            53860
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "decisionFrame THIEU (clarify) — KHONG tim kiem truoc khi biet",
-          "count": 1,
-          "offsets": [
-            47609
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 4 gia su, KHONG hoi",
-          "count": 1,
-          "offsets": [
-            51628
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 5 TOI DA 1 cau hoi",
-          "count": 1,
-          "offsets": [
-            52176
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        }
-      ]
+      "modelled": false,
+      "note": "server-authored turn (canned / clarify gate) — no prompt"
     },
     "T5": {
       "text": "đi chơi ở đâu",
-      "tools": [
-        "search_places",
-        "get_news",
-        "web_search",
-        "get_weather",
-        "get_gold_price",
-        "get_flight_prices",
-        "get_hotel_prices",
-        "get_transport_options",
-        "save_price_watch"
-      ],
-      "sharedChars": 45918,
-      "dynamicChars": 8806,
-      "totalChars": 54724,
-      "approxTokens": 15201,
-      "blocks": [
-        {
-          "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
-          "at": 33897,
-          "segment": "shared"
-        },
-        {
-          "header": "CTA ACTION BUTTONS - BAT BUOC",
-          "at": 37564,
-          "segment": "shared"
-        },
-        {
-          "header": "PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM",
-          "at": 42640,
-          "segment": "shared"
-        },
-        {
-          "header": "AN TOAN & TRUNG THUC - LUAT CUNG",
-          "at": 43790,
-          "segment": "shared"
-        },
-        {
-          "header": "DANH GIA BANG CHUNG (evidence provenance) - LUAT CUNG",
-          "at": 44725,
-          "segment": "shared"
-        },
-        {
-          "header": "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-          "at": 45920,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
-          "at": 46363,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THONG TIN NGUOI DUNG",
-          "at": 46909,
-          "segment": "dynamic"
-        },
-        {
-          "header": "WORD LIMIT - REPLY DAU TIEN",
-          "at": 46962,
-          "segment": "dynamic"
-        },
-        {
-          "header": "VI TRI: CUA HANG VAT LY - LUAT BAT BUOC",
-          "at": 47367,
-          "segment": "dynamic"
-        },
-        {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
-          "at": 47812,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 48187,
-          "segment": "dynamic"
-        },
-        {
-          "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 49500,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TINH HUONG (V1)",
-          "at": 50589,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 51343,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 54290,
-          "segment": "dynamic"
-        }
-      ],
-      "directives": [
-        {
-          "name": "R7 ladder (a)(b)(c)",
-          "count": 1,
-          "offsets": [
-            9448
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7(c) thieu thong tin quyet dinh → hoi",
-          "count": 1,
-          "offsets": [
-            9824
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7 LUAT CUNG toi da mot cau hoi",
-          "count": 1,
-          "offsets": [
-            10023
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R4 ket thuc bang khuyen nghi",
-          "count": 1,
-          "offsets": [
-            8473
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "KHONG HOI \"ban muon an loai gi\" (rulebook)",
-          "count": 1,
-          "offsets": [
-            7410
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "relaxation: HOI user chon option TRUOC KHI de xuat",
-          "count": 1,
-          "offsets": [
-            8091
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "pre-send: TOI DA MOT dau hoi",
-          "count": 1,
-          "offsets": [
-            54329
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "decisionFrame THIEU (clarify) — KHONG tim kiem truoc khi biet",
-          "count": 1,
-          "offsets": [
-            48043
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 4 gia su, KHONG hoi",
-          "count": 1,
-          "offsets": [
-            52097
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 5 TOI DA 1 cau hoi",
-          "count": 1,
-          "offsets": [
-            52645
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        }
-      ]
+      "modelled": false,
+      "note": "server-authored turn (canned / clarify gate) — no prompt"
     },
     "S2": {
       "text": "mua laptop van phong duoi 15tr",
@@ -624,9 +239,9 @@
         "save_price_watch"
       ],
       "sharedChars": 45918,
-      "dynamicChars": 17674,
-      "totalChars": 63592,
-      "approxTokens": 17664,
+      "dynamicChars": 17873,
+      "totalChars": 63791,
+      "approxTokens": 17720,
       "blocks": [
         {
           "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
@@ -659,7 +274,7 @@
           "segment": "dynamic"
         },
         {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:15 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
           "at": 46363,
           "segment": "dynamic"
         },
@@ -679,43 +294,48 @@
           "segment": "dynamic"
         },
         {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "header": "VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM)",
           "at": 48150,
           "segment": "dynamic"
         },
         {
+          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "at": 48517,
+          "segment": "dynamic"
+        },
+        {
           "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 48915,
+          "at": 49300,
           "segment": "dynamic"
         },
         {
           "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 50228,
+          "at": 50613,
           "segment": "dynamic"
         },
         {
           "header": "MUA SAM: CAN CU CUA TUNG CAU",
-          "at": 51317,
+          "at": 51702,
           "segment": "dynamic"
         },
         {
           "header": "TU VAN MUA SAM: 2 TANG (GIAO DUC + QUYET DINH CO CAN CU)",
-          "at": 56916,
+          "at": 57301,
           "segment": "dynamic"
         },
         {
           "header": "TINH HUONG (V1)",
-          "at": 59556,
+          "at": 59941,
           "segment": "dynamic"
         },
         {
           "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 60211,
+          "at": 60410,
           "segment": "dynamic"
         },
         {
           "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 63158,
+          "at": 63357,
           "segment": "dynamic"
         }
       ],
@@ -784,7 +404,7 @@
           "name": "pre-send: TOI DA MOT dau hoi",
           "count": 1,
           "offsets": [
-            63197
+            63396
           ],
           "segment": [
             "dynamic"
@@ -794,7 +414,7 @@
           "name": "decisionFrame DU DE GOI Y — KHONG hoi truoc",
           "count": 1,
           "offsets": [
-            48391
+            48776
           ],
           "segment": [
             "dynamic"
@@ -804,7 +424,7 @@
           "name": "V1 rule 4 gia su, KHONG hoi",
           "count": 1,
           "offsets": [
-            60965
+            61164
           ],
           "segment": [
             "dynamic"
@@ -814,7 +434,7 @@
           "name": "V1 rule 5 TOI DA 1 cau hoi",
           "count": 1,
           "offsets": [
-            61513
+            61712
           ],
           "segment": [
             "dynamic"
@@ -824,7 +444,7 @@
           "name": "shopping pick: chi duoc hoi lai khi bang chung khong du",
           "count": 1,
           "offsets": [
-            54394
+            54779
           ],
           "segment": [
             "dynamic"
@@ -834,191 +454,8 @@
     },
     "S6": {
       "text": "mua gì bây giờ",
-      "tools": [
-        "search_places",
-        "get_news",
-        "search_products",
-        "web_search",
-        "get_weather",
-        "get_gold_price",
-        "get_flight_prices",
-        "get_hotel_prices",
-        "get_transport_options",
-        "save_price_watch"
-      ],
-      "sharedChars": 45918,
-      "dynamicChars": 5834,
-      "totalChars": 51752,
-      "approxTokens": 14376,
-      "blocks": [
-        {
-          "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
-          "at": 33897,
-          "segment": "shared"
-        },
-        {
-          "header": "CTA ACTION BUTTONS - BAT BUOC",
-          "at": 37564,
-          "segment": "shared"
-        },
-        {
-          "header": "PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM",
-          "at": 42640,
-          "segment": "shared"
-        },
-        {
-          "header": "AN TOAN & TRUNG THUC - LUAT CUNG",
-          "at": 43790,
-          "segment": "shared"
-        },
-        {
-          "header": "DANH GIA BANG CHUNG (evidence provenance) - LUAT CUNG",
-          "at": 44725,
-          "segment": "shared"
-        },
-        {
-          "header": "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-          "at": 45920,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
-          "at": 46363,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THONG TIN NGUOI DUNG",
-          "at": 46909,
-          "segment": "dynamic"
-        },
-        {
-          "header": "WORD LIMIT - REPLY DAU TIEN",
-          "at": 46962,
-          "segment": "dynamic"
-        },
-        {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
-          "at": 47367,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TINH HUONG (V1)",
-          "at": 47725,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 48371,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 51318,
-          "segment": "dynamic"
-        }
-      ],
-      "directives": [
-        {
-          "name": "R7 ladder (a)(b)(c)",
-          "count": 1,
-          "offsets": [
-            9448
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7(c) thieu thong tin quyet dinh → hoi",
-          "count": 1,
-          "offsets": [
-            9824
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7 LUAT CUNG toi da mot cau hoi",
-          "count": 1,
-          "offsets": [
-            10023
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R4 ket thuc bang khuyen nghi",
-          "count": 1,
-          "offsets": [
-            8473
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "KHONG HOI \"ban muon an loai gi\" (rulebook)",
-          "count": 1,
-          "offsets": [
-            7410
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "relaxation: HOI user chon option TRUOC KHI de xuat",
-          "count": 1,
-          "offsets": [
-            8091
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "pre-send: TOI DA MOT dau hoi",
-          "count": 1,
-          "offsets": [
-            51357
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "decisionFrame THIEU (clarify) — KHONG tim kiem truoc khi biet",
-          "count": 1,
-          "offsets": [
-            47619
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 4 gia su, KHONG hoi",
-          "count": 1,
-          "offsets": [
-            49125
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 5 TOI DA 1 cau hoi",
-          "count": 1,
-          "offsets": [
-            49673
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        }
-      ]
+      "modelled": false,
+      "note": "server-authored turn (canned / clarify gate) — no prompt"
     },
     "T2": {
       "text": "khach san da nang gan bien duoi 1tr/dem",
@@ -1035,9 +472,9 @@
         "save_price_watch"
       ],
       "sharedChars": 45918,
-      "dynamicChars": 10292,
-      "totalChars": 56210,
-      "approxTokens": 15614,
+      "dynamicChars": 10709,
+      "totalChars": 56627,
+      "approxTokens": 15730,
       "blocks": [
         {
           "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
@@ -1070,7 +507,7 @@
           "segment": "dynamic"
         },
         {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:15 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
           "at": 46363,
           "segment": "dynamic"
         },
@@ -1090,38 +527,43 @@
           "segment": "dynamic"
         },
         {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "header": "VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM)",
           "at": 48147,
           "segment": "dynamic"
         },
         {
+          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "at": 48514,
+          "segment": "dynamic"
+        },
+        {
           "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 49068,
+          "at": 49485,
           "segment": "dynamic"
         },
         {
           "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 50381,
+          "at": 50798,
           "segment": "dynamic"
         },
         {
           "header": "BUOC 1 CUA LUOT NAY (bat buoc)",
-          "at": 51470,
+          "at": 51887,
           "segment": "dynamic"
         },
         {
           "header": "TINH HUONG (V1)",
-          "at": 51956,
+          "at": 52373,
           "segment": "dynamic"
         },
         {
           "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 52407,
+          "at": 52824,
           "segment": "dynamic"
         },
         {
           "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 55776,
+          "at": 56193,
           "segment": "dynamic"
         }
       ],
@@ -1190,7 +632,7 @@
           "name": "pre-send: TOI DA MOT dau hoi",
           "count": 1,
           "offsets": [
-            55815
+            56232
           ],
           "segment": [
             "dynamic"
@@ -1200,7 +642,7 @@
           "name": "decisionFrame DU DE GOI Y — KHONG hoi truoc",
           "count": 1,
           "offsets": [
-            48417
+            48824
           ],
           "segment": [
             "dynamic"
@@ -1210,7 +652,7 @@
           "name": "V1 BUOC 1 (search-now, top of block)",
           "count": 1,
           "offsets": [
-            51470
+            51887
           ],
           "segment": [
             "dynamic"
@@ -1220,7 +662,7 @@
           "name": "V1 LENH LUOT NAY (search-now, bottom of block)",
           "count": 1,
           "offsets": [
-            55291
+            55708
           ],
           "segment": [
             "dynamic"
@@ -1230,7 +672,7 @@
           "name": "V1 rule 4 gia su, KHONG hoi",
           "count": 1,
           "offsets": [
-            53161
+            53578
           ],
           "segment": [
             "dynamic"
@@ -1240,7 +682,7 @@
           "name": "V1 rule 5 TOI DA 1 cau hoi",
           "count": 1,
           "offsets": [
-            53709
+            54126
           ],
           "segment": [
             "dynamic"
@@ -1262,9 +704,9 @@
         "save_price_watch"
       ],
       "sharedChars": 45918,
-      "dynamicChars": 9832,
-      "totalChars": 55750,
-      "approxTokens": 15486,
+      "dynamicChars": 10239,
+      "totalChars": 56157,
+      "approxTokens": 15599,
       "blocks": [
         {
           "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
@@ -1297,7 +739,7 @@
           "segment": "dynamic"
         },
         {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
+          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 12:15 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
           "at": 46363,
           "segment": "dynamic"
         },
@@ -1317,38 +759,43 @@
           "segment": "dynamic"
         },
         {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "header": "VỊ TRÍ GPS NGƯỜI DÙNG (ĐỌC KHI GỢI Ý ĐỊA ĐIỂM)",
           "at": 47812,
           "segment": "dynamic"
         },
         {
+          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
+          "at": 48179,
+          "segment": "dynamic"
+        },
+        {
           "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 48785,
+          "at": 49192,
           "segment": "dynamic"
         },
         {
           "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 50098,
+          "at": 50505,
           "segment": "dynamic"
         },
         {
           "header": "BUOC 1 CUA LUOT NAY (bat buoc)",
-          "at": 51187,
+          "at": 51594,
           "segment": "dynamic"
         },
         {
           "header": "TINH HUONG (V1)",
-          "at": 51603,
+          "at": 52010,
           "segment": "dynamic"
         },
         {
           "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 52017,
+          "at": 52424,
           "segment": "dynamic"
         },
         {
           "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 55316,
+          "at": 55723,
           "segment": "dynamic"
         }
       ],
@@ -1417,7 +864,7 @@
           "name": "pre-send: TOI DA MOT dau hoi",
           "count": 1,
           "offsets": [
-            55355
+            55762
           ],
           "segment": [
             "dynamic"
@@ -1427,7 +874,7 @@
           "name": "decisionFrame DU DE GOI Y — KHONG hoi truoc",
           "count": 1,
           "offsets": [
-            48119
+            48526
           ],
           "segment": [
             "dynamic"
@@ -1437,7 +884,7 @@
           "name": "V1 BUOC 1 (search-now, top of block)",
           "count": 1,
           "offsets": [
-            51187
+            51594
           ],
           "segment": [
             "dynamic"
@@ -1447,7 +894,7 @@
           "name": "V1 LENH LUOT NAY (search-now, bottom of block)",
           "count": 1,
           "offsets": [
-            54901
+            55308
           ],
           "segment": [
             "dynamic"
@@ -1457,7 +904,7 @@
           "name": "V1 rule 4 gia su, KHONG hoi",
           "count": 1,
           "offsets": [
-            52771
+            53178
           ],
           "segment": [
             "dynamic"
@@ -1467,7 +914,7 @@
           "name": "V1 rule 5 TOI DA 1 cau hoi",
           "count": 1,
           "offsets": [
-            53319
+            53726
           ],
           "segment": [
             "dynamic"
@@ -1477,230 +924,8 @@
     },
     "HI": {
       "text": "xin chào",
-      "tools": [
-        "search_places",
-        "get_news",
-        "web_search",
-        "get_weather",
-        "get_gold_price",
-        "get_flight_prices",
-        "get_hotel_prices",
-        "get_transport_options",
-        "save_price_watch"
-      ],
-      "sharedChars": 45918,
-      "dynamicChars": 9832,
-      "totalChars": 55750,
-      "approxTokens": 15486,
-      "blocks": [
-        {
-          "header": "DANH GIA, REVIEW & ANH - LUAT BAT BUOC (ap dung moi category)",
-          "at": 33897,
-          "segment": "shared"
-        },
-        {
-          "header": "CTA ACTION BUTTONS - BAT BUOC",
-          "at": 37564,
-          "segment": "shared"
-        },
-        {
-          "header": "PHAM VI HOAT DONG - LUAT CUNG KHONG DUOC VI PHAM",
-          "at": 42640,
-          "segment": "shared"
-        },
-        {
-          "header": "AN TOAN & TRUNG THUC - LUAT CUNG",
-          "at": 43790,
-          "segment": "shared"
-        },
-        {
-          "header": "DANH GIA BANG CHUNG (evidence provenance) - LUAT CUNG",
-          "at": 44725,
-          "segment": "shared"
-        },
-        {
-          "header": "CRITICAL LANGUAGE OVERRIDE (HIGHEST PRIORITY)",
-          "at": 45920,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 11:56 Thứ Bảy, 19 tháng 9, 2026, gio Viet Nam (GMT+7). Ngay hien tai dang YYYY-MM-DD: 2026-09-19. Day la thong tin THOI GIAN THUC, LUON dung gia tri nay khi tra loi cau hoi ve \"hom nay/ngay mai/thang nay/nam nay/hien tai/bay gio\" hoac khi can tinh toan ngay thang, tuoi, deadline, lich am, v.v. TUYET DOI KHONG dung nam trong du lieu huan luyen cu (vd 2023, 2024, 2025) de doan nam hien tai - hay dung dung ngay/nam da cho o tren.",
-          "at": 46363,
-          "segment": "dynamic"
-        },
-        {
-          "header": "THONG TIN NGUOI DUNG",
-          "at": 46909,
-          "segment": "dynamic"
-        },
-        {
-          "header": "WORD LIMIT - REPLY DAU TIEN",
-          "at": 46962,
-          "segment": "dynamic"
-        },
-        {
-          "header": "VI TRI: CUA HANG VAT LY - LUAT BAT BUOC",
-          "at": 47367,
-          "segment": "dynamic"
-        },
-        {
-          "header": "KHUNG QUYET DINH (he thong suy ra tu hoi thoai — dung de TU VAN, khong doc lai cho user)",
-          "at": 47812,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TAPPY'S PICK — DA CHON SAN, BAN CHI GIAI THICH",
-          "at": 48785,
-          "segment": "dynamic"
-        },
-        {
-          "header": "GIAO DIEN DA HIEN THI THE THONG TIN",
-          "at": 50098,
-          "segment": "dynamic"
-        },
-        {
-          "header": "BUOC 1 CUA LUOT NAY (bat buoc)",
-          "at": 51187,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TINH HUONG (V1)",
-          "at": 51603,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TU VAN V1 — GHI DE CAC LUAT SAU",
-          "at": 52017,
-          "segment": "dynamic"
-        },
-        {
-          "header": "TRUOC KHI GUI - KIEM TRA CAU CUOI: reply nay duoc phep chua TOI DA MOT dau hoi. Neu dang co tu hai cau hoi tro len, BO het chi giu DUNG MOT cau quan trong nhat (cau ma cau tra loi cua user se lam doi khuyen nghi cua ban) va bo phan con lai. TUYET DOI KHONG liet ke cau hoi thanh bullet/danh sach. Neu ban da du du lieu de nghieng ve mot phuong an, hay ket bang khuyen nghi do va KHONG hoi gi ca.",
-          "at": 55316,
-          "segment": "dynamic"
-        }
-      ],
-      "directives": [
-        {
-          "name": "R7 ladder (a)(b)(c)",
-          "count": 1,
-          "offsets": [
-            9448
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7(c) thieu thong tin quyet dinh → hoi",
-          "count": 1,
-          "offsets": [
-            9824
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R7 LUAT CUNG toi da mot cau hoi",
-          "count": 1,
-          "offsets": [
-            10023
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "R4 ket thuc bang khuyen nghi",
-          "count": 1,
-          "offsets": [
-            8473
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "KHONG HOI \"ban muon an loai gi\" (rulebook)",
-          "count": 1,
-          "offsets": [
-            7410
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "relaxation: HOI user chon option TRUOC KHI de xuat",
-          "count": 1,
-          "offsets": [
-            8091
-          ],
-          "segment": [
-            "shared"
-          ]
-        },
-        {
-          "name": "pre-send: TOI DA MOT dau hoi",
-          "count": 1,
-          "offsets": [
-            55355
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "decisionFrame DU DE GOI Y — KHONG hoi truoc",
-          "count": 1,
-          "offsets": [
-            48119
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 BUOC 1 (search-now, top of block)",
-          "count": 1,
-          "offsets": [
-            51187
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 LENH LUOT NAY (search-now, bottom of block)",
-          "count": 1,
-          "offsets": [
-            54901
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 4 gia su, KHONG hoi",
-          "count": 1,
-          "offsets": [
-            52771
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        },
-        {
-          "name": "V1 rule 5 TOI DA 1 cau hoi",
-          "count": 1,
-          "offsets": [
-            53319
-          ],
-          "segment": [
-            "dynamic"
-          ]
-        }
-      ]
+      "modelled": false,
+      "note": "server-authored turn (canned / clarify gate) — no prompt"
     }
   }
 }
