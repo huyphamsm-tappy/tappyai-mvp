@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
+  classifyShoppingGaps,
+  shoppingEvidenceNote,
   deriveShoppingConstraints,
   budgetFromHistory,
   rejectCandidate,
@@ -24,7 +26,7 @@ const cand = (name: string, priceVnd?: number): Candidate => ({
 })
 
 const K = (over: Partial<ShoppingConstraints> = {}): ShoppingConstraints => ({
-  productType: null, brand: null, budget: null, ramGb: null, storageGb: null, wantsAccessory: false, ...over,
+  productType: null, unknownType: null, brand: null, budget: null, ramGb: null, storageGb: null, size: null, variant: null, inStock: false, recipient: null, wantsAccessory: false, ...over,
 })
 
 const user = (...texts: string[]) => texts.map(content => ({ role: 'user', content }))
@@ -346,5 +348,43 @@ describe('🚨 a stated price is a budget', () => {
     expect(b).not.toBeNull()
     expect(b!.type).toBe('around')
     expect(b!.max).toBe(2_400_000)
+  })
+})
+
+// ── B2 (2026-09-20): the widened lexicon and the new constraints ────────────────────────────
+describe('B2 — product families beyond electronics, and constraints beyond RAM', () => {
+  it('perfume, robot vacuum and air purifier resolve to a family (they resolved to null before)', () => {
+    expect(deriveShoppingConstraints(user('nước hoa nữ tầm 2 triệu'), null).productType).toBe('perfume')
+    expect(deriveShoppingConstraints(user('robot hút bụi lau nhà dưới 10 triệu'), null).productType).toBe('robot_vacuum')
+    expect(deriveShoppingConstraints(user('máy lọc không khí cho phòng 30m2'), null).productType).toBe('air_purifier')
+    expect(deriveShoppingConstraints(user('giày chạy bộ size 42'), null).productType).toBe('shoes')
+  })
+  it('an unknown type is kept as a gap with a warning source, never silence', () => {
+    const k = deriveShoppingConstraints(user('mua máy sấy tóc tầm 800k'), null)
+    expect(k.productType).toBeNull()
+    expect(k.unknownType).toBe('may say toc')
+    expect(classifyShoppingGaps(k, [{ title: 'Máy sấy tóc Panasonic' }]).gaps).toContain('unknown_type')
+  })
+  it('size, colour / volume, stock and recipient are read from the request', () => {
+    const k = deriveShoppingConstraints(user('giày Nike size 42 màu đen còn hàng cho bạn trai'), null)
+    expect(k).toMatchObject({ productType: 'shoes', size: '42', variant: 'den', inStock: true, recipient: 'ban trai' })
+    expect(deriveShoppingConstraints(user('nước hoa 100ml cho mẹ'), null)).toMatchObject({ productType: 'perfume', variant: '100ml', recipient: 'me' })
+  })
+  it('a listing that STATES another size or colour is rejected; one that states none is kept (silence is not a rejection)', () => {
+    const k = K({ productType: 'shoes', size: '42', variant: 'den' })
+    expect(rejectCandidate(cand('Giày Nike Air size 41 màu đen'), k)?.reason).toBe('size')
+    expect(rejectCandidate(cand('Giày Nike Air size 42 màu trắng'), k)?.reason).toBe('variant')
+    expect(rejectCandidate(cand('Giày Nike Air size 42 màu đen'), k)).toBeNull()
+    expect(rejectCandidate(cand('Giày Nike Air Zoom'), k)).toBeNull()
+    expect(rejectCandidate(cand('Nước hoa Chanel 50ml'), K({ productType: 'perfume', variant: '100ml' }))?.reason).toBe('variant')
+  })
+  it('the gate gaps: what no kept listing proves — stock and recipient are ALWAYS gaps when asked', () => {
+    const k = K({ productType: 'shoes', brand: 'sony', size: '42', variant: 'den', inStock: true, recipient: 'me' })
+    const { gaps, rowBackedBy } = classifyShoppingGaps(k, [{ title: 'Giày Sony size 42' }, { title: 'Giày khác' }])
+    expect(gaps).toEqual(['variant', 'in_stock', 'recipient'])
+    expect(rowBackedBy.brand).toEqual(['Giày Sony size 42'])
+    expect(rowBackedBy.size).toEqual(['Giày Sony size 42'])
+    expect(shoppingEvidenceNote(gaps, 'vi')).toContain('KHONG listing nao xac nhan')
+    expect(shoppingEvidenceNote([], 'vi')).toBeNull()
   })
 })

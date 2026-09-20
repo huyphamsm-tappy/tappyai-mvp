@@ -78,12 +78,33 @@ describe('places path (search_places) — late_open is judged on opening_hours (
 })
 
 describe('tools the gate does not apply to are logged, never silent', () => {
-  it.each(['search_products', 'get_transport_options', 'get_flight_prices', 'get_weather', 'web_search', 'some_future_tool'])('%s with a stated hard constraint logs hard_not_applicable', (tool) => {
+  it.each(['get_transport_options', 'get_flight_prices', 'get_weather', 'web_search', 'some_future_tool'])('%s with a stated hard constraint logs hard_not_applicable', (tool) => {
     const situation = deriveSituation(['quán yên tĩnh có chỗ đậu xe'], need())
     const { lines } = logs()
     const out = applyHardConstraintGate(tool, { shopping_results: [{ title: 'x' }] }, situation, 'vi')
     expect(out.applicable).toBe(false)
     expect(lines.some(l => l.includes('"step":"hard_not_applicable"') && l.includes(`"tool":"${tool}"`) && l.includes('"quiet"'))).toBe(true)
+  })
+  // B1 (2026-09-20): search_products is no longer "not applicable" — it is judged against the
+  // shopping constraints (the product unit's own vocabulary), and annotates the result the same way.
+  it('search_products is judged against the SHOPPING constraints: gaps annotated, evidence note written, budget gap detected', () => {
+    const situation = deriveSituation(['nước hoa 100ml cho mẹ, còn hàng, tầm 2 triệu'], need())
+    const { lines } = logs()
+    const result = { search_results: [{ title: 'Nước hoa Chanel Chance 50ml', price: 3_200_000 }, { title: 'Nước hoa Dior 100ml' }] } as Record<string, unknown>
+    const k = { productType: 'perfume', unknownType: null, brand: null, budget: { min: 0, max: 2_000_000, type: 'under' as const }, ramGb: null, storageGb: null, size: null, variant: '100ml', inStock: true, recipient: 'me', wantsAccessory: false }
+    const out = applyHardConstraintGate('search_products', result, situation, 'vi', { shopping: k })
+    expect(out.applicable).toBe(true)
+    expect(out.report?.gaps).toEqual(['in_stock', 'recipient'])
+    expect(result._tappy_hard_gaps).toEqual(['in_stock', 'recipient'])
+    expect(result._tappy_hard_backed_by).toEqual({ variant: ['Nước hoa Dior 100ml'] })
+    expect(String(result._tappy_evidence_note)).toContain('KHONG listing nao xac nhan')
+    expect(out.budgetGap).toBe(false)
+    expect(lines.some(l => l.includes('"step":"attributes"') && l.includes('"tool":"search_products"'))).toBe(true)
+    expect(lines.some(l => l.includes('hard_not_applicable'))).toBe(false)
+  })
+  it('search_products with no shopping constraints handed over is not applicable (nothing to judge)', () => {
+    const situation = deriveSituation(['quán yên tĩnh'], need())
+    expect(applyHardConstraintGate('search_products', { search_results: [] }, situation, 'vi').applicable).toBe(false)
   })
   it('no situation (flag OFF / no frame) ⇒ nothing happens and nothing is logged', () => {
     const { lines } = logs()

@@ -19,12 +19,20 @@
 
 import { extractAttributes } from './reviewAttributes'
 import { classifyHardGaps, evidenceNote, type HardGapReport } from './hardConstraints'
+import { classifyShoppingGaps, shoppingEvidenceNote, type ShoppingConstraints } from './shoppingConstraints'
 import type { SituationFrame } from './situationFrame'
 
 /** The row arrays a place-shaped tool result can carry, in the order they are looked for. */
 const ROW_KEYS = ['results', 'hotel_list'] as const
 /** Tools whose rows are places — the only results a hard constraint about a place can be judged on. */
 export const HARD_GATE_TOOLS = new Set(['search_places', 'get_hotel_prices'])
+/**
+ * B1 (2026-09-20): the PRODUCT unit is judged too — against the shopping constraints
+ * (shoppingConstraints.ts: budget, brand, size / variant, in stock, recipient, unknown type), not
+ * the place lexicon. Before this the gate logged `hard_not_applicable` for search_products, which
+ * is why an S5b-class miss ("nước hoa … cho mẹ", no gap named) was invisible.
+ */
+export const SHOPPING_GATE_TOOLS = new Set(['search_products'])
 
 export interface HardGateOutcome {
   applicable: boolean
@@ -73,8 +81,10 @@ export function applyHardConstraintGate(
   result: unknown,
   situation: SituationFrame | null,
   lang: string,
+  opts: { shopping?: ShoppingConstraints | null } = {},
 ): HardGateOutcome {
   const none: HardGateOutcome = { applicable: false, report: null, budgetGap: false }
+  if (SHOPPING_GATE_TOOLS.has(toolName)) return applyShoppingGate(result, opts.shopping ?? null, lang)
   if (!situation) return none
   if (!HARD_GATE_TOOLS.has(toolName)) {
     if (situation.hard.length > 0 || situation.budget) {
@@ -109,6 +119,35 @@ export function applyHardConstraintGate(
     return { applicable: true, report, budgetGap }
   } catch (e) {
     console.error('[consultative-v1] hard-constraint gate failed (turn runs ungated):', e)
+    return none
+  }
+}
+
+/** The product-unit gate (B1): the same annotations, the shopping vocabulary. */
+function applyShoppingGate(result: unknown, k: ShoppingConstraints | null, lang: string): HardGateOutcome {
+  const none: HardGateOutcome = { applicable: false, report: null, budgetGap: false }
+  if (!k || !result || typeof result !== 'object' || Array.isArray(result)) return none
+  const r = result as Record<string, unknown>
+  try {
+    const rows = (Array.isArray(r.search_results) ? r.search_results : Array.isArray(r.shopping_results) ? r.shopping_results : []) as Array<Record<string, unknown>>
+    const { gaps, rowBackedBy } = classifyShoppingGaps(k, rows as Array<{ title?: string }>)
+    const report: HardGapReport = { gaps: gaps as never, contrary: [], assumed: [], rowBacked: Object.keys(rowBackedBy) as never, rowBackedBy: rowBackedBy as never, fieldMissing: [], unclassified: [] }
+    if (gaps.length > 0) r._tappy_hard_gaps = gaps
+    if (Object.keys(rowBackedBy).length > 0) r._tappy_hard_backed_by = rowBackedBy
+    const note = shoppingEvidenceNote(gaps, lang)
+    if (note) r._tappy_evidence_note = note
+    const anyPrice = rows.some(row => typeof row.price === 'number' || typeof row.price_vnd === 'number' || (typeof row.price === 'string' && /\d/.test(row.price)))
+    const budgetGap = !!k.budget && !anyPrice
+    if (budgetGap) r._tappy_budget_evidence = false
+    if (k.unknownType && !k.productType) console.warn(JSON.stringify({ type: 'tappyai_shopping_constraints', step: 'unknown_product_type', text: k.unknownType.slice(0, 60) }))
+    console.log(JSON.stringify({
+      type: 'tappyai_consultative_v1', step: 'attributes', tool: 'search_products', rows: rows.length, venues_with_attributes: 0,
+      hard: [k.brand && 'brand', k.size && 'size', k.variant && 'variant', k.inStock && 'in_stock', k.recipient && 'recipient', k.unknownType && 'unknown_type'].filter(Boolean),
+      hard_gaps: gaps, hard_contrary: [], hard_assumed: [], hard_row_backed: Object.keys(rowBackedBy), hard_row_backed_by: rowBackedBy, hard_field_missing: [], hard_unclassified: [], budget_gap: budgetGap,
+    }))
+    return { applicable: true, report, budgetGap }
+  } catch (e) {
+    console.error('[consultative-v1] shopping gate failed (turn runs ungated):', e)
     return none
   }
 }

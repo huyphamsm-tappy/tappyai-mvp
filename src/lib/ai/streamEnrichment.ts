@@ -15,6 +15,7 @@ import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView, alignEmphasisToModelPick, placesRenderOrder } from '@/lib/recommendation/liveView'
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
+import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
@@ -1689,7 +1690,8 @@ export function applyPlaceEnrichmentStreamFilter(
        */
       // One word list for every constraint (hardConstraints.ts) — a gap the route computed can no
       // longer be invisible here (this list used to know 7 of the 12 and filtered the rest away).
-      const gapWords: Record<string, [string, string]> = HARD_GAP_WORDS
+      // B1: the product unit's gaps (size, variant, stock, recipient, unknown type) have their own words.
+      const gapWords: Record<string, [string, string]> = { ...HARD_GAP_WORDS, ...SHOPPING_GAP_WORDS }
       /**
        * A budget-FIT claim with no price on any row — "Cả hai quán đều dưới 80k/bát", "hoàn
        * toàn vừa tầm", "trong tầm giá" (measured F2) — is a guess dressed as a fact. The money
@@ -1725,9 +1727,15 @@ export function applyPlaceEnrichmentStreamFilter(
       const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay|tim thay) (?:duoc )?(?:muc |thong tin )?gia|khong (?:co|tim thay) (?:muc |thong tin )?gia|no price/.test(said)
       const headsUp: string[] = []
       if (unsaid.length > 0) {
+        // B1: a shopping turn's heads-up points at the seller page, not at a phone call.
+        const shoppingGaps = unsaid.every(g => g in SHOPPING_GAP_WORDS)
         headsUp.push(lang === 'en'
-          ? `I found no evidence about ${unsaid.map(g => gapWords[g][1]).join(', ')} for these places — worth a call before you go.`
-          : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`)
+          ? (shoppingGaps
+            ? `I could not confirm ${unsaid.map(g => gapWords[g][1]).join(', ')} from the listings — check the seller page before ordering.`
+            : `I found no evidence about ${unsaid.map(g => gapWords[g][1]).join(', ')} for these places — worth a call before you go.`)
+          : (shoppingGaps
+            ? `Mình chưa xác nhận được ${unsaid.map(g => gapWords[g][0]).join(', ')} từ các listing — bạn kiểm tra trên trang bán trước khi đặt.`
+            : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`))
       }
       if (contraryUnsaid.length > 0) {
         headsUp.push(lang === 'en'

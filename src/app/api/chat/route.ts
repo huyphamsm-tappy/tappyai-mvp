@@ -1417,7 +1417,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       if (typeof orig !== 'function') continue
       def.execute = async (...a: unknown[]) => {
         const out = await orig(...a)
-        const gate = applyHardConstraintGate(name, out, situation, lang)
+        // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
+        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
         const ctx = enrichment.consultativeV1
         if (gate.applicable && gate.report && ctx) {
           ctx.hardGaps = [...gate.report.gaps]
