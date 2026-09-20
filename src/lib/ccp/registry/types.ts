@@ -27,9 +27,12 @@ export interface FreshnessPolicyEntry {
 }
 
 export interface TrackingConfig {
-  network: 'accesstrade'
-  /** ACCESSTRADE campaign id (public; appears in every generated link). */
-  campaignId: string
+  /** `accesstrade` = the code wrapper (tracking/accesstrade.ts); `template` = a runtime-configured generic wrapper (A3.1). */
+  network: 'accesstrade' | 'template'
+  /** ACCESSTRADE campaign id (public; appears in every generated link). Required for `accesstrade`. */
+  campaignId?: string
+  /** `template` network only: an https template with `{url}` where the encoded destination goes. */
+  template?: string
   /** Approval state as last verified in the publisher portal. */
   approval: 'approved' | 'pending' | 'rejected' | 'parked'
   /** The ONLY wrapper endpoint verified to preserve this merchant's deep links. */

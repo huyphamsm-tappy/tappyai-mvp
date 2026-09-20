@@ -5,6 +5,8 @@ import { decayConfidence, makeFreshness } from '../domain/freshness'
 import type { ProviderAdapter } from '../adapters/types'
 import { checkCommerceUrl } from '../validation/url'
 import { wrapWithAccesstrade } from '../tracking/accesstrade'
+import { wrapWithTemplate } from '../tracking/template'
+import { effectiveTracking, providerOverride } from '../registry/runtime'
 
 // ── Deep Link Resolver (Plan §6) ─────────────────────────────────────────────
 // 1. build the deepest verified DIRECT URL for the configuration (adapter)
@@ -76,10 +78,18 @@ export function resolveDeepLink(
   let wrapperDetail: string | undefined
   const wrappingEnabled = opts.wrappingEnabled ?? CCP_AFFILIATE_WRAPPING_ENABLED
   const allowTracking = opts.allowTracking ?? request.context?.allowTracking ?? true
+  // A3.1: the tracking configuration is the RUNTIME registry's answer for this provider — the
+  // owner's table first, the code registry when the table is silent. A code-default entry still
+  // needs the declared `tracking` capability; a table row that enables the deeplink is the
+  // owner's decision and needs nothing else.
+  const trackingConfig = effectiveTracking(entry)
   if (!wrappingEnabled || !allowTracking) {
     wrapper = 'disabled'
-  } else if (entry.tracking && entry.capabilities.includes('tracking')) {
-    const w = wrapWithAccesstrade({ directUrl: build.url, tracking: entry.tracking, actorHash: opts.actorHash ?? request.context?.actorHash, utmContent: opts.utmContent })
+  } else if (trackingConfig && (providerOverride(entry.providerId) !== null || entry.capabilities.includes('tracking'))) {
+    const actorHash = opts.actorHash ?? request.context?.actorHash
+    const w = trackingConfig.network === 'template'
+      ? wrapWithTemplate({ directUrl: build.url, tracking: trackingConfig, actorHash })
+      : wrapWithAccesstrade({ directUrl: build.url, tracking: trackingConfig, actorHash, utmContent: opts.utmContent })
     if (w.ok) {
       url = w.url
       tracking = w.tracking

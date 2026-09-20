@@ -50,6 +50,7 @@ export type WrapResult =
 export function wrapWithAccesstrade(input: WrapInput): WrapResult {
   const pub = publisherId()
   if (!pub) return { ok: false, reason: 'not_configured' }
+  if (input.tracking.network !== 'accesstrade' || !input.tracking.campaignId) return { ok: false, reason: 'not_configured', detail: 'no accesstrade campaign' }
   if (input.tracking.approval !== 'approved') return { ok: false, reason: 'campaign_not_approved', detail: input.tracking.approval }
   if (input.tracking.safeWrapper !== 'deep_link') return { ok: false, reason: 'unsafe_wrapper', detail: input.tracking.safeWrapper }
 

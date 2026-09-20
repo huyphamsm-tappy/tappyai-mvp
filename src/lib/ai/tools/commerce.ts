@@ -15,6 +15,8 @@ import {
   type DiscoveryScope,
   type IntentType,
 } from '@/lib/ccp'
+import { refreshProviderConfig } from '@/lib/ccp'
+import { installProviderConfigSource } from '@/lib/commerce/providerConfigSource'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, sameCityKey, stripTrailingCity } from '@/lib/links/otaTitle'
 import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
@@ -432,6 +434,10 @@ const contradictsCity = (url: string | undefined, requestedCity: string | null):
 export async function attachCommerceLinks(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
   const enabled = ctx.enabled ?? CCP_ENABLED
   if (!enabled || !isRecord(result)) return result
+  // A3.1: the runtime registry (owner's `commerce_providers` table, 60 s cache) answers per link
+  // downstream; it is refreshed here, at the one seam, never inside CCP. A test that injects its
+  // own resolver / source is left alone.
+  if (!ctx.resolve) { installProviderConfigSource(); await refreshProviderConfig() }
   if (toolName === 'get_flight_prices' || toolName === 'get_transport_options') return attachRouteLinks(toolName, result, ctx)
   if (toolName === 'web_search') return attachWebHandoffs(result, ctx)
   try {

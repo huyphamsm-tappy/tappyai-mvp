@@ -1,9 +1,11 @@
 import { PROVIDER_REGISTRY } from './providers'
+import { effectiveTracking } from './runtime'
 import type { LinkStrategyStep, MonetizationStatus, ProviderRegistryEntry, ProviderStatus } from './types'
 import { INTENT_CAPABILITY, type CommerceCapability, type CommerceDomain, type IntentType, type TransactionDepthProfile } from '../domain/types'
 
 export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig, ProviderStatus, MonetizationStatus, LinkStrategyStep, DiscoverySubjectKind } from './types'
 export { PROVIDER_REGISTRY } from './providers'
+export { setProviderConfigSource, refreshProviderConfig, providerOverride, isProviderActive, providerTier, effectiveTracking, overrideFromRow, PROVIDER_CONFIG_TTL_MS, __resetProviderConfig, type ProviderOverride, type ProviderConfigSource, type ProviderTier } from './runtime'
 
 // ── REMOVED PROVIDERS — the ones the owner took out and forbade reintroducing ──
 //
@@ -61,10 +63,14 @@ export function depthProfileForCapability(entry: ProviderRegistryEntry, capabili
 // Reachability and monetisation are separate axes read off the same entry, so
 // "affiliate pending" can never be mistaken for "provider unavailable".
 
-/** Whether the merchant earns for TappyAI today — a monetisation fact only. */
+/** Whether the merchant earns for TappyAI today — a monetisation fact only. Reads the runtime overlay first (A3.1). */
 export function monetizationStatus(entry: ProviderRegistryEntry): MonetizationStatus {
-  if (!entry.tracking) return 'NOT_APPLICABLE'
-  return entry.tracking.approval === 'approved' ? 'APPROVED' : 'PENDING'
+  const eff = effectiveTracking(entry)
+  if (eff?.approval === 'approved') return 'APPROVED'
+  if (!eff && !entry.tracking) return 'NOT_APPLICABLE'
+  // A row that switched the deeplink off leaves the code's pending/approved fact behind: nothing earns.
+  if (!eff) return 'NOT_APPLICABLE'
+  return 'PENDING'
 }
 
 /**
@@ -125,7 +131,8 @@ export function validateRegistry(entries: readonly ProviderRegistryEntry[] = PRO
     }
     if (!e.commerce.includes('commerce_handoff')) problems.push(`${e.providerId}: a registry provider hands off to a merchant and must declare commerce_handoff`)
     if (e.tracking) {
-      if (!/^\d{10,25}$/.test(e.tracking.campaignId)) problems.push(`${e.providerId}: campaignId not numeric`)
+      if (e.tracking.network !== 'accesstrade') problems.push(`${e.providerId}: the code registry declares only accesstrade tracking (templates are runtime rows)`)
+      if (!/^\d{10,25}$/.test(e.tracking.campaignId ?? '')) problems.push(`${e.providerId}: campaignId not numeric`)
       if (e.tracking.safeWrapper !== 'deep_link') problems.push(`${e.providerId}: only the deep_link wrapper is verified safe`)
       if (!e.capabilities.includes('tracking')) problems.push(`${e.providerId}: tracking config without tracking capability`)
     }

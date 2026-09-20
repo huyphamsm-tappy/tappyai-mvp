@@ -8,10 +8,12 @@ import { rankLinks } from './ranking/score'
 import { RANKING_VERSION } from './ranking/weights'
 import { emitCommerceEvent } from './events/sink'
 import { isExpired } from './domain/freshness'
+import { isProviderActive } from './registry/runtime'
 
 export type * from './domain/types'
 export { parseCommerceRequest, CommerceRequestSchema } from './domain/request'
 export { PROVIDER_REGISTRY, getProvider, providersFor, providersForCapability, supportsCapability, depthProfileForCapability, providerStatus, monetizationStatus, linkStrategyFor, type ProviderStatus, type MonetizationStatus, type LinkStrategyStep } from './registry'
+export { setProviderConfigSource, refreshProviderConfig, providerOverride, isProviderActive, providerTier, effectiveTracking, overrideFromRow, PROVIDER_CONFIG_TTL_MS, type ProviderOverride, type ProviderConfigSource, type ProviderTier } from './registry'
 export { COMMERCE_CAPABILITIES, INTENT_CAPABILITY, DOMAIN_CAPABILITIES, capabilityForIntent } from './domain/types'
 export { resolveDeepLink } from './resolver/resolve'
 export { rankLinks } from './ranking/score'
@@ -78,6 +80,8 @@ export function resolveCommerce(input: unknown, opts: ResolveCommerceOptions = {
   const queried: string[] = []
 
   for (const adapter of adapters) {
+    // A3.1: a provider the owner switched off in `commerce_providers` runs no adapter at all.
+    if (!isProviderActive(adapter.entry)) { failed.push({ providerId: adapter.providerId, code: 'disabled', detail: 'inactive in commerce_providers' }); continue }
     const started = Date.now()
     queried.push(adapter.providerId)
     if (request.constraints?.merchantAllowList && !request.constraints.merchantAllowList.includes(adapter.entry.merchantId)) {
