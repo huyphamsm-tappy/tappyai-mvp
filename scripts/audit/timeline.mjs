@@ -41,7 +41,7 @@ for (;;) {
   }
 }
 const total = Date.now() - t0
-const out = { status: res.status, ttfb_ms: ttfb, total_ms: total, marks, progress, places, prose_chars: prose.length, prose_head: prose.slice(0, 160) }
+const out = { status: res.status, ttfb_ms: ttfb, total_ms: total, marks, progress, places, prose_chars: prose.length, prose_head: prose.slice(0, 160), prose: asJson ? prose : undefined }
 if (asJson) console.log(JSON.stringify(out))
 else {
   console.log(`status ${res.status} · TTFB ${ttfb} ms · total ${total} ms`)
