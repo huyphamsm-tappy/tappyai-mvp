@@ -1298,6 +1298,7 @@ export async function POST(req: Request) {
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
       referenced: referenced.map(v => v.name),
       carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
+      budget: needProfile.budget,
     })
     const refetchLines = refetch.length > 0
       ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`

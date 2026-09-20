@@ -192,6 +192,8 @@ export interface ConsultativeV1Context {
   hardContrary?: string[]
   /** The user stated a budget and no row carried a price — set at tool time. */
   budgetGap: boolean
+  /** E1 (2026-09-20): the budget the need profile read, in VND — the budget-fit guard compares a stated band against it. */
+  budget?: { min: number; max: number; type: 'range' | 'under' | 'around' } | null
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */

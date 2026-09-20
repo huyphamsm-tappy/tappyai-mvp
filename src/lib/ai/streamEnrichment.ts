@@ -4,6 +4,7 @@ import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
+import { guardBudgetFitInText } from './budgetFitGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
@@ -1669,7 +1670,17 @@ export function applyPlaceEnrichmentStreamFilter(
     if (hoursGuardResult && hoursGuardResult.redacted > 0) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hours', redacted: hoursGuardResult.redacted, unsupported: hoursGuardResult.unsupported.length, evidence_texts: hoursEvidence.length }))
     }
-    const placeGuarded = hoursGuardResult ? hoursGuardResult.text : placeGuardedRaw
+    const hoursGuarded = hoursGuardResult ? hoursGuardResult.text : placeGuardedRaw
+    /**
+     * E1 (2026-09-20) — P2 BUDGET-BAND OVERCLAIM. The band is the row's; the judgement that it
+     * "vừa vặn ngân sách" is the model's. A fit phrase next to a band starting at or above the
+     * user's ceiling loses its clause (measured B1/B8/F7b/E6 on the 2026-09-19 gate).
+     */
+    const budgetFit = (hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn
+      ? guardBudgetFitInText(hoursGuarded, collector?.consultativeV1?.budget)
+      : { text: hoursGuarded, redacted: 0 }
+    if (budgetFit.redacted > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'budget_fit', redacted: budgetFit.redacted }))
+    const placeGuarded = budgetFit.text
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.

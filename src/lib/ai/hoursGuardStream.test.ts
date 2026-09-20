@@ -49,3 +49,37 @@ describe('E1 — hours on a place turn', () => {
     expect(out).toContain('mở đến 3h sáng')
   })
 })
+
+// E1 — P2 budget-band overclaim through the real stream filter (the budget rides the V1 context).
+import type { ConsultativeV1Context } from './toolResultSplit'
+describe('E1 — budget fit on a place turn', () => {
+  async function runWithBudget(prose: string, budget: ConsultativeV1Context['budget']) {
+    const rows = [{ place_id: 'g-1', name: 'Béo Ơi Quán', address: '10 Nguyễn Trãi, Quận 1', rating_value: 4.6, rating_count: 1200, price_range_text: '100-200 N ₫', maps_link: 'https://maps.google.com/?cid=1', text_ranked: true }]
+    const result = { source: 'serper_maps', count: 1, results: rows, _tappy_place_domain: 'food' }
+    const collector = createEnrichmentCollector()
+    collector.add(rows)
+    collector.setPlacesRecommendations(placeRecommendations(result, 'TP HCM', { name: rows[0].name, reasons: [{ attribute: 'rating', evidence: 'rated 4.6' }] }), producerSubject('search_places', 'food'))
+    collector.setRendersDecisionCard(rendersDecisionCard('web'))
+    collector.setConsultativeV1({ on: true, rendersCard: true, namedRefetch: [], carried: [], hardGaps: [], budgetGap: false, budget })
+    const frames = ['9:{"toolCallId":"t1","toolName":"search_places","args":{"query":"quán ăn ngon","location":"Quận 1"}}', 'a:' + JSON.stringify({ toolCallId: 't1', result }), line0(prose), END]
+    // The band survives the snippet-price guard only under SNIPPET_PRICE_GUARD_V2 (the audit config).
+    const saved = process.env.SNIPPET_PRICE_GUARD_V2
+    process.env.SNIPPET_PRICE_GUARD_V2 = '1'
+    try {
+      const res = applyPlaceEnrichmentStreamFilter(new Response(frames.join('\n') + '\n'), 'vi', collector, undefined, undefined, undefined, false, 'ăn gì ngon giờ — dưới 100k/người', true)
+      const out = await new Response(res.body).text()
+      return out.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+    } finally {
+      if (saved === undefined) delete process.env.SNIPPET_PRICE_GUARD_V2; else process.env.SNIPPET_PRICE_GUARD_V2 = saved
+    }
+  }
+  it('B1 shape: "100-200k/người vừa vặn ngân sách" with "dưới 100k" loses the fit clause, keeps the band', async () => {
+    const out = await runWithBudget('Mình chọn **Béo Ơi Quán** — 4.6⭐ (1.200 đánh giá), mức giá 100-200k/người, vừa vặn ngân sách của bạn.', { min: 0, max: 100000, type: 'under' })
+    expect(out).toContain('100-200k/người')
+    expect(out).not.toContain('vừa vặn ngân sách')
+  })
+  it('the same sentence with a budget it really fits is untouched', async () => {
+    const out = await runWithBudget('Mình chọn **Béo Ơi Quán** — 4.6⭐ (1.200 đánh giá), mức giá 100-200k/người, vừa vặn ngân sách của bạn.', { min: 120000, max: 180000, type: 'around' })
+    expect(out).toContain('vừa vặn ngân sách')
+  })
+})
