@@ -29,3 +29,6 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 
 ## STEP 4 — PASS 1 complete
 docs/uat/PASS1-REPORT.md written. 26 findings (P0×1 F-002 next RCE, P1×2 F-015 quota-on-failure + F-001 GA, P2×8, P3×15 incl. verified-PASS records). 25 LLM turns (<$0.50). Seed data cleaned (86 rows + 3 users deleted). vitest 13,864/0. All source unchanged (read-only pass).
+
+## PASS 2 — FIX (complete 2026-09-20)
+Fixed P0/P1 per owner decisions. Commits: fb466c1 (F-015 quota refund), 08b916f (F-027 /api/track), a74499f (F-014 debug routes deleted), 919736a+21cc9cf (F-024 music reuse removed), 3a4326c (suite reconcile). F-002 investigated (no version change, owner #5). F-022 verified not-reproducible. F-028 filed P2 (out of scope). F-001 left open (owner action). Full suite 13,865/0; tsc 0; lint 0; prod build exit 0. Report: docs/uat/PASS2-REPORT.md.
