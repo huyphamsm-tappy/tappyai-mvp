@@ -48,7 +48,8 @@ describe('deriveSearchNow — the concrete first call for a place request', () =
   it('a specified request gets a SUGGESTED query the model may sharpen', () => {
     expect(derive('Tìm quán ăn tối ngon gần Quận 1 cho 2 người')).toEqual({ query: 'quán ăn tối ngon', type: 'restaurant', exact: false })
     expect(derive('Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1')).toEqual({ query: 'nhà hàng ngon phòng riêng', type: 'restaurant', exact: false })
-    expect(derive('Karaoke cho 10 người tầm 100k/người Gò Vấp')).toEqual({ query: 'địa điểm vui chơi giải trí', type: 'attraction', exact: false })
+    // Phase D (2026-09-20) superseded the generic "địa điểm vui chơi giải trí" call: the kind is the query.
+    expect(derive('Karaoke cho 10 người tầm 100k/người Gò Vấp')).toEqual({ query: 'quán karaoke', type: 'attraction', exact: false })
   })
   it('a follow-up, a movie turn, no GPS (clarify), a hotel turn → get_hotel_prices; a family outing → entertainment (suggested)', () => {
     expect(derive('ăn gì ngon giờ', { isFirstReply: false })).toBeNull()
@@ -76,5 +77,31 @@ describe('a transport request is never a place directive', () => {
     expect(derive('xe khách Sài Gòn đi Đà Lạt tối mai, vé bao nhiêu và mấy giờ chạy?')).toBeNull()
     expect(derive('vé máy bay Sài Gòn Hà Nội 10/10 cho 2 người')).toBeNull()
     expect(derive('tàu hỏa Hà Nội đi Sa Pa tối nay')).toBeNull()
+  })
+})
+
+// ── Phase D (2026-09-20): karaoke, cinemas, water parks, aquariums resolve to VENUE calls ──
+// Measured live (run 19): "tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì…" matched no venue noun,
+// went to web_search and produced no card. A named cinema is its own place; a kind is a kind.
+describe('Phase D — entertainment venue kinds name their own call', () => {
+  it('a NAMED cinema is searched exactly, even with no district and no GPS', () => {
+    expect(derive('tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?', { gps: false }))
+      .toEqual({ query: 'cgv vincom dong khoi', type: 'cinema', exact: true })
+    expect(derive('rạp Galaxy Nguyễn Du có suất nào tối nay?', { gps: false })).toEqual({ query: 'galaxy nguyen du', type: 'cinema', exact: true })
+  })
+
+  it('a cinema kind is a cinema search; karaoke / water park / aquarium are attraction searches of that kind', () => {
+    expect(derive('rạp chiếu phim nào gần đây?')).toMatchObject({ type: 'cinema', query: 'rạp chiếu phim' })
+    expect(derive('karaoke gần đây cho 10 người')).toMatchObject({ type: 'attraction', query: expect.stringContaining('quán karaoke') })
+    expect(derive('công viên nước nào gần Sài Gòn cho trẻ em?')).toMatchObject({ type: 'attraction', query: expect.stringContaining('công viên nước') })
+    expect(derive('thủy cung ở đâu gần đây?')).toMatchObject({ type: 'attraction', query: expect.stringContaining('thủy cung') })
+  })
+
+  it('a phone is still a phone — "Galaxy" without "rạp" names no cinema', () => {
+    expect(derive('mua điện thoại Galaxy S24 ở đâu rẻ?')).toBeNull()
+  })
+
+  it('a what-to-watch ask is still not a place call', () => {
+    expect(derive('tối nay xem phim gì hay?')).toBeNull()
   })
 })

@@ -27,7 +27,7 @@
 // Deterministic, model-free, clock-aware only through `now`. One AI.stream() per
 // turn stays one; the frame costs a few hundred prompt tokens, never a call.
 
-import { normalizeVN } from '../intent'
+import { normalizeVN, namedCinemaQuery } from '../intent'
 import type { NeedProfile } from './needProfile'
 import type { RankedEntry } from './rank'
 import type { CandidateAttrs } from './candidate'
@@ -205,7 +205,8 @@ export function deriveDecisionFrame(input: FrameInput): DecisionFrame {
   const informationNeeded: EvidenceKey[] = []
   for (const c of criteria) for (const k of NEEDS[c.key]) if (!informationNeeded.includes(k)) informationNeeded.push(k)
 
-  const hasLocation = !!input.need.location.text || input.hasGps
+  // Phase D: a named venue ("rạp CGV Vincom Đồng Khởi") is a location of its own.
+  const hasLocation = !!input.need.location.text || input.hasGps || namedCinemaQuery(last) !== null
   const clarify: DecisionFrame['clarify'] =
     placeDecision && !hasLocation && goal !== 'plan' ? { about: 'location' }
       : domains.includes('shopping') && !input.need.subject && goal !== 'inform' && !placeDecision ? { about: 'subject' }

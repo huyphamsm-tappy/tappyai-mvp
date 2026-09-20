@@ -77,7 +77,8 @@ const W_PREFERENCE = 0.25
 /** Subject nouns that NAME the thing being chosen, and the domain each implies. */
 const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   [/\b(macbook|laptop|may tinh xach tay|notebook)\b/, 'laptop', 'shopping'],
-  [/\b(dien thoai|smartphone|iphone|galaxy|phone)\b/, 'phone', 'shopping'],
+  // "Galaxy" is a phone unless it is the cinema chain ("rạp Galaxy", "Galaxy Cinema") — Phase D.
+  [/\b(dien thoai|smartphone|iphone|(?<!rap )galaxy(?! cine)|phone)\b/, 'phone', 'shopping'],
   [/\b(tai nghe|headphone|headphones|earbuds|airpods)\b/, 'headphones', 'shopping'],
   [/\b(may anh|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
   [/\b(tivi|tv|television)\b/, 'tv', 'shopping'],
@@ -89,7 +90,11 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   [/\b(nha hang|quan an|restaurant|quan nhau)\b/, 'restaurant', 'places'],
   [/\b(cafe|ca phe|coffee)\b/, 'cafe', 'places'],
   [/\bspa\b|\bmassage\b/, 'spa', 'places'],
-  [/\b(rap phim|rap chieu|cinema|karaoke|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
+  // Phase D (2026-09-20, measured live run 19): "rạp CGV Vincom Đồng Khởi" named no venue noun
+  // this row knew ("rap cgv" is neither "rap phim" nor "rap chieu"), so the domain stayed null and
+  // the whole consultative stack stood down on a cinema turn. Cinema chains, water parks,
+  // aquariums and play venues are VENUES: they resolve to a venue card like a café does.
+  [/\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|bida|billiards?|escape room|san truot bang|truot bang|ice rink|nha hat|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
   [/\b(xe khach|tau hoa|tau lua|ve xe|\btaxi\b)\b/, 'transport', 'transport'],
 ]
 

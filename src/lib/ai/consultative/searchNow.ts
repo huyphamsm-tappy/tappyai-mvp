@@ -18,7 +18,7 @@
 import type { DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
-import { normalizeVN } from '../intent'
+import { normalizeVN, namedCinemaQuery } from '../intent'
 import { CLARIFY_JOIN } from './actionability'
 
 export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product'
@@ -67,7 +67,14 @@ const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
 // name the venue kind, or every café turn would fetch restaurants and pay a second step to fix it.
 const CAFE_RE = /\b(ca phe|cafe|coffee|tra sua|tiem tra|quan tra)\b/
 const BAR_RE = /\b(bar|pub|beer club|bia thu cong|quan bia|quan nhau|rooftop)\b/
-
+// Phase D (2026-09-20): the ENTERTAINMENT venue kinds. Each names its own call — a cinema is a
+// `cinema` search, the others are `attraction` searches with the kind as the query — so a karaoke
+// / water park / aquarium turn fetches venues of that kind (a card), not "địa điểm vui chơi".
+const CINEMA_RE = /\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim)\b/
+const KARAOKE_RE = /\bkaraoke\b/
+const WATER_PARK_RE = /\b(cong vien nuoc|water ?park)\b/
+const AQUARIUM_RE = /\b(thuy cung|aquarium)\b/
+const PLAY_RE = /\b(khu vui choi|bowling|bida|billiards?|escape room|truot bang|ice rink)\b/
 export function deriveSearchNow(input: {
   text: string
   situation: SituationFrame | null
@@ -104,6 +111,10 @@ export function deriveSearchNow(input: {
   // place directive.
   if (input.need?.domain === 'transport') return null
   if (TRANSPORT_REQUEST.test(normalizeVN(input.text.toLowerCase()))) return null
+  // Phase D: a NAMED venue is its own place — "rạp CGV Vincom Đồng Khởi" needs neither a district nor
+  // GPS to be searched (exact: the call is that venue, and the reply is about it).
+  const namedCinema = namedCinemaQuery(normalizeVN(input.text.toLowerCase()))
+  if (namedCinema) return { query: namedCinema, type: 'cinema', exact: true }
   if (!situation.place.text && !situation.place.nearMe) return null
   const domain = domainOf(frame, input.need ?? null, situation, input.text)
   if (!domain) return null
@@ -124,6 +135,11 @@ export function deriveSearchNow(input: {
     const kindText = normalizeVN((input.consultationText ?? input.text).toLowerCase())
     if (CAFE_RE.test(kindText)) return { query: withHard('quán cà phê'), type: 'cafe', exact: vague }
     if (BAR_RE.test(kindText)) return { query: withHard('quán bar'), type: 'bar', exact: vague }
+    if (CINEMA_RE.test(kindText)) return { query: withHard('rạp chiếu phim'), type: 'cinema', exact: vague }
+    if (KARAOKE_RE.test(kindText)) return { query: withHard('quán karaoke'), type: 'attraction', exact: vague }
+    if (WATER_PARK_RE.test(kindText)) return { query: withHard('công viên nước'), type: 'attraction', exact: vague }
+    if (AQUARIUM_RE.test(kindText)) return { query: withHard('thủy cung'), type: 'attraction', exact: vague }
+    if (PLAY_RE.test(kindText)) return { query: withHard('khu vui chơi giải trí'), type: 'attraction', exact: vague }
   }
   if (domain === 'food') {
     const base = frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : situation.time === 'tonight' ? 'quán ăn tối ngon' : 'quán ăn ngon'

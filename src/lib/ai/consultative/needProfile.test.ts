@@ -355,3 +355,26 @@ describe('NP-PRIO-02 — a spec noun with an evaluative modifier IS a request', 
     expect(keys('dung lượng pin tốt')).not.toContain('storage')
   })
 })
+
+// ── Phase D (2026-09-20): entertainment VENUES the lexicon must know ──
+// Measured live (run 19): "rạp CGV Vincom Đồng Khởi" matched no venue noun, the domain stayed null
+// and the whole consultative stack stood down (v1Active:false) on a cinema turn.
+describe('Phase D — cinema chains, karaoke, water parks, aquariums are entertainment venues', () => {
+  it.each([
+    'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì?',
+    'rạp Galaxy Nguyễn Du có suất nào tối nay?',
+    'karaoke gần đây cho 10 người',
+    'công viên nước nào gần Sài Gòn cho trẻ em?',
+    'thủy cung ở đâu gần đây?',
+    'chỗ chơi bowling gần Quận 7',
+  ])('%s → entertainment / places', (text) => {
+    const p = deriveNeedProfile(turns(text))
+    expect(p.domain).toBe('places')
+    expect(p.subject).toBe('entertainment')
+  })
+
+  it('a Galaxy phone is still a phone', () => {
+    expect(deriveNeedProfile(turns('mua điện thoại Galaxy S24 ở đâu rẻ?')).subject).toBe('phone')
+    expect(deriveNeedProfile(turns('Galaxy Cinema Kinh Dương Vương có gần không?')).subject).toBe('entertainment')
+  })
+})

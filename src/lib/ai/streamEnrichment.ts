@@ -1567,25 +1567,30 @@ export function applyPlaceEnrichmentStreamFilter(
     // unit's, judged by the money guard above and hedged when unverifiable. Only when no place
     // search ran and a product search did.
     const shoppingTurn = !hadPlaceSearch && (productQueries.length > 0 || productRecords.length > 0)
-    const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
-      : null
     /**
      * C3 (2026-09-20) — THE SCHEDULE + TICKET UNIT FOR A VENUE. A cinema / admission turn that
      * neither searched places nor read as a place ("tối nay rạp CGV … chiếu phim gì, mấy giờ, vé
      * bao nhiêu?" was answered from web_search) reached no price guard at all, and a made-up
      * "80k-150k" ticket band and a "suất 19h30" would pass. No showtime provider exists, so the
-     * travel guard's fail-closed rule applies with a screening context: ticket prices and
-     * showtimes are cut and the reply says so once, pointing at the venue / ticket page — which
-     * the CTA still carries (the cinema link is what the fixed decision keeps).
+     * travel guard's fail-closed rule applies with a screening context: a ticket price or a
+     * showtime is SAYABLE only when a fetched row states it — the venue's own Serper snippet is
+     * such a row ("Giá vé 80.000đ", "suất 19:30"); anything else is cut and the reply says so
+     * once, pointing at the venue / ticket page — which the CTA still carries (the cinema link
+     * is what the fixed decision keeps). Runs on every ticket turn (Phase D: a cinema that
+     * resolved to a venue card still needs its showtime prose judged), before the place-price
+     * guard, whose snippet rule then agrees with it on the prices.
      */
-    const ticketUnitGuarded = (ticketIntent && !travelIntent && !shoppingTurn && !snippetGuardResult)
-      ? guardTravelClaimsInText(travelGuarded, [], userText, { lang, unit: 'ticket' })
+    const ticketUnitGuarded = (ticketIntent && !travelIntent && !shoppingTurn)
+      ? guardTravelClaimsInText(travelGuarded, snippetPrices, userText, { lang, unit: 'ticket', evidenceTimes: placeTexts.flatMap(t => scheduleTimesIn(t)) })
       : null
     if (ticketUnitGuarded && ticketUnitGuarded.redacted > 0) {
-      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ticket_unit', redacted: ticketUnitGuarded.redacted }))
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ticket_unit', redacted: ticketUnitGuarded.redacted, evidence_prices: snippetPrices.length }))
     }
-    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded
+    const ticketGuarded = ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded
+    const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
+      ? guardSnippetPricesInText(ticketGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      : null
+    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : ticketGuarded
     // G2 telemetry: counts only — never text, never a venue name (same rule as the place guard line).
     if (snippetGuardResult?.stats) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'snippet_price', v2: snippetV2, band_rows: priceBandsByEntity.size, ...snippetGuardResult.stats }))

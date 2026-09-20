@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { detectLang, detectExplicitLangRequest, classifyIntent } from './intent'
+import { detectLang, detectExplicitLangRequest, classifyIntent, detectForcedTool } from './intent'
 
 // classifyIntent picks between the full tool-capable prompt and the lightweight
 // no-tool prompt. Getting it wrong is not a cost problem, it is a correctness
@@ -180,5 +180,21 @@ describe('detectExplicitLangRequest — explicit instruction overrides detection
   it('returns null for ordinary messages with no language instruction', () => {
     expect(detectExplicitLangRequest('Good bún bò spots in TP.HCM?')).toBeNull()
     expect(detectExplicitLangRequest('Quán bún bò ngon ở TP.HCM?')).toBeNull()
+  })
+})
+
+// ── Phase D (2026-09-20): venue kinds take the place tool, not web_search ──
+describe('Phase D — cinema / karaoke / water park / aquarium are forced to search_places', () => {
+  it.each([
+    'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?',
+    'karaoke gần đây cho 10 người?',
+    'công viên nước nào gần Sài Gòn cho trẻ em?',
+    'thủy cung ở đâu gần đây?',
+    'chỗ chơi bowling gần Quận 7?',
+  ])('%s', (text) => {
+    expect(detectForcedTool(text)).toBe('search_places')
+  })
+  it('a plain question still goes to web_search', () => {
+    expect(detectForcedTool('tỷ giá USD hôm nay bao nhiêu?')).toBe('web_search')
   })
 })

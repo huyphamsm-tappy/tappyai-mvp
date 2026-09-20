@@ -389,7 +389,10 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
   if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
   if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
-  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
+  // Phase D (2026-09-20): a named cinema ("rạp CGV Vincom Đồng Khởi"), karaoke, a water park, an
+  // aquarium or a play venue is a VENUE — it takes the place tool, not `web_search` (measured live
+  // run 19: the cinema question fell through to the trailing "?" rule and got no card).
+  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|rap phim|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|\bcgv\b|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim|karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|\bbida\b|billiards?|escape room|truot bang|ice rink|nha hat|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
   // and it used to route an evening-out request to shopping. A negative
@@ -706,6 +709,24 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   if (hasPlanRequest) return MULTI_DAY_RE.test(t) ? 'trip' : 'evening'
 
   return null
+}
+
+// Phase D (2026-09-20): a cinema the user NAMED is its own place — the search-now directive calls it
+// exactly, and the decision frame does not ask for a location it does not need.
+/** A cinema the user NAMED ("rạp CGV Vincom Đồng Khởi") — the call is that venue, exactly. */
+// A bare "galaxy" / "bhd" is a brand only after "rạp" (Galaxy is also a phone).
+const CINEMA_BRAND_RE = /\b(?:rap (galaxy|bhd|cgv|lotte|cinestar)|(cgv|lotte cinema|galaxy cinema|bhd star|cinestar|mega gs))\b/
+const VENUE_NAME_STOP = new Set(['chieu', 'phim', 'toi', 'nay', 'mai', 'hom', 'co', 'gia', 've', 'may', 'gio', 'o', 'dau', 'gan', 'nao', 'ngay', 'lich', 'suat', 'bao', 'nhieu', 'khong', 'la', 'thi', 'de', 'cho', 'va', 'xem', 'gi', 'the', 'di', 'den', 'tu'])
+/** The named cinema, as a search query (unaccented is fine for Serper), or null when only the kind was named. */
+export function namedCinemaQuery(normalizedText: string): string | null {
+  const m = CINEMA_BRAND_RE.exec(normalizedText)
+  if (!m) return null
+  const words = [m[1] ?? m[2]]
+  for (const w of normalizedText.slice(m.index + m[0].length).split(/[^a-z0-9]+/).filter(Boolean)) {
+    if (VENUE_NAME_STOP.has(w) || words.length >= 5) break
+    words.push(w)
+  }
+  return words.join(' ')
 }
 
 // A MOVIE/SHOW something-to-watch cue: the reply is a recommendation from film
