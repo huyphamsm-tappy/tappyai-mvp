@@ -14,6 +14,7 @@ import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGu
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
 import { buildPlacesLiveView, alignEmphasisToModelPick, placesRenderOrder } from '@/lib/recommendation/liveView'
+import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
@@ -1137,6 +1138,10 @@ export function applyPlaceEnrichmentStreamFilter(
   // a money-free sentence — the V1 turn keeps the whole reply until the guards have run.
   const progressive = (placeIntent || ticketIntent) && !travelIntent && !collector?.consultativeV1
   let placeToolSeen = false
+  // A1(a)+(b): the row count of the place result just read (null = the result was not a place
+  // search), and whether the turn's preliminary fold + "found" progress already went out.
+  let lastPlaceRows: number | null = null
+  let preliminarySent = false
   /**
    * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
    * recall turn or a non-place conversation is left exactly as it was before this existed.
@@ -2378,11 +2383,28 @@ export function applyPlaceEnrichmentStreamFilter(
             // saw without one, upgrade to the entry that has the photo. Same helper the seed
             // uses, so seeded + live evidence for one place merges instead of duplicating.
             mergePlaces(newPlaces)
+            if (toolName === 'search_places' || toolName === 'get_hotel_prices') lastPlaceRows = newPlaces.length
           } catch { /* ignore */ }
           // B12 — a tool result closes the step. Whatever the model says next is a new paragraph,
           // not a continuation of the sentence it left off on.
           awaitingPostToolText = true
           controller.enqueue(encoder.encode(line + '\n'))
+          // A1(a)+(b): the rows are in and the model has not written a word yet — say so, and put
+          // the engine's set on the fold NOW (`preliminary`, unranked, no pick, no photos). Once
+          // per turn: a plan turn's later searches would otherwise replace the fold each time.
+          // Shopping keeps its own early decision below; hotels have no card and get the text only.
+          if (lastPlaceRows !== null && !preliminarySent && bufferMode) {
+            preliminarySent = true
+            controller.enqueue(encoder.encode('8:' + JSON.stringify([buildProgressAnnotation('found', lang, lastPlaceRows)]) + '\n'))
+            const early = (EMIT_PLACES_ANNOTATION && !collector?.shoppingMarker && collector?.placesRecommendations?.length)
+              ? buildPlacesLiveView(collector.placesRecommendations, { mapsSearchUrl: collector.placesMapsUrl, shown: CARDS_SHOWN, preliminary: true })
+              : null
+            if (early) {
+              controller.enqueue(encoder.encode('8:' + JSON.stringify([early]) + '\n'))
+              console.log(JSON.stringify({ type: 'tappyai_cards_preliminary', items: early.items.length, card1: early.items[0]?.name ?? null, rows: lastPlaceRows }))
+            }
+          }
+          lastPlaceRows = null
           // ── Early shopping decision ───────────────────────────────────────
           //
           // The decision card is FINISHED here. route.ts builds it from the
@@ -2406,6 +2428,8 @@ export function applyPlaceEnrichmentStreamFilter(
             controller.enqueue(encoder.encode('0:' + JSON.stringify(collector.shoppingMarker + '\n\n') + '\n'))
           }
         } else if (line.startsWith('d:')) {
+          // A1(b): the model is done; what follows is the guards, the photos and the card.
+          if (bufferMode && placeToolSeen && !emitted) controller.enqueue(encoder.encode('8:' + JSON.stringify([buildProgressAnnotation('finishing', lang)]) + '\n'))
           await emitReconstructed(controller)
           controller.enqueue(encoder.encode(line + '\n'))
         } else {

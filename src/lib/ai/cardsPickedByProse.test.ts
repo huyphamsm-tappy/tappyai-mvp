@@ -5,7 +5,7 @@ import { createEnrichmentCollector } from './toolResultSplit'
 import { placeRecommendations } from '@/lib/recommendation/fromToolResult'
 import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { rendersDecisionCard } from './decisionSurface'
-import { placesRenderOrder, type PlacesLiveView } from '@/lib/recommendation/liveView'
+import { placesRenderOrder, readPlacesLiveView, type PlacesLiveView } from '@/lib/recommendation/liveView'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // THE THREE CARDS ARE THE VENUES THE REPLY NAMED — under the PROVIDER'S spelling.
@@ -72,7 +72,8 @@ async function turn(prose: string, names = NAMES, enginePick?: { name: string; r
   )
   const out = await new Response(res.body).text()
   const annotations = out.split('\n').filter(l => l.startsWith('8:')).map(l => JSON.parse(l.slice(2)) as unknown[]).flat() as PlacesLiveView[]
-  const view = annotations.find(a => a.kind === 'tappy.places.v1')!
+  // A1(a): the turn carries the preliminary set first; the decision is the LAST place frame.
+  const view = readPlacesLiveView(annotations)!
   const nameOf = (id: string) => view.items.find(i => i.id === id)?.name
   return { view, picked: (view.picked ?? []).map(nameOf), aboveFold: placesRenderOrder(view).visible.map(i => i.name) }
 }

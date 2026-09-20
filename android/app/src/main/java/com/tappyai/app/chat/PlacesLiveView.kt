@@ -162,6 +162,13 @@ data class PlacesLiveView(
     val picked: List<String> = emptyList(),
     /** How many cards sit above "Xem thêm" (item 2: 3). Null: every card, as before. */
     val shown: Int? = null,
+    /**
+     * A1(a) (2026-09-20): the ENGINE's set, sent the moment the rows land — before the model has
+     * written a word — so the fold is not blank while the prose is written. Unranked, no pick, no
+     * reasons, no photos. The decision frame that follows the prose replaces it: the last frame of
+     * the kind is the turn's view. Web parity: `liveView.ts` `preliminary`.
+     */
+    val preliminary: Boolean = false,
 )
 
 /**

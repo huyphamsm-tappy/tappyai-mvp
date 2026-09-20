@@ -35,6 +35,14 @@ sealed interface ChatStreamEvent {
      * the durable `[TAPPY_PLACES]` block in the text is what survives a reload.
      */
     data class Places(val view: PlacesLiveView) : ChatStreamEvent
+
+    /**
+     * What the pipeline is doing right now (`8:`, kind `tappy.progress.v1`, A1(b)): the row count
+     * the search returned, the reply being checked and photos fetched. `text` is written by the
+     * server in the turn's language; the client shows it in place of the rotating generic hint.
+     * Never text, never persisted. Web parity: `progressAnnotation.ts`.
+     */
+    data class Progress(val stage: String, val text: String) : ChatStreamEvent
 }
 
 interface ChatRepository {

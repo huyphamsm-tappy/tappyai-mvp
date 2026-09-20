@@ -164,6 +164,14 @@ export interface PlacesLiveView {
    * such error on this turn.
    */
   pickUnmatched?: true
+  /**
+   * A1(a) (2026-09-20): the ENGINE's set, sent the moment the rows arrive — before the model has
+   * written a word — so the fold is not blank for the 6–10 s the prose takes. Never a pick: no
+   * `picked`, `ranked: false`, no emphasis, no photos. The final frame (same kind, after the
+   * prose) replaces it; readers take the LAST frame of the kind. A client that does not know the
+   * flag renders it as an unranked set, which is exactly what it is.
+   */
+  preliminary?: true
 }
 
 /** The provider already caps a place search at 8 rows; this is the same ceiling. */
@@ -368,18 +376,27 @@ function primaryOf(recs: readonly Recommendation[]): Recommendation | undefined 
  */
 export function buildPlacesLiveView(
   recs: readonly Recommendation[],
-  opts: { mapsSearchUrl?: string; picked?: readonly string[]; shown?: number; pickUnmatched?: boolean } = {},
+  opts: { mapsSearchUrl?: string; picked?: readonly string[]; shown?: number; pickUnmatched?: boolean; preliminary?: boolean } = {},
 ): PlacesLiveView | null {
-  const extras = (items: LivePlace[]): Pick<PlacesLiveView, 'picked' | 'shown' | 'pickUnmatched'> => {
+  const extras = (items: LivePlace[]): Pick<PlacesLiveView, 'picked' | 'shown' | 'pickUnmatched' | 'preliminary'> => {
     const ids = new Set(items.map(i => i.id))
     const picked = (opts.picked ?? []).filter(id => ids.has(id))
     return {
       ...(picked.length > 0 ? { picked } : {}),
       ...(typeof opts.shown === 'number' && opts.shown > 0 ? { shown: Math.min(opts.shown, items.length) } : {}),
       ...(opts.pickUnmatched === true ? { pickUnmatched: true as const } : {}),
+      ...(opts.preliminary === true ? { preliminary: true as const } : {}),
     }
   }
   if (!Array.isArray(recs) || recs.length === 0) return null
+  // A1(a): before the prose there is no pick — the engine's set, unranked on the wire, no emphasis.
+  if (opts.preliminary === true) {
+    const usable = recs.filter(r => r.entity.kind !== 'product' && r.entity.identity.name.trim())
+    if (usable.length === 0) return null
+    const items = usable.slice(0, MAX_ITEMS).map(r => toLive({ ...r, recommended: false, reasons: [], tradeOff: null }, MAX_ACTIONS))
+    const { picked: _p, ...rest } = extras(items)
+    return { kind: PLACES_ANNOTATION_KIND, v: 1, domain: usable[0].entity.domain, ranked: false, items, ...(isHttpUrl(opts.mapsSearchUrl) ? { mapsSearchUrl: opts.mapsSearchUrl } : {}), ...rest }
+  }
 
   /**
    * 🚨 NO RANKING IS NOT THE SAME AS NOTHING TO SHOW.
@@ -443,9 +460,13 @@ export function buildPlacesLiveView(
  * Defensive by contract — annotations are an open channel, so anything
  * unrecognised, malformed or half-arrived degrades to `null` rather than
  * throwing inside a render.
+ *
+ * A1(a): a turn may carry TWO frames of this kind — the preliminary set at the tool result and
+ * the decision after the prose. The LAST readable one is the turn's view.
  */
 export function readPlacesLiveView(annotations: unknown[] | undefined | null): PlacesLiveView | null {
   if (!Array.isArray(annotations)) return null
+  let view: PlacesLiveView | null = null
   for (const a of annotations) {
     if (!a || typeof a !== 'object') continue
     const candidate = a as Partial<PlacesLiveView>
@@ -456,7 +477,7 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
         .map(x => ({ ...x, actions: Array.isArray(x.actions) ? x.actions : [] }))
       : []
     if (items.length === 0) continue
-    return {
+    view = {
       kind: PLACES_ANNOTATION_KIND,
       v: 1,
       domain: (candidate.domain ?? 'food') as EntityDomain,
@@ -467,9 +488,10 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
       ...(Array.isArray(candidate.picked) ? { picked: candidate.picked.filter((x): x is string => typeof x === 'string') } : {}),
       ...(typeof candidate.shown === 'number' && candidate.shown > 0 ? { shown: candidate.shown } : {}),
       ...(candidate.pickUnmatched === true ? { pickUnmatched: true as const } : {}),
+      ...(candidate.preliminary === true ? { preliminary: true as const } : {}),
     }
   }
-  return null
+  return view
 }
 
 /**

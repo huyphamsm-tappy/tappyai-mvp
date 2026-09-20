@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { cn } from '@/lib/utils'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
 import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
@@ -96,7 +97,7 @@ export const PHOTO_RETRY_DELAY_MS = 1200
  * The card photo, with ONE proportionate retry.
  *
  * Measured 2026-09-18/19 (pre-release A.4): the `lh3.googleusercontent.com/gps-cs-s` photos loaded
- * 100 % from Node, from headless Chromium (6 loads × 30 images, with and without Referer) and from
+ * 100 % from Node, from headless Chromium (6 loads x 30 images, with and without Referer) and from
  * the desktop pane today, while the day before the same pane got 5–12 of 16 with intermittent
  * 429s that cleared after ~30 s. The failures track bursts from one address over time, not the
  * Referer (Referer set to our origin: 80/80 → 200). So the fix is cause-agnostic: on error, retry
@@ -394,7 +395,7 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
   const hiddenCount = folded ? order.hidden.filter(filter.match).length : 0
 
   return (
-    <div className="mt-3 animate-fade-in" data-testid="place-decision" data-domain={view.domain} data-pick-unmatched={view.pickUnmatched ? 'true' : undefined}>
+    <div className={cn('mt-3 animate-fade-in', view.preliminary && 'opacity-80')} data-testid="place-decision" data-domain={view.domain} data-pick-unmatched={view.pickUnmatched ? 'true' : undefined} data-preliminary={view.preliminary ? 'true' : undefined}>
       {/* The row shows when a chip can actually change the result, and also when
           the payload holds more rows than fit — the count is then the honest
           answer to "is this all of them?". */}

@@ -110,6 +110,15 @@ class ChatViewModel @Inject constructor(
     private val _streamingText = MutableStateFlow("")
     val streamingText: StateFlow<String> = _streamingText.asStateFlow()
 
+    // A1 (2026-09-20): what the in-flight turn has said about itself so far. The server's own
+    // progress sentence (`tappy.progress.v1`) replaces the rotating generic hint while it is
+    // present, and the place set it sent (the engine's `preliminary` fold, then the decision) is
+    // rendered under the streaming bubble instead of a blank. Both are reset with the stream.
+    private val _streamingHint = MutableStateFlow<String?>(null)
+    val streamingHint: StateFlow<String?> = _streamingHint.asStateFlow()
+    private val _streamingPlaces = MutableStateFlow<PlacesLiveView?>(null)
+    val streamingPlaces: StateFlow<PlacesLiveView?> = _streamingPlaces.asStateFlow()
+
     // True only while a resumed conversation's history is still loading, so the Welcome state
     // doesn't flash before the real messages arrive (see init{} below). Chats started fresh
     // (conversationId == null) never enter this state.
@@ -606,6 +615,8 @@ class ChatViewModel @Inject constructor(
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
             _streamingText.value = ""
+            _streamingHint.value = null
+            _streamingPlaces.value = null
 
             try {
                 val reply = StringBuilder()
@@ -617,7 +628,10 @@ class ChatViewModel @Inject constructor(
                 chatRepository.streamReply(history).collect { event ->
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
-                        is ChatStreamEvent.Places -> { livePlaces = event.view; return@collect }
+                        // The last place frame is the turn's view (the preliminary set is replaced
+                        // by the decision); both are shown live as they arrive.
+                        is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
+                        is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
                     }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown
@@ -689,6 +703,8 @@ class ChatViewModel @Inject constructor(
             } finally {
                 _isAssistantResponding.value = false
                 _streamingText.value = ""
+                _streamingHint.value = null
+                _streamingPlaces.value = null
             }
         }
     }

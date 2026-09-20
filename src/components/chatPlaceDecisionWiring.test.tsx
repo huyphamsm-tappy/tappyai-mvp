@@ -105,11 +105,24 @@ describe('ChatInterface — the place decision card', () => {
     expect(screen.getAllByTestId('place-card')[1].textContent).toContain('Cosa Nostra')
   })
 
-  it('🚨 does not render the card while the reply is still streaming', () => {
-    // The annotation is sent once the text is settled, but the guard is explicit:
-    // a card that appears mid-stream can flash, or show a place the grounding
-    // gate is about to delete from the reply.
-    seed('Mình đang tìm…', [view], true)
+  it('A1(a): while the reply is still streaming, a frame the SERVER sent for this turn renders — the preliminary set, marked as such, then the decision', () => {
+    // The stream carries the engine's set the moment the rows land (`preliminary`) and the
+    // decision after the prose; the reader takes the last, so nothing flashes or shows twice.
+    seed('', [{ ...view, ranked: false, picked: undefined, preliminary: true }], true)
+    render(<ChatInterface />)
+    expect(screen.getByTestId('place-decision').getAttribute('data-preliminary')).toBe('true')
+    cleanup()
+    seed('I lean towards **Ca Phe AnAn**.', [{ ...view, ranked: false, picked: undefined, preliminary: true }, view], true)
+    render(<ChatInterface />)
+    expect(screen.getAllByTestId('place-decision')).toHaveLength(1)
+    expect(screen.getByTestId('place-decision').getAttribute('data-preliminary')).toBeNull()
+  })
+
+  it('🚨 nothing from the recall cache renders mid-stream: a streaming message with no frame has no card', () => {
+    seed('I lean towards **Ca Phe AnAn**.', [view], false)
+    render(<ChatInterface />) // remembers the decision under this content
+    cleanup()
+    seed('I lean towards **Ca Phe AnAn**.', undefined, true)
     render(<ChatInterface />)
     expect(screen.queryByTestId('place-decision')).toBeNull()
   })

@@ -22,6 +22,7 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
+import { readProgress } from '@/lib/recommendation/progressAnnotation'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -925,6 +926,10 @@ export default function ChatInterface({
     return running?.toolName ?? null
   })()
   const toolHint = activeTool ? TOOL_HINTS[activeTool] : undefined
+  // A1(b): the pipeline's own word on what it is doing ("Đã có 10 chỗ phù hợp — đang chọn…",
+  // "Đang kiểm tra thông tin và lấy ảnh…") — an `8:` annotation on the streaming message. When
+  // present it beats both the tool hint and the rotating generic one, because it is true.
+  const progress = isLoading && lastMsg?.role === 'assistant' ? readProgress(lastMsg.annotations as unknown[] | undefined) : null
   // Target visible text of the last assistant reply (same parse chain as the
   // render below), fed through the smoothing hook so the streaming message types
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
@@ -1409,7 +1414,8 @@ export default function ChatInterface({
                  * second later. The in-memory hand-off keeps it for the session without
                  * writing anything anywhere; see `liveViewCache`.
                  */
-                if (annotated) rememberPlacesView(msg.content, annotated)
+                // Only the decision is remembered — a preliminary frame under an empty body must not be recalled for a later turn.
+                if (annotated && !annotated.preliminary) rememberPlacesView(msg.content, annotated)
                 const placeView = annotated ?? recallPlacesView(msg.content)
                 /**
                  * 🚨 THE SAME BUTTON TWICE IS STILL DUPLICATION. The model authors its
@@ -1464,13 +1470,14 @@ export default function ChatInterface({
                           }}
                         />
                       )}
-                      {/* One card per turn, and never while the reply is still
-                          arriving: the annotation is sent once the text is final, so a
-                          card can neither flash mid-stream nor appear twice. Shopping
+                      {/* One card per turn. While the reply is still arriving the card renders
+                          only from a frame the SERVER sent for this turn (A1(a): the engine's
+                          preliminary set at the tool result, then the decision after the prose —
+                          the reader takes the last), never from the recall cache. Shopping
                           owns its own decision surface, so the two are mutually
                           exclusive by construction (the projection returns null for a
                           product). */}
-                      {placeView && !shopView && !(isLoading && isLastMessage) && <PlaceDecision view={placeView} />}
+                      {placeView && !shopView && (!(isLoading && isLastMessage) || !!annotated) && <PlaceDecision view={placeView} />}
                       {/* Comparison (DD-005). Derived from the SAME payload the decision above
                           renders — no extra request, nothing inferred. Offered only once the reply
                           is complete, like every other structured action, and only when there are
@@ -1644,8 +1651,8 @@ export default function ChatInterface({
                     <span className="typing-dot text-gray-400" />
                     <span className="typing-dot text-gray-400" />
                   </div>
-                  <span key={toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in">
-                    {toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
+                  <span key={progress ? `p:${progress.stage}` : toolHint ? activeTool : thinkHintIdx} className="text-xs text-gray-400 dark:text-gray-500 animate-fade-in" data-testid="turn-progress" data-stage={progress?.stage}>
+                    {progress ? progress.text : toolHint ? toolHint[locale === 'en' ? 1 : 0] : THINK_HINTS[thinkHintIdx % THINK_HINTS.length]}
                   </span>
                 </div>
               </div>

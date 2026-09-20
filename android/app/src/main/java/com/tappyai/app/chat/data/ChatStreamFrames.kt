@@ -3,6 +3,11 @@ package com.tappyai.app.chat.data
 import com.tappyai.app.chat.PLACES_ANNOTATION_KIND
 import com.tappyai.app.chat.PlacesLiveView
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.decodeFromJsonElement
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * One line of the `/api/chat` data stream, decoded.
@@ -18,6 +23,9 @@ import kotlinx.serialization.json.Json
  */
 object ChatStreamFrames {
 
+    /** The progress annotation's kind (server `progressAnnotation.ts`, A1(b)). */
+    const val PROGRESS_ANNOTATION_KIND = "tappy.progress.v1"
+
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
 
     /**
@@ -27,7 +35,8 @@ object ChatStreamFrames {
      *
      *   `0:` text delta, payload a JSON-encoded string (`0:"Hello "`).
      *   `8:` MESSAGE ANNOTATION, payload a JSON array. The server sends the turn's place decision
-     *        here and has done since web gained its place card.
+     *        here and has done since web gained its place card — and, since A1 (2026-09-20), the
+     *        preliminary set at the tool result and the turn's progress (`tappy.progress.v1`).
      *
      * Every other part type — tool calls (`2`), step finish (`e`), done (`d`) — is skipped, and an
      * annotation this version does not recognise is skipped too: an unknown frame must never become
@@ -44,9 +53,26 @@ object ChatStreamFrames {
         }
         if (stripped.startsWith("8:")) {
             return runCatching {
-                json.decodeFromString<List<PlacesLiveView>>(stripped.removePrefix("8:"))
-                    .firstOrNull { it.kind == PLACES_ANNOTATION_KIND && it.items.isNotEmpty() }
-                    ?.let { ChatStreamEvent.Places(it) }
+                // Each element is gated on its own `kind`: a frame this version does not know is
+                // skipped, and a known one is decoded by its own shape — a progress element has no
+                // `items`, so decoding the whole array as place views would drop the place view too.
+                val root = json.parseToJsonElement(stripped.removePrefix("8:")).jsonArray
+                var event: ChatStreamEvent? = null
+                for (element in root) {
+                    val obj = element as? JsonObject ?: continue
+                    when (obj["kind"]?.jsonPrimitive?.contentOrNull) {
+                        PLACES_ANNOTATION_KIND -> {
+                            val view = json.decodeFromJsonElement<PlacesLiveView>(obj)
+                            if (view.items.isNotEmpty()) { event = ChatStreamEvent.Places(view); break }
+                        }
+                        PROGRESS_ANNOTATION_KIND -> {
+                            val text = obj["text"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                            val stage = obj["stage"]?.jsonPrimitive?.contentOrNull.orEmpty()
+                            if (text.isNotBlank()) { event = ChatStreamEvent.Progress(stage, text); break }
+                        }
+                    }
+                }
+                event
             }.getOrNull()
         }
         return null

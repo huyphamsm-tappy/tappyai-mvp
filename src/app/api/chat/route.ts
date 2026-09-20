@@ -2059,7 +2059,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
       console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch.args.query }))
     } catch (e) {
-      console.error('[chat] place evidence save failed (the next "gợi ý thêm" will search afresh):', e)
+      console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
     }
   }, undefined, travelIntent, lastText, needProfile.domain === 'places',
   /**

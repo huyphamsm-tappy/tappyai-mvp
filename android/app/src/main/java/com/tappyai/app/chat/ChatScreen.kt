@@ -144,6 +144,8 @@ fun ChatScreen(
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
+    val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
+    val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
     val isLoadingConversation by viewModel.isLoadingConversation.collectAsStateWithLifecycle()
     val speakingMessageId = viewModel.speakingMessageId
     val feedback by viewModel.feedback.collectAsStateWithLifecycle()
@@ -469,6 +471,9 @@ fun ChatScreen(
                         AssistantStreamingRow(
                             mascot = viewModel.category.mascot,
                             streamingText = streamingText,
+                            hint = streamingHint,
+                            places = streamingPlaces,
+                            commerce = commerceCallbacks,
                         )
                     }
                 }
@@ -1096,11 +1101,24 @@ private fun speedLabel(speed: Float): String = when (speed) {
 /**
  * The in-flight assistant reply. Mirrors the real assistant Row (mascot avatar + text column) so the
  * committed message takes over its exact position seamlessly. Before the first token it shows the
- * thinking dots + a rotating hint (web parity — no skeleton); once text arrives it renders the smooth
+ * thinking dots + a hint (web parity — no skeleton); once text arrives it renders the smooth
  * typewriter reveal + a blinking cursor.
+ *
+ * A1 (2026-09-20): the hint is the SERVER's progress sentence when the turn has sent one ("Đã có
+ * 10 chỗ phù hợp — đang chọn cho bạn…"), the rotating generic one otherwise; and the place set the
+ * turn has sent so far — the engine's `preliminary` fold the moment the rows land, the decision
+ * once the prose is done — renders under the bubble, so a place turn is never a blank for the
+ * 6–10 s its prose takes. The preliminary set is unranked and carries no pick; the section shows
+ * it exactly so (no badge, no "Vì sao").
  */
 @Composable
-private fun AssistantStreamingRow(mascot: Int, streamingText: String) {
+private fun AssistantStreamingRow(
+    mascot: Int,
+    streamingText: String,
+    hint: String? = null,
+    places: PlacesLiveView? = null,
+    commerce: CommerceActionCallbacks = CommerceActionCallbacks(),
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -1124,13 +1142,24 @@ private fun AssistantStreamingRow(mascot: Int, streamingText: String) {
                 ) {
                     TypingDots()
                     Text(
-                        text = rememberRotatingHint(),
+                        text = hint ?: rememberRotatingHint(),
                         style = MaterialTheme.typography.bodySmall, // text-xs
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("turn-progress"),
                     )
                 }
             } else {
                 StreamingMarkdown(smooth)
+            }
+            places?.let { view ->
+                PlaceDecisionSection(
+                    places = view.renderOrder().map { it.toCardView() },
+                    ranked = view.ranked != false,
+                    mapsSearchUrl = view.mapsSearchUrl,
+                    commerce = commerce,
+                    shown = view.shown,
+                    modifier = Modifier.testTag(if (view.preliminary) "place-decision-preliminary" else "place-decision-live"),
+                )
             }
         }
     }

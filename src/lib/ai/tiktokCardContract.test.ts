@@ -65,8 +65,8 @@ async function runTurn(opts: {
     'TP.HCM',
   )
   const text = await new Response(res.body).text()
-  const frame = text.split('\n').find(l => l.startsWith('8:'))
-  const view = frame ? readPlacesLiveView(JSON.parse(frame.slice(2))) : null
+  // A1(a): the preliminary set rides first; the decision is the LAST place frame — read them all.
+  const view = readPlacesLiveView(text.split('\n').filter(l => l.startsWith('8:')).flatMap(l => JSON.parse(l.slice(2)) as unknown[]))
   return { text, view }
 }
 
@@ -157,8 +157,7 @@ describe('cost: only entities that will actually render are asked about', () => 
       'TP.HCM',
     )
     const text = await new Response(res.body).text()
-    const frame = text.split('\n').find(l => l.startsWith('8:'))
-    expect(readPlacesLiveView(JSON.parse(frame!.slice(2)))!.items).toHaveLength(3)
+    expect(readPlacesLiveView(text.split('\n').filter(l => l.startsWith('8:')).flatMap(l => JSON.parse(l.slice(2)) as unknown[]))!.items).toHaveLength(3)
   })
 })
 
