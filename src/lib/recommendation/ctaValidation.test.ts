@@ -153,7 +153,8 @@ describe('the batch preserves order and count', () => {
   })
   it('unlinks a prose link whose label names a registry merchant but whose URL is another site; other links stay', () => {
     const prose = 'Xem tại [Điện Máy Xanh](https://www.dienmaycholon.vn) hoặc [Shopee](https://shopee.vn/search?keyword=iphone) và [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Lịch sự kiện](https://sodulich.hochiminhcity.gov.vn/).'
-    expect(unlinkMislabelledMerchantLinks(prose)).toBe('Xem tại Điện Máy Xanh hoặc [Shopee](https://shopee.vn/search?keyword=iphone) và [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Lịch sự kiện](https://sodulich.hochiminhcity.gov.vn/).')
+    // A3.3 (2026-09-20): the Shopee SEARCH link is unmade too; the dated flight list and the non-registry site stay.
+    expect(unlinkMislabelledMerchantLinks(prose)).toBe('Xem tại Điện Máy Xanh hoặc Shopee và [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Lịch sự kiện](https://sodulich.hochiminhcity.gov.vn/).')
   })
   it('drops a Ticketbox front door (CCP-owned): the verified event link arrives as a Commerce Link instead', () => {
     expect(validateModelCtaButtons([{ label: '🎫 Ticketbox - Mua vé sự kiện', type: 'website', url: AGGREGATOR_HOMEPAGE, primary: true }], t)).toEqual([])
@@ -166,9 +167,10 @@ describe('a named merchant unmakes prose links to OTHER registry merchants (live
     const out = unlinkMislabelledMerchantLinks(text, undefined, 'tripcom')
     expect(out).toBe('Để đặt phòng, bạn có thể truy cập Booking.com hoặc Agoda. Hoặc xem [Trip.com](https://vn.trip.com/hotels/detail/?hotelId=707332).')
   })
-  it('without a named merchant, an honest OTA results-page link is left alone', () => {
-    const text = 'Xem [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang).'
-    expect(unlinkMislabelledMerchantLinks(text, undefined, null)).toBe(text)
+  it('without a named merchant, an OTA results-page link is unmade (A3.3, 2026-09-20 — measured Android turn B2); a hotel page stays', () => {
+    expect(unlinkMislabelledMerchantLinks('Xem [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang).', undefined, null)).toBe('Xem Booking.com.')
+    const hotel = 'Xem [M Hotel](https://www.booking.com/hotel/vn/m-danang.vi.html).'
+    expect(unlinkMislabelledMerchantLinks(hotel, undefined, null)).toBe(hotel)
   })
   it('a system-placed link to another merchant is never touched', () => {
     const url = 'https://www.booking.com/searchresults.vi.html?ss=Da+Nang'
@@ -310,5 +312,17 @@ describe('a bold-wrapped markdown link is un-emphasised so Android linkifies it 
   it('does not rewrite the URL when unwrapping (host + path preserved verbatim)', () => {
     const out = unemphasizeLinks('**[X](https://ticketbox.vn/a/b?c=d&e=f)**')
     expect(out).toBe('[X](https://ticketbox.vn/a/b?c=d&e=f)')
+  })
+})
+
+// A3.3 (owner 2026-09-20), measured Android turn B2: a prose link to a Booking.com SEARCH page.
+describe('A3.3 — a prose link to a registry merchant search page is unmade, the route fare list stays', () => {
+  it('unlinks searchresults / marketplace search, keeps a hotel page and a dated flight list', () => {
+    expect(unlinkMislabelledMerchantLinks('Xem [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang) hoặc [Agoda](https://www.agoda.com/vi-vn/).')).toBe('Xem Booking.com hoặc Agoda.')
+    expect(unlinkMislabelledMerchantLinks('Mua trên [Shopee](https://shopee.vn/search?keyword=x).')).toBe('Mua trên Shopee.')
+    const hotel = 'Xem [M Hotel](https://www.booking.com/hotel/vn/m-danang.vi.html).'
+    expect(unlinkMislabelledMerchantLinks(hotel)).toBe(hotel)
+    const fare = 'Vé: [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10) · [Vexere](https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html?date=21-09-2026)'
+    expect(unlinkMislabelledMerchantLinks(fare)).toBe(fare)
   })
 })

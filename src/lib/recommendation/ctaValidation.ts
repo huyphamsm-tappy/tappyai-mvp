@@ -201,8 +201,20 @@ export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: Readon
     // turn — a link to ANY OTHER registry merchant (live UAT 14 Sep 2026: "… trên Trip.com" whose
     // reply still linked "[Booking.com] hoặc [Agoda]"). The named merchant's own links stay.
     const other = !!requestedProviderId && isOtherRegistryMerchant(url, requestedProviderId)
-    return other || isForbiddenMerchant(label, hostOf(url)) || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) ? label : whole
+    return other || isForbiddenMerchant(label, hostOf(url)) || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) || isRegistrySearchPage(url) ? label : whole
   })
+}
+
+/**
+ * A3.3 (owner 2026-09-20, measured Android turn B2: "[Booking.com](…/searchresults.vi.html?ss=Da+Nang)" in the
+ * prose of a hotel reply): a registry merchant's SEARCH / results page is never linked — the label stays as
+ * text. A dated flight / coach route fare list is the route's own page and stays linked.
+ */
+export function isRegistrySearchPage(url: string): boolean {
+  const host = hostOf(url)
+  if (!host || !(CCP_MERCHANT_HOSTS.has(host) || MERCHANT_BY_HOST.has(host))) return false
+  if (isFlightResultsPage(url) || isRouteResultsPage(url)) return false
+  return linkDepthClass(url) === 'search'
 }
 
 /** A registry merchant's front door (root or a bare section, locale segments ignored) — a button on it is dropped, a prose link to it is unmade. */
