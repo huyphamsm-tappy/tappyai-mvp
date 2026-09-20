@@ -562,7 +562,11 @@ const hasTikTok = (p: PlaceLike) => isValidTikTokContentUrl(p.tiktok_review_url)
  * for — and those are worth the call precisely because nothing else will fill
  * them. Raised to the card's own ceiling so the two stop disagreeing.
  */
-const PHOTO_ENRICHMENT_LIMIT = 8
+// A1(d) 2026-09-20: the fold shows THREE cards (CARDS_SHOWN); the five behind "Xem thêm" are not
+// on screen, so a billed lookup for them is a photo nobody sees. Measured on hotel turns (rows
+// without a thumbnail): 8 Serper image calls per turn, 5 of them for hidden cards — 15 credits vs
+// 10, and 0.5–1 s of wall time. Named places still come first, so a reply naming #5 keeps its photo.
+const PHOTO_ENRICHMENT_LIMIT = 3
 
 export function selectPlacesNeedingEnrichment(places: PlaceLike[], fullText: string): PlaceLike[] {
   // A place that already HAS a photo is not a candidate for a billed lookup —

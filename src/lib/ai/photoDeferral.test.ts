@@ -36,7 +36,8 @@ describe('selectPlacesNeedingEnrichment', () => {
     const text = 'Mình gợi ý **Bún Chả** và **Xôi Xéo** nhé.'
     const chosen = selectPlacesNeedingEnrichment(places, text)
     expect(chosen.slice(0, 2).map(p => p.name).sort()).toEqual(['Bún Chả', 'Xôi Xéo'])
-    expect(chosen.map(p => p.name)).toContain('Phở Gà')
+    // A1(d): the fill stops at the fold — three cards, so exactly one more after the two named.
+    expect(chosen.map(p => p.name)).toEqual(['Bún Chả', 'Xôi Xéo', 'Phở Gà'])
   })
 
   /**
