@@ -831,3 +831,60 @@ describe('admin_set_user_date_of_birth', () => {
     expect(t.t).toBe('text')
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// F-028 — after 20260920_f028_dob_self_correct_while_ineligible.sql redefines
+// set_user_date_of_birth(): an INELIGIBLE user may keep self-correcting so a
+// mistyped date is not a lockout, while an ELIGIBLE user is still capped at ONE
+// correction (the gate is not weakened, the general limit is not raised).
+//
+// Placed last on purpose: its beforeAll applies the F-028 migration ON TOP of
+// 20260908, so every describe above ran against the original one-correction RPC
+// and only the cases here see the new branch. CREATE OR REPLACE is idempotent.
+// ─────────────────────────────────────────────────────────────────────────────
+describe('F-028 — an ineligible user may self-correct again; an eligible user still cannot', () => {
+  const U = NOROW
+  const thisYear = new Date().getUTCFullYear()
+  const adult = (n = 30) => `${thisYear - n}-01-01`
+  const child = (n = 10) => `${thisYear - n}-01-01`
+
+  beforeAll(async () => {
+    await db.query(readFileSync(join(REPO, 'supabase/migrations/20260920_f028_dob_self_correct_while_ineligible.sql'), 'utf8'))
+  })
+  beforeEach(async () => {
+    await db.query(`DELETE FROM public.user_demographics WHERE user_id = '${U}'`)
+  })
+  const write = async (sub: string, dob: string) =>
+    (await rowsAsRole('authenticated', `SELECT public.set_user_date_of_birth(DATE '${dob}') AS r`, sub))[0].r as string
+  const storedDob = async (sub: string) =>
+    (await one(`SELECT date_of_birth::text AS d FROM public.user_demographics WHERE user_id='${sub}'`)).d
+
+  it('an eligible user who mistypes their correction to an under-age date can still fix it', async () => {
+    expect(await write(U, adult(35))).toBe('recorded')      // correct adult
+    expect(await write(U, child(10))).toBe('corrected')     // MISTAKE: now ineligible, corrections=1
+    expect(await write(U, adult(35))).toBe('corrected')     // F-028: ineligible → may re-correct
+    expect(await storedDob(U)).toBe(adult(35))              // the fix landed
+  })
+
+  it('an ineligible user can re-correct any number of times while still under age', async () => {
+    expect(await write(U, child(10))).toBe('recorded')      // under age
+    expect(await write(U, child(12))).toBe('corrected')     // still under age
+    expect(await write(U, child(8))).toBe('corrected')      // still under age — not exhausted
+    expect(await write(U, child(15))).toBe('corrected')     // still under age — still allowed
+    expect(await storedDob(U)).toBe(child(15))
+  })
+
+  it('but once ELIGIBLE, the one-correction limit is back — the gate is not weakened', async () => {
+    expect(await write(U, adult(30))).toBe('recorded')      // eligible, corrections=0
+    expect(await write(U, adult(40))).toBe('corrected')     // eligible correction, corrections=1
+    expect(await write(U, adult(50))).toBe('correction_exhausted') // eligible → exhausted
+    expect(await storedDob(U)).toBe(adult(40))              // refusal is real
+  })
+
+  it('an under-age user who recovers to eligible then gets exactly one eligible correction', async () => {
+    expect(await write(U, child(10))).toBe('recorded')      // under age, corrections=0
+    expect(await write(U, adult(30))).toBe('corrected')     // recovery to eligible — free (still 0)
+    expect(await write(U, adult(40))).toBe('corrected')     // first ELIGIBLE correction → corrections=1
+    expect(await write(U, adult(50))).toBe('correction_exhausted') // now eligible & spent → exhausted
+  })
+})
