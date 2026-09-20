@@ -411,6 +411,11 @@ export function sentenceSpans(text: string): Array<[number, number]> {
  */
 const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
 const LEADING_CONNECTIVE = /^\s*(?:và|với|hoặc|nhưng|còn|and|with|or|but)\s+/iu
+/**
+ * A clause cut that leaves the sentence ending on one of these is a stub ("bạn nên.", "giá là.",
+ * measured live 2026-09-20 run 14): the sentence goes whole instead.
+ */
+const DANGLING_TAIL = /(?:^|\s)(?:nên|và|với|là|có|hoặc|nhưng|hay|để|khi|vì|từ|đến|khoảng|tầm|giá|chỉ|mà|thì|cho|của|and|or|with|for|at|about|around|only|is|are|costs?)$/iu
 
 function removeClauseAround(sentenceWithBreak: string, at: number, end: number): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
@@ -426,6 +431,8 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
   }
   const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
   const after = sentence.slice(b)
+  // The clause ran to the end and what stays ends on a connective / a verb waiting for its object.
+  if (after.trim() === '' && DANGLING_TAIL.test(before)) return null
   const rest = before.length > 0 ? before + (bDelim.trim() === ')' ? '' : bDelim) + after : after.replace(/^\s+/, '')
   const letters = (rest.match(/\p{L}/gu) ?? []).length
   if (letters < 3) return null

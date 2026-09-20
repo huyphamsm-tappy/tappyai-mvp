@@ -1500,6 +1500,8 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const guarded = (() => {
       if (guardedRaw.enforced || productRecords.length === 0) return guardedRaw
+      // The budget line ("Kết quả chưa có mức giá…") already says no price was verified — one hedge, not two.
+      if (collector?.consultativeV1?.budgetGap) return guardedRaw
       const claims = extractMoneyClaims(guardedRaw.text)
       if (claims.length === 0) return guardedRaw
       const hedge = lang === 'en'

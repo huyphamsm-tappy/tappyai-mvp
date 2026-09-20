@@ -544,3 +544,13 @@ describe('P0 — the spelled-out currency word "đồng" is a money claim', () =
     })
   })
 })
+
+describe('R3 proportional — a cut that would leave a stub takes the sentence instead (live run 14, 2026-09-20)', () => {
+  const rs = [rec('Nước hoa Chanel Chance 100ml', '3.200.000 ₫')]
+  it('"bạn nên (…giá…)" does not become "bạn nên."', () => {
+    const out = guardMoneyClaimsInText('Chanel Chance rất hợp. Bạn nên xem giá khoảng 2 triệu tại cửa hàng.', rs, ['Chanel Chance']).text
+    expect(out).toContain('Chanel Chance rất hợp.')
+    expect(out).not.toMatch(/nên\.\s*$/)
+    expect(out).not.toContain('2 triệu')
+  })
+})
