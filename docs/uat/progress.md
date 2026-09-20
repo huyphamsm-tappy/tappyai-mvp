@@ -16,6 +16,8 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 | 3.1 secrets & supply chain | DONE | F-002 (P0 next RCE advisories), F-003, F-004, F-005, F-006; evidence/secret-scan-history-redacted.txt, npm-audit-prod.txt |
 | 3.2 seed users + data | DONE | A=uat2609_a@tappyai.com (registered via /register UI → 200, email-confirm ON on non-prod ⇒ confirmed via admin API), B=uat2609_b@ (signup hit Supabase 429 email rate limit ⇒ created via admin API), M=uat2609_merchant@ (admin API). Login via /login password form → /age-check (Playwright). DOB via PATCH /api/profile. Seed: ≥2 rows/user in conversations, favorites, price_watches, reviews, bookings, groups, plan_shares, review_likes/saves/comments/shares, message_feedback(4), chat_messages, user_events, notifications(5); 1-row tables: profiles, user_memory, user_preferences, user_demographics, notification_subscriptions, user_follows, chat_participants. 0 rows: group_members (creator not auto-added), review_interactions (body shape unknown). evidence/seed-*.txt/json |
 | 3.2 RLS matrix + IDOR + auth lifecycle | DONE | F-007 (PASS record), F-008, F-009, F-010 (guest path UNVERIFIED: anon sign-in disabled on audit project), F-011, F-012, F-013 (PASS), F-014; evidence/rls-matrix.*, idor-probes.*, auth-lifecycle.txt |
-| 3.3 chat quota + AI | IN PROGRESS | |
+| 3.3 chat quota + AI | DONE | F-015 (P1 FAIL: failed answer charged, 200 on model error), F-016 (PASS mechanics); cross-user memory probe clean (evidence/chat-crossuser-probe-A.txt). 20 LLM calls. |
+| 3.23 build/test baseline | DONE | tsc 0 err (29s); next lint 0 err / 2 warn (20s); vitest 735 files pass, 11 skipped, 13,864 tests pass / 69 skipped / 0 fail (211s) — via `vitest run` directly so docs/audit/*.json untouched |
+| 3.17 AI safety subset | IN PROGRESS | |
 | 3.3 – 3.23 | NOT STARTED | |
 | STEP 4 report | NOT STARTED | |

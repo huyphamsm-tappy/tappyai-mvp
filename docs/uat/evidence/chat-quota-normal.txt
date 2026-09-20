@@ -1,0 +1,12 @@
+=== A: one normal turn (streaming shape + charge timing) ===
+peek A: used=0 remaining=15 limit=15
+{"who":"A","text":"Chào Tappy, hôm nay ăn gì ở Quận 1 cho 2","status":200,"ms":13548,"ct":"text/event-stream","bytes":29852,"head":"f:{\"messageId\":\"msg-auWds3qxAJj5VwAQyoVoOz4c\"} 0:\"Mình tìm những quán ăn tối ngon ở Quận 1 trong tầm giá của bạn nhé!\" 0:\" 🍜\" 9:{\"toolCallId\":\"toolu_011uZVDWcu"}
+peek A: used=1 remaining=14 limit=15
+charged for A turn: 1
+=== A: same request twice in parallel (double-charge / idempotency) ===
+peek A: used=1 remaining=14 limit=15
+{"who":"A","text":"Gợi ý 1 quán phở ở Quận 3","status":200,"ms":11024,"ct":"text/event-stream","bytes":29715,"head":"f:{\"messageId\":\"msg-s1qmTyHgsGeof1DQugkhU99G\"} 0:\"Mình tìm quán phở ngon ở Quận 3 cho bạn nhé.\" 9:{\"toolCallId\":\"toolu_01WcSMa2G4xk6sKrTQc8CxJB\",\"toolName\":\"sea"}
+{"who":"A","text":"Gợi ý 1 quán phở ở Quận 3","status":200,"ms":11780,"ct":"text/event-stream","bytes":29896,"head":"f:{\"messageId\":\"msg-pN8mAZXmtpUCnhMDPrqc3TXV\"} 0:\"Mình tìm quán phở ngon ở Quận 3 cho bạn nhé.\" 9:{\"toolCallId\":\"toolu_01JCVm2ezPybRvg81gdLtsMV\",\"toolName\":\"sea"}
+peek A: used=3 remaining=12 limit=15
+charged for 2 parallel A turns: 2
+LLM-reaching requests this run (status 200): 3

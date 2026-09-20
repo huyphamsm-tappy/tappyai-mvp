@@ -1,0 +1,6 @@
+=== A: model failure path (server restarted with LLM_*_MODEL=bogus) — is the user charged? ===
+peek A: used=3 remaining=12 limit=15
+{"who":"A","text":"Test lỗi model: gợi ý quán ăn Quận 1?","status":200,"ms":2177,"ct":"text/event-stream","bytes":23,"head":"3:\"An error occurred.\" "}
+peek A: used=4 remaining=11 limit=15
+status: 200 | charged despite failure: 1 | body head: 3:"An error occurred." 
+LLM-reaching requests this run (status 200): 1
