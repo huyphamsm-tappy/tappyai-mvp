@@ -171,8 +171,10 @@ export const CCP_MERCHANT_PAGE_READ_ENABLED = false
 /** D7: ACCESSTRADE feed fields (title/price/image) are NEVER displayed until the
  * written data-rights confirmation is on file. Link-only until then. */
 export const CCP_FEED_DISPLAY_ENABLED = false
-/** D6: feed ingestion only over an authenticated HTTPS endpoint; off for MVP. */
-export const CCP_FEED_INGEST_ENABLED = false
+/** D6: feed ingestion only over an authenticated HTTPS endpoint. ON since B5 (2026-09-20) for the
+ * merchants the runtime registry marks Tier 1 with an Accesstrade campaign (src/lib/commerce/feedIngest.ts);
+ * the transport policy in ccp/feeds/source.ts is unchanged. */
+export const CCP_FEED_INGEST_ENABLED = true
 /** D4: affiliate wrapping is applied only when a validated wrapper exists AND
  * this is on. Direct links remain the fallback either way. */
 export const CCP_AFFILIATE_WRAPPING_ENABLED = true

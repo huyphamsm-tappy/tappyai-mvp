@@ -22,6 +22,10 @@
       "schedule": "0 6 * * *"
     },
     {
+      "path": "/api/cron/feed-ingest",
+      "schedule": "30 19 * * *"
+    },
+    {
       "path": "/api/cron/analytics-snapshot",
       "schedule": "5 17 * * *"
     },

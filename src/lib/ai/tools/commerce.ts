@@ -17,6 +17,7 @@ import {
 } from '@/lib/ccp'
 import { refreshProviderConfig } from '@/lib/ccp'
 import { installProviderConfigSource } from '@/lib/commerce/providerConfigSource'
+import { feedHintsFor, type FeedHint } from '@/lib/commerce/feedHints'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, sameCityKey, stripTrailingCity } from '@/lib/links/otaTitle'
 import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
@@ -67,6 +68,8 @@ export type CommerceToolName = 'search_places' | 'search_products' | 'get_hotel_
 export interface CommerceAttachContext {
   /** The user's stated area / city for this turn — narrows discovery and is the request's city constraint. */
   location?: string
+  /** B5: the feed reader (test seam). `null` disables the feed for this call; undefined = the ingested table. */
+  feedHints?: ((subject: string) => Promise<FeedHint[]>) | null
   /** The tool's own query argument (what was searched for) — the subject for experience discovery. */
   query?: string
   /** get_hotel_prices arguments, when the user gave dates (YYYY-MM-DD). */
@@ -505,11 +508,24 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
           discovered = []
         }
       }
-      // Hints per subject: the row's own URL first, then discovery in its rank order.
+      // B5: on a SHOPPING intent the ingested feed rows come first — the merchant's own product
+      // page, no Serper credit — through the same identity bar as a search hit. Absent (table
+      // empty, ingest blocked) they add nothing and discovery stands as before.
+      const feedHints = new Map<string, DiscoveryHint[]>()
+      if (plan.domain === 'shopping' && ctx.feedHints !== null) {
+        for (const s of subjects) {
+          try {
+            const fh = await (ctx.feedHints ?? feedHintsFor)(s.subject)
+            if (fh.length > 0) feedHints.set(s.id, fh.map(h => ({ url: h.url, title: h.title })))
+          } catch { /* the feed is a bonus, never a dependency */ }
+        }
+      }
+      // Hints per subject: the row's own URL first, then the feed, then discovery in its rank order.
       const hintsOf = new Map<string, DiscoveryHint[]>()
       for (const s of subjects) {
         const hints: DiscoveryHint[] = [
           ...(s.knownUrls ?? []).map(url => ({ url, title: s.subject })),
+          ...(feedHints.get(s.id) ?? []),
           ...discovered
             .filter(d => d.subjectId === s.id)
             // §8: a discovered listing that names another product (a case, the Pro Max) is not a hint for this row.
