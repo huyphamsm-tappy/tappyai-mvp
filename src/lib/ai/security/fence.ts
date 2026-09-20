@@ -52,6 +52,7 @@ export const UNTRUSTED_SOURCES = [
   'user_location',       // client-supplied address label
   'explore_clip',        // reviews row (place name / address / caption) the user pressed Ask Tappy on
   'scam_message',        // a suspicious message the user pasted (or OCR'd from a screenshot) for Scam Shield to ANALYZE — by definition adversarial text
+  'tool_result',         // A4 (2026-09-20): every tool result — third-party titles, snippets, names, descriptions (toolResultFence.ts)
 ] as const
 
 export type UntrustedSource = (typeof UNTRUSTED_SOURCES)[number]

@@ -25,6 +25,8 @@ const PRODUCERS: Array<[string, string]> = [
   ['explore clip row', 'src/lib/ai/exploreClipContext.ts'],
   // The suspicious message Scam Shield is asked to analyze — adversarial by definition.
   ['scam message', 'src/lib/scam-shield/message/ai/prompt.ts'],
+  // A4 (2026-09-20): every tool result — third-party titles, snippets, names — bracketed for the model.
+  ['tool results', 'src/lib/ai/security/toolResultFence.ts'],
 ]
 
 describe('the fence is the single implementation', () => {

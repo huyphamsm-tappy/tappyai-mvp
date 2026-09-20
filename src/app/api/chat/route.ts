@@ -25,6 +25,7 @@ import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
+import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
 import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
@@ -1423,7 +1424,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ctx.hardContrary = [...gate.report.contrary]
           ctx.budgetGap = gate.budgetGap
         }
-        return out
+        // A4 (2026-09-20): the model reads every tool result as fenced DATA (toolResultFence.ts) —
+        // here, at the one wrapper every tool and the pre-search pass through.
+        return wrapToolResultAsData(out)
       }
     }
     return tools
