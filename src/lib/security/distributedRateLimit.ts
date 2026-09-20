@@ -106,6 +106,27 @@ export function createUpstashStore(url: string, token: string): RateLimitStore {
   }
 }
 
+// ── ENVIRONMENT NAMESPACE (1b-2, 2026-09-20) ─────────────────────────────────────────────────
+//
+// The Vercel Upstash integration provisions ONE database for All Environments, so Production,
+// Preview and a local `next dev` with pulled credentials all talk to the same Redis. Before this,
+// every key was bare (`chat:ip:1.2.3.4`, `serper:credits:2026-09-20`): a tester on a preview
+// deployment shared the burst bucket with a real user on the same IP, and preview traffic spent
+// the PRODUCTION Serper day. Every key that reaches the store is therefore prefixed with the
+// deployment environment — `production:`, `preview:`, `development:` — and `local:` when
+// VERCEL_ENV is unset (a local run, a test). Applied at the two store boundaries
+// (`evalSlidingWindow` / `countInWindow` here, the INCRBY pipeline in kvCounter.ts) so that no
+// caller can forget it: `chat:*`, `admin:*`, `ai:q:*`, `serper:credits`, `commerce:untracked`
+// are all covered by construction.
+export function envKeyPrefix(env: NodeJS.ProcessEnv = process.env): string {
+  return `${env.VERCEL_ENV || 'local'}:`
+}
+
+/** The key as it is stored: environment prefix + the caller's key. */
+export function namespacedKey(key: string, env: NodeJS.ProcessEnv = process.env): string {
+  return envKeyPrefix(env) + key
+}
+
 let counter = 0
 
 /** Unique per request, so no two entries in the sorted set can collide. */
@@ -192,7 +213,7 @@ export async function distributedRateLimit(
     // The member must be unique per request. Sorted-set members are a SET: two
     // requests in the same millisecond sharing a member would collapse into one
     // entry and the counter would silently under-count.
-    const [admitted, oldest] = await active.evalSlidingWindow(key, now, windowMs, limit, uniqueMember(now))
+    const [admitted, oldest] = await active.evalSlidingWindow(namespacedKey(key), now, windowMs, limit, uniqueMember(now))
     if (admitted === 1) return { ok: true, retryAfter: 0 }
     const elapsed = Number.isFinite(oldest) && oldest > 0 ? now - oldest : 0
     return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)) }
@@ -212,7 +233,7 @@ export async function distributedCountInWindow(key: string, windowMs: number): P
   const active = resolveStore()
   if (!active?.countInWindow) return null
   try {
-    return await active.countInWindow(key, Date.now(), windowMs)
+    return await active.countInWindow(namespacedKey(key), Date.now(), windowMs)
   } catch {
     return null
   }

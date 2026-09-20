@@ -154,7 +154,8 @@ describe('P1-5 · the daily cap resets on the VN calendar day, not on a rolling 
     const store = countingStore()
     __setRateLimitStore(store)
     await publicDailyRateLimit('translate:1.2.3.4', 30)
-    expect(store.calls[0]).toBe(`translate:1.2.3.4:${vnToday()}`)
+    // `local:` = the environment namespace (1b-2) — VERCEL_ENV is unset under vitest.
+    expect(store.calls[0]).toBe(`local:translate:1.2.3.4:${vnToday()}`)
   })
 
   it('a different day is a different bucket', async () => {

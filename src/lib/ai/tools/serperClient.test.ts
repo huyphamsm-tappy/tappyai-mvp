@@ -80,7 +80,7 @@ describe('the shared daily counter', () => {
     const [url, init] = fetchMock.mock.calls[0]
     expect(String(url)).toBe('https://kv.test/pipeline')
     const cmds = JSON.parse(String((init as RequestInit).body)) as string[][]
-    expect(cmds[0][0]).toBe('INCRBY'); expect(cmds[0][1]).toMatch(/^serper:credits:\d{4}-\d{2}-\d{2}$/); expect(cmds[0][2]).toBe('3')
+    expect(cmds[0][0]).toBe('INCRBY'); expect(cmds[0][1]).toMatch(/^local:serper:credits:\d{4}-\d{2}-\d{2}$/); expect(cmds[0][2]).toBe('3')
     expect(cmds[1].slice(0, 1)).toEqual(['EXPIRE']); expect(cmds[1][3]).toBe('NX')
     fetchMock.mockResolvedValue(new Response('down', { status: 503 }))
     const down = await incrDailyCounter(SERPER_CEILING_KEY, 3, e)

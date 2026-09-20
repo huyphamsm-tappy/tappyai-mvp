@@ -183,7 +183,8 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
           await consumeAiQuestion(user('u1'))
           await consumeAiQuestion(anon('a1'))
           await consumeAiQuestion(guest('9.9.9.9'))
-          expect(store!.keys().sort()).toEqual(['ai:q:a:a1', 'ai:q:g:9.9.9.9', 'ai:q:u:u1:2026-09-15'])
+          // `local:` = the environment namespace the store boundary adds (1b-2; VERCEL_ENV unset here).
+          expect(store!.keys().sort()).toEqual(['local:ai:q:a:a1', 'local:ai:q:g:9.9.9.9', 'local:ai:q:u:u1:2026-09-15'])
         })
       }
     })

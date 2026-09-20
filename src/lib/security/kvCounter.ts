@@ -14,10 +14,12 @@
 //                             global ceiling into a per-instance one.
 //
 // The key carries the VN calendar day, so a ceiling resets at 00:00 Vietnam like every other
-// daily allowance in the product; the TTL only expires yesterday's key.
+// daily allowance in the product; the TTL only expires yesterday's key. It also carries the
+// deployment environment (`namespacedKey`, 1b-2): the store is shared by Production and Preview,
+// and a preview deployment must not spend the production day.
 
 import { vnToday } from '@/lib/config/product'
-import { isDistributedStoreConfigured } from './distributedRateLimit'
+import { isDistributedStoreConfigured, namespacedKey } from './distributedRateLimit'
 
 export interface CounterResult {
   /** The value AFTER this increment. */
@@ -49,7 +51,7 @@ const DAY_SECONDS = 36 * 60 * 60 // a day's key lives a day and a half, then goe
  * Never throws.
  */
 export async function incrDailyCounter(key: string, by: number, env: NodeJS.ProcessEnv = process.env): Promise<CounterResult> {
-  const dayKey = `${key}:${vnToday()}`
+  const dayKey = `${namespacedKey(key, env)}:${vnToday()}`
   if (!isDistributedStoreConfigured(env)) {
     return { count: incrLocal(dayKey, by), scope: 'instance' }
   }
