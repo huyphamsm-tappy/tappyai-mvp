@@ -100,7 +100,9 @@ function userEchoStandsHere(
 // 8h", "khởi hành 8 giờ sáng", "leaves around 8 AM", "departs at 08:30". The time
 // token is mandatory (a bare "sáng"/"morning" is not a schedule claim), and a
 // travel/flight verb must be in the same sentence — checked per-sentence below.
-const TIME_RE = /\b(?:[01]?\d|2[0-3])(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)\b/iu
+// C1 (2026-09-20): a bare colon form ("22:00", "08:30") is a clock time too — the coach / rail
+// snippets and the prose both write it that way; the departure context is still required.
+const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)\b/iu
 const DEPART_CTX = /\b(?:bay|chuyến bay|chuyen bay|khởi hành|khoi hanh|cất cánh|cat canh|hạ cánh|ha canh|departs?|departure|leaves?|arri(?:ves?|val)|flight)\b/iu
 // Availability assertions we can never verify without a live source.
 // No trailing \b after a Vietnamese noun — JS \b treats "ỗ" as a non-word char,
@@ -126,15 +128,36 @@ function sentenceSpans(text: string): Array<[number, number]> {
   return spans
 }
 
-/** Remove whole sentences that assert an unverifiable schedule time or availability.
- *  Writes nothing new; if removal would empty the reply, leaves it (money-claim
- *  redaction and the prompt still cover the common case). */
-function redactScheduleAvailability(text: string): { text: string; removed: number } {
+/** The clock times a text states, normalised ("8h", "08:30", "8 giờ sáng" → "8:00", "8:30"). */
+export function scheduleTimesIn(text: string): string[] {
+  const out = new Set<string>()
+  for (const m of text.matchAll(new RegExp(TIME_RE.source, 'giu'))) {
+    const t = m[0].toLowerCase()
+    const hm = t.match(/(2[0-3]|[01]?\d)(?::([0-5]\d))?/)
+    if (!hm) continue
+    let h = parseInt(hm[1], 10)
+    const min = hm[2] ?? '00'
+    if (/pm|p\.m\.|chiều|tối/.test(t) && h < 12) h += 12
+    out.add(`${h}:${min}`)
+  }
+  return [...out]
+}
+
+/**
+ * Remove whole sentences that assert an unverifiable schedule time or availability.
+ *
+ * C1 (2026-09-20): a time is VERIFIABLE when it traces to a fetched row — the coach / rail
+ * snippets carry "khởi hành 22:00" — so a sentence whose every stated time is in `evidenceTimes`
+ * stays; anything else is still fail-closed. Availability has no source and is always removed.
+ * Writes nothing new; if removal would empty the reply, leaves it.
+ */
+function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = []): { text: string; removed: number } {
   const spans = sentenceSpans(text)
   const doomed = new Set<number>()
+  const known = new Set(evidenceTimes)
   spans.forEach(([a, b], i) => {
     const s = text.slice(a, b)
-    const sched = TIME_RE.test(s) && DEPART_CTX.test(s)
+    const sched = TIME_RE.test(s) && DEPART_CTX.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
     if (sched || AVAIL_RE.test(s)) doomed.add(i)
   })
   if (doomed.size === 0) return { text, removed: 0 }
@@ -156,6 +179,7 @@ export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
+  opts: { evidenceTimes?: readonly string[]; lang?: string } = {},
 ): { text: string; redacted: number; enforced: boolean } {
   let out = text
   let redacted = 0
@@ -175,8 +199,21 @@ export function guardTravelClaimsInText(
 
   // 2) Schedule/availability — we have no live source for either, so any specific
   //    assertion on a travel turn is unverifiable and removed.
-  const sa = redactScheduleAvailability(out)
+  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [])
   out = sa.text; redacted += sa.removed
+
+  // C1: what was cut is said, once, with where to look — never left as a silent gap.
+  if (redacted > 0) {
+    const hedge = opts.lang === 'en'
+      ? 'Exact times and fares here are not confirmed by a fetched source — check them on the booking page.'
+      : 'Giờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.'
+    if (!out.includes(hedge)) {
+      const markerAt = (() => { let end = out.length; for (const m of ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']) { const i = out.indexOf(m); if (i !== -1 && i < end) end = i } return end })()
+      const head = out.slice(0, markerAt).replace(/\s+$/, '')
+      const tail = out.slice(markerAt)
+      out = `${head}${head ? '\n\n' : ''}${hedge}${tail ? `\n\n${tail}` : ''}`
+    }
+  }
 
   return { text: out, redacted, enforced: true }
 }

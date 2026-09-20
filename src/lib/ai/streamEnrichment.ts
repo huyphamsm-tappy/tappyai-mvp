@@ -2,7 +2,7 @@ import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
-import { guardTravelClaimsInText } from './travelGuard'
+import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
@@ -1021,6 +1021,8 @@ export function applyPlaceEnrichmentStreamFilter(
   /** Live VND fares fetched by get_flight_prices this turn. Empty ⇒ every travel
    *  price the model states is unverifiable and gets redacted by the travel guard. */
   const travelFares: number[] = []
+  /** C1: clock times the fetched transport rows state — the only times the prose may assert. */
+  const travelTimes = new Set<string>()
   /** VND amounts that appeared in food/spa price snippets (search_places). A stated
    *  price must trace to one of these (A5); a number in no snippet is fabricated. */
   const snippetPrices: number[] = []
@@ -1529,7 +1531,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // food/etc. are unaffected. Runs after the shopping guards so it reads prose
     // whose shopping prices are already settled.
     const travelGuarded = travelIntent
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -2372,6 +2374,18 @@ export function applyPlaceEnrichmentStreamFilter(
               const flights = (res.result as { flights?: Array<{ price_vnd?: number }> } | undefined)?.flights
               if (Array.isArray(flights)) {
                 for (const f of flights) if (typeof f?.price_vnd === 'number') travelFares.push(f.price_vnd)
+              }
+            }
+            // C1 (2026-09-20): the SCHEDULE + TICKET unit. A coach / rail turn has no structured
+            // fare, but its rows (Serper snippets: "khởi hành 22:00 · vé 250.000đ") ARE fetched
+            // evidence: a fare or a time the prose states may be restated iff it traces to one of
+            // them. Snippet amounts join `travelFares`; snippet times join `travelTimes`.
+            if (toolName === 'get_transport_options' || toolName === 'get_flight_prices') {
+              const r = res.result as { bus_search_results?: Array<{ title?: string; snippet?: string }>; train_search_results?: Array<{ title?: string; snippet?: string }> } | undefined
+              for (const row of [...(r?.bus_search_results ?? []), ...(r?.train_search_results ?? [])]) {
+                const text = `${row?.title ?? ''} ${row?.snippet ?? ''}`
+                for (const c of extractMoneyClaims(text)) { if (c.currency === 'VND') { travelFares.push(c.lo); if (c.hi !== c.lo) travelFares.push(c.hi) } }
+                for (const t of scheduleTimesIn(text)) travelTimes.add(t)
               }
             }
             if (toolName === 'get_hotel_prices') {

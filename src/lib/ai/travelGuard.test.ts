@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { guardTravelClaimsInText } from './travelGuard'
+import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { detectTravelIntent } from './intent'
 
 // The fail-closed boundary for dynamic travel facts (P0). The production bug —
@@ -203,5 +203,33 @@ describe('🚨 a stated budget may be a constraint, never the property price', (
     const text = 'Mình gợi ý khách sạn này. Với ngân sách 7 triệu thì rất ổn.'
     const out = guardTravelClaimsInText(text, NO_FARES, USER)
     expect(out.text).not.toContain('7 triệu')
+  })
+})
+
+// ── C1 (2026-09-20): the SCHEDULE + TICKET unit — every time and price traces to a fetched row ──
+describe('C1 — snippet-traceable times and fares; a hedge when something was cut', () => {
+  const NL = String.fromCharCode(10)
+  it('a departure time the fetched row states stays; one it does not is cut, and the reply says so once', () => {
+    const text = ['Xe Phương Trang khởi hành 22:00, vé 250.000đ.', 'Xe Thành Bưởi khởi hành 23:30, vé 300.000đ.'].join(NL)
+    const out = guardTravelClaimsInText(text, [250000], 'xe khách Sài Gòn Đà Lạt', { evidenceTimes: ['22:00'], lang: 'vi' })
+    expect(out.text).toContain('khởi hành 22:00')
+    expect(out.text).toContain('250.000')
+    expect(out.text).not.toContain('23:30')
+    expect(out.text).not.toContain('300.000')
+    expect(out.text.match(/Giờ chạy và giá vé cụ thể mình chưa xác nhận được/g)).toHaveLength(1)
+    expect(out.redacted).toBeGreaterThan(0)
+  })
+  it('nothing cut ⇒ no hedge', () => {
+    const out = guardTravelClaimsInText('Xe Phương Trang khởi hành 22:00, vé 250.000đ.', [250000], 'xe khách', { evidenceTimes: ['22:00'] })
+    expect(out.text).not.toContain('chưa xác nhận được')
+    expect(out.redacted).toBe(0)
+  })
+  it('scheduleTimesIn normalises the forms people and snippets use', () => {
+    expect(scheduleTimesIn('khởi hành 22h, về lúc 6 giờ sáng, đến 08:30')).toEqual(['22:00', '6:00', '8:30'])
+    expect(scheduleTimesIn('departs at 8 pm')).toEqual(['20:00'])
+  })
+  it('the hedge lands before the machine blocks', () => {
+    const out = guardTravelClaimsInText('Chuyến bay cất cánh 6h sáng.' + NL + NL + '[FOLLOWUPS]a|b[/FOLLOWUPS]', [], 'vé máy bay', { lang: 'vi' })
+    expect(out.text.indexOf('chưa xác nhận được')).toBeLessThan(out.text.indexOf('[FOLLOWUPS]'))
   })
 })
