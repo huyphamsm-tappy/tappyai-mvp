@@ -209,6 +209,17 @@ describe('🚨 a stated budget may be a constraint, never the property price', (
 // ── C1 (2026-09-20): the SCHEDULE + TICKET unit — every time and price traces to a fetched row ──
 describe('C1 — snippet-traceable times and fares; a hedge when something was cut', () => {
   const NL = String.fromCharCode(10)
+  it('REGRESSION (live run 17): "2 hành khách" is a passenger count, not the time "2h" — the Trip.com link line survives', () => {
+    const line = '**[Trip.com](https://vn.trip.com/flights/showfarefirst?quantity=2)** — Xem kết quả chuyến bay theo ngày, chọn chuyến rồi nhập thông tin 2 hành khách'
+    const text = ['Mình chưa có kết quả giá vé trực tuyến cho ngày 10/10, nhưng đã tìm được 2 nền tảng đặt vé để bạn so sánh giá:', '', line, '', 'Bạn có thể lọc theo giờ bay.'].join(NL)
+    const out = guardTravelClaimsInText(text, NO_FARES, 'vé máy bay Sài Gòn đi Hà Nội ngày 10/10, 2 người', { lang: 'vi' })
+    expect(out.text).toContain(line)
+    expect(out.text).toContain('2 nền tảng đặt vé')
+    expect(out.text).not.toContain('chưa xác nhận được') // nothing was cut ⇒ no hedge
+    expect(scheduleTimesIn('nhập thông tin 2 hành khách')).toEqual([])
+    expect(scheduleTimesIn('so sánh 2 hãng bay, 3 hạng vé')).toEqual([])
+    expect(scheduleTimesIn('bay lúc 2h.')).toEqual(['2:00']) // the real unit form still counts
+  })
   it('a departure time the fetched row states stays; one it does not is cut, and the reply says so once', () => {
     const text = ['Xe Phương Trang khởi hành 22:00, vé 250.000đ.', 'Xe Thành Bưởi khởi hành 23:30, vé 300.000đ.'].join(NL)
     const out = guardTravelClaimsInText(text, [250000], 'xe khách Sài Gòn Đà Lạt', { evidenceTimes: ['22:00'], lang: 'vi' })

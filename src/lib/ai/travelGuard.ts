@@ -102,7 +102,10 @@ function userEchoStandsHere(
 // travel/flight verb must be in the same sentence — checked per-sentence below.
 // C1 (2026-09-20): a bare colon form ("22:00", "08:30") is a clock time too — the coach / rail
 // snippets and the prose both write it that way; the departure context is still required.
-const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)\b/iu
+// The unit must END the token: JS `\b` after "h" is satisfied by a following "à" (non-ASCII is
+// non-word to `\b`), so "nhập thông tin 2 hành khách" read as the time "2h" and a whole
+// Trip.com link line was cut (C1 live probe, 2026-09-20). A letter/digit lookahead closes that.
+const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)(?![\p{L}\p{N}])/iu
 const DEPART_CTX = /\b(?:bay|chuyến bay|chuyen bay|khởi hành|khoi hanh|cất cánh|cat canh|hạ cánh|ha canh|departs?|departure|leaves?|arri(?:ves?|val)|flight)\b/iu
 // Availability assertions we can never verify without a live source.
 // No trailing \b after a Vietnamese noun — JS \b treats "ỗ" as a non-word char,
