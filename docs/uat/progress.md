@@ -24,3 +24,8 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 | STEP 4 report | NOT STARTED | |
 | 3.6 scam shield (inventory+legal) | DONE | F-022 (no phone lookup exists), F-023 (P2 legal: no scam disclaimer/appeal) |
 | 3.9 music reuse (inventory) | DONE | F-024 (P2: fully wired, record for PASS 2; owner must confirm removal intent) |
+| 3.10 contract drift (delta) | DONE (partial) | F-026 (PASS on sampled cross-platform routes; full coverage UNVERIFIED per backend scope) |
+| 3.11 schema/migrations/indexes | DONE | F-025 (PASS: RLS+FK+index correct; query plans UNVERIFIED on empty DB) |
+
+## STEP 4 — PASS 1 complete
+docs/uat/PASS1-REPORT.md written. 26 findings (P0×1 F-002 next RCE, P1×2 F-015 quota-on-failure + F-001 GA, P2×8, P3×15 incl. verified-PASS records). 25 LLM turns (<$0.50). Seed data cleaned (86 rows + 3 users deleted). vitest 13,864/0. All source unchanged (read-only pass).

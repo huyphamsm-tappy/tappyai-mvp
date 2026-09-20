@@ -855,3 +855,13 @@
  POST /api/commerce/handoff 400 in 20ms
  POST /api/commerce/handoff 400 in 16ms
  POST /api/commerce/handoff 200 in 15ms
+ ✓ Compiled /api/sound/[trackId] in 468ms (177 modules)
+ GET /api/sound/00000000-0000-0000-0000-000000000000 404 in 1433ms
+ ○ Compiling /sound/[trackId] ...
+ ✓ Compiled /sound/[trackId] in 5s (1064 modules)
+ GET /sound/00000000-0000-0000-0000-000000000000 200 in 5686ms
+ ✓ Compiled in 731ms (458 modules)
+ ✓ Compiled /music in 343ms (1074 modules)
+ GET /music 200 in 605ms
+ ✓ Compiled /api/music/tracks in 147ms (625 modules)
+ GET /api/music/tracks 200 in 417ms
