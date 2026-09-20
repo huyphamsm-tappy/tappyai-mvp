@@ -850,3 +850,8 @@
 {"type":"tappyai_model","model":"smart","planningIntent":null}
 {"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":240,"totalTokens":243,"cacheReadTokens":20788,"cacheCreationTokens":1349,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6187,"preModelMs":1182,"ttftMs":3015,"modelFinishMs":5367,"ttuaMs":3016,"postModelMs":820,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2352,"firstStepFinishMs":5365,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
  POST /api/chat 200 in 6327ms
+ ✓ Compiled /api/commerce/handoff in 221ms (162 modules)
+ POST /api/commerce/handoff 400 in 281ms
+ POST /api/commerce/handoff 400 in 20ms
+ POST /api/commerce/handoff 400 in 16ms
+ POST /api/commerce/handoff 200 in 15ms

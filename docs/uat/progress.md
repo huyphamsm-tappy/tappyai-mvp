@@ -22,3 +22,5 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 | 3.5 affiliate/commerce | DONE | F-019 (PASS static+config), F-020 (P2: wrapping UNVERIFIED — no ACCESSTRADE_PUBLISHER_ID in env), F-021 (PASS handoff). evidence/commerce-providers.json |
 | 3.3 – 3.23 | NOT STARTED | |
 | STEP 4 report | NOT STARTED | |
+| 3.6 scam shield (inventory+legal) | DONE | F-022 (no phone lookup exists), F-023 (P2 legal: no scam disclaimer/appeal) |
+| 3.9 music reuse (inventory) | DONE | F-024 (P2: fully wired, record for PASS 2; owner must confirm removal intent) |
