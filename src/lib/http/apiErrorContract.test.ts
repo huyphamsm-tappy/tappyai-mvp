@@ -57,8 +57,8 @@ const MACHINE_TO_MACHINE = [
   /^src\/app\/api\/webhooks\//,
   /^src\/app\/api\/iap\/apple\/notifications\//,
   /^src\/app\/api\/stripe\/webhook\//,
-  /^src\/app\/api\/debug-places\//,
-  /^src\/app\/api\/test-photos\//,
+  // /api/debug-places and /api/test-photos were deleted (F-014): unauthenticated in non-prod,
+  // gated only by CRON_SECRET in prod, calling paid providers on every hit. Owner decision: remove.
   /^src\/app\/api\/health\//,
   /^src\/app\/api\/version\//,
 ]
