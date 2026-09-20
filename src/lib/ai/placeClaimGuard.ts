@@ -250,8 +250,16 @@ export function isTicketSaleClaim(sentence: string): boolean {
   // both were cut, leaving the reply as one line plus a hedge.
   if (TICKET_NOT_AVAILABLE_RE.test(sentence)) return false
   if (!TICKET_SALE_VOCAB_RE.test(sentence)) return false
+  // `sentenceSpans` keeps a markdown link as its own span, so "đặt vé trực tiếp trên **[Moveek](…)**"
+  // reaches here as the fragment "đặt vé trực tiếp trên **" — the platform it points at is in the
+  // next span. A fragment that ends on the preposition IS the "where to look" framing (measured
+  // live, run 20: it was cut and the two links were left behind as an orphan line).
+  if (LINK_FRAMING_TAIL_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
+
+/** A fragment cut off by a link span right after its preposition: "… trên **", "… tại", "… on". */
+const LINK_FRAMING_TAIL_RE = /(?:^|\s)(?:trên|tren|tại|tai|qua|ở|o|on|at|via)\s*(?:\*\*|__)?\s*$/iu
 
 /** The sentence says we DO NOT have the schedule / tickets — a disclosure, not a claim. */
 const TICKET_NOT_AVAILABLE_RE = /(chưa có|chua co|không có|khong co|không thể|khong the|chưa xác nhận|chua xac nhan|chưa tra được|chua tra duoc|not available|don't have|do not have|can(?:'t|not) (?:see|show|confirm|check)|unable to)/iu

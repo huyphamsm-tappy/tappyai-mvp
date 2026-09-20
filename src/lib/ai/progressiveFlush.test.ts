@@ -194,3 +194,26 @@ describe('segmentComplete — the pre-tool segment has finished arriving', () =>
     expect(safeFlushPoint(FABRICATED, true)).toBe(0)
   })
 })
+
+// ── C3 (2026-09-20): a link splits a sentence into spans; a link's end is not a sentence end ──
+describe('an inline markdown link does not create a release point', () => {
+  const NL = String.fromCharCode(10)
+  const OPENING = 'Mình cần truy cập trực tiếp trang CGV để xem lịch chiếu chi tiết.'
+  const LINKED = ' Bạn có thể vào **[trang CGV Vincom Đồng Khởi](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/)** để xem danh sách phim tối nay, giờ chiếu và giá vé (thường từ 80k-150k tùy suất chiếu).'
+
+  it('the measured live text: releases the opening sentence, never the piece cut off by the link', () => {
+    const p = safeFlushPoint(OPENING + LINKED)
+    expect(p).toBe(OPENING.length)
+  })
+
+  it('a linked sentence with no claim is released whole once it ends', () => {
+    const t = OPENING + ' Bạn xem trên [trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/) nhé.' + NL + 'Bạn muốn'
+    const p = safeFlushPoint(t)
+    expect(t.slice(0, p)).toBe(OPENING + ' Bạn xem trên [trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/) nhé.' + NL)
+  })
+
+  it('mid-stream, right after the link closes, nothing past the opening goes out', () => {
+    const t = OPENING + ' Bạn có thể vào **[trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/)'
+    expect(safeFlushPoint(t)).toBe(OPENING.length)
+  })
+})

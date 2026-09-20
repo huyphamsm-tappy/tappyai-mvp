@@ -147,3 +147,18 @@ describe('C3 — cinema showtime / ticket price with no fetched row', () => {
     expect(out).not.toContain('chưa xác nhận được')
   })
 })
+
+// ── C3 (2026-09-20, run 20): a released bold link must not make the settled reply repeat ──
+describe('C3 — an early-released sentence with a bold link is sent once, unemphasized', () => {
+  const CINEMA_QUESTION = 'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?'
+  const NL = String.fromCharCode(10)
+  it('the opening streams early without the bold, and the settled remainder does not restate it', async () => {
+    const opening = 'Bạn xem lịch trên **[trang CGV Vincom Đồng Khởi](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/)** nhé.' + NL + NL
+    const rest = 'Giá vé thường từ 80k-150k tùy suất chiếu. Bạn muốn xem phim gì?'
+    const out = await runNonPlaceTurn([opening, rest], CINEMA_QUESTION)
+    expect(out.split('trang CGV Vincom Đồng Khởi').length - 1).toBe(1)
+    expect(out).not.toContain('**[trang CGV')
+    expect(out).not.toContain('80k-150k')
+    expect(out).toContain('Bạn muốn xem phim gì?')
+  })
+})

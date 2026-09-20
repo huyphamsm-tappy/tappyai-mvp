@@ -1151,6 +1151,14 @@ export function applyPlaceEnrichmentStreamFilter(
    */
   let placeSearchStatus: PlaceSearchStatus = 'not_run'
   let flushedText = ''
+  /**
+   * What the client actually RECEIVED of the released prefix. `flushedText` is the raw model text;
+   * the bytes sent are `unemphasizeLinks` of it, because the settled reply is unemphasized too
+   * (`scaffoldStripped`) and the final "send the remainder" subtraction compares against the
+   * settled text. Measured live (C3 run 20, 2026-09-20): a released "**[trang CGV](…)**" no longer
+   * prefixed the settled "[trang CGV](…)", the belt failed, and the whole reply went out twice.
+   */
+  let flushedSent = ''
   /** True once the shopping decision has gone out early, so it is not sent twice. */
   let earlyShoppingMarkerSent = false
   /**
@@ -1882,7 +1890,7 @@ export function applyPlaceEnrichmentStreamFilter(
         ? `I'd go with **${name}** — ${ratingText}${hoursText}.`
         : `Mình chọn **${name}** — ${ratingText}${hoursText}.`
     }
-    const releasedPrefix = flushedText ?? ''
+    const releasedPrefix = flushedSent
     const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
     const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
     /**
@@ -2108,8 +2116,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // around place names, all of which arrive after the tool) rewrites it — `outText` still starts
     // with it. The `startsWith` check is the belt: if that ever stopped holding, repeating a short
     // opening line is a far better failure than silently dropping the reply.
-    const send = flushedText && outText.startsWith(flushedText)
-      ? outText.slice(flushedText.length)
+    const send = flushedSent && outText.startsWith(flushedSent)
+      ? outText.slice(flushedSent.length)
       : outText
     if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
 
@@ -2161,8 +2169,9 @@ export function applyPlaceEnrichmentStreamFilter(
             if (progressive && !placeToolSeen) {
               const point = safeFlushPoint(mainText)
               if (point > flushedText.length) {
-                const slice = mainText.slice(flushedText.length, point)
+                const slice = unemphasizeLinks(mainText.slice(flushedText.length, point))
                 flushedText = mainText.slice(0, point)
+                flushedSent += slice
                 controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
               }
             }
@@ -2217,8 +2226,9 @@ export function applyPlaceEnrichmentStreamFilter(
               if (progressive && !placeToolSeen) {
                 const point = safeFlushPoint(mainText, true)
                 if (point > flushedText.length) {
-                  const slice = mainText.slice(flushedText.length, point)
+                  const slice = unemphasizeLinks(mainText.slice(flushedText.length, point))
                   flushedText = mainText.slice(0, point)
+                  flushedSent += slice
                   controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
                 }
               }

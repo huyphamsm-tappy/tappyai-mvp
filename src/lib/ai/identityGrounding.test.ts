@@ -157,10 +157,11 @@ describe('the detector reports and never rewrites', () => {
     // Late branch: the detector's input, unchanged.
     expect(lateBranch.trim()).toBe('finalText')
     // The second split obeys the same rule: `send` subtracts what was already streamed, and its
-    // only inputs are `flushedText` (delivery state) and `outText`. If a detector result ever
-    // appears in this expression, this fails — which is the moment "we noticed a fabricated name"
-    // could turn into "we silently edited the user's reply".
-    expect(filter).toMatch(/const send = flushedText && outText\.startsWith\(flushedText\)/)
+    // only inputs are `flushedSent` (delivery state: the bytes the early release actually sent,
+    // C3 2026-09-20) and `outText`. If a detector result ever appears in this expression, this
+    // fails — which is the moment "we noticed a fabricated name" could turn into "we silently
+    // edited the user's reply".
+    expect(filter).toMatch(/const send = flushedSent && outText\.startsWith\(flushedSent\)/)
   })
 
   it('the detector still reads the reply WITH every appended block in it', () => {

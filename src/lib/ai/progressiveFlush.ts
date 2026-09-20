@@ -95,6 +95,16 @@ export function safeFlushPoint(accumulated: string, segmentComplete = false): nu
     // ...and at the first sentence carrying a claim the PLACE guard could remove.
     // Evidence-blind on purpose: see `mayRedactPlaceClaim`.
     if (mayRedactPlaceClaim(accumulated.slice(start, end))) break
+    // 🚨 A LINK SPAN END IS NOT A SENTENCE END. `sentenceSpans` keeps a markdown link / bare URL as
+    // its own span, so a sentence with an inline link arrives here in three pieces. Measured live
+    // (C3 run 20, 2026-09-20): "Bạn có thể vào **[trang CGV](…)** để xem … giá vé (thường từ
+    // 80k-150k …)." — the money claim sat in the third piece, the first two were released, the
+    // guard then cut the clause, and the reply reached the client with its opening repeated. Only a
+    // boundary that is a real sentence end (terminal punctuation, a line break, or the completed
+    // segment's end) may be released; a piece cut off by a link waits with the rest of its sentence.
+    const last = accumulated[end - 1]
+    const realEnd = end >= accumulated.length || last === '\n' || last === '.' || last === '!' || last === '?'
+    if (!realEnd) continue
     point = end
   }
   return point
