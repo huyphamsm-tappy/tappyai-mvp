@@ -293,7 +293,10 @@ export function turnStartsNewConsultation(input: { messages: Array<{ role: strin
   if (users.length < 2) return false
   const last = users[users.length - 1]
   if (typeof last.content !== 'string') return false
-  const thread = assessActionability({ messages: input.messages, hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
+  // F (2026-09-20, measured Android session B: cinema → hotel → spa → "an gi ngon gio" read as a refinement of
+  // the spa consultation and the spa budget satisfied the FOOD gate): the domain to compare against is the
+  // thread BEFORE this turn — the whole thread with the new turn in it reads the new turn's own domain back.
+  const thread = assessActionability({ messages: input.messages.slice(0, -1), hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
   const own = assessActionability({ messages: [last], hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
   return !!own.domain && !!thread.domain && own.domain !== thread.domain
 }

@@ -66,3 +66,22 @@ describe('turnStartsNewConsultation', () => {
     expect(route).toMatch(/deriveSituation\(ownDomainSwitch \? consultationUserTexts\(framingMessages\)\.slice\(-1\)/)
   })
 })
+
+// F (2026-09-20), Android session B: a food ask after cinema → hotel → spa turns.
+describe('a food ask after several other place consultations is a new consultation', () => {
+  it('cinema → hotel → spa → "an gi ngon gio": the spa budget must not satisfy the food gate', () => {
+    const msgs = [
+      { role: 'user', content: 'toi nay rap CGV Vincom Dong Khoi chieu phim gi, may gio, ve bao nhieu?' },
+      { role: 'assistant', content: 'Mình vừa tìm được **CGV Vincom Đồng Khởi** gần bạn (0.2km). Hệ thống của mình chưa có dữ liệu suất chiếu real-time.' },
+      { role: 'user', content: 'khach san da nang gan bien duoi 1tr/dem' },
+      { role: 'assistant', content: '**M Hotel Đà Nẵng** — 4.8⭐ (2.827 đánh giá) — 286 Võ Nguyên Giáp, gần biển Mỹ Khê.' },
+      { role: 'user', content: 'spa massage chan gan q1 duoi 300k' },
+      { role: 'assistant', content: 'Mình chọn **Hyan Spa** cho bạn — 5⭐ (102 đánh giá), chỉ 0.9km, đang mở cửa (10:00–21:00).' },
+      { role: 'user', content: 'an gi ngon gio' },
+    ]
+    expect(turnStartsNewConsultation({ messages: msgs, ...gps })).toBe(true)
+    const own = assessActionability({ messages: msgs.slice(-1), lastAssistantText: null, ...gps })
+    expect(own.actionable).toBe(false)
+    expect(own.domain).toBe('food')
+  })
+})
