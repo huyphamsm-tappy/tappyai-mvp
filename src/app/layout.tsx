@@ -9,6 +9,7 @@ import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
+import GoogleAnalytics from '@/components/GoogleAnalytics'
 
 // og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
 // They were absent before, which is why a pasted TappyAI link rendered as bare
@@ -90,6 +91,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NotificationProvider>{children}</NotificationProvider>
         </PostHogProvider>
         <LocationProvider />
+        {/* GA4 loader — renders nothing unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set (Production
+            only). Events reach it through the in-app tracker's mirror, never directly. */}
+        <GoogleAnalytics />
         <TrackingProvider />
         <LanguagePicker />
         <HtmlLangSync />

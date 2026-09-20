@@ -4,6 +4,7 @@
 // current and future analytics reuse one schema (Analytics v1.1 §3/§8A).
 
 import { buildEnvelope, type AnalyticsEnvelope } from './envelope'
+import { mirrorToGa4 } from '@/lib/analytics/ga4'
 
 // Known event vocabulary (autocomplete hint). The pipeline is forward-compatible:
 // any string is accepted and unknown types are tagged server-side, so new events
@@ -80,4 +81,7 @@ export const tracker = typeof window !== 'undefined' ? new EventTracker() : null
 
 export function track(event_type: EventType, metadata?: Record<string, unknown>) {
   tracker?.track(event_type, metadata)
+  // GA4 sees an allowlisted projection of the same event (lib/analytics/ga4.ts owns the
+  // allowlist). Still the one tracker: there is no second call site anywhere.
+  mirrorToGa4(event_type, metadata)
 }
