@@ -800,3 +800,53 @@
 {"type":"tappyai_model","model":"fast","planningIntent":null}
 {"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":182,"totalTokens":185,"cacheReadTokens":20788,"cacheCreationTokens":1341,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":5843,"preModelMs":1627,"ttftMs":2642,"modelFinishMs":4983,"ttuaMs":2642,"postModelMs":860,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":2341,"firstStepFinishMs":4981,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
  POST /api/chat 200 in 7065ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":442,"totalTokens":445,"cacheReadTokens":0,"cacheCreationTokens":22178,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":8012,"preModelMs":1450,"ttftMs":3212,"modelFinishMs":7054,"ttuaMs":3212,"postModelMs":958,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":3842,"firstStepFinishMs":7054,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 8127ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":211,"totalTokens":214,"cacheReadTokens":20788,"cacheCreationTokens":1315,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6209,"preModelMs":740,"ttftMs":1651,"modelFinishMs":4622,"ttuaMs":1651,"postModelMs":1587,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2971,"firstStepFinishMs":4622,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 6228ms
+ ✓ Compiled /api/memory in 280ms (435 modules)
+ PATCH /api/memory 200 in 934ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"quán ăn tối Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"quán ăn tối Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Nori - Modern Izakaya","role":"best_overall","attributes":null},{"name":"えびすEbisu District1( Udon & Sushi)","role":null,"attributes":null},{"name":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Nori - Modern Izakaya","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"same","card1":"Nori - Modern Izakaya","model_pick":"Nori - Modern Izakaya","engine_pick":"Nori - Modern Izakaya"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":15,"sentences_removed":2,"chars_in":1031,"chars_removed":230,"chars_kept":801,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":2,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"quán ăn tối Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":4919,"completionTokens":714,"totalTokens":5633,"cacheReadTokens":23361,"cacheCreationTokens":23361,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":15519,"preModelMs":706,"ttftMs":1680,"modelFinishMs":13752,"ttuaMs":1958,"postModelMs":1767,"toolMs":2404,"providerId":"claude","modelRole":"smart","generationMs":12072,"firstStepFinishMs":4957,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 15647ms
+ PATCH /api/memory 200 in 158ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":198,"totalTokens":201,"cacheReadTokens":20640,"cacheCreationTokens":1587,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":4898,"preModelMs":1059,"ttftMs":1949,"modelFinishMs":3878,"ttuaMs":1949,"postModelMs":1020,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":1929,"firstStepFinishMs":3878,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 4914ms
+ ✓ Compiled /api/links/resolve in 216ms (439 modules)
+ POST /api/links/resolve 400 in 247ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 15ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 19ms
+ ○ Compiling /api/scam-shield/check ...
+ ✓ Compiled /api/scam-shield/check in 2.2s (836 modules)
+ POST /api/scam-shield/check 400 in 2356ms
+ POST /api/scam-shield/check 200 in 603ms
+ POST /api/scam-shield/check 400 in 92ms
+ POST /api/scam-shield/check 400 in 78ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":240,"totalTokens":243,"cacheReadTokens":20788,"cacheCreationTokens":1349,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6187,"preModelMs":1182,"ttftMs":3015,"modelFinishMs":5367,"ttuaMs":3016,"postModelMs":820,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2352,"firstStepFinishMs":5365,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 6327ms
