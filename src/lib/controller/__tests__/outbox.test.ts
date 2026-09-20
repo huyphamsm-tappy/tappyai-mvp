@@ -439,6 +439,11 @@ describe('C8 — the drain is wired as a daily cron', () => {
     // 8 -> 9 on 2026-09-01: `/api/cron/marketing-retention` (V2.2-2, contract
     // M-26/M-27) prunes marketing deliveries and campaigns past one year. It
     // deletes rows and cannot notify anybody.
-    expect(vercelJson.crons.length).toBe(9)
+    //
+    // 9 -> 10 on 2026-09-20: `/api/cron/feed-ingest` (B5) pulls the Accesstrade
+    // datafeed for the approved Tier-1 merchants once a day (02:30 VN). It writes
+    // `commerce_feed_items` / `commerce_feed_runs` only, and records
+    // `blocked_no_credentials` until the feed credentials exist.
+    expect(vercelJson.crons.length).toBe(10)
   })
 })
