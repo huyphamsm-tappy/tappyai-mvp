@@ -124,11 +124,11 @@ describe('Google fields reach the card', () => {
 })
 
 describe('actions come from the data, once each', () => {
-  it('renders Maps, the order platform and the website when the row carries them', () => {
+  it('renders Maps and the website when the row carries them — and NOT the platform search link (A3.3, 2026-09-20)', () => {
     const [card] = renderFromTool([googleRow('AnAn'), googleRow('Cosa')])
     const hrefs = within(card).getAllByRole('link').map(a => a.getAttribute('href'))
     expect(hrefs).toContain('https://www.google.com/maps/place/?q=place_id:ChIJ-AnAn')
-    expect(hrefs).toContain('https://shopeefood.vn/tim-kiem?q=AnAn')
+    expect(hrefs).not.toContain('https://shopeefood.vn/tim-kiem?q=AnAn')
     expect(hrefs.some(h => (h ?? '').includes('anan.vn')), `website missing from ${JSON.stringify(hrefs)}`).toBe(true)
     // Every destination appears exactly once on the card.
     expect(new Set(hrefs).size).toBe(hrefs.length)
@@ -157,16 +157,15 @@ describe('actions come from the data, once each', () => {
     expect(hrefs.some(h => h.includes('maps'))).toBe(true)
   })
 
-  it('marks an order link as a SEARCH, because that is what it is', () => {
-    // A named food place always has order links: `actions.ts` recomputes them
-    // from the shipped builder when the row did not carry them, so "no order
-    // action" is not a state Food can be in. What must stay true is the honesty
-    // field — the link goes to the platform's SEARCH page for that name, and the
-    // venue may not be listed there at all.
+  it('A3.3 / A3.6 (2026-09-20): a platform SEARCH for the name is NOT an order action — only the venue\'s own page is', () => {
+    // Superseded here: "a named food place always has order links". The owner's rule is the
+    // deepest merchant page or nothing, so a row that carries only the platforms' search links
+    // renders no order button, and the venue's own ShopeeFood page renders one, direct.
     const recs = placeRecommendations(toolResult([googleRow('AnAn', { order_links: undefined }), googleRow('Cosa')]), 'Quận 1')
-    const order = buildPlacesLiveView(recs)!.items[0].actions.filter(a => a.kind === 'order')
-    expect(order.length).toBeGreaterThan(0)
-    for (const a of order) expect(a.urlKind).toBe('search')
+    expect(buildPlacesLiveView(recs)!.items[0].actions.filter(a => a.kind === 'order')).toEqual([])
+    const own = placeRecommendations(toolResult([googleRow('AnAn', { order_search_results: [{ title: 'AnAn - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/anan-quan-1', snippet: '', evidence_scope: 'entity', evidence_about: 'AnAn' }] }), googleRow('Cosa')]), 'Quận 1')
+    const order = buildPlacesLiveView(own)!.items[0].actions.filter(a => a.kind === 'order')
+    expect(order.map(a => [a.url, a.urlKind])).toEqual([['https://shopeefood.vn/ho-chi-minh/anan-quan-1', 'direct']])
   })
 
   it('🚨 renders a TikTok review only when the attribution is real', () => {

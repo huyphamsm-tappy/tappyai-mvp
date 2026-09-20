@@ -85,14 +85,12 @@ describe('TRAVEL — a stay card shows what a stay actually has', () => {
     expect(cards[0].textContent).not.toMatch(/undefined|null|NaN/)
   })
 
-  it('🚨 a Booking.com SEARCH is labelled as a search, not as "Đặt phòng"', () => {
-    // The measured travel defect in its other half: a room-search URL wearing a
-    // "book this room" label.
+  it('🚨 A3.3 (2026-09-20): a Booking.com SEARCH is not on the card at all — never a results page, so never a "Tìm phòng" button either', () => {
+    // Superseded here: "labelled as a search". The measured defect (a search wearing a booking
+    // label) is closed the other way: the results page is never a CTA.
     const { cards } = renderStays()
-    const booking = within(cards[0]).getAllByRole('link').find(a => (a.getAttribute('href') ?? '').includes('booking.com'))
-    expect(booking, 'the stay carries the booking link the tool returned').toBeTruthy()
-    expect(booking!.textContent).toContain('Tìm phòng trên Booking.com')
-    expect(booking!.textContent).not.toBe('Đặt phòng')
+    const booking = within(cards[0]).getAllByRole('link').find(a => (a.getAttribute('href') ?? '').includes('booking.com/searchresults'))
+    expect(booking).toBeUndefined()
   })
 
   it('🚨 a review fallback says it is a search — never "Xem review"', () => {
@@ -255,7 +253,8 @@ describe('TRAVEL — the useful destination comes first', () => {
     }, { name: 'DA NANG BAY HOTEL', reasons: [], tradeOff: null })
     const view = buildPlacesLiveView(recs)!
     const bookings = view.items[0].actions.filter(a => a.kind === 'booking')
-    expect(bookings.length).toBeGreaterThan(1)
+    // A3.3: the hotel's own page is the ONLY booking action — the city-wide search is gone.
+    expect(bookings.length).toBe(1)
     expect(bookings[0].urlKind, 'the direct hotel page leads').toBe('direct')
     expect(bookings[0].url).toContain('/hotel/vn/')
 
@@ -263,8 +262,6 @@ describe('TRAVEL — the useful destination comes first', () => {
     const card = screen.getAllByTestId('place-card')[0]
     const labels = within(card).getAllByRole('link').map(a => (a.textContent ?? '').trim())
     expect(labels).toContain('Đặt phòng')
-    expect(labels.indexOf('Đặt phòng')).toBeLessThan(
-      labels.findIndex(l => l.startsWith('Tìm phòng')),
-    )
+    expect(labels.some(l => l.startsWith('Tìm phòng'))).toBe(false)
   })
 })
