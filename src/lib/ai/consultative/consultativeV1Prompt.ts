@@ -26,6 +26,8 @@ export interface ConsultativeV1PromptInput {
   searchNow?: { query: string; type: string; exact: boolean } | null
   /** Item 1: the previous assistant turn was the clarify question — asking again is forbidden. */
   afterClarify?: boolean
+  /** A1(c): the route already ran the search-now call; the rows are in the tool result the model holds. */
+  presearched?: boolean
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -57,7 +59,9 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
     ? `
 - BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
     : ''
-  const call = input.searchNow
+  const call = input.searchNow && input.presearched
+    ? `KET QUA search_places DA CO SAN trong tool result ngay tren (he thong da tim "${input.searchNow.query}" quanh vi tri user). DUNG rows do de chon — KHONG goi search_places lai, tru khi rows ro rang sai vung/sai loai.`
+    : input.searchNow
     ? (input.searchNow.type === 'product'
       ? `goi search_products({ query: "${input.searchNow.query}" })`
       : input.searchNow.type === 'hotel'
@@ -84,7 +88,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // The concrete first call goes FIRST, before the situation: measured, the same line at the end of
   // the block moved "ăn gì ngon giờ" to a search but "đi chơi ở đâu" still asked "bạn muốn chơi gì?".
   const searchFirst = input.searchNow
-    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)} NGAY, truoc khi viet bat ky chu nao. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 ${input.searchNow.type === 'product' ? 'san pham' : 'dia diem'} tu ket qua va noi ro "minh gia su ...".${afterClarify}
+    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)}${input.presearched ? '' : ' NGAY, truoc khi viet bat ky chu nao'}. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 ${input.searchNow.type === 'product' ? 'san pham' : 'dia diem'} tu ket qua va noi ro "minh gia su ...".${afterClarify}
 =====================================`
     : afterClarify
       ? `\n\n===== LUOT SAU CAU HOI LAM RO =====${afterClarify}\n=====================================`

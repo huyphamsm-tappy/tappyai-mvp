@@ -47,15 +47,35 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
     expect(call).not.toContain('forcedTool')
   })
 
-  it('no tool is invoked before generation — ranking runs INSIDE execute()', () => {
+  // A1(c) 2026-09-20 — THE INVARIANT AFTER THE OWNER OPENED THE LOCK FOR THE PRE-SEARCH:
+  // still exactly one AI.stream() per turn; the route may run AT MOST ONE tool before it, and only
+  // through the same wrapped tool object the model would have called (`tools.search_places.execute`,
+  // arguments from presearch.ts — derived by code from the frames, never by a model). No provider
+  // function (searchPlaces / searchProducts / getHotelPrices) and no ranker is called directly
+  // outside a tool's execute(); the tool DEFINITIONS are hoisted above the stream so the pre-search
+  // can reuse them, which is why the check strips that block before looking.
+  it('the only tool invoked before generation is the pre-search, through the wrapped tool object', () => {
     const src = code(ROUTE)
     const beforeStream = src.slice(0, src.indexOf('AI.stream('))
-    expect(beforeStream).not.toContain('searchPlaces(')
-    expect(beforeStream).not.toContain('searchProducts(')
-    expect(beforeStream).not.toContain('getHotelPrices(')
-    // The ranker is DEFINED before the stream but must only be CALLED from a
-    // tool's execute(), which is the only place candidates exist.
-    expect(beforeStream).not.toContain('rankForModel(')
+    const toolsStart = beforeStream.indexOf('const tools = noToolTurn ? undefined : gateTools(timeTools({')
+    expect(toolsStart).toBeGreaterThan(0)
+    const toolsEnd = beforeStream.indexOf('\n  }))', toolsStart)
+    expect(toolsEnd).toBeGreaterThan(toolsStart)
+    const outsideTools = beforeStream.slice(0, toolsStart) + beforeStream.slice(toolsEnd)
+    expect(outsideTools).not.toContain('searchPlaces(')
+    expect(outsideTools).not.toContain('searchProducts(')
+    expect(outsideTools).not.toContain('getHotelPrices(')
+    expect(outsideTools).not.toContain('rankForModel(')
+    // Exactly one pre-generation invocation, and it goes through the wrapped tool.
+    expect((outsideTools.match(/search_places\.execute\(presearchPlan\.args/g) || []).length).toBe(1)
+    expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1)
+  })
+
+  it('the pre-search never chooses its own arguments — planPresearch reads the search-now directive only', () => {
+    const src = code('src/lib/ai/consultative/presearch.ts')
+    expect(src).not.toContain('@/lib/ai/llm')
+    expect(src).not.toContain('fetch(')
+    expect(src).toContain('export function planPresearch(searchNow: SearchNow | null')
   })
 })
 

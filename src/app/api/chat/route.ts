@@ -74,6 +74,7 @@ import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, 
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
+import { planPresearch, presearchMessages, presearchFrames, prefixBody, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
@@ -786,6 +787,12 @@ export async function POST(req: Request) {
   const situation: SituationFrame | null = consultativeV1
     ? deriveSituation(ownDomainSwitch ? consultationUserTexts(framingMessages).slice(-1) : consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
     : null
+  // The concrete first step for a VAGUE place request (searchNow.ts) — computed once here, read by
+  // the V1 block below and by the pre-search (A1(c)). The turn after a clarify (item 1) is the first
+  // REAL reply: it must search now, never ask again.
+  const afterClarify = isClarifyReply(lastAssistantText)
+  const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify, movieRecommend, afterClarify }) : null
+  const presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
 
   /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
@@ -1246,10 +1253,8 @@ export async function POST(req: Request) {
     // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
-    const afterClarify = isClarifyReply(lastAssistantText)
-    const searchNow = deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify, movieRecommend, afterClarify })
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow, afterClarify })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow, afterClarify, presearched: presearchPlan !== null })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -1389,6 +1394,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     promptTokens: number | null; completionTokens: number | null; totalTokens: number | null
     cacheReadTokens: number | null; cacheCreationTokens: number | null
     llmCalls: number | null; toolCalls: number
+    /** A1(c): the route-run first search, when the turn had one. */
+    presearch?: { ms: number; exact: boolean | null } | null
   } | null = null
 
   /**
@@ -1462,66 +1469,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (process.env.AUDIT_DRY_RUN === '1') return cannedDataStreamResponse('[audit dry-run — no model call]', { 'X-Decision-Evidence-Id': evidenceId })
   }
 
-  let result
-  try {
-  // Provider-specific optimizations (e.g. prompt caching of this large system
-  // prompt) are applied inside the active provider adapter — not here.
-  result = AI.stream({
-    role,
-    // First text delta only. Tool-call and reasoning chunks are deliberately
-    // NOT counted: a turn that calls a tool emits its first text long after the
-    // model actually started answering, and conflating the two would report a
-    // tool round-trip as model latency — the exact confusion this exists to end.
-    onChunk: ({ chunk }) => {
-      if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
-    },
-    // Closes the first step (the tool-planning round-trip on a tool turn; the
-    // only step on a chitchat turn). Diagnostic — nothing branches on it.
-    onStepFinish: () => {
-      if (firstStepFinishMs === null) firstStepFinishMs = Date.now() - startTime
-    },
-    // Cancel the upstream generation (and skip the onFinish memory-extraction
-    // call) if the client disconnects — otherwise it runs to maxDuration billing
-    // tokens for a response nobody is receiving.
-    abortSignal: req.signal,
-    systemShared,
-    system: systemPrompt,
-    messages: modelMessages,
-    // Completion cap. Place/product replies previously hit finishReason:"length"
-    // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
-    // now injected by streamEnrichment instead of written by the LLM (see prompt),
-    // so actual output is smaller — this raised ceiling is headroom, not the norm.
-    // Completion cap (cost optimization item 7, 2026-09-18): measured on 38 audit turns with
-    // CONSULTATIVE_V1 on, the longest reply was 821 completion tokens (a two-step tool turn
-    // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
-    // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
-    // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
-    maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
-    // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
-    // never ran — ai@4.3.19 destructures experimental_prepareStep in
-    // generateText only (bundle line 4177); streamText (line 5193) takes
-    // toolChoice and maxSteps but never prepareStep, and 4177 is the option's
-    // only occurrence. Production has always run at the SDK default,
-    // toolChoice:'auto', and the baseline confirmed it behaviourally.
-    //
-    // This is a SAFETY cleanup, not a saving: behaviour is unchanged. It matters
-    // because the deleted code carried an @ts-ignore asserting the option works
-    // at runtime, and AI SDK 5 DOES support prepareStep on streamText — an
-    // upgrade would have silently switched forcing on, raising cost and breaking
-    // the clarification behaviour this phase builds on `auto`.
-    //
-    // No-tool turns get NO tool definitions. Measured 2026-08-10: declaring them
-    // cost ~2,400 of the path's ~2,657 input tokens, and none of it was
-    // reachable — a no-tool turn runs with maxSteps:1, so a tool call has no
-    // second step to answer in and the reply comes back EMPTY.
-    //
-    // This fragments no cache. The chitchat prefix (tools + the ~300-token
-    // simple prompt = ~2,657) sits under Haiku 4.5's 4,096-token minimum
-    // cacheable size, so it was never cached to begin with — measured
-    // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
-    // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: noToolTurn ? undefined : gateTools(timeTools({
+  const tools = noToolTurn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
       // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
@@ -1845,7 +1793,89 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           }
         }),
       } : {}),
-    })),
+  }))
+
+  /**
+   * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
+   * that one wrapped tool here — same object, same side effects — and hands the model a completed
+   * tool-call / tool-result pair, so the turn is a single model step. The client stream gets the
+   * same `9:` / `a:` frames the SDK would have written. Logged; a failure becomes a tool error
+   * result the model reads exactly as it reads a failed live call.
+   */
+  let presearchOutcome: PresearchOutcome | null = null
+  if (presearchPlan && !noToolTurn && tools && typeof (tools as Record<string, { execute?: unknown }>).search_places?.execute === 'function') {
+    const t0 = Date.now()
+    const toolCallId = 'presearch_' + randomUUID().slice(0, 8)
+    let result: unknown
+    try {
+      result = await (tools as unknown as { search_places: { execute: (args: PresearchPlan['args'], ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> } }).search_places.execute(presearchPlan.args, { toolCallId, messages: [] })
+    } catch (e) {
+      result = { error: e instanceof Error ? e.message.slice(0, 200) : 'presearch_failed' }
+    }
+    presearchOutcome = { toolCallId, toolName: 'search_places', args: presearchPlan.args, result, ms: Date.now() - t0 }
+    console.log(JSON.stringify({ type: 'tappyai_presearch', exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
+  }
+  const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
+  let result
+  try {
+  // Provider-specific optimizations (e.g. prompt caching of this large system
+  // prompt) are applied inside the active provider adapter — not here.
+  result = AI.stream({
+    role,
+    // First text delta only. Tool-call and reasoning chunks are deliberately
+    // NOT counted: a turn that calls a tool emits its first text long after the
+    // model actually started answering, and conflating the two would report a
+    // tool round-trip as model latency — the exact confusion this exists to end.
+    onChunk: ({ chunk }) => {
+      if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
+    },
+    // Closes the first step (the tool-planning round-trip on a tool turn; the
+    // only step on a chitchat turn). Diagnostic — nothing branches on it.
+    onStepFinish: () => {
+      if (firstStepFinishMs === null) firstStepFinishMs = Date.now() - startTime
+    },
+    // Cancel the upstream generation (and skip the onFinish memory-extraction
+    // call) if the client disconnects — otherwise it runs to maxDuration billing
+    // tokens for a response nobody is receiving.
+    abortSignal: req.signal,
+    systemShared,
+    system: systemPrompt,
+    messages: modelMessagesWithPresearch as typeof modelMessages,
+    // Completion cap. Place/product replies previously hit finishReason:"length"
+    // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
+    // now injected by streamEnrichment instead of written by the LLM (see prompt),
+    // so actual output is smaller — this raised ceiling is headroom, not the norm.
+    // Completion cap (cost optimization item 7, 2026-09-18): measured on 38 audit turns with
+    // CONSULTATIVE_V1 on, the longest reply was 821 completion tokens (a two-step tool turn
+    // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
+    // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
+    // generated, so this changes no cost on a normal reply — it bounds a runaway one.
+    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
+    // never ran — ai@4.3.19 destructures experimental_prepareStep in
+    // generateText only (bundle line 4177); streamText (line 5193) takes
+    // toolChoice and maxSteps but never prepareStep, and 4177 is the option's
+    // only occurrence. Production has always run at the SDK default,
+    // toolChoice:'auto', and the baseline confirmed it behaviourally.
+    //
+    // This is a SAFETY cleanup, not a saving: behaviour is unchanged. It matters
+    // because the deleted code carried an @ts-ignore asserting the option works
+    // at runtime, and AI SDK 5 DOES support prepareStep on streamText — an
+    // upgrade would have silently switched forcing on, raising cost and breaking
+    // the clarification behaviour this phase builds on `auto`.
+    //
+    // No-tool turns get NO tool definitions. Measured 2026-08-10: declaring them
+    // cost ~2,400 of the path's ~2,657 input tokens, and none of it was
+    // reachable — a no-tool turn runs with maxSteps:1, so a tool call has no
+    // second step to answer in and the reply comes back EMPTY.
+    //
+    // This fragments no cache. The chitchat prefix (tools + the ~300-token
+    // simple prompt = ~2,657) sits under Haiku 4.5's 4,096-token minimum
+    // cacheable size, so it was never cached to begin with — measured
+    // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
+    // the baseline and the post-B1 run. The tool path keeps its own lineage.
+    tools,
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
@@ -1882,7 +1912,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         // One LLM request per step. The memory-extraction generate() below is a
         // SEPARATE call, so total LLM calls = llmCalls + memoryExtract.
         llmCalls: steps?.length ?? null,
-        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
+        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0) + (presearchOutcome ? 1 : 0),
+        presearch: presearchOutcome ? { ms: presearchOutcome.ms, exact: presearchPlan?.exact ?? null } : null,
       }
       if (authedUserId && worthExtract) {
         try {
@@ -1963,7 +1994,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let photoTotalMs = 0
   let photoMaxPlaceMs = 0
 
-  const baseResponse = result.toDataStreamResponse()
+  const sdkResponse = result.toDataStreamResponse()
+  // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
+  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
