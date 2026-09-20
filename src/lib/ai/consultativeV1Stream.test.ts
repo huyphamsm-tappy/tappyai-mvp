@@ -51,7 +51,8 @@ const ON: ConsultativeV1Context = { on: true, rendersCard: true, namedRefetch: [
 
 describe('flag OFF — identity', () => {
   it('a no-tool follow-up streams straight through, search claim and all', async () => {
-    const reply = 'Mình đã kiểm tra lại, quán mở đến 22h. Bạn nên đi sớm.'
+    // E1 (2026-09-20): an hour no row states is cut whatever the V1 flag says — the filler names none.
+    const reply = 'Mình đã kiểm tra lại, quán hợp 2 người. Bạn nên đi sớm.'
     const { text, logs } = await run(reply, { tool: false })
     expect(prose(text)).toBe(reply)
     expect(logs.some(l => l.includes('"guard":"consultative_v1"'))).toBe(false)
@@ -60,7 +61,7 @@ describe('flag OFF — identity', () => {
 
 describe('flag ON', () => {
   it('removes a search claim on a no-tool follow-up and logs the guard once', async () => {
-    const { text, logs } = await run('Mình đã kiểm tra lại, quán mở đến 22h. Bạn nên đi sớm.', { v1: ON, tool: false })
+    const { text, logs } = await run('Mình đã kiểm tra lại, quán hợp 2 người. Bạn nên đi sớm.', { v1: ON, tool: false })
     expect(prose(text)).toBe('Bạn nên đi sớm.')
     const guard = logs.filter(l => l.includes('"guard":"consultative_v1"'))
     expect(guard).toHaveLength(1)

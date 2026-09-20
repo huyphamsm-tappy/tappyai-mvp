@@ -57,16 +57,17 @@ describe('A5 P0 — a food price invented on a no-retrieval turn', () => {
     // place guard now removes as an unsupported POPULARITY claim - correctly, on
     // a turn that retrieved nothing at all. Kept as its own case below so the
     // two boundaries are asserted separately instead of by accident.
-    return runNoToolTurn('Quán mở cửa từ 6h sáng, bạn có thể ghé sớm.', { placeIntent: true })
+    // E1 (2026-09-20): an hour with no retrieval is now cut too, so the filler names no time.
+    return runNoToolTurn('Quán nằm trên đường Nguyễn Trãi, bạn có thể ghé sớm.', { placeIntent: true })
       .then(out => { expect(out).toContain('bạn có thể ghé sớm') })
   })
 
   it('removes a popularity claim on a turn that retrieved nothing', () => {
-    return runNoToolTurn('Quán mở cửa từ 6h sáng, rất đông khách buổi trưa.', { placeIntent: true })
+    return runNoToolTurn('Quán nằm trên đường Nguyễn Trãi, rất đông khách buổi trưa.', { placeIntent: true })
       .then(out => {
         expect(out).not.toContain('rất đông khách')
         // Removal is clause-level: the supported half of the sentence survives.
-        expect(out).toContain('Quán mở cửa từ 6h sáng')
+        expect(out).toContain('Quán nằm trên đường Nguyễn Trãi')
       })
   })
 

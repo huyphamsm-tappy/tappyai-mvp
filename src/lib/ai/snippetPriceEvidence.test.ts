@@ -14,6 +14,8 @@ const ROW = {
   place_id: 'p1', name: 'GÀ RÁN K- JEJU CHICKEN-Quận 1', address: 'Quận 1',
   google_rating: '⭐ 4.9 (7.166 đánh giá)', rating_value: 4.9, rating_count: 7166,
   price_range_text: '100-200 N ₫', maps_link: 'https://maps.google.com/?cid=1',
+  // E1 (2026-09-20): the reply's "mở đến 3h sáng" must trace to the row's hours, like its band.
+  opening_hours: '10:00–03:00',
 }
 
 async function runTurn(reply: string, env: Record<string, string> = {}) {

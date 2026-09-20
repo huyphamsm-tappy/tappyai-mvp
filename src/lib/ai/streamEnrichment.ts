@@ -3,6 +3,7 @@ import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
+import { guardHoursClaimsInText } from './hoursGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
@@ -1652,7 +1653,23 @@ export function applyPlaceEnrichmentStreamFilter(
         systemLinkUrls,
       }, { scope: placeClaimScope, attributionV2: guardV2, pickName })
       : null
-    const placeGuarded = placeGuardResult ? placeGuardResult.text : foodGuarded
+    const placeGuardedRaw = placeGuardResult ? placeGuardResult.text : foodGuarded
+    /**
+     * E1 (2026-09-20) — OPENING HOURS ARE A NUMBER. Every other figure a place reply states is
+     * gated; "mở đến 3h sáng" / "mở cửa 08:30–18:00" were not (measured Phase D runs 24/28). The
+     * evidence is the rows' own hours (today + the week) and, on a follow-up that fetched nothing,
+     * the hours the previous reply stated (carried, like ratings). Proportional: the hour clause
+     * goes, the rest of the sentence stays, one hedge line. Place turns only — a travel turn's
+     * times are the travel guard's, a ticket turn's showtimes the ticket unit's.
+     */
+    const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? collector.consultativeV1.carried.map(c => c.hours ?? '') : [])]
+    const hoursGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
+      ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, { lang })
+      : null
+    if (hoursGuardResult && hoursGuardResult.redacted > 0) {
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hours', redacted: hoursGuardResult.redacted, unsupported: hoursGuardResult.unsupported.length, evidence_texts: hoursEvidence.length }))
+    }
+    const placeGuarded = hoursGuardResult ? hoursGuardResult.text : placeGuardedRaw
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.
@@ -2328,6 +2345,10 @@ export function applyPlaceEnrichmentStreamFilter(
               if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
               for (const k of ['snippet', 'address', 'opening_hours']) {
                 if (typeof row[k] === 'string') placeTexts.push(row[k] as string)
+              }
+              // E1: the week's hours are evidence too — a reply may state Friday's closing time today.
+              if (row.opening_hours_week && typeof row.opening_hours_week === 'object') {
+                for (const v of Object.values(row.opening_hours_week as Record<string, unknown>)) if (typeof v === 'string') placeTexts.push(v)
               }
             }
             let newPlaces: PlaceLike[] = []

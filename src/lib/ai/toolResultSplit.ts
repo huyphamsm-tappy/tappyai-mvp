@@ -185,7 +185,7 @@ export interface ConsultativeV1Context {
    * turn's only place evidence; the place-claim guard reads it instead of an
    * empty row set. Empty on a first turn.
    */
-  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null }>
+  carried: Array<{ name: string; rating: number | null; reviewCount: number | null; distanceKm: number | null; hours?: string | null }>
   /** Stated hard constraints no candidate carried evidence for — set at tool time. */
   hardGaps: string[]
   /** ASSUME_PRESENT constraints (air_con…) some fetched text argues AGAINST — set at tool time. */

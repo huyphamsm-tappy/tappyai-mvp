@@ -105,7 +105,10 @@ function userEchoStandsHere(
 // The unit must END the token: JS `\b` after "h" is satisfied by a following "à" (non-ASCII is
 // non-word to `\b`), so "nhập thông tin 2 hành khách" read as the time "2h" and a whole
 // Trip.com link line was cut (C1 live probe, 2026-09-20). A letter/digit lookahead closes that.
-const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)(?![\p{L}\p{N}])/iu
+// E1 (2026-09-20): the Vietnamese minute forms ("10h30", "8 giờ 30", "8 giờ rưỡi") and a trailing
+// period word ("5h chiều" = 17:00, "9 giờ đêm" = 21:00) — a venue's hours are written that way, and a
+// guard that read "5h chiều" as 5:00 against a row's "17:00" would cut a true sentence.
+const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h(?:[0-5]\d)?|giờ(?:\s*(?:[0-5]\d|rưỡi))?|gio(?:\s*(?:[0-5]\d|ruoi))?|am|pm|a\.m\.|p\.m\.)(?:\s*(?:sáng|sang|trưa|trua|chiều|chieu|tối|toi|đêm|dem))?(?![\p{L}\p{N}])/iu
 const DEPART_CTX = /\b(?:bay|chuyến bay|chuyen bay|khởi hành|khoi hanh|cất cánh|cat canh|hạ cánh|ha canh|departs?|departure|leaves?|arri(?:ves?|val)|flight)\b/iu
 // C3 (2026-09-20): the SCHEDULE + TICKET unit for a venue — a screening / show time. No showtime
 // provider is wired, so on a ticket turn a stated time next to one of these is unverifiable.
@@ -143,8 +146,12 @@ export function scheduleTimesIn(text: string): string[] {
     const hm = t.match(/(2[0-3]|[01]?\d)(?::([0-5]\d))?/)
     if (!hm) continue
     let h = parseInt(hm[1], 10)
-    const min = hm[2] ?? '00'
-    if (/pm|p\.m\.|chiều|tối/.test(t) && h < 12) h += 12
+    // Minutes: ":30", "10h30", "8 giờ 30", "8 giờ rưỡi".
+    const after = t.slice(hm.index! + hm[0].length)
+    const mm = hm[2] ?? after.match(/^\s*(?:h|giờ|gio)\s*([0-5]\d)/)?.[1] ?? (/rưỡi|ruoi/.test(after) ? '30' : '00')
+    const min = mm.padStart(2, '0')
+    if (/pm|p\.m\.|chiều|chieu|tối|toi/.test(t) && h < 12) h += 12
+    else if (/đêm|dem/.test(t) && h >= 6 && h < 12) h += 12
     out.add(`${h}:${min}`)
   }
   return [...out]
