@@ -69,3 +69,12 @@ describe('deriveSearchNow — the concrete first call for a place request', () =
     expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa')).toBeNull()
   })
 })
+
+// C1 (2026-09-20, live run 16): a coach request was pre-searched as restaurants.
+describe('a transport request is never a place directive', () => {
+  it('coach / flight / rail requests get no search_places call', () => {
+    expect(derive('xe khách Sài Gòn đi Đà Lạt tối mai, vé bao nhiêu và mấy giờ chạy?')).toBeNull()
+    expect(derive('vé máy bay Sài Gòn Hà Nội 10/10 cho 2 người')).toBeNull()
+    expect(derive('tàu hỏa Hà Nội đi Sa Pa tối nay')).toBeNull()
+  })
+})

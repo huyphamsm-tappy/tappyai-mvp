@@ -59,6 +59,7 @@ function domainOf(frame: DecisionFrame, need: NeedProfile | null, situation: Sit
   }
 }
 
+const TRANSPORT_REQUEST = /(?:^|\s)(?:xe khach|ve xe|ve may bay|may bay|chuyen bay|tau hoa|tau lua|ve tau|xe buyt|xe bus|xe limousine|coach|bus ticket|flight|train ticket)(?:\s|$)/
 const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
 // A1 (2026-09-20, measured on the web: "quán cà phê yên tĩnh ở Quận 3 để làm việc"): a café or a
 // bar is a FOOD-domain request whose call is not a restaurant search — the model's own step made
@@ -97,6 +98,12 @@ export function deriveSearchNow(input: {
   // A purchase / gift request with no place domain is never a place call: "quà sinh nhật cho bạn
   // gái" carries the occasion "birthday", which the occasion fallback below would read as FOOD.
   if (SHOP_REQUEST.test(normalizeVN(input.text.toLowerCase())) && !frame.placeDecision && !frame.domains.some(d => d === 'food' || d === 'spa' || d === 'entertainment' || d === 'travel')) return null
+  // C1 (2026-09-20, measured live run 16): "xe khách Sài Gòn đi Đà Lạt tối mai" was pre-searched
+  // as RESTAURANTS ("tối" read as a meal) and the reply ended with a vegetarian restaurant and its
+  // photos under the coach fares. A transport / flight request has its own tools and never a
+  // place directive.
+  if (input.need?.domain === 'transport') return null
+  if (TRANSPORT_REQUEST.test(normalizeVN(input.text.toLowerCase()))) return null
   if (!situation.place.text && !situation.place.nearMe) return null
   const domain = domainOf(frame, input.need ?? null, situation, input.text)
   if (!domain) return null
