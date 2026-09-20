@@ -1,0 +1,52 @@
+{
+  "id": "M5d",
+  "text": "vậy chốt cái đầu, đặt lịch thế nào?",
+  "vertical": "spa",
+  "unit": "SCHEDULE_TICKET",
+  "parent": "M5c",
+  "surface": "web",
+  "status": 200,
+  "ttfb": 1850,
+  "ms": 4755,
+  "evidenceId": "7ddc809e-fe44-4177-9503-737727ef0067",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Bạn có thể đặt lịch **Jang Mi Spa & Massage** bằng cách:\n\n• **Gọi trực tiếp** — tìm số điện thoại trên Google Maps (tìm \"Jang Mi Spa & Massage Đà Nẵng\")\n• **Facebook/Zalo** — spa thường có fanpage, bạn inbox để đặt lịch\n• **Đến trực tiếp** — địa chỉ 77 Đình Nghệ, An Hải (mở 09:00–22:00 nên bạn có thời gian linh hoạt)\n\nSpa này đánh giá cao nên thường khá đông — nếu muốn chắc chắn có chỗ, gọi/inbox trước 1-2 tiếng là tốt nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Jang+Mi+Spa+Massage+Da+Nang\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm spa rẻ mà chất lượng tốt gần đây để thư giãn hôm nay. Mình chọn **Jang Mi Spa & Massage** cho bạn — nó có **4.9⭐ (8.572 đánh giá)** trên Google Maps, cao nhất trong danh sách, và mở từ 09:00–22:00 nên bạn có thời gian linh hoạt. Địa chỉ tại 77 Đình Nghệ, An Hải, cách bạn khoảng 1.5km.\n\nNếu muốn thử khác, **Panda Spa** cũng rất tốt với 4.8⭐ (2.858 đánh giá), mở đến 23:45 và có nhiều dịch vụ đa dạng — nhưng xa hơn một chút.\n\nMình chưa có giá cụ thể từ các spa này, nhưng bạn có thể gọi hoặc nhắn Zalo/WhatsApp để hỏi giá gói massage phổ thông. Jang Mi có website riêng nên bạn cũng có thể xem chi tiết trước khi đặt.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Jang Mi Spa\",\"type\":\"website\",\"url\":\"http://www.jangmispa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6104490640027775177\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Panda Spa có dịch vụ gì?|Spa nào gần nhất từ vị trí tôi?|Giá massage bao nhiêu tiền?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "gợi ý thêm"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thêm cho bạn. Ngoài **Jang Mi**, mình gợi ý thêm 2 spa khác cũng rất tốt:\n\n**Mo Ran Spa Massage** — **4.9⭐ (877 đánh giá)**, mở 09:00–22:30. Địa chỉ 88 Trần Bạch Đằng, Ngũ Hành Sơn.\n\n**Charm Spa** — **4.8⭐ (942 đánh giá)**, mở 09:00–23:00. Địa chỉ 283 Nguyễn Chí Thanh, Hải Châu.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Jang Mi Spa\",\"type\":\"website\",\"url\":\"http://www.jangmispa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6104490640027775177\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Mo Ran Spa giá bao nhiêu|Charm Spa có dịch vụ gì|Spa nào gần nhất từ vị trí tôi[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "cái thứ hai có massage đá nóng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin cụ thể về dịch vụ massage đá nóng tại **Mo Ran Spa Massage** từ dữ liệu hiện có. Để chắc chắn, bạn nên:\n\n• Gọi trực tiếp spa: tìm số điện thoại trên Google Maps\n• Xem chi tiết dịch vụ trên website hoặc fanpage Facebook của Mo Ran\n• Hoặc thử 2 spa kia (**Jang Mi** hay **Charm Spa**) — chúng đều có đánh giá rất cao nên khả năng có dịch vụ đá nóng khá lớn\n\n[FOLLOWUPS]Tìm spa có massage đá nóng|Gọi Mo Ran để hỏi dịch vụ|Xem review Mo Ran trên TikTok[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "vậy chốt cái đầu, đặt lịch thế nào?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn có thể đặt lịch **Jang Mi Spa & Massage** bằng cách:\n\n• **Gọi trực tiếp** — tìm số điện thoại trên Google Maps (tìm \"Jang Mi Spa & Massage Đà Nẵng\")\n• **Facebook/Zalo** — spa thường có fanpage, bạn inbox để đặt lịch\n• **Đến trực tiếp** — địa chỉ 77 Đình Nghệ, An Hải (mở 09:00–22:00 nên bạn có thời gian linh hoạt)\n\nSpa này đánh giá cao nên thường khá đông — nếu muốn chắc chắn có chỗ, gọi/inbox trước 1-2 tiếng là tốt nhất.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Jang+Mi+Spa+Massage+Da+Nang\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "at": "2026-09-20T08:02:01.204Z"
+}

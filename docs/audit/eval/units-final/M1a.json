@@ -1,0 +1,28 @@
+{
+  "id": "M1a",
+  "text": "ăn gì ngon giờ",
+  "vertical": "food",
+  "unit": "VENUE",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 380,
+  "ms": 380,
+  "evidenceId": "91242c3b-724c-42d1-a1f2-e5401c0feb16",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T08:00:25.351Z"
+}
