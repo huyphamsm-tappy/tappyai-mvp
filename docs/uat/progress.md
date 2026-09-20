@@ -18,6 +18,7 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 | 3.2 RLS matrix + IDOR + auth lifecycle | DONE | F-007 (PASS record), F-008, F-009, F-010 (guest path UNVERIFIED: anon sign-in disabled on audit project), F-011, F-012, F-013 (PASS), F-014; evidence/rls-matrix.*, idor-probes.*, auth-lifecycle.txt |
 | 3.3 chat quota + AI | DONE | F-015 (P1 FAIL: failed answer charged, 200 on model error), F-016 (PASS mechanics); cross-user memory probe clean (evidence/chat-crossuser-probe-A.txt). 20 LLM calls. |
 | 3.23 build/test baseline | DONE | tsc 0 err (29s); next lint 0 err / 2 warn (20s); vitest 735 files pass, 11 skipped, 13,864 tests pass / 69 skipped / 0 fail (211s) — via `vitest run` directly so docs/audit/*.json untouched |
-| 3.17 AI safety subset | IN PROGRESS | |
+| 3.17 AI safety subset | DONE | F-017 (PASS: injection/extraction/XSS all blocked), F-018 (PASS: SSRF allowlist + DNS pinning). 5 LLM calls. golden-set scoring DEFERRED per owner. |
+| 3.5 affiliate/commerce | IN PROGRESS | |
 | 3.3 – 3.23 | NOT STARTED | |
 | STEP 4 report | NOT STARTED | |

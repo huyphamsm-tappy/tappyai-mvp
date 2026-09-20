@@ -782,3 +782,21 @@
 {"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
  POST /api/chat 429 in 548ms
 [?25h
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 1845ms
+ ○ Compiling /api/health ...
+ ✓ Compiled /api/health in 717ms (145 modules)
+ GET /api/health 200 in 860ms
+ GET /api/health 200 in 28ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 974ms (435 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":182,"totalTokens":185,"cacheReadTokens":20788,"cacheCreationTokens":1341,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":5843,"preModelMs":1627,"ttftMs":2642,"modelFinishMs":4983,"ttuaMs":2642,"postModelMs":860,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":2341,"firstStepFinishMs":4981,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 7065ms
