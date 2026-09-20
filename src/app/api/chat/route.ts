@@ -797,13 +797,22 @@ export async function POST(req: Request) {
   // the V1 block below and by the pre-search (A1(c)). The turn after a clarify (item 1) is the first
   // REAL reply: it must search now, never ask again.
   const afterClarify = isClarifyReply(lastAssistantText)
-  const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify, movieRecommend, afterClarify }) : null
+  // A1(d), measured on the web as a guest (2026-09-20): "còn quán nào khác không" after a café turn
+  // went to the model with no directive (not a first reply) and no evidence row (anonymous writes
+  // are refused), the model answered from memory, and the place guard cut 356 of 523 chars. A
+  // "more" turn inside the same consultation is a search turn: the directive is derived as for the
+  // first reply, and the venues the previous reply named are what the model must pick around.
+  const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && wantsMoreFromSet(lastText) && priorVenuesIn(lastAssistantText).length > 0
+  const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null
   let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
-  // the model told which venues were already shown. moreFromSet.ts.
+  // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
+  // users) is exact; without a row the directive's call stands in and the prior reply's names do.
   const priorPlaceSearch = reusablePlaceSearch(loadedEvidenceRow, !ownDomainSwitch)
-  if (!presearchPlan && consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
+  if (consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
     presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true, reuse: { shown: priorPlaceSearch.shown } }
+  } else if (presearchPlan && moreTurn) {
+    presearchPlan = { ...presearchPlan, reuse: { shown: priorVenuesIn(lastAssistantText).map(v => v.name).slice(0, 8) } }
   }
 
   /**

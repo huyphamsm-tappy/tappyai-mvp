@@ -12,13 +12,30 @@ import { detectForcedTool, detectMovieRecommendationIntent } from '../intent'
 // and hotel turns get nothing.
 
 const GPS = { lat: 10.7769, lng: 106.7009 }
-function derive(text: string, opts: { gps?: boolean; isFirstReply?: boolean; now?: Date; afterClarify?: boolean } = {}) {
+function derive(text: string, opts: { gps?: boolean; isFirstReply?: boolean; now?: Date; afterClarify?: boolean; consultationText?: string } = {}) {
   const hasGps = opts.gps !== false
   const need = deriveNeedProfile([{ role: 'user', content: text }], hasGps ? { gps: GPS as never } : {})
   const situation = deriveSituation([text], need, { hasGps })
   const frame = deriveDecisionFrame({ messages: [{ role: 'user', content: text }], need, planningIntent: null, forcedTool: detectForcedTool(text), hasGps, storedPreferences: null, now: opts.now ?? new Date('2026-09-18T12:30:00+07:00') } as never)
-  return deriveSearchNow({ text, situation, frame, need, forcedTool: detectForcedTool(text), isFirstReply: opts.isFirstReply ?? true, movieRecommend: detectMovieRecommendationIntent(text), afterClarify: opts.afterClarify })
+  return deriveSearchNow({ text, situation, frame, need, forcedTool: detectForcedTool(text), isFirstReply: opts.isFirstReply ?? true, movieRecommend: detectMovieRecommendationIntent(text), afterClarify: opts.afterClarify, consultationText: opts.consultationText })
 }
+
+// A1 (2026-09-20), measured on the web: a café request is food-domain, but its call is a CAFE search
+// (the model's own step made it `cafe yên tĩnh Quận 3`); with the pre-search running the directive,
+// a restaurant call here would fetch the wrong venues and buy a second step to fix them.
+describe('the venue kind names the call', () => {
+  it('a café request → quán cà phê / cafe, with the hard constraint; a bar → quán bar / bar', () => {
+    expect(derive('quán cà phê yên tĩnh ở Quận 3 để làm việc, tầm 50-80k, đi 1 mình')).toEqual({ query: 'quán cà phê yên tĩnh', type: 'cafe', exact: false })
+    expect(derive('bar nào chill ở Quận 1 cho 4 người tối nay')).toEqual({ query: 'quán bar', type: 'bar', exact: false })
+  })
+  it('the kind stated turns ago still decides a "more" turn (consultationText; the situation is the whole consultation, as in the route)', () => {
+    const texts = ['quán cà phê yên tĩnh ở Quận 3 để làm việc, tầm 50-80k, đi 1 mình', 'gợi ý thêm']
+    const need = deriveNeedProfile(texts.map(t => ({ role: 'user', content: t })), { gps: GPS as never })
+    const situation = deriveSituation(texts, need, { hasGps: true })
+    const frame = deriveDecisionFrame({ messages: texts.map(t => ({ role: 'user', content: t })), need, planningIntent: null, forcedTool: null, hasGps: true, storedPreferences: null, now: new Date('2026-09-18T12:30:00+07:00') } as never)
+    expect(deriveSearchNow({ text: 'gợi ý thêm', situation, frame, need, forcedTool: null, isFirstReply: true, movieRecommend: false, consultationText: texts.join(' ') })).toEqual({ query: 'quán cà phê yên tĩnh', type: 'cafe', exact: false })
+  })
+})
 
 describe('deriveSearchNow — the concrete first call for a place request', () => {
   it('"ăn gì ngon giờ" at lunchtime → the EXACT call quán ăn trưa ngon / restaurant', () => {

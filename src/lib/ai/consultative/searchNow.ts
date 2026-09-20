@@ -60,6 +60,12 @@ function domainOf(frame: DecisionFrame, need: NeedProfile | null, situation: Sit
 }
 
 const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
+// A1 (2026-09-20, measured on the web: "quán cà phê yên tĩnh ở Quận 3 để làm việc"): a café or a
+// bar is a FOOD-domain request whose call is not a restaurant search — the model's own step made
+// it `cafe yên tĩnh Quận 3 / cafe`. With the pre-search running the directive, the directive must
+// name the venue kind, or every café turn would fetch restaurants and pay a second step to fix it.
+const CAFE_RE = /\b(ca phe|cafe|coffee|tra sua|tiem tra|quan tra)\b/
+const BAR_RE = /\b(bar|pub|beer club|bia thu cong|quan bia|quan nhau|rooftop)\b/
 
 export function deriveSearchNow(input: {
   text: string
@@ -71,6 +77,8 @@ export function deriveSearchNow(input: {
   movieRecommend: boolean
   /** Item 1: the previous assistant turn was the clarify — the answer turn must call now, exactly. */
   afterClarify?: boolean
+  /** Every user turn of the consultation, joined — the venue kind may have been stated turns ago. */
+  consultationText?: string
 }): SearchNow | null {
   const { situation, frame } = input
   if (!situation || !input.isFirstReply || input.movieRecommend) return null
@@ -104,6 +112,12 @@ export function deriveSearchNow(input: {
   const vague = !!input.afterClarify || (situation.assumptions.length > 0 && situation.confidence < 0.5 && input.text.trim().length <= VAGUE_MAX_CHARS)
   const hard = situation.hard.map(h => HARD_QUERY[h]).filter((x): x is string => !!x)
   const withHard = (q: string) => [q, ...hard].join(' ')
+  // A café reads as food, a bar as food or entertainment — the kind names the call either way.
+  if (domain === 'food' || domain === 'entertainment') {
+    const kindText = normalizeVN((input.consultationText ?? input.text).toLowerCase())
+    if (CAFE_RE.test(kindText)) return { query: withHard('quán cà phê'), type: 'cafe', exact: vague }
+    if (BAR_RE.test(kindText)) return { query: withHard('quán bar'), type: 'bar', exact: vague }
+  }
   if (domain === 'food') {
     const base = frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : situation.time === 'tonight' ? 'quán ăn tối ngon' : 'quán ăn ngon'
     const occasion = situation.occasion === 'business' || situation.occasion === 'birthday' || situation.occasion === 'celebration' ? 'nhà hàng ' : ''
