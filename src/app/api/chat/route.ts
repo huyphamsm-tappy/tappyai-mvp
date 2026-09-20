@@ -75,6 +75,7 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
 import { planPresearch, presearchMessages, presearchFrames, prefixBody, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
@@ -389,6 +390,8 @@ export async function POST(req: Request) {
   let evidenceDb: SupabaseClient | null = null
   /** Evidence from a PREVIOUS turn, loaded when the client presented its id. */
   let priorEvidence: DecisionEvidence | null = null
+  /** The raw evidence row this turn was handed (shopping evidence and/or the last place search). */
+  let loadedEvidenceRow: Record<string, unknown> | null = null
   /** True when an id WAS presented but did not resolve — the fail-safe path. */
   let priorEvidenceMissing = false
 
@@ -643,8 +646,11 @@ export async function POST(req: Request) {
         ? await evidenceDb.rpc('decision_evidence_load', { p_id: presentedEvidenceId })
         : { data: null }
       // A jsonb row comes back as an object; anything else means "nothing usable".
-      if (data && typeof data === 'object') priorEvidence = data as DecisionEvidence
-      else priorEvidenceMissing = true
+      if (data && typeof data === 'object') {
+        loadedEvidenceRow = data as Record<string, unknown>
+        // A place-only row (A1(d) moreFromSet.ts) has no shopping pick; it is not shopping evidence.
+        if ((data as { pick?: unknown }).pick) priorEvidence = data as DecisionEvidence
+      } else priorEvidenceMissing = true
     } catch (e) {
       // Fail SAFE, not open: an unreachable RPC must not become licence to
       // answer from memory, which is the exact failure this feature exists for.
@@ -662,9 +668,9 @@ export async function POST(req: Request) {
   //
   // If this turn DOES shop, `freezeShoppingEvidence` writes the same id again
   // with fresher facts and wins; the RPC upserts, so the order is safe either way.
-  if (priorEvidence && evidenceDb) {
+  if (loadedEvidenceRow && evidenceDb) {
     try {
-      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: priorEvidence })
+      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: loadedEvidenceRow })
     } catch (e) {
       console.error('[chat] decision evidence carry-forward failed:', e)
     }
@@ -792,7 +798,13 @@ export async function POST(req: Request) {
   // REAL reply: it must search now, never ask again.
   const afterClarify = isClarifyReply(lastAssistantText)
   const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify, movieRecommend, afterClarify }) : null
-  const presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
+  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
+  // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
+  // the model told which venues were already shown. moreFromSet.ts.
+  const priorPlaceSearch = reusablePlaceSearch(loadedEvidenceRow, !ownDomainSwitch)
+  if (!presearchPlan && consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
+    presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true, reuse: { shown: priorPlaceSearch.shown } }
+  }
 
   /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
@@ -1254,7 +1266,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow, afterClarify, presearched: presearchPlan !== null })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null, reuseShown: presearchPlan?.reuse?.shown })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -1283,7 +1295,7 @@ export async function POST(req: Request) {
     // Either the real numbers go in, or an explicit instruction not to invent
     // them does; there is no third branch that leaves the model guessing.
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
-    priorEvidenceMissing ? renderMissingEvidenceBlock() : '',
+    priorEvidenceMissing && needProfile.domain === 'shopping' ? renderMissingEvidenceBlock() : '',
     // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
     v1Block,
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
@@ -1469,6 +1481,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (process.env.AUDIT_DRY_RUN === '1') return cannedDataStreamResponse('[audit dry-run — no model call]', { 'X-Decision-Evidence-Id': evidenceId })
   }
 
+  /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
+  let lastPlaceSearch: PlaceSearchEvidence | null = null
   const tools = noToolTurn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -1488,6 +1502,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }),
         execute: async ({ query, location: modelLocation, type: rawType }) => {
           const type = coercePlaceType(rawType)
+          lastPlaceSearch = { args: { query, ...(type ? { type } : {}), ...(modelLocation ? { location: modelLocation } : {}) }, shown: [], at: new Date().toISOString() }
           if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))
           // Explore clip: when the model names no area, the clip's own address is
           // the area — the author wrote it, and `searchPlaces` already knows how to
@@ -1813,7 +1828,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       result = { error: e instanceof Error ? e.message.slice(0, 200) : 'presearch_failed' }
     }
     presearchOutcome = { toolCallId, toolName: 'search_places', args: presearchPlan.args, result, ms: Date.now() - t0 }
-    console.log(JSON.stringify({ type: 'tappyai_presearch', exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
+    console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
   }
   const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
   let result
@@ -2036,7 +2051,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // skip the boundary entirely and state a price reconstructed from general knowledge.
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
-  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places',
+  }, async (evidence) => {
+    // A1(d): carry this turn's place search (args + the venues shown) under this turn's evidence id.
+    if (!lastPlaceSearch || !evidenceDb) return
+    const row = { ...(loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } }
+    try {
+      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
+      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch.args.query }))
+    } catch (e) {
+      console.error('[chat] place evidence save failed (the next "gợi ý thêm" will search afresh):', e)
+    }
+  }, undefined, travelIntent, lastText, needProfile.domain === 'places',
   /**
    * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
    * THAT CAN ACTUALLY BE ATTRIBUTED.

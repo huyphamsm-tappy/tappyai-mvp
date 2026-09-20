@@ -28,6 +28,8 @@ export interface ConsultativeV1PromptInput {
   afterClarify?: boolean
   /** A1(c): the route already ran the search-now call; the rows are in the tool result the model holds. */
   presearched?: boolean
+  /** A1(d): the rows are the previous turn's set; these venues were already shown — pick others. */
+  reuseShown?: string[]
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -59,7 +61,9 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
     ? `
 - BANG CHUNG NGUOC: user can "${input.hardContrary!.map(h => HARD_VI[h]).join(', ')}" va co danh gia noi quan KHONG co / kem. Neu ban chon quan do, noi ro dieu nay; KHONG khang dinh nguoc lai.`
     : ''
-  const call = input.searchNow && input.presearched
+  const call = input.searchNow && input.presearched && input.reuseShown
+    ? `KET QUA search_places DA CO SAN trong tool result ngay tren — la CUNG bo ket qua cua luot truoc (user muon THEM lua chon). KHONG goi search_places lai. Chon 2-3 cho KHAC voi nhung cho da gioi thieu: ${input.reuseShown.map(n => `"${n}"`).join(', ') || '(chua co)'}. Neu trong ket qua khong con cho nao khac phu hop, noi that va de nghi doi khu vuc/tieu chi.`
+    : input.searchNow && input.presearched
     ? `KET QUA search_places DA CO SAN trong tool result ngay tren (he thong da tim "${input.searchNow.query}" quanh vi tri user). DUNG rows do de chon — KHONG goi search_places lai, tru khi rows ro rang sai vung/sai loai.`
     : input.searchNow
     ? (input.searchNow.type === 'product'

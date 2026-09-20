@@ -62,7 +62,7 @@ describe('what the model and the client receive', () => {
   })
   it('route.ts wires it: the plan from the directive, the frames onto the response, the pair into the model messages, the count into usage', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
-    expect(route).toMatch(/const presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
+    expect(route).toMatch(/let presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
     expect(route).toMatch(/search_places\.execute\(presearchPlan\.args/)
     expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), sdkResponse\.body\)/)
     expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchMessages\(presearchOutcome\)\]/)

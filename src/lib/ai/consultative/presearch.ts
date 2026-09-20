@@ -24,9 +24,11 @@ import type { SituationFrame } from './situationFrame'
 
 export interface PresearchPlan {
   toolName: 'search_places'
-  args: { query: string; type: string; location?: string }
+  args: { query: string; type?: string; location?: string }
   /** true = the directive's arguments were the call; false = the route used the suggested query. */
   exact: boolean
+  /** A1(d): the same search as the previous turn, for "gợi ý thêm" — the venues already shown. */
+  reuse?: { shown: string[] }
 }
 
 const PLACE_TYPES = new Set(['restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
