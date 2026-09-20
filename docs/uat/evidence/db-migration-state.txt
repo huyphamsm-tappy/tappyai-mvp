@@ -1,0 +1,107 @@
+PARTIAL                              2/4   20260620_place_photos.sql  -- missing: policy:place_photos|anon_insert, policy:place_photos|anon_update
+APPLIED                              6/6   20260621_notification_subscriptions.sql
+APPLIED                              4/4   20260627_user_memory.sql
+APPLIED                              2/2   20260703_add_reviews_update_policy.sql
+APPLIED                              1/1   20260703_fix_comment_count_trigger.sql
+APPLIED                              1/1   20260703_fix_like_count_trigger.sql
+APPLIED                              1/1   20260703_fix_save_count_trigger.sql
+APPLIED                             16/16  20260704_add_music_module.sql
+APPLIED                              1/1   20260704_add_reviews_music_column.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260704_backfill_review_counters.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260704_tighten_music_constraints.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260705_seed_music_demo_catalog.sql
+APPLIED                             15/15  20260706_add_music_saved_and_type.sql
+APPLIED                              2/2   20260706b_add_music_count_fns.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260706c_repoint_music_audio_local.sql
+APPLIED                              2/2   20260711_anon_chat_usage.sql
+APPLIED                             23/23  20260711_music_ugc_combined.sql
+APPLIED                              5/5   20260712_prod_baseline_and_review_saves_indexes.sql
+APPLIED                              5/5   20260713_analytics_envelope_foundation.sql
+APPLIED                              4/4   20260713_auth_daily_rollup.sql
+APPLIED                             10/10  20260713_backoffice_phase0.sql
+APPLIED                              6/6   20260713_user_acquisition_dimension.sql
+APPLIED                              3/3   20260714_activation_daily_rollup.sql
+APPLIED                              2/2   20260714_activation_dimension.sql
+APPLIED                              1/1   20260714_device_context.sql
+APPLIED                              9/9   20260720_comment_replies_reactions.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260722_notification_realtime.sql
+APPLIED                              5/5   20260724_partner_deals.sql
+APPLIED                              9/9   20260724_partner_deals_hardening.sql
+APPLIED                              1/1   20260724_partner_deals_metadata.sql
+APPLIED                              6/6   20260725_notifications_unification.sql
+APPLIED                              4/4   20260731_partner_deal_translations.sql
+APPLIED                              6/6   20260803_platform_owner.sql
+APPLIED                              9/9   20260807_audit_chain.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260807_platform_hardening_phase0.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260807_platform_owner_revoke_public_execute.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260807b_sync_last_login_revoke_public_execute.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260808_anon_chat_usage_acl_hardening.sql
+APPLIED                              1/1   20260808b_anon_claim_conversations.sql
+APPLIED                              1/1   20260808c_handle_new_user_skip_anonymous.sql
+APPLIED                              6/6   20260813_c8_event_outbox.sql
+APPLIED                              4/4   20260814_c11_session_security.sql
+APPLIED                              9/9   20260817_content_safety_gate.sql
+NO-OBJECTS(alter/grant/data only)    0/0   20260818_publication_boundary_rls.sql
+APPLIED                              1/1   20260818b_music_tracks_publication_boundary.sql
+APPLIED                              3/3   20260819_m08_account_status.sql
+APPLIED                              6/6   20260820_b8_owner_recovery.sql
+APPLIED                              5/5   20260820_m01_daily_snapshots.sql
+APPLIED                              3/3   20260820_m04_cohort_metrics.sql
+APPLIED                              1/1   20260821_anon_chat_usage_read.sql
+APPLIED                              2/2   20260821_m08_user_notes.sql
+APPLIED                              8/8   20260821_m09_moderation_queue.sql
+APPLIED                              2/2   20260822_k2_platform_settings.sql
+APPLIED                              5/5   20260824_decision_evidence_state.sql
+APPLIED                              5/5   20260830_push_credential_ownership.sql
+APPLIED                              7/7   20260901_marketing_governance_foundation.sql
+APPLIED                             21/21  20260905_chat_messaging_phase1.sql
+APPLIED                             11/11  20260906_phase6_messenger_reachability.sql
+APPLIED                              7/7   20260908_user_demographics_foundation.sql
+APPLIED                              1/1   20260911_user_memory_discovery_city.sql
+MISSING                              0/6   20260913_plan_shares.sql
+APPLIED                              3/3   20260915_review_shares.sql
+APPLIED                              3/3   20260920100000_commerce_providers.sql
+APPLIED                              3/3   20260920110000_commerce_feed_items.sql
+APPLIED                              1/1   add_billing_customers_isolation.sql
+APPLIED                              3/3   add_counter_security_definer.sql
+NO-OBJECTS(alter/grant/data only)    0/0   add_event_type_check.sql
+APPLIED                              9/9   add_explore_upgrade.sql
+APPLIED                              2/2   add_gatea_db_hardening.sql
+APPLIED                              2/2   add_group_members_auth.sql
+PARTIAL                              5/6   add_groups.sql  -- missing: policy:group_members|Anyone can join a group
+APPLIED                              2/2   add_memory_columns.sql
+APPLIED                              3/3   add_message_feedback.sql
+MISSING                              0/2   add_music_attribution.sql
+APPLIED                              8/8   add_original_sound_ugc.sql
+PARTIAL                              6/7   add_phase4.sql  -- missing: policy:review_milestones|Service role can insert milestones
+APPLIED                              2/2   add_phase4_hardening.sql
+APPLIED                              3/3   add_preferences.sql
+APPLIED                              3/3   add_price_watches.sql
+MISSING                              0/1   add_profile_edit.sql
+APPLIED                              1/1   add_profiles_email_isolation.sql
+APPLIED                             10/10  add_review_social.sql
+APPLIED                             17/17  add_social_week2.sql
+APPLIED                              8/8   add_tracking_integrations.sql
+APPLIED                              1/1   add_user_language_preference.sql
+APPLIED                              2/2   add_user_preference_profile.sql
+
+MISSING/PARTIAL detail:
+20260620_place_photos.sql 
+    policy:place_photos|anon_insert
+    policy:place_photos|anon_update
+20260913_plan_shares.sql 
+    table:plan_shares
+    func:plan_share_public
+    policy:plan_shares|plan_shares_select_own
+    policy:plan_shares|plan_shares_insert_own
+    policy:plan_shares|plan_shares_delete_own
+    index:plan_shares_owner_idx
+add_groups.sql 
+    policy:group_members|Anyone can join a group
+add_music_attribution.sql 
+    col:music_tracks.license
+    index:music_tracks_source_url_uidx
+add_phase4.sql 
+    policy:review_milestones|Service role can insert milestones
+add_profile_edit.sql 
+    col:profiles.bio

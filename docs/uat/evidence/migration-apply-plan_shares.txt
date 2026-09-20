@@ -1,0 +1,3 @@
+connected via db.zdaprdfgpbpnxyofagmc.supabase.co
+applied supabase/migrations/20260913_plan_shares.sql
+verify {"t":"plan_shares","policies":"3","rls":true}
