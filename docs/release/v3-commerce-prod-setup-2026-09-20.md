@@ -1,5 +1,10 @@
 # V3 commerce — production setup checklist (owner làm tay, 2026-09-20)
 
+## KẾT QUẢ THỰC TẾ (làm qua Chrome của owner, 2026-09-20 ~15:40–16:50 SEAST)
+- **A. Supabase prod `fwznnobrdctuskgrvuik`** — Backups: "Free Plan does not include project backups" (không backup/PITR; owner chấp nhận chạy vì pack chỉ tạo mới). Pack dán nguyên văn (126 dòng), owner "go", chạy 1 lần thành công. Verify: `providers 17 · active_providers 16 · dmx_off true`; row `dmx · active false · deeplink_enabled false · tier 2 · network accesstrade · updated_at 2026-09-20 08:36:48+00`; `feed_items 0 · feed_runs 0`. ⇒ mục 1–3 XONG.
+- **B. Vercel env** — dashboard che TOÀN BỘ giá trị (không hiện 4 ký tự cuối; không bấm reveal) ⇒ câu hỏi `…LKXQ` KHÔNG kiểm được từ dashboard. `GOOGLE_PLACES_API_KEY` có ở Production + Preview (Jun 12). `KV_REST_API_URL` / `KV_REST_API_TOKEN` / `KV_REST_API_READ_ONLY_TOKEN` / `KV_URL` / `REDIS_URL` = All Environments (Aug 13, Upstash integration); badge "Needs Attention" trên 2 token = biến lưu dạng thường, không phải Secret ("value is visible to anyone with access… Consider rotating at the source and saving as Secret") — không phải hỏng. `PLACES_PROVIDER` trước đó CHƯA có ⇒ đã thêm `serper` (Type Config) cho Production + Preview. **Redeploy** deployment production hiện hành (`main` @ `842379b`, PR #251) → Ready 2m41s; `curl -sL www.tappyai.com/api/version` = `842379b…`, trang chủ 200. ⇒ mục 6–7 XONG; 8–10 còn owner.
+- **C. Upstash / limiter** — KHÔNG kiểm được bằng 1 lượt chat: trên `main` `/api/chat` dùng `rateLimit` in-memory (`src/lib/security/rateLimit`), `distributedRateLimit` (Upstash) chỉ được import ở `/api/admin/*`; log `tappyai_rate_limit … scope` chỉ có trên nhánh V3 (`publicRateLimit.ts`). Console Upstash đòi đăng nhập (STOP POINT 1 — không đăng nhập). Kiểm mục 13 SAU khi merge V3.
+
 Session không có kênh ghi vào prod (Vercel CLI bị policy chặn, Supabase CLI không cài, PAT trong `.env.local` đã hết hạn — HTTP 401). Mọi bước dưới đây là owner tự làm; mỗi bước có câu verify.
 
 ## A. Supabase prod (`fwznnobrdctuskgrvuik`) — Dashboard → SQL Editor
