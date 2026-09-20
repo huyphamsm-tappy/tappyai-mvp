@@ -388,3 +388,20 @@ describe('B2 — product families beyond electronics, and constraints beyond RAM
     expect(shoppingEvidenceNote([], 'vi')).toBeNull()
   })
 })
+
+// B2, measured S7 live (run 10, 2026-09-20): the shopping turn ran with `v1Active:false` and the
+// fast model — the need profile's own subject lexicon knew five electronics families, so "máy lọc
+// không khí" resolved to domain null and the whole consultative stack stood down. The two lexicons
+// are one now.
+describe('B2 — the need profile knows every product family (the consultative stack turns on for shopping)', () => {
+  it('perfume / air purifier / shoes resolve to the shopping domain with a Vietnamese subject', async () => {
+    const { deriveNeedProfile } = await import('./needProfile')
+    const np = (t: string) => deriveNeedProfile([{ role: 'user', content: t }], {})
+    expect(np('Máy lọc không khí phòng ngủ 20m2')).toMatchObject({ domain: 'shopping', subject: 'máy lọc không khí' })
+    expect(np('nước hoa nữ tầm 2 triệu')).toMatchObject({ domain: 'shopping', subject: 'nước hoa' })
+    expect(np('giày chạy bộ size 42')).toMatchObject({ domain: 'shopping', subject: 'giày' })
+    expect(np('mua máy sấy tóc tầm 800k').domain).toBe('shopping') // buy verb, unknown noun
+    expect(np('lập kế hoạch ăn chơi nhảy múa tối nay cho 2 người').domain).toBe('places') // "múa" is dancing
+    expect(np('Thôi nâng ngân sách lên 35 triệu').subject).toBeNull() // "ngân sách" is the budget, not a book
+  })
+})

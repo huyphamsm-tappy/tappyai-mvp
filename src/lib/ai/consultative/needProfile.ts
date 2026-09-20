@@ -1,5 +1,6 @@
 import { extractBudget, type Budget } from '../budget'
 import { normalizeVN } from '../intent'
+import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
 
 // ── The structured need (Phase 2 §3) ────────────────────────────────────────
 //
@@ -80,6 +81,10 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   [/\b(tai nghe|headphone|headphones|earbuds|airpods)\b/, 'headphones', 'shopping'],
   [/\b(may anh|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
   [/\b(tivi|tv|television)\b/, 'tv', 'shopping'],
+  // B2 (2026-09-20, measured S7 live: "Máy lọc không khí phòng ngủ 20m2" resolved to domain null,
+  // so the whole consultative stack — situation, gate, smart model, backstop — stood down on a
+  // shopping turn). Every product family the shopping validator knows names the shopping domain.
+  ...PRODUCT_TYPES.filter(([type]) => !['laptop', 'phone', 'headphones', 'camera', 'tv'].includes(type)).map(([type, re]): [RegExp, string, NeedProfile['domain']] => [re, PRODUCT_TYPE_QUERY_VI[type] ?? type, 'shopping']),
   [/\b(khach san|hotel|resort|homestay|nha nghi)\b/, 'hotel', 'hotel'],
   [/\b(nha hang|quan an|restaurant|quan nhau)\b/, 'restaurant', 'places'],
   [/\b(cafe|ca phe|coffee)\b/, 'cafe', 'places'],
@@ -98,6 +103,9 @@ const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   // words are place-seeking by definition; a false positive still lands on
   // `places`, which is where every one of them belongs.
   [/\ban choi\b|\bnhay mua\b|\bnightlife\b|\bnight out\b|\bclub\b|\bpub\b|\bvui choi\b|\bdi choi\b|\bhen ho\b|\bdate night\b/, 'places'],
+  // B2: a buy verb names the shopping domain even when the product noun is unknown to the lexicon.
+  // AFTER the outing hint, and never the "mua" of "nhảy múa" (dancing).
+  [/(?<!nhay )\b(mua|dat mua|shopping|san pham|nen mua)\b/, 'shopping'],
   // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
   // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
   // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú

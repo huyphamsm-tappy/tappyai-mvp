@@ -89,7 +89,7 @@ const norm = (s: string) => normalizeVN((s || '').toLowerCase())
  * Only families where a mismatch is unambiguous. Deliberately absent: anything
  * that would need judgement about whether two nouns mean the same thing.
  */
-const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
+export const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['laptop', /\b(laptop|macbook|notebook|ultrabook|may tinh xach tay)\b/],
   ['phone', /\b(iphone|dien thoai|smartphone|galaxy|redmi)\b/],
   ['headphones', /\b(tai nghe|headphone|headset|earbuds|airpods)\b/],
@@ -117,9 +117,17 @@ const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['console', /\b(ps5|playstation|nintendo switch|xbox|may choi game)\b/],
   ['bike', /\b(xe dap|xe dap dien|xe may dien)\b/],
   ['baby', /\b(xe day|ghe an dam|noi cho be|sua bot|ta (?:bim|giay)|bim)\b/],
-  ['book', /\b(sach|truyen|tieu thuyet)\b/],
+  ['book', /\b(cuon sach|sach giay|mua sach|truyen tranh|tieu thuyet)\b/], // never bare "sach": "ngân sách" is the budget
   ['furniture', /\b(ghe (?:gaming|van phong|cong thai hoc)|ban lam viec|nem|giuong|sofa|tu quan ao)\b/],
 ]
+
+/** B2: the Vietnamese noun each family is searched as — the need profile's `subject` and the search query. */
+export const PRODUCT_TYPE_QUERY_VI: Record<string, string> = {
+  laptop: 'laptop', phone: 'điện thoại', headphones: 'tai nghe', tablet: 'máy tính bảng', watch: 'đồng hồ thông minh', tv: 'tivi', camera: 'máy ảnh',
+  perfume: 'nước hoa', robot_vacuum: 'robot hút bụi', air_purifier: 'máy lọc không khí', vacuum: 'máy hút bụi', air_conditioner: 'máy lạnh', fan: 'quạt',
+  fridge: 'tủ lạnh', washer: 'máy giặt', speaker: 'loa', monitor: 'màn hình máy tính', kitchen: 'đồ gia dụng nhà bếp', skincare: 'mỹ phẩm', shoes: 'giày',
+  clothing: 'quần áo', bag: 'túi xách', console: 'máy chơi game', bike: 'xe đạp', baby: 'đồ cho bé', book: 'sách', furniture: 'nội thất',
+}
 
 /**
  * B2: a thing the user is BUYING that no family above names — the noun phrase after a buy verb
