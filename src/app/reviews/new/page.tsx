@@ -8,16 +8,13 @@ import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {
   Star, X, ArrowLeft, Loader2, AlertTriangle,
-  MapPin, Plus, Video, XCircle, Music, UploadCloud, Info,
+  MapPin, Plus, Video, XCircle, UploadCloud, Info,
   Image as ImageIcon, Youtube, Play, Sparkles, PenLine, Users, Globe,
 } from 'lucide-react'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
-import {
-  MusicPickerSheet, MusicThumbnail, MusicDuration, useMusicTrack,
-  type MusicSelection,
-} from '@/modules/music'
+// F-024 — music reuse removed: the composer no longer imports the sound picker or track display.
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
 
@@ -213,44 +210,7 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
   })
 }
 
-// Displays a selected MusicSelection as a card (cover, title, artist,
-// duration, remove). Fetches the track's own display metadata via
-// useMusicTrack since MusicSelection itself only carries {trackId, startSec,
-// volume}. Feature-owned composition of the Music Module's exported dumb
-// display primitives — not a Music Module component.
-function SelectedMusicCard({
-  trackId, onReplace, onRemove,
-}: { trackId: string; onReplace: () => void; onRemove: () => void }) {
-  const { track } = useMusicTrack(trackId)
-  const { t } = useTranslation()
-  return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={onReplace}
-      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReplace() } }}
-      aria-label={t('reviewNew.selectedMusicAria')}
-      className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border p-3 text-left transition-colors"
-      style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
-    >
-      <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold" style={{ color: 'var(--v3-fg)' }}>{track?.title ?? t('reviewNew.loading')}</p>
-        {track?.artist && <p className="truncate text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{track.artist}</p>}
-      </div>
-      {track && <span className="flex-shrink-0 text-xs" style={{ color: 'var(--v3-fg-muted)' }}><MusicDuration seconds={track.durationSec} /></span>}
-      <button
-        type="button"
-        aria-label={t('reviewNew.removeMusic')}
-        onClick={e => { e.stopPropagation(); onRemove() }}
-        className="flex-shrink-0 rounded-full p-1 transition-colors hover:text-red-500"
-        style={{ color: 'var(--v3-fg-muted)' }}
-      >
-        <X size={16} />
-      </button>
-    </div>
-  )
-}
+// F-024 — SelectedMusicCard (the composer's selected-sound display) removed with music reuse.
 
 /* ─── page ─── */
 
@@ -341,20 +301,9 @@ export default function NewReviewPage() {
     if (area && !placeArea.trim()) { setPlaceArea(area); setAreaFromAi(true) }
   }
 
-  /* music */
-  const [music, setMusic] = useState<MusicSelection | null>(null)
-  const [musicPickerOpen, setMusicPickerOpen] = useState(false)
-  const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
-  const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
-
-  // "Sử dụng âm thanh này" deep-link from a sound page (/reviews/new?sound=ID):
-  // preselect that track so the composer opens with the soundtrack attached.
-  // Read from window.location (not useSearchParams) so this statically-rendered
-  // page needs no Suspense boundary. Defaults match the selection panel.
-  useEffect(() => {
-    const sound = new URLSearchParams(window.location.search).get('sound')
-    if (sound) setMusic({ trackId: sound, startSec: 0, volume: 1 })
-  }, [])
+  /* music: F-024 — "use this sound" is removed. A new clip can no longer borrow a sound (no
+     picker, no /reviews/new?sound=ID deep link), and the backend refuses an attached sound. A
+     clip's own audio is unaffected. */
 
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
@@ -649,9 +598,7 @@ export default function NewReviewPage() {
         body: body.trim(),
       }
 
-      if (music) {
-        payload.music = { version: 1, trackId: music.trackId, startSec: music.startSec, volume: music.volume }
-      }
+      // F-024 — no borrowed sound is ever attached to a new clip.
 
       if (mediaMode === 'photo') {
         payload.photos = photos
@@ -1133,13 +1080,7 @@ export default function NewReviewPage() {
             )}
           </button>
 
-          {!music && (
-            <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
-              className="v3-post-chip" data-tone="rose" data-active="false">
-              <span className="v3-post-chip-icon" aria-hidden="true"><Music size={16} /></span>
-              {t('reviewNew.addMusic')}
-            </button>
-          )}
+          {/* F-024 — "add music" (use this sound) removed: a new clip can no longer borrow a sound. */}
         </div>
 
         {/* Place: the name and the area, exactly as before. */}
@@ -1178,19 +1119,7 @@ export default function NewReviewPage() {
           </div>
         )}
 
-        {/* Music */}
-        {music && (
-          <div className="mt-3">
-            <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
-          </div>
-        )}
-        {hasOpenedMusicPicker && (
-          <MusicPickerSheet
-            open={musicPickerOpen}
-            onClose={() => setMusicPickerOpen(false)}
-            onSelect={selection => setMusic(selection)}
-          />
-        )}
+        {/* F-024 — the selected-sound card and the sound picker are removed with the reuse path. */}
 
         {/* -- Visibility -- every post is public today; there is no per-post audience
             setting in the data model, so this states the fact instead of drawing a

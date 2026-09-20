@@ -8,7 +8,7 @@ import BottomNav from '@/components/BottomNav'
 import CategoryPills from '@/components/CategoryPills'
 import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
-import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2, ShieldCheck } from 'lucide-react'
+import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, ShieldCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 
@@ -234,15 +234,7 @@ export default function HomeView({
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.recDesc')}</p>
               </div>
             </Link>
-            <Link href="/music" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
-              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-100 to-orange-100 dark:from-pink-900/30 dark:to-orange-900/30 flex items-center justify-center shadow-sm">
-                <Music2 size={20} className="text-pink-600 dark:text-pink-400" />
-              </div>
-              <div>
-                <p className="font-semibold text-sm text-gray-900 dark:text-white group-hover:text-pink-600 dark:group-hover:text-pink-400 transition-colors">{t('home.musicTitle')}</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.musicDesc')}</p>
-              </div>
-            </Link>
+            {/* F-024 — the Music (sound library / "use this sound") home tile is removed with the reuse path. */}
           </div>
         </section>
 

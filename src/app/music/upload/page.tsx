@@ -1,129 +1,30 @@
 'use client'
 
-import { useTranslation } from '@/lib/i18n/useTranslation'
-import { useState, useRef } from 'react'
+// F-024 — music reuse removed. This page was part of the "use this sound" reuse path (sound
+// detail / music library / sound upload), which is withdrawn. It now shows a short notice. A clip
+// still plays its own audio in the feed — that never lived here.
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { uploadMedia } from '@/lib/media/client'
-import Header from '@/components/Header'
-import { Loader2, Music, UploadCloud, CheckCircle2 } from 'lucide-react'
+import { ChevronLeft, Music2 } from 'lucide-react'
 
-// Read an audio file's duration (seconds) in the browser before upload.
-function readDuration(file: File): Promise<number> {
-  return new Promise((resolve) => {
-    const el = document.createElement('audio')
-    el.preload = 'metadata'
-    el.onloadedmetadata = () => { URL.revokeObjectURL(el.src); resolve(Math.round(el.duration || 0)) }
-    el.onerror = () => resolve(0)
-    el.src = URL.createObjectURL(file)
-  })
-}
-
-export default function MusicUploadPage() {
-  const { t } = useTranslation()
+export default function MusicFeatureRemoved() {
   const router = useRouter()
-  const [file, setFile] = useState<File | null>(null)
-  const [title, setTitle] = useState('')
-  const [artist, setArtist] = useState('')
-  const [rights, setRights] = useState(false)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState('')
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  const canSubmit = !!file && !!title.trim() && rights && !busy
-
-  const onPick = (f: File | null) => {
-    setError('')
-    if (!f) return
-    if (!f.type.startsWith('audio/')) { setError(t('music.upload.err.notAudio')); return }
-    if (f.size > 20 * 1024 * 1024) { setError(t('music.upload.err.tooLarge')); return }
-    setFile(f)
-    if (!title) setTitle(f.name.replace(/\.[^.]+$/, '').slice(0, 120))
-  }
-
-  const submit = async () => {
-    if (!file || !canSubmit) return
-    setBusy(true); setError('')
-    try {
-      const durationSec = await readDuration(file)
-      if (!durationSec || durationSec > 600) { setError(t('music.upload.err.duration')); setBusy(false); return }
-      // 1) Upload the audio straight to the active media provider.
-      const ext = file.name.split('.').pop() || 'mp3'
-      const blob = await uploadMedia({
-        endpoint: '/api/upload/audio',
-        kind: 'audio',
-        file,
-      })
-      // 2) Register the Original Sound (rights confirmation is mandatory).
-      const res = await fetch('/api/music/tracks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          title: title.trim(),
-          artist: artist.trim() || undefined,
-          audioUrl: blob.url,
-          durationSec,
-          rightsConfirmed: true,
-        }),
-      })
-      const data = await res.json()
-      if (!res.ok) { setError(data.message || t('music.upload.err.failed')); setBusy(false); return }
-      router.replace(`/sound/${data.id}`)
-    } catch (e) {
-      console.error(e)
-      setError(t('music.upload.err.generic'))
-      setBusy(false)
-    }
-  }
-
   return (
-    <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/music" title={t('music.upload.title')} />
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-5">
-        <div className="flex items-center gap-2 text-sm text-content-secondary">
-          <Music size={16} /> {t('music.upload.subtitle')}
-        </div>
-
-        {/* File picker */}
-        <button
-          type="button"
-          onClick={() => inputRef.current?.click()}
-          className="w-full rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700 p-6 flex flex-col items-center gap-2 text-content-secondary hover:border-primary-400 transition-colors"
-        >
-          {file ? <CheckCircle2 size={28} className="text-green-500" /> : <UploadCloud size={28} />}
-          <span className="text-sm font-medium">{file ? file.name : t('music.upload.pickFile')}</span>
-        </button>
-        <input ref={inputRef} type="file" accept="audio/*" className="hidden" onChange={(e) => onPick(e.target.files?.[0] ?? null)} />
-
-        <div className="space-y-3">
-          <input
-            value={title} onChange={(e) => setTitle(e.target.value)} maxLength={120} placeholder={t('music.upload.titlePlaceholder')}
-            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-primary-400"
-          />
-          <input
-            value={artist} onChange={(e) => setArtist(e.target.value)} maxLength={120} placeholder={t('music.upload.artistPlaceholder')}
-            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-sm focus:outline-none focus:border-primary-400"
-          />
-        </div>
-
-        {/* Rights consent — mandatory */}
-        <label className="flex gap-3 items-start rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/40 p-4 cursor-pointer">
-          <input type="checkbox" checked={rights} onChange={(e) => setRights(e.target.checked)} className="mt-0.5 w-4 h-4 flex-shrink-0" />
-          <span className="text-xs text-amber-900 dark:text-amber-200 leading-relaxed">
-            {t('music.upload.rights.before')}<strong>{t('music.upload.rights.emphasis')}</strong>{t('music.upload.rights.after')}{' '}
-            <Link href="/copyright" className="underline font-medium">{t('music.upload.rights.policyLink')}</Link>.
-          </span>
-        </label>
-
-        {error && <p className="text-sm text-red-500">{error}</p>}
-
-        <button
-          onClick={submit} disabled={!canSubmit}
-          className="w-full py-3 rounded-2xl bg-interactive text-white font-semibold text-sm disabled:opacity-40 flex items-center justify-center gap-2"
-        >
-          {busy ? <><Loader2 size={16} className="animate-spin" /> {t('music.upload.publishing')}</> : t('music.upload.publish')}
-        </button>
-      </main>
+    <div className="flex min-h-[100dvh] flex-col items-center justify-center gap-4 px-8 text-center">
+      <Music2 size={40} style={{ color: 'var(--v3-fg-muted)' }} aria-hidden="true" />
+      <p className="text-base font-semibold" style={{ color: 'var(--v3-fg)' }}>
+        Tính năng âm thanh không còn khả dụng
+      </p>
+      <p className="max-w-sm text-sm" style={{ color: 'var(--v3-fg-muted)' }}>
+        Tappy đã gỡ bỏ tính năng &ldquo;Dùng âm thanh này&rdquo;. Các video vẫn phát âm thanh của chính chúng.
+      </p>
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="mt-2 inline-flex items-center gap-1 rounded-full border px-4 py-2 text-sm font-medium"
+        style={{ borderColor: 'var(--v3-border)', color: 'var(--v3-fg)' }}
+      >
+        <ChevronLeft size={16} /> Quay lại
+      </button>
     </div>
   )
 }
