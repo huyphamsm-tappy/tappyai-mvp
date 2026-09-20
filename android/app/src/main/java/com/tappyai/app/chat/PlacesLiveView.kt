@@ -169,7 +169,17 @@ data class PlacesLiveView(
      * the kind is the turn's view. Web parity: `liveView.ts` `preliminary`.
      */
     val preliminary: Boolean = false,
+    /**
+     * F (2026-09-20): the reply named venues and NONE matched a row (server A.4) — `picked` is empty
+     * and the order is the engine's, not the model's. The card then prints no rank badge and no lead
+     * emphasis, exactly as an unranked set. Web parity: `liveView.ts` `pickUnmatched` /
+     * `PlaceDecision.tsx` `ranked={view.ranked !== false && !view.pickUnmatched}`.
+     */
+    val pickUnmatched: Boolean = false,
 )
+
+/** Whether a position means anything on this view (web parity). */
+fun PlacesLiveView.positionsRanked(): Boolean = ranked != false && !pickUnmatched
 
 /**
  * The render order (web parity: `placesRenderOrder`): the model's picks first, then the engine's

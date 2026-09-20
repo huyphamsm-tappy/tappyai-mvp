@@ -1,6 +1,7 @@
 package com.tappyai.app.chat.data
 
 import com.tappyai.app.chat.PLACES_ANNOTATION_KIND
+import com.tappyai.app.chat.positionsRanked
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -54,5 +55,18 @@ class ChatStreamProgressFramesTest {
     fun `an unknown kind on the shared part is skipped, and a progress frame without text is nothing`() {
         assertNull(ChatStreamFrames.parse("""8:[{"kind":"tappy.other.v9","x":1}]"""))
         assertNull(ChatStreamFrames.parse("""8:[{"kind":"tappy.progress.v1","stage":"found","text":""}]"""))
+    }
+
+    // F (2026-09-20): web parity for the A.4 fallback — the reply named venues that matched no row.
+    private val unmatched = """8:[{"kind":"tappy.places.v1","v":1,"domain":"food","ranked":true,"items":[{"id":"g-1","domain":"food","kind":"place","name":"Béo Ơi Quán","rank":0,"actions":[]}],"picked":[],"shown":3,"pickUnmatched":true}]"""
+
+    @Test
+    fun `pickUnmatched is read and no position is ranked on such a view, while a ranked decision still is`() {
+        val view = (ChatStreamFrames.parse(unmatched) as ChatStreamEvent.Places).view
+        assertTrue(view.pickUnmatched)
+        assertFalse(view.positionsRanked())
+        val decided = (ChatStreamFrames.parse(decision) as ChatStreamEvent.Places).view
+        assertFalse(decided.pickUnmatched)
+        assertTrue(decided.positionsRanked())
     }
 }

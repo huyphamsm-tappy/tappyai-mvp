@@ -376,7 +376,8 @@ class PlaceDecisionSectionTest {
         val screen = File(findSrc("app/src/main/java/com/tappyai/app/chat/ChatScreen.kt")).readText().replace(Regex("(?m)^\\s*//.*$"), "")
         assertTrue("places yield to a shopping decision, like web", screen.contains("if (message.shopping == null)"))
         assertTrue("live first, durable as the fallback", screen.contains("?: placesOutsideItinerary(message.plan, message.places)"))
-        assertTrue("the server's ranked flag reaches the section", screen.contains("ranked = message.livePlaces?.ranked != false"))
+        // F (2026-09-20): the flag reaches the section THROUGH positionsRanked(), which also honours pickUnmatched (web parity).
+        assertTrue("the server's ranked flag reaches the section", screen.contains("ranked = message.livePlaces?.positionsRanked() != false"))
         assertTrue("the server's map url reaches the section", screen.contains("mapsSearchUrl = placesMapsUrl"))
         assertTrue("CTA buttons are de-duplicated against the cards", screen.contains("ctaButtonsOutsideCards(message.ctaButtons, placeCards, placesMapsUrl)"))
         assertFalse("no second place renderer", screen.contains("PlaceRecommendationRail"))

@@ -333,7 +333,7 @@ fun ChatScreen(
                                     places = placeCards,
                                     // The durable block never carries `ranked`: it is written only
                                     // from a ranked decision, so its order is a ranking.
-                                    ranked = message.livePlaces?.ranked != false,
+                                    ranked = message.livePlaces?.positionsRanked() != false,
                                     mapsSearchUrl = placesMapsUrl,
                                     commerce = commerceCallbacks,
                                     // Item 2: three above the fold when the server says so.
@@ -1154,7 +1154,7 @@ private fun AssistantStreamingRow(
             places?.let { view ->
                 PlaceDecisionSection(
                     places = view.renderOrder().map { it.toCardView() },
-                    ranked = view.ranked != false,
+                    ranked = view.positionsRanked(),
                     mapsSearchUrl = view.mapsSearchUrl,
                     commerce = commerce,
                     shown = view.shown,
