@@ -106,3 +106,17 @@ describe('the clarify turn', () => {
     expect(r.reply).toMatch(/^To pick the right place, I need a little more:\n• Budget\?/)
   })
 })
+
+// ── Phase D (2026-09-20): a question about a NAMED venue is never clarified ──
+describe('Phase D — a named cinema question is actionable as asked', () => {
+  it('measured live (run 22): the showtime question was answered with "Tầm giá? Mấy người?"', () => {
+    for (const gps of [true, false]) {
+      const r = assess('tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?', { gps })
+      expect(r.actionable).toBe(true)
+      expect(r.reply).toBeNull()
+    }
+  })
+  it('a cinema KIND with nothing else stated is still gated like any place pick', () => {
+    expect(assess('rạp chiếu phim nào gần đây?').actionable).toBe(false)
+  })
+})

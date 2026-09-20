@@ -27,7 +27,7 @@
 import { deriveNeedProfile } from './needProfile'
 import { deriveDecisionFrame } from './decisionFrame'
 import { deriveSituation, type SituationFrame } from './situationFrame'
-import { normalizeVN } from '../intent'
+import { normalizeVN, namedCinemaQuery } from '../intent'
 
 export type Missing = 'area' | 'signal' | 'subject'
 
@@ -114,6 +114,11 @@ export function assessActionability(input: {
   }
 
   if (!domain) return { ...none, domain }
+
+  // Phase D (2026-09-20, measured live run 22): a question ABOUT A NAMED VENUE ("tối nay rạp CGV
+  // Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?") is not a request to pick one — budget and
+  // party size decide nothing here, and the canned clarify asked for both. The venue is the answer.
+  if (namedCinemaQuery(last) !== null) return { ...none, domain }
 
   // A gift is gated whatever the frame's goal says (it reads "quà sinh nhật" as inform).
   if (domain === 'shopping') {
