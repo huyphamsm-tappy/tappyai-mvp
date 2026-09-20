@@ -19,6 +19,7 @@
 // Scope today: place searches (restaurant / cafe / spa / bar / attraction / cinema). Hotels (dates)
 // and shopping (the model sharpens the product query) keep the two-step turn — stated in the report.
 
+import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import type { SearchNow } from './searchNow'
 import type { SituationFrame } from './situationFrame'
 
@@ -82,5 +83,55 @@ export function prefixBody(prefix: string, body: ReadableStream<Uint8Array> | nu
       }
     },
     cancel(reason) { return body?.cancel(reason) },
+  })
+}
+
+/** A1(b): the progress frame that leads a pre-search turn — written before the search runs. */
+export function searchingFrame(lang: string): string {
+  return '8:' + JSON.stringify([buildProgressAnnotation('searching', lang)]) + '\n'
+}
+
+/**
+ * A1(b): a body that yields `prefix` NOW and the turn's own stream once `produce` resolves — the
+ * first byte no longer waits for the pre-search. `produce` is the rest of the route, unchanged;
+ * a non-OK response or a throw inside it becomes the SDK's error part (`3:`) and a finish frame,
+ * so the client ends the turn with an error instead of a hung stream.
+ */
+export function deferredBody(prefix: string, produce: () => Promise<Response>): ReadableStream<Uint8Array> {
+  const enc = new TextEncoder()
+  let inner: ReadableStream<Uint8Array> | null = null
+  let cancelled = false
+  return new ReadableStream<Uint8Array>({
+    async start(controller) {
+      controller.enqueue(enc.encode(prefix))
+      let res: Response
+      try {
+        res = await produce()
+      } catch (e) {
+        console.error('[chat] deferred turn failed:', e)
+        controller.enqueue(enc.encode('3:' + JSON.stringify('ai_error') + '\nd:' + JSON.stringify({ finishReason: 'error' }) + '\n'))
+        controller.close()
+        return
+      }
+      if (!res.ok || !res.body) {
+        controller.enqueue(enc.encode('3:' + JSON.stringify('ai_error') + '\nd:' + JSON.stringify({ finishReason: 'error' }) + '\n'))
+        controller.close()
+        return
+      }
+      if (cancelled) { await res.body.cancel('client_gone').catch(() => {}); return }
+      inner = res.body
+      const reader = inner.getReader()
+      try {
+        for (;;) {
+          const { done, value } = await reader.read()
+          if (done) break
+          if (value) controller.enqueue(value)
+        }
+        controller.close()
+      } catch (e) {
+        controller.error(e)
+      }
+    },
+    cancel(reason) { cancelled = true; return inner?.cancel(reason) },
   })
 }

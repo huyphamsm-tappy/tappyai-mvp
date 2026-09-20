@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { planPresearch, presearchMessages, presearchFrames, prefixBody, type PresearchOutcome } from './presearch'
+import { planPresearch, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome } from './presearch'
 import { deriveSituation } from './situationFrame'
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -69,3 +69,40 @@ describe('what the model and the client receive', () => {
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })
 })
+
+describe('A1(b): the first byte does not wait for the search', () => {
+  const NL = String.fromCharCode(10)
+  it("the searching frame is a progress annotation in the turn's language", () => {
+    const [l, rest] = searchingFrame('vi').split(NL)
+    expect(rest).toBe('')
+    expect(JSON.parse(l.slice(2))).toEqual([{ kind: 'tappy.progress.v1', v: 1, stage: 'searching', text: 'Đang tìm chỗ quanh bạn…' }])
+    expect(JSON.parse(searchingFrame('en').slice(2))[0].text).toBe('Searching places around you…')
+  })
+  it("the prefix is readable BEFORE the turn resolves; the turn's own bytes follow unchanged", async () => {
+    let release!: () => void
+    const gate = new Promise<void>(r => { release = r })
+    const body = '0:"Mình chọn"' + NL + 'd:{"finishReason":"stop"}' + NL
+    const produce = async () => { await gate; return new Response(body) }
+    const reader = deferredBody(searchingFrame('vi'), produce).getReader()
+    const first = await reader.read()
+    expect(new TextDecoder().decode(first.value)).toBe(searchingFrame('vi'))
+    release()
+    let rest = ''
+    for (;;) { const { done, value } = await reader.read(); if (done) break; rest += new TextDecoder().decode(value) }
+    expect(rest).toBe(body)
+  })
+  it('a non-OK response or a throw inside the turn ends the stream with the SDK error part, never a hang', async () => {
+    const text = async (p: () => Promise<Response>) => new Response(deferredBody('', p)).text()
+    const errorTail = '3:"ai_error"' + NL + 'd:{"finishReason":"error"}' + NL
+    expect(await text(async () => new Response('{"error":"ai_error"}', { status: 502 }))).toBe(errorTail)
+    expect(await text(async () => { throw new Error('boom') })).toBe(errorTail)
+  })
+  it('route.ts wires it: a pre-search turn returns the deferred body with the evidence id header; every other turn runs the same closure directly', () => {
+    const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
+    expect(route).toMatch(/const finishTurn = async \(\): Promise<Response> => \{/)
+    expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(searchingFrame\(lang\), finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
+    expect(route).toMatch(/return finishTurn\(\)\s*\}\s*$/)
+    expect(route).toMatch(/if \(willPresearch && presearchPlan\) \{/)
+  })
+})
+

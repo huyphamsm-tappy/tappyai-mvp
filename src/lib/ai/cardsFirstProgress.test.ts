@@ -27,13 +27,12 @@ const row = (name: string, i: number) => ({ place_id: `g-${i}`, name, address: `
 const NAMES = ['Quán ăn ngon Sài Gòn', 'Béo Ơi Quán - Món ngon Hà Nội', 'Cơm Tấm Ba Ghiền', 'Ốc Đào']
 const PROSE = 'Mình chọn **Béo Ơi Quán** (4.1⭐): bún chả đúng vị.\n\nNếu muốn thay thế: **Cơm Tấm Ba Ghiền** (4.2⭐) cũng ngon.'
 
-async function run(frames: string[], opts: { consultativeV1?: boolean } = {}) {
+async function run(frames: string[]) {
   const result = { source: 'serper_maps', count: NAMES.length, results: NAMES.map(row), _tappy_place_domain: 'food' }
   const collector = createEnrichmentCollector()
   collector.add(result.results)
   collector.setPlacesRecommendations(placeRecommendations(result, 'TP HCM', { name: NAMES[0], reasons: [{ attribute: 'rating', evidence: 'rated 4.0' }] }), producerSubject('search_places', 'food'))
   collector.setRendersDecisionCard(rendersDecisionCard('android'))
-  if (opts.consultativeV1) collector.setConsultativeV1?.(true)
   const res = applyPlaceEnrichmentStreamFilter(new Response(frames.join('\n') + '\n'), 'vi', collector)
   const out = await new Response(res.body).text()
   const lines = out.split('\n').filter(Boolean)

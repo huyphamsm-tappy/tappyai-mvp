@@ -14,7 +14,7 @@
 
 export const PROGRESS_ANNOTATION_KIND = 'tappy.progress.v1' as const
 
-export type ProgressStage = 'found' | 'writing' | 'finishing'
+export type ProgressStage = 'searching' | 'found' | 'writing' | 'finishing'
 
 export interface ProgressAnnotation {
   kind: typeof PROGRESS_ANNOTATION_KIND
@@ -26,6 +26,7 @@ export interface ProgressAnnotation {
 }
 
 const COPY: Record<ProgressStage, { vi: (n?: number) => string; en: (n?: number) => string }> = {
+  searching: { vi: () => 'Đang tìm chỗ quanh bạn…', en: () => 'Searching places around you…' },
   found: {
     vi: n => (n && n > 0 ? `Đã có ${n} chỗ phù hợp — đang chọn cho bạn…` : 'Đang xem kết quả tìm được…'),
     en: n => (n && n > 0 ? `Found ${n} matching places — choosing for you…` : 'Looking at what was found…'),
@@ -47,7 +48,7 @@ export function readProgress(annotations: unknown[] | undefined | null): Progres
     if (!a || typeof a !== 'object') continue
     const c = a as Partial<ProgressAnnotation>
     if (c.kind !== PROGRESS_ANNOTATION_KIND || typeof c.text !== 'string' || !c.text) continue
-    if (c.stage !== 'found' && c.stage !== 'writing' && c.stage !== 'finishing') continue
+    if (c.stage !== 'searching' && c.stage !== 'found' && c.stage !== 'writing' && c.stage !== 'finishing') continue
     latest = { kind: PROGRESS_ANNOTATION_KIND, v: 1, stage: c.stage, text: c.text, ...(typeof c.count === 'number' ? { count: c.count } : {}) }
   }
   return latest

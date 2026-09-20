@@ -58,6 +58,8 @@ vi.mock('@/lib/security/rateLimit', () => ({
 vi.mock('@/lib/ai/llm', () => ({
   AI: {
     isConfigured: () => true,
+    // A1(b): a deferred turn is driven past the model call by `settled`, which reaches the usage tail.
+    providerId: () => 'mock',
     stream: (opts: Record<string, unknown>) => {
       h.state.streamOptions = opts
       return { toDataStreamResponse: () => new Response('', { status: 200, headers: { 'content-type': 'text/plain' } }) }
@@ -83,6 +85,23 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 
 import { POST } from '@/app/api/chat/route'
 
+/**
+ * A1(b) (2026-09-20): on a pre-search turn the route returns its response BEFORE the search and the
+ * model call run — they produce the body as it is read. The tests below inspect what the model
+ * received, so the turn is driven past the model call here (on a tee'd copy) and an unconsumed
+ * body is handed back for the assertions that read it.
+ */
+const settled = async (res: Response): Promise<Response> => {
+  if (!res.body) return res
+  const [drain, keep] = res.body.tee()
+  const reader = drain.getReader()
+  // The searching frame, then the first chunk of the turn itself — by then the model was called.
+  await reader.read()
+  await reader.read()
+  reader.cancel().catch(() => {})
+  return new Response(keep, { status: res.status, headers: res.headers })
+}
+
 const post = async (messages: unknown[]) => {
   const req = {
     url: 'http://localhost/api/chat',
@@ -91,7 +110,7 @@ const post = async (messages: unknown[]) => {
     json: () => Promise.resolve({ messages }),
     signal: undefined,
   }
-  return POST(req as never)
+  return settled(await POST(req as never))
 }
 const system = () => String(h.state.streamOptions?.system ?? '')
 const finish = async () => {

@@ -74,7 +74,7 @@ import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, 
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
-import { planPresearch, presearchMessages, presearchFrames, prefixBody, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { planPresearch, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
@@ -1811,6 +1811,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }))
 
   /**
+   * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
+   * (4.3 s measured cold on a food turn, 2026-09-20), and while it ran the client had nothing —
+   * no bytes, so no frame, so the generic "đang suy nghĩ" dots. On a pre-search turn the response
+   * is returned NOW with a `searching` progress frame, and the rest of the turn — the search, the
+   * one AI.stream(), every filter — produces its body behind it (`deferredBody`). Nothing about the
+   * turn changes: same code, same order, same frames; only the first byte moves from after the
+   * search to before it. A failure inside becomes an SDK error frame (`3:`), never a hung stream.
+   */
+  const willPresearch = !!(presearchPlan && !noToolTurn && tools && typeof (tools as Record<string, { execute?: unknown }>).search_places?.execute === 'function')
+  const finishTurn = async (): Promise<Response> => {
+  /**
    * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
    * that one wrapped tool here — same object, same side effects — and hands the model a completed
    * tool-call / tool-result pair, so the turn is a single model step. The client stream gets the
@@ -1818,7 +1829,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * result the model reads exactly as it reads a failed live call.
    */
   let presearchOutcome: PresearchOutcome | null = null
-  if (presearchPlan && !noToolTurn && tools && typeof (tools as Record<string, { execute?: unknown }>).search_places?.execute === 'function') {
+  if (willPresearch && presearchPlan) {
     const t0 = Date.now()
     const toolCallId = 'presearch_' + randomUUID().slice(0, 8)
     let result: unknown
@@ -2216,5 +2227,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     ? finalResponse.body.pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
+  }
+  if (willPresearch) {
+    return new Response(deferredBody(searchingFrame(lang), finishTurn), {
+      status: 200,
+      headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'X-Decision-Evidence-Id': evidenceId },
+    })
+  }
+  return finishTurn()
 }
 
