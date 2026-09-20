@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { serperAdmit, serperPost, serperDailyCeiling, __resetSerperAlerts, SERPER_CEILING_KEY } from './serperClient'
+import { serperAdmit, serperPost, serperDailyCeiling, serperOutageInstanceCeiling, __resetSerperAlerts, SERPER_CEILING_KEY } from './serperClient'
 import { serperSnapshot } from './serperMeter'
 import { incrDailyCounter, __resetKvCounters } from '@/lib/security/kvCounter'
 
@@ -43,6 +43,34 @@ describe('serperAdmit', () => {
     expect(serperDailyCeiling({} as unknown as NodeJS.ProcessEnv)).toBe(15_000)
     expect(serperDailyCeiling(env('500'))).toBe(500)
     expect(serperDailyCeiling(env('abc'))).toBe(15_000)
+  })
+
+  // ── 1b-3: the fail-open is BOUNDED ─────────────────────────────────────────────────────────
+  // Store configured but down ⇒ the count is this instance's own, and the ceiling it is held to
+  // is the per-instance outage one (default 1,500), never the full shared day per instance.
+  it('the outage ceiling defaults to 1,500, follows the env, and never exceeds the daily ceiling', () => {
+    expect(serperOutageInstanceCeiling({} as unknown as NodeJS.ProcessEnv)).toBe(1_500)
+    expect(serperOutageInstanceCeiling({ SERPER_OUTAGE_INSTANCE_CEILING: '200' } as unknown as NodeJS.ProcessEnv)).toBe(200)
+    expect(serperOutageInstanceCeiling({ SERPER_DAILY_CREDIT_CEILING: '900' } as unknown as NodeJS.ProcessEnv)).toBe(900)
+  })
+  it('with the store DOWN, refuses at the per-instance outage ceiling while the daily ceiling is still far away', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('down', { status: 503 }))
+    const e = { KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't', SERPER_DAILY_CREDIT_CEILING: '15000', SERPER_OUTAGE_INSTANCE_CEILING: '4' } as unknown as NodeJS.ProcessEnv
+    expect(await serperAdmit('maps', e)).toBe(true)   // 3 ≤ 4, store_down
+    expect(await serperAdmit('search', e)).toBe(true) // 4 — at the outage ceiling
+    expect(await serperAdmit('search', e)).toBe(false) // 5 > 4: refused although 15,000 is nowhere near
+    const alerts = err.mock.calls.map(c => JSON.parse(String(c[0])) as { alert: string; scope?: string; ceiling: number; dailyCeiling?: number })
+    expect(alerts.map(a => a.alert)).toEqual(['serper_ceiling_store_down', 'serper_daily_ceiling'])
+    expect(alerts[0].dailyCeiling).toBe(15_000)
+    expect(alerts[1]).toMatchObject({ scope: 'store_down', ceiling: 4 })
+  })
+  it('with the store UP, the outage ceiling does not apply', async () => {
+    let n = 0
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response(JSON.stringify([{ result: (n += 3) }, { result: 1 }]), { status: 200 }))
+    const e = { KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't', SERPER_OUTAGE_INSTANCE_CEILING: '4' } as unknown as NodeJS.ProcessEnv
+    expect(await serperAdmit('maps', e)).toBe(true) // 3
+    expect(await serperAdmit('maps', e)).toBe(true) // 6 > 4 but the shared count is judged against 15,000
   })
 })
 

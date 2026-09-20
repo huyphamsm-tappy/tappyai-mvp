@@ -22,23 +22,48 @@ import { vnToday } from '@/lib/config/product'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
+// ── BOUNDED FAIL-OPEN (1b-3, 2026-09-20) ──────────────────────────────────────────────────────
+// When the store is configured but does not answer, the counter falls back to THIS instance's
+// shadow count (kvCounter.ts). Search must keep working through a KV outage — failing closed
+// would take every place answer down with the limiter — but "keep working" used to mean the full
+// 15,000 ceiling PER INSTANCE, i.e. N warm lambdas × 15,000 with nobody adding them up. During an
+// outage each instance is therefore held to a much smaller ceiling of its own:
+//
+//   SERPER_OUTAGE_INSTANCE_CEILING   default 1,500 credits = 10 % of the daily ceiling per
+//                                    instance. ≈ 375 place turns (4 credits each) — more than one
+//                                    instance serves in a normal hour, so real users are not
+//                                    refused by an outage; and with the handful of warm instances
+//                                    Vercel keeps for this project (≤ 10 observed), N × 1,500 stays
+//                                    at or under the one shared day the owner already accepted.
+//
+// The instance ceiling never exceeds the daily one, and the existing ERROR alert still fires.
+const DEFAULT_OUTAGE_INSTANCE_CEILING = 1_500
 
 export function serperDailyCeiling(env: NodeJS.ProcessEnv = process.env): number {
   const n = Number(env.SERPER_DAILY_CREDIT_CEILING)
   return Number.isFinite(n) && n > 0 ? n : DEFAULT_CEILING
 }
 
+/** Per-instance ceiling that applies while the shared store is down. Never above the daily one. */
+export function serperOutageInstanceCeiling(env: NodeJS.ProcessEnv = process.env): number {
+  const n = Number(env.SERPER_OUTAGE_INSTANCE_CEILING)
+  const own = Number.isFinite(n) && n > 0 ? n : DEFAULT_OUTAGE_INSTANCE_CEILING
+  return Math.min(own, serperDailyCeiling(env))
+}
+
 const alerted = { warn: '', ceiling: '', storeDown: '' }
 
 /** Admits or refuses one call against today's ceiling. Never throws. */
 export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessEnv = process.env): Promise<boolean> {
-  const ceiling = serperDailyCeiling(env)
   const credits = SERPER_CREDITS[endpoint]
   const { count, scope } = await incrDailyCounter(SERPER_CEILING_KEY, credits, env)
+  // Store down ⇒ `count` is this instance's own day, so the ceiling it is held to is the
+  // per-instance one; otherwise the shared count against the shared ceiling.
+  const ceiling = scope === 'store_down' ? serperOutageInstanceCeiling(env) : serperDailyCeiling(env)
   const today = vnToday()
   if (scope === 'store_down' && alerted.storeDown !== today) {
     alerted.storeDown = today
-    console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_ceiling_store_down', note: 'counting per instance until the store answers', count, ceiling }))
+    console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_ceiling_store_down', note: 'counting per instance until the store answers; per-instance outage ceiling applies', count, ceiling, dailyCeiling: serperDailyCeiling(env) }))
   }
   if (count > ceiling) {
     if (alerted.ceiling !== today) {
