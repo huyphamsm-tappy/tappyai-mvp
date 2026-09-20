@@ -1,0 +1,75 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 1791ms
+ ✓ Compiled /api/health in 269ms (145 modules)
+ GET /api/health 200 in 393ms
+ GET /api/health 200 in 17ms
+ ✓ Compiled /api/subscription in 232ms (176 modules)
+ GET /api/subscription 200 in 786ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 689ms (437 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+[chat] stream error: APICallError [AI_APICallError]: API key is invalid.
+    at eval (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/@ai-sdk/provider-utils/dist/index.mjs:708:14)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async postToApi (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/@ai-sdk/provider-utils/dist/index.mjs:608:28)
+    at async AnthropicMessagesLanguageModel.doStream (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/@ai-sdk/anthropic/dist/index.mjs:693:50)
+    at async fn (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:5752:25)
+    at async eval (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:558:22)
+    at async _retryWithExponentialBackoff (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:359:12)
+    at async streamStep (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:5707:15)
+    at async fn (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:6078:9)
+    at async eval (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/ai/dist/index.mjs:558:22) {
+  cause: undefined,
+  url: 'https://api.anthropic.com/v1/messages',
+  requestBodyValues: {
+    model: 'claude-haiku-4-5-20251001',
+    max_tokens: 2048,
+    temperature: 0,
+    top_k: undefined,
+    top_p: undefined,
+    stop_sequences: undefined,
+    system: [ [Object], [Object] ],
+    messages: [ [Object] ],
+    tools: [
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object],
+      [Object], [Object]
+    ],
+    tool_choice: { type: 'auto' },
+    stream: true
+  },
+  statusCode: 401,
+  responseHeaders: {
+    'cf-cache-status': 'DYNAMIC',
+    'cf-ray': 'a3e17f7d586f715e-HKG',
+    connection: 'keep-alive',
+    'content-length': '106',
+    'content-security-policy': "default-src 'none'; frame-ancestors 'none'",
+    'content-type': 'application/json',
+    date: 'Sun, 20 Sep 2026 14:25:11 GMT',
+    server: 'cloudflare',
+    'x-robots-tag': 'none'
+  },
+  responseBody: '{"type":"error","error":{"type":"authentication_error","message":"API key is invalid."},"request_id":null}',
+  isRetryable: false,
+  data: {
+    type: 'error',
+    error: { type: 'authentication_error', message: 'API key is invalid.' }
+  },
+  Symbol(vercel.ai.error): true,
+  Symbol(vercel.ai.error.AI_APICallError): true
+}
+{"type":"tappyai_quota_refund","reason":"stream_error","scope":"distributed"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"unknown","promptTokens":null,"completionTokens":null,"totalTokens":null,"cacheReadTokens":null,"cacheCreationTokens":null,"llmCalls":null,"memoryExtract":1,"toolCalls":0,"elapsedMs":1453,"preModelMs":924,"ttftMs":null,"modelFinishMs":null,"ttuaMs":null,"postModelMs":null,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":null,"firstStepFinishMs":null,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":"location"}
+ POST /api/chat 200 in 2363ms
+ GET /api/subscription 200 in 180ms
+[?25h
