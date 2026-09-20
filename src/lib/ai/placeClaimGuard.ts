@@ -243,12 +243,29 @@ export function isTicketSaleClaim(sentence: string): boolean {
   if (/\?\s*$/.test(sentence.trim())) return false
   if (TICKET_AVAILABILITY_RE.test(sentence)) return false // handled by the stricter rule
   if (TICKET_SALE_POSSESSION_RE.test(sentence)) return true
+  // C3 (2026-09-20): the honest "not available" sentence is the answer the fixed decision wants
+  // ("Mình chưa có lịch chiếu trực tuyến của rạp") — it asserts nothing on sale. And a sentence
+  // that only NAMES the schedule ("Lịch chiếu tối nay tại CGV Vincom Đồng Khởi") makes no sale
+  // claim either; a stated time in it is the availability rule's job. Measured live (run 19):
+  // both were cut, leaving the reply as one line plus a hedge.
+  if (TICKET_NOT_AVAILABLE_RE.test(sentence)) return false
+  if (!TICKET_SALE_VOCAB_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
 
+/** The sentence says we DO NOT have the schedule / tickets — a disclosure, not a claim. */
+const TICKET_NOT_AVAILABLE_RE = /(chưa có|chua co|không có|khong co|không thể|khong the|chưa xác nhận|chua xac nhan|chưa tra được|chua tra duoc|not available|don't have|do not have|can(?:'t|not) (?:see|show|confirm|check)|unable to)/iu
+/** Ticket-SALE vocabulary, as opposed to schedule vocabulary ("lịch chiếu", "suất chiếu", "showtimes"). */
+const TICKET_SALE_VOCAB_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|còn vé|con ve|hết vé|het ve|có vé|co ve|vé xem phim|ve xem phim|book(?:ing)? tickets?|buy tickets?|tickets? available|sold out)/iu
+/**
+ * C3: a schedule sentence that STATES a clock time ("Lịch chiếu tối nay: Avatar lúc 19h30") is a
+ * showtime claim even without "suất"/"chiếu lúc" — nothing this pipeline fetches can back it.
+ */
+const SHOWTIME_STATED_RE = /(?:lịch chiếu|lich chieu|suất chiếu|suat chieu|showtimes?)[^.!?]*(?:\d{1,2}:[0-5]\d|\d{1,2}\s*h(?:[0-5]\d)?(?![\p{L}\p{N}]))/iu
+
 /** Is this a claim about seats being available, or about a specific showtime? */
 export function isTicketAvailabilityClaim(sentence: string): boolean {
-  if (!TICKET_AVAILABILITY_RE.test(sentence)) return false
+  if (!TICKET_AVAILABILITY_RE.test(sentence) && !SHOWTIME_STATED_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
@@ -269,8 +286,17 @@ export function isTicketAvailabilityClaim(sentence: string): boolean {
  * provenance guard — was skipped.
  */
 export function mentionsTickets(text: string | null | undefined): boolean {
-  return !!text && TICKET_RE.test(text)
+  return !!text && (TICKET_RE.test(text) || TICKET_TURN_RE.test(text))
 }
+
+/**
+ * C3 (2026-09-20): the cinema / admission asks the trigger missed. "tối nay rạp CGV Vincom Đồng
+ * Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?" matched nothing in TICKET_RE (measured live, run
+ * 19), so the turn ran with NO ticket rule and a made-up "80k-150k" ticket band reached the
+ * user. These words widen only the TURN TRIGGER — TICKET_RE is also a claim test, and a wider
+ * claim test would judge harmless prose ("phim gì") as a ticket-sale claim.
+ */
+const TICKET_TURN_RE = /(giá vé|gia ve|vé bao nhiêu|ve bao nhieu|vé (?:xem )?phim|ve (?:xem )?phim|rạp (?:phim|chiếu)|rap (?:phim|chieu)|chiếu phim|chieu phim|\bcinema\b|\bcgv\b|lotte cinema|galaxy cinema|\bbhd\b|ticket price|admission)/iu
 
 /**
  * Is this URL a direct, entity-level destination rather than a front door?

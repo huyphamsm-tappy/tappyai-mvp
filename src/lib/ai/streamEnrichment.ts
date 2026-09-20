@@ -1562,7 +1562,22 @@ export function applyPlaceEnrichmentStreamFilter(
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
-    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : travelGuarded
+    /**
+     * C3 (2026-09-20) — THE SCHEDULE + TICKET UNIT FOR A VENUE. A cinema / admission turn that
+     * neither searched places nor read as a place ("tối nay rạp CGV … chiếu phim gì, mấy giờ, vé
+     * bao nhiêu?" was answered from web_search) reached no price guard at all, and a made-up
+     * "80k-150k" ticket band and a "suất 19h30" would pass. No showtime provider exists, so the
+     * travel guard's fail-closed rule applies with a screening context: ticket prices and
+     * showtimes are cut and the reply says so once, pointing at the venue / ticket page — which
+     * the CTA still carries (the cinema link is what the fixed decision keeps).
+     */
+    const ticketUnitGuarded = (ticketIntent && !travelIntent && !shoppingTurn && !snippetGuardResult)
+      ? guardTravelClaimsInText(travelGuarded, [], userText, { lang, unit: 'ticket' })
+      : null
+    if (ticketUnitGuarded && ticketUnitGuarded.redacted > 0) {
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ticket_unit', redacted: ticketUnitGuarded.redacted }))
+    }
+    const foodGuarded = snippetGuardResult ? snippetGuardResult.text : ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded
     // G2 telemetry: counts only — never text, never a venue name (same rule as the place guard line).
     if (snippetGuardResult?.stats) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'snippet_price', v2: snippetV2, band_rows: priceBandsByEntity.size, ...snippetGuardResult.stats }))

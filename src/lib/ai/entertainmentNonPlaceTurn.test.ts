@@ -110,3 +110,40 @@ describe('full-text and streaming agree', () => {
     expect(out.redacted).toBeGreaterThan(0)
   })
 })
+
+// ── C3 (2026-09-20): the SCHEDULE + TICKET unit on a cinema turn that ran no place tool ──
+// Measured live (autorun run 19): "tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao
+// nhiêu?" was answered from web_search; no rule matched the question, so a made-up ticket band
+// "(thường 80k-150k tùy định dạng 2D/3D)" reached the user. The cinema link must stay.
+describe('C3 — cinema showtime / ticket price with no fetched row', () => {
+  const CINEMA_QUESTION = 'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?'
+  const NL = String.fromCharCode(10)
+  const LIVE = [
+    'Mình chưa có lịch chiếu trực tuyến của rạp. Bạn xem lịch trên trang CGV:', '',
+    '- **Lịch chiếu tối nay** (20/9) tại CGV Vincom Đồng Khởi',
+    '- **Giá vé** theo suất chiếu (thường 80k-150k tùy định dạng 2D/3D)',
+    '- Suất chiếu lúc 19h30 và 21h45 còn ghế.', '',
+    'Bạn muốn xem phim gì? 🎬', '',
+    '[CTA_BUTTONS]{"buttons":[{"label":"🎬 Xem lịch chiếu CGV","type":"website","url":"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi/","primary":true}]}[/CTA_BUTTONS]',
+  ].join(NL)
+
+  it('the trigger recognises the measured cinema question (and plain admission asks)', () => {
+    expect(mentionsTickets(CINEMA_QUESTION)).toBe(true)
+    expect(mentionsTickets('giá vé Đầm Sen bao nhiêu?')).toBe(true)
+    expect(mentionsTickets('phim nào hay tối nay?')).toBe(false) // a what-to-watch ask is not a ticket turn
+  })
+
+  it('cuts the invented ticket band and the showtime, keeps the cinema CTA, and says so once', async () => {
+    const out = await runNonPlaceTurn([LIVE], CINEMA_QUESTION)
+    expect(out).not.toContain('80k-150k')
+    expect(out).not.toContain('19h30')
+    expect(out).toContain('cgv-vincom-dong-khoi')
+    expect(out).toContain('Lịch chiếu tối nay')
+    expect(out.match(/Suất chiếu và giá vé cụ thể mình chưa xác nhận được/g)).toHaveLength(1)
+  })
+
+  it('a ticket turn with nothing to cut carries no hedge', async () => {
+    const out = await runNonPlaceTurn(['Mình chưa có lịch chiếu trực tuyến — bạn xem trên trang rạp nhé.'], CINEMA_QUESTION)
+    expect(out).not.toContain('chưa xác nhận được')
+  })
+})

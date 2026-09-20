@@ -107,6 +107,10 @@ function userEchoStandsHere(
 // Trip.com link line was cut (C1 live probe, 2026-09-20). A letter/digit lookahead closes that.
 const TIME_RE = /\b(?:2[0-3]|[01]?\d):[0-5]\d\b|\b(?:2[0-3]|[01]?\d)(?::[0-5]\d)?\s*(?:h|giờ|gio|am|pm|a\.m\.|p\.m\.|giờ sáng|giờ chiều|giờ tối)(?![\p{L}\p{N}])/iu
 const DEPART_CTX = /\b(?:bay|chuyến bay|chuyen bay|khởi hành|khoi hanh|cất cánh|cat canh|hạ cánh|ha canh|departs?|departure|leaves?|arri(?:ves?|val)|flight)\b/iu
+// C3 (2026-09-20): the SCHEDULE + TICKET unit for a venue — a screening / show time. No showtime
+// provider is wired, so on a ticket turn a stated time next to one of these is unverifiable.
+// No trailing `\b` after the Vietnamese words (the same Unicode-boundary trap as AVAIL_RE).
+const SHOW_CTX = /(?:^|\s)(?:suất|suat|chiếu|chieu|screening|showtimes?|show)(?:\s|$|[.,:;])/iu
 // Availability assertions we can never verify without a live source.
 // No trailing \b after a Vietnamese noun — JS \b treats "ỗ" as a non-word char,
 // so "còn 3 chỗ\b" never matches (the same Unicode-boundary trap the money guard
@@ -154,13 +158,13 @@ export function scheduleTimesIn(text: string): string[] {
  * stays; anything else is still fail-closed. Availability has no source and is always removed.
  * Writes nothing new; if removal would empty the reply, leaves it.
  */
-function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = []): { text: string; removed: number } {
+function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX): { text: string; removed: number } {
   const spans = sentenceSpans(text)
   const doomed = new Set<number>()
   const known = new Set(evidenceTimes)
   spans.forEach(([a, b], i) => {
     const s = text.slice(a, b)
-    const sched = TIME_RE.test(s) && DEPART_CTX.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
+    const sched = TIME_RE.test(s) && ctx.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
     if (sched || AVAIL_RE.test(s)) doomed.add(i)
   })
   if (doomed.size === 0) return { text, removed: 0 }
@@ -177,13 +181,17 @@ function redactScheduleAvailability(text: string, evidenceTimes: readonly string
  * @param text   the settled reply prose
  * @param fares  live, fetched VND fares this turn (empty ⇒ every travel price is UNKNOWN)
  * @param userText  the user's own message this turn — numbers in it are never redacted
+ * @param opts.unit  'travel' (default: fares, departures) or 'ticket' — C3 (2026-09-20): a venue's
+ *                   SCHEDULE + TICKET unit (cinema showtimes, admission). Same fail-closed money rule;
+ *                   the schedule context is a screening word and the hedge points at the venue page.
  */
 export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket' } = {},
 ): { text: string; redacted: number; enforced: boolean } {
+  const ticketUnit = opts.unit === 'ticket'
   let out = text
   let redacted = 0
 
@@ -202,14 +210,18 @@ export function guardTravelClaimsInText(
 
   // 2) Schedule/availability — we have no live source for either, so any specific
   //    assertion on a travel turn is unverifiable and removed.
-  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [])
+  const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX)
   out = sa.text; redacted += sa.removed
 
   // C1: what was cut is said, once, with where to look — never left as a silent gap.
   if (redacted > 0) {
-    const hedge = opts.lang === 'en'
-      ? 'Exact times and fares here are not confirmed by a fetched source — check them on the booking page.'
-      : 'Giờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.'
+    const hedge = ticketUnit
+      ? (opts.lang === 'en'
+        ? 'Exact showtimes and ticket prices are not confirmed by a fetched source — check them on the venue or ticket page.'
+        : 'Suất chiếu và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang rạp hoặc trang bán vé.')
+      : (opts.lang === 'en'
+        ? 'Exact times and fares here are not confirmed by a fetched source — check them on the booking page.'
+        : 'Giờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.')
     if (!out.includes(hedge)) {
       const markerAt = (() => { let end = out.length; for (const m of ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']) { const i = out.indexOf(m); if (i !== -1 && i < end) end = i } return end })()
       const head = out.slice(0, markerAt).replace(/\s+$/, '')

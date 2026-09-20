@@ -218,3 +218,31 @@ describe('entertainment ticket claims cannot escape through the stream', () => {
     expect(out).toContain('kiểm tra thêm trên Ticketbox')
   })
 })
+
+// ── C3 (2026-09-20): the honest "not available" answer and a bare schedule mention are not sale claims ──
+describe('C3 — the honest showtime answer survives; a stated showtime still does not', () => {
+  it('a disclosure that we have no schedule is not a sale claim', () => {
+    for (const t of ['Mình chưa có lịch chiếu trực tuyến của rạp.', 'Suất chiếu tối nay mình không có dữ liệu.']) {
+      expect(isTicketSaleClaim(t)).toBe(false)
+      expect(guardPlaceClaimsInText(t + TAIL, ev()).redacted).toBe(0)
+    }
+  })
+
+  it('naming the schedule without a time is not a sale claim', () => {
+    const t = '- **Lịch chiếu tối nay** (20/9) tại CGV Vincom Đồng Khởi'
+    expect(isTicketSaleClaim(t)).toBe(false)
+    expect(isTicketAvailabilityClaim(t)).toBe(false)
+  })
+
+  it('a schedule sentence that states a clock time is an availability claim (fail-closed)', () => {
+    for (const t of ['Lịch chiếu tối nay: Avatar lúc 19h30 và 21h45.', 'Showtimes tonight: 7:30 PM and 21:45.']) {
+      expect(isTicketAvailabilityClaim(t)).toBe(true)
+      expect(guardPlaceClaimsInText(t + TAIL, ev(), { scope: 'tickets' }).redacted).toBeGreaterThan(0)
+    }
+  })
+
+  it('a real sale claim is still gated on a direct ticket page', () => {
+    expect(isTicketSaleClaim('Rạp chiếu phim CGV có bán vé online.')).toBe(true)
+    expect(isTicketSaleClaim('Bạn có thể đặt vé tại Galaxy Cinema.')).toBe(true)
+  })
+})
