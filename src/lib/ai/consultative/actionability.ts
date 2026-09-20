@@ -61,6 +61,8 @@ const BUDGET_OPTIONS: Record<'food' | 'spa' | 'entertainment' | 'travel', { vi: 
   travel: { vi: ['dưới 1tr/đêm', '1–2tr/đêm', 'trên 2tr/đêm'], en: ['under 1M/night', '1–2M/night', 'over 2M/night'] },
 }
 
+/** Venue kinds a city has only a few of — the kind itself is the pick. */
+const RARE_VENUE_KIND = /\b(cong vien nuoc|water ?park|thuy cung|aquarium)\b/
 const fold = (s: string) => ' ' + normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim() + ' '
 const GIFT = /\b(qua|gift|present|qua tang|tang gi|tang ban|tang nguoi yeu)\b/
 const ACTIVITY = /\b(lam gi|di dau|choi gi|di choi|hoat dong gi|what to do|where to go|things to do)\b/
@@ -119,6 +121,9 @@ export function assessActionability(input: {
   // Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?") is not a request to pick one — budget and
   // party size decide nothing here, and the canned clarify asked for both. The venue is the answer.
   if (namedCinemaQuery(last) !== null) return { ...none, domain }
+  // …and a city-scale venue KIND with a handful of instances (a water park, an aquarium — measured live
+  // run 27: "thủy cung nào ở Sài Gòn…" was asked "Tầm giá? Mấy người?") is answered by naming them.
+  if (RARE_VENUE_KIND.test(last)) return { ...none, domain }
 
   // A gift is gated whatever the frame's goal says (it reads "quà sinh nhật" as inform).
   if (domain === 'shopping') {

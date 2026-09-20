@@ -120,3 +120,10 @@ describe('Phase D — a named cinema question is actionable as asked', () => {
     expect(assess('rạp chiếu phim nào gần đây?').actionable).toBe(false)
   })
 })
+
+describe('Phase D — a rare city-scale venue kind is actionable as asked', () => {
+  it('measured live (run 27): the aquarium question was answered with "Tầm giá? Mấy người?"', () => {
+    expect(assess('thủy cung nào ở Sài Gòn đáng đi cuối tuần này, giá vé sao?').actionable).toBe(true)
+    expect(assess('công viên nước nào ở Sài Gòn hợp cho gia đình có trẻ em?').actionable).toBe(true)
+  })
+})

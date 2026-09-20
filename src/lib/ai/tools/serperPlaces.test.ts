@@ -333,3 +333,15 @@ describe('serperPlaces — priceLevel is non-deterministic upstream, so an empty
     expect(again?.[0].priceLevel).toBe('100-200 N ₫')
   })
 })
+
+// Phase D (2026-09-20): the zoom in `ll` is the caller's — a city-scale venue kind reads the city.
+describe('the caller chooses the zoom', () => {
+  it('a zoom passed in ll is sent as-is, and the cache key tells 12z from 14z', async () => {
+    stub({ places: [LIVE_ROW] })
+    await serperPlaces('công viên nước', { lat: 10.7769, lng: 106.7009, zoom: 12 })
+    expect(captured[0].body.ll).toBe('@10.7769,106.7009,12z')
+    stub({ places: [LIVE_ROW] })
+    await serperPlaces('công viên nước', { lat: 10.7769, lng: 106.7009 })
+    expect(captured[captured.length - 1].body.ll).toBe('@10.7769,106.7009,14z')
+  })
+})

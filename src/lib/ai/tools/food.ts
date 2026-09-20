@@ -644,15 +644,22 @@ async function searchPlacesSerper(
   locationBias: { lat: number; lng: number } | null | undefined,
   scope: { destination: VietnamCity | null; remote: boolean },
   priceRetry = true,
+  placeType?: string | null,
 ): Promise<Record<string, unknown> | null> {
   const { destination, remote } = scope
   const centeredOnUser = !!locationBias && !remote
+  // Phase D (2026-09-20, measured live run 26): "công viên nước" at the default 14z around District 1
+  // returned a water-delivery shop as the only "water park" — the real ones are city-scale venues a
+  // few km out. An attraction / cinema search reads the city (12z); a café or a restaurant stays
+  // near (14z). The engine still ranks nearer rows higher, so a close venue still wins when it exists.
+  const zoom = placeType === 'attraction' || placeType === 'cinema' ? 12 : 14
+  const centreAt = (lat: number, lng: number) => ({ lat, lng, zoom })
   const centre = centeredOnUser
-    ? { lat: locationBias!.lat, lng: locationBias!.lng }
+    ? centreAt(locationBias!.lat, locationBias!.lng)
     : destination
-      ? { lat: destination.coords[0], lng: destination.coords[1] }
+      ? centreAt(destination.coords[0], destination.coords[1])
       : locationBias
-        ? { lat: locationBias.lat, lng: locationBias.lng }
+        ? centreAt(locationBias.lat, locationBias.lng)
         : null
 
   // The place string is normalised (city alias → Maps name, no commas) so `/maps` answers with
@@ -917,7 +924,7 @@ async function searchPlacesUncached(
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result && provider !== 'osm') {
-    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry)
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type)
     if (result) googleOk = true
   }
   if (!result) {
