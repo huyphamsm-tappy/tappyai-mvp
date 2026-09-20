@@ -15,7 +15,7 @@ import {
   type DiscoveryScope,
   type IntentType,
 } from '@/lib/ccp'
-import { refreshProviderConfig } from '@/lib/ccp'
+import { refreshProviderConfig, isProviderActive, inactiveMerchants, hasProviderConfigSource } from '@/lib/ccp'
 import { installProviderConfigSource } from '@/lib/commerce/providerConfigSource'
 import { feedHintsFor, type FeedHint } from '@/lib/commerce/feedHints'
 import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, sameCityKey, stripTrailingCity } from '@/lib/links/otaTitle'
@@ -174,10 +174,28 @@ interface RequestedProvider {
   merchantAllowList: string[]
   scopesFor(domain: CommerceDomain, intentType: IntentType): DiscoveryScope[]
 }
+/** Does this row point at (link / url) or come from (source / merchant / store) a switched-off provider? */
+function rowInactiveOwner(row: Record<string, unknown>, off: ReturnType<typeof inactiveMerchants>): string | null {
+  for (const k of ['link', 'url', 'product_link', 'website_uri']) {
+    const v = row[k]
+    if (typeof v === 'string') { const owner = providerOwning(v); if (owner && off.some(m => m.providerId === owner)) return owner }
+  }
+  // `name` is the PLACE row's (a physical store of the merchant is a destination too); a product `title` is not.
+  for (const k of ['source', 'merchant', 'store', 'seller', 'name']) {
+    const v = row[k]
+    if (typeof v === 'string') { const hit = off.find(m => m.nameRe.test(v)); if (hit) return hit.providerId }
+  }
+  return null
+}
+const rowBelongsToInactive = (row: Record<string, unknown>, off: ReturnType<typeof inactiveMerchants>): boolean => off.length > 0 && rowInactiveOwner(row, off) !== null
+
 function requestedProvider(ctx: CommerceAttachContext): RequestedProvider | null {
   const providerId = requestedProviderOf(userTurns(ctx))
   const entry = providerId ? getProvider(providerId) : null
   if (!providerId || !entry) return null
+  // A3.1: naming a provider the runtime registry switched OFF (DMX) does not make it the request —
+  // the active providers answer, nothing else is suppressed on its account.
+  if (!isProviderActive(entry)) return null
   return {
     providerId,
     merchantAllowList: [entry.merchantId],
@@ -436,6 +454,28 @@ const contradictsCity = (url: string | undefined, requestedCity: string | null):
  * Resolve Commerce Links for the turn's leading rows and attach them as
  * `commerce_links`. Returns the same `result` object. Never throws.
  */
+/**
+ * A3.1 (owner decision 2026-09-20, DMX disabled): BEFORE the rows are ranked, drop every row that
+ * points at, is sold by, or IS a physical store of a provider the runtime registry switched OFF —
+ * so neither the pick, the model's shortlist, the card nor the prose can name it. Idempotent; the
+ * seam below applies the same rule again on the ranked rows. Refreshes the overlay (60 s cache).
+ */
+export async function dropInactiveMerchantRows(result: unknown, listKey: 'results' | 'search_results' = 'results'): Promise<unknown> {
+  if (!isRecord(result) || !Array.isArray(result[listKey])) return result
+  if (!hasProviderConfigSource()) installProviderConfigSource()
+  await refreshProviderConfig()
+  const off = inactiveMerchants()
+  if (off.length === 0) return result
+  const rows = result[listKey] as unknown[]
+  const kept = rows.filter(row => !isRecord(row) || !rowBelongsToInactive(row, off))
+  if (kept.length !== rows.length) {
+    console.log(JSON.stringify({ type: 'tappyai_commerce_inactive_rows', stage: 'pre_rank', listKey, dropped: rows.length - kept.length, kept: kept.length, providers: off.map(m => m.providerId) }))
+    result[listKey] = kept
+    if (typeof result.count === 'number') result.count = kept.length
+  }
+  return result
+}
+
 export async function attachCommerceLinks(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
   const enabled = ctx.enabled ?? CCP_ENABLED
   if (!enabled || !isRecord(result)) return result
@@ -457,11 +497,24 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     // previous attachment is dropped first — appending would duplicate buttons turn after turn.
     // Listing rows this seam appended last turn are dropped for the same reason.
     const list = (r[plan.listKey] as unknown[]).filter(row => !(isRecord(row) && row._tappy_experience === true))
-    for (const row of list) if (isRecord(row)) delete row[COMMERCE_LINKS_KEY]
+    // A3.1 (owner decision 2026-09-20, DMX): a row that points at, or is sold by, a provider the runtime
+    // registry switched OFF leaves the result before the model or the card sees it — no card, no
+    // prose mention, no dead link. The other rows stay, so a former-DMX query resolves to the next
+    // provider instead of an empty gap. Logged so the fall-through is visible.
+    const off = inactiveMerchants()
+    if (off.length > 0) {
+      const dropped = list.filter(row => isRecord(row) && rowBelongsToInactive(row, off))
+      if (dropped.length > 0) {
+        console.log(JSON.stringify({ type: 'tappyai_commerce_inactive_rows', tool: toolName, dropped: dropped.length, kept: list.length - dropped.length, providers: [...new Set(dropped.map(row => rowInactiveOwner(row as Record<string, unknown>, off)))] }))
+        r[plan.listKey] = (r[plan.listKey] as unknown[]).filter(row => !dropped.includes(row))
+      }
+    }
+    const live = list.filter(row => !isRecord(row) || !rowBelongsToInactive(row, off))
+    for (const row of live) if (isRecord(row)) delete row[COMMERCE_LINKS_KEY]
     // A NAMED merchant (live UAT 14 Sep 2026): the legacy per-row search links of OTHER registry
     // merchants leave the row too — "qua ShopeeFood" must not render "Tìm trên GrabFood" beside it.
     const requestedEarly = requestedProvider(ctx)
-    for (const row of list) {
+    for (const row of live) {
       if (!isRecord(row)) continue
       delete row._tappy_requested_provider
       if (!requestedEarly) continue
@@ -478,7 +531,7 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     }
     // P2-8: rows that contradict the request (an OTA page filed under another city) leave the
     // result — neither the model nor the card sees them as matches.
-    const kept = plan.rejects ? list.filter(row => !(isRecord(row) && plan.rejects!(row))) : list
+    const kept = plan.rejects ? live.filter(row => !(isRecord(row) && plan.rejects!(row))) : live
     r[plan.listKey] = kept
     const rows = kept.filter(isRecord)
     const targets = candidateRows(rows, r, ctx.maxRows ?? plan.maxRows ?? 3)

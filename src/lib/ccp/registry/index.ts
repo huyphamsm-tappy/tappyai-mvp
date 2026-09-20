@@ -1,11 +1,11 @@
 import { PROVIDER_REGISTRY } from './providers'
-import { effectiveTracking } from './runtime'
+import { effectiveTracking, isProviderActive } from './runtime'
 import type { LinkStrategyStep, MonetizationStatus, ProviderRegistryEntry, ProviderStatus } from './types'
 import { INTENT_CAPABILITY, type CommerceCapability, type CommerceDomain, type IntentType, type TransactionDepthProfile } from '../domain/types'
 
 export type { ProviderRegistryEntry, ProviderCapability, TrackingConfig, ProviderStatus, MonetizationStatus, LinkStrategyStep, DiscoverySubjectKind } from './types'
 export { PROVIDER_REGISTRY } from './providers'
-export { setProviderConfigSource, refreshProviderConfig, providerOverride, isProviderActive, providerTier, effectiveTracking, overrideFromRow, PROVIDER_CONFIG_TTL_MS, __resetProviderConfig, type ProviderOverride, type ProviderConfigSource, type ProviderTier } from './runtime'
+export { setProviderConfigSource, hasProviderConfigSource, refreshProviderConfig, providerOverride, isProviderActive, providerTier, effectiveTracking, overrideFromRow, PROVIDER_CONFIG_TTL_MS, __resetProviderConfig, type ProviderOverride, type ProviderConfigSource, type ProviderTier } from './runtime'
 
 // ── REMOVED PROVIDERS — the ones the owner took out and forbade reintroducing ──
 //
@@ -20,9 +20,33 @@ export const REMOVED_MERCHANT_HOSTS: ReadonlySet<string> = new Set([
 ])
 const REMOVED_MERCHANT_NAME_RE = /(?<![\p{L}\p{N}])(tiki|pasgo|th[eế] gi[oớ]i di đ[oộ]ng|tgdd|sendo|california fitness)(?![\p{L}\p{N}])/iu
 
-/** A label or a host that names / points at a removed provider — never reintroduced through the model. */
+/**
+ * A label or a host that names / points at a removed provider — never reintroduced through the model.
+ *
+ * A3.1 (owner decision 2026-09-20, DMX disabled): a provider switched OFF in the runtime registry
+ * (`commerce_providers.active = false`) is a removed merchant for as long as the row says so — no
+ * deeplink, no handoff, no CTA, no discovery, no mention. Reading the overlay here means every
+ * caller that already asks "is this removed?" (buttons, prose links, discovery, shopping rows)
+ * honours the flip without a code change; flipping it back is the same data change.
+ */
 export function isRemovedMerchant(label: string, host: string): boolean {
-  return REMOVED_MERCHANT_HOSTS.has(host.replace(/^www\./, '')) || REMOVED_MERCHANT_NAME_RE.test(label)
+  if (REMOVED_MERCHANT_HOSTS.has(host.replace(/^www\./, '')) || REMOVED_MERCHANT_NAME_RE.test(label)) return true
+  const h = host.toLowerCase().replace(/^www\./, '')
+  return inactiveMerchants().some(m => m.hosts.includes(h) || m.nameRe.test(label))
+}
+
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+/** The registry providers the runtime overlay has switched OFF, with their hosts and a name matcher. */
+export function inactiveMerchants(): Array<{ providerId: string; hosts: string[]; nameRe: RegExp }> {
+  return PROVIDER_REGISTRY.filter(e => !isProviderActive(e)).map(e => ({
+    providerId: e.providerId,
+    hosts: e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, '')),
+    nameRe: new RegExp(`(?<![\\p{L}\\p{N}])(?:${[e.merchantName, ...merchantAliases(e.providerId)].map(escapeRe).join('|')})(?![\\p{L}\\p{N}])`, 'iu'),
+  }))
+}
+/** Spellings the model uses for a merchant beyond `merchantName` (the intent module keeps the AI layer's list; these are the registry's). */
+function merchantAliases(providerId: string): string[] {
+  return providerId === 'dmx' ? ['Điện máy XANH', 'Điện Máy Xanh', 'dien may xanh', 'dienmayxanh', 'DMX'] : []
 }
 
 const BY_ID: ReadonlyMap<string, ProviderRegistryEntry> = new Map(PROVIDER_REGISTRY.map(p => [p.providerId, p]))

@@ -164,3 +164,34 @@ describe('architecture: the consultative layer asks the registry, it never branc
     expect(seam).toContain('refreshProviderConfig()')
   })
 })
+
+// ── Owner decision 2026-09-20: DMX DISABLED entirely — a DATA change (the CCP half; the AI-layer half is
+// src/lib/ai/tools/commerceInactiveProvider.test.ts, which this layer must not import) ──
+import { isRemovedMerchant, inactiveMerchants } from './index'
+import { discoveryScopesFor } from '../discovery'
+
+describe('a provider switched OFF in commerce_providers is not a destination (DMX, owner 2026-09-20)', () => {
+  beforeEach(() => { setCommerceEventWriter(() => {}); __resetProviderConfig() })
+  afterEach(() => { setCommerceEventWriter(null); setProviderConfigSource(null) })
+
+  it('active=false: no adapter, no discovery scope, removed-merchant by host and by name; active=true restores it', async () => {
+    fakeSource([row({ providerId: 'dmx', active: false })])
+    await refreshProviderConfig({ now: 0 })
+    expect(isProviderActive(getProvider('dmx')!)).toBe(false)
+    expect(inactiveMerchants().map(m => m.providerId)).toEqual(['dmx'])
+    const res = await resolveCommerce(dmxReq, { hints: [dmxHint], now })
+    if (!('links' in res)) throw new Error('resolve rejected the request')
+    expect(res.links.some(l => l.providerId === 'dmx')).toBe(false)
+    expect(res.providersFailed.find(f => f.providerId === 'dmx')?.code).toBe('disabled')
+    expect(discoveryScopesFor('shopping', 'buy_product', Object.fromEntries(PROVIDER_REGISTRY.map(e => [e.enabledFlag, true]))).some(s => s.providerId === 'dmx')).toBe(false)
+    expect(isRemovedMerchant('🛒 Mua tại Điện máy XANH', 'www.dienmayxanh.com')).toBe(true)
+    expect(isRemovedMerchant('🛒 Mua ngay', 'dienmayxanh.com')).toBe(true)
+    expect(isRemovedMerchant('🛒 Shopee', 'shopee.vn')).toBe(false)
+
+    fakeSource([row({ providerId: 'dmx', active: true })])
+    await refreshProviderConfig({ now: PROVIDER_CONFIG_TTL_MS + 1, force: true })
+    expect(isProviderActive(getProvider('dmx')!)).toBe(true)
+    expect(inactiveMerchants()).toEqual([])
+    expect(isRemovedMerchant('🛒 Mua tại Điện máy XANH', 'www.dienmayxanh.com')).toBe(false)
+  })
+})

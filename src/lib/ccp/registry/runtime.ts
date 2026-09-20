@@ -54,6 +54,8 @@ export function setProviderConfigSource(next: ProviderConfigSource | null): void
 
 /** Test seam. */
 export function __resetProviderConfig(): void { cache = null; inflight = null }
+/** Whether a reader is installed at all (the seam installs Supabase only when nothing — a test's fake — is there). */
+export function hasProviderConfigSource(): boolean { return source !== null }
 
 /**
  * Loads the overlay when the cache is cold or older than the TTL. Never throws: a source that

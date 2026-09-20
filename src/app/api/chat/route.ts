@@ -45,7 +45,7 @@ import { placeRecommendations, productRecommendations, stayRecommendations } fro
 import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
-import { attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
 import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
@@ -1615,7 +1615,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             r = alt.result
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_alternatives', requested: alt.requested, kept: alt.kept }))
           }
-          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
+          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'results')
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.
           //
@@ -1665,7 +1665,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
         execute: async ({ query }) => {
           const r = await searchProducts(query, lang)
-          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
+          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
           await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })

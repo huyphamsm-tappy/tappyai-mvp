@@ -11,6 +11,7 @@
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import { normalizeVN } from '@/lib/ai/intent'
+import { inactiveMerchants } from '@/lib/ccp'
 import { productIdentityMatch } from '@/lib/links/productIdentity'
 
 export interface FeedHint { url: string; title: string; providerId: string }
@@ -44,6 +45,8 @@ export async function feedHintsFor(subject: string, opts: { reader?: FeedReader;
   const rows = await (opts.reader ?? supabaseFeedReader)(subject, 50)
   return rows
     .filter(r => typeof r.url === 'string' && r.url.startsWith('https://') && feedRowMatches(subject, r.name))
+    // A3.1: a provider the runtime registry switched OFF (DMX, owner 2026-09-20) contributes no hint.
+    .filter(r => !inactiveMerchants().some(m => m.providerId === r.provider_id))
     // §8, the seam's own bar: a row that names another product (a case, the Pro Max) is not this subject.
     .filter(r => productIdentityMatch(subject, r.name) === 'match')
     .sort((a, b) => a.name.length - b.name.length)

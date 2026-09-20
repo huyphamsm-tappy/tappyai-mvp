@@ -1,6 +1,6 @@
 import { CCP_ADAPTERS } from '@/lib/config/product'
 import type { CommerceDomain, IntentType } from './domain/types'
-import { PROVIDER_REGISTRY } from './registry'
+import { PROVIDER_REGISTRY, isProviderActive } from './registry'
 import type { ProviderRegistryEntry } from './registry/types'
 
 // ── Discovery scopes — how the TOOL layer may look for a merchant's pages ────
@@ -47,6 +47,8 @@ export function discoveryScopesFor(domain: CommerceDomain, intentType: IntentTyp
   for (const e of PROVIDER_REGISTRY) {
     if (!e.discovery || e.discovery.subjectKind !== kind || (e.tier !== 'mvp' && e.handoffPassthrough !== true)) continue
     if (flags[e.enabledFlag] !== true) continue
+    // A3.1: a provider the runtime registry switched OFF is not searched for (owner: DMX, 2026-09-20).
+    if (!isProviderActive(e)) continue
     if (!e.domains.includes(domain) || !e.intents.includes(intentType)) continue
     out.push({ providerId: e.providerId, merchantName: e.merchantName, site: e.discovery.site, subjectKind: e.discovery.subjectKind, ...(e.segment ? { segment: e.segment } : {}) })
   }
