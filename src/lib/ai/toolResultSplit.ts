@@ -194,6 +194,8 @@ export interface ConsultativeV1Context {
   budgetGap: boolean
   /** E1 (2026-09-20): the budget the need profile read, in VND — the budget-fit guard compares a stated band against it. */
   budget?: { min: number; max: number; type: 'range' | 'under' | 'around' } | null
+  /** E1/F (2026-09-20): the clock times the PREVIOUS reply stated (it passed the hours guard) — evidence on a no-tool follow-up. */
+  priorTimes?: string[]
 }
 
 /** Tools whose results carry enrichment. Mirrors PLACE_TOOLS in streamEnrichment. */

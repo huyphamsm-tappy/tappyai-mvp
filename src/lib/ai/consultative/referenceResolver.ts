@@ -232,6 +232,11 @@ export function carriedFacts(priorText: string, venues: readonly PriorVenue[]): 
     const hoursM = seg.match(/\b(\d{1,2}[:h]\d{0,2})\s*(?:[–-]|den|to|toi)\s*(\d{1,2}[:h]\d{0,2})\b/)
     const clock = (t: string) => t.replace('h', ':').replace(/:$/, ':00')
     const hours = hoursM ? `${clock(hoursM[1])}–${clock(hoursM[2])}` : null
+    // E1/F (2026-09-20, measured Android turn A2): the prior reply said only "mở cửa đến 22:30" — a single
+    // bound. Without it the follow-up "quán này mở mấy giờ?" was answered by the hours guard alone (the
+    // model's true restatement cut, hedge only). A closing or opening bound is carried as stated.
+    const boundM = !hoursM ? seg.match(/\b(?:mo(?: cua)? (?:den|toi|luc|tu)|dong cua(?: luc)?|open(?:s)? (?:until|till|at|from)|closes? at|until)\s*(\d{1,2}[:h]\d{0,2})\b/) : null
+    const hoursBound = boundM ? (/\b(?:tu|from)\s*\d/.test(boundM[0]) ? `từ ${clock(boundM[1])}` : `đến ${clock(boundM[1])}`) : null
     const phoneM = seg.match(/(?:\+84|0)\d[\d .]{7,}\d/)
     const phone = phoneM ? phoneM[0].trim() : null
     // Address: read off the ORIGINAL text (diacritics intact) at the same offsets — normalizeVN
@@ -246,7 +251,7 @@ export function carriedFacts(priorText: string, venues: readonly PriorVenue[]): 
         ?? raw.match(/\b(\d{1,4}[A-Za-z]?(?:\/\d+)?\s+[^,.\n;]{3,40},\s*(?:Quận|Q\.|Phường|Huyện|District)[^.\n;]{1,40})/)
       if (addrM) address = addrM[1].trim().replace(/[,\s]+$/, '')
     }
-    out.push({ name: v.name, rating: num(rating, false), reviewCount: num(count, true), distanceKm: num(dist, false), hours, phone, address })
+    out.push({ name: v.name, rating: num(rating, false), reviewCount: num(count, true), distanceKm: num(dist, false), hours: hours ?? hoursBound, phone, address })
   }
   return out
 }

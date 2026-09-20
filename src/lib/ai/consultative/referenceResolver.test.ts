@@ -138,3 +138,13 @@ describe('venue segment — a bold number does not end the venue paragraph (meas
     expect(priorTextStates(prior, venues[1], 'distance', venues)).toBe(true)
   })
 })
+
+// E1/F (2026-09-20, measured Android turn A2): a single closing bound is carried too.
+describe('carriedFacts — a single opening / closing bound', () => {
+  it('"mở cửa đến 22:30" is carried as "đến 22:30"; "mở từ 07:00" as "từ 07:00"', () => {
+    const prior = 'Mình gợi ý **Nhà Hàng Ngon** — cách bạn chỉ 0.1km, mở cửa đến 22:30, có **4⭐ từ 11.408 đánh giá** Google Maps.\n\nNếu muốn thử **Hàng Dương Quán** (0.6km, 4.5⭐ từ 718 đánh giá) — mở từ 07:00.'
+    const facts = carriedFacts(prior, priorVenuesIn(prior))
+    expect(facts.find(f => f.name === 'Nhà Hàng Ngon')?.hours).toBe('đến 22:30')
+    expect(facts.find(f => f.name === 'Hàng Dương Quán')?.hours).toBe('từ 07:00')
+  })
+})

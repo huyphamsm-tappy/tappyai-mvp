@@ -83,3 +83,17 @@ describe('E1 — budget fit on a place turn', () => {
     expect(out).toContain('vừa vặn ngân sách')
   })
 })
+
+// E1/F (2026-09-20, measured Android turn A2): on a no-tool follow-up the previous reply's hours are evidence.
+describe('E1 — a no-tool follow-up may restate the hours the previous reply stated', () => {
+  it('"quán này mở mấy giờ?" → "mở cửa đến 22:30" survives (priorTimes / carried hours), a new hour does not', async () => {
+    const collector = createEnrichmentCollector()
+    collector.setRendersDecisionCard(rendersDecisionCard('android'))
+    collector.setConsultativeV1({ on: true, rendersCard: true, namedRefetch: [], carried: [{ name: 'Nhà Hàng Ngon', rating: 4, reviewCount: 11408, distanceKm: 0.1, hours: 'đến 22:30' }], hardGaps: [], budgetGap: false, priorTimes: ['22:30'] })
+    const frames = [line0('**Nhà Hàng Ngon** mở cửa đến 22:30 hôm nay, và mở từ 6h sáng.'), END]
+    const res = applyPlaceEnrichmentStreamFilter(new Response(frames.join('\n') + '\n'), 'vi', collector, undefined, undefined, undefined, false, 'quán này mở mấy giờ?', true)
+    const out = (await new Response(res.body).text()).split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+    expect(out).toContain('mở cửa đến 22:30')
+    expect(out).not.toContain('6h sáng')
+  })
+})

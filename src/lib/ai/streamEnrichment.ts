@@ -1663,7 +1663,7 @@ export function applyPlaceEnrichmentStreamFilter(
      * goes, the rest of the sentence stays, one hedge line. Place turns only — a travel turn's
      * times are the travel guard's, a ticket turn's showtimes the ticket unit's.
      */
-    const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? collector.consultativeV1.carried.map(c => c.hours ?? '') : [])]
+    const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
     const hoursGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, { lang })
       : null
