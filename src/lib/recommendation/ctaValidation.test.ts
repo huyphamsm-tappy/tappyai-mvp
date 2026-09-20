@@ -142,7 +142,8 @@ describe('the batch preserves order and count', () => {
       { label: '🚌 Phương Trang', type: 'website', url: 'https://www.redbus.vn/ve-xe-khach/nha-xe/phuong-trang', primary: false },
       { label: '🏨 Booking.com - Mường Thanh', type: 'booking', url: 'https://www.booking.com/searchresults.vi.html?ss=Muong+Thanh', primary: false },
     ], t)
-    expect(out.map(b => b.label)).toEqual(['🚌 Phương Trang', '🏨 Booking.com - Mường Thanh'])
+    // A3.3 (owner, 2026-09-20): a Booking.com SEARCH results button is dropped too — deepest page or nothing.
+    expect(out.map(b => b.label)).toEqual(['🚌 Phương Trang'])
   })
   it('drops a model button on the Agoda front door even without a promise word: the front-door template is not a search grammar', () => {
     expect(validateModelCtaButtons([{ label: '🏨 Agoda - Phú Quốc', type: 'booking', url: 'https://www.agoda.com/vi-vn/', primary: false }], t)).toEqual([])
@@ -178,14 +179,14 @@ describe('a named merchant unmakes prose links to OTHER registry merchants (live
 
 describe('a REMOVED provider never returns through the model (cross-platform UAT, 15 Sep 2026)', () => {
   it('drops a model "📦 Tiki" button (Tiki is forbidden) — under a Shopee request only Shopee survives', () => {
-    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Tìm trên Shopee","type":"search","url":"https://shopee.vn/search?keyword=iphone"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=iphone"},{"label":"🛍️ Lazada","type":"search","url":"https://www.lazada.vn/catalog/?q=iphone"}]}[/CTA_BUTTONS]'
+    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Tìm trên Shopee","type":"website","url":"https://shopee.vn/iPhone-15-128GB-i.88201679.23456789"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=iphone"},{"label":"🛍️ Lazada","type":"search","url":"https://www.lazada.vn/catalog/?q=iphone"}]}[/CTA_BUTTONS]'
     const out = validateModelCtaBlock('Đây nhé.\n\n' + block, t, 'shopee')
     expect(out).toContain('Tìm trên Shopee')
     expect(out).not.toContain('Tiki')
     expect(out).not.toContain('Lazada')
   })
   it('drops Tiki even with NO named merchant (a general shopping turn)', () => {
-    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Shopee","type":"search","url":"https://shopee.vn/search?keyword=x"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=x"}]}[/CTA_BUTTONS]'
+    const block = '[CTA_BUTTONS]{"buttons":[{"label":"🛒 Shopee","type":"website","url":"https://shopee.vn/Tai-nghe-X-i.1.2"},{"label":"📦 Tiki","type":"search","url":"https://tiki.vn/search?q=x"}]}[/CTA_BUTTONS]'
     const out = validateModelCtaBlock('x\n\n' + block, t, null)
     expect(out).toContain('Shopee')
     expect(out).not.toContain('Tiki')
@@ -196,8 +197,13 @@ describe('a REMOVED provider never returns through the model (cross-platform UAT
   it('unlinks a prose link to Tiki', () => {
     expect(unlinkMislabelledMerchantLinks('Bạn có thể xem trên [Tiki](https://tiki.vn/dien-thoai) nữa.')).toBe('Bạn có thể xem trên Tiki nữa.')
   })
-  it('does not touch a legitimate registry merchant (Shopee)', () => {
-    expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=x' })).toBe(false)
+  it('does not touch a legitimate registry merchant PRODUCT page (Shopee); its search page is dropped since A3.3 (2026-09-20)', () => {
+    expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'website', url: 'https://shopee.vn/Tai-nghe-X-i.1.2' })).toBe(false)
+    expect(isMisleadingModelCta({ label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=x' })).toBe(true)
+    // Measured live on Android (Phase F turn A1): a GrabFood restaurants?search= button.
+    expect(isMisleadingModelCta({ label: '🛵 GrabFood - Nhà Hàng Ngon', type: 'website', url: 'https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0+H%C3%A0ng+Ngon' })).toBe(true)
+    // A dated coach ROUTE page is the route's own page, never a search.
+    expect(isMisleadingModelCta({ label: '🚌 Vexere', type: 'website', url: 'https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html?date=21-09-2026' })).toBe(false)
   })
 })
 

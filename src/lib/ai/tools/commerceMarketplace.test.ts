@@ -288,16 +288,18 @@ describe('§13 negative tests', () => {
     expect((e.commerceLinks ?? []).filter(c => c.kind !== 'SEARCH_HANDOFF').map(c => c.providerId)).toEqual(['shopee'])
   })
 
-  it('model-authored marketplace SEARCH buttons stay (downgraded to honest search labels); a bare merchant front door is dropped; a promise on a registry search page is RELABELLED (live UAT 14 Sep 2026), never dropped', () => {
+  // SUPERSEDED (A3.3, owner 2026-09-20): a merchant search page is never a button — deepest page or nothing.
+  // The 14 Sep 'relabelled, never dropped' treatment survives only for hosts outside the registry.
+  it('model-authored marketplace SEARCH buttons and front doors are dropped (A3.3); a product page stays, a promise on it keeps its label', () => {
     const kept = validateModelCtaButtons([
       { label: '🛒 Shopee', type: 'search', url: 'https://shopee.vn/search?keyword=iphone+16' },
       { label: '📦 Lazada', type: 'search', url: 'https://www.lazada.vn/catalog/?q=iphone+16' },
       { label: '🎵 TikTok Shop', type: 'website', url: 'https://www.tiktok.com/shop' },
       { label: '🛒 Mua ngay trên Shopee', type: 'purchase', url: 'https://shopee.vn/search?keyword=iphone+16' },
+      { label: '🛒 Mua ngay trên Shopee', type: 'purchase', url: 'https://shopee.vn/iPhone-16-128GB-i.88201679.23456789' },
     ], t)
-    expect(kept.map(b => b.url)).toEqual(['https://shopee.vn/search?keyword=iphone+16', 'https://www.lazada.vn/catalog/?q=iphone+16', 'https://shopee.vn/search?keyword=iphone+16'])
-    expect(kept[2]).toMatchObject({ type: 'search' })
-    expect(kept[2].label).not.toContain('Mua ngay')
+    expect(kept.map(b => b.url)).toEqual(['https://shopee.vn/iPhone-16-128GB-i.88201679.23456789'])
+    expect(kept[0].label).toContain('Mua ngay')
   })
 })
 

@@ -4,6 +4,7 @@ import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
 import { PROVIDER_REGISTRY, isRemovedMerchant } from '@/lib/ccp/registry'
 import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
+import { linkDepthClass } from '@/lib/commerce/outboundLink'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
@@ -95,6 +96,9 @@ const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.som
 const RESULTS_PAGE_PREFIXES = resultsPagePrefixes()
 const isRegistryResultsPage = (url: string) => RESULTS_PAGE_PREFIXES.some(p => url.startsWith(p))
 const isFlightResultsPage = (url: string) => /^https:\/\/(vn\.trip\.com\/flights\/|www\.traveloka\.com\/vi-vn\/flight\/)/i.test(url)
+/** A coach / rail ROUTE's dated fare list (Vexere route page, dsvn booking) — the route's own page, not a search (A3.3). */
+const isRouteResultsPage = (url: string) => /^https:\/\/(?:www\.)?vexere\.com\/vi-VN\/ve-xe-khach-tu-[a-z0-9-]+-di-[a-z0-9-]+-\d+t\d+\.html/i.test(url) || /^https:\/\/dsvn\.vn\/#\/|^https:\/\/dsvn\.vn\/[a-z-]+\?/i.test(url)
+// MERCHANT_BY_HOST (below) is a registry host → provider map; the depth rule reads it in isMisleadingModelCta.
 
 /**
  * CCP Phase 8 (owner-like UAT R1, P1-7 / P2-4): two model-authored buttons that no relabelling
@@ -132,9 +136,18 @@ export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
   // stays dropped, as measured in Phase 8.
   if (isFlightResultsPage(btn.url)) return false
   if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
-  // Any other registry results page (marketplace / OTA / event searches, routes) is honest as a
-  // search: relabelled by the downgrade, never dropped — the system may have handed the model
-  // that very URL (booking_links / event_links).
+  // A3.3 (owner, 2026-09-20 — supersedes the 14 Sep "relabelled, never dropped" rule): a merchant
+  // button lands on the DEEPEST page or not at all. A search / results page, a front door or a
+  // Google Shopping intermediary is dropped, on every client. Measured live on Android (Phase F,
+  // turn A1): "🛵 GrabFood - Nhà Hàng Ngon" → food.grab.com/…/restaurants?search=… A dated ROUTE
+  // fare list (flights above, coach / rail) is the route's own page and is not a search.
+  // A Maps button is a map, not a merchant handoff — never judged here.
+  if (btn.type === 'maps' || /(^|\.)maps\.google\.[a-z.]+$|^goo\.gl$|^maps\.app\.goo\.gl$/i.test(host) || /^https:\/\/(www\.)?google\.[a-z.]+\/maps/i.test(btn.url)) return false
+  const depth = linkDepthClass(btn.url, undefined, undefined, isRouteResultsPage(btn.url))
+  if (depth === 'intermediary' && /shopping|ibp=oshop|tbm=shop|\/search/i.test(btn.url)) return true
+  if ((depth === 'search' || depth === 'homepage') && (MERCHANT_BY_HOST.has(host) || CCP_MERCHANT_HOSTS.has(host))) return true
+  // A results page on a host that is not a registry merchant (a cinema chain's own showtime page)
+  // keeps the 14 Sep treatment: honest as a search, relabelled by the downgrade.
   if (isMarketplaceSearchLink(btn.url) || isRegistryResultsPage(btn.url)) return false
   if (!CCP_MERCHANT_HOSTS.has(host)) return false
   let path = '/'

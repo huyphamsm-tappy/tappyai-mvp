@@ -190,8 +190,10 @@ describe('E · activity_booking: Klook, never a hotel-OTA ticket CTA', () => {
     expect(isMisleadingModelCta(buttons[0])).toBe(true)
     expect(isMisleadingModelCta(buttons[1])).toBe(true)
     expect(validateModelCtaButtons(buttons, t).map(b => b.url)).toEqual([buttons[2].url])
-    // A hotel search on Booking.com on a HOTEL turn is still an honest "find rooms" button.
-    expect(isMisleadingModelCta({ label: '🏨 Đặt phòng trên Booking.com', type: 'booking', url: 'https://www.booking.com/searchresults.html?ss=Da+Nang' })).toBe(false)
+    // A3.3 (owner 2026-09-20): a Booking.com SEARCH results button is dropped too (deepest page or nothing);
+    // a hotel's own page on Booking.com stays.
+    expect(isMisleadingModelCta({ label: '🏨 Đặt phòng trên Booking.com', type: 'booking', url: 'https://www.booking.com/searchresults.html?ss=Da+Nang' })).toBe(true)
+    expect(isMisleadingModelCta({ label: '🏨 Đặt phòng trên Booking.com', type: 'booking', url: 'https://www.booking.com/hotel/vn/muong-thanh-luxury-da-nang.vi.html' })).toBe(false)
   })
 
   it('the seam discovers Klook by SUBJECT + city and attaches it as its own row — not as a link on an unrelated venue', async () => {
@@ -353,10 +355,12 @@ describe('I · no misleading CTA reaches the user', () => {
 
   it('a Ticketbox front door is dropped (CCP-owned since the Completion Pass); a promise on its search page is relabelled as a search; a plain search button stays', () => {
     expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/' }], t)).toEqual([])
-    const [relabelled] = validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/search?q=concert' }], t)
-    expect(relabelled).toMatchObject({ type: 'search', label: 'v3.action.ticketSearch:Ticketbox' })
-    const plain = { label: '🎫 Ticketbox', type: 'search', url: 'https://ticketbox.vn/search?q=concert' }
-    expect(validateModelCtaButtons([plain], t)).toEqual([plain])
+    // A3.3 (owner 2026-09-20) supersedes the relabel: a registry merchant's SEARCH page is dropped, promise or not;
+    // the event's own page stays.
+    expect(validateModelCtaButtons([{ label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/search?q=concert' }], t)).toEqual([])
+    expect(validateModelCtaButtons([{ label: '🎫 Ticketbox', type: 'search', url: 'https://ticketbox.vn/search?q=concert' }], t)).toEqual([])
+    const event = { label: '🎫 Mua vé', type: 'ticket', url: 'https://ticketbox.vn/chao-show2026-25472' }
+    expect(validateModelCtaButtons([event], t)).toEqual([event])
     // A system-handed fare list under a promise label is relabelled, never lost (live UAT: Traveloka round trip).
     const [fare] = validateModelCtaButtons([{ label: '✈️ Đặt vé Traveloka', type: 'booking', url: 'https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=20-10-2026.25-10-2026&ps=1.0.0&sc=ECONOMY' }], t)
     expect(fare).toMatchObject({ type: 'search', url: 'https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=20-10-2026.25-10-2026&ps=1.0.0&sc=ECONOMY' })
