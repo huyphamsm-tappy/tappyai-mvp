@@ -1,0 +1,10 @@
+review_likes                 A=2 B=2
+review_saves                 A=2 B=2
+review_comments              A=2 B=2
+review_shares                A=2 B=2
+review_interactions          A=0 B=0
+message_feedback             A=4 B=4
+user_preferences             A=1 B=1
+user_events                  A=2 B=2
+notifications                A=5 B=5
+chat_reads                   A=0 B=1

@@ -12,6 +12,9 @@ LLM calls used: 0 / 300 · est. cost: $0.00
 | STEP 0 · Playwright install | DONE | playwright@latest + chromium 153.0.8010.12 installed in scratchpad (exit 0). Launched against http://localhost:3101/: status 200, title "TappyAI – Trợ lý AI thuần Việt", 0 console errors, evidence/step0-home-3101.png |
 | STEP 0 · migrations → audit project | DONE | Object-existence scan of 86 files: only 20260913_plan_shares.sql MISSING → applied via scripts/audit/applyMigrationAudit.mjs (verify: table present, rls=true, 3 policies; evidence/migration-apply-plan_shares.txt). PARTIALs = policies dropped by later hardening migrations. add_profile_edit (profiles.bio) + add_music_attribution (music_tracks.license) never applied to the prod-exported schema, no code reads them → §3.11 P3 drift. |
 | STEP 1 ground truth | DONE | node v24.16.0, npm 11.13.0, next 14.2.35; merge-base(HEAD, origin/main=842379b prod) = 842379b; DELTA = 842379b..d96d06b = 378 commits, 2212 files. Dev server: `npx next dev -p 3101` (bg), Ready in 4.7s. |
-| STEP 2 inventory | NOT STARTED | |
-| 3.1 – 3.23 | NOT STARTED | |
+| STEP 2 inventory | DONE | docs/uat/inventory.md committed f107368 |
+| 3.1 secrets & supply chain | DONE | F-002 (P0 next RCE advisories), F-003, F-004, F-005, F-006; evidence/secret-scan-history-redacted.txt, npm-audit-prod.txt |
+| 3.2 seed users + data | DONE | A=uat2609_a@tappyai.com (registered via /register UI → 200, email-confirm ON on non-prod ⇒ confirmed via admin API), B=uat2609_b@ (signup hit Supabase 429 email rate limit ⇒ created via admin API), M=uat2609_merchant@ (admin API). Login via /login password form → /age-check (Playwright). DOB via PATCH /api/profile. Seed: ≥2 rows/user in conversations, favorites, price_watches, reviews, bookings, groups, plan_shares, review_likes/saves/comments/shares, message_feedback(4), chat_messages, user_events, notifications(5); 1-row tables: profiles, user_memory, user_preferences, user_demographics, notification_subscriptions, user_follows, chat_participants. 0 rows: group_members (creator not auto-added), review_interactions (body shape unknown). evidence/seed-*.txt/json |
+| 3.2 RLS matrix + IDOR | IN PROGRESS | |
+| 3.3 – 3.23 | NOT STARTED | |
 | STEP 4 report | NOT STARTED | |

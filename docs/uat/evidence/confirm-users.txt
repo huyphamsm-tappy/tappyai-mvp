@@ -1,0 +1,4 @@
+uat2609_a@tappyai.com 4d6429c1-8270-4fa6-b114-5a61238bc78a confirmed_at= set is_anonymous= false
+total auth.users: 4
+uat2609_b@tappyai.com 18bb5d88-1a3f-4e67-b370-6453e53222ab confirmed_at= set
+uat2609_merchant@tappyai.com c35fe627-ac44-4767-96b7-665494829015 confirmed_at= set
