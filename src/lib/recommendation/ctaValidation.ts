@@ -4,7 +4,9 @@ import type { ActionKind } from './actions'
 // The registry module only (providers + domain types): this file is client-bundled.
 import { PROVIDER_REGISTRY, isRemovedMerchant } from '@/lib/ccp/registry'
 import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
-import { linkDepthClass } from '@/lib/commerce/outboundLink'
+// The pure depth judgement, NOT @/lib/commerce/outboundLink: that module imports the CCP barrel
+// (node:crypto) and the KV counter, and a client import of it fails `next build`.
+import { linkDepthClass } from '@/lib/commerce/linkDepth'
 
 // ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
 //
