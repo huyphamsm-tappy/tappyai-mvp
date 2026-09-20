@@ -18,3 +18,271 @@
  ✓ Compiled /api/auth/anonymous in 160ms (721 modules)
  GET /api/auth/anonymous 405 in 215ms
  GET / 200 in 261ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 795ms (941 modules)
+ GET /_next/static/chunks/app/page.js 404 in 1009ms
+ GET /_next/static/chunks/app/page.js 404 in 32ms
+ GET /_next/static/chunks/app/page.js 404 in 67ms
+ ✓ Compiled /register in 410ms (937 modules)
+ GET /register 200 in 642ms
+ ✓ Compiled /api/track in 479ms (547 modules)
+ POST /api/track 200 in 1365ms
+ GET /register 200 in 211ms
+ GET /register 200 in 68ms
+ ✓ Compiled /api/profile in 178ms (561 modules)
+ PATCH /api/profile 401 in 240ms
+ GET /register 200 in 148ms
+ PATCH /api/profile 401 in 20ms
+ GET /register 200 in 58ms
+ PATCH /api/profile 401 in 27ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 824ms (1128 modules)
+ GET /login?email=1 200 in 1046ms
+ PATCH /api/profile 401 in 80ms
+ ✓ Compiled /api/track in 109ms (628 modules)
+ POST /api/track 200 in 683ms
+ GET /login?email=1 200 in 202ms
+ PATCH /api/profile 401 in 24ms
+ GET /login?email=1 200 in 41ms
+ PATCH /api/profile 401 in 25ms
+ POST /api/track 200 in 242ms
+ GET /login?email=1 200 in 50ms
+ PATCH /api/profile 401 in 23ms
+ GET /login 200 in 43ms
+ PATCH /api/profile 401 in 24ms
+ GET /login 200 in 83ms
+ PATCH /api/profile 401 in 20ms
+ ○ Compiling /api/notifications ...
+ ✓ Compiled /age-check in 2s (1401 modules)
+ GET /api/notifications 200 in 2850ms
+ GET /api/profile 200 in 325ms
+ GET /api/profile 200 in 183ms
+ GET /login 200 in 237ms
+ PATCH /api/profile 401 in 22ms
+ GET /api/notifications 200 in 515ms
+ GET /api/profile 200 in 246ms
+ GET /api/profile 200 in 157ms
+ GET /login 200 in 73ms
+ PATCH /api/profile 401 in 19ms
+ GET /api/notifications 200 in 402ms
+ GET /api/profile 200 in 242ms
+ GET /api/profile 200 in 160ms
+ ✓ Compiled /api/age-declaration in 173ms (640 modules)
+ POST /api/age-declaration 200 in 236ms
+ POST /api/age-declaration 200 in 20ms
+ POST /api/age-declaration 200 in 16ms
+ POST /api/age-declaration 200 in 16ms
+ POST /api/age-declaration 200 in 19ms
+ GET /api/profile 200 in 404ms
+ POST /api/age-declaration 200 in 16ms
+ GET /api/profile 200 in 373ms
+ POST /api/age-declaration 200 in 15ms
+ POST /api/age-declaration 200 in 16ms
+ GET /api/profile 200 in 149ms
+ PATCH /api/profile 200 in 450ms
+ GET /api/profile 200 in 202ms
+ PATCH /api/profile 200 in 225ms
+ GET /api/profile 200 in 177ms
+ PATCH /api/profile 200 in 230ms
+ GET /api/profile 200 in 172ms
+ PATCH /api/profile 200 in 196ms
+ GET /api/profile 200 in 147ms
+ GET /api/profile 200 in 437ms
+ ○ Compiling /api/onboarding ...
+ ✓ Compiled /api/onboarding in 513ms (690 modules)
+ POST /api/onboarding 200 in 1470ms
+ ✓ Compiled /api/preferences in 134ms (695 modules)
+ POST /api/preferences 400 in 229ms
+ ✓ Compiled /api/memory in 144ms (697 modules)
+ PATCH /api/memory 200 in 337ms
+ ✓ Compiled /api/conversations in 150ms (700 modules)
+ POST /api/conversations 200 in 407ms
+ POST /api/conversations 200 in 193ms
+ ✓ Compiled /api/favorites in 150ms (702 modules)
+ POST /api/favorites 200 in 326ms
+ POST /api/favorites 200 in 130ms
+ ✓ Compiled /api/price-watch in 250ms (707 modules)
+ POST /api/price-watch 200 in 526ms
+ POST /api/price-watch 200 in 372ms
+ ✓ Compiled /api/reviews in 453ms (750 modules)
+ POST /api/reviews 200 in 1045ms
+ POST /api/reviews 200 in 394ms
+ ✓ Compiled /api/bookings in 153ms (752 modules)
+ POST /api/bookings 200 in 309ms
+ POST /api/bookings 200 in 133ms
+ ✓ Compiled /api/group in 152ms (754 modules)
+ POST /api/group 200 in 324ms
+ POST /api/group 200 in 138ms
+ ✓ Compiled /api/plans/share in 192ms (761 modules)
+ POST /api/plans/share 200 in 435ms
+ POST /api/plans/share 200 in 213ms
+ ✓ Compiled /api/track in 144ms (765 modules)
+ POST /api/track 200 in 245ms
+ ✓ Compiled /api/notifications/subscribe in 160ms (767 modules)
+ POST /api/notifications/subscribe 200 in 312ms
+ POST /api/notifications/subscribe 200 in 129ms
+ ✓ Compiled /api/users/[id]/follow in 495ms (833 modules)
+ POST /api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/follow 200 in 1332ms
+ POST /api/onboarding 200 in 197ms
+ POST /api/preferences 400 in 79ms
+ PATCH /api/memory 200 in 130ms
+ POST /api/conversations 200 in 191ms
+ POST /api/conversations 200 in 186ms
+ POST /api/favorites 200 in 126ms
+ POST /api/favorites 200 in 124ms
+ POST /api/price-watch 200 in 253ms
+ POST /api/price-watch 200 in 448ms
+ POST /api/reviews 200 in 521ms
+ POST /api/reviews 200 in 363ms
+ POST /api/bookings 200 in 128ms
+ POST /api/bookings 200 in 135ms
+ POST /api/group 200 in 149ms
+ POST /api/group 200 in 161ms
+ POST /api/plans/share 200 in 217ms
+ POST /api/plans/share 200 in 197ms
+ POST /api/track 200 in 76ms
+ POST /api/notifications/subscribe 200 in 143ms
+ POST /api/notifications/subscribe 200 in 138ms
+ POST /api/users/4d6429c1-8270-4fa6-b114-5a61238bc78a/follow 200 in 292ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/messaging/threads in 201ms (836 modules)
+ POST /api/messaging/threads 200 in 393ms
+ ✓ Compiled /api/messaging/threads/[id]/messages in 203ms (839 modules)
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 780ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 195ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 216ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 197ms
+ ✓ Compiled /api/messaging/threads/[id]/read in 204ms (841 modules)
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read 200 in 679ms
+ ✓ Compiled /api/message-feedback in 188ms (843 modules)
+ POST /api/message-feedback 400 in 280ms
+ POST /api/message-feedback 400 in 79ms
+ POST /api/message-feedback 400 in 74ms
+ POST /api/message-feedback 400 in 72ms
+ POST /api/preferences 200 in 338ms
+ POST /api/message-feedback 200 in 151ms
+ POST /api/message-feedback 200 in 139ms
+ POST /api/message-feedback 200 in 140ms
+ POST /api/message-feedback 200 in 119ms
+ ✓ Compiled /api/reviews/[id]/like in 456ms (706 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/like 200 in 1144ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/reviews/[id]/save in 174ms (708 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/save 200 in 771ms
+ ✓ Compiled /api/reviews/[id]/comments in 280ms (713 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/comments 200 in 975ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/reviews/[id]/share in 146ms (715 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share 200 in 783ms
+ ✓ Compiled /api/reviews/[id]/interact in 148ms (717 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/interact 200 in 541ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/like 200 in 263ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/save 200 in 192ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/comments 200 in 435ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/share 200 in 279ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/interact 200 in 72ms
+ ✓ Compiled /api/track in 243ms (720 modules)
+ POST /api/track 200 in 399ms
+ POST /api/preferences 200 in 119ms
+ POST /api/message-feedback 200 in 116ms
+ POST /api/message-feedback 200 in 115ms
+ POST /api/message-feedback 200 in 118ms
+ POST /api/message-feedback 200 in 117ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/like 200 in 237ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/save 200 in 210ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/comments 200 in 367ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/share 200 in 292ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/interact 200 in 74ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/like 200 in 417ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/save 200 in 228ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/comments 200 in 422ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/share 200 in 344ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/interact 200 in 101ms
+ POST /api/track 200 in 161ms

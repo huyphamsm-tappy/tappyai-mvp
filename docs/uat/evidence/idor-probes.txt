@@ -1,0 +1,91 @@
+=== IDOR as A against B-owned objects ===
+A    GET    /api/conversations                                                     200 [{"id":"f53ddf68-5169-42ac-b511-5143df5feed9","title":"uat2609_A_conv2","category":"food","updated_at":"2026-0
+A    GET    /api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61             200 [{"id":"f53ddf68-5169-42ac-b511-5143df5feed9","title":"uat2609_A_conv2","category":"food","updated_at":"2026-0
+A    PUT    /api/conversations                                                     500 {"error":"server_error","message":"Lỗi server"}
+A    DELETE /api/conversations                                                     200 {"ok":true}
+A    DELETE /api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61             200 {"ok":true}
+A    DELETE /api/price-watch                                                       404 {"error":"not_found","message":"Không tìm thấy"}
+A    DELETE /api/favorites                                                         400 {"error":"missing_fields","message":"Thiếu thông tin bắt buộc"}
+A    PATCH  /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c                      404 {"error":"not_found","message":"Không tìm thấy"}
+A    DELETE /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c                      404 {"error":"not_found","message":"Không tìm thấy"}
+A    GET    /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c                      200 {"id":"f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c","user_id":"18bb5d88-1a3f-4e67-b370-6453e53222ab","place_name":"ua
+A    GET    /api/bookings                                                          200 {"bookings":[{"id":"6122093e-4251-44e9-bd34-b6ce27fe8473","user_id":"4d6429c1-8270-4fa6-b114-5a61238bc78a","se
+A    GET    /api/price-watch                                                       200 {"watches":[{"id":"49b23e09-f71d-4a6e-8cd0-f273c5fbd1dc","product_name":"uat2609_A_product2","target_price":20
+A    GET    /api/memory                                                            200 {"memory":{"location_base":"uat2609_A_Q1","discovery_city":"Hồ Chí Minh","preferences":{},"budget":{},"history
+A    GET    /api/notifications                                                     200 {"notifications":[{"id":"ec4c9dae-8a5e-4394-9708-f13e66915894","type":"comment","category":"social","title":"u
+A    GET    /api/reviews/mine                                                      200 {"reviews":[{"id":"8906525f-0083-4b3c-9429-f12e8ad6f8cf","user_id":"4d6429c1-8270-4fa6-b114-5a61238bc78a","pla
+A    GET    /api/reviews/saved                                                     200 {"reviews":[{"id":"467c47a0-62b0-43cb-9280-cf14639b6d6a","place_name":"uat2609 B Quán 2","body":"uat2609 revie
+A    GET    /api/reviews/shared                                                    200 {"reviews":[{"id":"467c47a0-62b0-43cb-9280-cf14639b6d6a","place_name":"uat2609 B Quán 2","body":"uat2609 revie
+A    GET    /api/reviews/liked                                                     200 {"reviews":[{"id":"467c47a0-62b0-43cb-9280-cf14639b6d6a","place_name":"uat2609 B Quán 2","body":"uat2609 revie
+A    GET    /api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab                        200 {"id":"18bb5d88-1a3f-4e67-b370-6453e53222ab","full_name":"uat2609_b","avatar_url":null,"follower_count":1,"fol
+A    POST   /api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/join                   400 {"error":"invalid_input","message":"Dữ liệu không hợp lệ"}
+A    POST   /api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/suggest                403 {"error":"owner_only","message":"Chỉ trưởng nhóm mới có thể gợi ý"}
+=== messaging: M (not a participant) vs the A-B thread ===
+M    GET    /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages   404 {"error":"not_found","message":"Không tìm thấy"}
+M    POST   /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages   404 {"error":"not_found","message":"Không tìm thấy"}
+M    POST   /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read       404 {"error":"not_found","message":"Không tìm thấy"}
+M    GET    /api/messaging/threads                                                 200 {"threads":[]}
+M    POST   /api/messaging/threads                                                 400 {"error":"invalid_input","message":"Dữ liệu không hợp lệ"}
+=== plan share: public read of B plan (capability URL, by design) + A cannot enumerate ===
+anon GET    /plan/hovkM05pMlOG                                                     200 <!DOCTYPE html><html lang="vi"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width,
+anon GET    /plan/AAAAAAAAAAAA                                                     404 <!DOCTYPE html><html id="__next_error__"><head><meta charSet="utf-8"/><meta name="viewport" content="width=dev
+=== role enforcement: plain user A / M hitting admin endpoints ===
+A    GET    /api/admin/users                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.list.read"}}
+A    GET    /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab                  403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.detail.read"}}
+A    POST   /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban              403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.account.ban"}}
+A    GET    /api/admin/audit                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: audit.log.read"}}
+A    GET    /api/admin/settings                                                    403 {"error":{"code":"FORBIDDEN","message":"Missing permission: settings.config.read"}}
+A    GET    /api/admin/deals                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: commerce.deals.read"}}
+A    POST   /api/admin/deals                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: commerce.deals.create"}}
+A    POST   /api/admin/notifications/broadcast                                     403 {"error":{"code":"FORBIDDEN","message":"Missing permission: notifications.send.broadcast"}}
+A    GET    /api/admin/security/sessions                                           403 {"error":{"code":"FORBIDDEN","message":"Missing permission: security.sessions.read"}}
+A    POST   /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth    403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.date_of_birth.correct"}}
+A    GET    /api/admin/moderation                                                  403 {"error":{"code":"FORBIDDEN","message":"Missing permission: moderation.queue.read"}}
+A    GET    /api/admin/marketing/campaigns                                         403 {"error":{"code":"FORBIDDEN","message":"Missing permission: marketing.campaigns.read"}}
+M    GET    /api/admin/users                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.list.read"}}
+M    GET    /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab                  403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.detail.read"}}
+M    POST   /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban              403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.account.ban"}}
+M    GET    /api/admin/audit                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: audit.log.read"}}
+M    GET    /api/admin/settings                                                    403 {"error":{"code":"FORBIDDEN","message":"Missing permission: settings.config.read"}}
+M    GET    /api/admin/deals                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: commerce.deals.read"}}
+M    POST   /api/admin/deals                                                       403 {"error":{"code":"FORBIDDEN","message":"Missing permission: commerce.deals.create"}}
+M    POST   /api/admin/notifications/broadcast                                     403 {"error":{"code":"FORBIDDEN","message":"Missing permission: notifications.send.broadcast"}}
+M    GET    /api/admin/security/sessions                                           403 {"error":{"code":"FORBIDDEN","message":"Missing permission: security.sessions.read"}}
+M    POST   /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth    403 {"error":{"code":"FORBIDDEN","message":"Missing permission: users.date_of_birth.correct"}}
+M    GET    /api/admin/moderation                                                  403 {"error":{"code":"FORBIDDEN","message":"Missing permission: moderation.queue.read"}}
+M    GET    /api/admin/marketing/campaigns                                         403 {"error":{"code":"FORBIDDEN","message":"Missing permission: marketing.campaigns.read"}}
+=== anon hitting user endpoints ===
+anon GET    /api/conversations                                                     401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/favorites                                                         401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/notifications                                                     200 {"notifications":[],"unread_count":0}
+anon GET    /api/memory                                                            200 {"memory":null}
+anon GET    /api/profile                                                           401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/price-watch                                                       401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/bookings                                                          401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/reviews/mine                                                      401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/messaging/threads                                                 401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/social/connections                                                401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon GET    /api/admin/users                                                       401 {"error":{"code":"UNAUTHORIZED","message":"Authentication required"}}
+anon POST   /api/plans/share                                                       401 {"error":"unauthorized","message":"Cần đăng nhập"}
+anon POST   /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share                401 {"error":"unauthorized","message":"Cần đăng nhập"}
+=== cron / internal without secret ===
+anon GET    /api/cron/feed-ingest                                                  401 {"error":"Unauthorized"}
+anon GET    /api/cron/price-check                                                  401 {"error":"Unauthorized"}
+anon GET    /api/cron/outbox-drain                                                 401 {"error":"Unauthorized"}
+anon GET    /api/cron/analytics-snapshot                                           401 {"error":"Unauthorized"}
+anon GET    /api/cron/deal-notifications                                           401 {"error":"Unauthorized"}
+anon GET    /api/cron/feed-ingest                                                  401 {"error":"Unauthorized"}
+A    GET    /api/cron/feed-ingest                                                  401 {"error":"Unauthorized"}
+=== debug / test endpoints reachable? ===
+anon GET    /api/debug-places?q=uat2609                                            200 {"report":"PRODUCTION RESPONSE VERIFICATION","timestamp":"2026-09-20T12:03:41.945Z","env":{"GOOGLE_PLACES_API_
+anon GET    /api/test-photos                                                       200 {"hasSerperKey":true,"directSerper":[{"name":"Atispho - Pho Atiso","ms":1294,"status":200,"count":3,"url":"htt
+anon GET    /api/health                                                            200 {"status":"ok"}
+anon GET    /api/version                                                           200 {"v":"dev"}
+anon GET    /api/admin/media/wif-check                                             401 {"error":{"code":"UNAUTHORIZED","message":"Authentication required"}}
+=== anonymous Supabase session (is_anonymous JWT) ===
+anon POST   /api/auth/anonymous                                                    503 {"error":"anonymous_unavailable"}
+=== profiles: which columns can anon / A read on B? ===
+anon profiles row keys: id,username,full_name,avatar_url,created_at,updated_at,onboarded,follower_count,following_count,language | email present: false
+anon select email: 42703 column profiles.email does not exist
+A select B email: 42703 column profiles.email does not exist
+anon reviews row keys: id,user_id,place_id,place_name,place_address,rating,body,is_hidden,created_at,photos,is_verified,like_count,comment_count,content_type,media_url,thumbnail,hashtags,watch_time_avg,completion_rate,save_count,source_type,source_url,view_count,music,publication_state,safety_state,evaluated_version,evaluated_at

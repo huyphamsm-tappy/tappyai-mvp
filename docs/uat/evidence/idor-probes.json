@@ -1,0 +1,548 @@
+[
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "[{\"id\":\"f53ddf68-5169-42ac-b511-5143df5feed9\",\"title\":\"uat2609_A_conv2\",\"category\":\"food\",\"updated_at\":\"2026-09-20T11:57:30.326289+00:00\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 A hello 2\"},{\"ro"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61",
+  "status": 200,
+  "resp": "[{\"id\":\"f53ddf68-5169-42ac-b511-5143df5feed9\",\"title\":\"uat2609_A_conv2\",\"category\":\"food\",\"updated_at\":\"2026-09-20T11:57:30.326289+00:00\",\"messages\":[{\"role\":\"user\",\"content\":\"uat2609 A hello 2\"},{\"ro"
+ },
+ {
+  "who": "A",
+  "method": "PUT",
+  "path": "/api/conversations",
+  "status": 500,
+  "resp": "{\"error\":\"server_error\",\"message\":\"Lỗi server\"}"
+ },
+ {
+  "who": "A",
+  "method": "DELETE",
+  "path": "/api/conversations",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "DELETE",
+  "path": "/api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "DELETE",
+  "path": "/api/price-watch",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "A",
+  "method": "DELETE",
+  "path": "/api/favorites",
+  "status": 400,
+  "resp": "{\"error\":\"missing_fields\",\"message\":\"Thiếu thông tin bắt buộc\"}"
+ },
+ {
+  "who": "A",
+  "method": "PATCH",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "A",
+  "method": "DELETE",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c",
+  "status": 200,
+  "resp": "{\"id\":\"f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c\",\"user_id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"place_name\":\"uat2609 B Quán 1\",\"place_address\":\"Q1, HCM\",\"rating\":4,\"body\":\"uat2609 review B #1 — ngon\",\""
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/bookings",
+  "status": 200,
+  "resp": "{\"bookings\":[{\"id\":\"6122093e-4251-44e9-bd34-b6ce27fe8473\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"service_id\":\"uat2609_svc2\",\"service_name\":\"uat2609 A spa 2\",\"service_type\":\"spa\",\"date\":\"202"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/price-watch",
+  "status": 200,
+  "resp": "{\"watches\":[{\"id\":\"49b23e09-f71d-4a6e-8cd0-f273c5fbd1dc\",\"product_name\":\"uat2609_A_product2\",\"target_price\":200000,\"current_price\":null,\"status\":\"active\",\"last_checked\":null,\"notified_at\":null,\"create"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/memory",
+  "status": 200,
+  "resp": "{\"memory\":{\"location_base\":\"uat2609_A_Q1\",\"discovery_city\":\"Hồ Chí Minh\",\"preferences\":{},\"budget\":{},\"history\":[],\"companions\":\"uat2609 solo\",\"timing\":\"uat2609 evening\",\"personality\":null,\"updated_at"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/notifications",
+  "status": 200,
+  "resp": "{\"notifications\":[{\"id\":\"ec4c9dae-8a5e-4394-9708-f13e66915894\",\"type\":\"comment\",\"category\":\"social\",\"title\":\"uat2609_b binh luan review cua ban\",\"body\":\"\\\"uat2609 comment by B on A\\\"\",\"actor\":{\"id\":\"1"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/reviews/mine",
+  "status": 200,
+  "resp": "{\"reviews\":[{\"id\":\"8906525f-0083-4b3c-9429-f12e8ad6f8cf\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"place_id\":\"uat2609_A_place2\",\"place_name\":\"uat2609 A Quán 2\",\"place_address\":\"Q1, HCM\",\"ratin"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/reviews/saved",
+  "status": 200,
+  "resp": "{\"reviews\":[{\"id\":\"467c47a0-62b0-43cb-9280-cf14639b6d6a\",\"place_name\":\"uat2609 B Quán 2\",\"body\":\"uat2609 review B #2 — ngon\",\"photos\":[],\"thumbnail\":null,\"content_type\":\"photo\",\"created_at\":\"2026-09-2"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/reviews/shared",
+  "status": 200,
+  "resp": "{\"reviews\":[{\"id\":\"467c47a0-62b0-43cb-9280-cf14639b6d6a\",\"place_name\":\"uat2609 B Quán 2\",\"body\":\"uat2609 review B #2 — ngon\",\"photos\":[],\"thumbnail\":null,\"content_type\":\"photo\",\"created_at\":\"2026-09-2"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/reviews/liked",
+  "status": 200,
+  "resp": "{\"reviews\":[{\"id\":\"467c47a0-62b0-43cb-9280-cf14639b6d6a\",\"place_name\":\"uat2609 B Quán 2\",\"body\":\"uat2609 review B #2 — ngon\",\"photos\":[],\"thumbnail\":null,\"content_type\":\"photo\",\"created_at\":\"2026-09-2"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab",
+  "status": 200,
+  "resp": "{\"id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"full_name\":\"uat2609_b\",\"avatar_url\":null,\"follower_count\":1,\"following_count\":1,\"review_count\":2,\"is_following\":true,\"is_self\":false}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/join",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/suggest",
+  "status": 403,
+  "resp": "{\"error\":\"owner_only\",\"message\":\"Chỉ trưởng nhóm mới có thể gợi ý\"}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read",
+  "status": 404,
+  "resp": "{\"error\":\"not_found\",\"message\":\"Không tìm thấy\"}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/messaging/threads",
+  "status": 200,
+  "resp": "{\"threads\":[]}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/messaging/threads",
+  "status": 400,
+  "resp": "{\"error\":\"invalid_input\",\"message\":\"Dữ liệu không hợp lệ\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/plan/hovkM05pMlOG",
+  "status": 200,
+  "resp": "<!DOCTYPE html><html lang=\"vi\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\"/><link rel=\"pre"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/plan/AAAAAAAAAAAA",
+  "status": 404,
+  "resp": "<!DOCTYPE html><html id=\"__next_error__\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\"/><lin"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/users",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.list.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.detail.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.account.ban\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/audit",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: audit.log.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/settings",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: settings.config.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/deals",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: commerce.deals.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/admin/deals",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: commerce.deals.create\"}}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/admin/notifications/broadcast",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: notifications.send.broadcast\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/security/sessions",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: security.sessions.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.date_of_birth.correct\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/moderation",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: moderation.queue.read\"}}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/admin/marketing/campaigns",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: marketing.campaigns.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/users",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.list.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.detail.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.account.ban\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/audit",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: audit.log.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/settings",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: settings.config.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/deals",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: commerce.deals.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/admin/deals",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: commerce.deals.create\"}}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/admin/notifications/broadcast",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: notifications.send.broadcast\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/security/sessions",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: security.sessions.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "POST",
+  "path": "/api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: users.date_of_birth.correct\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/moderation",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: moderation.queue.read\"}}"
+ },
+ {
+  "who": "M",
+  "method": "GET",
+  "path": "/api/admin/marketing/campaigns",
+  "status": 403,
+  "resp": "{\"error\":{\"code\":\"FORBIDDEN\",\"message\":\"Missing permission: marketing.campaigns.read\"}}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/conversations",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/favorites",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/notifications",
+  "status": 200,
+  "resp": "{\"notifications\":[],\"unread_count\":0}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/memory",
+  "status": 200,
+  "resp": "{\"memory\":null}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/profile",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/price-watch",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/bookings",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/reviews/mine",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/messaging/threads",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/social/connections",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/admin/users",
+  "status": 401,
+  "resp": "{\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"Authentication required\"}}"
+ },
+ {
+  "who": "anon",
+  "method": "POST",
+  "path": "/api/plans/share",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share",
+  "status": 401,
+  "resp": "{\"error\":\"unauthorized\",\"message\":\"Cần đăng nhập\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/feed-ingest",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/price-check",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/outbox-drain",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/analytics-snapshot",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/deal-notifications",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/cron/feed-ingest",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "A",
+  "method": "GET",
+  "path": "/api/cron/feed-ingest",
+  "status": 401,
+  "resp": "{\"error\":\"Unauthorized\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/debug-places?q=uat2609",
+  "status": 200,
+  "resp": "{\"report\":\"PRODUCTION RESPONSE VERIFICATION\",\"timestamp\":\"2026-09-20T12:03:41.945Z\",\"env\":{\"GOOGLE_PLACES_API_KEY\":\"SET\",\"SERPER_API_KEY\":\"SET\"},\"note_on_images\":\"Google CDN (lh3.googleusercontent.com"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/test-photos",
+  "status": 200,
+  "resp": "{\"hasSerperKey\":true,\"directSerper\":[{\"name\":\"Atispho - Pho Atiso\",\"ms\":1294,\"status\":200,\"count\":3,\"url\":\"https://phoatisochinhgoc.com/thumbs/1200x555x1/upload/photo/\"},{\"name\":\"Hai San Hoang Gia qua"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/health",
+  "status": 200,
+  "resp": "{\"status\":\"ok\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/version",
+  "status": 200,
+  "resp": "{\"v\":\"dev\"}"
+ },
+ {
+  "who": "anon",
+  "method": "GET",
+  "path": "/api/admin/media/wif-check",
+  "status": 401,
+  "resp": "{\"error\":{\"code\":\"UNAUTHORIZED\",\"message\":\"Authentication required\"}}"
+ },
+ {
+  "who": "anon",
+  "method": "POST",
+  "path": "/api/auth/anonymous",
+  "status": 503,
+  "resp": "{\"error\":\"anonymous_unavailable\"}"
+ }
+]
