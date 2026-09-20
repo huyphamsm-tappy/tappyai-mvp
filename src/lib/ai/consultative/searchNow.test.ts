@@ -93,7 +93,7 @@ describe('Phase D — entertainment venue kinds name their own call', () => {
   it('a cinema kind is a cinema search; karaoke / water park / aquarium are attraction searches of that kind', () => {
     expect(derive('rạp chiếu phim nào gần đây?')).toMatchObject({ type: 'cinema', query: 'rạp chiếu phim' })
     expect(derive('karaoke gần đây cho 10 người')).toMatchObject({ type: 'attraction', query: expect.stringContaining('quán karaoke') })
-    expect(derive('công viên nước nào gần Sài Gòn cho trẻ em?')).toMatchObject({ type: 'attraction', query: expect.stringContaining('công viên nước') })
+    expect(derive('công viên nước nào gần Sài Gòn cho trẻ em?')).toEqual({ type: 'attraction', query: 'công viên nước', exact: false }) // no 'có khu trẻ em' — measured run 25
     expect(derive('thủy cung ở đâu gần đây?')).toMatchObject({ type: 'attraction', query: expect.stringContaining('thủy cung') })
   })
 

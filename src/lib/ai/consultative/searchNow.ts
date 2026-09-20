@@ -130,6 +130,10 @@ export function deriveSearchNow(input: {
   const vague = !!input.afterClarify || (situation.assumptions.length > 0 && situation.confidence < 0.5 && input.text.trim().length <= VAGUE_MAX_CHARS)
   const hard = situation.hard.map(h => HARD_QUERY[h]).filter((x): x is string => !!x)
   const withHard = (q: string) => [q, ...hard].join(' ')
+  // Phase D (measured live run 25): a family venue kind is already for children — "công viên nước có khu
+  // trẻ em" pulled hot-spring play areas ahead of the water parks. The kids constraint names no query
+  // word for these kinds; the other hard constraints (parking, late_open…) still do.
+  const withHardFamily = (q: string) => [q, ...situation.hard.filter(h => h !== 'kids').map(h => HARD_QUERY[h]).filter((x): x is string => !!x)].join(' ')
   // A café reads as food, a bar as food or entertainment — the kind names the call either way.
   if (domain === 'food' || domain === 'entertainment') {
     const kindText = normalizeVN((input.consultationText ?? input.text).toLowerCase())
@@ -137,9 +141,9 @@ export function deriveSearchNow(input: {
     if (BAR_RE.test(kindText)) return { query: withHard('quán bar'), type: 'bar', exact: vague }
     if (CINEMA_RE.test(kindText)) return { query: withHard('rạp chiếu phim'), type: 'cinema', exact: vague }
     if (KARAOKE_RE.test(kindText)) return { query: withHard('quán karaoke'), type: 'attraction', exact: vague }
-    if (WATER_PARK_RE.test(kindText)) return { query: withHard('công viên nước'), type: 'attraction', exact: vague }
-    if (AQUARIUM_RE.test(kindText)) return { query: withHard('thủy cung'), type: 'attraction', exact: vague }
-    if (PLAY_RE.test(kindText)) return { query: withHard('khu vui chơi giải trí'), type: 'attraction', exact: vague }
+    if (WATER_PARK_RE.test(kindText)) return { query: withHardFamily('công viên nước'), type: 'attraction', exact: vague }
+    if (AQUARIUM_RE.test(kindText)) return { query: withHardFamily('thủy cung'), type: 'attraction', exact: vague }
+    if (PLAY_RE.test(kindText)) return { query: withHardFamily('khu vui chơi giải trí'), type: 'attraction', exact: vague }
   }
   if (domain === 'food') {
     const base = frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : situation.time === 'tonight' ? 'quán ăn tối ngon' : 'quán ăn ngon'
