@@ -86,10 +86,9 @@ describe('every social mutation route is behind the boundary', () => {
     'src/app/api/group/route.ts',
     'src/app/api/group/[id]/join/route.ts',
     'src/app/api/group/[id]/suggest/route.ts',
-    'src/app/api/music/tracks/route.ts',
-    'src/app/api/music/tracks/[id]/report/route.ts',
-    'src/app/api/sound/[trackId]/follow/route.ts',
-    'src/app/api/sound/[trackId]/save/route.ts',
+    // music/tracks, music/tracks/[id]/report, sound/[trackId]/follow and sound/[trackId]/save were
+    // the music-reuse mutation routes; they now answer 410 Gone (F-024) and hold no user data, so
+    // they are no longer part of the social-write boundary.
     'src/app/api/reviews/upload/route.ts',
   ]
 

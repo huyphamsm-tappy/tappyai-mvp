@@ -6,7 +6,8 @@ import { decidePublication } from '@/lib/safety/gate/publishDecision'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
-import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
+import { recordUsage, createOriginalSound } from '@/modules/music/server'
+import { gone } from '@/lib/http/gone'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
 import { searchParam } from '@/lib/http/searchParams'
@@ -99,6 +100,9 @@ export async function POST(req: NextRequest) {
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
   let music: ReviewMusic | null
   let videoDuration = 0
+  // F-024: "use this sound" is removed — a new clip may not borrow a sound from another clip or the
+  // library. A borrowed attachment in the body is refused below; a clip's OWN audio is unaffected.
+  let musicAttachAttempted = false
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -115,16 +119,9 @@ export async function POST(req: NextRequest) {
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
     videoDuration = Number(b.duration) || 0
     music = null
-    if (b.music) {
-      if (b.music.version !== MUSIC_PAYLOAD_VERSION) throw new Error('unsupported music version')
-      // createSelection validates shape (trackId non-empty, startSec/volume in range)
-      // and throws on invalid input — reuses the Music Module's own public validator
-      // rather than re-implementing the checks here.
-      const selection = createSelection(String(b.music.trackId), Number(b.music.startSec), Number(b.music.volume))
-      // A track the user picked from another clip / the library → 'attached':
-      // the feed mutes this clip's video and plays the borrowed sound over it.
-      music = { version: MUSIC_PAYLOAD_VERSION, ...selection, origin: 'attached' }
-    }
+    // A borrowed sound ("use this sound") is no longer accepted (F-024). The attempt is recorded and
+    // refused after the body parses; nothing is attached, so no clip can take another clip's audio.
+    if (b.music) musicAttachAttempted = true
     if (!placeId || !placeName) throw new Error('missing fields')
     if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
@@ -151,11 +148,10 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  if (music) {
-    const track = await getTrack(music.trackId)
-    if (!track) {
-      return NextResponse.json({ error: 'track_gone', message: serverMessage('music.trackGone', requestLocale(req)) }, { status: 400 })
-    }
+  // F-024: refuse a borrowed-sound attachment. The reuse path is withdrawn; the endpoint no longer
+  // enables one user to take audio from another user's clip.
+  if (musicAttachAttempted) {
+    return gone('music-reuse:attach-sound')
   }
 
   // Check if user has a past booking here → verified badge

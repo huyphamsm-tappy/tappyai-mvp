@@ -1,13 +1,7 @@
-import { NextResponse } from 'next/server'
-import { getCategories } from '@/modules/music/services/musicService'
+// F-024 — music reuse removed. This endpoint powered the "use this sound" path (browse a
+// sound, save/follow it, upload a reusable track, or attach one to a clip). The whole path is
+// withdrawn; every method answers 410 Gone. A clip still plays its OWN audio, which never used
+// this route. Deletion of the already-collected music rows is deferred to the owner.
+import { gone } from '@/lib/http/gone'
 
-// Categories are curated DATA seeded independently of deploys, so this param-less
-// route must not be statically cached at build time (that would freeze whatever was
-// in the DB when `next build` ran, e.g. an empty catalog). Serve it fresh.
-export const dynamic = 'force-dynamic'
-
-// GET /api/music/categories
-export async function GET() {
-  const categories = await getCategories()
-  return NextResponse.json({ categories })
-}
+export function GET() { return gone('music-reuse:categories') }
