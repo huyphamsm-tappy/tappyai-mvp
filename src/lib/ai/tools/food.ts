@@ -710,6 +710,12 @@ async function searchPlacesUncached(
     type: 'tappyai_tool_called', tool: 'searchPlaces', step: 'fn_entry', hasKey: !!key, query, location, placeType: type,
     // Operational only — a city name we resolved, never user text.
     destination: destination?.query ?? null, remoteDestination,
+    // A5 (2026-09-20): the GPS the search is centred on, to TWO decimals (≈1 km — a district, never
+    // a doorstep), and whether the search actually centred on it (`centeredOnUser`, the same rule
+    // the provider applies: a bias with no remote destination). The UAT that found the emulator
+    // in Mountain View needed exactly this line and had to read the provider debug for it.
+    gps: locationBias ? { lat: Math.round(locationBias.lat * 100) / 100, lng: Math.round(locationBias.lng * 100) / 100 } : null,
+    centeredOnUser: !!locationBias && !remoteDestination,
   }))
   let result: unknown = null
   /**
