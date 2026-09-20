@@ -39,6 +39,11 @@ const MESSAGES = {
     vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay (tính chung mọi tính năng). Hẹn gặp lại bạn vào ngày mai nhé!',
     en: "You've used all {n} AI questions for today (across every feature). See you again tomorrow!",
   },
+  // A2 (2026-09-20): a Pro account's daily ceiling — far above real use; a graceful sentence, never a wall.
+  'chat.proDailyLimit': {
+    vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
+  },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
     en: 'That message is too long. Please shorten it.',

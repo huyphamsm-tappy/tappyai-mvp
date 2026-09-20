@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
+import { serperPost } from '@/lib/ai/tools/serperClient'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { emitNotification } from '@/lib/notifications/emit'
 import { pw, normalizePwLang, type PwLang } from '@/lib/priceWatch/messages'
@@ -24,14 +25,9 @@ const SERPER_KEY = process.env.SERPER_API_KEY
 async function searchCurrentPrice(query: string): Promise<Array<{ title: string; snippet: string; link: string }>> {
   if (!SERPER_KEY) return []
   try {
-    const resp = await Promise.race([
-      fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': SERPER_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query + ' giá hiện tại site:shopee.vn OR site:tiki.vn OR site:lazada.vn', gl: 'vn', hl: 'vi', num: 5 }),
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000)),
-    ])
+    // A2: through the one Serper door, so the cron shares the daily credit ceiling.
+    const resp = await serperPost('search', SERPER_KEY, { q: query + ' giá hiện tại site:shopee.vn OR site:tiki.vn OR site:lazada.vn', gl: 'vn', hl: 'vi', num: 5 }, 6000)
+    if (!resp) return []
     if (!(resp as Response).ok) return []
     const data = await (resp as Response).json()
     return (data?.organic ?? [])

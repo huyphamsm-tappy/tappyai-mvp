@@ -56,7 +56,9 @@ import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultS
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext, buildIdentityBlock } from '@/lib/ai/contextBuilder'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicRateLimit, publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
@@ -107,8 +109,13 @@ export async function POST(req: Request) {
   // Flood guard: cap requests per client IP (applies to anonymous and
   // authenticated callers alike, before any expensive LLM/tool work). The
   // per-user daily freemium cap below is a separate, longer-window control.
-  const rl = rateLimit(`chat:${clientIp(req)}`, 30, 60_000)
+  // A2 (2026-09-20): the cap is SHARED across instances when the KV store is configured
+  // (publicRateLimit → distributedRateLimit, fail-closed on a store outage); without credentials
+  // it is the in-process limiter this line always was — 🚨 NOT PRODUCTION SAFE as a real cap
+  // (N warm lambdas = N × 30/min), and `scope` says which one answered.
+  const rl = await publicRateLimit(`chat:ip:${clientIp(req)}`, CHAT_IP_BURST_PER_MINUTE, 60_000)
   if (!rl.ok) {
+    console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_ip_burst', scope: rl.scope }))
     return new Response(
       JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
       { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rl.retryAfter) } },
@@ -584,6 +591,16 @@ export async function POST(req: Request) {
       // One question from the shared daily pool. Same pool every AI feature draws on, so a
       // Cảnh báo lừa đảo analysis earlier today is already counted here.
       quotaMetered = true
+      // A2: a signed-in account has its own burst cap on top of the IP one — one account behind
+      // many IPs (a script through proxies) is the case the IP cap cannot see.
+      const userBurst = await publicRateLimit(`chat:user:${user.id}`, CHAT_USER_BURST_PER_MINUTE, 60_000)
+      if (!userBurst.ok) {
+        console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_user_burst', scope: userBurst.scope, pro: isPro }))
+        return new Response(
+          JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
+          { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(userBurst.retryAfter) } },
+        )
+      }
       if (!isPro && !quotaExempt && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
         return new Response(
           JSON.stringify({
@@ -592,6 +609,19 @@ export async function POST(req: Request) {
           }),
           { status: 429, headers: { 'Content-Type': 'application/json' } }
         )
+      }
+      // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
+      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
+      // worst day of one account; canned turns ($0) are not counted.
+      if (isPro && !quotaExempt) {
+        const proDay = await publicDailyRateLimit(`chat:pro:${user.id}`, PRO_DAILY_CHAT_CAP)
+        if (!proDay.ok) {
+          console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_pro_daily', scope: proDay.scope }))
+          return new Response(
+            JSON.stringify({ error: 'pro_daily_limit_reached', message: serverMessage('chat.proDailyLimit', requestLocale(req), { n: PRO_DAILY_CHAT_CAP }) }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } },
+          )
+        }
       }
     }
   } catch (e) {

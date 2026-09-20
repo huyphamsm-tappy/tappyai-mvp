@@ -1,5 +1,5 @@
 import { getCache, setCache, sanitizeUrlForMarkdown } from './common'
-import { recordSerperCall } from './serperMeter'
+import { serperPost } from './serperClient'
 import { serperPlacesCacheKey } from './cacheKeys'
 
 // ── SERPER /maps — THE STRUCTURED PLACE SOURCE ───────────────────────────────
@@ -150,16 +150,10 @@ export async function serperPlaces(
 /** One `/maps` request → parsed records, or null on a failed/timed-out call. */
 async function fetchSerperMaps(apiKey: string, body: Record<string, unknown>): Promise<SerperPlaceRecord[] | null> {
   try {
-    const resp = await Promise.race([
-      (recordSerperCall('maps'), fetch('https://google.serper.dev/maps', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      })),
-      // 8s, matching `/shopping`: a 20-row response is measurably slower than
-      // `/search`'s 8 organic rows, and 6s was cutting it off.
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
-    ])
+    // 8s, matching `/shopping`: a 20-row response is measurably slower than
+    // `/search`'s 8 organic rows, and 6s was cutting it off.
+    const resp = await serperPost('maps', apiKey, body, 8000)
+    if (!resp) return null // A2: over today's Serper ceiling — the tool reports no rows, honestly
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const rows = (data?.places || []) as Array<Record<string, unknown>>

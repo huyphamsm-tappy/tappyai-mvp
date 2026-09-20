@@ -1,5 +1,5 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
-import { recordSerperCall } from './serperMeter'
+import { serperPost } from './serperClient'
 import { messages } from '@/lib/ai/messages'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
 
@@ -335,14 +335,8 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
     return []
   }
   try {
-    const resp = await Promise.race([
-      (recordSerperCall('images'), fetch('https://google.serper.dev/images', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 8 }),
-      })),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
-    ])
+    const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
+    if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
     if (!(resp as Response).ok) {
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
       return []
@@ -486,14 +480,8 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
-    const resp = await Promise.race([
-      (recordSerperCall('search'), fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 8 })
-      })),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-    ])
+    const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000)
+    if (!resp) return null // A2: over today's Serper ceiling
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string }>
@@ -575,18 +563,12 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
-    const resp = await Promise.race([
-      (recordSerperCall('shopping'), fetch('https://google.serper.dev/shopping', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
-        // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
-        // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
-        // and 6s was measured cutting it off.
-        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num }),
-      })),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
-    ])
+    // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
+    // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
+    // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
+    // and 6s was measured cutting it off.
+    const resp = await serperPost('shopping', apiKey, { q: query, gl: 'vn', hl: 'vi', num }, 8000)
+    if (!resp) return null // A2: over today's Serper ceiling
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const rows = (data?.shopping || []) as Array<Record<string, unknown>>
