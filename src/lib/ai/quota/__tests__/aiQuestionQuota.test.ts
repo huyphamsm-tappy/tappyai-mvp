@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { __setRateLimitStore, __resetRateLimitStore, type RateLimitStore } from '@/lib/security/distributedRateLimit'
 import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
 import {
-  aiQuotaIdentity, consumeAiQuestion, peekAiQuestionQuota, quotaFor, __resetAiQuestionQuotaLocal,
+  aiQuotaIdentity, consumeAiQuestion, peekAiQuestionQuota, quotaFor, refundAiQuestion, __resetAiQuestionQuotaLocal,
   type AiQuotaIdentity,
 } from '../aiQuestionQuota'
 
@@ -36,6 +36,10 @@ function fakeStore(): RateLimitStore & { fail(mode: 'throw' | null): void; keys(
     async countInWindow(key, now, window) {
       if (failure === 'throw') throw new Error('store unreachable')
       return prune(key, now, window).size
+    },
+    async releaseSlidingWindow(key, member) {
+      if (failure === 'throw') throw new Error('store unreachable')
+      sets.get(key)?.delete(member)
     },
   }
 }
@@ -169,6 +173,54 @@ function contractSuite(label: string, setup: () => { store: ReturnType<typeof fa
         for (let i = 0; i < 10; i++) await peekAiQuestionQuota(anon())
         expect((await peekAiQuestionQuota(anon())).used).toBe(0)
       })
+      describe('refund — a failed answer is not charged (F-015)', () => {
+        it('refunding a spent question restores the count on both tiers', async () => {
+          const before = (await peekAiQuestionQuota(user())).remaining
+          const spend = await consumeAiQuestion(user())
+          expect(spend.ok).toBe(true)
+          expect(spend.refund).not.toBeNull()
+          expect((await peekAiQuestionQuota(user())).remaining).toBe(before! - 1)
+          await refundAiQuestion(spend.refund)
+          expect((await peekAiQuestionQuota(user())).remaining).toBe(before)
+        })
+        it('a user at the daily limit who fails their last question can ask again after the refund', async () => {
+          await spendN(user(), FREE_DAILY_LIMIT - 1)
+          const last = await consumeAiQuestion(user())
+          expect(last.ok).toBe(true)
+          expect((await consumeAiQuestion(user())).ok).toBe(false) // genuinely at the limit
+          await refundAiQuestion(last.refund) // the last answer failed
+          expect((await peekAiQuestionQuota(user())).remaining).toBe(1)
+          expect((await consumeAiQuestion(user())).ok).toBe(true)  // the refunded unit is spendable
+        })
+        it('an anonymous identity gets its lifetime unit back on failure', async () => {
+          const spend = await consumeAiQuestion(anon())
+          expect((await peekAiQuestionQuota(anon())).remaining).toBe(ANON_LIFETIME_LIMIT - 1)
+          await refundAiQuestion(spend.refund)
+          expect((await peekAiQuestionQuota(anon())).remaining).toBe(ANON_LIFETIME_LIMIT)
+        })
+        it('refund removes only the failed unit, not a concurrent one for the same identity', async () => {
+          const a = await consumeAiQuestion(user())
+          await consumeAiQuestion(user()) // a second, successful question
+          expect((await peekAiQuestionQuota(user())).used).toBe(2)
+          await refundAiQuestion(a.refund)
+          expect((await peekAiQuestionQuota(user())).used).toBe(1) // the other spend is untouched
+        })
+        it('a refused question carries no refund handle, and refunding null is a no-op', async () => {
+          await spendN(anon(), ANON_LIFETIME_LIMIT)
+          const refused = await consumeAiQuestion(anon())
+          expect(refused.ok).toBe(false)
+          expect(refused.refund).toBeNull()
+          await refundAiQuestion(refused.refund) // must not create a free unit
+          expect((await peekAiQuestionQuota(anon())).remaining).toBe(0)
+        })
+        it('double refund does not give back two units', async () => {
+          const spend = await consumeAiQuestion(user())
+          await refundAiQuestion(spend.refund)
+          await refundAiQuestion(spend.refund) // idempotent
+          expect((await peekAiQuestionQuota(user())).used).toBe(0)
+        })
+      })
+
       if (label === 'shared store') {
         it('a configured store that does not answer FAILS CLOSED — an outage is not a free question', async () => {
           store!.fail('throw')

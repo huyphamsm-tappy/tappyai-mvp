@@ -54,6 +54,14 @@ export interface AIStreamOptions extends AIGenerateOptions {
   // cost and clarification behaviour.
   onFinish?: Parameters<typeof streamText>[0]['onFinish']
   /**
+   * Error callback. Fires when the stream carries a terminal error part — a provider/network
+   * failure, or an argument-validation rejection the tools could not repair. The route uses it to
+   * refund the AI-question quota so a failed answer is not charged (F-015). Provider-neutral: the
+   * SDK's own callback, forwarded untouched. (The tools in this codebase catch their own errors and
+   * never throw, so a recoverable tool error does not reach here as a terminal failure.)
+   */
+  onError?: Parameters<typeof streamText>[0]['onError']
+  /**
    * Per-chunk callback. Exposed for ONE reason: time-to-first-token cannot be
    * observed anywhere else. `onFinish` fires after generation ends, and the
    * caller's own stream transform sees bytes only after the SDK has already

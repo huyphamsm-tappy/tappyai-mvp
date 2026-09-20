@@ -62,7 +62,7 @@ import { publicRateLimit, publicDailyRateLimit } from '@/lib/security/publicRate
 import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
-import { aiQuotaIdentity, consumeAiQuestion } from '@/lib/ai/quota/aiQuestionQuota'
+import { aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
@@ -349,6 +349,11 @@ export async function POST(req: Request) {
   // True once a VERIFIED identity (anonymous session or account) has been metered above; the
   // identity-less fallback below then stays out of the way.
   let quotaMetered = false
+  // F-015: the refund handle for the ONE question this turn spends, and a single-shot guard so a
+  // failed answer is given back exactly once. Set at whichever consume site meters the turn; stays
+  // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
+  let quotaRefund: AiQuotaRefund | null = null
+  let quotaRefunded = false
   /**
    * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
    * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
@@ -486,7 +491,7 @@ export async function POST(req: Request) {
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
       quotaMetered = true
-      const spend = quotaExempt ? { ok: true } : await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+      const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
       if (!spend.ok) {
         return new Response(
           JSON.stringify({
@@ -497,6 +502,7 @@ export async function POST(req: Request) {
           { status: 401, headers: { 'Content-Type': 'application/json' } }
         )
       }
+      quotaRefund = spend.refund
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
       // preferences, calendar and subscription lookups, so a blocked turn costs
@@ -603,14 +609,18 @@ export async function POST(req: Request) {
           { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(userBurst.retryAfter) } },
         )
       }
-      if (!isPro && !quotaExempt && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
-        return new Response(
-          JSON.stringify({
-            error: 'free_limit_reached',
-            message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-          }),
-          { status: 429, headers: { 'Content-Type': 'application/json' } }
-        )
+      if (!isPro && !quotaExempt) {
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
+          return new Response(
+            JSON.stringify({
+              error: 'free_limit_reached',
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+            }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+        quotaRefund = spend.refund
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
@@ -712,7 +722,7 @@ export async function POST(req: Request) {
   // mint failed. Metered as the lifetime anonymous tier keyed by IP: the same five, once. The
   // previous cookie counter is gone — a counter the client carries is a counter the client resets.
   if (!quotaMetered) {
-    const spend = quotaExempt ? { ok: true } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
+    const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
     if (!spend.ok) {
       return new Response(
         JSON.stringify({
@@ -723,6 +733,7 @@ export async function POST(req: Request) {
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
+    quotaRefund = spend.refund
   }
 
   // Inject freeform user preferences from client request body
@@ -1888,6 +1899,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
   }
   const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
+  // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
+  // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
+  // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
+  // `onError` here means the turn produced no usable answer.
+  const refundQuotaOnFailure = async (reason: string): Promise<void> => {
+    if (quotaRefunded || !quotaRefund) return
+    quotaRefunded = true
+    console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
+    await refundAiQuestion(quotaRefund)
+  }
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
@@ -1900,6 +1921,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tool round-trip as model latency — the exact confusion this exists to end.
     onChunk: ({ chunk }) => {
       if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
+    },
+    // F-015: a terminal error part (provider/network failure, or an unrepairable argument
+    // rejection) means the model produced no answer. Refund the spent question before the client
+    // sees the error stream. Never charges a failed turn; a successful onFinish never reaches here.
+    onError: ({ error }) => {
+      console.error('[chat] stream error:', error)
+      void refundQuotaOnFailure('stream_error')
     },
     // Closes the first step (the tool-planning round-trip on a tool turn; the
     // only step on a chitchat turn). Diagnostic — nothing branches on it.
@@ -2051,6 +2079,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // the AI registry's own error text enumerates provider/model names, which the
     // client must never learn (AI Platform boundary). Return a generic code.
     console.error('streamText init error:', e)
+    // F-015: the model never ran, so the question this turn spent must be given back.
+    await refundQuotaOnFailure('init_throw')
     return new Response(
       JSON.stringify({ error: 'ai_error' }),
       { status: 502, headers: { 'Content-Type': 'application/json' } },

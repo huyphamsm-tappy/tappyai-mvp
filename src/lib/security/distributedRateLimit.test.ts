@@ -76,7 +76,10 @@ const KEY = 'admin:rbac:grant:user-a'
 
 describe('C10 — 1..3 admission up to the boundary', () => {
   it('1 — the first request is admitted', async () => {
-    expect(await distributedRateLimit(KEY, 3, 60_000)).toEqual({ ok: true, retryAfter: 0 })
+    const r = await distributedRateLimit(KEY, 3, 60_000)
+    // `member` (the sorted-set entry, for a later refund — F-015) rides along on an admission.
+    expect(r).toMatchObject({ ok: true, retryAfter: 0 })
+    expect(typeof r.member).toBe('string')
   })
 
   it('2 — requests below the limit are all admitted', async () => {

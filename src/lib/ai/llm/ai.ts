@@ -62,6 +62,7 @@ export const AI = {
       tools: opts.tools,
       onFinish: opts.onFinish,
       onChunk: opts.onChunk,
+      onError: opts.onError,
       onStepFinish: opts.onStepFinish,
       abortSignal: opts.abortSignal,
       // A shape mistake in the model's tool arguments (null, number-as-string…) is repaired from

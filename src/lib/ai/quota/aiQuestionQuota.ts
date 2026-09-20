@@ -1,7 +1,7 @@
 import type { SupabaseClient, User } from '@supabase/supabase-js'
 import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT, vnToday } from '@/lib/config/product'
 import {
-  distributedCountInWindow, distributedRateLimit, isDistributedStoreConfigured,
+  distributedCountInWindow, distributedRateLimit, distributedRateLimitRelease, isDistributedStoreConfigured,
 } from '@/lib/security/distributedRateLimit'
 
 // ── The ONE AI question quota ────────────────────────────────────────────────
@@ -64,11 +64,28 @@ export interface AiQuotaState {
   remaining: number | null
 }
 
+/**
+ * A handle for reversing exactly one spent question (F-015). Non-null only when a unit was actually
+ * spent AND it can be identified for removal. `key` is the un-namespaced bucket key (the release
+ * re-applies the same environment prefix); `member` is the sorted-set member for the distributed
+ * path, or the spend timestamp for the in-process path.
+ */
+export interface AiQuotaRefund {
+  scope: 'distributed' | 'instance'
+  key: string
+  member: string
+}
+
 export interface AiQuotaSpend extends AiQuotaState {
   /** True when this question was admitted and one unit was spent. */
   ok: boolean
   /** Which limiter answered. Diagnostics only. */
   scope: 'distributed' | 'instance'
+  /**
+   * Pass to `refundAiQuestion` to give this question back if the model call it paid for then failed.
+   * Null when nothing was spent (`ok: false`) or the spend cannot be identified for removal.
+   */
+  refund: AiQuotaRefund | null
 }
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000
@@ -96,7 +113,7 @@ function bucket(identity: AiQuotaIdentity): { key: string; windowMs: number; lim
 // deployments only.
 const local = new Map<string, number[]>()
 
-function localSpend(key: string, windowMs: number, limit: number): { ok: boolean; used: number } {
+function localSpend(key: string, windowMs: number, limit: number): { ok: boolean; used: number; member?: number } {
   const now = Date.now()
   const hits = (local.get(key) ?? []).filter(t => now - t < windowMs)
   if (hits.length >= limit) {
@@ -108,7 +125,19 @@ function localSpend(key: string, windowMs: number, limit: number): { ok: boolean
   if (local.size > 5000) {
     for (const [k, v] of local) if (v.every(t => now - t >= windowMs)) local.delete(k)
   }
-  return { ok: true, used: hits.length }
+  return { ok: true, used: hits.length, member: now }
+}
+
+/** Reverse one in-process spend: drop the single hit whose timestamp matches `member`. No-op if the
+ *  key or that hit is already gone. Mirrors `distributedRateLimitRelease` for the no-store path. */
+function localRefund(key: string, member: number): void {
+  const hits = local.get(key)
+  if (!hits) return
+  const i = hits.indexOf(member)
+  if (i === -1) return
+  hits.splice(i, 1)
+  if (hits.length === 0) local.delete(key)
+  else local.set(key, hits)
 }
 
 function localCount(key: string, windowMs: number): number {
@@ -139,7 +168,11 @@ export async function consumeAiQuestion(identity: AiQuotaIdentity): Promise<AiQu
   const b = bucket(identity)
   if (!isDistributedStoreConfigured()) {
     const r = localSpend(b.key, b.windowMs, b.limit)
-    return { ok: r.ok, limit: b.limit, period: b.period, used: r.used, remaining: Math.max(0, b.limit - r.used), scope: 'instance' }
+    return {
+      ok: r.ok, limit: b.limit, period: b.period, used: r.used, remaining: Math.max(0, b.limit - r.used),
+      scope: 'instance',
+      refund: r.ok && r.member !== undefined ? { scope: 'instance', key: b.key, member: String(r.member) } : null,
+    }
   }
   // Fail-closed on a store failure is inherited from distributedRateLimit, deliberately.
   const r = await distributedRateLimit(b.key, b.limit, b.windowMs)
@@ -151,6 +184,26 @@ export async function consumeAiQuestion(identity: AiQuotaIdentity): Promise<AiQu
     used,
     remaining: used === null ? null : Math.max(0, b.limit - used),
     scope: 'distributed',
+    refund: r.ok && r.member ? { scope: 'distributed', key: b.key, member: r.member } : null,
+  }
+}
+
+/**
+ * Give back one question that was spent for a model call that then failed (F-015: a failed AI
+ * answer must not be charged). Pass the `refund` handle from the matching `consumeAiQuestion`.
+ *
+ * Best-effort and never throws — this runs on an already-failing request, and leaving the unit
+ * spent (the user stays metered) is the safe direction if the store cannot release. A no-op when
+ * `refund` is null. Call it at most once per spend; the underlying ZREM / splice is itself
+ * idempotent, so an accidental second call cannot refund twice.
+ */
+export async function refundAiQuestion(refund: AiQuotaRefund | null): Promise<void> {
+  if (!refund) return
+  try {
+    if (refund.scope === 'instance') localRefund(refund.key, Number(refund.member))
+    else await distributedRateLimitRelease(refund.key, refund.member)
+  } catch {
+    /* leave the unit spent; a failed refund must not surface into the request */
   }
 }
 

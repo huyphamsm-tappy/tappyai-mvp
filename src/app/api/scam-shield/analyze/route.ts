@@ -7,7 +7,7 @@ import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { analyzeMessage } from '@/lib/scam-shield/message'
-import { aiQuotaIdentity, consumeAiQuestion, isProAccount, quotaFor, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
+import { aiQuotaIdentity, consumeAiQuestion, isProAccount, quotaFor, refundAiQuestion, type AiQuotaSpend } from '@/lib/ai/quota/aiQuestionQuota'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
 import { CHECK_RATE_LIMIT_WINDOW_MS } from '@/lib/scam-shield/config'
 
@@ -119,7 +119,7 @@ export async function POST(req: Request) {
   const aiGate = async () => {
     if (await isProAccount(supabase, user)) {
       const q = quotaFor(identity)
-      quota = { ok: true, limit: q.limit, period: q.period, used: 0, remaining: q.limit, scope: 'instance', pro: true }
+      quota = { ok: true, limit: q.limit, period: q.period, used: 0, remaining: q.limit, scope: 'instance', pro: true, refund: null }
       return { allowed: true as const }
     }
     quota = { ...(await consumeAiQuestion(identity)), pro: false }
@@ -159,6 +159,10 @@ export async function POST(req: Request) {
     })
   } catch (err) {
     console.error('[scam-shield] analyze error:', err instanceof Error ? err.name : 'error')
+    // F-015: a hard analysis failure produced no answer, so give back the question it spent (the
+    // same defect and the same refund path as /api/chat). `refund` is null for a Pro/exempt turn or
+    // when the model was never reached (LEVEL 0), so this is a no-op in those cases.
+    await refundAiQuestion((quota as AiQuotaSpend | null)?.refund ?? null)
     return NextResponse.json({ error: 'analyze_failed', message: serverMessage('scam.analyzeFailed', locale) }, { status: 500 })
   }
 }

@@ -31,11 +31,26 @@ export interface RateLimitStore {
    * double) that only limits keeps working; callers treat "unsupported" as "unknown".
    */
   countInWindow?(key: string, nowMs: number, windowMs: number): Promise<number>
+  /**
+   * Remove the ONE entry a prior `evalSlidingWindow` admitted, identified by the exact `member` it
+   * added. This is the refund half of consume: it releases a unit that was spent for work that then
+   * failed (F-015 — a failed AI answer must not be charged). It removes only that member, so a
+   * concurrent admission for the same key is never touched. Idempotent (ZREM of an absent member is
+   * a no-op) and optional — a store that cannot release keeps limiting, and the caller treats the
+   * unit as spent rather than crashing.
+   */
+  releaseSlidingWindow?(key: string, member: string): Promise<void>
 }
 
 export interface RateLimitResult {
   ok: boolean
   retryAfter: number
+  /**
+   * When `ok`, the sorted-set member this admission added. Pass it to `distributedRateLimitRelease`
+   * to refund the unit if the work it admitted then failed (F-015). Absent when rejected, when the
+   * fail-closed path answered, or when the store cannot report it.
+   */
+  member?: string
 }
 
 // Atomic sliding window. Atomicity matters: a read-then-write implementation
@@ -102,6 +117,18 @@ export function createUpstashStore(url: string, token: string): RateLimitStore {
       const result = body.result
       if (!Array.isArray(result) || result.length < 2) throw new Error('rate-limit store malformed response')
       return [Number(result[0]), Number(result[1])]
+    },
+    async releaseSlidingWindow(key, member) {
+      // ZREM the exact member this admission added. Only that entry is removed, so a concurrent
+      // admission for the same key is untouched; ZREM of an absent member is a harmless no-op.
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(['ZREM', key, member]),
+      })
+      if (!res.ok) throw new Error(`rate-limit store HTTP ${res.status}`)
+      const body = (await res.json()) as { error?: string }
+      if (body.error) throw new Error('rate-limit store error')
     },
   }
 }
@@ -209,16 +236,36 @@ export async function distributedRateLimit(
   if (!active) return failClosed
 
   const now = Date.now()
+  // The member must be unique per request. Sorted-set members are a SET: two
+  // requests in the same millisecond sharing a member would collapse into one
+  // entry and the counter would silently under-count. Hoisted so an admitted
+  // request can hand it back for a later refund (F-015).
+  const member = uniqueMember(now)
   try {
-    // The member must be unique per request. Sorted-set members are a SET: two
-    // requests in the same millisecond sharing a member would collapse into one
-    // entry and the counter would silently under-count.
-    const [admitted, oldest] = await active.evalSlidingWindow(namespacedKey(key), now, windowMs, limit, uniqueMember(now))
-    if (admitted === 1) return { ok: true, retryAfter: 0 }
+    const [admitted, oldest] = await active.evalSlidingWindow(namespacedKey(key), now, windowMs, limit, member)
+    if (admitted === 1) return { ok: true, retryAfter: 0, member }
     const elapsed = Number.isFinite(oldest) && oldest > 0 ? now - oldest : 0
     return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)) }
   } catch {
     return failClosed
+  }
+}
+
+/**
+ * Refund one admitted unit: remove the exact `member` a prior `distributedRateLimit` returned.
+ *
+ * Best-effort and never throws — a refund that fails leaves the unit spent, which is the safe
+ * direction (the user keeps being metered) rather than crashing the request that is already
+ * failing. Does nothing when no store is configured (the in-process path refunds elsewhere) or the
+ * store cannot release. Never logs the key.
+ */
+export async function distributedRateLimitRelease(key: string, member: string): Promise<void> {
+  const active = resolveStore()
+  if (!active?.releaseSlidingWindow) return
+  try {
+    await active.releaseSlidingWindow(namespacedKey(key), member)
+  } catch {
+    /* leave the unit spent; a failed refund must not surface into the request */
   }
 }
 
