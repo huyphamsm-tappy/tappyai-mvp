@@ -395,32 +395,82 @@ export function sentenceSpans(text: string): Array<[number, number]> {
 }
 
 /**
- * POLICY R3, as locked by the owner in C3-B.10.2.
+ * POLICY R3 — PROPORTIONAL (owner, 2026-09-20; supersedes the whole-sentence default locked in
+ * C3-B.10.2).
  *
- * Default: remove the WHOLE SENTENCE containing an unsupported amount. That is
- * what stops the dangling-connective output the audit found ("và phù hợp…").
+ * Measured S7 (3/3 deterministic, GATE 40): a product list — one line per product, each with an
+ * amount — lost EVERY line to the whole-sentence rule, leaving "mình gợi ý:" and nothing. The
+ * amount was the unsupported part; the product line was not.
  *
- * Widen only when that would leave no prose at all: then remove just the amount
- * and the hedge that introduces it, so a one-sentence reply degrades to its
- * remaining words instead of to "" — which the stream filter would drop
- * entirely, giving the user an empty answer.
- *
- * Both paths write nothing: every character of the output comes from the input.
+ * Order now: (1) the CLAUSE that carries the amount — bounded by `,` `;` `:` a dash or a
+ * parenthesis — goes, with the hedge that introduces it; the rest of the sentence stays when it
+ * still says something (has letters). (2) When the clause IS the sentence, the sentence goes —
+ * that is what stopped the dangling-connective output the audit found ("và phù hợp…"). (3) When
+ * that would leave no prose at all, only the amounts go. Every path writes nothing: every output
+ * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
+const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
+const LEADING_CONNECTIVE = /^\s*(?:và|với|hoặc|nhưng|còn|and|with|or|but)\s+/iu
+
+function removeClauseAround(sentenceWithBreak: string, at: number, end: number): string | null {
+  // The line break that closes a list line is structure, not clause: it always survives.
+  const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
+  const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
+  // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
+  // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
+  let a = 0, b = sentence.length, bDelim = ''
+  for (const m of sentence.matchAll(CLAUSE_DELIM)) {
+    const i = m.index!
+    if (i < at) a = i
+    else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
+  }
+  const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
+  const after = sentence.slice(b)
+  const rest = before.length > 0 ? before + (bDelim.trim() === ')' ? '' : bDelim) + after : after.replace(/^\s+/, '')
+  const letters = (rest.match(/\p{L}/gu) ?? []).length
+  if (letters < 3) return null
+  return rest + brk
+}
+
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[]): string {
   const bad = claims.filter(c => c.verdict !== 'VERIFIED')
   if (bad.length === 0) return text
 
-  const tidy = (s: string) => s.replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
+  // Seams only, never across a line break: a list bullet after a newline is structure, not a
+  // doubled delimiter.
+  const tidy = (s: string) => s
+    .replace(/([,;:])[ \t]*(?:[,;:—–][ \t]*)+/g, '$1 ')
+    .replace(/[ \t][—–-][ \t]*([.!?\n])/g, '$1')
+    .replace(/[,;][ \t]*([.!?\n])/g, '$1')
+    .replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 
-  // 1) sentence-level removal
+  // 1) clause-level removal inside each affected sentence; 2) the sentence when the clause is all of it
   const spans = sentenceSpans(text)
-  const doomed = new Set<number>()
-  spans.forEach(([a, b], i) => { if (bad.some(c => c.start >= a && c.start < b)) doomed.add(i) })
-  const sentenceLevel = tidy(spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join(''))
-  if (HAS_LETTER.test(sentenceLevel)) return sentenceLevel
+  let dropped = false // the previous sentence went: a connective opening this one dangles
+  const stripConnective = (s: string) => s.replace(LEADING_CONNECTIVE, m => m.replace(/\S+\s+$/, ''))
+  const pieces = spans.map(([a, b]) => {
+    const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
+    const raw = text.slice(a, b)
+    if (inSentence.length === 0) {
+      const out = dropped && raw.trim() ? stripConnective(raw) : raw
+      if (raw.trim()) dropped = false
+      return out
+    }
+    let sentence = raw
+    for (const c of inSentence) {
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a)
+      if (cut === null) { dropped = true; return '' }
+      sentence = cut // claims are processed from the end, so earlier offsets are unaffected
+    }
+    dropped = false
+    const trailing = sentence.match(/[\n]+$/)?.[0] ?? ''
+    const core = stripConnective(sentence.replace(/[\n]+$/, ''))
+    return core + trailing
+  })
+  const proportional = tidy(pieces.join(''))
+  if (HAS_LETTER.test(proportional)) return proportional
 
-  // 2) removing the sentences would leave nothing — take only the amounts.
+  // 3) removing the clauses would leave nothing — take only the amounts.
   let out = text
   for (const claim of [...bad].sort((a, b) => b.start - a.start)) {
     const head = out.slice(0, claim.start).replace(HEDGE_BEFORE, '')

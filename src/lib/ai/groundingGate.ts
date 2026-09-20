@@ -210,6 +210,13 @@ export type PlaceSearchStatus = 'not_run' | 'empty' | 'has_results'
 export interface GroundingGateOptions {
   /** Defaults to `not_run`, which preserves the pre-existing behaviour exactly. */
   placeSearch?: PlaceSearchStatus
+  /**
+   * B4 (S7, 2026-09-20): whether a decision card will actually render for this turn. `false`
+   * when rows were fetched but every candidate was rejected (a shopping marker never built):
+   * "the options I verified are on the card below" then points at nothing, and the honest line
+   * is that no option in the results was a close enough match. Undefined = unknown = as before.
+   */
+  cardRenders?: boolean
 }
 
 export function suppressUngroundedVenues(
@@ -340,7 +347,7 @@ export function suppressUngroundedVenues(
   // but the tool DID return venues, "found nothing" contradicts the card rendered right under
   // it. The truthful line is then that the verified places are on the card — the not-found
   // line is kept for the case it was written for: retrieval came back empty.
-  const fallback = knownNorm.length > 0 ? seeCardLine(lang) : notFoundLine(lang)
+  const fallback = knownNorm.length > 0 ? (opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
   const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${fallback}`.trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
@@ -350,6 +357,13 @@ function notFoundLine(lang: string): string {
   return lang === 'vi'
     ? 'Mình chưa tìm thấy địa điểm nào đủ dữ liệu để giới thiệu cho yêu cầu này.'
     : "I couldn't find a place with enough verified data to recommend for this request."
+}
+
+/** B4: rows came back, the prose named none of them, and no card will render — say what would help next, invent nothing. */
+function noMatchLine(lang: string): string {
+  return lang === 'vi'
+    ? 'Mình chưa tìm được lựa chọn nào trong kết quả đủ khớp để giới thiệu — bạn cho mình biết thêm hãng hoặc tầm giá, mình tìm lại ngay.'
+    : 'I could not find an option in the results that matches closely enough to recommend — tell me the brand or the budget and I will search again.'
 }
 
 /** The prose named venues/products the search did not return; what it DID return is on the card (places or products). */

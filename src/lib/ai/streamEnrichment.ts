@@ -1800,7 +1800,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check
       // against because nothing was retrieved" from "nothing to check against because this
       // is a recall turn" — and it stood down for both.
-      { placeSearch: placeSearchStatus },
+      { placeSearch: placeSearchStatus, cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined },
     )
     // AUDIT ONLY (env-gated, never in production): what the grounding gate cut and against which
     // names, plus the pre-gate prose — the one place a "0 rows" / "all cut" verdict can be checked.
@@ -1899,14 +1899,29 @@ export function applyPlaceEnrichmentStreamFilter(
       return null
     })()
     if (v1PickBackstop) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', kind: v1PickBackstop.kind, body_letters: bodyLetters }))
-    const fallback = g1bFallback ?? v1PickBackstop?.sentence ?? null
+    /**
+     * B4 (S7, 2026-09-20): a SHOPPING turn whose product lines were all cut and that has no
+     * decision marker to fall back on (every candidate rejected by the validator) used to ship
+     * "mình gợi ý:" and nothing. The honest sentence is the server's — no product, no price, no
+     * name: what was searched found nothing the guards could keep, and what would help next.
+     */
+    const shoppingNoneBackstop = (() => {
+      if (g1bFallback || v1PickBackstop || !collector?.consultativeV1?.on) return null
+      if (bodyLetters >= 40 || collector.shoppingMarker || places.length > 0) return null
+      if (productRecords.length === 0 && productQueries.length === 0) return null
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consultative_v1_pick_backstop', kind: 'shopping_none', body_letters: bodyLetters, records: productRecords.length }))
+      return lang === 'en'
+        ? 'I could not find a listing in the results that matches this request closely enough to recommend — tell me the brand or the budget and I will search again.'
+        : 'Mình chưa tìm được listing nào trong kết quả đủ khớp để gợi ý — bạn cho mình biết hãng hoặc tầm giá, mình tìm lại ngay.'
+    })()
+    const fallback = g1bFallback ?? v1PickBackstop?.sentence ?? shoppingNoneBackstop
     // The sentence goes where the body was — BEFORE the first structured block. Appending
     // it after [CTA_BUTTONS]/[FOLLOWUPS] put it below the buttons (measured on the
     // 2026-09-17 replay, run 2 #11), where the client renders it as an orphan line.
     const groundedProse = (() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows.
-      if (v1PickBackstop && !g1bFallback) {
+      if ((v1PickBackstop || shoppingNoneBackstop) && !g1bFallback) {
         const head = gated.text.startsWith(releasedPrefix) ? releasedPrefix : ''
         return `${head}${fallback}\n\n${bodyAfterGuards.replace(/^\s+/, '')}`
       }

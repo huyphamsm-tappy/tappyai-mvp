@@ -210,6 +210,40 @@ describe('redaction — POLICY R3', () => {
   })
 })
 
+describe('redaction — POLICY R3 is PROPORTIONAL (B4, owner 2026-09-20; supersedes whole-sentence)', () => {
+  // S7 (GATE 40, 3/3 deterministic): a product list lost every line to the whole-sentence rule.
+  const rs = [rec('Máy lọc không khí Daikin MC55UVM6', '6.990.000 ₫'), rec('Máy lọc không khí Xiaomi 4 Lite', '2.790.000 ₫')]
+  const NL = '\n'
+  it('a product LINE keeps its product when only its amount is unsupported — the clause goes, the line stays', () => {
+    const text = ['Mình gợi ý:', '- **Daikin MC55UVM6** — 6.500.000₫, lọc HEPA tốt cho phòng ngủ', '- **Xiaomi 4 Lite** — 2.990.000₫, giá mềm', 'Bạn chọn Daikin nếu ưu tiên độ ồn thấp.'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('**Daikin MC55UVM6**')
+    expect(out).toContain('**Xiaomi 4 Lite**')
+    expect(out).toContain('lọc HEPA tốt cho phòng ngủ')
+    expect(out).toContain('giá mềm')
+    expect(out).not.toContain('6.500.000')
+    expect(out).not.toContain('2.990.000')
+    expect(out).toContain('Bạn chọn Daikin')
+  })
+  it('a sentence that is nothing but the amount still goes whole; the connective it leaves is tidied', () => {
+    const out = guardMoneyClaimsInText('Daikin MC55UVM6 khoảng 9 triệu. Và máy rất êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('9 triệu')
+    expect(out).toContain('máy rất êm')
+    expect(out.trim().toLowerCase().startsWith('và ')).toBe(false)
+  })
+  it('a supported amount in the same list is untouched', () => {
+    const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 6.990.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('6.990.000')
+    expect(out).not.toContain('3.500.000')
+    expect(out).toContain('**Xiaomi 4 Lite**')
+  })
+  it('writes nothing: every word of the output was in the input', () => {
+    const text = ['- **Daikin MC55UVM6** — 6.500.000₫, lọc HEPA tốt', '- **Xiaomi 4 Lite** — 2.990.000₫, giá mềm'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    for (const word of out.split(/\s+/).filter(Boolean)) expect(text).toContain(word.replace(/[.,]$/, ''))
+  })
+})
+
 describe('the guard is inert without structured evidence', () => {
   // Organic retrieval carries no `price` field. Treating that as "nothing is
   // supported" would redact prices that are in fact grounded, so the guard
