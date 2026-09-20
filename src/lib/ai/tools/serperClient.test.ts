@@ -14,7 +14,7 @@ import { incrDailyCounter, __resetKvCounters } from '@/lib/security/kvCounter'
 // 80 %. Over the ceiling the call is refused (null) and the tool degrades; the turn still answers.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const env = (ceiling: string) => ({ SERPER_DAILY_CREDIT_CEILING: ceiling } as NodeJS.ProcessEnv)
+const env = (ceiling: string) => ({ SERPER_DAILY_CREDIT_CEILING: ceiling } as unknown as NodeJS.ProcessEnv)
 
 beforeEach(() => { __resetKvCounters(); __resetSerperAlerts() })
 afterEach(() => { vi.restoreAllMocks(); vi.unstubAllEnvs() })
@@ -40,7 +40,7 @@ describe('serperAdmit', () => {
     expect(warns.filter(w => w.alert === 'serper_daily_ceiling_80pct')).toHaveLength(1)
   })
   it('the default ceiling is 15,000 credits; the env overrides it', () => {
-    expect(serperDailyCeiling({} as NodeJS.ProcessEnv)).toBe(15_000)
+    expect(serperDailyCeiling({} as unknown as NodeJS.ProcessEnv)).toBe(15_000)
     expect(serperDailyCeiling(env('500'))).toBe(500)
     expect(serperDailyCeiling(env('abc'))).toBe(15_000)
   })
@@ -67,13 +67,13 @@ describe('serperPost', () => {
 
 describe('the shared daily counter', () => {
   it('without a store: per instance, keyed by the VN day, and says so', async () => {
-    const r1 = await incrDailyCounter('t:x', 2, {} as NodeJS.ProcessEnv)
-    const r2 = await incrDailyCounter('t:x', 3, {} as NodeJS.ProcessEnv)
+    const r1 = await incrDailyCounter('t:x', 2, {} as unknown as NodeJS.ProcessEnv)
+    const r2 = await incrDailyCounter('t:x', 3, {} as unknown as NodeJS.ProcessEnv)
     expect(r1).toEqual({ count: 2, scope: 'instance' })
     expect(r2).toEqual({ count: 5, scope: 'instance' })
   })
   it('with a store: INCRBY + EXPIRE NX through the pipeline; a store that does not answer falls back to the instance count and says store_down', async () => {
-    const e = { KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't' } as NodeJS.ProcessEnv
+    const e = { KV_REST_API_URL: 'https://kv.test', KV_REST_API_TOKEN: 't' } as unknown as NodeJS.ProcessEnv
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify([{ result: 42 }, { result: 1 }]), { status: 200 }))
     const r = await incrDailyCounter(SERPER_CEILING_KEY, 3, e)
     expect(r).toEqual({ count: 42, scope: 'distributed' })
