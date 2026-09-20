@@ -24,6 +24,8 @@ describe('FOOD', () => {
     opening_hours: 'Mo-Su 06:00-21:00', phone: '+84 28 1', maps_link: 'https://maps.google.com/?cid=1',
     website_uri: 'https://coba.example', price_level: 1, lat: 10.77, lng: 106.7, cuisine: 'vietnamese',
     order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/tim-kiem?q=bun' }],
+    // A3.3: the CTA is the venue's OWN page on the platform (entity-scoped evidence), never its search.
+    order_search_results: [{ title: 'Bún Bò Cô Ba - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/bun-bo-co-ba-12-le-loi', snippet: '', evidence_scope: 'entity', evidence_about: 'Bún Bò Cô Ba' }],
   }]))
 
   it('produces a recommendation with the shortlist position the ranker chose', () => {
@@ -33,12 +35,13 @@ describe('FOOD', () => {
     expect(recs[0].recommended).toBe(true)
   })
 
-  it('carries cuisine, price level, hours and an order action', () => {
+  it('carries cuisine, price level, hours and an order action (the venue\'s own platform page, never the search)', () => {
     const e = recs[0].entity
     expect((e.ext as { cuisine?: string[] }).cuisine).toEqual(['vietnamese'])
     expect(e.pricing.priceLevel).toBe(1)
     expect(isKnown(e.availability.openingHours)).toBe(true)
-    expect(e.actions.some(a => a.kind === 'order')).toBe(true)
+    const order = e.actions.filter(a => a.kind === 'order')
+    expect(order.map(a => a.url)).toEqual(['https://shopeefood.vn/ho-chi-minh/bun-bo-co-ba-12-le-loi'])
   })
 
   it('exposes no matchScore', () => {
@@ -91,9 +94,8 @@ describe('TRAVEL', () => {
     expect(recs.map(r => r.entity.identity.name)).toEqual(expect.arrayContaining(['Hotel Continental', 'Khách Sạn Biển']))
   })
 
-  it('offers booking as a SEARCH link, since that is what it is', () => {
-    const b = recs[0].entity.actions.find(a => a.kind === 'booking')!
-    expect(b.urlKind).toBe('search')
+  it('A3.3: offers NO booking search link — a results page is never a CTA; the hotel\'s own OTA page is', () => {
+    for (const r of recs) expect(r.entity.actions.some(a => a.kind === 'booking' && a.urlKind === 'search')).toBe(false)
   })
 
   it('claims no guest rating — snippets carry it, we do not extract it', () => {

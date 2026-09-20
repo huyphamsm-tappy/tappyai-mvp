@@ -1852,7 +1852,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   /**
    * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
    * (4.3 s measured cold on a food turn, 2026-09-20), and while it ran the client had nothing —
-   * no bytes, so no frame, so the generic "đang suy nghĩ" dots. On a pre-search turn the response
+   * no bytes, so no frame, so the generic "thinking" dots. On a pre-search turn the response
    * is returned NOW with a `searching` progress frame, and the rest of the turn — the search, the
    * one AI.stream(), every filter — produces its body behind it (`deferredBody`). Nothing about the
    * turn changes: same code, same order, same frames; only the first byte moves from after the

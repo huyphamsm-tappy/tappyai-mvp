@@ -31,10 +31,10 @@ beforeEach(() => { setCommerceEventWriter(() => undefined) })
 afterEach(() => { setCommerceEventWriter(null) })
 
 describe('attachCommerceLinks — gate and safety', () => {
-  it('is an identity with CCP disabled (the production default) and performs no search', async () => {
+  it('is an identity with CCP disabled and performs no search (the switch is ON since A3, 2026-09-20; the seam honours `enabled: false`)', async () => {
     const { search, calls } = searchStub({})
     const result = { search_results: [{ title: 'Tủ lạnh', link: 'https://www.dienmayxanh.com/tu-lanh/samsung-rt31' }] }
-    const out = await attachCommerceLinks('search_products', result, { search, now: NOW })
+    const out = await attachCommerceLinks('search_products', result, { search, now: NOW, enabled: false })
     expect(out).toBe(result)
     expect(links(result.search_results[0])).toEqual([])
     expect(calls).toEqual([])

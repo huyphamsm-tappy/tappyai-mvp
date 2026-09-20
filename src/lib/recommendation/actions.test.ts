@@ -29,66 +29,46 @@ const FOOD_ROW = {
   has_tiktok_review: true,
 }
 
-describe('an order button must land somewhere that names the venue', () => {
-  // 🚨 THE MEASURED DEFECT: `buildFoodOrderLinks` returns BeFood as the bare
-  // site root for every restaurant, because BeFood publishes no search page. Shown
-  // beside ShopeeFood and GrabFood - both of which carry the venue's name in the
-  // query - it looked like a third way to order this meal and was a homepage.
-  //
-  // The rule is about the destination, not the brand: BeFood support stays in the
-  // builder and the data, and a venue-specific BeFood URL still shows.
-
-  it('drops a homepage-only order link, and keeps GrabFood (ShopeeFood has no search page — live UAT 14 Sep 2026)', () => {
-    const actions = buildActions({ ...FOOD_ROW, order_links: undefined }, 'food')
-    const order = actions.filter(a => a.kind === 'order')
-    expect(order.map(a => a.platform)).toEqual(['GrabFood'])
-    expect(order.every(a => a.url.includes('B%C3%BAn') || a.url.includes('C%C3%B4'))).toBe(true)
+describe('A3.3 / A3.6 (owner, 2026-09-20): an order CTA is the venue\'s OWN page on the platform — never a search, never a front door', () => {
+  // Superseded here: the 14 Sep 2026 rule that a delivery platform\'s SEARCH for the venue\'s name
+  // was an honest order button. The owner\'s rule is absolute — the deepest merchant page or
+  // nothing — so `order_links` (GrabFood search + BeFood homepage) are not emitted at all, and
+  // GrabFood / ShopeeFood reach the card only as the venue\'s page (entity-scoped evidence or a
+  // Commerce Link). Prose never carries them (streamEnrichment: the card owns enrichment).
+  it('the legacy search / homepage order links produce NO order action', () => {
+    expect(buildActions({ ...FOOD_ROW, order_links: undefined }, 'food').filter(a => a.kind === 'order')).toEqual([])
+    expect(buildActions(FOOD_ROW, 'food').filter(a => a.kind === 'order')).toEqual([])
+    const actions = buildActions({ ...FOOD_ROW, order_links: [{ name: 'ShopeeFood', url: 'https://shopeefood.vn/' }, { name: 'GrabFood', url: 'https://food.grab.com/vn/en/s?searchKeyword=x' }] }, 'food')
+    expect(actions.some(a => a.kind === 'order')).toBe(false)
     expect(actions.some(a => a.url === 'https://be.com.vn/')).toBe(false)
   })
 
-  it('the builder still offers BeFood — this is visibility, not deletion', () => {
-    expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1').map(l => l.name))
-      .toEqual(['GrabFood', 'BeFood'])
-    // The GrabFood grammar is the registry's verified one, never the 404 /vn/en/s?searchKeyword= form.
-    expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1')[0].url).toMatch(/^https:\/\/food\.grab\.com\/vn\/vi\/restaurants\?search=/)
+  it('the builder still exists for the legacy prose surfaces — it is no longer an action source', () => {
+    expect(buildFoodOrderLinks('Bún Bò Huế Cô Ba', '12 Lê Lợi', 'Quận 1').map(l => l.name)).toEqual(['GrabFood', 'BeFood'])
   })
 
-  it('shows BeFood when the row carries a venue-specific destination', () => {
+  it('the venue\'s OWN page on a platform (entity-scoped evidence) IS the order CTA, direct and attributed', () => {
     const order = buildActions({
       ...FOOD_ROW,
-      order_links: [
-        { name: 'ShopeeFood', url: 'https://shopeefood.vn/tim-kiem?q=x' },
-        { name: 'BeFood', url: 'https://be.com.vn/olac' },
-      ],
+      order_links: undefined,
+      order_search_results: [{ title: 'Bún Bò Huế Cô Ba - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/bun-bo-hue-co-ba-12-le-loi' }],
     }, 'food').filter(a => a.kind === 'order')
-    expect(order.map(a => a.platform)).toEqual(['ShopeeFood', 'BeFood'])
-    expect(order.find(a => a.platform === 'BeFood')!.url).toBe('https://be.com.vn/olac')
-  })
-
-  it('applies to any platform, and never to a link that does name the venue', () => {
-    const order = buildActions({
-      ...FOOD_ROW,
-      order_links: [
-        { name: 'ShopeeFood', url: 'https://shopeefood.vn/' },
-        { name: 'GrabFood', url: 'https://food.grab.com/vn/en/s?searchKeyword=x' },
-      ],
-    }, 'food').filter(a => a.kind === 'order')
-    expect(order.map(a => a.platform)).toEqual(['GrabFood'])
+    expect(order).toHaveLength(1)
+    expect(order[0]).toMatchObject({ urlKind: 'direct', attributed: true, url: 'https://shopeefood.vn/ho-chi-minh/bun-bo-hue-co-ba-12-le-loi' })
   })
 })
 
 describe('every URL comes from the application', () => {
   const actions = buildActions(FOOD_ROW, 'food')
 
-  it('produces one list covering order, maps, website, call and review', () => {
-    expect(new Set(actions.map(a => a.kind))).toEqual(new Set(['order', 'maps', 'website', 'call', 'review']))
+  it('produces one list covering maps, website, call and review (no order: the row carries only search links)', () => {
+    expect(new Set(actions.map(a => a.kind))).toEqual(new Set(['maps', 'website', 'call', 'review']))
   })
 
   it('orders by the domain priority table, not by discovery order', () => {
-    expect(actions[0].kind).toBe('order')
     const kinds = actions.map(a => a.kind)
-    expect(kinds.indexOf('order')).toBeLessThan(kinds.indexOf('maps'))
-    expect(kinds.indexOf('maps')).toBeLessThan(kinds.indexOf('website'))
+    expect(kinds.indexOf('maps')).toBeLessThan(kinds.indexOf('review'))
+    expect(kinds.indexOf('review')).toBeLessThan(kinds.indexOf('website'))
   })
 
   it('rejects anything that is not a safe https URL', () => {
@@ -112,23 +92,32 @@ describe('every URL comes from the application', () => {
 })
 
 describe('urlKind separates a destination from a search', () => {
-  it('a ShopeeFood order link is a SEARCH — the venue may not be listed there', () => {
-    const order = buildActions(FOOD_ROW, 'food').find(a => a.kind === 'order')!
-    expect(order.urlKind).toBe('search')
+  it('a product link is DIRECT — it goes to the product', () => {
+    const buy = buildActions({ name: 'MacBook', link: 'https://cellphones.example/macbook-air-m3-13-inch' }, 'shopping').find(a => a.kind === 'purchase')!
+    expect(buy.urlKind).toBe('direct')
   })
 
-  it('a product link is DIRECT — it goes to the product', () => {
-    const buy = buildActions({ name: 'MacBook', link: 'https://cellphones.example/mba' }, 'shopping').find(a => a.kind === 'purchase')!
-    expect(buy.urlKind).toBe('direct')
+  it('A3.3: a Google Shopping row link (the `ibp=oshop` intermediary), a merchant search page and a front door are never a purchase', () => {
+    for (const link of [
+      'https://www.google.com/search?q=macbook&ibp=oshop&prds=pid:123',
+      'https://www.google.com/shopping/product/123',
+      'https://shopee.vn/search?keyword=macbook',
+      'https://www.lazada.vn/',
+      'https://www.lazada.vn/vi/',
+    ]) {
+      expect(buildActions({ name: 'MacBook', link }, 'shopping').some(a => a.kind === 'purchase'), link).toBe(false)
+    }
   })
 
   it('a Google Maps link is direct', () => {
     expect(buildActions(FOOD_ROW, 'food').find(a => a.kind === 'maps')!.urlKind).toBe('direct')
   })
 
-  it('a Booking.com link is a search', () => {
-    const b = buildActions({ name: 'Hotel X', booking_link: 'https://www.booking.com/searchresults.html?ss=Hotel+X' }, 'travel')
-    expect(b.find(a => a.kind === 'booking')!.urlKind).toBe('search')
+  it('A3.3: the Booking.com results page and the Agoda front door are NOT booking actions; a hotel\'s own OTA page is', () => {
+    const b = buildActions({ name: 'Hotel X', booking_link: 'https://www.booking.com/searchresults.html?ss=Hotel+X', agoda_link: 'https://www.agoda.com/vi-vn/' }, 'travel')
+    expect(b.some(a => a.kind === 'booking')).toBe(false)
+    const own = buildActions({ name: 'Hotel X', link: 'https://www.booking.com/hotel/vn/hotel-x.vi.html' }, 'travel')
+    expect(own.find(a => a.kind === 'booking')).toMatchObject({ urlKind: 'direct' })
   })
 
   it('the verified review is direct and the YouTube fallback is a search', () => {
@@ -145,15 +134,12 @@ describe('urlKind separates a destination from a search', () => {
 })
 
 describe('the copy follows urlKind, so a search never reads as a booking', () => {
-  const order = buildActions(FOOD_ROW, 'food').find(a => a.kind === 'order')!
-  it('vi says "tìm", not "đặt", for a search link', () => {
-    expect(labelFor(order, 'vi')).toContain('Tìm')
-  })
-  it('en says "Find", not "Order", for a search link', () => {
-    expect(labelFor(order, 'en')).toContain('Find')
+  it('a review search says search, never a destination verb', () => {
+    const yt = buildActions(FOOD_ROW, 'food').find(a => a.kind === 'review' && a.urlKind === 'search')!
+    expect(labelFor(yt, 'en')).toMatch(/Search|Find/)
   })
   it('a direct purchase still says buy', () => {
-    const buy = buildActions({ name: 'X', link: 'https://shop.example/p' }, 'shopping')[0]
+    const buy = buildActions({ name: 'X', link: 'https://shop.example/p/iphone-15-256gb' }, 'shopping')[0]
     expect(labelFor(buy, 'en')).toContain('Buy')
   })
 })

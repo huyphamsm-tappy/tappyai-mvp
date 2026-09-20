@@ -158,8 +158,16 @@ export const AUTH_PROVIDERS = [
 // while CCP_ENABLED is false. Flip flags HERE only. These flags are server-side: nothing exposes
 // them through /api/config, and Phase 6 (13 Sep 2026) wires CCP into the SERVER-owned action
 // channel only (row attachment → recommendation/actions → web live view), so no client reads them.
-/** Master switch for CCP-resolved commerce links. */
-export const CCP_ENABLED = false
+/** Master switch for CCP-resolved commerce links. ON since A3 (owner, 2026-09-20): Tier 1 providers
+ * wrap through the network's deeplink, Tier 2 hand off direct — which tier is the `commerce_providers`
+ * table's answer (src/lib/ccp/registry/runtime.ts), never a code edit. */
+export const CCP_ENABLED = true
+/**
+ * A3 (owner standing rule, 2026-09-20): NEVER fetch a merchant / operator site's HTML. The event
+ * page schedule read (eventSchedule.ts) is a bounded GET of a Ticketbox page — a merchant page —
+ * and stays OFF. With it off an event link carries no stated schedule; a past event is not judged.
+ */
+export const CCP_MERCHANT_PAGE_READ_ENABLED = false
 /** D7: ACCESSTRADE feed fields (title/price/image) are NEVER displayed until the
  * written data-rights confirmation is on file. Link-only until then. */
 export const CCP_FEED_DISPLAY_ENABLED = false

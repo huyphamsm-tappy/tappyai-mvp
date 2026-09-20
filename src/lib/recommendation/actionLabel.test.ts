@@ -128,14 +128,13 @@ describe('🚨 end to end from the real action builder', () => {
     expect(actionLabel(review!, vi)).toBe('Review trên TikTok')
   })
 
-  it('🚨 food order platforms are labelled as the searches they are', () => {
+  it('A3.3 / A3.6 (2026-09-20): a food row with no venue page on a platform gets NO order button — a platform search is never a CTA', () => {
     const actions = buildActions({ name: 'Bún Bò Cô Ba', address: '12 Lê Lợi' }, 'food')
-    const order = actions.filter(x => x.kind === 'order')
-    expect(order.length).toBeGreaterThan(0)
-    for (const o of order) {
-      expect(o.urlKind).toBe('search')
-      expect(actionLabel(o, vi)).toMatch(/^Tìm trên /)
-    }
+    expect(actions.filter(x => x.kind === 'order')).toEqual([])
+    // The venue's own page on the platform is the CTA, and it says order — a destination verb.
+    const own = buildActions({ name: 'Bún Bò Cô Ba', order_search_results: [{ title: 'Bún Bò Cô Ba - ShopeeFood', link: 'https://shopeefood.vn/ho-chi-minh/bun-bo-co-ba' }] }, 'food').filter(x => x.kind === 'order')
+    expect(own).toHaveLength(1)
+    expect(actionLabel(own[0], vi)).not.toMatch(/^Tìm trên /)
   })
 
   it('every label resolves to real copy — no raw keys reach a button', () => {

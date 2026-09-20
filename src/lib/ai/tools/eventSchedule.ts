@@ -1,6 +1,7 @@
 import { providerOwning } from '@/lib/ccp'
 import type { CommerceFacts } from '@/lib/ccp'
 import { safeGetText } from '@/lib/security/safeFetch'
+import { CCP_MERCHANT_PAGE_READ_ENABLED } from '@/lib/config/product'
 
 // ── The stated schedule of an EVENT page (Final local live UAT, 14 Sep 2026) ──
 //
@@ -22,6 +23,7 @@ const TIMEOUT_MS = 4_000
 const STOP_AT = /"endDate"\s*:\s*"[^"]+"|<\/head>/i
 
 export async function fetchEventPageText(url: string): Promise<string | null> {
+  if (!CCP_MERCHANT_PAGE_READ_ENABLED) return null // A3: no merchant HTML is fetched — ever — while this is off
   if (!providerOwning(url)) return null // only a registry merchant's page is ever read
   const ctl = new AbortController()
   const timer = setTimeout(() => ctl.abort(), TIMEOUT_MS)

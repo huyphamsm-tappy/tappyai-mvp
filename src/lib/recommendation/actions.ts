@@ -4,6 +4,7 @@ import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace, type ReviewAction } from '@/lib/ai/consultative/reviewAction'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { actionKindFor, urlKindFor, isCommerceLinkRow, requiresMerchantLogin, providerOwning, type CommerceLinkRow } from '@/lib/ccp'
+import { outboundLinkFacts, isDeepEnough, reportOutboundLink } from '@/lib/commerce/outboundLink'
 
 // ── ONE ACTION LIST, ONE AUTHORITY ───────────────────────────────────────────
 //
@@ -276,6 +277,11 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
   const out: Action[] = []
   rows.forEach((row, index) => {
     if (!isCommerceLinkRow(row)) return
+    // A3.3: a Commerce Link at search / landing depth is not a CTA. The resolver no longer emits
+    // one for a row, but a cached result from before still can — judged here, at the last exit.
+    const facts = outboundLinkFacts(row.url, row.kind, { commerceDepth: row.depth, commerceKind: row.kind, tracked: row.tracked, providerId: row.providerId })
+    if (!isDeepEnough(facts)) { reportOutboundLink(row.url, facts, { domain }); return }
+    reportOutboundLink(row.url, facts, { domain })
     const kind = actionKindFor(row.intentType)
     const a = action(kind, row.url, domain, { urlKind: urlKindFor(row.kind), platform: row.merchantName })
     if (!a) return
@@ -366,13 +372,19 @@ export function buildActions(
    */
   for (const ev of src.order_search_results ?? []) {
     if (!ev?.link || !namesTheVenue(ev.link)) continue
+    const facts = outboundLinkFacts(ev.link, 'order')
+    reportOutboundLink(ev.link, facts, { domain })
+    if (!isDeepEnough(facts)) continue
     out.push(action('order', ev.link, domain, { urlKind: 'direct', attributed: true }))
   }
-  const orderLinks = src.order_links ?? (domain === 'food' && name ? buildFoodOrderLinks(name, src.address, location) : [])
-  for (const l of orderLinks) {
-    if (!namesTheVenue(l.url)) continue
-    out.push(action('order', l.url, domain, { platform: l.name, urlKind: 'search' }))
-  }
+  /**
+   * A3.3 / A3.6 (owner, 2026-09-20): GrabFood and ShopeeFood are Tier 2 CTAs on the CARD — and a
+   * CTA is the venue's OWN page on the platform (the entity-scoped evidence above, or a Commerce
+   * Link), never the platform's search for its name and never a front door. The legacy
+   * `order_links` (GrabFood search + BeFood homepage) were exactly those and are not emitted;
+   * `buildFoodOrderLinks` stays for the prose injector's legacy surfaces only.
+   */
+  void buildFoodOrderLinks
 
   // ── Platform links — spa and entertainment: website + maps, nothing more ───
   const platformLinks = src.platform_links ?? (
@@ -390,8 +402,10 @@ export function buildActions(
   // the row (its property page beats its results page), and Agoda's link only when it is a real
   // search — Agoda's search URL drops the query (verified 14 Sep 2026), so the tool now hands a
   // front door, which is never a "Tìm phòng trên Agoda" on a hotel.
-  if (!commerceProviders.has('booking') && !otherMerchant(src.booking_link)) out.push(action('booking', src.booking_link, domain, { platform: 'Booking.com', urlKind: 'search' }))
-  if (!commerceProviders.has('agoda') && !otherMerchant(src.agoda_link) && src.agoda_link && /[?&](q|textToSearch|city)=/.test(src.agoda_link)) out.push(action('booking', src.agoda_link, domain, { platform: 'Agoda', urlKind: 'search' }))
+  // A3.3 (2026-09-20): Booking.com's results page and Agoda's front door are search / homepage
+  // depth — never a CTA. A hotel's booking action is its OWN page on the OTA (the row link below,
+  // or a Commerce Link with the stay applied).
+  void otherMerchant
 
   // ── The row's own link — and it is not a "product" outside shopping ───────
   //
@@ -404,7 +418,17 @@ export function buildActions(
   // The link's HOST decides what it is, because that is the only honest source:
   // an OTA's own hotel page is a booking, anything else is just the venue's
   // website. Nothing is guessed from the domain alone.
-  out.push(action(rowLinkKind(rowLink, domain), rowLink, domain, { urlKind: 'direct' }))
+  const rowKind = rowLinkKind(rowLink, domain)
+  if (rowLink && (rowKind === 'purchase' || rowKind === 'booking')) {
+    // A3.3: a purchase / booking CTA is the product's or the hotel's OWN page. A Google Shopping
+    // row link (`google.com/…ibp=oshop…`), an OTA results page or a front door is reported and
+    // dropped — the card shows no CTA rather than a wrong one.
+    const facts = outboundLinkFacts(rowLink, rowKind)
+    reportOutboundLink(rowLink, facts, { domain })
+    if (isDeepEnough(facts)) out.push(action(rowKind, rowLink, domain, { urlKind: 'direct' }))
+  } else {
+    out.push(action(rowKind, rowLink, domain, { urlKind: 'direct' }))
+  }
 
   // ── Universal ─────────────────────────────────────────────────────────────
   out.push(action('maps', src.maps_link, domain, { urlKind: 'direct' }))

@@ -121,8 +121,8 @@ describe('orchestrator + ranking + fallback', () => {
   beforeEach(() => { process.env.ACCESSTRADE_PUBLISHER_ID = '6277265300509373567'; setCommerceEventWriter(() => {}) })
   afterEach(() => { delete process.env.ACCESSTRADE_PUBLISHER_ID; setCommerceEventWriter(null) })
 
-  it('returns a disabled failure and no links while CCP_ENABLED is false (default)', () => {
-    const r = resolveCommerce(hotelReq, { now, hints: [{ subjectRef: '10569789' }] })
+  it('returns a disabled failure and no links when CCP is disabled (the switch is ON since A3, 2026-09-20)', () => {
+    const r = resolveCommerce(hotelReq, { now, hints: [{ subjectRef: '10569789' }], enabled: false })
     expect('links' in r && r.links).toEqual([])
     expect('providersFailed' in r && r.providersFailed[0]).toMatchObject({ code: 'disabled' })
   })

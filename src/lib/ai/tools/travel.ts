@@ -98,9 +98,11 @@ export async function getFlightPrices(origin: string, destination: string, lang 
   const defaultDepartISO = departDateISO && /^\d{4}-\d{2}-\d{2}$/.test(departDateISO) ? departDateISO : new Date(Date.now() + 7 * 86400000 + 7 * 3600000).toISOString().slice(0, 10)
   // VN-recognizable booking links (Traveloka + Google Flights). If a city can't be mapped
   // to an airport code, fall back to a city-name Google Flights query only.
+  // A3.3 (2026-09-20): the dated route pages on the airlines' / OTAs' own sites, or nothing — Google
+  // Flights is an intermediary and an unmapped city has no route page to point at.
   const bookingLinks = originCode && destCode
-    ? buildFlightLinks(originCode, destCode, defaultDepartISO)
-    : [{ name: 'Google Flights', url: `https://www.google.com/travel/flights?q=${encodeURIComponent(`Flights from ${origin} to ${destination}`)}` }]
+    ? buildFlightLinks(originCode, destCode, defaultDepartISO).filter(l => !/google\./i.test(l.url))
+    : []
 
   let result: unknown
   if (!originCode || !destCode) {
@@ -152,10 +154,11 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  // Registry projections (Completion Pass, 14 Sep 2026): the Booking.com results page keeps the
-  // destination and the stay; Agoda's search URL drops the query (verified), so its link is the
-  // front door — a "see more on Agoda" text link, never a per-hotel search button.
-  const { bookingUrl, agodaUrl } = buildHotelSearchLinks(location, checkIn, checkOut)
+  // A3.3 (2026-09-20): the Booking.com results page and Agoda's front door are search / homepage
+  // depth and are NOT emitted any more — a hotel's link is its OWN OTA page (found by the site:
+  // search below) or a Commerce Link with the stay applied. `buildHotelSearchLinks` stays for
+  // the legacy prose surfaces only.
+  void buildHotelSearchLinks
   const budgetTag = maxBudgetVnd && maxBudgetVnd < 1_500_000
     ? ' gia re binh dan duoi ' + Math.round(maxBudgetVnd / 1000) + 'k -"5 sao" -pullman -marriott -hilton -sheraton -sofitel -intercontinental -novotel'
     : ''
@@ -257,18 +260,14 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         return true
       }).slice(0, 8)
     }
-    // Neu mot ket qua tro toi trang OTA nhung KHONG phai trang rieng 1 khach san (vd trang city/budget chung),
-    // thay link bang bookingUrl de model khong gan nham cho ten khach san cu the
+    // An OTA result that is NOT one hotel's own page (a city / budget listing) is not a hotel row:
+    // A3.3 (2026-09-20) drops it instead of swapping in the results page as before.
     if (searchResults) {
-      searchResults = searchResults.map(r => {
+      searchResults = searchResults.filter(r => {
         try {
-          const u = new URL(r.link)
-          const host = u.hostname.replace(/^www\./, '')
-          if ((host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')) && !isSpecificOtaHotelPage(r.link)) {
-            return { ...r, link: bookingUrl }
-          }
-          return r
-        } catch { return r }
+          const host = new URL(r.link).hostname.replace(/^www\./, '')
+          return !((host.includes('booking.com') || host.includes('agoda.com') || host.includes('traveloka.com')) && !isSpecificOtaHotelPage(r.link))
+        } catch { return true }
       })
     }
     /**
@@ -326,22 +325,16 @@ export async function getHotelPrices(location: string, checkIn?: string, checkOu
         source,
         ...(searchResults && searchResults.length > 0 ? { search_results: searchResults } : {}),
         hotel_list: hotelList,
-        booking_link: bookingUrl,
-        agoda_link: agodaUrl,
         note: messages.hotels.priceDisclaimer(lang)
       }
     } else {
       result = {
         error: messages.hotels.noData(lang),
         hotel_list: hotelList,
-        booking_link: bookingUrl,
-        agoda_link: agodaUrl,
-        note: messages.hotels.seeBookingAt(lang, bookingUrl),
-        search_url: bookingUrl,
       }
     }
   } catch {
-    result = { error: messages.hotels.fetchError(lang), booking_link: bookingUrl, agoda_link: agodaUrl, note: messages.hotels.seeBookingAt(lang, bookingUrl), search_url: bookingUrl }
+    result = { error: messages.hotels.fetchError(lang) }
   }
   setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut
   return result
@@ -402,10 +395,9 @@ export async function getTransportOptions(origin: string, destination: string, m
   let result: unknown
 
   if (!isTaxi) {
-    // Vexere's front door. The former /ket-qua-tim-kiem-ve-xe-khach?fromLocationName= grammar
-    // returns 404 (verified 14 Sep 2026); the dated route page is a CCP link (attachCommerceLinks).
-    const vexereUrl = buildCoachLandingLink()
-    const trainUrl = 'https://dsvn.vn/'
+    // A3.3 (2026-09-20): no front doors. Vexere's dated route page is a Commerce Link
+    // (attachCommerceLinks → `vexere_link`); the railway has no route page to point at.
+    void buildCoachLandingLink
     try {
       const [busResults, trainResults] = await Promise.all([
         serperSearch('ve xe khach tu ' + origin + ' di ' + destination + ' gia bao nhieu vexere futa phuong trang'),
@@ -417,15 +409,13 @@ export async function getTransportOptions(origin: string, destination: string, m
           origin, destination,
           bus_search_results: busResults || [],
           train_search_results: trainResults || [],
-          vexere_link: vexereUrl,
-          train_booking_link: trainUrl,
           note: messages.transport.intercityDisclaimer(lang)
         }
       } else {
-        result = { error: messages.transport.noIntercityResults(lang), vexere_link: vexereUrl, train_booking_link: trainUrl }
+        result = { error: messages.transport.noIntercityResults(lang) }
       }
     } catch {
-      result = { error: messages.transport.noIntercityResults(lang), vexere_link: vexereUrl, train_booking_link: trainUrl }
+      result = { error: messages.transport.noIntercityResults(lang) }
     }
   } else {
     try {

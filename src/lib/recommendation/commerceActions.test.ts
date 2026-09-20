@@ -52,8 +52,8 @@ describe('buildActions with commerce_links', () => {
       depth: 4, guestDepth: 5, authenticatedDepth: 5, authRequiredAt: 'none', loginRequired: false, handoff: 'guest', freshnessType: 'static',
       expiresAt: '2026-10-09T17:00:00.000Z', tracked: false, capability: 'hotel_booking', primary: true,
     })
-    // The legacy Booking.com search handoff is still offered, after it.
-    expect(actions[1]).toMatchObject({ kind: 'booking', urlKind: 'search', platform: 'Booking.com' })
+    // A3.3 (2026-09-20): the legacy Booking.com results-page handoff is NOT offered any more.
+    expect(actions.some(a => a.kind === 'booking' && a.urlKind === 'search')).toBe(false)
   })
 
   it('intent → kind: product/spa voucher = purchase · table = reservation · ticket/activity = ticket · delivery = delivery', () => {
@@ -71,9 +71,8 @@ describe('buildActions with commerce_links', () => {
     }
   })
 
-  it('a SEARCH_HANDOFF is an honest search; every other kind is direct', () => {
-    const search = buildActions({ commerce_links: [row({ kind: 'SEARCH_HANDOFF' })] }, 'travel')[0]
-    expect(search.urlKind).toBe('search')
+  it('A3.3: a SEARCH_HANDOFF Commerce Link is not emitted at all (never a search results page); every other kind is direct', () => {
+    expect(buildActions({ commerce_links: [row({ kind: 'SEARCH_HANDOFF', depth: 2 })] }, 'travel').some(a => a.commerce)).toBe(false)
     for (const kind of ['DIRECT_DEEP_LINK', 'AFFILIATE_DEEP_LINK', 'TRACKED_DEEP_LINK', 'DETAIL_HANDOFF', 'CONFIGURED_HANDOFF', 'CHECKOUT_HANDOFF'] as const) {
       expect(buildActions({ commerce_links: [row({ kind })] }, 'travel')[0].urlKind, kind).toBe('direct')
     }
@@ -123,13 +122,12 @@ describe('buildActions with commerce_links', () => {
 describe('labels — the merchant is named and the login boundary is stated', () => {
   const direct = buildActions({ commerce_links: [row()] }, 'travel')[0]
   const login = buildActions({ commerce_links: [row({ providerId: 'cgv', merchantName: 'CGV', intentType: 'buy_ticket', domain: 'entertainment', authRequiredAt: 'before_selection', url: 'https://www.cgv.vn/default/x.html', destinationUrl: 'https://www.cgv.vn/default/x.html' })] }, 'entertainment')[0]
-  const search = buildActions({ commerce_links: [row({ kind: 'SEARCH_HANDOFF' })] }, 'travel')[0]
+  // A3.3: a SEARCH_HANDOFF is no longer an action — the label of a search commerce link is a moot key.
 
   it('resolves platform-bearing keys, with a LoginOn variant for a login boundary', () => {
     expect(resolveActionLabel(direct)).toEqual({ key: 'v3.action.bookingOn', params: { platform: 'Trip.com' } })
     expect(resolveActionLabel(login)).toEqual({ key: 'v3.action.ticketLoginOn', params: { platform: 'CGV' } })
-    // A search handoff is still a search — commerce facts do not upgrade the promise.
-    expect(resolveActionLabel(search)).toEqual({ key: 'v3.action.bookingSearch', params: { platform: 'Trip.com' } })
+    expect(buildActions({ commerce_links: [row({ kind: 'SEARCH_HANDOFF', depth: 2 })] }, 'travel').some(a => a.commerce)).toBe(false)
   })
 
   it('renders finished strings in both languages, and every new key exists in both dictionaries', () => {

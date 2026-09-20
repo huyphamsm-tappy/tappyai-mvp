@@ -15,18 +15,18 @@ const links = (row: Row): CommerceLinkRow[] => (row[COMMERCE_LINKS_KEY] as Comme
 const noSearch = vi.fn(async () => [])
 
 describe('flights — get_flight_prices booking links are a CCP projection', () => {
-  it('projects Trip.com and Traveloka dated fare lists first, then the airlines; facts travel without URLs; nothing else is left on the result', async () => {
+  it('projects Trip.com and Traveloka DATED fare lists (the route\'s own page); the airlines\' front doors (L1) are not emitted (A3.3, 2026-09-20); facts travel without URLs', async () => {
     const result: Row = { flights: [], booking_links: [{ name: 'Traveloka', url: 'https://legacy.example/x' }], origin: 'SGN', destination: 'HAN' }
     await attachCommerceLinks('get_flight_prices', result, { enabled: true, now: NOW, search: noSearch, origin: 'Sài Gòn', destination: 'Hà Nội', departDate: '2026-10-10', passengers: 2 })
     const names = (result.booking_links as Array<{ name: string; url: string }>).map(l => l.name)
-    expect(names).toEqual(['Trip.com', 'Traveloka', 'Vietnam Airlines', 'Vietjet'])
+    expect(names).toEqual(['Trip.com', 'Traveloka'])
     const urls = (result.booking_links as Array<{ name: string; url: string }>).map(l => l.url)
     expect(urls[0]).toBe('https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-10&flighttype=ow&class=y&quantity=2&locale=vi-VN&curr=VND')
     expect(urls[1]).toBe('https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=10-10-2026.null&ps=2.0.0&sc=ECONOMY')
     expect(urls.some(u => u.includes('legacy.example'))).toBe(false)
     const facts = result._tappy_commerce as RouteHandoffFacts[]
     expect(facts.map(f => [f.providerId, f.kind, f.depth, f.authRequiredAt])).toEqual([
-      ['tripcom', 'SEARCH_HANDOFF', 2, 'none'], ['traveloka', 'SEARCH_HANDOFF', 2, 'none'], ['vietnamairlines', 'SEARCH_HANDOFF', 1, 'none'], ['vietjet', 'SEARCH_HANDOFF', 1, 'none'],
+      ['tripcom', 'SEARCH_HANDOFF', 2, 'none'], ['traveloka', 'SEARCH_HANDOFF', 2, 'none'],
     ])
     expect(facts.every(f => f.assumedParams.length === 0 && f.limitations.length > 0)).toBe(true)
     expect(JSON.stringify(facts)).not.toMatch(/https?:/)
@@ -70,11 +70,11 @@ describe('coaches — get_transport_options vexere_link is a CCP projection', ()
     expect(String(result.vexere_link)).not.toContain('ket-qua-tim-kiem')
   })
 
-  it('a route page for other places is refused and the front door is the fallback; a taxi turn is untouched', async () => {
+  it('a route page for other places is refused and NO front door stands in (A3.3, 2026-09-20); a taxi turn is untouched', async () => {
     const search = vi.fn(async () => [{ title: 'x', link: 'https://vexere.com/vi-VN/ve-xe-khach-tu-ha-noi-di-sa-pa-lao-cai-124t24241.html', snippet: '' }])
     const result: Row = { type: 'intercity', vexere_link: 'x' }
     await attachCommerceLinks('get_transport_options', result, { enabled: true, now: NOW, search, origin: 'Sài Gòn', destination: 'Đà Lạt', transportMode: 'intercity' })
-    expect(result.vexere_link).toBe('https://vexere.com/vi-VN')
+    expect(result.vexere_link).toBe('x') // untouched: the seam emitted nothing (the tool itself no longer sets a front door)
     const taxi: Row = { type: 'taxi', apps: [] }
     await attachCommerceLinks('get_transport_options', taxi, { enabled: true, now: NOW, search, origin: 'a', destination: 'b', transportMode: 'taxi' })
     expect(taxi).toEqual({ type: 'taxi', apps: [] })

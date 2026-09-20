@@ -195,7 +195,7 @@ describe('product identity (§8) — never a different product labelled as the r
     expect(productIdentityMatch('Máy giặt LG', 'Hàng chính hãng giá tốt')).toBe('mismatch')
   })
 
-  it('the seam drops a discovered listing for another product and offers the marketplace search instead', async () => {
+  it('the seam drops a discovered listing for another product — and offers NOTHING in its place (A3.3, 2026-09-20: never a search results page)', async () => {
     const row = { title: 'Điện thoại Apple iPhone 16 Pro 128GB', link: 'https://www.google.com/search?q=iphone+16+pro&prds=1', price_vnd: 25990000, source: 'Fogo Store' }
     const result = { search_results: [row], source: 'Google Shopping (Serper)' }
     const { search } = marketplaceSearch([
@@ -204,9 +204,7 @@ describe('product identity (§8) — never a different product labelled as the r
     ])
     await attachCommerceLinks('search_products', result, { enabled: true, now: NOW, search })
     const ls = links(row)
-    expect(ls.filter(l => l.kind !== 'SEARCH_HANDOFF')).toEqual([])
-    expect(ls.find(l => l.providerId === 'shopee')).toMatchObject({ kind: 'SEARCH_HANDOFF', depth: 2 })
-    expect(ls.find(l => l.providerId === 'tiktokshop')).toBeUndefined() // no search grammar, no detail: honestly absent
+    expect(ls).toEqual([])
   })
 })
 

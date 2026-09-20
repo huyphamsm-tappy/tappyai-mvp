@@ -99,13 +99,13 @@ describe('CommerceRequest carries a capability that must agree with its intent',
 })
 
 describe('the seam routes by the user\'s words (Food & Drink)', () => {
-  it('A · delivery intent → no PasGo link; the legacy order links remain the actions', async () => {
+  it('A · delivery intent → no PasGo link; and no platform SEARCH is an order action any more (A3.3 / A3.6, 2026-09-20)', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
     await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Tôi muốn đặt món ăn giao tận nhà.' })
     expect(links(row)).toEqual([])
     const rec = placeRecommendations(result, 'Quận 3')[0]
-    expect(rec.entity.actions[0]).toMatchObject({ kind: 'order', urlKind: 'search', platform: 'ShopeeFood' })
+    expect(rec.entity.actions.some(a => a.kind === 'order' && a.urlKind === 'search')).toBe(false)
     expect(rec.entity.actions.some(a => a.commerce)).toBe(false)
   })
 
@@ -129,7 +129,9 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
     expect(links(row)).toEqual([])
     expect(search).not.toHaveBeenCalled()
     const kinds = placeRecommendations(result, 'Quận 3')[0].entity.actions.map(a => a.kind)
-    expect(kinds.slice(0, 2)).toEqual(['order', 'order'])
+    // A3.3: the legacy search order links are gone; maps leads.
+    expect(kinds[0]).toBe('maps')
+    expect(kinds).not.toContain('order')
   })
 
   it('the two intents cannot collapse: a reservation sentence never yields a delivery link, and a delivery sentence never a reservation', async () => {

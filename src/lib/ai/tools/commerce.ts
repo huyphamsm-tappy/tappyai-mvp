@@ -148,7 +148,9 @@ const MAX_HOTEL_QUERIES = 4
  * would be a duplicate, subject-less CTA. Landing fallbacks exist for the route-level handoffs
  * (flights, coaches), where the merchant's front door with the route typed on site is the truth.
  */
-const MIN_ROW_LINK_DEPTH = 2
+const MIN_ROW_LINK_DEPTH = 3 // A3.3 (2026-09-20): a row's CTA is the subject's OWN page (L3+) — never a search results page
+/** A route handoff is the DATED ROUTE page (L2: the fare list for that route); a merchant front door (L0/L1) is not. */
+const MIN_ROUTE_LINK_DEPTH = 2
 /** The departure the flight / coach tools assume when the user gave no date (+7 days, VN). */
 const DEFAULT_DEPART_OFFSET_MS = 7 * 86_400_000 + 7 * 3_600_000
 
@@ -529,8 +531,10 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
         // A ROW carries subject links. A merchant's SEARCH page for the row's name is kept only for
         // shopping (owner decision 14 Sep 2026: the marketplaces' honest fallbacks); a hotel or a
         // venue row never gets "Tìm … trên X" for a capability it was not asked for.
+        // A3.3 (owner, 2026-09-20): NEVER a search results page — the marketplaces' "honest search
+        // fallbacks" of 14 Sep are gone; a shopping row with no product page found gets no CTA.
         const projected = out.links
-          .filter(l => l.depth >= MIN_ROW_LINK_DEPTH && (plan.domain === 'shopping' || l.kind !== 'SEARCH_HANDOFF'))
+          .filter(l => l.depth >= MIN_ROW_LINK_DEPTH && l.kind !== 'SEARCH_HANDOFF')
           .map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
         if (projected.length === 0) continue
         const existing = Array.isArray(row[COMMERCE_LINKS_KEY]) ? (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) : []
@@ -658,7 +662,8 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
     const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, ...(requested ? { constraints: { merchantAllowList: requested.merchantAllowList } } : {}), context }
     const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
     if (!('links' in out) || out.links.length === 0) return r
-    const rows = dedupeLinks([], out.links.map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
+    // A3.3: the dated route page or nothing — a merchant's front door with the route to be typed is not a route link.
+    const rows = dedupeLinks([], out.links.filter(l => l.depth >= MIN_ROUTE_LINK_DEPTH).map(l => projectCommerceLinkRow(l, out.requestId, intentType, assumed, { primary: true })), flight ? 4 : 1)
     if (rows.length === 0) return r
     const projected = rows.map(l => ({ name: l.merchantName, url: l.url }))
     if (flight) r.booking_links = projected

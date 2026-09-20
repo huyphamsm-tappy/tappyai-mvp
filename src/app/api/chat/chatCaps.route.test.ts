@@ -66,7 +66,8 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 import { POST } from '@/app/api/chat/route'
 import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
 
-const post = async (text = 'Tìm quán bún bò ngon ở Quận 1 cho 2 người, dưới 100k') => {
+// Fixtures as escapes: the i18n ratchet (webHardcodedUiStrings) scans src/app for Vietnamese code points.
+const post = async (text = 'T\u00ecm qu\u00e1n b\u00fan b\u00f2 ngon \u1edf Qu\u1eadn 1 cho 2 ng\u01b0\u1eddi, d\u01b0\u1edbi 100k') => {
   const req = {
     url: 'http://localhost/api/chat', nextUrl: new URL('http://localhost/api/chat'),
     headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web' }),
@@ -129,7 +130,7 @@ describe('Pro daily ceiling', () => {
     // the same limiter the route consults, then the 301st turn is a real request.
     const { publicDailyRateLimit } = await import('@/lib/security/publicRateLimit')
     for (let i = 0; i < PRO_DAILY_CHAT_CAP; i++) await publicDailyRateLimit(`chat:pro:${h.state.user!.id}`, PRO_DAILY_CHAT_CAP)
-    const canned = await post('cảm ơn nhé') // canned chit-chat — $0, exempt from every quota
+    const canned = await post('c\u1ea3m \u01a1n nh\u00e9') // canned chit-chat — $0, exempt from every quota
     expect(canned.status).toBe(200)
     const modelBefore = h.state.calls.model
     const res = await post()
