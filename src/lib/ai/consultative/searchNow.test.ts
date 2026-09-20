@@ -67,7 +67,8 @@ describe('deriveSearchNow — the concrete first call for a place request', () =
     expect(derive('đi chơi ở đâu — 3–5 người', { afterClarify: true })).toEqual({ query: 'địa điểm vui chơi giải trí', type: 'attraction', exact: true })
     expect(derive('đi chơi ở đâu — 3–5 người')).toMatchObject({ exact: false })
     expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa', { afterClarify: true })).toEqual({ query: 'nước hoa', type: 'product', exact: true })
-    expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa')).toBeNull()
+    // F (2026-09-20): a first turn that names its product gets the product call as a suggestion.
+    expect(derive('quà sinh nhật cho bạn gái tầm 1tr — nước hoa')).toMatchObject({ type: 'product', exact: false })
   })
 })
 
@@ -114,8 +115,11 @@ describe('E3 — a NAMED venue of any kind is searched exactly', () => {
 })
 
 describe('E3 — a known product family with no where-word is a product turn, not a place pre-search', () => {
-  it('"loa karaoke gia đình dưới 3 triệu" gets no search_places directive (measured EP1)', () => {
-    expect(derive('loa karaoke gia đình dưới 3 triệu loại nào hát hay')).toBeNull()
+  it('"loa karaoke gia đình dưới 3 triệu" gets a PRODUCT directive, never a place one (measured EP1 web, B5 Android)', () => {
+    expect(derive('loa karaoke gia đình dưới 3 triệu loại nào hát hay')).toEqual({ query: 'loa karaoke gia đình dưới 3 triệu loại nào hát hay', type: 'product', exact: false })
+    expect(derive('Mua tai nghe bluetooth dưới 1 triệu, pin trâu')).toMatchObject({ type: 'product', exact: false })
+    expect(derive('mua bánh trung thu Kinh Đô online, hộp 4 bánh')).toMatchObject({ type: 'product' })
+    expect(derive('cửa hàng CellphoneS gần Quận 1 nhất ở đâu?')).not.toMatchObject({ type: 'product' })
   })
   it('a karaoke VENUE ask still does', () => {
     expect(derive('karaoke gần đây cho nhóm 8 người tối nay, tầm 150k/người')).toMatchObject({ type: 'attraction', query: expect.stringContaining('quán karaoke') })

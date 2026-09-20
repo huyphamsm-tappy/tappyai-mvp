@@ -20,6 +20,7 @@ import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
 import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
 import { CLARIFY_JOIN } from './actionability'
+import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 
 export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product'
 export interface SearchNow {
@@ -101,10 +102,16 @@ export function deriveSearchNow(input: {
     const shopping = (frame.domains.includes('shopping') && !frame.placeDecision) || input.need?.domain === 'shopping' || SHOP_REQUEST.test(normalizeVN(request.toLowerCase()))
     if (shopping) return answer || input.need?.subject ? { query: input.need?.subject ?? answer, type: 'product', exact: true } : null
   }
-  if (frame.domains.includes('shopping') && !frame.placeDecision) return null
+  // F (2026-09-20, measured Android turn B5 "loa karaoke gia dinh duoi 3 trieu…"): with no directive the
+  // model asked "mua loa hay tìm quán karaoke?" instead of searching. A first-turn purchase that NAMES
+  // its product (a known family, or an unknown noun after the buy verb) gets the product call as a
+  // SUGGESTED query — the same directive the clarify answer already gets, one turn earlier.
+  const shoppingNamed = input.need?.domain === 'shopping' && (!!input.need?.subject || namesUnknownProduct(deriveShoppingConstraints([{ role: 'user', content: input.text }], input.need?.budget ?? null)))
+  const asksWhere = /(?:^|\s)(?:o dau|gan day|gan toi|gan minh|cua hang|tiem|shop|sieu thi)(?:\s|$)/.test(normalizeVN(input.text.toLowerCase()))
+  if (frame.domains.includes('shopping') && !frame.placeDecision) return shoppingNamed && !asksWhere ? { query: input.text.trim(), type: 'product', exact: false } : null
   // E3 (measured EP1 "loa karaoke gia đình…"): the need profile KNOWS the product family, and nothing
   // asks where — a product turn, even when a venue word (karaoke) also lit the entertainment domain.
-  if (input.need?.domain === 'shopping' && !situation.place.text && !/(?:^|\s)(?:o dau|gan day|gan toi|gan minh|cua hang|tiem|shop|sieu thi)(?:\s|$)/.test(normalizeVN(input.text.toLowerCase()))) return null
+  if (input.need?.domain === 'shopping' && !situation.place.text && !asksWhere) return shoppingNamed ? { query: input.text.trim(), type: 'product', exact: false } : null
   // A purchase / gift request with no place domain is never a place call: "quà sinh nhật cho bạn
   // gái" carries the occasion "birthday", which the occasion fallback below would read as FOOD.
   if (SHOP_REQUEST.test(normalizeVN(input.text.toLowerCase())) && !frame.placeDecision && !frame.domains.some(d => d === 'food' || d === 'spa' || d === 'entertainment' || d === 'travel')) return null
