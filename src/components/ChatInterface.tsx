@@ -1530,7 +1530,9 @@ export default function ChatInterface({
                           />
                         </div>
                       )}
-                      <SavePlaceButton text={text} buttons={buttons} />
+                      {/* A1: the bubble now exists from the first progress frame, so this is gated
+                          like the action bar — it used to be hidden only because the bubble was. */}
+                      {!(isLoading && isLastMessage) && <SavePlaceButton text={text} buttons={buttons} />}
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3 animate-fade-in">
                           {buttons.map((btn, i) => {
