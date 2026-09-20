@@ -392,7 +392,9 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   // Phase D (2026-09-20): a named cinema ("rạp CGV Vincom Đồng Khởi"), karaoke, a water park, an
   // aquarium or a play venue is a VENUE — it takes the place tool, not `web_search` (measured live
   // run 19: the cinema question fell through to the trailing "?" rule and got no card).
-  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|rap phim|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|\bcgv\b|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim|karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|\bbida\b|billiards?|escape room|truot bang|ice rink|nha hat|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
+  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|rap phim|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|\bcgv\b|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim|(?<!loa |dan |micro |mic |may |bo )karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|\bbida\b|billiards?|escape room|truot bang|ice rink|nha hat|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
+  // E3: a fact question about a venue the user NAMED ("CellphoneS Nguyễn Trãi mở cửa mấy giờ?") is a place lookup.
+  if (namedVenueIn(text) !== null && /mo cua|dong cua|may gio|gio mo|gio dong|dia chi|so dien thoai|\bo dau\b|co .{0,20}khong|gia ve|con mo/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
   // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
   // and it used to route an evening-out request to shopping. A negative
@@ -727,6 +729,41 @@ export function namedCinemaQuery(normalizedText: string): string | null {
     words.push(w)
   }
   return words.join(' ')
+}
+
+/**
+ * E3 (2026-09-20, measured FK1 / PK2 / SK1): a question about a venue the user NAMED — "quán Cơm
+ * Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?", "Sả Spa Quận 1 mở cửa đến mấy giờ?" — is not a
+ * request to pick one, and the canned clarify asked "Tầm giá? Mấy người?". The name is read from
+ * the ORIGINAL text (case and diacritics intact): two or more capitalised tokens in a row that are
+ * not just an area, optionally introduced by a venue noun. Returns the name or null.
+ */
+const AREA_TOKENS = /^(?:Quận|Q\.?|Phường|P\.?|Huyện|Thành|Phố|TP\.?|Tỉnh|Sài|Gòn|Hà|Nội|Đà|Nẵng|Lạt|Phú|Quốc|Nhuận|Hội|An|Nha|Trang|Vũng|Tàu|Gò|Vấp|Bình|Thạnh|Tân|Thủ|Đức|Cần|Thơ|Huế|Sa|Pa|Hạ|Long|Việt|Nam|HCM|TPHCM|Hồ|Chí|Minh|Đồng|Nai|Biên|Hòa|Chánh|Tây|Ninh|Kiên|Giang|Lâm|Bà|Rịa|Mũi|Né|Phan|Thiết|Quy|Nhơn|Ninh|Cát|Bà|Mộc|Châu|Côn|Đảo|Cà|Mau|Bạc|Liêu|Sóc|Trăng|Vĩnh|Yên|Bái|Lào|Cai|Điện|Biên|Cao|Bằng|Lạng|Sơn|Hải|Phòng|Nam|Định|Thái|Nguyên|Bắc|Hưng|Hà|Nam|Thanh|Hóa|Nghệ|Vinh|Tĩnh|Quảng|Trị|Bình|Định|Tuy|Hòa|Khánh|Đắk|Lắk|Buôn|Ma|Thuột|Gia|Lai|Kon|Tum|Pleiku|Tây|Đô|Mỹ|Tho|Bến|Tre|Trà|Vinh|Long|Xuyên|Rạch|Giá|Hà|Tiên|Mekong|Chợ|Lớn)$/u
+const VENUE_NOUN_RE = /^(?:quán|quan|nhà hàng|tiệm|tiem|cafe|cà phê|spa|khách sạn|hotel|resort|rạp|rap|bar|karaoke|cửa hàng|siêu thị|homestay|shop|tiệm|salon|phòng khám)$/iu
+/** A venue-type word INSIDE a name ("Sả Spa", "Lotte Cinema", "Highlands Coffee") makes a sentence-initial run a name. */
+const VENUE_TYPE_WORD = /^(?:Spa|Cinema|Cine|Hotel|Resort|Karaoke|Cafe|Café|Coffee|Shop|Store|Mart|Plaza|Mall|Restaurant|Bistro|Kitchen|Garden|Lounge|Club|Bar|Pub|Villa|Homestay|Salon|Clinic|Center|Centre|Tower|Studio|Quán|Tiệm)$/iu
+export function namedVenueIn(originalText: string): string | null {
+  const tokens = originalText.replace(/[?!.,;:()]/g, ' ').split(/\s+/).filter(Boolean)
+  let best: string[] = []
+  for (let i = 0; i < tokens.length; i++) {
+    const run: string[] = []
+    let j = i
+    while (j < tokens.length && /^[\p{Lu}\p{N}][\p{L}\p{N}'’-]*$/u.test(tokens[j]) && !/^\d+$/.test(tokens[j])) { run.push(tokens[j]); j++ }
+    if (run.length >= 2) {
+      const introduced = i > 0 && VENUE_NOUN_RE.test(tokens[i - 1])
+      // Drop area tokens from the END ("Sả Spa Quận 1" → "Sả Spa"); a run that is ONLY an area is not a venue.
+      const core = [...run]
+      while (core.length > 0 && (AREA_TOKENS.test(core[core.length - 1]) || /^\d+$/.test(core[core.length - 1]))) core.pop()
+      const nonArea = core.filter(t => !AREA_TOKENS.test(t))
+      // At the very start of a message a capitalised run may just be sentence case ("Tìm quán…",
+      // "Resort Phú Quốc"): require the venue noun there, or a brand-shaped token (inner capital).
+      const startOk = i > 0 || introduced || core.some(t => /\p{Ll}\p{Lu}/u.test(t)) || core.length >= 3 || core.some(t => VENUE_TYPE_WORD.test(t))
+      if (nonArea.length >= (introduced ? 1 : 2) && core.length >= 2 && startOk && core.length > best.length) best = core
+      else if (introduced && nonArea.length >= 1 && core.length >= 1 && core.length > best.length) best = core
+    }
+    if (j > i) i = j - 1
+  }
+  return best.length > 0 ? best.join(' ') : null
 }
 
 // A MOVIE/SHOW something-to-watch cue: the reply is a recommendation from film

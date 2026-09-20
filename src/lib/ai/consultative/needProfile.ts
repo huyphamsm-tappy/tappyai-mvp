@@ -1,5 +1,5 @@
 import { extractBudget, type Budget } from '../budget'
-import { normalizeVN } from '../intent'
+import { normalizeVN, namedVenueIn } from '../intent'
 import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
 
 // ── The structured need (Phase 2 §3) ────────────────────────────────────────
@@ -94,7 +94,7 @@ const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   // this row knew ("rap cgv" is neither "rap phim" nor "rap chieu"), so the domain stayed null and
   // the whole consultative stack stood down on a cinema turn. Cinema chains, water parks,
   // aquariums and play venues are VENUES: they resolve to a venue card like a café does.
-  [/\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|bida|billiards?|escape room|san truot bang|truot bang|ice rink|nha hat|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
+  [/\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|(?<!loa |dan |micro |mic |may |bo )karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|bida|billiards?|escape room|san truot bang|truot bang|ice rink|nha hat|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
   [/\b(xe khach|tau hoa|tau lua|ve xe|\btaxi\b)\b/, 'transport', 'transport'],
 ]
 
@@ -497,6 +497,9 @@ export function deriveNeedProfile(
     for (const [re, subject, domain] of SUBJECTS) {
       if (re.test(t)) { matchedSubject = subject; matchedDomain = domain; break }
     }
+    // E3 (2026-09-20, measured SK1 "CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?"): a venue the user
+    // NAMED is a place whatever its kind — no lexicon row knows a store chain, but the name is there.
+    if (!matchedDomain && namedVenueIn(String(raw ?? '')) !== null) { matchedSubject = 'venue'; matchedDomain = 'places' }
 
     if (matchedDomain && p.domain && matchedDomain !== p.domain) {
       // A genuine task switch. Everything task-scoped goes; GPS is not

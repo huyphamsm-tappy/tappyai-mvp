@@ -105,3 +105,10 @@ describe('Phase D — entertainment venue kinds name their own call', () => {
     expect(derive('tối nay xem phim gì hay?')).toBeNull()
   })
 })
+
+describe('E3 — a NAMED venue of any kind is searched exactly', () => {
+  it('a named restaurant / spa is the call, typed by its noun, with no district or GPS', () => {
+    expect(derive('quán Cơm Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?', { gps: false })).toEqual({ query: 'Cơm Tấm Ba Ghiền Đặng Văn Ngữ', type: 'restaurant', exact: true })
+    expect(derive('Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?', { gps: false })).toEqual({ query: 'Sả Spa', type: 'spa', exact: true })
+  })
+})

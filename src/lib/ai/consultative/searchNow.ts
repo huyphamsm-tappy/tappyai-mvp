@@ -18,7 +18,7 @@
 import type { DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
-import { normalizeVN, namedCinemaQuery } from '../intent'
+import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
 import { CLARIFY_JOIN } from './actionability'
 
 export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product'
@@ -71,7 +71,7 @@ const BAR_RE = /\b(bar|pub|beer club|bia thu cong|quan bia|quan nhau|rooftop)\b/
 // `cinema` search, the others are `attraction` searches with the kind as the query — so a karaoke
 // / water park / aquarium turn fetches venues of that kind (a card), not "địa điểm vui chơi".
 const CINEMA_RE = /\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim)\b/
-const KARAOKE_RE = /\bkaraoke\b/
+const KARAOKE_RE = /(?<!loa |dan |micro |mic |may |bo )\bkaraoke\b/
 const WATER_PARK_RE = /\b(cong vien nuoc|water ?park)\b/
 const AQUARIUM_RE = /\b(thuy cung|aquarium)\b/
 const PLAY_RE = /\b(khu vui choi|bowling|bida|billiards?|escape room|truot bang|ice rink)\b/
@@ -115,6 +115,14 @@ export function deriveSearchNow(input: {
   // GPS to be searched (exact: the call is that venue, and the reply is about it).
   const namedCinema = namedCinemaQuery(normalizeVN(input.text.toLowerCase()))
   if (namedCinema) return { query: namedCinema, type: 'cinema', exact: true }
+  // E3: any other NAMED venue is searched exactly too, typed by its noun / the domain (a named
+  // restaurant answers its own hours question from its row — measured FK1).
+  const namedVenue = namedVenueIn(input.text)
+  if (namedVenue && !frame.domains.includes('shopping')) {
+    const t = normalizeVN(input.text.toLowerCase())
+    const type: SearchNowType = /\bspa\b|massage/.test(t) ? 'spa' : /\b(cafe|ca phe|coffee)\b/.test(t) ? 'cafe' : /\b(bar|pub)\b/.test(t) ? 'bar' : /\b(khach san|hotel|resort|homestay)\b/.test(t) ? 'hotel' : /\b(quan|nha hang|tiem|com|bun|pho|lau|nuong)\b/.test(t) ? 'restaurant' : 'attraction'
+    if (type !== 'hotel') return { query: namedVenue, type, exact: true }
+  }
   if (!situation.place.text && !situation.place.nearMe) return null
   const domain = domainOf(frame, input.need ?? null, situation, input.text)
   if (!domain) return null

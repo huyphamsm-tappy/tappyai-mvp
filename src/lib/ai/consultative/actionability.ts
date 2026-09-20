@@ -27,7 +27,8 @@
 import { deriveNeedProfile } from './needProfile'
 import { deriveDecisionFrame } from './decisionFrame'
 import { deriveSituation, type SituationFrame } from './situationFrame'
-import { normalizeVN, namedCinemaQuery } from '../intent'
+import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
+import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 
 export type Missing = 'area' | 'signal' | 'subject'
 
@@ -63,6 +64,10 @@ const BUDGET_OPTIONS: Record<'food' | 'spa' | 'entertainment' | 'travel', { vi: 
 
 /** Venue kinds a city has only a few of — the kind itself is the pick. */
 const RARE_VENUE_KIND = /\b(cong vien nuoc|water ?park|thuy cung|aquarium)\b/
+/** A follow-up pointing back at an answered venue: "rạp đó", "quán này", "cái thứ hai", "số 2". Folded text. */
+const ANAPHORA = /(?:^|\s)(?:rap do|quan do|cho do|cai do|tiem do|spa do|khach san do|o do|cai nay|quan nay|cho nay|cai thu (?:nhat|hai|ba|tu|nam)|cai dau|cai cuoi|so \d|cai so \d|ben do|ben day)(?:\s|$|[,.?!])/
+/** An event / concert TICKET ask — where to buy, not which venue to pick. Folded text. */
+const EVENT_TICKET = /(?:ve|ticket)\s+(?:concert|show|su kien|live|festival|nhac|ca nhac|kich|hoa nhac|le hoi)|(?:concert|su kien|festival|le hoi)\s.{0,40}(?:ve|mua o dau|ticket)/
 const fold = (s: string) => ' ' + normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim() + ' '
 const GIFT = /\b(qua|gift|present|qua tang|tang gi|tang ban|tang nguoi yeu)\b/
 const ACTIVITY = /\b(lam gi|di dau|choi gi|di choi|hoat dong gi|what to do|where to go|things to do)\b/
@@ -120,14 +125,26 @@ export function assessActionability(input: {
   // Phase D (2026-09-20, measured live run 22): a question ABOUT A NAMED VENUE ("tối nay rạp CGV
   // Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?") is not a request to pick one — budget and
   // party size decide nothing here, and the canned clarify asked for both. The venue is the answer.
-  if (namedCinemaQuery(last) !== null) return { ...none, domain }
+  // The venue may have been named EARLIER in the consultation (measured M4b: "rạp đó có suất sau 21h"
+  // after "rạp CGV Vincom Đồng Khởi tối nay chiếu gì?" was clarified) — the thread is the request.
+  if (userTexts.some(t => namedCinemaQuery(fold(t)) !== null)) return { ...none, domain }
+  // E3 (measured FK1 / PK2 / SK1): any venue the user NAMED — "quán Cơm Tấm Ba Ghiền…", "Sả Spa Quận 1".
+  if (domain !== 'shopping' && userTexts.some(t => namedVenueIn(t) !== null)) return { ...none, domain }
+  // A follow-up that points back at something already answered ("rạp đó", "quán này", "cái thứ hai")
+  // is answered, not clarified — the model resolves the reference.
+  if (input.lastAssistantText && ANAPHORA.test(last)) return { ...none, domain }
+  // An event / concert TICKET ask (measured EK2) is a where-to-buy question, not a venue pick.
+  if (EVENT_TICKET.test(last)) return { ...none, domain }
   // …and a city-scale venue KIND with a handful of instances (a water park, an aquarium — measured live
   // run 27: "thủy cung nào ở Sài Gòn…" was asked "Tầm giá? Mấy người?") is answered by naming them.
   if (RARE_VENUE_KIND.test(last)) return { ...none, domain }
 
   // A gift is gated whatever the frame's goal says (it reads "quà sinh nhật" as inform).
   if (domain === 'shopping') {
-    const subject = !!need.subject && !frame.clarify && !gift
+    // E3 (measured FP1 "mua bánh trung thu Kinh Đô online"): a product the lexicon does not know is
+    // still a NAMED product — B2 keeps it as unknownType; asking "mua món gì?" back is wrong.
+    const namedUnknown = !gift && namesUnknownProduct(deriveShoppingConstraints(input.messages, need.budget))
+    const subject = (!!need.subject || namedUnknown) && !frame.clarify && !gift
     const signals = { area: true, budget: !!need.budget, occasion: false, constraint: false, subject }
     if (subject || (frame.goal === 'inform' && !gift)) return { ...none, domain, signals }
     const q: ClarifyQuestion = gift

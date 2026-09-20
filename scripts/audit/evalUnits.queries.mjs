@@ -55,7 +55,7 @@ export const QUERIES = {
   M1a: { text: 'ăn gì ngon giờ', vertical: 'food', unit: 'VENUE', note: 'expects the canned clarify' },
   M1b: { text: 'dưới 100k/người', vertical: 'food', unit: 'VENUE', parent: 'M1a' },
   // M2 task switch (food → shopping in one thread)
-  M2a: { text: 'quán bún bò ngon Quận 1', vertical: 'food', unit: 'VENUE' },
+  M2a: { text: 'quán bún bò ngon Quận 1', vertical: 'food', unit: 'VENUE', note: 'expects the canned clarify (no budget / party / constraint — item 1 policy)' },
   M2b: { text: 'à mà thôi, mua tai nghe bluetooth dưới 1 triệu', vertical: 'shopping', unit: 'PRODUCT', parent: 'M2a' },
   // M3 follow-up chain on a venue
   M3a: { text: 'quán này mở mấy giờ?', vertical: 'food', unit: 'SCHEDULE_TICKET', parent: 'FV1' },

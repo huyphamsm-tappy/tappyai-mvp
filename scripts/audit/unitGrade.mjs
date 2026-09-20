@@ -14,7 +14,15 @@ const [dir, ...ids] = args.filter(a => !a.startsWith('--'))
 const fold = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase()
 const TYPE_PREFIX = /^(?:nha hang|quan an|quan|tiem|cafe|ca phe|coffee|restaurant|bar|pub|club|spa|salon|khach san|hotel|resort|homestay|rap|the)\s+/
 const strip = n => { const s = n.replace(TYPE_PREFIX, '').trim(); return s.length >= 3 ? s : n }
-const grounded = (h, known) => { const hh = strip(h); return known.some(k => { const kk = strip(k); return k.includes(h) || h.includes(k) || kk.includes(hh) || hh.includes(kk) }) }
+const GENERIC_TOKEN = /^(?:tai|nghe|loa|may|robot|hut|bui|loc|khong|khi|noi|chien|dau|vali|keo|sim|du|lich|tinh|massage|co|vai|gay|chieu|mini|xem|phim|bluetooth|day|cho|nha|hang|quan|an|the|and|of|-|–)$/
+// A product name is grounded when its brand/model tokens sit in a row title ("Tai nghe EDIFIER X2S" vs
+// "Tai nghe Bluetooth Edifier X2S …"): substring both ways is too strict for a title with extra words.
+const tokenGrounded = (h, known) => {
+  const toks = h.split(/\s+/).filter(t => t.length >= 2 && !GENERIC_TOKEN.test(t))
+  if (toks.length === 0) return false
+  return known.some(k => toks.filter(t => k.includes(t)).length / toks.length >= 0.6)
+}
+const grounded = (h, known) => { const hh = strip(h); return known.some(k => { const kk = strip(k); return k.includes(h) || h.includes(k) || kk.includes(hh) || hh.includes(kk) }) || tokenGrounded(h, known) }
 
 // ── evidence readers ──
 const ROW_KEYS = ['results', 'search_results', 'shopping_results', 'hotel_list', 'bus_search_results', 'train_search_results', 'price_search_results']
@@ -32,11 +40,12 @@ function threadRows(rec, dir, seen = new Set()) {
   return rows
 }
 /** VND amounts a text states, as numbers. "100-200k" → [100000, 200000]; "1.5 triệu" → 1500000; "250.000đ" → 250000; "100-200 N ₫" → both. */
-const UNIT = '(k|nghìn|nghin|ngàn|ngan|triệu|trieu|tr|₫|đ|vnd|vnđ|n ₫)'
+// Serper writes "100-500 N ₫" with NBSPs around the N; "240,000đ" / "250.000đ" are both thousands.
+const UNIT = String.raw`(k|nghìn|nghin|ngàn|ngan|triệu|trieu|tr|₫|đ|vnd|vnđ|n\s?₫)`
 const NUM = String.raw`(\d+(?:[.,]\d+)*)`
 const RANGE_RE = new RegExp(NUM + String.raw`\s*[-–]\s*` + NUM + String.raw`\s*` + UNIT + String.raw`(?![\p{L}\p{N}])`, 'giu')
 const SINGLE_RE = new RegExp(NUM + String.raw`\s*` + UNIT + String.raw`(?![\p{L}\p{N}])`, 'giu')
-const toNum = (numStr) => /^\d{1,3}(\.\d{3})+$/.test(numStr) ? Number(numStr.replace(/\./g, '')) : Number(numStr.replace(',', '.'))
+const toNum = (numStr) => /^\d{1,3}([.,]\d{3})+$/.test(numStr) ? Number(numStr.replace(/[.,]/g, '')) : Number(numStr.replace(',', '.'))
 function amountsIn(text) {
   const out = []
   let t = text
@@ -49,14 +58,15 @@ function amountsIn(text) {
   return out
 }
 function scale(n, unit) {
-  if (/^(k|nghìn|nghin|ngàn|ngan|n ₫)$/.test(unit)) return n * 1000
+  if (/^(k|nghìn|nghin|ngàn|ngan|n\s?₫)$/.test(unit)) return n * 1000
   if (/^(triệu|trieu|tr)$/.test(unit)) return n * 1000000
   return n
 }
 /** Clock times a text states, normalised "H:MM". */
 function timesIn(text) {
   const out = new Set()
-  const re = /\b(2[0-3]|[01]?\d):([0-5]\d)\b|\b(2[0-3]|[01]?\d)\s*(?:h|giờ|gio)\s*([0-5]\d)?(?:\s*(sáng|chiều|tối|đêm|pm|am))?(?![\p{L}\p{N}])/giu
+  // A duration ("5-6 giờ", "8.5 giờ", "khoảng 2 giờ", "mất 5 giờ") is not a clock time.
+  const re = /\b(2[0-3]|[01]?\d):([0-5]\d)\b|(?<!\d[.,])(?<!(?:khoảng|tầm|mất|trong|cỡ|thời gian|di chuyển|chạy|bay|kéo dài)\s+(?:\d+\s*[-–]\s*)?)\b(2[0-3]|[01]?\d)\s*(?:h|giờ|gio)\s*([0-5]\d)?(?:\s*(sáng|chiều|tối|đêm|pm|am))?(?![\p{L}\p{N}])/giu
   for (const m of text.matchAll(re)) {
     let h = Number(m[1] ?? m[3]); const min = m[2] ?? m[4] ?? '00'; const p = (m[5] ?? '').toLowerCase()
     if ((p === 'chiều' || p === 'tối' || p === 'pm') && h < 12) h += 12
@@ -69,7 +79,9 @@ const near = (v, set, tol = 0.02) => set.some(e => Math.abs(v - e) <= Math.max(e
 
 // ── prose readers ──
 const stripMarkers = p => p.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, ' ').replace(/\[TAPPY_SHOPPING\][\s\S]*?\[\/TAPPY_SHOPPING\]/g, ' ').replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/g, ' ').replace(/\[TAPPY_PLACES\][\s\S]*?\[\/TAPPY_PLACES\]/g, ' ').replace(/\[FOLLOWUPS\][^\n]*/g, ' ').replace(/\]\((https?:[^)]+)\)/g, ']')
-const nameLike = h => /^\p{Lu}/u.test(h) && h.split(/\s+/).length <= 7 && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b|\.(?:com|vn|net)\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không|website|app)\b/i.test(h) && !/^(?:Gợi ý|Phư?ơng án|Lưu ý|Mẹo|Tổng|Tham quan|Thay thế|Kết luận|Lịch trình|Ngày \d|Bữa|Buổi|Sáng|Trưa|Chiều|Tối|Giá vé|Lịch chiếu|Chọn ghế)\b/i.test(h)
+// Platforms, apps and CTA-ish labels in bold are not venue/product names.
+const PLATFORM = /^(?:Shopee|Lazada|Tiki|Sendo|TikTok Shop|Google Maps|Maps|Facebook|Zalo|Grab|GrabFood|ShopeeFood|BeFood|Momo|MoMo|Website|App|Traveloka|Trip\.com|Booking\.com|Agoda|Klook|Vexere|Ticketbox|CGV|Moveek|Gọi trực tiếp|Gọi điện|Gọi ngay|Lưu ý|Lịch chiếu|Giá vé|Xe Phương Trang|FUTA Bus Lines|tàu hỏa)$/i
+const nameLike = h => /^\p{Lu}/u.test(h) && h.split(/\s+/).length <= 7 && !PLATFORM.test(h) && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b|\.(?:com|vn|net)\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không|website|app|với|nâng cấp|màn hình|gọi|khoảng|tùy)\b/i.test(h) && !/^(?:Gợi ý|Phư?ơng án|Lưu ý|Mẹo|Tổng|Tham quan|Thay thế|Kết luận|Lịch trình|Ngày \d|Bữa|Buổi|Sáng|Trưa|Chiều|Tối|Giá vé|Lịch chiếu|Chọn ghế)\b/i.test(h)
 const boldNames = prose => [...prose.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => m[1]).filter(raw => !/[:：]\s*$/.test(raw.trim())).map(h => h.replace(/^\s*\d+[.)]\s*/, '').replace(/^\[([^\]]+)\]$/, '$1').replace(/\s*\([^)]*\)\s*$/, '').replace(/[:：,;.!?\-–—\s]+$/, '').trim()).filter(h => h && nameLike(h))
 const HEDGE = /(?:chưa (?:thấy|xác nhận|có|tìm (?:thấy|được))|mình chưa|không (?:tìm )?thấy|không thể (?:cập nhật|xác nhận)|chua (?:co|tim)|no evidence|not confirmed|couldn't find|chưa được xác nhận|kiểm tra (?:trực tiếp|trên trang|trên Maps))/i
 
@@ -88,9 +100,11 @@ function grade(rec, dir) {
 
   const bold = boldNames(prose)
   const ungrounded = bold.filter(h => !grounded(fold(h), rowNames))
-  const proseAmounts = amountsIn(prose)
+  // Bold markers sit between a duration word and its number ("khoảng **5-6 giờ**"): read numbers off plain text.
+  const plain = prose.split('**').join('')
+  const proseAmounts = amountsIn(plain)
   const untracedPrices = proseAmounts.filter(a => !near(a, evAmounts))
-  const untracedTimes = timesIn(prose).filter(t => !evTimes.has(t))
+  const untracedTimes = timesIn(plain).filter(t => !evTimes.has(t))
 
   const placesFinal = (rec.frames8 ?? []).flat().filter(a => a?.kind === 'tappy.places.v1' && !a.preliminary)
   const cardItems = placesFinal.length ? (placesFinal[placesFinal.length - 1].items?.length ?? 0) : 0
@@ -102,9 +116,13 @@ function grade(rec, dir) {
 
   const failures = []
   if (rec.status !== 200) failures.push(`http_${rec.status}`)
-  if (ungrounded.length) failures.push(`fabricated_name:${ungrounded.join('|')}`)
-  if (untracedPrices.length && !hedge) failures.push(`fabricated_price:${untracedPrices.join('|')}`)
-  if (untracedTimes.length && !hedge) failures.push(`fabricated_time:${untracedTimes.join('|')}`)
+  // A canned clarify's chips ("dưới 100k/người") are options, not claims.
+  if (!canned && ungrounded.length) failures.push(`fabricated_name:${ungrounded.join('|')}`)
+  if (!canned && untracedPrices.length && !hedge) failures.push(`fabricated_price:${untracedPrices.join('|')}`)
+  if (!canned && untracedTimes.length && !hedge) failures.push(`fabricated_time:${untracedTimes.join('|')}`)
+  // A canned clarify on a request that was already specified is itself a failure (E3: named venue,
+  // named product, event ticket, follow-up): the query set marks which ids EXPECT the clarify.
+  if (canned && !(q.note ?? '').includes('expects the canned clarify')) failures.push('unexpected_clarify')
   let unitOk = true
   if (!canned) {
     if (q.unit === 'VENUE') unitOk = cardItems > 0 || hasPlacesMarker || emptyHonest || (rec.parent && bold.length > 0 && ungrounded.length === 0)

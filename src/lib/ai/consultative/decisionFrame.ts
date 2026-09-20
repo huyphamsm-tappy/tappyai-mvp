@@ -27,8 +27,9 @@
 // Deterministic, model-free, clock-aware only through `now`. One AI.stream() per
 // turn stays one; the frame costs a few hundred prompt tokens, never a call.
 
-import { normalizeVN, namedCinemaQuery } from '../intent'
+import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
 import type { NeedProfile } from './needProfile'
+import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 import type { RankedEntry } from './rank'
 import type { CandidateAttrs } from './candidate'
 
@@ -206,10 +207,12 @@ export function deriveDecisionFrame(input: FrameInput): DecisionFrame {
   for (const c of criteria) for (const k of NEEDS[c.key]) if (!informationNeeded.includes(k)) informationNeeded.push(k)
 
   // Phase D: a named venue ("rạp CGV Vincom Đồng Khởi") is a location of its own.
-  const hasLocation = !!input.need.location.text || input.hasGps || namedCinemaQuery(last) !== null
+  // E3 (measured FP1 "mua bánh trung thu Kinh Đô online"): a product the lexicon does not know is still named.
+  const namedUnknownProduct = domains.includes('shopping') && namesUnknownProduct(deriveShoppingConstraints(input.messages, input.need.budget))
+  const hasLocation = !!input.need.location.text || input.hasGps || namedCinemaQuery(last) !== null || namedVenueIn(userTurns[userTurns.length - 1] ?? '') !== null
   const clarify: DecisionFrame['clarify'] =
     placeDecision && !hasLocation && goal !== 'plan' ? { about: 'location' }
-      : domains.includes('shopping') && !input.need.subject && goal !== 'inform' && !placeDecision ? { about: 'subject' }
+      : domains.includes('shopping') && !input.need.subject && !namedUnknownProduct && goal !== 'inform' && !placeDecision ? { about: 'subject' }
         : null
 
   return { goal, domains, occasion: { meal, when, partySize }, criteria, informationNeeded, clarify, placeDecision }

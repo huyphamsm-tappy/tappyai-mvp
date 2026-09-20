@@ -127,3 +127,24 @@ describe('Phase D — a rare city-scale venue kind is actionable as asked', () =
     expect(assess('công viên nước nào ở Sài Gòn hợp cho gia đình có trẻ em?').actionable).toBe(true)
   })
 })
+
+// ── E3 (2026-09-20, measured gate FK1 / SK1 / PK2 / FP1): named venues and named-but-unknown products ──
+describe('E3 — a question about a NAMED venue, and a product the lexicon does not know, are actionable', () => {
+  it.each([
+    'quán Cơm Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?',
+    'Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?',
+    'CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?',
+    'Thế Giới Di Động gần Quận 1 mấy giờ đóng cửa tối nay?',
+  ])('%s → no canned clarify', (text) => {
+    const r = assess(text, { gps: false })
+    expect(r.actionable).toBe(true)
+    expect(r.reply).toBeNull()
+  })
+  it('"mua bánh trung thu Kinh Đô online, hộp 4 bánh" names its product (unknownType) — no "mua món gì?"', () => {
+    const r = assess('mua bánh trung thu Kinh Đô online, hộp 4 bánh')
+    expect(r.actionable).toBe(true)
+  })
+  it('"mua gì bây giờ" still asks', () => {
+    expect(assess('mua gì bây giờ').actionable).toBe(false)
+  })
+})

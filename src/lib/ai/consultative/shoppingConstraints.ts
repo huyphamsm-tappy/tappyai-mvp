@@ -318,6 +318,15 @@ const textOf = (m: Msg): string =>
  * Latest statement wins per field, so changing your mind works; silence keeps
  * what was already said, so a follow-up inherits it.
  */
+/**
+ * E3 (2026-09-20): the unknown noun NAMES a product ("banh trung thu kinh do") rather than asking for one
+ * ("gi bay gio", "gi lam qua") — the actionability gate and the decision frame treat the former as a subject.
+ */
+export function namesUnknownProduct(k: Pick<ShoppingConstraints, 'unknownType' | 'productType'>): boolean {
+  if (k.productType || !k.unknownType) return false
+  return !/^(?:gi|cai gi|do|hang|san pham|qua|thu|mon|cai|nhung|may|vai|do gi|gi do|cai nao|loai nao)(?:\s|$)/.test(k.unknownType)
+}
+
 export function deriveShoppingConstraints(
   messages: readonly Msg[],
   budget: Budget | null,
