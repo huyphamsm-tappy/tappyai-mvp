@@ -59,6 +59,9 @@ const MACHINE_TO_MACHINE = [
   /^src\/app\/api\/stripe\/webhook\//,
   // /api/debug-places and /api/test-photos were deleted (F-014): unauthenticated in non-prod,
   // gated only by CRON_SECRET in prod, calling paid providers on every hit. Owner decision: remove.
+  // /api/track is a fire-and-forget analytics beacon — the client sends via sendBeacon/fetch and
+  // never reads the body, so its `persist_failed` code (F-027) is machine-facing, not user-facing.
+  /^src\/app\/api\/track\//,
   /^src\/app\/api\/health\//,
   /^src\/app\/api\/version\//,
 ]

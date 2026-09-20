@@ -121,11 +121,11 @@ const EXEMPT: Record<string, string> = {
   'voice/tts': 'anonymous tool; rate-limited',
   'voice/language': 'anonymous tool; rate-limited',
   'links/resolve': 'link metadata for the composer; rate-limited',
-  'upload/audio': 'refuses unauthenticated callers and is rate-limited',
+  // upload/audio and sound/[trackId]/play were retired with music reuse (F-024) — they answer 410
+  // Gone and no longer mutate, so they are not exempted anonymous-write routes.
   'upload/video': 'refuses unauthenticated callers and is rate-limited',
 
   // ── Counters and analytics. Not content, not a graph edge. ──
-  'sound/[trackId]/play': 'play counter — anonymous listens count too; rate-limited 30/min per IP',
   'reviews/[id]/interact': "the caller's own watch row; rate-limited 10/min, values clamped, one view per user per review",
   'deals/[id]/click': 'click analytics, no user content',
   'track': 'analytics, no user content',

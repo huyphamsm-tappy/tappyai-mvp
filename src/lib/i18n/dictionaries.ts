@@ -242,6 +242,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Cần cẩn thận',
     'scamShield.result.high': 'Nguy cơ cao',
     'scamShield.result.critical': 'Rất nguy hiểm',
+    // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
+    'musicRemoved.title': 'Tính năng âm thanh không còn khả dụng',
+    'musicRemoved.body': 'Tappy đã gỡ bỏ tính năng “Dùng âm thanh này”. Các video vẫn phát âm thanh của chính chúng.',
+    'musicRemoved.back': 'Quay lại',
     // Không phải một mức trên thang đo — là lời nói rằng chưa có kết luận. Tuyệt đối không được
     // dịch thành một biến thể của "An toàn".
     'scamShield.result.inconclusive': 'Chưa kết luận được',
@@ -500,6 +504,10 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.result.medium': 'Use caution',
     'scamShield.result.high': 'High risk',
     'scamShield.result.critical': 'Very dangerous',
+    // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
+    'musicRemoved.title': 'This sound feature is no longer available',
+    'musicRemoved.body': 'Tappy has removed the “use this sound” feature. Videos still play their own audio.',
+    'musicRemoved.back': 'Back',
     // Not a point on the scale — a statement that there is no verdict. It must never be worded
     // as a variant of "Safe".
     'scamShield.result.inconclusive': 'Could not be checked',
