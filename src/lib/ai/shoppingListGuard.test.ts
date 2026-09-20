@@ -72,3 +72,26 @@ describe('B4 — an emptied shopping reply is never blank', () => {
     void logs
   })
 })
+
+describe('B3 — a price no fetched row can verify is HEDGED, not cut', () => {
+  it('organic rows (no structured price): the amounts stay and one hedge line is appended; a name the rows do not carry is still cut', async () => {
+    const collector = createEnrichmentCollector(USER)
+    collector.setConsultativeV1(ON)
+    const organic = { source: 'serper_organic', search_results: [{ title: 'Máy lọc không khí Daikin MC55UVM6', link: 'https://www.dienmayxanh.com/x', snippet: 'HEPA' }] }
+    const reply = ['- **Daikin MC55UVM6** — khoảng 6.500.000₫, lọc HEPA', 'Mình nghiêng về **Daikin MC55UVM6**.'].join(NL)
+    const lines = ['9:{"toolCallId":"t1","toolName":"search_products","args":{"query":"máy lọc không khí"}}', `a:{"toolCallId":"t1","result":${JSON.stringify(organic)}}`, '0:' + JSON.stringify(reply), 'd:{"finishReason":"stop"}']
+    const logs: string[] = []
+    const orig = console.log
+    console.log = (...a: unknown[]) => { logs.push(a.map(String).join(' ')) }
+    let text = ''
+    try {
+      const res = applyPlaceEnrichmentStreamFilter(new Response(lines.join(NL) + NL), 'vi', collector, undefined, undefined, undefined, false, USER, true)
+      text = await new Response(res.body).text()
+    } finally { console.log = orig }
+    const out = prose(text)
+    expect(out, logs.filter(l => l.includes('tappyai_guard')).join('|')).toContain('6.500.000')
+    expect(out).toContain('Giá nêu trên chưa được xác nhận từ listing đã tìm')
+    expect(out.match(/chưa được xác nhận từ listing/g)).toHaveLength(1)
+    expect(logs.some(l => l.includes('"step":"hedged_unverified"'))).toBe(true)
+  })
+})

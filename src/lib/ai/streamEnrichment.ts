@@ -1490,7 +1490,27 @@ export function applyPlaceEnrichmentStreamFilter(
     // does not support is removed here — deterministically, with no model call,
     // no network call, and nothing written that was not already in the text.
     // Inert unless the evidence carries structured prices (see moneyGuard).
-    const guarded = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    const guardedRaw = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    /**
+     * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
+     * money guard enforces only where a structured price exists (it is inert on organic rows, by
+     * design). When product rows were fetched but none carries a price and the prose still states
+     * amounts, nothing can verify them — so the reply says so, once, at the end of the prose;
+     * the amounts are not cut (proportional) and nothing is invented.
+     */
+    const guarded = (() => {
+      if (guardedRaw.enforced || productRecords.length === 0) return guardedRaw
+      const claims = extractMoneyClaims(guardedRaw.text)
+      if (claims.length === 0) return guardedRaw
+      const hedge = lang === 'en'
+        ? 'The prices above are not confirmed by the fetched listings — check the seller page before ordering.'
+        : 'Giá nêu trên chưa được xác nhận từ listing đã tìm — bạn kiểm tra trên trang bán trước khi đặt.'
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'money', step: 'hedged_unverified', claims: claims.length, records: productRecords.length }))
+      const at = earliestMarker(guardedRaw.text)
+      const head = guardedRaw.text.slice(0, at).replace(/\s+$/, '')
+      const tail = guardedRaw.text.slice(at)
+      return { ...guardedRaw, text: `${head}${head ? '\n\n' : ''}${hedge}${tail ? `\n\n${tail}` : ''}` }
+    })()
     // The SPEC guard is the same idea applied to the other half of a product
     // claim. Money guards what a thing COSTS; this guards what it IS — weight
     // and battery, which /shopping never returns. They compose because both are
@@ -1530,7 +1550,12 @@ export function applyPlaceEnrichmentStreamFilter(
         ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
         : undefined
     const snippetV2 = snippetPriceGuardV2Enabled()
-    const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent)
+    // B3/B4 (2026-09-20): a SHOPPING turn ("máy lọc không khí phòng ngủ" reads as placeIntent
+    // through "phòng") is not judged by the PLACE snippet guard — its prices are the product
+    // unit's, judged by the money guard above and hedged when unverifiable. Only when no place
+    // search ran and a product search did.
+    const shoppingTurn = !hadPlaceSearch && (productQueries.length > 0 || productRecords.length > 0)
+    const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardSnippetPricesInText(travelGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
     const foodGuarded = snippetGuardResult ? snippetGuardResult.text : travelGuarded
