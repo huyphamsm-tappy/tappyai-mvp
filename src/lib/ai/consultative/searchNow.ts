@@ -102,6 +102,9 @@ export function deriveSearchNow(input: {
     if (shopping) return answer || input.need?.subject ? { query: input.need?.subject ?? answer, type: 'product', exact: true } : null
   }
   if (frame.domains.includes('shopping') && !frame.placeDecision) return null
+  // E3 (measured EP1 "loa karaoke gia đình…"): the need profile KNOWS the product family, and nothing
+  // asks where — a product turn, even when a venue word (karaoke) also lit the entertainment domain.
+  if (input.need?.domain === 'shopping' && !situation.place.text && !/(?:^|\s)(?:o dau|gan day|gan toi|gan minh|cua hang|tiem|shop|sieu thi)(?:\s|$)/.test(normalizeVN(input.text.toLowerCase()))) return null
   // A purchase / gift request with no place domain is never a place call: "quà sinh nhật cho bạn
   // gái" carries the occasion "birthday", which the occasion fallback below would read as FOOD.
   if (SHOP_REQUEST.test(normalizeVN(input.text.toLowerCase())) && !frame.placeDecision && !frame.domains.some(d => d === 'food' || d === 'spa' || d === 'entertainment' || d === 'travel')) return null

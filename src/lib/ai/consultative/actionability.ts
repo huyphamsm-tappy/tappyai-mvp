@@ -107,7 +107,9 @@ export function assessActionability(input: {
   // A gift request is shopping with no product ("quà sinh nhật cho bạn gái") — the frame reads
   // it as inform with no domain, so it is named here.
   const gift = GIFT.test(last) && !need.subject
-  const domain: Actionability['domain'] = gift ? 'shopping' : domainOf(frame)
+  // E3 (measured PP2): the need profile read a PURCHASE ("mua tinh dầu massage body…"); a venue word in
+  // the product name ("massage") lit the spa domain too, and the spa gate asked "Tầm giá? Mấy người?".
+  const domain: Actionability['domain'] = gift || need.domain === 'shopping' ? 'shopping' : domainOf(frame)
 
   const occasionSignal = !!situation.who || situation.partySize !== null || (!!situation.occasion && situation.occasion !== 'hangout' && situation.occasion !== 'quick_bite')
 

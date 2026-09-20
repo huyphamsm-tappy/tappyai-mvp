@@ -84,7 +84,7 @@ const text = (m: { role: string; content: unknown }): string =>
 // "quan" is never a food cue; only "quán ăn / quán cafe / quán nhậu…" are.
 const FOOD_RE = /\ban\b|\bquan (?:an|nhau|com|pho|bun|cafe|ca phe|nuong|lau|oc|chay)\b|nha hang|\bcafe\b|ca phe|\bcoffee\b|tra sua|\bbua\b|\bmon\b|\bpho\b|\bbun\b|\bcom\b|\blau\b|\bnuong\b|hai san|\bbuffet\b|\bpizza\b|\bsushi\b|\bfood\b|\beat\b|\bdinner\b|\blunch\b|\bbreakfast\b|\brestaurant\b|\bdrink\b/
 const SHOPPING_RE = /(?<!nhay )\bmua\b|san pham|\bshopee\b|\btiki\b|\blazada\b|\blaptop\b|dien thoai|\biphone\b|\btai nghe\b|\bproduct\b|\bbuy\b|\bshop\b|\bgia bao nhieu\b/
-const ENTERTAINMENT_RE = /\bbar\b|\bpub\b|\bclub\b|nhay mua|\bkaraoke\b|xem phim|rap phim|\bcinema\b|\bmovie\b|nightlife|night out|\bconcert\b|\bshow\b|giai tri|vui choi|di choi|an choi|\bgame\b|bida|\bbilliard/
+const ENTERTAINMENT_RE = /\bbar\b|\bpub\b|\bclub\b|nhay mua|(?<!loa |dan |micro |mic |may |bo )\bkaraoke\b|xem phim|rap phim|\bcinema\b|\bmovie\b|nightlife|night out|\bconcert\b|\bshow\b|giai tri|vui choi|di choi|an choi|\bgame\b|bida|\bbilliard/
 const TRAVEL_RE = /du lich|khach san|\bhotel\b|\bresort\b|ve may bay|chuyen bay|\bflight\b|\btrip\b|lich trinh|itinerary|\bxe khach\b|\btau\b|\btrain\b|tham quan|thang canh|diem du lich|\bhomestay\b|\btour\b|\bcheck-?in\b/
 const SPA_RE = /\bspa\b|\bmassage\b|\bnail\b|lam dep|\bsalon\b|toc\b|\bbeauty\b|\bfacial\b|goi dau|cham soc da|\bxong hoi\b/
 const UTILITY_RE = /thoi tiet|du bao|gia vang|ty gia|tin tuc|\bnews\b|\bweather\b|gold price|la gi\b|\bwhat is\b|\bnghia la\b|\bwhy\b|tai sao|\bvi sao\b|may gio/

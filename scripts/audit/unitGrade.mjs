@@ -81,7 +81,7 @@ const near = (v, set, tol = 0.02) => set.some(e => Math.abs(v - e) <= Math.max(e
 const stripMarkers = p => p.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, ' ').replace(/\[TAPPY_SHOPPING\][\s\S]*?\[\/TAPPY_SHOPPING\]/g, ' ').replace(/\[TAPPY_PLAN\][\s\S]*?\[\/TAPPY_PLAN\]/g, ' ').replace(/\[TAPPY_PLACES\][\s\S]*?\[\/TAPPY_PLACES\]/g, ' ').replace(/\[FOLLOWUPS\][^\n]*/g, ' ').replace(/\]\((https?:[^)]+)\)/g, ']')
 // Platforms, apps and CTA-ish labels in bold are not venue/product names.
 const PLATFORM = /^(?:Shopee|Lazada|Tiki|Sendo|TikTok Shop|Google Maps|Maps|Facebook|Zalo|Grab|GrabFood|ShopeeFood|BeFood|Momo|MoMo|Website|App|Traveloka|Trip\.com|Booking\.com|Agoda|Klook|Vexere|Ticketbox|CGV|Moveek|Gọi trực tiếp|Gọi điện|Gọi ngay|Lưu ý|Lịch chiếu|Giá vé|Xe Phương Trang|FUTA Bus Lines|tàu hỏa)$/i
-const nameLike = h => /^\p{Lu}/u.test(h) && h.split(/\s+/).length <= 7 && !PLATFORM.test(h) && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b|\.(?:com|vn|net)\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không|website|app|với|nâng cấp|màn hình|gọi|khoảng|tùy)\b/i.test(h) && !/^(?:Gợi ý|Phư?ơng án|Lưu ý|Mẹo|Tổng|Tham quan|Thay thế|Kết luận|Lịch trình|Ngày \d|Bữa|Buổi|Sáng|Trưa|Chiều|Tối|Giá vé|Lịch chiếu|Chọn ghế)\b/i.test(h)
+const nameLike = h => /^\p{Lu}/u.test(h) && h.split(/\s+/).length <= 7 && !PLATFORM.test(h) && !/\d{3,}|⭐|đánh giá|reviews?|^\d|₫|VND|\bk\b|\.(?:com|vn|net)\b/i.test(h) && !/\b(?:bạn|nên|về|trong|các|những|hầu hết|thực sự|để|là|có|không|website|app|với|nâng cấp|màn hình|gọi|khoảng|tùy|nếu|muốn|hơn|thì|khi|cần|chọn)\b/i.test(h) && !/^(?:Gợi ý|Phư?ơng án|Lưu ý|Mẹo|Tổng|Tham quan|Thay thế|Kết luận|Lịch trình|Ngày \d|Bữa|Buổi|Sáng|Trưa|Chiều|Tối|Giá vé|Lịch chiếu|Chọn ghế)\b/i.test(h)
 const boldNames = prose => [...prose.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => m[1]).filter(raw => !/[:：]\s*$/.test(raw.trim())).map(h => h.replace(/^\s*\d+[.)]\s*/, '').replace(/^\[([^\]]+)\]$/, '$1').replace(/\s*\([^)]*\)\s*$/, '').replace(/[:：,;.!?\-–—\s]+$/, '').trim()).filter(h => h && nameLike(h))
 const HEDGE = /(?:chưa (?:thấy|xác nhận|có|tìm (?:thấy|được))|mình chưa|không (?:tìm )?thấy|không thể (?:cập nhật|xác nhận)|chua (?:co|tim)|no evidence|not confirmed|couldn't find|chưa được xác nhận|kiểm tra (?:trực tiếp|trên trang|trên Maps))/i
 
@@ -111,7 +111,10 @@ function grade(rec, dir) {
   const hasPlacesMarker = /\[TAPPY_PLACES\]/.test(rec.prose)
   const hasShoppingMarker = /\[TAPPY_SHOPPING\]/.test(rec.prose)
   const shoppingRows = rows.filter(x => x.title && (x.price !== undefined || x.price_vnd !== undefined || x.link || x.url)).length
-  const link = /\]\(https?:\/\/|\[CTA_BUTTONS\]|https?:\/\/\S+/.test(rec.prose)
+  // A follow-up on a venue already answered inherits the consultation's link (the CTA is on the
+  // previous bubble) — measured M4b: "rạp đó có suất sau 21h không" answered with no new link.
+  const LINK_RE = /\]\(https?:\/\/|\[CTA_BUTTONS\]|https?:\/\/\S+/
+  const link = LINK_RE.test(rec.prose) || (!!rec.parent && rec.thread.filter(m => m.role === 'assistant').some(m => LINK_RE.test(String(m.content))))
   const emptyHonest = rows.length === 0 && /không tìm thấy|chưa tìm (?:thấy|được)|chưa có kết quả|không có kết quả/i.test(prose)
 
   const failures = []

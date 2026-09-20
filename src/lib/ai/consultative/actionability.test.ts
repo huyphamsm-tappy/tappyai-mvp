@@ -148,3 +148,9 @@ describe('E3 — a question about a NAMED venue, and a product the lexicon does 
     expect(assess('mua gì bây giờ').actionable).toBe(false)
   })
 })
+
+describe('E3 — a buy-verb message naming an unknown product is actionable even with a venue noun in it', () => {
+  it('"mua tinh dầu massage body chính hãng online" is not clarified (measured PP2)', () => {
+    expect(assess('mua tinh dầu massage body chính hãng online').actionable).toBe(true)
+  })
+})

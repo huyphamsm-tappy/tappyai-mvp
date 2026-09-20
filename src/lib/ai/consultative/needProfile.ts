@@ -500,6 +500,10 @@ export function deriveNeedProfile(
     // E3 (2026-09-20, measured SK1 "CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?"): a venue the user
     // NAMED is a place whatever its kind — no lexicon row knows a store chain, but the name is there.
     if (!matchedDomain && namedVenueIn(String(raw ?? '')) !== null) { matchedSubject = 'venue'; matchedDomain = 'places' }
+    // E3 (measured PP2 "mua tinh dầu massage body chính hãng online"): a message that OPENS with a buy
+    // verb is a purchase whatever venue noun follows ("massage" named the spa subject) — the product
+    // itself is the unknown-type noun the shopping validator reads.
+    if (matchedDomain === 'places' && /^(?:mua|dat mua|can mua|muon mua|order|dat hang)\s/.test(t)) { matchedSubject = null; matchedDomain = 'shopping' }
 
     if (matchedDomain && p.domain && matchedDomain !== p.domain) {
       // A genuine task switch. Everything task-scoped goes; GPS is not

@@ -378,3 +378,15 @@ describe('Phase D — cinema chains, karaoke, water parks, aquariums are enterta
     expect(deriveNeedProfile(turns('Galaxy Cinema Kinh Dương Vương có gần không?')).subject).toBe('entertainment')
   })
 })
+
+describe('E3 — a message that opens with a buy verb is shopping whatever venue noun follows', () => {
+  it('"mua tinh dầu massage body chính hãng online" → shopping, no spa subject (measured PP2)', () => {
+    const p = deriveNeedProfile(turns('mua tinh dầu massage body chính hãng online'))
+    expect(p.domain).toBe('shopping')
+    expect(p.subject).toBeNull()
+  })
+  it('"loa karaoke gia đình" is a speaker, not the karaoke venue kind (measured EP1)', () => {
+    const p = deriveNeedProfile(turns('loa karaoke gia đình dưới 3 triệu loại nào hát hay'))
+    expect(p.domain).toBe('shopping')
+  })
+})

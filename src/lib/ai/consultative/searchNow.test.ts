@@ -112,3 +112,12 @@ describe('E3 — a NAMED venue of any kind is searched exactly', () => {
     expect(derive('Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?', { gps: false })).toEqual({ query: 'Sả Spa', type: 'spa', exact: true })
   })
 })
+
+describe('E3 — a known product family with no where-word is a product turn, not a place pre-search', () => {
+  it('"loa karaoke gia đình dưới 3 triệu" gets no search_places directive (measured EP1)', () => {
+    expect(derive('loa karaoke gia đình dưới 3 triệu loại nào hát hay')).toBeNull()
+  })
+  it('a karaoke VENUE ask still does', () => {
+    expect(derive('karaoke gần đây cho nhóm 8 người tối nay, tầm 150k/người')).toMatchObject({ type: 'attraction', query: expect.stringContaining('quán karaoke') })
+  })
+})
