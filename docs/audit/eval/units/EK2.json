@@ -1,0 +1,28 @@
+{
+  "id": "EK2",
+  "text": "vé concert hoặc sự kiện cuối tuần này ở Sài Gòn mua ở đâu?",
+  "vertical": "entertainment",
+  "unit": "SCHEDULE_TICKET",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 419,
+  "ms": 420,
+  "evidenceId": "c8c24d85-c928-4ef7-8d94-473c9c77d595",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "vé concert hoặc sự kiện cuối tuần này ở Sài Gòn mua ở đâu?"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T06:30:30.876Z"
+}

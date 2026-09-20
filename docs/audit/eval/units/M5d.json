@@ -1,0 +1,52 @@
+{
+  "id": "M5d",
+  "text": "vậy chốt cái đầu, đặt lịch thế nào?",
+  "vertical": "spa",
+  "unit": "SCHEDULE_TICKET",
+  "parent": "M5c",
+  "surface": "web",
+  "status": 200,
+  "ttfb": 1396,
+  "ms": 3942,
+  "evidenceId": "2a0bf676-2d1e-428a-b7e4-05968dcfbd50",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Bạn có thể đặt lịch **Jang Mi Spa & Massage** bằng cách:\n\n• **Gọi trực tiếp** — tìm số điện thoại trên Google Maps\n• **Facebook** — spa thường có fanpage, có thể inbox để đặt lịch\n• **Google Maps** — nhấn nút \"Liên hệ\" hoặc \"Đặt lịch\" nếu spa hỗ trợ\n\nMình không có link đặt lịch trực tiếp, nhưng bạn có thể vào Google Maps tìm **Jang Mi Spa & Massage** Đà Nẵng → xem số điện thoại và địa chỉ chính xác để gọi hoặc ghé trực tiếp.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Jang+Mi+Spa+Massage+Da+Nang\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage thư giãn trong hôm nay với giá phổ thông. Dựa trên đánh giá và vị trí gần bạn, mình chọn **Jang Mi Spa & Massage** — có 4.9⭐ từ 8.571 đánh giá Google Maps, mở từ 09:00–22:00, nằm ở An Hải khá gần vị trí bạn. Đây là spa được yêu thích nhất ở Đà Nẵng với dịch vụ massage, đá nóng, spa mặt.\n\nNếu muốn chọn khác, **Panda Spa & Massage** cũng rất tốt (4.8⭐, 2.858 đánh giá), mở đến 23:45, có nhiều dịch vụ đa dạng và có thể đặt online trực tiếp trên website.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Jang Mi Spa\",\"type\":\"website\",\"url\":\"http://www.jangmispa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6104490640027775177\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Panda Spa có gì đặc biệt|Spa nào rẻ nhất Đà Nẵng|Massage trị liệu hay thư giãn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "gợi ý thêm"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thêm cho bạn. Ngoài **Jang Mi** và **Panda**, có thêm 2 spa rất tốt:\n\n• **Mo Ran Spa Massage** — 4.9⭐ (876 đánh giá), mở 09:00–22:30, ở Ngũ Hành Sơn. Spa này được yêu thích vì dịch vụ chất lượng và giá hợp lý, có website riêng để xem chi tiết.\n\n• **Clover Spa** — 4.8⭐ (1.433 đánh giá), mở 08:30–23:00, ở Hải Châu.\n\nBạn muốn biết thêm chi tiết về dịch vụ hoặc giá của spa nào không?\n[FOLLOWUPS]Giá massage bao nhiêu|Spa nào gần nhất|Có thể đặt online không[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "cái thứ hai có massage đá nóng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin cụ thể về dịch vụ massage đá nóng của **Clover Spa** trong kết quả tìm kiếm. Để chắc chắn, bạn có thể:\n\n• Xem trực tiếp trên **Google Maps** — thường có review chi tiết từ khách hàng nói về dịch vụ\n• Gọi spa để hỏi dịch vụ cụ thể\n\nNếu bạn ưu tiên massage đá nóng, **Jang Mi Spa** hoặc **Mo Ran Spa** đều có dịch vụ này. Bạn muốn chọn một trong hai cái này không?"
+    },
+    {
+      "role": "user",
+      "content": "vậy chốt cái đầu, đặt lịch thế nào?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn có thể đặt lịch **Jang Mi Spa & Massage** bằng cách:\n\n• **Gọi trực tiếp** — tìm số điện thoại trên Google Maps\n• **Facebook** — spa thường có fanpage, có thể inbox để đặt lịch\n• **Google Maps** — nhấn nút \"Liên hệ\" hoặc \"Đặt lịch\" nếu spa hỗ trợ\n\nMình không có link đặt lịch trực tiếp, nhưng bạn có thể vào Google Maps tìm **Jang Mi Spa & Massage** Đà Nẵng → xem số điện thoại và địa chỉ chính xác để gọi hoặc ghé trực tiếp.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Jang Mi Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Jang+Mi+Spa+Massage+Da+Nang\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "at": "2026-09-20T06:31:53.109Z"
+}

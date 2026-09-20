@@ -93,7 +93,9 @@ function grade(rec, dir) {
   const rowText = rows.map(x => JSON.stringify(x)).join(' ')
   const userText = rec.thread.filter(m => m.role === 'user').map(m => m.content).join(' ')
   const priorAssistant = rec.thread.filter(m => m.role === 'assistant').slice(0, -1).map(m => m.content).join(' ')
-  const evAmounts = [...amountsIn(rowText), ...amountsIn(userText), ...amountsIn(priorAssistant)]
+  // Structured prices are bare numbers on the row ("price": 29900) — no unit for the text reader to see.
+  const rowNumbers = rows.flatMap(x => ['price', 'price_vnd', 'priceVnd', 'extracted_price', 'price_min', 'price_max', 'fare', 'fare_vnd', 'price_per_night'].map(k => x[k]).filter(v => typeof v === 'number' && v >= 1000))
+  const evAmounts = [...rowNumbers, ...amountsIn(rowText), ...amountsIn(userText), ...amountsIn(priorAssistant)]
   const evTimes = new Set([...timesIn(rowText), ...timesIn(userText), ...timesIn(priorAssistant)])
   const canned = (rec.toolCalls?.length ?? 0) === 0 && /Để chọn đúng|mình cần biết|Bạn muốn làm gì\?|Bạn ở khu nào\?/.test(rec.prose) && rec.ms < 2500
   const hedge = HEDGE.test(prose)

@@ -1,0 +1,28 @@
+{
+  "id": "PK2",
+  "text": "Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?",
+  "vertical": "spa",
+  "unit": "SCHEDULE_TICKET",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 468,
+  "ms": 469,
+  "evidenceId": "411e932b-a5b3-4950-9c78-e3e47d384f2c",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T06:29:29.722Z"
+}
