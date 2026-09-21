@@ -42,7 +42,11 @@ Backs plan sharing (`/api/plans/share`, incl. the F-029 fix). The 2026-09-17 exp
 ### 2) `supabase/migrations/20260920100000_commerce_providers.sql`  — creates `commerce_providers`
 - **Check first (expect `f`):** `SELECT to_regclass('public.commerce_providers') IS NOT NULL AS applied;`
 - **Verify after:** `SELECT to_regclass('public.commerce_providers') IS NOT NULL AS ok;`  (expect `t`)
-- **Rollback:** ⚠️ **NONE** — see §5.
+- **Rollback: none needed — purely additive.** It only CREATEs a new table, a new trigger function
+  (`commerce_providers_touch`, not a replacement of anything existing), a trigger, RLS + revoke **on
+  that new table**, and seed rows. It ALTERs no existing table and replaces no existing function, so
+  there is nothing to unwind. To revert: `DROP TABLE public.commerce_providers CASCADE;`
+  `DROP FUNCTION IF EXISTS public.commerce_providers_touch();`
 
 ### 3) `supabase/migrations/20260920110000_commerce_feed_items.sql`  — creates `commerce_feed_items` + `commerce_feed_runs`
 **Must run after #2** (feed rows key on a `provider_id`).
@@ -52,7 +56,8 @@ Backs plan sharing (`/api/plans/share`, incl. the F-029 fix). The 2026-09-17 exp
   SELECT to_regclass('public.commerce_feed_items') IS NOT NULL AS items_ok,
          to_regclass('public.commerce_feed_runs')  IS NOT NULL AS runs_ok;   -- both t
   ```
-- **Rollback:** ⚠️ **NONE** — see §5.
+- **Rollback: none needed — purely additive** (two new tables + an index + RLS/revoke on them; no
+  existing object touched). To revert: `DROP TABLE public.commerce_feed_items, public.commerce_feed_runs;`
 
 ### 4) `supabase/migrations/20260920_f028_dob_self_correct_while_ineligible.sql`  — CREATE OR REPLACE `set_user_date_of_birth`
 The base function is already on prod; this replaces the body so an ineligible user can keep
@@ -136,9 +141,11 @@ Roll back in the **reverse** of the apply order, and only what you applied:
 `#6 music_tracks_lockdown` → `#5 F-032` → `#4 F-028` → `#3 commerce_feed_items` → `#2 commerce_providers` → `#1 plan_shares`.
 - #4, #5 rollbacks restore the previous function bodies (F-028/F-032 base). #6 restores the music_tracks
   policies + grants. #1 drops `plan_shares`.
-- ⚠️ **#2 and #3 (commerce) have NO rollback scripts.** To undo them you would hand-drop
-  `commerce_feed_items`, `commerce_feed_runs`, then `commerce_providers` (feed tables first). Decide
-  before the release whether that is acceptable, or write the two rollback files first.
+- **#2 and #3 (commerce) have no rollback scripts by design — they are purely additive** (only new
+  tables/index/trigger/policies + seed data; no existing object is altered or replaced). Reverting is a
+  plain drop of the new tables: `DROP TABLE public.commerce_feed_items, public.commerce_feed_runs;`
+  then `DROP TABLE public.commerce_providers CASCADE; DROP FUNCTION IF EXISTS public.commerce_providers_touch();`
+  (feed tables before the provider table).
 
 ---
 
