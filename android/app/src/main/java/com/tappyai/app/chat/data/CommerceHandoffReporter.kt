@@ -70,6 +70,12 @@ class RealCommerceHandoffReporter @Inject constructor(
 
     override fun tapped(commerce: LiveCommerceFacts, opened: Boolean) {
         analytics.track("commerce_action_tapped", props(commerce))
+        // affiliate_click — the GA4 funnel event (RUNBOOK §3.19). GA-only by the
+        // taxonomy filter: the commerce_* events here are internal and dropped from
+        // GA4, while this one is the single GA4 projection, mirroring web's
+        // trackGa('affiliate_click'). Provider slug + tracking-wrapper boolean only;
+        // never the URL or the opaque ids. (domain/vertical is not on LiveCommerceFacts.)
+        analytics.track("affiliate_click", mapOf("provider" to commerce.providerId, "tracked" to commerce.tracked))
         if (!opened) {
             analytics.track("commerce_handoff_failed", props(commerce) + ("reason" to "no_activity"))
             return

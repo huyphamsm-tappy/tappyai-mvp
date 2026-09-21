@@ -27,4 +27,12 @@ dependencies {
     implementation(project(":core:logging"))
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+
+    // Firebase Analytics — the one real AnalyticsProvider. BOM-managed (the version
+    // comes from the app's firebase-bom); the google-services plugin stays in the
+    // app module, which owns google-services.json.
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics.ktx)
+
+    testImplementation(libs.junit)
 }

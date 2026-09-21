@@ -17,6 +17,7 @@ import com.tappyai.app.scamshield.data.ScamCheckOutcome
 import com.tappyai.app.scamshield.data.ScamKnowledgeRepository
 import com.tappyai.app.scamshield.data.ScamScenario
 import com.tappyai.app.scamshield.data.ScamShieldRepository
+import com.tappyai.core.analytics.AnalyticsProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -48,6 +49,7 @@ class ScamShieldViewModel @Inject constructor(
     private val repository: ScamShieldRepository,
     private val history: ScamCheckHistoryStore,
     private val knowledge: ScamKnowledgeRepository,
+    private val analytics: AnalyticsProvider,
 ) : ViewModel() {
 
     var url by mutableStateOf("")
@@ -136,7 +138,7 @@ class ScamShieldViewModel @Inject constructor(
         if (target.isEmpty() || state is ScamShieldUiState.Checking) return
         run {
             when (val o = repository.check(target, preferVietnameseLabels = vietnamese())) {
-                is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); ScamShieldUiState.Result(o.result) }
+                is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); trackScamCheck("url", o.result.level); ScamShieldUiState.Result(o.result) }
                 is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
             }
         }
@@ -151,7 +153,7 @@ class ScamShieldViewModel @Inject constructor(
                 bytes == null -> ScamShieldUiState.Failed(ScamCheckFailure.Refused("no_image", null))
                 bytes.size > QR_MAX_BYTES -> ScamShieldUiState.Failed(ScamCheckFailure.Refused("too_large", null))
                 else -> when (val o = repository.checkQrImage(bytes, mime, preferVietnameseLabels = vietnamese())) {
-                    is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); ScamShieldUiState.Result(o.result) }
+                    is ScamCheckOutcome.Verdict -> { recent = history.record(o.result); trackScamCheck("qr", o.result.level); ScamShieldUiState.Result(o.result) }
                     is ScamCheckOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
                 }
             }
@@ -179,10 +181,18 @@ class ScamShieldViewModel @Inject constructor(
         val shot = screenshot
         run {
             when (val o = repository.analyzeMessage(message.trim(), messageUrl.trim(), shot?.bytes, shot?.mimeType, preferVietnameseLabels = vietnamese())) {
-                is MessageAnalysisOutcome.Verdict -> ScamShieldUiState.MessageResult(o.result)
+                is MessageAnalysisOutcome.Verdict -> { trackScamCheck("message", o.result.level); ScamShieldUiState.MessageResult(o.result) }
                 is MessageAnalysisOutcome.Failed -> ScamShieldUiState.Failed(o.failure)
             }
         }
+    }
+
+    /**
+     * scam_check (RUNBOOK §3.19). The verdict enum only — never the checked URL,
+     * message text, QR contents or any number extracted from them.
+     */
+    private fun trackScamCheck(checkType: String, level: RiskLevel) {
+        analytics.track("scam_check", mapOf("check_type" to checkType, "risk_level" to level.name))
     }
 
     private fun run(call: suspend () -> ScamShieldUiState) {

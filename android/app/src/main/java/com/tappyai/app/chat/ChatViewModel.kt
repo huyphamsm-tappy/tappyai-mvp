@@ -19,6 +19,7 @@ import com.tappyai.app.chat.data.ChatException
 import com.tappyai.app.chat.data.GuestAgeStore
 import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.CommerceHandoffReporter
+import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.app.chat.data.ChatStreamEvent
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
@@ -56,6 +57,7 @@ class ChatViewModel @Inject constructor(
     private val mapsRepository: MapsRepository,
     private val voiceLanguageRepository: VoiceLanguageRepository,
     private val commerceHandoffReporter: CommerceHandoffReporter,
+    private val analytics: AnalyticsProvider,
     private val guestAgeStore: GuestAgeStore,
     private val languageManager: LanguageManager,
     private val logger: LoggerProvider,
@@ -262,6 +264,10 @@ class ChatViewModel @Inject constructor(
 
     init {
         val id = conversationId
+        // chat_opened (RUNBOOK §3.19) — fires once when a fresh main chat opens. A
+        // resumed conversation (conversationId != null) is a continuation, matching
+        // web's !isContinuation gate; the ViewModel is created once per screen open.
+        if (id == null) analytics.track("chat_opened")
         if (id != null) {
             viewModelScope.launch {
                 when (val result = chatHistoryRepository.getConversationMessages(id)) {
@@ -669,6 +675,9 @@ class ChatViewModel @Inject constructor(
                     )
                 }
                 persistConversation()
+                // chat_response (RUNBOOK §3.19) — one hit per completed AI answer; feature
+                // is the domain enum (matches web's `feature`), never the reply text.
+                analytics.track("chat_response", mapOf("feature" to category.name.lowercase()))
             } catch (e: CancellationException) {
                 // User tapped Stop — suppress the indicator via onStop(); just rethrow.
                 throw e
@@ -768,6 +777,9 @@ class ChatViewModel @Inject constructor(
         val index = persistedIndexOf(messageId) ?: return
         viewModelScope.launch {
             messageFeedbackRepository.saveFeedback(id, index, MessageFeedback.Report, REPORT_REASON)
+            // report_submitted (F-031 / RUNBOOK §3.19) — the fixed reason enum only,
+            // never the reported message id, author or text.
+            analytics.track("report_submitted", mapOf("reason" to REPORT_REASON))
         }
     }
 
