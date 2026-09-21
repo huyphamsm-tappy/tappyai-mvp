@@ -76,40 +76,6 @@ export function setCache(key: string, data: unknown, ttlMs: number) {
   cache.set(key, { data, expires: Date.now() + ttlMs })
 }
 
-// ===== GOOGLE PLACES PHOTO — LIVE SOURCE ONLY =====
-// Google Maps Platform Terms of Service: Places content (photos) must not be pre-fetched,
-// cached, or stored beyond the request — only place_id (indefinitely) and lat/lng (<=30 days)
-// are exempt. This function therefore never persists the result; every call hits Google live.
-// photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
-export async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoName) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', placeId, hasKey: !!key, hasPhotoName: !!photoName }))
-    return null
-  }
-  const controller = new AbortController()
-  const tid = setTimeout(() => controller.abort(), 3000)
-  try {
-    // New API resource names (places/ChIJ.../photos/AeZ...) → use Places API (New) media endpoint
-    // Legacy photo_reference tokens → use old Maps API endpoint
-    const photoApiUrl = photoName.includes('/')
-      ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=400&key=${key}`
-      : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`
-    const resp = await fetch(photoApiUrl, { signal: controller.signal, redirect: 'follow' })
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', placeId, status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
-    if (!resp.ok) return null
-    const photoUri = resp.url
-    const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
-    if (!photoUri || !safe) return null
-    return photoUri
-  } catch (e) {
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', placeId, error: String(e) }))
-    return null
-  }
-}
-
 // ===== OFFICIAL WEBSITE IMAGE (og:image) — live only, short timeout, never blocks =====
 // Highest-priority source: an image the business itself publishes on its own site.
 // Bounded read (stops once <head> is seen or MAX_BYTES hit) + hard timeout so a slow/dead
@@ -373,10 +339,9 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
  * these to decide anything, and emitting them cannot change what is fetched.
  */
 export interface PhotoStepTiming {
-  // `places_detail` was removed when the legacy Place Details photo lookup was
-  // retired (approved architecture rev 2, §4.3). Nothing emits it any more, so
-  // it is gone from the union rather than left as a step that can never appear.
-  step: 'website' | 'places_media' | 'serper'
+  // `places_detail` and `places_media` were removed with the Google Places photo
+  // lookup (Google Places is unavailable for Vietnam). Nothing emits them any more.
+  step: 'website' | 'serper'
   ms: number
   /** The step produced at least one usable URL. */
   hit: boolean
@@ -385,7 +350,7 @@ export interface PhotoStepTiming {
 }
 
 export async function resolvePlacePhotos(
-  place: { place_id?: string; name?: string; website_uri?: string; photo_names?: string[] },
+  place: { place_id?: string; name?: string; website_uri?: string },
   max = 3,
   /**
    * Per-step timing sink (Phase 2 instrumentation).
@@ -417,32 +382,10 @@ export async function resolvePlacePhotos(
     mark('website', t, before)
   }
 
-  /**
-   * ── STEP 2 — Google's own photo, WITHOUT the legacy Place Details lookup ────
-   *
-   * 🚨 WHAT WAS REMOVED, AND WHY IT WAS SAFE TO REMOVE. This step used to call
-   * `maps.googleapis.com/maps/api/place/details/json?fields=photos` for the sole
-   * purpose of learning a photo reference — a separately billed request (Places
-   * Details Legacy) whose entire output was one token. `places.photos` in the
-   * search field mask now carries those references already, so the Details call
-   * asked Google for something the search response had handed over for free.
-   *
-   * 🔑 ONE photo is taken here, exactly as before. The old code read
-   * `photos[0].photo_reference` and stopped; taking three now would triple the
-   * billed Place Photo calls, which is a cost decision nobody approved. Serper
-   * still fills the rest of the gallery, so what the user sees is unchanged.
-   *
-   * A place with no `photo_names` — every OSM-sourced row, and any Google row
-   * whose venue has no photos — simply falls through to Serper, which is what
-   * happened whenever the Details call came back empty.
-   */
-  const photoName = place.photo_names?.[0]
-  if (collected.length < max && photoName && place.place_id) {
-    const tMedia = Date.now(); const beforeMedia = collected.length
-    addUnique(await fetchPlacePhoto(place.place_id, photoName))
-    mark('places_media', tMedia, beforeMedia)
-  }
-
+  // Google Places photo lookup removed (2026-09-21): Google Places is not available
+  // for Vietnam, so it was legacy code. Serper supplies the place card's photo
+  // directly (its /maps thumbnailUrl → photo_url), and the Serper image search
+  // below fills the rest of the gallery.
   if (collected.length < max && place.name) {
     const t = Date.now(); const before = collected.length
     const serperPhotos = await fetchPlacePhotosByName(

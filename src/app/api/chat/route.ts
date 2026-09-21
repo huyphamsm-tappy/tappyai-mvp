@@ -2116,7 +2116,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       const placeStart = Date.now()
       try {
         const urls = await resolvePlacePhotos(
-          { place_id: p.place_id, name: p.name, website_uri: p.website_uri, photo_names: p.photo_names },
+          { place_id: p.place_id, name: p.name, website_uri: p.website_uri },
           3,
           (t) => {
             const s = (photoSteps[t.step] ??= { n: 0, totalMs: 0, maxMs: 0, hits: 0, timeouts: 0 })

@@ -42,9 +42,6 @@ function stubFetch(handler: (url: string) => { status?: number; headers?: Record
   return calls
 }
 
-/** A Places API (New) photo resource name, as `places.photos` returns it. */
-const PHOTO_NAME = 'places/pid-1/photos/AeZabc'
-
 beforeEach(() => {
   // Image lookups are memoised; clear between tests so each measures its own call.
   __clearToolCache()
@@ -70,59 +67,12 @@ describe('the sink observes the steps that actually ran', () => {
   it('does not report a step that never ran', async () => {
     stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
     const steps: PhotoStepTiming[] = []
-    // No website_uri and no photo_names → website and Places steps cannot run.
+    // No website_uri → the website step cannot run; only Serper does. (The Google
+    // Places photo step was removed — Google Places is not available for Vietnam.)
     await resolvePlacePhotos({ name: 'Quán A' }, 3, t => steps.push(t))
     expect(steps.some(s => s.step === 'website')).toBe(false)
-    expect(steps.some(s => s.step === 'places_media')).toBe(false)
+    expect(steps.map(s => s.step)).toEqual(['serper'])
   })
-
-  it('reports the media step when the search result carried a photo name', async () => {
-    // 🔄 REWRITTEN, NOT DELETED. This used to assert a `places_detail` step that
-    // ran a legacy Place Details request purely to learn a photo reference. The
-    // widened field mask returns that reference on the search response, so the
-    // request — and the step — are gone. What must still hold is that Google's
-    // own photo is attempted before Serper, and that is what is asserted now.
-    stubFetch(url =>
-      url.includes('serper') ? { body: JSON.stringify({ images: [] }) }
-        : { body: 'binary', headers: { 'content-type': 'image/jpeg' } })
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3, t => steps.push(t))
-    const names = steps.map(s => s.step)
-    expect(names).toContain('places_media')
-    expect(names.indexOf('places_media')).toBeLessThan(names.indexOf('serper'))
-  })
-
-  it('omits the media step when the row carried no photo name', async () => {
-    stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    expect(steps.some(s => s.step === 'places_media')).toBe(false)
-  })
-
-  it('never issues a legacy Place Details request', async () => {
-    // 🚨 THE RETIREMENT, PINNED. That call was billed separately (Places Details
-    // Legacy) and its entire output was one photo token the search response
-    // already carried. If it ever comes back, this fails.
-    const calls = stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3)
-    expect(calls.some(u => u.includes('/place/details'))).toBe(false)
-  })
-})
-
-describe('a step that burns its timeout is reported, not hidden', () => {
-  it('marks the media step timedOut and still falls through to Serper', async () => {
-    stubFetch(url =>
-      url.includes('places.googleapis.com') ? 'hang'
-        : { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) })
-    const steps: PhotoStepTiming[] = []
-    const urls = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }, 3, t => steps.push(t))
-    const media = steps.find(s => s.step === 'places_media')!
-    expect(media, 'the timed-out step must still be reported').toBeDefined()
-    expect(media.hit).toBe(false)
-    // Unchanged behaviour: the fallback still runs and still returns its photo.
-    expect(steps.some(s => s.step === 'serper')).toBe(true)
-    expect(urls).toEqual(['https://cdn.example/s.jpg'])
-  }, 10_000)
 })
 
 describe('`hit` reports contribution, not mere completion', () => {
@@ -152,7 +102,7 @@ describe('measuring changes nothing', () => {
   const scenario = () => stubFetch(url =>
     url.includes('serper') ? { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) }
       : { body: 'binary', headers: { 'content-type': 'image/jpeg' } })
-  const place = { name: 'Quán A', place_id: 'pid-1', photo_names: [PHOTO_NAME] }
+  const place = { name: 'Quán A', place_id: 'pid-1' }
 
   it('returns the same photos with and without the sink', async () => {
     const c1 = scenario()

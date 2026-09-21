@@ -64,7 +64,7 @@ All four use the same password: **`TappyUAT!2026`**. All are 18+ (age gate passe
 ## 3. Seeded data
 
 - **Places / merchants for the 5 domains: nothing was seeded, and nothing needs to be.** Place/restaurant/hotel data is **not** in the database — it comes live from external providers. **Serper** (`google.serper.dev`) is the working provider and returns real Vietnamese places (verified: a "phở quận 1" query returned 12 real results). So FOOD / SHOPPING / TRAVEL / ENTERTAINMENT / SPA discovery, search, categories, filters, sorting and pagination all work live with real data — just start the server and ask.
-  - Caveat: **Google Places is 403** on this project (Maps Platform onboarding, not the key). It only supplies place *photos* and some details; the app degrades gracefully to "no photo" and never errors. So expect thinner imagery in places, not broken results.
+  - **Serper is the sole place provider — including photos.** Google Places was removed (2026-09-21): it is not available for Vietnam, so it was legacy code. Serper's `/maps` response carries a place thumbnail (`image`), and a Serper image search fills the rest of the gallery, so place cards show photos across all five domains (verified live).
 - **User data:** the four accounts above, plus history on account #1 (see §2). The rest of the audit DB is empty by design.
 - To re-seed the accounts/history (idempotent), the provisioning script lives in the session scratchpad; re-running it recreates or refreshes the four accounts.
 
@@ -130,7 +130,6 @@ Install the debug build (§1) and sign in.
 | **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
 | **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
 | **Google Analytics (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset — GA not wired for this env. | Configure a GA property. |
-| **Google Places photos/details** | 403 (Maps Platform onboarding). | Complete Maps Platform onboarding. Results still work via Serper; only imagery is thin. |
 | **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
 
 ---

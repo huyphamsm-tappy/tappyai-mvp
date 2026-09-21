@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { searchPlaces, __resetPlacesBreaker } from './food'
+import { searchPlaces } from './food'
 import { __clearToolCache } from './common'
 import { placesProvider, PLACES_PROVIDER_DEFAULT, __resetPlacesProviderWarning } from './placesProvider'
 
@@ -43,7 +43,7 @@ const ORIGINAL = { key: process.env.GOOGLE_PLACES_API_KEY, serper: process.env.S
 
 beforeEach(() => {
   googleCalls = 0; serperMapsCalls = 0; osmCalls = 0
-  __resetPlacesBreaker(); __clearToolCache(); __resetPlacesProviderWarning()
+  __clearToolCache(); __resetPlacesProviderWarning()
   process.env.GOOGLE_PLACES_API_KEY = 'test-key-valid-not-a-real-secret'
   process.env.SERPER_API_KEY = 'test-serper-not-a-real-secret'
   delete process.env.PLACES_PROVIDER
@@ -62,10 +62,14 @@ describe('placesProvider — the setting', () => {
     expect(placesProvider({})).toBe('serper')
     expect(placesProvider({ PLACES_PROVIDER: '  ' })).toBe('serper')
   })
-  it('accepts serper | google | osm, case-insensitively', () => {
-    expect(placesProvider({ PLACES_PROVIDER: 'google' })).toBe('google')
+  it('accepts serper | osm, case-insensitively', () => {
     expect(placesProvider({ PLACES_PROVIDER: 'OSM' })).toBe('osm')
     expect(placesProvider({ PLACES_PROVIDER: 'Serper' })).toBe('serper')
+  })
+  it('the removed `google` provider falls back to serper', () => {
+    // Google Places is not available for Vietnam; the provider value was retired 2026-09-21.
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    try { expect(placesProvider({ PLACES_PROVIDER: 'google' })).toBe('serper') } finally { err.mockRestore() }
   })
   it('an unknown value is a logged config error and falls back to serper', () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {})
@@ -89,11 +93,14 @@ describe('🚨 a valid Google key with PLACES_PROVIDER=serper makes NO Google ca
     expect(googleCalls).toBe(0)
     expect(serperMapsCalls).toBeGreaterThan(0)
   })
-  it('PLACES_PROVIDER=google: Google is called first and answers (the pre-2026-09-19 chain)', async () => {
+  it('PLACES_PROVIDER=google is retired: Google is never called, Serper /maps answers', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
     process.env.PLACES_PROVIDER = 'google'
-    const r = await searchPlaces('quán ăn ngon', 'Quận 1', 'restaurant', 'vi', { lat: 10.7769, lng: 106.7009 }) as { source?: string }
-    expect(googleCalls).toBe(1)
-    expect(r.source).toBe('Google Maps')
+    const r = await searchPlaces('quán ăn ngon', 'Quận 1', 'restaurant', 'vi', { lat: 10.7769, lng: 106.7009 }) as { source?: string; results?: unknown[] }
+    err.mockRestore()
+    expect(googleCalls).toBe(0)
+    expect(serperMapsCalls).toBeGreaterThan(0)
+    expect(r.results?.length).toBeGreaterThan(0)
   })
   it('PLACES_PROVIDER=osm: neither Google nor Serper /maps; OSM answers', async () => {
     process.env.PLACES_PROVIDER = 'osm'

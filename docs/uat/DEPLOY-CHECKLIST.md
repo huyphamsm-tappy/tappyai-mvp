@@ -163,7 +163,6 @@ Confirm these on the **production** project/host (they were unset in the audit e
 | Var / setting | Gates | If unset |
 |---|---|---|
 | `BLOB_READ_WRITE_TOKEN` (+ create a Vercel Blob store) | review photo / clip / avatar uploads | uploads fail — **set this** |
-| Google **Maps Platform onboarding/billing** for `GOOGLE_PLACES_API_KEY` | place photos & some details | 403 → thin imagery (results still work via Serper) |
 | **Supabase Auth → "Allow anonymous sign-ins"** (prod) | guest / anonymous flow | guests can't use the app (enable it on prod as was done on audit) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` (+ create a GA property) | analytics (F-001) | no GA |
 | `RESEND_API_KEY` | outbound email / OTP sign-in | email flows off (email+password still works) |
