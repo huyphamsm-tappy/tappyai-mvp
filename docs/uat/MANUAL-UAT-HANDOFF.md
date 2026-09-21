@@ -129,7 +129,7 @@ Install the debug build (§1) and sign in.
 - [ ] **Copyright policy is reachable.** Android: Settings → **Copyright Policy** opens the web `/copyright` page. Web: the footer's Copyright Policy link and `/copyright` render in EN + VI. *(Note for you: the policy text is still scoped to the removed music-upload feature — F-033 lists the legal-judgement rewrite for your decision.)*
 
 ### J. GA4 funnel events (F-001) — check each fires with no PII
-The web client is instrumented and client-verified; **delivery to the GA property is confirmed only in GA4 after you set the real Measurement ID** (`G-0PQ6Y6R2BE`) on production/preview. Two ways to check:
+The web client is instrumented and client-verified; **delivery to the GA property is confirmed only in GA4 after you set the real Measurement ID** (`G-8GP7L7N516`) on production/preview. Two ways to check:
 - **In the browser (works on localhost, any/dummy ID):** open DevTools console and run `window.dataLayer` after each action below — the event and its params appear as a pushed `['event', name, params]` entry.
 - **In GA4 (after the real ID is set on a deployed/preview build):** GA4 → **Admin → DebugView** (or **Reports → Realtime**) and watch the events land.
 
@@ -147,7 +147,7 @@ For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the l
 | `scam_check` | Run a Scam Shield url / QR / message check | `check_type` (url·qr·message) + `risk_level` — never the checked content |
 | `login` / `sign_up` | Sign in / create an account | `method` (+ `is_first_login` on login) |
 
-**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-0PQ6Y6R2BE` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All nine events are wired on Android now, including `recommendation_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
+**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-8GP7L7N516` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All nine events are wired on Android now, including `recommendation_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
 
 ---
 
@@ -159,7 +159,7 @@ For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the l
 | **Photo / clip / avatar uploads** | `BLOB_READ_WRITE_TOKEN` (Vercel Blob) is unset — the upload endpoints have nowhere to store the file. | Set a Blob token. Until then, expect the composer's photo attach and avatar change to fail. |
 | **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
 | **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
-| **Google Analytics delivery (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset locally, so no hit leaves the browser (the client IS instrumented — see §J to observe events in `window.dataLayer`). | Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-0PQ6Y6R2BE` on production only, redeploy, then confirm in GA4 Realtime. Android delivery also needs the Firebase↔GA4 link (§J). |
+| **Google Analytics delivery (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset locally, so no hit leaves the browser (the client IS instrumented — see §J to observe events in `window.dataLayer`). | Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-8GP7L7N516` on production only, redeploy, then confirm in GA4 Realtime. Android delivery also needs the Firebase↔GA4 link (§J). |
 | **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
 | **Buy buttons on shopping (F-036)** | `commerce_feed_items` is empty and `ACCESSTRADE_API_KEY`/`ACCESSTRADE_FEED_ENDPOINT` are unset, so no product-depth commerce link resolves → a shopping answer shows **no buy button** (expected, not a bug). | Set the Accesstrade env + `CRON_SECRET` and run the feed-ingest cron once (DEPLOY-CHECKLIST §6). Then a shopping query shows "Mua trên …" and `affiliate_click` becomes testable. |
 

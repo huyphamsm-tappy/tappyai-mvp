@@ -15,10 +15,22 @@ in-app tracker already emits, nothing more.
 | Build report | `scripts/check-env.mjs` (`CAPABILITY_ENV`) | Build output prints whether GA4 is active. Never fails the build. |
 | Tests | `src/lib/analytics/ga4.test.ts` | Enablement, once-per-route page_view, query/hash stripping, allowlist, tracker integration. |
 
+## The canonical property — use this one, do not create another
+
+The web app measures into the **canonical TappyAI GA4 property `549975015`**, web data stream
+**Measurement ID `G-8GP7L7N516`**. Do **not** create a second property and do **not** add a second
+Google tag: the app already loads exactly one `gtag.js` (a single `next/script` with a fixed
+`id="ga4-gtag"`, in `src/components/GoogleAnalytics.tsx`, rendered once in the root layout), and the
+Measurement ID is **not hardcoded anywhere** — it comes only from the env var below. Pointing that
+variable at `G-8GP7L7N516` is the entire web configuration.
+
+> An earlier interim ID, `G-0PQ6Y6R2BE`, is **superseded** by `G-8GP7L7N516`. If a duplicate/interim
+> property was created, do not wire the app to it — use `549975015` / `G-8GP7L7N516`.
+
 ## Environment
 
 ```
-NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
+NEXT_PUBLIC_GA_MEASUREMENT_ID=G-8GP7L7N516
 ```
 
 - **Vercel → Settings → Environment Variables → scope: Production ONLY.** Do not tick Preview or
@@ -31,7 +43,10 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
 
 ## Property configuration (manual, one-time, in GA4 admin)
 
-1. Create a GA4 property → Web data stream for `https://www.tappyai.com` → copy the Measurement ID.
+1. Open the **existing** canonical property `549975015` → its Web data stream for
+   `https://www.tappyai.com` → its Measurement ID is `G-8GP7L7N516`. **Do not create a new property
+   or a new data stream / tag.** (If a web stream for the domain does not exist yet on `549975015`,
+   add the stream to *this* property — do not spin up a separate property.)
 2. **Enhanced measurement**: keep *Page views* on, but open its ⚙ and turn **OFF "Page changes
    based on browser history events"**. The app sends its own `page_view` on every client-side
    route change; leaving this on would double-count SPA navigations.
@@ -41,8 +56,10 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX
    `page_location`, so it will collect nothing and can stay off.
 3. **Google Signals: OFF** (no ads personalisation, no cross-device joins). **Data retention:
    14 months** (default is 2).
-4. Optionally register the custom dimensions you want to slice by (Admin → Custom definitions):
-   `method`, `feature`, `source`, `search_type`, `reason`, `place_type` (event-scoped).
+4. Optionally register the custom dimensions you want to slice by (Admin → Custom definitions),
+   event-scoped: `method`, `feature`, `source`, `search_type`, `reason`, `place_type`, and the
+   funnel-completeness params `domain`, `check_type`, `risk_level`, `provider`, `tracked`
+   (`is_first_login` and `liked` are booleans sent as "true"/"false").
 
 ## Event taxonomy
 
@@ -60,6 +77,11 @@ All events originate from the in-app tracker; the "internal event" column is the
 | `search` | `review_search` | `search_type: reviews` | A search on the reviews feed. **The term is not sent.** |
 | `review_like` | `review_like` | `liked` | Like / unlike on a review. |
 | `share` | `review_share` | `content_type: review` | Share of a review. Google recommended name. |
+| `recommendation_click` | `recommendation_click` | `domain` | A recommended place / product card tapped. Vertical only, never the place/product. |
+| `report_submitted` | `report` | `reason` | A content report (F-031). Reason enum only. |
+| `scam_check` | `scam_check` | `check_type`, `risk_level` | A Scam Shield check. Type ∈ url/qr/message + verdict enum; never the checked content. |
+| `chat_opened` | `chat_opened` | *(none)* | Main chat opened (once per fresh open). |
+| `affiliate_click` | *(commerce-handoff tap)* | `domain`, `provider`, `tracked` | A buy / commerce link followed. GA-only (rides the CCP handoff beacon, no second internal row). |
 
 Baseline traffic / user / engagement metrics (users, sessions, engagement time, new vs returning,
 geography, device, landing pages, referrers) come from `page_view` + GA4's own session logic —
@@ -69,8 +91,9 @@ no extra code.
 
 - Any user identifier (`user_id` is never set — GA4 users are cookie-scoped only), e-mail, name.
 - Message text, AI output, search terms, review ids, place names, coordinates, tokens.
-- `page_time` (in-app only), `report` / `hide` / `not_interested` (moderation signals stay
-  internal), and any internal event not in `GA4_EVENT_MAP`.
+- `page_time` (in-app only), `hide` / `not_interested` (moderation signals stay internal), and any
+  internal event not in `GA4_EVENT_MAP`. (`report` **is** mirrored, as `report_submitted` with the
+  reason enum only — never the reported id, author or text.)
 - Query strings and hashes of any URL (`/login?email=1`, `?returnTo=`, `?q=`).
 
 ### Adding an event
