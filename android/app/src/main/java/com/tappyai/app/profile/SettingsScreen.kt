@@ -2,6 +2,7 @@ package com.tappyai.app.profile
 
 import android.content.Intent
 import android.net.Uri
+import com.tappyai.app.share.TappyShare
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteOutline
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.Copyright
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.VolumeUp
@@ -229,6 +231,24 @@ fun SettingsScreen(
                             accent = AccentGreen,
                             titleFontWeight = FontWeight.SemiBold,
                             onClick = onOpenPrivacy,
+                        )
+                        SettingsDivider()
+                        // Copyright / notice-and-takedown policy. Opens the web page
+                        // (TappyShare.CANONICAL_ORIGIN + "/copyright") rather than a native screen, so
+                        // web and Android read ONE policy that cannot drift — the native copy was
+                        // removed with music reuse. App Store/Play both require a reachable copyright
+                        // report path for user content.
+                        TappyMenuRow(
+                            icon = Icons.Filled.Copyright,
+                            title = stringResource(R.string.settings_copyright_policy),
+                            subtitle = stringResource(R.string.settings_copyright_policy_desc),
+                            accent = AccentPurple,
+                            titleFontWeight = FontWeight.SemiBold,
+                            onClick = {
+                                runCatching {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("${TappyShare.CANONICAL_ORIGIN}/copyright")))
+                                }
+                            },
                         )
                         SettingsDivider()
                         // Required by Google Play for any app that offers account creation, and

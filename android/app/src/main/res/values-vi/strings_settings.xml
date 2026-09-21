@@ -8,6 +8,7 @@
     <string name="settings_how_to_use_desc">Tìm hiểu cách sử dụng TappyAI</string>
     <string name="settings_terms_of_service_desc">Xem điều khoản và điều kiện</string>
     <string name="settings_privacy_policy_desc">Cách chúng tôi bảo vệ dữ liệu của bạn</string>
+    <string name="settings_copyright_policy_desc">Báo cáo nội dung vi phạm</string>
     <string name="settings_delete_account_desc">Gửi yêu cầu xóa tài khoản và dữ liệu của bạn</string>
     <string name="settings_section_options">Tùy chọn</string>
     <string name="settings_notifications">Thông báo</string>
@@ -22,6 +23,7 @@
     <string name="settings_how_to_use">Hướng dẫn sử dụng</string>
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_copyright_policy">Chính sách bản quyền</string>
     <string name="settings_version">Phiên bản %1$s</string>
     <string name="settings_signing_out">Đang đăng xuất…</string>
     <string name="settings_sign_out">Đăng xuất</string>

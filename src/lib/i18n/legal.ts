@@ -169,7 +169,7 @@ export const en: Record<string, string> = {
 
   'legal.copyright.s3.heading': '3. Reporting infringement (notice and takedown)',
   'legal.copyright.s3.p1':
-    'If you hold the rights to a work and believe a track on TappyAI infringes them, send a notice to the copyright agent below, or use the “Report” button on the track’s page.',
+    'If you hold the rights to a work and believe a track on TappyAI infringes them, send a notice to the copyright agent below, or use the in-app “Report” option and choose “Copyright”.',
   'legal.copyright.s3.lead': 'Your notice needs to include:',
   'legal.copyright.s3.b1': 'The track or link that infringes your rights.',
   'legal.copyright.s3.b2': 'Evidence that you are the rights holder.',
@@ -342,7 +342,7 @@ export const vi: Record<string, string> = {
 
   'legal.copyright.s3.heading': '3. Báo cáo vi phạm (Notice-and-Takedown)',
   'legal.copyright.s3.p1':
-    'Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng nút “Báo cáo” trên trang bài nhạc.',
+    'Nếu bạn là chủ sở hữu quyền và cho rằng một bản nhạc trên TappyAI vi phạm bản quyền của bạn, hãy gửi thông báo tới đại diện bản quyền bên dưới, hoặc dùng tùy chọn “Báo cáo” trong ứng dụng và chọn “Bản quyền”.',
   'legal.copyright.s3.lead': 'Thông báo cần gồm:',
   'legal.copyright.s3.b1': 'Bản nhạc hoặc đường dẫn bị vi phạm.',
   'legal.copyright.s3.b2': 'Bằng chứng bạn là chủ sở hữu quyền.',
