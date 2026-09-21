@@ -11,11 +11,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import ShareMenu from '@/components/share/ShareMenu'
 import { recordReviewShare } from '@/lib/share/recordReviewShare'
+import { REPORT_REASONS } from '@/lib/reviews/reportReasons'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
-  X, Loader2, Plus, AlertCircle, Sparkles,
+  X, Loader2, Plus, AlertCircle, Sparkles, Flag,
 } from 'lucide-react'
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
@@ -328,6 +329,25 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   const name = r.profiles?.full_name || t('reviews.anonymous')
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
   const [menu, setMenu] = useState(false)
+  // F-031 — a non-owner can report someone else's clip/review. The owner sees the
+  // delete/hide menu above; a signed-in non-owner sees this. Guests (me === null)
+  // see neither: the report route requires an authenticated identity (ADR-026).
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reporting, setReporting] = useState(false)
+  const submitReport = useCallback(async (reason: string) => {
+    if (reporting) return
+    setReporting(true)
+    try {
+      const res = await fetch(`/api/reviews/${r.id}/report`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason }),
+      })
+      alert(res.ok ? t('reviews.reportThanks') : t('reviews.reportFailed'))
+    } catch {
+      alert(t('reviews.reportFailed'))
+    } finally {
+      setReporting(false); setReportOpen(false); setMenu(false)
+    }
+  }, [r.id, reporting, t])
   const containerRef = useRef<HTMLDivElement>(null)
   const durationRef = useRef<number | null>(null)
   const videoHandleRef = useRef<VideoPlayerHandle>(null)
@@ -514,6 +534,29 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                     className="flex items-center gap-3 w-full px-4 py-3 text-gray-300 text-sm font-medium hover:bg-gray-800 border-t border-gray-800">
                     <EyeOff size={15} /> {t('reviews.hidePost')}
                   </button>
+                </div>
+              </>
+            )}
+          </div>
+        )}
+        {!isMe && me && (
+          <div className="absolute right-4 top-12">
+            <button onClick={() => { setReportOpen(v => !v) }} aria-label={t('reviews.report')} className="w-8 h-8 flex items-center justify-center">
+              <MoreVertical size={20} className="text-white drop-shadow" />
+            </button>
+            {reportOpen && (
+              <>
+                <div className="fixed inset-0 z-30" onClick={() => setReportOpen(false)} />
+                <div className="absolute right-0 top-9 z-40 bg-[#1a1a1a] border border-gray-700 rounded-2xl overflow-hidden w-52 shadow-2xl">
+                  <div className="flex items-center gap-2 px-4 py-3 text-gray-400 text-xs font-medium border-b border-gray-800">
+                    <Flag size={13} /> {t('reviews.report')}
+                  </div>
+                  {REPORT_REASONS.map(reason => (
+                    <button key={reason} disabled={reporting} onClick={() => submitReport(reason)}
+                      className="flex items-center w-full px-4 py-2.5 text-gray-200 text-sm hover:bg-gray-800 disabled:opacity-50 border-t border-gray-900 first:border-t-0">
+                      {t(`reviews.reportReason.${reason}`)}
+                    </button>
+                  ))}
                 </div>
               </>
             )}

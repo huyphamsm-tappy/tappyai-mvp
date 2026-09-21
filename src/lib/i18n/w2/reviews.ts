@@ -35,6 +35,17 @@ export const vi: Record<string, string> = {
   // Post overflow menu
   'reviews.deletePost': 'Xoá bài',
   'reviews.hidePost': 'Ẩn bài',
+  // F-031 — report a review/clip (content_reports intake).
+  'reviews.report': 'Báo cáo',
+  'reviews.reportThanks': 'Đã gửi báo cáo. Cảm ơn bạn đã giúp giữ cộng đồng an toàn.',
+  'reviews.reportFailed': 'Không gửi được báo cáo. Vui lòng thử lại.',
+  'reviews.reportReason.spam': 'Spam hoặc lừa đảo',
+  'reviews.reportReason.harassment': 'Quấy rối hoặc thù ghét',
+  'reviews.reportReason.inappropriate': 'Nội dung không phù hợp',
+  'reviews.reportReason.copyright': 'Vi phạm bản quyền',
+  'reviews.reportReason.misinformation': 'Thông tin sai lệch',
+  'reviews.reportReason.violence': 'Bạo lực hoặc nguy hiểm',
+  'reviews.reportReason.other': 'Khác',
   'reviews.deleteConfirmShort': 'Xoá?',
 
   // Comment sheet
@@ -183,6 +194,17 @@ export const en: Record<string, string> = {
   // Post overflow menu
   'reviews.deletePost': 'Delete post',
   'reviews.hidePost': 'Hide post',
+  // F-031 — report a review/clip (content_reports intake).
+  'reviews.report': 'Report',
+  'reviews.reportThanks': 'Report sent. Thanks for helping keep the community safe.',
+  'reviews.reportFailed': "Couldn't send the report. Please try again.",
+  'reviews.reportReason.spam': 'Spam or scam',
+  'reviews.reportReason.harassment': 'Harassment or hate',
+  'reviews.reportReason.inappropriate': 'Inappropriate content',
+  'reviews.reportReason.copyright': 'Copyright infringement',
+  'reviews.reportReason.misinformation': 'Misinformation',
+  'reviews.reportReason.violence': 'Violence or danger',
+  'reviews.reportReason.other': 'Other',
   'reviews.deleteConfirmShort': 'Delete?',
 
   // Comment sheet
