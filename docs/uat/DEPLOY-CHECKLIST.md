@@ -302,6 +302,35 @@ from a single branch's list — is applied to prod, every event_type not in that
    environment that already has the constraint, but it cannot retro-fit a constraint another branch
    creates later.
 
+### 🔒 Privacy review REQUIRED before g1-growth merges — contacts & stored query text
+
+Four of the g1-growth objects above process personal / sensitive data and **must not ship without a
+privacy sign-off**, independent of the schema reconciliation:
+
+- **Contact sync** — `contact_identity_index`, `contact_matches`, `contact_sync_state`. Reading a
+  user's contacts is a **Play sensitive-permission** surface. Before merge, confirm:
+  1. **Runtime consent + disclosure** — an in-context prompt explaining why contacts are accessed
+     *before* the `READ_CONTACTS` request, and a prominent in-app disclosure (Play's Prominent
+     Disclosure & Consent requirement). Contacts access without it is a policy-strike risk.
+  2. **Play Data Safety** — declare **Contacts** collected, the purpose, whether it is shared, whether
+     it is linked to identity, and the deletion path. (This is separate from the analytics declaration;
+     do not fold it in.)
+  3. **Privacy policy** — a clause naming contact collection, what is derived (`contact_matches` /
+     `contact_identity_index` — hashed identifiers? plaintext?), and how a user deletes it. Verify
+     whether identifiers are **hashed at rest**; if plaintext, that is its own finding.
+  4. **Minimum-necessary + retention** — a stated retention/purge for `contact_sync_state` and the
+     match tables, and deletion on account deletion / permission revocation.
+- **Stored query text** — `query_texts`. This persists **raw user query strings**, which the analytics
+  layer deliberately never stores (GA4/`user_events` strip query text). Before merge, confirm:
+  1. a **defined retention period** (with an automated purge) — raw queries are free-text PII by
+     content and cannot be kept indefinitely;
+  2. **Data Safety** + **privacy-policy** coverage of "search/query content" as collected data;
+  3. access controls (RLS) so a user's stored queries are not readable by others, and deletion on
+     account deletion.
+
+Owner action: route contact sync and query-text storage through a privacy review (consent, Data
+Safety, privacy policy, retention) **before** the g1-growth merge lands them on prod.
+
 ---
 
 *Migration inventory diffed against `docs/audit/schema-baseline/prod-schema-only.sql` (2026-09-17).
