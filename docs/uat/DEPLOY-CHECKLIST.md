@@ -230,8 +230,80 @@ Confirm these on the **production** project/host (they were unset in the audit e
 9. **F-032:** confirm the back office loads for an `@tappyai.com` admin; (optional) a plain user's own
    JWT calling `rpc/fn_grant_admin_role` returns `42501`.
 10. Watch server logs for 500s during the above.
+11. **Buy buttons (revenue path):** after step 12 below has run, ask a shopping query → at least one
+    product row shows a "Mua trên …" commerce action. **Before** the feed job runs this will be
+    **empty by design** (see §6) — a shopping answer with no buy button is expected until then, not a bug.
+
+---
+
+## 6. Post-deploy data job — populate the commerce feed (buy buttons)
+
+🚨 **Buy buttons do not appear until this runs.** A shopping row gets a commerce CTA only from a
+**product-depth** link (A3.3, 2026-09-20: search-page fallbacks are intentionally discarded). Offline,
+the only deterministic source of those links is the **`commerce_feed_items`** table, which ships
+**empty** (its migration is DDL-only, no seed). Until it is filled, essentially every shopping query
+shows **no buy button** — including on production right after deploy.
+
+**What fills it:** the daily cron `GET /api/cron/feed-ingest` (Vercel cron `30 19 * * *`, see
+`vercel.json`). It calls `feedMerchants()` → `ingestMerchantFeed()` and upserts into
+`commerce_feed_items` (journaled in `commerce_feed_runs`). It needs, as env:
+- `CRON_SECRET` (the route requires `Authorization: Bearer $CRON_SECRET`),
+- `ACCESSTRADE_API_KEY` **and** `ACCESSTRADE_FEED_ENDPOINT` (missing either → `blocked_no_credentials`,
+  nothing written),
+- `SUPABASE_SERVICE_ROLE_KEY` (the admin write client).
+- `commerce_providers` seeded (its migration seeds shopee/tiktokshop/lazada/etc.) and the provider
+  active with an approved campaign.
+
+**Run it once, right after deploy** (do not wait for 19:30 UTC):
+```bash
+curl -H "Authorization: Bearer $CRON_SECRET" https://<prod-host>/api/cron/feed-ingest
+```
+Success = `outcome:"ok"` with `written > 0` per merchant, and rows in `commerce_feed_runs`. If it
+reports `blocked_no_credentials`, the Accesstrade env is missing — buy buttons will stay absent until
+it is set and the job re-run. (This is the same reason the audit env shows zero buy buttons: no feed +
+no Accesstrade key. Not a resolver bug.)
+
+---
+
+## 7. Branch skew — cross-branch migration hazard (READ before merging with g1-growth)
+
+**Fact (audit DB, 2026-09-21):** the shared audit/nonprod DB carries schema objects that exist in
+**neither** this branch's migrations **nor** the prod snapshot — they were applied from other branches.
+App-level (excluding the `vector`/pgvector extension's ~91 functions, which are environment setup):
+- **Tables:** `chat_reports`, `contact_identity_index`, `contact_matches`, `contact_sync_state`,
+  `governed_events`, `query_texts`.
+- **Views:** `analytics_ai_misses`, `analytics_funnel_daily`, `analytics_vertical_mix_daily`.
+- **Function:** `contact_sync_touch_updated_at` (trigger for `contact_sync_state`).
+
+None of these ship from this branch; do not assume the audit DB == prod. Prod (2026-09-17 baseline) has
+**none** of them, and — critically — **no `user_events_event_type_check` constraint at all**.
+
+**The `user_events` CHECK hazard.** The 52-value `user_events_event_type_check` on the audit DB is **not
+reproduced by any committed migration** in either branch (it was applied ad-hoc). g1-growth's only CHECK
+migration, `add_event_type_check.sql`, is an `IF NOT EXISTS`-guarded **21-value** list that contains
+neither the growth events (`share_out`, `action_started`, …) nor this branch's three new types
+(`recommendation_click`, `scam_check`, `chat_opened`). It is currently orphaned (not in any release
+delta). **If that migration — or any migration that CREATES an enumerated `user_events_event_type_check`
+from a single branch's list — is applied to prod, every event_type not in that list is dropped silently
+(the F-027 failure), including these three funnel events and all growth events.**
+
+**Safe merge order & what must change:**
+1. This branch (uat/release-audit) merges first. Its migration **#7** is a conditional dynamic **union**
+   and a **no-op on prod** (no constraint there), so it never narrows anything and never introduces a gate.
+2. When merging **g1-growth**: do **NOT** ship `add_event_type_check.sql` (or any narrowing enumerated
+   CHECK) to prod. Either
+   - **keep prod forward-compatible** (no event_type CHECK — the envelope-foundation design), i.e. exclude
+     that orphan migration from the prod apply path on both branches; **or**
+   - if a CHECK is wanted as a security control, replace the enumerated list with the **dynamic-union**
+     pattern of migration #7 (add values, never DROP-and-narrow), authored as the single source and
+     ordered to run **after** every branch's event-type additions, and its list must include
+     `recommendation_click`, `scam_check`, `chat_opened` **and** the growth events.
+3. Whichever approach, the reconciliation is a documentation duty here: migration #7 protects every
+   environment that already has the constraint, but it cannot retro-fit a constraint another branch
+   creates later.
 
 ---
 
 *Migration inventory diffed against `docs/audit/schema-baseline/prod-schema-only.sql` (2026-09-17).
-Only the six migrations in §1 are missing from prod; everything else is already applied.*
+Seven migrations (§1 #1–#7) are the release delta; everything else is already applied. §7 records the
+audit-DB objects that belong to neither this branch nor prod.*

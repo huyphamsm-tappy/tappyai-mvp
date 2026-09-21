@@ -104,6 +104,15 @@ Install the debug build (§1) and sign in.
 ### F. This session's fixes — spot-check
 - [ ] **F-029 (plan share):** as any account, generate a **large Vietnamese itinerary** (multi-day, many stops, diacritic-heavy text) and **share it**. It should return a share link and open the shared page — no 500. (Previously a large VN plan 500'd.)
 - [ ] **F-031 (content report):** as one account, open **another** user's clip/review in the feed (use the plain-history account's posted review, viewed from a different account) → the **⋮ Report** menu appears → pick a reason → you get a "report sent" confirmation. (Owners see delete/hide instead; guests see neither.)
+  - ⚠️ **Prep (F-037):** the seeded `manual.uat.user` review is **text-only**, and a media-less review is excluded from the Explore feed by design (it is visible only on that user's own profile). To make it appear so another account can report it, give it a photo — run this once against the audit DB:
+    ```sql
+    UPDATE public.reviews
+    SET photos = ARRAY['https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80']::text[],
+        thumbnail = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
+        media_url = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
+        content_type = 'photo'
+    WHERE id = '62116a0d-54ee-4313-acf6-1393be8ac862';
+    ```
 
 ### G. Auth / age-gate / account flows
 - [ ] Sign out / sign in with email+password works for each account.
@@ -138,7 +147,7 @@ For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the l
 | `scam_check` | Run a Scam Shield url / QR / message check | `check_type` (url·qr·message) + `risk_level` — never the checked content |
 | `login` / `sign_up` | Sign in / create an account | `method` (+ `is_first_login` on login) |
 
-**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-0PQ6Y6R2BE` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. NOTE: on Android, `recommendation_click` and `login`/`sign_up` are **not yet wired** (deferred — see findings F-001); the rest are.
+**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-0PQ6Y6R2BE` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All nine events are wired on Android now, including `recommendation_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
 
 ---
 
@@ -152,6 +161,7 @@ For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the l
 | **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
 | **Google Analytics delivery (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset locally, so no hit leaves the browser (the client IS instrumented — see §J to observe events in `window.dataLayer`). | Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-0PQ6Y6R2BE` on production only, redeploy, then confirm in GA4 Realtime. Android delivery also needs the Firebase↔GA4 link (§J). |
 | **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
+| **Buy buttons on shopping (F-036)** | `commerce_feed_items` is empty and `ACCESSTRADE_API_KEY`/`ACCESSTRADE_FEED_ENDPOINT` are unset, so no product-depth commerce link resolves → a shopping answer shows **no buy button** (expected, not a bug). | Set the Accesstrade env + `CRON_SECRET` and run the feed-ingest cron once (DEPLOY-CHECKLIST §6). Then a shopping query shows "Mua trên …" and `affiliate_click` becomes testable. |
 
 ---
 
