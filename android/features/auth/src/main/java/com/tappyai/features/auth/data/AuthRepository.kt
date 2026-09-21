@@ -3,6 +3,7 @@ package com.tappyai.features.auth.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkError
 import com.tappyai.core.network.NetworkResult
@@ -53,6 +54,7 @@ class AuthRepository @Inject constructor(
     private val supabaseClient: SupabaseClient,
     private val tokenProvider: TokenProvider,
     private val logger: LoggerProvider,
+    private val analytics: AnalyticsProvider,
     private val zaloSignInClient: ZaloSignInClient,
     // dagger.Lazy, not a direct injection: AuthRepository is bound as core:network's
     // SessionRefresher, which TokenAuthenticator needs to build OkHttp, which Retrofit needs to
@@ -190,6 +192,21 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Emits login / sign_up for an EXPLICIT user sign-in only. Called from the three explicit
+     * success paths (Google id-token, email-OTP verify, OAuth deep-link) — NEVER from the session
+     * collector or the cold-start restore, both of which reach Authenticated via importSession /
+     * SDK refresh and must not count as a login. `is_first_login` (and the extra sign_up) come from
+     * the account's created-at vs last-sign-in timestamps. See [authAnalyticsEventsFor], unit-tested.
+     */
+    private fun emitSignInAnalytics(method: String) {
+        val user = runCatching { supabaseClient.auth.currentUserOrNull() }.getOrNull()
+        val first = isFirstLoginFromTimestamps(user?.createdAt?.epochSeconds, user?.lastSignInAt?.epochSeconds)
+        for (event in authAnalyticsEventsFor(AuthTrigger.EXPLICIT_SIGN_IN, method, first)) {
+            analytics.track(event.name, event.params)
+        }
+    }
+
     /** [idToken] comes from Credential Manager's native Google Sign-In (UI-layer concern, not
      *  this repository's — see `GoogleSignInClient` in the same package). */
     suspend fun signInWithGoogleIdToken(idToken: String, rawNonce: String?): NetworkResult<Unit> =
@@ -200,6 +217,7 @@ class AuthRepository @Inject constructor(
                 nonce = rawNonce
             }
             persistSession()
+            emitSignInAnalytics("google")
         }.logOnError("signInWithGoogleIdToken")
 
     /**
@@ -239,6 +257,7 @@ class AuthRepository @Inject constructor(
     suspend fun verifyEmailOtp(email: String, code: String): NetworkResult<Unit> = safeAuthCall {
         supabaseClient.auth.verifyEmailOtp(type = OtpType.Email.EMAIL, email = email, token = code)
         persistSession()
+        emitSignInAnalytics("email")
     }.logOnError("verifyEmailOtp")
 
     /**
@@ -275,6 +294,11 @@ class AuthRepository @Inject constructor(
             supabaseClient.handleDeeplinks(intent)
         }
         persistSession()
+        // Explicit sign-in completion arriving via the auth-callback deep link (Facebook / Zalo /
+        // email magic link). This is NOT the cold-start restore — that path is [sessionState]'s
+        // importSession at process launch, which never calls this method. Provider isn't
+        // distinguishable from the intent, so the method is the generic "oauth".
+        emitSignInAnalytics("oauth")
     }.logOnError("handleOAuthRedirectIntent")
 
     /**

@@ -336,6 +336,8 @@ sealed class PlaceChip {
  */
 data class PlaceCardFacts(
     val name: String,
+    /** The vertical, carried only for the recommendation_click event. */
+    val domain: String,
     /** 1-based position in the SERVER's list, or null when the set was not ranked. */
     val rankLabel: Int?,
     val lead: Boolean,
@@ -371,6 +373,7 @@ internal fun placeCardFacts(place: PlaceCardView, position: Int, ranked: Boolean
     val amenities = place.flags.filter { it == "wifi" || it == "outdoorSeating" || it == "vegetarian" }
     return PlaceCardFacts(
         name = place.name,
+        domain = place.domain,
         rankLabel = if (ranked) position + 1 else null,
         lead = lead,
         popular = lead && (place.ratingCount ?: 0) >= POPULAR_MIN_RATINGS,
@@ -408,10 +411,15 @@ private val PAGE_PEEK = 36.dp
  * provider's and no position means anything, so no "#N" is printed. [mapsSearchUrl] is the
  * server-built "see everything on the map" destination; the durable payload does not carry one.
  */
-/** Callbacks a commerce action reports through (CCP event 6). Absent in previews and tests. */
+/**
+ * Callbacks a place / product card reports through. [onRendered]/[onHandoff] are the commerce
+ * handoff (CCP event 6); [onCardTap] is the GA4 `recommendation_click` — the vertical only, fired
+ * when the user taps a recommended card's action. Absent in previews and tests.
+ */
 data class CommerceActionCallbacks(
     val onRendered: (LiveCommerceFacts) -> Unit = {},
     val onHandoff: (LiveCommerceFacts, Boolean) -> Unit = { _, _ -> },
+    val onCardTap: (String) -> Unit = {},
 )
 
 @Composable
@@ -846,7 +854,7 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                         border = colors.primary.copy(alpha = 0.6f),
                         tint = colors.primary,
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = { openPlaceAction(context, lead, commerce) },
+                        onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, lead, commerce) },
                     )
                 }
                 grouped.maps?.let { maps ->
@@ -856,7 +864,7 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                         border = colors.outlineVariant,
                         tint = colors.onSurface,
                         modifier = Modifier.fillMaxWidth(),
-                        onClick = { openUrl(context, maps.url) },
+                        onClick = { commerce.onCardTap(facts.domain); openUrl(context, maps.url) },
                     )
                 }
                 if (grouped.orders.isNotEmpty()) {
@@ -870,7 +878,7 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                                 icon = Icons.Filled.Restaurant,
                                 border = tappyCategoryColors.red.accent.copy(alpha = 0.6f),
                                 tint = tappyCategoryColors.red.accent,
-                                onClick = { openPlaceAction(context, a, commerce) },
+                                onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, a, commerce) },
                             )
                         }
                     }
@@ -886,7 +894,7 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                                 icon = if (a.kind == "call") Icons.Filled.Call else null,
                                 border = colors.outlineVariant,
                                 tint = colors.onSurface,
-                                onClick = { openPlaceAction(context, a, commerce) },
+                                onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, a, commerce) },
                             )
                         }
                     }

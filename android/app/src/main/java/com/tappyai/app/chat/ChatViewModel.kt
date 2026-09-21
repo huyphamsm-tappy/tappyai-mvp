@@ -607,6 +607,15 @@ class ChatViewModel @Inject constructor(
     fun onCommerceActionRendered(commerce: LiveCommerceFacts) = commerceHandoffReporter.rendered(commerce)
     fun onCommerceHandoff(commerce: LiveCommerceFacts, opened: Boolean) = commerceHandoffReporter.tapped(commerce, opened)
 
+    /**
+     * recommendation_click (RUNBOOK §3.19) — the user tapped a recommended place / product card.
+     * The vertical only (the per-place `domain`, or the chat category when a card carries none);
+     * never the place or product.
+     */
+    fun onRecommendationClick(domain: String) {
+        analytics.track("recommendation_click", mapOf("domain" to domain.ifBlank { category.name.lowercase() }))
+    }
+
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""

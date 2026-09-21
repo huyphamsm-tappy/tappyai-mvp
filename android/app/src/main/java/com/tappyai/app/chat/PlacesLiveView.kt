@@ -249,6 +249,8 @@ fun PlacesLiveView.toShareView(): com.tappyai.app.share.PlacesLiveView =
 data class PlaceCardView(
     val name: String,
     val rank: Int,
+    /** The vertical (food/travel/shopping/entertainment/spa) — carried for the recommendation_click event only. */
+    val domain: String = "",
     val image: String? = null,
     val address: String? = null,
     val rating: Double? = null,
@@ -303,6 +305,7 @@ data class PlaceCardAction(
 fun LivePlace.toCardView(): PlaceCardView = PlaceCardView(
     name = name,
     rank = rank,
+    domain = domain,
     image = image,
     address = address,
     rating = rating,
@@ -336,6 +339,7 @@ fun PersistedPlace.toCardView(): PlaceCardView? {
     return PlaceCardView(
         name = known,
         rank = rank,
+        domain = domain,
         image = image,
         address = address,
         rating = rating,

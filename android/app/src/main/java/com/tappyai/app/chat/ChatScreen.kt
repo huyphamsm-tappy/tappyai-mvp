@@ -160,9 +160,10 @@ fun ChatScreen(
     // The composer chip and the decision card must ask for a price watch in the SAME words, or
     // the model sees two different requests for one feature. Read once, used by both.
     val pricePrefill = stringResource(R.string.chat_chip_price_watch_prefill)
-    // Commerce actions (CCP) report their render and their tap through the ViewModel's reporter.
+    // Commerce actions (CCP) report their render and their tap through the ViewModel's reporter;
+    // onCardTap fires the GA4 recommendation_click (the vertical only).
     val commerceCallbacks = remember(viewModel) {
-        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff)
+        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff, onCardTap = viewModel::onRecommendationClick)
     }
     val promptsInEnglish = booleanResource(R.bool.resources_are_english)
     LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }

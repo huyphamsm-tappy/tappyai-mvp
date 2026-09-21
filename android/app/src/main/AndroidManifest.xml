@@ -18,6 +18,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Firebase Analytics merges the Advertising ID permissions by default; we do NOT collect the
+         Advertising ID (analytics events are anonymous, enum/boolean only), so strip BOTH the
+         legacy GMS permission and the newer AdServices one from the merged manifest. Paired with
+         the google_analytics_adid_collection_enabled=false meta-data below; together they keep the
+         Play Data Safety form free of Advertising ID. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
     <!-- Android 13+ delivers no notification at all without this. Undeclared, the permission can
          never be granted, so it gates delivery only — never Tappy's identity sound setting. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -57,6 +64,12 @@
         android:theme="@style/Theme.TappyAI"
         android:resizeableActivity="true"
         tools:targetApi="31">
+
+        <!-- Disable Firebase Analytics' Advertising ID collection (paired with the AD_ID
+             permission removal above). No Advertising ID is gathered or sent. -->
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <!-- Locale persistence below API 33 — NOT optional, and not a decorative service.
 

@@ -263,7 +263,7 @@ private fun CommerceHandoffRow(handoffs: ShoppingCommerceHandoffs, commerce: Com
                 modifier = Modifier
                     .clip(TappyShapes.chip)
                     .then(if (detail) Modifier.border(1.dp, colors.primary.copy(alpha = 0.35f), TappyShapes.chip) else Modifier)
-                    .clickable { openPlaceAction(context, action, commerce) }
+                    .clickable { commerce.onCardTap("shopping"); openPlaceAction(context, action, commerce) }
                     .padding(horizontal = if (detail) TappySpacing.lg else TappySpacing.sm, vertical = TappySpacing.sm),
             )
         }
