@@ -156,6 +156,8 @@ Measure how sparse the revenue path actually is with the feed un-ingested (no Ac
 
 Tally `buy-button : search-only : neither` out of 10. This is the actual pre-launch coverage number; expect it heavily weighted to search-only until the feed-ingest cron runs (§6). `shopping_search_click` (§J) then measures demand on the search-only ones.
 
+- [ ] **Android label honesty (do these shopping queries on the Android app too).** A search-redirect offer link must read **"Tìm trên Google"** (EN: "Search on Google") — the SAME label web shows — **not** "Xem". A genuine merchant **product** page keeps **"Xem"** or **"Xem trên {platform}"** ("View on …"). Confirm EN and VI both read correctly (toggle app language). This is the fix for the old dishonest "Xem" on a google redirect; the classifier is shared-cases-pinned with web so the two cannot drift.
+
 **Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-8GP7L7N516` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All ten events are wired on Android now, including `recommendation_click`, `shopping_search_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
 
 ---

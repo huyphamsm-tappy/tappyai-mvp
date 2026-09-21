@@ -349,7 +349,14 @@ private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit
     val seller = offer.seller ?: stringResource(R.string.shopping_decision_unknown_seller)
     val price = offer.price?.let { formatCompactVnd(it.toLong()) }
         ?: stringResource(R.string.shopping_decision_no_price)
-    val viewLabel = stringResource(R.string.shopping_decision_view)
+    // Honest label + search gate, in lockstep with web's offerActionLabel: a google-search
+    // redirect (Serper /shopping) reads "Tìm trên …", only a genuine product page keeps "Xem".
+    val dest = offerDestination(offer.url, offer.seller)
+    val actionLabel = when (offerLabelKind(dest)) {
+        OfferLabelKind.VIEW -> stringResource(R.string.shopping_decision_view)
+        OfferLabelKind.VIEW_ON -> stringResource(R.string.shopping_decision_view_on, dest?.platform ?: "")
+        OfferLabelKind.VIEW_ON_SEARCH -> stringResource(R.string.shopping_decision_view_on_search, dest?.platform ?: "")
+    }
 
     Row(
         modifier = Modifier
@@ -357,9 +364,10 @@ private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit
             .then(
                 if (offer.url != null) {
                     Modifier.clickable {
-                        // shopping_search_click — the "Xem/Tìm trên …" offer search-redirect
-                        // (not a buy button; those are CommerceHandoff). Platform enum only.
-                        onSearchLinkTap(sellerPlatform(offer.seller))
+                        // shopping_search_click fires ONLY for a search redirect (never a genuine
+                        // product page), matching web's `!dest.direct` gate. Platform enum only —
+                        // not the seller string, product or URL.
+                        if (dest != null && !dest.direct) onSearchLinkTap(sellerPlatform(offer.seller))
                         runCatching {
                             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(offer.url)))
                         }
@@ -391,7 +399,7 @@ private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit
         )
         if (offer.url != null) {
             Text(
-                text = viewLabel,
+                text = actionLabel,
                 style = MaterialTheme.typography.bodySmall,
                 color = colors.primary,
             )
