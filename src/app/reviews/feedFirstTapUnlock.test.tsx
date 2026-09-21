@@ -30,13 +30,7 @@ vi.mock('next/image', () => ({ default: (p: any) => <img src={typeof p.src === '
 vi.mock('next/link', () => ({ default: (p: any) => <a href={typeof p.href === 'string' ? p.href : '#'}>{p.children}</a> }))
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn() }), useSearchParams: () => new URLSearchParams() }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
-vi.mock('./ReviewMusicDisc', () => ({ default: () => null }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('@/lib/i18n/useTranslation', () => ({ useTranslation: () => ({ t: (k: string) => k, locale: 'vi', setLocale: vi.fn() }) }))
-vi.mock('@/modules/music', () => ({
-  useMusicTrack: () => ({ track: null, loading: false }),
-  getPreviewUrl: (t: any) => t?.previewUrl ?? '',
-}))
 
 // The player itself is not under test — its handle and its unlock state are.
 vi.mock('@/components/explore/VideoPlayer', async () => {

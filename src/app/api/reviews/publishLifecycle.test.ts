@@ -58,12 +58,6 @@ vi.mock('@/lib/auth/getRequestUser', () => ({
   getRequestUser: () => Promise.resolve({ user: h.state.user, supabase: h.client }),
 }));
 vi.mock('@/lib/preferences/profileCache', () => ({ rebuildProfile: () => Promise.resolve() }));
-vi.mock('@/modules/music/server', () => ({
-  createSelection: () => ({ trackId: 't', startSec: 0, volume: 1 }),
-  getTrack: () => Promise.resolve(null),
-  recordUsage: () => Promise.resolve(),
-  createOriginalSound: () => Promise.resolve(null),
-}));
 vi.mock('@/lib/security/rateLimit', () => ({
   dailyRateLimit: () => ({ ok: true }),
   clientIp: () => '127.0.0.1',

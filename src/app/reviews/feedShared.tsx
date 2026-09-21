@@ -23,8 +23,6 @@ import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
-import ReviewMusicDisc from './ReviewMusicDisc'
-import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
@@ -41,7 +39,6 @@ export interface Review {
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
-  music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
 // A "share-only" post (clip/photo posted without adding a place) carries a
@@ -295,7 +292,7 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
 }
 
 /* ─── Single post (TikTok style) ─── */
-export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap, onFollow, onOpenLikes }: {
+export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onFollow, onOpenLikes }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
@@ -310,7 +307,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
-  onSoundTap?: (trackId: string) => void
   // Follow the clip's author straight from the feed (the red "+" on the avatar).
   // Optional: the profile clip viewer doesn't pass it, and without it the "+" is
   // not rendered at all — an inert badge was the bug (WEB-EXPLORE-FOLLOW-002).
@@ -369,19 +365,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
     }
   }, [])
 
-
-  // Attached sound ("use this sound"): resolve the borrowed track's audio only
-  // for clips in the render window, then hand its URL to VideoPlayer, which plays
-  // it in place of the clip's own audio. An 'original' clip already IS its own
-  // audio, so only 'attached' needs substituting.
-  const attachedTrackId = renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
-  const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
-  const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
-  // Known synchronously from the review row — VideoPlayer mutes the video from
-  // frame one, BEFORE the track URL resolves (deciding by soundUrl alone left
-  // the video unmuted during the fetch gap → double audio). Drops to false when
-  // the fetch finishes empty → VideoPlayer falls back to the clip's own audio.
-  const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
 
   useEffect(() => {
     if (r.content_type !== 'video' || !containerRef.current) return
@@ -473,9 +456,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 sourceType={r.source_type ?? 'upload'}
                 sourceUrl={r.source_url ?? undefined}
                 active={active}
-                hasSound={hasAttachedSound}
-                soundUrl={attachedSoundUrl}
-                soundVolume={r.music?.volume ?? 1}
                 onDurationKnown={d => { durationRef.current = d }}
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
@@ -604,14 +584,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
-
-        {/* The clip's sound — tap to open its sound page ("use this sound").
-            Shown for ALL upload video clips. If the clip has a registered track
-            (music.trackId), the disc links to the sound page; otherwise it's
-            a visual-only indicator (migrations may not be applied yet). */}
-        {r.content_type === 'video' && (r.source_type === 'upload' || !r.source_type) && r.media_url && (
-          <ReviewMusicDisc trackId={r.music?.trackId} onTap={onSoundTap} />
-        )}
       </div>
 
       {/* Bottom info */}

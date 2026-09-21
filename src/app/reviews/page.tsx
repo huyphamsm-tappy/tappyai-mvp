@@ -12,7 +12,6 @@ import { createClient } from '@/lib/supabase/client'
 import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
-import SoundSheet from './SoundSheet'
 import LikeListSheet from './LikeListSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
@@ -524,7 +523,6 @@ function ReviewsPageInner() {
   const fetchRef = useRef<(p: number, append: boolean, ft: 'for-you' | 'latest' | 'following', signal?: AbortSignal) => Promise<void>>(null as any)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
-  const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   // The review whose like list is open. Holds an id, not a Review: the search grid opens it too
   // and its rows are a different shape from the feed's.
   const [likesOf, setLikesOf] = useState<string | null>(null)
@@ -1136,7 +1134,7 @@ function ReviewsPageInner() {
                 </div>
               : <>
                   <div ref={containerRef} className="h-dvh overflow-y-scroll snap-y snap-mandatory bg-black" style={{ scrollbarWidth: 'none' }}>
-                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onSoundTap={setSoundTrackId} onFollow={followFromFeed} onOpenLikes={rev => setLikesOf(rev.id)} />)}
+                    {reviews.map((r, i) => <Post key={r.id} r={r} me={me} feedType={feedType} renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex} onFeedTypeChange={handleFeedTypeChange} onLike={like} onLikeDouble={likeOnly} onSave={save} onComment={setCommentOf} onShare={handleShare} onDelete={del} onFollow={followFromFeed} onOpenLikes={rev => setLikesOf(rev.id)} />)}
                   </div>
                   {/* Desktop prev/next — no swipe on desktop, so surface arrows to the right of the column. */}
                   <div className="hidden md:flex flex-col gap-3 absolute left-full ml-4 top-1/2 -translate-y-1/2 z-20">
@@ -1311,7 +1309,6 @@ function ReviewsPageInner() {
 
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
       {/* Opened from the Inbox. Closing returns to the notification list the user came from,
           which is why this lives here rather than behind a route change. */}

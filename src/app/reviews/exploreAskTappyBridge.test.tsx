@@ -14,10 +14,6 @@ vi.mock('@/components/explore/VideoPlayer', () => ({
   default: () => null,
   isFeedAudioUnlocked: () => true,
 }))
-vi.mock('@/modules/music', () => ({
-  useMusicTrack: () => ({ track: null }),
-  getPreviewUrl: () => null,
-}))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
 // The analytics batcher: recorded, not sent. What this file asserts is the EVENT the CTA emits.
 const trackMock = vi.fn()
@@ -79,7 +75,6 @@ function renderPost(overrides: Partial<Review> = {}) {
       onComment={noop}
       onShare={noop}
       onDelete={noop}
-      onSoundTap={noop}
     />,
   )
 }
@@ -263,7 +258,7 @@ describe('ask_tappy_place — the feed CTA emits the click event', () => {
     const { container } = render(
       <div onClick={onParent}>
         <Post r={BASE} me="u2" feedType="for-you" onFeedTypeChange={noop} renderVideo={false}
-          onLike={noop} onLikeDouble={noop} onSave={noop} onComment={noop} onShare={noop} onDelete={noop} onSoundTap={noop} />
+          onLike={noop} onLikeDouble={noop} onSave={noop} onComment={noop} onShare={noop} onDelete={noop} />
       </div>,
     )
     press(bridge(container)!)

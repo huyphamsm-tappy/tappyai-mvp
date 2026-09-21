@@ -29,7 +29,6 @@ vi.mock('@/components/LinkPoster', () => ({
   __esModule: true,
   default: ({ review }: { review: { id: string } }) => <div data-testid="poster" data-id={review.id} />,
 }))
-vi.mock('@/modules/music', () => ({ useMusicTrack: () => ({ track: null }), getPreviewUrl: () => null }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
 const trackMock = vi.fn()
 vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))

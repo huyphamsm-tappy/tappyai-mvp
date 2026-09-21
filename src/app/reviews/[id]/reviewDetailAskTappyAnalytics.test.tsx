@@ -16,12 +16,10 @@ vi.mock('next/navigation', () => ({
 // Media, music and the action buttons that reach for Supabase or the share sheet are not what this
 // file guards; each is a marker.
 vi.mock('@/components/explore/VideoPlayer', () => ({ __esModule: true, default: () => null, isFeedAudioUnlocked: () => true }))
-vi.mock('@/modules/music', () => ({ useMusicTrack: () => ({ track: null }), getPreviewUrl: () => null }))
 vi.mock('./ReviewCommentButton', () => ({ __esModule: true, default: () => null }))
 vi.mock('./ReviewShareButton', () => ({ __esModule: true, default: () => null }))
 vi.mock('./ReviewLikeButton', () => ({ __esModule: true, default: () => null }))
 vi.mock('./ReviewSaveButton', () => ({ __esModule: true, default: () => null }))
-vi.mock('../ReviewMusicCard', () => ({ __esModule: true, default: () => null }))
 
 const trackMock = vi.fn()
 vi.mock('@/lib/tracking/tracker', () => ({ track: (...args: unknown[]) => trackMock(...args) }))

@@ -14,7 +14,6 @@ import {
 import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
-import SoundSheet from './SoundSheet'
 import LikeListSheet from './LikeListSheet'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -43,7 +42,6 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
-  const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   const [likesOf, setLikesOf] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -130,7 +128,7 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
               renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
-              onComment={setCommentOf} onShare={setShareOf} onDelete={del} onSoundTap={setSoundTrackId}
+              onComment={setCommentOf} onShare={setShareOf} onDelete={del}
               onOpenLikes={rev => setLikesOf(rev.id)} />
           ))}
         </div>
@@ -144,7 +142,6 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
       </div>
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
