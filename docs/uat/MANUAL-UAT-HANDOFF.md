@@ -109,6 +109,7 @@ Install the debug build (§1) and sign in.
 - [ ] Sign out / sign in with email+password works for each account.
 - [ ] The 18+ age gate behaves (all four accounts are adults and should pass straight through). F-028: a mistyped DOB correction path is recoverable.
 - [ ] Pro account: confirm it isn't hitting the free-question quota; admin account: confirm back-office surfaces load.
+- [ ] **Guest / anonymous flow (now enabled — F-010).** Open the app signed-out and declare your age (18+). You get **5 trial AI questions for the lifetime of the guest identity** (not per day). Ask 5 questions, then the 6th should return a friendly message — *"Bạn đã dùng hết 5 câu hỏi AI dùng thử. Đăng nhập để có 15 câu hỏi AI mỗi ngày…"* — with a sign-in prompt, **not** a raw error. Then sign in and confirm you now get the 15/day registered allowance (a separate pool). *(Backend-verified already: anon session issues, the guest JWT cannot read/write other users' rows, and the quota is enforced + separate — this is the human-facing confirmation.)*
 
 ### H. Admin / back office
 - [ ] Sign in as **admin** and confirm the back-office/admin surfaces are reachable and render (moderation queue, etc.). A non-`@tappyai.com` account must **not** reach them.
@@ -119,7 +120,6 @@ Install the debug build (§1) and sign in.
 
 | Area | Why | To enable |
 |---|---|---|
-| **Guest / anonymous flow** | Anonymous sign-in is **disabled** on the audit project (control-plane setting; can't be flipped from code). | Owner: Dashboard → project `zdaprdfgpbpnxyofagmc` → Authentication → Sign In / Providers → **Allow anonymous sign-ins** → enable → Save. Then guest quota, the anon-JWT RLS checks, and claim-anonymous become testable. |
 | **Affiliate / deal-link wrapping (F-020)** | `ACCESSTRADE_PUBLISHER_ID` is unset (pending provider approval); `CJ_API_KEY` also unset. | Set the publisher id once approved; the money path (real `go.isclix.com` links, tracking params) is unverified until then. |
 | **Photo / clip / avatar uploads** | `BLOB_READ_WRITE_TOKEN` (Vercel Blob) is unset — the upload endpoints have nowhere to store the file. | Set a Blob token. Until then, expect the composer's photo attach and avatar change to fail. |
 | **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
@@ -134,7 +134,7 @@ Install the debug build (§1) and sign in.
 
 - **iOS still ships the music-reuse UI** and will hit the now-410 endpoints. iOS **must not be released** until that UI is removed (no macOS build env here, so it wasn't touched this session).
 - **F-002 (Next.js version)** — mitigated on Vercel; upgrade scheduled post-launch.
-- **F-001 (GA)**, **F-010 / guest**, **F-020 (Accesstrade)** — open by decision; see §5.
+- **F-001 (GA)**, **F-020 (Accesstrade)** — open by decision; see §5. *(F-010 guest flow is now enabled and verified — see §G.)*
 - **Test-suite trust (F-030)** — a green unit suite does not prove DB write-paths satisfy real column constraints (mocked inserts can't fail like Postgres). Treat green as a logic guard, not a data-integrity one.
 - Anything under "can't test locally" (§5) that appears broken is an environment gap, not a product bug.
 
