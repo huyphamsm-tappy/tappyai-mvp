@@ -22,6 +22,12 @@ const KNOWN_TYPES = new Set([
   // Explore → the Ask-Tappy-about-this-place CTA. Phase `click` from the three CTAs, phase
   // `target` from the chat route with the resolved/ambiguous/unresolved verdict.
   'ask_tappy_place',
+  // Funnel completeness (RUNBOOK §3.19, 2026-09-21). affiliate_click is NOT here:
+  // it is GA-only and never posts to /api/track (its internal record is the
+  // commerce-handoff beacon). These three DO write a user_events row, so they are
+  // also allowed by user_events_event_type_check where that constraint exists
+  // (migration 20260921_user_events_ga4_event_types.sql).
+  'recommendation_click', 'scam_check', 'chat_opened',
 ])
 const REBUILD_SIGNALS = new Set(['chat_search', 'review_search', 'hide', 'not_interested', 'report'])
 

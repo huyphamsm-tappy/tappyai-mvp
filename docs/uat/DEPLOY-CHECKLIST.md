@@ -21,9 +21,9 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 
 ## 1. The release delta — migrations to apply, in this exact order
 
-Only **six** migrations are missing from the 2026-09-17 prod snapshot. Apply them in the order below
+Only **seven** migrations are missing from the 2026-09-17 prod snapshot. Apply them in the order below
 (chronological filename order, which also satisfies every dependency). Each prerequisite for the
-CREATE-OR-REPLACE / policy migrations (#4–#6) is already on prod, so all six apply cleanly.
+CREATE-OR-REPLACE / policy migrations (#4–#6) is already on prod, so all apply cleanly.
 
 ### 1) `supabase/migrations/20260913_plan_shares.sql`  — creates the `plan_shares` table
 Backs plan sharing (`/api/plans/share`, incl. the F-029 fix). The 2026-09-17 export lacked it.
@@ -107,6 +107,43 @@ data kept; service_role keeps access). Prereqs (`20260704_add_music_module`, `ad
   ```
 - **Rollback:** `supabase/migrations/rollback/20260921_music_tracks_lockdown_rollback.sql`
 
+### 7) `supabase/migrations/20260921_user_events_ga4_event_types.sql`  — allow the new GA4 funnel event types on `user_events`
+Adds `recommendation_click`, `scam_check`, `chat_opened` to the `user_events_event_type_check`
+allowlist so `/api/track` does not silently drop those rows (the F-027 lesson). `report_submitted`
+reuses the existing `report` type, and `affiliate_click` is GA-only (no `user_events` row), so neither
+needs an entry.
+
+> 🔑 **This migration is deliberately conditional and additive.** PROD (2026-09-17 baseline) has **no**
+> `user_events_event_type_check` at all — the forward-compatible envelope migration dropped it and the
+> security re-add was never applied to prod. So **on prod this migration is a NO-OP**: it does not create
+> a constraint (that would introduce a new restrictive gate and could start dropping event types prod
+> currently accepts freely). It only acts where the constraint already exists (the audit/nonprod DB,
+> where the G1 growth branch expanded it), and there it rebuilds the constraint as *(current allowed set
+> ∪ the three new types)* — never narrowing, so another branch's growth events (`share_out`,
+> `action_started`, …) are preserved. Idempotent and `NOT VALID` (new rows only; never fails on history).
+
+- **Check first (is there a constraint to widen?):**
+  ```sql
+  SELECT pg_get_constraintdef(oid) FROM pg_constraint
+  WHERE conrelid='public.user_events'::regclass AND conname='user_events_event_type_check';
+  -- prod: 0 rows (no-op expected). audit/nonprod: the ANY(ARRAY[...]) allowlist.
+  ```
+- **Verify after (only meaningful where a constraint exists):**
+  ```sql
+  SELECT pg_get_constraintdef(oid) LIKE '%recommendation_click%'
+     AND pg_get_constraintdef(oid) LIKE '%scam_check%'
+     AND pg_get_constraintdef(oid) LIKE '%chat_opened%' AS has_new_types
+  FROM pg_constraint
+  WHERE conrelid='public.user_events'::regclass AND conname='user_events_event_type_check';
+  ```
+- **Rollback:** `supabase/migrations/rollback/20260921_user_events_ga4_event_types_rollback.sql`
+  (removes only the three added values; also a no-op when no constraint exists).
+- **⚠️ Cross-branch reconciliation:** the G1 growth branch owns the migration that CREATES the big
+  `user_events_event_type_check` on prod. Whichever migration ends up creating/replacing that constraint
+  on prod **must include `recommendation_click`, `scam_check`, `chat_opened`**, or these three funnel
+  events will be dropped on prod once the constraint lands. This migration protects every environment
+  that already has the constraint; it cannot retro-fit a constraint another branch introduces later.
+
 ### 🚫 Do NOT apply to prod (demo/seed data)
 - `supabase/migrations/20260705_seed_music_demo_catalog.sql` — replaceable demo catalog.
 - `supabase/migrations/20260706c_repoint_music_audio_local.sql` — only repoints that demo data.
@@ -131,6 +168,10 @@ Safe **with or after** the deploy:
   read it only best-effort (a denied read → the clip plays its own audio), so this degrades
   gracefully whichever side lands first. Recommended **with or just after** the deploy.
 
+- **#7 user_events GA4 event types** — before OR with the deploy where the constraint exists (so the
+  new client `track()` rows are not dropped once the new code ships). A NO-OP on prod (no constraint),
+  so on prod its ordering does not matter.
+
 Nothing in this delta must come strictly *after* the deploy.
 
 ---
@@ -138,7 +179,7 @@ Nothing in this delta must come strictly *after* the deploy.
 ## 3. Rollback order (if you must revert)
 
 Roll back in the **reverse** of the apply order, and only what you applied:
-`#6 music_tracks_lockdown` → `#5 F-032` → `#4 F-028` → `#3 commerce_feed_items` → `#2 commerce_providers` → `#1 plan_shares`.
+`#7 user_events GA4 event types` → `#6 music_tracks_lockdown` → `#5 F-032` → `#4 F-028` → `#3 commerce_feed_items` → `#2 commerce_providers` → `#1 plan_shares`.
 - #4, #5 rollbacks restore the previous function bodies (F-028/F-032 base). #6 restores the music_tracks
   policies + grants. #1 drops `plan_shares`.
 - **#2 and #3 (commerce) have no rollback scripts by design — they are purely additive** (only new

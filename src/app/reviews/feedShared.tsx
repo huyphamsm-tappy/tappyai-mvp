@@ -337,6 +337,9 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
       const res = await fetch(`/api/reviews/${r.id}/report`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason }),
       })
+      // report_submitted (F-031). Only the fixed reason enum — never the reported
+      // id, author or content. Fires once, on a report the server accepted.
+      if (res.ok) track('report', { reason })
       alert(res.ok ? t('reviews.reportThanks') : t('reviews.reportFailed'))
     } catch {
       alert(t('reviews.reportFailed'))

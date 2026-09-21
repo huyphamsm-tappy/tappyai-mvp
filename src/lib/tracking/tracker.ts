@@ -27,6 +27,9 @@ type KnownEventType =
   | 'not_interested'
   | 'report'
   | 'ask_tappy_place'
+  | 'recommendation_click'
+  | 'scam_check'
+  | 'chat_opened'
 
 export type EventType = KnownEventType | (string & {})
 
@@ -83,5 +86,20 @@ export function track(event_type: EventType, metadata?: Record<string, unknown>)
   tracker?.track(event_type, metadata)
   // GA4 sees an allowlisted projection of the same event (lib/analytics/ga4.ts owns the
   // allowlist). Still the one tracker: there is no second call site anywhere.
+  mirrorToGa4(event_type, metadata)
+}
+
+/**
+ * GA4-ONLY mirror — no user_events row is queued.
+ *
+ * Used for an event that ALREADY has its own internal record and so must not be
+ * written a second time: the commerce handoff (`affiliate_click`) is recorded
+ * server-side by the /api/commerce/handoff beacon (CCP event 6), so a `track()`
+ * here would be the "second parallel event" we deliberately avoid. GA4 still
+ * needs its projection, through the SAME closed taxonomy (GA4_EVENT_MAP) and the
+ * same no-PII allowlist — this is the only extra seam, and it calls the same
+ * mirrorToGa4, so ga4.ts remains the single gtag emitter.
+ */
+export function trackGa(event_type: EventType, metadata?: Record<string, unknown>) {
   mirrorToGa4(event_type, metadata)
 }

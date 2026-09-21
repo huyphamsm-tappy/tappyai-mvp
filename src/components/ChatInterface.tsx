@@ -819,8 +819,21 @@ export default function ChatInterface({
   // to exist BEFORE the first request, and awaiting it inside submit would put a
   // network round-trip in front of the user's first message.
   // Fail-open by design; see ensureAnonymousSession.
+  // Guards chat_opened against React StrictMode's double effect invocation in dev
+  // (same mount, so the ref persists and the second run is skipped). A genuinely
+  // new chat open is a new mount with a fresh ref, so it fires again as intended.
+  const chatOpenedFiredRef = useRef(false)
   useEffect(() => {
     void ensureAnonymousSession()
+    // chat_opened (RUNBOOK §3.19). Fires exactly once per genuinely fresh main-chat
+    // open. The component also remounts once after the first reply (router.replace
+    // /chat → /chat/{id}); that remount is a CONTINUATION (conversationId is now
+    // set), so it is excluded here and the event does not double-fire per session.
+    if (!isContinuation && !chatOpenedFiredRef.current) {
+      chatOpenedFiredRef.current = true
+      track('chat_opened')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({

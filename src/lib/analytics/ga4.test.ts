@@ -134,9 +134,51 @@ describe('product events — the allowlist is the taxonomy', () => {
   it('an internal event outside the map is not sent at all', async () => {
     const ga = await loadGa4(ID)
     ga.mirrorToGa4('page_time', { path: '/x', duration_ms: 4000 })
-    ga.mirrorToGa4('report', { review_id: 'r-1' })
     ga.mirrorToGa4('some_future_event', { anything: 1 })
     expect(events()).toEqual([])
+  })
+
+  it('recommendation_click forwards the vertical only, never the place/product', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('recommendation_click', { domain: 'food', place_id: 'p-7', name: 'Phở Hòa', position: 0 })
+    expect(events('recommendation_click')[0][2]).toEqual({ domain: 'food' })
+    const all = JSON.stringify(layer())
+    expect(all).not.toContain('p-7')
+    expect(all).not.toContain('Phở Hòa')
+  })
+
+  it('report (F-031) → report_submitted with the reason enum only', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('report', { reason: 'copyright', review_id: 'r-1', content: 'reported text' })
+    expect(events('report_submitted')[0][2]).toEqual({ reason: 'copyright' })
+    const all = JSON.stringify(layer())
+    expect(all).not.toContain('r-1')
+    expect(all).not.toContain('reported text')
+  })
+
+  it('scam_check forwards check_type + risk level, never the checked content', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('scam_check', { check_type: 'url', risk_level: 'HIGH', url: 'http://scam.example/pay?acct=123', message: 'send 5tr' })
+    expect(events('scam_check')[0][2]).toEqual({ check_type: 'url', risk_level: 'HIGH' })
+    const all = JSON.stringify(layer())
+    expect(all).not.toContain('scam.example')
+    expect(all).not.toContain('send 5tr')
+  })
+
+  it('chat_opened fires with no parameters', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('chat_opened', { conversation_id: 'c-1', category: 'food' })
+    expect(events('chat_opened')[0][2]).toEqual({})
+    expect(JSON.stringify(layer())).not.toContain('c-1')
+  })
+
+  it('affiliate_click forwards vertical, provider slug and the tracked boolean only', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('affiliate_click', { domain: 'shopping', provider: 'lazada', tracked: true, url: 'https://lazada.vn/x?sub=abc', linkId: 'l-9' })
+    expect(events('affiliate_click')[0][2]).toEqual({ domain: 'shopping', provider: 'lazada', tracked: true })
+    const all = JSON.stringify(layer())
+    expect(all).not.toContain('lazada.vn/x')
+    expect(all).not.toContain('l-9')
   })
 
   it('every mapped param is an enum-or-boolean key, never free text, ids or the user', async () => {

@@ -18,6 +18,7 @@ import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageRe
 import ScamKnowledgeSection from './ScamKnowledgeSection'
 import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
+import { track } from '@/lib/tracking/tracker'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
 
 /**
@@ -178,6 +179,8 @@ export default function ScamShieldView() {
       const checked: CheckResult = await res.json()
       setResult(checked)
       remember(checked)
+      // scam_check — verdict enum only, never the URL or any number in it.
+      track('scam_check', { check_type: 'url', risk_level: checked.risk.level })
     } catch {
       setError(t('scamShield.error.invalidUrl'))
     } finally {
@@ -203,6 +206,8 @@ export default function ScamShieldView() {
       const checked: CheckResult = await res.json()
       setResult(checked)
       remember(checked)
+      // scam_check — verdict enum only, never the decoded QR contents.
+      track('scam_check', { check_type: 'qr', risk_level: checked.risk.level })
     } catch {
       setError(t('scamShield.error.qrDecode'))
     } finally {
@@ -249,6 +254,8 @@ export default function ScamShieldView() {
         return
       }
       setMessageResult(analyzed as MessageAnalysisResponse)
+      // scam_check — verdict enum only, never the message text, URL or screenshot.
+      track('scam_check', { check_type: 'message', risk_level: analyzed.risk.level })
     } catch {
       setError(t('v3.scam.msg.errFailed'))
     } finally {

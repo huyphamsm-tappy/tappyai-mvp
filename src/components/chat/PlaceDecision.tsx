@@ -5,7 +5,8 @@ import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } fr
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { cn } from '@/lib/utils'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
-import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
+import { commerceTap } from '@/lib/recommendation/handoff'
+import { track } from '@/lib/tracking/tracker'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
 
 // ── The place decision, as the approved Food composition renders it ─────────
@@ -159,6 +160,10 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
       data-testid="place-card"
       data-rank={ranked ? position + 1 : undefined}
       data-lead={ranked && position === 0 ? 'true' : undefined}
+      // Card engagement (RUNBOOK §3.19 recommendation interaction). Domain only —
+      // never the place. A tap on an inner action bubbles here too, so this counts
+      // any interaction with the recommended card.
+      onClick={() => track('recommendation_click', { domain: p.domain })}
       className={
         ranked && position === 0
           ? 'overflow-hidden rounded-2xl border border-primary-300 bg-white dark:border-primary-700 dark:bg-gray-900'
@@ -315,7 +320,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
             href={lead.url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => reportCommerceHandoff(lead)}
+            onClick={() => commerceTap(lead, p.domain)}
             className="flex min-h-[40px] w-full items-center justify-center gap-2 rounded-xl border border-primary-300 bg-primary-50 text-sm font-semibold text-primary-800 transition-colors hover:bg-primary-100 dark:border-primary-700 dark:bg-primary-900/20 dark:text-primary-300 dark:hover:bg-primary-900/40"
           >
             {actionLabel(lead, t)}
@@ -339,7 +344,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
                 href={a.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={a.commerce ? () => reportCommerceHandoff(a) : undefined}
+                onClick={a.commerce ? () => commerceTap(a, p.domain) : undefined}
                 className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-rose-300 px-3 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/30"
               >
                 <Utensils size={12} aria-hidden="true" /> {actionLabel(a, t)}
@@ -355,8 +360,8 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
                   href={a.url}
                   target={isCall ? undefined : '_blank'}
                   rel={isCall ? undefined : 'noopener noreferrer'}
-                  // A commerce handoff reports its opaque ids on the way out (CCP event 6); every other action is untouched.
-                  onClick={a.commerce ? () => reportCommerceHandoff(a) : undefined}
+                  // A commerce handoff reports its opaque ids on the way out (CCP event 6) and mirrors a GA-only affiliate_click; every other action is untouched.
+                  onClick={a.commerce ? () => commerceTap(a, p.domain) : undefined}
                   className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-gray-200 px-3 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   {isCall && <Phone size={12} aria-hidden="true" />}

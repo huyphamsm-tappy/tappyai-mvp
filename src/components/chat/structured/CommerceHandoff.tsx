@@ -3,7 +3,7 @@
 import { ExternalLink } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
-import { reportCommerceHandoff } from '@/lib/recommendation/handoff'
+import { commerceTap } from '@/lib/recommendation/handoff'
 import type { SynthesisCommerceView } from '@/lib/ai/consultative/synthesisView'
 
 // ── The Shopping card's commerce handoff (CCP Phase 8, owner-like UAT R1 P1-5) ─
@@ -31,7 +31,7 @@ export default function CommerceHandoff({ c, size }: { c: SynthesisCommerceView;
       href={c.url}
       target="_blank"
       rel="noopener noreferrer"
-      onClick={() => reportCommerceHandoff(action)}
+      onClick={() => commerceTap(action, 'shopping')}
       data-testid={search ? 'commerce-search' : 'commerce-handoff'}
       data-provider={c.providerId}
       className={cls}

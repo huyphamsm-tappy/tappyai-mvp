@@ -8,6 +8,7 @@ import MatchBadge from '@/components/chat/structured/MatchBadge'
 import OfferRow, { offerDestination, offerActionLabel } from '@/components/chat/structured/OfferRow'
 import CommerceHandoff from '@/components/chat/structured/CommerceHandoff'
 import { reasonList } from '@/lib/recommendation/reasonText'
+import { track } from '@/lib/tracking/tracker'
 
 // ── Phase 9: render the DECISION, not the catalogue ─────────────────────────
 //
@@ -139,7 +140,7 @@ function ProductRow({ e, showMatch }: { e: SynthesisEntityView; showMatch: boole
   const dest = offerDestination(offer?.url ?? null, offer?.seller ?? null)
   const handoffs = handoffsOf(e)
   return (
-    <div className="flex gap-2.5 rounded-xl border border-gray-200 p-2.5 dark:border-gray-700" data-testid="product-row">
+    <div className="flex gap-2.5 rounded-xl border border-gray-200 p-2.5 dark:border-gray-700" data-testid="product-row" onClick={() => track('recommendation_click', { domain: 'shopping' })}>
       {e.image && (
         <img
           src={e.image}

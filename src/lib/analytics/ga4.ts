@@ -143,6 +143,27 @@ export const GA4_EVENT_MAP: Readonly<Record<string, Ga4Mapping>> = {
   review_search: { name: 'search', params: [], constant: { search_type: 'reviews' } },
   review_like: { name: 'review_like', params: ['liked'] },
   review_share: { name: 'share', params: [], constant: { content_type: 'review' } },
+
+  // ── Funnel completeness (RUNBOOK §3.19) — added 2026-09-21, all enum/boolean only ──
+  // A recommended place/product card was tapped. `domain` is the vertical enum
+  // (food / travel / shopping / entertainment / spa), never the place or product.
+  recommendation_click: { name: 'recommendation_click', params: ['domain'] },
+  // Content report (F-031). Mirrors the existing internal `report` event; only the
+  // fixed reason enum (spam / harassment / copyright / …) is forwarded, never the
+  // reported id, author or text.
+  report: { name: 'report_submitted', params: ['reason'] },
+  // Scam Shield ran a check. `check_type` ∈ url|qr|message, `risk_level` is the
+  // verdict enum — NEVER the checked URL, message text, QR contents or any number
+  // extracted from them.
+  scam_check: { name: 'scam_check', params: ['check_type', 'risk_level'] },
+  // The main chat was opened. No metadata is forwarded (see chat_opened fire site).
+  chat_opened: { name: 'chat_opened', params: [] },
+  // A commerce / buy link was followed. Fired GA-ONLY at the commerce-handoff tap
+  // (lib/recommendation/handoff.ts → trackGa), so it is not a second parallel
+  // user_events row: the internal record is the handoff beacon (CCP event 6). Only
+  // the vertical, the provider slug and whether a tracking wrapper was applied are
+  // forwarded — never the destination URL or the opaque link ids.
+  affiliate_click: { name: 'affiliate_click', params: ['domain', 'provider', 'tracked'] },
 }
 
 /** Called by tracker.track() for every in-app event. Safe to call when GA4 is disabled. */
