@@ -1,0 +1,143 @@
+# TappyAI — Manual UAT Handoff
+
+Prepared 2026-09-21 for a full manual UAT on localhost. This is the document to work
+from. It assumes the audit (non-production) Supabase project `zdaprdfgpbpnxyofagmc`.
+
+> **This session's fixes to spot-check** (all committed on `uat/release-audit-2026-09`):
+> - **F-029** — sharing a large Vietnamese plan no longer 500s (byte-based trim). *Test: item 6 below.*
+> - **F-031** — a content-report channel is restored (`POST /api/reviews/[id]/report` + a Report menu on other people's clips). *Test: item 7 below.*
+> - **Android music-reuse removed** — no "use this sound"/sound sheet/music tile; clips still play their own audio. *Test: item 4 below.*
+
+---
+
+## 1. Start everything from cold
+
+### Web (required for everything, including the Android app)
+```bash
+npm install        # first time only
+npm run dev        # Next.js on http://localhost:3000
+```
+- Expect: `▲ Next.js 14.2.35 … Local: http://localhost:3000`, ready in a few seconds.
+- Env is already in `.env.local` (points at the audit Supabase, Serper key, Anthropic key). Do **not** commit it.
+- Open http://localhost:3000 and sign in with an account from §2.
+
+### Reset to a clean state (if you break the dev server / caches)
+```bash
+npm run dev:reset          # stop port 3000 → clear .next + node_modules/.cache → reinstall only if corrupt → health-check → stop
+npm run dev:reset -- --keep   # same, but leaves the server running
+```
+- This resets the **dev environment only**. It never touches the database, your env files, or app code. The seeded accounts and data in §2/§3 persist across resets. If you need fresh data, re-run the provisioning (ask, or see §3).
+
+### Android (debug build, against your local web server)
+- Prereqs: Android Studio installed; an emulator running; the web dev server up on :3000.
+- The debug build's API base URL defaults to **`http://10.0.2.2:3000/`** (the emulator's route to your host's localhost) — so the **emulator**, not a physical device, is the zero-config path.
+- Build/install from the `android/` folder:
+  ```bash
+  cd android
+  # Windows (Git Bash): point Gradle at Android Studio's bundled JDK 21
+  export JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"
+  ./gradlew :app:installDebug      # installs com.tappyai.app.debug on the running emulator
+  ```
+- Supabase URL/anon key for the debug build come from `android/gradle.properties` (already set to the audit project). App id: `com.tappyai.app.debug`.
+- A **physical device** needs the API base overridden to your machine's LAN IP: `./gradlew :app:installDebug -PTAPPYAI_API_BASE_URL_DEBUG=http://<your-LAN-ip>:3000/` (and the phone on the same network).
+- iOS: **not buildable here** (no macOS) and **must not be released** — see §5.
+
+---
+
+## 2. Accounts (persistent — created directly, log in with email + password)
+
+All four use the same password: **`TappyUAT!2026`**. All are 18+ (age gate passed) and onboarded, so they land straight in the app.
+
+| Role | Email | What it's for |
+|---|---|---|
+| **Plain user, with history** | `manual.uat.user@tappyai.com` | The product should not look empty: 2 saved conversations (a food chat + a Đà Lạt trip), 1 posted review (Phở Phú Vương, published), 1 saved review. Use for the "returning user" experience. |
+| **Fresh plain user** | `manual.uat.fresh@tappyai.com` | A brand-new signed-in user, no history. Use to see empty states and first-run flows. |
+| **Pro user** | `manual.uat.pro@tappyai.com` | Has an **active subscription** (`status=active`, expires ~1 year out), so it skips the free-question quota and gets the Pro daily cap. Use to test Pro-only behaviour. NOTE: the *purchase/upgrade* flow itself isn't testable locally (§5) — this account is already Pro. |
+| **Admin** | `manual.uat.admin@tappyai.com` | Has the `admin` back-office role. The email is `@tappyai.com` on purpose — the back office refuses any non-corporate identity, so an admin account must be on that domain. Use to reach admin/back-office surfaces. |
+
+**Merchant: not applicable.** There is **no merchant/partner/business account type** in this app. Partner deals and commerce providers are owner-managed *content* (written server-side, read publicly), not something a user logs in to manage. So there is no merchant login to hand you. If you need to exercise partner-deal content, it's admin-managed.
+
+> These accounts are **not** prefixed `uat2609_` — they're meant to persist. They live only on the audit project.
+
+---
+
+## 3. Seeded data
+
+- **Places / merchants for the 5 domains: nothing was seeded, and nothing needs to be.** Place/restaurant/hotel data is **not** in the database — it comes live from external providers. **Serper** (`google.serper.dev`) is the working provider and returns real Vietnamese places (verified: a "phở quận 1" query returned 12 real results). So FOOD / SHOPPING / TRAVEL / ENTERTAINMENT / SPA discovery, search, categories, filters, sorting and pagination all work live with real data — just start the server and ask.
+  - Caveat: **Google Places is 403** on this project (Maps Platform onboarding, not the key). It only supplies place *photos* and some details; the app degrades gracefully to "no photo" and never errors. So expect thinner imagery in places, not broken results.
+- **User data:** the four accounts above, plus history on account #1 (see §2). The rest of the audit DB is empty by design.
+- To re-seed the accounts/history (idempotent), the provisioning script lives in the session scratchpad; re-running it recreates or refreshes the four accounts.
+
+---
+
+## 4. Highest-value checklist — work top to bottom
+
+Ordered by risk: the top items are core product surfaces that have **never** been verified (the backend audit re-verified plumbing, not the product). Each line is something to click through.
+
+### A. The five core domains — **do these first** (never verified; now testable on live Serper data)
+Sign in as **plain-history**. For **each** domain — FOOD, SHOPPING, TRAVEL, ENTERTAINMENT, SPA/WELLNESS:
+- [ ] Ask a natural Vietnamese request (e.g. *"quán lẩu ngon quận 3 cho 4 người"*, *"khách sạn Đà Nẵng gần biển"*, *"spa massage quận 1"*). You should get real, relevant places.
+- [ ] Open a result's detail. **Check every field shown is actually backed by data** — name, address, rating, price, hours. Flag anything that looks invented or mismatched (this is the #1 risk).
+- [ ] Try a failure/empty path (a nonsense query, a place that shouldn't exist) — you should get a graceful "nothing found", not an error or a fabricated answer.
+- [ ] Categories, filters, sort, and "load more"/pagination each change the results sensibly.
+
+### B. AI answer quality (never scored)
+- [ ] Across the domains above, judge: did it honour the constraints (budget, area, party size)? Any hallucinated places, prices, or claims? Does the reply language match your input language?
+- [ ] Ask a multi-turn/consultative flow (it asks a clarifying question, you answer, it refines).
+
+### C. Web frontend sweep (no real-browser pass has been done)
+- [ ] Open the browser devtools console and watch for red errors / hydration warnings as you navigate.
+- [ ] Click through every primary nav destination; look for dead buttons, broken routes, and 404s.
+- [ ] Check empty / loading / error states (fresh account, offline, a failing search).
+- [ ] Resize to mobile width and toggle light/dark theme — layout should hold; nothing clipped or unreadable.
+
+### D. Android app (music-reuse was just removed — confirm it's clean)
+Install the debug build (§1) and sign in.
+- [ ] **No music-reuse UI anywhere:** no "use this sound" pill on feed clips, no sound sheet/detail screen, no "add music" in the composer, no Music tile in Smart Tools / Home. (These would have called retired endpoints and are gone.)
+- [ ] **A clip still plays its own audio** — open the Explore feed, a video plays with sound. (Own-clip audio is embedded and was deliberately kept.)
+- [ ] General smoke: feed scrolls, chat works against localhost, profile loads, posting a review works.
+
+### E. Notifications & theme (unverified across surfaces)
+- [ ] Notification preferences toggle and persist (web + Android).
+- [ ] Default theme is correct on every entry path (fresh install, deep link, re-open).
+
+### F. This session's fixes — spot-check
+- [ ] **F-029 (plan share):** as any account, generate a **large Vietnamese itinerary** (multi-day, many stops, diacritic-heavy text) and **share it**. It should return a share link and open the shared page — no 500. (Previously a large VN plan 500'd.)
+- [ ] **F-031 (content report):** as one account, open **another** user's clip/review in the feed (use the plain-history account's posted review, viewed from a different account) → the **⋮ Report** menu appears → pick a reason → you get a "report sent" confirmation. (Owners see delete/hide instead; guests see neither.)
+
+### G. Auth / age-gate / account flows
+- [ ] Sign out / sign in with email+password works for each account.
+- [ ] The 18+ age gate behaves (all four accounts are adults and should pass straight through). F-028: a mistyped DOB correction path is recoverable.
+- [ ] Pro account: confirm it isn't hitting the free-question quota; admin account: confirm back-office surfaces load.
+
+### H. Admin / back office
+- [ ] Sign in as **admin** and confirm the back-office/admin surfaces are reachable and render (moderation queue, etc.). A non-`@tappyai.com` account must **not** reach them.
+
+---
+
+## 5. What you canNOT exercise on localhost (and why)
+
+| Area | Why | To enable |
+|---|---|---|
+| **Guest / anonymous flow** | Anonymous sign-in is **disabled** on the audit project (control-plane setting; can't be flipped from code). | Owner: Dashboard → project `zdaprdfgpbpnxyofagmc` → Authentication → Sign In / Providers → **Allow anonymous sign-ins** → enable → Save. Then guest quota, the anon-JWT RLS checks, and claim-anonymous become testable. |
+| **Affiliate / deal-link wrapping (F-020)** | `ACCESSTRADE_PUBLISHER_ID` is unset (pending provider approval); `CJ_API_KEY` also unset. | Set the publisher id once approved; the money path (real `go.isclix.com` links, tracking params) is unverified until then. |
+| **Photo / clip / avatar uploads** | `BLOB_READ_WRITE_TOKEN` (Vercel Blob) is unset — the upload endpoints have nowhere to store the file. | Set a Blob token. Until then, expect the composer's photo attach and avatar change to fail. |
+| **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
+| **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
+| **Google Analytics (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset — GA not wired for this env. | Configure a GA property. |
+| **Google Places photos/details** | 403 (Maps Platform onboarding). | Complete Maps Platform onboarding. Results still work via Serper; only imagery is thin. |
+| **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
+
+---
+
+## 6. Known-broken / expected-to-fail (don't file these as new bugs)
+
+- **iOS still ships the music-reuse UI** and will hit the now-410 endpoints. iOS **must not be released** until that UI is removed (no macOS build env here, so it wasn't touched this session).
+- **F-002 (Next.js version)** — mitigated on Vercel; upgrade scheduled post-launch.
+- **F-001 (GA)**, **F-010 / guest**, **F-020 (Accesstrade)** — open by decision; see §5.
+- **Test-suite trust (F-030)** — a green unit suite does not prove DB write-paths satisfy real column constraints (mocked inserts can't fail like Postgres). Treat green as a logic guard, not a data-integrity one.
+- Anything under "can't test locally" (§5) that appears broken is an environment gap, not a product bug.
+
+---
+
+*Source of the checklist ordering: the release report's "What I did not verify" (§ What I did not verify in `docs/uat/RELEASE-REPORT.md`), re-ordered for a human clicking through the product, highest-risk first.*
