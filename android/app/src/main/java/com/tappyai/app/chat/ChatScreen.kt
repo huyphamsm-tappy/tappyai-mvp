@@ -163,7 +163,7 @@ fun ChatScreen(
     // Commerce actions (CCP) report their render and their tap through the ViewModel's reporter;
     // onCardTap fires the GA4 recommendation_click (the vertical only).
     val commerceCallbacks = remember(viewModel) {
-        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff, onCardTap = viewModel::onRecommendationClick)
+        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff, onCardTap = viewModel::onRecommendationClick, onSearchLinkTap = viewModel::onShoppingSearchClick)
     }
     val promptsInEnglish = booleanResource(R.bool.resources_are_english)
     LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }

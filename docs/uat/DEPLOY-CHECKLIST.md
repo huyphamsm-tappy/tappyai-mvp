@@ -21,7 +21,7 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 
 ## 1. The release delta — migrations to apply, in this exact order
 
-Only **seven** migrations are missing from the 2026-09-17 prod snapshot. Apply them in the order below
+Only **eight** migrations are missing from the 2026-09-17 prod snapshot. Apply them in the order below
 (chronological filename order, which also satisfies every dependency). Each prerequisite for the
 CREATE-OR-REPLACE / policy migrations (#4–#6) is already on prod, so all apply cleanly.
 
@@ -138,9 +138,23 @@ needs an entry.
   ```
 - **Rollback:** `supabase/migrations/rollback/20260921_user_events_ga4_event_types_rollback.sql`
   (removes only the three added values; also a no-op when no constraint exists).
+
+### 8) `supabase/migrations/20260921_user_events_shopping_search_event.sql`  — allow `shopping_search_click`
+Adds one more type, `shopping_search_click` (the shopping "Tìm trên …" search-redirect demand signal),
+using the **exact same** conditional dynamic-union pattern as #7 — kept separate because #7 is already
+applied (editing it in place would drift). NO-OP on prod (no constraint); union on the audit/nonprod DB.
+- **Verify after (only where a constraint exists):**
+  ```sql
+  SELECT pg_get_constraintdef(oid) LIKE '%shopping_search_click%' AS has_it
+  FROM pg_constraint
+  WHERE conrelid='public.user_events'::regclass AND conname='user_events_event_type_check';
+  ```
+- **Rollback:** `supabase/migrations/rollback/20260921_user_events_shopping_search_event_rollback.sql`
+  (removes only `shopping_search_click`; no-op when no constraint exists).
+
 - **⚠️ Cross-branch reconciliation:** the G1 growth branch owns the migration that CREATES the big
   `user_events_event_type_check` on prod. Whichever migration ends up creating/replacing that constraint
-  on prod **must include `recommendation_click`, `scam_check`, `chat_opened`**, or these three funnel
+  on prod **must include `recommendation_click`, `scam_check`, `chat_opened`, `shopping_search_click`**, or these three funnel
   events will be dropped on prod once the constraint lands. This migration protects every environment
   that already has the constraint; it cannot retro-fit a constraint another branch introduces later.
 
@@ -168,9 +182,9 @@ Safe **with or after** the deploy:
   read it only best-effort (a denied read → the clip plays its own audio), so this degrades
   gracefully whichever side lands first. Recommended **with or just after** the deploy.
 
-- **#7 user_events GA4 event types** — before OR with the deploy where the constraint exists (so the
-  new client `track()` rows are not dropped once the new code ships). A NO-OP on prod (no constraint),
-  so on prod its ordering does not matter.
+- **#7 user_events GA4 event types** and **#8 user_events shopping_search_click** — before OR with the
+  deploy where the constraint exists (so the new client `track()` rows are not dropped once the new code
+  ships). Both are NO-OPs on prod (no constraint), so on prod their ordering does not matter.
 
 Nothing in this delta must come strictly *after* the deploy.
 
@@ -179,7 +193,7 @@ Nothing in this delta must come strictly *after* the deploy.
 ## 3. Rollback order (if you must revert)
 
 Roll back in the **reverse** of the apply order, and only what you applied:
-`#7 user_events GA4 event types` → `#6 music_tracks_lockdown` → `#5 F-032` → `#4 F-028` → `#3 commerce_feed_items` → `#2 commerce_providers` → `#1 plan_shares`.
+`#8 user_events shopping_search_click` → `#7 user_events GA4 event types` → `#6 music_tracks_lockdown` → `#5 F-032` → `#4 F-028` → `#3 commerce_feed_items` → `#2 commerce_providers` → `#1 plan_shares`.
 - #4, #5 rollbacks restore the previous function bodies (F-028/F-032 base). #6 restores the music_tracks
   policies + grants. #1 drops `plan_shares`.
 - **#2 and #3 (commerce) have no rollback scripts by design — they are purely additive** (only new
@@ -297,7 +311,7 @@ from a single branch's list — is applied to prod, every event_type not in that
    - if a CHECK is wanted as a security control, replace the enumerated list with the **dynamic-union**
      pattern of migration #7 (add values, never DROP-and-narrow), authored as the single source and
      ordered to run **after** every branch's event-type additions, and its list must include
-     `recommendation_click`, `scam_check`, `chat_opened` **and** the growth events.
+     `recommendation_click`, `scam_check`, `chat_opened`, `shopping_search_click` **and** the growth events.
 3. Whichever approach, the reconciliation is a documentation duty here: migration #7 protects every
    environment that already has the constraint, but it cannot retro-fit a constraint another branch
    creates later.
@@ -334,5 +348,5 @@ Safety, privacy policy, retention) **before** the g1-growth merge lands them on 
 ---
 
 *Migration inventory diffed against `docs/audit/schema-baseline/prod-schema-only.sql` (2026-09-17).
-Seven migrations (§1 #1–#7) are the release delta; everything else is already applied. §7 records the
+Eight migrations (§1 #1–#8) are the release delta; everything else is already applied. §7 records the
 audit-DB objects that belong to neither this branch nor prod.*

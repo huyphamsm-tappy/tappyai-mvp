@@ -4,6 +4,8 @@ import { ExternalLink, Star } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { formatVndShort, type PriceLocale } from '@/lib/format/vndPrice'
 import type { SynthesisOfferView } from '@/lib/ai/consultative/synthesisView'
+import { track } from '@/lib/tracking/tracker'
+import { sellerPlatform } from '@/lib/commerce/sellerPlatform'
 
 // ── P4-03/P4-16 · OfferRow (DD-008: Extract → Generalise → Improve) ────────
 //
@@ -110,6 +112,10 @@ export default function OfferRow({ o }: { o: SynthesisOfferView }) {
             href={o.url}
             target="_blank"
             rel="noopener noreferrer"
+            // Demand signal for the "Tìm trên …" search redirect (NOT a buy button).
+            // Separate from affiliate_click; platform is the marketplace enum only,
+            // never the seller string, product name or URL.
+            onClick={dest.direct ? undefined : () => track('shopping_search_click', { domain: 'shopping', platform: sellerPlatform(o.seller) })}
             className="inline-flex items-center gap-1 text-primary-600 dark:text-primary-400 hover:underline"
           >
             {offerActionLabel(dest, t)}

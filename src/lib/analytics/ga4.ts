@@ -164,6 +164,12 @@ export const GA4_EVENT_MAP: Readonly<Record<string, Ga4Mapping>> = {
   // the vertical, the provider slug and whether a tracking wrapper was applied are
   // forwarded — never the destination URL or the opaque link ids.
   affiliate_click: { name: 'affiliate_click', params: ['domain', 'provider', 'tracked'] },
+  // The "Tìm trên …" search-redirect link on a shopping card was tapped. A demand
+  // signal while real buy buttons are sparse — kept SEPARATE from affiliate_click so
+  // it can never inflate that metric (this is a search redirect, not an affiliate
+  // link). `platform` is the marketplace ENUM (shopee/lazada/tiki/tiktok/other),
+  // never the seller string, the product name or the URL.
+  shopping_search_click: { name: 'shopping_search_click', params: ['domain', 'platform'] },
 }
 
 /** Called by tracker.track() for every in-app event. Safe to call when GA4 is disabled. */

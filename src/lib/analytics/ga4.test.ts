@@ -181,6 +181,16 @@ describe('product events — the allowlist is the taxonomy', () => {
     expect(all).not.toContain('l-9')
   })
 
+  it('shopping_search_click forwards the vertical + platform enum only, never the seller or url', async () => {
+    const ga = await loadGa4(ID)
+    ga.mirrorToGa4('shopping_search_click', { domain: 'shopping', platform: 'shopee', seller: 'CellphoneS', url: 'https://google.com/search?q=x&prds=1', name: 'iPhone 16' })
+    expect(events('shopping_search_click')[0][2]).toEqual({ domain: 'shopping', platform: 'shopee' })
+    const all = JSON.stringify(layer())
+    expect(all).not.toContain('CellphoneS')
+    expect(all).not.toContain('google.com/search')
+    expect(all).not.toContain('iPhone 16')
+  })
+
   it('every mapped param is an enum-or-boolean key, never free text, ids or the user', async () => {
     const ga = await loadGa4(ID)
     const forbidden = /(^|_)(id|ids|email|name|query|q|text|content|message|token|phone|address|lat|lng|url)$/i

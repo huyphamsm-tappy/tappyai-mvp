@@ -71,6 +71,15 @@ class Ga4TaxonomyTest {
     }
 
     @Test
+    fun `shopping_search_click forwards vertical + platform enum only, never seller or url`() {
+        val out = Ga4Taxonomy.project(
+            "shopping_search_click",
+            mapOf("domain" to "shopping", "platform" to "shopee", "seller" to "CellphoneS", "url" to "https://google.com/search?prds=1", "name" to "iPhone 16"),
+        )
+        assertEquals(mapOf("domain" to "shopping", "platform" to "shopee"), out)
+    }
+
+    @Test
     fun `no allowlisted param key reads like an id, name, query, url, contact or free text`() {
         val bad = Ga4Taxonomy.forbiddenParamKeys()
         assertTrue("forbidden param keys: $bad", bad.isEmpty())

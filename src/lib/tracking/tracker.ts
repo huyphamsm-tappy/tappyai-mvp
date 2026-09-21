@@ -30,6 +30,7 @@ type KnownEventType =
   | 'recommendation_click'
   | 'scam_check'
   | 'chat_opened'
+  | 'shopping_search_click'
 
 export type EventType = KnownEventType | (string & {})
 

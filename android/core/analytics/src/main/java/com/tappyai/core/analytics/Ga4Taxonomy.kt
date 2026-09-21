@@ -38,6 +38,10 @@ object Ga4Taxonomy {
         "scam_check" to setOf("check_type", "risk_level"),
         "chat_opened" to emptySet(),
         "affiliate_click" to setOf("domain", "provider", "tracked"),
+        // The "Tìm trên …" search-redirect link on a shopping card was tapped. Separate
+        // from affiliate_click (this is a search redirect, not an affiliate link).
+        // `platform` is the marketplace enum only, never the seller string / product / URL.
+        "shopping_search_click" to setOf("domain", "platform"),
     )
 
     /** A param key must never read like an id, name, query, url, contact or free text. */

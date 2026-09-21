@@ -27,7 +27,7 @@ const KNOWN_TYPES = new Set([
   // commerce-handoff beacon). These three DO write a user_events row, so they are
   // also allowed by user_events_event_type_check where that constraint exists
   // (migration 20260921_user_events_ga4_event_types.sql).
-  'recommendation_click', 'scam_check', 'chat_opened',
+  'recommendation_click', 'scam_check', 'chat_opened', 'shopping_search_click',
 ])
 const REBUILD_SIGNALS = new Set(['chat_search', 'review_search', 'hide', 'not_interested', 'report'])
 

@@ -229,7 +229,7 @@ private fun RecommendedEntity(
         // marketplaces' searches only stand in when no detail link exists. Seller offer rows (a
         // Google Shopping redirect each) are kept only while no verified merchant handoff exists.
         CommerceHandoffRow(handoffs, commerce, emphasised = true)
-        if (handoffs.detail.isEmpty()) entity.offers.forEach { OfferRow(it) }
+        if (handoffs.detail.isEmpty()) entity.offers.forEach { OfferRow(it, onSearchLinkTap = commerce.onSearchLinkTap) }
     }
 }
 
@@ -343,7 +343,7 @@ private fun MatchBadge(match: String) {
 
 /** One seller's offer. Opens the listing; a missing price says so rather than showing nothing. */
 @Composable
-private fun OfferRow(offer: ShoppingOfferView) {
+private fun OfferRow(offer: ShoppingOfferView, onSearchLinkTap: (String) -> Unit = {}) {
     val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
     val seller = offer.seller ?: stringResource(R.string.shopping_decision_unknown_seller)
@@ -357,6 +357,9 @@ private fun OfferRow(offer: ShoppingOfferView) {
             .then(
                 if (offer.url != null) {
                     Modifier.clickable {
+                        // shopping_search_click — the "Xem/Tìm trên …" offer search-redirect
+                        // (not a buy button; those are CommerceHandoff). Platform enum only.
+                        onSearchLinkTap(sellerPlatform(offer.seller))
                         runCatching {
                             context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(offer.url)))
                         }

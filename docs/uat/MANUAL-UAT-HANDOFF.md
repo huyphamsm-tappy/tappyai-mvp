@@ -142,12 +142,21 @@ For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the l
 | `chat_response` | Ask an AI question, let it answer | `feature` (food/travel/… domain only) |
 | `recommendation_click` | Tap a place card / product row in a result | `domain` only |
 | `affiliate_click` | Tap a **buy / commerce** link on a card | `domain, provider, tracked` (needs a card carrying a CCP commerce link) |
+| `shopping_search_click` | Tap a shopping card's **"Tìm trên …"** search-redirect link (the non-buy-button offer link) | `domain: shopping`, `platform` (shopee·lazada·tiki·tiktok·other) — **never** the seller name, product or URL. Separate from `affiliate_click`. |
 | `search` | Run a **reviews** search | `search_type: reviews` (never the query) |
 | `report_submitted` | Report a review/message (§F F-031) | `reason` enum only |
 | `scam_check` | Run a Scam Shield url / QR / message check | `check_type` (url·qr·message) + `risk_level` — never the checked content |
 | `login` / `sign_up` | Sign in / create an account | `method` (+ `is_first_login` on login) |
 
-**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-8GP7L7N516` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All nine events are wired on Android now, including `recommendation_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
+### 🛒 Buy-button coverage count (do this before launch — F-036)
+Measure how sparse the revenue path actually is with the feed un-ingested (no Accesstrade creds). Run **10 varied shopping queries** — mix categories and specificity, e.g. *"tai nghe bluetooth chống ồn"*, *"iPhone 16 Pro 256GB"*, *"nồi chiên không dầu 5L"*, *"giày chạy bộ nam size 42"*, *"bàn phím cơ không dây"*, *"sữa rửa mặt cho da dầu"*, *"máy hút bụi cầm tay"*, *"áo khoác gió nữ"*, *"ổ cứng SSD 1TB"*, *"bình giữ nhiệt 500ml"*. For each, record:
+- [ ] a **real buy button** ("Mua trên …", a CCP commerce handoff), **or**
+- [ ] only a **"Tìm trên …" search link** (the offer row — fires `shopping_search_click`), **or**
+- [ ] neither.
+
+Tally `buy-button : search-only : neither` out of 10. This is the actual pre-launch coverage number; expect it heavily weighted to search-only until the feed-ingest cron runs (§6). `shopping_search_click` (§J) then measures demand on the search-only ones.
+
+**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-8GP7L7N516` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All ten events are wired on Android now, including `recommendation_click`, `shopping_search_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
 
 ---
 

@@ -616,6 +616,16 @@ class ChatViewModel @Inject constructor(
         analytics.track("recommendation_click", mapOf("domain" to domain.ifBlank { category.name.lowercase() }))
     }
 
+    /**
+     * shopping_search_click — a tap on a shopping offer's "Xem/Tìm trên …" search-redirect
+     * link (a demand signal while real buy buttons are sparse). Separate from affiliate_click.
+     * [platform] is the marketplace enum only (see sellerPlatform); the seller string, product
+     * name and URL are never sent.
+     */
+    fun onShoppingSearchClick(platform: String) {
+        analytics.track("shopping_search_click", mapOf("domain" to "shopping", "platform" to platform))
+    }
+
     private fun sendUserMessage(text: String, imageUri: Uri? = null) {
         _messages.update { it + ChatMessage(id = nextId++, role = TappyChatRole.User, text = text, imageUri = imageUri) }
         input = ""

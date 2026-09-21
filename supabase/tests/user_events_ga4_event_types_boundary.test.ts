@@ -16,6 +16,9 @@ import type { Client } from 'pg'
 const REPO = join(__dirname, '..', '..')
 const FORWARD = readFileSync(join(REPO, 'supabase/migrations/20260921_user_events_ga4_event_types.sql'), 'utf8')
 const ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260921_user_events_ga4_event_types_rollback.sql'), 'utf8')
+// #8 reuses the exact same conditional-union pattern for one more type.
+const FORWARD_8 = readFileSync(join(REPO, 'supabase/migrations/20260921_user_events_shopping_search_event.sql'), 'utf8')
+const ROLLBACK_8 = readFileSync(join(REPO, 'supabase/migrations/rollback/20260921_user_events_shopping_search_event_rollback.sql'), 'utf8')
 const PORT = 54371
 
 const NEW_TYPES = ['recommendation_click', 'scam_check', 'chat_opened']
@@ -105,6 +108,29 @@ describe('migration #7 — constraint PRESENT: types added, nothing lost', () =>
     expect([...after].sort()).toEqual([...EXISTING].sort())
     for (const t of NEW_TYPES) expect(await inserts(t)).toBe(false)
     for (const t of EXISTING) expect(await inserts(t)).toBe(true)
+  })
+})
+
+describe('migration #8 — shopping_search_click, same conditional union', () => {
+  it('present: adds shopping_search_click on top of #7, nothing lost', async () => {
+    await resetTable(true)
+    await db.query(FORWARD)
+    const afterSeven = allowedValues(await constraintDef())
+    await db.query(FORWARD_8)
+    const afterEight = allowedValues(await constraintDef())
+    expect([...afterEight].sort()).toEqual([...new Set([...afterSeven, 'shopping_search_click'])].sort())
+    for (const t of afterSeven) expect(afterEight).toContain(t) // nothing from #7 lost
+    expect(await inserts('shopping_search_click')).toBe(true)
+    await db.query(ROLLBACK_8)
+    expect(allowedValues(await constraintDef())).not.toContain('shopping_search_click')
+    for (const t of afterSeven) expect(allowedValues(await constraintDef())).toContain(t)
+  })
+
+  it('absent: a true no-op, no constraint created', async () => {
+    await resetTable(false)
+    await db.query(FORWARD_8)
+    expect(await constraintDef()).toBeNull()
+    expect(await inserts('shopping_search_click')).toBe(true)
   })
 })
 

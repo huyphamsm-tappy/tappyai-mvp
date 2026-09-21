@@ -420,6 +420,8 @@ data class CommerceActionCallbacks(
     val onRendered: (LiveCommerceFacts) -> Unit = {},
     val onHandoff: (LiveCommerceFacts, Boolean) -> Unit = { _, _ -> },
     val onCardTap: (String) -> Unit = {},
+    /** GA4 `shopping_search_click` — the marketplace platform enum only (see sellerPlatform). */
+    val onSearchLinkTap: (String) -> Unit = {},
 )
 
 @Composable
