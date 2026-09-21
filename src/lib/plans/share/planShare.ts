@@ -51,8 +51,14 @@ const MAX_ADDRESS = 200
 const MAX_SHORT = 40
 const MAX_SUMMARY = 160
 const MAX_LINK = 512
-/** The row's CHECK is 64 KiB of jsonb; the snapshot stays under it with margin to spare. */
-export const MAX_SNAPSHOT_JSON = 60_000
+/**
+ * The row's CHECK is `pg_column_size(plan) <= 65536` — 64 KiB of BYTES. The budget must therefore
+ * be measured in UTF-8 BYTES, not characters (F-029): the previous 60_000-CHARACTER budget let a
+ * Vietnamese plan (multi-byte diacritics — the primary audience) pass the trim at ~60k chars while
+ * its bytes were ~90k+, so the insert hit the CHECK and the share 500'd. 56 KiB leaves ~9.5 KiB of
+ * headroom below the CHECK for jsonb's binary overhead vs the JSON text.
+ */
+export const MAX_SNAPSHOT_BYTES = 56_000
 
 export interface PlanShareItem {
   time?: string
@@ -118,13 +124,14 @@ function pickItem(raw: unknown): PlanShareItem | null {
  * built to hit every cap at once — not a path a real plan takes.
  */
 function fitBudget(snap: PlanShareSnapshot): PlanShareSnapshot {
-  const size = (s: PlanShareSnapshot) => JSON.stringify(s).length
-  if (size(snap) <= MAX_SNAPSHOT_JSON) return snap
+  // BYTES, not characters — the DB CHECK counts pg_column_size (F-029).
+  const size = (s: PlanShareSnapshot) => Buffer.byteLength(JSON.stringify(s), 'utf8')
+  if (size(snap) <= MAX_SNAPSHOT_BYTES) return snap
   const out: PlanShareSnapshot = { ...snap, days: snap.days.map(d => ({ label: d.label, items: d.items.map(it => ({ ...it })) })) }
   for (const d of out.days) for (const it of d.items) delete it.description
-  if (size(out) <= MAX_SNAPSHOT_JSON) return out
+  if (size(out) <= MAX_SNAPSHOT_BYTES) return out
   for (const d of out.days) for (const it of d.items) { delete it.maps_link; delete it.booking_link }
-  while (size(out) > MAX_SNAPSHOT_JSON && out.days.length > 1) out.days.pop()
+  while (size(out) > MAX_SNAPSHOT_BYTES && out.days.length > 1) out.days.pop()
   return out
 }
 

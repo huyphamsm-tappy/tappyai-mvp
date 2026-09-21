@@ -6,7 +6,7 @@
 
 import { describe, it, expect } from 'vitest'
 import {
-  MAX_SNAPSHOT_JSON, PLAN_SHARE_ID_RE, brochureOf, canonicalPlanShareJson, isPlanPhotoUrl, newPlanShareId,
+  MAX_SNAPSHOT_BYTES, PLAN_SHARE_ID_RE, brochureOf, canonicalPlanShareJson, isPlanPhotoUrl, newPlanShareId,
   planSharePath, planShareUrl, readPlanShareSnapshot, toPlanShareSnapshot,
 } from './planShare'
 import type { TappyPlan } from '@/components/TripPlanCard'
@@ -123,7 +123,7 @@ describe('toPlanShareSnapshot — the whitelist', () => {
     expect(snap.days).toHaveLength(10)
     expect(snap.days[0].items).toHaveLength(12)
     expect(snap.days[0].items[0].description).toHaveLength(240)
-    expect(JSON.stringify(snap).length).toBeLessThanOrEqual(MAX_SNAPSHOT_JSON)
+    expect(Buffer.byteLength(JSON.stringify(snap), 'utf8')).toBeLessThanOrEqual(MAX_SNAPSHOT_BYTES)
   })
 
   it('a payload built to hit every cap at once still fits the row: descriptions go first, then links, then days', () => {
@@ -135,11 +135,32 @@ describe('toPlanShareSnapshot — the whitelist', () => {
     })
     const plan: TappyPlan = { ...quyNhon(), days: Array.from({ length: 10 }, (_, i) => ({ label: `D${i}`, items: Array.from({ length: 12 }, (_, j) => item(j)) })) }
     const snap = toPlanShareSnapshot(plan)!
-    expect(JSON.stringify(snap).length).toBeLessThanOrEqual(MAX_SNAPSHOT_JSON)
+    expect(Buffer.byteLength(JSON.stringify(snap), 'utf8')).toBeLessThanOrEqual(MAX_SNAPSHOT_BYTES)
     // What survived is still real: names, addresses and photos are intact; the fit is deterministic.
     expect(snap.days[0].items[0].name).toBe(`${long('n', 118)}0`)
     expect(snap.days[0].items[0].photo_url).toBeDefined()
     expect(toPlanShareSnapshot(plan)).toEqual(snap)
+  })
+
+  // F-029 — the budget is BYTES, not characters. A Vietnamese plan (the primary audience) is
+  // multi-byte, so a snapshot that fits a 60k-CHAR budget can still be ~90k BYTES and blow the
+  // pg_column_size <= 65536 CHECK, 500-ing the share. The trim must measure UTF-8 bytes.
+  it('trims a large Vietnamese plan to fit the BYTE budget, not the character budget', () => {
+    const vi = (n: number) => 'nhà hàng hải sản tươi sống ngon tuyệt vời phục vụ chu đáo '.repeat(n)
+    const item = (j: number) => ({
+      time: '19:00', emoji: '🍜', category: 'ẩm thực', name: `Quán ăn ngon số ${j} ${vi(1)}`.slice(0, 118),
+      description: vi(5).slice(0, 240), price: '200 nghìn đồng', address: `Địa chỉ ${vi(3)}`.slice(0, 200),
+    })
+    const plan: TappyPlan = { ...quyNhon(), title: `Kế hoạch du lịch ${vi(2)}`.slice(0, 120),
+      days: Array.from({ length: 10 }, (_, i) => ({ label: `Ngày ${i + 1}`, items: Array.from({ length: 12 }, (_, j) => item(j)) })) }
+    const snap = toPlanShareSnapshot(plan)!
+    const chars = JSON.stringify(snap).length
+    const bytes = Buffer.byteLength(JSON.stringify(snap), 'utf8')
+    // The Vietnamese content inflates bytes past chars — the exact gap the old char-trim missed.
+    expect(bytes).toBeGreaterThan(chars)
+    // The byte size — what the DB CHECK measures — is within budget, and the budget is under 65536.
+    expect(bytes).toBeLessThanOrEqual(MAX_SNAPSHOT_BYTES)
+    expect(MAX_SNAPSHOT_BYTES).toBeLessThan(65536)
   })
 
   it('round-trips: a stored snapshot reads back identical, and re-publishing it fingerprints the same', () => {
