@@ -114,6 +114,11 @@ Install the debug build (§1) and sign in.
 ### H. Admin / back office
 - [ ] Sign in as **admin** and confirm the back-office/admin surfaces are reachable and render (moderation queue, etc.). A non-`@tappyai.com` account must **not** reach them.
 
+### I. Music-reuse fully gone (final cleanup — web this time)
+- [ ] **Feed shows NO sound disc.** Open the reviews feed and a clip's detail — there is no "sound"/music disc or "use this sound" affordance anywhere (it was removed on Android last pass and on web now).
+- [ ] **A clip plays its own audio.** Open an uploaded video clip (or post one, if Blob is on) — it plays its own embedded sound on tap-to-unmute; nothing borrows another clip's audio. *(This is the one Item-2 check best done visually here — the removal is source-verified but a seeded upload video confirms playback.)*
+- [ ] **Copyright policy is reachable.** Android: Settings → **Copyright Policy** opens the web `/copyright` page. Web: the footer's Copyright Policy link and `/copyright` render in EN + VI. *(Note for you: the policy text is still scoped to the removed music-upload feature — F-033 lists the legal-judgement rewrite for your decision.)*
+
 ---
 
 ## 5. What you canNOT exercise on localhost (and why)
