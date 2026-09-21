@@ -80,10 +80,6 @@ sealed interface ProfileRoute {
         val saved: Boolean = false,
     ) : ProfileRoute
 
-    /** A clip's sound, from the pager — the same sheet the Explore graph hosts. */
-    @Serializable
-    data class SoundSheet(val trackId: String) : ProfileRoute
-
     @Serializable
     data object AccountGraph : ProfileRoute
 

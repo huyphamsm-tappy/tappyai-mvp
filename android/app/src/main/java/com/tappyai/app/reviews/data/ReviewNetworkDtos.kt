@@ -56,7 +56,6 @@ data class ReviewDto(
      *  under the play badge (V3 mockup 05_17_48). Null when the row predates the column. */
     @SerialName("view_count") val viewCount: Int? = null,
     val score: Double? = null,
-    val music: MusicDto? = null,
     @SerialName("is_hidden") val isHidden: Boolean? = false,
     /** Whether the viewer follows this row's author — the feed route computes it per row for a
      *  signed-in viewer (`is_following`); absent/false when signed out. */
@@ -74,16 +73,6 @@ data class ReviewDto(
 data class ProfileDto(
     @SerialName("full_name") val fullName: String? = null,
     @SerialName("avatar_url") val avatarUrl: String? = null,
-)
-
-/** Stored JSON payload — its keys are camelCase server-side, unlike every other response field. */
-@Serializable
-data class MusicDto(
-    val version: Int = 1,
-    val trackId: String = "",
-    val startSec: Int = 0,
-    val volume: Double = 1.0,
-    val origin: String? = null,
 )
 
 @Serializable
@@ -262,7 +251,6 @@ data class CreateReviewRequestDto(
     val placeName: String,
     val body: String,
     val rating: Int? = null,
-    val music: MusicSelectionDto? = null,
     // Public Blob URLs of already-uploaded photos (via [PhotoUploadResponseDto]). The backend reads
     // `b.photos` (camelCase, unlike the snake_case response fields) and caps the array at 6. Null
     // when the review has no photos — with encodeDefaults=false it's then omitted from the wire,
@@ -310,28 +298,6 @@ data class ProductConfigDto(
 data class VideoConfigDto(
     val linkProviders: List<String> = listOf("youtube"),
 )
-
-/**
- * A track attached to the review being composed — the ONE cross-platform music payload
- * (`{version, trackId, startSec, volume}`, web `src/app/api/reviews/route.ts`). The backend hard-
- * rejects a missing/mismatched `version` ("unsupported music version"), and `Number(undefined)` on
- * a missing startSec/volume NaN-fails its validator — so NO field may carry a default value: the
- * shared prod Json has `encodeDefaults=false`, which silently drops default-valued fields from the
- * wire (the same trap that broke Blob uploads — see `BlobTokenRequestDto`). Every field is a
- * required constructor param and is therefore always serialized.
- */
-@Serializable
-data class MusicSelectionDto(
-    val version: Int,
-    val trackId: String,
-    val startSec: Int,
-    val volume: Double,
-) {
-    companion object {
-        /** Web `MUSIC_PAYLOAD_VERSION` — bump only in lockstep with the backend. */
-        const val PAYLOAD_VERSION = 1
-    }
-}
 
 /**
  * The safety gate's author-facing outcome, as `POST /api/reviews` and `GET /api/reviews/feed`
@@ -401,7 +367,6 @@ fun ReviewDto.toDomain(): Review = Review(
     watchTimeAvg = watchTimeAvg,
     score = score,
     viewCount = viewCount,
-    music = music?.toDomain(),
     isHidden = isHidden ?: false,
     isFollowingAuthor = isFollowing,
     moderation = moderation?.toDomain(),
@@ -422,14 +387,6 @@ fun ModerationDto.toDomain(): ReviewModeration = ReviewModeration(
     title = title,
     detail = detail,
     assertsViolation = assertsViolation,
-)
-
-fun MusicDto.toDomain(): ReviewMusic = ReviewMusic(
-    version = version,
-    trackId = trackId,
-    startSec = startSec,
-    volume = volume,
-    origin = origin,
 )
 
 fun CommentDto.toDomain(): ReviewComment = ReviewComment(

@@ -49,7 +49,7 @@ class ReviewShareTest {
         photos = photos, likeCount = 0, commentCount = 0, saveCount = null, createdAt = "", likedByMe = false,
         savedByMe = false, profiles = null, contentType = if (video) ReviewContentType.Video else ReviewContentType.Photo,
         mediaUrl = mediaUrl, thumbnail = null, sourceType = sourceType, sourceUrl = sourceUrl, hashtags = null,
-        watchTimeAvg = null, score = null, music = null, isHidden = false, viewCount = null,
+        watchTimeAvg = null, score = null, isHidden = false, viewCount = null,
     )
 
     // ── the payload ──

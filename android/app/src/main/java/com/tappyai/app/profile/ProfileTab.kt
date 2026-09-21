@@ -27,7 +27,6 @@ import com.tappyai.app.notifications.InboxScreen
 import com.tappyai.app.notifications.NotificationsScreen
 import com.tappyai.app.planner.PlannerScreen
 import com.tappyai.app.pricetracking.PriceTrackingScreen
-import com.tappyai.app.music.SoundSheet
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.ui.ProfileClipsScreen
 import com.tappyai.app.reviews.ui.ReviewComposerHost
@@ -133,13 +132,9 @@ fun ProfileTab(
             ProfileClipsScreen(
                 startReviewId = route.startReviewId,
                 onAuthorClick = { userId -> navController.navigate(ProfileRoute.AuthorProfile(userId)) },
-                onMusicDiscClick = { trackId -> navController.navigate(ProfileRoute.SoundSheet(trackId)) },
                 onAskTappy = askTappy,
                 onBack = { navController.popBackStack() },
             )
-        }
-        composable<ProfileRoute.SoundSheet> {
-            SoundSheet(onDismiss = { navController.popBackStack() })
         }
         composable<ProfileRoute.Planner> {
             PlannerScreen(

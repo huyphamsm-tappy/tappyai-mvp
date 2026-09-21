@@ -227,13 +227,6 @@ fun AppNavHost(
         composable<AppRoute.GroupDetail> {
             GroupDetailScreen(onBack = { navController.popBackStack() })
         }
-        // ReviewComposerViewModel reads trackId/trackTitle from this entry's SavedStateHandle
-        // (same convention as ChatViewModel's conversationId) — no need to thread them through
-        // this composable's params. See AppRoute.ComposerWithSound's doc for why this is a
-        // top-level route rather than living inside the Reviews tab's own nested NavHost.
-        composable<AppRoute.ComposerWithSound> {
-            ReviewComposerHost(onBack = { navController.popBackStack() })
-        }
         // Same host, reached from a past booking's Review button — ReviewComposerViewModel reads
         // placeId/placeName from this entry's SavedStateHandle.
         composable<AppRoute.ComposerForPlace> {

@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.Add
@@ -103,7 +102,6 @@ fun ReviewCard(
     onDelete: () -> Unit,
     onHide: () -> Unit,
     modifier: Modifier = Modifier,
-    onMusicDiscClick: (() -> Unit)? = null,
     /**
      * ✦ Hỏi Tappy (reference design): opens Chat pre-filled with a question about THIS clip —
      * the web's `/chat?q=` bridge (`bridge.promptEntity`, AskTappyButton.tsx). Null hides it.
@@ -220,7 +218,6 @@ fun ReviewCard(
         ReviewCreatorBlock(
             review = review,
             onAuthorClick = onAvatarClick,
-            onSoundClick = onMusicDiscClick,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(start = 16.dp, end = 96.dp, bottom = bottomClearance + 40.dp),
@@ -649,7 +646,6 @@ private fun ReviewPlacePill(review: Review) {
 private fun ReviewCreatorBlock(
     review: Review,
     onAuthorClick: () -> Unit,
-    onSoundClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val displayName = review.profiles?.fullName
@@ -696,39 +692,6 @@ private fun ReviewCreatorBlock(
                 overflow = TextOverflow.Ellipsis,
             )
         }
-        val music = review.music
-        if (music?.origin != null && onSoundClick != null) {
-            val handleForSound = displayName?.lowercase()?.replace(" ", ".")
-            val label = if (music.origin == "original" && handleForSound != null) {
-                stringResource(R.string.reviews_sound_original, handleForSound)
-            } else {
-                stringResource(R.string.reviews_sound_attached)
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(50))
-                    .background(ExploreV3.Glass)
-                    .border(1.dp, ExploreV3.GlassBorder, RoundedCornerShape(50))
-                    .clickable(onClick = onSoundClick)
-                    .padding(start = 12.dp, end = 10.dp, top = 8.dp, bottom = 8.dp),
-            ) {
-                Icon(Icons.Filled.MusicNote, contentDescription = null, tint = ReviewTextPrimary, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = label,
-                    color = ReviewTextPrimary,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.widthIn(max = 200.dp),
-                )
-                Spacer(modifier = Modifier.width(6.dp))
-                Text(text = "›", color = ExploreV3.OnVideoMuted, fontSize = 16.sp)
-            }
-        }
     }
 }
 
@@ -764,7 +727,6 @@ private fun ReviewCardVideoPreview() {
         isMe = false,
         onLike = {}, onSave = {}, onComment = {}, onShare = {},
         onAvatarClick = {}, onDelete = {}, onHide = {},
-        onMusicDiscClick = {},
     )
 }
 
@@ -798,6 +760,5 @@ private fun ReviewCardMusicPreview() {
         isMe = false,
         onLike = {}, onSave = {}, onComment = {}, onShare = {},
         onAvatarClick = {}, onDelete = {}, onHide = {},
-        onMusicDiscClick = {},
     )
 }

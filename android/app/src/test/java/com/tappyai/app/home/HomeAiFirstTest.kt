@@ -160,7 +160,7 @@ class HomeAiFirstTest {
         val required = mapOf(
             "Scan" to "SmartToolId.Scan",
             "Content Writer" to "SmartToolId.Captions",
-            "Music" to "SmartToolId.Music",
+            // Music reuse retired (backend endpoints 410) — the Music tile is removed from Home, not de-emphasised.
             "Tappy Together" to "SmartToolId.Together",
             // Canonical since D-series: Home is the entry to Scam Shield, and it must stay one.
             "Scam Shield" to "SmartToolId.Safety",

@@ -47,7 +47,6 @@ internal fun ReviewClipPager(
     currentUserId: String?,
     viewModel: ReviewsFeedViewModel,
     onAuthorClick: (String) -> Unit,
-    onMusicDiscClick: (String) -> Unit,
     modifier: Modifier = Modifier,
     /** ✦ Hỏi Tappy for the tapped row — the Chat prefill bridge; null hides the rail action. */
     onAskTappy: ((Review) -> Unit)? = null,
@@ -107,10 +106,6 @@ internal fun ReviewClipPager(
                 onFollow = { viewModel.toggleFollow(review) },
                 onDelete = { viewModel.deleteReview(review) },
                 onHide = { viewModel.hideReview(review) },
-                // Web parity: the disc opens the SoundSheet for the clip's attached track.
-                onMusicDiscClick = review.music?.trackId
-                    ?.takeIf { it.isNotBlank() }
-                    ?.let { trackId -> { onMusicDiscClick(trackId) } },
                 onAskTappy = onAskTappy?.let { ask -> { ask(review) } },
                 bottomClearance = bottomClearance,
             )

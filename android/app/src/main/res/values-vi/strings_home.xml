@@ -128,8 +128,6 @@
     <string name="smart_tool_safety_desc">Kiểm tra link, website mã QR an toàn</string>
     <string name="smart_tool_together">Nhóm ăn</string>
     <string name="smart_tool_together_desc">Chọn địa điểm ăn uống phù hợp nhóm bạn</string>
-    <string name="smart_tool_music">Nhạc</string>
-    <string name="smart_tool_music_desc">Nghe &amp; chọn nhạc nền cho review của bạn</string>
     <string name="smart_tool_fortune">Bói</string>
     <string name="smart_tool_fortune_desc">Xem tử vi hôm nay theo cung hoàng đạo</string>
     <string name="smart_tool_captions">Viết</string>

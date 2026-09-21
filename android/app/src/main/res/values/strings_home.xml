@@ -130,8 +130,6 @@
     <string name="smart_tool_safety_desc">Check a link, website or QR code is safe</string>
     <string name="smart_tool_together">Tappy Together</string>
     <string name="smart_tool_together_desc">Find somewhere that suits the whole group</string>
-    <string name="smart_tool_music">Music Library</string>
-    <string name="smart_tool_music_desc">Find a soundtrack for your review</string>
     <string name="smart_tool_fortune">Fortune Today</string>
     <string name="smart_tool_fortune_desc">Today&#8217;s reading for your sign</string>
     <string name="smart_tool_captions">Social Captions</string>

@@ -35,7 +35,7 @@ class SelfProfileV3Test {
         photos = null, likeCount = likes, commentCount = 0, saveCount = null, createdAt = "", likedByMe = false,
         savedByMe = false, profiles = null, contentType = if (video) ReviewContentType.Video else ReviewContentType.Photo,
         mediaUrl = null, thumbnail = null, sourceType = null, sourceUrl = null, hashtags = null, watchTimeAvg = null,
-        score = null, music = null, isHidden = hidden, viewCount = views,
+        score = null, isHidden = hidden, viewCount = views,
     )
 
     // ── header facts: real numbers only ───────────────────────────────────

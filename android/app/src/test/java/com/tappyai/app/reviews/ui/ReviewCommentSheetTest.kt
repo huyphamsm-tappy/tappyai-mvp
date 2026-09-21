@@ -54,7 +54,7 @@ class ReviewCommentSheetTest {
         assertTrue(feed.contains("onComment = { commentsFor = review.id },"))
         assertFalse("no Detail navigation from the feed screen", feed.contains("onReviewClick") || feedScreen.contains("onReviewClick"))
         assertTrue("the feed composes the shared pager", feedScreen.contains("ReviewClipPager("))
-        val feedRoute = nav.substring(nav.indexOf("composable<ReviewsRoute.Feed>"), nav.indexOf("composable<ReviewsRoute.SoundSheet>"))
+        val feedRoute = nav.substring(nav.indexOf("composable<ReviewsRoute.Feed>"), nav.indexOf("composable<ReviewsRoute.SelfProfile>"))
         assertFalse("the feed destination has no path to Detail", feedRoute.contains("ReviewsRoute.Detail"))
         assertFalse(feedRoute.contains("onReviewClick"))
     }

@@ -167,7 +167,6 @@ class ProfileClipsTest {
             "onAvatarClick = { onAuthorClick(review.userId) },",
             "onDelete = { viewModel.deleteReview(review) },",
             "onHide = { viewModel.hideReview(review) },",
-            "?.let { trackId -> { onMusicDiscClick(trackId) } },",
             "var audioUnlocked by rememberSaveable { mutableStateOf(true) }",
             "viewModel.onPageSettled(pagerState.currentPage)",
             "viewModel.onActiveReviewChanged(activeReview)",

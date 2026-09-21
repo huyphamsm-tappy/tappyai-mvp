@@ -26,7 +26,6 @@ data class Review(
     val hashtags: List<String>?,
     val watchTimeAvg: Double?,
     val score: Double?,
-    val music: ReviewMusic?,
     val isHidden: Boolean,
     /**
      * The safety gate's outcome for this post, or null.
@@ -94,12 +93,4 @@ data class ReviewProfile(
     val followerCount: Int = 0,
     val followingCount: Int = 0,
     val reviewCount: Int = 0,
-)
-
-data class ReviewMusic(
-    val version: Int,
-    val trackId: String,
-    val startSec: Int,
-    val volume: Double,
-    val origin: String?,
 )

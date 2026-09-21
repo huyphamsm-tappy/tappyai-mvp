@@ -62,18 +62,6 @@
     <string name="tool_group_preset5">Office team</string>
     <string name="tool_group_counter">%1$d/%2$d</string>
 
-    <!-- Music (/music) -->
-    <string name="tool_music_title1">Music</string>
-    <string name="tool_music_title2">For every mood</string>
-    <string name="tool_music_body">Browse songs by mood, preview them instantly and pick a soundtrack for your review.</string>
-    <string name="tool_music_cta">Explore now</string>
-    <string name="tool_music_pill_moods">Music by mood</string>
-    <string name="tool_music_pill_preview">Preview instantly in the app</string>
-    <string name="tool_music_pill_soundtrack">Soundtracks for your reviews</string>
-    <string name="tool_music_pill_upload">Upload your Original Sound</string>
-    <string name="tool_music_section_all">All songs</string>
-    <string name="tool_music_section_results">Search results</string>
-    <string name="tool_music_now_playing">Now playing</string>
 
     <!-- Caption writer (/viet-content) -->
     <string name="tool_viet_eyebrow">AI caption writer ✍️</string>

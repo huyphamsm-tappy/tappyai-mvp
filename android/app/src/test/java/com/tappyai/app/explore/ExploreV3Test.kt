@@ -119,7 +119,7 @@ class ExploreV3Test {
     // ── the card ──────────────────────────────────────────────────────────
 
     @Test
-    fun `the lower-left block is place pill, creator, a two-line caption, sound pill - no headline over the clip`() {
+    fun `the lower-left block is place pill, creator, a two-line caption - no headline over the clip`() {
         val pill = card.substring(card.indexOf("private fun ReviewPlacePill("), card.indexOf("private fun ReviewCreatorBlock("))
         assertTrue("pill = address, else the place name, never for a share-only post", pill.contains("if (isShareOnlyName(review.placeName)) return") && pill.contains("if (!review.placeAddress.isNullOrBlank()) review.placeAddress else review.placeName"))
         assertFalse("no city/district field is invented", pill.contains("review.city") || pill.contains("district"))
@@ -127,12 +127,11 @@ class ExploreV3Test {
         val place = creator.indexOf("ReviewPlacePill(review = review)")
         val identity = creator.indexOf("TappyAvatar(")
         val caption = creator.indexOf("text = review.body.trim(),")
-        val sound = creator.indexOf("R.string.reviews_sound_original")
-        assertTrue("place → avatar+handle → caption → sound pill", place in 1 until identity && identity < caption && caption < sound)
+        assertTrue("place → avatar+handle → caption", place in 1 until identity && identity < caption)
         assertTrue("both open the author's profile", creator.contains("onClick = onAuthorClick"))
         assertTrue("the caption is compact, two lines, not a headline", creator.contains("fontSize = 15.sp") && creator.contains("maxLines = 2") && !creator.contains("fontSize = 30.sp"))
-        assertTrue("the sound pill reads the real origin", creator.contains("music.origin == \"original\"") && creator.contains("R.string.reviews_sound_attached"))
-        assertTrue("the sound pill opens the SoundSheet like the disc did", creator.contains(".clickable(onClick = onSoundClick)"))
+        // Music reuse retired: the sound pill and its SoundSheet tap are gone from the creator block.
+        assertFalse("no sound-reuse pill remains", creator.contains("reviews_sound_original") || creator.contains("onSoundClick"))
         assertFalse("no verified badge without verification data", creator.contains("Verified"))
         val body = card.substring(card.indexOf("fun ReviewCard("), card.indexOf("private fun ReviewMediaBackground("))
         assertFalse("the mid-screen content block is gone: the clip's centre stays clear", body.contains("ReviewContentBlock(") || body.contains("fillMaxHeight("))

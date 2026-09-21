@@ -63,17 +63,6 @@
     <string name="tool_group_counter">%1$d/%2$d</string>
 
     <!-- Nhạc (/music) -->
-    <string name="tool_music_title1">Âm nhạc</string>
-    <string name="tool_music_title2">Cho mọi tâm trạng</string>
-    <string name="tool_music_body">Khám phá bài hát theo tâm trạng, nghe thử ngay và chọn nhạc nền cho review của bạn.</string>
-    <string name="tool_music_cta">Khám phá ngay</string>
-    <string name="tool_music_pill_moods">Nhạc theo tâm trạng</string>
-    <string name="tool_music_pill_preview">Nghe thử ngay trong app</string>
-    <string name="tool_music_pill_soundtrack">Nhạc nền cho review của bạn</string>
-    <string name="tool_music_pill_upload">Đăng Original Sound của bạn</string>
-    <string name="tool_music_section_all">Tất cả bài hát</string>
-    <string name="tool_music_section_results">Kết quả tìm kiếm</string>
-    <string name="tool_music_now_playing">Đang phát</string>
 
     <!-- Viết (/viet-content) -->
     <string name="tool_viet_eyebrow">AI viết content ✍️</string>

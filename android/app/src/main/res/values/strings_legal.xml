@@ -21,11 +21,4 @@
     <string name="legal_terms_section5_title">Changes to These Terms</string>
     <string name="legal_terms_section6_title">Contact</string>
 
-    <string name="legal_copyright_title">Copyright Policy</string>
-    <string name="legal_copyright_scope">Applies to music uploaded to TappyAI by users.</string>
-    <string name="legal_copyright_section1_title">Conditions for uploading music</string>
-    <string name="legal_copyright_section2_title">Responsibility</string>
-    <string name="legal_copyright_section3_title">Reporting infringement (Notice-and-Takedown)</string>
-    <string name="legal_copyright_section4_title">Copyright Agent</string>
-    <string name="legal_copyright_section5_title">Repeat infringement</string>
 </resources>

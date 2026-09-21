@@ -21,11 +21,4 @@
     <string name="legal_terms_section5_title">Thay đổi đối với các điều khoản này</string>
     <string name="legal_terms_section6_title">Liên hệ</string>
 
-    <string name="legal_copyright_title">Chính sách bản quyền</string>
-    <string name="legal_copyright_scope">Áp dụng cho nhạc do người dùng đăng tải lên TappyAI.</string>
-    <string name="legal_copyright_section1_title">Điều kiện khi đăng nhạc</string>
-    <string name="legal_copyright_section2_title">Trách nhiệm</string>
-    <string name="legal_copyright_section3_title">Báo cáo vi phạm (Notice-and-Takedown)</string>
-    <string name="legal_copyright_section4_title">Đại diện bản quyền</string>
-    <string name="legal_copyright_section5_title">Xử lý vi phạm lặp lại</string>
 </resources>

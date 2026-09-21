@@ -98,10 +98,7 @@ interface ReviewsRepository {
      */
     suspend fun getLinkProviders(): NetworkResult<List<String>>
 
-    /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
-     *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own
-     *  attach-an-existing-track flow, independent of whether real media is attached.
-     *  [photos] carries public Blob URLs from [uploadReviewPhoto] (max 6, backend-capped).
+    /** [photos] carries public Blob URLs from [uploadReviewPhoto] (max 6, backend-capped).
      *  [link], when present, attaches an external clip (YouTube/TikTok/Facebook) — the web sends
      *  content_type='video', media_url=source_url, source_type, source_url and a best-effort thumb. */
     suspend fun createReview(
@@ -109,11 +106,6 @@ interface ReviewsRepository {
         placeName: String,
         body: String,
         rating: Int?,
-        musicTrackId: String? = null,
-        // Web parity: the composer's MusicSelectionPanel lets the user set a start offset + volume
-        // for the attached track; sent through in the `music` payload (defaults = whole track, full).
-        musicStartSec: Int = 0,
-        musicVolume: Double = 1.0,
         photos: List<String>? = null,
         link: LinkAttachment? = null,
         /**

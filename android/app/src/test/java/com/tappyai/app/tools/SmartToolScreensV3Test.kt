@@ -7,7 +7,7 @@ import org.junit.Test
 import java.io.File
 
 /**
- * The nine Smart Tool feature screens in the V3 dress (2026-09-15, from the design/v3-phase4 tool
+ * The Smart Tool feature screens in the V3 dress (2026-09-15, from the design/v3-phase4 tool
  * pages). Source-pinned, like [com.tappyai.app.fortune.FortuneHubV3Test]:
  *  - every screen stands on the shared kit (`ToolV3Page` / `V3HomeTheme`) with its own hue,
  *    pose and scene — no generic single template, no Material default chrome;
@@ -16,6 +16,9 @@ import java.io.File
  *  - the hero copy is the web's, in both languages, and every new string has a vi + en value;
  *  - the mascot poses are real bundled assets; the one new asset is a byte-identical copy of the
  *    web's `reading.png`.
+ *
+ * The Music library screen was removed with music reuse (the backend endpoints answer 410), so it
+ * is no longer among the screens pinned here.
  */
 class SmartToolScreensV3Test {
 
@@ -30,7 +33,6 @@ class SmartToolScreensV3Test {
     private val split get() = screen("splitbill", "SplitBillScreen")
     private val scam get() = screen("scamshield", "ScamShieldScreen")
     private val group get() = screen("groupdining", "GroupDiningScreen")
-    private val music get() = screen("music", "MusicLibraryScreen")
     private val fortune get() = screen("fortune", "FortuneHubScreen")
     private val viet get() = screen("vietwriter", "VietWriterScreen")
     private val kit get() = screen("tools", "ToolV3")
@@ -45,9 +47,6 @@ class SmartToolScreensV3Test {
             assertFalse("$name has no TappyButton left", s.contains("TappyButton("))
             assertFalse("$name has no TappyTextField left", s.contains("TappyTextField("))
         }
-        // Music keeps a lazy grid (infinite scroll), so it wears the theme directly.
-        assertTrue(music.contains("V3HomeTheme {") && music.contains("LazyVerticalGrid("))
-        assertFalse(music.contains("FilterChip(") || music.contains("TappySearchBar("))
         assertTrue(fortune.contains("V3HomeTheme {"))
         // Scam Shield (2026-09-17) follows the CURRENT web page (`design/v3-phase4`): the Navy hero
         // with the shield pose and the four capability tiles, then the three-tab tool (see
@@ -62,7 +61,6 @@ class SmartToolScreensV3Test {
         assertTrue(currency.contains("hue = ToolHue.Navy") && currency.contains("R.drawable.tappy_wave") && currency.contains("ToolCoin("))
         assertTrue(split.contains("hue = ToolHue.Navy") && split.contains("R.drawable.tappy_wave") && split.contains("SplitScene("))
         assertTrue(group.contains("hue = ToolHue.Blue") && group.contains("R.drawable.tappy_thinking") && group.contains("GroupScene("))
-        assertTrue(music.contains("R.drawable.tappy_aitools") && music.contains("Color(0xFF1D4ED8), Color(0xFF4338CA), Color(0xFF6D28D9)"))
         assertTrue(viet.contains("hue = ToolHue.Pink") && viet.contains("R.drawable.tappy_reading") && viet.contains("Color(0xFFEC4899), Color(0xFFF43F5E), Color(0xFFFB923C)"))
         // The kit knows all five hues; each is a distinct palette.
         val hues = Regex("""^    (Blue|Indigo|Navy|Music|Pink)\(""", RegexOption.MULTILINE).findAll(kit).map { it.groupValues[1] }.toList()
@@ -79,15 +77,11 @@ class SmartToolScreensV3Test {
             .forEach { assertTrue("scam $it", scam.contains(it)) }
         listOf("viewModel::onGroupNameChange", "viewModel::createGroup", "viewModel.isCreating", "viewModel.errorMessage", "GroupDiningViewModel.MAX_NAME")
             .forEach { assertTrue("group $it", group.contains(it)) }
-        listOf("viewModel::onQueryChange", "viewModel::onSelectCategory", "viewModel.loadMore()", "viewModel::retry", "viewModel.isLoadingMore", "viewModel.isSearching", "player.toggle(track.id, track.previewUrl ?: track.audioUrl)", "onOpenSound(track.id)")
-            .forEach { assertTrue("music $it", music.contains(it)) }
         listOf("viewModel::onTopicChange", "viewModel::onPlatformChange", "viewModel::onToneChange", "viewModel::onLengthChange", "viewModel::generate", "viewModel::onReset", "viewModel.isGenerating", "viewModel.result")
             .forEach { assertTrue("viet $it", viet.contains(it)) }
         // Split bill stays 100% client-side; its two modes and tip presets are intact.
         assertTrue(split.contains("private enum class SplitMode { Equal, Custom }") && split.contains("private val TIP_PRESETS = listOf(0, 5, 10, 15, 20)"))
         assertTrue(split.contains("SplitMode.Equal -> EqualResult(") && split.contains("SplitMode.Custom -> CustomResult("))
-        // Music keeps the split interaction: art → detail, play badge → preview.
-        assertTrue(music.contains(".clickable(onClick = onOpenDetail)") && music.contains(".clickable(onClick = onTogglePreview)"))
         // Group's quick picks only fill the field through the same change callback.
         assertTrue(group.contains("onClick = { onGroupNameChange(label) }"))
     }
@@ -100,12 +94,10 @@ class SmartToolScreensV3Test {
         assertEquals("vi and en carry the same keys", names(vi), names(en))
         assertTrue(vi.contains(">Quét ảnh, hiểu ngay<") || vi.contains("tool_scan_title1"))
         assertTrue(vi.contains("<string name=\"tool_group_title1\">Đi đâu ăn gì</string>") && vi.contains("<string name=\"tool_group_title2\">cả team?</string>"))
-        assertTrue(vi.contains("<string name=\"tool_music_title1\">Âm nhạc</string>") && vi.contains("<string name=\"tool_music_title2\">Cho mọi tâm trạng</string>"))
         assertTrue(vi.contains("<string name=\"tool_viet_title1\">Caption hấp dẫn</string>") && vi.contains("<string name=\"tool_viet_title2\">trong vài giây</string>"))
         assertTrue(vi.contains("<string name=\"tool_group_bubble\">Cùng đi ăn càng vui!</string>"))
-        assertTrue(en.contains("<string name=\"tool_music_cta\">Explore now</string>") && vi.contains("<string name=\"tool_music_cta\">Khám phá ngay</string>"))
         // Every tool_* string the screens reference exists.
-        val referenced = listOf(scan, translate, currency, split, scam, group, music, viet)
+        val referenced = listOf(scan, translate, currency, split, scam, group, viet)
             .flatMap { Regex("""R\.string\.(tool_\w+)""").findAll(it).map { m -> m.groupValues[1] }.toList() }.toSet()
         val missing = referenced - names(vi)
         assertTrue("missing strings: $missing", missing.isEmpty())
@@ -114,7 +106,7 @@ class SmartToolScreensV3Test {
     @Test
     fun `mascot poses are real bundled assets and the reading pose is the web's own file`() {
         val drawables = File(root(), "app/src/main/res/drawable-nodpi").list().orEmpty().toSet()
-        val used = listOf(scan, translate, currency, split, scam, group, music, viet)
+        val used = listOf(scan, translate, currency, split, scam, group, viet)
             .flatMap { Regex("""R\.drawable\.(tappy_\w+)""").findAll(it).map { m -> m.groupValues[1] }.toList() }.toSet()
         used.forEach { assertTrue("$it.png is bundled", "$it.png" in drawables) }
         val web = File(root().parentFile, "public/tappy/reading.png")

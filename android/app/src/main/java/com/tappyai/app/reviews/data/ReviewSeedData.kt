@@ -42,7 +42,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("banhmi", "saigonfood", "streetfood", "quan1"),
         watchTimeAvg = null,
         score = 0.95,
-        music = null,
     ),
     Review(
         id = "review-002",
@@ -68,13 +67,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("caphe", "coffeeshop", "saigon", "congcaphe"),
         watchTimeAvg = 45.2,
         score = 0.82,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-001",
-            startSec = 0,
-            volume = 0.8,
-            origin = "attached",
-        ),
     ),
     Review(
         id = "review-003",
@@ -100,7 +92,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("pho", "hanoi", "phothin", "vietnamfood"),
         watchTimeAvg = null,
         score = 0.98,
-        music = null,
     ),
     Review(
         id = "review-004",
@@ -126,7 +117,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("buncha", "hanoi", "obama"),
         watchTimeAvg = null,
         score = 0.75,
-        music = null,
     ),
     Review(
         id = "review-005",
@@ -155,7 +145,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("landmark81", "saigon", "skyview", "sunset"),
         watchTimeAvg = null,
         score = 0.60,
-        music = null,
     ),
     Review(
         id = "review-006",
@@ -186,7 +175,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("seafood", "oc", "saigonfood", "nhaudem"),
         watchTimeAvg = null,
         score = 0.88,
-        music = null,
     ),
     Review(
         id = "review-007",
@@ -212,13 +200,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("dalat", "nightmarket", "travel", "vietnam"),
         watchTimeAvg = 62.8,
         score = 0.91,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-002",
-            startSec = 15,
-            volume = 1.0,
-            origin = "library",
-        ),
     ),
     Review(
         id = "review-008",
@@ -244,7 +225,6 @@ val SEED_REVIEWS = listOf(
         hashtags = null,
         watchTimeAvg = null,
         score = 0.30,
-        music = null,
     ),
     Review(
         id = "review-009",
@@ -270,13 +250,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("eggcoffee", "hanoi", "caphetrung", "oldquarter"),
         watchTimeAvg = 28.5,
         score = 0.70,
-        music = ReviewMusic(
-            version = 1,
-            trackId = "track-003",
-            startSec = 5,
-            volume = 0.6,
-            origin = "attached",
-        ),
     ),
     Review(
         id = "review-010",
@@ -308,7 +281,6 @@ val SEED_REVIEWS = listOf(
         hashtags = listOf("hoian", "ancienttown", "travel", "quangnam", "lanterns"),
         watchTimeAvg = null,
         score = 0.99,
-        music = null,
     ),
 )
 

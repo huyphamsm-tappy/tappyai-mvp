@@ -136,7 +136,6 @@ fun HomeScreen(
     onOpenChatWithCategory: (String) -> Unit,
     onOpenChatWithPrefill: (String) -> Unit,
     onOpenConversation: (String) -> Unit,
-    onOpenMusic: () -> Unit,
     onOpenRecommendations: () -> Unit,
     onOpenTranslate: () -> Unit,
     onOpenCurrency: () -> Unit,
@@ -247,7 +246,6 @@ fun HomeScreen(
                     onOpenTranslate = onOpenTranslate,
                     onOpenSplitBill = onOpenSplitBill,
                     onOpenCurrency = onOpenCurrency,
-                    onOpenMusic = onOpenMusic,
                     onOpenTappyTogether = onOpenTappyTogether,
                     onOpenSmartTools = onOpenSmartTools,
                 )
@@ -854,14 +852,13 @@ private fun SmartToolsSection(
     onOpenTranslate: () -> Unit,
     onOpenSplitBill: () -> Unit,
     onOpenCurrency: () -> Unit,
-    onOpenMusic: () -> Unit,
     onOpenTappyTogether: () -> Unit,
     onOpenSmartTools: () -> Unit,
 ) {
-    // The section's eight, as registry ids, resolved to the callbacks the shell already passes.
+    // The section's previewed tools, as registry ids, resolved to the callbacks the shell already passes.
     val previewed = setOf(
         SmartToolId.Scan, SmartToolId.Translate, SmartToolId.Currency, SmartToolId.Split,
-        SmartToolId.Safety, SmartToolId.Together, SmartToolId.Music, SmartToolId.Captions,
+        SmartToolId.Safety, SmartToolId.Together, SmartToolId.Captions,
     )
     val tools = SMART_TOOLS.filter { it.id in previewed }
 
@@ -882,7 +879,6 @@ private fun SmartToolsSection(
                     SmartToolId.Split -> onOpenSplitBill()
                     SmartToolId.Safety -> onOpenScamShield()
                     SmartToolId.Together -> onOpenTappyTogether()
-                    SmartToolId.Music -> onOpenMusic()
                     SmartToolId.Captions -> onOpenVietWriter()
                     // Not previewed on Home: reachable from the Smart Tools page.
                     SmartToolId.Fortune -> onOpenSmartTools()

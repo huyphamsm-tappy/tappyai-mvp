@@ -130,9 +130,6 @@ class RealReviewsRepository @Inject constructor(
         placeName: String,
         body: String,
         rating: Int?,
-        musicTrackId: String?,
-        musicStartSec: Int,
-        musicVolume: Double,
         photos: List<String>?,
         link: LinkAttachment?,
     ): NetworkResult<ReviewModeration?> = safeApiCall {
@@ -142,14 +139,6 @@ class RealReviewsRepository @Inject constructor(
                 placeName = placeName,
                 body = body,
                 rating = rating,
-                music = musicTrackId?.let {
-                    MusicSelectionDto(
-                        version = MusicSelectionDto.PAYLOAD_VERSION,
-                        trackId = it,
-                        startSec = musicStartSec,
-                        volume = musicVolume,
-                    )
-                },
                 photos = photos?.takeIf { it.isNotEmpty() },
                 // Mirror the web's link payload: content_type='video', media_url = the source URL.
                 contentType = link?.let { "video" },

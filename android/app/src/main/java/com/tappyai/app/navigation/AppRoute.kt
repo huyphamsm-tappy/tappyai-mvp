@@ -16,12 +16,6 @@ import kotlinx.serialization.Serializable
  *    reached two ways — in-app after creating a group (Profile → Group dining → create) and via
  *    a shared-link deep link (`tappyai://group/{id}`) that arrives at `MainActivity` — and both
  *    routes must resolve to the same single registration.
- *  - [ComposerWithSound]: the review composer with a sound pre-attached (`/reviews/new?sound=`
- *    on the web), reached from Sound Detail's "Use this sound". It lives at the app level for the
- *    same structural reason as [GroupDetail]: Music (Sound Detail) is nested inside the Home tab's
- *    own NavHost, while the review composer normally lives inside the Reviews tab's NavHost — two
- *    separate `NavController`s that can't navigate into each other directly. This route composes
- *    the same `ReviewComposerHost` those tabs already reuse, just from a third call site.
  */
 sealed interface AppRoute : TappyRoute {
     @Serializable
@@ -42,12 +36,9 @@ sealed interface AppRoute : TappyRoute {
     @Serializable
     data class GroupDetail(val groupId: String) : AppRoute
 
-    @Serializable
-    data class ComposerWithSound(val trackId: String, val trackTitle: String) : AppRoute
-
     /**
      * The review composer with a real place pre-filled, reached from a past booking's Review
-     * button. Top-level for the same structural reason as [ComposerWithSound]: Bookings lives
+     * button. Top-level for the same structural reason as [GroupDetail]: Bookings lives
      * inside the Profile tab's nested nav, the composer inside the Reviews tab's.
      *
      * [placeId] is the booking's actual `place_id`, not a slug of the name — the composer's usual

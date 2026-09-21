@@ -37,9 +37,6 @@
     <!-- Badge on the author's own post when the gate did not publish it. Short by necessity: it
          sits on a grid tile. Tapping the post shows the server's full explanation. -->
     <string name="reviews_moderation_not_public">Not public</string>
-    <string name="reviews_composer_using_sound">Using: %1$s</string>
-    <string name="reviews_composer_remove_sound">Remove sound</string>
-    <string name="reviews_composer_add_music">Add music</string>
     <string name="reviews_notification_section_just_now">JUST NOW</string>
     <string name="reviews_notification_section_today">TODAY</string>
     <string name="reviews_notification_section_this_week">THIS WEEK</string>
@@ -173,8 +170,6 @@
     <string name="reviews_ask_tappy_prefill">Tell me more about %1$s</string>
     <string name="reviews_action_more">More</string>
     <string name="reviews_action_unsave">Unsave</string>
-    <string name="reviews_sound_original">Original sound - %1$s</string>
-    <string name="reviews_sound_attached">Attached sound</string>
     <string name="reviews_creator_open_profile">Open the profile of %1$s</string>
     <string name="reviews_likes_title">Likes</string>
     <string name="reviews_likes_empty">No likes on this post yet</string>
