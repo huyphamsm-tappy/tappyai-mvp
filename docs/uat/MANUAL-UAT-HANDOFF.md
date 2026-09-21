@@ -119,6 +119,27 @@ Install the debug build (§1) and sign in.
 - [ ] **A clip plays its own audio.** Open an uploaded video clip (or post one, if Blob is on) — it plays its own embedded sound on tap-to-unmute; nothing borrows another clip's audio. *(This is the one Item-2 check best done visually here — the removal is source-verified but a seeded upload video confirms playback.)*
 - [ ] **Copyright policy is reachable.** Android: Settings → **Copyright Policy** opens the web `/copyright` page. Web: the footer's Copyright Policy link and `/copyright` render in EN + VI. *(Note for you: the policy text is still scoped to the removed music-upload feature — F-033 lists the legal-judgement rewrite for your decision.)*
 
+### J. GA4 funnel events (F-001) — check each fires with no PII
+The web client is instrumented and client-verified; **delivery to the GA property is confirmed only in GA4 after you set the real Measurement ID** (`G-0PQ6Y6R2BE`) on production/preview. Two ways to check:
+- **In the browser (works on localhost, any/dummy ID):** open DevTools console and run `window.dataLayer` after each action below — the event and its params appear as a pushed `['event', name, params]` entry.
+- **In GA4 (after the real ID is set on a deployed/preview build):** GA4 → **Admin → DebugView** (or **Reports → Realtime**) and watch the events land.
+
+For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the listed params, and (d) carries **no** email, phone, message text, AI output, place/product name, token, or raw URL:
+
+| Event | How to trigger | Expected params (and nothing else) |
+|---|---|---|
+| `page_view` | Load a page; navigate to another (client-side) | `page_path` (query stripped, chat UUID → `/chat/_id`) |
+| `chat_opened` | Open a fresh main chat | *(none)* — must fire **once**, not on the `/chat/{id}` continuation |
+| `chat_response` | Ask an AI question, let it answer | `feature` (food/travel/… domain only) |
+| `recommendation_click` | Tap a place card / product row in a result | `domain` only |
+| `affiliate_click` | Tap a **buy / commerce** link on a card | `domain, provider, tracked` (needs a card carrying a CCP commerce link) |
+| `search` | Run a **reviews** search | `search_type: reviews` (never the query) |
+| `report_submitted` | Report a review/message (§F F-031) | `reason` enum only |
+| `scam_check` | Run a Scam Shield url / QR / message check | `check_type` (url·qr·message) + `risk_level` — never the checked content |
+| `login` / `sign_up` | Sign in / create an account | `method` (+ `is_first_login` on login) |
+
+**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-0PQ6Y6R2BE` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. NOTE: on Android, `recommendation_click` and `login`/`sign_up` are **not yet wired** (deferred — see findings F-001); the rest are.
+
 ---
 
 ## 5. What you canNOT exercise on localhost (and why)
@@ -129,7 +150,7 @@ Install the debug build (§1) and sign in.
 | **Photo / clip / avatar uploads** | `BLOB_READ_WRITE_TOKEN` (Vercel Blob) is unset — the upload endpoints have nowhere to store the file. | Set a Blob token. Until then, expect the composer's photo attach and avatar change to fail. |
 | **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
 | **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
-| **Google Analytics (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset — GA not wired for this env. | Configure a GA property. |
+| **Google Analytics delivery (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset locally, so no hit leaves the browser (the client IS instrumented — see §J to observe events in `window.dataLayer`). | Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-0PQ6Y6R2BE` on production only, redeploy, then confirm in GA4 Realtime. Android delivery also needs the Firebase↔GA4 link (§J). |
 | **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
 
 ---
@@ -138,7 +159,7 @@ Install the debug build (§1) and sign in.
 
 - **iOS still ships the music-reuse UI** and will hit the now-410 endpoints. iOS **must not be released** until that UI is removed (no macOS build env here, so it wasn't touched this session).
 - **F-002 (Next.js version)** — mitigated on Vercel; upgrade scheduled post-launch.
-- **F-001 (GA)**, **F-020 (Accesstrade)** — open by decision; see §5. *(F-010 guest flow is now enabled and verified — see §G.)*
+- **F-001 (GA)** — the client is now instrumented and client-verified (web + Android); only **delivery** to the property is unconfirmed until the real ID is set and checked in GA4 Realtime (§J, §5). **F-020 (Accesstrade)** — open by decision; see §5. *(F-010 guest flow is now enabled and verified — see §G.)*
 - **Test-suite trust (F-030)** — a green unit suite does not prove DB write-paths satisfy real column constraints (mocked inserts can't fail like Postgres). Treat green as a logic guard, not a data-integrity one.
 - Anything under "can't test locally" (§5) that appears broken is an environment gap, not a product bug.
 
