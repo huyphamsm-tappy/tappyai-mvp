@@ -26,7 +26,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -218,13 +218,39 @@ export async function POST(req: Request) {
   const intent = classifyIntent(framingText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
-  const planningIntent = detectPlanningIntent(lastText)
+  // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
+  // decided from the LAST message alone, so "mai đi mốt về, budget 20 triệu" and "gần biển" — the
+  // answers to the plan's own questions — arrived without it, the model re-asked instead of
+  // planning, and the plan never came. A short refinement inside a planning thread inherits the
+  // thread's plan type; the envelope, the named activities and the trip length are folded from
+  // the user turns of the thread (nearest statement wins for budget and length).
+  const priorUserTexts: string[] = messages
+    .filter((m: { role: string }) => m.role === 'user')
+    .slice(-4, -1)
+    .map((m: { content?: unknown }) => { const c = m.content; return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : '' })
+  const ownPlanningIntent = detectPlanningIntent(lastText)
+  const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
+    ? (priorUserTexts.map(detectPlanningIntent).reverse().find(p => p !== null) ?? null)
+    : null
+  const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
   const planning = planningIntent
-    ? { totalBudget: extractPlanTotalBudget(lastText), activities: detectPlanActivities(lastText) }
+    ? (() => {
+        const thread = [...priorUserTexts, lastText]
+        const nearest = <T,>(read: (s: string) => T | null): T | null => thread.slice().reverse().map(read).find(v => v !== null) ?? null
+        return {
+          totalBudget: nearest(extractPlanTotalBudget),
+          activities: [...new Set(thread.flatMap(detectPlanActivities))],
+          tripLength: nearest(detectTripLength),
+          transport: planningIntent === 'trip' ? defaultTransportFor(thread.join(' '), userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null) : null,
+          inherited: inheritedPlanningIntent !== null,
+          refinement: inheritedPlanningIntent !== null ? lastText : null,
+        }
+      })()
     : undefined
+  if (inheritedPlanningIntent) console.log(JSON.stringify({ type: 'tappyai_planning', step: 'inherited', planType: inheritedPlanningIntent, tripLength: planning?.tripLength ?? null, totalBudget: planning?.totalBudget ?? null }))
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.

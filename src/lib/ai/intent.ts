@@ -682,6 +682,93 @@ const MULTI_DAY_RE = /\d+\s*(ngay|dem|night|day)s?\b|\bcuoi tuan\b|\bweekend\b|\
  */
 const PLAN_NOUN_RE = /\bke hoach\b|\blich trinh\b|\bitinerary\b/
 
+const TRIP_DESTINATIONS = 'da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|sai gon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul'
+const TRIP_DESTINATION_RE = new RegExp(`(${TRIP_DESTINATIONS})`)
+/** A go-verb immediately before a destination: "đi Đà Lạt", "lên Đà Lạt", "ra Hà Nội", "qua Thái Lan". */
+const GO_TO_DESTINATION_RE = new RegExp(`\\b(?:di|len|xuong|ra|vao|qua|den|toi|ve)\\s+(?:choi\\s+)?(?:o\\s+)?(?:${TRIP_DESTINATIONS})\\b`)
+/** A when for a trip: weekend, next week, a named month/holiday, or a depart/return phrase. */
+const TRIP_WHEN_RE = /\bcuoi tuan\b|\bweekend\b|\btuan (?:nay|sau|toi)\b|\bthang (?:nay|sau|toi|\d{1,2})\b|\ble\b|\btet\b|\bnghi le\b|\bmai di\b|\bngay mai\b|\bsang mai\b|\bcuoi thang\b|\bdau thang\b|\bnext week\b|\bthis week\b/
+const TRANSPORT_ASK_RE = /\bxe khach\b|\bve xe\b|\bve may bay\b|\bchuyen bay\b|\bve tau\b|\btau hoa\b|\bgia ve\b|\bnha xe\b|\bbus\b|\bflight\b|\bticket\b/
+
+export interface TripLength { days: number; nights: number; /** the phrase it was read from */ from: string }
+
+/** Rough centre of each destination the trip detector knows, for the transport default. */
+const DESTINATION_COORDS: ReadonlyArray<[re: RegExp, label: string, lat: number, lng: number]> = [
+  [/da nang|danang/, 'Đà Nẵng', 16.05, 108.20], [/phu quoc|phuquoc/, 'Phú Quốc', 10.23, 103.96],
+  [/nha trang/, 'Nha Trang', 12.24, 109.19], [/hoi an|hoian/, 'Hội An', 15.88, 108.34],
+  [/da lat|dalat/, 'Đà Lạt', 11.94, 108.44], [/vung tau/, 'Vũng Tàu', 10.35, 107.08],
+  [/ha long|halong/, 'Hạ Long', 20.95, 107.07], [/sapa|sa pa/, 'Sa Pa', 22.34, 103.84],
+  [/ninh binh/, 'Ninh Bình', 20.25, 105.97], [/\bhue\b/, 'Huế', 16.46, 107.59],
+  [/ha noi|hanoi/, 'Hà Nội', 21.03, 105.85], [/ho chi minh|saigon|sai gon/, 'TP HCM', 10.78, 106.70],
+  [/can tho/, 'Cần Thơ', 10.03, 105.78], [/mui ne/, 'Mũi Né', 10.93, 108.29],
+  [/con dao/, 'Côn Đảo', 8.68, 106.61], [/ly son/, 'Lý Sơn', 15.38, 109.11],
+  [/quy nhon/, 'Quy Nhơn', 13.78, 109.22], [/phan thiet/, 'Phan Thiết', 10.93, 108.10],
+]
+const ABROAD_RE = /thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul/
+
+export interface TransportDefault { mode: 'máy bay' | 'xe khách / ô tô' | 'tàu cao tốc'; destination: string; distanceKm: number | null }
+
+/**
+ * The transport a plan assumes, decided from distance so the model never has to ask "máy bay
+ * hay xe khách?" (Phase 7 group 4: it asked on T1 turns 1 AND 2 with the rule in the prompt;
+ * a stated default is what it followed on turn 3). ≥ 400 km or abroad → plane; an island →
+ * fast boat or plane; otherwise road. Null when the destination is unknown to this table.
+ */
+export function defaultTransportFor(text: string, origin: { lat: number; lng: number } | null | undefined): TransportDefault | null {
+  const t = normalizeVN(String(text ?? '').toLowerCase())
+  if (ABROAD_RE.test(t)) return { mode: 'máy bay', destination: 'nước ngoài', distanceKm: null }
+  const hit = DESTINATION_COORDS.find(([re]) => re.test(t))
+  if (!hit) return null
+  const [, label, lat, lng] = hit
+  if (!origin) return { mode: 'máy bay', destination: label, distanceKm: null }
+  const R = 6371
+  const dLat = (lat - origin.lat) * Math.PI / 180
+  const dLng = (lng - origin.lng) * Math.PI / 180
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(origin.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2
+  const km = Math.round(2 * R * Math.asin(Math.sqrt(a)))
+  if (/Phú Quốc|Côn Đảo/.test(label)) return { mode: km >= 250 ? 'máy bay' : 'tàu cao tốc', destination: label, distanceKm: km }
+  if (/Lý Sơn/.test(label)) return { mode: 'tàu cao tốc', destination: label, distanceKm: km }
+  return { mode: km >= 400 ? 'máy bay' : 'xe khách / ô tô', destination: label, distanceKm: km }
+}
+
+/**
+ * The trip's length as the user said it. "3 ngày 2 đêm" is literal; "mai đi mốt về" is TWO days
+ * (one night), "sáng đi chiều về" / "đi về trong ngày" is one day. Phase 7 group 4 (golden T1
+ * turn 2): the model read "mai đi mốt về" as three days and kept planning three — the length is
+ * decided here so the planning block can state it and the model cannot mis-count it.
+ */
+export function detectTripLength(text: string): TripLength | null {
+  const t = normalizeVN(String(text ?? '').toLowerCase())
+  let m = t.match(/\b(\d{1,2})\s*(?:ngay|days?)\b(?:\s*(\d{1,2})\s*(?:dem|nights?)\b)?/)
+  if (m) {
+    const days = Number(m[1])
+    if (days >= 1 && days <= 30) return { days, nights: m[2] ? Number(m[2]) : Math.max(0, days - 1), from: m[0].trim() }
+  }
+  m = t.match(/\b(\d{1,2})\s*(?:dem|nights?)\b/)
+  if (m) {
+    const nights = Number(m[1])
+    if (nights >= 1 && nights <= 30) return { days: nights + 1, nights, from: m[0].trim() }
+  }
+  if (/\bmai di\b.{0,12}\bmot ve\b|\bdi mai\b.{0,8}\bve mot\b/.test(t)) return { days: 2, nights: 1, from: 'mai đi mốt về' }
+  if (/\bsang di\b.{0,12}\b(?:chieu|toi) ve\b|\bdi ve trong ngay\b|\bve trong ngay\b|\bday trip\b|\bsame day\b/.test(t)) return { days: 1, nights: 0, from: 'đi về trong ngày' }
+  return null
+}
+
+/**
+ * Whether this turn is a REFINEMENT of the plan the thread is already building, as opposed to a
+ * new subject. The planning block is re-issued for a refinement ("mai đi mốt về, budget 20
+ * triệu", "gần biển") so the plan is actually delivered — group 4 measured the block dropping
+ * out on every follow-up, which is why the model kept asking instead of planning. A refinement
+ * is short and names no other tool subject (a product, the news, gold, a ticket).
+ */
+const OTHER_SUBJECT_RE = /\bmua\b|\bgia vang\b|\btin tuc\b|\bthoi tiet\b|\bty gia\b|\bdien thoai\b|\blaptop\b|\bmacbook\b|\biphone\b|\bxe may\b|\bo to\b|\bve xe\b|\bve may bay\b|\bcong thuc\b|\bdich\b|\btom tat\b/
+export function isPlanningRefinement(lastText: string): boolean {
+  const t = normalizeVN(String(lastText ?? '').toLowerCase()).trim()
+  if (t.length === 0 || t.length > 160) return false
+  if (OTHER_SUBJECT_RE.test(t)) return false
+  return true
+}
+
 export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   const t = normalizeVN(text.toLowerCase())
 
@@ -698,11 +785,16 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   // Trip: destination + (days/nights pattern OR budget pattern OR trip keyword)
   const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
   const hasBudget = t.includes('budget') || t.includes('ngan sach') || /\d+\s*(trieu|tr\b|million)/.test(t)
-  const hasDestination = /(da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|sai gon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul)/.test(t)
+  const hasDestination = TRIP_DESTINATION_RE.test(t)
   const hasTripKw = t.includes('trip') || t.includes('du lich') || t.includes('di choi') || t.includes('chuyen di') || hasPlanKeyword
 
   if (hasDays && (hasDestination || hasBudget || hasTripKw)) return 'trip'
   if (hasTripKw && hasDestination) return 'trip'
+  // Phase 7 group 4 (golden G4a): "Đi Đà Lạt cuối tuần này" is a trip — a go-verb right before a
+  // destination plus a when ("cuối tuần", "tuần sau", "mai đi mốt về"). It used to fall through
+  // to a plain place search, which asked two questions and planned nothing. A ticket question
+  // ("xe khách đi Đà Lạt cuối tuần") keeps its transport tool: no plan is asked for there.
+  if (hasDestination && GO_TO_DESTINATION_RE.test(t) && TRIP_WHEN_RE.test(t) && !TRANSPORT_ASK_RE.test(t)) return 'trip'
 
   // An explicit plan request with no evening cue and no destination: the two
   // existing plan types are the only ones the clients render, so it maps to the
