@@ -895,7 +895,32 @@ export function guardPlaceClaimsInText(
       const group = v2 && !named ? placesNamedIn(prose, names) : []
       const pool = named ? (reviewCountsByEntity?.get(named) ?? []) : group.length >= 2 ? group.flatMap(g => reviewCountsByEntity?.get(g) ?? []) : []
       const stated = statedReviewCounts(prose)
-      if (stated.length > 0 && !stated.some(n => near(n, pool))) { doomed.add(i); reasonOf.set(i, 'review_count'); if (!named && group.length < 2) stats.unattributable_claims++; return }
+      if (stated.length > 0 && !stated.some(n => near(n, pool))) {
+        /**
+         * 🔑 KEEP THE PICK, DROP THE COUNT (Phase 7, 2026-09-22 — golden T3 t2 and G3a, twice
+         * each). The model writes the pick and the count in one breath — "Mình chọn **Bún Riêu
+         * Gánh** cho bạn (4.6⭐, 1.2k đánh giá)" — and the whole-sentence rule deleted the one
+         * sentence that named the pick: the card marked it recommended while the prose opened
+         * "Quán có đánh giá tuyệt vời…" about nobody. Same policy as the clause trim above and
+         * R3 for money: when the sentence NAMES the venue and the count sits in a parenthetical
+         * or in its own clause, only that part goes; the name and the rest of the sentence stay.
+         * Nothing is written; if the count cannot be isolated, the sentence goes as before.
+         */
+        const current = trimmed.get(i) ?? s
+        const namedBefore = placeNamedIn(current)
+        const withoutParen = current.replace(/\s*\([^()\n]*?\d[\d.,]*\s*(?:\+\s*)?(?:đánh giá|danh gia|nhận xét|nhan xet|lượt đánh giá|luot danh gia|reviews?|ratings?)[^()\n]*\)/iu, '')
+        const parenTrim = withoutParen !== current && !REVIEW_COUNT_RE.test(proseOnly(withoutParen)) ? withoutParen : null
+        const clauseTrim = parenTrim === null ? stripOffendingClauses(current, [REVIEW_COUNT_RE]) : null
+        const candidate = parenTrim ?? clauseTrim?.text ?? null
+        const survivorNames = candidate ? placeNamedIn(candidate) : null
+        if (candidate && namedBefore !== null && survivorNames === namedBefore && (parenTrim !== null || trimStandsAlone(clauseTrim!.headRemoved, survivorNames))) {
+          trimmed.set(i, candidate)
+          stats.reasons.review_count++
+          prose = proseOnly(candidate)
+        } else {
+          doomed.add(i); reasonOf.set(i, 'review_count'); if (!named && group.length < 2) stats.unattributable_claims++; return
+        }
+      }
     }
 
     /**

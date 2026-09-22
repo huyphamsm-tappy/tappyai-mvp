@@ -51,6 +51,7 @@ import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
+import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -1628,7 +1629,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             r = alt.result
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_alternatives', requested: alt.requested, kept: alt.kept }))
           }
-          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'results')
+          const budgeted = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'results')
+          // Phase 7 group 3: the user's stated constraints (budget band, ruled-out venue type,
+          // "now") shape the ROWS here, before ranking, so the set the model reads and the card
+          // the client renders are the same set. `applyBudgetFilter` above only ever touched web
+          // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
+          const constraints = detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentUserTexts.slice(0, -1))
+          const constrained = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
+          if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0) {
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
+          }
+          const filtered = constrained.result
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.
           //

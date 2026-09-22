@@ -57,4 +57,21 @@ describe('rating evidence reaches the place-claim guard', () => {
     const drop = await runTurn('Mình chọn **Bún Bò Huế Đông Ba** cho bạn 👍 Quán này có 4.2⭐ (7.166 đánh giá Google Maps).', { PLACE_GUARD_ATTRIBUTION_V2: '1' })
     expect(drop).not.toContain('4.2⭐')
   })
+
+  // Phase 7 (2026-09-22, golden T3 t2 / G3a): the pick sentence carried a wrong count and was
+  // deleted whole, so the prose named no pick while the card marked one recommended.
+  it('🚨 a wrong review count in the pick sentence loses the count, not the pick', async () => {
+    const out = await runTurn('Mình chọn **Bún Bò Huế Đông Ba** cho bạn (4.9⭐, 1.200 đánh giá) vì gần nhất. Quán mở đến 22:00.')
+    expect(out).toContain('Mình chọn **Bún Bò Huế Đông Ba** cho bạn')
+    expect(out).not.toContain('1.200 đánh giá')
+    expect(out).toContain('vì gần nhất')
+  })
+  it('a wrong count in its own clause goes alone; a sentence that is only the count still goes whole', async () => {
+    const clause = await runTurn('Mình chọn **Bún Bò Huế Đông Ba** cho bạn, hơn 1.200 đánh giá, và mở đến 22:00.')
+    expect(clause).toContain('Mình chọn **Bún Bò Huế Đông Ba** cho bạn')
+    expect(clause).not.toContain('1.200 đánh giá')
+    const whole = await runTurn('Mình chọn **Bún Bò Huế Đông Ba** cho bạn. Quán này có hơn 1.200 đánh giá.')
+    expect(whole).toContain('Mình chọn **Bún Bò Huế Đông Ba** cho bạn.')
+    expect(whole).not.toContain('1.200 đánh giá')
+  })
 })

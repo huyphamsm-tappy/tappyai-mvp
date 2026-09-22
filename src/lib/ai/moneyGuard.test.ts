@@ -554,3 +554,32 @@ describe('R3 proportional — a cut that would leave a stub takes the sentence i
     expect(out).not.toContain('2 triệu')
   })
 })
+
+describe('R3 proportional — a parenthetical that qualifies the amount goes with it (Phase 7 plan replies, 2026-09-22)', () => {
+  // Measured on golden T1 / G4a once plans were actually delivered: the hotel rows made the guard
+  // enforce, the plan's own total was unsupported, and the cut at "(" left these behind:
+  //   "**Tổng ước tính(chưa bao gồm vé máy bay)."   and   "xe + khách sạn + ăn + tham quan)."
+  const rs = [rec('M Hotel Da Nang - Booking.com', '1.200.000 ₫')]
+  const text = [
+    'Thời tiết có mưa, nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng.',
+    '',
+    '**Tổng ước tính: ~12 triệu VND** (chưa bao gồm vé máy bay).',
+    '',
+    'Mình chọn **M Hotel** (4.8⭐) vì gần biển.',
+    '',
+    '**Tổng ước tính** khoảng 12 triệu (xe + khách sạn + ăn + tham quan).',
+    '',
+    'Bạn có thể điều chỉnh.',
+  ].join('\n')
+  it('🚨 no label stub, no orphaned bracket, the neighbours untouched', () => {
+    const out = guardMoneyClaimsInText(text, rs, ['M Hotel Da Nang']).text
+    expect(out).not.toContain('12 triệu')
+    expect(out).not.toContain('Tổng ước tính')
+    expect(out).not.toContain('tham quan).')
+    expect(out).toBe('Thời tiết có mưa, nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng.\n\nMình chọn **M Hotel** (4.8⭐) vì gần biển.\n\nBạn có thể điều chỉnh.')
+  })
+  it('a grounded sentence with a parenthetical keeps it', () => {
+    const out = guardMoneyClaimsInText('**M Hotel** giá 1.200.000 ₫ (đã gồm ăn sáng).', rs, ['M Hotel Da Nang']).text
+    expect(out).toContain('(đã gồm ăn sáng)')
+  })
+})

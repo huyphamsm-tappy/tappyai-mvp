@@ -429,11 +429,32 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
     if (i < at) a = i
     else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
   }
+  /**
+   * A parenthesis that OPENS right after the amount qualifies the amount ("~12 triệu (chưa bao
+   * gồm vé máy bay)", "khoảng 12 triệu (xe + khách sạn + ăn)"): it goes with it, through its
+   * closing bracket. Phase 7 (2026-09-22, golden T1/G4a plan replies): cutting at the "(" left
+   * "**Tổng ước tính(chưa bao gồm vé máy bay)." and "xe + khách sạn + ăn + tham quan)." behind.
+   */
+  if (bDelim === '(') {
+    const close = sentence.indexOf(')', b)
+    if (close !== -1) { b = close + 1; bDelim = ')' }
+  }
   const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
   const after = sentence.slice(b)
+  const afterSaysNothing = after.replace(/[\s.!?…]/g, '') === ''
   // The clause ran to the end and what stays ends on a connective / a verb waiting for its object.
-  if (after.trim() === '' && DANGLING_TAIL.test(before)) return null
-  const rest = before.length > 0 ? before + (bDelim.trim() === ')' ? '' : bDelim) + after : after.replace(/^\s+/, '')
+  if (afterSaysNothing && DANGLING_TAIL.test(before)) return null
+  // …or what stays is only the LABEL the amount hung on ("**Tổng ước tính", "Giá vé"): a heading
+  // with nothing under it, or an unclosed bold, says nothing — the sentence goes whole.
+  // A complete bold span is content — "- **Sharp FP-J40E** — 4.200.000₫" keeps its product line
+  // (B4: the list survives, only the amount goes); a bare label or an unclosed bold does not.
+  const boldMarks = (before.match(/\*\*/g) ?? []).length
+  const hasBoldName = boldMarks >= 2 && boldMarks % 2 === 0
+  if (afterSaysNothing && (boldMarks % 2 === 1 || (!hasBoldName && before.split(/\s+/).filter(Boolean).length <= 4))) return null
+  // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
+  // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
+  const lead = sentence.match(/^\s*/)?.[0] ?? ''
+  const rest = before.length > 0 ? before + (bDelim.trim() === ')' ? '' : bDelim) + after : lead + after.replace(/^\s+/, '')
   const letters = (rest.match(/\p{L}/gu) ?? []).length
   if (letters < 3) return null
   return rest + brk
