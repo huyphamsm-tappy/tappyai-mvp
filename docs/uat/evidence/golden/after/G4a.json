@@ -1,0 +1,24 @@
+{
+  "id": "G4a",
+  "group": "over-clarifying",
+  "criteria": [
+    "Gives a useful first answer (a sketch plan or concrete suggestions) with stated assumptions",
+    "Asks at most ONE question, and only one that would materially change the result",
+    "Does not re-ask anything already stated (destination, timing)"
+  ],
+  "turns": [
+    {
+      "user": "Đi Đà Lạt cuối tuần này",
+      "status": 200,
+      "elapsedMs": 6310,
+      "textFrames": 113,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình hiểu bạn muốn lên kế hoạch đi Đà Lạt cuối tuần này! Để gợi ý đúng ý, mình cần biết thêm một chút:\n\n**Bạn muốn làm gì ở Đà Lạt?** (ví dụ: tham quan thắng cảnh, ăn uống, spa/massage, vui chơi giải trí, hay kết hợp cả vài hoạt động?)\n\nMình sẽ tính toán dựa trên:\n- **2 người** (theo thói quen của bạn)\n- **Ngân sách dưới 5 triệu** (như bạn thường dùng cho trip)\n- **Cuối tuần này** (2 ngày 1 đêm)\n\nBạn chỉ cần nói hoạt động chính là mình sẽ lập kế hoạch chi tiết ngay! 🎯",
+      "visible": "Mình hiểu bạn muốn lên kế hoạch đi Đà Lạt cuối tuần này! Để gợi ý đúng ý, mình cần biết thêm một chút:\n\n**Bạn muốn làm gì ở Đà Lạt?** (ví dụ: tham quan thắng cảnh, ăn uống, spa/massage, vui chơi giải trí, hay kết hợp cả vài hoạt động?)\n\nMình sẽ tính toán dựa trên:\n- **2 người** (theo thói quen của bạn)\n- **Ngân sách dưới 5 triệu** (như bạn thường dùng cho trip)\n- **Cuối tuần này** (2 ngày 1 đêm)\n\nBạn chỉ cần nói hoạt động chính là mình sẽ lập kế hoạch chi tiết ngay! 🎯"
+    }
+  ]
+}

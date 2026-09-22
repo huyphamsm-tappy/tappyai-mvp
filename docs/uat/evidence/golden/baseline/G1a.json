@@ -1,0 +1,236 @@
+{
+  "id": "G1a",
+  "group": "travel-single",
+  "criteria": [
+    "First reply gives a usable plan (stay + eat) from what is known, states assumptions, asks at most ONE question",
+    "Hotel/places render as cards with names",
+    "No delivery apps for another city",
+    "Reply appears once"
+  ],
+  "turns": [
+    {
+      "user": "Cuối tuần này đi Vũng Tàu 2 người, budget 5 triệu, thích hải sản",
+      "status": 200,
+      "elapsedMs": 20914,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán hải sản Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Vũng Tàu",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "10:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà hàng hải sản La Sirena",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "10:30–14:00, 17:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà hàng Gành Hào 1",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "10:00–21:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Bờ Biển",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:30–03:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ốc Biển Tự Nhiên",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "08:30–03:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "09:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán hải sản Hùng Chi",
+              "rating": 4.1,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "10:00–23:00",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Nhà hàng hải sản La Sirena",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "10:30–14:00, 17:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà hàng Gành Hào 1",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "10:00–21:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Bờ Biển",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:30–03:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ốc Biển Tự Nhiên",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "08:30–03:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "09:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán hải sản Hùng Chi",
+              "rating": 4.1,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.35251,107.08343",
+            "place:osm:10.34382,107.09478"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "QUÁN ỐC HẢI SẢN SƯƠNG",
+          "Nhà hàng hải sản La Sirena",
+          "Nhà hàng Gành Hào 1",
+          "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+          "Hải Sản Bờ Biển",
+          "Ốc Biển Tự Nhiên",
+          "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+          "Quán hải sản Hùng Chi"
+        ],
+        [
+          "QUÁN ỐC HẢI SẢN SƯƠNG",
+          "Nhà hàng hải sản La Sirena",
+          "Nhà hàng Gành Hào 1",
+          "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+          "Hải Sản Bờ Biển",
+          "Ốc Biển Tự Nhiên",
+          "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+          "Quán hải sản Hùng Chi"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm cho bạn những quán hải sản ngon ở Vũng Tàu trong tầm giá phù hợp nhé! 🦐\n\nMình gợi ý **Quán Ốc Hải Sản Sương** cho bạn! Địa chỉ: 281 Trương Công Định, Vũng Tàu.\n\nNgoài ra còn **Nhà hàng hải sản La Sirena** (4.6⭐, 1.654 đánh giá) cũng rất được yêu thích, có view đẹp, mở 10:30-14:00 và 17:00-22:30.\n\n Bạn có thể check giá chính xác trên Booking.com để đảm bảo nằm trong budget 5 triệu.\n\nBạn muốn mình tìm thêm thông tin về giá phòng cụ thể hoặc các quán hải sản khác không? 🏖️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Quán Ốc Hải Sản Sương\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6433895982357148304\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá phòng Golden Era bao nhiêu?|Quán nào rẻ hơn?|Có quán nào gần biển không?[/FOLLOWUPS]",
+      "visible": "Mình tìm cho bạn những quán hải sản ngon ở Vũng Tàu trong tầm giá phù hợp nhé! 🦐\n\nMình gợi ý **Quán Ốc Hải Sản Sương** cho bạn! Địa chỉ: 281 Trương Công Định, Vũng Tàu.\n\nNgoài ra còn **Nhà hàng hải sản La Sirena** (4.6⭐, 1.654 đánh giá) cũng rất được yêu thích, có view đẹp, mở 10:30-14:00 và 17:00-22:30.\n\n Bạn có thể check giá chính xác trên Booking.com để đảm bảo nằm trong budget 5 triệu.\n\nBạn muốn mình tìm thêm thông tin về giá phòng cụ thể hoặc các quán hải sản khác không? 🏖️"
+    }
+  ]
+}

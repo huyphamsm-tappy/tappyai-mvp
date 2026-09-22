@@ -1,0 +1,23 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 15059,
+      "textFrames": 403,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook là một quyết định mua sắm — mình sẽ giúp bạn những điểm cần lưu ý để tránh rủi ro mất tiền hoặc mất hàng.\n\n**Rủi ro chính cần cảnh báo trước:**\n- **Lừa đảo cọc tiền**: người bán yêu cầu chuyển tiền trước, sau đó biến mất hoặc không giao hàng\n- **Hàng không đúng như mô tả**: tình trạng thực tế tệ hơn ảnh, cấu hình khác, hỏng hóc ẩn\n- **Quyền sở hữu không rõ ràng**: đồ cũ có thể bị khóa (điện thoại khóa iCloud, xe máy khóa từ xa), nợ trả góp, hoặc không sang tên được\n- **Gặp mặt ở nơi không an toàn**: gặp người lạ, bị cướp hoặc lừa\n\n**Cách bảo vệ bản thân:**\n\n1. **Kiểm tra người bán trước**: xem lịch sử bán hàng, số lượng bạn bè, bình luận từ người mua khác — tài khoản mới hoặc ít tương tác là dấu hiệu cần nghi\n2. **KHÔNG chuyển tiền trước**: chỉ trả tiền khi đã xem trực tiếp và kiểm tra hàng xong\n3. **Gặp mặt ở nơi công cộng, an toàn**: trung tâm thương mại, quán cà phê, hoặc công an phường — tránh gặp ở nhà riêng hoặc nơi vắng\n4. **Kiểm tra kỹ trước khi mua**: \n   - Với điện thoại/laptop: kiểm tra màn hình, pin, loa, camera, cảm biến\n   - Với xe máy: kiểm tra khóa, chìa khóa, giấy tờ, xem có bị khóa từ xa không\n   - Yêu cầu bật máy, chạy thử, gọi điện để chắc chắn hoạt động\n5. **Giấy tờ pháp lý**: với xe máy/ô tô, kiểm tra giấy đăng ký, chứng thực bản sao tại công an phường trước khi chuyển tiền\n6. **Dùng tính năng \"Cảnh báo lừa đảo\" của TappyAI**: nếu bạn nghi ngờ số điện thoại hoặc tài khoản người bán, hãy kiểm tra trước khi liên hệ\n\n**Tóm lại**: gặp trực tiếp, kiểm tra kỹ, chỉ trả tiền khi chắc chắn, và luôn giữ bằng chứng giao dịch (ảnh, tin nhắn, video).\n\nBạn đang định mua cái gì trên group Facebook? Mình có thể giúp bạn kiểm tra thêm nếu cần 👍\n\n[FOLLOWUPS]kiểm tra xe máy cũ|mua điện thoại cũ|mua laptop cũ[/FOLLOWUPS]",
+      "visible": "Mua đồ cũ trên group Facebook là một quyết định mua sắm — mình sẽ giúp bạn những điểm cần lưu ý để tránh rủi ro mất tiền hoặc mất hàng.\n\n**Rủi ro chính cần cảnh báo trước:**\n- **Lừa đảo cọc tiền**: người bán yêu cầu chuyển tiền trước, sau đó biến mất hoặc không giao hàng\n- **Hàng không đúng như mô tả**: tình trạng thực tế tệ hơn ảnh, cấu hình khác, hỏng hóc ẩn\n- **Quyền sở hữu không rõ ràng**: đồ cũ có thể bị khóa (điện thoại khóa iCloud, xe máy khóa từ xa), nợ trả góp, hoặc không sang tên được\n- **Gặp mặt ở nơi không an toàn**: gặp người lạ, bị cướp hoặc lừa\n\n**Cách bảo vệ bản thân:**\n\n1. **Kiểm tra người bán trước**: xem lịch sử bán hàng, số lượng bạn bè, bình luận từ người mua khác — tài khoản mới hoặc ít tương tác là dấu hiệu cần nghi\n2. **KHÔNG chuyển tiền trước**: chỉ trả tiền khi đã xem trực tiếp và kiểm tra hàng xong\n3. **Gặp mặt ở nơi công cộng, an toàn**: trung tâm thương mại, quán cà phê, hoặc công an phường — tránh gặp ở nhà riêng hoặc nơi vắng\n4. **Kiểm tra kỹ trước khi mua**: \n   - Với điện thoại/laptop: kiểm tra màn hình, pin, loa, camera, cảm biến\n   - Với xe máy: kiểm tra khóa, chìa khóa, giấy tờ, xem có bị khóa từ xa không\n   - Yêu cầu bật máy, chạy thử, gọi điện để chắc chắn hoạt động\n5. **Giấy tờ pháp lý**: với xe máy/ô tô, kiểm tra giấy đăng ký, chứng thực bản sao tại công an phường trước khi chuyển tiền\n6. **Dùng tính năng \"Cảnh báo lừa đảo\" của TappyAI**: nếu bạn nghi ngờ số điện thoại hoặc tài khoản người bán, hãy kiểm tra trước khi liên hệ\n\n**Tóm lại**: gặp trực tiếp, kiểm tra kỹ, chỉ trả tiền khi chắc chắn, và luôn giữ bằng chứng giao dịch (ảnh, tin nhắn, video).\n\nBạn đang định mua cái gì trên group Facebook? Mình có thể giúp bạn kiểm tra thêm nếu cần 👍"
+    }
+  ]
+}

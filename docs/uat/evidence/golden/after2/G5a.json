@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 15174,
+      "textFrames": 436,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Nguồn gốc máy**: Kiểm tra máy có phải hàng chính hãng, hàng lậu hay hàng đã bị khóa từ xa không. Yêu cầu người bán cung cấp hóa đơn hoặc giấy tờ chứng minh.\n- **Tài khoản Apple**: Đảm bảo máy không bị khóa iCloud (Find My iPhone). Yêu cầu người bán đăng xuất tài khoản trước khi giao.\n- **Gặp trực tiếp**: Nên gặp người bán tại chỗ công cộng, kiểm tra máy trực tiếp trước khi trả tiền. Không chuyển tiền trước.\n- **Giá bất thường**: Nếu giá rẻ hơn 30-40% so với giá thị trường, cần cảnh báo — có thể là máy lỗi, bị khóa hay nguồn gốc không rõ.\n\n**Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**📱 KIỂM TRA TÌNH TRẠNG VẬT LÝ:**\n- **Màn hình**: Có vết nứt, chấm đen, hay vết xước không? Thử chạy video, hình ảnh để kiểm tra hiển thị.\n- **Pin**: Kiểm tra sức khỏe pin (Settings > Battery > Battery Health). Pin dưới 80% là dấu hiệu máy đã dùng lâu.\n- **Camera**: Chụp ảnh, quay video để kiểm tra camera trước/sau có bị mờ hay lỗi không.\n- **Nút bấm & loa**: Thử tất cả nút (tăng/giảm âm, nguồn, Home), loa ngoài và loa trong.\n- **Vỏ máy**: Kiểm tra vết trầy xước, móp méo, hoặc dấu hiệu va đập.\n\n**⚙️ KIỂM TRA PHẦN MỀM & CHỨC NĂNG:**\n- **iOS version**: Kiểm tra máy đang chạy iOS nào, có thể cập nhật được không.\n- **Chạy thử các ứng dụng**: Mở vài ứng dụng nặng (game, video) để kiểm tra hiệu năng, không bị lag hay crash.\n- **Kết nối**: Thử WiFi, Bluetooth, 4G/5G để đảm bảo hoạt động bình thường.\n\n**💰 LỰA CHỌN AN TOÀN:**\nNếu muốn mua iPhone 13 cũ an toàn hơn, có thể xem các cửa hàng uy tín bán hàng cũ (như CellphoneS, Thế Giới Di Động) — họ thường có bảo hành và kiểm tra kỹ trước khi bán.\n\nBạn cần tìm nơi mua iPhone 13 cũ không? Mình có thể giúp bạn tìm giá và so sánh các lựa chọn trên các sàn TMĐT.",
+      "visible": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Nguồn gốc máy**: Kiểm tra máy có phải hàng chính hãng, hàng lậu hay hàng đã bị khóa từ xa không. Yêu cầu người bán cung cấp hóa đơn hoặc giấy tờ chứng minh.\n- **Tài khoản Apple**: Đảm bảo máy không bị khóa iCloud (Find My iPhone). Yêu cầu người bán đăng xuất tài khoản trước khi giao.\n- **Gặp trực tiếp**: Nên gặp người bán tại chỗ công cộng, kiểm tra máy trực tiếp trước khi trả tiền. Không chuyển tiền trước.\n- **Giá bất thường**: Nếu giá rẻ hơn 30-40% so với giá thị trường, cần cảnh báo — có thể là máy lỗi, bị khóa hay nguồn gốc không rõ.\n\n**Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**📱 KIỂM TRA TÌNH TRẠNG VẬT LÝ:**\n- **Màn hình**: Có vết nứt, chấm đen, hay vết xước không? Thử chạy video, hình ảnh để kiểm tra hiển thị.\n- **Pin**: Kiểm tra sức khỏe pin (Settings > Battery > Battery Health). Pin dưới 80% là dấu hiệu máy đã dùng lâu.\n- **Camera**: Chụp ảnh, quay video để kiểm tra camera trước/sau có bị mờ hay lỗi không.\n- **Nút bấm & loa**: Thử tất cả nút (tăng/giảm âm, nguồn, Home), loa ngoài và loa trong.\n- **Vỏ máy**: Kiểm tra vết trầy xước, móp méo, hoặc dấu hiệu va đập.\n\n**⚙️ KIỂM TRA PHẦN MỀM & CHỨC NĂNG:**\n- **iOS version**: Kiểm tra máy đang chạy iOS nào, có thể cập nhật được không.\n- **Chạy thử các ứng dụng**: Mở vài ứng dụng nặng (game, video) để kiểm tra hiệu năng, không bị lag hay crash.\n- **Kết nối**: Thử WiFi, Bluetooth, 4G/5G để đảm bảo hoạt động bình thường.\n\n**💰 LỰA CHỌN AN TOÀN:**\nNếu muốn mua iPhone 13 cũ an toàn hơn, có thể xem các cửa hàng uy tín bán hàng cũ (như CellphoneS, Thế Giới Di Động) — họ thường có bảo hành và kiểm tra kỹ trước khi bán.\n\nBạn cần tìm nơi mua iPhone 13 cũ không? Mình có thể giúp bạn tìm giá và so sánh các lựa chọn trên các sàn TMĐT."
+    }
+  ]
+}
