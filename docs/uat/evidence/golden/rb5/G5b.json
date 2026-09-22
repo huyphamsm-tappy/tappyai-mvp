@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 14754,
+      "textFrames": 446,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**Giấy tờ & pháp lý (ưu tiên cao nhất)**\n- Giấy đăng ký xe (biển xanh) còn hạn, chủ sở hữu khớp với người bán\n- Giấy chứng thực quyền sử dụng đất (nếu có)\n- Hóa đơn mua bán hoặc biên bản bàn giao\n- Kiểm tra xe có bị khoá từ xa, nợ trả góp, hay bị thế chấp không\n\n**Tình trạng máy & khung gầm**\n- Số khung, số máy khớp với giấy tờ\n- Khung gầm không bị gỉ sét nặng, không bị va đập lớn\n- Động cơ chạy êm, không có tiếng lạ (kêu, rè, nổ)\n- Khí thải bình thường (không khói đen hoặc trắng quá)\n- Dầu máy sạch, mức dầu đủ\n\n**Hệ thống điện & phụ tùng**\n- Đèn pha, đèn phanh, xi nhan sáng bình thường\n- Pin còn tốt, xe nổ máy dễ dàng\n- Cáp, dây điện không bị hư hỏng, ăn mòn\n\n**Lốp & phanh**\n- Lốp còn độ sâu rãnh, không bị nứt, không bị vá quá nhiều\n- Phanh trước/sau hoạt động tốt, không kêu\n- Dây cáp phanh không bị gỉ, không bị đứt\n\n**Khác**\n- Xe chạy bao nhiêu km (kiểm tra đồng hồ, so với tình trạng xe)\n- Lịch sử bảo dưỡng (nếu có)\n- Hỏi lý do bán xe, xe có từng gặp tai nạn không\n\n**Mẹo an toàn khi giao dịch**\n- Gặp trực tiếp, kiểm tra xe tại chỗ, nổ máy để nghe\n- Không chuyển tiền trước khi xem xe\n- Nếu mua qua người trung gian/group Facebook, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé\n- Giữ lại hóa đơn, biên bản bàn giao\n\n**Kết luận:** Chỉ mua khi đã kiểm tra kỹ giấy tờ (ưu tiên 1), tình trạng máy bình thường, và gặp trực tiếp người bán. Nếu xe quá rẻ so với giá thị trường hoặc người bán vội vàng, cần cẩn thận 🚨\n\nBạn đang tìm mua Wave cũ ở khu vực nào? Minh có thể giúp tìm các tin đăng hoặc kiểm tra giá tham khảo nếu cần.",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**Giấy tờ & pháp lý (ưu tiên cao nhất)**\n- Giấy đăng ký xe (biển xanh) còn hạn, chủ sở hữu khớp với người bán\n- Giấy chứng thực quyền sử dụng đất (nếu có)\n- Hóa đơn mua bán hoặc biên bản bàn giao\n- Kiểm tra xe có bị khoá từ xa, nợ trả góp, hay bị thế chấp không\n\n**Tình trạng máy & khung gầm**\n- Số khung, số máy khớp với giấy tờ\n- Khung gầm không bị gỉ sét nặng, không bị va đập lớn\n- Động cơ chạy êm, không có tiếng lạ (kêu, rè, nổ)\n- Khí thải bình thường (không khói đen hoặc trắng quá)\n- Dầu máy sạch, mức dầu đủ\n\n**Hệ thống điện & phụ tùng**\n- Đèn pha, đèn phanh, xi nhan sáng bình thường\n- Pin còn tốt, xe nổ máy dễ dàng\n- Cáp, dây điện không bị hư hỏng, ăn mòn\n\n**Lốp & phanh**\n- Lốp còn độ sâu rãnh, không bị nứt, không bị vá quá nhiều\n- Phanh trước/sau hoạt động tốt, không kêu\n- Dây cáp phanh không bị gỉ, không bị đứt\n\n**Khác**\n- Xe chạy bao nhiêu km (kiểm tra đồng hồ, so với tình trạng xe)\n- Lịch sử bảo dưỡng (nếu có)\n- Hỏi lý do bán xe, xe có từng gặp tai nạn không\n\n**Mẹo an toàn khi giao dịch**\n- Gặp trực tiếp, kiểm tra xe tại chỗ, nổ máy để nghe\n- Không chuyển tiền trước khi xem xe\n- Nếu mua qua người trung gian/group Facebook, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé\n- Giữ lại hóa đơn, biên bản bàn giao\n\n**Kết luận:** Chỉ mua khi đã kiểm tra kỹ giấy tờ (ưu tiên 1), tình trạng máy bình thường, và gặp trực tiếp người bán. Nếu xe quá rẻ so với giá thị trường hoặc người bán vội vàng, cần cẩn thận 🚨\n\nBạn đang tìm mua Wave cũ ở khu vực nào? Minh có thể giúp tìm các tin đăng hoặc kiểm tra giá tham khảo nếu cần."
+    }
+  ]
+}

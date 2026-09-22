@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 13630,
+      "textFrames": 375,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra IMEI** trên trang Apple chính thức để xác nhận máy không bị báo mất cắp, không phải hàng lậu\n- **Yêu cầu giấy tờ**: hóa đơn, phiếu bảo hành (nếu còn) để chứng minh nguồn gốc\n- **Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**📱 KIỂM TRA TÌNH TRẠNG MÁY:**\n- **Pin**: mở Settings → Battery → Battery Health — pin trên 80% là tốt, dưới 80% là đã chai\n- **Màn hình**: kiểm tra xem có vết nứt, chấm đen, hay burn-in không\n- **Camera**: chụp ảnh, quay video để xem có bị mờ hay lỗi không\n- **Loa & mic**: gọi thử, nghe nhạc để kiểm tra âm thanh\n- **Nút bấm & cảm ứng**: thử tất cả nút (nguồn, âm lượng, silent), vuốt màn hình xem có lag không\n- **Vỏ máy**: xem có trầy xước, móp méo hay không (ảnh hưởng đến giá)\n\n**💰 VỀ GIÁ:**\nGiá iPhone 13 cũ thường **3-5 triệu VND** tùy tình trạng (like-new hay có trầy). Nếu giá rẻ bất thường (dưới 2.5 triệu), cần cảnh báo cao — có thể máy bị khóa, hàng lậu, hay có vấn đề ẩn.\n\n**Bạn đang tìm mua ở đâu (Facebook, Shopee, cửa hàng) hay cần mình giúp tìm các tin đăng uy tín?**\n\n[FOLLOWUPS]tìm iPhone 13 cũ|check máy cũ trước khi mua|giá iPhone 13 cũ hiện nay[/FOLLOWUPS]\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra IMEI** trên trang Apple chính thức để xác nhận máy không bị báo mất cắp, không phải hàng lậu\n- **Yêu cầu giấy tờ**: hóa đơn, phiếu bảo hành (nếu còn) để chứng minh nguồn gốc\n- **Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**📱 KIỂM TRA TÌNH TRẠNG MÁY:**\n- **Pin**: mở Settings → Battery → Battery Health — pin trên 80% là tốt, dưới 80% là đã chai\n- **Màn hình**: kiểm tra xem có vết nứt, chấm đen, hay burn-in không\n- **Camera**: chụp ảnh, quay video để xem có bị mờ hay lỗi không\n- **Loa & mic**: gọi thử, nghe nhạc để kiểm tra âm thanh\n- **Nút bấm & cảm ứng**: thử tất cả nút (nguồn, âm lượng, silent), vuốt màn hình xem có lag không\n- **Vỏ máy**: xem có trầy xước, móp méo hay không (ảnh hưởng đến giá)\n\n**💰 VỀ GIÁ:**\nGiá iPhone 13 cũ thường **3-5 triệu VND** tùy tình trạng (like-new hay có trầy). Nếu giá rẻ bất thường (dưới 2.5 triệu), cần cảnh báo cao — có thể máy bị khóa, hàng lậu, hay có vấn đề ẩn.\n\n**Bạn đang tìm mua ở đâu (Facebook, Shopee, cửa hàng) hay cần mình giúp tìm các tin đăng uy tín?**\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 14477,
+      "textFrames": 440,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook là giao dịch với người lạ, rủi ro cao về mất tiền hoặc mất hàng. Dưới đây là những điều cần lưu ý:\n\n**Rủi ro chính cần tránh:**\n• **Lừa đảo thanh toán** — người bán yêu cầu chuyển tiền trước, sau đó biến mất hoặc không gửi hàng\n• **Hàng không đúng như quảng cáo** — tinh trạng thực tế khác với ảnh/mô tả (hỏng, cũ hơn, thiếu phụ kiện)\n• **Hàng không có giấy tờ hợp pháp** — đặc biệt với xe máy, ô tô, điện thoại (có thể là hàng trộm cắp, hàng nhập lậu)\n\n**Cách bảo vệ bản thân:**\n1. **Kiểm tra người bán** — xem lịch sử bài viết, số lượng bạn bè, độ hoạt động trên Facebook (tài khoản mới/ít hoạt động = rủi ro cao)\n2. **Yêu cầu ảnh/video thực tế** — không chỉ ảnh quảng cáo; xin ảnh chụp lúc đó với ngày tháng rõ ràng\n3. **Gặp trực tiếp để kiểm tra** — TUỆT ĐỐI không chuyển tiền trước khi xem hàng. Kiểm tra kỹ trước khi trả tiền\n4. **Mang theo người thân** — không nên đi một mình, đặc biệt với giao dịch giá cao\n5. **Chọn địa điểm an toàn** — gặp ở nơi công cộng, có camera, có người (không gặp ở nhà riêng hoặc chỗ vắng)\n6. **Kiểm tra giấy tờ** — với xe máy/ô tô: xem giấy đăng ký, biển số, kiểm tra lịch sử bảo dưỡng; với điện thoại: kiểm tra IMEI, không bị khóa tài khoản\n7. **Trả tiền an toàn** — chỉ trả tiền mặt sau khi kiểm tra xong hàng, hoặc dùng chuyển khoản có bằng chứng (không dùng ví điện tử không thể hoàn lại)\n\n**Dấu hiệu cảnh báo lừa đảo:**\n- Giá rẻ bất thường so với thị trường\n- Người bán vội vàng, không cho xem hàng trực tiếp\n- Yêu cầu chuyển tiền qua ví điện tử, mã QR, hoặc link lạ\n- Tài khoản Facebook mới, ít bạn bè, ít hoạt động\n- Không có số điện thoại hoặc số điện thoại không liên lạc được\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang xem xét mua một sản phẩm cụ thể (xe máy, ô tô, điện thoại...), mình có thể giúp bạn biết cần kiểm tra những gì cụ thể cho loại hàng đó! 👍",
+      "visible": "Mua đồ cũ trên group Facebook là giao dịch với người lạ, rủi ro cao về mất tiền hoặc mất hàng. Dưới đây là những điều cần lưu ý:\n\n**Rủi ro chính cần tránh:**\n• **Lừa đảo thanh toán** — người bán yêu cầu chuyển tiền trước, sau đó biến mất hoặc không gửi hàng\n• **Hàng không đúng như quảng cáo** — tinh trạng thực tế khác với ảnh/mô tả (hỏng, cũ hơn, thiếu phụ kiện)\n• **Hàng không có giấy tờ hợp pháp** — đặc biệt với xe máy, ô tô, điện thoại (có thể là hàng trộm cắp, hàng nhập lậu)\n\n**Cách bảo vệ bản thân:**\n1. **Kiểm tra người bán** — xem lịch sử bài viết, số lượng bạn bè, độ hoạt động trên Facebook (tài khoản mới/ít hoạt động = rủi ro cao)\n2. **Yêu cầu ảnh/video thực tế** — không chỉ ảnh quảng cáo; xin ảnh chụp lúc đó với ngày tháng rõ ràng\n3. **Gặp trực tiếp để kiểm tra** — TUỆT ĐỐI không chuyển tiền trước khi xem hàng. Kiểm tra kỹ trước khi trả tiền\n4. **Mang theo người thân** — không nên đi một mình, đặc biệt với giao dịch giá cao\n5. **Chọn địa điểm an toàn** — gặp ở nơi công cộng, có camera, có người (không gặp ở nhà riêng hoặc chỗ vắng)\n6. **Kiểm tra giấy tờ** — với xe máy/ô tô: xem giấy đăng ký, biển số, kiểm tra lịch sử bảo dưỡng; với điện thoại: kiểm tra IMEI, không bị khóa tài khoản\n7. **Trả tiền an toàn** — chỉ trả tiền mặt sau khi kiểm tra xong hàng, hoặc dùng chuyển khoản có bằng chứng (không dùng ví điện tử không thể hoàn lại)\n\n**Dấu hiệu cảnh báo lừa đảo:**\n- Giá rẻ bất thường so với thị trường\n- Người bán vội vàng, không cho xem hàng trực tiếp\n- Yêu cầu chuyển tiền qua ví điện tử, mã QR, hoặc link lạ\n- Tài khoản Facebook mới, ít bạn bè, ít hoạt động\n- Không có số điện thoại hoặc số điện thoại không liên lạc được\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang xem xét mua một sản phẩm cụ thể (xe máy, ô tô, điện thoại...), mình có thể giúp bạn biết cần kiểm tra những gì cụ thể cho loại hàng đó! 👍"
+    }
+  ]
+}

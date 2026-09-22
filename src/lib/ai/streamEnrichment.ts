@@ -14,6 +14,8 @@ import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
+import { riskBackstopEnabled, riskBackstopMode } from '@/lib/config/product'
+import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
 import { renderPlacesMarker } from '@/lib/recommendation/marker'
@@ -1167,6 +1169,9 @@ export function applyPlaceEnrichmentStreamFilter(
   // no-retrieval turns — short conversational replies, where the cost is small and the exposure
   // is highest.
   if (placeIntent) bufferMode = true
+  // F-043: RISK_BACKSTOP=buffer holds a second-hand purchase reply so threshold parentheticals can
+  // be removed and the risk block placed before the markers (live mode can only append + hedge).
+  if (riskBackstopMode() === 'buffer' && isSecondHandPurchaseAdvice(collector?.userTexts ?? [userText])) bufferMode = true
   // Consultative V1: a decision turn buffers whether or not a tool runs, so the
   // search-claim guard can judge "mình đã kiểm tra" on a no-tool follow-up.
   if (collector?.consultativeV1) bufferMode = true
@@ -1283,6 +1288,27 @@ export function applyPlaceEnrichmentStreamFilter(
    * "quán đó" resolved against a reply two turns older.
    */
   let liveText = ''
+
+  /**
+   * F-043 — the risk-first backstop for second-hand purchase advice (`riskBackstop.ts`). One
+   * function, two call sites: the buffered path applies it to the prose before the structured
+   * blocks are appended; the live path (no tool, nothing buffered — exactly the T4 / G5 turns)
+   * applies it to what was streamed and emits the appended text as one last `0:` frame before
+   * `d:`. Fixed text only; the model's own prose is never removed except a parenthetical that
+   * carries an unsourced numeric threshold. Behind RISK_BACKSTOP until the owner approves the
+   * block text.
+   */
+  const riskBackstopOn = riskBackstopEnabled()
+  let riskBackstopRan = false
+  const riskBackstopped = (text: string, live = false): string => {
+    if (!riskBackstopOn || riskBackstopRan) return text
+    const r = applyRiskBackstop(text, collector?.userTexts ?? [userText], lang, { live })
+    if (r.text !== text) {
+      riskBackstopRan = true
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'risk_backstop', appended: r.appended, pointer: r.pointerAppended, thresholds_removed: r.thresholdsRemoved, threshold_hedged: r.thresholdHedged }))
+    }
+    return r.text
+  }
 
   /**
    * Which HELD candidates does this text actually name?
@@ -2200,7 +2226,9 @@ export function applyPlaceEnrichmentStreamFilter(
     const placesSuffix = groundedRecs.length > 0 ? `\n\n${renderPlacesMarker(groundedRecs)}` : ''
     // With the server authoring the CTA, the model's block is removed from the
     // prose before anything is appended; without the flag, `prose` is untouched.
-    const ctaOwnedProse = serverCta ? stripModelCta(prose) : prose
+    // F-043 risk-first backstop (buffered path). The live path runs the same function on the
+    // finish frame. Fixed text only; see `riskBackstop.ts`.
+    const ctaOwnedProse = riskBackstopped(serverCta ? stripModelCta(prose) : prose)
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
@@ -2667,6 +2695,15 @@ export function applyPlaceEnrichmentStreamFilter(
           // A1(b): the model is done; what follows is the guards, the photos and the card.
           if (bufferMode && placeToolSeen && !emitted) controller.enqueue(encoder.encode('8:' + JSON.stringify([buildProgressAnnotation('finishing', lang)]) + '\n'))
           await emitReconstructed(controller)
+          // Live path of the F-043 backstop: everything already streamed; only the appended
+          // text is sent, as one frame, so the persisted message carries it too. Markers the
+          // model already streamed sit above it — the client's parsers find them anywhere.
+          if (!bufferMode && riskBackstopOn && !riskBackstopRan && liveText) {
+            const after = riskBackstopped(liveText, true)
+            if (after.length > liveText.length && after.startsWith(liveText.replace(/\s+$/, ''))) {
+              controller.enqueue(encoder.encode('0:' + JSON.stringify(after.slice(liveText.replace(/\s+$/, '').length)) + '\n'))
+            }
+          }
           controller.enqueue(encoder.encode(line + '\n'))
         } else {
           controller.enqueue(encoder.encode(line + '\n'))

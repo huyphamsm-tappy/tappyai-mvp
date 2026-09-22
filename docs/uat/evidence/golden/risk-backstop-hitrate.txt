@@ -1,0 +1,27 @@
+rb1/T4: prompt-only=MISS backstop=lines final=OK threshold(model)=false threshold(final,unhedged)=false
+rb1/G5a: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb1/G5b: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb1/G5c: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb1/G5d: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb2/T4: prompt-only=MISS backstop=lines final=OK threshold(model)=true threshold(final,unhedged)=false
+rb2/G5a: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb2/G5b: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb2/G5c: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb2/G5d: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb3/T4: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb3/G5a: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb3/G5b: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb3/G5c: prompt-only=MISS backstop=pointer final=OK threshold(model)=false threshold(final,unhedged)=false
+rb3/G5d: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb4/T4: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb4/G5a: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb4/G5b: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb4/G5c: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb4/G5d: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb5/T4: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb5/G5a: prompt-only=OK backstop=hedge final=OK threshold(model)=true threshold(final,unhedged)=false
+rb5/G5b: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb5/G5c: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+rb5/G5d: prompt-only=OK backstop=- final=OK threshold(model)=false threshold(final,unhedged)=false
+
+replies: 25 · prompt alone complete: 22/25 · backstop fired: 12/25 · final complete: 25/25 · thresholds in model text: 10/25 · unhedged thresholds after: 0/25 · phone/account wording: 4/25

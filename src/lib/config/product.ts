@@ -385,3 +385,33 @@ export function consultativeV1Enabled(env: NodeJS.ProcessEnv = process.env): boo
   const v = env.CONSULTATIVE_V1
   return v === '1' || v === 'true'
 }
+
+/**
+ * F-043 — RISK_BACKSTOP (Session C follow-up, 2026-09-22). The deterministic backstop for
+ * second-hand / high-value purchase advice (`src/lib/ai/riskBackstop.ts`): when the final reply
+ * does not cover ownership / lock / fraud / safe payment, the fixed line(s) for the missing
+ * topic(s) and the fixed scam-checker pointer are appended; an unsourced numeric threshold in a
+ * parenthetical is removed, an inline one hedged. No model call. Measured 2026-09-22 (5 runs ×
+ * T4 + G5a–d, see docs/uat/findings.json F-043): the prompt alone covered all four topics in
+ * N/25 replies; with the backstop 25/25.
+ *
+ * Default OFF until the owner approves the block text.
+ *   RISK_BACKSTOP=1 | true | live  — append-only. These turns run no tool, so they stream live;
+ *                                    the block is appended after the model's text and an inline
+ *                                    threshold can only be HEDGED (nothing already on the wire can
+ *                                    be removed). Measured: 25/25 complete, 0 unhedged thresholds.
+ *   RISK_BACKSTOP=buffer            — additionally buffers a second-hand purchase turn so the
+ *                                    threshold parentheticals can be REMOVED and the block sits
+ *                                    before the structured markers. Costs the user the wait for
+ *                                    the full reply (~10 s on Haiku for these answers).
+ */
+export type RiskBackstopMode = 'off' | 'live' | 'buffer'
+export function riskBackstopMode(env: NodeJS.ProcessEnv = process.env): RiskBackstopMode {
+  const v = (env.RISK_BACKSTOP ?? '').trim().toLowerCase()
+  if (v === 'buffer') return 'buffer'
+  if (v === '1' || v === 'true' || v === 'live') return 'live'
+  return 'off'
+}
+export function riskBackstopEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return riskBackstopMode(env) !== 'off'
+}

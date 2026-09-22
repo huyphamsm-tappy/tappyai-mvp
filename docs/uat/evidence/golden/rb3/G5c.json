@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 14183,
+      "textFrames": 420,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh mua phải xe có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 **Rủi ro chính — kiểm tra TRƯỚC khi chuyển tiền:**\n\n**Giấy tờ & quyền sở hữu:**\n- Giấy đăng ký xe, giấy chứng chỉ kiểm định còn hạn\n- Chứng chỉ bảo hành (nếu có)\n- Kiểm tra xe có bị khoá, nợ trả góp, hay tranh chấp quyền sở hữu không (hỏi trực tiếp chủ cũ, xem giấy tờ)\n\n**Tình trạng pháp lý:**\n- Xe có bị thế chấp ngân hàng không\n- Có nợ thuế, phí bảo hiểm hay phạt giao thông không\n- Kiểm tra lịch sử tai nạn (nếu có thể)\n\n## ✅ **Kiểm tra tình trạng xe (phải xem trực tiếp):**\n\n**Ngoại thất & khung gầm:**\n- Kiểm tra vết va đập, sơn xe (sơn lại = dấu hiệu tai nạn)\n- Kiểm tra khung gầm có bị cong, gỉ sét không\n- Lốp xe (độ mòn, tuổi lốp)\n\n**Động cơ & hộp số:**\n- Nổ máy nghe có bất thường không (tiếng lạ, khó nổ)\n- Kiểm tra dầu máy, nước làm mát, dầu hộp số\n- Lái thử xe: phanh, vô lăng, hộp số có hoạt động mượt không\n- Kiểm tra khí thải (nếu có thiết bị)\n\n**Nội thất:**\n- Ghế, điều hòa, cửa sổ, gương chiếu hậu\n- Đèn (pha, hậu, nội thất)\n\n**Lịch sử bảo dưỡng:**\n- Hỏi chủ cũ về lịch bảo dưỡng, sửa chữa lớn\n- Kiểm tra sổ bảo dưỡng (nếu có)\n\n## 💡 **Lời khuyên an toàn:**\n\n✓ **Gặp trực tiếp** chủ xe, xem xe ở nơi sáng sủa, kiểm tra kỹ trước khi chuyển tiền  \n✓ **Mang theo người hiểu biết** (bạn có kinh nghiệm hoặc thợ sửa xe)  \n✓ **Yêu cầu chủ xe** cung cấp đầy đủ giấy tờ, sổ bảo dưỡng  \n✓ **Chuyển tiền sau khi** đã kiểm tra xong và có giấy tờ rõ ràng  \n✓ **Tránh** những xe giá quá rẻ so với thị trường (dấu hiệu lừa đảo)\n\nBạn đang tìm xe ở đâu (Facebook Marketplace, Chợ Tốt, hay từ người quen)? Mình có thể giúp bạn tìm những chiếc xe phù hợp với ngân sách 300 triệu nếu bạn cần! 🚗\n\nNếu mua từ người lạ hoặc qua group/chợ online: dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra trước khi chuyển tiền.",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh mua phải xe có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 **Rủi ro chính — kiểm tra TRƯỚC khi chuyển tiền:**\n\n**Giấy tờ & quyền sở hữu:**\n- Giấy đăng ký xe, giấy chứng chỉ kiểm định còn hạn\n- Chứng chỉ bảo hành (nếu có)\n- Kiểm tra xe có bị khoá, nợ trả góp, hay tranh chấp quyền sở hữu không (hỏi trực tiếp chủ cũ, xem giấy tờ)\n\n**Tình trạng pháp lý:**\n- Xe có bị thế chấp ngân hàng không\n- Có nợ thuế, phí bảo hiểm hay phạt giao thông không\n- Kiểm tra lịch sử tai nạn (nếu có thể)\n\n## ✅ **Kiểm tra tình trạng xe (phải xem trực tiếp):**\n\n**Ngoại thất & khung gầm:**\n- Kiểm tra vết va đập, sơn xe (sơn lại = dấu hiệu tai nạn)\n- Kiểm tra khung gầm có bị cong, gỉ sét không\n- Lốp xe (độ mòn, tuổi lốp)\n\n**Động cơ & hộp số:**\n- Nổ máy nghe có bất thường không (tiếng lạ, khó nổ)\n- Kiểm tra dầu máy, nước làm mát, dầu hộp số\n- Lái thử xe: phanh, vô lăng, hộp số có hoạt động mượt không\n- Kiểm tra khí thải (nếu có thiết bị)\n\n**Nội thất:**\n- Ghế, điều hòa, cửa sổ, gương chiếu hậu\n- Đèn (pha, hậu, nội thất)\n\n**Lịch sử bảo dưỡng:**\n- Hỏi chủ cũ về lịch bảo dưỡng, sửa chữa lớn\n- Kiểm tra sổ bảo dưỡng (nếu có)\n\n## 💡 **Lời khuyên an toàn:**\n\n✓ **Gặp trực tiếp** chủ xe, xem xe ở nơi sáng sủa, kiểm tra kỹ trước khi chuyển tiền  \n✓ **Mang theo người hiểu biết** (bạn có kinh nghiệm hoặc thợ sửa xe)  \n✓ **Yêu cầu chủ xe** cung cấp đầy đủ giấy tờ, sổ bảo dưỡng  \n✓ **Chuyển tiền sau khi** đã kiểm tra xong và có giấy tờ rõ ràng  \n✓ **Tránh** những xe giá quá rẻ so với thị trường (dấu hiệu lừa đảo)\n\nBạn đang tìm xe ở đâu (Facebook Marketplace, Chợ Tốt, hay từ người quen)? Mình có thể giúp bạn tìm những chiếc xe phù hợp với ngân sách 300 triệu nếu bạn cần! 🚗\n\nNếu mua từ người lạ hoặc qua group/chợ online: dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra trước khi chuyển tiền."
+    }
+  ]
+}

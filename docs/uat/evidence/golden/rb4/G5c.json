@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 14162,
+      "textFrames": 423,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (có phải xe lừa đảo, xe cấu, xe nước ngoài nhập lậu không). Nếu giấy tờ không rõ ràng hoặc chủ xe không thể xuất trình → **KHÔNG MUA**.\n- **Nợ trả góp / Khoá từ xa**: Hỏi rõ xe có đang nợ ngân hàng hay bị khoá từ xa không. Nếu có → **KHÔNG MUA** vì bạn sẽ không thể sang tên.\n- **Lừa đảo trong giao dịch**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền (không chuyển cọc trước). Nếu người bán gấp gáp, không cho xem xe trực tiếp, hoặc yêu cầu chuyển tiền qua link lạ → **CẢN THẬN**.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**✅ KIỂM TRA TÌNH TRẠNG XE (sau khi chắc chắn giấy tờ):**\n- **Động cơ & hộp số**: Nổ máy nghe có bất thường không, chuyển số mượt không, có khí thải lạ không\n- **Khung gầm & thân xe**: Kiểm tra dấu vết tai nạn, rỉ sét, mối hàn lạ (dấu hiệu từng bị tai nạn nặng)\n- **Nội thất & điều hòa**: Ghế ngồi, vô lăng, màn hình có hỏng không, điều hòa lạnh không\n- **Lốp & phanh**: Độ mòn lốp, độ dày má phanh còn bao nhiêu\n- **Lịch sử bảo dưỡng**: Hỏi xe bảo dưỡng định kỳ không, có lịch sử sửa chữa lớn không\n\n**💡 Lời khuyên cuối cùng**: Nên đưa xe đi kiểm tra tại một garage uy tín (tính phí ~500k-1 triệu) để có báo cáo chi tiết trước khi quyết định mua. Tiền kiểm tra này sẽ giúp bạn tránh được những chiếc xe có vấn đề lớn.\n\nBạn đang tìm xe loại nào (sedan, SUV, bán tải) hay đã có chiếc xe cụ thể để kiểm tra?",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (có phải xe lừa đảo, xe cấu, xe nước ngoài nhập lậu không). Nếu giấy tờ không rõ ràng hoặc chủ xe không thể xuất trình → **KHÔNG MUA**.\n- **Nợ trả góp / Khoá từ xa**: Hỏi rõ xe có đang nợ ngân hàng hay bị khoá từ xa không. Nếu có → **KHÔNG MUA** vì bạn sẽ không thể sang tên.\n- **Lừa đảo trong giao dịch**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền (không chuyển cọc trước). Nếu người bán gấp gáp, không cho xem xe trực tiếp, hoặc yêu cầu chuyển tiền qua link lạ → **CẢN THẬN**.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**✅ KIỂM TRA TÌNH TRẠNG XE (sau khi chắc chắn giấy tờ):**\n- **Động cơ & hộp số**: Nổ máy nghe có bất thường không, chuyển số mượt không, có khí thải lạ không\n- **Khung gầm & thân xe**: Kiểm tra dấu vết tai nạn, rỉ sét, mối hàn lạ (dấu hiệu từng bị tai nạn nặng)\n- **Nội thất & điều hòa**: Ghế ngồi, vô lăng, màn hình có hỏng không, điều hòa lạnh không\n- **Lốp & phanh**: Độ mòn lốp, độ dày má phanh còn bao nhiêu\n- **Lịch sử bảo dưỡng**: Hỏi xe bảo dưỡng định kỳ không, có lịch sử sửa chữa lớn không\n\n**💡 Lời khuyên cuối cùng**: Nên đưa xe đi kiểm tra tại một garage uy tín (tính phí ~500k-1 triệu) để có báo cáo chi tiết trước khi quyết định mua. Tiền kiểm tra này sẽ giúp bạn tránh được những chiếc xe có vấn đề lớn.\n\nBạn đang tìm xe loại nào (sedan, SUV, bán tải) hay đã có chiếc xe cụ thể để kiểm tra?"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 16743,
+      "textFrames": 527,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, cần kiểm tra kỹ để tránh mua phải xe có vấn đề. Dưới đây là những điểm **rủi ro cao** và **cách kiểm tra** bạn nên biết:\n\n## 🚨 Rủi ro trước tiên\n- **Giấy tờ không chính chủ** → xe bị khoá từ xa, không sang tên được, hoặc bị trộm cắp\n- **Xe bị khoá tài chính** → chủ cũ còn nợ trả góp, bạn không thể sử dụng\n- **Lừa đảo trong giao dịch** → cọc tiền rồi biến mất, hoặc giá được chốt nhanh bất thường\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\n## ✅ Kiểm tra giấy tờ & pháp lý (quan trọng nhất)\n- **Giấy chứng nhận đăng ký xe** → tên chủ xe, số khung, số máy phải khớp với xe thực tế\n- **Kiểm tra xe bị khoá tài chính** → liên hệ Cục Đăng ký Xe hoặc công an giao thông để xác nhận\n- **Kiểm tra lịch sử bảo hành** → nếu còn bảo hành thì tốt, nếu hết thì xe đã cũ bao lâu\n- **Giấy tờ phải khớp với người bán** → không mua từ người trung gian\n\n## 🔧 Kiểm tra tình trạng xe\n- **Khung xe & thân xe** → có bị va chạm, bị gỉ sét, bị sơn lại không\n- **Động cơ** → nổ máy xem có khó khởi động, tiếng gầm có bất thường không, khí thải có mùi lạ không\n- **Lốp xe** → độ mòn, có bị rách không, áp suất có bình thường không\n- **Phanh & đèn** → phanh có còn hiệu lực, đèn pha/đèn hậu có sáng không\n- **Dầu nhớt & chất lỏng** → kiểm tra mức dầu, nước làm mát, nước phanh\n- **Số km đã chạy** → xem đồng hồ công tơ mét, nếu quá thấp so với tuổi xe có thể bị chỉnh lại\n\n## 💰 Kiểm tra giá\n- **So sánh giá thị trường** → Honda Wave cũ thường 8-15 triệu tùy năm sản xuất & tình trạng\n- **Nếu giá rẻ bất thường** → cảnh báo, có thể xe bị ẩu, bị khoá, hoặc giấy tờ có vấn đề\n- **Chỉ mua khi xem xe trực tiếp** → kiểm tra xong mới trả tiền, giữ bằng chứng chuyển khoản\n\n## 🎯 Lời khuyên cuối cùng\n**Chỉ mua khi:** bạn đã xem xe trực tiếp, kiểm tra giấy tờ chính chủ, thử chạy xe, và đã xác nhận không bị khoá tài chính. Nếu có dấu hiệu lạ (giấy tờ mơ hồ, người bán vội vàng, giá quá rẻ), hãy từ chối và tìm xe khác.\n\n[FOLLOWUPS]Tìm Honda Wave cũ ở Quận 7|Kiểm tra giấy tờ xe ở đâu|Giá Honda Wave cũ hiện nay[/FOLLOWUPS]",
+      "visible": "Mua xe máy cũ là quyết định lớn, cần kiểm tra kỹ để tránh mua phải xe có vấn đề. Dưới đây là những điểm **rủi ro cao** và **cách kiểm tra** bạn nên biết:\n\n## 🚨 Rủi ro trước tiên\n- **Giấy tờ không chính chủ** → xe bị khoá từ xa, không sang tên được, hoặc bị trộm cắp\n- **Xe bị khoá tài chính** → chủ cũ còn nợ trả góp, bạn không thể sử dụng\n- **Lừa đảo trong giao dịch** → cọc tiền rồi biến mất, hoặc giá được chốt nhanh bất thường\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\n## ✅ Kiểm tra giấy tờ & pháp lý (quan trọng nhất)\n- **Giấy chứng nhận đăng ký xe** → tên chủ xe, số khung, số máy phải khớp với xe thực tế\n- **Kiểm tra xe bị khoá tài chính** → liên hệ Cục Đăng ký Xe hoặc công an giao thông để xác nhận\n- **Kiểm tra lịch sử bảo hành** → nếu còn bảo hành thì tốt, nếu hết thì xe đã cũ bao lâu\n- **Giấy tờ phải khớp với người bán** → không mua từ người trung gian\n\n## 🔧 Kiểm tra tình trạng xe\n- **Khung xe & thân xe** → có bị va chạm, bị gỉ sét, bị sơn lại không\n- **Động cơ** → nổ máy xem có khó khởi động, tiếng gầm có bất thường không, khí thải có mùi lạ không\n- **Lốp xe** → độ mòn, có bị rách không, áp suất có bình thường không\n- **Phanh & đèn** → phanh có còn hiệu lực, đèn pha/đèn hậu có sáng không\n- **Dầu nhớt & chất lỏng** → kiểm tra mức dầu, nước làm mát, nước phanh\n- **Số km đã chạy** → xem đồng hồ công tơ mét, nếu quá thấp so với tuổi xe có thể bị chỉnh lại\n\n## 💰 Kiểm tra giá\n- **So sánh giá thị trường** → Honda Wave cũ thường 8-15 triệu tùy năm sản xuất & tình trạng\n- **Nếu giá rẻ bất thường** → cảnh báo, có thể xe bị ẩu, bị khoá, hoặc giấy tờ có vấn đề\n- **Chỉ mua khi xem xe trực tiếp** → kiểm tra xong mới trả tiền, giữ bằng chứng chuyển khoản\n\n## 🎯 Lời khuyên cuối cùng\n**Chỉ mua khi:** bạn đã xem xe trực tiếp, kiểm tra giấy tờ chính chủ, thử chạy xe, và đã xác nhận không bị khoá tài chính. Nếu có dấu hiệu lạ (giấy tờ mơ hồ, người bán vội vàng, giá quá rẻ), hãy từ chối và tìm xe khác."
+    }
+  ]
+}
