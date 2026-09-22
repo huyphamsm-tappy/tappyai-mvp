@@ -8,7 +8,7 @@ import { guardBudgetFitInText } from './budgetFitGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
-import { safeFlushPoint } from './progressiveFlush'
+import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -1924,7 +1924,9 @@ export function applyPlaceEnrichmentStreamFilter(
         : `Mình chọn **${name}** — ${ratingText}${hoursText}.`
     }
     const releasedPrefix = flushedSent
-    const bodyAfterGuards = gated.text.startsWith(releasedPrefix) ? gated.text.slice(releasedPrefix.length) : gated.text
+    // Same whitespace-tolerant alignment as the final send below (see `alignReleasedPrefix`).
+    const releasedPrefixEnd = releasedPrefix ? alignReleasedPrefix(gated.text, releasedPrefix) : 0
+    const bodyAfterGuards = releasedPrefixEnd === null ? gated.text : gated.text.slice(releasedPrefixEnd)
     const bodyLetters = (bodyAfterGuards.replace(/\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]/g, '').replace(/\[FOLLOWUPS\][^\n]*/g, '').match(/\p{L}/gu) ?? []).length
     /**
      * 🚨 A FOLLOW-UP ABOUT ONE VENUE MAY ONLY EVER BE ANSWERED ABOUT THAT VENUE. Measured P3
@@ -2009,7 +2011,9 @@ export function applyPlaceEnrichmentStreamFilter(
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows.
       if ((v1PickBackstop || shoppingNoneBackstop) && !g1bFallback) {
-        const head = gated.text.startsWith(releasedPrefix) ? releasedPrefix : ''
+        // The head is the SETTLED bytes of the released region (whitespace-normalised), so the
+        // final send's alignment against the released prefix still holds.
+        const head = releasedPrefixEnd === null ? '' : gated.text.slice(0, releasedPrefixEnd)
         return `${head}${fallback}\n\n${bodyAfterGuards.replace(/^\s+/, '')}`
       }
       const at = earliestMarker(gated.text)
@@ -2147,11 +2151,19 @@ export function applyPlaceEnrichmentStreamFilter(
     // prefix is money-free whole sentences taken from before any place tool, so neither the guard
     // (which only removes sentences carrying a money claim) nor the photo injector (which writes
     // around place names, all of which arrive after the tool) rewrites it — `outText` still starts
-    // with it. The `startsWith` check is the belt: if that ever stopped holding, repeating a short
-    // opening line is a far better failure than silently dropping the reply.
-    const send = flushedSent && outText.startsWith(flushedSent)
-      ? outText.slice(flushedSent.length)
-      : outText
+    // with it, UP TO WHITESPACE: `stripModelScaffolding` folds trailing spaces before a line
+    // break and trims the end, and the released bytes were not normalised. A byte-exact
+    // `startsWith` therefore failed on a reply whose model text had one trailing space before
+    // "\n", and the belt re-sent the ENTIRE reply — the whole-reply duplicate of Phase 7 (golden
+    // set T1 turn 3; the owner's screenshot). `alignReleasedPrefix` compares whitespace runs as
+    // equal and nothing else. The belt stays for the case the guard proof says cannot happen —
+    // repeating text is a better failure than silently dropping the reply — but it is now logged,
+    // so a recurrence is a measured event rather than a screenshot.
+    const releasedEnd = flushedSent ? alignReleasedPrefix(outText, flushedSent) : 0
+    if (flushedSent && releasedEnd === null) {
+      console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'progressive_flush', kind: 'released_prefix_mismatch', released_chars: flushedSent.length, settled_chars: outText.length }))
+    }
+    const send = releasedEnd === null ? outText : outText.slice(releasedEnd)
     if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
 
     /**

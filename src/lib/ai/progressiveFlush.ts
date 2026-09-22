@@ -65,6 +65,53 @@ import { mayRedactPlaceClaim } from './placeClaimGuard'
 // at this moment. Fail-closed — it waits.
 
 /**
+ * Where, in the SETTLED reply, the text the client has already received ends.
+ *
+ * ============================================================================
+ * THE THIRD FAMILY — WHITESPACE — AND THE WHOLE-REPLY DUPLICATE IT CAUSED
+ * ============================================================================
+ * The proof above covers the two guard families that can REMOVE a sentence. A released prefix
+ * survives both by construction. But the settled text is also passed through
+ * `stripModelScaffolding`, which folds `[ \t]+\n` to `\n` and trims the end, and the released
+ * bytes were not. So a model that writes "**Bạn muốn đi máy bay hay xe khách?** \n" (one trailing
+ * space before the line break) produced a released prefix that the settled text no longer
+ * `startsWith`, the belt fired, and the WHOLE reply — released prefix included — went out a
+ * second time: "…chuyến đi.Hiểu rồi! Bạn muốn ở gần biển…" (Phase 7 golden set T1 turn 3,
+ * 2026-09-22; the owner's screenshot shows the same joined seam). The belt was designed for a
+ * short opening line; here the released part WAS the reply, so the belt doubled it.
+ *
+ * This aligns the two strings ignoring how whitespace RUNS are written — a run of spaces, tabs
+ * and newlines on one side matches any run on the other — and nothing else: every non-whitespace
+ * character must match in order. That is exactly the difference the normaliser can introduce,
+ * and no more. It returns the offset in `settled` just past the released material, or `null`
+ * when the released text is not (whitespace-insensitively) a prefix of the settled text — the
+ * case the guard proof says cannot happen, which the caller still treats as before.
+ */
+export function alignReleasedPrefix(settled: string, released: string): number | null {
+  if (!released) return 0
+  const isWs = (c: string) => c === ' ' || c === '\t' || c === '\n' || c === '\r'
+  let i = 0
+  let j = 0
+  while (j < released.length) {
+    const rc = released[j]
+    if (isWs(rc)) {
+      // A whitespace run on the released side: consume it, and consume whatever whitespace run
+      // the settled side has here (possibly none — the normaliser may have trimmed it away).
+      while (j < released.length && isWs(released[j])) j++
+      while (i < settled.length && isWs(settled[i])) i++
+      continue
+    }
+    // The settled side may carry a whitespace run the released side does not (be tolerant in
+    // this direction too).
+    while (i < settled.length && isWs(settled[i])) i++
+    if (i >= settled.length || settled[i] !== rc) return null
+    i++
+    j++
+  }
+  return i
+}
+
+/**
  * The number of characters of `accumulated` that may be streamed to the client now.
  *
  * 0 means "release nothing yet". The result never decreases as `accumulated` grows, so a caller

@@ -111,8 +111,10 @@ describe('the detector reports and never rewrites', () => {
     // literal no longer appears. The property is unchanged and now also covers
     // the gate: neither the detector's finding nor the gate's finding may be
     // read back to decide what is emitted.
+    // 🔄 WIDENED AGAIN (Phase 7, 2026-09-22): the whole-reply duplicate fix documents itself
+    // between the assignment and the enqueue (`alignReleasedPrefix`), so the window is 3000.
     const emit = filter.slice(filter.indexOf('ungroundedNames = [...new Set(['))
-      .slice(0, 1600)
+      .slice(0, 3000)
     // The property this protects: the detector REPORTS and never rewrites.
     //
     // The emitted variable is no longer `finalText` itself. There are now TWO delivery splits,
@@ -161,7 +163,12 @@ describe('the detector reports and never rewrites', () => {
     // C3 2026-09-20) and `outText`. If a detector result ever appears in this expression, this
     // fails — which is the moment "we noticed a fabricated name" could turn into "we silently
     // edited the user's reply".
-    expect(filter).toMatch(/const send = flushedSent && outText\.startsWith\(flushedSent\)/)
+    // 🔄 EXPRESSION UPDATED (Phase 7, 2026-09-22): the byte-exact `startsWith` re-sent whole
+    // replies when the settled text differed from the released bytes by whitespace alone, so
+    // the prefix is now aligned whitespace-insensitively. Its inputs are unchanged — the settled
+    // `outText` and the delivered `flushedSent` — and nothing a detector found enters it.
+    expect(filter).toMatch(/const releasedEnd = flushedSent \? alignReleasedPrefix\(outText, flushedSent\) : 0/)
+    expect(filter).toMatch(/const send = releasedEnd === null \? outText : outText\.slice\(releasedEnd\)/)
   })
 
   it('the detector still reads the reply WITH every appended block in it', () => {
