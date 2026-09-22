@@ -15,6 +15,20 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
+import { getTrack } from '@/modules/music/server'
+
+const MUSIC_PAYLOAD_VERSION = 1
+
+interface ReviewMusic {
+  version: number
+  trackId: string
+  startSec: number
+  volume: number
+  // 'attached' = a soundtrack picked from the Music LIBRARY: the feed mutes the clip's
+  // own audio and plays the track over it. ('original' — a clip's own audio registered
+  // as a reusable sound — is the retired reuse path and is never written any more.)
+  origin?: 'original' | 'attached'
+}
 
 // Daily cap: 20 posts/day/IP via the shared limiter (lib/security/rateLimit) —
 // one implementation for every daily-capped route instead of per-route Maps.
@@ -84,9 +98,9 @@ export async function POST(req: NextRequest) {
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
   let videoDuration = 0
-  // F-024: "use this sound" is removed — a new clip may not borrow a sound from another clip or the
-  // library. A borrowed attachment in the body is refused below; a clip's OWN audio is unaffected.
-  let musicAttachAttempted = false
+  // A soundtrack from the Music LIBRARY (Phase 7). The client sends {trackId, startSec, volume};
+  // only the id is trusted after the library check below. A clip's OWN audio is unaffected.
+  let music: ReviewMusic | null = null
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -102,9 +116,13 @@ export async function POST(req: NextRequest) {
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
     videoDuration = Number(b.duration) || 0
-    // A borrowed sound ("use this sound") is no longer accepted (F-024). The attempt is recorded and
-    // refused after the body parses; nothing is attached, so no clip can take another clip's audio.
-    if (b.music) musicAttachAttempted = true
+    if (b.music) {
+      const trackId = typeof b.music.trackId === 'string' ? b.music.trackId.trim() : ''
+      if (!trackId) throw new Error('invalid music')
+      const startSec = Math.max(0, Number(b.music.startSec) || 0)
+      const volume = Math.min(1, Math.max(0, Number(b.music.volume) || 1))
+      music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec, volume, origin: 'attached' }
+    }
     if (!placeId || !placeName) throw new Error('missing fields')
     if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
     if (rating && (rating < 1 || rating > 5 || !Number.isInteger(rating))) throw new Error('invalid rating')
@@ -131,10 +149,15 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // F-024: refuse a borrowed-sound attachment. The reuse path is withdrawn; the endpoint no longer
-  // enables one user to take audio from another user's clip.
-  if (musicAttachAttempted) {
-    return gone('music-reuse:attach-sound')
+  // 🚨 THE ONE PLACE THAT DECIDES WHAT A CLIP MAY ATTACH. `getTrack` is the Music Module's
+  // server read and it returns ONLY library rows (`music_type` royalty_free / licensed,
+  // active). A user's clip audio ("original sound"), a removed track or a made-up id all
+  // resolve to null here and the post is refused with 410 — the same answer F-024 gave every
+  // borrowed-sound attempt, because that is exactly what a non-library id is. The reuse path
+  // (one user taking another user's clip audio) stays withdrawn; the licensed library is back.
+  if (music) {
+    const track = await getTrack(music.trackId)
+    if (!track) return gone('music-reuse:attach-sound')
   }
 
   // Check if user has a past booking here → verified badge
@@ -164,8 +187,9 @@ export async function POST(req: NextRequest) {
 
   // Music reuse is retired: a clip's audio is no longer auto-registered as a
   // reusable "original sound" (that only existed so others could "use this
-  // sound", which is gone). A clip plays its OWN embedded audio; nothing about a
-  // review references the music_tracks catalogue any more.
+  // sound", which is gone). A clip plays its OWN embedded audio unless the poster
+  // picked a LIBRARY soundtrack above, in which case `reviewData.music` records
+  // that choice by reference (never a copy of the audio).
 
   const reviewData: Record<string, unknown> = {
     user_id: user.id,
@@ -183,6 +207,7 @@ export async function POST(req: NextRequest) {
   if (source_type && source_type !== 'upload') reviewData.source_type = source_type
   if (source_url) reviewData.source_url = source_url
   if (hashtags.length > 0) reviewData.hashtags = hashtags
+  if (music) reviewData.music = music
 
   // ── Content safety publication gate ────────────────────────────────────────
   // The actual publication boundary. New content receives its lifecycle state

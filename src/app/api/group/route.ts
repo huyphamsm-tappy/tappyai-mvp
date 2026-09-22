@@ -5,6 +5,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { isServableMediaUrl } from '@/lib/media/servableMedia'
 
 export async function POST(req: NextRequest) {
   const { user, supabase } = await getRequestUser(req)
@@ -40,11 +41,15 @@ export async function GET(req: NextRequest) {
 
   const { data: group, error: groupError } = await supabase
     .from('groups')
-    .select('id, name, creator_id, status, suggestion, created_at')
+    // `avatar_url`: the group's own picture (20260922_groups_avatar_url), set by the creator
+    // through POST /api/group/[id]/avatar. Only a servable URL leaves — a retired-host URL
+    // would render as a broken image on every member's screen.
+    .select('id, name, creator_id, status, suggestion, created_at, avatar_url')
     .eq('id', id)
     .single()
 
   if (groupError || !group) return NextResponse.json({ error: 'group_not_found', message: serverMessage('group.notFound', requestLocale(req)) }, { status: 404 })
+  group.avatar_url = isServableMediaUrl(group.avatar_url) ? group.avatar_url : null
 
   const { data: members } = await supabase
     .from('group_members')

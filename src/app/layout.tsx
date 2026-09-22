@@ -10,6 +10,7 @@ import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
 import GoogleAnalytics from '@/components/GoogleAnalytics'
+import NavHistoryTracker from '@/components/NavHistoryTracker'
 
 // og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
 // They were absent before, which is why a pasted TappyAI link rendered as bare
@@ -97,6 +98,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TrackingProvider />
         <LanguagePicker />
         <HtmlLangSync />
+        {/* Per-tab in-app history depth for every Back control (lib/nav/inAppBack). */}
+        <NavHistoryTracker />
         <VersionWatcher />
       </body>
     </html>

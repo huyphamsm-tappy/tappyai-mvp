@@ -88,6 +88,7 @@ export const vi: Record<string, string> = {
   'reviewNew.selectedMusicAria': 'Nhạc nền đã chọn, bấm để đổi nhạc',
   'reviewNew.removeMusic': 'Xóa nhạc nền',
   'reviewNew.loading': 'Đang tải...',
+  'reviewNew.musicUnavailable': 'Bài nhạc này không còn trong thư viện',
 
   // Submit
   'reviewNew.postError': 'Lỗi đăng bài',
@@ -177,6 +178,7 @@ export const en: Record<string, string> = {
   'reviewNew.selectedMusicAria': 'Selected background music, tap to change',
   'reviewNew.removeMusic': 'Remove background music',
   'reviewNew.loading': 'Loading...',
+  'reviewNew.musicUnavailable': 'This track is no longer in the library',
 
   // Submit
   'reviewNew.postError': 'Failed to post',

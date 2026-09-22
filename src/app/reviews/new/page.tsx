@@ -8,13 +8,18 @@ import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {
   Star, X, ArrowLeft, Loader2, AlertTriangle,
-  MapPin, Plus, Video, XCircle, UploadCloud, Info,
+  MapPin, Plus, Video, XCircle, Music, UploadCloud, Info,
   Image as ImageIcon, Youtube, Play, Sparkles, PenLine, Users, Globe,
 } from 'lucide-react'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
-// F-024 — music reuse removed: the composer no longer imports the sound picker or track display.
+// Phase 7: the Music LIBRARY picker is back (F-024 had removed it with the reuse path). The
+// picker lists library tracks only — `/api/music/*` never serves another user's clip audio.
+import {
+  MusicPickerSheet, MusicThumbnail, MusicDuration, useMusicTrack, attributionLine,
+  type MusicSelection,
+} from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { detectSource, placeholderFor, SUPPORTED_LINK_SOURCES, type LinkSource } from '@/lib/links/platforms'
 
@@ -210,7 +215,50 @@ function generateVideoThumbnail(file: File): Promise<Blob> {
   })
 }
 
-// F-024 — SelectedMusicCard (the composer's selected-sound display) removed with music reuse.
+// Displays a selected MusicSelection as a card (cover, title, artist + licence,
+// duration, remove). Fetches the track's own display metadata via
+// useMusicTrack since MusicSelection itself only carries {trackId, startSec,
+// volume}. Feature-owned composition of the Music Module's exported dumb
+// display primitives — not a Music Module component. A track the library no
+// longer serves (removed, or never a library track) resolves to null and the
+// card says so instead of showing a title it cannot vouch for.
+function SelectedMusicCard({
+  trackId, onReplace, onRemove,
+}: { trackId: string; onReplace: () => void; onRemove: () => void }) {
+  const { track, loading } = useMusicTrack(trackId)
+  const { t } = useTranslation()
+  const credit = track ? attributionLine(track) : ''
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={onReplace}
+      onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onReplace() } }}
+      aria-label={t('reviewNew.selectedMusicAria')}
+      className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border p-3 text-left transition-colors"
+      style={{ borderColor: 'var(--v3-border)', background: 'var(--v3-panel)' }}
+      data-selected-music={trackId}
+    >
+      <MusicThumbnail coverUrl={track?.coverUrl ?? null} title={track?.title ?? ''} size={44} />
+      <div className="min-w-0 flex-1">
+        <p className="truncate text-sm font-semibold" style={{ color: 'var(--v3-fg)' }}>
+          {track?.title ?? (loading ? t('reviewNew.loading') : t('reviewNew.musicUnavailable'))}
+        </p>
+        {credit && <p className="truncate text-xs" style={{ color: 'var(--v3-fg-muted)' }}>{credit}</p>}
+      </div>
+      {track && <span className="flex-shrink-0 text-xs" style={{ color: 'var(--v3-fg-muted)' }}><MusicDuration seconds={track.durationSec} /></span>}
+      <button
+        type="button"
+        aria-label={t('reviewNew.removeMusic')}
+        onClick={e => { e.stopPropagation(); onRemove() }}
+        className="flex-shrink-0 rounded-full p-1 transition-colors hover:text-red-500"
+        style={{ color: 'var(--v3-fg-muted)' }}
+      >
+        <X size={16} />
+      </button>
+    </div>
+  )
+}
 
 /* ─── page ─── */
 
@@ -301,9 +349,15 @@ export default function NewReviewPage() {
     if (area && !placeArea.trim()) { setPlaceArea(area); setAreaFromAi(true) }
   }
 
-  /* music: F-024 — "use this sound" is removed. A new clip can no longer borrow a sound (no
-     picker, no /reviews/new?sound=ID deep link), and the backend refuses an attached sound. A
-     clip's own audio is unaffected. */
+  /* music — a soundtrack from the Music LIBRARY (Phase 7 restored this; F-024 had removed it
+     together with the reuse path). What is NOT here, on purpose: the `/reviews/new?sound=ID`
+     deep link from a clip's sound page — that was "use this sound" (another user's clip audio)
+     and stays withdrawn. The picker only lists library tracks, and the backend only accepts a
+     library track id, so nothing a clip attaches can be somebody else's audio. */
+  const [music, setMusic] = useState<MusicSelection | null>(null)
+  const [musicPickerOpen, setMusicPickerOpen] = useState(false)
+  const [hasOpenedMusicPicker, setHasOpenedMusicPicker] = useState(false)
+  const openMusicPicker = () => { setHasOpenedMusicPicker(true); setMusicPickerOpen(true) }
 
   const resetVideoState = () => {
     setMedia_url(''); setThumbnail(''); setThumbPreview(''); setVideoDuration(0)
@@ -598,7 +652,11 @@ export default function NewReviewPage() {
         body: body.trim(),
       }
 
-      // F-024 — no borrowed sound is ever attached to a new clip.
+      // A library soundtrack, when one was picked. The server re-checks that the id is a
+      // library track before it stores anything.
+      if (music) {
+        payload.music = { version: 1, trackId: music.trackId, startSec: music.startSec, volume: music.volume }
+      }
 
       if (mediaMode === 'photo') {
         payload.photos = photos
@@ -1080,7 +1138,14 @@ export default function NewReviewPage() {
             )}
           </button>
 
-          {/* F-024 — "add music" (use this sound) removed: a new clip can no longer borrow a sound. */}
+          {/* Music library — pick a licensed soundtrack. Not "use this sound". */}
+          {!music && (
+            <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
+              className="v3-post-chip" data-tone="rose" data-active="false" data-add-music>
+              <span className="v3-post-chip-icon" aria-hidden="true"><Music size={16} /></span>
+              {t('reviewNew.addMusic')}
+            </button>
+          )}
         </div>
 
         {/* Place: the name and the area, exactly as before. */}
@@ -1119,7 +1184,19 @@ export default function NewReviewPage() {
           </div>
         )}
 
-        {/* F-024 — the selected-sound card and the sound picker are removed with the reuse path. */}
+        {/* Music: the selected library track, and the picker (mounted on first open). */}
+        {music && (
+          <div className="mt-3">
+            <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
+          </div>
+        )}
+        {hasOpenedMusicPicker && (
+          <MusicPickerSheet
+            open={musicPickerOpen}
+            onClose={() => setMusicPickerOpen(false)}
+            onSelect={selection => setMusic(selection)}
+          />
+        )}
 
         {/* -- Visibility -- every post is public today; there is no per-post audience
             setting in the data model, so this states the fact instead of drawing a

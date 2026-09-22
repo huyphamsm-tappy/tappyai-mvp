@@ -9,6 +9,7 @@ import {
   Loader2, Users, Utensils, MapPin, Link2, Sparkles, ClipboardList, AlertCircle, LayoutGrid, type LucideIcon,
 } from 'lucide-react'
 import { TappyMascot } from '@/components/TappyMascot'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 /** The input's `maxLength`; the counter beside it says the same number. */
 const NAME_MAX = 80
@@ -62,10 +63,12 @@ export default function GroupNewForm() {
   return (
     // `v3-theme` brings the shared tokens to a page that keeps its legacy header and bottom nav.
     <div className="v3-theme v3-group-page flex min-h-dvh flex-col">
+      {/* Back pops in-app history (the Smart Tools tile is the usual parent); a deep link
+          falls back to /tools. A fixed `backHref="/"` sent every Back to Home. */}
       <Header
         showBack
         title={t('groupNew.title')}
-        backHref="/"
+        backFallbackHref={SMART_TOOLS_HREF}
       />
       <main className="mx-auto w-full max-w-5xl flex-1 space-y-5 px-4 pb-24 pt-5 sm:px-6 sm:pt-7" data-group-main>
         {/* ── Hero ── */}

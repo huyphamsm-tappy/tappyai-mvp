@@ -15,8 +15,10 @@ vi.mock('@/components/NotificationProvider', () => ({
 }))
 vi.mock('@/components/Header', () => ({
   __esModule: true,
-  default: ({ title, showBack, backHref }: { title?: string; showBack?: boolean; backHref?: string }) => (
-    <header data-testid="header" data-back={showBack ? 'yes' : 'no'} data-back-href={backHref}>{title}</header>
+  // Phase 7: Back pops history and falls back to Smart Tools; `backHref="/"` (a fixed push
+  // to Home) is gone, so the mock reports both props.
+  default: ({ title, showBack, backHref, backFallbackHref }: { title?: string; showBack?: boolean; backHref?: string; backFallbackHref?: string }) => (
+    <header data-testid="header" data-back={showBack ? 'yes' : 'no'} data-back-href={backHref ?? ''} data-back-fallback={backFallbackHref ?? ''}>{title}</header>
   ),
 }))
 vi.mock('@/components/BottomNav', () => ({ __esModule: true, default: () => <nav data-testid="bottom-nav" /> }))
@@ -55,12 +57,14 @@ const submit = () => q<HTMLButtonElement>('[data-group-submit]')!
 const type = (v: string) => fireEvent.change(input(), { target: { value: v } })
 
 describe('what the page claims is what the code does', () => {
-  it('renders the V3 hero, the legacy back header to "/", and no help control', () => {
+  it('renders the V3 hero, a history-popping Back that falls back to Smart Tools, and no help control', () => {
     render(<GroupNewForm />)
     const header = q('[data-testid="header"]')!
     expect(header.textContent).toBe(enCopy['groupNew.title'])
     expect(header.getAttribute('data-back')).toBe('yes')
-    expect(header.getAttribute('data-back-href')).toBe('/')
+    // No fixed parent (Back returns to wherever the person came from); Smart Tools is the fallback.
+    expect(header.getAttribute('data-back-href')).toBe('')
+    expect(header.getAttribute('data-back-fallback')).toBe('/tools')
     const hero = q('[data-group-hero]')!
     expect(hero.textContent).toContain(enCopy['groupNew.heroEyebrow'])
     expect(hero.textContent).toContain(enCopy['groupNew.heroTitle1'])

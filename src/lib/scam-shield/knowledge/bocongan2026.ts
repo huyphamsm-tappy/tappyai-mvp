@@ -112,7 +112,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['SMS có tên thương hiệu quen thuộc nhưng kèm link lạ, tên miền khác thường', 'Nội dung thúc giục: "tài khoản bị khóa", "đăng nhập bất thường", "nhận tiền hoàn"'],
       commonRequests: ['Bấm vào link để "xác minh" hoặc "mở khóa"', 'Nhập tên đăng nhập, mật khẩu, OTP trên trang được dẫn tới'],
-      whatToDo: ['Coi mọi link trong SMS là đáng ngờ; tự mở ứng dụng/website chính thức để kiểm tra', 'Dùng công cụ Kiểm tra URL của Scam Shield trước khi mở'],
+      whatToDo: ['Coi mọi link trong SMS là đáng ngờ; tự mở ứng dụng/website chính thức để kiểm tra', 'Dùng công cụ Kiểm tra URL của Cảnh báo lừa đảo trước khi mở'],
       whatNotToDo: ['Không bấm link trong SMS dù tên người gửi trông chính thức', NEVER_SHARE],
     }),
   scenario(10, 'impersonation', 'payment_fraud',
@@ -244,7 +244,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['Mã QR dán đè, in rời tại quầy, cột điện, tờ rơi, hoặc gửi qua tin nhắn', 'Quét xong dẫn tới trang lạ yêu cầu đăng nhập/tải app'],
       commonRequests: ['Chuyển tiền theo QR', 'Tải ứng dụng hoặc đăng nhập trên trang mở ra từ QR'],
-      whatToDo: ['Kiểm tra tên người nhận hiện trong ứng dụng ngân hàng trước khi xác nhận', 'Dùng Quét mã QR của Scam Shield để kiểm tra đường dẫn trước khi mở'],
+      whatToDo: ['Kiểm tra tên người nhận hiện trong ứng dụng ngân hàng trước khi xác nhận', 'Dùng Quét mã QR của Cảnh báo lừa đảo để kiểm tra đường dẫn trước khi mở'],
       whatNotToDo: ['Không quét mã QR không rõ nguồn gốc', 'Không cài ứng dụng từ trang mở ra sau khi quét'],
     }),
   scenario(20, 'online_trading', 'remote_access_compromise',
@@ -262,7 +262,7 @@ const SCENARIOS: ScamScenario[] = [
     {
       warningSigns: ['Link rút gọn hoặc tên miền lạ giống thương hiệu thật', 'Trang mở ra yêu cầu đăng nhập, nhập OTP hoặc tải file'],
       commonRequests: ['Đăng nhập tài khoản trên trang được dẫn tới', 'Tải file/ứng dụng "cần thiết"'],
-      whatToDo: ['Dùng Kiểm tra URL của Scam Shield trước khi mở link lạ', 'Tự gõ địa chỉ website chính thức thay vì bấm link'],
+      whatToDo: ['Dùng Kiểm tra URL của Cảnh báo lừa đảo trước khi mở link lạ', 'Tự gõ địa chỉ website chính thức thay vì bấm link'],
       whatNotToDo: ['Không đăng nhập qua link nhận được', 'Không tải file từ link lạ'],
     }),
   scenario(8, 'data_theft', 'account_takeover',

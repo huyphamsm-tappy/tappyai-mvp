@@ -6,6 +6,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ArrowRight, Info, Moon, Orbit, Sparkles, Star, Sun, Wand2, type LucideIcon } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 // ── Xem bói hub (/boi) — the V3 cosmic skin ─────────────────────────────────
 //
@@ -73,7 +74,8 @@ export default function BoiLandingView({ user }: { user: ComponentProps<typeof H
     // `v3-theme` brings the shared tokens (page ground, panel, text hierarchy) to
     // a page that keeps its legacy header and bottom nav.
     <div className="v3-theme v3-boi-page min-h-dvh pb-24">
-      <Header user={user} showBack backHref="/" title={t('fortune.headerTitle')} />
+      {/* Back pops in-app history (Smart Tools, Home, …); a deep link falls back to /tools. */}
+      <Header user={user} showBack backFallbackHref={SMART_TOOLS_HREF} title={t('fortune.headerTitle')} />
 
       <main className="mx-auto w-full max-w-5xl px-4 py-5 sm:px-6 sm:py-8" data-boi-main>
         {/* ── Hero ── */}

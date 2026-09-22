@@ -1,17 +1,25 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { QrCode, X, Share2, Check } from 'lucide-react'
+import { QrCode, X, Share2 } from 'lucide-react'
 import { encodeQR, qrToSvg } from '@/lib/qr/qrcode'
+import ShareMenu from '@/components/share/ShareMenu'
+import { absoluteUrl } from '@/lib/share/openGraph'
 
 // QR Profile (MFS 4.7): lets a person share their identity in the physical world.
 // Zero-dependency — the QR is generated + rendered as inline SVG entirely on-device.
+//
+// Sharing goes through the TappyAI share menu (Phase 7, item 8) — the direct
+// `navigator.share` call was the raw OS dialog (Nearby Sharing / Teams / Outlook on
+// Windows, no Zalo or Facebook). The link the sheet carries is the CANONICAL public
+// profile URL, the only host `isShareableUrl` admits; the QR on screen still encodes
+// this origin's URL, which is what a camera pointed at this screen resolves.
 export default function QRProfileButton({ userId, name }: { userId: string; name?: string | null }) {
   const [open, setOpen] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
   const [svg, setSvg] = useState<string>('')
-  const [url, setUrl] = useState<string>('')
   const [failed, setFailed] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const shareUrl = absoluteUrl(`/users/${userId}`)
 
   // Build the QR only when opened (needs the real origin, available client-side).
   useEffect(() => {
@@ -19,7 +27,6 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
     try {
       const origin = window.location.origin
       const link = `${origin}/users/${userId}`
-      setUrl(link)
       setSvg(qrToSvg(encodeQR(link), { size: 232, margin: 2 }))
       setFailed(false)
     } catch {
@@ -34,13 +41,6 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open])
-
-  const share = async () => {
-    try {
-      if (navigator.share) { await navigator.share({ title: name || 'TappyAI', url }); return }
-    } catch { /* user cancelled or unsupported → fall through to copy */ }
-    try { await navigator.clipboard.writeText(url); setCopied(true); setTimeout(() => setCopied(false), 1800) } catch { /* ignore */ }
-  }
 
   return (
     <>
@@ -90,14 +90,21 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
 
             <button
               type="button"
-              onClick={share}
+              onClick={() => setShareOpen(true)}
               className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-interactive hover:bg-interactive-hover text-white text-sm font-semibold transition-colors"
             >
-              {copied ? <><Check size={16} /> Đã sao chép liên kết</> : <><Share2 size={16} /> Chia sẻ liên kết</>}
+              <Share2 size={16} /> Chia sẻ liên kết
             </button>
           </div>
         </div>
       )}
+
+      <ShareMenu
+        url={shareUrl}
+        title={name ? `${name} · TappyAI` : 'TappyAI'}
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+      />
     </>
   )
 }

@@ -46,7 +46,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     .from('reviews')
     .select(`
       id, user_id, place_name, place_address, rating, body,
-      photos, is_verified, like_count, comment_count, save_count, created_at,
+      photos, is_verified, like_count, comment_count, save_count, created_at, music,
       content_type, media_url, thumbnail, source_type, source_url, hashtags,
       profiles(full_name, avatar_url)
     `)

@@ -1,8 +1,24 @@
-// F-024 — music reuse removed. This endpoint powered the "use this sound" path (browse a
-// sound, save/follow it, upload a reusable track, or attach one to a clip). The whole path is
-// withdrawn; every method answers 410 Gone. A clip still plays its OWN audio, which never used
-// this route. Deletion of the already-collected music rows is deferred to the owner.
+import { NextRequest, NextResponse } from 'next/server'
+import { parseTracksQuery } from '@/modules/music/api'
+import { browseTracks } from '@/modules/music/services/musicService'
+import { requestSearchParams } from '@/lib/http/searchParams'
 import { gone } from '@/lib/http/gone'
 
-export function GET() { return gone('music-reuse:tracks') }
+// The catalogue is DATA seeded independently of deploys; never freeze it at build time.
+export const dynamic = 'force-dynamic'
+
+// GET /api/music/tracks?categoryId=&page=&limit= — browse the Music LIBRARY.
+//
+// Phase 7 restored the library half of what F-024 retired. The repository serves
+// only `music_type IN ('royalty_free','licensed')`: a curated, licensed track a
+// person picks as a soundtrack. A user's clip audio (`original_sound`) is never
+// listed here — "use this sound" stays withdrawn.
+export async function GET(req: NextRequest) {
+  const filter = parseTracksQuery(requestSearchParams(req))
+  const result = await browseTracks(filter)
+  return NextResponse.json(result)
+}
+
+// POST — publishing a user-owned "Original Sound" (UGC upload) was the reuse
+// path and stays withdrawn (F-024). 410, not 404: it existed and was removed.
 export function POST() { return gone('music-reuse:tracks') }

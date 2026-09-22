@@ -27,6 +27,8 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
+import { useMusicTrack, getPreviewUrl } from '@/modules/music'
+import { ReviewMusicCredit } from './ReviewMusicCard'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -39,6 +41,8 @@ export interface Review {
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
+  /** A LIBRARY soundtrack picked in the composer (`origin: 'attached'`), by reference. */
+  music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
 // A "share-only" post (clip/photo posted without adding a place) carries a
@@ -368,6 +372,19 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
     }
   }, [])
 
+  // Attached LIBRARY soundtrack: resolve the track (through /api/music, which
+  // serves library rows only) for clips in the render window, then hand its URL
+  // to VideoPlayer, which plays it in place of the clip's own audio. An
+  // 'original' clip already IS its own audio, so only 'attached' substitutes.
+  const attachedTrackId = renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
+  const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
+  const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
+  // Known synchronously from the review row — VideoPlayer mutes the video from
+  // frame one, BEFORE the track URL resolves (deciding by soundUrl alone left
+  // the video unmuted during the fetch gap → double audio). Drops to false when
+  // the fetch finishes empty (a track the library no longer serves) → VideoPlayer
+  // falls back to the clip's own audio.
+  const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
 
   useEffect(() => {
     if (r.content_type !== 'video' || !containerRef.current) return
@@ -459,6 +476,9 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
                 sourceType={r.source_type ?? 'upload'}
                 sourceUrl={r.source_url ?? undefined}
                 active={active}
+                hasSound={hasAttachedSound}
+                soundUrl={attachedSoundUrl}
+                soundVolume={r.music?.volume ?? 1}
                 onDurationKnown={d => { durationRef.current = d }}
               />
             // Off-screen: thumbnail only, no <video> element (frees iOS media slots)
@@ -595,6 +615,9 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
           <p className="text-white font-bold text-[15px] mb-1 drop-shadow truncate">{handle}</p>
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
+        {/* The library soundtrack's credit (artist · licence). Attribution is the licence's
+            condition, so it sits with the caption; it is a label, not a "use this sound" CTA. */}
+        {r.music?.origin === 'attached' && <ReviewMusicCredit trackId={r.music.trackId} />}
         {!isShareOnlyName(r.place_name) && (
           <>
             <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">

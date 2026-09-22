@@ -82,8 +82,12 @@ const GROUPS: NavGroup[] = [
   {
     titleKey: 'v3.nav.groupCapabilities',
     items: [
-      // Search is a capability, not a destination — it moved here out of the old "main" group.
-      { href: '/recommendations', labelKey: 'v3.nav.search', icon: Search },
+      // 🚨 THIS ROW WAS LABELLED "Search" AND OPENED `/recommendations` — the personalised
+      // places page, which has no search box. A row lying about its destination is the same
+      // class of bug as the two below. Phase 7: it now carries the destination's own name,
+      // the one the Smart Tools tile and Home's "see all" use (`v3.tool.suggest`), so one
+      // page has one name wherever it is reached from.
+      { href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles },
       // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
       // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
       // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.

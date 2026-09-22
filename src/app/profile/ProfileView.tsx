@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import UserAvatar from '@/components/UserAvatar'
 import QRProfileButton from '@/components/QRProfileButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
@@ -22,9 +23,12 @@ import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
 // the reason is recorded here so the next person working from the same picture does not spend a
 // day looking for the endpoint:
 //
-//   • COVER PHOTO + change-cover control — `profiles` has no cover column and no upload route
-//     accepts one. The hero wears a V3 gradient instead: decoration this file draws, not a
-//     photograph attributed to the user.
+//   • CHANGE-COVER CONTROL — the cover itself is real since `profiles.cover_url`
+//     (`20260915_profile_public_presentation.sql`, uploaded through POST /api/profile), and the
+//     hero shows it when the row carries one. Changing it lives on `/profile/edit` and on the
+//     owner's Explore profile, the same two places that own the avatar picker; this hub keeps a
+//     single edit entry point. With no cover the banner is the V3 gradient — decoration this
+//     file draws, not a photograph attributed to the user.
 //   • @HANDLE — there is no username column. Identity is `full_name` and an email. A handle
 //     minted from the email would be a public identifier the user never chose.
 //   • LOCATION / PHONE — no city, country or phone column anywhere on `profiles`, and profile
@@ -87,6 +91,8 @@ type ProfileViewProps = {
   firstName: string
   conversationCount: number
   bio: string | null
+  /** `profiles.cover_url`; absent/null = no cover, the banner stays a gradient. */
+  coverUrl?: string | null
   joinedAt: string | null
   followerCount: number | null
   followingCount: number | null
@@ -110,7 +116,7 @@ const TABS: { key: string; icon: LucideIcon }[] = [
 
 export default function ProfileView({
   userId, userInfo, firstName: rawFirstName, conversationCount,
-  bio, joinedAt, followerCount, followingCount, isPremium, stats, following,
+  bio, coverUrl, joinedAt, followerCount, followingCount, isPremium, stats, following,
 }: ProfileViewProps) {
   const { t, locale } = useTranslation()
   // C14 — the server cannot know the language, so it sends the bare name (possibly empty) and the
@@ -136,6 +142,7 @@ export default function ProfileView({
               displayName={displayName}
               avatarUrl={userInfo.avatar_url}
               bio={bio}
+              coverUrl={coverUrl ?? null}
               isPremium={isPremium}
               followerCount={followerCount}
               followingCount={followingCount}
@@ -170,22 +177,24 @@ export default function ProfileView({
 /**
  * The hero.
  *
- * 🚨 THE BANNER IS A GRADIENT, AND IT IS NOT PRETENDING TO BE A PHOTO. There is no cover column,
- * so there is no change-cover control either — an upload button over a field nothing can store
- * is worse than no banner at all. The one camera badge on the page sits on the AVATAR and opens
- * `/profile/edit`, which already owns the picker and the upload.
+ * 🚨 THE BANNER IS THE USER'S OWN COVER, OR A GRADIENT — never a stock photo pretending to be
+ * one. `coverUrl` is `profiles.cover_url`, an object POST /api/profile wrote for this user; when
+ * it is null the banner is decoration this file draws. There is no change-cover control HERE: the
+ * one camera badge on the page sits on the AVATAR and opens `/profile/edit`, which owns the
+ * avatar picker and the cover picker alike.
  *
  * Statistics render only when the server actually sent them. `follower_count` and
  * `following_count` are real trigger-maintained columns; `likes` is the sum of the `like_count`
  * the database keeps on this user's own posts. Nothing is defaulted to 0 to fill the row.
  */
 function ProfileHero({
-  userId, displayName, avatarUrl, bio, isPremium, followerCount, followingCount, likes,
+  userId, displayName, avatarUrl, bio, coverUrl, isPremium, followerCount, followingCount, likes,
 }: {
   userId: string
   displayName: string
   avatarUrl?: string | null
   bio: string | null
+  coverUrl: string | null
   isPremium: boolean
   followerCount: number | null
   followingCount: number | null
@@ -195,7 +204,14 @@ function ProfileHero({
 
   return (
     <section className="v3-profile-hero" data-profile-hero aria-labelledby="profile-hero-name">
-      <div className="v3-profile-banner relative h-28 w-full sm:h-36" aria-hidden="true">
+      <div className="v3-profile-banner relative h-28 w-full overflow-hidden sm:h-36" aria-hidden="true">
+        {coverUrl && (
+          <>
+            <Image src={coverUrl} alt="" fill sizes="(min-width: 1280px) 900px, 100vw" className="object-cover" data-profile-cover />
+            {/* Keeps the breadcrumb legible over any photo. */}
+            <span className="absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/25" />
+          </>
+        )}
         <p className="absolute left-5 top-4 text-[11px] font-medium uppercase tracking-[0.12em] text-white/80">
           {t('v3.profile.breadcrumb')}
         </p>

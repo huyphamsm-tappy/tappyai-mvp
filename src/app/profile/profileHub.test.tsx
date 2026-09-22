@@ -31,7 +31,8 @@ import { setLocale } from '@/lib/i18n/useTranslation'
 //
 // The design shows a cover photo, an @handle, a location line, a 1.250-point balance with a
 // progress bar to "Silver", story-ring highlights, an activity feed and a friends list. Audited:
-// there is no cover column, no username column, no location column, no points/rewards/tier table
+// the cover is real since `profiles.cover_url` (2026-09-15) and renders ONLY when the row has
+// one; there is no username column in use, no location column, no points/rewards/tier table
 // anywhere in the codebase, no story or highlight model, and `user_follows` is directional.
 //
 // Those absences are the hard part of this screen, because every one of them is easy to fake and
@@ -143,9 +144,10 @@ describe('the mockup fields with no column behind them are absent', () => {
     }
   })
 
-  it('offers no cover-photo upload — nothing can store one', () => {
+  it('offers no cover-photo upload HERE — the hub keeps one edit entry point (the avatar badge → /profile/edit)', () => {
     const { container } = renderHub()
-    expect(container.textContent ?? '').not.toMatch(/ảnh bìa|cover photo/i)
+    expect(container.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
+    expect(container.querySelector('input[type=file]')).toBeNull()
   })
 
   it('shows no points, tier or progress bar — no such table exists', () => {
@@ -297,11 +299,21 @@ describe('the hero after the reskin', () => {
     expect(badge.getAttribute('href')).toBe('/profile/edit')
   })
 
-  it('keeps the banner a gradient — no image inside it, no cover control', () => {
+  it('keeps the banner a gradient when the row has no cover — no image inside it, no cover control', () => {
     const { container } = renderHub()
     const hero = container.querySelector('[data-profile-hero]') as HTMLElement
     expect(hero.querySelector('.v3-profile-banner img')).toBeNull()
     expect(hero.querySelector('.v3-profile-banner')!.getAttribute('style')).toBeNull()
+    expect(hero.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
+  })
+
+  it("shows the user's own cover in the banner when the row carries one — the same profiles.cover_url the Explore profile shows", () => {
+    const { container } = renderHub({ coverUrl: 'https://storage.googleapis.com/b/covers/u1-abc.jpg' })
+    const hero = container.querySelector('[data-profile-hero]') as HTMLElement
+    const img = hero.querySelector('.v3-profile-banner img[data-profile-cover]') as HTMLImageElement
+    expect(img).toBeTruthy()
+    expect(decodeURIComponent(img.getAttribute('src') ?? '')).toContain('covers/u1-abc.jpg')
+    // Still no control here; the cover is changed on /profile/edit and the owner's Explore profile.
     expect(hero.textContent ?? '').not.toMatch(/thay ảnh bìa|change cover/i)
   })
 

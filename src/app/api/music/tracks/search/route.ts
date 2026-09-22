@@ -1,7 +1,11 @@
-// F-024 — music reuse removed. This endpoint powered the "use this sound" path (browse a
-// sound, save/follow it, upload a reusable track, or attach one to a clip). The whole path is
-// withdrawn; every method answers 410 Gone. A clip still plays its OWN audio, which never used
-// this route. Deletion of the already-collected music rows is deferred to the owner.
-import { gone } from '@/lib/http/gone'
+import { NextRequest, NextResponse } from 'next/server'
+import { parseSearchQuery } from '@/modules/music/api'
+import { searchTracks } from '@/modules/music/services/musicService'
+import { requestSearchParams } from '@/lib/http/searchParams'
 
-export function GET() { return gone('music-reuse:track-search') }
+// GET /api/music/tracks/search?q=&page=&limit=
+export async function GET(req: NextRequest) {
+  const filter = parseSearchQuery(requestSearchParams(req))
+  const result = await searchTracks(filter)
+  return NextResponse.json(result)
+}

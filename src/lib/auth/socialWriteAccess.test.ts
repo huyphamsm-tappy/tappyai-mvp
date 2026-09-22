@@ -86,6 +86,8 @@ describe('every social mutation route is behind the boundary', () => {
     'src/app/api/group/route.ts',
     'src/app/api/group/[id]/join/route.ts',
     'src/app/api/group/[id]/suggest/route.ts',
+    // Phase 7: the group's picture — every member sees it, so it is a social write.
+    'src/app/api/group/[id]/avatar/route.ts',
     // music/tracks, music/tracks/[id]/report, sound/[trackId]/follow and sound/[trackId]/save were
     // the music-reuse mutation routes; they now answer 410 Gone (F-024) and hold no user data, so
     // they are no longer part of the social-write boundary.
