@@ -44,3 +44,26 @@ describe('guardBudgetFitInText', () => {
     expect(out.text).toBe('Prices run 100-200k per person.')
   })
 })
+
+// Session C follow-up (owner, 2026-09-22): a venue the constraint filter kept with NO provider
+// band must never be presented as within budget — the model wrote "Quán Bụi nằm trong tầm giá"
+// about a row that carried no price at all.
+describe('a fit phrase about an UNPRICED venue is unsupported', () => {
+  const unpriced = ['Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine', 'Hàng Dương Quán | Quán ăn ngon Quận 1']
+  it('loses the fit clause, keeps the venue and its other facts', () => {
+    const t = 'Mình chọn **Quán Bụi** cho bạn, nằm trong tầm giá, cách bạn 0.5km và đang mở cửa.'
+    const out = guardBudgetFitInText(t, UNDER_100K, { unpricedNames: unpriced })
+    expect(out.redacted).toBe(1)
+    expect(out.text).not.toContain('nằm trong tầm giá')
+    expect(out.text).toContain('**Quán Bụi**')
+    expect(out.text).toContain('0.5km')
+  })
+  it('a fit phrase about a venue that HAS a band is judged by the band, as before', () => {
+    const t = 'Mình chọn **Cơm Tấm Cali** cho bạn, rất hợp ngân sách.'
+    expect(guardBudgetFitInText(t, UNDER_100K, { unpricedNames: unpriced }).redacted).toBe(0)
+  })
+  it('the head of a "| tagline" name is enough to recognise the venue', () => {
+    const t = 'Hàng Dương Quán rất hợp túi tiền.'
+    expect(guardBudgetFitInText(t, UNDER_100K, { unpricedNames: unpriced }).text).not.toContain('hợp túi tiền')
+  })
+})

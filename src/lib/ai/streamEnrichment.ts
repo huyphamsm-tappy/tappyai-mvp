@@ -6,6 +6,7 @@ import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
 import { guardFormatClaimsInText } from './formatClaimGuard'
 import { guardBudgetFitInText } from './budgetFitGuard'
+import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
@@ -1140,6 +1141,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const addressesByEntity = new Map<string, string>()
   /** G2: the provider's own price band per venue (`price_range_text` / `price_range`) — entity-level price evidence. */
   const priceBandsByEntity = new Map<string, PriceBand>()
+  /** Rows the constraint filter kept with NO band under a stated budget (`_tappy_price_unconfirmed`). */
+  const unpricedRowNames = new Set<string>()
   /**
    * Rating / distance evidence for `guardPlaceClaimsInText`, gathered the same
    * way and at the same moment as `snippetPrices`: read off the provider's own
@@ -1748,8 +1751,14 @@ export function applyPlaceEnrichmentStreamFilter(
      * "vừa vặn ngân sách" is the model's. A fit phrase next to a band starting at or above the
      * user's ceiling loses its clause (measured B1/B8/F7b/E6 on the 2026-09-19 gate).
      */
+    // The budget: Consultative V1's when the flag is on; otherwise the nearest one the user
+    // stated in the thread (without this the guard was inert on every server with V1 off —
+    // measured Session C). Rows the constraint filter kept unpriced cannot "fit" either.
+    const fitBudget = collector?.consultativeV1?.budget
+      ?? (collector?.userTexts ?? [userText]).slice().reverse().map(t => extractBudget(t)).find(b => b !== null)
+      ?? null
     const budgetFit = (hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn
-      ? guardBudgetFitInText(hoursGuarded, collector?.consultativeV1?.budget)
+      ? guardBudgetFitInText(hoursGuarded, fitBudget, { unpricedNames: [...unpricedRowNames] })
       : { text: hoursGuarded, redacted: 0 }
     if (budgetFit.redacted > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'budget_fit', redacted: budgetFit.redacted }))
     // Phase 7 group 1 (golden T2): a projection format the user asked for (IMAX, 4DX…) that no
@@ -2449,6 +2458,9 @@ export function applyPlaceEnrichmentStreamFilter(
                 const band = bandFromRow(row)
                 if (band) priceBandsByEntity.set(rowName, band)
               }
+              // Phase 7 group 3: the constraint filter marked this row as unpriced under a stated
+              // budget — a "fits the budget" phrase about it is unsupported (budgetFitGuard).
+              if (rowName && row._tappy_price_unconfirmed === true) unpricedRowNames.add(rowName)
               if (typeof row.distance_km === 'number') placeDistancesKm.push(row.distance_km)
               for (const k of ['snippet', 'address', 'opening_hours']) {
                 if (typeof row[k] === 'string') placeTexts.push(row[k] as string)

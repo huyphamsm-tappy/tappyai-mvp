@@ -31,15 +31,38 @@ export function bandOverclaims(band: { lo: number; hi: number }, budget: BudgetF
   return budget.type === 'under' ? band.lo >= budget.max : band.lo > budget.max
 }
 
-export function guardBudgetFitInText(text: string, budget: BudgetForFit | null | undefined): { text: string; redacted: number } {
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase()
+
+/**
+ * Does this sentence name one of the venues (by the head of the provider name: the part before
+ * a " | ", " - " or "(" tagline, which is how the model writes it)?
+ */
+function namesAnUnpricedVenue(sentence: string, unpricedNames: readonly string[]): boolean {
+  const s = fold(sentence)
+  return unpricedNames.some(n => {
+    const head = fold(n).split(/\s*[|(–—]\s*|\s+-\s+/)[0].trim()
+    return head.length >= 4 && s.includes(head)
+  })
+}
+
+/**
+ * @param opts.unpricedNames Session C follow-up (owner): venues the constraint filter kept with NO
+ *   provider band while a budget was stated. A fit phrase written about one of them ("Quán Bụi
+ *   nằm trong tầm giá") asserts a fit no evidence supports — the clause goes, exactly as for a
+ *   band above the ceiling. The sentence keeps the venue and its other facts.
+ */
+export function guardBudgetFitInText(text: string, budget: BudgetForFit | null | undefined, opts: { unpricedNames?: readonly string[] } = {}): { text: string; redacted: number } {
   if (!budget || !FIT_RE.test(text)) return { text, redacted: 0 }
+  const unpriced = opts.unpricedNames ?? []
   const pieces: string[] = []
   let redacted = 0
   for (const [a, b] of sentenceSpans(text)) {
     const s = text.slice(a, b)
     if (!FIT_RE.test(s)) { pieces.push(s); continue }
     const claims = extractMoneyClaims(s).filter(c => c.currency === 'VND')
-    if (claims.length === 0 || !claims.some(c => bandOverclaims(c, budget))) { pieces.push(s); continue }
+    const overclaims = claims.some(c => bandOverclaims(c, budget))
+    const unsupportedFit = claims.length === 0 && unpriced.length > 0 && namesAnUnpricedVenue(s, unpriced)
+    if (!overclaims && !unsupportedFit) { pieces.push(s); continue }
     const cl = clauses(s)
     const parts = cl.map(c => s.slice(c.start, c.end))
     const doomed = new Set<number>()

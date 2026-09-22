@@ -21,8 +21,9 @@ import { bandFromRow, parsePriceBand as parseProviderBand } from '@/lib/recommen
 //     with NO band is kept and counted, and the reply is told to say the price is unconfirmed
 //     rather than to present it as fitting. Nothing here invents a price.
 //   · VENUE TYPE — when the user rules a type OUT ("không nhà hàng", "toàn nhà hàng", "rẻ tiền /
-//     bình dân", "thôi không nhậu"), rows whose own NAME says they are that type are dropped.
-//     Only the name: Google's `types` call every eatery a "restaurant", which decides nothing.
+//     bình dân", "thôi không nhậu"), rows the provider's TYPES put in that class are dropped
+//     (`venueTypeOf`: types first, name as the fallback — see the note there on why the bare
+//     Google type "Nhà hàng" cannot be the signal).
 //   · OPEN NOW — when the request is for now ("trưa nay", "tối nay" while it is evening, "đang mở
 //     cửa"), a row the schedule says is closed is not dropped but moves to the end, so it cannot
 //     rank first. A request for another time is left alone: the schedule is not consulted for it.
@@ -111,10 +112,38 @@ export function detectPlaceConstraints(
   return { budgetMax: budget && budget.max > 0 ? budget.max : null, exclude, openNow }
 }
 
+/**
+ * THE PROVIDER'S TYPES ARE THE PRIMARY SIGNAL; THE NAME IS THE FALLBACK (owner, Session C
+ * follow-up). Serper /maps rows carry Google's localised `types` ("Quán bia", "Quán rượu",
+ * "Nhà hàng cao cấp"…) in `place_types`. Name matching alone let "Quán Bụi" (types: Nhà hàng
+ * Việt Nam / Nhà hàng cơm …) through a "toàn nhà hàng" exclusion — most restaurants do not say
+ * "nhà hàng" in their name.
+ *
+ * 🚨 "Nhà hàng" ON ITS OWN IS NOT A SIGNAL. Google's Vietnamese type vocabulary calls EVERY
+ * eatery a "Nhà hàng …" (measured on golden T3: "Cơm Ngon Hà Nội" = "Nhà hàng châu Á", "Béo Ơi
+ * Quán" = "Nhà hàng"), so the bare word would exclude the whole result set. What the user
+ * means by "toàn nhà hàng / rẻ tiền / bình dân" is the UPSCALE tier: a type that says so
+ * (cao cấp, sang trọng, fine dining, steakhouse, buffet, nhà hàng khách sạn, rooftop) or, when
+ * the row carries a band, a band the budget rule already handles. A row whose types say
+ * nothing either way falls back to its name.
+ */
+const RESTAURANT_TYPE_RE = /cao cap|sang trong|fine dining|steak|\bbuffet\b|nha hang khach san|hotel restaurant|rooftop|\bbanquet\b|tiec cuoi|nha hang phap|nha hang y\b|french restaurant|italian restaurant|japanese restaurant|nha hang nhat/
+const DRINKING_TYPE_RE = /quan bia|\bbia\b|\bbeer\b|\bbar\b|\bpub\b|quan ruou|\bruou\b|\bwine\b|\bclub\b|\blounge\b|karaoke|quan nhau|\bnhau\b|brewery|\bcocktail\b|tap ?room|beer garden|nightclub|vu truong/
 const RESTAURANT_NAME_RE = /\bnha hang\b|\brestaurant\b|\bbistro\b|\bfine dining\b/
 const DRINKING_NAME_RE = /\bnhau\b|\bbia\b|\bbeer\b|\bpub\b|\bbar\b|\bclub\b|\blau nuong\b|\bbbq\b/
 
-function venueTypeOf(row: Record<string, unknown>): ExcludedVenueType | null {
+/** The row's provider types, folded, as one haystack (Serper `place_types`; Google `types`/`type`). */
+function typesOf(row: Record<string, unknown>): string {
+  const raw = Array.isArray(row.place_types) ? row.place_types : Array.isArray(row.types) ? row.types : typeof row.type === 'string' ? [row.type] : []
+  return raw.map(t => normalizeVN(String(t ?? '').toLowerCase())).join(' | ')
+}
+
+export function venueTypeOf(row: Record<string, unknown>): ExcludedVenueType | null {
+  const types = typesOf(row)
+  if (types) {
+    if (DRINKING_TYPE_RE.test(types)) return 'drinking'
+    if (RESTAURANT_TYPE_RE.test(types)) return 'restaurant'
+  }
   const name = normalizeVN(String(row.name ?? '').toLowerCase())
   if (DRINKING_NAME_RE.test(name)) return 'drinking'
   if (RESTAURANT_NAME_RE.test(name)) return 'restaurant'
@@ -145,7 +174,8 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
   let priceFits = 0
   let priceUnknown = 0
 
-  for (const row of rows) {
+  for (const raw of rows) {
+    let row = raw
     const name = String(row.name ?? '')
     if (c.exclude.length > 0) {
       const type = venueTypeOf(row)
@@ -160,7 +190,11 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
         if (Number.isFinite(band.hi) && band.hi <= c.budgetMax * 1.05) { bucket = 'fits'; priceFits++ }
         else bucket = 'maybe'
       } else {
+        // The row itself says its price is unconfirmed, so the model (which reads the compact
+        // row, `modelPayload.ts` ROW_KEEP) can never present it as within budget; the guard
+        // (`budgetFitGuard`) cuts a fit phrase written about it anyway.
         priceUnknown++
+        row = { ...row, _tappy_price_unconfirmed: true }
       }
     }
     if (c.openNow && row.open_now === false) { closed.push(row); continue }
@@ -169,8 +203,8 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
     else unknown.push(row)
   }
 
-  const ordered = c.budgetMax !== null ? [...fits, ...maybe, ...unknown, ...closed] : [...fits, ...maybe, ...unknown, ...closed]
-  const changed = dropped.length > 0 || closed.length > 0 || (c.budgetMax !== null && (fits.length > 0 || maybe.length > 0))
+  const ordered = [...fits, ...maybe, ...unknown, ...closed]
+  const changed = dropped.length > 0 || closed.length > 0 || (c.budgetMax !== null && (fits.length > 0 || maybe.length > 0 || priceUnknown > 0))
   if (!changed) return empty
 
   const vi = lang !== 'en'
@@ -188,8 +222,8 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
   }
   if (c.budgetMax !== null && priceUnknown > 0) {
     parts.push(vi
-      ? `${priceUnknown} chỗ còn lại KHÔNG có dữ liệu giá (không có price_range_text): nói rõ với user là chưa xác nhận được giá của những chỗ đó, KHÔNG viết "trong tầm giá" cho chúng.${priceFits === 0 ? ' KHÔNG có chỗ nào được xác nhận nằm trong ngân sách — nói thẳng điều này.' : ''}`
-      : `${priceUnknown} remaining places have NO price data: say their price is unconfirmed, never present them as within budget.${priceFits === 0 ? ' No place is confirmed within budget — say so plainly.' : ''}`)
+      ? `${priceUnknown} chỗ còn lại KHÔNG có dữ liệu giá (đánh dấu _tappy_price_unconfirmed=true, không có price_range_text): nói rõ với user là chưa xác nhận được giá của những chỗ đó, KHÔNG viết "trong tầm giá" cho chúng.${priceFits === 0 ? ' KHÔNG có chỗ nào được xác nhận nằm trong ngân sách — nói thẳng điều này.' : ''}`
+      : `${priceUnknown} remaining places have NO price data (_tappy_price_unconfirmed=true): say their price is unconfirmed, never present them as within budget.${priceFits === 0 ? ' No place is confirmed within budget — say so plainly.' : ''}`)
   }
   if (closed.length > 0) {
     parts.push(vi

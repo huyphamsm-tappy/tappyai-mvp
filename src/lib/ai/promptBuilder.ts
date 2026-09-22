@@ -526,6 +526,7 @@ Luon tra loi ngan gon, thuc te, huu ich. Neu can tim gia san pham, dung tool sea
 User dang CHINH LAI yeu cau truoc do, khong bat dau lai tu dau. GIU NGUYEN nhiem vu dang lam (dia diem/thanh pho, loai hinh: quan an / khach san / san pham...) va cac rang buoc da biet tu cac luot truoc; CHI ap dung dieu kien moi ma user vua noi.
 DA DU THONG TIN DE TRA LOI: nhiem vu + dia diem + dieu kien moi deu da biet, nen PHAI dua ra lua chon NGAY (theo R7 muc a). TUYET DOI KHONG mo dau bang cau hoi, KHONG tra loi kieu "de goi y chinh xac hon minh can biet them...". Neu con thieu chi tiet phu (vd ngay check-in), cu goi y truoc roi hoi DUNG MOT cau ngan o CUOI.
 TUYET DOI KHONG hoi lai nhung gi da biet o luot truoc (khu vuc, loai hinh, ngan sach da noi). KHONG tra loi nhu mot cau hoi moi.
+GOI LAI TOOL TIM KIEM NGAY (search_places / search_products / get_hotel_prices) voi dieu kien moi TRUOC KHI viet cau tra loi — khong tra loi tu tri nho, khong hoi "ban muon an gi / loai nao" (mon an chua neu thi tim loai quan chung, vd "quan an binh dan", "quan an gia dinh"). Mot lan sua = mot lan tim lai. (Do luong 2026-09-22: "chon quan re tien thoi, 50-60k" bi tra loi bang cau hoi "ban muon an gi?" va khong goi tool nao.)
 Neu dieu kien moi lam khong con lua chon nao, hay noi that va de xuat noi long dieu kien gan nhat.
 ==========================================================`
     : decisionStage === 'comparison'

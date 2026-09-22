@@ -28,6 +28,9 @@ const ROW_KEEP = [
   // Row flags the hard-constraint gate vouches from (A.3: the gate reads THIS copy).
   'has_delivery', 'has_order',
   'tappy_rating', 'tappy_rating_count',
+  // Phase 7 group 3: the constraint filter marks a row with no provider band when a budget was
+  // stated, so the model says "chưa xác nhận giá" for THAT row instead of "trong tầm giá".
+  '_tappy_price_unconfirmed',
   // The URL fields the CTA and review-link rules read; nothing else the model could invent from.
   'maps_link', 'booking_links', 'website_uri', 'has_tiktok_review',
 ] as const

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { applyPlaceConstraints, detectPlaceConstraints, parsePriceBand } from './placeConstraintFilter'
+import { applyPlaceConstraints, detectPlaceConstraints, parsePriceBand, venueTypeOf } from './placeConstraintFilter'
 import { extractBudget } from './budget'
 
 // ── Phase 7 group 3 (2026-09-22): constraints shape the rows, not only the text ──
@@ -125,10 +125,40 @@ describe('applyPlaceConstraints', () => {
     expect(applyPlaceConstraints(input, c, 'vi').result).toBe(input)
   })
 
-  it('"nhà hàng" is judged on the NAME only — Google types every eatery a restaurant', () => {
+  it('🚨 venue type: the provider TYPES decide first; the bare Google type "Nhà hàng" decides nothing; the name is the fallback', () => {
     const c = detectPlaceConstraints('bình dân thôi', null, [], EVENING)
-    const out = applyPlaceConstraints({ results: [{ ...row('Cơm Tấm Cali'), place_types: ['restaurant'] }, row('Nhà hàng Ngọc Sương')] }, c, 'vi')
-    expect((out.result as { results: Array<{ name: string }> }).results.map(r => r.name)).toEqual(['Cơm Tấm Cali'])
+    const rows = [
+      { ...row('Cơm Ngon Hà Nội'), place_types: ['Nhà hàng châu Á'] },           // every eatery is a "Nhà hàng …" to Google
+      { ...row('Béo Ơi Quán'), place_types: ['Nhà hàng'] },
+      { ...row('The Deck Saigon'), place_types: ['Nhà hàng cao cấp', 'Nhà hàng'] }, // upscale by TYPE, no "nhà hàng" in the name
+      { ...row('Bụi Garden'), place_types: ['Nhà hàng Việt Nam', 'Fine dining restaurant'] },
+      row('Nhà hàng Ngọc Sương'),                                                  // no types → name fallback
+    ]
+    const out = applyPlaceConstraints({ results: rows }, c, 'vi')
+    expect((out.result as { results: Array<{ name: string }> }).results.map(r => r.name)).toEqual(['Cơm Ngon Hà Nội', 'Béo Ơi Quán'])
+    expect(out.dropped.map(d => d.name)).toEqual(['The Deck Saigon', 'Bụi Garden', 'Nhà hàng Ngọc Sương'])
+  })
+
+  it('drinking venues by TYPE: "Quán bia" is out on "thôi không nhậu" whatever the name says', () => {
+    const c = detectPlaceConstraints('thôi không nhậu nữa, quán ăn gia đình thôi', null, [], EVENING)
+    const rows = [
+      { ...row('Pasteur Street Craft Beer'), place_types: ['Quán bia', 'Nhà hàng'] },
+      { ...row('Ebisu District 1'), place_types: ['Nhà hàng Nhật', 'Quán rượu'] },
+      { ...row('Bếp Mẹ Ỉn'), place_types: ['Nhà hàng Việt Nam'] },
+      { ...row('Quán Ốc 79'), place_types: ['Nhà hàng hải sản'] },
+    ]
+    const out = applyPlaceConstraints({ results: rows }, c, 'vi')
+    expect((out.result as { results: Array<{ name: string }> }).results.map(r => r.name)).toEqual(['Bếp Mẹ Ỉn', 'Quán Ốc 79'])
+    expect(venueTypeOf({ name: 'Ebisu District 1', place_types: ['Nhà hàng Nhật', 'Quán rượu'] })).toBe('drinking')
+  })
+
+  it('an unpriced row under a stated budget is marked so the model can never present it as within budget', () => {
+    const c = detectPlaceConstraints('50-60k thôi', extractBudget('50-60k'), [], LUNCH)
+    const out = applyPlaceConstraints({ results: [row('A'), row('B', '1-100.000 ₫')] }, c, 'vi')
+    const rows = (out.result as { results: Array<Record<string, unknown>> }).results
+    expect(rows.find(r => r.name === 'A')?._tappy_price_unconfirmed).toBe(true)
+    expect(rows.find(r => r.name === 'B')?._tappy_price_unconfirmed).toBeUndefined()
+    expect(out.note).toContain('_tappy_price_unconfirmed')
   })
 
   it('no constraint → the same object back, untouched', () => {
