@@ -226,6 +226,70 @@ Confirm these on the **production** project/host (they were unset in the audit e
 | `ACCESSTRADE_PUBLISHER_ID` | affiliate deal-link wrapping (F-020) | wrapping off — **pending provider approval** |
 | `CJ_API_KEY` | CJ affiliate network | off |
 
+### 4a. Behaviour flags — production must match what Session C tested (2026-09-22)
+
+Everything below changes what the AI or the product DOES. The whole Phase 7 / Session C golden set
+was replayed with the **"UAT value"** column; production must resolve to the **"Prod must be"**
+column or it is running an untested combination. "Code default" is what the flag resolves to when
+the variable is unset in the environment. Read sites: `src/lib/config/product.ts`,
+`src/lib/ai/llm/registry.ts`, `src/lib/ai/tools/placesProvider.ts`.
+
+| Flag | Kind | Code default | UAT value | Prod must be | What it gates |
+|---|---|---|---|---|---|
+| `LLM_PROVIDER` | env | `claude` | unset (claude) | **unset** | The only adapter tested. |
+| `LLM_FAST_MODEL` / `LLM_SMART_MODEL` / `LLM_PLANNING_MODEL` / `LLM_VISION_MODEL` | env | all four → `claude-haiku-4-5-20251001` (one model on purpose: shared prompt cache) | unset | **unset** — every Session C measurement is Haiku 4.5; setting a different model per role changes tool behaviour, planning compliance and cost, and voids the golden results | Model per role |
+| `PLACES_PROVIDER` | env | `serper` (→ OSM fallback) | unset (serper) | **unset / `serper`**. `osm` = no-paid-provider emergency mode (no photos, no bands); `google` was removed 2026-09-21 (not available for Vietnam) and now falls back to serper | Place/discovery provider for all five domains |
+| `PLACE_GUARD_ATTRIBUTION_V2` | env | **ON since 184738b** (`0`/`false` rolls back) | replayed both ways; final decision = ON (`golden/final2-v2`) | **unset (ON)** | Identity-first attribution in the place-claim guard, L5 number identity, coherence pass, the G1b evidence-only fallback sentence |
+| `CONSULTATIVE_V1` | env | OFF | OFF | **unset (OFF)** — V1 was never part of this UAT; turning it on switches the pipeline (situation frame, presearch, shortlist prompt, prose-shape guard, memory scoping) to a path the golden set has not measured | Consultative V1 |
+| `SNIPPET_PRICE_GUARD_V2` | env | OFF | OFF | **unset (OFF)** to match the test; see the caveat row below before choosing ON | Snippet-price guard reads the row's own price band as evidence |
+| `MEDIA_PLACEMENT_V2` | env | OFF | OFF (web only tested; web is unaffected either way) | **unset (OFF)** | Where inline photo/link blocks land on Android/iOS replies (web cards own enrichment) |
+| `CCP_ENABLED` | code const | `true` | true | (const) | Commerce links / actions on cards |
+| `CCP_MERCHANT_PAGE_READ_ENABLED` | code const | `false` | false | (const) | Fetching merchant pages |
+| `CCP_FEED_DISPLAY_ENABLED` / `CCP_FEED_INGEST_ENABLED` / `CCP_AFFILIATE_WRAPPING_ENABLED` | code const | `false` / `true` / `true` | same | (const) | Commerce feed display / ingest / affiliate wrapping (wrapping is a no-op without `ACCESSTRADE_PUBLISHER_ID`) |
+| `EMIT_PLACES_ANNOTATION` / `EMIT_TAPPY_PLACES` / `SERVER_AUTHORED_CTA` | code const | `true` / `false` / `false` | same | (const) | Place card as a stream annotation (web); durable `[TAPPY_PLACES]` marker (off); server-authored CTA block (off — model writes CTA_BUTTONS) |
+| `SHOW_SCAM_SHIELD` / `SHOW_PRO_UPGRADE` / `SHOW_MARKETPLACE` / `SHOW_WALLET` / `SHOW_APP_CONNECTIONS` | code const | `true` / `false` / `false` / `false` / `false` | same | (const) | Navigation surfaces |
+| `FREE_DAILY_LIMIT` / `ANON_LIFETIME_LIMIT` (product.ts) / `PRO_DAILY_CHAT_CAP` (security/chatCaps.ts) | code const | 15 / 5 / 300 | same (golden ran on the Pro account) | (const) | AI question quotas |
+| `SERPER_DAILY_CREDIT_CEILING` / `SERPER_OUTAGE_INSTANCE_CEILING` | env | none (uncapped) | unset | **set a daily ceiling** you accept — unset means uncapped spend on a runaway | Serper credit breakers |
+| `BACKOFFICE_ENABLED` | config (`adminConfig`) | `true` | unset (true) | true | Back office |
+| `CONTENT_SAFETY_GATE_ENABLED` / `CONTENT_SAFETY_SCHEMA_MIGRATED` | env | `false` / `false` | unset | **unset** until the safety schema is applied to prod (a `true` without the migration fails publication reads) | Content-safety gate |
+| `MESSAGE_NOTIFICATIONS_ENABLED`, `MARKETING_SENDING_ENABLED`, `CONTROLLER_ORG_MEMBERSHIP_ENABLED`, `GCP_LOGGING_ENABLED` | env | all `false` | unset | conscious choice each; none affects AI answers | Notifications / marketing sends / org membership / cloud logging |
+| `TAPPY_MEASURE`, `TAPPY_FENCE_PROBE`, `AUDIT_*`, `CCP_UAT`, `CCP_VERIFY`, `CCP_EVENT_LOG`, `C9B_*`, `MEASURE_OUT` | env | off | unset | **must be unset** — measurement / audit harness switches only | Harness |
+
+**Guards and features that are silently inactive under a flag combination** (found while
+auditing; each is either fixed or must be consciously accepted):
+
+| Path | Active only when | State after Session C |
+|---|---|---|
+| `guardBudgetFitInText` ("vừa vặn ngân sách" overclaim cut) | read its budget from `collector.consultativeV1.budget` → **inert whenever `CONSULTATIVE_V1` is off**, i.e. on every server so far | **FIXED (1b7bd67)**: reads the thread's stated budget when V1 is off; also cuts a fit phrase about an unpriced row |
+| Search-now directive / presearch (`deriveSearchNow`, `planPresearch`) — the deterministic "call the tool with THIS query now" | `CONSULTATIVE_V1=1` | Inactive in prod (V1 off). Compensated by the prompt (refinement rule, planning defaults) — the prompt-only paths are the ones that regress ~1 run in 4 (F-043) |
+| `consultative_v1_pick_backstop` / `shopping_none` backstop (re-insert an evidence-only pick sentence when guards emptied the reply) | `CONSULTATIVE_V1=1` | Inactive in prod. The v2 attribution default + review-count trim (e9fe302) reduce how often a pick sentence is lost; a fully emptied reply still has no backstop with V1 off |
+| Memory scoping by decision-frame domain (`buildMemoryBlock … domains`) | `CONSULTATIVE_V1=1` | Inactive in prod — the unscoped memory block is what was tested |
+| G1b evidence-only fallback, L5 number identity, coherence pass in the place-claim guard | `PLACE_GUARD_ATTRIBUTION_V2` on | **Active** (default ON since 184738b) |
+| Snippet-price guard reading the venue's OWN band as evidence | `SNIPPET_PRICE_GUARD_V2=1` | **Inactive** (OFF, as tested). Caveat: with v1 the guard can delete a price sentence the model copied from the card band (measured 13/17 on the 2026-09-17 capture); the card still shows the band. Turning it ON was not replayed — do not flip without a golden pass |
+| Inline media placement fix (`MEDIA_PLACEMENT_V2`) | flag on, native surfaces only | Inactive; web unaffected (card owns enrichment). Android/iOS were not part of Session C |
+| Place cards (`tappy.places.v1`) | `x-tappy-surface: web` header AND `EMIT_PLACES_ANNOTATION` | Android sends no surface header → inline media path (memory: `project_android_place_decision_surface_header`) |
+| Risk-first backstop for second-hand purchase advice (`riskBackstop.ts`) | `RISK_BACKSTOP` (see 4b) | New in this follow-up; default per the owner's approval of the block text |
+
+### 4b. `RISK_BACKSTOP` — the F-043 deterministic backstop (awaiting the owner's approval of the block text)
+
+`src/lib/ai/riskBackstop.ts`. On a high-value second-hand purchase question (thread mentions a
+second-hand / marketplace cue + a purchase + a high-value category + "what to check / should I / risks"),
+it reads the FINAL reply and, for each of the four risk topics the reply does not cover (ownership /
+lock-and-liens / transaction fraud / safe payment), appends the fixed line for that topic; it appends
+the fixed scam-checker pointer when the reply has none; it removes a parenthetical carrying an
+unsourced numeric threshold and hedges an inline one. No model call; nothing generated; the pointer
+names a **message, link or QR code only** (never a phone number or bank account — `riskBackstop.test.ts`
+pins this).
+
+| Value | Behaviour | Measured |
+|---|---|---|
+| unset / `0` | **OFF (code default until approved)** | — |
+| `1` / `true` / `live` | append-only: the model text streams live, the block (+ hedge) arrives as the last frame; an inline threshold can only be hedged | 5 × (T4 + G5a–d) = 25 replies: prompt alone complete 22/25, backstop fired 12/25 (3 topic/pointer appends, 9 hedges), final complete **25/25**, unhedged thresholds after **0/25** (`docs/uat/evidence/golden/rb1..rb5`, `scripts/audit/riskBackstopReport.mjs`) |
+| `buffer` | also buffers the turn: threshold parentheticals are REMOVED and the block sits before the markers; the user waits for the whole reply (~10 s) | unit-tested on the stream (`riskBackstopStream.test.ts`); not replayed live |
+
+**Recommendation once the text is approved: `RISK_BACKSTOP=1` on production** (append-only, no
+latency cost), and make it the code default in the same change.
+
 ---
 
 ## 5. Post-deploy smoke test (run on production immediately after)
