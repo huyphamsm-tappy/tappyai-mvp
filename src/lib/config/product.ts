@@ -326,12 +326,20 @@ export const SERVER_AUTHORED_CTA = false
  * 46 chars of a 441-token answer).
  *
  * Read from the environment at call time so a regression can be rolled back
- * by configuration rather than by redeploying code. Default OFF: production
- * behaviour is byte-identical until the flag is set to `1`/`true`.
+ * by configuration rather than by redeploying code.
+ *
+ * DEFAULT ON since Session C (owner decision, 2026-09-22). With v1 the pick sentence was
+ * deleted whenever the model wrote a venue by its short form and Serper's row carried a
+ * "| tagline" ("ViDa Cafe | CÀ PHÊ NGON QUẬN 3 …") — even with a CORRECT review count
+ * (unit harness) — so the card marked a pick the prose never named (golden G3a, T3 t2). The
+ * full golden set was replayed with v2 on (`docs/uat/evidence/golden/final2-v2`): on the
+ * place cases nothing got worse and the two lost picks came back; the guard removed the same
+ * number of sentences (7/248 vs 7/279). `PLACE_GUARD_ATTRIBUTION_V2=0` (or `false`) rolls back.
  */
 export function placeGuardAttributionV2Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
   const v = env.PLACE_GUARD_ATTRIBUTION_V2
-  return v === '1' || v === 'true'
+  if (v === '0' || v === 'false') return false
+  return true
 }
 
 /**

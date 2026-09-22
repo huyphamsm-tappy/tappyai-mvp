@@ -22,7 +22,8 @@ const FOLLOWUPS = '[FOLLOWUPS]Quán khác|Giá món[/FOLLOWUPS]'
 
 async function runTurn(reply: string, opts: { v2: boolean; userText?: string; lang?: string; rows?: Array<Record<string, unknown>>; withPick?: boolean }) {
   const saved = process.env.PLACE_GUARD_ATTRIBUTION_V2
-  if (opts.v2) process.env.PLACE_GUARD_ATTRIBUTION_V2 = '1'; else delete process.env.PLACE_GUARD_ATTRIBUTION_V2
+  // v2 is the default since Session C (2026-09-22); "without the flag" now means the explicit rollback value.
+  if (opts.v2) process.env.PLACE_GUARD_ATTRIBUTION_V2 = '1'; else process.env.PLACE_GUARD_ATTRIBUTION_V2 = '0'
   try {
     const rows = opts.rows ?? ROWS
     const toolResult = { results: rows, place_search_status: 'has_results' }
