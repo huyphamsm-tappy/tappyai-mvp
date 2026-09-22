@@ -121,11 +121,12 @@ describe('applyRiskBackstop', () => {
 
   it('live mode is the code default; 0/false/off disable; buffer opts in', async () => {
     const { riskBackstopMode } = await import('@/lib/config/product')
-    expect(riskBackstopMode({} as NodeJS.ProcessEnv)).toBe('live')
-    expect(riskBackstopMode({ RISK_BACKSTOP: '1' } as NodeJS.ProcessEnv)).toBe('live')
-    expect(riskBackstopMode({ RISK_BACKSTOP: '0' } as NodeJS.ProcessEnv)).toBe('off')
-    expect(riskBackstopMode({ RISK_BACKSTOP: 'false' } as NodeJS.ProcessEnv)).toBe('off')
-    expect(riskBackstopMode({ RISK_BACKSTOP: 'buffer' } as NodeJS.ProcessEnv)).toBe('buffer')
+    const env = (o: Record<string, string>) => o as unknown as NodeJS.ProcessEnv
+    expect(riskBackstopMode(env({}))).toBe('live')
+    expect(riskBackstopMode(env({ RISK_BACKSTOP: '1' }))).toBe('live')
+    expect(riskBackstopMode(env({ RISK_BACKSTOP: '0' }))).toBe('off')
+    expect(riskBackstopMode(env({ RISK_BACKSTOP: 'false' }))).toBe('off')
+    expect(riskBackstopMode(env({ RISK_BACKSTOP: 'buffer' }))).toBe('buffer')
   })
 
   it('English thread gets the English block', () => {
