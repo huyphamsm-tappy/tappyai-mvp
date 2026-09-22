@@ -8,6 +8,8 @@ import { actionLabel } from '@/lib/recommendation/actionLabel'
 import { commerceTap } from '@/lib/recommendation/handoff'
 import { track } from '@/lib/tracking/tracker'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
+import { reasonList, reasonText } from '@/lib/recommendation/reasonText'
+import { formatPriceBandText } from '@/lib/recommendation/priceBand'
 
 // ── The place decision, as the approved Food composition renders it ─────────
 //
@@ -136,7 +138,7 @@ function CardPhoto({ src }: { src: string }) {
  * stops styling the first row as a lead.
  */
 function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ranked: boolean }) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const popular = ranked && position === 0 && typeof p.ratingCount === 'number' && p.ratingCount >= POPULAR_MIN_RATINGS
   const band = priceBand(p.priceLevel)
   const flagLabel: Record<PlaceFlag, string> = {
@@ -277,7 +279,7 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           // hedge, because unlike `priceSignal` below it is a structured field
           // rather than a number spotted in search prose.
           <p className="text-xs text-gray-600 dark:text-gray-400 tabular-nums" data-testid="price-range-text">
-            {p.priceRangeText}
+            {formatPriceBandText(p.priceRangeText, locale)}
           </p>
         )}
 
@@ -302,13 +304,13 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
           // trade-off, so the engine's positive case — the half that explains
           // the recommendation — never reached the user.
           <p className="pt-0.5 text-xs text-emerald-700 dark:text-emerald-300" data-testid="place-reasons">
-            {t('placeDecision.why')}: {p.reasons.map(r => r.evidence).filter(Boolean).join(' · ')}
+            {t('placeDecision.why')}: {reasonList(p.reasons, t, locale).join(' · ')}
           </p>
         )}
 
         {p.tradeOff && (
           <p className="pt-0.5 text-xs text-amber-700 dark:text-amber-300">
-            {t('placeDecision.tradeOff')}: {p.tradeOff.evidence}
+            {t('placeDecision.tradeOff')}: {reasonText(p.tradeOff, t, locale)}
           </p>
         )}
       </div>

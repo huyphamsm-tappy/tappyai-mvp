@@ -269,6 +269,18 @@ function detectFirstPlaceName(text: string, buttons: CTAButton[]): string {
   return ''
 }
 
+/**
+ * Does this reply carry a place worth saving? A rendered place card, a maps / booking /
+ * internal-booking button, or — with no card — a bold name that reads like a venue (it is
+ * followed by a rating, an address or hours in the same paragraph). A bold phrase alone is
+ * not a place: "**cần check kỹ**" in a shopping checklist was offering "Lưu địa điểm".
+ */
+function replyHasSavablePlace(text: string, buttons: CTAButton[], placeView: { items?: unknown[] } | null | undefined): boolean {
+  if (placeView && Array.isArray(placeView.items) && placeView.items.length > 0) return true
+  if (buttons.some(b => b.type === 'maps' || b.type === 'booking' || b.type === 'internal_booking')) return true
+  return /\*\*[^*\n]{3,60}\*\*[^\n]{0,80}(?:⭐|★|đánh giá|reviews?|\d+\s*(?:đường|street|quận|q\.|phường|district)|\bmở\b|\bopen\b|\d{1,2}[:h]\d{2})/i.test(text)
+}
+
 function SavePlaceButton({ text, buttons }: { text: string; buttons: CTAButton[] }) {
   const [open, setOpen] = useState(false)
   const [placeName, setPlaceName] = useState('')
@@ -1545,7 +1557,10 @@ export default function ChatInterface({
                       )}
                       {/* A1: the bubble now exists from the first progress frame, so this is gated
                           like the action bar — it used to be hidden only because the bubble was. */}
-                      {!(isLoading && isLastMessage) && <SavePlaceButton text={text} buttons={buttons} />}
+                      {/* Phase 7 small item: only a reply that actually carries a place (a card, a
+                          maps/booking button, or a place-shaped bold name) offers to save one —
+                          it used to sit under a shopping checklist and under "hello". */}
+                      {!(isLoading && isLastMessage) && replyHasSavablePlace(text, buttons, placeView) && <SavePlaceButton text={text} buttons={buttons} />}
                       {buttons.length > 0 && (
                         <div className="flex flex-wrap gap-2 mt-3 animate-fade-in">
                           {buttons.map((btn, i) => {

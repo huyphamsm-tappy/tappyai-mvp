@@ -19,6 +19,8 @@ import type { ConfigMatch } from '@/lib/ai/consultative/synthesis'
 export interface RecommendationReason {
   attribute: string
   evidence: string
+  /** The reason as data, so the card can word it in the reader's language (`reasonText.ts`). */
+  params?: Record<string, string | number>
 }
 
 export interface Recommendation {

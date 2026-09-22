@@ -1,5 +1,22 @@
 import { describe, expect, it } from 'vitest'
-import { amountWithinBand, bandFromRow, bandFromStructuredRange, parsePriceBand } from './priceBand'
+import { amountWithinBand, bandFromRow, bandFromStructuredRange, formatPriceBandText, parsePriceBand } from './priceBand'
+
+// Phase 7 small item (2026-09-22): "1-100.000 ₫" on the card read as "from one đồng".
+describe('formatPriceBandText', () => {
+  it('an open lower bound is "dưới"', () => {
+    expect(formatPriceBandText('1-100.000 ₫', 'vi')).toBe('dưới 100.000 ₫')
+    expect(formatPriceBandText('1-100.000 ₫', 'en')).toBe('under 100,000 ₫')
+  })
+  it('closed and open-above bands', () => {
+    expect(formatPriceBandText('100-200 N ₫', 'vi')).toBe('100.000–200.000 ₫')
+    expect(formatPriceBandText('Trên 1 Tr ₫', 'vi')).toBe('trên 1 triệu ₫')
+    expect(formatPriceBandText('200.000-1.500.000 ₫', 'vi')).toBe('200.000–1,5 triệu ₫')
+  })
+  it('an unknown shape is shown verbatim, never hidden', () => {
+    expect(formatPriceBandText('$$', 'vi')).toBe('$$')
+    expect(formatPriceBandText('', 'vi')).toBeNull()
+  })
+})
 
 describe('parsePriceBand — the provider strings seen in the 2026-09-17 V3 capture', () => {
   it('"100-200 N ₫" is 100 000 – 200 000', () => {

@@ -109,3 +109,29 @@ export function amountWithinBand(lo: number, hi: number, band: PriceBand): boole
   if (!Number.isFinite(lo) || !Number.isFinite(hi) || lo > hi) return false
   return lo >= band.lo && hi <= band.hi
 }
+
+/** "100.000" / "1,5 triệu" — the way a Vietnamese reader writes an amount. */
+function vnd(n: number, locale: 'vi' | 'en'): string {
+  if (n >= 1_000_000) {
+    const m = n / 1_000_000
+    const s = Number.isInteger(m) ? String(m) : m.toFixed(1).replace(/\.0$/, '')
+    return locale === 'vi' ? `${s.replace('.', ',')} triệu` : `${s}M`
+  }
+  return n.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US')
+}
+
+/**
+ * The provider band as a reader understands it (Phase 7 small item, 2026-09-22). Google's
+ * "1-100.000 ₫" is an open lower bound, not "from one đồng": shown as "dưới 100.000 ₫"; "Trên 1
+ * Tr ₫" as "trên 1 triệu ₫"; a closed band as "100.000–200.000 ₫". A shape the parser does not
+ * know is shown verbatim — never hidden, never guessed.
+ */
+export function formatPriceBandText(text: string | null | undefined, locale: string): string | null {
+  if (typeof text !== 'string' || !text.trim()) return null
+  const band = parsePriceBand(text)
+  if (!band) return text
+  const loc: 'vi' | 'en' = locale === 'vi' ? 'vi' : 'en'
+  if (band.open === 'below') return loc === 'vi' ? `dưới ${vnd(band.hi, loc)} ₫` : `under ${vnd(band.hi, loc)} ₫`
+  if (band.open === 'above') return loc === 'vi' ? `trên ${vnd(band.lo, loc)} ₫` : `over ${vnd(band.lo, loc)} ₫`
+  return `${vnd(band.lo, loc)}–${vnd(band.hi, loc)} ₫`
+}

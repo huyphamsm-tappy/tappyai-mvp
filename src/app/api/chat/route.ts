@@ -953,8 +953,11 @@ export async function POST(req: Request) {
     const leadsOn = pick.runnerUp?.leadsOn
     return {
       name: pick.candidate.name,
-      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail })),
-      tradeOff: leadsOn ? { attribute: leadsOn.key, evidence: leadsOn.detail } : null,
+      // Phase 7 small item: `params` travel with the reason so the card can say it in the
+      // reader's language (`reasonText.ts`) — "rated 4.7 · 279 reviews" was English under a
+      // Vietnamese "Vì sao:".
+      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail, ...(r.params ? { params: r.params } : {}) })),
+      tradeOff: leadsOn ? { attribute: leadsOn.key, evidence: leadsOn.detail, ...(leadsOn.params ? { params: leadsOn.params } : {}) } : null,
     }
   }
 

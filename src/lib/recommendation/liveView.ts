@@ -542,9 +542,10 @@ export function alignEmphasisToModelPick(
   const reasons: RecommendationReason[] = []
   const rating = num(e.quality.rating.value)
   const count = num(e.quality.ratingCount.value)
-  if (rating !== undefined) reasons.push({ attribute: 'rating', evidence: `rated ${rating}` })
-  if (count !== undefined) reasons.push({ attribute: 'reviewCount', evidence: `${count} reviews` })
-  if (e.location.distanceKm !== null && e.location.distanceKm !== undefined) reasons.push({ attribute: 'distance', evidence: `${e.location.distanceKm}km away` })
+  // `params` ride along so the card can word the reason in the reader's language (`reasonText.ts`).
+  if (rating !== undefined) reasons.push({ attribute: 'rating', evidence: `rated ${rating}`, params: { value: rating } })
+  if (count !== undefined) reasons.push({ attribute: 'reviewCount', evidence: `${count} reviews`, params: { count } })
+  if (e.location.distanceKm !== null && e.location.distanceKm !== undefined) reasons.push({ attribute: 'distance', evidence: `${e.location.distanceKm}km away`, params: { km: e.location.distanceKm } })
   const out = recs.map(r => {
     if (r.entity.id === modelPickId) return reasons.length > 0 ? { ...r, recommended: true, reasons, tradeOff: null } : { ...r, recommended: false, reasons: [], tradeOff: null }
     return (r.recommended || r.reasons.length || r.tradeOff) ? { ...r, recommended: false, reasons: [], tradeOff: null } : r
