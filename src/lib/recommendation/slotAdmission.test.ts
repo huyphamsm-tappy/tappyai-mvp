@@ -123,3 +123,50 @@ describe('"ở Quận 1" is a district, not an eatery (CONSULTATIVE-40 E1, 2026-
     expect(askedSubjects('quán nào ngon ở Quận 1').has('food')).toBe(true)
   })
 })
+
+// ── Phase 7 (2026-09-22): a follow-up inherits what the conversation asked ───────────────
+//
+// Both cases are from the golden-set baseline: the reply had run the right tools, and the
+// last line alone refused their cards.
+describe('a bare follow-up is judged by the conversation, not by its own few words', () => {
+  const TRIP = ['Mình muốn đi Đà Nẵng 3 ngày, 2 người, thích tham quan và ăn hải sản', 'mai đi mốt về, budget 20 triệu']
+
+  it('"gần biển" in a trip conversation still admits the hotel and the seafood producers', () => {
+    // Before: the line read as {attraction} and refused both. Now it asks for nothing on its own
+    // (fail open), and with the conversation the plan's subjects hold.
+    expect(admitsProducer('gần biển', 'stay')).toBe(true)
+    expect(admitsProducer('gần biển', 'stay', TRIP)).toBe(true)
+    expect(admitsProducer('gần biển', 'food', TRIP)).toBe(true)
+    expect(admitsProducer('gần biển', 'place', TRIP)).toBe(true)
+  })
+
+  it('"quận nào cũng được" after a cinema question admits the cinema producer', () => {
+    const t = 'quận nào cũng được'
+    // The measured misreading: "quan nao" as the eatery.
+    expect(askedSubjects(t).has('food')).toBe(false)
+    expect(admitsProducer(t, 'entertainment', ['Rạp chiếu phim IMAX ở TP HCM'])).toBe(true)
+    // …and the hotel producer is still NOT admitted on that conversation.
+    expect(admitsProducer(t, 'stay', ['Rạp chiếu phim IMAX ở TP HCM'])).toBe(false)
+  })
+
+  it('a turn that names its own subject is judged on that, not on the past', () => {
+    // The conversation was about cinemas; this turn asks for a hotel by name ("gần rạp" is
+    // where, not a cinema ask).
+    expect(admitsProducer('khách sạn gần rạp giá rẻ', 'entertainment', ['Rạp chiếu phim IMAX ở TP HCM'])).toBe(false)
+    expect(admitsProducer('khách sạn gần rạp giá rẻ', 'stay', ['Rạp chiếu phim IMAX ở TP HCM'])).toBe(true)
+  })
+
+  it('the original defect stays closed: a flight turn inside a trip plan does not inherit the hotel', () => {
+    expect(admitsProducer('máy bay đi, bay từ sài gòn', 'stay', TRIP)).toBe(false)
+  })
+
+  it('"gần biển" on its own asks for nothing — it is a proximity refinement', () => {
+    expect(askedSubjects('gần biển').size).toBe(0)
+    expect(askedSubjects('khách sạn gần biển').has('stay')).toBe(true)
+    expect(askedSubjects('khách sạn gần biển').has('attraction')).toBe(false)
+  })
+
+  it('a conversation that never named a subject still fails open', () => {
+    expect(admitsProducer('cái đầu tiên', 'stay', ['ok', 'ừ'])).toBe(true)
+  })
+})

@@ -4,6 +4,7 @@ import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
+import { guardFormatClaimsInText } from './formatClaimGuard'
 import { guardBudgetFitInText } from './budgetFitGuard'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
@@ -300,6 +301,77 @@ function isOwnedEnrichmentLine(line: string, owned: Owned): boolean {
     if (rest === '' && links.every(m => owned.linkDomains.has(domainOf(m[1])))) return true
   }
   return false
+}
+
+/**
+ * Drop an injected photo / link block whose owner is no longer named beside it.
+ *
+ * ============================================================================
+ * PHASE 7 — "A HOTEL IMAGE WITH NO HOTEL NAME" (owner screenshot 2, golden set T1 turn 3)
+ * ============================================================================
+ * `injectPlaceEnrichment` runs BEFORE the prose guards (so that the detectors read exactly the
+ * bytes the user gets), and it places each venue's photo and links right under the sentence
+ * that names it. When a guard then removes that sentence — an unsupported price, a rating the
+ * retrieval does not back, a clause the grounding gate rejects — the photo and the links stay
+ * where they were, under nothing: an image, then "[GrabFood] · [BeFood]", with no name anywhere
+ * near it. Measured on the T1 replay: `![Ảnh địa điểm](https://mhotel.vn/…)` directly under
+ * "mình cần biết:", the M Hotel line gone.
+ *
+ * The rule is the injector's own rule read backwards: a block belongs under its owner's mention,
+ * so a block whose owner is not mentioned in the prose ABOVE it (within the paragraph it was
+ * placed in) has lost its anchor and is removed. Ownership is decided by the same URL identity
+ * the injector uses (`coreImageUrl`, link domain), and "mentioned" by the same locator the
+ * injector used to place it (`findPlaceOffset` over the preceding prose), so this can only ever
+ * remove what the injector itself would no longer have placed. Every card, every name.
+ */
+export function dropOrphanedEnrichment(places: PlaceLike[], text: string): { text: string; dropped: number } {
+  const named = places.filter(p => p.name)
+  if (named.length === 0 || !text) return { text, dropped: 0 }
+  const owned = buildOwned(named)
+  const lines = text.split('\n')
+  const out: string[] = []
+  let dropped = 0
+  /** The prose (non-enrichment) lines kept so far, for the "named above" test. */
+  const proseAbove: string[] = []
+  const allNames = named.map(p => p.name as string)
+  const ownerOf = (line: string): PlaceLike | null => {
+    const img = [...line.matchAll(IMG_TOKEN)][0]
+    if (img) {
+      const core = coreImageUrl(decodeSafe(img[1]))
+      return named.find(p => (p.photo_urls?.length ? p.photo_urls : p.photo_url ? [p.photo_url] : []).some(u => coreImageUrl(decodeSafe(u)) === core)) ?? null
+    }
+    const links = [...line.matchAll(LINK_TOKEN)].map(m => m[1])
+    if (links.length === 0) return null
+    return named.find(p => [...(p.order_links ?? []), ...(p.platform_links ?? [])].some(l => links.includes(l.url))) ?? null
+  }
+  for (const line of lines) {
+    if (!isOwnedEnrichmentLine(line, owned)) {
+      out.push(line)
+      if (line.trim()) proseAbove.push(line)
+      continue
+    }
+    const owner = ownerOf(line)
+    // A block the injector placed always has an owner; one it cannot attribute is left alone —
+    // this pass removes orphans, it does not adjudicate ownership.
+    if (!owner) { out.push(line); continue }
+    // The paragraph the block was placed in: the prose lines above it, back to the previous
+    // blank line, plus one more paragraph — the injector puts the block right after its owner's
+    // last line, so a real anchor is never further up than that.
+    let window: string[] = []
+    let blanks = 0
+    for (let i = out.length - 1; i >= 0 && blanks < 2; i--) {
+      const l = out[i]
+      if (isOwnedEnrichmentLine(l, owned)) continue
+      if (!l.trim()) { blanks++; continue }
+      window.unshift(l)
+    }
+    const region = window.join('\n')
+    const anchored = region.length > 0 && findPlaceOffset(owner.name as string, normalizeVN(region.toLowerCase()), undefined, allNames.filter(n => n !== owner.name)) >= 0
+    if (anchored) { out.push(line); continue }
+    dropped++
+  }
+  if (dropped === 0) return { text, dropped: 0 }
+  return { text: out.join('\n').replace(/\n{3,}/g, '\n\n'), dropped }
 }
 
 // Remove the LLM's own copies of owned enrichment (line-wise) so injection re-places
@@ -1680,7 +1752,13 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardBudgetFitInText(hoursGuarded, collector?.consultativeV1?.budget)
       : { text: hoursGuarded, redacted: 0 }
     if (budgetFit.redacted > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'budget_fit', redacted: budgetFit.redacted }))
-    const placeGuarded = budgetFit.text
+    // Phase 7 group 1 (golden T2): a projection format the user asked for (IMAX, 4DX…) that no
+    // retrieved row carries is unconfirmed — say so once, and call a screen a screen.
+    const formatGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn
+      ? guardFormatClaimsInText(budgetFit.text, (collector?.userTexts ?? [userText]).join('\n'), [...places.map(p => p.name ?? ''), ...placeTexts], lang)
+      : { text: budgetFit.text, hedged: [] as string[], reworded: 0 }
+    if (formatGuard.hedged.length > 0 || formatGuard.reworded > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'format_claim', hedged: formatGuard.hedged, reworded: formatGuard.reworded }))
+    const placeGuarded = formatGuard.text
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.
@@ -1874,7 +1952,7 @@ export function applyPlaceEnrichmentStreamFilter(
      * is only released while `!placeToolSeen`, so nothing naming a venue has
      * been streamed yet and there is nothing to retract.
      */
-    const gated = suppressUngroundedVenues(
+    const gatedRaw = suppressUngroundedVenues(
       scaffoldStripped,
       [
         ...places.map(p => p.name || ''),
@@ -1887,6 +1965,12 @@ export function applyPlaceEnrichmentStreamFilter(
       // is a recall turn" — and it stood down for both.
       { placeSearch: placeSearchStatus, cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined },
     )
+    // Phase 7: the guards above may have removed the sentence an injected photo/link block was
+    // placed under. A block with no owner named beside it goes too — never an image without its
+    // name (see `dropOrphanedEnrichment`). Only when the injector ran on this reply.
+    const orphans = cardOwnsEnrichment ? { text: gatedRaw.text, dropped: 0 } : dropOrphanedEnrichment(places, gatedRaw.text)
+    if (orphans.dropped > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphaned_enrichment', dropped: orphans.dropped }))
+    const gated = { ...gatedRaw, text: orphans.text }
     // AUDIT ONLY (env-gated, never in production): what the grounding gate cut and against which
     // names, plus the pre-gate prose — the one place a "0 rows" / "all cut" verdict can be checked.
     // Every guarded turn (B-phase, 2026-09-20): the RAW model text and the text after each guard

@@ -830,13 +830,24 @@ async function searchPlacesUncached(
                 tiktok_review_url: tiktokFields.has_tiktok_review ? (own as string) : undefined,
                 has_tiktok_review: tiktokFields.has_tiktok_review,
               })
+              /**
+               * Phase 7 (2026-09-22): delivery links only where the user IS. A trip's restaurants
+               * in another city (the Đà Nẵng plan asked from Quận 1) shipped "GrabFood · BeFood"
+               * under every seafood place — a search-redirect the person cannot use from here
+               * and will not want there. `remoteDestination` is the same reading the search
+               * itself centred on (a resolved city ≠ the user's GPS city); with no GPS nothing
+               * is known and the links stay, as before. The place keeps its Maps / website /
+               * review actions either way.
+               */
               return {
                 ...place,
-                order_links: buildFoodOrderLinks(
-                  place.name as string || '',
-                  place.address as string | undefined,
-                  location
-                ),
+                ...(remoteDestination ? {} : {
+                  order_links: buildFoodOrderLinks(
+                    place.name as string || '',
+                    place.address as string | undefined,
+                    location
+                  ),
+                }),
                 ...tiktokFields,
                 review_actions: reviewActions,
               }

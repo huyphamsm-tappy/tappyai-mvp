@@ -757,8 +757,10 @@ export async function POST(req: Request) {
   // on, nothing shared between users or carried across warm invocations.
   // The turn's own words decide which producer may claim the recommendation card.
   // Passed in at construction because the collector outlives every individual
-  // tool call and must judge them all against the SAME question.
-  const enrichment = createEnrichmentCollector(lastText)
+  // tool call and must judge them all against the SAME question. Phase 7: the earlier user
+  // turns ride along so a bare follow-up ("gần biển", "quận nào cũng được") is judged by what
+  // the CONVERSATION asked, not misread as a new, narrower question (slotAdmission.ts).
+  const enrichment = createEnrichmentCollector(lastText, recentUserTexts.slice(0, -1))
   // Observability for the TikTok cost/quality trade-off. Nothing branches on these.
   let tiktokEntitiesAsked = 0
   let tiktokSearched = false

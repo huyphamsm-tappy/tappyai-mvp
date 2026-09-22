@@ -54,4 +54,10 @@ describe('serperMapsQuery', () => {
     expect(serperMapsQuery('quán ăn ngon', undefined)).toBe('quán ăn ngon')
     expect(serperMapsQuery('quán ăn ngon', '')).toBe('quán ăn ngon')
   })
+  it('🚨 G1b: a trailing "gần <area>" the location already names is not sent twice', () => {
+    expect(serperMapsQuery('rạp chiếu phim gần Quận 7', 'Quận 7, TP HCM')).toBe('rạp chiếu phim Quận 7 Ho Chi Minh City')
+    expect(serperMapsQuery('quán nhậu ở Quận 1', 'Quận 1, TP HCM')).toBe('quán nhậu Quận 1 Ho Chi Minh City')
+    // A different area in the query is the user's own scope and stays.
+    expect(serperMapsQuery('cafe gần chợ Bến Thành', 'Quận 1, TP HCM')).toBe('cafe gần chợ Bến Thành Quận 1 Ho Chi Minh City')
+  })
 })

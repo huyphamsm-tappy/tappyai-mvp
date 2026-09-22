@@ -49,7 +49,11 @@ export type AskedSubject = ProducerSubject | 'flight' | 'transport' | 'weather'
  * direction.
  */
 export function askedSubjects(text: string): Set<AskedSubject> {
-  const t = normalizeVN(String(text ?? '').toLowerCase())
+  // Phase 7 (2026-09-22): "gần biển / gần trung tâm / gần chợ / gần rạp" is WHERE the user wants
+  // the thing, not a request for the beach, the market or the cinema. `\bbien\b` read "gần biển"
+  // as an attraction ask and refused the trip's hotel and seafood cards. A "gần <noun>" phrase is
+  // a proximity refinement and names no subject of its own.
+  const t = normalizeVN(String(text ?? '').toLowerCase()).replace(/\bgan\s+(?:trung tam|\S+)/g, ' ')
   const out = new Set<AskedSubject>()
   if (!t.trim()) return out
 
@@ -74,9 +78,17 @@ export function askedSubjects(text: string): Set<AskedSubject> {
   // 2026-09-18 (CONSULTATIVE-40 E1): "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1" read as a
   // FOOD turn, the entertainment producer was refused, and the reply fell back to inline media
   // with no card on web and Android alike. Only the bare word not followed by a number counts.
-  if (/quan an|nha hang|\bquan\b(?!\s*\d)|\ban uong\b|do an|mon an|bun |pho |com |banh |\bcafe\b|ca phe|\bfood\b|restaurant|\bnhau\b|lau |buffet/.test(t)) out.add('food')
+  // Phase 7 (2026-09-22): "quận nào cũng được" folds to "quan nao cung duoc" and was read as the
+  // eatery — the cinema follow-up lost its cards. "quận nào cũng …" is the answer to a district
+  // question, never an eatery, so that one phrase is excluded; "quán nào ngon" stays food.
+  if (/quan an|nha hang|\bquan\b(?!\s*(?:\d|nao\s+cung\b))|\ban uong\b|do an|mon an|bun |pho |com |banh |\bcafe\b|ca phe|\bfood\b|restaurant|\bnhau\b|lau |buffet/.test(t)) out.add('food')
   if (/\bspa\b|massage|lam dep|duong da|cham soc da|\bnail\b|\bgoi dau\b|tham my/.test(t)) out.add('spa')
   if (/\brap\b|rap phim|rap chieu|cinema|\bcgv\b|lotte cinema|\bbhd\b|xem phim|karaoke|\bbar\b|\bpub\b|club dem|suat chieu|lich chieu/.test(t)) out.add('entertainment')
+  // Phase 7 (2026-09-22, golden G3b): "quán nhậu" is an eatery OR a bar — the model searches it
+  // as `type=restaurant` on one run and `type=bar` on the next (measured), and the bar-typed rows
+  // arrive under the entertainment producer. The user asked for either; refusing one of the two
+  // dropped the card and fell back to inline photos.
+  if (/\bnhau\b|\bbia\b|\bbeer\b|bia hoi|bia tuoi/.test(t)) out.add('entertainment')
   // "đi chơi / vui chơi / giải trí" is a generic outing: entertainment or an attraction, never a
   // refusal of either.
   if (/\bdi choi\b|vui choi|giai tri|\bchoi gi\b|hang ?out/.test(t)) { out.add('entertainment'); out.add('attraction') }
@@ -110,12 +122,33 @@ export function producerSubject(toolName: string, statedPlaceDomain?: unknown): 
 /**
  * May this producer claim the turn's recommendation slot?
  *
+ * ============================================================================
+ * PHASE 7 — A FOLLOW-UP TURN INHERITS WHAT THE CONVERSATION ASKED
+ * ============================================================================
+ * 🚨 Judging admission on the LAST LINE alone refused the cards of every short follow-up, and
+ * that is exactly the shape the owner's screenshots show (golden set, 2026-09-22):
+ *
+ *   "gần biển"             → `\bbien\b` → {attraction} → the hotel producer (`stay`) and the
+ *                            seafood producer (`food`) of the trip plan were both refused;
+ *                            no card, the model fell back to inline images.
+ *   "quận nào cũng được"   → folds to "quan nao …" → the bare-word food rule matched "quan"
+ *                            → {food} → the cinema producer (`entertainment`) was refused.
+ *
+ * The user did not stop asking about hotels and cinemas — the earlier turns said what the
+ * conversation is about and the follow-up answered a question. So admission reads the CURRENT
+ * turn first, and when that turn names no PRODUCER-SHAPED subject (a bare answer, a location
+ * refinement, "cái đầu tiên"), it inherits the subjects of the most recent earlier user turn that
+ * named any. Recall still fails open: a conversation in which no turn names a subject admits
+ * everything, as before. What changed is only that a follow-up can no longer be misread as a
+ * NEW, narrower question.
+ *
  * @param text  the user's message for this turn
  * @param producer  what the tool produced, from `producerSubject`
+ * @param earlierUserTexts  earlier user turns of the same conversation, oldest first (optional)
  */
-export function admitsProducer(text: string, producer: ProducerSubject | null): boolean {
+export function admitsProducer(text: string, producer: ProducerSubject | null, earlierUserTexts: readonly string[] = []): boolean {
   if (!producer) return false
-  const asked = askedSubjects(text)
+  const asked = conversationSubjects(text, earlierUserTexts)
   // Fail open: an unrecognised turn behaves exactly as it did before this guard.
   if (asked.size === 0) return true
   if (asked.has(producer)) return true
@@ -132,4 +165,24 @@ export function admitsProducer(text: string, producer: ProducerSubject | null): 
     return ['food', 'spa', 'entertainment', 'shopping', 'attraction'].some(s => asked.has(s as AskedSubject))
   }
   return false
+}
+
+/**
+ * The subjects the CONVERSATION is asking about at this turn: the current turn's own subjects
+ * whenever it names ANY subject; otherwise (a bare answer — "gần biển", "quận nào cũng được",
+ * "cái đầu tiên") those of the nearest earlier user turn that named one.
+ *
+ * 🚨 A turn that names a subject of its own is judged on that alone, even a non-producer one.
+ * "máy bay đi, bay từ sài gòn" inside a trip plan names a flight, and the original defect this
+ * file closes was eight hotel cards rendered under that flight answer — inheriting the plan's
+ * `stay` there would put them back. Inheritance is only for a turn that asks nothing on its own.
+ */
+export function conversationSubjects(text: string, earlierUserTexts: readonly string[] = []): Set<AskedSubject> {
+  const own = askedSubjects(text)
+  if (own.size > 0) return own
+  for (let i = earlierUserTexts.length - 1; i >= 0; i--) {
+    const earlier = askedSubjects(earlierUserTexts[i])
+    if (earlier.size > 0) return earlier
+  }
+  return own
 }

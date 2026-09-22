@@ -54,8 +54,21 @@ export function normalizeSerperLocation(location: string | null | undefined): st
   return raw
 }
 
-/** `query + normalised location`, or the query alone when there is no location. */
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase()
+
+/**
+ * `query + normalised location`, or the query alone when there is no location.
+ *
+ * Phase 7 (2026-09-22, golden G1b): the model's query already ended in the area ("rạp chiếu phim
+ * gần Quận 7") and the location repeated it, so Maps read "rạp chiếu phim gần Quận 7 Quận 7 Ho Chi
+ * Minh City" and answered with LOTTE Mart, Co.opmart and a karaoke shop. A trailing "gần / ở /
+ * tại / quanh / khu vực <area>" whose area the location already names is dropped — the location
+ * carries it once, in the form `/maps` answers best.
+ */
 export function serperMapsQuery(query: string, location: string | null | undefined): string {
   const loc = normalizeSerperLocation(location)
-  return loc ? `${query} ${loc}` : query
+  if (!loc) return query
+  const m = query.match(/^(.*?)\s+(?:gần|gan|ở|o|tại|tai|quanh|khu vực|khu vuc)\s+(.+)$/i)
+  if (m && m[1].trim() && fold(`${location ?? ''} ${loc}`).includes(fold(m[2].trim()))) return `${m[1].trim()} ${loc}`
+  return `${query} ${loc}`
 }

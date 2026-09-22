@@ -94,6 +94,8 @@ export interface PlaceEnrichment {
 /** Request-scoped. One per HTTP request, created in the route and never shared. */
 export interface EnrichmentCollector {
   readonly places: PlaceEnrichment[]
+  /** The user turns of this thread, earlier first and this turn last (Phase 7: the format guard reads a format asked for on an earlier turn). */
+  readonly userTexts: readonly string[]
   add(items: PlaceEnrichment[]): void
   /**
    * The batch-level TikTok link, if any tool produced one this turn.
@@ -321,7 +323,13 @@ export function splitToolResult(
  * to carry data across invocations. It also survives any number of concurrent
  * requests on the same instance for free.
  */
-export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
+/**
+ * @param turnText  the user's message for this turn
+ * @param earlierUserTexts  the earlier user turns of the conversation (oldest first) — a short
+ *   follow-up inherits the subjects they asked about when the slot is judged (Phase 7; see
+ *   `conversationSubjects` in slotAdmission.ts)
+ */
+export function createEnrichmentCollector(turnText = '', earlierUserTexts: readonly string[] = []): EnrichmentCollector {
   const places: PlaceEnrichment[] = []
   /** Every photo URL already claimed by an earlier entry, so no image is used twice. */
   const claimedPhotos = new Set<string>()
@@ -363,6 +371,7 @@ export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
 
   return {
     places,
+    userTexts: [...earlierUserTexts, turnText],
     batchTikTokUrl: undefined as string | undefined,
     setBatchTikTokUrl(url) {
       // First one wins: a trip plan runs several place searches and the answer carries one
@@ -398,7 +407,7 @@ export function createEnrichmentCollector(turnText = ''): EnrichmentCollector {
        * Order matters: admission is judged before emptiness, so a REFUSED
        * producer cannot leave a trace either way.
        */
-      if (!admitsProducer(turnText, producer)) return
+      if (!admitsProducer(turnText, producer, earlierUserTexts)) return
       if (recs && recs.length > 0 && !this.placesRecommendations) {
         this.placesRecommendations = recs
         this.placesProducer = producer ?? undefined
