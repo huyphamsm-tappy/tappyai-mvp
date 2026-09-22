@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dropOrphanedEnrichment } from './streamEnrichment'
+import { dropOrphanedEnrichment, injectPlaceEnrichment } from './streamEnrichment'
 
 // ── Phase 7 (2026-09-22): never an image without its name ────────────────────
 //
@@ -58,6 +58,37 @@ describe('dropOrphanedEnrichment', () => {
   it("a photo the injector did not own (the model's own image) is left alone", () => {
     const text = '![Ảnh địa điểm](https://elsewhere.example/x.jpg)'
     expect(dropOrphanedEnrichment([HOTEL], text).dropped).toBe(0)
+  })
+
+  it('🚨 v1 placement (header-less clients): a block placed at the NEXT venue mention, paragraphs below its owner, is anchored', () => {
+    // Measured 2026-09-22 on a header-less /api/chat probe: the fixed two-paragraph window called
+    // every injected block an orphan (orphaned_enrichment dropped=4) — iOS / old builds lost all photos.
+    const places = [
+      { name: 'Phở Nhất Vị - Nguyễn Thị Minh Khai', photo_url: 'https://lh3.googleusercontent.com/a1', order_links: [{ name: 'GrabFood', url: 'https://food.grab.com/vn/vi/restaurants?search=Pho%20Nhat%20Vi' }] },
+      { name: 'Quán Phở Con Bò Vàng', photo_url: 'https://lh3.googleusercontent.com/a2', order_links: [{ name: 'GrabFood', url: 'https://food.grab.com/vn/vi/restaurants?search=Con%20Bo%20Vang' }] },
+      { name: 'Phở Hòa Pasteur', photo_url: 'https://lh3.googleusercontent.com/a3' },
+    ]
+    const prose = [
+      'Mình tìm quán phở ngon ở Quận 1 cho bạn nhé! 🍲',
+      '',
+      'Mình chọn **Phở Nhất Vị - Nguyễn Thị Minh Khai** cho bạn! 🎯',
+      '',
+      '**4.9⭐ (1.103 đánh giá Google Maps)**',
+      '',
+      'Bạn có thể gọi qua GrabFood hoặc đến trực tiếp nhé.',
+      '',
+      'Ngoài ra, **Quán Phở Con Bò Vàng** (4.9⭐, 2km) cũng là lựa chọn tốt, hoặc **Phở Hòa Pasteur** nếu thích phở truyền thống.',
+      '',
+      'Bạn muốn đặt món không?',
+    ].join('\n')
+    const injected = injectPlaceEnrichment(places as never, prose, 'vi', { placement: 'v1' })
+    expect((injected.match(/!\[/g) ?? []).length).toBe(3)
+    expect(dropOrphanedEnrichment(places as never, injected)).toEqual({ text: injected, dropped: 0 })
+  })
+
+  it('a block whose owner is NOT the last venue named above it is an orphan', () => {
+    const text = ['**Hải Sản Ku Tom Đà Nẵng** (4.9⭐) — quán nổi tiếng.', '', `![Ảnh địa điểm](${HOTEL.photo_url})`].join('\n')
+    expect(dropOrphanedEnrichment([HOTEL, KUTOM], text).dropped).toBe(1)
   })
 
   it('no places → no-op', () => {

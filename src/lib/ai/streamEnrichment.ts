@@ -357,20 +357,30 @@ export function dropOrphanedEnrichment(places: PlaceLike[], text: string): { tex
     // A block the injector placed always has an owner; one it cannot attribute is left alone —
     // this pass removes orphans, it does not adjudicate ownership.
     if (!owner) { out.push(line); continue }
-    // The paragraph the block was placed in: the prose lines above it, back to the previous
-    // blank line, plus one more paragraph — the injector puts the block right after its owner's
-    // last line, so a real anchor is never further up than that.
-    let window: string[] = []
-    let blanks = 0
-    for (let i = out.length - 1; i >= 0 && blanks < 2; i--) {
-      const l = out[i]
-      if (isOwnedEnrichmentLine(l, owned)) continue
-      if (!l.trim()) { blanks++; continue }
-      window.unshift(l)
+    /**
+     * A block is anchored when its owner is the LAST venue the prose names above it. That holds
+     * under both placements the injector has: v2 puts the block at the end of the owner's own
+     * paragraph; v1 puts it at the NEXT venue's mention, which can be several paragraphs below
+     * the owner's name (measured on a header-less reply: the pick's block landed three
+     * paragraphs down, after the rating line and the "gọi qua GrabFood" line, and a fixed
+     * two-paragraph window called all three blocks orphans). What makes the T1 hotel photo an
+     * orphan is not distance — no venue was named above it, or a different one was.
+     */
+    const above = normalizeVN(proseAbove.join('\n').toLowerCase())
+    let lastName: string | null = null
+    let lastAt = -1
+    for (const name of allNames) {
+      const competitors = allNames.filter(n => n !== name)
+      let from = 0
+      for (;;) {
+        const at = findPlaceOffset(name, above.slice(from), undefined, competitors)
+        if (at < 0) break
+        const abs = from + at
+        if (abs > lastAt) { lastAt = abs; lastName = name }
+        from = abs + 1
+      }
     }
-    const region = window.join('\n')
-    const anchored = region.length > 0 && findPlaceOffset(owner.name as string, normalizeVN(region.toLowerCase()), undefined, allNames.filter(n => n !== owner.name)) >= 0
-    if (anchored) { out.push(line); continue }
+    if (lastName === owner.name) { out.push(line); continue }
     dropped++
   }
   if (dropped === 0) return { text, dropped: 0 }
