@@ -1,0 +1,2064 @@
+{
+  "id": "G3b",
+  "group": "food-correction",
+  "criteria": [
+    "Turn 2 replaces the venue-type constraint (no beer/nhậu venues) and acknowledges the change",
+    "Cards match the new constraint and the text",
+    "Budget 100-150k respected where data exists"
+  ],
+  "turns": [
+    {
+      "user": "tìm quán nhậu ở Quận 1 tối nay",
+      "status": 200,
+      "elapsedMs": 14531,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán nhậu Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "bar"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Pasteur Street Craft Beer",
+              "rating": 4.8,
+              "ratingCount": 2862,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Quán bar"
+              ],
+              "hours": "11:00–00:00",
+              "open": true,
+              "distanceKm": 0.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "FunnyBone Bar & Coffe Quận 1",
+              "rating": 5,
+              "ratingCount": 200,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Quán bar cocktail"
+              ],
+              "hours": "07:00–00:00",
+              "open": true,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "えびすEbisu District1( Udon & Sushi)",
+              "rating": 4.7,
+              "ratingCount": 1012,
+              "price": null,
+              "categories": [
+                "Nhà hàng mì Udon",
+                "Nhà hàng Izakaya",
+                "Nhà hàng Nhật Bản",
+                "Nhà hàng sushi"
+              ],
+              "hours": "11:30–22:30",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "ratingCount": 968,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "08:00–00:00",
+              "open": true,
+              "distanceKm": 1.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "ratingCount": 719,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "rating": 4.7,
+              "ratingCount": 279,
+              "price": null,
+              "categories": [
+                "Nhà hàng châu Á",
+                "Trang trại hải sản"
+              ],
+              "hours": "15:00–02:00",
+              "open": true,
+              "distanceKm": 2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "rating": 4.4,
+              "ratingCount": 6204,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": true,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.77412,106.69716",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Pasteur Street Craft Beer",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmML6sLuVJlIGhTROrT9l1hUeH9709hDO0Mjf5tT1fCD-wxRku882oLXYejRE5jt3_6L4BFVKKbwV3dU3O4fpoK12X8JVHsD2dNs7W5dSuVhqW7p9yqXp6T3kAhSy1TH8EW3NY4",
+                "address": "112 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2862,
+                "openingHours": "11:00–00:00",
+                "openNow": true,
+                "phone": "+84 977 240 110",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00",
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán bar"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://pasteurstreet.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3123673193691217346",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Pasteur%20Street%20Craft%20Beer%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977240110",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:name:tour uống rượu đêm sài gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+                "address": "Quận 1, TP HCM",
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "ticket",
+                    "urlKind": "direct",
+                    "url": "https://www.klook.com/vi/activity/152759-saigon-night-drinking-tour-double-deck-bus-city-view/",
+                    "labelKey": "v3.action.ticketLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "7659a5f29c693da38cfab39b",
+                      "requestId": "3ca7d78e-c8d3-4450-bd9d-97c1d9c958ae",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": false,
+                      "capability": "activity_booking",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/Tour%20u%E1%BB%91ng%20r%C6%B0%E1%BB%A3u%20%C4%91%C3%AAm%20S%C3%A0i%20G%C3%B2n%20tr%C3%AAn%20xe%20bu%C3%BDt%20hai%20t%E1%BA%A7ng%20ng%E1%BA%AFm%20c%E1%BA%A3nh%20th%C3%A0nh%20...",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Tour%20u%E1%BB%91ng%20r%C6%B0%E1%BB%A3u%20%C4%91%C3%AAm%20S%C3%A0i%20G%C3%B2n%20tr%C3%AAn%20xe%20bu%C3%BDt%20hai%20t%E1%BA%A7ng%20ng%E1%BA%AFm%20c%E1%BA%A3nh%20th%C3%A0nh%20...%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76594,106.69558",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "FunnyBone Bar & Coffe Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOAOMgyfgvHGtcP7AmpOxXzdqeErABV_VYX6uLCbn1miHzugdworCwySnq75JGv-ljuil7ZjZKg54CNkQtFYz5sRD-jAoLP6vD8IuICOKYUzp1g_11r5xe-WcRxeB6mB-1b8joQ5v7lJUnq",
+                "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 200,
+                "openingHours": "07:00–00:00",
+                "openNow": true,
+                "phone": "+84 948 951 348",
+                "openingHoursWeek": {
+                  "Thứ Ba": "07:00–00:00",
+                  "Thứ Tư": "07:00–00:00",
+                  "Thứ Năm": "07:00–00:00",
+                  "Thứ Sáu": "07:00–00:00",
+                  "Thứ Bảy": "07:00–00:00",
+                  "Chủ Nhật": "07:00–00:00",
+                  "Thứ Hai": "07:00–00:00"
+                },
+                "distanceKm": 1.4,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán bar cocktail"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14670112455443010031",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FunnyBone%20Bar%20%26%20Coffe%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84948951348",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78166,106.70515",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "えびすEbisu District1( Udon & Sushi)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPClPNN_N4e7Og0gFY4cHeN1akyUoI0ohoaH4bLcSuc4WRxyVFUTA7tV5s6EECSdDxTDFO2_s4u_bsjVb0qgUg4rMTOYMnp8Cv0Vp1S8gik7KG4gDRMubzpzrslk4fjGtVz-R7M0g",
+                "address": "2A Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 1012,
+                "openingHours": "11:30–22:30",
+                "openNow": true,
+                "phone": "+84 938 659 586",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:30–22:30",
+                  "Thứ Tư": "11:30–22:30",
+                  "Thứ Năm": "11:30–22:30",
+                  "Thứ Sáu": "11:30–22:30",
+                  "Thứ Bảy": "11:30–22:30",
+                  "Chủ Nhật": "11:30–22:30",
+                  "Thứ Hai": "11:30–22:30"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng mì Udon",
+                  "Nhà hàng Izakaya",
+                  "Nhà hàng Nhật Bản",
+                  "Nhà hàng sushi"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Ebisuchumanhtrinhquan1/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15517132992011241645",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E3%81%88%E3%81%B3%E3%81%99Ebisu%20District1(%20Udon%20%26%20Sushi)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938659586",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76306,106.69074",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMiiGs1b1E2YO2ZWP6wgma5OlZBWQKswbuEraJSbDyuS1Bm_6Ubzfv9fkCl8O7QV7SDJMgHKVuFopGFmqyNwGVQhepgHeisWq7r9t7Pa3QW-RjgIVYempgCU3PQXpGgZRpZOyUN7G0RBvfJ",
+                "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 968,
+                "openingHours": "08:00–00:00",
+                "openNow": true,
+                "phone": "+84 1900 0303",
+                "openingHoursWeek": {
+                  "Thứ Ba": "08:00–00:00",
+                  "Thứ Tư": "08:00–00:00",
+                  "Thứ Năm": "08:00–00:00",
+                  "Thứ Sáu": "08:00–00:00",
+                  "Thứ Bảy": "08:00–00:00",
+                  "Chủ Nhật": "08:00–00:00",
+                  "Thứ Hai": "08:00–00:00"
+                },
+                "distanceKm": 1.9,
+                "categories": [
+                  "Nhà hàng",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanhoanggia.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8690476982161666487",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419000303",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Tr4Ku-wjwOCbZgLZ1H91nFaBKLj7Mjys7EKr0DwKBqykOGOG6UgKI1RHFfX_tjgzDtcgdi-pAbpotNLMG8D8hyCczFm7zP6xeb0T8-JFmW4LcMxLGTEGYY84gbFrpvmOIBNI",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 719,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79358,106.69402",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMfpaqV5bc0yLpKFHGKd7sRhiG4WHMxTl-i1JCQDH64xQS__KU6pCYWctyXmzlGZridVt4IWSMgSRai2tenXq1U_tlu0qxKJlcH9yWnpvNJYcRLH4ypAgmUFdkMIzlab6ejMLlr0w",
+                "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 279,
+                "openingHours": "15:00–02:00",
+                "openNow": true,
+                "phone": "+84 833 233 963",
+                "openingHoursWeek": {
+                  "Thứ Ba": "15:00–02:00",
+                  "Thứ Tư": "15:00–02:00",
+                  "Thứ Năm": "15:00–02:00",
+                  "Thứ Sáu": "15:00–02:00",
+                  "Thứ Bảy": "15:00–02:00",
+                  "Chủ Nhật": "15:00–02:00",
+                  "Thứ Hai": "15:00–02:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Nhà hàng châu Á",
+                  "Trang trại hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8963047816332474488",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84833233963",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPrtCe6oK4uwCHl73G6czREIEnY9UHlW7624oVPIGMsL8UN_H-m2ue-lDiKMnHEBSxhpTeC2RBY3JXaCTK0aYeF1yf6x1zzm0X7sVQrPJLPTkzQeF8TeINIIUYRAVm1TpyG0dwgRw",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6204,
+                "openingHours": "11:00–22:30",
+                "openNow": true,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30",
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30",
+                  "Thứ Hai": "11:00–22:30"
+                },
+                "distanceKm": 1.4,
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20nh%E1%BA%ADu%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "entertainment"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Pasteur Street Craft Beer",
+              "rating": 4.8,
+              "ratingCount": 2862,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Quán bar"
+              ],
+              "hours": "11:00–00:00",
+              "open": true,
+              "distanceKm": 0.5,
+              "recommended": true,
+              "reasons": [
+                "open now",
+                "rated 4.8",
+                "0.5km away"
+              ]
+            },
+            {
+              "name": "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "FunnyBone Bar & Coffe Quận 1",
+              "rating": 5,
+              "ratingCount": 200,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Quán bar cocktail"
+              ],
+              "hours": "07:00–00:00",
+              "open": true,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "えびすEbisu District1( Udon & Sushi)",
+              "rating": 4.7,
+              "ratingCount": 1012,
+              "price": null,
+              "categories": [
+                "Nhà hàng mì Udon",
+                "Nhà hàng Izakaya",
+                "Nhà hàng Nhật Bản",
+                "Nhà hàng sushi"
+              ],
+              "hours": "11:30–22:30",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "ratingCount": 968,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "08:00–00:00",
+              "open": true,
+              "distanceKm": 1.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "ratingCount": 719,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "rating": 4.7,
+              "ratingCount": 279,
+              "price": null,
+              "categories": [
+                "Nhà hàng châu Á",
+                "Trang trại hải sản"
+              ],
+              "hours": "15:00–02:00",
+              "open": true,
+              "distanceKm": 2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "rating": 4.4,
+              "ratingCount": 6204,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": true,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.77412,106.69716",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Pasteur Street Craft Beer",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmML6sLuVJlIGhTROrT9l1hUeH9709hDO0Mjf5tT1fCD-wxRku882oLXYejRE5jt3_6L4BFVKKbwV3dU3O4fpoK12X8JVHsD2dNs7W5dSuVhqW7p9yqXp6T3kAhSy1TH8EW3NY4",
+                "address": "112 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2862,
+                "openingHours": "11:00–00:00",
+                "openNow": true,
+                "phone": "+84 977 240 110",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00",
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00",
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán bar"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "0.5km away",
+                    "params": {
+                      "km": 0.5
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "rating",
+                  "evidence": "rated 5",
+                  "params": {
+                    "value": 5
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://pasteurstreet.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@davisitonguyen/video/7668203869620555022",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3123673193691217346",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977240110",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Pasteur%20Street%20Craft%20Beer%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:name:tour uống rượu đêm sài gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9VPJOBsyjXeTK1YTYKQobVrzlTtUV1vlPJ58MIjB0rQ&s=10",
+                "address": "Quận 1, TP HCM",
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "ticket",
+                    "urlKind": "direct",
+                    "url": "https://www.klook.com/vi/activity/152759-saigon-night-drinking-tour-double-deck-bus-city-view/",
+                    "labelKey": "v3.action.ticketLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "7659a5f29c693da38cfab39b",
+                      "requestId": "3ca7d78e-c8d3-4450-bd9d-97c1d9c958ae",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": false,
+                      "capability": "activity_booking",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/Tour%20u%E1%BB%91ng%20r%C6%B0%E1%BB%A3u%20%C4%91%C3%AAm%20S%C3%A0i%20G%C3%B2n%20tr%C3%AAn%20xe%20bu%C3%BDt%20hai%20t%E1%BA%A7ng%20ng%E1%BA%AFm%20c%E1%BA%A3nh%20th%C3%A0nh%20...",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Tour%20u%E1%BB%91ng%20r%C6%B0%E1%BB%A3u%20%C4%91%C3%AAm%20S%C3%A0i%20G%C3%B2n%20tr%C3%AAn%20xe%20bu%C3%BDt%20hai%20t%E1%BA%A7ng%20ng%E1%BA%AFm%20c%E1%BA%A3nh%20th%C3%A0nh%20...%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76594,106.69558",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "FunnyBone Bar & Coffe Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOAOMgyfgvHGtcP7AmpOxXzdqeErABV_VYX6uLCbn1miHzugdworCwySnq75JGv-ljuil7ZjZKg54CNkQtFYz5sRD-jAoLP6vD8IuICOKYUzp1g_11r5xe-WcRxeB6mB-1b8joQ5v7lJUnq",
+                "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 200,
+                "openingHours": "07:00–00:00",
+                "openNow": true,
+                "phone": "+84 948 951 348",
+                "openingHoursWeek": {
+                  "Thứ Ba": "07:00–00:00",
+                  "Thứ Tư": "07:00–00:00",
+                  "Thứ Năm": "07:00–00:00",
+                  "Thứ Sáu": "07:00–00:00",
+                  "Thứ Bảy": "07:00–00:00",
+                  "Chủ Nhật": "07:00–00:00",
+                  "Thứ Hai": "07:00–00:00"
+                },
+                "distanceKm": 1.4,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán bar cocktail"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14670112455443010031",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FunnyBone%20Bar%20%26%20Coffe%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84948951348",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78166,106.70515",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "えびすEbisu District1( Udon & Sushi)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPClPNN_N4e7Og0gFY4cHeN1akyUoI0ohoaH4bLcSuc4WRxyVFUTA7tV5s6EECSdDxTDFO2_s4u_bsjVb0qgUg4rMTOYMnp8Cv0Vp1S8gik7KG4gDRMubzpzrslk4fjGtVz-R7M0g",
+                "address": "2A Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 1012,
+                "openingHours": "11:30–22:30",
+                "openNow": true,
+                "phone": "+84 938 659 586",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:30–22:30",
+                  "Thứ Tư": "11:30–22:30",
+                  "Thứ Năm": "11:30–22:30",
+                  "Thứ Sáu": "11:30–22:30",
+                  "Thứ Bảy": "11:30–22:30",
+                  "Chủ Nhật": "11:30–22:30",
+                  "Thứ Hai": "11:30–22:30"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng mì Udon",
+                  "Nhà hàng Izakaya",
+                  "Nhà hàng Nhật Bản",
+                  "Nhà hàng sushi"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Ebisuchumanhtrinhquan1/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15517132992011241645",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E3%81%88%E3%81%B3%E3%81%99Ebisu%20District1(%20Udon%20%26%20Sushi)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938659586",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76306,106.69074",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMiiGs1b1E2YO2ZWP6wgma5OlZBWQKswbuEraJSbDyuS1Bm_6Ubzfv9fkCl8O7QV7SDJMgHKVuFopGFmqyNwGVQhepgHeisWq7r9t7Pa3QW-RjgIVYempgCU3PQXpGgZRpZOyUN7G0RBvfJ",
+                "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 968,
+                "openingHours": "08:00–00:00",
+                "openNow": true,
+                "phone": "+84 1900 0303",
+                "openingHoursWeek": {
+                  "Thứ Ba": "08:00–00:00",
+                  "Thứ Tư": "08:00–00:00",
+                  "Thứ Năm": "08:00–00:00",
+                  "Thứ Sáu": "08:00–00:00",
+                  "Thứ Bảy": "08:00–00:00",
+                  "Chủ Nhật": "08:00–00:00",
+                  "Thứ Hai": "08:00–00:00"
+                },
+                "distanceKm": 1.9,
+                "categories": [
+                  "Nhà hàng",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanhoanggia.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8690476982161666487",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ho%C3%A0ng%20Gia%20-%20180%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419000303",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Tr4Ku-wjwOCbZgLZ1H91nFaBKLj7Mjys7EKr0DwKBqykOGOG6UgKI1RHFfX_tjgzDtcgdi-pAbpotNLMG8D8hyCczFm7zP6xeb0T8-JFmW4LcMxLGTEGYY84gbFrpvmOIBNI",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 719,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79358,106.69402",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMfpaqV5bc0yLpKFHGKd7sRhiG4WHMxTl-i1JCQDH64xQS__KU6pCYWctyXmzlGZridVt4IWSMgSRai2tenXq1U_tlu0qxKJlcH9yWnpvNJYcRLH4ypAgmUFdkMIzlab6ejMLlr0w",
+                "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 279,
+                "openingHours": "15:00–02:00",
+                "openNow": true,
+                "phone": "+84 833 233 963",
+                "openingHoursWeek": {
+                  "Thứ Ba": "15:00–02:00",
+                  "Thứ Tư": "15:00–02:00",
+                  "Thứ Năm": "15:00–02:00",
+                  "Thứ Sáu": "15:00–02:00",
+                  "Thứ Bảy": "15:00–02:00",
+                  "Chủ Nhật": "15:00–02:00",
+                  "Thứ Hai": "15:00–02:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Nhà hàng châu Á",
+                  "Trang trại hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8963047816332474488",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84833233963",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPrtCe6oK4uwCHl73G6czREIEnY9UHlW7624oVPIGMsL8UN_H-m2ue-lDiKMnHEBSxhpTeC2RBY3JXaCTK0aYeF1yf6x1zzm0X7sVQrPJLPTkzQeF8TeINIIUYRAVm1TpyG0dwgRw",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6204,
+                "openingHours": "11:00–22:30",
+                "openNow": true,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30",
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30",
+                  "Thứ Hai": "11:00–22:30"
+                },
+                "distanceKm": 1.4,
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20nh%E1%BA%ADu%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.77412,106.69716",
+              "place:osm:10.76594,106.69558"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.77412,106.69716",
+            "place:osm:10.76594,106.69558"
+          ],
+          "domain": "entertainment"
+        }
+      ],
+      "cardItems": [
+        [
+          "Pasteur Street Craft Beer",
+          "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+          "FunnyBone Bar & Coffe Quận 1",
+          "えびすEbisu District1( Udon & Sushi)",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Hàng Dương Quán Quận 1",
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "Quán Ụt Ụt - Bến Thành"
+        ],
+        [
+          "Pasteur Street Craft Beer",
+          "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+          "FunnyBone Bar & Coffe Quận 1",
+          "えびすEbisu District1( Udon & Sushi)",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Hàng Dương Quán Quận 1",
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "Quán Ụt Ụt - Bến Thành"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm quán nhậu ở Quận 1 cho bạn nhé! 🍺\n\nMình chọn **Pasteur Street Craft Beer** cho bạn! 🍻 Quán đang mở cửa tới 00:00 tối nay, chỉ cách bạn 0.5km, có 4.8⭐ từ 2.862 đánh giá — là địa chỉ nhậu chất lượng cao ở Quận 1.\n\nNgoài ra, **FunnyBone Bar & Coffe** cũng là lựa chọn tốt nếu bạn muốn rating cao hơn (5⭐), mở tới 00:00 nhưng cách xa hơn một chút (1.4km).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍺 Xem trên Maps - Pasteur Street\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3123673193691217346\",\"primary\":true},{\"label\":\"🌐 Website - Pasteur Street\",\"type\":\"website\",\"url\":\"https://pasteurstreet.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem quán khác ở Quận 1|Tìm quán nhậu gần Quận 7|Gọi bàn tại Pasteur Street[/FOLLOWUPS]",
+      "visible": "Mình tìm quán nhậu ở Quận 1 cho bạn nhé! 🍺\n\nMình chọn **Pasteur Street Craft Beer** cho bạn! 🍻 Quán đang mở cửa tới 00:00 tối nay, chỉ cách bạn 0.5km, có 4.8⭐ từ 2.862 đánh giá — là địa chỉ nhậu chất lượng cao ở Quận 1.\n\nNgoài ra, **FunnyBone Bar & Coffe** cũng là lựa chọn tốt nếu bạn muốn rating cao hơn (5⭐), mở tới 00:00 nhưng cách xa hơn một chút (1.4km)."
+    },
+    {
+      "user": "thôi không nhậu nữa, quán ăn gia đình thôi, 100-150k/người",
+      "status": 200,
+      "elapsedMs": 14209,
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình Quận 1 100-150k",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+              "rating": 4.9,
+              "ratingCount": 4328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Hàn Quốc",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:40–22:00",
+              "open": true,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "rating": 4.5,
+              "ratingCount": 2136,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": "100-600 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": 0.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "rating": 4.2,
+              "ratingCount": 421,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "14:00–22:00",
+              "open": true,
+              "distanceKm": 2.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn gia đình 79",
+              "rating": 4.4,
+              "ratingCount": 515,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78439,106.69737",
+                "domain": "food",
+                "kind": "place",
+                "name": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtfbsspD9eIBnpUbB8nQYyDhEuj935s2B59BL6WZMqY19xHi3uRcWEovG8lyUMDVoTsJUa3NCldukJ8Hxb-QQavaSK7-53oAm-iV2GhscXXpJFzEfqlkZwnVXUpxfHu0f8KvCPfOp5OrT3",
+                "address": "20 Trần Cao Vân, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 4328,
+                "openingHours": "10:40–22:00",
+                "openNow": true,
+                "phone": "+84 902 304 634",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:40–22:00",
+                  "Thứ Tư": "10:40–22:00",
+                  "Thứ Năm": "10:40–22:00",
+                  "Thứ Sáu": "10:40–22:00",
+                  "Thứ Bảy": "10:40–22:00",
+                  "Chủ Nhật": "10:40–22:00",
+                  "Thứ Hai": "10:40–22:00"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng Hàn Quốc",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4604500883820478645",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Truy%E1%BB%81n%20Thuy%E1%BA%BFt%20ChamPong%20Qu%E1%BA%ADn%201%20-%20%EC%A0%84%EC%84%A4%EC%9D%98%EC%A7%AC%EB%BD%95%201%EA%B5%B0%EC%A0%90%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://kigholding.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902304634",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlibYfJhWN1pZTUId7WbjAo3xRJMpqo61dbP45Zs0VvrfWXEOjke_cdqKGJii5mba9js_2x9ZK2YY3DRp-QhVS1ayCxw-fFvibKtSTZvz09gFEB6aZOQPLdFSIANjDIpa2HSaRrSZc0L0j_",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2136,
+                "openingHours": "10:00–22:00",
+                "openNow": true,
+                "phone": "+84 765 371 893",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlH9F9XNtioZckwPMs-F2LrREp8XU_D8g_oJN2ckXd7Go1TQqqKQAQ_m18owY3kfLmyE29vI83q9IGnJvSPGDU_bKQuiZSYuwM27FXBNKUaH019YHfnd22QMH8hVFJzOEL_I_c",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "priceRangeText": "100-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00",
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00"
+                },
+                "distanceKm": 0.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79456,106.68897",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnoi2mXXtk8mIccb6WEjmNqsUPZAFNmFFrxa9Gu8F4oac3iq3oRPI_Pv4_S334O8BRlppRjANAgxZNcn87GpfdGYb9e_0w-0rYyprC3PCT2hpxeP5L0DuwyWLgjj4zJKWm1IKZGD4jLdE0N",
+                "address": "10/6 Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 71008, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 421,
+                "openingHours": "14:00–22:00",
+                "openNow": true,
+                "phone": "+84 966 018 039",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "14:00–22:00",
+                  "Thứ Tư": "14:00–22:00",
+                  "Thứ Năm": "14:00–22:00",
+                  "Thứ Sáu": "14:00–22:00",
+                  "Thứ Bảy": "14:00–22:00",
+                  "Chủ Nhật": "14:00–22:00",
+                  "Thứ Hai": "14:00–22:00"
+                },
+                "distanceKm": 2.4,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3366256617780850917",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20lu%E1%BB%99c%20H%C3%80%20NGUY%C3%8AN%20-%20CN%20Qu%E1%BA%ADn%201%20%7C%20%E1%BB%90c%20lu%E1%BB%99c%20m%E1%BA%AFm%20g%E1%BB%ABng%20H%C3%A0%20N%E1%BB%99i%20chi%20nh%C3%A1nh%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ocluochanguyen.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84966018039",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrCMa88B5AT0YiDMEhXa4tufarTnNYygVRGLcC9wO_S5_6Av66HJdbWYi4RW1ErJJLvvu6-xC6AFh1tTIXZDTUGucxzrbXQwqezEMxrQW8fhxcUPmgCVgDNra-KoVYqSfEcMHgXA",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 515,
+                "openingHours": "16:00–00:00",
+                "openNow": false,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20Qu%E1%BA%ADn%201%20100-150k%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+              "rating": 4.9,
+              "ratingCount": 4328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Hàn Quốc",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:40–22:00",
+              "open": true,
+              "distanceKm": 0.9,
+              "recommended": true,
+              "reasons": [
+                "open now",
+                "rated 4.9",
+                "0.9km away"
+              ]
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "rating": 4.5,
+              "ratingCount": 2136,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": "100-600 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": 0.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "rating": 4.2,
+              "ratingCount": 421,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "14:00–22:00",
+              "open": true,
+              "distanceKm": 2.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn gia đình 79",
+              "rating": 4.4,
+              "ratingCount": 515,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.78439,106.69737",
+                "domain": "food",
+                "kind": "place",
+                "name": "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtfbsspD9eIBnpUbB8nQYyDhEuj935s2B59BL6WZMqY19xHi3uRcWEovG8lyUMDVoTsJUa3NCldukJ8Hxb-QQavaSK7-53oAm-iV2GhscXXpJFzEfqlkZwnVXUpxfHu0f8KvCPfOp5OrT3",
+                "address": "20 Trần Cao Vân, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 4328,
+                "openingHours": "10:40–22:00",
+                "openNow": true,
+                "phone": "+84 902 304 634",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:40–22:00",
+                  "Thứ Tư": "10:40–22:00",
+                  "Thứ Năm": "10:40–22:00",
+                  "Thứ Sáu": "10:40–22:00",
+                  "Thứ Bảy": "10:40–22:00",
+                  "Chủ Nhật": "10:40–22:00",
+                  "Thứ Hai": "10:40–22:00"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng Hàn Quốc",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.9",
+                    "params": {
+                      "value": 4.9
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "0.9km away",
+                    "params": {
+                      "km": 0.9
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "distance",
+                  "evidence": "0.6km away",
+                  "params": {
+                    "km": 0.6
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4604500883820478645",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Truy%E1%BB%81n%20Thuy%E1%BA%BFt%20ChamPong%20Qu%E1%BA%ADn%201%20-%20%EC%A0%84%EC%84%A4%EC%9D%98%EC%A7%AC%EB%BD%95%201%EA%B5%B0%EC%A0%90%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://kigholding.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902304634",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlibYfJhWN1pZTUId7WbjAo3xRJMpqo61dbP45Zs0VvrfWXEOjke_cdqKGJii5mba9js_2x9ZK2YY3DRp-QhVS1ayCxw-fFvibKtSTZvz09gFEB6aZOQPLdFSIANjDIpa2HSaRrSZc0L0j_",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2136,
+                "openingHours": "10:00–22:00",
+                "openNow": true,
+                "phone": "+84 765 371 893",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlH9F9XNtioZckwPMs-F2LrREp8XU_D8g_oJN2ckXd7Go1TQqqKQAQ_m18owY3kfLmyE29vI83q9IGnJvSPGDU_bKQuiZSYuwM27FXBNKUaH019YHfnd22QMH8hVFJzOEL_I_c",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "priceRangeText": "100-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00",
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00"
+                },
+                "distanceKm": 0.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79456,106.68897",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnoi2mXXtk8mIccb6WEjmNqsUPZAFNmFFrxa9Gu8F4oac3iq3oRPI_Pv4_S334O8BRlppRjANAgxZNcn87GpfdGYb9e_0w-0rYyprC3PCT2hpxeP5L0DuwyWLgjj4zJKWm1IKZGD4jLdE0N",
+                "address": "10/6 Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 71008, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 421,
+                "openingHours": "14:00–22:00",
+                "openNow": true,
+                "phone": "+84 966 018 039",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "14:00–22:00",
+                  "Thứ Tư": "14:00–22:00",
+                  "Thứ Năm": "14:00–22:00",
+                  "Thứ Sáu": "14:00–22:00",
+                  "Thứ Bảy": "14:00–22:00",
+                  "Chủ Nhật": "14:00–22:00",
+                  "Thứ Hai": "14:00–22:00"
+                },
+                "distanceKm": 2.4,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3366256617780850917",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20lu%E1%BB%99c%20H%C3%80%20NGUY%C3%8AN%20-%20CN%20Qu%E1%BA%ADn%201%20%7C%20%E1%BB%90c%20lu%E1%BB%99c%20m%E1%BA%AFm%20g%E1%BB%ABng%20H%C3%A0%20N%E1%BB%99i%20chi%20nh%C3%A1nh%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ocluochanguyen.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84966018039",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrCMa88B5AT0YiDMEhXa4tufarTnNYygVRGLcC9wO_S5_6Av66HJdbWYi4RW1ErJJLvvu6-xC6AFh1tTIXZDTUGucxzrbXQwqezEMxrQW8fhxcUPmgCVgDNra-KoVYqSfEcMHgXA",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 515,
+                "openingHours": "16:00–00:00",
+                "openNow": false,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20Qu%E1%BA%ADn%201%20100-150k%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.78439,106.69737",
+              "place:osm:10.77332,106.70504",
+              "place:osm:10.77531,106.69734"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.78439,106.69737",
+            "place:osm:10.77332,106.70504",
+            "place:osm:10.77531,106.69734"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Sài Gòn Xưa và Nay",
+          "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+          "Quán ăn gia đình 79"
+        ],
+        [
+          "Truyền Thuyết ChamPong Quận 1 - 전설의짬뽕 1군점",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Sài Gòn Xưa và Nay",
+          "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+          "Quán ăn gia đình 79"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm quán ăn gia đình ở Quận 1 trong tầm 100-150k/người cho bạn nhé! 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn!\nNếu bạn muốn gần hơn, **Cơm Quê Dượng Bầu** cũng tốt — chỉ 0.6km, ẩm thực Việt gia đình, 4.5⭐, mở tới 22:00. Hoặc **Sài Gòn Xưa và Nay** gần nhất (0.4km), mở tới 01:00 nên có thời gian thoải mái hơn.\n\nBạn muốn đặt bàn hay gọi trước không? 📞\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Truyền Thuyết ChamPong\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4604500883820478645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Xem menu chi tiết|Tìm quán khác gần hơn[/FOLLOWUPS]",
+      "visible": "Mình tìm quán ăn gia đình ở Quận 1 trong tầm 100-150k/người cho bạn nhé! 🍽️\n\nMình chọn **Truyền Thuyết ChamPong Quận 1** cho bạn!\nNếu bạn muốn gần hơn, **Cơm Quê Dượng Bầu** cũng tốt — chỉ 0.6km, ẩm thực Việt gia đình, 4.5⭐, mở tới 22:00. Hoặc **Sài Gòn Xưa và Nay** gần nhất (0.4km), mở tới 01:00 nên có thời gian thoải mái hơn.\n\nBạn muốn đặt bàn hay gọi trước không? 📞"
+    }
+  ]
+}
