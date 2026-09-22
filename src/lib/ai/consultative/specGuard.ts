@@ -73,6 +73,16 @@ const EVIDENCE_ABSENCE =
 const REQUIREMENT_FRAMING =
   /\bban (uu tien|can|muon|thich|yeu cau|thuong xuyen)|vi ban\b|theo yeu cau|ban dang tim|(yeu cau|nhu cau|tieu chi|mong muon|uu tien|ngan sach) cua ban|\byou (want|need|prefer|asked|care)\b|since you\b|because you\b|your (requirement|priority|preference|need|criteri)/
 
+/**
+ * Phrasing that tells the user WHAT TO CHECK rather than stating what the product has. Phase 7
+ * group 5 (golden G5a, 2026-09-22): "mua iPhone 13 cũ thì cần check gì" was answered with a
+ * checklist, and the line "Pin: kiểm tra Battery Health, dưới 70% nên cân nhắc" was cut as an
+ * unsupported battery claim about the retrieved listing. An instruction to inspect an attribute
+ * asserts nothing about any candidate's value of it — it is the advice the user asked for.
+ */
+const ADVICE_FRAMING =
+  /\bkiem tra\b|\bcheck\b|\bxem (thu|ky|lai|truoc)\b|\bhoi (ro|ky|nguoi ban|shop|chu)\b|\byeu cau (nguoi ban|shop|chu)\b|\btest (thu|ky|truoc)?\b|\bthu (bat|tat|sac|cam|dung)\b|\bcan (xem|hoi|test|thu|soi)\b|\bnen (xem|hoi|test|thu|soi|so sanh)\b|\bverify\b|\binspect\b|\bask the seller\b|\bmake sure\b|\blook (at|for)\b|\bwatch out\b/
+
 /** Words that make a two-candidate sentence a comparison rather than a list. */
 const COMPARATIVE = /\bhon\b|\bthan\b|\bvs\.?\b|\bversus\b|so voi|compared to/
 
@@ -155,9 +165,13 @@ const PROTECTED = /(\[CTA_BUTTONS\][\s\S]*?\[\/CTA_BUTTONS\]|\[FOLLOWUPS\][^\n]*
  * bulleted comparison came back as one run-on paragraph. Nothing about which
  * claims are removed changes here; the reply simply keeps the shape the model
  * gave it.
+ *
+ * A line break is a boundary too (Phase 7 group 5, golden G5a): a checklist's lines end without
+ * punctuation, so "… bình thường\n\n**Nguồn gốc:**\n- Hỏi rõ …" was ONE sentence, the clause
+ * surgery rejoined it with single spaces, and the whole list came back flattened.
  */
 function splitSentences(text: string): string[] {
-  return text.split(/((?<=[.!?…])\s+)/)
+  return text.split(/((?<=[.!?…])\s+|[ \t]*\n\s*)/)
 }
 
 /** A list marker at the head of a line, which belongs to the LINE, not the clause. */
@@ -294,13 +308,16 @@ export function guardSpecClaimsInText(
     let anchored = false
     const inert = clauses.map(c => {
       const nc = norm(c)
-      const own = REQUIREMENT_FRAMING.test(nc) || EVIDENCE_ABSENCE.test(nc)
+      const framed = REQUIREMENT_FRAMING.test(nc) || EVIDENCE_ABSENCE.test(nc)
+      // Advice exempts ITS OWN clause only: "kiểm tra pin trước, máy này pin rất trâu" must
+      // not let the instruction shield the assertion that follows it.
+      const own = framed || ADVICE_FRAMING.test(nc)
       // Once the sentence has named a product it is ABOUT that product, so no
       // later clause may inherit framing — "**G5+** — … if you need more
       // power…, and known for decent battery life" must not shield the battery
       // claim. A clause carrying its own framing is still exempt.
       if (candidates.some(cd => names(norm(identityFor(c)), cd.name))) { anchored = true; carry = false; return own }
-      if (own && !anchored) carry = true
+      if (framed && !anchored) carry = true
       return own || carry
     })
     // A sentence made ENTIRELY of framing/absence clauses asserts nothing.

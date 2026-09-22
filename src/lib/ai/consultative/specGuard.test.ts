@@ -779,3 +779,47 @@ describe('SPEC-GUARD-26 — line structure survives clause surgery', () => {
     expect((out.match(/\(/g) ?? []).length).toBe((out.match(/\)/g) ?? []).length)
   })
 })
+
+// ── Phase 7 group 5 (2026-09-22): a checklist is advice, not a claim ────────────
+//
+// Golden G5a "mua iPhone 13 cũ thì cần check gì": the retrieved listing carried no battery
+// evidence, the reply's "Pin: kiểm tra Battery Health…" line was cut as an unsupported battery
+// claim, and — because the unpunctuated list lines formed one "sentence" — the surviving lines
+// were rejoined with spaces and the whole checklist came back flattened.
+describe('advice lines and list shape', () => {
+  const C: SpecEvidence[] = [{ name: 'iPhone 13 128GB Cũ (LikeNew)' }]
+  const CHECKLIST = [
+    '**[iPhone 13 128GB Cũ (LikeNew)](https://x.example/p)** — 7.499.000đ.',
+    '',
+    'Những điều **cần check kỹ** khi mua iPhone 13 cũ:',
+    '',
+    '**Tình trạng vật lý:**',
+    '- Nút bấm (âm lượng, nguồn, im lặng) có hoạt động không',
+    '- Pin: kiểm tra Battery Health, dưới 70% nên cân nhắc',
+    '- Kiểm tra loa, mic, loa ngoài có hoạt động bình thường',
+    '',
+    '**Nguồn gốc & bảo hành:**',
+    '- Hỏi rõ máy từ đâu',
+  ].join('\n')
+
+  it('🚨 G5a: an instruction to check the battery is not a battery claim, and the list keeps its lines', () => {
+    const out = guardSpecClaimsInText(CHECKLIST, C)
+    expect(out.removed).toEqual([])
+    expect(out.text).toBe(CHECKLIST)
+  })
+
+  it('an assertion about the candidate on a list line is still cut — without flattening its neighbours', () => {
+    const t = CHECKLIST + '\n- Máy này pin rất trâu, dùng cả ngày'
+    const out = guardSpecClaimsInText(t, C)
+    expect(out.removed).toEqual(['iPhone 13 128GB Cũ (LikeNew):battery'])
+    expect(out.text).not.toContain('pin rất trâu')
+    expect(out.text).toContain('**Nguồn gốc & bảo hành:**\n- Hỏi rõ máy từ đâu')
+  })
+
+  it('advice shields its own clause only', () => {
+    const t = '**[iPhone 13 128GB Cũ (LikeNew)](https://x.example/p)** — kiểm tra pin trước, máy này pin rất trâu.'
+    const out = guardSpecClaimsInText(t, C)
+    expect(out.text).toContain('kiểm tra pin')
+    expect(out.text).not.toContain('pin rất trâu')
+  })
+})
