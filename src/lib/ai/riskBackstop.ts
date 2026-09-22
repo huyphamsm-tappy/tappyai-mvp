@@ -69,10 +69,10 @@ export const SCAM_CHECKER_POINTER_RE = /Cảnh báo lừa đảo|Canh bao lua da
  */
 export const RISK_BLOCK = {
   vi: {
-    header: '⚠️ Trước khi trả tiền, kiểm tra mấy điều này trước — tình trạng máy/xe/hàng xét sau:',
+    header: '⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:',
     lines: {
-      ownership: '- **Quyền sở hữu & nguồn gốc:** hỏi giấy tờ / hóa đơn gốc, số serial hoặc số khung–số máy có khớp giấy tờ không, có sang tên / chuyển quyền được không. Không rõ nguồn gốc thì không mua.',
-      lock: '- **Ràng buộc với chủ cũ:** tài khoản (Apple ID / Google / ứng dụng xe) phải được thoát và xóa ngay trước mặt bạn; hỏi thẳng có đang trả góp, cầm cố hay thế chấp không.',
+      ownership: '- **Quyền sở hữu & nguồn gốc:** hỏi giấy tờ / hóa đơn gốc, số serial / IMEI hoặc số khung–số máy có khớp giấy tờ không và có bị báo mất / báo trộm không, có sang tên / chuyển quyền được không. Không rõ nguồn gốc thì không mua.',
+      lock: '- **Ràng buộc với chủ cũ:** tài khoản (Apple ID / Google / ứng dụng xe) phải được thoát và xóa ngay trước mặt bạn, máy không còn nằm trong hệ thống quản lý từ xa của công ty nào (MDM); hỏi thẳng có đang trả góp, cầm cố hay thế chấp không.',
       fraud: '- **Lừa đảo trong giao dịch:** không cọc trước cho người lạ, không bấm link thanh toán người bán gửi, cảnh giác giá rẻ bất thường và người bán hối chốt nhanh.',
       payment: '- **Cách trả tiền an toàn:** gặp trực tiếp, kiểm tra xong mới trả tiền, giữ lại hóa đơn / tin nhắn thỏa thuận làm bằng chứng.',
     } satisfies Record<RiskTopic, string>,
@@ -80,10 +80,10 @@ export const RISK_BLOCK = {
     thresholdHedge: 'Các con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.',
   },
   en: {
-    header: '⚠️ Before you pay, check these first — the condition of the item comes after:',
+    header: '⚠️ Before you pay, check these — the condition of the item comes after:',
     lines: {
-      ownership: '- **Ownership & provenance:** ask for the original receipt / papers, confirm the serial or frame/engine numbers match them, and that ownership can actually be transferred to you. No clear provenance, no purchase.',
-      lock: '- **Ties to the previous owner:** every account (Apple ID / Google / vehicle app) must be signed out and removed in front of you; ask outright whether it is on instalments, pawned or used as collateral.',
+      ownership: '- **Ownership & provenance:** ask for the original receipt / papers, confirm the serial / IMEI or frame/engine numbers match them and are not reported lost or stolen, and that ownership can actually be transferred to you. No clear provenance, no purchase.',
+      lock: '- **Ties to the previous owner:** every account (Apple ID / Google / vehicle app) must be signed out and removed in front of you, the device must not be enrolled in any company\'s remote management (MDM); ask outright whether it is on instalments, pawned or used as collateral.',
       fraud: '- **Transaction fraud:** no deposit to a stranger, no tapping a payment link the seller sends, and be wary of an unusually low price or a seller pushing you to close fast.',
       payment: '- **Paying safely:** meet in person, pay only after you have checked everything, and keep the receipt / the chat as evidence.',
     } satisfies Record<RiskTopic, string>,

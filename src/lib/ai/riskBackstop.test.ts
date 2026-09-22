@@ -102,12 +102,30 @@ describe('applyRiskBackstop', () => {
     expect(out.text.indexOf(RISK_BLOCK.vi.pointer)).toBeGreaterThan(out.text.indexOf('[/FOLLOWUPS]'))
   })
 
-  it('the block never mentions a phone number or bank account', () => {
+  it('🔒 the approved block (owner, 2026-09-22): no phone number, no account number, no percentage, no threshold', () => {
     for (const l of [RISK_BLOCK.vi, RISK_BLOCK.en]) {
       const all = [l.header, ...Object.values(l.lines), l.pointer, l.thresholdHedge].join('\n')
       expect(all).not.toMatch(/số điện thoại|sđt|số tài khoản|tài khoản ngân hàng|phone number|bank account|account number/i)
-      expect(all).not.toMatch(/\d+\s*%/)
+      expect(all).not.toMatch(/\d/)
     }
+    // The three text edits the approval asked for.
+    expect(RISK_BLOCK.vi.header).toBe('⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:')
+    expect(RISK_BLOCK.vi.lines.ownership).toMatch(/serial \/ IMEI/)
+    expect(RISK_BLOCK.vi.lines.ownership).toMatch(/báo mất \/ báo trộm/)
+    expect(RISK_BLOCK.vi.lines.lock).toMatch(/quản lý từ xa của công ty nào \(MDM\)/)
+    expect(RISK_BLOCK.en.lines.ownership).toMatch(/serial \/ IMEI .* not reported lost or stolen/)
+    expect(RISK_BLOCK.en.lines.lock).toMatch(/remote management \(MDM\)/)
+    // The pointer names what the checker takes and nothing else.
+    expect(RISK_BLOCK.vi.pointer).toContain('dán tin nhắn, link hoặc mã QR của người bán')
+  })
+
+  it('live mode is the code default; 0/false/off disable; buffer opts in', async () => {
+    const { riskBackstopMode } = await import('@/lib/config/product')
+    expect(riskBackstopMode({} as NodeJS.ProcessEnv)).toBe('live')
+    expect(riskBackstopMode({ RISK_BACKSTOP: '1' } as NodeJS.ProcessEnv)).toBe('live')
+    expect(riskBackstopMode({ RISK_BACKSTOP: '0' } as NodeJS.ProcessEnv)).toBe('off')
+    expect(riskBackstopMode({ RISK_BACKSTOP: 'false' } as NodeJS.ProcessEnv)).toBe('off')
+    expect(riskBackstopMode({ RISK_BACKSTOP: 'buffer' } as NodeJS.ProcessEnv)).toBe('buffer')
   })
 
   it('English thread gets the English block', () => {

@@ -249,7 +249,7 @@ the variable is unset in the environment. Read sites: `src/lib/config/product.ts
 | `EMIT_PLACES_ANNOTATION` / `EMIT_TAPPY_PLACES` / `SERVER_AUTHORED_CTA` | code const | `true` / `false` / `false` | same | (const) | Place card as a stream annotation (web); durable `[TAPPY_PLACES]` marker (off); server-authored CTA block (off — model writes CTA_BUTTONS) |
 | `SHOW_SCAM_SHIELD` / `SHOW_PRO_UPGRADE` / `SHOW_MARKETPLACE` / `SHOW_WALLET` / `SHOW_APP_CONNECTIONS` | code const | `true` / `false` / `false` / `false` / `false` | same | (const) | Navigation surfaces |
 | `FREE_DAILY_LIMIT` / `ANON_LIFETIME_LIMIT` (product.ts) / `PRO_DAILY_CHAT_CAP` (security/chatCaps.ts) | code const | 15 / 5 / 300 | same (golden ran on the Pro account) | (const) | AI question quotas |
-| `SERPER_DAILY_CREDIT_CEILING` / `SERPER_OUTAGE_INSTANCE_CEILING` | env | none (uncapped) | unset | **set a daily ceiling** you accept — unset means uncapped spend on a runaway | Serper credit breakers |
+| `SERPER_DAILY_CREDIT_CEILING` (**REQUIRED — set explicitly**) / `SERPER_OUTAGE_INSTANCE_CEILING` | env | 15,000 credits per VN day (≈ 2,500 place turns with photos) / 1,500 per instance while the KV store is down | unset (defaults) | **set the daily ceiling to the spend you accept** (e.g. `15000`); keep the outage ceiling default. Needs `KV_REST_API_URL` for the count to be global — without KV it is per instance and NOT a real cap (`serperClient.ts`) | Serper credit breakers — see §4c for what the user sees when it trips |
 | `BACKOFFICE_ENABLED` | config (`adminConfig`) | `true` | unset (true) | true | Back office |
 | `CONTENT_SAFETY_GATE_ENABLED` / `CONTENT_SAFETY_SCHEMA_MIGRATED` | env | `false` / `false` | unset | **unset** until the safety schema is applied to prod (a `true` without the migration fails publication reads) | Content-safety gate |
 | `MESSAGE_NOTIFICATIONS_ENABLED`, `MARKETING_SENDING_ENABLED`, `CONTROLLER_ORG_MEMBERSHIP_ENABLED`, `GCP_LOGGING_ENABLED` | env | all `false` | unset | conscious choice each; none affects AI answers | Notifications / marketing sends / org membership / cloud logging |
@@ -268,9 +268,9 @@ auditing; each is either fixed or must be consciously accepted):
 | Snippet-price guard reading the venue's OWN band as evidence | `SNIPPET_PRICE_GUARD_V2=1` | **Inactive** (OFF, as tested). Caveat: with v1 the guard can delete a price sentence the model copied from the card band (measured 13/17 on the 2026-09-17 capture); the card still shows the band. Turning it ON was not replayed — do not flip without a golden pass |
 | Inline media placement fix (`MEDIA_PLACEMENT_V2`) | flag on, native surfaces only | Inactive; web unaffected (card owns enrichment). Android/iOS were not part of Session C |
 | Place cards (`tappy.places.v1`) | `x-tappy-surface: web` header AND `EMIT_PLACES_ANNOTATION` | Android sends no surface header → inline media path (memory: `project_android_place_decision_surface_header`) |
-| Risk-first backstop for second-hand purchase advice (`riskBackstop.ts`) | `RISK_BACKSTOP` (see 4b) | New in this follow-up; default per the owner's approval of the block text |
+| Risk-first backstop for second-hand purchase advice (`riskBackstop.ts`) | `RISK_BACKSTOP` (see 4b) | **Active by default (live mode)** since the owner approved the block text 2026-09-22; `RISK_BACKSTOP=0` disables |
 
-### 4b. `RISK_BACKSTOP` — the F-043 deterministic backstop (awaiting the owner's approval of the block text)
+### 4b. `RISK_BACKSTOP` — the F-043 deterministic backstop (block text approved by the owner 2026-09-22; **default ON, live mode**)
 
 `src/lib/ai/riskBackstop.ts`. On a high-value second-hand purchase question (thread mentions a
 second-hand / marketplace cue + a purchase + a high-value category + "what to check / should I / risks"),
@@ -283,12 +283,31 @@ pins this).
 
 | Value | Behaviour | Measured |
 |---|---|---|
-| unset / `0` | **OFF (code default until approved)** | — |
-| `1` / `true` / `live` | append-only: the model text streams live, the block (+ hedge) arrives as the last frame; an inline threshold can only be hedged | 5 × (T4 + G5a–d) = 25 replies: prompt alone complete 22/25, backstop fired 12/25 (3 topic/pointer appends, 9 hedges), final complete **25/25**, unhedged thresholds after **0/25** (`docs/uat/evidence/golden/rb1..rb5`, `scripts/audit/riskBackstopReport.mjs`) |
+| `0` / `false` / `off` | OFF | — |
+| **unset** / `1` / `true` / `live` | **code default.** append-only: the model text streams live, the block (+ hedge) arrives as the last frame; an inline threshold can only be hedged | 5 × (T4 + G5a–d) = 25 replies: prompt alone complete 22/25, backstop fired 12/25 (3 topic/pointer appends, 9 hedges), final complete **25/25**, unhedged thresholds after **0/25** (`docs/uat/evidence/golden/rb1..rb5`, `scripts/audit/riskBackstopReport.mjs`) |
 | `buffer` | also buffers the turn: threshold parentheticals are REMOVED and the block sits before the markers; the user waits for the whole reply (~10 s) | unit-tested on the stream (`riskBackstopStream.test.ts`); not replayed live |
 
-**Recommendation once the text is approved: `RISK_BACKSTOP=1` on production** (append-only, no
-latency cost), and make it the code default in the same change.
+**Production: leave unset (= live).** Roll back with `RISK_BACKSTOP=0` — no redeploy.
+
+### 4c. What the app does when `SERPER_DAILY_CREDIT_CEILING` is hit
+
+`src/lib/ai/tools/serperClient.ts` is the one door to Serper (maps 3 credits, search/shopping/images 1). Credits are
+added to the shared daily counter BEFORE the call; at 80 % one `tappyai_alert serper_daily_ceiling_80pct` warning is
+logged per instance per day; over the ceiling every further Serper call is **refused inside the server** (`serperPost`
+returns `null`, one `tappyai_alert serper_daily_ceiling` error per instance per day) and the request continues:
+
+1. **Place search** falls through to OpenStreetMap (`osm_fallback_used`): the user still gets places, without ratings,
+   price bands or photos, and the reply says the data is from OpenStreetMap with a Google Maps link.
+2. **OSM empty or down too**: the tool returns `results: []` + `google_maps_search` + `no_results_instruction`; the
+   prompt rule (i) makes the model say plainly nothing was found and offer the Maps link — **no raw error, no stack
+   trace reaches the model or the user** (`serperCeilingDegrade.test.ts` pins this with Serper refused and every fetch
+   rejecting: the result carries no "error", "serper" or "ceiling" text).
+3. **Photos / web / shopping enrichment** simply do not run for the rest of the day (cards render without images;
+   shopping answers from the model's knowledge with the honesty rules).
+4. The counter resets at the VN midnight (`vnToday`). With the KV store down, each instance is held to
+   `SERPER_OUTAGE_INSTANCE_CEILING` (1,500) instead, and `serper_ceiling_store_down` is logged.
+
+Watch the two alerts in the logs; the 80 % warning is the moment to raise the ceiling or investigate abuse.
 
 ---
 

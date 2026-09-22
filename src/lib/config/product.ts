@@ -395,7 +395,7 @@ export function consultativeV1Enabled(env: NodeJS.ProcessEnv = process.env): boo
  * T4 + G5a–d, see docs/uat/findings.json F-043): the prompt alone covered all four topics in
  * N/25 replies; with the backstop 25/25.
  *
- * Default OFF until the owner approves the block text.
+ * DEFAULT: live (owner approved the block text 2026-09-22). `RISK_BACKSTOP=0|false|off` turns it off.
  *   RISK_BACKSTOP=1 | true | live  — append-only. These turns run no tool, so they stream live;
  *                                    the block is appended after the model's text and an inline
  *                                    threshold can only be HEDGED (nothing already on the wire can
@@ -409,8 +409,8 @@ export type RiskBackstopMode = 'off' | 'live' | 'buffer'
 export function riskBackstopMode(env: NodeJS.ProcessEnv = process.env): RiskBackstopMode {
   const v = (env.RISK_BACKSTOP ?? '').trim().toLowerCase()
   if (v === 'buffer') return 'buffer'
-  if (v === '1' || v === 'true' || v === 'live') return 'live'
-  return 'off'
+  if (v === '0' || v === 'false' || v === 'off') return 'off'
+  return 'live'
 }
 export function riskBackstopEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
   return riskBackstopMode(env) !== 'off'
