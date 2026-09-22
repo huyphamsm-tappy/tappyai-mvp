@@ -19,7 +19,7 @@ const ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260921_
 // #8 reuses the exact same conditional-union pattern for one more type.
 const FORWARD_8 = readFileSync(join(REPO, 'supabase/migrations/20260921_user_events_shopping_search_event.sql'), 'utf8')
 const ROLLBACK_8 = readFileSync(join(REPO, 'supabase/migrations/rollback/20260921_user_events_shopping_search_event_rollback.sql'), 'utf8')
-const PORT = 54371
+const PORT = 54389 // 54371 belongs to broadcast_audience_invariants; unique per suite, see portAllocation.test.ts
 
 const NEW_TYPES = ['recommendation_click', 'scam_check', 'chat_opened']
 // A representative "already allowed" set: base app types + a growth type that lives

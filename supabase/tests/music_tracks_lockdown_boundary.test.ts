@@ -14,7 +14,7 @@ import type { Client } from 'pg'
 const REPO = join(__dirname, '..', '..')
 const FORWARD = readFileSync(join(REPO, 'supabase/migrations/20260921_music_tracks_lockdown.sql'), 'utf8')
 const ROLLBACK = readFileSync(join(REPO, 'supabase/migrations/rollback/20260921_music_tracks_lockdown_rollback.sql'), 'utf8')
-const PORT = 54363
+const PORT = 54387 // 54363 belongs to user_notes_boundary; unique per suite, see portAllocation.test.ts
 
 // Models the pre-migration state: the table born fully open (Supabase default
 // grants to anon/authenticated/service_role), then the four ordinary-role policies.

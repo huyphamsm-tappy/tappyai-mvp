@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 
 // ── V2-UAT-007 — the parity matrix, as an executable record ─────────────────
 //
@@ -29,7 +29,7 @@ describe('every V2 feature Android ships has an iOS surface', () => {
     ['Settings',              'profile',        'Features/Profile/UI/SettingsView.swift'],
     ['Deals',                 'deals',          'Features/Deals/UI/DealsView.swift'],
     ['Notifications inbox',   'notifications',  'Features/Notifications/UI/NotificationsInboxView.swift'],
-    ['Music',                 'music',          'Features/Music/UI/MusicLibraryView.swift'],
+    // 'Music' left this matrix on 2026-09-22: see "music-reuse is withdrawn" below.
     ['Bookings',              'bookings',       'Features/Profile/UI/BookingsView.swift'],
     ['Price tracking',        'pricetracking',  'Features/Profile/UI/PriceWatchesView.swift'],
     ['Memory',                'memory',         'Features/Profile/UI/TappyKnowsView.swift'],
@@ -56,6 +56,22 @@ describe('every V2 feature Android ships has an iOS surface', () => {
       expect(ios(iosPath), `iOS: ${iosPath}`).toBe(true)
     })
   }
+})
+
+describe('music-reuse is withdrawn (F-024) — the parity row became a removal contract', () => {
+  // ae2a777 (2026-09-21) deleted the Android `music` package to mirror the web withdrawal (every
+  // reuse endpoint answers 410) but left the 'Music' row in the matrix above, so this suite failed
+  // as "Android: music: expected false to be true" — a stale row, not a regression. The real
+  // mismatch runs the OTHER way: iOS still ships the music-reuse UI (MusicLibraryView, SoundPage,
+  // MusicUpload) and must not be released until it is removed (MANUAL-UAT-HANDOFF §6).
+  it('Android has no music package', () => {
+    expect(android('music')).toBe(false)
+  })
+  it('the web reuse path is withdrawn (410 stubs), not merely hidden', () => {
+    expect(readFileSync('src/app/api/music/tracks/route.ts', 'utf8')).toMatch(/export function POST\(\) \{ return gone\(/)
+    expect(readFileSync('src/app/api/sound/[trackId]/route.ts', 'utf8')).toMatch(/return gone\('music-reuse:sound'\)/)
+  })
+  it.todo('iOS: remove Features/Music (MusicLibraryView, SoundPageView, MusicUploadView) — no macOS build env here; tracked in the handoff, released only after removal')
 })
 
 describe('the features with NO native surface, and why', () => {

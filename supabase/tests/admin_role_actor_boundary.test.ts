@@ -36,7 +36,7 @@ const ADMIN = '10000000-0000-4000-8000-000000000002'
 const PLAIN = '10000000-0000-4000-8000-000000000003'
 const TARGET = '10000000-0000-4000-8000-000000000004'
 const TARGET2 = '10000000-0000-4000-8000-000000000005'
-const PORT = 54361
+const PORT = 54385 // 54361 belongs to cohort_metrics_rollup; unique per suite, see portAllocation.test.ts
 
 const PRELUDE = `
   DO $$ BEGIN
