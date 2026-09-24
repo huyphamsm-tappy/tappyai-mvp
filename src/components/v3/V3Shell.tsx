@@ -8,7 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import {
   Home, PlayCircle, Search, Upload, Users, Bookmark, History,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
-  Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
+  Bell, Sun, Moon, UserCircle, UserRound, Wallet, Settings, HelpCircle,
   MessageSquare, LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
@@ -82,8 +82,12 @@ const GROUPS: NavGroup[] = [
   {
     titleKey: 'v3.nav.groupCapabilities',
     items: [
-      // Search is a capability, not a destination — it moved here out of the old "main" group.
-      { href: '/recommendations', labelKey: 'v3.nav.search', icon: Search },
+      // 🚨 THIS ROW WAS LABELLED "Search" AND OPENED `/recommendations` — the personalised
+      // places page, which has no search box. A row lying about its destination is the same
+      // class of bug as the two below. Phase 7: it now carries the destination's own name,
+      // the one the Smart Tools tile and Home's "see all" use (`v3.tool.suggest`), so one
+      // page has one name wherever it is reached from.
+      { href: '/recommendations', labelKey: 'v3.tool.suggest', icon: Sparkles },
       // 🚨 THIS WAS `/#smart-tools`, AN ANCHOR NOTHING CARRIED. No element in the codebase
       // had `id="smart-tools"`, so the row scrolled to the top of Home and read as working.
       // `/tools` is the real page — the "Page 7 (Tools)" the debt note below names.
@@ -167,10 +171,16 @@ const GROUPS: NavGroup[] = [
       // points at `/profile/notifications`. (The note that lived here recorded why it is that
       // route and not `/profile` — that fix stands, the row simply sits with the agent now,
       // which is where a message from Tappy belongs. One entry, not two.)
+      // Phase 7 RC (§3/§9): MY ACCOUNT is exactly these three rows, in this order — both
+      // canonical references show Profile / Me · Tài khoản · Cài đặt and no fourth entry.
       { href: '/profile', labelKey: 'v3.nav.profile', icon: UserCircle },
-      // 🚨 POINTED AT `/profile`, where the QR was an icon in the header rather than a
-      // destination — the row named a page that did not exist. `/profile/qr` is it.
-      { href: '/profile/qr', labelKey: 'v3.nav.qr', icon: QrCode },
+      { href: '/profile/account', labelKey: 'profile.account', icon: UserRound },
+      { href: '/profile/settings', labelKey: 'v3.action.settings', icon: Settings },
+      // 🚨 THE QR ROW MOVED, IT DID NOT DISAPPEAR. It used to point at `/profile`, where the QR
+      // was a header icon rather than a destination; `/profile/qr` fixed that. The row itself is
+      // gone from this group because the references name three rows here, and the page stays
+      // reachable from the two places those same references show it: the Profile hub's header
+      // button and its "QR Profile" rail card (`v3.profile.qrOpen` → /profile/qr).
       // 🚨 WALLET IS HIDDEN, NOT DELETED - AND IT NEVER POINTED AT A WALLET. This row read
       // "Wallet / Tappy Points" and its destination was `/subscription`; no wallet route, API or
       // table exists in this repo. Gated rather than removed so the entry comes back with one
@@ -186,8 +196,9 @@ const GROUPS: NavGroup[] = [
       // 🚨 This read `nav.settings` — a key with no `v3.` prefix and no entry in any dictionary,
       // so the row rendered the literal string "nav.settings" on screen. It sat below the
       // sidebar's scroll fold, which is why every review of a screenshot missed it.
-      { href: '/profile/settings', labelKey: 'v3.action.settings', icon: Settings },
-      { href: '/profile/settings', labelKey: 'v3.nav.language', icon: Languages },
+      // Both of these pointed at `/profile/settings` — one destination rendered as two rows, and
+      // language is a SECTION of that page (the reference labels it "Ngôn ngữ, thông báo, giao
+      // diện"), not a sibling of it. The page is now reached from MY ACCOUNT above.
       { href: '/how-to-use', labelKey: 'v3.nav.help', icon: HelpCircle },
       { href: '/profile', labelKey: 'v3.nav.feedback', icon: MessageSquare },
       /**

@@ -7,6 +7,8 @@ import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { apiFetch } from '@/lib/account/ageGateClient'
+import { goBack } from '@/lib/nav/inAppBack'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 interface Rec {
   placeId: string
@@ -52,8 +54,10 @@ export default function RecommendationsPage() {
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
       <header className="sticky top-0 z-10 border-b border-gray-100 dark:border-gray-800 bg-white/80 dark:bg-gray-950/80 backdrop-blur">
         <div className="max-w-lg mx-auto flex items-center px-4 h-14">
-          <button onClick={() => router.push('/')} className="flex items-center gap-1 text-sm font-medium text-link">
-            <ChevronLeft size={18} /> {t('recommendations.home')}
+          {/* Back pops in-app history (Smart Tools tile, Home "see all", sidebar row); a deep
+              link falls back to /tools. It used to push Home unconditionally and say so. */}
+          <button onClick={() => goBack(router, SMART_TOOLS_HREF)} className="flex items-center gap-1 text-sm font-medium text-link" data-in-app-back={SMART_TOOLS_HREF}>
+            <ChevronLeft size={18} /> {t('common.back')}
           </button>
           <h1 className="flex-1 text-center font-semibold text-gray-900 dark:text-white pr-16">{t('recommendations.title')}</h1>
         </div>

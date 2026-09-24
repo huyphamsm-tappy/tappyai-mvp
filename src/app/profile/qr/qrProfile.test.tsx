@@ -103,25 +103,45 @@ describe('the code stays scannable', () => {
 })
 
 describe('sharing', () => {
-  it('uses the native share sheet when the browser has one', async () => {
+  // Phase 7 (item 8): the raw OS dialog is gone. Share opens the TappyAI share menu —
+  // the same sheet reviews and plans use — carrying the CANONICAL public profile URL.
+  it('🚨 never calls navigator.share directly — the branded share menu opens instead', async () => {
     const share = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'share', { value: share, configurable: true })
     renderQR()
     fireEvent.click(screen.getByRole('button', { name: /chia sẻ profile|share profile/i }))
-    await waitFor(() => expect(share).toHaveBeenCalledWith(
-      expect.objectContaining({ url: `${window.location.origin}/users/${USER}` }),
-    ))
+    const dialog = await screen.findByRole('dialog')
+    expect(dialog).toBeTruthy()
+    expect(share).not.toHaveBeenCalled()
+    expect(screen.getByTestId('share-target-copy')).toBeTruthy()
   })
 
-  it('falls back to copying the link when it does not', async () => {
-    Object.defineProperty(navigator, 'share', { value: undefined, configurable: true })
+  it('the menu carries the canonical profile URL, not this origin', async () => {
     const writeText = vi.fn().mockResolvedValue(undefined)
     Object.defineProperty(navigator, 'clipboard', { value: { writeText }, configurable: true })
     renderQR()
     fireEvent.click(screen.getByRole('button', { name: /chia sẻ profile|share profile/i }))
-    await waitFor(() => expect(writeText).toHaveBeenCalledWith(`${window.location.origin}/users/${USER}`))
-    // And it says so, rather than looking like nothing happened.
-    expect(await screen.findByText(/đã sao chép|link copied/i)).toBeTruthy()
+    fireEvent.click(await screen.findByTestId('share-target-copy'))
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1))
+    const copied = writeText.mock.calls[0][0] as string
+    expect(copied).toContain(`/users/${USER}`)
+    expect(copied).toMatch(/^https:\/\/(www\.)?tappyai\.(com|vn)\//)
+    expect(copied).not.toContain(window.location.origin)
+  })
+})
+
+describe('the download is branded AND still the same code', () => {
+  it('composes the card from the on-screen payload with the shipped lockup around the code', () => {
+    const src = readFileSync('src/lib/qr/brandedCard.ts', 'utf8')
+    // Same encoder, same payload: the card is `encodeQR(text)` of the profile URL.
+    expect(src).toContain("from './qrcode'")
+    expect(src).toContain('encodeQR(opts.text)')
+    // The shipped mark and the wordmark colour, not a redrawn logo.
+    expect(src).toContain('TAPPY_MARK_SRC')
+    expect(src).toContain('TAPPY_WORDMARK_BLUE')
+    const view = readFileSync('src/app/profile/qr/QRProfileView.tsx', 'utf8')
+    expect(view).toContain('renderBrandedQrCard({')
+    expect(view).toContain('text: profileUrl')
   })
 })
 

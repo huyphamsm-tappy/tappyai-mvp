@@ -185,7 +185,9 @@ const MESSAGES = {
   'review.signInToReview': { vi: 'Cần đăng nhập để đánh giá', en: 'Please sign in to write a review' },
   'review.alreadyReviewed': { vi: 'Bạn đã đánh giá địa điểm này rồi.', en: "You've already reviewed this place." },
   'media.signInToUpload': { vi: 'Cần đăng nhập để tải ảnh', en: 'Please sign in to upload images' },
-  'media.imageTooLarge5': { vi: 'File ảnh phải nhỏ hơn 5MB', en: 'Images must be smaller than 5MB' },
+  // {n} is MAX_PHOTO_SIZE_MB. The number was baked into the key name AND the copy, so raising
+  // the constant would have kept telling the user 5MB while the server enforced something else.
+  'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },

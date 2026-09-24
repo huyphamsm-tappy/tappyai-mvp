@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 import Header from '@/components/Header'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import BottomNav from '@/components/BottomNav'
 import { Copy, Check, Users, Loader2 } from 'lucide-react'
 
@@ -153,7 +154,9 @@ export default function GroupPage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/" title={group.name} />
+      {/* Phase 7 §13: Back pops the in-app history and falls back to Smart Tools, this
+        * page's usual parent. A fixed `backHref="/"` sent every Back to Home. */}
+      <Header showBack backFallbackHref={SMART_TOOLS_HREF} title={group.name} />
       <main className="max-w-2xl mx-auto px-4 py-5 space-y-4">
 
         {/* Group header card */}

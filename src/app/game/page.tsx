@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 // Product scope: SuperTux is the only game surfaced. The former mini-game grid
 // (Bắn Thiên Hà, Đua Xe, Rắn Săn Mồi, Đập Gạch, 2048, Phòng Thủ) was removed.
@@ -22,7 +23,9 @@ export default function GameHubPage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header showBack backHref="/" title={t('game.headerTitle')} />
+      {/* Phase 7 §13: Back pops the in-app history and falls back to Smart Tools, the tile
+        * this hub is reached from. A fixed `backHref="/"` sent every Back to Home. */}
+      <Header showBack backFallbackHref={SMART_TOOLS_HREF} title={t('game.headerTitle')} />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Hero */}

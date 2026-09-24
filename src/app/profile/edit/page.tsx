@@ -6,13 +6,17 @@ import { useRouter } from 'next/navigation'
 import UserAvatar from '@/components/UserAvatar'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
-import { Check, Save, Loader2, Camera } from 'lucide-react'
+import { Check, Save, Loader2, Camera, ImagePlus, Trash2 } from 'lucide-react'
+import { rejectCoverFile, uploadCover, removeCover } from '@/lib/profile/cover'
 
 interface ProfileData {
   full_name: string
   avatar_url: string
   email: string
   bio: string
+  // Present (string or null) once `profiles.cover_url` exists; absent before the
+  // migration — and then the cover section is not offered, since nothing can store one.
+  cover_url?: string | null
 }
 
 export default function EditProfilePage() {
@@ -27,6 +31,8 @@ export default function EditProfilePage() {
   const [uploadingAvatar, setUploadingAvatar] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const coverRef = useRef<HTMLInputElement>(null)
+  const [coverBusy, setCoverBusy] = useState(false)
 
   // Revoke the avatar preview object URL on change / clear / unmount.
   useEffect(() => {
@@ -79,6 +85,40 @@ export default function EditProfilePage() {
       setPreviewUrl(null)
     } finally {
       setUploadingAvatar(false)
+    }
+  }
+
+  // Cover — the same one client path the Explore profile uses (`@/lib/profile/cover`).
+  const handleCoverChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    e.target.value = ''
+    if (!file) return
+    const rejection = rejectCoverFile(file)
+    if (rejection) { setError(t(rejection === 'tooLarge' ? 'editProfile.err.coverTooLarge' : 'editProfile.err.notImage')); return }
+    setCoverBusy(true)
+    setError(null)
+    try {
+      const url = await uploadCover(file)
+      setProfile(prev => ({ ...prev, cover_url: url }))
+      router.refresh()
+    } catch (err) {
+      setError(err instanceof Error && err.message ? err.message : t('editProfile.err.cover'))
+    } finally {
+      setCoverBusy(false)
+    }
+  }
+
+  const handleCoverRemove = async () => {
+    setCoverBusy(true)
+    setError(null)
+    try {
+      await removeCover()
+      setProfile(prev => ({ ...prev, cover_url: null }))
+      router.refresh()
+    } catch (err) {
+      setError(err instanceof Error && err.message ? err.message : t('editProfile.err.cover'))
+    } finally {
+      setCoverBusy(false)
     }
   }
 
@@ -161,6 +201,53 @@ export default function EditProfilePage() {
           />
         </div>
 
+        {/* Cover — offered only once the profile row can store one (see ProfileData). */}
+        {profile.cover_url !== undefined && (
+          <section className="card p-4 space-y-3" data-edit-cover aria-labelledby="cover-label">
+            <div className="flex items-center justify-between gap-2">
+              <label id="cover-label" className="block text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+                {t('editProfile.cover')}
+              </label>
+              <span className="text-[11px] text-gray-400 dark:text-gray-500">{t('editProfile.coverHint')}</span>
+            </div>
+            <div className={`relative aspect-[21/9] w-full overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800 ${coverBusy ? 'opacity-60' : ''}`}>
+              {profile.cover_url
+                // eslint-disable-next-line @next/next/no-img-element -- a URL this server just stored; sizing is the box, not the optimizer
+                ? <img src={profile.cover_url} alt={t('editProfile.cover')} className="h-full w-full object-cover" data-edit-cover-img />
+                : <p className="flex h-full items-center justify-center text-sm text-gray-400 dark:text-gray-500">{t('editProfile.coverNone')}</p>}
+              {coverBusy && (
+                <div className="absolute inset-0 flex items-center justify-center" aria-live="polite">
+                  <Loader2 size={28} className="animate-spin text-white drop-shadow" />
+                  <span className="sr-only">{t('editProfile.coverUploading')}</span>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => coverRef.current?.click()}
+                disabled={coverBusy}
+                className="inline-flex items-center gap-2 rounded-xl bg-interactive hover:bg-interactive-hover px-4 py-2.5 text-sm font-semibold text-white transition-all disabled:opacity-50"
+                data-edit-cover-change
+              >
+                <ImagePlus size={16} aria-hidden="true" />{t('editProfile.coverChange')}
+              </button>
+              {profile.cover_url && (
+                <button
+                  type="button"
+                  onClick={handleCoverRemove}
+                  disabled={coverBusy}
+                  className="inline-flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 px-4 py-2.5 text-sm font-semibold text-gray-600 dark:text-gray-300 transition-all disabled:opacity-50"
+                  data-edit-cover-remove
+                >
+                  <Trash2 size={16} aria-hidden="true" />{t('editProfile.coverRemove')}
+                </button>
+              )}
+            </div>
+            <input ref={coverRef} type="file" accept="image/*" className="hidden" onChange={handleCoverChange} data-edit-cover-input />
+          </section>
+        )}
+
         {/* Error */}
         {error && (
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 rounded-2xl px-4 py-3">
@@ -218,7 +305,7 @@ export default function EditProfilePage() {
         {/* Save button */}
         <button
           onClick={handleSave}
-          disabled={saving || saved || uploadingAvatar}
+          disabled={saving || saved || uploadingAvatar || coverBusy}
           className={`w-full py-4 rounded-2xl font-bold text-base shadow-md transition-all flex items-center justify-center gap-2 ${
             saved
               ? 'bg-green-500 text-white'

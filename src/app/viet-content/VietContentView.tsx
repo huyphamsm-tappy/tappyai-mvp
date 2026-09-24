@@ -7,6 +7,7 @@ import VietContentForm from '@/components/VietContentForm'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 
 // Client view for the caption writer so all text is reactive to the language
 // toggle. The server page still does the profile fetch and passes user down.
@@ -15,7 +16,8 @@ export default function VietContentView({ user }: { user: ComponentProps<typeof 
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      <Header user={user} showBack backHref="/" title={t('vietContent.headerTitle')} />
+      {/* Back pops in-app history (Smart Tools, Home, …); a deep link falls back to /tools. */}
+      <Header user={user} showBack backFallbackHref={SMART_TOOLS_HREF} title={t('vietContent.headerTitle')} />
 
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-6">
         {/* Hero */}

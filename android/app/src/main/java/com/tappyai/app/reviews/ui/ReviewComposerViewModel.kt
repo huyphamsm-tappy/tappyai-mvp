@@ -341,8 +341,14 @@ class ReviewComposerViewModel @Inject constructor(
             "youtube" to { u: String -> u.contains("youtube.com") || u.contains("youtu.be") },
         )
         // Matches the web's MAX_PHOTOS_PER_REVIEW (src/lib/config/product.ts) and the backend's
-        // photos.slice(0, 6) cap; and the 5MB-per-file limit the upload route enforces.
+        // photos.slice(0, 6) cap; and the per-file limit the upload route enforces.
+        //
+        // Both numbers are served by GET /api/config as `upload.maxPhotosPerReview` and
+        // `upload.maxPhotoSizeMb` (the size one was added in the Phase 7 RC pass — until then no
+        // client could read it, which is how three platforms came to carry the same literal).
+        // These stay as the offline fallback; binary megabytes, the same convention web uses.
         const val MAX_PHOTOS = 6
-        const val MAX_PHOTO_BYTES = 5 * 1024 * 1024
+        const val MAX_PHOTO_SIZE_MB = 5
+        const val MAX_PHOTO_BYTES = MAX_PHOTO_SIZE_MB * 1024 * 1024
     }
 }

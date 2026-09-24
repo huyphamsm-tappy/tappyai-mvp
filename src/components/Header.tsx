@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useThemeMode } from '@/lib/theme/useThemeMode'
 import { displayName } from '@/lib/i18n/displayName'
+import { goBack as goBackInApp } from '@/lib/nav/inAppBack'
 
 interface HeaderProps {
   user?: { full_name?: string | null; avatar_url?: string | null; email?: string | null }
@@ -59,14 +60,16 @@ export default function Header({ user, showBack, backHref, backFallbackHref, tit
   const { isDark: dark, toggle: toggleDark } = useThemeMode()
   // Back pops history rather than pushing a destination, so the user returns to
   // wherever they actually came from. Only used when no fixed `backHref` is
-  // given. history.length === 1 means this tab opened directly on the page (a
-  // deep link, a shared URL, the Play Console listing), so there is nothing to
-  // pop — back() would dead-end, and in an Android TWA it would close the app.
-  // In that case go to the declared fallback instead, via replace() so the
-  // dead-end entry is not left behind in history.
+  // given. When this tab opened directly on the page (a deep link, a shared URL,
+  // the Play Console listing) there is nothing of ours to pop — back() would
+  // dead-end, and in an Android TWA it would close the app — so Back goes to the
+  // declared fallback instead, via replace() so the dead-end entry is not left
+  // behind in history. "Something of ours to pop" is `lib/nav/inAppBack`'s
+  // per-tab count; `history.length <= 1` was the earlier test and it under-counted
+  // (a fresh tab's blank entry already makes it 2).
   const goBack = () => {
-    if (backFallbackHref && typeof window !== 'undefined' && window.history.length <= 1) {
-      router.replace(backFallbackHref)
+    if (backFallbackHref) {
+      goBackInApp(router, backFallbackHref)
       return
     }
     router.back()

@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import { ChevronLeft, Plus, Minus, Trash2, Calculator, Coins, Users, Percent, Split, Utensils, Info, Receipt } from 'lucide-react'
-import Link from 'next/link'
 import BottomNav from '@/components/BottomNav'
+import InAppBackButton from '@/components/InAppBackButton'
+import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import AskTappyButton from '@/components/chat/AskTappyButton'
@@ -98,9 +99,10 @@ export default function SplitBillPage() {
     <div className="v3-theme v3-sb-page min-h-dvh pb-24">
       <div className="v3-sb-topbar sticky top-0 z-30 backdrop-blur">
         <div className="mx-auto flex w-full max-w-4xl items-center gap-3 px-4 py-3 sm:px-6">
-          <Link href="/" className="-ml-1.5 flex h-10 w-10 items-center justify-center rounded-xl transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2" aria-label={t('splitBill.title')}>
+          {/* Back pops in-app history; a deep link falls back to the tool's parent, /tools. */}
+          <InAppBackButton fallbackHref={SMART_TOOLS_HREF} className="-ml-1.5 flex h-10 w-10 items-center justify-center rounded-xl transition-colors hover:bg-white/5 focus:outline-none focus-visible:ring-2" aria-label={t('common.back')}>
             <ChevronLeft size={20} aria-hidden="true" />
-          </Link>
+          </InAppBackButton>
           <span className="text-[15px] font-semibold">{t('splitBill.title')}</span>
         </div>
       </div>

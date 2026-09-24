@@ -49,9 +49,12 @@ export default function ChatConversation({ conversation }: { conversation: Conve
       {/* The saved-conversation header carries the same approved pose as the live
         * one — the two are the same surface and must not disagree. See the note
         * in src/app/chat/page.tsx. */}
+      {/* Phase 7 §13: Back pops the in-app history; Home is only the fallback. A fixed
+        * `backHref="/"` sent Back to Home even when the user arrived from
+        * /profile/history or from a notification. */}
       <Header
         showBack
-        backHref="/"
+        backFallbackHref="/"
         title={catInfo ? (
           <span className="inline-flex items-center justify-center gap-2">
             <TappyMascot pose={catInfo.id} size={24} alt="" />

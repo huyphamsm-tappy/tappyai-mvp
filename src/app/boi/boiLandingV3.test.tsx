@@ -15,8 +15,10 @@ vi.mock('@/components/NotificationProvider', () => ({
 // The legacy chrome is not what this file guards.
 vi.mock('@/components/Header', () => ({
   __esModule: true,
-  default: ({ title, showBack, backHref }: { title?: string; showBack?: boolean; backHref?: string }) => (
-    <header data-testid="header" data-back={showBack ? backHref : ''}>{title}</header>
+  // Phase 7: Back pops history and falls back to Smart Tools — a fixed `backHref="/"`
+  // sent every Back to Home (Smart Tools → Xem bói → Back → Home).
+  default: ({ title, showBack, backHref, backFallbackHref }: { title?: string; showBack?: boolean; backHref?: string; backFallbackHref?: string }) => (
+    <header data-testid="header" data-back={showBack ? backHref ?? '' : ''} data-back-fallback={showBack ? backFallbackHref ?? '' : ''}>{title}</header>
   ),
 }))
 vi.mock('@/components/BottomNav', () => ({ __esModule: true, default: () => <nav data-testid="bottom-nav" /> }))
@@ -43,11 +45,13 @@ const renderHub = () => render(<BoiLandingView user={undefined} />)
 const feature = (href: string) => document.querySelector(`[data-boi-feature="${href}"]`) as HTMLAnchorElement | null
 
 describe('the chrome it keeps', () => {
-  it('renders the existing back-bar with the same title and back target, and the bottom nav', () => {
+  it('renders the existing back-bar with the same title, a history-popping Back that falls back to Smart Tools, and the bottom nav', () => {
     renderHub()
     const header = screen.getByTestId('header')
     expect(header.textContent).toMatch(/xem bói|fortune telling/i)
-    expect(header.getAttribute('data-back')).toBe('/')
+    // No fixed parent: Back returns to wherever the person came from.
+    expect(header.getAttribute('data-back')).toBe('')
+    expect(header.getAttribute('data-back-fallback')).toBe('/tools')
     expect(screen.getByTestId('bottom-nav')).toBeTruthy()
   })
 })

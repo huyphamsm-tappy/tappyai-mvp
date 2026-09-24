@@ -67,7 +67,9 @@ describe('PATCH /api/profile — bio persists for a bearer-token (native) client
   it('a session-backed client writes metadata directly; the admin client is not touched', async () => {
     const res = await patch({ full_name: 'Huy', bio: 'Yêu du lịch' })
     expect(res.status).toBe(200)
-    expect(h.state.profileUpdates).toEqual([{ full_name: 'Huy' }])
+    // The bio is a `profiles` column again (20260915_profile_public_presentation, restored in
+    // Phase 7): the row every profile surface reads gets it, and the metadata keeps its copy.
+    expect(h.state.profileUpdates).toEqual([{ full_name: 'Huy', bio: 'Yêu du lịch' }])
     expect(h.state.adminCalls).toEqual([])
   })
 

@@ -1,13 +1,17 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import type Header from '@/components/Header'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { ArrowLeft, Share2, Download, Check } from 'lucide-react'
+import { ArrowLeft, Share2, Download, Loader2 } from 'lucide-react'
 import V3Shell from '@/components/v3/V3Shell'
+import ShareMenu from '@/components/share/ShareMenu'
 import { encodeQR, qrToSvg } from '@/lib/qr/qrcode'
+import { renderBrandedQrCard } from '@/lib/qr/brandedCard'
+import { absoluteUrl } from '@/lib/share/openGraph'
+import { goBack } from '@/lib/nav/inAppBack'
 
 // ── V3 Web · QR Profile ─────────────────────────────────────────────────────
 //
@@ -26,6 +30,15 @@ import { encodeQR, qrToSvg } from '@/lib/qr/qrcode'
 const QR_PX = 260
 /** Modules of quiet zone. 4 is the spec's minimum for reliable scanning. */
 const QR_MARGIN = 4
+/** The site as a person reads it on a printed card: no scheme, no trailing slash. */
+function cardWebsite(): string {
+  try {
+    return new URL(absoluteUrl('/')).host
+  } catch {
+    return ''
+  }
+}
+
 /** Downloaded at 3x so the PNG survives being printed or re-shared. */
 const DOWNLOAD_SCALE = 3
 
@@ -36,8 +49,10 @@ export default function QRProfileView({
   userInfo: ComponentProps<typeof Header>['user']
 }) {
   const { t } = useTranslation()
+  const router = useRouter()
   const [origin, setOrigin] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [shareOpen, setShareOpen] = useState(false)
+  const [downloading, setDownloading] = useState(false)
   const [failed, setFailed] = useState(false)
   const svgRef = useRef<HTMLDivElement>(null)
 
@@ -73,68 +88,59 @@ export default function QRProfileView({
 
   const displayName = userInfo?.full_name?.trim() || ''
 
-  async function share() {
-    if (!profileUrl) return
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: displayName || 'TappyAI', url: profileUrl })
-        return
-      }
-    } catch {
-      // Cancelled, or the sheet refused — fall through to the clipboard rather
-      // than leaving the button feeling dead.
-    }
-    try {
-      await navigator.clipboard.writeText(profileUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1800)
-    } catch {
-      /* nothing further to offer; the URL is on screen under the code */
-    }
-  }
+  /**
+   * Share goes through the TappyAI share menu, not `navigator.share`.
+   *
+   * 🚨 The direct call was the raw OS dialog: on Windows that lists Nearby
+   * Sharing, Teams and Outlook, and no Zalo, Facebook or WhatsApp anywhere
+   * (Phase 7, item 8). `ShareMenu` is the sheet every other share in the product
+   * already uses — Copy link, Zalo, Facebook, WhatsApp, Telegram, Email, the
+   * Inbox, Save, and the OS sheet as ONE option only where `navigator.share`
+   * exists. It never claims an app is installed: a desktop Zalo tile says
+   * "copy link", Messenger is absent where its scheme cannot resolve.
+   *
+   * 🔑 The link it carries is the CANONICAL public profile URL
+   * (`absoluteUrl('/users/<id>')`, the only host `isShareableUrl` admits) — never
+   * `window.location`, which on a preview deployment or localhost would hand
+   * out an address a recipient cannot open.
+   */
+  const shareUrl = absoluteUrl(`/users/${userId}`)
 
   /**
-   * Download the code the page is showing.
+   * Download: the branded card (Phase 7, item 9).
    *
-   * 🔑 Rasterised from the SAME SVG that is rendered, so the file and the screen
-   * cannot disagree — and drawn through a Blob URL rather than a data: URI so no
-   * canvas taint applies. A failure leaves the page alone; the QR on screen is
-   * still scannable, which is the primary path.
+   * 🔑 The card encodes the SAME `profileUrl` the on-screen code encodes — the
+   * same `encodeQR`, the same payload — with the shipped lockup, the display
+   * name and the caption AROUND the code, never on it, so it still scans (see
+   * `lib/qr/brandedCard.ts`). A failure leaves the page alone; the QR on screen
+   * is still scannable, which is the primary path.
    */
-  function download() {
-    const markup = svgRef.current?.querySelector('svg')?.outerHTML
-    if (!markup) return
-    const blob = new Blob([markup], { type: 'image/svg+xml;charset=utf-8' })
-    const blobUrl = URL.createObjectURL(blob)
-    const img = new window.Image()
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas')
-        canvas.width = QR_PX * DOWNLOAD_SCALE
-        canvas.height = QR_PX * DOWNLOAD_SCALE
-        const ctx = canvas.getContext('2d')
-        if (!ctx) return
-        // White ground first: a transparent PNG dropped onto a dark chat bubble
-        // is an unscannable code.
-        ctx.fillStyle = '#FFFFFF'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.imageSmoothingEnabled = false
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
-        canvas.toBlob(png => {
-          if (!png) return
-          const href = URL.createObjectURL(png)
-          const a = document.createElement('a')
-          a.href = href
-          a.download = 'tappyai-qr.png'
-          a.click()
-          URL.revokeObjectURL(href)
-        }, 'image/png')
-      } finally {
-        URL.revokeObjectURL(blobUrl)
-      }
+  async function download() {
+    if (!profileUrl || downloading) return
+    setDownloading(true)
+    try {
+      const png = await renderBrandedQrCard({
+        text: profileUrl,
+        displayName,
+        caption: t('v3.qr.scanHint'),
+        // The product line and the site, both already configuration: `v3.page.subtitle` is the
+        // shipped tagline and the host comes from NEXT_PUBLIC_SITE_URL via `absoluteUrl`.
+        // No store badges — see the note on `website` in brandedCard.ts.
+        tagline: t('v3.page.subtitle'),
+        website: cardWebsite(),
+        qrPx: QR_PX * DOWNLOAD_SCALE,
+        quietModules: QR_MARGIN,
+      })
+      if (!png) return
+      const href = URL.createObjectURL(png)
+      const a = document.createElement('a')
+      a.href = href
+      a.download = 'tappyai-qr.png'
+      a.click()
+      URL.revokeObjectURL(href)
+    } finally {
+      setDownloading(false)
     }
-    img.onerror = () => URL.revokeObjectURL(blobUrl)
-    img.src = blobUrl
   }
 
   return (
@@ -145,14 +151,19 @@ export default function QRProfileView({
       user={userInfo ? { name: userInfo.full_name, avatarUrl: userInfo.avatar_url } : null}
     >
       <div className="mx-auto w-full max-w-[440px]">
-        <Link
-          href="/profile"
+        {/* Back pops in-app history — the Profile page, the sidebar row's origin, wherever the
+            person came from; a deep link falls back to /profile. It was a fixed link to /profile,
+            which pushed a new entry instead of returning (Phase 7, item 7). */}
+        <button
+          type="button"
+          onClick={() => goBack(router, '/profile')}
           className="mb-3 inline-flex items-center gap-1.5 text-[13px] font-semibold"
           style={{ color: 'var(--v3-fg-muted)' }}
+          data-in-app-back="/profile"
         >
           <ArrowLeft size={16} />
           {t('v3.qr.back')}
-        </Link>
+        </button>
 
         <section className="v3-panel flex flex-col items-center p-6 text-center sm:p-7">
           <h1 className="text-[17px] font-extrabold" style={{ color: 'var(--v3-fg)' }}>
@@ -189,23 +200,25 @@ export default function QRProfileView({
           <div className="mt-6 w-full space-y-2">
             <button
               type="button"
-              onClick={() => void share()}
+              onClick={() => setShareOpen(true)}
               disabled={!profileUrl}
               className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl text-[14px] font-semibold transition-opacity disabled:opacity-50"
               style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+              data-qr-share
             >
-              {copied ? <Check size={17} /> : <Share2 size={17} />}
-              {copied ? t('v3.qr.copied') : t('v3.qr.share')}
+              <Share2 size={17} />
+              {t('v3.qr.share')}
             </button>
 
             <button
               type="button"
-              onClick={download}
-              disabled={!svg}
+              onClick={() => void download()}
+              disabled={!svg || downloading}
               className="flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl border text-[14px] font-semibold transition-opacity disabled:opacity-50"
               style={{ background: 'var(--v3-panel-elevated)', borderColor: 'var(--v3-border)', color: 'var(--v3-fg)' }}
+              data-qr-download
             >
-              <Download size={17} />
+              {downloading ? <Loader2 size={17} className="animate-spin" /> : <Download size={17} />}
               {t('v3.qr.download')}
             </button>
           </div>
@@ -215,6 +228,13 @@ export default function QRProfileView({
           </p>
         </section>
       </div>
+
+      <ShareMenu
+        url={shareUrl}
+        title={displayName ? `${displayName} · TappyAI` : 'TappyAI'}
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+      />
     </V3Shell>
   )
 }

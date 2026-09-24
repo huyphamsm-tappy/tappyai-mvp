@@ -8,6 +8,7 @@ import {
   SCAM_SHIELD_DAILY_LIMIT_AUTH,
   SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
+  MAX_PHOTO_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
   MAX_VIDEO_DURATION_ACCEPT_SEC,
@@ -49,6 +50,10 @@ export async function GET() {
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
+        // The per-photo ceiling POST /api/reviews/upload actually applies. It was the one upload
+        // rule the clients could not read, so iOS carried its own 5 * 1024 * 1024 literal and would
+        // have kept rejecting at 5MB after a server change.
+        maxPhotoSizeMb: MAX_PHOTO_SIZE_MB,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
         // The validation ceiling, so a client pre-checking for UX uses the same boundary the

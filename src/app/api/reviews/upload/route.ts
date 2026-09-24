@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
 
   const file = formData.get('file') as File | null
   if (!file) return NextResponse.json({ error: 'file_not_found', message: serverMessage('media.fileNotFound', requestLocale(req)) }, { status: 400 })
-  if (file.size > MAX_FILE_SIZE) return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTooLarge5', requestLocale(req)) }, { status: 400 })
+  if (file.size > MAX_FILE_SIZE) return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTooLarge', requestLocale(req), { n: String(MAX_PHOTO_SIZE_MB) }) }, { status: 400 })
 
   // Validate the REAL file type by its magic bytes, not the client-supplied
   // MIME/extension — blocks SVG/HTML-as-image (stored-XSS) and mislabeled files.

@@ -25,7 +25,9 @@ export const vi: Record<string, string> = {
   'v3.nav.community': 'Cộng đồng',
   'v3.nav.commerce': 'Thương mại',
   'v3.nav.tools': 'Công cụ & tiện ích',
-  'v3.nav.account': 'Tài khoản',
+  // The GROUP header over Profile / Me · Tài khoản · Cài đặt — "MY ACCOUNT" in the
+  // canonical references. It read "Tài khoản", the same words as the row beneath it.
+  'v3.nav.account': 'Tài khoản của tôi',
   'v3.nav.settings': 'Cài đặt & khác',
   'v3.nav.ariaMain': 'Điều hướng chính',
   'v3.nav.ariaTabs': 'Khu vực chính',
@@ -148,8 +150,12 @@ export const vi: Record<string, string> = {
   // by CSS. `v3.tab.aiAgent` ("AI Agent") is the TAB's label and is not this string.
   'v3.home.cardLabel': 'AI Agent – Home',
   'v3.home.quickTitle': 'Gợi ý nhanh',
-  'v3.home.forYouTitle': 'Gợi ý dành cho bạn',
-  'v3.home.forYouSub': 'Được cá nhân hóa bởi Tappy AI',
+  // Phase 7: this strip is PROMPT ideas (`getDynamicPrompts` → each card opens /chat). It is
+  // not the personalised-places page — that is `/recommendations`, "Gợi ý cho bạn" — and the
+  // two were named alike, with this strip's "see all" opening that other feature.
+  'v3.home.forYouTitle': 'Hỏi Tappy thử',
+  'v3.home.forYouSub': 'Gợi ý câu hỏi theo thời điểm và sở thích của bạn',
+  'v3.home.forYouAction': 'Mở trò chuyện',
   'v3.home.toolsSub': 'Để Tappy giúp bạn nhanh hơn',
   'v3.chip.cafe': 'Quán cafe view đẹp',
   'v3.chip.plan': 'Lên kế hoạch du lịch',
@@ -597,7 +603,10 @@ export const vi: Record<string, string> = {
   'v3.post.live': 'Livestream',
 
   // ── Smart tools ─────────────────────────────────────────────────────────
-  'v3.tool.suggest': 'Gợi ý',
+  // Phase 7: ONE name for `/recommendations`. Home's "see all", this tile and the sidebar
+  // row all open the same personalised-places page; it was "Gợi ý" here and "Search" on the
+  // sidebar row, so one destination read as two or three features.
+  'v3.tool.suggest': 'Gợi ý cho bạn',
   // The ONE key this redesign added: every other tool already had a description and this
   // one did not, so the card had nothing to say. Wording taken from the destination's own
   // `recommendations.subtitle`, not invented for the tile.
@@ -614,7 +623,9 @@ export const vi: Record<string, string> = {
   'v3.tool.splitDesc': 'Chia đều hóa đơn theo người / món',
   'v3.tool.translate': 'Dịch',
   'v3.tool.translateDesc': 'Dịch nhanh hơn 100 ngôn ngữ',
-  'v3.tool.safety': 'An toàn',
+  // Phase 7: the tool's Vietnamese name is "Cảnh báo lừa đảo" everywhere it is shown (nav
+  // row, page title, this tile). "Scam Shield" stays an internal/EN name only.
+  'v3.tool.safety': 'Cảnh báo lừa đảo',
   'v3.tool.safetyDesc': 'Kiểm tra link, website mã QR an toàn',
   'v3.tool.music': 'Nhạc',
   'v3.tool.musicDesc': 'Nghe & chọn nhạc nền cho review của bạn',
@@ -726,7 +737,7 @@ export const en: Record<string, string> = {
   'v3.nav.community': 'Community',
   'v3.nav.commerce': 'Commerce',
   'v3.nav.tools': 'Tools & utilities',
-  'v3.nav.account': 'Account',
+  'v3.nav.account': 'My account',
   'v3.nav.settings': 'Settings & more',
   'v3.nav.ariaMain': 'Main navigation',
   'v3.nav.ariaTabs': 'Primary sections',
@@ -838,8 +849,9 @@ export const en: Record<string, string> = {
   'v3.home.sendAria': 'Send',
   'v3.home.cardLabel': 'AI Agent – Home',
   'v3.home.quickTitle': 'Quick suggestions',
-  'v3.home.forYouTitle': 'Suggested for you',
-  'v3.home.forYouSub': 'Personalised by Tappy AI',
+  'v3.home.forYouTitle': 'Try asking Tappy',
+  'v3.home.forYouSub': 'Prompt ideas for this moment and your tastes',
+  'v3.home.forYouAction': 'Open chat',
   'v3.home.toolsSub': 'So Tappy can help you faster',
   'v3.chip.cafe': 'Cafés with a view',
   'v3.chip.plan': 'Plan a trip',
@@ -1236,7 +1248,7 @@ export const en: Record<string, string> = {
   'v3.post.live': 'Livestream',
 
   // ── Smart tools ─────────────────────────────────────────────────────────
-  'v3.tool.suggest': 'Suggestions',
+  'v3.tool.suggest': 'Suggested for you',
   'v3.tool.suggestDesc': 'Personalised places for your taste',
   'v3.tool.fortune': 'Fortune Today',
   'v3.tool.fortuneDesc': "Today's reading for your sign",
@@ -1250,7 +1262,7 @@ export const en: Record<string, string> = {
   'v3.tool.splitDesc': 'Split a bill evenly, by person or by item',
   'v3.tool.translate': 'Translate',
   'v3.tool.translateDesc': 'Fast translation in 100+ languages',
-  'v3.tool.safety': 'Safety Check',
+  'v3.tool.safety': 'Scam Alerts',
   'v3.tool.safetyDesc': 'Check a link, website or QR code is safe',
   'v3.tool.music': 'Music Library',
   'v3.tool.musicDesc': 'Find a soundtrack for your review',
