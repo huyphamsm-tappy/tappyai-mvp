@@ -1,4 +1,5 @@
 import { execSync } from 'node:child_process'
+import { assertNotProduction } from './scripts/prodEnvGuard.mjs'
 
 // ── Environment identity + production-DB startup guard (consolidation 2026-09-24) ──
 // Prevents the "UAT'd the wrong worktree on the production database" class of bug.
@@ -12,23 +13,11 @@ function gitInfo() {
 }
 const GIT = gitInfo()
 const WORKTREE = process.cwd()
-const SUPABASE_REF = (String(process.env.NEXT_PUBLIC_SUPABASE_URL || '').match(/([a-z0-9]{20})\.supabase\.co/) || [])[1] || 'none'
-const PROD_SUPABASE_REF = 'fwznnobrdctuskgrvuik'
-
-// Refuse to start a dev server pointed at the PRODUCTION Supabase project.
-// An explicit override exists, but it is never silent.
-if (
-  process.env.NODE_ENV !== 'production' &&
-  SUPABASE_REF === PROD_SUPABASE_REF &&
-  process.env.ALLOW_PROD_SUPABASE_IN_DEV !== '1'
-) {
-  throw new Error(
-    `\n\n🛑 REFUSING TO START — dev server is pointed at the PRODUCTION Supabase project (${PROD_SUPABASE_REF}).\n` +
-    `   Worktree: ${WORKTREE}\n   Branch:   ${GIT.branch} @ ${GIT.sha}\n\n` +
-    `   Fix: point .env.local NEXT_PUBLIC_SUPABASE_URL at the AUDIT project (zdaprdfgpbpnxyofagmc).\n` +
-    `   Override (NOT recommended): ALLOW_PROD_SUPABASE_IN_DEV=1 npm run dev\n`
-  )
-}
+// Refuse `next dev`, `next build` AND `next start` when anything — a process env value or any env
+// file Next loads (.env.production.local included) — points at the PRODUCTION Supabase project.
+// Only a real Vercel build is exempt. The override is loud on every start. See prodEnvGuard.mjs.
+const NEXT_COMMAND = (process.argv.find((a) => ['dev', 'build', 'start'].includes(a))) || 'unknown'
+assertNotProduction({ command: NEXT_COMMAND })
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
