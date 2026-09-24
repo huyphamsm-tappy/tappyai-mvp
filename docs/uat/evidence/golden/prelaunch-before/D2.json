@@ -1,0 +1,1190 @@
+{
+  "id": "D2",
+  "group": "district-named",
+  "criteria": [
+    "Every card's ADDRESS is in Bình Thạnh (explicit 'Bình Thạnh' or a Bình Thạnh ward: Gia Định, Bình Lợi Trung, Thạnh Mỹ Tây, Bình Quới), or is explicitly marked as outside",
+    "The prose never presents a venue outside Bình Thạnh as being in Bình Thạnh",
+    "Stated Bình Thạnh beats the Quận 1 GPS"
+  ],
+  "turns": [
+    {
+      "user": "Quán cà phê yên tĩnh để làm việc ở Bình Thạnh",
+      "status": 200,
+      "elapsedMs": 12954,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán cà phê yên tĩnh làm việc Bình Thạnh",
+            "location": "Bình Thạnh, TP HCM",
+            "type": "cafe"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+              "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2459,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê",
+                "Quán cà phê nghệ thuật",
+                "Cửa hàng cà phê",
+                "Không gian làm việc chia sẻ",
+                "Quán cà phê internet"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 2.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+              "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 158,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 2.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cỏ cafe",
+              "address": "1C Mê Linh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1032,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:30",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cà Kê Café",
+              "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 614,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 3.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhâm Coffee",
+              "address": "195/10/2 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 2687,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 2.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "2PM Coffee",
+              "address": "135/39 Nguyễn Hữu Cảnh, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 761,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê espresso",
+                "Quán cà phê nghệ thuật"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 2.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cú Trên Cây Coffee",
+              "address": "262 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1831,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:30",
+              "open": false,
+              "distanceKm": 3.8,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gathering coffee",
+              "address": "Bạch Đằng, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 408,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:30–22:00",
+              "open": false,
+              "distanceKm": 3,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79312,106.71171",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNk36wkcaIOz-YN4-7F_KIIg1k1nLhOOsremRFFmdO_ohfTnPQaS69p2KqolYZ-60uZa7ul-ZHen9uN0M7uTNltFA8yx4qa1DWf8DUEDcObCkEB_M4l57-RdPcQiq8f69PmGZCa3w",
+                "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2459,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 707 014 095",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Quán cà phê",
+                  "Quán cà phê nghệ thuật",
+                  "Cửa hàng cà phê",
+                  "Không gian làm việc chia sẻ",
+                  "Quán cà phê internet"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11556591421643182041",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Bamos%20Coffee%20B%C3%ACnh%20Th%E1%BA%A1nh%20-%20C%C3%A0%20ph%C3%AA%2024h%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84707014095",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79940,106.70709",
+                "domain": "food",
+                "kind": "place",
+                "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmjGQTf59yMXt6urcfMQteOBNxpINY69dEYS-6tuu8z3hZ6ltvHqT34Tq0Idg1x55Eprx4UVDXyFoxxLmumrjmSTJUZK3yL8pTiGI7o85SsWniSyM0LH8RwitEIvW7lOUq9OhO2XKKrxw",
+                "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 158,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 779 184 722",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 2.6,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6053567326639024822",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FOCUS%20SPACE%20-%20Cafe%20h%E1%BB%8Dc%20t%E1%BA%ADp%20%26%20l%C3%A0m%20vi%E1%BB%87c%20(CN%20B%C3%ACnh%20Th%E1%BA%A1nh)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84779184722",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78827,106.70925",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cỏ cafe",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPdjtp9OJMKBD_ugoy6OS_GSdBlvoHNHSIpsAMisN9DdygtgmJWwZDkUYoBBb6w1N32Ri8zNFysPm37g2Dp7ufM7QMWQurSKaoFZdx9r5tbAJd8yzERz1Nj0gosWkgokD4jHPA",
+                "address": "1C Mê Linh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1032,
+                "openingHours": "07:00–22:30",
+                "openNow": false,
+                "phone": "+84 909 763 314",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–22:30",
+                  "Thứ Sáu": "07:00–22:30",
+                  "Thứ Bảy": "07:00–22:30",
+                  "Chủ Nhật": "07:00–22:30",
+                  "Thứ Hai": "07:00–22:30",
+                  "Thứ Ba": "07:00–22:30",
+                  "Thứ Tư": "07:00–22:30"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14233944808103183148",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BB%8F%20cafe%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909763314",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80279,106.71476",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cà Kê Café",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMBoGr6JxFEeX_WYaWz3EHyoZpi2TEcnu6gZIhWC8qW-NZBhnDwRRkLTnSRfW5LpoGhlwhCtGJOtz1o5bFQ4GKLdX_GEODL2NhFWSftnUzOhJx9CAZUlCoRNYALwlDSMowfgGUY",
+                "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 614,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 3.3,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15434151642040852027",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%A0%20K%C3%AA%20Caf%C3%A9%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80075,106.70679",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhâm Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM0Ixy8a1axnl7IjdUk-JbnDBPWdy-6OuVCVx_b-t6WRW8_RJ-BThte8cn8eMQzeS_hqI2bSr2EOvE6LMh06moefrn5hbTUog4wc1QbEUNtpkyBVShh6pj386Z0cVKCKFzY3tJ7-aQ7poA",
+                "address": "195/10/2 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 2687,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 868 360 453",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 2.7,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14008787243764351018",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A2m%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84868360453",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79724,106.71787",
+                "domain": "food",
+                "kind": "place",
+                "name": "2PM Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOTJoueBFPdSDMcTX2wDYVHs0iRJj0aBJ4Wf8JL3hegF-UBU4yRw2nk9F01HF5m3PkQayo7jjnFd3e1J6_ySYOkRp736vRcVuJlVhymqeXOD6imOU4elvJ6SkiTkH5X5Lf88slx",
+                "address": "135/39 Nguyễn Hữu Cảnh, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 761,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 902 990 096",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 2.9,
+                "categories": [
+                  "Quán cà phê espresso",
+                  "Quán cà phê nghệ thuật"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10322761097247355378",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=2PM%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902990096",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80404,106.72151",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cú Trên Cây Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPnEXh3UEB748pHtPbbtWT1JDnbdbgwYnsUSjQcMj0A8OQBlZDIyIuflXDTnYUEeTg6xHzKKaH0jGA-W0EB4-dWq0cvSMvMyBqueig2G6iKZkgqiXZumxKOODC5H0YagD-EzwZCBw",
+                "address": "262 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1831,
+                "openingHours": "07:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 6271 4757",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–22:30",
+                  "Thứ Sáu": "07:00–22:30",
+                  "Thứ Bảy": "07:00–22:30",
+                  "Chủ Nhật": "07:00–22:30",
+                  "Thứ Hai": "07:00–22:30",
+                  "Thứ Ba": "07:00–22:30",
+                  "Thứ Tư": "07:00–22:30"
+                },
+                "distanceKm": 3.8,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10207895429550582202",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%BA%20Tr%C3%AAn%20C%C3%A2y%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862714757",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80354,106.69958",
+                "domain": "food",
+                "kind": "place",
+                "name": "Gathering coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP8FUIBNwSw_NYj3tAU2ri_AGrzgwEzX2TANhiBo-_HZXdrBas64ntEUhf4Hz6NApFdPQ1I_XXOHnUC9gIDvQso1N9Nr4mU2uR4OduhThbCoA8fnFkMVk40usqF6v97Ey76Sfsj",
+                "address": "Bạch Đằng, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 408,
+                "openingHours": "07:30–22:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–22:00",
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00",
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00"
+                },
+                "distanceKm": 3,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14366153936786452189",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Gathering%20coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20l%C3%A0m%20vi%E1%BB%87c%20B%C3%ACnh%20Th%E1%BA%A1nh%20B%C3%ACnh%20Th%E1%BA%A1nh%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+              "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2459,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê",
+                "Quán cà phê nghệ thuật",
+                "Cửa hàng cà phê",
+                "Không gian làm việc chia sẻ",
+                "Quán cà phê internet"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 2.2,
+              "recommended": true,
+              "reasons": [
+                "rated 4.7",
+                "2.2km away",
+                "2459 reviews"
+              ]
+            },
+            {
+              "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+              "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 158,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 2.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cỏ cafe",
+              "address": "1C Mê Linh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1032,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:30",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cà Kê Café",
+              "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 614,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 3.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhâm Coffee",
+              "address": "195/10/2 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 2687,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 2.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "2PM Coffee",
+              "address": "135/39 Nguyễn Hữu Cảnh, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 761,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê espresso",
+                "Quán cà phê nghệ thuật"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 2.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cú Trên Cây Coffee",
+              "address": "262 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1831,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:30",
+              "open": false,
+              "distanceKm": 3.8,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gathering coffee",
+              "address": "Bạch Đằng, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 408,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:30–22:00",
+              "open": false,
+              "distanceKm": 3,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.79312,106.71171",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNk36wkcaIOz-YN4-7F_KIIg1k1nLhOOsremRFFmdO_ohfTnPQaS69p2KqolYZ-60uZa7ul-ZHen9uN0M7uTNltFA8yx4qa1DWf8DUEDcObCkEB_M4l57-RdPcQiq8f69PmGZCa3w",
+                "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2459,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 707 014 095",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Quán cà phê",
+                  "Quán cà phê nghệ thuật",
+                  "Cửa hàng cà phê",
+                  "Không gian làm việc chia sẻ",
+                  "Quán cà phê internet"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.7",
+                    "params": {
+                      "value": 4.7
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "2.2km away",
+                    "params": {
+                      "km": 2.2
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "2459 reviews",
+                    "params": {
+                      "count": 2459
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "rating",
+                  "evidence": "rated 4.8",
+                  "params": {
+                    "value": 4.8
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11556591421643182041",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Bamos%20Coffee%20B%C3%ACnh%20Th%E1%BA%A1nh%20-%20C%C3%A0%20ph%C3%AA%2024h%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84707014095",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79940,106.70709",
+                "domain": "food",
+                "kind": "place",
+                "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmjGQTf59yMXt6urcfMQteOBNxpINY69dEYS-6tuu8z3hZ6ltvHqT34Tq0Idg1x55Eprx4UVDXyFoxxLmumrjmSTJUZK3yL8pTiGI7o85SsWniSyM0LH8RwitEIvW7lOUq9OhO2XKKrxw",
+                "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 158,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 779 184 722",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 2.6,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@focus.space4/video/7688217392496774420",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6053567326639024822",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84779184722",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FOCUS%20SPACE%20-%20Cafe%20h%E1%BB%8Dc%20t%E1%BA%ADp%20%26%20l%C3%A0m%20vi%E1%BB%87c%20(CN%20B%C3%ACnh%20Th%E1%BA%A1nh)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78827,106.70925",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cỏ cafe",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPdjtp9OJMKBD_ugoy6OS_GSdBlvoHNHSIpsAMisN9DdygtgmJWwZDkUYoBBb6w1N32Ri8zNFysPm37g2Dp7ufM7QMWQurSKaoFZdx9r5tbAJd8yzERz1Nj0gosWkgokD4jHPA",
+                "address": "1C Mê Linh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1032,
+                "openingHours": "07:00–22:30",
+                "openNow": false,
+                "phone": "+84 909 763 314",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–22:30",
+                  "Thứ Sáu": "07:00–22:30",
+                  "Thứ Bảy": "07:00–22:30",
+                  "Chủ Nhật": "07:00–22:30",
+                  "Thứ Hai": "07:00–22:30",
+                  "Thứ Ba": "07:00–22:30",
+                  "Thứ Tư": "07:00–22:30"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14233944808103183148",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BB%8F%20cafe%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909763314",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80279,106.71476",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cà Kê Café",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMBoGr6JxFEeX_WYaWz3EHyoZpi2TEcnu6gZIhWC8qW-NZBhnDwRRkLTnSRfW5LpoGhlwhCtGJOtz1o5bFQ4GKLdX_GEODL2NhFWSftnUzOhJx9CAZUlCoRNYALwlDSMowfgGUY",
+                "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 614,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 3.3,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15434151642040852027",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%A0%20K%C3%AA%20Caf%C3%A9%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80075,106.70679",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhâm Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM0Ixy8a1axnl7IjdUk-JbnDBPWdy-6OuVCVx_b-t6WRW8_RJ-BThte8cn8eMQzeS_hqI2bSr2EOvE6LMh06moefrn5hbTUog4wc1QbEUNtpkyBVShh6pj386Z0cVKCKFzY3tJ7-aQ7poA",
+                "address": "195/10/2 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 2687,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 868 360 453",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 2.7,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14008787243764351018",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A2m%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84868360453",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79724,106.71787",
+                "domain": "food",
+                "kind": "place",
+                "name": "2PM Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOTJoueBFPdSDMcTX2wDYVHs0iRJj0aBJ4Wf8JL3hegF-UBU4yRw2nk9F01HF5m3PkQayo7jjnFd3e1J6_ySYOkRp736vRcVuJlVhymqeXOD6imOU4elvJ6SkiTkH5X5Lf88slx",
+                "address": "135/39 Nguyễn Hữu Cảnh, Thạnh Mỹ Tây, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 761,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 902 990 096",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 2.9,
+                "categories": [
+                  "Quán cà phê espresso",
+                  "Quán cà phê nghệ thuật"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10322761097247355378",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=2PM%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902990096",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80404,106.72151",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cú Trên Cây Coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPnEXh3UEB748pHtPbbtWT1JDnbdbgwYnsUSjQcMj0A8OQBlZDIyIuflXDTnYUEeTg6xHzKKaH0jGA-W0EB4-dWq0cvSMvMyBqueig2G6iKZkgqiXZumxKOODC5H0YagD-EzwZCBw",
+                "address": "262 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1831,
+                "openingHours": "07:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 6271 4757",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–22:30",
+                  "Thứ Sáu": "07:00–22:30",
+                  "Thứ Bảy": "07:00–22:30",
+                  "Chủ Nhật": "07:00–22:30",
+                  "Thứ Hai": "07:00–22:30",
+                  "Thứ Ba": "07:00–22:30",
+                  "Thứ Tư": "07:00–22:30"
+                },
+                "distanceKm": 3.8,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10207895429550582202",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%BA%20Tr%C3%AAn%20C%C3%A2y%20Coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862714757",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80354,106.69958",
+                "domain": "food",
+                "kind": "place",
+                "name": "Gathering coffee",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP8FUIBNwSw_NYj3tAU2ri_AGrzgwEzX2TANhiBo-_HZXdrBas64ntEUhf4Hz6NApFdPQ1I_XXOHnUC9gIDvQso1N9Nr4mU2uR4OduhThbCoA8fnFkMVk40usqF6v97Ey76Sfsj",
+                "address": "Bạch Đằng, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 408,
+                "openingHours": "07:30–22:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:30–22:00",
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00",
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00"
+                },
+                "distanceKm": 3,
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14366153936786452189",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Gathering%20coffee%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20l%C3%A0m%20vi%E1%BB%87c%20B%C3%ACnh%20Th%E1%BA%A1nh%20B%C3%ACnh%20Th%E1%BA%A1nh%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.79312,106.71171",
+              "place:osm:10.79940,106.70709",
+              "place:osm:10.78827,106.70925"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.79312,106.71171",
+            "place:osm:10.79940,106.70709",
+            "place:osm:10.78827,106.70925"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Bamos Coffee Bình Thạnh - Cà phê 24h",
+          "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+          "Cỏ cafe",
+          "Cà Kê Café",
+          "Nhâm Coffee",
+          "2PM Coffee",
+          "Cú Trên Cây Coffee",
+          "Gathering coffee"
+        ],
+        [
+          "Bamos Coffee Bình Thạnh - Cà phê 24h",
+          "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+          "Cỏ cafe",
+          "Cà Kê Café",
+          "Nhâm Coffee",
+          "2PM Coffee",
+          "Cú Trên Cây Coffee",
+          "Gathering coffee"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Bình Thạnh nhé! 🔍\n\nMình gợi ý **Bamos Coffee Bình Thạnh** cho bạn! 👍 Quán này có **4.7⭐**, mở cửa 24h nên bạn có thể làm việc bất cứ lúc nào. cách bạn khoảng 2.2km, và có wifi để làm việc.\n\nNếu bạn muốn không gian chuyên biệt hơn, **FOCUS SPACE** cũng là lựa chọn tốt — quán này được thiết kế riêng cho học tập & làm việc, đánh giá 4.8⭐, mở từ 7h-23h.\n\nCòn **Cỏ cafe** gần nhất (1.6km), yên tĩnh, 4.5⭐ nhưng đóng cửa lúc 22:30 nên nếu bạn muốn làm việc khuya thì không phù hợp.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bamos Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11556591421643182041\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]FOCUS SPACE chi tiết|Cỏ cafe yên tĩnh|Quán khác ở Bình Thạnh[/FOLLOWUPS]",
+      "visible": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Bình Thạnh nhé! 🔍\n\nMình gợi ý **Bamos Coffee Bình Thạnh** cho bạn! 👍 Quán này có **4.7⭐**, mở cửa 24h nên bạn có thể làm việc bất cứ lúc nào. cách bạn khoảng 2.2km, và có wifi để làm việc.\n\nNếu bạn muốn không gian chuyên biệt hơn, **FOCUS SPACE** cũng là lựa chọn tốt — quán này được thiết kế riêng cho học tập & làm việc, đánh giá 4.8⭐, mở từ 7h-23h.\n\nCòn **Cỏ cafe** gần nhất (1.6km), yên tĩnh, 4.5⭐ nhưng đóng cửa lúc 22:30 nên nếu bạn muốn làm việc khuya thì không phù hợp."
+    }
+  ]
+}

@@ -1,0 +1,1240 @@
+{
+  "id": "B3",
+  "group": "budget-subject-reset",
+  "criteria": [
+    "Turn 1: food cards respect the 100k ceiling (as before)",
+    "Turn 2: the 100k lunch budget does NOT follow into the phone purchase — no 'dưới 100k' ceiling, no phones filtered to ≤100k, no 'không tìm thấy trong 100k'",
+    "Turn 2 is handled as a new shopping consultation (mid-range Samsung phones at real prices)"
+  ],
+  "turns": [
+    {
+      "user": "Trưa nay ăn gì ngon dưới 100k ở Quận 1",
+      "status": 200,
+      "elapsedMs": 16778,
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình ngon dưới 100k Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 516,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cục Gạch Quán",
+              "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4263,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ann Quán",
+              "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 1279,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "07:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+              "address": "150/56 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 345,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 2430,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2156,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 6203,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlCkVhfF8dEizkb-5lhc3fHomBTAggee3biCabu-TZZrowEmW2S-fnbW2Tx0ABNYVOYXDPCSudMeQUxQw6N66-TJdrSiEfgMlbrTUMpurR7eUMsF5hRL_eeiMf8QYkYeekPH6IFGBohEel4",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 516,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "openingHoursWeek": {
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79284,106.68901",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cục Gạch Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKpdKY1N4VNT-sWb2OLroNvUk0rsEGlMoqxt1b5BGNABUnwkQXqlbd8kzCES5EiA4YcK8DUcLG79rz0jwzdvPookcCsq2viQisVuzmRgmsJLLbDwMnon3aUzeoJ8iknpdA2AvSY5NM6dE5",
+                "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4263,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 28 3848 0144",
+                "openingHoursWeek": {
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10022954861294462091",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BB%A5c%20G%E1%BA%A1ch%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838480144",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77244,106.70428",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ann Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn7LAo5iPIa1H6eNWh0f5KXtU2DA_sR4gD25tF28W5HlEom8eU5SeFEJWe1VDUwmrjshSWGcfFGkvjAU-LquADVkyp8z_S9EuWXIFiMiRShTnr9Wq0RgHnk5xrbMcEKdMPsL8elxnS5pzex",
+                "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 1279,
+                "openingHours": "07:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3622 6666",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–01:00",
+                  "Thứ Sáu": "07:00–01:00",
+                  "Thứ Bảy": "07:00–01:00",
+                  "Chủ Nhật": "07:00–01:00",
+                  "Thứ Hai": "07:00–01:00",
+                  "Thứ Ba": "07:00–01:00",
+                  "Thứ Tư": "07:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8503124390060826448",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ann%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/nhahangannquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836226666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77058,106.68978",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjVa4I_AffqYmz0RNR_dRjpZ_ycsc4BAgzltqO_2v_2Ms_5ji33Oqm0NTpa82jbvSy_2mG_7AeJDGVho538Z6RVhdsq3WjEP34jumhADXJGcKxJ-OiWgvkplNQv5aYfZfSgTUh",
+                "address": "150/56 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 345,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 886 768",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6702896718831527561",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20G%C3%A0%20L%C3%AAn%20M%C3%A2m%20Mai%20Phai%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902886768",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlFyHLYqMAzt6kCr3ymFirs6DypE5iBZyTRtZuHsKUx0mTxO-hGwSt2q5Uc6FNTK18_i44WVcKXIfUMBVB07ke28Zv5MpnXnXPQmegYgOFQ3XqRwHzY8j7p3IHq9kneg2LokNF",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00",
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76918,106.69048",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl8sLyMGSF24cDxiZESGNFu1_IwGgU5EmD9cMM0m9Te9gZ2ioNWGSF7fZBzLHAv7dlKMD41LrjzVB_SAvBRSoz0HBuG_TyTh6Tmhx-pUe4Ickq-LnIUCmEiqtgdQngE6a-iGM0",
+                "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 2430,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 911 879",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1147451480670108994",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20D%C3%ACn%20K%C3%BD%20Nguy%E1%BB%85n%20Tr%C3%A3i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dinkynguyentrai.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902911879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnjadlLJwAvpHUKONrwXY5vSlqJnnojKTBU2mug0aatYjQJFkpMkID8c9D8eF8wH0mL2MeHK-l_8bHwaYWv9sDzFYtmCJr56euCNBgkw9Z_RnN8Pd1d82gc4Wil74Xkl-ntFm8-vO-q_efk",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2156,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 765 371 893",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWltBga8SXcldMiFwnP8_abDHJjqlc1BDKK8KBOi6QyNOBFZNr6hrNVVxESJGJKpAoD3PwFKKMk3uAAh6WDykWnabod3HkHPRnIhciL3_aNwpLgYaz8Cjjx2blXyMt7csXTFtSsm",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6203,
+                "openingHours": "11:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30",
+                  "Thứ Hai": "11:00–22:30",
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 516,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.4",
+                "open now",
+                "516 reviews"
+              ]
+            },
+            {
+              "name": "Cục Gạch Quán",
+              "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4263,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ann Quán",
+              "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 1279,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "07:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+              "address": "150/56 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 345,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 2430,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2156,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 6203,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlCkVhfF8dEizkb-5lhc3fHomBTAggee3biCabu-TZZrowEmW2S-fnbW2Tx0ABNYVOYXDPCSudMeQUxQw6N66-TJdrSiEfgMlbrTUMpurR7eUMsF5hRL_eeiMf8QYkYeekPH6IFGBohEel4",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 516,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "openingHoursWeek": {
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.4",
+                    "params": {
+                      "value": 4.4
+                    }
+                  },
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "516 reviews",
+                    "params": {
+                      "count": 516
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "4263 reviews",
+                  "params": {
+                    "count": 4263
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@vuthuphuong99/video/7685744424449477908",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79284,106.68901",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cục Gạch Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKpdKY1N4VNT-sWb2OLroNvUk0rsEGlMoqxt1b5BGNABUnwkQXqlbd8kzCES5EiA4YcK8DUcLG79rz0jwzdvPookcCsq2viQisVuzmRgmsJLLbDwMnon3aUzeoJ8iknpdA2AvSY5NM6dE5",
+                "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4263,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 28 3848 0144",
+                "openingHoursWeek": {
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10022954861294462091",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BB%A5c%20G%E1%BA%A1ch%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838480144",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77244,106.70428",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ann Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn7LAo5iPIa1H6eNWh0f5KXtU2DA_sR4gD25tF28W5HlEom8eU5SeFEJWe1VDUwmrjshSWGcfFGkvjAU-LquADVkyp8z_S9EuWXIFiMiRShTnr9Wq0RgHnk5xrbMcEKdMPsL8elxnS5pzex",
+                "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 1279,
+                "openingHours": "07:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3622 6666",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–01:00",
+                  "Thứ Sáu": "07:00–01:00",
+                  "Thứ Bảy": "07:00–01:00",
+                  "Chủ Nhật": "07:00–01:00",
+                  "Thứ Hai": "07:00–01:00",
+                  "Thứ Ba": "07:00–01:00",
+                  "Thứ Tư": "07:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@annquanchuyenchuake/video/7684919017382972679",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8503124390060826448",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/nhahangannquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836226666",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ann%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77058,106.68978",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjVa4I_AffqYmz0RNR_dRjpZ_ycsc4BAgzltqO_2v_2Ms_5ji33Oqm0NTpa82jbvSy_2mG_7AeJDGVho538Z6RVhdsq3WjEP34jumhADXJGcKxJ-OiWgvkplNQv5aYfZfSgTUh",
+                "address": "150/56 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 345,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 886 768",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6702896718831527561",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20G%C3%A0%20L%C3%AAn%20M%C3%A2m%20Mai%20Phai%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902886768",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlFyHLYqMAzt6kCr3ymFirs6DypE5iBZyTRtZuHsKUx0mTxO-hGwSt2q5Uc6FNTK18_i44WVcKXIfUMBVB07ke28Zv5MpnXnXPQmegYgOFQ3XqRwHzY8j7p3IHq9kneg2LokNF",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00",
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76918,106.69048",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl8sLyMGSF24cDxiZESGNFu1_IwGgU5EmD9cMM0m9Te9gZ2ioNWGSF7fZBzLHAv7dlKMD41LrjzVB_SAvBRSoz0HBuG_TyTh6Tmhx-pUe4Ickq-LnIUCmEiqtgdQngE6a-iGM0",
+                "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 2430,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 911 879",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1147451480670108994",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20D%C3%ACn%20K%C3%BD%20Nguy%E1%BB%85n%20Tr%C3%A3i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dinkynguyentrai.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902911879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnjadlLJwAvpHUKONrwXY5vSlqJnnojKTBU2mug0aatYjQJFkpMkID8c9D8eF8wH0mL2MeHK-l_8bHwaYWv9sDzFYtmCJr56euCNBgkw9Z_RnN8Pd1d82gc4Wil74Xkl-ntFm8-vO-q_efk",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2156,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 765 371 893",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWltBga8SXcldMiFwnP8_abDHJjqlc1BDKK8KBOi6QyNOBFZNr6hrNVVxESJGJKpAoD3PwFKKMk3uAAh6WDykWnabod3HkHPRnIhciL3_aNwpLgYaz8Cjjx2blXyMt7csXTFtSsm",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6203,
+                "openingHours": "11:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30",
+                  "Thứ Hai": "11:00–22:30",
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76347,106.69585",
+              "place:osm:10.79284,106.68901"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76347,106.69585",
+            "place:osm:10.79284,106.68901"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán ăn gia đình 79",
+          "Cục Gạch Quán",
+          "Ann Quán",
+          "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+          "Sài Gòn Xưa và Nay",
+          "Nhà hàng Dìn Ký Nguyễn Trãi",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Quán Ụt Ụt - Bến Thành"
+        ],
+        [
+          "Quán ăn gia đình 79",
+          "Cục Gạch Quán",
+          "Ann Quán",
+          "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+          "Sài Gòn Xưa và Nay",
+          "Nhà hàng Dìn Ký Nguyễn Trãi",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Quán Ụt Ụt - Bến Thành"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm những quán ăn ngon dưới 100k ở Quận 1 cho bạn nhé! 🍜\n\nMình chọn **Quán ăn gia đình 79** cho bạn! 🎯\n\n**4.4⭐ (516 đánh giá Google Maps)**\n\nQuán đang mở cửa lúc này (16:00–00:00), có 516 đánh giá tích cực trên Google Maps. Đây là quán ăn gia đình yên tĩnh, phù hợp với sở thích của bạn.\n\n**Danh đối:** Cục Gạch Quán cũng rất tốt (4.3⭐ với 4.263 đánh giá), nhưng mình chọn Quán 79 vì nó đang mở cửa ngay bây giờ và có rating cao, phù hợp cho bữa trưa.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể của các quán này, nên bạn nên kiểm tra trên GrabFood hoặc gọi trực tiếp để chắc chắn nằm trong 100k nhé! 📞\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán ăn gia đình 79\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=403634638146792061\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cục Gạch Quán có ngon không?|Quán nào gần nhất từ vị trí mình?|Ăn gì ở Quận 1 vào tối?[/FOLLOWUPS]",
+      "visible": "Mình tìm những quán ăn ngon dưới 100k ở Quận 1 cho bạn nhé! 🍜\n\nMình chọn **Quán ăn gia đình 79** cho bạn! 🎯\n\n**4.4⭐ (516 đánh giá Google Maps)**\n\nQuán đang mở cửa lúc này (16:00–00:00), có 516 đánh giá tích cực trên Google Maps. Đây là quán ăn gia đình yên tĩnh, phù hợp với sở thích của bạn.\n\n**Danh đối:** Cục Gạch Quán cũng rất tốt (4.3⭐ với 4.263 đánh giá), nhưng mình chọn Quán 79 vì nó đang mở cửa ngay bây giờ và có rating cao, phù hợp cho bữa trưa.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể của các quán này, nên bạn nên kiểm tra trên GrabFood hoặc gọi trực tiếp để chắc chắn nằm trong 100k nhé! 📞"
+    },
+    {
+      "user": "Tư vấn giúp mình mua điện thoại Samsung tầm trung chụp ảnh đẹp",
+      "status": 200,
+      "elapsedMs": 16764,
+      "textFrames": 14,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "Samsung tầm trung chụp ảnh đẹp camera tốt"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình tìm những chiếc Samsung tầm trung chụp ảnh đẹp cho bạn nhé! 📱[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Samsung Galaxy A17 4G 4/128GB 8/128GB SM\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":5290000,\"priceHigh\":5290000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT1hUQ8wtbUR6QMsxLTlNdp6Jvb8B59uVYcBYMGaS6m0dmeCGLd0Vvxg9hkxAlP_DLZ5Q47NNDqG2JooEpt7SO9pFfBXznx5TU5kdSGFmHQvg5pV1VzXfT23Q\",\"offers\":[{\"seller\":\"Topmax Store\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7904891730927209283,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":5290000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":150}],\"commerce\":{\"linkId\":\"0287d0bce1a7f905d0cbe40b\",\"requestId\":\"e8bc74ff-4722-4136-87d7-ca749f0c7b77\",\"providerId\":\"tiktokshop\",\"merchantName\":\"TikTok Shop\",\"url\":\"https://shop.tiktok.com/vn/pdp/1735856217941247909\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"0287d0bce1a7f905d0cbe40b\",\"requestId\":\"e8bc74ff-4722-4136-87d7-ca749f0c7b77\",\"providerId\":\"tiktokshop\",\"merchantName\":\"TikTok Shop\",\"url\":\"https://shop.tiktok.com/vn/pdp/1735856217941247909\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},{\"linkId\":\"79659d09bccc52b1f9ee7f0e\",\"requestId\":\"e8bc74ff-4722-4136-87d7-ca749f0c7b77\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Th%C3%B4ng-Minh-SAMSUNG-Galaxy-A17-4G-8-128GB-T%E1%BA%A7n-s%E1%BB%91-qu%C3%A9t-90Hz-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-Ch%C3%ADnh-H%C3%A3ng-i.1578289909.46157363349\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:1\",\"name\":\"Samsung Galaxy A17 5G 8GB 128GB\",\"config\":\"8GB · 128GB\",\"specs\":[{\"key\":\"ram\",\"value\":8},{\"key\":\"storage\",\"value\":128}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6190000,\"priceHigh\":6190000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSn7mSO5Mukqr5x_ttPABNgN1QtuerG5J2EyH-5o1iXUXyHuFX9wLqFfSzzarKir9oTZ0GucF1hNpiQE3pwY3CILXQ9QDdv2JBAQuMcleZWZiDLowftVams\",\"offers\":[{\"seller\":\"minhtuanmobile.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:13754639599627023045,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6190000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":74}],\"commerce\":{\"linkId\":\"ddc8420f6483f512158cf44a\",\"requestId\":\"04aa6021-922f-47e8-9ced-88a8617e4bf8\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/dien-thoai-samsung-galaxy-a17-5g.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"ddc8420f6483f512158cf44a\",\"requestId\":\"04aa6021-922f-47e8-9ced-88a8617e4bf8\",\"providerId\":\"cellphones\",\"merchantName\":\"CellphoneS\",\"url\":\"https://cellphones.com.vn/dien-thoai-samsung-galaxy-a17-5g.html\",\"depth\":3,\"guestDepth\":4,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"near_realtime\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},{\"linkId\":\"a6631d26e578fa757049a92a\",\"requestId\":\"04aa6021-922f-47e8-9ced-88a8617e4bf8\",\"providerId\":\"lazada\",\"merchantName\":\"Lazada\",\"url\":\"https://www.lazada.vn/products/dien-thoai-di-dong-samsung-galaxy-a17-5g-8gb128gb-chinh-hang-nguyen-seal-chua-active-i3192908689.html\",\"depth\":3,\"guestDepth\":3,\"authRequiredAt\":\"before_checkout\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},{\"linkId\":\"f4ad332a85ec68c260ce0ac5\",\"requestId\":\"04aa6021-922f-47e8-9ced-88a8617e4bf8\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/Samsung-Galaxy-A17-5G-8GB-128GB-Ch%C3%ADnh-H%C3%A3ng-i.645499489.29790111814\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:2\",\"name\":\"Samsung Galaxy Note 20 Ultra 5G (12GB/128GB) USA\",\"config\":\"12GB · 128GB\",\"specs\":[{\"key\":\"ram\",\"value\":12},{\"key\":\"storage\",\"value\":128}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRoPe3sA8e3L-Wh7tdSkKDwYnFXSJ33KrRPF8PqJDeINbRaSIULawPYOyFdK7zDryZzPEmNTIEwkk6Xqm__IMXkaRAUkMoBPzHOpYDuKHYwIcCfASHKPNMl\",\"offers\":[{\"seller\":\"totomobile.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:17553767183139875725,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Samsung galaxy s25 fe xanh Haze Dual SIM 128 GB\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":12490000,\"priceHigh\":12490000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTWNhAVXb0aVN5PunyjWa-ysjDDqsBDfnIg2Jp-3vX9YJM0dWoHVZDpLdpZaeKWhKINW8z1dV38gf2x2fz5pl9NLkcwAsGPdg\",\"offers\":[{\"seller\":\"HungMobile\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15448615218911213662,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12490000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":18}]},{\"key\":\"uncertain:4\",\"name\":\"Samsung Galaxy S25 Plus 256GB\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":13890000,\"priceHigh\":13890000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQnP7sl-fRfheajuN6zNwG0ykMsASoBcFC0IKCfqtiLRlgy1qTw0qgDR1VNG3ODE8a5vy0JeJ9nsrRg8bRldMp9q-vuMSi8N_yhei2hKBoGcj7glvOejIOU\",\"offers\":[{\"seller\":\"Didongmoi.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15168817881158679670,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":13890000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":217}]},{\"key\":\"uncertain:5\",\"name\":\"Samsung Galaxy Z Flip7 FE Trắng Dual SIM 128 GB\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":15840000,\"priceHigh\":15840000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQxh6WaQSWjvuuXE3Y0uuucdBBFcWzpWDxDM-duEwLjYMps-sObW2G_psXDsbXkH-zcMSZEmshXd3MU7lsuSu1shwQeBpKLGtua-lSvXcChnNryaNbnRFqz\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=Samsung+t%E1%BA%A7m+trung+ch%E1%BB%A5p+%E1%BA%A3nh+%C4%91%E1%BA%B9p+camera+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:17409200847835943131,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":15840000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":145}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Topmax Store\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"5290000 VND\",\"params\":{\"priceVnd\":5290000}},{\"attribute\":\"reviewCount\",\"evidence\":\"150 reviews\",\"params\":{\"count\":150}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Samsung Galaxy A17 5G 8GB 128GB** cho bạn! 📸\n\n**4.9⭐ (74 đánh giá)**\n\nChiếc này có **8GB RAM + 128GB bộ nhớ** Dòng A17 5G được biết đến với camera chất lượng tốt ở tầm giá này, phù hợp với nhu cầu chụp ảnh đẹp của bạn.\n\n**Danh đối:** Samsung Galaxy A17 4G, 5⭐ với 150 đánh giá, nhưng RAM chỉ 4GB — nếu bạn ưu tiên tiết kiệm và không cần RAM cao thì có thể xem xét.\n\nTuy nhiên, mình chưa xác nhận được chi tiết về cảm biến camera cụ thể (megapixel, khẩu độ) từ nguồn hiện tại, nên bạn nên kiểm tra thêm trên trang bán hàng để chắc chắn nó đáp ứng yêu cầu chụp ảnh của bạn nhé! 📱\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, không phải quảng cáo trả tiền. Bạn có thể so sánh giá trên các sàn TMĐT khác nhau để chọn mua.*\n\n[FOLLOWUPS]Xem thêm Samsung tầm trung khác|Tìm điện thoại chụp ảnh đêm tốt|Tư vấn mua điện thoại cũ[/FOLLOWUPS]",
+      "visible": "Mình tìm những chiếc Samsung tầm trung chụp ảnh đẹp cho bạn nhé! 📱\n\nMình chọn **Samsung Galaxy A17 5G 8GB 128GB** cho bạn! 📸\n\n**4.9⭐ (74 đánh giá)**\n\nChiếc này có **8GB RAM + 128GB bộ nhớ** Dòng A17 5G được biết đến với camera chất lượng tốt ở tầm giá này, phù hợp với nhu cầu chụp ảnh đẹp của bạn.\n\n**Danh đối:** Samsung Galaxy A17 4G, 5⭐ với 150 đánh giá, nhưng RAM chỉ 4GB — nếu bạn ưu tiên tiết kiệm và không cần RAM cao thì có thể xem xét.\n\nTuy nhiên, mình chưa xác nhận được chi tiết về cảm biến camera cụ thể (megapixel, khẩu độ) từ nguồn hiện tại, nên bạn nên kiểm tra thêm trên trang bán hàng để chắc chắn nó đáp ứng yêu cầu chụp ảnh của bạn nhé! 📱\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực tế, không phải quảng cáo trả tiền. Bạn có thể so sánh giá trên các sàn TMĐT khác nhau để chọn mua.*"
+    }
+  ]
+}

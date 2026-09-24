@@ -1,0 +1,25 @@
+T1#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+T1#2	budget old={"min":0,"max":20000000,"type":"under"}	new={"min":0,"max":20000000,"type":"under"}	SAME	carry old={"min":0,"max":20000000,"type":"under"}	new={"min":0,"max":20000000,"type":"under"}	SAME	district=-
+T1#3	budget old=null	new=null	SAME	carry old={"min":0,"max":20000000,"type":"under"}	new={"min":0,"max":20000000,"type":"under"}	SAME	district=-
+T2#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+T2#2	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+T3#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+T3#2	budget old={"min":50000,"max":60000,"type":"range"}	new={"min":50000,"max":60000,"type":"range"}	SAME	carry old={"min":50000,"max":60000,"type":"range"}	new={"min":50000,"max":60000,"type":"range"}	SAME	district=-
+T4#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+T4#2	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+G1a#1	budget old={"min":0,"max":5000000,"type":"under"}	new={"min":0,"max":5000000,"type":"under"}	SAME	carry old={"min":0,"max":5000000,"type":"under"}	new={"min":0,"max":5000000,"type":"under"}	SAME	district=-
+G1b#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=Quận 7
+G3a#1	budget old={"min":0,"max":50000,"type":"under"}	new={"min":0,"max":50000,"type":"under"}	SAME	carry old={"min":0,"max":50000,"type":"under"}	new={"min":0,"max":50000,"type":"under"}	SAME	district=Quận 3
+G3b#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=Quận 1
+G3b#2	budget old={"min":100000,"max":150000,"type":"range"}	new={"min":100000,"max":150000,"type":"range"}	SAME	carry old={"min":100000,"max":150000,"type":"range"}	new={"min":100000,"max":150000,"type":"range"}	SAME	district=-
+G4a#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+G5a#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+G5b#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+G5c#1	budget old={"min":240000000,"max":360000000,"type":"around"}	new={"min":240000000,"max":360000000,"type":"around"}	SAME	carry old={"min":240000000,"max":360000000,"type":"around"}	new={"min":240000000,"max":360000000,"type":"around"}	SAME	district=-
+G5d#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=-
+B1#1	budget old={"min":98000,"max":99000,"type":"range"}	new=null	CHANGED	carry old={"min":98000,"max":99000,"type":"range"}	new=null	CHANGED	district=-
+B2#1	budget old={"min":5000,"max":6000,"type":"range"}	new=null	CHANGED	carry old={"min":5000,"max":6000,"type":"range"}	new=null	CHANGED	district=-
+B3#1	budget old={"min":0,"max":100000,"type":"under"}	new={"min":0,"max":100000,"type":"under"}	SAME	carry old={"min":0,"max":100000,"type":"under"}	new={"min":0,"max":100000,"type":"under"}	SAME	district=Quận 1
+B3#2	budget old=null	new=null	SAME	carry old={"min":0,"max":100000,"type":"under"}	new=null	CHANGED	district=-
+D1#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=Quận 3
+D2#1	budget old=null	new=null	SAME	carry old=null	new=null	SAME	district=Bình Thạnh

@@ -282,3 +282,74 @@ Lệnh:   cd D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-g
 
 Lý do (đo được trong phiên này): hai phiên cùng dùng một worktree. Phiên kia đã rebase các commit chưa push của tôi. Nếu phiên kia push, nó sẽ đẩy luôn **13 commit chưa được bạn duyệt** của tôi lên origin.
 
+## Part 5 — Hai lỗi AI còn lại
+
+**Trình tự làm:**
+1. Viết golden case và unit test **trước** (commit `98571da`, cùng log RED trong `docs/uat/evidence/prelaunch-5/`).
+2. Chạy **toàn bộ** golden set trên code chưa sửa (`golden/prelaunch-before`, 25 lượt gọi LLM).
+3. Sửa (commit `00ae32a`).
+4. Chạy lại **toàn bộ** set (`golden/prelaunch-after`, 25 lượt) và chạy thêm T3 hai lần (4 lượt).
+
+Tổng cộng 54 lượt gọi LLM.
+
+### 5a — "98-99%" không phải tiền; ngân sách không đi theo sang chủ đề khác
+
+- **Nguyên nhân** (`src/lib/ai/budget.ts`): ba dạng tiền không bắt buộc đơn vị (khoảng/dưới/khoảng chừng) coi mọi số ≤ 9999 không đơn vị là **nghìn đồng**.
+  - Hệ quả: "pin 98-99%" thành 98k–99k; "5-6 người" thành 5k–6k; "dưới 5 tuổi" thành dưới 5k; "khoảng 2 km", "20-25kg" (chữ `k` của "kg"), "2020-2023", "7-9h"… đều bị đọc thành tiền.
+- **Sửa:** một số không có đơn vị chỉ được coi là tiền khi thoả cả ba điều kiện:
+  - **không** có đơn vị phi-tiền theo sau (`%`, kg, km, người, tuổi, năm, giờ/h, GB, MP, inch, phòng…);
+  - **không** có từ chỉ thông số đứng trước (pin, RAM, đời, size…);
+  - **không** giống số năm.
+
+  Đơn vị tiền phải kết thúc ở ranh giới từ. Hàm thử **mọi** chỗ khớp, nên số tiền thật đứng sau vẫn được đọc ("pin 98-99%, giá dưới 15 triệu" → 15 triệu).
+- **Ngân sách mang theo:** `budgetFromHistory` từng lùi qua **mọi** lượt user. Giờ nó chỉ đọc **chủ đề hiện tại** (`consultative/subjectScope.ts`), dùng lại quy tắc đổi chủ đề có sẵn `turnStartsNewConsultation` áp cho từng lượt. Collector của guard và ràng buộc địa điểm cũng dùng cùng phạm vi này.
+- **Các đơn vị khác đã kiểm** (26 unit test): %, "phần trăm", người, tuổi, km, kg, năm 2020–2023, giờ, MP, GB, inch, phòng. Tiền thật vẫn đúng: "50-60k", "dưới 100k", "khoảng 5 triệu", "từ 100 đến 200", "ngân sách 20 triệu".
+
+### 5b — Quận người dùng nêu ràng buộc KẾT QUẢ theo địa chỉ thật
+
+- **Bối cảnh:** sau đợt sắp xếp hành chính 2025, địa chỉ Google ở TP.HCM ghi **phường mới** ("…, Bến Thành, Hồ Chí Minh"), hiếm khi còn chữ "Quận". Vì vậy `src/lib/ai/districts.ts` có bảng **phường mới → quận cũ** cho các quận nội thành cũ của TP.HCM (theo Nghị quyết 1685/NQ-UBTVQH15) và đọc thêm tên quận nếu địa chỉ còn ghi.
+  - Không đọc được thì là `unknown`, **không bao giờ** là "ngoài quận".
+  - Hà Nội: chỉ nhận tên quận ghi rõ; chưa có bảng phường.
+- **Lọc** (`placeConstraintFilter.ts`):
+  - quán **trong quận** lên đầu;
+  - quán `unknown` theo sau, có đánh dấu;
+  - quán mà địa chỉ nằm ở **quận khác** bị loại;
+  - nếu **không có quán nào** trong quận: nói thẳng điều đó, và giữ các lựa chọn ngoài quận, **mỗi quán ghi quận thật** của nó.
+- **Quận nêu ra thắng GPS:** tìm kiếm Serper đặt tâm ở quận **người dùng** nêu. Không lấy chuỗi `location` do model điền, vì model tự điền "Quận 1" từ GPS. Khi đó không còn nói "cách bạn X km". Cache key có kèm quận.
+- **Guard văn bản** (`districtClaimGuard.ts`): câu nào gắn quận được hỏi cho một quán có địa chỉ ở nơi khác thì được sửa thành quận thật.
+
+### Golden set — tiêu chí của các case mới (trước → sau)
+
+| Case | Tiêu chí | Trước | Sau | Bằng chứng |
+|---|---|---|---|---|
+| B1 | Không suy ra ngân sách từ "98-99%" | ❌ "trong tầm **98k-99k VND**… nâng budget lên khoảng **119k**" | ✅ không có 98k/99k/119k | `golden/prelaunch-*/B1.json` |
+| B1 | Pin 98-99% là tình trạng máy | ✅ | ✅ | như trên |
+| B1 | Sản phẩm không bị lọc theo trần 100k | ❌ không có sản phẩm nào (bị lọc 98–99k) | ✅ iPhone giá thật (11,59 triệu). *Ngoài lề: kết quả là 15 Pro, không phải Pro Max* | như trên |
+| B2 | Không có ngân sách từ "5-6 người"/"dưới 5 tuổi" | ❌ đầu vào tất định: `{min:5000,max:6000}`; chỉ còn 4 thẻ | ✅ `null`; 8 thẻ | `prelaunch-5/golden-deterministic-inputs.tsv`, B2.json |
+| B3 | Lượt 1: thẻ tôn trọng 100k | ✅ (có dải giá) | **UNVERIFIED**: lần này Serper không trả `priceLevel` cho dòng nào (dao động phía upstream đã được ghi trong code) | B3.json |
+| B3 | Lượt 2: 100k **không** đi theo sang điện thoại | ✅ theo văn bản (không nhắc 100k), nhưng theo tất định thì `budgetFromHistory` vẫn mang 100k vào ràng buộc shopping, và model hỏi lại ngân sách | ✅ mang theo = `null`; gợi ý Samsung A17 5G giá thật | tsv, B3.json |
+| B3 | Lượt 2 là tư vấn mới | ❌ hỏi lại, lôi "300k" từ memory (F-067) | ✅ | B3.json |
+| D1 | Mọi thẻ ở Quận 3 hoặc được đánh dấu | ❌ **2/8 thẻ ở Quận 1** (Phở Hùng @Cầu Ông Lãnh, PHỞ HÀ @Sài Gòn) | ✅ 8/8 ở Quận 3 (Xuân Hòa, Nhiêu Lộc, Bàn Cờ, "quận 3"). Log server: `district:"Quận 3", dropped: 2 × out_of_district` | D1.json, dev log |
+| D1 | Văn bản không gán quán ngoài quận là Quận 3 | ✅ | ✅ (guard: 0 lần phải sửa) | D1.json |
+| D1 | Quận 3 thắng GPS Quận 1 | ❌ tâm tìm kiếm là GPS | ✅ log: `"area":"Quận 3"` | dev log |
+| D2 | Mọi thẻ ở Bình Thạnh | ✅ 8/8 | ✅ 8/8 | D2.json |
+| D2 | Bình Thạnh thắng GPS | ❌ tâm là GPS (kết quả vẫn đúng nhờ chuỗi truy vấn) | ✅ `"area":"Bình Thạnh"` | dev log |
+
+### Hồi quy trên 13 case cũ
+
+- **Bằng chứng tất định** (`docs/uat/evidence/prelaunch-5/golden-deterministic-inputs.tsv`): với **mọi lượt user của 13 case cũ**, ngân sách đọc được và ngân sách mang theo giữa code cũ và code mới **giống hệt nhau**. Chỉ B1, B2 và B3#2 thay đổi, đúng chủ đích.
+- **Case cũ có quận:** G1b (Quận 7), G3a (Quận 3), G3b (Quận 1). Trước và sau, mọi thẻ đều nằm trong quận; log server cho thấy **0 dòng bị loại vì ngoài quận**.
+- **Khác biệt quan sát được, không thuộc code:**
+  - **T3 lượt 2**, lần chạy đầu sau sửa: model **không tìm kiếm**, mà hỏi lại và tự bịa "hải sản", vi phạm tiêu chí "không bịa món". Hai lần chạy lại **đều tìm kiếm** (3 thẻ, lọc theo 60k). Baseline tìm kiếm 1/1. Đầu vào tất định giống hệt, nên tôi xếp là **model không ổn định** (1/3 lần sau sửa), không phải hồi quy do code. Đây vẫn là một điểm chất lượng cần theo dõi.
+  - **G4a:** lần sau sửa không gọi `get_transport_options` (lần trước có).
+  - **T1:** độ dài câu trả lời dao động.
+  - Cả hai đều do model chọn; đầu vào của chúng không đổi.
+- **Không có case cũ nào bị hỏng do code.**
+
+### Chưa làm / giới hạn
+
+- **Memory** vẫn lưu ngân sách một lần mua thành ngân sách mua sắm cố định (**F-067**, P2). Đây là cùng loại lỗi 5a nhưng qua kênh khác; chưa sửa.
+- **Thẻ ngoài quận** (trường hợp không có quán nào trong quận) chưa có nhãn riêng trên giao diện thẻ; nhãn chỉ nằm trong văn bản và địa chỉ trên thẻ. Thêm nhãn thì phải đổi UI cả web lẫn Android.
+- **"gần Quận 7"** đang được hiểu là "trong Quận 7" khi có kết quả trong quận. Với G1b không có khác biệt, nhưng đây là một lựa chọn thiết kế cần bạn quyết.
+- **Bảng phường** mới có TP.HCM. Quán ở Hà Nội thường ra `unknown`; không bao giờ bị coi là "ngoài quận".
+
