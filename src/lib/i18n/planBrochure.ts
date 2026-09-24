@@ -104,5 +104,5 @@ export function planBrochureStrings(locale: RequestLocale): PlanBrochureStrings 
 }
 
 export function fill(template: string, n: number | string): string {
-  return template.replace('{n}', String(n))
+  return template.replace('{n}', String(n)).replace(/\b(days|stops|people)\b/g, (w) => (Number(n) === 1 ? ({ days: 'day', stops: 'stop', people: 'person' } as Record<string, string>)[w] : w))
 }
