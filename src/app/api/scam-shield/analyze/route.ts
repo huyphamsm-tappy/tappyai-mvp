@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { z } from 'zod'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { getAccountRestriction, accountRestrictionCode, accountRestrictionMessage } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionCode, accountRestrictionMessage, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -83,7 +83,8 @@ export async function POST(req: Request) {
     if (restriction.blocked) {
       return NextResponse.json(
         { error: accountRestrictionCode(restriction.reason!), message: accountRestrictionMessage(restriction) },
-        { status: 403 },
+        // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+        { status: accountRestrictionStatus(restriction.reason!) },
       )
     }
   }

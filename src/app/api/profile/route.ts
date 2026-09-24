@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia, randomMediaSuffix } from '@/lib/media'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
+import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { getAgeEligibility, setDateOfBirth, parseDateOfBirthInput } from '@/lib/account/ageEligibility'
@@ -309,11 +310,23 @@ async function uploadCover(
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
 
+
+  // R-2: strip EXIF/XMP before anything is stored. `.rotate()` inside keeps the picture upright;
+  // a payload that passed the signature check but cannot be decoded is refused rather than
+  // stored as-is, because falling back to the caller's bytes would reopen the leak.
+  let clean: Buffer
+  try {
+    clean = (await stripImageMetadata(bytes, kind)).bytes
+  } catch (e) {
+    console.error('[profile] cover] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
+  }
+
   let blob: { url: string }
   try {
     blob = await putMedia(
       `covers/${user.id}-${randomMediaSuffix()}.${imageExt(kind)}`,
-      file,
+      clean,
       { contentType: imageMime(kind) },
       getMediaProvider(process.env, req)
     )
@@ -367,6 +380,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
   }
 
+
+  // R-2: strip EXIF/XMP before anything is stored. `.rotate()` inside keeps the picture upright;
+  // a payload that passed the signature check but cannot be decoded is refused rather than
+  // stored as-is, because falling back to the caller's bytes would reopen the leak.
+  let clean: Buffer
+  try {
+    clean = (await stripImageMetadata(bytes, kind)).bytes
+  } catch (e) {
+    console.error('[profile] avatar] metadata strip failed, refusing upload:', e instanceof Error ? e.message : e)
+    return NextResponse.json({ error: 'bad_image_type', message: serverMessage('media.imageType', requestLocale(req)) }, { status: 400 })
+  }
+
   let blob: { url: string }
   try {
     // `addRandomSuffix` was a Vercel Blob feature; the bridge is provider
@@ -374,7 +399,7 @@ export async function POST(req: NextRequest) {
     // every avatar upload is a new object, so caches never serve a stale one.
     blob = await putMedia(
       `avatars/${user.id}-${randomMediaSuffix()}.${imageExt(kind)}`,
-      file,
+      clean,
       { contentType: imageMime(kind) },
       // `req` carries the deployment's OIDC token in production — without it a
       // GCS write has no identity to federate with.

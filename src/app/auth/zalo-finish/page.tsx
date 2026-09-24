@@ -8,6 +8,12 @@ import { Loader2 } from 'lucide-react'
 // returns personal info (graph.zalo.me/v2.0/me) to VIETNAM IPs, so we fetch the
 // profile HERE — in the user's Vietnamese browser — then post it to /complete
 // which creates the session.
+//
+// 🚨 R-1: WHAT THIS PAGE SENDS IS DISPLAY DATA, NOT IDENTITY. `zaloId` used to travel in this
+// body and decide which account /complete logged you into — so this page, which runs on the
+// user's machine, chose the account. It no longer sends an id at all: /complete resolves the
+// Zalo user id from the httpOnly `zalo_at` cookie against Zalo itself. Do not add one back;
+// `name` and `avatar` are cosmetic metadata for a newly created user and nothing else.
 export default function ZaloFinishPage() {
   const [error, setError] = useState('')
 
@@ -33,7 +39,6 @@ export default function ZaloFinishPage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            zaloId: String(profile.id),
             name: profile.name,
             avatar: profile.picture?.data?.url ?? null,
             next,

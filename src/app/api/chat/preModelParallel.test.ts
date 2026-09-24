@@ -54,11 +54,14 @@ describe('the account-restriction short-circuit still runs FIRST', () => {
 
   it('returns 403 on restriction.blocked, still between the gate and the batch', () => {
     const gate = CODE.search(/await\s+getAccountRestriction/)
-    const four03 = CODE.indexOf('403', gate)
+    // R-4: the literal 403 became `accountRestrictionStatus(reason)` — 403 for a real sanction,
+    // 503 when the status could not be read. The property under test is the SHORT-CIRCUIT, and
+    // that is what is measured: the refusal still happens before the batch spends any read.
+    const refusal = CODE.indexOf('accountRestrictionStatus(', gate)
     const batch = CODE.indexOf('await Promise.all([')
-    expect(four03).toBeGreaterThan(gate)
-    expect(four03, 'the 403 must short-circuit before any batched read').toBeLessThan(batch)
-    expect(CODE).toMatch(/if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,400}?403/)
+    expect(refusal).toBeGreaterThan(gate)
+    expect(refusal, 'the refusal must short-circuit before any batched read').toBeLessThan(batch)
+    expect(CODE).toMatch(/if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,500}?accountRestrictionStatus\s*\(/)
   })
 
   it('does not put any batched read above the gate', () => {
@@ -133,8 +136,13 @@ describe('calendar cannot take the batch down with it', () => {
 
 describe('isPro semantics for the quota are unchanged', () => {
   it('spends from the shared pool only when the user is not Pro, and only after isPro is known', () => {
-    expect(CODE).toMatch(/if\s*\(\s*!\s*isPro\s*&&\s*!\(await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)\)\.ok\s*\)/)
-    const spend = CODE.indexOf('!isPro && !(await consumeAiQuestion')
+    // R-3 split the single condition in two so the metering flag can be set AFTER the spend:
+    // `if (isPro) { quotaMetered = true } else { const spend = await consumeAiQuestion(...) }`.
+    // The property is unchanged — Pro spends nothing, and the spend happens only once `isPro` is
+    // known — and both halves are asserted here.
+    expect(CODE).toMatch(/if\s*\(\s*isPro\s*\)\s*\{[\s\S]{0,120}?quotaMetered = true/)
+    expect(CODE).toMatch(/\}\s*else\s*\{[\s\S]{0,200}?const spend = await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)/)
+    const spend = CODE.indexOf('const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))', CODE.indexOf('isPro = new Date'))
     expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))
     expect(batchBlock()).not.toContain('consumeAiQuestion')
   })

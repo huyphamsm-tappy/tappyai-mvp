@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
 import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
@@ -383,8 +383,8 @@ export async function POST(req: Request) {
     } else {
       // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
       // returns `unknown` on a read error, but an unexpected throw used to land in
-      // the "auth/quota resolution failed (proceeding unmetered)" catch below — and
-      // "unmetered" there also meant UNGATED: the turn reached the model with no
+      // the "auth/quota resolution failed" catch below — and back when that catch
+      // let the turn through unmetered, unmetered also meant UNGATED: the turn reached the model with no
       // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
       // An unknown age withholds the model; it never admits.
       const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
@@ -412,7 +412,11 @@ export async function POST(req: Request) {
       // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
-      quotaMetered = true
+      // 🚨 R-4/R-3: SET AFTER THE SPEND, NOT BEFORE. `quotaMetered` exists to stop the IP-keyed
+      // backstop below from double-charging a request that was already counted. Setting it
+      // first meant a THROW between here and the spend left the flag true and the backstop
+      // skipped — the turn reached the model counted by nobody. Set once the spend is known to
+      // have happened, a failure here falls through to the backstop and is metered by IP.
       const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
       if (!spend.ok) {
         return new Response(
@@ -424,6 +428,7 @@ export async function POST(req: Request) {
           { status: 401, headers: { 'Content-Type': 'application/json' } }
         )
       }
+      quotaMetered = true
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
       // preferences, calendar and subscription lookups, so a blocked turn costs
@@ -436,7 +441,8 @@ export async function POST(req: Request) {
             error: accountRestrictionCode(restriction.reason!),
             message: accountRestrictionMessage(restriction),
           }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
+          // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+          { status: accountRestrictionStatus(restriction.reason!), headers: { 'Content-Type': 'application/json' } }
         )
       }
 
@@ -507,23 +513,37 @@ export async function POST(req: Request) {
 
       // One question from the shared daily pool. Same pool every AI feature draws on, so a
       // Cảnh báo lừa đảo analysis earlier today is already counted here.
-      quotaMetered = true
-      if (!isPro && !(await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))).ok) {
-        return new Response(
-          JSON.stringify({
-            error: 'free_limit_reached',
-            message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-          }),
-          { status: 429, headers: { 'Content-Type': 'application/json' } }
-        )
+      //
+      // 🚨 R-3: THE FLAG IS SET AFTER THE SPEND. It used to be set on the line above the
+      // `await`, so any throw in the spend — or anywhere after it inside this block — landed in
+      // the catch with `quotaMetered` already true, and the IP-keyed backstop below was skipped.
+      // The turn then reached the model charged to nobody, which is a metering bypass an
+      // attacker can provoke by making the quota store fail. Now a failure leaves the flag false
+      // and the backstop meters the request by IP: the user still gets an answer, and the answer
+      // is still counted. Pro sets it deliberately — an unlimited plan is metered by nothing.
+      if (isPro) {
+        quotaMetered = true
+      } else {
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
+          return new Response(
+            JSON.stringify({
+              error: 'free_limit_reached',
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+            }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+        quotaMetered = true
       }
     }
   } catch (e) {
-    // Identity/quota resolution is best-effort so a transient auth/DB error can't
-    // hard-fail chat. This favors availability over strict enforcement: on error
-    // the daily cap for THIS request may be skipped. Log it so the fail-open is
-    // observable rather than silent.
-    console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+    // Identity/quota resolution is best-effort so a transient auth/DB error can't hard-fail
+    // chat. What it must NOT do is let the turn through uncounted: `quotaMetered` is only true
+    // once a spend actually happened (R-3), so anything that lands here falls through to the
+    // IP-keyed backstop below and is metered as the anonymous tier — stricter than the tier the
+    // user would have had, which is the right direction to fail. Logged so it stays observable.
+    console.error('[chat] auth/quota resolution failed (falling back to IP-keyed metering):', e)
   }
   // 🚨 "UNMETERED" MUST NEVER MEAN "UNGATED". If identity resolution threw before
   // the gate above could run, the request is treated as a guest: the device

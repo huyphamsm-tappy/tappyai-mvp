@@ -64,7 +64,12 @@ vi.mock('@/lib/media', () => ({
 
 import { GET, PATCH, POST } from './route'
 
-const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10])
+// A REAL, DECODABLE 1x1 JPEG. R-2: the route strips EXIF before storing, so it decodes the
+// image — a bare magic-byte header is no longer an image this route will accept.
+const JPEG = new Uint8Array(Buffer.from(
+  '/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJUAB//Z',
+  'base64',
+))
 const req = (init: { method?: string; body?: unknown; form?: FormData } = {}) => {
   const headers = new Headers({ 'accept-language': 'vi' })
   if (init.form) return new Request('http://t/api/profile', { method: init.method ?? 'POST', body: init.form, headers }) as any

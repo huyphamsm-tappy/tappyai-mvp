@@ -60,9 +60,17 @@ vi.mock('@/lib/media', () => ({
 
 import { POST } from './route'
 
-// A REAL PNG magic-byte header, so `sniffImageType` runs for real and a passing
-// upload passes for the right reason.
-const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d])
+// A REAL, DECODABLE 1x1 PNG — not just the magic bytes.
+//
+// 🚨 R-2 CHANGED WHAT THIS FIXTURE HAS TO BE. The route now strips EXIF before storing, which
+// means it DECODES the image; a header followed by nothing is no longer something the route will
+// accept, and it should not be — a payload that cannot be decoded is not an image we store. The
+// old 12-byte stub passed the sniffer and died in sharp, so the test would have failed for a
+// reason that had nothing to do with what it is testing.
+const PNG = new Uint8Array(Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWNgYGAAAAAEAAGjChXjAAAAAElFTkSuQmCC',
+  'base64',
+))
 
 const ELIGIBLE: AgeRow = { has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }
 const UNDER_18: AgeRow = { has_dob: true, age_years: 15, age_band: 'under_18', corrections_used: 0 }

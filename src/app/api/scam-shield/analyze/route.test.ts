@@ -24,6 +24,9 @@ vi.mock('@/lib/account/accountStatus', () => ({
   getAccountRestriction: async () => (h.state.restricted ? { blocked: true, reason: 'suspended', suspendedUntil: null } : { blocked: false, reason: null, suspendedUntil: null }),
   accountRestrictionCode: () => 'account_suspended',
   accountRestrictionMessage: () => 'suspended',
+  // R-4: the route now asks for the status code as well — 403 for a real sanction, 503 when
+  // the status could not be read. This mock only ever reports a real sanction.
+  accountRestrictionStatus: (reason: string) => (reason === 'unavailable' ? 503 : 403),
 }))
 vi.mock('@/lib/security/publicRateLimit', () => ({ publicRateLimit: h.burst }))
 vi.mock('@/lib/scam-shield/message', () => ({ analyzeMessage: h.analyze }))

@@ -13,7 +13,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 
 const MUSIC_PAYLOAD_VERSION = 1
@@ -85,7 +85,8 @@ export async function POST(req: NextRequest) {
   if (restriction.blocked) {
     return NextResponse.json(
       { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
-      { status: 403 }
+      // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+      { status: accountRestrictionStatus(restriction.reason!) }
     )
   }
 
