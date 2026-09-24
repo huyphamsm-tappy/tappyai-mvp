@@ -146,6 +146,14 @@ fun ChatScreen(
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
     val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
+    val sharePublic by viewModel.sharePublic.collectAsStateWithLifecycle()
+    // G1 share-out dialog — rendered at the screen level so it survives list recomposition.
+    SharePublicDialog(
+        state = sharePublic,
+        onTitleChange = viewModel::onSharePublicTitleChange,
+        onConfirm = viewModel::onConfirmSharePublic,
+        onDismiss = viewModel::onDismissSharePublic,
+    )
     val isLoadingConversation by viewModel.isLoadingConversation.collectAsStateWithLifecycle()
     val speakingMessageId = viewModel.speakingMessageId
     val feedback by viewModel.feedback.collectAsStateWithLifecycle()
@@ -392,6 +400,7 @@ fun ChatScreen(
                                         onToggleFeedback = { type -> viewModel.onToggleFeedback(message.id, type) },
                                         onReport = { viewModel.onReportMessage(message.id) },
                                         onRegenerate = viewModel::onRegenerate,
+                                        onSharePublic = { viewModel.onSharePublic(message.id) },
                                     )
                                 }
                             }

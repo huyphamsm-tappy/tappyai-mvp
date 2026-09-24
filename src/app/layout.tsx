@@ -54,6 +54,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" suppressHydrationWarning>
+      <head>
+        {/* Browser/aggregator discovery (G1 free acquisition): the OpenSearch description lets
+            Firefox/Edge/Safari register "ask Tappy" as an address-bar engine on first visit
+            (Chrome keeps it inactive until enabled); the Atom feed lists the newest public
+            results for feed readers and crawlers. Both are static text — see browserFeeds.ts. */}
+        <link rel="search" type="application/opensearchdescription+xml" title="TappyAI" href="/opensearch.xml" />
+        <link rel="alternate" type="application/atom+xml" title="TappyAI" href="/feed.xml" />
+      </head>
       <body className="antialiased">
         {/* ── The stored theme, applied BEFORE first paint ──────────────────
             This is not a second theme mechanism. It reads the same

@@ -5,9 +5,11 @@ import {
   SHOW_PRO_UPGRADE,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
+  SHOW_MUSIC,
   SCAM_SHIELD_DAILY_LIMIT_AUTH,
   SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
+  MAX_PHOTO_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
   MAX_VIDEO_DURATION_ACCEPT_SEC,
@@ -46,9 +48,16 @@ export async function GET() {
         showProUpgrade: SHOW_PRO_UPGRADE,
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
+        // Music is hidden on every platform while the catalogue licensing is undecided.
+        // Native reads this; the underlying routes and catalogue are untouched.
+        showMusic: SHOW_MUSIC,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
+        // The per-photo ceiling POST /api/reviews/upload actually applies. It was the one upload
+        // rule the clients could not read, so iOS carried its own 5 * 1024 * 1024 literal and would
+        // have kept rejecting at 5MB after a server change.
+        maxPhotoSizeMb: MAX_PHOTO_SIZE_MB,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
         // The validation ceiling, so a client pre-checking for UX uses the same boundary the

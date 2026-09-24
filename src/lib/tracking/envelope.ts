@@ -8,6 +8,7 @@
 // device/session context and the idempotency key.
 
 import { detectDeviceContext, type DeviceContext } from './deviceContext'
+import { getAnonId as getCanonicalAnonId } from '@/lib/analytics/anonId'
 
 const SCHEMA_VERSION = 1
 
@@ -23,13 +24,11 @@ function uuid(): string {
 }
 
 // Stable per-device anonymous id (Analytics §8D). Client-readable (localStorage),
-// distinct from the httpOnly auth anon cookie.
+// distinct from the httpOnly auth anon cookie. The implementation lives in
+// `@/lib/analytics/anonId` so G1 attribution and the public shared-result view
+// read the SAME identity — this envelope is one consumer of it, not its owner.
 function getAnonId(): string {
-  try {
-    let id = localStorage.getItem('tappy_analytics_anon')
-    if (!id) { id = uuid(); localStorage.setItem('tappy_analytics_anon', id) }
-    return id
-  } catch { return uuid() }
+  return getCanonicalAnonId() ?? uuid()
 }
 
 // Session id: new after 30 min inactivity (Data Dictionary §4 session rule).

@@ -1,0 +1,47 @@
+{
+  "extName": {
+    "message": "TappyAI — Ask Tappy about this page"
+  },
+  "extDescription": {
+    "message": "Ask Tappy about the text you select or the page you are on, and check suspicious links with Scam Shield. Never tracks your browsing."
+  },
+  "actionTitle": {
+    "message": "Ask Tappy"
+  },
+  "menuAskSelection": {
+    "message": "Ask Tappy about “%s”"
+  },
+  "menuAskPage": {
+    "message": "Ask Tappy about this page"
+  },
+  "menuCheckLink": {
+    "message": "Check this link with Scam Shield"
+  },
+  "menuCheckPage": {
+    "message": "Check this page with Scam Shield"
+  },
+  "popupAsk": {
+    "message": "Ask Tappy"
+  },
+  "popupAskPlaceholder": {
+    "message": "What do you want to ask?"
+  },
+  "popupAskPage": {
+    "message": "Ask Tappy about this page"
+  },
+  "popupCheckPage": {
+    "message": "Check this page with Scam Shield"
+  },
+  "popupOpen": {
+    "message": "Open TappyAI"
+  },
+  "popupNotWebPage": {
+    "message": "This is not a web page, so there is nothing to send to Tappy."
+  },
+  "popupLanguage": {
+    "message": "Language"
+  },
+  "popupPrivacy": {
+    "message": "Sent only when you click. Nothing stored, nothing tracked."
+  }
+}

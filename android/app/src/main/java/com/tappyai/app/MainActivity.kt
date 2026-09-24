@@ -10,8 +10,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.tappyai.app.growth.PublicLinkOpener
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
+import com.tappyai.app.navigation.PublicWebLinks
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -97,9 +99,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        val uri = intent?.data ?: return
+        if (intent == null) return
+        // G1-F: an inbound system share (another app → Share → Tappy) has no data URI; it
+        // carries its payload in extras. Handled before the deep-link path so the two never
+        // compete — a share intent is never also a link intent.
+        // G1 completion: a text selection sent through the toolbar (ACTION_PROCESS_TEXT) is
+        // the same inbound shape — extras, no data URI — and takes the same path.
+        if (intent.action == Intent.ACTION_SEND || intent.action == Intent.ACTION_PROCESS_TEXT) {
+            navHostViewModel.handleIncomingShare(intent)
+            return
+        }
+        val uri = intent.data ?: return
         if (uri.scheme == "tappyai") {
             navHostViewModel.handleDeepLink(intent)
+            return
+        }
+        // App Links (prepared, off by default): a verified https://<origin>/r/<slug> arrives here
+        // only when the PublicLinkActivity alias is enabled. The public page is the product — show
+        // it in a session-bound Custom Tab. If no browser offers Custom Tabs, the app simply opens.
+        if (PublicWebLinks.isPublicResultLink(uri.toString(), BuildConfig.WEB_APP_URL)) {
+            PublicLinkOpener.open(this, uri)
         }
     }
 }

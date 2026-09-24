@@ -125,9 +125,13 @@ describe('raising video does not move any other upload limit', () => {
     expect(MEDIA_UPLOAD_POLICIES[kind].maxBytes).toBe(bytes)
   })
 
+  // Still 5MB, and still nothing to do with video. The assertion moved off the literal spelling
+  // when §5 made the number a named constant (`maxPhotoSizeMB`) so it could be served by
+  // /api/config; the photo contract itself now lives in photoSize.test.ts.
   it('leaves the iOS photo limit alone', () => {
     const ios = read('ios/TappyAI/Features/Reviews/Model/CreateReviewModels.swift')
-    expect(ios).toMatch(/maxPhotoSizeBytes\s*=\s*5 \* 1024 \* 1024/)
+    expect(ios).toMatch(/static let maxPhotoSizeMB = 5\b/)
+    expect(ios).toMatch(/maxPhotoSizeBytes\s*=\s*maxPhotoSizeMB \* 1024 \* 1024/)
   })
 })
 

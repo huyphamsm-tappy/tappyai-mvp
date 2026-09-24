@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import Header from '@/components/Header'
 import V3Shell from '@/components/v3/V3Shell'
+import PublicFooter from '@/components/discovery/PublicFooter'
 import TappyPresence from '@/components/v3/TappyPresence'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
@@ -609,11 +610,15 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
 
             🚨 THIS IS THE PROMPT STRIP, NOT THE PLACES PAGE (Phase 7, item 2). Every card here
             is a `getDynamicPrompts` suggestion that opens /chat with that question. It was
-            titled "Gợi ý dành cho bạn" with a "see all" that opened `/recommendations` — the
-            personalised PLACES page, a different feature with its own engine — so one name
-            appeared to be two or three features. The strip now says what it is, and its one
-            action goes where its cards go: the chat. `/recommendations` keeps its single name
-            ("Gợi ý cho bạn") on the sidebar row, the Smart Tools tile and the page itself. */}
+            titled with the same words as `/recommendations` — the personalised PLACES page, a
+            different feature with its own engine — so one name appeared to be two or three
+            features. The strip now says what it is (`v3.home.forYouTitle`), and its one action
+            goes where its cards go: the chat. `/recommendations` keeps the single name held by
+            `v3.tool.suggest` on the sidebar row, the Smart Tools tile and the page itself.
+
+            The two names are quoted in the dictionary, not here: this file is scanned by
+            webHardcodedUiStrings.test.ts, whose per-line comment strip cannot see that a
+            multi-line JSX comment is a comment, so a Vietnamese word here reads as UI text. */}
         {suggestions.length > 0 && (
           <section data-home-section="for-you" aria-label={t('v3.home.forYouTitle')}>
             <SectionHeading title={t('v3.home.forYouTitle')} subtitle={t('v3.home.forYouSub')} action={{ label: t('v3.home.forYouAction'), href: '/chat' }} />
@@ -794,6 +799,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </div>
           )}
         </section>
+        <PublicFooter />
       </div>
     </V3Shell>
   )

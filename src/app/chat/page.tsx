@@ -57,9 +57,12 @@ function ChatPageContent() {
         * needs no new mapping and no new asset: `TappyMascot` already resolves
         * the PNG and already falls back to an emoji if one is ever missing.
         */}
+      {/* Phase 7 §13: Back pops the in-app history; Home is only the fallback. A fixed
+        * `backHref="/"` sent Back to Home even when the user arrived from
+        * /profile/history or from a notification. */}
       <Header
         showBack
-        backHref="/"
+        backFallbackHref="/"
         title={catInfo ? (
           <span className="inline-flex items-center justify-center gap-2">
             <TappyMascot pose={catInfo.id} size={24} alt="" />

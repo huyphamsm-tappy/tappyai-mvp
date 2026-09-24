@@ -143,6 +143,28 @@
                     android:host="auth-callback" />
             </intent-filter>
 
+            <!-- G1-F Android Direct Share (inbound): "another app → Share → Tappy". Text and
+                 links only; the payload is parsed by IncomingShareParser into the existing
+                 chat-with-prefill destination. image/* is deliberately not claimed — see the
+                 parser. Post-install utility, not acquisition: nothing here runs before the
+                 app is installed. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- G1 completion — Android "Process Text": select text in ANY app → toolbar →
+                 "Ask Tappy". The Android counterpart of the browser extension's selection
+                 menu. Same parser, same chat-with-prefill destination, same quota; nothing
+                 runs before the person taps, and nothing is read but the selection Android
+                 hands over. Post-install utility, not acquisition. -->
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
             <!-- Shared group link (Group Dining). Custom scheme → no domain verification needed,
                  same as the OAuth callback above. Parsed by GroupDeepLinkParser into
                  AppRoute.GroupDetail. NOTE: the link actually shared with users is the public web
@@ -159,6 +181,33 @@
                     android:host="group" />
             </intent-filter>
         </activity>
+
+        <!-- App Links (PREPARED, OFF BY DEFAULT). An alias of MainActivity that claims
+             https://<web origin>/r/<slug> — public shared results — with autoVerify, so that once
+             the owner (a) publishes the release signing fingerprint to
+             /.well-known/assetlinks.json and (b) builds with -PTAPPYAI_APP_LINKS_ENABLED=true, a
+             shared link opens the app when it is installed. The app has no native result screen
+             on purpose: MainActivity shows the same public page in a session-bound Custom Tab
+             (growth/PublicLinkOpener), which keeps the navigation in the tab instead of looping.
+             android:enabled is bound to a resValue that is FALSE unless that property is set, so
+             this block changes nothing for any current build; an unverified claim would otherwise
+             only make Android 12+ ignore it and open the browser, never break a link. The host is
+             a manifest placeholder derived from TAPPYAI_WEB_APP_URL so it cannot drift from the
+             origin the app already uses for share links. -->
+        <activity-alias
+            android:name=".PublicLinkActivity"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="@bool/tappy_app_links_enabled">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="${tappyPublicHost}" />
+                <data android:pathPrefix="/r/" />
+            </intent-filter>
+        </activity-alias>
 
         <!-- Share sheet: exposes ONLY the rendered share card (cache/share/) to the receiving
              app via a content:// URI, so an image can travel with the brochure text. -->

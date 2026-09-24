@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Inbox
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -84,6 +85,8 @@ private val Warn = Color(0xFFFBBF24)
 fun TappyShareSheet(
     artifact: ShareArtifact,
     onDismiss: () -> Unit,
+    /** G1: when provided, a "Public link" row opens the sanitized-preview flow for a /r/<slug> page. */
+    onPublicLink: (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     val lang = Locale.getDefault().language
@@ -222,6 +225,10 @@ fun TappyShareSheet(
             }
 
             RowAction(Icons.Filled.Inbox, stringResource(R.string.share_inbox), enabled = targetsEnabled) { handle(TappyShare.Target.INBOX) }
+            // G1 public link — a row beside the artifact targets, never a replacement for them.
+            if (onPublicLink != null) {
+                RowAction(Icons.Filled.Link, stringResource(R.string.chat_share_public_link), enabled = targetsEnabled, tag = "share-public-link") { onPublicLink() }
+            }
             // A published plan lives on its page; there is nothing to save to the device.
             if (!a.isPlanLink) RowAction(Icons.Filled.Download, stringResource(R.string.share_save), enabled = targetsEnabled) { handle(TappyShare.Target.SAVE) }
             RowAction(

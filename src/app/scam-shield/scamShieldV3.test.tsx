@@ -324,11 +324,13 @@ describe('boundaries the skin did not cross', () => {
     expect(endpoints).toEqual(['/api/scam-shield/analyze', '/api/scam-shield/check', '/api/scam-shield/qr'])
   })
 
-  it('imports nothing from the engine but its types, the history store, and the message-analysis bounds', () => {
+  it('imports nothing from the engine but its types, the history store, the message-analysis bounds and the deep-link parser', () => {
     // `message/config` is limits only (max chars, allowed image types) — the numbers the server
     // enforces, read here so the picker cannot drift from the route. No engine code is imported.
+    // `deepLink` is the pure `?url=` prefill parser (G1 completion — browser extension entry): it
+    // PREFILLS the input and never checks. Still no engine code.
     const imports = [...src.matchAll(/from '@\/lib\/scam-shield\/([^']+)'/g)].map(m => m[1]).sort()
-    expect(imports).toEqual(['history', 'message/config', 'types'])
+    expect(imports).toEqual(['deepLink', 'history', 'message/config', 'types'])
   })
 
   it('holds no hardcoded Vietnamese UI text', () => {

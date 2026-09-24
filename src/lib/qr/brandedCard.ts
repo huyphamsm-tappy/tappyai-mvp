@@ -24,6 +24,20 @@ export interface BrandedQrOptions {
   qrPx?: number
   /** Quiet zone in modules. 4 is the spec's minimum. */
   quietModules?: number
+  /** The product line under the lockup (`v3.page.subtitle`). Omitted when empty. */
+  tagline?: string
+  /**
+   * The website the card points people at, shown bare ("www.tappyai.com").
+   *
+   * 🚨 THIS IS THE ONLY DESTINATION ON THE CARD BESIDES THE CODE. The reference also draws
+   * App Store and Google Play badges; measured across `src/`, `public/` and `docs/`, this
+   * repository holds NO canonical store URL for either platform (the only App Store strings are
+   * third-party test fixtures and Apple's server-to-server StoreKit host), and the Android
+   * `applicationId` is not a published listing. A store link composed from an app id would be an
+   * invented URL on a file people print and hand out, so the badges are omitted until a real
+   * listing exists. The site origin, by contrast, is configuration: `NEXT_PUBLIC_SITE_URL`.
+   */
+  website?: string
 }
 
 /** Layout constants (px at the rendered scale). Kept together so the card reads as one design. */
@@ -31,7 +45,11 @@ const CARD = {
   pad: 72,
   markSize: 84,
   wordmarkPx: 52,
+  taglinePx: 26,
+  gapLockupToTagline: 18,
   gapLockupToQr: 48,
+  websitePx: 26,
+  gapCaptionToWebsite: 26,
   gapQrToName: 44,
   namePx: 46,
   captionPx: 27,
@@ -75,11 +93,16 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   const qrSide = modulePx * (n + quiet * 2)
 
   const hasName = opts.displayName.trim().length > 0
+  const tagline = opts.tagline?.trim() ?? ''
+  const website = opts.website?.trim() ?? ''
   const width = qrSide + CARD.pad * 2
   const height =
-    CARD.pad + CARD.markSize + CARD.gapLockupToQr + qrSide +
+    CARD.pad + CARD.markSize +
+    (tagline ? CARD.gapLockupToTagline + CARD.taglinePx : 0) +
+    CARD.gapLockupToQr + qrSide +
     (hasName ? CARD.gapQrToName + CARD.namePx : CARD.gapQrToName) +
-    CARD.gapNameToCaption + CARD.captionPx + CARD.pad
+    CARD.gapNameToCaption + CARD.captionPx +
+    (website ? CARD.gapCaptionToWebsite + CARD.websitePx : 0) + CARD.pad
 
   const canvas = document.createElement('canvas')
   canvas.width = width
@@ -117,7 +140,17 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   ctx.fillText('Tappy', x, y + CARD.markSize / 2)
   ctx.fillStyle = TAPPY_WORDMARK_BLUE
   ctx.fillText('AI', x + tappyW, y + CARD.markSize / 2)
-  y += CARD.markSize + CARD.gapLockupToQr
+  y += CARD.markSize
+  if (tagline) {
+    y += CARD.gapLockupToTagline
+    ctx.textAlign = 'center'
+    ctx.fillStyle = CARD.muted
+    ctx.font = `500 ${CARD.taglinePx}px ${CARD.font}`
+    ctx.fillText(tagline, width / 2, y + CARD.taglinePx / 2, width - CARD.pad * 2)
+    y += CARD.taglinePx
+    ctx.textAlign = 'left'
+  }
+  y += CARD.gapLockupToQr
 
   // The code. Module by module, dark on the white ground, with `quiet` empty
   // modules on every side. Nothing else is drawn in this rectangle.
@@ -141,6 +174,13 @@ export async function renderBrandedQrCard(opts: BrandedQrOptions): Promise<Blob 
   ctx.fillStyle = CARD.muted
   ctx.font = `400 ${CARD.captionPx}px ${CARD.font}`
   ctx.fillText(opts.caption, width / 2, y + CARD.captionPx / 2, width - CARD.pad * 2)
+
+  if (website) {
+    y += CARD.captionPx + CARD.gapCaptionToWebsite
+    ctx.fillStyle = TAPPY_WORDMARK_BLUE
+    ctx.font = `600 ${CARD.websitePx}px ${CARD.font}`
+    ctx.fillText(website, width / 2, y + CARD.websitePx / 2, width - CARD.pad * 2)
+  }
 
   return new Promise((resolve) => canvas.toBlob((b) => resolve(b), 'image/png'))
 }

@@ -25,7 +25,9 @@ export const vi: Record<string, string> = {
   'v3.nav.community': 'Cộng đồng',
   'v3.nav.commerce': 'Thương mại',
   'v3.nav.tools': 'Công cụ & tiện ích',
-  'v3.nav.account': 'Tài khoản',
+  // The GROUP header over Profile / Me · Tài khoản · Cài đặt — "MY ACCOUNT" in the
+  // canonical references. It read "Tài khoản", the same words as the row beneath it.
+  'v3.nav.account': 'Tài khoản của tôi',
   'v3.nav.settings': 'Cài đặt & khác',
   'v3.nav.ariaMain': 'Điều hướng chính',
   'v3.nav.ariaTabs': 'Khu vực chính',
@@ -735,7 +737,7 @@ export const en: Record<string, string> = {
   'v3.nav.community': 'Community',
   'v3.nav.commerce': 'Commerce',
   'v3.nav.tools': 'Tools & utilities',
-  'v3.nav.account': 'Account',
+  'v3.nav.account': 'My account',
   'v3.nav.settings': 'Settings & more',
   'v3.nav.ariaMain': 'Main navigation',
   'v3.nav.ariaTabs': 'Primary sections',

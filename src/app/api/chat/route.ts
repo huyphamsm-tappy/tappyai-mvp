@@ -7,7 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
 import { buildMemoryBlock, extractMemoryFromConversation, lastMemoryExtractionUsage, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
@@ -61,6 +61,8 @@ import { buildChatPromptContext, buildIdentityBlock } from '@/lib/ai/contextBuil
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicRateLimit, publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
+import { guardShareFollowUp } from '@/lib/share/followUpGuard'
+import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
 import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
 import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
@@ -166,9 +168,11 @@ export async function POST(req: Request) {
 
   const messages = validated.messages
   const rawUserPrefs = validated.preferences
-  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = (rawBody ?? {}) as {
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle, shareSlug: rawShareSlug } = (rawBody ?? {}) as {
     userLocation?: { lat?: unknown; lng?: unknown; address?: string }
     responseStyle?: unknown
+    /** G1: set only by the public shared-result page's follow-up box. Validated in the guard. */
+    shareSlug?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -488,8 +492,8 @@ export async function POST(req: Request) {
     } else {
       // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
       // returns `unknown` on a read error, but an unexpected throw used to land in
-      // the "auth/quota resolution failed (proceeding unmetered)" catch below — and
-      // "unmetered" there also meant UNGATED: the turn reached the model with no
+      // the "auth/quota resolution failed" catch below — and back when that catch
+      // let the turn through unmetered, unmetered also meant UNGATED: the turn reached the model with no
       // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
       // An unknown age withholds the model; it never admits.
       const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
@@ -517,7 +521,9 @@ export async function POST(req: Request) {
       // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
-      quotaMetered = true
+      // 🚨 R-4/R-3: quotaMetered is SET AFTER THE SPEND, never before — a THROW between here and
+      // the spend must fall through to the IP-keyed backstop, or the turn reaches the model counted
+      // by nobody. A $0 canned turn (quotaExempt, owner decision 2026-09-18) is not charged.
       const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
       if (!spend.ok) {
         return new Response(
@@ -529,6 +535,7 @@ export async function POST(req: Request) {
           { status: 401, headers: { 'Content-Type': 'application/json' } }
         )
       }
+      quotaMetered = true
       quotaRefund = spend.refund
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
@@ -542,7 +549,8 @@ export async function POST(req: Request) {
             error: accountRestrictionCode(restriction.reason!),
             message: accountRestrictionMessage(restriction),
           }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
+          // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+          { status: accountRestrictionStatus(restriction.reason!), headers: { 'Content-Type': 'application/json' } }
         )
       }
 
@@ -625,7 +633,6 @@ export async function POST(req: Request) {
 
       // One question from the shared daily pool. Same pool every AI feature draws on, so a
       // Cảnh báo lừa đảo analysis earlier today is already counted here.
-      quotaMetered = true
       // A2: a signed-in account has its own burst cap on top of the IP one — one account behind
       // many IPs (a script through proxies) is the case the IP cap cannot see.
       const userBurst = await publicRateLimit(`chat:user:${user.id}`, CHAT_USER_BURST_PER_MINUTE, 60_000)
@@ -636,18 +643,31 @@ export async function POST(req: Request) {
           { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(userBurst.retryAfter) } },
         )
       }
-      if (!isPro && !quotaExempt) {
-        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
-        if (!spend.ok) {
-          return new Response(
-            JSON.stringify({
-              error: 'free_limit_reached',
-              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-            }),
-            { status: 429, headers: { 'Content-Type': 'application/json' } }
-          )
+      // 🚨 R-3: quotaMetered is SET AFTER THE SPEND, never before. Setting it first meant a throw
+      // between here and the spend left the flag true and the IP-keyed backstop skipped — the turn
+      // reached the model counted by nobody, a metering bypass an attacker can provoke by failing
+      // the quota store. Pro is metered by nothing (unlimited); a $0 canned turn (quotaExempt,
+      // owner decision 2026-09-18) is not charged but is still marked metered so the backstop does
+      // not recharge it. Exactly one spend per turn.
+      if (isPro) {
+        quotaMetered = true
+      } else {
+        if (quotaExempt) {
+          quotaMetered = true
+        } else {
+          const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+          if (!spend.ok) {
+            return new Response(
+              JSON.stringify({
+                error: 'free_limit_reached',
+                message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+              }),
+              { status: 429, headers: { 'Content-Type': 'application/json' } }
+            )
+          }
+          quotaMetered = true
+          quotaRefund = spend.refund
         }
-        quotaRefund = spend.refund
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
@@ -664,11 +684,12 @@ export async function POST(req: Request) {
       }
     }
   } catch (e) {
-    // Identity/quota resolution is best-effort so a transient auth/DB error can't
-    // hard-fail chat. This favors availability over strict enforcement: on error
-    // the daily cap for THIS request may be skipped. Log it so the fail-open is
-    // observable rather than silent.
-    console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+    // Identity/quota resolution is best-effort so a transient auth/DB error can't hard-fail
+    // chat. What it must NOT do is let the turn through uncounted: `quotaMetered` is only true
+    // once a spend actually happened (R-3), so anything that lands here falls through to the
+    // IP-keyed backstop below and is metered as the anonymous tier — stricter than the tier the
+    // user would have had, which is the right direction to fail. Logged so it stays observable.
+    console.error('[chat] auth/quota resolution failed (falling back to IP-keyed metering):', e)
   }
   // 🚨 "UNMETERED" MUST NEVER MEAN "UNGATED". If identity resolution threw before
   // the gate above could run, the request is treated as a guest: the device
@@ -761,6 +782,45 @@ export async function POST(req: Request) {
       )
     }
     quotaRefund = spend.refund
+  }
+
+  // ── G1-E: per-Zalo-identity daily cap ────────────────────────────────────
+  //
+  // A request from the Zalo Mini App carries a SERVER-SIGNED identity cookie
+  // (see src/lib/zalo/identity.ts). It is an additional rate-limit key over the
+  // canonical quota above — never an authentication, never a bypass. A forged or
+  // absent cookie simply means this cap does not apply and the ordinary anonymous
+  // quota does. Same number as the anonymous tier (ANON_LIFETIME_LIMIT), applied
+  // per VN day to the Zalo identity — one place to change it.
+  const zaloHash = readZaloIdentity(req.headers.get('cookie'), zaloIdentitySecret())
+  if (zaloHash) {
+    const zrl = await publicDailyRateLimit(`chat-zalo:${zaloHash}`, ANON_LIFETIME_LIMIT)
+    if (!zrl.ok) {
+      return new Response(
+        JSON.stringify({ error: 'anon_limit_reached', message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }), upgradeUrl: '/login' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } },
+      )
+    }
+  }
+
+  // ── G1: anonymous follow-up from a public shared result ──────────────────
+  //
+  // Same pipeline, two additions (see src/lib/share/followUpGuard.ts): a per-slug
+  // daily cap keyed on the strongest identity we have, and a short PUBLIC context
+  // line so the model knows which shared result the question refers to. Runs
+  // AFTER the identity/quota resolution above (the lifetime anonymous tier and
+  // the guest 18+ declaration have already been enforced) and BEFORE any model
+  // or tool work, so a refused request costs nothing.
+  let shareContextBlock = ''
+  if (rawShareSlug !== undefined) {
+    const decision = await guardShareFollowUp(req, rawShareSlug, authedUserId)
+    if (!decision.ok) {
+      return new Response(
+        JSON.stringify({ error: 'share_follow_up_limit', message: serverMessage('chat.shareFollowUpLimit', requestLocale(req)) }),
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(decision.retryAfter || 3600) } },
+      )
+    }
+    shareContextBlock = decision.contextBlock
   }
 
   // Inject freeform user preferences from client request body
@@ -1406,7 +1466,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     planning,
   )
   const systemShared = built?.shared
-  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //

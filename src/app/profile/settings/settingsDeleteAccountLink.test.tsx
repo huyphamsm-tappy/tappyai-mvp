@@ -14,9 +14,23 @@ vi.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }))
 
-// SignOutButton builds a Supabase browser client on render.
+// SignOutButton builds a Supabase browser client on render, and since Settings moved onto
+// `V3Shell` (Phase 7 RC §9) the shell's auth-aware sidebar row reads the session too
+// (`useAuthStatus` → getUser + onAuthStateChange). A mock missing either one throws inside an
+// effect, which fails every test in the file for a reason that has nothing to do with them.
 vi.mock('@/lib/supabase/client', () => ({
-  createClient: () => ({ auth: { signOut: vi.fn() } }),
+  createClient: () => ({
+    auth: {
+      signOut: vi.fn(),
+      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      getSession: vi.fn().mockResolvedValue({ data: { session: null }, error: null }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: vi.fn() } } }),
+    },
+  }),
+}))
+
+vi.mock('@/components/NotificationProvider', () => ({
+  useNotifications: () => ({ notifications: [], unreadCount: 0, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
 }))
 
 const user = { full_name: 'Huy Pham', avatar_url: null, email: 'huy@example.com' }
@@ -58,8 +72,9 @@ describe('Settings → Request Account Deletion', () => {
     const { container } = render(<SettingsView user={user} />)
     const link = screen.getByRole('link', { name: /Request Account Deletion/i })
 
-    // Same card as Sign out, matching how Android groups the two rows.
-    const card = link.closest('div.card')
+    // Same card as Sign out, matching how Android groups the two rows. The card is
+    // `.v3-panel` since Settings moved onto the V3 shell (Phase 7 RC §9); it was `.card`.
+    const card = link.closest('div.v3-panel')
     expect(card).not.toBeNull()
     expect(card!.textContent).toContain('Sign out')
 

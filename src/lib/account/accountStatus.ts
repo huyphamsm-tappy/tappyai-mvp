@@ -32,7 +32,13 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 // design, including to the subject of the note.
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type AccountRestrictionReason = 'suspended' | 'banned'
+// 🚨 R-4 (2026-09-24): 'unavailable' IS A THIRD ANSWER, NOT A THIRD PUNISHMENT.
+// "we know you are blocked" and "we could not find out" are different facts and the user must
+// be told different things. Collapsing them was the old fail-OPEN ("could not find out" → let
+// them through); collapsing them the other way would be worse, telling an innocent user their
+// account is suspended because a read timed out. This reason means: refuse the action, say the
+// check is temporarily unavailable, invite a retry, and accuse nobody.
+export type AccountRestrictionReason = 'suspended' | 'banned' | 'unavailable'
 
 export interface AccountRestriction {
   blocked: boolean
@@ -87,43 +93,71 @@ export function evaluateAccountStatus(
   return ACTIVE
 }
 
+/** Refusal because the status could not be read — never because of anything the user did. */
+const UNAVAILABLE: AccountRestriction = { blocked: true, reason: 'unavailable', suspendedUntil: null }
+
 /**
- * Reads the caller's own account status.
+ * Reads the caller's own account status. Never throws.
  *
- * Never throws, and never blocks on a read failure. The trade-off is stated
- * rather than hidden: failing closed would take posting, commenting and chat
- * away from every user during any database blip, to close a window in which a
- * sanctioned user — currently zero of them — could act. For the two write paths
- * the very next statement is a write to the same database, so a failure here
- * generally means the action fails anyway. The error is logged loudly so the
- * window is observable rather than silent.
+ * ── R-4: THIS NOW FAILS CLOSED, AND THE COST WAS WEIGHED RATHER THAN ASSUMED ──
+ *
+ * It used to return ACTIVE when the read failed, with the trade recorded as "failing closed
+ * would take posting, commenting and chat away from every user during any database blip, to
+ * close a window in which a sanctioned user — currently zero of them — could act".
+ *
+ * The reasoning was sound about cost and wrong about shape. An enforcement control that stops
+ * enforcing precisely when the database is unhealthy is enforcement an attacker can schedule:
+ * a suspended account only has to retry during the blip. And "currently zero" is a fact about
+ * today, not a property of the system — the first real suspension makes it stale, and nothing
+ * here would have told us.
+ *
+ * What made fail-closed unacceptable before was not the refusal, it was the MESSAGE: a real user
+ * being told they are suspended because a read timed out. That is why the failure now has its
+ * own reason. The user is told the check is temporarily unavailable and to try again; they are
+ * never told they are blocked, and no moderation state is implied.
+ *
+ * One retry first. Most of these failures are a single dropped pooler connection, and retrying
+ * once turns the common case back into a normal answer instead of a refusal the user sees.
  */
 export async function getAccountRestriction(
   supabase: SupabaseClient,
   userId: string,
   now: Date = new Date()
 ): Promise<AccountRestriction> {
-  try {
-    const { data, error } = await supabase
-      .from('account_status')
-      .select(ACCOUNT_STATUS_COLUMNS)
-      .eq('user_id', userId)
-      .maybeSingle()
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const { data, error } = await supabase
+        .from('account_status')
+        .select(ACCOUNT_STATUS_COLUMNS)
+        .eq('user_id', userId)
+        .maybeSingle()
 
-    if (error) {
-      console.error('[accountStatus] read failed, allowing request:', error.message)
-      return ACTIVE
+      if (!error) return evaluateAccountStatus(data as AccountStatusRow | null, now)
+      if (attempt === 1) {
+        console.error('[accountStatus] read failed twice, refusing the action:', error.message)
+        return UNAVAILABLE
+      }
+    } catch (e) {
+      if (attempt === 1) {
+        console.error('[accountStatus] read threw twice, refusing the action:', e instanceof Error ? e.message : e)
+        return UNAVAILABLE
+      }
     }
-    return evaluateAccountStatus(data as AccountStatusRow | null, now)
-  } catch (e) {
-    console.error('[accountStatus] read threw, allowing request:', e instanceof Error ? e.message : e)
-    return ACTIVE
   }
+  return UNAVAILABLE
 }
 
 /** Stable machine-readable code, so clients localize rather than parse prose. */
 export function accountRestrictionCode(reason: AccountRestrictionReason): string {
-  return reason === 'banned' ? 'account_banned' : 'account_suspended'
+  if (reason === 'banned') return 'account_banned'
+  // Its own code so a client can offer "try again" instead of an appeals link.
+  if (reason === 'unavailable') return 'account_status_unavailable'
+  return 'account_suspended'
+}
+
+/** 503 for an unreadable status — a retryable server condition, not a 403 verdict on the user. */
+export function accountRestrictionStatus(reason: AccountRestrictionReason): 403 | 503 {
+  return reason === 'unavailable' ? 503 : 403
 }
 
 /**
@@ -131,6 +165,10 @@ export function accountRestrictionCode(reason: AccountRestrictionReason): string
  * guards; the `code` above is what a client should branch on.
  */
 export function accountRestrictionMessage(restriction: AccountRestriction): string {
+  // 🚨 Says nothing about the account. The check failed; the user did not.
+  if (restriction.reason === 'unavailable') {
+    return 'Hiện chưa kiểm tra được trạng thái tài khoản. Bạn thử lại sau ít phút nhé.'
+  }
   if (restriction.reason === 'banned') {
     return 'Tài khoản của bạn đã bị khóa vĩnh viễn.'
   }

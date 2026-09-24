@@ -280,4 +280,21 @@
     <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
     <string name="voice_listening_title_accent">lắng nghe…</string>
     <string name="voice_listening_title_lead">Tôi đang</string>
+
+    <!-- G1 share-out: lượt trả lời trở thành trang kết quả công khai (tương đương bản xem trước trên web). -->
+    <string name="chat_share_public_link">Liên kết công khai (trang chia sẻ)</string>
+    <string name="chat_share_public_title">Người khác sẽ thấy gì</string>
+    <string name="chat_share_public_hint">Đây là bản công khai đã ẩn thông tin cá nhân. Chỉ khi bạn xác nhận, liên kết mới được tạo.</string>
+    <string name="chat_share_public_loading">Đang chuẩn bị bản xem trước…</string>
+    <string name="chat_share_public_title_field">Tiêu đề công khai</string>
+    <string name="chat_share_public_question">Câu hỏi (đã rút gọn)</string>
+    <string name="chat_share_public_answer">Câu trả lời</string>
+    <string name="chat_share_public_counts">%1$d nút hành động · %2$d ảnh</string>
+    <string name="chat_share_public_privacy">Không bao gồm: tên, số điện thoại, email, địa chỉ nhà, trí nhớ và lịch sử trò chuyện của bạn.</string>
+    <string name="chat_share_public_unlisted">Bạn chưa đăng nhập: liên kết vẫn mở được cho mọi người nhưng không xuất hiện trên tìm kiếm cho đến khi bạn tạo tài khoản.</string>
+    <string name="chat_share_public_confirm">Tạo liên kết công khai</string>
+    <string name="chat_share_public_published">Đã tạo liên kết công khai</string>
+    <string name="chat_share_public_copy">Sao chép liên kết</string>
+    <string name="chat_share_public_rate_limited">Bạn đã tạo đủ số liên kết công khai hôm nay. Thử lại vào ngày mai nhé.</string>
+    <string name="chat_share_public_not_shareable">Câu trả lời này chưa thể chia sẻ công khai.</string>
 </resources>

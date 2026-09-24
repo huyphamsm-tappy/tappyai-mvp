@@ -46,10 +46,12 @@ struct ReviewActionRail: View {
                 action: onShare
             )
 
-            // Music hidden by default (FeatureFlags.showMusic, owner decision 2026-09-24): the
-            // feed music disc opens the retired "use this sound" SoundPage, so it stays gated off.
-            if isUploadVideo && FeatureFlags.showMusic {
-                ReviewMusicDisc(music: review.music, isPlaying: isPlaying, onTap: onMusicTap)
+            if isUploadVideo {
+                // Hidden with `ProductFlags.showMusic`: the disc is the entry point to the sound
+                // page, so while Music is hidden a clip carries no music affordance at all.
+                if ProductFlags.showMusic {
+                    ReviewMusicDisc(music: review.music, isPlaying: isPlaying, onTap: onMusicTap)
+                }
             }
         }
     }

@@ -1,15 +1,12 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import { createBrowserClient } from '@supabase/ssr'
 import Header from '@/components/Header'
-import BottomNav from '@/components/BottomNav'
-import { Copy, Check, Users, Loader2, Camera } from 'lucide-react'
 import { SMART_TOOLS_HREF } from '@/lib/tools/registry'
-
-/** Same ceiling the server enforces (POST /api/group/[id]/avatar), so the page can refuse early. */
-const GROUP_AVATAR_MAX_BYTES = 3 * 1024 * 1024
+import BottomNav from '@/components/BottomNav'
+import { Copy, Check, Users, Loader2 } from 'lucide-react'
 
 type Member = {
   id: string
@@ -26,8 +23,6 @@ type Group = {
   creator_id: string
   status: string
   suggestion: string | null
-  /** The group's own picture (not the creator's avatar); null until the creator sets one. */
-  avatar_url?: string | null
   members: Member[]
 }
 
@@ -52,15 +47,6 @@ export default function GroupPage() {
   const [area, setArea] = useState('')
   const [joining, setJoining] = useState(false)
   const [joinError, setJoinError] = useState('')
-
-  // Group avatar (creator only). Mirrors profile/edit's avatar handler: preview while the
-  // upload is in flight, the server's URL once it answers, the error otherwise — never a
-  // "saved" that did not persist.
-  const avatarInputRef = useRef<HTMLInputElement>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
-  const [avatarUploading, setAvatarUploading] = useState(false)
-  const [avatarError, setAvatarError] = useState('')
-  useEffect(() => () => { if (avatarPreview) URL.revokeObjectURL(avatarPreview) }, [avatarPreview])
 
   const fetchGroup = useCallback(async () => {
     try {
@@ -140,32 +126,6 @@ export default function GroupPage() {
     }
   }
 
-  async function handleAvatarSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    e.target.value = ''
-    if (!file) return
-    if (!file.type.startsWith('image/')) { setAvatarError('Chỉ chấp nhận ảnh JPG, PNG, WebP hoặc GIF'); return }
-    if (file.size > GROUP_AVATAR_MAX_BYTES) { setAvatarError('Ảnh tối đa 3MB'); return }
-
-    setAvatarError('')
-    setAvatarPreview(URL.createObjectURL(file))
-    setAvatarUploading(true)
-    const formData = new FormData()
-    formData.append('avatar', file)
-    try {
-      const res = await fetch(`/api/group/${id}/avatar`, { method: 'POST', body: formData })
-      let data: { avatar_url?: string; message?: string; error?: string } = {}
-      try { data = await res.json() } catch { /* non-JSON response */ }
-      if (!res.ok || !data.avatar_url) throw new Error(data.message || data.error || 'Không thể tải ảnh lên. Vui lòng thử lại.')
-      setGroup(prev => prev ? { ...prev, avatar_url: data.avatar_url! } : prev)
-    } catch (err) {
-      setAvatarError(err instanceof Error ? err.message : 'Không thể tải ảnh lên. Vui lòng thử lại.')
-    } finally {
-      setAvatarPreview(null)
-      setAvatarUploading(false)
-    }
-  }
-
   async function copyLink() {
     const link = `${window.location.origin}/group/${id}`
     await navigator.clipboard.writeText(link)
@@ -194,53 +154,24 @@ export default function GroupPage() {
 
   return (
     <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24">
-      {/* Back pops in-app history (the creator arrives from /group/new, a member from a shared
-          link, the creator later from wherever they were); a deep link falls back to /tools.
-          A fixed `backHref="/"` sent every Back to Home. */}
+      {/* Phase 7 §13: Back pops the in-app history and falls back to Smart Tools, this
+        * page's usual parent. A fixed `backHref="/"` sent every Back to Home. */}
       <Header showBack backFallbackHref={SMART_TOOLS_HREF} title={group.name} />
       <main className="max-w-2xl mx-auto px-4 py-5 space-y-4">
 
-        {/* Group header card — the GROUP's picture, set by the creator; members see it too. */}
+        {/* Group header card */}
         <div className="card p-5">
           <div className="flex items-center gap-3">
-            {(() => {
-              const src = avatarPreview || group.avatar_url || null
-              const tile = src ? (
-                // eslint-disable-next-line @next/next/no-img-element -- a user-uploaded picture; object-cover in a fixed tile, no pipeline needed
-                <img src={src} alt="" className="w-12 h-12 rounded-2xl object-cover shrink-0" data-group-avatar />
-              ) : (
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center shrink-0" data-group-avatar="placeholder">
-                  <Users className="text-white" size={22} />
-                </div>
-              )
-              if (!isCreator) return tile
-              return (
-                <button
-                  type="button"
-                  onClick={() => avatarInputRef.current?.click()}
-                  disabled={avatarUploading}
-                  className="relative shrink-0 rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-400 disabled:opacity-70"
-                  aria-label="Đổi ảnh nhóm"
-                  data-group-avatar-edit
-                >
-                  {tile}
-                  <span className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-gray-900 shadow ring-1 ring-gray-200 dark:ring-gray-700 text-gray-700 dark:text-gray-200">
-                    {avatarUploading ? <Loader2 size={13} className="animate-spin" /> : <Camera size={13} />}
-                  </span>
-                </button>
-              )
-            })()}
-            <div className="min-w-0">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary-400 to-accent-400 flex items-center justify-center shrink-0">
+              <Users className="text-white" size={22} />
+            </div>
+            <div>
               <h1 className="font-bold text-gray-900 dark:text-white text-lg">{group.name}</h1>
               <p className="text-sm text-content-secondary">
                 {group.members.length} thành viên đã tham gia
               </p>
-              {isCreator && avatarError && <p className="mt-1 text-xs text-red-500 dark:text-red-400" role="alert">{avatarError}</p>}
             </div>
           </div>
-          {isCreator && (
-            <input ref={avatarInputRef} type="file" accept="image/*" className="hidden" onChange={handleAvatarSelect} data-group-avatar-input />
-          )}
         </div>
 
         {/* CREATOR VIEW */}

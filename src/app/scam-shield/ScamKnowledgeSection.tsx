@@ -57,7 +57,7 @@ function List({ items, icon: Icon, color }: { items: string[]; icon: LucideIcon;
   )
 }
 
-function ScenarioDetail({ scenario }: { scenario: ScamScenario }) {
+export function ScenarioDetail({ scenario }: { scenario: ScamScenario }) {
   const { t, locale } = useTranslation()
   const dataset = datasetOf(scenario)
   const group = dataset.groups.find(g => g.category === scenario.category)

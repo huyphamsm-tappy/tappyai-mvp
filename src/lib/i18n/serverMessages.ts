@@ -179,6 +179,8 @@ const MESSAGES = {
   'content.badFormat': { vi: 'Kết quả không đúng định dạng, vui lòng thử lại.', en: 'The result came back malformed — please try again.' },
 
   // Per-feature rate limits. `{n}` is the daily allowance.
+  'share.notShareable': { vi: 'Kết quả này chưa thể chia sẻ công khai.', en: 'This result cannot be shared publicly.' },
+  'chat.shareFollowUpLimit': { vi: 'Bạn đã hỏi đủ số câu cho kết quả này hôm nay. Đăng nhập để hỏi Tappy thoải mái hơn nhé.', en: "You've asked all the follow-ups this result allows today. Sign in to keep asking Tappy." },
   'rate.tooFast': { vi: 'Bạn thao tác quá nhanh, vui lòng thử lại sau giây lát.', en: "You're going a bit fast — please try again in a moment." },
   'rate.postLimit': { vi: 'Bạn đã đăng quá {n} bài hôm nay. Thử lại vào ngày mai nhé.', en: "You've posted {n} times today. Please try again tomorrow." },
   'rate.uploadLimit': { vi: 'Bạn đã tải lên {n} ảnh hôm nay. Thử lại vào ngày mai nhé.', en: "You've uploaded {n} images today. Please try again tomorrow." },
@@ -188,7 +190,9 @@ const MESSAGES = {
   'review.signInToReview': { vi: 'Cần đăng nhập để đánh giá', en: 'Please sign in to write a review' },
   'review.alreadyReviewed': { vi: 'Bạn đã đánh giá địa điểm này rồi.', en: "You've already reviewed this place." },
   'media.signInToUpload': { vi: 'Cần đăng nhập để tải ảnh', en: 'Please sign in to upload images' },
-  'media.imageTooLarge5': { vi: 'File ảnh phải nhỏ hơn 5MB', en: 'Images must be smaller than 5MB' },
+  // {n} is MAX_PHOTO_SIZE_MB. The number was baked into the key name AND the copy, so raising
+  // the constant would have kept telling the user 5MB while the server enforced something else.
+  'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },

@@ -283,4 +283,21 @@
     <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
     <string name="voice_listening_title_accent">lắng nghe…</string>
     <string name="voice_listening_title_lead">Tôi đang</string>
+
+    <!-- G1 share-out: a finished turn becomes a public result page (parity with the web's share preview). -->
+    <string name="chat_share_public_link">Public link (share page)</string>
+    <string name="chat_share_public_title">What others will see</string>
+    <string name="chat_share_public_hint">This is the public version with personal details removed. No link exists until you confirm.</string>
+    <string name="chat_share_public_loading">Preparing preview…</string>
+    <string name="chat_share_public_title_field">Public title</string>
+    <string name="chat_share_public_question">Question (generalised)</string>
+    <string name="chat_share_public_answer">Answer</string>
+    <string name="chat_share_public_counts">%1$d action buttons · %2$d images</string>
+    <string name="chat_share_public_privacy">Not included: your name, phone, email, home address, memory and chat history.</string>
+    <string name="chat_share_public_unlisted">You are not signed in: the link opens for anyone but stays out of search until you create an account.</string>
+    <string name="chat_share_public_confirm">Create public link</string>
+    <string name="chat_share_public_published">Public link created</string>
+    <string name="chat_share_public_copy">Copy link</string>
+    <string name="chat_share_public_rate_limited">You have created enough public links for today. Try again tomorrow.</string>
+    <string name="chat_share_public_not_shareable">This answer cannot be shared publicly.</string>
 </resources>

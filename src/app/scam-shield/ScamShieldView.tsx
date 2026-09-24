@@ -13,6 +13,7 @@ import {
 } from '@/lib/scam-shield/history'
 import V3Shell from '@/components/v3/V3Shell'
 import TappyPresence from '@/components/v3/TappyPresence'
+import { getAttribution, setSessionSource } from '@/lib/analytics/attribution'
 import ScamShieldResult, { LEVEL_TONE, LEVEL_KEY } from './ScamShieldResult'
 import ScamMessageResult, { type MessageAnalysisResponse } from './ScamMessageResult'
 import ScamKnowledgeSection from './ScamKnowledgeSection'
@@ -20,6 +21,7 @@ import { ANON_LIFETIME_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { track } from '@/lib/tracking/tracker'
 import { MESSAGE_MAX_CHARS, SCREENSHOT_ALLOWED_MIME, SCREENSHOT_MAX_BYTES } from '@/lib/scam-shield/message/config'
+import { readScamShieldPrefill } from '@/lib/scam-shield/deepLink'
 
 /**
  * Three capabilities, three tabs. `message` is Analyze Message — the SAME URL engine over every
@@ -151,6 +153,19 @@ export default function ScamShieldView() {
    * state: a first-time visitor genuinely has no history.
    */
   useEffect(() => { setHistory(readHistory()) }, [])
+  // G1 wedge attribution: a session that STARTED on Scam Shield (no more specific
+  // source captured) is a wedge_scam entry. Never overrides a share/GEO/QR source.
+  useEffect(() => { if (getAttribution().source === 'direct') setSessionSource('wedge_scam') }, [])
+  // Deep link (`/scam-shield?url=…` — the browser extension, share-out pages): PREFILL the
+  // URL tab and stop. The person presses Check; a link never spends a check by itself.
+  // Read from `location` in an effect rather than `useSearchParams` so this page stays a
+  // static shell with no Suspense boundary and no per-request render.
+  useEffect(() => {
+    const prefill = readScamShieldPrefill(window.location.search)
+    if (!prefill) return
+    setTab('url')
+    setUrl(prefill)
+  }, [])
 
   /** The one place a history row is created, and only from a result the engine actually returned. */
   const remember = useCallback((checked: CheckResult) => {

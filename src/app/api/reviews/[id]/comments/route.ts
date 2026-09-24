@@ -8,7 +8,7 @@ import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 
 type CommentProfile = { full_name: string | null; avatar_url: string | null }
 
@@ -119,7 +119,8 @@ export async function POST(
   if (restriction.blocked) {
     return NextResponse.json(
       { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
-      { status: 403 }
+      // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+      { status: accountRestrictionStatus(restriction.reason!) }
     )
   }
 

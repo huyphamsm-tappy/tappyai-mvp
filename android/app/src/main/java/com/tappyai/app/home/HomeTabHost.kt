@@ -16,6 +16,11 @@ import com.tappyai.app.fortune.zodiac.ZodiacScreen
 import com.tappyai.app.games.GamesRoute
 import com.tappyai.app.games.GamesScreen
 import com.tappyai.app.groupdining.GroupDiningScreen
+import com.tappyai.app.ProductFlags
+import com.tappyai.app.music.MusicLibraryScreen
+import com.tappyai.app.music.MusicRoute
+import com.tappyai.app.profile.CopyrightPolicyScreen
+import com.tappyai.app.music.SoundDetailScreen
 import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
 import com.tappyai.app.scan.ScanRoute
@@ -30,7 +35,7 @@ import com.tappyai.app.vietwriter.VietWriterRoute
 import com.tappyai.app.vietwriter.VietWriterScreen
 
 /**
- * The Home tab's content. Hosts its own nested NavHost (Landing → Fortune sub-screens)
+ * The Home tab's content. Hosts its own nested NavHost (Landing → Music → Fortune sub-screens)
  * so each flow drills in with its own back stack without touching the app shell or other tabs.
  * [onNavigateToTab] is forwarded from the shell so the launchpad's quick actions can still
  * switch top-level tabs. [onOpenChatWithPrefill] likewise reaches back to the shell to open the
@@ -54,6 +59,10 @@ fun HomeTabHost(
                 onOpenChatWithCategory = onOpenChatWithCategory,
                 onOpenChatWithPrefill = onOpenChatWithPrefill,
                 onOpenConversation = onOpenConversation,
+                // Music is hidden on every platform while its licensing is open. The tile is
+                // already absent from `smartTools()`; the destination is refused here too, so no
+                // leftover callback can reach the library.
+                onOpenMusic = { if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library) },
                 onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
@@ -80,6 +89,7 @@ fun HomeTabHost(
                         SmartToolId.Split -> navController.navigate(SplitBillRoute.Main)
                         SmartToolId.Safety -> navController.navigate(ScamShieldRoute.Main)
                         SmartToolId.Together -> navController.navigate(HomeTabRoute.GroupDining)
+                        SmartToolId.Music -> if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library)
                         SmartToolId.Fortune -> navController.navigate(FortuneRoute.Hub)
                         SmartToolId.Captions -> navController.navigate(VietWriterRoute.Main)
                     }
@@ -118,6 +128,21 @@ fun HomeTabHost(
         }
         composable<GamesRoute.Main> {
             GamesScreen(onBack = { navController.popBackStack() })
+        }
+        composable<MusicRoute.Library> {
+            MusicLibraryScreen(
+                onBack = { navController.popBackStack() },
+                onOpenSound = { trackId -> navController.navigate(MusicRoute.SoundDetail(trackId)) },
+            )
+        }
+        composable<MusicRoute.SoundDetail> {
+            SoundDetailScreen(
+                onBack = { navController.popBackStack() },
+                onOpenCopyrightPolicy = { navController.navigate(MusicRoute.CopyrightPolicy) },
+            )
+        }
+        composable<MusicRoute.CopyrightPolicy> {
+            CopyrightPolicyScreen(onBack = { navController.popBackStack() })
         }
         composable<FortuneRoute.Hub> {
             FortuneHubScreen(

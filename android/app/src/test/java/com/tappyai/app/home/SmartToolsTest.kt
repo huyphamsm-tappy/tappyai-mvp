@@ -31,20 +31,24 @@ class SmartToolsTest {
     // ── the registry is the web's ──
 
     @Test
-    fun `the tools, their order, groups, Home flags and sign-in flags are the web registry's minus suggest and music`() {
+    fun `the nine tools, their order, groups, Home flags and sign-in flags are the web registry's minus suggest`() {
         val web = repo("src/lib/tools/registry.ts").readText()
         val rows = Regex("""\{ id: '(\w+)', href: '([^']+)'.*?group: 'v3\.tools\.(\w+)', home: (true|false)(, auth: true)? \}""")
             .findAll(web).map { m -> listOf(m.groupValues[1], m.groupValues[3], m.groupValues[4], (m.groupValues[5].isNotEmpty()).toString()) }.toList()
         assertEquals("ten rows on the web", 10, rows.size)
-        // 🔑 Android drops `suggest` (Home already has "Gợi ý cho bạn") and `music` (music reuse
-        // retired — the backend endpoints answer 410); every other row, in the web's order, with the
-        // web's group and flags.
+        // 🔑 Android drops exactly `suggest` (Home already has "Gợi ý cho bạn"); every other row, in
+        // the web's order, with the web's group and flags.
         val ours = SMART_TOOLS.map { listOf(it.id.name.lowercase(), it.group.name.lowercase(), it.home.toString(), it.auth.toString()) }
-        assertEquals(rows.filter { it[0] != "suggest" && it[0] != "music" }, ours)
-        assertEquals(8, SMART_TOOLS.size)
-        assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "fortune", "captions"), SMART_TOOLS.map { it.id.name.lowercase() })
+        assertEquals(rows.filter { it[0] != "suggest" }, ours)
+        assertEquals(9, SMART_TOOLS.size)
+        assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "music", "fortune", "captions"), SMART_TOOLS.map { it.id.name.lowercase() })
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups().map { it.first.name.lowercase() })
+        // SMART_TOOLS is the REGISTRY (9, web parity). `smartTools()` is what this build OFFERS:
+        // Music is gated off on every platform while its licensing is open (ProductFlags.SHOW_MUSIC),
+        // so Discover shows 1 of its 2. `smartToolGroups()` reads the gated list, as the web's does.
+        assertEquals(listOf("together", "music"), SMART_TOOLS.filter { it.group == SmartToolGroup.Discover }.map { it.id.name.lowercase() })
         assertEquals(listOf(5, 1, 2), smartToolGroups().map { it.second.size })
+        assertFalse("Music is not offered", smartTools().any { it.id == SmartToolId.Music })
         assertEquals(setOf(SmartToolId.Together), SMART_TOOLS.filter { it.auth }.map { it.id }.toSet())
     }
 
@@ -74,13 +78,13 @@ class SmartToolsTest {
             SmartToolId.Scan to ("Quét" to "Quét hóa đơn, menu, văn bản"), SmartToolId.Translate to ("Dịch" to "Dịch nhanh hơn 100 ngôn ngữ"),
             SmartToolId.Currency to ("Tỷ giá" to "Quy đổi tiền tệ"), SmartToolId.Split to ("Chia bill" to "Chia tiền nhóm"),
             SmartToolId.Safety to ("Cảnh báo lừa đảo" to "Kiểm tra link, website mã QR an toàn"), SmartToolId.Together to ("Nhóm ăn" to "Chọn quán cùng nhau"),
-            SmartToolId.Fortune to ("Bói" to "Xem tử vi hôm nay"), SmartToolId.Captions to ("Viết" to "Viết caption"),
+            SmartToolId.Music to ("Nhạc" to "Thư viện nhạc"), SmartToolId.Fortune to ("Bói" to "Xem tử vi hôm nay"), SmartToolId.Captions to ("Viết" to "Viết caption"),
         )
         assertEquals(SMART_TOOLS.map { it.id }.toSet(), titles.keys)
         val hits = SMART_TOOLS.filter { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("gợi ý", t, d) }
         assertTrue("no Smart Tool answers to gợi ý", hits.isEmpty())
         for (tool in SMART_TOOLS) { val (t, d) = titles.getValue(tool.id); assertTrue(tool.id.name, matchesSmartToolQuery(t, t, d)) }
-        assertEquals(8, SMART_TOOLS.count { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("", t, d) })
+        assertEquals(9, SMART_TOOLS.count { val (t, d) = titles.getValue(it.id); matchesSmartToolQuery("", t, d) })
     }
 
     @Test
@@ -92,6 +96,7 @@ class SmartToolsTest {
             SmartToolId.Split to (SmartToolHue.Amber to "welcome"),
             SmartToolId.Safety to (SmartToolHue.Blue to "recommendation"),
             SmartToolId.Together to (SmartToolHue.Rose to "food"),
+            SmartToolId.Music to (SmartToolHue.Cobalt to "aitools"),
             SmartToolId.Fortune to (SmartToolHue.Violet to "thinking"),
             SmartToolId.Captions to (SmartToolHue.Pink to "phone"),
         )
@@ -156,7 +161,7 @@ class SmartToolsTest {
     fun `the page is a nested Home-tab screen with header, local search, the three groups and no invented actions`() {
         assertTrue(screen.contains("internal fun SmartToolsScreen(") && screen.contains("onOpen: (SmartToolId) -> Unit"))
         assertTrue("own back row + title + blurb", screen.contains("Icons.AutoMirrored.Filled.ArrowBack") && screen.contains("R.string.home_v3_smart_tools_title") && screen.contains("R.string.smart_tools_blurb"))
-        assertTrue("search filters the registry locally", screen.contains("smartToolGroups(filterSmartTools(SMART_TOOLS, query))") && screen.contains("R.string.smart_tools_search_hint"))
+        assertTrue("search filters the offered tools locally", screen.contains("smartToolGroups(filterSmartTools(smartTools(), query))") && screen.contains("R.string.smart_tools_search_hint"))
         assertTrue("an empty match says so", screen.contains("R.string.smart_tools_search_empty"))
         assertTrue("groups in the web's order with the small-caps header", screen.contains("SmartToolsGroupHeader(title = stringResource(group.titleRes))") && screen.contains("title.uppercase()"))
         assertTrue("full-size cards on the page", screen.contains("variant = SmartToolCardVariant.Full"))
@@ -203,17 +208,24 @@ class SmartToolsTest {
         val wiring = mapOf(
             "SmartToolId.Scan" to "ScanRoute.Main", "SmartToolId.Translate" to "TranslateRoute.Main", "SmartToolId.Currency" to "CurrencyRoute.Main",
             "SmartToolId.Split" to "SplitBillRoute.Main", "SmartToolId.Safety" to "ScamShieldRoute.Main",
-            "SmartToolId.Together" to "HomeTabRoute.GroupDining", "SmartToolId.Fortune" to "FortuneRoute.Hub",
+            "SmartToolId.Together" to "HomeTabRoute.GroupDining", "SmartToolId.Music" to "MusicRoute.Library", "SmartToolId.Fortune" to "FortuneRoute.Hub",
             "SmartToolId.Captions" to "VietWriterRoute.Main",
         )
-        for ((id, route) in wiring) assertTrue("$id → $route", page.contains("$id -> navController.navigate($route)"))
+        for ((id, route) in wiring) {
+            // Music's branch survives (the route table is one table) but is refused by the flag, so
+            // its line reads `-> if (ProductFlags.SHOW_MUSIC) navController.navigate(...)`.
+            val direct = "$id -> navController.navigate($route)"
+            val gated = "$id -> if (ProductFlags.SHOW_MUSIC) navController.navigate($route)"
+            assertTrue("$id → $route", page.contains(direct) || page.contains(gated))
+        }
+        assertTrue("Music is reached only behind the flag", page.contains("SmartToolId.Music -> if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library)"))
         assertTrue(page.contains("onBack = { navController.popBackStack() }"))
         assertTrue("the landing's own callback", host.contains("onOpenSmartTools = { navController.navigate(HomeTabRoute.SmartTools) },"))
         assertTrue(src("app/src/main/java/com/tappyai/app/home/HomeTabRoute.kt").contains("data object SmartTools : HomeTabRoute"))
         val section = home.substring(home.indexOf("private fun SmartToolsSection("), home.indexOf("private fun V3DealsSection("))
-        assertTrue("the section previews the registry's cards, compact", section.contains("SMART_TOOLS.filter { it.id in previewed }") && section.contains("variant = SmartToolCardVariant.Compact"))
+        assertTrue("the section previews the offered cards, compact", section.contains("smartTools().filter { it.id in previewed }") && section.contains("variant = SmartToolCardVariant.Compact"))
         assertTrue("Xem tất cả → the page", section.contains("SectionLink(text = stringResource(R.string.smart_tools_see_all), onClick = onOpenSmartTools)"))
-        assertEquals("the seven the section shows (music dropped with reuse)", 7, Regex("""SmartToolId\.\w+ -> onOpen(?!SmartTools)\w+\(\)""").findAll(section).count())
+        assertEquals("the eight the section always showed, none dropped", 8, Regex("""SmartToolId\.\w+ -> onOpen(?!SmartTools)\w+\(\)""").findAll(section).count())
         assertFalse("the old hand-built tiles are gone", home.contains("private fun FeatureTile(") || home.contains("featureGradient("))
     }
 
@@ -226,7 +238,7 @@ class SmartToolsTest {
         for (k in keys) {
             assertTrue("$k (vi)", vi.contains("name=\"$k\"")); assertTrue("$k (en)", en.contains("name=\"$k\""))
         }
-        for (copy in listOf(">Quét<", ">Dịch<", ">Tỷ giá<", ">Chia bill<", ">Cảnh báo lừa đảo<", ">Nhóm ăn<", ">Bói<", ">Viết<", ">Hằng ngày<", ">Khám phá<", ">Giải trí<", ">Cần đăng nhập<", ">Tìm công cụ…<", ">Làm nhiều hơn cùng TappyAI<", "Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày")) {
+        for (copy in listOf(">Quét<", ">Dịch<", ">Tỷ giá<", ">Chia bill<", ">Cảnh báo lừa đảo<", ">Nhóm ăn<", ">Nhạc<", ">Bói<", ">Viết<", ">Hằng ngày<", ">Khám phá<", ">Giải trí<", ">Cần đăng nhập<", ">Tìm công cụ…<", ">Làm nhiều hơn cùng TappyAI<", "Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày")) {
             assertTrue(copy, vi.contains(copy))
         }
     }

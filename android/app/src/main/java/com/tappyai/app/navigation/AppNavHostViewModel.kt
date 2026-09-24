@@ -90,6 +90,29 @@ class AppNavHostViewModel @Inject constructor(
      * [AppRoute.GroupDetail] and is published on [deepLinkTarget] for [AppNavHost] to navigate to.
      * Unrecognized links are ignored.
      */
+    /**
+     * G1-F — an inbound system share (or a Process-Text selection, G1 completion). Parsed by the pure [IncomingShareParser] into the
+     * existing chat-with-prefill destination and handed to the shell exactly the way a
+     * notification's chat link is ([PendingShellDestination] + [AppRoute.HomeShell]), so the
+     * cold-start and authenticated-gating behaviour is the one already proven for deep links.
+     * An unrecognised share is ignored and the app opens normally.
+     */
+    fun handleIncomingShare(intent: Intent) {
+        val route = runCatching {
+            IncomingShareParser.parse(
+                action = intent.action,
+                type = intent.type,
+                // ACTION_SEND carries EXTRA_TEXT; ACTION_PROCESS_TEXT carries the selection in
+                // EXTRA_PROCESS_TEXT (a CharSequence). Either is one plain string to the parser.
+                text = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?: intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString(),
+                subject = intent.getStringExtra(Intent.EXTRA_SUBJECT),
+            )
+        }.getOrNull() ?: return
+        pendingShellDestination.set(route)
+        _deepLinkTarget.value = AppRoute.HomeShell
+    }
+
     fun handleDeepLink(intent: Intent) {
         val uri = intent.data ?: return
         if (uri.host == "auth-callback") {

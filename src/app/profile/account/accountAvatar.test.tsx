@@ -17,8 +17,11 @@ vi.mock('next/navigation', () => ({
 // The chrome around the card is not under test, and both pieces reach for browser APIs this
 // environment does not provide. Stubbing them also means every <img> asserted below belongs to
 // the profile card itself.
-vi.mock('@/components/Header', () => ({ default: () => null }))
-vi.mock('@/components/BottomNav', () => ({ default: () => null }))
+// Account moved onto `V3Shell` (Phase 7 RC §9), which replaced Header + BottomNav. The shell
+// reads the unread count from the notification store; there is no provider in a unit render.
+vi.mock('@/components/NotificationProvider', () => ({
+  useNotifications: () => ({ notifications: [], unreadCount: 0, loading: false, refetch: vi.fn(), markAllRead: vi.fn() }),
+}))
 
 type UserInfo = {
   full_name?: string | null

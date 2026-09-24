@@ -30,6 +30,11 @@ struct AppConfig: Decodable, Sendable {
         /// `SHOW_APP_CONNECTIONS`. Optional so decoding still succeeds against an
         /// older /api/config that predates the flag; absent is treated as hidden.
         let showAppConnections: Bool?
+        /// Music UI entry-point gate — mirrors Web `SHOW_MUSIC`. Optional so decoding still
+        /// succeeds against an older /api/config that predates the flag. The screens read the
+        /// compile-time `ProductFlags.showMusic`, which must carry the same value: a surface
+        /// withdrawn for a legal reason cannot wait for the first config response to disappear.
+        let showMusic: Bool?
     }
 
     struct Upload: Decodable, Sendable {
@@ -39,6 +44,9 @@ struct AppConfig: Decodable, Sendable {
         /// Validation ceiling (300s advertised + 5s tolerance). Optional so an older deployment
         /// that does not send it still decodes; `UploadLimits` carries the same default.
         let maxVideoDurationAcceptSec: Int?
+        /// Per-photo ceiling in binary megabytes (Web `MAX_PHOTO_SIZE_MB`). Optional so an older
+        /// deployment that does not send it still decodes; `UploadLimits` carries the same default.
+        let maxPhotoSizeMb: Int?
     }
 
     struct Auth: Decodable, Sendable {

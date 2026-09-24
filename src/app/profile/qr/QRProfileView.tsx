@@ -30,6 +30,15 @@ import { goBack } from '@/lib/nav/inAppBack'
 const QR_PX = 260
 /** Modules of quiet zone. 4 is the spec's minimum for reliable scanning. */
 const QR_MARGIN = 4
+/** The site as a person reads it on a printed card: no scheme, no trailing slash. */
+function cardWebsite(): string {
+  try {
+    return new URL(absoluteUrl('/')).host
+  } catch {
+    return ''
+  }
+}
+
 /** Downloaded at 3x so the PNG survives being printed or re-shared. */
 const DOWNLOAD_SCALE = 3
 
@@ -114,6 +123,11 @@ export default function QRProfileView({
         text: profileUrl,
         displayName,
         caption: t('v3.qr.scanHint'),
+        // The product line and the site, both already configuration: `v3.page.subtitle` is the
+        // shipped tagline and the host comes from NEXT_PUBLIC_SITE_URL via `absoluteUrl`.
+        // No store badges — see the note on `website` in brandedCard.ts.
+        tagline: t('v3.page.subtitle'),
+        website: cardWebsite(),
         qrPx: QR_PX * DOWNLOAD_SCALE,
         quietModules: QR_MARGIN,
       })
