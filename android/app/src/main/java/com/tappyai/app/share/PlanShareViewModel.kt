@@ -38,7 +38,9 @@ class PlanShareViewModel @Inject constructor(
 
     /** Publish this block unless it is already published or in flight. */
     fun publish(planJson: String?) {
-        if (planJson == current && _state.value !is PlanShareState.Failed) return
+        // Idle is excluded: a sheet opened with NO block (null == the initial `current`) must reach
+        // NoPlanPayload below, not return here and spin on "preparing" forever (UAT 2026-09-25).
+        if (planJson == current && _state.value !is PlanShareState.Failed && _state.value !is PlanShareState.Idle) return
         current = planJson
         job?.cancel()
         if (planJson.isNullOrBlank()) {

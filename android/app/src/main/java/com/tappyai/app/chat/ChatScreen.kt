@@ -309,7 +309,7 @@ fun ChatScreen(
                                     }
                                 }
                             }
-                            message.plan?.let { plan -> TripPlanCard(plan) }
+                            message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
                             // The place decision. Rendered only once generation is done, like every
                             // other structured block: a half-arrived card is not a card, and showing
                             // one mid-stream is how partial JSON reached users before.
@@ -400,6 +400,10 @@ fun ChatScreen(
                                         onToggleFeedback = { type -> viewModel.onToggleFeedback(message.id, type) },
                                         onReport = { viewModel.onReportMessage(message.id) },
                                         onRegenerate = viewModel::onRegenerate,
+                                        placesView = message.placesView,
+                                        plan = message.plan,
+                                        planJson = message.planJson,
+                                        shareSubject = shareSubjectFor(messages, message),
                                         onSharePublic = { viewModel.onSharePublic(message.id) },
                                     )
                                 }
@@ -1095,6 +1099,18 @@ private fun TtsPlayerBar(
             Icon(Icons.Filled.Close, contentDescription = stringResource(R.string.chat_action_stop_read_aloud), modifier = Modifier.size(14.dp), tint = onSurfaceVariant)
         }
     }
+}
+
+/**
+ * The share subject for an assistant turn is the user's question that produced it (≤80 chars),
+ * exactly like the web ChatInterface passes `subject` — so the brochure header reads
+ * "TappyAI gợi ý: <what was asked>". Null when there is no preceding user turn.
+ */
+private fun shareSubjectFor(messages: List<ChatMessage>, message: ChatMessage): String? {
+    val idx = messages.indexOfFirst { it.id == message.id }
+    if (idx <= 0) return null
+    val prev = messages.subList(0, idx).lastOrNull { it.role == TappyChatRole.User } ?: return null
+    return prev.text.trim().replace(Regex("\\s+"), " ").take(80).ifBlank { null }
 }
 
 private fun formatMinSec(totalSec: Int): String {
