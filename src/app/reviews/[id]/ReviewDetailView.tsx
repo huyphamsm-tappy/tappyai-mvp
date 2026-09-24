@@ -9,6 +9,7 @@ import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
 import ReviewMusicCard from '../ReviewMusicCard'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -248,8 +249,9 @@ export default function ReviewDetailView({
           <p className="text-gray-600 text-sm italic pr-14">{t('reviewDetail.noBody')}</p>
         )}
 
-        {/* Attached music */}
-        {review.music && (
+        {/* Attached music — gated off with `SHOW_MUSIC`. The card carries the track's title,
+            artist and a link to its sound page, so it is an entry point, not decoration. */}
+        {SHOW_MUSIC && review.music && (
           <div className="mt-6">
             <ReviewMusicCard
               playKey={review.id}

@@ -211,9 +211,14 @@ describe('Home is NOT Chat (DD-002 — binding limit)', () => {
 describe('no tool was dropped when Home stopped being a dashboard', () => {
   // Tools belong to Home by the approved layout (grouped, with a hierarchy). Losing one while
   // trimming the page would be a real capability loss, so the list is pinned.
+  //
+  // 🚨 `/music` IS NOT ON THIS LIST, AND THAT IS DELIBERATE. Music is hidden on every platform
+  // while its catalogue licensing is open (`SHOW_MUSIC`), so it is unreachable ON PURPOSE — the
+  // opposite of orphaned. It is asserted from the other side in `musicHidden.test.tsx`, which
+  // fails if any entry point comes back, and it returns to this list when the flag flips.
   const REQUIRED_TOOLS = [
     '/boi', '/scan', '/group/new', '/currency', '/split-bill',
-    '/translate', '/scam-shield', '/music', '/viet-content', '/recommendations',
+    '/translate', '/scam-shield', '/viet-content', '/recommendations',
   ]
 
   it('leaves no tool route unreachable from the page', () => {

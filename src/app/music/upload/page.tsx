@@ -2,7 +2,8 @@
 
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import Link from 'next/link'
 import { uploadMedia } from '@/lib/media/client'
 import Header from '@/components/Header'
@@ -20,6 +21,14 @@ function readDuration(file: File): Promise<number> {
 }
 
 export default function MusicUploadPage() {
+  /**
+   * 🚨 HIDING THE NAV IS NOT HIDING THE FEATURE. Every Music entry point is gated off, but a
+   * direct visit — a bookmark, a shared link, a search result — would still have rendered the
+   * surface. `notFound()` is this app's own answer for a route that is not there (the same one
+   * `/marketplace` uses under `SHOW_MARKETPLACE`), so nothing new was invented and nothing below
+   * was deleted: the page comes back whole the moment `SHOW_MUSIC` flips.
+   */
+  if (!SHOW_MUSIC) notFound()
   const { t } = useTranslation()
   const router = useRouter()
   const [file, setFile] = useState<File | null>(null)

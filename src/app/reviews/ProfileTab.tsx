@@ -15,6 +15,7 @@ import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import LikeListSheet from './LikeListSheet'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -144,7 +145,9 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
       </div>
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
+      {/* Gated off with `SHOW_MUSIC` — nothing can set `soundTrackId` while Music is hidden,
+          and the overlay is refused here as well so no deep state can open it. */}
+      {SHOW_MUSIC && soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )

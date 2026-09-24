@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { notFound, useParams, useRouter } from 'next/navigation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import Link from 'next/link'
 import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp, Flag, X } from 'lucide-react'
 import { MusicThumbnail, MusicDuration } from '@/modules/music'
@@ -57,6 +58,14 @@ function attributionFor(audioUrl: string | undefined): { license: string; source
 }
 
 export default function SoundPage() {
+  /**
+   * 🚨 HIDING THE NAV IS NOT HIDING THE FEATURE. Every Music entry point is gated off, but a
+   * direct visit — a bookmark, a shared link, a search result — would still have rendered the
+   * surface. `notFound()` is this app's own answer for a route that is not there (the same one
+   * `/marketplace` uses under `SHOW_MARKETPLACE`), so nothing new was invented and nothing below
+   * was deleted: the page comes back whole the moment `SHOW_MUSIC` flips.
+   */
+  if (!SHOW_MUSIC) notFound()
   const router = useRouter()
   const params = useParams<{ trackId: string }>()
   const trackId = params?.trackId

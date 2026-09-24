@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.R
 import com.tappyai.app.music.SoundSheet
 import com.tappyai.app.reviews.data.Review
@@ -86,7 +87,8 @@ fun ReviewsNavHost(
                 requestedFeedType = requested?.let { ReviewFeedType.Following },
                 // Web parity: tapping a clip's music disc opens the compact SoundSheet.
                 onMusicDiscClick = { trackId ->
-                    navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
+                    // Refused while Music is hidden ([ProductFlags.SHOW_MUSIC]).
+                    if (ProductFlags.SHOW_MUSIC) navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
                 },
                 onAskTappy = askTappy,
             )
@@ -207,7 +209,8 @@ fun ReviewsNavHost(
                     navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
                 },
                 onMusicDiscClick = { trackId ->
-                    navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
+                    // Refused while Music is hidden ([ProductFlags.SHOW_MUSIC]).
+                    if (ProductFlags.SHOW_MUSIC) navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
                 },
                 onAskTappy = askTappy,
                 onBack = { navController.popBackStack() },

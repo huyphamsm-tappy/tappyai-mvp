@@ -50,6 +50,7 @@ import {
 import V3Shell from '@/components/v3/V3Shell'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
@@ -267,7 +268,8 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
     { href: '/reviews', key: 'v3.explore.navExplore', current: true },
     { href: '/chat', key: 'v3.explore.navAsk', current: false },
     { href: '/planner', key: 'v3.explore.navPlan', current: false },
-    { href: '/music', key: 'v3.explore.navMusic', current: false },
+    // Music is gated off everywhere while its licensing is open (`SHOW_MUSIC`).
+    ...(SHOW_MUSIC ? [{ href: '/music', key: 'v3.explore.navMusic', current: false }] : []),
   ]
 
   // ── Compact top bar in the shell's header slot: the same bar vocabulary as the

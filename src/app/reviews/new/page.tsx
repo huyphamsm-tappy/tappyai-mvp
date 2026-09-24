@@ -32,6 +32,7 @@ import {
   isAcceptableVideoDuration,
   MAX_VIDEO_SIZE_MB,
   MAX_PHOTO_SIZE_MB,
+  SHOW_MUSIC,
 } from '@/lib/config/product'
 import { apiFetch, isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
@@ -649,7 +650,9 @@ export default function NewReviewPage() {
         body: body.trim(),
       }
 
-      if (music) {
+      // The picker cannot open while `SHOW_MUSIC` is false, so `music` is always null there; the
+      // guard is here as well so a stale draft can never post a track the UI no longer offers.
+      if (SHOW_MUSIC && music) {
         payload.music = { version: 1, trackId: music.trackId, startSec: music.startSec, volume: music.volume }
       }
 
@@ -1133,7 +1136,10 @@ export default function NewReviewPage() {
             )}
           </button>
 
-          {!music && (
+          {/* Music is gated off on every platform while its licensing is open (`SHOW_MUSIC`).
+              The picker, the selected-track card and the payload below are all behind the same
+              boolean, so a post created while it is off carries no track at all. */}
+          {SHOW_MUSIC && !music && (
             <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
               className="v3-post-chip" data-tone="rose" data-active="false">
               <span className="v3-post-chip-icon" aria-hidden="true"><Music size={16} /></span>
@@ -1179,12 +1185,12 @@ export default function NewReviewPage() {
         )}
 
         {/* Music */}
-        {music && (
+        {SHOW_MUSIC && music && (
           <div className="mt-3">
             <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
           </div>
         )}
-        {hasOpenedMusicPicker && (
+        {SHOW_MUSIC && hasOpenedMusicPicker && (
           <MusicPickerSheet
             open={musicPickerOpen}
             onClose={() => setMusicPickerOpen(false)}

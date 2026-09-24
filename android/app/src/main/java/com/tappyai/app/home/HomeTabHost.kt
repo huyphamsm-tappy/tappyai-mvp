@@ -16,6 +16,7 @@ import com.tappyai.app.fortune.zodiac.ZodiacScreen
 import com.tappyai.app.games.GamesRoute
 import com.tappyai.app.games.GamesScreen
 import com.tappyai.app.groupdining.GroupDiningScreen
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.music.MusicLibraryScreen
 import com.tappyai.app.music.MusicRoute
 import com.tappyai.app.profile.CopyrightPolicyScreen
@@ -58,7 +59,10 @@ fun HomeTabHost(
                 onOpenChatWithCategory = onOpenChatWithCategory,
                 onOpenChatWithPrefill = onOpenChatWithPrefill,
                 onOpenConversation = onOpenConversation,
-                onOpenMusic = { navController.navigate(MusicRoute.Library) },
+                // Music is hidden on every platform while its licensing is open. The tile is
+                // already absent from `smartTools()`; the destination is refused here too, so no
+                // leftover callback can reach the library.
+                onOpenMusic = { if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library) },
                 onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
@@ -85,7 +89,7 @@ fun HomeTabHost(
                         SmartToolId.Split -> navController.navigate(SplitBillRoute.Main)
                         SmartToolId.Safety -> navController.navigate(ScamShieldRoute.Main)
                         SmartToolId.Together -> navController.navigate(HomeTabRoute.GroupDining)
-                        SmartToolId.Music -> navController.navigate(MusicRoute.Library)
+                        SmartToolId.Music -> if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library)
                         SmartToolId.Fortune -> navController.navigate(FortuneRoute.Hub)
                         SmartToolId.Captions -> navController.navigate(VietWriterRoute.Main)
                     }

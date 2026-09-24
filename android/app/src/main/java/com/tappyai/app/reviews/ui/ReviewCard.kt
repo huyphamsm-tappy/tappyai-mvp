@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
 import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.explore.compactCount
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewContentType
 import com.tappyai.app.reviews.data.SEED_REVIEWS
@@ -697,7 +698,10 @@ private fun ReviewCreatorBlock(
             )
         }
         val music = review.music
-        if (music?.origin != null && onSoundClick != null) {
+        // Gated with [ProductFlags.SHOW_MUSIC]: this pill is the entry point to the sound page,
+        // so while Music is hidden the clip carries no music affordance at all (web parity with
+        // the gated `ReviewMusicDisc`).
+        if (ProductFlags.SHOW_MUSIC && music?.origin != null && onSoundClick != null) {
             val handleForSound = displayName?.lowercase()?.replace(" ", ".")
             val label = if (music.origin == "original" && handleForSound != null) {
                 stringResource(R.string.reviews_sound_original, handleForSound)

@@ -2,7 +2,7 @@ import {
   ScanText, Calculator, Languages, ArrowLeftRight, ShieldCheck,
   Star, Users, Music2, Sparkle, PenLine,
 } from 'lucide-react'
-import { SHOW_SCAM_SHIELD } from '@/lib/config/product'
+import { SHOW_SCAM_SHIELD, SHOW_MUSIC } from '@/lib/config/product'
 
 // ── Smart Tools — THE registry ──────────────────────────────────────────────
 //
@@ -95,7 +95,13 @@ const ALL: readonly SmartTool[] = [
  * greyed out. Nothing else here is flag-gated, because no other flag exists for these tools.
  */
 export function smartTools(): SmartTool[] {
-  return ALL.filter((tool) => (tool.id === 'safety' ? SHOW_SCAM_SHIELD : true))
+  return ALL.filter((tool) => {
+    if (tool.id === 'safety') return SHOW_SCAM_SHIELD
+    // Music is gated off on every platform while its licensing is open (`SHOW_MUSIC`). The row
+    // stays in ALL so the tile, its copy and its skin come back with one boolean.
+    if (tool.id === 'music') return SHOW_MUSIC
+    return true
+  })
 }
 
 /** The five Home curates — Home is an entry point, not the catalogue. */

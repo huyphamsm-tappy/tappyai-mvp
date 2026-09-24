@@ -87,6 +87,29 @@ export const SHOW_APP_CONNECTIONS = false
  * `SHOW_SCAM_SHIELD` gate — flip BOTH together. */
 export const SHOW_SCAM_SHIELD = true
 /**
+ * Music — HIDDEN ON EVERY PLATFORM, NOT DELETED.
+ *
+ * 🚨 THE LICENSING DECISION IS STILL OPEN, SO THE ENTRY POINTS COME DOWN FIRST.
+ * The catalogue served in production is Jamendo API hotlinks; Jamendo's API terms are
+ * non-commercial without an agreement, and TappyAI is monetised (see `docs/uat/PHASE7-AUDIT.md`
+ * R5 / §6.1). Until that is settled, a user must not be able to reach Music through normal
+ * product navigation on Web, Android or iOS.
+ *
+ * Same shape as `SHOW_APP_CONNECTIONS` and `SHOW_MARKETPLACE`: every entry point is gated off
+ * and NOTHING underneath is touched — not the module, not the routes, not the API handlers, not
+ * the catalogue, not a migration, not a row. Flipping this one boolean back to `true` restores
+ * the Web surface in full.
+ *
+ * 🚨 THIS ONE *IS* EXPORTED THROUGH `GET /api/config` as `flags.showMusic`, and it has two
+ * mirrors that must move with it:
+ *   · Android — `com.tappyai.app.ProductFlags.SHOW_MUSIC`
+ *   · iOS     — `ProductFlags.showMusic` (Core/Config)
+ * Flip all three together. A Web-only hidden state is exactly the split this flag exists to
+ * prevent: `SHOW_SCAM_SHIELD` was already read by native and by no Web surface at all, which is
+ * how one flag came to mean two different products.
+ */
+export const SHOW_MUSIC = false
+/**
  * Marketplace — HIDDEN, NOT DELETED.
  *
  * 🚨 The V3 shell advertised Marketplace in the sidebar AND the top tab bar, and

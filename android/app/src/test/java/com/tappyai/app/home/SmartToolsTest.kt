@@ -43,7 +43,12 @@ class SmartToolsTest {
         assertEquals(9, SMART_TOOLS.size)
         assertEquals(listOf("scan", "translate", "currency", "split", "safety", "together", "music", "fortune", "captions"), SMART_TOOLS.map { it.id.name.lowercase() })
         assertEquals(listOf("daily", "discover", "fun"), smartToolGroups().map { it.first.name.lowercase() })
-        assertEquals(listOf(5, 2, 2), smartToolGroups().map { it.second.size })
+        // SMART_TOOLS is the REGISTRY (9, web parity). `smartTools()` is what this build OFFERS:
+        // Music is gated off on every platform while its licensing is open (ProductFlags.SHOW_MUSIC),
+        // so Discover shows 1 of its 2. `smartToolGroups()` reads the gated list, as the web's does.
+        assertEquals(listOf("together", "music"), SMART_TOOLS.filter { it.group == SmartToolGroup.Discover }.map { it.id.name.lowercase() })
+        assertEquals(listOf(5, 1, 2), smartToolGroups().map { it.second.size })
+        assertFalse("Music is not offered", smartTools().any { it.id == SmartToolId.Music })
         assertEquals(setOf(SmartToolId.Together), SMART_TOOLS.filter { it.auth }.map { it.id }.toSet())
     }
 
@@ -156,7 +161,7 @@ class SmartToolsTest {
     fun `the page is a nested Home-tab screen with header, local search, the three groups and no invented actions`() {
         assertTrue(screen.contains("internal fun SmartToolsScreen(") && screen.contains("onOpen: (SmartToolId) -> Unit"))
         assertTrue("own back row + title + blurb", screen.contains("Icons.AutoMirrored.Filled.ArrowBack") && screen.contains("R.string.home_v3_smart_tools_title") && screen.contains("R.string.smart_tools_blurb"))
-        assertTrue("search filters the registry locally", screen.contains("smartToolGroups(filterSmartTools(SMART_TOOLS, query))") && screen.contains("R.string.smart_tools_search_hint"))
+        assertTrue("search filters the offered tools locally", screen.contains("smartToolGroups(filterSmartTools(smartTools(), query))") && screen.contains("R.string.smart_tools_search_hint"))
         assertTrue("an empty match says so", screen.contains("R.string.smart_tools_search_empty"))
         assertTrue("groups in the web's order with the small-caps header", screen.contains("SmartToolsGroupHeader(title = stringResource(group.titleRes))") && screen.contains("title.uppercase()"))
         assertTrue("full-size cards on the page", screen.contains("variant = SmartToolCardVariant.Full"))
@@ -206,12 +211,19 @@ class SmartToolsTest {
             "SmartToolId.Together" to "HomeTabRoute.GroupDining", "SmartToolId.Music" to "MusicRoute.Library", "SmartToolId.Fortune" to "FortuneRoute.Hub",
             "SmartToolId.Captions" to "VietWriterRoute.Main",
         )
-        for ((id, route) in wiring) assertTrue("$id → $route", page.contains("$id -> navController.navigate($route)"))
+        for ((id, route) in wiring) {
+            // Music's branch survives (the route table is one table) but is refused by the flag, so
+            // its line reads `-> if (ProductFlags.SHOW_MUSIC) navController.navigate(...)`.
+            val direct = "$id -> navController.navigate($route)"
+            val gated = "$id -> if (ProductFlags.SHOW_MUSIC) navController.navigate($route)"
+            assertTrue("$id → $route", page.contains(direct) || page.contains(gated))
+        }
+        assertTrue("Music is reached only behind the flag", page.contains("SmartToolId.Music -> if (ProductFlags.SHOW_MUSIC) navController.navigate(MusicRoute.Library)"))
         assertTrue(page.contains("onBack = { navController.popBackStack() }"))
         assertTrue("the landing's own callback", host.contains("onOpenSmartTools = { navController.navigate(HomeTabRoute.SmartTools) },"))
         assertTrue(src("app/src/main/java/com/tappyai/app/home/HomeTabRoute.kt").contains("data object SmartTools : HomeTabRoute"))
         val section = home.substring(home.indexOf("private fun SmartToolsSection("), home.indexOf("private fun V3DealsSection("))
-        assertTrue("the section previews the registry's cards, compact", section.contains("SMART_TOOLS.filter { it.id in previewed }") && section.contains("variant = SmartToolCardVariant.Compact"))
+        assertTrue("the section previews the offered cards, compact", section.contains("smartTools().filter { it.id in previewed }") && section.contains("variant = SmartToolCardVariant.Compact"))
         assertTrue("Xem tất cả → the page", section.contains("SectionLink(text = stringResource(R.string.smart_tools_see_all), onClick = onOpenSmartTools)"))
         assertEquals("the eight the section always showed, none dropped", 8, Regex("""SmartToolId\.\w+ -> onOpen(?!SmartTools)\w+\(\)""").findAll(section).count())
         assertFalse("the old hand-built tiles are gone", home.contains("private fun FeatureTile(") || home.contains("featureGradient("))

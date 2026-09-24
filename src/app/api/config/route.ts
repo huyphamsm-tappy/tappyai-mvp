@@ -5,6 +5,7 @@ import {
   SHOW_PRO_UPGRADE,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
+  SHOW_MUSIC,
   SCAM_SHIELD_DAILY_LIMIT_AUTH,
   SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
@@ -47,6 +48,9 @@ export async function GET() {
         showProUpgrade: SHOW_PRO_UPGRADE,
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
+        // Music is hidden on every platform while the catalogue licensing is undecided.
+        // Native reads this; the underlying routes and catalogue are untouched.
+        showMusic: SHOW_MUSIC,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

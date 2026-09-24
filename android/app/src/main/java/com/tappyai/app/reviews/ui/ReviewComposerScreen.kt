@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MusicNote
+import com.tappyai.app.ProductFlags
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
@@ -127,7 +128,8 @@ fun ReviewComposerScreen(
             if (attachedSoundTitle != null) {
                 AttachedSoundChip(title = attachedSoundTitle, onRemove = onRemoveSound)
             } else {
-                AddMusicButton(onClick = onAddMusic)
+                // Hidden with [ProductFlags.SHOW_MUSIC] — web parity with the gated `v3-post-chip`.
+                if (ProductFlags.SHOW_MUSIC) AddMusicButton(onClick = onAddMusic)
             }
 
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)

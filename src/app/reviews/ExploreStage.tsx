@@ -14,6 +14,7 @@ import LinkPoster from '@/components/LinkPoster'
 import { createClient } from '@/lib/supabase/client'
 import { useNotifications } from '@/components/NotificationProvider'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { isShareOnlyName, ago, type Review } from './feedShared'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
@@ -377,7 +378,8 @@ export default function ExploreStage() {
     { href: '/reviews', key: 'v3.explore.navExplore', current: true },
     { href: '/chat', key: 'v3.explore.navAsk', current: false },
     { href: '/planner', key: 'v3.explore.navPlan', current: false },
-    { href: '/music', key: 'v3.explore.navMusic', current: false },
+    // Music is gated off everywhere while its licensing is open (`SHOW_MUSIC`).
+    ...(SHOW_MUSIC ? [{ href: '/music', key: 'v3.explore.navMusic', current: false }] : []),
   ]
 
   // ── The page's own top bar, rendered in the shell's header slot ──────────

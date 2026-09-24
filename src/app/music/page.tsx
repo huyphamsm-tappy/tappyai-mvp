@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useRef, useState, type ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
+import { notFound, useRouter } from 'next/navigation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { ChevronLeft, ChevronRight, Flame, Headphones, Mic2, Music, Music2, Sparkles, Upload } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import TappyPresence from '@/components/v3/TappyPresence'
@@ -51,6 +52,14 @@ const TRENDING_SLUG = 'trending'
 const TRACKS_ANCHOR = 'music-tracks'
 
 export default function MusicLibraryPage() {
+  /**
+   * 🚨 HIDING THE NAV IS NOT HIDING THE FEATURE. Every Music entry point is gated off, but a
+   * direct visit — a bookmark, a shared link, a search result — would still have rendered the
+   * surface. `notFound()` is this app's own answer for a route that is not there (the same one
+   * `/marketplace` uses under `SHOW_MARKETPLACE`), so nothing new was invented and nothing below
+   * was deleted: the page comes back whole the moment `SHOW_MUSIC` flips.
+   */
+  if (!SHOW_MUSIC) notFound()
   const router = useRouter()
   const { t, locale } = useTranslation()
   const { categories } = useMusicCategories()

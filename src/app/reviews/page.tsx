@@ -13,6 +13,7 @@ import { track } from '@/lib/tracking/tracker'
 import { logUserEvent, getUserPreferences, inferPreferencesFromEvents } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
 import SoundSheet from './SoundSheet'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import LikeListSheet from './LikeListSheet'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, ago, type Review } from './feedShared'
@@ -1311,7 +1312,9 @@ function ReviewsPageInner() {
 
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
+      {/* Gated off with `SHOW_MUSIC` — nothing can set `soundTrackId` while Music is hidden,
+          and the overlay is refused here as well so no deep state can open it. */}
+      {SHOW_MUSIC && soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
       {/* Opened from the Inbox. Closing returns to the notification list the user came from,
           which is why this lives here rather than behind a route change. */}

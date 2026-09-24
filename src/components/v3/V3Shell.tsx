@@ -13,7 +13,7 @@ import {
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { SHOW_MARKETPLACE, SHOW_WALLET } from '@/lib/config/product'
+import { SHOW_MARKETPLACE, SHOW_WALLET, SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import BottomNav from '@/components/BottomNav'
 import { useNotifications } from '@/components/NotificationProvider'
@@ -125,7 +125,10 @@ const GROUPS: NavGroup[] = [
       // these four belong there and these lines should go. Existing routes, existing dictionary
       // keys; nothing new was invented for them.
       { href: '/group/new', labelKey: 'v3.tool.together', icon: Users },
-      { href: '/music', labelKey: 'v3.tool.music', icon: Music2 },
+      // Hidden with `SHOW_MUSIC` — same gate as the Smart Tools tile and the Explore tab.
+      ...(SHOW_MUSIC
+        ? [{ href: '/music', labelKey: 'v3.tool.music', icon: Music2 }]
+        : []),
       { href: '/boi', labelKey: 'v3.tool.fortune', icon: Sparkle },
       { href: '/viet-content', labelKey: 'v3.tool.captions', icon: PenLine },
     ],

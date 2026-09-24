@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.ui
 
 import android.widget.Toast
+import com.tappyai.app.ProductFlags
 import com.tappyai.app.music.MusicPickerSheet
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -637,7 +638,9 @@ internal fun ReviewDetailScreen(
                 }
                 // Web parity: the attached-music card sits under the clip on the detail view, with
                 // its own play/pause honoring the review's saved startSec + volume.
-                uiState.attachedTrack?.let { track ->
+                // Gated with [ProductFlags.SHOW_MUSIC] — the card names the track and its artist,
+                // so it is a music surface, not decoration (web parity: ReviewMusicCard).
+                uiState.attachedTrack?.takeIf { ProductFlags.SHOW_MUSIC }?.let { track ->
                     item(key = "attached-music") {
                         ReviewMusicCard(
                             track = track,
@@ -851,7 +854,9 @@ internal fun ReviewComposerHost(
         onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName) },
         attachedSoundTitle = uiState.attachedTrackTitle,
         onRemoveSound = viewModel::onRemoveSound,
-        onAddMusic = { showMusicPicker = true },
+        // Hidden with [ProductFlags.SHOW_MUSIC]: the button is already gated off inside the
+        // composer, and the picker cannot be opened from here either.
+        onAddMusic = { if (ProductFlags.SHOW_MUSIC) showMusicPicker = true },
         photoUrls = uiState.photoUrls,
         isUploadingPhoto = uiState.isUploadingPhoto,
         onPickPhotos = {

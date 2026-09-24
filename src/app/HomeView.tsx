@@ -10,6 +10,7 @@ import SearchBar from '@/components/SearchBar'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { MessageCircle, Sparkles, ChevronRight, ScanText, ArrowLeftRight, Calculator, Music2, ShieldCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 
 interface Suggestion { text: string; textEn: string; category: string; emoji: string; gradient: string }
@@ -234,6 +235,8 @@ export default function HomeView({
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.recDesc')}</p>
               </div>
             </Link>
+            {/* Music is gated off on every platform while its licensing is open (`SHOW_MUSIC`). */}
+            {SHOW_MUSIC && (
             <Link href="/music" className="group flex flex-col gap-3 rounded-2xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 p-4 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all">
               <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-100 to-orange-100 dark:from-pink-900/30 dark:to-orange-900/30 flex items-center justify-center shadow-sm">
                 <Music2 size={20} className="text-pink-600 dark:text-pink-400" />
@@ -243,6 +246,7 @@ export default function HomeView({
                 <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5 leading-snug">{t('home.musicDesc')}</p>
               </div>
             </Link>
+            )}
           </div>
         </section>
 
