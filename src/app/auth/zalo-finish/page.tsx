@@ -27,9 +27,13 @@ export default function ZaloFinishPage() {
       const platformParam = params.get('platform')
       const platform = platformParam === 'ios' ? 'ios' : platformParam === 'android' ? 'android' : 'web'
       // 🚨 The access token is now in memory; get it OUT of the address bar before anything else
-      // runs. Left in the fragment it lands in browser history, sync, screenshots and any
-      // extension that reads `location` — history is exactly where a token was recovered from
-      // during the 2026-09-24 region test. replaceState, not pushState: no entry keeps it.
+      // runs: the address bar, screenshots, the back/forward entry and any extension that reads
+      // `location` afterwards. replaceState, not pushState, so no session-history entry keeps it.
+      // ⚠️ This does NOT reliably remove it from the browser's History database: Chrome records
+      // the URL when the navigation commits, before this runs — which is exactly where a token
+      // was recovered from during the 2026-09-24 region test. Mitigation only. The real fix (next
+      // round, once zalo-verify runs): the callback finishes server-side and the token never
+      // reaches the browser; this page and the fragment go away.
       window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search)
       if (!at) { window.location.replace('/login?error=zalo_failed'); return }
 

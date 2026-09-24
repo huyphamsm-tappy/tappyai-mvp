@@ -4,8 +4,10 @@ import { render, cleanup, waitFor } from '@testing-library/react'
 import ZaloFinishPage from './page'
 
 // /auth/zalo-finish receives the Zalo access token in the URL fragment (`#at=…`). The page must
-// strip the fragment the moment it has read it, with replaceState, so the token never stays in
-// the address bar or in browser history. It must still USE the token it read.
+// strip the fragment the moment it has read it, with replaceState, so the token does not stay in
+// the address bar or the back/forward entry. (It may still be in the browser's History database,
+// which records the URL at navigation — jsdom cannot test that, and replaceState cannot undo it.
+// Removing the token from the URL entirely is the follow-up.) It must still USE the token it read.
 
 const TOKEN = 'fake-zalo-access-token-for-tests-only'
 

@@ -173,8 +173,20 @@ browser --QR--> Zalo --code--> /api/auth/zalo/callback (Vercel, exchanges code, 
   (60/min/IP, 600/min total, 10 bad secrets/min/IP -> 15 min block), 5s upstream timeout,
   logs outcome only. Tests: `src/lib/zalo/zaloVerifyService.test.ts` (incl. end-to-end against
   the app-side verifier over a socket).
-* `/auth/zalo-finish` now strips `#at=` with `history.replaceState` right after reading it, so
-  the token no longer lands in browser history (which is exactly where Phase B found one).
+* `/auth/zalo-finish` now strips `#at=` with `history.replaceState` right after reading it.
+  **Correction (e5488ae's message overstated this):** replaceState only removes it from the
+  address bar and the back/forward entry. It is NOT confirmed to remove it from Chrome's History
+  database, which records the URL when the navigation commits -- exactly where Phase B found a
+  token. Treat it as a mitigation, not a fix.
+
+### Next round (owner-approved 2026-09-24, after the VPS runs stably) -- token never reaches the browser
+
+The server now verifies through zalo-verify, so the browser leg is unnecessary:
+`/api/auth/zalo/callback` does everything server-side -- PKCE code exchange -> access token ->
+zalo-verify -> id -> Supabase session -- and redirects to `/auth/confirm`. Delete
+`/auth/zalo-finish`, the `#at=` fragment and the `zalo_at` cookie. The client-side profile fetch
+(name / avatar) goes with it; those fields are cosmetic. Covers web and the native
+`platform=android|ios` return leg, which must be re-tested on a real Android build (RULE 4).
 
 ### Env (UAT only -- Preview, branch `rc/web-uat`)
 
