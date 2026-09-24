@@ -59,8 +59,9 @@ describe('the chat route still DERIVES conversational context, it does not store
     // has nothing to gain from a store and everything to lose from a stale one.
     // Item 1 (2026-09-19): the history it reads is `framingMessages` — the same messages, with a
     // clarify answer folded into its request (mergeClarifyAnswer); still derived from the thread
-    // every turn, never stored.
-    expect(route()).toMatch(/deriveNeedProfile\(\s*framingMessages/)
+    // every turn, never stored. PRELAUNCH golden B4 (2026-09-25): scoped to the current subject
+    // (currentSubjectMessages), still re-derived from the thread every turn.
+    expect(route()).toMatch(/deriveNeedProfile\(\s*currentSubjectMessages\(\s*framingMessages/)
     expect(route()).toMatch(/const framingMessages = mergeClarifyAnswer\(messages\)/)
   })
 

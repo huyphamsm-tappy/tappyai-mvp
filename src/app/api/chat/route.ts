@@ -224,39 +224,6 @@ export async function POST(req: Request) {
   const intent = classifyIntent(framingText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
-  // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
-  // decided from the LAST message alone, so "mai đi mốt về, budget 20 triệu" and "gần biển" — the
-  // answers to the plan's own questions — arrived without it, the model re-asked instead of
-  // planning, and the plan never came. A short refinement inside a planning thread inherits the
-  // thread's plan type; the envelope, the named activities and the trip length are folded from
-  // the user turns of the thread (nearest statement wins for budget and length).
-  const priorUserTexts: string[] = messages
-    .filter((m: { role: string }) => m.role === 'user')
-    .slice(-4, -1)
-    .map((m: { content?: unknown }) => { const c = m.content; return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : '' })
-  const ownPlanningIntent = detectPlanningIntent(lastText)
-  const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
-    ? (priorUserTexts.map(detectPlanningIntent).reverse().find(p => p !== null) ?? null)
-    : null
-  const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
-  // A plan's budget is the WHOLE envelope, and its searches are the activities
-  // the user named — both decided here, deterministically, so the planning block
-  // can state the total and list exactly the searches to run (see promptBuilder).
-  const planning = planningIntent
-    ? (() => {
-        const thread = [...priorUserTexts, lastText]
-        const nearest = <T,>(read: (s: string) => T | null): T | null => thread.slice().reverse().map(read).find(v => v !== null) ?? null
-        return {
-          totalBudget: nearest(extractPlanTotalBudget),
-          activities: [...new Set(thread.flatMap(detectPlanActivities))],
-          tripLength: nearest(detectTripLength),
-          transport: planningIntent === 'trip' ? defaultTransportFor(thread.join(' '), userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null) : null,
-          inherited: inheritedPlanningIntent !== null,
-          refinement: inheritedPlanningIntent !== null ? lastText : null,
-        }
-      })()
-    : undefined
-  if (inheritedPlanningIntent) console.log(JSON.stringify({ type: 'tappyai_planning', step: 'inherited', planType: inheritedPlanningIntent, tripLength: planning?.tripLength ?? null, totalBudget: planning?.totalBudget ?? null }))
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
@@ -310,6 +277,40 @@ export async function POST(req: Request) {
   const statedArea = statedDistrict(lastText)
     ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
     ?? null
+  // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
+  // decided from the LAST message alone, so "mai đi mốt về, budget 20 triệu" and "gần biển" — the
+  // answers to the plan's own questions — arrived without it, the model re-asked instead of
+  // planning, and the plan never came. A short refinement inside a planning thread inherits the
+  // thread's plan type; the envelope, the named activities and the trip length are folded from
+  // the user turns of the CURRENT SUBJECT (nearest statement wins for budget and length).
+  // PRELAUNCH UAT (Android, golden B4, 2026-09-25): "tai nghe dưới 2 triệu" → "Lên lịch trình 1
+  // ngày ở Vũng Tàu" folded the headphone ceiling in as the trip's total budget ("ngân sách 2 triệu"
+  // in the reply, budget_max 2,000,000 on the place rows) — the fold read the last 3 user turns
+  // whatever their subject.
+  const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)
+  const ownPlanningIntent = detectPlanningIntent(lastText)
+  const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
+    ? (priorUserTexts.map(detectPlanningIntent).reverse().find(p => p !== null) ?? null)
+    : null
+  const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
+  // A plan's budget is the WHOLE envelope, and its searches are the activities
+  // the user named — both decided here, deterministically, so the planning block
+  // can state the total and list exactly the searches to run (see promptBuilder).
+  const planning = planningIntent
+    ? (() => {
+        const thread = [...priorUserTexts, lastText]
+        const nearest = <T,>(read: (s: string) => T | null): T | null => thread.slice().reverse().map(read).find(v => v !== null) ?? null
+        return {
+          totalBudget: nearest(extractPlanTotalBudget),
+          activities: [...new Set(thread.flatMap(detectPlanActivities))],
+          tripLength: nearest(detectTripLength),
+          transport: planningIntent === 'trip' ? defaultTransportFor(thread.join(' '), userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null) : null,
+          inherited: inheritedPlanningIntent !== null,
+          refinement: inheritedPlanningIntent !== null ? lastText : null,
+        }
+      })()
+    : undefined
+  if (inheritedPlanningIntent) console.log(JSON.stringify({ type: 'tappyai_planning', step: 'inherited', planType: inheritedPlanningIntent, tripLength: planning?.tripLength ?? null, totalBudget: planning?.totalBudget ?? null }))
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
@@ -888,7 +889,10 @@ export async function POST(req: Request) {
   // ranker orders against and what the Pick is FOR; without it there is nothing
   // user-specific to rank by. Derived here because durable preferences (a
   // low-weight prior) are only loaded above.
-  const needProfile = deriveNeedProfile(framingMessages, {
+  // Folded over the CURRENT SUBJECT only (golden B4): the profile resets itself on a venue-noun
+  // switch, but "Lên lịch trình … Vũng Tàu" names no venue, so the headphone budget stayed on the
+  // profile and filtered the trip's place rows to 2,000,000.
+  const needProfile = deriveNeedProfile(currentSubjectMessages(framingMessages, { hasGps: !!userLocation, lang }), {
     storedPreferences: storedPrefs,
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
