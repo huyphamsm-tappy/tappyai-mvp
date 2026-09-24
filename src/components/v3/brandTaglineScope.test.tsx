@@ -70,10 +70,10 @@ describe('the Home tagline does not leak to other destinations', () => {
     const optIn = 'brandTagline='
     const pages = [
       'src/app/HomeV3.tsx',
-      'src/app/deals/DealsView.tsx',
-      'src/app/marketplace/MarketplaceReserved.tsx',
-      'src/app/profile/ProfileView.tsx',
-      'src/app/profile/GuestProfileView.tsx',
+      'src/app/(app)/deals/DealsView.tsx',
+      'src/app/(app)/marketplace/MarketplaceReserved.tsx',
+      'src/app/(app)/profile/ProfileView.tsx',
+      'src/app/(app)/profile/GuestProfileView.tsx',
     ]
     const optedIn = pages.filter(p => read(p).includes(optIn))
     expect(optedIn, 'exactly one page may carry the Home wording').toEqual(['src/app/HomeV3.tsx'])

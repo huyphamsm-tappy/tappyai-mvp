@@ -22,7 +22,7 @@ const root = join(__dirname, '..', '..', '..')
 const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 
 const CARD = 'src/lib/qr/brandedCard.ts'
-const VIEW = 'src/app/profile/qr/QRProfileView.tsx'
+const VIEW = 'src/app/(app)/profile/qr/QRProfileView.tsx'
 
 describe('the QR itself carries no artwork', () => {
   it('the card draws the matrix and nothing else in that rectangle', () => {

@@ -230,8 +230,8 @@ describe('the refusal is actionable on the client', () => {
     // Detail — including that neither kept a bare fetch — is owned by
     // `ageGateClient.test.ts`. This asserts only that both participate.
     for (const p of [
-      'src/app/reviews/new/page.tsx',
-      'src/app/profile/bookings/BookingReviewButton.tsx',
+      'src/app/(app)/reviews/new/page.tsx',
+      'src/app/(app)/profile/bookings/BookingReviewButton.tsx',
     ]) {
       expect(SRC(p), p).toContain("apiFetch('/api/reviews/upload'")
     }

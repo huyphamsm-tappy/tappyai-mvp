@@ -230,7 +230,7 @@ describe('🔑 authorization follows the action', () => {
     const { readFileSync } = await import('node:fs')
     const { join } = await import('node:path')
     const page = readFileSync(
-      join(__dirname, '..', '..', '..', 'admin', 'moderation', 'page.tsx'),
+      join(__dirname, '..', '..', '..', '(app)', 'admin', 'moderation', 'page.tsx'),
       'utf8'
     )
     expect(page).toMatch(/dismiss:\s*permissionEngine\.can\(\s*ctx\.actor,\s*PERMISSIONS\.MODERATION_REPORT_DISMISS\s*\)/)

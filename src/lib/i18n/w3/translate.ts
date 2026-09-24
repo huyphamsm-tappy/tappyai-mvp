@@ -1,4 +1,4 @@
-// Wave-3 i18n module — /translate screen (src/app/translate/page.tsx).
+// Wave-3 i18n module — /translate screen (src/app/(app)/translate/page.tsx).
 // Merged into useTranslation via the w3 index.
 
 export const vi: Record<string, string> = {

@@ -46,6 +46,6 @@ describe('PublicFooter — the crawlable link block on discovery pages', () => {
     expect(home.match(/<PublicFooter \/>/g)).toHaveLength(1)
     expect(home).toContain("import PublicFooter from '@/components/discovery/PublicFooter'")
     expect(home).toMatch(/<\/section>\s*<PublicFooter \/>\s*<\/div>\s*<\/V3Shell>/)
-    expect(readFileSync('src/app/(home)/page.tsx', 'utf8')).not.toContain('PublicFooter')
+    expect(readFileSync('src/app/(app)/(home)/page.tsx', 'utf8')).not.toContain('PublicFooter')
   })
 })

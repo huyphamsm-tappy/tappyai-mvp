@@ -122,7 +122,7 @@ describe('§11 — BACKOFFICE_ENABLED resolves through the provider', () => {
   it('no Controller surface reads the flag straight from the environment any more', () => {
     // The refactor is only real if the old path is gone. `toContain` on the new
     // import would pass on a file that still had both.
-    for (const f of ['src/app/admin/settings/page.tsx', 'src/app/api/admin/settings/route.ts']) {
+    for (const f of ['src/app/(app)/admin/settings/page.tsx', 'src/app/api/admin/settings/route.ts']) {
       expect(readFileSync(f, 'utf8')).not.toMatch(/envBoolean\(\s*'BACKOFFICE_ENABLED'/)
     }
   })

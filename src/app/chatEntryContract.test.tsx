@@ -102,7 +102,7 @@ describe('Home → Chat handoff carries the prompt', () => {
 })
 
 describe('the receiving side submits the prompt instead of parking it', () => {
-  const chatPage = stripComments(read('src/app/chat/page.tsx'))
+  const chatPage = stripComments(read('src/app/(app)/chat/page.tsx'))
   const chatInterface = stripComments(read('src/components/ChatInterface.tsx'))
 
   it('the chat route reads ?q= and hands it to ChatInterface as the initial message', () => {
@@ -137,7 +137,7 @@ describe('the receiving side submits the prompt instead of parking it', () => {
 })
 
 describe('/chat/[id] fails gracefully, never with an unexplained 500', () => {
-  const page = stripComments(read('src/app/chat/[id]/page.tsx'))
+  const page = stripComments(read('src/app/(app)/chat/[id]/page.tsx'))
 
   it('sends a signed-out visitor to login with a return path', () => {
     expect(page).toMatch(/if \(!user\) redirect\(`\/login\?returnTo=\/chat\/\$\{params\.id\}`\)/)

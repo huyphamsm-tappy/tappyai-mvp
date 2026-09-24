@@ -39,7 +39,7 @@ describe('the deals attribution line is written in the reader\'s language', () =
   })
 
   it('the page actually uses the key rather than an inline string', () => {
-    const view = readFileSync('src/app/deals/DealsView.tsx', 'utf8')
+    const view = readFileSync('src/app/(app)/deals/DealsView.tsx', 'utf8')
     expect(view).toContain("t('deals.viaSource'")
     // No stray literal preposition left behind next to the partner name.
     expect(view).not.toMatch(/>\s*via\s*\{/)

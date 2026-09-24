@@ -216,7 +216,7 @@ describe('the panel and the page decide nothing about authorization', () => {
   // permission and survived every test above — the panel behaved perfectly on
   // the wrong input. Same seam the session panel had.
   const page = readFileSync(
-    join(__dirname, '..', '..', '..', 'app', 'admin', 'users', 'page.tsx'),
+    join(__dirname, '..', '..', '..', 'app', '(app)', 'admin', 'users', 'page.tsx'),
     'utf8'
   )
 

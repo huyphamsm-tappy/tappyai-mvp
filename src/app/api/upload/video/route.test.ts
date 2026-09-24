@@ -207,7 +207,7 @@ describe('the refusal is actionable on the client', () => {
     // `uploadMedia` owns its own request (XMLHttpRequest, for the progress bar)
     // so it cannot use `apiFetch`. It must still share the DETECTOR — the same
     // answer the chat transport reaches.
-    const code = SRC('src/app/reviews/new/page.tsx')
+    const code = SRC('src/app/(app)/reviews/new/page.tsx')
     expect(code).toContain('isAgeGateMessage((e as Error)?.message)')
     expect(code).toContain('redirectToAgeCheck()')
     // …and no hand-rolled copy of the destination or the code list.

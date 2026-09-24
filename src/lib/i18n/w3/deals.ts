@@ -1,4 +1,4 @@
-// Wave-3 dictionary module — Deals screen (src/app/deals). Flat vi/en maps,
+// Wave-3 dictionary module — Deals screen (src/app/(app)/deals). Flat vi/en maps,
 // keys namespaced under "deals." so the object-spread merge stays collision-free.
 
 export const vi: Record<string, string> = {

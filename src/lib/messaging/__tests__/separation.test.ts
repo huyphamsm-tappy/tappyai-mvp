@@ -80,7 +80,7 @@ describe('message unread and notification unread are independent', () => {
   })
 
   it('the Inbox reads two counts from two stores and never adds them', () => {
-    const src = codeOnly(read('src/app/profile/notifications/NotificationsView.tsx'))
+    const src = codeOnly(read('src/app/(app)/profile/notifications/NotificationsView.tsx'))
     // Both stores are consulted…
     expect(src).toContain('useNotifications()')
     expect(src).toContain('useMessages()')

@@ -136,7 +136,7 @@ describe('raising video does not move any other upload limit', () => {
 })
 
 describe('the web composer reads the shared limit rather than its own', () => {
-  const page = () => read('src/app/reviews/new/page.tsx')
+  const page = () => read('src/app/(app)/reviews/new/page.tsx')
 
   it('derives its byte ceiling from the shared config', () => {
     expect(page()).toContain('MAX_VIDEO_SIZE_MB')

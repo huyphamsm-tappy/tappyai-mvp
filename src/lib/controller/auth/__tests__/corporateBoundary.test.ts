@@ -95,7 +95,7 @@ describe('no surface resolves an identity around the boundary', () => {
   // app/admin or app/api/admin that calls auth.getUser() and then builds its own
   // notion of "who this is" would be a bypass.
   const controllerSurfaces = ALL.filter(
-    (p) => rel(p).startsWith('app/admin/') || rel(p).startsWith('app/api/admin/')
+    (p) => rel(p).startsWith('app/(app)/admin/') || rel(p).startsWith('app/api/admin/')
   )
 
   it('finds the Controller surface', () => {
@@ -119,7 +119,7 @@ describe('no surface resolves an identity around the boundary', () => {
     ).map(rel)
     expect(builders.sort()).toEqual(
       [
-        'app/admin/layout.tsx',
+        'app/(app)/admin/layout.tsx',
         'lib/admin/permissions/guards.ts',
         'lib/admin/rbac.ts',
       ].sort()
@@ -136,7 +136,7 @@ describe('no surface resolves an identity around the boundary', () => {
     // ⚠️ Asserts the CALL, not the import. Mutation M-C7 swapped the call and
     // stayed GREEN against an assertion that only required the symbol to appear
     // — the import line satisfied it. An inert guard manufactures confidence.
-    const layout = codeLines(read(join(SRC, 'app/admin/layout.tsx')))
+    const layout = codeLines(read(join(SRC, 'app/(app)/admin/layout.tsx')))
     expect(layout).toMatch(/await resolveActorForPage\(/)
     expect(layout).not.toMatch(/await resolveActorForUser\(/)
 

@@ -4,7 +4,7 @@
 // TappyAI surfaces anywhere. Pure data + pure functions: no React, no
 // Next.js, no DOM, no imports from any feature module — which is what lets
 // every current and future consumer share it:
-//   today:  Deals (src/app/deals/DealsView.tsx via BrandLogo)
+//   today:  Deals (src/app/(app)/deals/DealsView.tsx via BrandLogo)
 //   next:   Shopping / Food / Travel surfaces, Explore, AI Recommendations,
 //           Affiliate Platform, Merchant Center, Admin CMS, Ads Platform
 // Consumers import { resolveBrand, BRAND_REGISTRY, type BrandId } from here —

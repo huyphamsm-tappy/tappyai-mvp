@@ -89,7 +89,7 @@ describe('what the removal must NOT take away', () => {
     // the call left the IMPORT line behind, so the identifier was still in the
     // file and the assertion passed. A name appearing in a file proves nothing
     // about whether it runs.
-    const layout = readFileSync(join(ROOT, 'src/app/admin/layout.tsx'), 'utf8')
+    const layout = readFileSync(join(ROOT, 'src/app/(app)/admin/layout.tsx'), 'utf8')
       .replace(/\/\*[\s\S]*?\*\//g, '')
       .replace(/^\s*\/\/.*$/gm, '')
     expect(layout).toMatch(/navGroups\s*=\s*filterNavByDepartment\(\s*navGroups\s*,/)

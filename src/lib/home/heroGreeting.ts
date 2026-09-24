@@ -1,7 +1,7 @@
 // The Home hero greeting engine — THE canonical copy of the rules every client mirrors.
 //
 // Before this file the same engine lived three times: the Vietnamese pool inline in
-// `src/app/(home)/page.tsx`, the English pool inline in `src/app/HomeView.tsx`, and a
+// `src/app/(app)/(home)/page.tsx`, the English pool inline in `src/app/HomeView.tsx`, and a
 // 1:1 Kotlin port in `android/.../home/HomeGreeting.kt` whose header says "keep the
 // template pools byte-identical to the web files". Then the V3 Home shipped with a
 // static "Hi {name}! 👋" and none of it. One module now; the surfaces only render.

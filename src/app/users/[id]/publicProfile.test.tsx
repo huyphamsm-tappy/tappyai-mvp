@@ -546,7 +546,7 @@ describe('route + privacy + i18n contracts (source)', () => {
     const cover = readFileSync('src/lib/profile/cover.ts', 'utf8')
     expect(cover).toMatch(/body\.append\('cover', file\)/)
     expect(cover).toMatch(/JSON\.stringify\(\{ cover_url: null \}\)/)
-    expect(readFileSync('src/app/profile/edit/page.tsx', 'utf8')).toContain("from '@/lib/profile/cover'")
+    expect(readFileSync('src/app/(app)/profile/edit/page.tsx', 'utf8')).toContain("from '@/lib/profile/cover'")
   })
 
   it('every profile string comes from the dictionary in both languages', () => {

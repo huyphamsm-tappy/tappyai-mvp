@@ -72,7 +72,7 @@ describe('the request body carries the clip reference', () => {
 describe('the page → prop contract (source-pinned)', () => {
   it('chat/page.tsx reads `ctx` and forwards it as an explore_clip initialContext', async () => {
     const { readFileSync } = await import('node:fs')
-    const page = readFileSync('src/app/chat/page.tsx', 'utf8')
+    const page = readFileSync('src/app/(app)/chat/page.tsx', 'utf8')
     expect(page).toContain("searchParams.get('ctx')")
     expect(page).toMatch(/initialContext=\{exploreReviewId \? \{ kind: 'explore_clip', reviewId: exploreReviewId \} : undefined\}/)
     // Still the same route and the same visible question: `q` is read exactly as before.
@@ -87,7 +87,7 @@ describe('the page → prop contract (source-pinned)', () => {
 // next request to carry it. Two halves: `ChatInterface` puts it on the first saved
 // message; `ChatConversation` reads it back and hands it in as `initialContext`.
 
-import ChatConversation from '@/app/chat/[id]/ChatConversation'
+import ChatConversation from '@/app/(app)/chat/[id]/ChatConversation'
 
 const lastOpts = () => captured[captured.length - 1] as Record<string, unknown> & { onFinish?: (m: unknown) => Promise<void> }
 

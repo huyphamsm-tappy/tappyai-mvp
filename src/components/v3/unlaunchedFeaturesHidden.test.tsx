@@ -70,8 +70,8 @@ describe('unlaunched features are hidden from the current product', () => {
   it('🚨 hides them by FLAG, never by deletion — the implementations are still on disk', () => {
     // If a later cleanup deletes these instead of gating them, flipping the flag
     // stops being enough and the feature has to be rebuilt.
-    expect(existsSync(join(process.cwd(), 'src/app/marketplace/page.tsx'))).toBe(true)
-    expect(existsSync(join(process.cwd(), 'src/app/marketplace/MarketplaceReserved.tsx'))).toBe(true)
+    expect(existsSync(join(process.cwd(), 'src/app/(app)/marketplace/page.tsx'))).toBe(true)
+    expect(existsSync(join(process.cwd(), 'src/app/(app)/marketplace/MarketplaceReserved.tsx'))).toBe(true)
 
     const shell = read('src/components/v3/V3Shell.tsx')
     // The rows still exist in the source, behind their flags.

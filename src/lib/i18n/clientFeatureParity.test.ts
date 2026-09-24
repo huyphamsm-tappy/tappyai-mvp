@@ -100,7 +100,7 @@ describe('the features with NO native surface, and why', () => {
   it('Group dining has a web surface both native clients reach by link', () => {
     // Android opens the shared web URL; iOS does the same. Neither has a native screen, and the
     // link is the product's own sharing mechanism rather than a shortfall.
-    expect(existsSync('src/app/group')).toBe(true)
+    expect(existsSync('src/app/(app)/group')).toBe(true)
   })
 })
 

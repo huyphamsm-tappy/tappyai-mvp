@@ -102,10 +102,10 @@ describe('web — no surface offers a way into Music', () => {
     ['src/app/users/[id]/PublicProfileView.tsx', "...(SHOW_MUSIC ? [{ href: '/music'"],
     // The composer: the Add-music chip, the selected-track card, the picker, and the payload
     // (unchanged — phase7's LIBRARY picker uses the identical SHOW_MUSIC markers).
-    ['src/app/reviews/new/page.tsx', '{SHOW_MUSIC && !music && ('],
-    ['src/app/reviews/new/page.tsx', '{SHOW_MUSIC && music && ('],
-    ['src/app/reviews/new/page.tsx', '{SHOW_MUSIC && hasOpenedMusicPicker && ('],
-    ['src/app/reviews/new/page.tsx', 'if (SHOW_MUSIC && music) {'],
+    ['src/app/(app)/reviews/new/page.tsx', '{SHOW_MUSIC && !music && ('],
+    ['src/app/(app)/reviews/new/page.tsx', '{SHOW_MUSIC && music && ('],
+    ['src/app/(app)/reviews/new/page.tsx', '{SHOW_MUSIC && hasOpenedMusicPicker && ('],
+    ['src/app/(app)/reviews/new/page.tsx', 'if (SHOW_MUSIC && music) {'],
     // 🔧 CHANGED: phase7's feed shows the LIBRARY soundtrack CREDIT (attached track), not rc's
     // reuse disc. Same gate (SHOW_MUSIC), phase7's marker (origin === 'attached').
     ['src/app/reviews/feedShared.tsx', "{SHOW_MUSIC && r.music?.origin === 'attached'"],
@@ -136,8 +136,8 @@ describe('web — no surface offers a way into Music', () => {
 describe('web — a direct visit is not a product surface', () => {
   // phase7's /music is the restored LIBRARY, so it 404s via notFound() while the flag is off —
   // the same answer `/marketplace` uses under `SHOW_MARKETPLACE`.
-  it('src/app/music/page.tsx calls notFound() while the flag is off', () => {
-    const src = read('src/app/music/page.tsx')
+  it('src/app/(app)/music/page.tsx calls notFound() while the flag is off', () => {
+    const src = read('src/app/(app)/music/page.tsx')
     expect(src).toContain('if (!SHOW_MUSIC) notFound()')
     expect(src).toContain("from 'next/navigation'")
   })
@@ -146,7 +146,7 @@ describe('web — a direct visit is not a product surface', () => {
   // withdrew UNCONDITIONALLY (F-024) — a permanent "feature removed" notice, stronger than a flag
   // gate and not dependent on SHOW_MUSIC. Asserted as the removed-notice stub.
   it.each([
-    'src/app/music/upload/page.tsx',
+    'src/app/(app)/music/upload/page.tsx',
     'src/app/sound/[trackId]/page.tsx',
   ])('%s is the F-024 removed-notice stub (reuse withdrawn unconditionally)', (file) => {
     expect(read(file)).toContain('MusicFeatureRemoved')

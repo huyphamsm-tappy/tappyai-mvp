@@ -1,4 +1,4 @@
-// i18n keys for the Notifications screen (src/app/profile/notifications).
+// i18n keys for the Notifications screen (src/app/(app)/profile/notifications).
 // Flat map, one entry per t('notifications.*') key referenced by the screen.
 export const vi: Record<string, string> = {
   'notifications.title': 'Thông báo',

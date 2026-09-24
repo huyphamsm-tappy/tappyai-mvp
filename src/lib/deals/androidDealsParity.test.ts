@@ -27,7 +27,7 @@ import { vi as viDict } from '../i18n/w3/deals'
 // and the copy out of the shared dictionary — so adding a field or changing a sentence on the web
 // flags Android instead of quietly leaving it behind.
 
-const WEB_VIEW = 'src/app/deals/DealsView.tsx'
+const WEB_VIEW = 'src/app/(app)/deals/DealsView.tsx'
 const ANDROID = {
   dto: 'android/app/src/main/java/com/tappyai/app/deals/data/DealsNetworkDtos.kt',
   model: 'android/app/src/main/java/com/tappyai/app/deals/Deal.kt',

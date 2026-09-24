@@ -73,13 +73,13 @@ describe('AskTappyButton', () => {
 
 describe('the bridge is present on the surfaces that used to dead-end', () => {
   it('Deals offers it on a deal', () => {
-    const src = read('src/app/deals/DealsView.tsx')
+    const src = read('src/app/(app)/deals/DealsView.tsx')
     expect(src).toContain('AskTappyButton')
     expect(src).toContain('subject={deal.title}')
   })
 
   it('a tool result offers it once there is a result to carry', () => {
-    const src = read('src/app/split-bill/page.tsx')
+    const src = read('src/app/(app)/split-bill/page.tsx')
     expect(src).toContain('AskTappyButton')
     // Only when a real number exists — an empty form has nothing to talk about.
     expect(src).toContain('totalNum > 0 && (')

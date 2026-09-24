@@ -70,9 +70,9 @@ describe('no navigation offers Marketplace', () => {
 describe('nothing was deleted', () => {
   it('keeps the route, the component and its test', () => {
     for (const f of [
-      'src/app/marketplace/page.tsx',
-      'src/app/marketplace/MarketplaceReserved.tsx',
-      'src/app/marketplace/marketplaceReserved.test.tsx',
+      'src/app/(app)/marketplace/page.tsx',
+      'src/app/(app)/marketplace/MarketplaceReserved.tsx',
+      'src/app/(app)/marketplace/marketplaceReserved.test.tsx',
     ]) {
       expect(existsSync(f), f).toBe(true)
     }
@@ -99,7 +99,7 @@ describe('the route itself does not stay reachable', () => {
     // crawler would still have reached a page announcing a product that does not
     // exist. `notFound()` is the app's existing answer for a route that is not
     // there — no new "unavailable" screen was invented for this.
-    const page = read('src/app/marketplace/page.tsx')
+    const page = read('src/app/(app)/marketplace/page.tsx')
     expect(page).toContain('notFound()')
     expect(page).toContain('if (!SHOW_MARKETPLACE)')
   })

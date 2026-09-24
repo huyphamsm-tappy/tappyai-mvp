@@ -1,4 +1,4 @@
-// i18n keys for the create-a-review composer screen (src/app/reviews/new/page.tsx).
+// i18n keys for the create-a-review composer screen (src/app/(app)/reviews/new/page.tsx).
 // Flat map, same keys used with t('reviewNew.*'). VN original + EN translation.
 export const vi: Record<string, string> = {
   // Header + post button

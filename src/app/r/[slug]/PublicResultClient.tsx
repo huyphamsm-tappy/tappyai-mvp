@@ -118,17 +118,19 @@ export default function PublicResultClient({
         if (!id && saved?.id) { conversationIdRef.current = saved.id; setConversationId(saved.id) }
       } catch { /* the thread simply cannot be shared this session */ }
     },
-  })
-
-  useEffect(() => {
     // The RC's guest tier: a visitor must self-declare 18+ before any AI question
     // (`age_declaration_required`). Send them through the existing age flow and back
     // here, instead of leaving the box silently refused.
-    if (isAgeGateMessage(error?.message)) { redirectToAgeCheck(`/r/${slug}`); return }
-    const code = serverErrorCode(error?.message)
-    if (code === 'anon_limit_reached' || code === 'share_follow_up_limit' || code === 'free_limit_reached') setHardGate(t('publicResult.hardGate'))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error])
+    //
+    // 🚨 In the request's error callback, NOT in an effect: this page is PUBLIC, and the age
+    // flow may only ever be the answer to a question the visitor chose to ask — never something
+    // that happens on arrival (src/app/publicBoundary.test.ts forbids gates in mount effects).
+    onError: (err) => {
+      if (isAgeGateMessage(err?.message)) { redirectToAgeCheck(`/r/${slug}`); return }
+      const code = serverErrorCode(err?.message)
+      if (code === 'anon_limit_reached' || code === 'share_follow_up_limit' || code === 'free_limit_reached') setHardGate(t('publicResult.hardGate'))
+    },
+  })
 
   const countAsk = useCallback(() => {
     askCountRef.current += 1

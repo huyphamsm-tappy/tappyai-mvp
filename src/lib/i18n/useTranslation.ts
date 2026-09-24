@@ -14,6 +14,7 @@ import { vi as legalVi, en as legalEn } from './legal'
 import { vi as shareVi, en as shareEn, publicResultVi, publicResultEn } from './share'
 import { vi as guideVi, en as guideEn } from './guide'
 import { vi as discoveryVi, en as discoveryEn } from './discovery'
+import { browserLocale, isAppSurface } from './appSurface'
 
 // Full lookup maps: base dictionary + per-screen wave modules layered on top.
 // Namespaced keys make the merge collision-free.
@@ -47,12 +48,23 @@ const listeners = new Set<() => void>()
 const PRODUCT_LOCALE: Locale = 'vi'
 
 /**
- * The language this client is actually speaking: the user's explicit choice, else the product
- * default. Safe outside React and outside the browser — on the server there is no stored choice,
- * and the answer is the same default SSR renders in.
+ * The language this client is actually speaking: the user's explicit choice, else the default for
+ * the side of the public / app boundary this document is on (see `appSurface.ts`):
+ *
+ *   · inside the app (`src/app/(app)/`) — the product default, until the first-visit
+ *     LanguagePicker records a choice;
+ *   · on a public page (a shared link, a hub, the legal pages) — the browser's own language, the
+ *     same preference it sends as `Accept-Language`. A stranger is never asked; the page simply
+ *     speaks their language.
+ *
+ * Safe outside React and outside the browser — on the server there is no stored choice and no
+ * document, and the answer is the same default SSR renders in.
  */
 export function appLocale(): Locale {
-  return getStoredLocale() ?? PRODUCT_LOCALE
+  const stored = getStoredLocale()
+  if (stored) return stored
+  if (typeof document === 'undefined') return PRODUCT_LOCALE
+  return isAppSurface() ? PRODUCT_LOCALE : browserLocale()
 }
 
 /**

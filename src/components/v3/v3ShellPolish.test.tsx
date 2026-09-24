@@ -237,7 +237,7 @@ describe('the grid is defined once, in tokens', () => {
 
   it('no V3 page re-caps its own width inside the shared container', () => {
     // A second, narrower max-width inside `.v3-container` is what stranded Home in empty space.
-    for (const page of ['src/app/HomeV3.tsx', 'src/app/deals/DealsView.tsx', 'src/app/profile/ProfileView.tsx']) {
+    for (const page of ['src/app/HomeV3.tsx', 'src/app/(app)/deals/DealsView.tsx', 'src/app/(app)/profile/ProfileView.tsx']) {
       const src = read(page)
       const outerCap = /className="[^"]*mx-auto[^"]*max-w-\[\d+px\][^"]*"/.exec(src)
       expect(outerCap, `${page} must use the shell's container, not its own width`).toBeNull()

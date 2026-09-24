@@ -96,7 +96,7 @@ describe('Scam Shield — the highest-intent public entry finally has metadata',
 
 describe('home — one canonical, stated by the page, not the layout', () => {
   it('the home page declares canonical "/" and the root layout declares none', () => {
-    const home = readFileSync(join(ROOT, 'src/app/(home)/page.tsx'), 'utf8')
+    const home = readFileSync(join(ROOT, 'src/app/(app)/(home)/page.tsx'), 'utf8')
     expect(home).toMatch(/alternates:\s*\{\s*canonical:\s*absoluteUrl\('\/'\)\s*\}/)
     const layout = readFileSync(join(ROOT, 'src/app/layout.tsx'), 'utf8')
     expect(layout).not.toMatch(/canonical/)

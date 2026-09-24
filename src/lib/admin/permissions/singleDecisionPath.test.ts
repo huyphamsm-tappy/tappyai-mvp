@@ -62,8 +62,8 @@ describe('every API handler decides through the PDP', () => {
 })
 
 describe('every admin page decides through the PDP', () => {
-  const pages = ALL.filter((p) => rel(p).startsWith('app/admin/') && rel(p).endsWith('/page.tsx'))
-  const root = ALL.filter((p) => rel(p) === 'app/admin/page.tsx')
+  const pages = ALL.filter((p) => rel(p).startsWith('app/(app)/admin/') && rel(p).endsWith('/page.tsx'))
+  const root = ALL.filter((p) => rel(p) === 'app/(app)/admin/page.tsx')
 
   it('finds the admin page surface', () => {
     expect(pages.length + root.length).toBeGreaterThanOrEqual(8)
@@ -74,7 +74,7 @@ describe('every admin page decides through the PDP', () => {
   })
 
   it('the /admin layout resolves the Actor but makes no rank comparison', () => {
-    const layout = codeLines(read(join(SRC, 'app/admin/layout.tsx')))
+    const layout = codeLines(read(join(SRC, 'app/(app)/admin/layout.tsx')))
     // FOUNDATION-10C: the layout now goes through `resolveActorForPage`, the
     // page-surface wrapper that runs the corporate-identity boundary and turns
     // its denial into a redirect. It still resolves the FULL Actor — that is

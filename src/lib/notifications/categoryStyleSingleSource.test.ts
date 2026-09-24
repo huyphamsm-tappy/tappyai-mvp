@@ -18,7 +18,7 @@ import { CATEGORY_STYLE, NOTIF_COLOR, notificationBrandMark } from './inbox'
 const ROOT = join(__dirname, '..', '..', '..')
 const CONSUMERS = [
   'src/app/reviews/page.tsx',
-  'src/app/profile/notifications/NotificationsView.tsx',
+  'src/app/(app)/profile/notifications/NotificationsView.tsx',
 ]
 
 describe('CATEGORY_STYLE has exactly one definition', () => {

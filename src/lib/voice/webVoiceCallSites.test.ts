@@ -19,7 +19,7 @@ const read = (rel: string) => readFileSync(join(root, rel), 'utf8')
 const VOICE_COMPONENTS = [
   'src/components/ChatInterface.tsx',
   'src/components/SearchBar.tsx',
-  'src/app/translate/page.tsx',
+  'src/app/(app)/translate/page.tsx',
 ] as const
 
 /** A speech-recognition locale assigned from a literal rather than the shared table. */

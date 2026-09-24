@@ -111,7 +111,7 @@ describe('the display name keeps its own line, as production’s "Xin chào, {na
 })
 
 describe('one engine, no clock on the client, no timer, no request', () => {
-  const page = readFileSync('src/app/(home)/page.tsx', 'utf8')
+  const page = readFileSync('src/app/(app)/(home)/page.tsx', 'utf8')
   const v3 = readFileSync('src/app/HomeV3.tsx', 'utf8')
   const legacy = readFileSync('src/app/HomeView.tsx', 'utf8')
 

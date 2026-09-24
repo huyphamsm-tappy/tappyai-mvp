@@ -1,4 +1,4 @@
-// Wave-3 dictionary module — Split Bill screen (src/app/split-bill/page.tsx).
+// Wave-3 dictionary module — Split Bill screen (src/app/(app)/split-bill/page.tsx).
 // Flat vi/en maps with keys namespaced under `splitBill.` so an object-spread
 // merge into the app dictionaries stays collision-free.
 

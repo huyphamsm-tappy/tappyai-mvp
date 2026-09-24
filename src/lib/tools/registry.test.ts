@@ -119,7 +119,7 @@ describe('Home curates; it does not mirror the catalogue', () => {
     const shell = require('node:fs').readFileSync(resolve(process.cwd(), 'src/components/v3/V3Shell.tsx'), 'utf8')
     for (const tool of smartTools().filter((t) => !t.home)) {
       const inShell = shell.includes(`'${tool.href}'`)
-      const onToolsPage = existsSync(resolve(process.cwd(), 'src/app/tools/page.tsx'))
+      const onToolsPage = existsSync(resolve(process.cwd(), 'src/app/(app)/tools/page.tsx'))
       expect(inShell || onToolsPage, `${tool.id} must be reachable somewhere`).toBe(true)
     }
   })

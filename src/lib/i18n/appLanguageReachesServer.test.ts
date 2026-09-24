@@ -32,11 +32,11 @@ const read = (path: string) => readFileSync(path, 'utf8')
 /** Call sites that receive the author-facing moderation notice and must ask for a language. */
 const OWN_CONTENT_CALLERS = [
   {
-    file: 'src/app/reviews/new/page.tsx',
+    file: 'src/app/(app)/reviews/new/page.tsx',
     what: 'the composer POSTs a review and renders the held-post notice from the response',
   },
   {
-    file: 'src/app/profile/bookings/BookingReviewButton.tsx',
+    file: 'src/app/(app)/profile/bookings/BookingReviewButton.tsx',
     what: 'the booking flow POSTs a review through the same endpoint',
   },
   {

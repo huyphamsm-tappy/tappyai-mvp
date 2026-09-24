@@ -180,7 +180,7 @@ describe('the Deals prompt', () => {
     })
     const requestPermission = vi.fn()
     Object.defineProperty(window, 'Notification', { configurable: true, value: { permission: 'default', requestPermission } })
-    const { default: DealNotifyButton } = await import('@/app/deals/DealNotifyButton')
+    const { default: DealNotifyButton } = await import('@/app/(app)/deals/DealNotifyButton')
     localStorage.setItem(NOTIFICATION_PREFERENCE_KEY, 'off')
     const off = render(<DealNotifyButton />)
     await vi.waitFor(() => expect(off.container.querySelector('button')).toBeNull())

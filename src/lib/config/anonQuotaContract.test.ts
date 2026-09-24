@@ -40,7 +40,7 @@ describe('no consumer can read the anonymous allowance as a daily figure', () =>
     for (const f of [
       'src/app/api/chat/route.ts',
       'src/app/api/subscription/route.ts',
-      'src/app/subscription/page.tsx',
+      'src/app/(app)/subscription/page.tsx',
       'src/app/scam-shield/ScamShieldView.tsx',
       'src/app/scam-shield/ScamMessageResult.tsx',
       'src/lib/config/product.ts',

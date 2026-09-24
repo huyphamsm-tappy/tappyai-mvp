@@ -35,15 +35,15 @@ describe('no navigation offers My Reviews', () => {
   })
 
   it('the profile hub has no such row', () => {
-    const src = code(read('src/app/profile/ProfileRows.tsx'))
+    const src = code(read('src/app/(app)/profile/ProfileRows.tsx'))
     expect(/profile\.myReviews/.test(src)).toBe(false)
   })
 
   it('no other surface links to it', () => {
     for (const f of [
       'src/components/v3/V3Shell.tsx',
-      'src/app/profile/ProfileRows.tsx',
-      'src/app/profile/ProfileView.tsx',
+      'src/app/(app)/profile/ProfileRows.tsx',
+      'src/app/(app)/profile/ProfileView.tsx',
     ]) {
       expect(/myReviews/.test(code(read(f))), f).toBe(false)
     }
@@ -63,7 +63,7 @@ describe('the post system Explore depends on is untouched', () => {
   it('the My Reviews page itself is gone', () => {
     // Exclusively the removed feature. Deleting the row but leaving the route
     // would have kept a page nothing links to and every guard still lints.
-    expect(existsSync('src/app/profile/posts')).toBe(false)
+    expect(existsSync('src/app/(app)/profile/posts')).toBe(false)
   })
 
   it('but the author can still manage their own posts, from the profile grid', () => {
@@ -99,14 +99,14 @@ describe('the removal left nothing dead behind it', () => {
       'src/lib/i18n/webHardcodedUiStrings.test.ts',
       'src/lib/i18n/appLanguageReachesServer.test.ts',
     ]) {
-      expect(/'src\/app\/profile\/posts\/page\.tsx'/.test(read(f)), f).toBe(false)
+      expect(/'src\/app\/(app)\/profile\/posts\/page\.tsx'/.test(read(f)), f).toBe(false)
     }
   })
 })
 
 describe('the removal left no dead imports', () => {
   it('neither file still imports the icon the row used', () => {
-    for (const f of ['src/components/v3/V3Shell.tsx', 'src/app/profile/ProfileRows.tsx']) {
+    for (const f of ['src/components/v3/V3Shell.tsx', 'src/app/(app)/profile/ProfileRows.tsx']) {
       const src = code(read(f))
       const importBlocks = src.match(/import[\s\S]*?from 'lucide-react'/) ?? []
       const usesStar = /\bStar\b/.test(src.replace(importBlocks.join('\n'), ''))

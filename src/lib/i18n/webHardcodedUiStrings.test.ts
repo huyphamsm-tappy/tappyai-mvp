@@ -39,31 +39,31 @@ const SEALED = [
   // chrome and a 197-word Vietnamese body, which is the shape that stops anyone looking twice.
   // Now a LegalDocument like /privacy and /terms, so it follows the LanguagePicker.
   'src/app/copyright/page.tsx',
-  'src/app/subscription/page.tsx',
-  'src/app/subscription/SubscriptionView.tsx',
+  'src/app/(app)/subscription/page.tsx',
+  'src/app/(app)/subscription/SubscriptionView.tsx',
   'src/components/StripeCheckoutButton.tsx',
   'src/components/ManageSubscriptionButton.tsx',
-  'src/app/profile/tappy-knows/page.tsx',
-  'src/app/profile/integrations/page.tsx',
-  'src/app/profile/edit/page.tsx',
-  'src/app/profile/history/page.tsx',
-  'src/app/profile/history/HistoryView.tsx',
-  'src/app/profile/history/DeleteConversationButton.tsx',
-  'src/app/recommendations/page.tsx',
-  'src/app/currency/page.tsx',
-  'src/app/music/upload/page.tsx',
+  'src/app/(app)/profile/tappy-knows/page.tsx',
+  'src/app/(app)/profile/integrations/page.tsx',
+  'src/app/(app)/profile/edit/page.tsx',
+  'src/app/(app)/profile/history/page.tsx',
+  'src/app/(app)/profile/history/HistoryView.tsx',
+  'src/app/(app)/profile/history/DeleteConversationButton.tsx',
+  'src/app/(app)/recommendations/page.tsx',
+  'src/app/(app)/currency/page.tsx',
+  'src/app/(app)/music/upload/page.tsx',
   'src/components/CategoryGrid.tsx',
 
   // ── Sealed by the release-readiness fix round (C14, C15, C43) ──────────────
   'src/components/Header.tsx',            // the app-wide greeting: "Good morning, bạn"
-  'src/app/profile/account/page.tsx',
-  'src/app/profile/account/AccountView.tsx',
-  'src/app/profile/bookings/page.tsx',
-  'src/app/profile/bookings/BookingsView.tsx',
-  'src/app/profile/favorites/page.tsx',
-  'src/app/profile/price-watches/page.tsx',
-  'src/app/group/new/GroupNewForm.tsx',
-  'src/app/music/page.tsx',
+  'src/app/(app)/profile/account/page.tsx',
+  'src/app/(app)/profile/account/AccountView.tsx',
+  'src/app/(app)/profile/bookings/page.tsx',
+  'src/app/(app)/profile/bookings/BookingsView.tsx',
+  'src/app/(app)/profile/favorites/page.tsx',
+  'src/app/(app)/profile/price-watches/page.tsx',
+  'src/app/(app)/group/new/GroupNewForm.tsx',
+  'src/app/(app)/music/page.tsx',
 ]
 
 /**
@@ -73,7 +73,7 @@ const SEALED = [
  * translated. Such a line is recognisable by carrying a dictionary key beside the value.
  */
 const SEALED_WITH_PERSISTED_VALUES: Record<string, RegExp> = {
-  'src/app/profile/preferences/page.tsx': /^\s*\{\s*value:\s*'[^']+',\s*key:\s*'[a-z][A-Za-z.]+'\s*\},?\s*$/,
+  'src/app/(app)/profile/preferences/page.tsx': /^\s*\{\s*value:\s*'[^']+',\s*key:\s*'[a-z][A-Za-z.]+'\s*\},?\s*$/,
   // The 18+ age-check screen (V3 user-data foundation) is fully localized except for the
   // language toggle, which shows each language's own endonym — 'Tiếng Việt' / 'English' —
   // and is intentionally never translated. That single locale-aware line is the only carve-out.

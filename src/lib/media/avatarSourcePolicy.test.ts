@@ -53,7 +53,7 @@ describe('PRIORITY — an uploaded TappyAI avatar outranks the Zalo one', () => 
   // reaches `user_metadata.avatar_url` (set once, at account creation). Every read must therefore
   // prefer the profiles row, or an upload would appear to "not save" for Zalo users.
   const readers = [
-    'src/app/profile/account/page.tsx',
+    'src/app/(app)/profile/account/page.tsx',
     'src/app/api/profile/route.ts',
   ]
   for (const f of readers) {

@@ -124,7 +124,7 @@ describe('the page derives each capability from its own permission', () => {
   // is this derivation. Rendering it would test Next's plumbing; reading it
   // tests the claim.
   const page = readFileSync(
-    join(__dirname, '..', '..', '..', 'app', 'admin', 'users', 'page.tsx'),
+    join(__dirname, '..', '..', '..', 'app', '(app)', 'admin', 'users', 'page.tsx'),
     'utf8'
   )
 

@@ -48,7 +48,7 @@ describe('single navigation authority', () => {
   })
 
   it('the live shell composes exactly one authority then the department filter', () => {
-    const layout = readFileSync(join(ROOT, 'src/app/admin/layout.tsx'), 'utf8')
+    const layout = readFileSync(join(ROOT, 'src/app/(app)/admin/layout.tsx'), 'utf8')
     expect(layout).toContain('resolveAdminNavigation(actor)')
     expect(layout).toContain('filterNavByDepartment')
     expect(layout).not.toMatch(/export\s+const\s+NAV\b/)

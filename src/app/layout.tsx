@@ -3,9 +3,7 @@ import './globals.css'
 import { buildSiteMetadata } from '@/lib/share/openGraph'
 import { PostHogProvider } from '@/components/PostHogProvider'
 import { NotificationProvider } from '@/components/NotificationProvider'
-import LocationProvider from '@/components/LocationProvider'
 import TrackingProvider from '@/components/TrackingProvider'
-import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
@@ -105,12 +103,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PostHogProvider>
           <NotificationProvider>{children}</NotificationProvider>
         </PostHogProvider>
-        <LocationProvider />
+        {/* 🚨 THE PUBLIC / APP BOUNDARY. This root layout wraps EVERY route, including the pages a
+            stranger opens from a shared link (/plan/<id>, /r/<slug>, /reviews/<id>, /users/<id>, the
+            hubs, Scam Shield, the legal pages). So nothing here may prompt, gate or interrupt: no
+            location request, no language modal, no age gate, no login wall. Those belong to the
+            signed-in product and are mounted by `src/app/(app)/layout.tsx`, which only wraps routes
+            that live under `src/app/(app)/`. A new page added anywhere else is public-safe with no
+            list to update; `src/app/publicBoundary.test.ts` fails the build if a gate ever leaks back
+            into this file or into anything a public route imports. */}
         {/* GA4 loader — renders nothing unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set (Production
             only). Events reach it through the in-app tracker's mirror, never directly. */}
         <GoogleAnalytics />
         <TrackingProvider />
-        <LanguagePicker />
         <HtmlLangSync />
         {/* Per-tab in-app history depth for every Back control (lib/nav/inAppBack). */}
         <NavHistoryTracker />

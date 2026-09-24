@@ -127,7 +127,7 @@ describe('a store that cannot report FAILS CLOSED', () => {
 describe('no second authority survives in the routes', () => {
   const chat = readFileSync('src/app/api/chat/route.ts', 'utf8')
   const sub = readFileSync('src/app/api/subscription/route.ts', 'utf8')
-  const page = readFileSync('src/app/subscription/page.tsx', 'utf8')
+  const page = readFileSync('src/app/(app)/subscription/page.tsx', 'utf8')
 
   it('/api/chat spends from the shared quota and no longer runs the per-day RPC or the cookie counter', () => {
     expect(chat).toContain("from '@/lib/ai/quota/aiQuestionQuota'")

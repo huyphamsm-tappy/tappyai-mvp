@@ -1,6 +1,6 @@
 // The Home hero greeting rules — every boundary, both languages, and parity with Android.
 //
-// These are the PRODUCTION rules (they lived inline in `src/app/(home)/page.tsx` and
+// These are the PRODUCTION rules (they lived inline in `src/app/(app)/(home)/page.tsx` and
 // `src/app/HomeView.tsx`, and Android carries a 1:1 port). The V3 Home used to ignore
 // them and print a static line; now all three surfaces read this one module, so the
 // module is what gets pinned: slot edges one hour and one minute either side, the
