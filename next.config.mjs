@@ -1,3 +1,35 @@
+import { execSync } from 'node:child_process'
+
+// ── Environment identity + production-DB startup guard (consolidation 2026-09-24) ──
+// Prevents the "UAT'd the wrong worktree on the production database" class of bug.
+function gitInfo() {
+  try {
+    return {
+      sha: execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(),
+      branch: execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim(),
+    }
+  } catch { return { sha: 'unknown', branch: 'unknown' } }
+}
+const GIT = gitInfo()
+const WORKTREE = process.cwd()
+const SUPABASE_REF = (String(process.env.NEXT_PUBLIC_SUPABASE_URL || '').match(/([a-z0-9]{20})\.supabase\.co/) || [])[1] || 'none'
+const PROD_SUPABASE_REF = 'fwznnobrdctuskgrvuik'
+
+// Refuse to start a dev server pointed at the PRODUCTION Supabase project.
+// An explicit override exists, but it is never silent.
+if (
+  process.env.NODE_ENV !== 'production' &&
+  SUPABASE_REF === PROD_SUPABASE_REF &&
+  process.env.ALLOW_PROD_SUPABASE_IN_DEV !== '1'
+) {
+  throw new Error(
+    `\n\n🛑 REFUSING TO START — dev server is pointed at the PRODUCTION Supabase project (${PROD_SUPABASE_REF}).\n` +
+    `   Worktree: ${WORKTREE}\n   Branch:   ${GIT.branch} @ ${GIT.sha}\n\n` +
+    `   Fix: point .env.local NEXT_PUBLIC_SUPABASE_URL at the AUDIT project (zdaprdfgpbpnxyofagmc).\n` +
+    `   Override (NOT recommended): ALLOW_PROD_SUPABASE_IN_DEV=1 npm run dev\n`
+  )
+}
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Build gates ENFORCED: production builds fail on TypeScript or ESLint errors.
@@ -17,6 +49,12 @@ const nextConfig = {
   // Fixes the recurring "iPhone Safari keeps showing an old cached build" issue.
   env: {
     NEXT_PUBLIC_BUILD_ID: process.env.VERCEL_GIT_COMMIT_SHA || 'dev',
+    // Dev-only identity for the DevEnvBadge. These are read only inside a
+    // `process.env.NODE_ENV === 'development'` branch, so they are tree-shaken
+    // out of a production build (see DevEnvBadge + layout gate).
+    NEXT_PUBLIC_DEV_GIT_SHA: GIT.sha,
+    NEXT_PUBLIC_DEV_GIT_BRANCH: GIT.branch,
+    NEXT_PUBLIC_DEV_WORKTREE: WORKTREE,
   },
   images: {
     remotePatterns: [

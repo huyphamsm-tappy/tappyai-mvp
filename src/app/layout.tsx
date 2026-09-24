@@ -9,6 +9,12 @@ import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
+import dynamic from 'next/dynamic'
+// Dev-only: the import lives inside a NODE_ENV branch that constant-folds to false in a
+// production build, so the DevEnvBadge module is dead-code-eliminated from the prod bundle.
+const DevEnvBadge = process.env.NODE_ENV === 'development'
+  ? dynamic(() => import('@/components/DevEnvBadge'))
+  : () => null
 import GoogleAnalytics from '@/components/GoogleAnalytics'
 import NavHistoryTracker from '@/components/NavHistoryTracker'
 
@@ -109,6 +115,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Per-tab in-app history depth for every Back control (lib/nav/inAppBack). */}
         <NavHistoryTracker />
         <VersionWatcher />
+        {/* Dev-only environment badge (worktree/branch/SHA/Supabase ref; RED on prod DB).
+            The NODE_ENV constant folds to false in a production build, so DevEnvBadge and
+            its NEXT_PUBLIC_DEV_* env are dead-code-eliminated from the prod bundle. */}
+        {process.env.NODE_ENV === 'development' && <DevEnvBadge />}
       </body>
     </html>
   )
