@@ -67,6 +67,7 @@ code on the shipping branch fails for users if the migration is missing when the
 | 7 | `20260921_user_events_ga4_event_types` | widens a constraint **if present** | conditional | file | no — **no-op on prod** |
 | 8 | `20260921_user_events_shopping_search_event` | same pattern | conditional | file | no — **no-op on prod** |
 | GR | `20260922_groups_avatar_url` | `groups.avatar_url` | yes (1 column) | file | **YES** — `GET /api/group` selects `avatar_url`; without it every group answers 404 `group_not_found` |
+| **S1** | `20260904_group_read_boundary` (**added 2026-09-25, F-065 P0**) | drops `"Anyone can read groups"` / `"Anyone can read group members"` (`USING (true)` to `public`); participant-only SELECT `TO authenticated` via `fn_group_participant()` | no (replaces 2 policies) | §1-S1 | **SECURITY** — without it anyone holding the public anon key reads every group and every member's name/area/budget/dietary restrictions (measured on audit 2026-09-25). ⚠️ **Apply AFTER the web deploy** (§2) |
 | ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
 
 The detailed check / apply / verify blocks for #1–#8 follow unchanged; the new steps (G1, P1, G2, GR,
@@ -238,6 +239,17 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - **Verify after:** same → `t`. Then `GET /api/group?id=<a real group>` must answer 200, not 404.
 - **Rollback:** `supabase/migrations/rollback/20260922_groups_avatar_url_rollback.sql`
 
+### §1-S1) `supabase/migrations/20260904_group_read_boundary.sql` — groups / members readable only by participants (F-065)
+- Recovered 2026-09-25 from `integration/v3-foundation` (`558ba49`), which never reached the shipping branch.
+- **Check first (expect 2 rows = still open):** `SELECT tablename, policyname FROM pg_policies WHERE schemaname='public' AND policyname IN ('Anyone can read groups','Anyone can read group members');`
+- **Apply AFTER the web deploy** — the new `GET /api/group` (link holder) and the join-cap count read through the
+  service role keyed by the group id; the OLD code reads as the caller and would 404 a link holder / lose the
+  10-member cap once the policies are gone.
+- **Verify after:** the query above → 0 rows; `SELECT policyname FROM pg_policies WHERE tablename IN ('groups','group_members') AND cmd='SELECT';`
+  → `groups_select_participant`, `group_members_select_participant`. Then, with ONLY the anon key:
+  `curl "$SUPABASE_URL/rest/v1/group_members?select=group_id" -H "apikey: $ANON" -H "Authorization: Bearer $ANON"` → `[]`.
+- **Rollback (re-opens the leak — only if group sharing breaks):** re-create the two `USING (true)` policies from `add_groups.sql`.
+
 ### §1-V) Already on prod — verify, do NOT re-apply
 ```sql
 SELECT to_regclass('public.chat_messages') IS NOT NULL AS chat_phase1,
@@ -305,7 +317,10 @@ Safe **with or after** the deploy:
   deploy where the constraint exists (so the new client `track()` rows are not dropped once the new code
   ships). Both are NO-OPs on prod (no constraint), so on prod their ordering does not matter.
 
-Nothing in this delta must come strictly *after* the deploy.
+Strictly **after** the deploy (added 2026-09-25):
+- **§1-S1 group read boundary** — right after the web deploy is live (minutes, not days: until it lands
+  the group tables stay readable with the public anon key). Before the deploy it would break the OLD
+  `GET /api/group` for link holders and remove the join cap.
 
 ---
 

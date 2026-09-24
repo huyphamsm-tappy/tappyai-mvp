@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { searchParam } from '@/lib/http/searchParams'
@@ -37,7 +37,21 @@ export async function GET(req: NextRequest) {
   const id = searchParam(req, 'id')
   if (!id) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
 
-  const supabase = createClient()
+  // S-1. Read through the service role, keyed by the id the caller supplied.
+  //
+  // The share link IS the capability — `/group/{uuid}` is what the page tells
+  // the creator to send — and this route has always been the way a link holder
+  // reads the group. What it used to rely on was the RLS policy
+  // `"Anyone can read group members" USING (true)`, and that policy could not
+  // tell "asked for one id" from "asked for every row": with the PUBLIC anon
+  // key it also served `GET /rest/v1/group_members?select=*`, i.e. every
+  // member's name, area, budget and dietary restrictions, platform-wide, to
+  // anyone. 20260904_group_read_boundary.sql closes that path.
+  //
+  // So the capability moves to where it can be checked — a UUID this handler
+  // requires and filters on — instead of a policy that granted it to everyone.
+  // Both reads below are pinned to that single id; nothing here can enumerate.
+  const supabase = createAdminClient()
 
   const { data: group, error: groupError } = await supabase
     .from('groups')
