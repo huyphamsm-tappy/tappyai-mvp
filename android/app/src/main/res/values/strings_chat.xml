@@ -259,6 +259,20 @@
     <string name="place_pager_position">Place %1$d of %2$d</string>
     <string name="place_card_tappy_rating">Tappy %1$s · %2$d reviews</string>
     <string name="place_card_why">Why</string>
+    <!-- The tag of the locale these strings belong to: one authority (the resources), read per Context. -->
+    <string name="place_card_lang">en</string>
+    <!-- F-050: the ranker's reason and the provider's price band, worded like web
+         (src/lib/i18n/w5/shoppingDecision.ts reason.* and priceBand.ts formatPriceBandText). -->
+    <string name="place_reason_rating">rated %1$s</string>
+    <string name="place_reason_review_count">%1$s reviews</string>
+    <string name="place_reason_price">priced %1$s</string>
+    <string name="place_reason_distance">%1$s km away</string>
+    <string name="place_reason_stars">%1$s-star</string>
+    <string name="place_reason_eta">%1$s min to pickup</string>
+    <string name="place_reason_direct_page">direct booking page</string>
+    <string name="place_band_under">under %1$s ₫</string>
+    <string name="place_band_over">over %1$s ₫</string>
+    <string name="place_band_range">%1$s–%2$s ₫</string>
 
     <!-- V3 (ported from A 77b0bb7): voice listening screen -->
     <string name="voice_listening_cancel">Hủy</string>

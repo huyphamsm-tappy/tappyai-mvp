@@ -256,6 +256,20 @@
     <string name="place_pager_position">Địa điểm %1$d/%2$d</string>
     <string name="place_card_tappy_rating">Tappy %1$s · %2$d đánh giá</string>
     <string name="place_card_why">Vì sao</string>
+    <!-- Tag của locale mà chuỗi này thuộc về: một nguồn duy nhất (resources), đọc theo Context. -->
+    <string name="place_card_lang">vi</string>
+    <!-- F-050: lý do của ranker và dải giá của provider, cùng lời với web
+         (src/lib/i18n/w5/shoppingDecision.ts reason.* và priceBand.ts formatPriceBandText). -->
+    <string name="place_reason_rating">đánh giá %1$s</string>
+    <string name="place_reason_review_count">%1$s lượt đánh giá</string>
+    <string name="place_reason_price">giá %1$s</string>
+    <string name="place_reason_distance">cách %1$s km</string>
+    <string name="place_reason_stars">%1$s sao</string>
+    <string name="place_reason_eta">đón sau %1$s phút</string>
+    <string name="place_reason_direct_page">trang đặt trực tiếp</string>
+    <string name="place_band_under">dưới %1$s ₫</string>
+    <string name="place_band_over">trên %1$s ₫</string>
+    <string name="place_band_range">%1$s–%2$s ₫</string>
 
     <!-- V3 (ported from A 77b0bb7): voice listening screen -->
     <string name="voice_listening_cancel">Hủy</string>

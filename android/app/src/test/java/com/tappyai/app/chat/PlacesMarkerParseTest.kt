@@ -222,7 +222,7 @@ class PlacesMarkerParseTest {
         assertEquals(true, card.openNow)
         assertEquals("~50k", card.priceSignal)
         assertEquals(listOf("cafe", "bakery"), card.categories)
-        assertEquals("Xa hơn 1km", card.tradeOff)
+        assertEquals("Xa hơn 1km", card.tradeOff?.evidence) // structured since F-050; the card words it
         assertEquals("₫₫", priceBand(card.priceLevel))
     }
 

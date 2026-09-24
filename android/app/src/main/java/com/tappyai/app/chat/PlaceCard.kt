@@ -368,7 +368,7 @@ data class PlaceCardFacts(
     val actions: GroupedActions,
 )
 
-internal fun placeCardFacts(place: PlaceCardView, position: Int, ranked: Boolean): PlaceCardFacts {
+internal fun placeCardFacts(place: PlaceCardView, position: Int, ranked: Boolean, copy: PlaceCardCopy = PlaceCardCopy.PASSTHROUGH): PlaceCardFacts {
     val lead = ranked && position == 0
     val amenities = place.flags.filter { it == "wifi" || it == "outdoorSeating" || it == "vegetarian" }
     return PlaceCardFacts(
@@ -388,12 +388,14 @@ internal fun placeCardFacts(place: PlaceCardView, position: Int, ranked: Boolean
         openNow = place.openNow,
         priceBand = priceBand(place.priceLevel),
         distanceKm = place.distanceKm,
-        priceRangeText = place.priceRangeText?.takeIf { it.isNotBlank() },
+        // F-050: the provider band as a reader understands it ("dưới 100.000 ₫", never "1-100.000 ₫").
+        priceRangeText = copy.formatPriceBand(place.priceRangeText),
         priceSignal = place.priceSignal?.takeIf { it.isNotBlank() },
         chips = amenities.map { PlaceChip.Amenity(it) } +
             place.categories.filter { it.isNotBlank() }.take(CATEGORY_CHIPS).map { PlaceChip.Category(it) },
-        reasons = place.reasons.filter { it.isNotBlank() },
-        tradeOff = place.tradeOff?.takeIf { it.isNotBlank() },
+        // F-050: the ranker's reason said in the reader's language, from its params (web reasonText).
+        reasons = copy.reasonList(place.reasons),
+        tradeOff = place.tradeOff?.let { copy.reasonText(it.attribute, it.evidence, it.params) }?.takeIf { it.isNotBlank() },
         actions = groupActions(place.actions),
     )
 }
@@ -445,6 +447,8 @@ fun PlaceDecisionSection(
     // list would keep counting pages that no longer exist.
     val currentPages = rememberUpdatedState(pages)
     val pagerState = rememberPagerState(pageCount = { currentPages.value.size })
+    // F-050: reason and price-band copy in the app language (web reasonText / formatPriceBandText).
+    val copy = rememberPlaceCardCopy()
     // A chip restarts the carousel at its first admitted merchant. The chip itself survives
     // recomposition and configuration changes (rememberSaveable above).
     LaunchedEffect(active.id) { if (pagerState.currentPage != 0) pagerState.scrollToPage(0) }
@@ -484,7 +488,7 @@ fun PlaceDecisionSection(
                 val place = pages[page]
                 // "#N" is the position in the SERVER's list, not in the filtered one: hiding #1
                 // behind a chip does not promote #2.
-                PlaceCard(facts = placeCardFacts(place, position = places.indexOf(place), ranked = ranked), commerce = commerce)
+                PlaceCard(facts = placeCardFacts(place, position = places.indexOf(place), ranked = ranked, copy = copy), commerce = commerce)
             }
             if (pages.size > 1) {
                 PagerDots(count = pages.size, current = pagerState.currentPage)

@@ -1,6 +1,7 @@
 package com.tappyai.app.chat
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 /**
  * The LIVE place decision, as it arrives on the `8:` annotation frame.
@@ -99,6 +100,12 @@ data class LivePlaceAction(
 data class LivePlaceReason(
     val attribute: String = "",
     val evidence: String = "",
+    /**
+     * The reason as data (web `reasonText.ts`): `{value}` for rating, `{count}` for reviewCount,
+     * `{km}` for distance, `{priceVnd}`, `{stars}`, `{minutes}`. The card words it from these in
+     * the reader's language (`PlaceCardCopy`); absent → the `evidence` string, as before (F-050).
+     */
+    val params: JsonObject? = null,
 )
 
 @Serializable
@@ -280,8 +287,9 @@ data class PlaceCardView(
      * server sends the key, never a sentence.
      */
     val flags: List<String> = emptyList(),
-    val reasons: List<String> = emptyList(),
-    val tradeOff: String? = null,
+    /** Structured, so the card can word them in the reader's language (F-050). */
+    val reasons: List<LivePlaceReason> = emptyList(),
+    val tradeOff: LivePlaceReason? = null,
     val actions: List<PlaceCardAction> = emptyList(),
 )
 
@@ -321,8 +329,8 @@ fun LivePlace.toCardView(): PlaceCardView = PlaceCardView(
     distanceKm = distanceKm,
     categories = categories,
     flags = flags,
-    reasons = reasons.map { it.evidence }.filter { it.isNotBlank() },
-    tradeOff = tradeOff?.evidence?.takeIf { it.isNotBlank() },
+    reasons = reasons.filter { it.evidence.isNotBlank() },
+    tradeOff = tradeOff?.takeIf { it.evidence.isNotBlank() },
     actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform, it.attributed, it.commerce) },
 )
 
@@ -349,7 +357,7 @@ fun PersistedPlace.toCardView(): PlaceCardView? {
         phone = phone,
         priceLevel = priceLevel,
         distanceKm = distanceKm,
-        reasons = reasons.map { it.evidence }.filter { it.isNotBlank() },
+        reasons = reasons.filter { it.evidence.isNotBlank() }.map { LivePlaceReason(it.attribute, it.evidence) },
         actions = actions.map { PlaceCardAction(it.kind, it.urlKind, it.url, it.labelKey, it.platform, it.attributed) },
     )
 }
