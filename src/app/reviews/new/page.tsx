@@ -34,6 +34,7 @@ import {
   isAcceptableVideoDuration,
   MAX_VIDEO_SIZE_MB,
   MAX_PHOTO_SIZE_MB,
+  SHOW_MUSIC,
 } from '@/lib/config/product'
 import { apiFetch, isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
@@ -653,8 +654,9 @@ export default function NewReviewPage() {
       }
 
       // A library soundtrack, when one was picked. The server re-checks that the id is a
-      // library track before it stores anything.
-      if (music) {
+      // library track before it stores anything. Guarded by SHOW_MUSIC (owner decision
+      // 2026-09-24) so a soundtrack can never be attached while Music is hidden.
+      if (SHOW_MUSIC && music) {
         payload.music = { version: 1, trackId: music.trackId, startSec: music.startSec, volume: music.volume }
       }
 
@@ -1138,8 +1140,10 @@ export default function NewReviewPage() {
             )}
           </button>
 
-          {/* Music library — pick a licensed soundtrack. Not "use this sound". */}
-          {!music && (
+          {/* Music library — pick a licensed soundtrack. Not "use this sound".
+              Hidden by default: SHOW_MUSIC (owner decision 2026-09-24). With the chip
+              gone the picker can never open, so `music` stays null and nothing attaches. */}
+          {SHOW_MUSIC && !music && (
             <button type="button" onClick={openMusicPicker} aria-haspopup="dialog"
               className="v3-post-chip" data-tone="rose" data-active="false" data-add-music>
               <span className="v3-post-chip-icon" aria-hidden="true"><Music size={16} /></span>
@@ -1184,13 +1188,15 @@ export default function NewReviewPage() {
           </div>
         )}
 
-        {/* Music: the selected library track, and the picker (mounted on first open). */}
-        {music && (
+        {/* Music: the selected library track, and the picker (mounted on first open).
+            Gated on SHOW_MUSIC too (owner decision 2026-09-24) — belt-and-suspenders with
+            the hidden chip above, so nothing music renders while the feature is hidden. */}
+        {SHOW_MUSIC && music && (
           <div className="mt-3">
             <SelectedMusicCard trackId={music.trackId} onReplace={openMusicPicker} onRemove={() => setMusic(null)} />
           </div>
         )}
-        {hasOpenedMusicPicker && (
+        {SHOW_MUSIC && hasOpenedMusicPicker && (
           <MusicPickerSheet
             open={musicPickerOpen}
             onClose={() => setMusicPickerOpen(false)}

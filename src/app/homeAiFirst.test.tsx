@@ -157,7 +157,8 @@ describe('Home is AI-first (DD-002)', () => {
     // The first /chat entry in document order must precede the first tool destination.
     const firstChatEntry = order.findIndex(h => h.startsWith('/chat'))
     const firstTool = order.findIndex(h =>
-      ['/boi', '/scan', '/group/new', '/currency', '/split-bill', '/translate', '/music', '/viet-content']
+      // '/music' dropped: Music is hidden by default (SHOW_MUSIC, owner decision 2026-09-24).
+      ['/boi', '/scan', '/group/new', '/currency', '/split-bill', '/translate', '/viet-content']
         .some(t => h.startsWith(t)),
     )
 
@@ -211,9 +212,13 @@ describe('Home is NOT Chat (DD-002 — binding limit)', () => {
 describe('no tool was dropped when Home stopped being a dashboard', () => {
   // Tools belong to Home by the approved layout (grouped, with a hierarchy). Losing one while
   // trimming the page would be a real capability loss, so the list is pinned.
+  //
+  // '/music' is intentionally NOT here: Music is hidden by default (SHOW_MUSIC, owner decision
+  // 2026-09-24), so its route is deliberately unreachable from the page — the opposite of a
+  // dropped-by-accident tool. Restoring SHOW_MUSIC restores every music entry point at once.
   const REQUIRED_TOOLS = [
     '/boi', '/scan', '/group/new', '/currency', '/split-bill',
-    '/translate', '/scam-shield', '/music', '/viet-content', '/recommendations',
+    '/translate', '/scam-shield', '/viet-content', '/recommendations',
   ]
 
   it('leaves no tool route unreachable from the page', () => {

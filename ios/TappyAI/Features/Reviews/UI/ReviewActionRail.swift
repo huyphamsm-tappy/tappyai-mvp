@@ -46,7 +46,9 @@ struct ReviewActionRail: View {
                 action: onShare
             )
 
-            if isUploadVideo {
+            // Music hidden by default (FeatureFlags.showMusic, owner decision 2026-09-24): the
+            // feed music disc opens the retired "use this sound" SoundPage, so it stays gated off.
+            if isUploadVideo && FeatureFlags.showMusic {
                 ReviewMusicDisc(music: review.music, isPlaying: isPlaying, onTap: onMusicTap)
             }
         }

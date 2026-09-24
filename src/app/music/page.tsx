@@ -1,7 +1,8 @@
 'use client'
 
 import { useCallback, useRef, useState, type ReactNode } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, notFound } from 'next/navigation'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { ChevronLeft, ChevronRight, Flame, Headphones, Mic2, Music, Music2, Sparkles } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import TappyPresence from '@/components/v3/TappyPresence'
@@ -62,7 +63,16 @@ import {
 const TRENDING_SLUG = 'trending'
 const TRACKS_ANCHOR = 'music-tracks'
 
+// Deep-link guard. Music is hidden by default (SHOW_MUSIC, owner decision 2026-09-24),
+// so a direct hit on /music 404s rather than opening the library. The view and the whole
+// Music Module stay intact; flipping SHOW_MUSIC back to true restores this route. The
+// guard is a wrapper (calls no hooks) so the view keeps a clean hook order.
 export default function MusicLibraryPage() {
+  if (!SHOW_MUSIC) notFound()
+  return <MusicLibraryView />
+}
+
+function MusicLibraryView() {
   const router = useRouter()
   const { t, locale } = useTranslation()
   const { categories } = useMusicCategories()

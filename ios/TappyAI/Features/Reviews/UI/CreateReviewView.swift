@@ -117,7 +117,10 @@ struct CreateReviewView: View {
                     Divider().foregroundStyle(TappyColor.border)
                     placeSection
                     ratingSection
-                    musicSection
+                    // Music hidden by default (FeatureFlags.showMusic, owner decision 2026-09-24).
+                    if FeatureFlags.showMusic {
+                        musicSection
+                    }
                     errorBanner
                     Spacer().frame(height: Spacing.xxl)
                 }

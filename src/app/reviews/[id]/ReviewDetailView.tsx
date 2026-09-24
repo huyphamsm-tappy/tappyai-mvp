@@ -11,6 +11,7 @@ import ReviewShareButton from './ReviewShareButton'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
@@ -90,7 +91,8 @@ export default function ReviewDetailView({
   // /api/music, library rows only) and let the hero VideoPlayer play it in place
   // of the clip's own audio. Same contract as the feed: mute from frame one while
   // the track is the intended audio; false again if the fetch comes back empty.
-  const attachedTrackId = review.music?.origin === 'attached' ? review.music.trackId : null
+  // Hidden by default (SHOW_MUSIC, owner decision 2026-09-24): the clip then plays its own audio.
+  const attachedTrackId = SHOW_MUSIC && review.music?.origin === 'attached' ? review.music.trackId : null
   const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
   const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
   const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
@@ -248,8 +250,9 @@ export default function ReviewDetailView({
           <p className="text-gray-600 text-sm italic pr-14">{t('reviewDetail.noBody')}</p>
         )}
 
-        {/* The library soundtrack's credit — attribution, not a "use this sound" link. */}
-        {review.music?.origin === 'attached' && (
+        {/* The library soundtrack's credit — attribution, not a "use this sound" link.
+            Hidden by default (SHOW_MUSIC, owner decision 2026-09-24). */}
+        {SHOW_MUSIC && review.music?.origin === 'attached' && (
           <div className="mt-6">
             <ReviewMusicCard
               playKey={review.id}

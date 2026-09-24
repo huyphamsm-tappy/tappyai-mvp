@@ -13,9 +13,27 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 > live on prod (`20260817_content_safety_gate`, `20260820_m01`, `20260820_m04`, `20260821_m08`,
 > `20260821_m09`). The check queries — not the banners — decide.
 
-> 🍏 **iOS is NOT in this release.** The iOS app still ships the music-reuse UI (its `Features/Music`
-> module still calls the now-410 `/api/music/*`, `/api/sound/*`, `/api/upload/audio`). iOS must **not**
-> be released until that UI is removed.
+> 🎵 **Music — HIDDEN BY DEFAULT, reconciled with the code (owner decision 2026-09-24).**
+> Music is out — not launching, no licensing review. The state below is what the code actually does at
+> `uat/phase7-regressions` HEAD, so this checklist and the code now MATCH:
+> - **Two separate things.** The *reuse* path ("use this sound" — borrow another user's clip audio) was
+>   retired for good by F-024/F-034 and stays gone. Session A (`9f85cde`) then RESTORED the *library*
+>   half — the `/music` browser + the composer soundtrack picker, reading a curated `royalty_free`/
+>   `licensed` catalogue. That restore is real and is in HEAD; the earlier "music removed" write-ups
+>   were about the reuse path, not the library.
+> - **The hide.** A single hardcoded flag `SHOW_MUSIC = false` (`src/lib/config/product.ts`, same shape
+>   as `SHOW_MARKETPLACE`/`SHOW_WALLET`) now gates every WEB entry point: Smart Tools card, the sidebar
+>   row, the Explore and public-profile top-bar links, the composer picker, the feed/detail soundtrack
+>   credit + playback, and `/music` itself (404s via `notFound()`). It is a code default, NOT an env
+>   read: if the flag were unset Music would still be hidden. Flip it to `true` to restore everything.
+> - **Backend untouched.** `/api/music/*` GET still serves the library via the **service-role** client;
+>   POST/upload and `/api/sound/*` stay **410**. Nothing in the UI calls these while `SHOW_MUSIC=false`,
+>   and no cron touches music.
+> - **Android:** already clean — no reachable music surface exists (nothing to gate).
+> - **iOS is NOT in this release.** iOS carries the full music UI *including* the retired reuse SoundPage.
+>   A mirror flag `FeatureFlags.showMusic = false` (`ios/TappyAI/Core/Config/FeatureFlags.swift`) now
+>   gates the iOS composer section and the feed music disc, but **this has NOT been compiled** (no macOS
+>   in this environment). iOS must not be released until it is built and the gate is verified.
 
 ---
 
@@ -162,6 +180,21 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - `supabase/migrations/20260705_seed_music_demo_catalog.sql` — replaceable demo catalog.
 - `supabase/migrations/20260706c_repoint_music_audio_local.sql` — only repoints that demo data.
 
+### 🎵 Music migrations — whose intent changed after Session A (reconciled 2026-09-24)
+None of these change what to APPLY (the DB objects are the same); what changed is the *narrative*: they
+back a **hidden but present** library, not a removed feature. The lockdown's mechanic is unaffected.
+- `20260921_music_tracks_lockdown.sql` — **intent narrative changed.** Its own header still says "the web
+  + Android UIs are removed." That is now stale for web: Session A restored the LIBRARY UI (the reuse UI
+  stays removed). The mechanic is unchanged and still correct — it revokes anon/authenticated only, and
+  the restored library reads via `service_role`, so the lockdown does not break it. Do NOT roll it back
+  to "re-open" the library; the library never needed ordinary-role grants.
+- `20260922_music_soundhelix_attribution.sql` — **NEW, added with the Session A restore** (post-lockdown).
+  It adds attribution for the demo library tracks. Intent: support the (now hidden) library. Demo/seed
+  adjacent — treat like the seed rows above unless the library is ever launched.
+- `20260704_add_music_module.sql`, `20260706_add_music_saved_and_type.sql`, `20260711_music_ugc_combined.sql`,
+  `20260818b_music_tracks_publication_boundary.sql`, `add_original_sound_ugc` — schema unchanged; they now
+  back a hidden library rather than a "removed" feature. No action.
+
 ---
 
 ## 2. Order relative to the web / Android deploy
@@ -178,9 +211,14 @@ security change to land early):
   security hardening.
 
 Safe **with or after** the deploy:
-- **#6 music_tracks_lockdown** — the NEW web/Android code never reads `music_tracks`; the OLD web code
-  read it only best-effort (a denied read → the clip plays its own audio), so this degrades
-  gracefully whichever side lands first. Recommended **with or just after** the deploy.
+- **#6 music_tracks_lockdown** — the lockdown revokes ONLY anon/authenticated (ordinary-role) grants on
+  `music_tracks`; it leaves `service_role` untouched. Reconciled with Session A (2026-09-24): the
+  restored web library reads `music_tracks` **through the service-role client** (`musicRepository`,
+  server-side, behind `/api/music/*` GET), so the lockdown does not break it — and with `SHOW_MUSIC=false`
+  no UI reaches that path anyway. No client-side (anon/authenticated) code reads the table any more, and
+  Android has no music code, so this degrades gracefully whichever side lands first. Recommended **with
+  or just after** the deploy. (Earlier drafts said "the NEW code never reads `music_tracks`" — that was
+  true only while the library was removed; Session A restored the service-role read.)
 
 - **#7 user_events GA4 event types** and **#8 user_events shopping_search_click** — before OR with the
   deploy where the constraint exists (so the new client `track()` rows are not dropped once the new code

@@ -29,6 +29,7 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { ReviewMusicCredit } from './ReviewMusicCard'
+import { SHOW_MUSIC } from '@/lib/config/product'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -376,7 +377,10 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   // serves library rows only) for clips in the render window, then hand its URL
   // to VideoPlayer, which plays it in place of the clip's own audio. An
   // 'original' clip already IS its own audio, so only 'attached' substitutes.
-  const attachedTrackId = renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
+  // Music hidden by default (SHOW_MUSIC, owner decision 2026-09-24): with it off, an attached
+  // library soundtrack is not resolved, so the clip plays its OWN embedded audio (F-034 behaviour)
+  // and no credit renders. Flip SHOW_MUSIC back to true to restore attached-soundtrack playback.
+  const attachedTrackId = SHOW_MUSIC && renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
   const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
   const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
   // Known synchronously from the review row — VideoPlayer mutes the video from
@@ -617,7 +621,7 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
         {/* The library soundtrack's credit (artist · licence). Attribution is the licence's
             condition, so it sits with the caption; it is a label, not a "use this sound" CTA. */}
-        {r.music?.origin === 'attached' && <ReviewMusicCredit trackId={r.music.trackId} />}
+        {SHOW_MUSIC && r.music?.origin === 'attached' && <ReviewMusicCredit trackId={r.music.trackId} />}
         {!isShareOnlyName(r.place_name) && (
           <>
             <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">

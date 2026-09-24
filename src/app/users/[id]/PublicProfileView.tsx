@@ -41,6 +41,7 @@
 // no badge, no points. Bio and cover render only when the row carries them.
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
+import { SHOW_MUSIC } from '@/lib/config/product'
 import Link from 'next/link'
 import Image from 'next/image'
 import {
@@ -267,7 +268,8 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
     { href: '/reviews', key: 'v3.explore.navExplore', current: true },
     { href: '/chat', key: 'v3.explore.navAsk', current: false },
     { href: '/planner', key: 'v3.explore.navPlan', current: false },
-    { href: '/music', key: 'v3.explore.navMusic', current: false },
+    // Music hidden by default (owner decision 2026-09-24) — SHOW_MUSIC drops this link.
+    ...(SHOW_MUSIC ? [{ href: '/music', key: 'v3.explore.navMusic', current: false }] : []),
   ]
 
   // ── Compact top bar in the shell's header slot: the same bar vocabulary as the

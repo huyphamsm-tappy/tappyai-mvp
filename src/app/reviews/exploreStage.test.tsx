@@ -296,12 +296,13 @@ describe('the spatial model (pure)', () => {
 })
 
 describe('the approved composition is on screen', () => {
-  it('top bar: logo, Explore / Ask Tappy / Plan / Music with Explore current, search, notifications, profile', async () => {
+  it('top bar: logo, Explore / Ask Tappy / Plan with Explore current, search, notifications, profile', async () => {
     mockFeed(five())
     render(<ExploreStage />)
     await untilCards()
     const nav = Array.from(document.querySelectorAll('.v3-xp-nav a')).map(a => [a.textContent, a.getAttribute('href'), a.getAttribute('aria-current')])
-    expect(nav).toEqual([['Explore', '/reviews', 'page'], ['Ask Tappy', '/chat', null], ['Plan', '/planner', null], ['Music', '/music', null]])
+    // Music dropped from the top bar: hidden by default (SHOW_MUSIC, owner decision 2026-09-24).
+    expect(nav).toEqual([['Explore', '/reviews', 'page'], ['Ask Tappy', '/chat', null], ['Plan', '/planner', null]])
     // The wordmark exists only for the widths where the shell's sidebar (the brand) is hidden.
     const logo = document.querySelector('.v3-xp-logo')!
     expect(logo.getAttribute('href')).toBe('/')
@@ -489,7 +490,8 @@ describe('no redundant branding on the stage', () => {
     expect(Object.keys(enCopy).filter(k => k.startsWith('v3.explore.editorial'))).toEqual([])
     // What stays: the shell's sidebar brand, the top navigation, the right column, the stage, the player.
     expect(document.querySelector('aside.sticky')!.textContent).toContain('Tappy')
-    expect(document.querySelectorAll('.v3-xp-nav a')).toHaveLength(4)
+    // 3, not 4: Music dropped from the top nav (SHOW_MUSIC hidden, owner decision 2026-09-24).
+    expect(document.querySelectorAll('.v3-xp-nav a')).toHaveLength(3)
     expect(document.querySelector('[data-xp-right]')).toBeTruthy()
     expect(cards().find(c => c.getAttribute('data-role') === 'active')).toBeTruthy()
     expect(players()).toHaveLength(1)
