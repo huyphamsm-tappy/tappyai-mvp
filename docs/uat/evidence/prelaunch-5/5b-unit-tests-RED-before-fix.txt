@@ -1,0 +1,8 @@
+     × from this turn 8ms
+     × from an earlier turn of the same subject when this one names none 1ms
+     × none when nobody named one 1ms
+     × keeps in-district rows first, drops rows the address puts in another district, keeps unknown after 4ms
+     × nothing in the district → says so, keeps the nearest alternatives MARKED with their real district 1ms
+     × English note 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  6 failed | 1 passed (7)

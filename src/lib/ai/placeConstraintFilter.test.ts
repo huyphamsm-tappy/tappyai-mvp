@@ -59,7 +59,10 @@ describe('detectPlaceConstraints', () => {
 
   it('"đang mở cửa" is now at any hour; a plain search is not', () => {
     expect(detectPlaceConstraints('cafe yên tĩnh Q3 đang mở cửa', null, [], EVENING).openNow).toBe(true)
-    expect(detectPlaceConstraints('cafe yên tĩnh Q3', null, [], EVENING)).toEqual({ budgetMax: null, exclude: [], openNow: false })
+    // "Q3" is a district the user named, so it is now read as one (PRELAUNCH 5b); nothing else is set.
+    const c = detectPlaceConstraints('cafe yên tĩnh Q3', null, [], EVENING)
+    expect(c).toMatchObject({ budgetMax: null, exclude: [], openNow: false })
+    expect(c.district?.label).toBe('Quận 3')
   })
 
   it('the earlier turn lends its time only when this turn names none', () => {

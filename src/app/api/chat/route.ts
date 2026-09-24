@@ -78,6 +78,8 @@ import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/ha
 import { admitsForHard } from '@/lib/ai/consultative/upscale'
 import { closesLate } from '@/lib/ai/consultative/hardConstraints'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation } from '@/lib/ai/consultative/actionability'
+import { currentSubjectMessages, currentSubjectUserTexts } from '@/lib/ai/consultative/subjectScope'
+import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
@@ -298,6 +300,16 @@ export async function POST(req: Request) {
     const c = m.content
     return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : ''
   })
+  // PRELAUNCH 5a/5b: what a follow-up may INHERIT (a budget, a district, a meal time) comes from the
+  // CURRENT subject's turns only — a lunch budget must not follow the user into a phone purchase.
+  // The boundary is `turnStartsNewConsultation` applied to every user turn (subjectScope.ts).
+  const subjectUserTexts: string[] = currentSubjectUserTexts(messages, { hasGps: !!userLocation, lang })
+  const recentSubjectUserTexts = subjectUserTexts.slice(-3)
+  // A district the USER named (never the model's own location string, which it fills from the GPS).
+  // It centres the place search and constrains the rows by address (placeConstraintFilter.ts).
+  const statedArea = statedDistrict(lastText)
+    ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
+    ?? null
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
@@ -847,7 +859,7 @@ export async function POST(req: Request) {
   // tool call and must judge them all against the SAME question. Phase 7: the earlier user
   // turns ride along so a bare follow-up ("gần biển", "quận nào cũng được") is judged by what
   // the CONVERSATION asked, not misread as a new, narrower question (slotAdmission.ts).
-  const enrichment = createEnrichmentCollector(lastText, recentUserTexts.slice(0, -1))
+  const enrichment = createEnrichmentCollector(lastText, recentSubjectUserTexts.slice(0, -1))
   // Observability for the TikTok cost/quality trade-off. Nothing branches on these.
   let tiktokEntitiesAsked = 0
   let tiktokSearched = false
@@ -1031,7 +1043,7 @@ export async function POST(req: Request) {
    */
   const shoppingConstraints = deriveShoppingConstraints(
     messages,
-    budget ?? budgetFromHistory(messages, extractBudget),
+    budget ?? budgetFromHistory(currentSubjectMessages(messages, { hasGps: !!userLocation, lang }), extractBudget),
   )
 
 
@@ -1663,7 +1675,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
           // The editorial supplement runs beside the live search, not after it.
-          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry }), travelEditorialFor(location)])
+          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)])
           let r: unknown = placesResult
           // A type the lexicon could not place ran as a type-less search — said so, not swallowed.
           if (rawType !== undefined && rawType !== null && String(rawType).trim() !== '' && type === undefined && r && typeof r === 'object') {
@@ -1723,10 +1735,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentUserTexts.slice(0, -1))
+          const constraints = detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1))
           const constrained = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
-          if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0) {
-            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
+          if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
           }
           const filtered = constrained.result
           // Deterministic ranking runs BEFORE the model sees the result, so the

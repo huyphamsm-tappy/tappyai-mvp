@@ -505,16 +505,22 @@ async function searchPlacesSerper(
   scope: { destination: VietnamCity | null; remote: boolean },
   priceRetry = true,
   placeType?: string | null,
+  areaCentre: { lat: number; lng: number; label: string } | null = null,
 ): Promise<Record<string, unknown> | null> {
   const { destination, remote } = scope
-  const centeredOnUser = !!locationBias && !remote
+  // PRELAUNCH 5b: a district the user NAMED beats their GPS — "phở ở Quận 3" asked from Quận 1 is
+  // centred on Quận 3, and no distance-from-user is stated for rows the user did not ask to be near.
+  const useArea = !!areaCentre && !remote
+  const centeredOnUser = !!locationBias && !remote && !useArea
   // Phase D (2026-09-20, measured live run 26): "công viên nước" at the default 14z around District 1
   // returned a water-delivery shop as the only "water park" — the real ones are city-scale venues a
   // few km out. An attraction / cinema search reads the city (12z); a café or a restaurant stays
   // near (14z). The engine still ranks nearer rows higher, so a close venue still wins when it exists.
   const zoom = placeType === 'attraction' || placeType === 'cinema' ? 12 : 14
   const centreAt = (lat: number, lng: number) => ({ lat, lng, zoom })
-  const centre = centeredOnUser
+  const centre = useArea
+    ? centreAt(areaCentre!.lat, areaCentre!.lng)
+    : centeredOnUser
     ? centreAt(locationBias!.lat, locationBias!.lng)
     : destination
       ? centreAt(destination.coords[0], destination.coords[1])
@@ -547,7 +553,7 @@ async function searchPlacesSerper(
   console.log(JSON.stringify({
     type: 'tappyai_places_debug', provider: 'serper_maps',
     returned: records.length, inScope: rows.length,
-    destination: destination?.query ?? null, centeredOnUser,
+    destination: destination?.query ?? null, centeredOnUser, area: useArea ? areaCentre!.label : null,
   }))
   return {
     source: SERPER_PLACES_SOURCE,
@@ -568,6 +574,7 @@ async function searchPlacesUncached(
   query: string, location?: string, type?: string, lang = 'vi',
   locationBias?: { lat: number; lng: number } | null,
   priceRetry = true,
+  areaCentre: { lat: number; lng: number; label: string } | null = null,
 ): Promise<{ result: unknown; googleOk: boolean }> {
   // BUG-011: resolved once here and used by BOTH providers, so the Google call and the OSM
   // fallback can never disagree about which city this search is for.
@@ -606,7 +613,7 @@ async function searchPlacesUncached(
    * see the wrapper). Only the OSM fallback and failures stay uncached.
    */
   if (!result && provider !== 'osm') {
-    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type)
+    result = await searchPlacesSerper(query, location, lang, locationBias, { destination, remote: remoteDestination }, priceRetry, type, areaCentre)
     if (result) googleOk = true
   }
   if (!result) {
@@ -956,9 +963,16 @@ export async function searchPlaces(
   opts: {
     /** Item 5: pay the `/maps` price-band retry only when price is part of this decision. */
     priceRetry?: boolean
+    /**
+     * PRELAUNCH 5b: the centre of a district the USER named ("Quận 3"). A stated area beats the GPS:
+     * the search centres there instead of on the user, and no distance-from-user is claimed.
+     */
+    areaCentre?: { lat: number; lng: number; label: string }
   } = {},
 ) {
-  const cacheKey = placesCacheKey(query, location, type, locationBias, lang)
+  // The area is part of the question, so it is part of the key: "phở" centred on Quận 3 is not the
+  // same answer as "phở" centred on the user.
+  const cacheKey = placesCacheKey(query, opts.areaCentre ? `${location ?? ''}@area:${opts.areaCentre.label}` : location, type, locationBias, lang)
   const cached = getCache(cacheKey)
   if (cached) {
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'cache_hit', cacheKey }))
@@ -990,7 +1004,7 @@ export async function searchPlaces(
     }
 
     console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'provider_attempt', provider: placesProvider(), placeType: type ?? null }))
-    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false)
+    const { result, googleOk } = await searchPlacesUncached(query, location, type, lang, locationBias, opts.priceRetry !== false, opts.areaCentre ?? null)
     if (googleOk) {
       setCache(cacheKey, result, 30 * 60 * 1000) // cache 30 phut, dia diem it thay doi
       console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'google_ok_cached' }))

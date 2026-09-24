@@ -5,6 +5,8 @@ import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpa
 import { guardTravelClaimsInText, scheduleTimesIn } from './travelGuard'
 import { guardHoursClaimsInText } from './hoursGuard'
 import { guardFormatClaimsInText } from './formatClaimGuard'
+import { guardDistrictClaims } from './districtClaimGuard'
+import { statedDistrict } from './districts'
 import { guardBudgetFitInText } from './budgetFitGuard'
 import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
@@ -1803,7 +1805,14 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardFormatClaimsInText(budgetFit.text, (collector?.userTexts ?? [userText]).join('\n'), [...places.map(p => p.name ?? ''), ...placeTexts], lang)
       : { text: budgetFit.text, hedged: [] as string[], reworded: 0 }
     if (formatGuard.hedged.length > 0 || formatGuard.reworded > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'format_claim', hedged: formatGuard.hedged, reworded: formatGuard.reworded }))
-    const placeGuarded = formatGuard.text
+    // PRELAUNCH 5b: a venue whose ADDRESS is in another district is never presented as being in the
+    // district the user named — the requested district in that sentence becomes the real one.
+    const requestedDistrict = (collector?.userTexts ?? [userText]).slice().reverse().map(t => statedDistrict(t)).find(d => d !== null) ?? null
+    const districtGuard = (hadPlaceSearch || placeIntent) && !shoppingTurn && requestedDistrict
+      ? guardDistrictClaims(formatGuard.text, requestedDistrict, places.map(p => ({ name: p.name, address: p.address })))
+      : { text: formatGuard.text, rewritten: 0, venues: [] as string[] }
+    if (districtGuard.rewritten > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'district_claim', rewritten: districtGuard.rewritten, district: requestedDistrict?.label }))
+    const placeGuarded = districtGuard.text
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.

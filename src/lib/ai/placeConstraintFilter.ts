@@ -2,6 +2,7 @@ import { normalizeVN } from './intent'
 import type { Budget } from './budget'
 import { vietnamNow } from './tools/serperPlaces'
 import { bandFromRow, parsePriceBand as parseProviderBand } from '@/lib/recommendation/priceBand'
+import { statedDistrict, districtRelation, type District } from './districts'
 
 // ── THE USER'S CONSTRAINTS SHAPE THE ROWS, NOT ONLY THE TEXT ─────────────────
 //
@@ -41,11 +42,16 @@ export interface PlaceConstraints {
   exclude: ExcludedVenueType[]
   /** The request is for right now — closed rows rank last. */
   openNow: boolean
+  /**
+   * PRELAUNCH 5b: the district the USER named (this turn, else the nearest earlier turn of the same
+   * subject). Rows are kept, ranked and marked by the district their ADDRESS puts them in.
+   */
+  district?: District | null
 }
 
 export interface ConstraintFilterOutcome {
   result: unknown
-  dropped: Array<{ name: string; reason: 'over_budget' | 'venue_type' }>
+  dropped: Array<{ name: string; reason: 'over_budget' | 'venue_type' | 'out_of_district' }>
   demotedClosed: number
   /** Kept rows with no provider price band while a budget was stated. */
   priceUnknown: number
@@ -109,7 +115,12 @@ export function detectPlaceConstraints(
     ?? earlierUserTexts.slice().reverse().map(x => requestedPeriod(normalizeVN(String(x ?? '').toLowerCase()))).find(p => p !== null)
     ?? null
   const openNow = OPEN_NOW_RE.test(t) || (period !== null && period === currentPeriod(vietnamNow(now)))
-  return { budgetMax: budget && budget.max > 0 ? budget.max : null, exclude, openNow }
+  // A district the user named: this turn first, then the nearest earlier turn (the caller passes the
+  // CURRENT subject's turns, so a district from another consultation cannot leak in).
+  const district = statedDistrict(lastText)
+    ?? earlierUserTexts.slice().reverse().map(x => statedDistrict(x)).find(d => d !== null)
+    ?? null
+  return { budgetMax: budget && budget.max > 0 ? budget.max : null, exclude, openNow, district }
 }
 
 /**
@@ -164,7 +175,7 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
   const r = result as Record<string, unknown>
   const rows = Array.isArray(r.results) ? (r.results as Array<Record<string, unknown>>) : null
   if (!rows || rows.length === 0) return empty
-  if (c.budgetMax === null && c.exclude.length === 0 && !c.openNow) return empty
+  if (c.budgetMax === null && c.exclude.length === 0 && !c.openNow && !c.district) return empty
 
   const dropped: ConstraintFilterOutcome['dropped'] = []
   const fits: Array<Record<string, unknown>> = []
@@ -203,13 +214,54 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
     else unknown.push(row)
   }
 
-  const ordered = [...fits, ...maybe, ...unknown, ...closed]
-  const changed = dropped.length > 0 || closed.length > 0 || (c.budgetMax !== null && (fits.length > 0 || maybe.length > 0 || priceUnknown > 0))
+  let ordered = [...fits, ...maybe, ...unknown, ...closed]
+
+  // ── PRELAUNCH 5b: the stated district, by the venue's ADDRESS ───────────────────────────────
+  // In-district rows lead (keeping the order above inside them); rows whose address cannot be read
+  // follow, marked unconfirmed; rows the address puts in ANOTHER district are dropped — unless
+  // nothing is confirmed in the district, in which case they stay as the nearest alternatives,
+  // each marked with its real district. Never a row presented as in a district it is not in.
+  let district: { label: string; inCount: number; outDropped: number; outKept: number; unconfirmed: number } | null = null
+  if (c.district) {
+    const d = c.district
+    const inD: Array<Record<string, unknown>> = []
+    const unkD: Array<Record<string, unknown>> = []
+    const outD: Array<{ row: Record<string, unknown>; actual: string }> = []
+    for (const row of ordered) {
+      const rel = districtRelation(d, row.address)
+      if (rel.relation === 'in') inD.push({ ...row, _tappy_district: d.label })
+      else if (rel.relation === 'out') outD.push({ row, actual: rel.actual?.label ?? '' })
+      else unkD.push({ ...row, _tappy_district_unconfirmed: true })
+    }
+    if (inD.length > 0) {
+      for (const o of outD) dropped.push({ name: String(o.row.name ?? ''), reason: 'out_of_district' })
+      ordered = [...inD, ...unkD]
+      district = { label: d.label, inCount: inD.length, outDropped: outD.length, outKept: 0, unconfirmed: unkD.length }
+    } else {
+      ordered = [...unkD, ...outD.map(o => ({ ...o.row, _tappy_out_of_district: o.actual }))]
+      district = { label: d.label, inCount: 0, outDropped: 0, outKept: outD.length, unconfirmed: unkD.length }
+    }
+  }
+
+  const changed = dropped.length > 0 || closed.length > 0 || district !== null || (c.budgetMax !== null && (fits.length > 0 || maybe.length > 0 || priceUnknown > 0))
   if (!changed) return empty
 
   const vi = lang !== 'en'
   const parts: string[] = []
-  if (dropped.length > 0) {
+  if (district) {
+    const L = district.label
+    if (district.inCount > 0) {
+      parts.push(vi
+        ? `USER HỎI Ở ${L}: ${district.inCount} chỗ được XÁC NHẬN ở ${L} theo địa chỉ (_tappy_district)${district.outDropped > 0 ? `; ${district.outDropped} chỗ có địa chỉ ở quận khác đã bị loại` : ''}${district.unconfirmed > 0 ? `; ${district.unconfirmed} chỗ chưa xác định được quận từ địa chỉ (_tappy_district_unconfirmed=true) — nếu nhắc thì nói rõ là chưa xác nhận quận` : ''}. CHỈ nói một chỗ "ở ${L}" khi nó có _tappy_district.`
+        : `THE USER ASKED FOR ${L}: ${district.inCount} places are CONFIRMED in ${L} by address (_tappy_district)${district.outDropped > 0 ? `; ${district.outDropped} whose address is in another district were removed` : ''}${district.unconfirmed > 0 ? `; ${district.unconfirmed} have an address whose district cannot be confirmed (_tappy_district_unconfirmed=true) — say so if you mention them` : ''}. Only call a place "in ${L}" when it has _tappy_district; places outside ${L} were removed.`)
+    } else {
+      parts.push(vi
+        ? `KHÔNG có chỗ nào được xác nhận ở ${L} theo địa chỉ — NÓI THẲNG điều này trước tiên. Các chỗ còn lại là LỰA CHỌN NGOÀI ${L}: chỗ có _tappy_out_of_district phải được gọi đúng quận thật của nó (giá trị của _tappy_out_of_district); chỗ có _tappy_district_unconfirmed chưa xác nhận được quận. TUYỆT ĐỐI không gọi chỗ nào là "ở ${L}".`
+        : `NO place is confirmed in ${L} by address — SAY SO FIRST. The remaining places are alternatives outside ${L}: a place with _tappy_out_of_district must be named with its real district (that field's value); a place with _tappy_district_unconfirmed has an unconfirmed district. Never call any of them "in ${L}".`)
+    }
+  }
+  const overOrType = dropped.filter(d => d.reason === 'over_budget' || d.reason === 'venue_type')
+  if (overOrType.length > 0) {
     const over = dropped.filter(d => d.reason === 'over_budget').length
     const type = dropped.filter(d => d.reason === 'venue_type').length
     if (vi) {
@@ -235,6 +287,7 @@ export function applyPlaceConstraints(result: unknown, c: PlaceConstraints, lang
   out._tappy_constraint_filter = {
     budget_max: c.budgetMax, exclude: c.exclude, open_now: c.openNow,
     dropped, demoted_closed: closed.length, price_unknown: priceUnknown, price_fits: priceFits,
+    ...(district ? { district: district.label, in_district: district.inCount, out_of_district_kept: district.outKept, district_unconfirmed: district.unconfirmed } : {}),
   }
   const note = parts.length > 0 ? parts.join(' ') : null
   if (note) out._tappy_constraint_note = note

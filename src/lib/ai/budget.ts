@@ -64,29 +64,62 @@ function extractRepresentativePriceVND(text: string): number | null {
   return hasPromo ? Math.max(...prices) : Math.min(...prices)
 }
 
+/**
+ * 🚨 A PERCENTAGE IS NEVER MONEY (PRELAUNCH 5a, Session D 2026-09-24) — and neither is a head count,
+ * an age, a weight, a distance, a year, a time or a spec.
+ *
+ * The range / "dưới" / "khoảng" forms accept a number with NO unit and read a bare number ≤ 9999
+ * as thousands of đồng (`parseMoneyAmount`), which is right for "từ 50 đến 60" and "tầm 500". It
+ * also turned "iPhone cũ pin 98-99%" into a 98k–99k budget — measured: the reply offered to "nâng
+ * budget lên 119k" for an iPhone — and "5-6 người", "dưới 5 tuổi", "khoảng 2 km", "20-25kg",
+ * "2020-2023", "7-9h" into money the same way.
+ *
+ * So a UNITLESS match is money only when the words around it do not say otherwise: nothing in
+ * NON_MONEY_AFTER follows it (a trailing range half such as "-9" is skipped first), nothing in
+ * NON_MONEY_BEFORE precedes it, and it does not look like a year. A match that carries a money unit
+ * (k, tr, triệu, nghìn) is money regardless. Every match is tried, so a later real amount still
+ * wins: "pin 98-99%, giá dưới 15 triệu" → 15 triệu.
+ */
+const NON_MONEY_AFTER = /^\s*(?:%|phan tram|percent|kg|kilo|gram|gr?\b|km|kilomet|m\b|met\b|cm|mm|inch|in\b|"|mp\b|megapixel|gb|tb|mb\b|mah|w\b|kw|hz|nguoi|khach|be\b|chau|tre\b|tuoi|nam\b|thang|tuan|ngay|dem|gio|h\b|tieng|phut|giay|lan\b|cai|chiec|mon\b|phong|tang|lau\b|sao\b|ban\b|suat|ly\b|coc|chai|lon\b|hop\b|goi\b|ve\b|x\b|do\b|°|size|cho ngoi)/
+const NON_MONEY_BEFORE = /(?:size|sz|pin|ram|rom|bo nho|dung luong|doi|model|phien ban|version|ios|android|tang|lau|phong|so nha|lop|khoi|nam|ngay|thang|luc|gio|tu gio|mo cua|dong cua|iphone|galaxy|note|series|ban)\s*$/
+const RANGE_TAIL = /^\s*(?:-|den|toi)\s*[\d][\d.,]*/
+
+function unitlessIsMoney(t: string, start: number, end: number, nums: string[]): boolean {
+  const after = t.slice(end).replace(RANGE_TAIL, '')
+  if (NON_MONEY_AFTER.test(after)) return false
+  if (NON_MONEY_BEFORE.test(t.slice(Math.max(0, start - 24), start))) return false
+  // A year (or a year range) is a date, not an amount.
+  if (nums.every(n => /^\d{4}$/.test(n) && Number(n) >= 1900 && Number(n) <= 2100)) return false
+  return true
+}
+
 export function extractBudget(userMessage: string): Budget | null {
   const t = normalizeVN(userMessage.toLowerCase())
   const N = '([\\d][\\d.,]*)'
-  const U = '\\s*(k|tr|trieu|ngan|nghin)?'
+  // The unit must END at a word boundary: without `\b` the `k` of "25kg" read as "25k".
+  const U = '\\s*(?:(k|tr|trieu|ngan|nghin)\\b)?'
 
-  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`)
-  let m = t.match(rangeRe)
-  if (m) {
+  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`, 'g')
+  for (const m of t.matchAll(rangeRe)) {
+    const numStart = (m.index ?? 0) + m[0].indexOf(m[1])
+    if (!m[2] && !m[4] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1], m[3]])) continue
     const min = parseMoneyAmount(m[1], m[2] || '')
     const max = parseMoneyAmount(m[3], m[4] || '')
     if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
   }
 
-  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`)
-  m = t.match(underRe)
-  if (m) {
+  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`, 'g')
+  for (const m of t.matchAll(underRe)) {
+    const numStart = (m.index ?? 0) + m[0].indexOf(m[1], m[0].search(/\d/))
+    if (!m[2] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1]])) continue
     const max = parseMoneyAmount(m[1], m[2] || '')
     if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
   }
 
-  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`)
-  m = t.match(aroundRe)
-  if (m) {
+  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`, 'g')
+  for (const m of t.matchAll(aroundRe)) {
+    const numStart = (m.index ?? 0) + m[0].search(/\d/)
+    if (!m[2] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1]])) continue
     const base = parseMoneyAmount(m[1], m[2] || '')
     if (base !== null && base > 0) return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
   }
@@ -113,7 +146,7 @@ export function extractBudget(userMessage: string): Budget | null {
   // a sentence boundary, so "ngân sách. Chuyến đi 3 ngày" cannot become 3.
   const bareRe = new RegExp(
     `(?:ngan sach|budget)[^.!?\\n]{0,25}?${N}\\s*(k|tr|trieu|ngan|nghin|m|mil|million)\\b`)
-  m = t.match(bareRe)
+  let m = t.match(bareRe)
   if (m) {
     const max = parseMoneyAmount(m[1], m[2] || '')
     if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }

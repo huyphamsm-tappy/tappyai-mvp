@@ -240,9 +240,12 @@ describe('F · the observed bug: Tappy asked for an area, the user typed one', (
     await post({ messages: askedForArea() })
     expect(system()).not.toContain('source=explore_clip')
     const out = await toolResult({ query: 'bún bò Huế', location: 'Quận 1' })
-    // Item 2 (2026-09-19): the model reads every row, compact; `count` = every stranger came back.
-    expect((out.results as unknown[]).length).toBe(NEIGHBOURS.length)
-    expect(out.count).toBe(NEIGHBOURS.length)
+    // Item 2 (2026-09-19): the model reads every row, compact; `count` = every stranger came back —
+    // every stranger IN THE DISTRICT THE USER TYPED (PRELAUNCH 5b): the answer was "Quận 1", so the
+    // one Quận 3 row is removed by address; no clip narrowing happens.
+    const inQ1 = NEIGHBOURS.filter(v => !/Quận 3/.test(v.address))
+    expect((out.results as Array<{ name: string }>).map(r => r.name)).toEqual(inQ1.map(v => v.name))
+    expect(out.count).toBe(inQ1.length)
     expect('_tappy_clip_target' in out).toBe(false)
   })
 })
@@ -329,8 +332,12 @@ describe('H · ordinary chat is untouched', () => {
     expect(system()).not.toContain('source=explore_clip')
     expect(h.state.reviewQueries).toHaveLength(0)
     const out = await toolResult({ query: 'bún bò', location: 'Quận 1' })
-    expect((out.results as unknown[]).length).toBe(NEIGHBOURS.length + 1)
-    expect(out.count).toBe(NEIGHBOURS.length + 1)
+    // No clip narrowing: every row the provider returned in the district the user named ("ở Quận 1")
+    // comes back. The one Quận 3 fixture is removed by ADDRESS (PRELAUNCH 5b), and only that one.
+    const inQ1 = [...NEIGHBOURS, GOC_HUE_ROW].filter(v => !/Quận 3/.test(v.address))
+    expect((out.results as unknown[]).length).toBe(inQ1.length)
+    expect(out.count).toBe(inQ1.length)
+    expect((out._tappy_constraint_filter as { dropped: Array<{ name: string; reason: string }> }).dropped).toEqual([{ name: 'Phở Hòa Pasteur', reason: 'out_of_district' }])
     expect('_tappy_clip_target' in out).toBe(false)
     expect('_tappy_clip_alternatives' in out).toBe(false)
     expect('alternatives_instruction' in out).toBe(false)

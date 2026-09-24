@@ -606,7 +606,7 @@ describe('architecture contracts (source)', () => {
     expect(route).toMatch(/const turnEditorial = createTurnEditorial\(\)/)
     expect(route).toMatch(/await turnEditorial\(gate\.destination\.term, gate\.intent, lang\)/)
     expect(route).not.toMatch(/searchVnExpressTravel\(/)
-    for (const tool of ['searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry }), travelEditorialFor(location)', 'getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)', 'travelEditorialFor(destination)', 'webSearch(query, lang), travelEditorialFor(null)']) {
+    for (const tool of ['searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)', 'getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)', 'travelEditorialFor(destination)', 'webSearch(query, lang), travelEditorialFor(null)']) {
       expect(route, tool).toContain(tool)
     }
     // Attached to the tool result, the same seam price_search_results uses; nothing runs before generation.
