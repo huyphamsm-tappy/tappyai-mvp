@@ -1,6 +1,7 @@
 import type { TappyPlan } from '@/components/TripPlanCard'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { absoluteUrl } from '@/lib/share/openGraph'
+import { planAmount } from '@/lib/plans/planPrice'
 
 // ── The published plan: what a recipient may see, and nothing else ──────────
 //
@@ -109,7 +110,8 @@ function pickItem(raw: unknown): PlanShareItem | null {
   const emoji = clip(r.emoji, 8); if (emoji) item.emoji = emoji
   const category = clip(r.category, MAX_SHORT); if (category) item.category = category
   const description = clip(r.description, MAX_DESC); if (description) item.description = description
-  const price = clip(r.price, MAX_SHORT); if (price) item.price = price
+  // Only an actual amount (or "free") is published; a "chưa có giá" sentinel is not a price (planPrice.ts).
+  const price = planAmount(clip(r.price, MAX_SHORT)); if (price) item.price = price
   const address = clip(r.address, MAX_ADDRESS); if (address) item.address = address
   const maps = safeLink(r.maps_link); if (maps) item.maps_link = maps
   const booking = safeLink(r.booking_link); if (booking) item.booking_link = booking
@@ -159,7 +161,7 @@ export function toPlanShareSnapshot(plan: TappyPlan | null | undefined): PlanSha
   const snap: PlanShareSnapshot = { v: 1, title, days }
   if (plan.type === 'trip' || plan.type === 'evening') snap.type = plan.type
   if (typeof plan.people === 'number' && Number.isFinite(plan.people) && plan.people > 0 && plan.people <= 999) snap.people = Math.floor(plan.people)
-  const budget = clip(plan.budget_total, MAX_SHORT); if (budget) snap.budget_total = budget
+  const budget = planAmount(clip(plan.budget_total, MAX_SHORT)); if (budget) snap.budget_total = budget
   // The model's caption may say anything; it contributes one short line and never a link.
   const summary = clip(plan.share_text, MAX_SUMMARY + 1)
   if (summary && summary.length <= MAX_SUMMARY && !/https?:\/\//i.test(summary)) snap.summary = summary

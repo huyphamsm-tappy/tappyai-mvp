@@ -269,6 +269,8 @@ object ChatResponseParser {
             runCatching { json.decodeFromString<TappyPlan>(it.groupValues[1].trim()) }
                 .getOrNull()
                 ?.takeIf { p -> p.days.isNotEmpty() }
+                // A "chưa có giá" sentinel is not a price: dropped once, here (PlanPrice.kt).
+                ?.let(PlanPrice::project)
         }
         if (planMatch != null) text = PLAN_RE.replace(text, "").trimEnd()
         // Whatever a complete block did not consume: a truncated plan at the tail, then any

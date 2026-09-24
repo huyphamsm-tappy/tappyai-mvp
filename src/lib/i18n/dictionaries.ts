@@ -221,7 +221,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'tripPlan.shareItinerary': '📤 Chia sẻ lịch trình',
     'tripPlan.shareCopied': '✓ Đã sao chép vào clipboard!',
     'tripPlan.shareHint': 'Chia sẻ lên Zalo, Facebook hoặc gửi cho bạn bè',
-    'tripPlan.peopleCount': '{count} người · ',
+    'tripPlan.peopleCount': '{count} người',
     'tripPlan.shareFallback': '{title} — kế hoạch từ TappyAI 🎉 #TappyAI',
 
     // Video player
@@ -483,7 +483,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'tripPlan.shareItinerary': '📤 Share itinerary',
     'tripPlan.shareCopied': '✓ Copied to clipboard!',
     'tripPlan.shareHint': 'Share via Zalo, Facebook or send to friends',
-    'tripPlan.peopleCount': '{count} people · ',
+    'tripPlan.peopleCount': '{count} people',
     'tripPlan.shareFallback': '{title} — an itinerary from TappyAI 🎉 #TappyAI',
 
     // Video player

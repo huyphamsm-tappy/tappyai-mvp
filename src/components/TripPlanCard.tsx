@@ -75,12 +75,15 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <h3 className="font-bold text-sm leading-snug line-clamp-2">{plan.title}</h3>
-            {(plan.people || plan.budget_total) && (
-              <p className="text-primary-100 text-xs mt-0.5">
-                {plan.people && plan.people > 1 ? t('tripPlan.peopleCount', { count: String(plan.people) }) : ''}
-                {plan.budget_total}
-              </p>
-            )}
+            {(() => {
+              // Joined, not concatenated: with no real budget (planPrice.ts drops a "chưa có giá"
+              // sentinel) the people count must not be left with a dangling " · ".
+              const meta = [
+                plan.people && plan.people > 1 ? t('tripPlan.peopleCount', { count: String(plan.people) }) : '',
+                plan.budget_total ?? '',
+              ].filter(Boolean).join(' · ')
+              return meta ? <p className="text-primary-100 text-xs mt-0.5">{meta}</p> : null
+            })()}
           </div>
           <button
             onClick={handleShare}

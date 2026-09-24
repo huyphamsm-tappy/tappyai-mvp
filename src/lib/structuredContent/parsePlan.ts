@@ -1,4 +1,5 @@
 import type { TappyPlan } from '@/components/TripPlanCard'
+import { projectPlanPrices } from '@/lib/plans/planPrice'
 
 // ── The [TAPPY_PLAN] reader ─────────────────────────────────────────────────
 //
@@ -55,7 +56,9 @@ export function parsePlan(content: string): { text: string; plan: TappyPlan | nu
   try {
     const plan = JSON.parse(planMatch[1].trim()) as TappyPlan
     if (!plan.days || !Array.isArray(plan.days)) return { text, plan: null }
-    return { text, plan }
+    // A "no price" sentinel is not a price: every plan surface reads through here, so it is
+    // dropped once, here, and never reaches a price chip or a budget row (planPrice.ts).
+    return { text, plan: projectPlanPrices(plan) }
   } catch {
     return { text, plan: null }
   }
