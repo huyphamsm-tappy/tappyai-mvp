@@ -39,6 +39,8 @@ const SUPABASE_ADMIN = 'src/lib/supabase/admin.ts'
 // admin.test.ts asserts the file contains no createClient( of its own so this
 // exemption cannot quietly grow into a bypass.
 const SERVICE_ROLE_FLAG_READ = 'src/app/api/users/search/route.ts'
+/** The only module that may read a forwarded-IP header (P3-F1 / S-2). */
+const RATE_LIMIT = 'src/lib/security/rateLimit.ts'
 
 // ── Commerce Capability Platform (CCP) zones ─────────────────────────────────
 // Merchant URL grammars and affiliate-network knowledge live ONLY under
@@ -228,6 +230,22 @@ const RULES = [
     ],
     allow: [SUPABASE_ADMIN, SERVICE_ROLE_FLAG_READ],
     hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
+  },
+  {
+    id: 'no-adhoc-forwarded-ip',
+    title: 'Request IP read straight from a forwarded header',
+    patterns: [
+      // The caller writes these. Only the module that knows which of them the
+      // PLATFORM sets may read them.
+      /['"]x-forwarded-for['"]/,
+      /['"]x-real-ip['"]/,
+      /['"]x-vercel-forwarded-for['"]/,
+    ],
+    allow: [RATE_LIMIT],
+    // Naming these headers is how you WRITE the fixture — clientIpTrust.test.ts
+    // has to forge them to prove they are not trusted.
+    exemptTests: true,
+    hint: 'import { clientIp } from "@/lib/security/rateLimit". P3-F1: the LEFTMOST x-forwarded-for entry is text the caller wrote, so a limiter keyed on it is not a limiter — rotating the header mints a fresh bucket per request. S-2 found the account-existence oracle in /api/users/search throttled on exactly that. clientIp() prefers the platform-set headers, never a caller-authored hop, and always returns a valid IP or "unknown".',
   },
   {
     // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 4.

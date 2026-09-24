@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { aiQuotaIdentity, peekAiQuestionQuota } from '@/lib/ai/quota/aiQuestionQuota'
 import { headers } from 'next/headers'
+import { clientIp } from '@/lib/security/rateLimit'
 import SubscriptionView from './SubscriptionView'
 
 // Session-bound data only. All presentation lives in SubscriptionView, which is a client component
@@ -32,8 +33,9 @@ export default async function SubscriptionPage() {
   // Read from the ONE shared AI quota /api/chat and /api/scam-shield/analyze spend from — display
   // can never drift from enforcement (this page once showed 10/day against an enforced 15). A
   // store that cannot report the count is shown as the limit used, never as plenty left.
-  const h = headers()
-  const ip = h.get('x-forwarded-for')?.split(',')[0].trim() || h.get('x-real-ip') || 'unknown'
+  // The same derivation /api/chat enforces with (clientIp: platform-set headers first) — a page
+  // that keyed on the raw leftmost x-forwarded-for could show a different bucket than it spends.
+  const ip = clientIp({ headers: headers() })
   const quota = await peekAiQuestionQuota(aiQuotaIdentity(user, ip))
   const todayMsgCount = isPro ? 0 : (quota.used ?? quota.limit)
   const remaining = isPro ? quota.limit : Math.max(0, quota.limit - todayMsgCount)
