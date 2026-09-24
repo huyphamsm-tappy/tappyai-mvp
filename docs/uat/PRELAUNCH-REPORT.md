@@ -231,3 +231,54 @@ Chi tiết check/apply/verify cho từng bước: `DEPLOY-CHECKLIST.md` §1 (đ�
 - **`music_soundhelix_attribution` sẽ lỗi trên production** (thiếu cột phụ thuộc). Checklist cũ xếp nó vào nhóm "demo/seed adjacent" nhưng không nói rõ là sẽ lỗi.
 - **`profile_public_presentation`** thiếu trên production nhưng code có đường dự phòng. Tôi đã kiểm code (`src/app/api/profile/route.ts:46-65`); chưa chạy thử trên DB thiếu cột, nên phần này **UNVERIFIED** ở runtime.
 
+## Part 4 — Rõ ràng về nhánh
+
+### Nhánh nào sẽ ship, và vì sao lại thành như vậy
+
+**`rc/web-uat` là nhánh ship.** Production = `main` @ `842379b` (09-11). Việc ship là PR #252 `rc/web-uat → main` (đang mở, chưa merge).
+
+Diễn biến:
+1. `rc/web-uat` ban đầu là ứng viên UAT web của G1 (`b496f4a`, 09-19).
+2. Song song, `uat/phase7-regressions` gom các bản sửa UAT Phase 7, Session C (AI), hotfix bảo mật `8efcdb5` và phần ẩn Music.
+3. Ngày 09-24, theo chỉ đạo của bạn, `rc/web-uat` được merge vào `uat/unified` (`3cbb10e`, cơ sở là phase7). Sau đó `rc/web-uat` được **fast-forward** lên `c7604c9` và push. Từ đó `uat/phase7-regressions` chỉ còn là tổ tiên; nó **không còn là nhánh ship**.
+4. Sau đó, một phiên Claude khác (Zalo) commit và push thẳng lên `rc/web-uat`: `33b7690`, `e5488ae`, `b7a9586`. Phiên này làm việc **trong cùng worktree `g1-place-guard`**, và đã rebase các commit local của tôi.
+
+Hiện tại:
+- `origin/rc/web-uat` = `b7a9586`.
+- `rc/web-uat` local có **13 commit chưa push** của phiên này: STEP-3, ranh giới public/app, brochure, PRELAUNCH 1–3 và 5.
+
+### Mọi thay đổi trong tháng qua đã nằm trong nhánh ship chưa? — **CHƯA**
+
+**Cách kiểm:**
+- `git cherry rc/web-uat <nhánh>` trên mọi nhánh local và remote có commit từ 2026-08-24.
+- Loại bỏ commit nào đã có trên `rc/web-uat` dưới cùng tiêu đề (vào bằng merge hoặc cherry-pick có chỉnh sửa).
+- Còn **241 commit** không có trên `rc/web-uat` theo cả patch-id lẫn tiêu đề: `docs/uat/evidence/branch-containment-2026-09-24.txt`.
+- Tiêu đề khác chưa chắc là thiếu nội dung, vì có thể đã được làm lại theo cách khác. Chỗ nào tôi đã kiểm nội dung thì ghi rõ.
+
+| Nhánh | Chưa có trên rc | Nội dung | Đánh giá |
+|---|---|---|---|
+| **`integration/v3-foundation`** (09-03) | 9 | **Bản sửa bảo mật V3 Phase 0–3:** ranh giới đọc nhóm (`558ba49`), chặn egress của model (`66e4c46`), throttle oracle tài khoản (`a3c342a`), thu hồi integration tại provider (`fc115b7`), các finding Phase 0 để lại (`a711181`), `/api/chat` bỏ thao tác đặc quyền (`2caff4b`) | 🚨 **F-065 (P1).** Đã kiểm nội dung: `20260904_group_read_boundary.sql` **không có** trên rc. Cả rc lẫn production (09-17) vẫn để `groups`/`group_members` là `SELECT TO public USING (true)`, tức ai có anon key cũng đọc được mọi nhóm và mọi thành viên. Các file test egress/clientIp/contentProcessor cũng không có. Các bản còn lại: **UNVERIFIED** (code liên quan có mặt nhưng khác bản gốc) |
+| `integration/phase6-release` (09-19) | 19 | Phase 6: Inbox DoD, Contact Sync (Android), kill switch phía server, sửa deep link Messenger, test ranh giới tin cậy | chưa merge; phần migration chat đã có trên production từ 09-15 |
+| `phase8-master` (09-24) | 9 | Phase 8 (Tasks 01/04/07/12/17) | cố ý tách riêng, không thuộc bản phát hành này |
+| `feat/scam-shield-public-utility` | 1 | `/kiem-tra` | cố ý tách riêng; bạn chưa quyết |
+| `wip/*-2026-09-17` (15 nhánh) | 1–151 | Snapshot công việc chưa commit của 15 worktree, chụp khi hợp nhất 09-17 | ba snapshot đã được merge (cool-vaughan, v3-canonical, v3-phase4); **15 cái này chưa**. Đáng chú ý: `wtandroid` (10 sửa Android 08-23: Deals DTO, bàn phím composer, F03 "khách ẩn danh không được tạo việc trả phí định kỳ", màn đăng nhập có mascot…), `tappy-business-p0` (checkpoint năng lực Business), `ios-sprint` (151 commit, 07-26→; iOS không thuộc bản này) |
+| `feat/ccp-mvp`, `feat/consultative-…`, `integration/scam-shield-v3`, `feat/v3-scam-shield-ui`, `feat/v3-qr-profile` | 20–30 | Phần lớn là cùng một chồng commit perf/consultative từ 08-10 (B2–B7…) | nhiều khả năng đã được làm lại trên mainline; **UNVERIFIED** |
+
+### STEP-3 (`ccee15b`) có tới được nhánh ship không
+
+- **Có, trên `rc/web-uat` local**, dưới dạng `e687225`, sau khi phiên Zalo rebase. Bằng chứng: `git patch-id` của hai commit giống hệt nhau (`f18d0ed0b261`).
+- **Chưa có trên origin**: `origin/rc/web-uat` = `b7a9586`. Nó chỉ lên origin khi `rc/web-uat` được push; tôi không push.
+
+### Hai dòng để giữ lại
+
+```
+Nhánh:  rc/web-uat   (worktree D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard)
+Lệnh:   cd D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard ; npm run whoami ; npm run dev   → http://localhost:3007
+```
+
+### Nói gì với các phiên khác (F-066)
+
+> "Nhánh ship duy nhất là `rc/web-uat`. **Không làm việc trực tiếp trong worktree `g1-place-guard`** khi đang có phiên khác mở nó. Hãy tạo worktree và nhánh riêng từ `rc/web-uat` (`git worktree add ../<tên> -b <tên> rc/web-uat`), chạy `npm run whoami` đầu tiên, rồi mở PR/merge vào `rc/web-uat` khi xong. Không rebase và không push commit không phải của mình. Không force-push. Không push `main`."
+
+Lý do (đo được trong phiên này): hai phiên cùng dùng một worktree. Phiên kia đã rebase các commit chưa push của tôi. Nếu phiên kia push, nó sẽ đẩy luôn **13 commit chưa được bạn duyệt** của tôi lên origin.
+
