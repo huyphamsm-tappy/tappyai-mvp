@@ -39,9 +39,38 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 
 ## 1. The release delta — migrations to apply, in this exact order
 
-Only **eight** migrations are missing from the 2026-09-17 prod snapshot. Apply them in the order below
-(chronological filename order, which also satisfies every dependency). Each prerequisite for the
-CREATE-OR-REPLACE / policy migrations (#4–#6) is already on prod, so all apply cleanly.
+> **Rewritten 2026-09-24 (PRELAUNCH Part 3).** The 2026-09-21 version said "only eight". That was true
+> for the branch it was written on (`33d9147`); the shipping branch has since absorbed Phase 7 Session A
+> (`9f85cde`, 3 migrations) and G1 growth (`47f2d5e`/`8a01877`, 2 migrations). Of the **16** migration files
+> on the shipping branch that `origin/main` (`842379b`) lacks, **3 are already on production** (applied by
+> hand on 2026-09-15; present in the 09-17 snapshot), **12 must be applied**, and **1 must be skipped**.
+> Evidence: object-by-object diff against `docs/audit/schema-baseline/prod-schema-only.sql`; all 16 verified
+> present on the AUDIT database 2026-09-24 (`docs/uat/evidence/migrations-2026-09-24.txt`).
+
+**Authoritative order** (chronological filename order; every dependency is satisfied by it). "Blocker" =
+code on the shipping branch fails for users if the migration is missing when the code deploys.
+
+| Step | File | What it does | Additive? | Rollback | Blocker if missing |
+|---|---|---|---|---|---|
+| — | `20260905_chat_messaging_phase1` | chat tables/RPCs | — | file | **Already on prod** — verify only (§1-V) |
+| — | `20260906_phase6_messenger_reachability` | chat blocks/settings | — | file | **Already on prod** — verify only |
+| — | `20260915_review_shares` | `review_shares` | — | file | **Already on prod** — verify only |
+| G1 | `20260913_g1_growth_foundation` | `shared_results`, `anon_identity_map`, `fn_shared_result_bump` | yes (new tables/fn) | file | **YES** — "Public link" share (web + Android) 500s: *Could not find the table 'public.shared_results'* (measured on audit before applying) |
+| 1 | `20260913_plan_shares` | `plan_shares` + `plan_share_public()` | yes | file | **YES** — every plan share 500s |
+| P1 | `20260915_profile_public_presentation` | `profiles.bio`, `profiles.cover_url` | yes (2 columns) | file | no — `/api/profile` has a 42703 fallback; the cover control stays hidden until applied |
+| G2 | `20260918_g1b_share_ancestry` | `shared_results.parent_id`, `owner_is_anonymous` + indexes | yes | file | **YES** (with G1) — share creation writes these columns |
+| 2 | `20260920100000_commerce_providers` | `commerce_providers` | yes | none needed | only if the commerce feed is read |
+| 3 | `20260920110000_commerce_feed_items` | `commerce_feed_items`, `commerce_feed_runs` | yes | none needed | as #2 |
+| 4 | `20260920_f028_dob_self_correct_while_ineligible` | replaces `set_user_date_of_birth` body | no (REPLACE) | file | age-correction flow mismatch |
+| 5 | `20260921_f032_admin_role_actor_from_authuid` | replaces admin-role RPC bodies (security) | no (REPLACE) | file | no (security hardening) |
+| 6 | `20260921_music_tracks_lockdown` | drops 4 policies, revokes anon/auth | no (revokes) | file | no |
+| 7 | `20260921_user_events_ga4_event_types` | widens a constraint **if present** | conditional | file | no — **no-op on prod** |
+| 8 | `20260921_user_events_shopping_search_event` | same pattern | conditional | file | no — **no-op on prod** |
+| GR | `20260922_groups_avatar_url` | `groups.avatar_url` | yes (1 column) | file | **YES** — `GET /api/group` selects `avatar_url`; without it every group answers 404 `group_not_found` |
+| ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
+
+The detailed check / apply / verify blocks for #1–#8 follow unchanged; the new steps (G1, P1, G2, GR,
+the verify-only three and the skip) are at the end of this section (§1-G1 … §1-V).
 
 ### 1) `supabase/migrations/20260913_plan_shares.sql`  — creates the `plan_shares` table
 Backs plan sharing (`/api/plans/share`, incl. the F-029 fix). The 2026-09-17 export lacked it.
@@ -176,6 +205,52 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
   events will be dropped on prod once the constraint lands. This migration protects every environment
   that already has the constraint; it cannot retro-fit a constraint another branch introduces later.
 
+### §1-G1) `supabase/migrations/20260913_g1_growth_foundation.sql` — public shared results (G1)
+- **Check first (expect `f`):** `SELECT to_regclass('public.shared_results') IS NOT NULL AS applied;`
+- **Apply** the file (it has no BEGIN/COMMIT of its own — run it inside one).
+- **Verify after (expect t, t, t, RLS t on both, 2 policies on shared_results, 0 on anon_identity_map):**
+  ```sql
+  SELECT to_regclass('public.shared_results') IS NOT NULL AS sr,
+         to_regclass('public.anon_identity_map') IS NOT NULL AS aim,
+         EXISTS (SELECT 1 FROM pg_proc WHERE proname='fn_shared_result_bump') AS fn,
+         (SELECT relrowsecurity FROM pg_class WHERE oid=to_regclass('public.shared_results')) AS sr_rls,
+         (SELECT relrowsecurity FROM pg_class WHERE oid=to_regclass('public.anon_identity_map')) AS aim_rls,
+         (SELECT count(*) FROM pg_policies WHERE tablename='shared_results') AS sr_policies,
+         (SELECT count(*) FROM pg_policies WHERE tablename='anon_identity_map') AS aim_policies;
+  ```
+- **Rollback:** `supabase/migrations/rollback/20260913_g1_growth_foundation_rollback.sql`
+- Audit result 2026-09-24: before `f/f/f`; after `t/t/t`, RLS `t/t`, policies `2/0`; `POST /api/shared-results`
+  went from **500** to **201**, `/r/<slug>`, its OG image, oEmbed, feed and sitemap all 200.
+
+### §1-P1) `supabase/migrations/20260915_profile_public_presentation.sql` — `profiles.bio`, `profiles.cover_url`
+- **Check first (expect `f`):** `SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='profiles' AND column_name='bio') AS applied;`
+- **Verify after:** same query → `t`, and the same for `cover_url`.
+- **Rollback:** `supabase/migrations/rollback/20260915_profile_public_presentation_rollback.sql`
+- Not a blocker (the profile API has a schema bridge), but until applied, users cannot set a cover.
+
+### §1-G2) `supabase/migrations/20260918_g1b_share_ancestry.sql` — share ancestry (after §1-G1)
+- **Check first (expect `f`):** `SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='shared_results' AND column_name='parent_id') AS applied;`
+- **Verify after:** same → `t`; also `owner_is_anonymous` → `t`.
+- **Rollback:** `supabase/migrations/rollback/20260918_g1b_share_ancestry_rollback.sql`
+
+### §1-GR) `supabase/migrations/20260922_groups_avatar_url.sql` — `groups.avatar_url`
+- **Check first (expect `f`):** `SELECT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='groups' AND column_name='avatar_url') AS applied;`
+- **Verify after:** same → `t`. Then `GET /api/group?id=<a real group>` must answer 200, not 404.
+- **Rollback:** `supabase/migrations/rollback/20260922_groups_avatar_url_rollback.sql`
+
+### §1-V) Already on prod — verify, do NOT re-apply
+```sql
+SELECT to_regclass('public.chat_messages') IS NOT NULL AS chat_phase1,
+       to_regclass('public.chat_blocks')   IS NOT NULL AS chat_phase6,
+       to_regclass('public.review_shares') IS NOT NULL AS review_shares;   -- expect t, t, t
+```
+If any is `f`, stop: the 09-17 snapshot no longer describes prod and this checklist must be re-derived.
+
+### §1-✗) `20260922_music_soundhelix_attribution.sql` — SKIP on prod
+It updates `music_tracks.license`/`source_url`, columns added by `add_music_attribution.sql`, which the
+09-17 prod snapshot does not contain — the migration would error. Music is hidden and not launching (owner
+decision 2026-09-24); leave both out of this release. (It is applied on the audit DB only.)
+
 ### 🚫 Do NOT apply to prod (demo/seed data)
 - `supabase/migrations/20260705_seed_music_demo_catalog.sql` — replaceable demo catalog.
 - `supabase/migrations/20260706c_repoint_music_audio_local.sql` — only repoints that demo data.
@@ -201,8 +276,14 @@ back a **hidden but present** library, not a removed feature. The lockdown's mec
 
 Apply **before** the code deploy (new code depends on the schema, or the migration is a safe no-risk
 security change to land early):
+- **§1-G1 + §1-G2 G1 shared results** — REQUIRED before deploy. `POST /api/shared-results` (the "Public
+  link" share on web and Android) inserts into `shared_results` with the ancestry columns; without them every
+  public-link share 500s (measured on audit 2026-09-24).
 - **#1 plan_shares** — REQUIRED before deploy. `/api/plans/share` inserts into it; without the table
   every share 500s.
+- **§1-GR groups.avatar_url** — REQUIRED before deploy. `GET /api/group` selects the column; without it every
+  group page answers 404.
+- **§1-P1 profile presentation** — before deploy (recommended); the code degrades without it.
 - **#2 + #3 commerce** — before deploy **if** this release's code reads the commerce feed; otherwise
   any time. Safe to apply before regardless.
 - **#4 F-028** — before deploy, so the client's age-correction flow matches the new RPC behaviour.

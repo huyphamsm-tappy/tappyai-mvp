@@ -159,3 +159,75 @@ Ghi chú:
 | Supabase PAT1, PAT2 | Supabase → Account → Access Tokens (thu hồi; tạo mới nếu cần CLI) · xoá khỏi `tappyai-mvp\.env.local` và `settings.local.json` |
 | Upstash KV/Redis (`KV_URL`, `REDIS_URL`, `KV_REST_API_*`) | Upstash console (reset password/token) → Vercel KV env (cả 3 môi trường) |
 
+## Part 3 — Đối soát migration
+
+**Cách làm:**
+- Liệt kê file migration có trên nhánh ship (`rc/web-uat`) mà `origin/main` (`842379b`, bản production) chưa có.
+- Đối chiếu **object** mà mỗi file tạo ra với snapshot schema production `docs/audit/schema-baseline/prod-schema-only.sql` (09-17; đây là chuẩn mà chính checklist dùng).
+- Không kết nối DB production. Nếu production đã đổi sau 09-17, bảng dưới cần kiểm lại bằng các câu check read-only trong checklist.
+
+### Danh sách chuẩn: 16 file
+
+| # | File | Làm gì | Bổ sung? | Rollback | Trên prod 09-17 | Việc cần làm |
+|---|---|---|---|---|---|---|
+| — | `20260905_chat_messaging_phase1` | bảng/RPC chat | có | file | **đã có** | chỉ verify |
+| — | `20260906_phase6_messenger_reachability` | chat blocks/settings | có | file | **đã có** | chỉ verify |
+| — | `20260915_review_shares` | `review_shares` | có | file | **đã có** | chỉ verify |
+| G1 | `20260913_g1_growth_foundation` | `shared_results`, `anon_identity_map`, `fn_shared_result_bump` | có | file | thiếu | **apply — chặn launch** |
+| 1 | `20260913_plan_shares` | `plan_shares` | có | file | thiếu | **apply — chặn launch** |
+| P1 | `20260915_profile_public_presentation` | `profiles.bio`, `cover_url` | có | file | thiếu | apply (không chặn: code có đường dự phòng) |
+| G2 | `20260918_g1b_share_ancestry` | `shared_results.parent_id`, `owner_is_anonymous` | có | file | thiếu | **apply — chặn launch (cùng G1)** |
+| 2 | `20260920100000_commerce_providers` | bảng mới | có | không cần | thiếu | apply |
+| 3 | `20260920110000_commerce_feed_items` | 2 bảng mới | có | không cần | thiếu | apply |
+| 4 | `20260920_f028_…` | thay thân `set_user_date_of_birth` | không (REPLACE) | file | thiếu (thân cũ) | apply |
+| 5 | `20260921_f032_…` | thay thân RPC admin (bảo mật) | không (REPLACE) | file | thiếu (thân cũ) | apply |
+| 6 | `20260921_music_tracks_lockdown` | bỏ 4 policy, thu quyền | không (revoke) | file | thiếu | apply |
+| 7 | `20260921_user_events_ga4_event_types` | nới constraint **nếu có** | có điều kiện | file | — | apply (**no-op trên prod**) |
+| 8 | `20260921_user_events_shopping_search_event` | như #7 | có điều kiện | file | — | apply (**no-op trên prod**) |
+| GR | `20260922_groups_avatar_url` | `groups.avatar_url` | có | file | thiếu | **apply — chặn launch** |
+| ✗ | `20260922_music_soundhelix_attribution` | UPDATE dữ liệu `music_tracks` | — | không có | — | **BỎ QUA trên prod**: cần cột `license`/`source_url` (prod chưa có) → sẽ lỗi; Music đang ẩn |
+
+Chi tiết check/apply/verify cho từng bước: `DEPLOY-CHECKLIST.md` §1 (đã viết lại) và §2 (thứ tự so với deploy).
+
+### Vì sao checklist ghi 8 còn tôi đếm 16
+
+**Checklist không sai tại thời điểm viết; chính nhánh đã thay đổi.**
+- Checklist được tạo ở `33d9147` (09-21). Lúc đó nhánh chưa có:
+  - 3 file mà `9f85cde` (Phase 7 Session A) thêm ngày 09-22: `profile_public_presentation`, `groups_avatar_url`, `music_soundhelix_attribution`;
+  - 2 file G1 vào qua merge rc/web-uat ngày 09-24: `g1_growth_foundation` (`47f2d5e`), `g1b_share_ancestry` (`8a01877`).
+  - Tôi đã kiểm bằng `git merge-base --is-ancestor`: cả 5 đều không nằm trong cây của `33d9147`.
+- Ngược lại, 3 file chat/review_shares có trong `origin/main..HEAD` nhưng **đã có trên production** (áp tay ngày 09-15), vì production được sửa ngoài `main`.
+- Tổng: 8 (checklist) + 5 (nhánh mới thêm) + 3 (đã có) = **16**. Trong đó 12 cần apply, 1 bỏ qua, 3 chỉ verify.
+
+### `shared_results`: hỏng gì hôm nay, hỏng gì trên production
+
+**Trên audit, trước khi apply** (đo bằng probe có phiên đăng nhập, `docs/uat/evidence/migrations-2026-09-24.txt`):
+- `POST /api/shared-results` (nút **"Public link"** trên web **và** Android) → **500**; server ghi `Could not find the table 'public.shared_results' in the schema cache`.
+- `/r/<slug>` và oEmbed → 404 (không có dòng nào).
+- Feed, sitemap và hub → 200 nhưng **âm thầm** không có kết quả chia sẻ nào.
+- Liên kết danh tính ẩn danh (`anon_identity_map`) bị bỏ qua mà không báo lỗi.
+
+**Trên production nếu thiếu 2 migration:** giống hệt audit, vì prod (09-17) không có cả hai bảng. Mọi người dùng bấm "Public link" đều gặp lỗi, và vòng tăng trưởng G1 (share-out, `/r/`, sitemap/IndexNow) không hoạt động.
+
+**Có chặn launch không: CÓ**, vì code ship có nút này. Cách gỡ đơn giản: 2 migration đều chỉ bổ sung và có rollback. Chỉ cần apply **trước** khi deploy code (checklist §2).
+
+### Đã apply 2 migration G1 lên audit và kiểm lại
+
+- PRE-FLIGHT CHECK 2: `npm run whoami` → `supabase : zdaprdfgpbpnxyofagmc ✅ audit/non-prod`; script còn tự từ chối chạy nếu ref không phải audit.
+- Mỗi file chạy trong `BEGIN … COMMIT` riêng:
+  ```
+  BEFORE: shared_results=false anon_identity_map=false fn_bump=false parent_id=false owner_is_anonymous=false
+  APPLIED 20260913_g1_growth_foundation.sql
+  APPLIED 20260918_g1b_share_ancestry.sql
+  AFTER : shared_results=true anon_identity_map=true fn_bump=true parent_id=true owner_is_anonymous=true
+          sr_rls=true aim_rls=true sr_policies=2 aim_policies=0 ; anon/authenticated grants: authenticated SELECT
+  ```
+- Kiểm chức năng sau apply: `POST /api/shared-results` → **201** (`/r/QNgw8uoghB`). `/r/<slug>`, `og.png`, `/api/shared-results/<slug>`, `feed.xml`, `sitemap.xml`, `/food` và oEmbed đều **200**; slug mới có trong sitemap (1 lần) và feed (2 lần).
+- Cả 16 migration giờ đều có trên audit (kiểm read-only từng object).
+
+### Phát hiện thêm (ngoài câu hỏi)
+
+- **`groups.avatar_url` chặn launch.** `GET /api/group` select cột này; production chưa có cột, nên mọi nhóm sẽ trả 404. Checklist cũ không có mục này.
+- **`music_soundhelix_attribution` sẽ lỗi trên production** (thiếu cột phụ thuộc). Checklist cũ xếp nó vào nhóm "demo/seed adjacent" nhưng không nói rõ là sẽ lỗi.
+- **`profile_public_presentation`** thiếu trên production nhưng code có đường dự phòng. Tôi đã kiểm code (`src/app/api/profile/route.ts:46-65`); chưa chạy thử trên DB thiếu cột, nên phần này **UNVERIFIED** ở runtime.
+

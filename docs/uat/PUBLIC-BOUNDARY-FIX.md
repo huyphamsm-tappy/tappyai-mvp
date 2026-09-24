@@ -154,7 +154,9 @@ src/app/<mọi thứ khác>      ← PUBLIC mặc định.
 | /age-check | ✅ 200 | final_vi_age_check_page.png · final_en_age_check_page.png | ❌ (0/0) | ❌ | ❌ | N/A (chính là trang age-check) |
 | /auth/zalo-finish (không tham số) | ✅ 200 → /login | final_vi_auth_zalo_finish.png · final_en_auth_zalo_finish.png | ❌ (0/0) | ❌ | N/A (callback đăng nhập thất bại thì quay về /login) | ❌ |
 
-¹ `/r/<slug>` có dữ liệu thật: **UNVERIFIED** trên audit, vì 2 migration G1 (`shared_results`) chưa được apply lên audit. Việc apply thuộc PRELAUNCH Part 3; sau đó sẽ chụp lại với một slug thật.
+¹ `/r/<slug>` có dữ liệu thật: **đã kiểm** sau khi apply 2 migration G1 lên audit (PRELAUNCH Part 3).
+- `/r/QNgw8uoghB` → 200; không hộp xin vị trí, không modal, không cổng nào; VI `htmlLang=vi`, EN `htmlLang=en` (`final_vi_r_real.png` · `final_en_r_real.png`).
+- Ghi nhận, chỉ báo cáo: phần nhãn của trang `/r` vẫn là tiếng Việt với khách EN (trang render theo ngôn ngữ của nội dung).
 ² Trang 404 và trang lỗi hiện tiếng Việt, nền sáng với khách EN: F-058 (P3, mở).
 
 ## 7. Android — không giả định
