@@ -280,7 +280,18 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
   const ratingCount = num(e.quality.ratingCount.value)
   const address = str(e.location.address as unknown)
   const hours = str(e.availability.openingHours.value as unknown)
-  const priceSignal = str(e.pricing.priceSignal.value as unknown)
+  /**
+   * 🚨 A SIGNAL IS NOT A PRICE. `buildEntity` records the snippet-price claim as
+   * `provenancedClaim('price_search_results', …)` — a MARKER saying "this venue has snippet
+   * prices, and they live in `price_search_results` where the guards can see them", never a
+   * displayable amount. Both cards printed that marker verbatim: "Giá tham khảo:
+   * price_search_results" (measured on the emulator 2026-09-24; the same string is in
+   * `docs/uat/evidence/golden/after2/T3.json`, which a card would have shown on web too).
+   * The card shows a reference price only when there IS one — a value with a digit in it.
+   * Nothing else reads this claim's value; its provenance entry is untouched.
+   */
+  const priceSignalRaw = str(e.pricing.priceSignal.value as unknown)
+  const priceSignal = priceSignalRaw && /\d/.test(priceSignalRaw) ? priceSignalRaw : undefined
   const priceRangeText = str(e.pricing.priceRangeText?.value as unknown)
   const hoursWeek = e.ext && typeof e.ext === 'object'
     ? (e.ext as { openingHoursWeek?: Record<string, string> }).openingHoursWeek

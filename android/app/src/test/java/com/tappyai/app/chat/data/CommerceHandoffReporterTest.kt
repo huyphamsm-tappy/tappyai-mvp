@@ -17,6 +17,9 @@ import retrofit2.Response
  * observability bridge distinguishes — rendered · tapped · handoff attempted · handoff failed.
  */
 class CommerceHandoffReporterTest {
+    // affiliate_click rides every tap since 8a5354c (GA4 funnel, F-001 §3.19): the single GA4 projection of
+    // the internal commerce_* events. The expectations below include it; the tests were written before it.
+
 
     private class RecordingApi : CommerceHandoffApi {
         val posted = CompletableDeferred<CommerceHandoffBodyDto>()
@@ -54,7 +57,7 @@ class CommerceHandoffReporterTest {
         RealCommerceHandoffReporter(api, analytics, silent).tapped(facts, opened = true)
         val body = withTimeout(5_000) { api.posted.await() }
         assertEquals(CommerceHandoffBodyDto(linkId = facts.linkId, requestId = facts.requestId, platform = "android"), body)
-        assertEquals(listOf("commerce_action_tapped", "commerce_handoff_attempted"), analytics.events.map { it.first })
+        assertEquals(listOf("commerce_action_tapped", "affiliate_click", "commerce_handoff_attempted"), analytics.events.map { it.first })
         assertEquals("tiktokshop", analytics.events[0].second["providerId"])
         assertEquals(true, analytics.events[0].second["loginRequired"])
         // Never the URL, never the person.
@@ -66,8 +69,8 @@ class CommerceHandoffReporterTest {
         val api = RecordingApi()
         val analytics = RecordingAnalytics()
         RealCommerceHandoffReporter(api, analytics, silent).tapped(facts, opened = false)
-        assertEquals(listOf("commerce_action_tapped", "commerce_handoff_failed"), analytics.events.map { it.first })
-        assertEquals("no_activity", analytics.events[1].second["reason"])
+        assertEquals(listOf("commerce_action_tapped", "affiliate_click", "commerce_handoff_failed"), analytics.events.map { it.first })
+        assertEquals("no_activity", analytics.events[2].second["reason"])
         assertTrue(!api.posted.isCompleted)
     }
 
@@ -90,7 +93,7 @@ class CommerceHandoffReporterTest {
         val reporter = RealCommerceHandoffReporter(api, analytics, silent)
         reporter.rendered(facts)
         reporter.tapped(facts.copy(linkId = ""), opened = true)
-        assertEquals(listOf("commerce_action_rendered", "commerce_action_tapped", "commerce_handoff_attempted"), analytics.events.map { it.first })
+        assertEquals(listOf("commerce_action_rendered", "commerce_action_tapped", "affiliate_click", "commerce_handoff_attempted"), analytics.events.map { it.first })
         assertTrue(!api.posted.isCompleted)
     }
 }

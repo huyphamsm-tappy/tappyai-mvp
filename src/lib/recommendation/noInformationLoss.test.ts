@@ -64,7 +64,10 @@ function fullyPopulated(): CanonicalEntity {
       price: unknownClaim<number>(),
       priceRange: { low: 30000, high: 60000, currency: 'VND' },
       priceLevel: 2,
-      priceSignal: { value: 'price_search_results', evidence_type: 'REVIEW_SUPPORTED', source_type: 'search_snippet' },
+      // A REAL snippet price. The production claim carries the marker 'price_search_results'
+      // (buildEntity), which the projection now drops so no card prints a field name as a price
+      // (measured on the emulator 2026-09-24) — a populated priceSignal means an actual amount.
+      priceSignal: { value: '~50.000đ/tô', evidence_type: 'REVIEW_SUPPORTED', source_type: 'search_snippet' },
       priceRangeText: { value: '1-100.000 ₫', evidence_type: 'FACT', source_type: 'structured_provider' },
     },
     availability: {

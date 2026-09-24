@@ -182,7 +182,9 @@ class ScamShieldV3Test {
         assertTrue(s.contains("entries.size > ScamShieldViewModel.HISTORY_PREVIEW") && s.contains("entries.take(ScamShieldViewModel.HISTORY_PREVIEW)"))
         assertTrue("a row re-runs the check", s.contains("onRecheck(entry)"))
         assertEquals("exactly the URL and QR verdicts record", 2, Regex("""recent = history\.record\(o\.result\)""").findAll(vm).count())
-        assertTrue("a message verdict is its own card, never a row", vm.contains("is MessageAnalysisOutcome.Verdict -> ScamShieldUiState.MessageResult(o.result)"))
+        // Since 8a5354c the branch also fires the GA4 scam_check event before returning the card; the property is
+        // unchanged: the verdict becomes MessageResult and never a history row.
+        assertTrue("a message verdict is its own card, never a row", vm.contains("is MessageAnalysisOutcome.Verdict -> { trackScamCheck(\"message\", o.result.level); ScamShieldUiState.MessageResult(o.result) }"))
         assertFalse("nothing records a failure into the history", vm.contains("Failed -> {\n                    recent"))
         val store = src("app/src/main/java/com/tappyai/app/scamshield/data/ScamCheckHistoryStore.kt")
         assertTrue(store.contains("const val LIMIT = 15") && store.contains("read().filter { it.url != entry.url }"))
