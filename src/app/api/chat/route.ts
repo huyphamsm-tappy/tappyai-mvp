@@ -2292,7 +2292,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }))
     return { perPlace: result.perPlace, batch: result.batch }
   },
-  turnPlaceLocation)
+  turnPlaceLocation,
+  // P3-F4 (66e4c46, restored 2026-09-25): the URLs this conversation has ALREADY shown the user.
+  // A URL is publishable only if it came from this turn's tool results or from a reply we already
+  // published — otherwise the model invented it, and an invented URL is an exfiltration channel
+  // wearing the product's own "Xem thêm kết quả" clothing. Assistant turns only: what the USER
+  // typed was never vetted by the guard, so echoing it back must not launder it.
+  messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')))
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

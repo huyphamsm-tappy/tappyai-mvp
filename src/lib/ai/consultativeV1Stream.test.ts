@@ -122,7 +122,10 @@ describe('flag ON', () => {
 
 describe('flag ON — a link-only line goes when the card renders', () => {
   it('"[website của quán](…)." is dropped with a card and kept without', async () => {
-    const reply = 'Mình chọn **Cơm Niêu Sài Gòn** cho 2 người tối nay.\n\n[website của quán](http://www.example.com/).\n\nĐi sớm nhé.'
+    // 2026-09-25 (P3-F4 restored): the link must be one this turn's tool result carried (the row's
+    // own maps_link here). An INVENTED URL is removed by the egress guard with or without a card —
+    // linkEgressBoundary.test.ts owns that case; this one is about the link-only LINE.
+    const reply = 'Mình chọn **Cơm Niêu Sài Gòn** cho 2 người tối nay.\n\n[website của quán](https://maps.google.com/?cid=1).\n\nĐi sớm nhé.'
     const withCard = prose((await run(reply, { v1: ON })).text)
     expect(withCard).not.toContain('[website của quán]')
     expect(withCard).toContain('Đi sớm nhé.')

