@@ -1,0 +1,135 @@
+[
+ {
+  "id": "W1a",
+  "area": "guest first visit: language offered on Home",
+  "status": "PASS",
+  "detail": {
+   "dark": true,
+   "modal": true,
+   "geo": 2,
+   "bell": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W1-guest-home-first-visit.png"
+ },
+ {
+  "id": "W1b",
+  "area": "default theme on first load (logged out) is dark",
+  "status": "PASS",
+  "detail": {
+   "htmlDark": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W1-guest-home-first-visit.png"
+ },
+ {
+  "id": "W2a",
+  "area": "guest chat asks for the 18+ declaration before the first AI answer",
+  "status": "PASS",
+  "detail": {
+   "gateShown": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W2a-guest-chat-age-gate.png"
+ },
+ {
+  "id": "W2b",
+  "area": "the gate leads to /age-check",
+  "status": "PASS",
+  "detail": {
+   "url": "/age-check?next=%2Fchat"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W2b-age-check-page.png"
+ },
+ {
+  "id": "W2c",
+  "area": "age declaration accepted with a synthetic adult DOB → back to chat",
+  "status": "PASS",
+  "detail": {
+   "inputs": [
+    "DD",
+    "MM",
+    "YYYY"
+   ],
+   "landedOn": "/chat"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W2c-after-age-check.png"
+ },
+ {
+  "id": "W2d",
+  "area": "guest chat answers with place cards (names, maps actions, VI copy)",
+  "status": "PASS",
+  "detail": {
+   "mapsButtons": 3,
+   "imgs": 4,
+   "hasPrice": true,
+   "vi": true,
+   "mapsHref": [
+    "https://maps.google.com/?cid=7664339604106097960",
+    "https://maps.google.com/?cid=16328525708642007153"
+   ],
+   "quotaText": null
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W2d-guest-chat-cards.png"
+ },
+ {
+  "id": "W2e",
+  "area": "guest quota is displayed",
+  "status": "UNVERIFIED",
+  "detail": {
+   "quotaText": null,
+   "note": "no quota counter text found on the guest chat screen after one answer"
+  },
+  "shot": null
+ },
+ {
+  "id": "W3a",
+  "area": "login (magic link — password entry is not done by the agent) lands signed in",
+  "status": "PASS",
+  "detail": {
+   "landed": "/",
+   "apiProfile": 200
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W3a-login-magic-link-home.png"
+ },
+ {
+  "id": "W3b",
+  "area": "session persists across navigation/reload",
+  "status": "PASS",
+  "detail": {
+   "ok": true,
+   "name": "Minh Anh (UAT)",
+   "hasEmail": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W3b-session-persists-profile.png"
+ },
+ {
+  "id": "W3c",
+  "area": "theme when logged in with no stored choice is dark",
+  "status": "PASS",
+  "detail": {
+   "htmlDark": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W3b-session-persists-profile.png"
+ },
+ {
+  "id": "W3d",
+  "area": "logout ends the session",
+  "status": "PASS",
+  "detail": {
+   "logoutClicked": "Đăng xuất",
+   "apiProfileAfter": 401,
+   "url": "/login"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W3d-after-logout.png"
+ },
+ {
+  "id": "W4",
+  "area": "sign-up screen renders (submission not performed: the agent may not create accounts)",
+  "status": "UNVERIFIED",
+  "detail": {
+   "email": true,
+   "password": true,
+   "submit": true,
+   "why": "account creation is outside what the agent may do; render verified only"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W4-register.png"
+ }
+]

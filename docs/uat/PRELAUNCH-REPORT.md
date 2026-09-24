@@ -353,3 +353,78 @@ Tổng cộng 54 lượt gọi LLM.
 - **"gần Quận 7"** đang được hiểu là "trong Quận 7" khi có kết quả trong quận. Với G1b không có khác biệt, nhưng đây là một lựa chọn thiết kế cần bạn quyết.
 - **Bảng phường** mới có TP.HCM. Quán ở Hà Nội thường ra `unknown`; không bao giờ bị coi là "ngoài quận".
 
+---
+
+## Part 6 — Tôi tự UAT (web + Android)
+
+**Cách làm.** Web: Edge headless điều khiển qua CDP (Playwright Chromium trên máy bị hỏng), mỗi kịch bản một context mới. Android: emulator Pixel_8 (API 36) chạy APK debug trỏ vào `10.0.2.2:3007` và Supabase audit, gõ tiếng Việt bằng Telex của Gboard qua `adb input`. Đăng nhập bằng magic link admin, tôi không gõ mật khẩu. Evidence nằm ở `docs/uat/evidence/uat-2026-09-24/{web,android}/`. Kết quả máy đọc được nằm trong `web/results-web*.json`.
+
+### Web
+
+| ID | Hạng mục | Kết quả | Evidence / ghi chú |
+|---|---|---|---|
+| W1a/b | Khách lần đầu: Home dark, chọn ngôn ngữ trên phía app | ✅ PASS | W1-guest-home-first-visit.png |
+| W2a–d | Chat khách: hỏi xác nhận 18+ → /age-check → quay lại chat → có thẻ địa điểm, link Maps, tiếng Việt | ✅ PASS | W2a…W2d |
+| W2e | Hiển thị quota khách | ⚪ UNVERIFIED | Sau 1 câu trả lời không thấy bộ đếm quota nào |
+| W3a–d | Đăng nhập (magic link), phiên giữ qua reload, theme dark khi chưa chọn, đăng xuất → `/api/profile` 401 | ✅ PASS | W3a/b/d |
+| W4 | Đăng ký | ⚪ UNVERIFIED | Chỉ kiểm màn hình render; tôi không được tạo tài khoản |
+| W5a | Đồ ăn "Quận 3 dưới 80k" | ✅ PASS | 3/3 thẻ có địa chỉ Quận 3; log: 1 quán bị loại vì `out_of_district`, 1 vì `over_budget` |
+| W5b | Thẻ: ảnh, tên, nút Maps mở đúng quán | ✅ PASS | `maps.google.com/?cid=…` |
+| W5c | Khách sạn Đà Nẵng dưới 1 triệu/đêm | ✅ PASS (một phần) | 3/3 ở Đà Nẵng. Giá/đêm ≤1tr **không kiểm được** vì thẻ không có giá phòng |
+| W5d | Rạp chiếu Quận 7 | ✅ PASS | 3/3 Quận 7 |
+| W5e | Spa Bình Thạnh ~300k | ✅ PASS | 3/3 Bình Thạnh |
+| W6 | Đổi chủ đề đồ ăn → tai nghe dưới 2 triệu | ✅ PASS | 80k không đi theo; giá thấy được đều ≤ 2tr |
+| W7a–c | Lịch trình → Chia sẻ → `/plan/oG6Aj4QUqJYA` → người lạ mở được, không có chip "chưa có giá" | ✅ PASS | W7a/b/c |
+| W8a/b/c | Scam Shield: URL / QR (upload QR thật) / tin nhắn | ✅ PASS (HTTP 200 cả 3) | **F-068**: lý do trong tab tin nhắn bằng tiếng Anh |
+| W9a | Khám phá (mobile) | ✅ PASS | Lần này không lỗi; F-057 (ảnh unsplash làm sập next/image) vẫn mở |
+| W10a–c | Hồ sơ, QR, chia sẻ QR | ✅ PASS | |
+| W10d | Xoá QR | ⚪ UNVERIFIED | Màn QR không có nút xoá |
+| W11 | Đăng bài / upload ảnh | ⚪ UNVERIFIED | `POST /api/reviews/upload` 500 `WifExchangeError`: token OIDC Vercel local đã hết hạn. Lỗi môi trường, không phải lỗi code |
+| W12 ×4 | Back trong app về đúng trang cha (settings/qr/history → /profile, /currency → /tools) | ✅ PASS | |
+| W13 | Có điều khiển thông báo | ✅ PASS | |
+| W14 | Tiếng Anh: /, /profile, /scam-shield, /tools | ✅ PASS | W14-en_*.png |
+| W16 | Quiz "muốn hiểu bạn hơn" | 🟡 quan sát | **F-075**: quiz phủ lên chat; ở trình duyệt mới thì modal chọn ngôn ngữ còn chồng lên trên nữa |
+
+### Android (emulator, `com.tappyai.app.debug`)
+
+| ID | Hạng mục | Kết quả | Evidence / ghi chú |
+|---|---|---|---|
+| A1 | Mở lần đầu (sau `pm clear`): splash → Home khách, tiếng Việt, dark | ✅ PASS | A1, A1b. F-077: splash là chữ "T" chung chung; máy en-US vẫn mở bằng tiếng Việt, không hỏi ngôn ngữ |
+| A2 | Magic link → deep link `tappyai://auth-callback` → đăng nhập manual.uat.pro | ✅ PASS | A2a, A2b |
+| A3 | Chat đồ ăn Quận 3: thẻ có ảnh, địa chỉ Xuân Hòa, "Xem bản đồ" mở Google Maps đúng quán | ✅ PASS | A3a/b/c. **F-072**: "mở từ 6h sáng nên tiện ăn khuya" trong khi quán đang đóng. **F-074**: dòng "Đánh đổi: 912 lượt đánh giá" dễ hiểu nhầm |
+| A4 | Hỏi tiếp nhiều lượt ("còn quán nào mở sau 21h") | ✅ PASS | Log: vẫn giữ `district:"Quận 3"` và `budget_max: 80000`; `open_now: true` |
+| A5 | Đổi chủ đề sang tai nghe dưới 2 triệu (có câu hỏi làm rõ) | ✅ PASS về ràng buộc | 980k ≤ 2tr, không có 80k. **F-071**: câu văn vỡ ("dư ngân sách.", "Danh đổi: … nhưng…"). **F-073**: thẻ ghi "rated 4.7 · 980000 VND · 310 reviews" bằng tiếng Anh |
+| A7a | Lịch trình Vũng Tàu sau chủ đề tai nghe | ❌ **FAIL → đã sửa** | **F-069 (P1)**: "tổng ngân sách 2 triệu" lấy từ tai nghe. Sửa ở `9163d5b` (xem dưới) |
+| A7b | Chia sẻ lịch trình | ❌ **FAIL → đã sửa** | **F-070 (P1)**: kẹt ở "Đang tạo kế hoạch chia sẻ…", không có request nào đi ra. Sửa ở `8e90514`; sau sửa `POST /api/plans/share` 200 và brochure `/plan/LHlhAZ9qQBvF` mở được |
+| A7c | Xin quyền vị trí khi đang lập lịch trình | 🟡 quan sát | Hộp thoại hệ thống hiện ngay giữa lượt chat (A7-location-prompt-during-plan.png). Đây là phía app nên được phép, nhưng hiện ra đột ngột |
+| A8 | Scam Shield: URL giả Vietcombank | ✅ PASS | "Nguy cơ cao", điểm 79, hiện hotline/website chính thức |
+| A8c | Scam Shield: phân tích tin nhắn | ✅ PASS (verdict) | "Rất nguy hiểm", 100 điểm, "Lấy mã OTP của bạn". **F-068**: 4 lý do bằng tiếng Anh |
+| A9 | Khám phá | ✅ PASS | F-077: tagline "Discover something better" bằng tiếng Anh |
+| A10 | QR hồ sơ: mở / chia sẻ (sheet hệ thống) / tải về | ✅ PASS | File PNG lưu vào `Pictures/TappyAI` (A10c-downloaded-qr-file.png). Không có nút xoá |
+| A11–13 | Cài đặt → Thông báo → Back → Cài đặt → Back → Tôi | ✅ PASS | Toggle đúng; máy chặn quyền thông báo thì app hiện nút "Cho phép" |
+| A14 | Giao diện Sáng | ✅ PASS | F-077: icon status bar trắng trên nền trắng |
+| A15 | Tiếng Anh | ✅ PASS | Settings và Scam Shield đổi sang tiếng Anh, trừ tóm tắt AI đã sinh từ trước (đúng). Sau test đã đặt lại tiếng Việt + theo hệ thống |
+
+### Hai lỗi P1 đã sửa trong Part 6
+
+- **F-069 — `9163d5b`.** Kế hoạch đi chơi không còn nhận ngân sách của chủ đề trước. Có hai chỗ mang ngân sách sang: phép gộp ngân sách kế hoạch (đọc 3 lượt user gần nhất) và `deriveNeedProfile` (chỉ reset khi gặp danh từ địa điểm). Giờ cả hai chỉ đọc **chủ đề hiện tại**, dùng cùng ranh giới với 5a.
+  - Golden **B4** mới, trước sửa: câu trả lời ghi "với ngân sách 2 triệu VND" và `budget_max 2000000` trên thẻ địa điểm của chuyến đi.
+  - B4 sau sửa: không còn cả hai.
+  - T1 (kế hoạch qua nhiều lượt, 20 triệu) vẫn được kế thừa đúng. G4a không đổi.
+  - Unit test `planSubjectBudget.test.ts`: 1 fail trên route cũ, 5/5 pass sau sửa (log trong `evidence/golden/`).
+  - T1 lượt 3 có đoạn văn lặp lại (dup). Baseline cũng có hiện tượng này, nên đây là lỗi có sẵn của model, không phải hồi quy.
+- **F-070 — `8e90514`.** Merge `a6ca9f0` ("uncommitted canonical work") đã làm mất phần nối dây mà `3731efa` thêm: `planJson` → `TripPlanCard`, và `placesView/plan/planJson/shareSubject` → `MessageActionBar`. Tôi khôi phục nguyên văn.
+  - Nếu không có `planJson`, ViewModel thoát sớm và quay "preparing" mãi. Giờ nó báo `NoPlanPayload`.
+  - `ChatShareWiringTest` fail 3/3 trước sửa, pass 3/3 sau sửa.
+  - 🚨 **`a6ca9f0` chưa được audit toàn bộ.** Đây là cùng loại với lần mất CSS ở `1e7b77e`. Nên diff merge này với parent thứ nhất trước khi launch.
+
+### Không test được / giới hạn
+
+- **iOS**: không có macOS.
+- **Upload ảnh/video** (W11): token OIDC Vercel local đã hết hạn. Muốn kiểm phải `vercel env pull` lại, hoặc test trên preview.
+- **Đăng ký tài khoản mới, đăng nhập bằng mật khẩu, Google/Zalo OAuth**: tôi không được làm. Google OAuth còn bị chặn vì chưa có client mới.
+- **Quét QR bằng camera** (emulator không có camera thật). Phần QR chỉ test bằng upload trên web.
+- **Giọng nói (mic), push notification thật** (emulator chặn quyền), **WebView trong Zalo/Messenger**, **GA4 có nhận event hay không**, **Accesstrade/affiliate tracking**.
+- **Share trên Android luôn tạo link `www.tappyai.com/…`**, kể cả bản debug trỏ local (F-078). Khi UAT, hãy mở id đó trên `localhost:3007`.
+- **Nút share trên thanh tin nhắn cho lượt có địa điểm** (Android): đã sửa dây nối và có test, nhưng **chưa bấm lại trên thiết bị** (UNVERIFIED).
+- Câu hỏi Android đầu tiên bị mất chữ "k" khi gõ qua `adb`, nên đi là "dưới 80" chứ không phải "80k". Server vẫn hiểu là 80.000. Đây là lỗi của harness, không phải của app.

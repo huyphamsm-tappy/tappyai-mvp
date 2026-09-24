@@ -1,0 +1,131 @@
+[
+ {
+  "id": "W5a",
+  "area": "food: stated district + budget — cards obey",
+  "status": "PASS",
+  "detail": {
+   "cards": 3,
+   "inQuan3ByAddress": 3,
+   "prices": [
+    "dưới 100.000 ₫",
+    "dưới 100.000 ₫",
+    "dưới 100.000 ₫"
+   ],
+   "reasons": [
+    "Vì sao: đánh giá 4.6 · 180 lượt đánh giá",
+    null
+   ],
+   "withImage": 3,
+   "links": [
+    "https://maps.google.com/?cid=12091866329327729772",
+    "https://www.youtube.com/results?search_query=B%C3%BAn%20B%C3%B2%20Sa%20T%E1%BA%BF%20S%E1%BA%A3%20-%20Nguy%E1%BB%85n%20Th%C3%B4ng%20Qu%E1%BA%ADn%203%20review"
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W5a-food-q3-under-80k.png"
+ },
+ {
+  "id": "W5b",
+  "area": "cards: images render, names present, maps link opens Google Maps",
+  "status": "PASS",
+  "detail": {
+   "names": [
+    "#1 🔥 Phổ biến Bún Bò Sa Tế Sả - Nguyễn ",
+    "#2 Bún Bò Huế Mỡ Nổi Cô Như 4.4 (912 đán",
+    "#3 Bún Bò Viên Cô Hoa Vườn Chuối 4.3 (12"
+   ],
+   "imagesRendered": 3
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W5a-food-q3-under-80k.png"
+ },
+ {
+  "id": "W6",
+  "area": "topic switch food → shopping: the 80k food budget does not follow; shopping obeys 2 triệu",
+  "status": "PASS",
+  "detail": {
+   "carries80k": false,
+   "pricesSeen": [
+    730000,
+    730000,
+    899000,
+    116495,
+    870000,
+    439000
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W6-topic-switch-shopping-under-2tr.png"
+ },
+ {
+  "id": "W5c",
+  "area": "travel: Đà Nẵng hotel under 1 triệu/night — cards in Đà Nẵng",
+  "status": "PASS",
+  "detail": {
+   "cards": 3,
+   "inDaNang": 3,
+   "sample": [
+    "#1 🔥 Phổ biến Santa Luxury Hotel 4.9 (3627 đánh giá) 362W+PP6, 09 Đỗ Bá, Bắc Mỹ Phú, Ngũ ",
+    "#2 Yarra Ocean Suites Danang 4.8 (3175 đánh giá) 304 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng",
+    "#3 M Hotel Da Nang 4.8 (2839 đánh giá) 286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, V"
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W5c-travel-danang-hotel-under-1tr.png"
+ },
+ {
+  "id": "W5d",
+  "area": "entertainment: Quận 7 cinemas — cards in Quận 7",
+  "status": "PASS",
+  "detail": {
+   "cards": 3,
+   "inQ7": 3,
+   "sample": [
+    "#1 🔥 Phổ biến Chiin Coffee & Cinema Quận 7 4.8 (902 đánh giá) B309 Đường Số 8, Tân Hưng, ",
+    "#2 CGV Crescent Mall 4.4 (4793 đánh giá) Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tâ",
+    "#3 Galaxy Cinema Huỳnh Tấn Phát 4.5 (2035 đánh giá) PP6P+XPP, 1362 Huỳnh Tấn Phát, Khu phố"
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W5d-entertainment-q7.png"
+ },
+ {
+  "id": "W5e",
+  "area": "spa: Bình Thạnh ~300k — cards in Bình Thạnh",
+  "status": "PASS",
+  "detail": {
+   "cards": 3,
+   "inBT": 3,
+   "sample": [
+    "#1 🔥 Phổ biến OM SPA - DƯỠNG SINH ĐÔNG Y - BÌNH THẠNH 4.7 (183 đánh giá) 16 Nguyễn Hữu Cả",
+    "#2 Đá Massage Giá Rẻ 5 (9 đánh giá) 203 Đ. Nguyễn Xí, Bình Thạnh, Hồ Chí Minh 740000, Việt",
+    "#3 Dịch Vụ Massage Thành Công 4.6 (14 đánh giá) 268 Đinh Bộ Lĩnh, Bình Thạnh, Hồ Chí Minh,"
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W5e-spa-binh-thanh-300k.png"
+ },
+ {
+  "id": "W7a",
+  "area": "trip planning: the plan card renders",
+  "status": "PASS",
+  "detail": {
+   "planShown": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W7a-trip-plan.png"
+ },
+ {
+  "id": "W7b",
+  "area": "share → a real /plan/<id> brochure link is produced",
+  "status": "PASS",
+  "detail": {
+   "shareClicked": true,
+   "shareStatus": 200,
+   "shareUrl": "http://localhost:3007/plan/oG6Aj4QUqJYA"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W7b-share-menu.png"
+ },
+ {
+  "id": "W7c",
+  "area": "the brochure opens for a stranger, no \"chưa có giá\" price chips",
+  "status": "PASS",
+  "detail": {
+   "url": "http://localhost:3007/plan/oG6Aj4QUqJYA"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W7c-brochure-stranger.png"
+ }
+]

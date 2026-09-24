@@ -1,0 +1,173 @@
+[
+ {
+  "id": "W8a",
+  "area": "Scam Shield — URL path returns a verdict",
+  "status": "FAIL",
+  "detail": {
+   "tabs": [
+    "Kiểm tra URL",
+    "Quét mã QR",
+    "Phân tích tin nhắn"
+   ],
+   "http": null,
+   "verdict": "đáng ngờ"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W8a-scam-url.png"
+ },
+ {
+  "id": "W8b",
+  "area": "Scam Shield — QR path decodes an uploaded QR and returns a verdict",
+  "status": "PASS",
+  "detail": {
+   "uploaded": true,
+   "http": 200,
+   "verdict": "đáng ngờ"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W8b-scam-qr.png"
+ },
+ {
+  "id": "W8c",
+  "area": "Scam Shield — message path analyses the text and returns a verdict",
+  "status": "FAIL",
+  "detail": {
+   "http": null,
+   "verdict": "đáng ngờ"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W8c-scam-message.png"
+ },
+ {
+  "id": "W9a",
+  "area": "Explore feed renders (mobile)",
+  "status": "PASS",
+  "detail": {
+   "error": false,
+   "videos": 2,
+   "imgs": 1,
+   "note": ""
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W9a-explore-mobile.png"
+ },
+ {
+  "id": "W10a",
+  "area": "profile renders",
+  "status": "PASS",
+  "detail": {},
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W10a-profile.png"
+ },
+ {
+  "id": "W10b",
+  "area": "QR — opens with a code",
+  "status": "PASS",
+  "detail": {
+   "svg": true,
+   "share": true,
+   "download": true,
+   "del": false
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W10b-profile-qr.png"
+ },
+ {
+  "id": "W10c",
+  "area": "QR — share opens the TappyAI share sheet",
+  "status": "PASS",
+  "detail": {
+   "shareSheet": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W10c-profile-qr-share.png"
+ },
+ {
+  "id": "W10d",
+  "area": "QR — delete",
+  "status": "UNVERIFIED",
+  "detail": {
+   "note": "the QR screen has no delete action (share + download only); nothing to delete"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W10b-profile-qr.png"
+ },
+ {
+  "id": "W11",
+  "area": "post/upload — composer renders; photo upload as far as local allows",
+  "status": "UNVERIFIED",
+  "detail": {
+   "composer": {
+    "textarea": true,
+    "file": true
+   },
+   "uploadResponses": [
+    "500 /api/reviews/upload"
+   ],
+   "note": "publishing was not submitted; local Blob upload outcome recorded above"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W11-composer-upload.png"
+ },
+ {
+  "id": "W12_profile_profile_settings",
+  "area": "Back from /profile/settings returns to /profile",
+  "status": "PASS",
+  "detail": {
+   "clickedLink": "/profile/settings",
+   "child": "/profile/settings",
+   "backButton": true,
+   "landed": "/profile"
+  },
+  "shot": null
+ },
+ {
+  "id": "W12_profile_profile_qr",
+  "area": "Back from /profile/qr returns to /profile",
+  "status": "PASS",
+  "detail": {
+   "clickedLink": "/profile/qr",
+   "child": "/profile/qr",
+   "backButton": true,
+   "landed": "/profile"
+  },
+  "shot": null
+ },
+ {
+  "id": "W12_tools_currency",
+  "area": "Back from /currency returns to /tools",
+  "status": "PASS",
+  "detail": {
+   "clickedLink": "/currency",
+   "child": "/currency",
+   "backButton": true,
+   "landed": "/tools"
+  },
+  "shot": null
+ },
+ {
+  "id": "W12_profile_profile_history",
+  "area": "Back from /profile/history returns to /profile",
+  "status": "PASS",
+  "detail": {
+   "clickedLink": "/profile/history",
+   "child": "/profile/history",
+   "backButton": true,
+   "landed": "/profile"
+  },
+  "shot": null
+ },
+ {
+  "id": "W13",
+  "area": "notifications control is present",
+  "status": "FAIL",
+  "detail": {
+   "switches": 0,
+   "text": true
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W13-notifications.png"
+ },
+ {
+  "id": "W14",
+  "area": "EN — key screens render in English",
+  "status": "PASS",
+  "detail": {
+   "/": true,
+   "/profile": true,
+   "/scam-shield": true,
+   "/tools": true
+  },
+  "shot": null
+ }
+]
