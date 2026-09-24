@@ -1,8 +1,6 @@
 package com.tappyai.app.reviews.ui
 
 import android.widget.Toast
-import com.tappyai.app.ProductFlags
-import com.tappyai.app.music.MusicPickerSheet
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -109,8 +107,6 @@ internal fun ReviewsFeedScreen(
     /** Set when another screen asks the feed to switch tab — web parity: the Inbox digest banner
      *  hands off to the Following feed. Applied once, then cleared by the nav host. */
     requestedFeedType: ReviewFeedType? = null,
-    /** Opens the compact SoundSheet for a clip's attached track (web: the feed music disc). */
-    onMusicDiscClick: (String) -> Unit = {},
     /**
      * ✦ Hỏi Tappy: opens Chat pre-filled with the question about the given clip — the native
      * `/chat?q=` bridge the Deals and Home surfaces already use. Null hides the rail action.
@@ -171,7 +167,6 @@ internal fun ReviewsFeedScreen(
                     currentUserId = uiState.currentUserId,
                     viewModel = viewModel,
                     onAuthorClick = onAuthorClick,
-                    onMusicDiscClick = onMusicDiscClick,
                     onAskTappy = onAskTappy,
                     bottomClearance = ExploreV3.DockClearance,
                     modifier = Modifier.fillMaxSize(),
@@ -219,7 +214,6 @@ internal fun ReviewsFeedScreen(
 internal fun ProfileClipsScreen(
     startReviewId: String,
     onAuthorClick: (String) -> Unit,
-    onMusicDiscClick: (String) -> Unit,
     onBack: () -> Unit,
     onAskTappy: ((Review) -> Unit)? = null,
     viewModel: ReviewsFeedViewModel = hiltViewModel(),
@@ -277,7 +271,6 @@ internal fun ProfileClipsScreen(
                         currentUserId = uiState.currentUserId,
                         viewModel = viewModel,
                         onAuthorClick = onAuthorClick,
-                        onMusicDiscClick = onMusicDiscClick,
                         onAskTappy = onAskTappy,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -636,19 +629,6 @@ internal fun ReviewDetailScreen(
                         )
                     }
                 }
-                // Web parity: the attached-music card sits under the clip on the detail view, with
-                // its own play/pause honoring the review's saved startSec + volume.
-                // Gated with [ProductFlags.SHOW_MUSIC] — the card names the track and its artist,
-                // so it is a music surface, not decoration (web parity: ReviewMusicCard).
-                uiState.attachedTrack?.takeIf { ProductFlags.SHOW_MUSIC }?.let { track ->
-                    item(key = "attached-music") {
-                        ReviewMusicCard(
-                            track = track,
-                            startSec = review.music?.startSec ?: 0,
-                            volume = (review.music?.volume ?: 1.0).toFloat(),
-                        )
-                    }
-                }
                 reviewCommentItems(
                     comments = uiState.comments,
                     nowMillis = nowMillis,
@@ -793,9 +773,6 @@ internal fun ReviewComposerHost(
     // behind a collapsed disclosure.
     var showPlaceInput by rememberSaveable { mutableStateOf(viewModel.prefilledPlaceName != null) }
     var showRating by rememberSaveable { mutableStateOf(false) }
-    // The in-composer music picker (web MusicPickerSheet). The attached track itself now lives in the
-    // ViewModel's uiState, so add/replace/remove/trim all go through the ViewModel.
-    var showMusicPicker by rememberSaveable { mutableStateOf(false) }
     // The safety gate's outcome when it did not publish. A dialog rather than a Toast, and
     // deliberately: a Toast is dismissible by looking away, and this is the only moment the author
     // is told their post is not public. The web gives this its own screen for the same reason.
@@ -852,11 +829,6 @@ internal fun ReviewComposerHost(
         onToggleRating = { showRating = !showRating },
         onBack = onBack,
         onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName) },
-        attachedSoundTitle = uiState.attachedTrackTitle,
-        onRemoveSound = viewModel::onRemoveSound,
-        // Hidden with [ProductFlags.SHOW_MUSIC]: the button is already gated off inside the
-        // composer, and the picker cannot be opened from here either.
-        onAddMusic = { if (ProductFlags.SHOW_MUSIC) showMusicPicker = true },
         photoUrls = uiState.photoUrls,
         isUploadingPhoto = uiState.isUploadingPhoto,
         onPickPhotos = {
@@ -869,16 +841,6 @@ internal fun ReviewComposerHost(
         linkThumbnailUrl = uiState.linkThumbnailUrl,
         isFetchingLinkMeta = uiState.isFetchingLinkMeta,
     )
-
-    if (showMusicPicker) {
-        MusicPickerSheet(
-            onSelect = { trackId, title, startSec, volume ->
-                viewModel.onMusicSelected(trackId, title, startSec, volume)
-                showMusicPicker = false
-            },
-            onDismiss = { showMusicPicker = false },
-        )
-    }
 }
 
 @Composable

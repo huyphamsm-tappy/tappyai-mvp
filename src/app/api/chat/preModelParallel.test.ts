@@ -136,11 +136,12 @@ describe('calendar cannot take the batch down with it', () => {
 
 describe('isPro semantics for the quota are unchanged', () => {
   it('spends from the shared pool only when the user is not Pro, and only after isPro is known', () => {
-    // R-3 split the single condition in two so the metering flag can be set AFTER the spend:
-    // `if (isPro) { quotaMetered = true } else { const spend = await consumeAiQuestion(...) }`.
-    // The property is unchanged — Pro spends nothing, and the spend happens only once `isPro` is
-    // known — and both halves are asserted here.
-    expect(CODE).toMatch(/if\s*\(\s*isPro\s*\)\s*\{[\s\S]{0,120}?quotaMetered = true/)
+    // R-3 split the single condition so the metering flag is set AFTER the spend. 🔧 2026-09-24:
+    // a deterministic/canned turn (quotaExempt) is also metered without a spend, so the guard is
+    // `if (isPro || quotaExempt) { quotaMetered = true } else { const spend = await consumeAiQuestion(...) }`.
+    // The property is unchanged — Pro and canned spend nothing, and the spend happens only once
+    // `isPro` is known — and both halves are asserted here.
+    expect(CODE).toMatch(/if\s*\(\s*isPro \|\| quotaExempt\s*\)\s*\{[\s\S]{0,120}?quotaMetered = true/)
     expect(CODE).toMatch(/\}\s*else\s*\{[\s\S]{0,200}?const spend = await consumeAiQuestion\(aiQuotaIdentity\(user, clientIp\(req\)\)\)/)
     const spend = CODE.indexOf('const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))', CODE.indexOf('isPro = new Date'))
     expect(spend).toBeGreaterThan(CODE.indexOf('isPro = new Date(subData.current_period_end)'))

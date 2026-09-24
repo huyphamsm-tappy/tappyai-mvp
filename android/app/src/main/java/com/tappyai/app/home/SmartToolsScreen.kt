@@ -148,7 +148,7 @@ internal fun SmartToolsScreen(
                         modifier = Modifier.fillMaxWidth(),
                     )
 
-                    val groups = smartToolGroups(filterSmartTools(smartTools(), query))
+                    val groups = smartToolGroups(filterSmartTools(SMART_TOOLS, query))
                     if (groups.isEmpty()) {
                         Text(
                             text = stringResource(R.string.smart_tools_search_empty),

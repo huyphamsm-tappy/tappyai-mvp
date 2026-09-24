@@ -521,22 +521,31 @@ export async function POST(req: Request) {
       // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
-      // 🚨 R-4/R-3: quotaMetered is SET AFTER THE SPEND, never before — a THROW between here and
-      // the spend must fall through to the IP-keyed backstop, or the turn reaches the model counted
-      // by nobody. A $0 canned turn (quotaExempt, owner decision 2026-09-18) is not charged.
-      const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
-      if (!spend.ok) {
-        return new Response(
-          JSON.stringify({
-            error: 'anon_limit_reached',
-            message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
-            upgradeUrl: '/login',
-          }),
-          { status: 401, headers: { 'Content-Type': 'application/json' } }
-        )
+      // 🚨 TWO INVARIANTS, BOTH SERVER-SIDE.
+      //   (1) DETERMINISTIC = FREE. `quotaExempt` (a canned reply or a clarification question — both
+      //       computed here from the messages/intent, never from a client body/header/query) answers
+      //       WITHOUT the model (see the `canned` return below, `llmCalls: 0`), so it spends nothing.
+      //   (2) R-4/R-3: on the model path, quotaMetered is set AFTER the spend, never before — a THROW
+      //       between here and the spend must fall through to the IP-keyed backstop, or the turn
+      //       reaches the model counted by nobody. Exempt still marks metered (it never reaches the
+      //       backstop) so nothing recharges it.
+      if (quotaExempt) {
+        quotaMetered = true
+      } else {
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
+          return new Response(
+            JSON.stringify({
+              error: 'anon_limit_reached',
+              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
+              upgradeUrl: '/login',
+            }),
+            { status: 401, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+        quotaMetered = true
+        quotaRefund = spend.refund
       }
-      quotaMetered = true
-      quotaRefund = spend.refund
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
       // preferences, calendar and subscription lookups, so a blocked turn costs
@@ -643,31 +652,27 @@ export async function POST(req: Request) {
           { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(userBurst.retryAfter) } },
         )
       }
-      // 🚨 R-3: quotaMetered is SET AFTER THE SPEND, never before. Setting it first meant a throw
-      // between here and the spend left the flag true and the IP-keyed backstop skipped — the turn
-      // reached the model counted by nobody, a metering bypass an attacker can provoke by failing
-      // the quota store. Pro is metered by nothing (unlimited); a $0 canned turn (quotaExempt,
-      // owner decision 2026-09-18) is not charged but is still marked metered so the backstop does
-      // not recharge it. Exactly one spend per turn.
-      if (isPro) {
+      // 🚨 R-3 + DETERMINISTIC-IS-FREE. quotaMetered is SET AFTER THE SPEND, never before: setting
+      // it first meant a throw between here and the spend left the flag true and the IP-keyed
+      // backstop skipped — the turn reached the model counted by nobody, a metering bypass an
+      // attacker can provoke by failing the quota store. Pro is metered by nothing (unlimited); a
+      // deterministic/canned turn (quotaExempt) answers WITHOUT the model, so it spends nothing
+      // either. Both still mark metered so the backstop does not recharge them. One spend per turn.
+      if (isPro || quotaExempt) {
         quotaMetered = true
       } else {
-        if (quotaExempt) {
-          quotaMetered = true
-        } else {
-          const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
-          if (!spend.ok) {
-            return new Response(
-              JSON.stringify({
-                error: 'free_limit_reached',
-                message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-              }),
-              { status: 429, headers: { 'Content-Type': 'application/json' } }
-            )
-          }
-          quotaMetered = true
-          quotaRefund = spend.refund
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
+          return new Response(
+            JSON.stringify({
+              error: 'free_limit_reached',
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+            }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } }
+          )
         }
+        quotaMetered = true
+        quotaRefund = spend.refund
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the

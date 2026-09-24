@@ -144,31 +144,6 @@ export const SHOW_MARKETPLACE = false
  * NOT exported through `GET /api/config`: there is no Android or iOS wallet gate to mirror.
  */
 export const SHOW_WALLET = false
-/**
- * Music — HIDDEN BY DEFAULT, NOT DELETED (owner decision 2026-09-24: Music is out,
- * not launching, no licensing review).
- *
- * 🚨 CONTEXT — WHY THIS FLAG EXISTS AND WHY IT DEFAULTS TO FALSE.
- * F-024/F-034 retired the "use this sound" REUSE path (borrowing another user's clip
- * audio) for good. Session A (9f85cde) then restored the licensed LIBRARY half — the
- * `/music` browser and the composer soundtrack picker, reading a curated
- * royalty_free/licensed catalogue via the service-role client (the `music_tracks`
- * lockdown revoked ordinary-role grants, so the library reads server-side only). The
- * owner has now decided the library ships hidden too.
- *
- * This is a HARDCODED default, deliberately NOT an env read: if the flag were unset or
- * a production env var were missing, Music would leak back into the UI. Hidden must be
- * the code default. Flipping this one boolean to `true` restores every web entry point
- * at once (nav/Smart Tools card, `/music` page, composer picker, feed soundtrack card).
- *
- * Same shape as `SHOW_APP_CONNECTIONS`/`SHOW_MARKETPLACE`: the pages, components, module
- * and backend routes all stay intact — only the entry points are gated off. The REUSE
- * path stays withdrawn regardless of this flag; this flag governs the LIBRARY only.
- *
- * Mirrored by the Android `SHOW_MUSIC` gate (also a hardcoded `false`) — flip BOTH
- * together if Music is ever launched.
- */
-export const SHOW_MUSIC = false
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 

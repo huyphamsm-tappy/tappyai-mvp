@@ -24,8 +24,6 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MusicNote
-import com.tappyai.app.ProductFlags
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
@@ -92,9 +90,6 @@ fun ReviewComposerScreen(
     onBack: () -> Unit,
     onPost: () -> Unit,
     modifier: Modifier = Modifier,
-    attachedSoundTitle: String? = null,
-    onRemoveSound: () -> Unit = {},
-    onAddMusic: () -> Unit = {},
     photoUrls: List<String> = emptyList(),
     isUploadingPhoto: Boolean = false,
     onPickPhotos: () -> Unit = {},
@@ -124,13 +119,6 @@ fun ReviewComposerScreen(
             verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
         ) {
             Spacer(modifier = Modifier.height(TappySpacing.md))
-
-            if (attachedSoundTitle != null) {
-                AttachedSoundChip(title = attachedSoundTitle, onRemove = onRemoveSound)
-            } else {
-                // Hidden with [ProductFlags.SHOW_MUSIC] — web parity with the gated `v3-post-chip`.
-                if (ProductFlags.SHOW_MUSIC) AddMusicButton(onClick = onAddMusic)
-            }
 
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
 
@@ -300,70 +288,6 @@ private fun MediaTab(
             fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
         )
         Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-/** "Using: {title}" bar — mirrors TikTok/the web's attached-sound indicator on the composer,
- *  shown when this session was reached via Sound Detail's "Use this sound". */
-@Composable
-private fun AttachedSoundChip(title: String, onRemove: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(ComposerSurface)
-            .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.MusicNote,
-            contentDescription = null,
-            tint = ActionRowIcon,
-            modifier = Modifier.size(18.dp),
-        )
-        Text(
-            text = stringResource(R.string.reviews_composer_using_sound, title),
-            color = ComposerTextPrimary,
-            fontSize = 13.sp,
-            modifier = Modifier.weight(1f).padding(start = TappySpacing.sm),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        IconButton(onClick = onRemove) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = stringResource(R.string.reviews_composer_remove_sound),
-                tint = ComposerTextSecondary,
-                modifier = Modifier.size(18.dp),
-            )
-        }
-    }
-}
-
-/** Web parity: the composer's "Add music" text button (Music icon + accent label) shown when no
- *  track is attached — opens the in-composer [com.tappyai.app.music.MusicPickerSheet]. */
-@Composable
-private fun AddMusicButton(onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .clickable(onClick = onClick)
-            .padding(vertical = TappySpacing.xs, horizontal = TappySpacing.xs),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
-    ) {
-        Icon(
-            imageVector = Icons.Filled.MusicNote,
-            contentDescription = null,
-            tint = ComposerAccent,
-            modifier = Modifier.size(16.dp),
-        )
-        Text(
-            text = stringResource(R.string.reviews_composer_add_music),
-            color = ComposerAccent,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-        )
     }
 }
 

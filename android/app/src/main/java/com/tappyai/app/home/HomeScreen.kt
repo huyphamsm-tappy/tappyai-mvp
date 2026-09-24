@@ -860,8 +860,7 @@ private fun SmartToolsSection(
         SmartToolId.Scan, SmartToolId.Translate, SmartToolId.Currency, SmartToolId.Split,
         SmartToolId.Safety, SmartToolId.Together, SmartToolId.Captions,
     )
-    // `smartTools()`, not the raw registry: a gated tool (Music) must not appear on Home either.
-    val tools = smartTools().filter { it.id in previewed }
+    val tools = SMART_TOOLS.filter { it.id in previewed }
 
     Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
         SectionHeader(

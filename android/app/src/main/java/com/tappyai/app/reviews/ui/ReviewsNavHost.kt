@@ -9,9 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.tappyai.app.ProductFlags
 import com.tappyai.app.R
-import com.tappyai.app.music.SoundSheet
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
 import com.tappyai.app.home.HomeTab
@@ -85,17 +83,8 @@ fun ReviewsNavHost(
                 onProfile = { navController.navigate(ReviewsRoute.SelfProfile) },
                 onBack = onBack,
                 requestedFeedType = requested?.let { ReviewFeedType.Following },
-                // Web parity: tapping a clip's music disc opens the compact SoundSheet.
-                onMusicDiscClick = { trackId ->
-                    // Refused while Music is hidden ([ProductFlags.SHOW_MUSIC]).
-                    if (ProductFlags.SHOW_MUSIC) navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
-                },
                 onAskTappy = askTappy,
             )
-        }
-
-        composable<ReviewsRoute.SoundSheet> {
-            SoundSheet(onDismiss = { navController.popBackStack() })
         }
 
         // Self Profile (V3, 2026-09-12): reached from the feed header's person button. A post's
@@ -207,10 +196,6 @@ fun ReviewsNavHost(
                 startReviewId = route.startReviewId,
                 onAuthorClick = { userId ->
                     navController.navigate(ReviewsRoute.AuthorProfile(userId = userId))
-                },
-                onMusicDiscClick = { trackId ->
-                    // Refused while Music is hidden ([ProductFlags.SHOW_MUSIC]).
-                    if (ProductFlags.SHOW_MUSIC) navController.navigate(ReviewsRoute.SoundSheet(trackId = trackId))
                 },
                 onAskTappy = askTappy,
                 onBack = { navController.popBackStack() },

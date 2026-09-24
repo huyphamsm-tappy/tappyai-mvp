@@ -30,8 +30,6 @@ import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.MusicNote
-import com.tappyai.app.ProductFlags
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -96,7 +94,7 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  * untouched: Home's section still opens it. The web registry keeps its row; this list is
  * the web's minus that one.
  */
-internal enum class SmartToolId { Scan, Translate, Currency, Split, Safety, Together, Music, Fortune, Captions }
+internal enum class SmartToolId { Scan, Translate, Currency, Split, Safety, Together, Fortune, Captions }
 
 /** The web's three groups (`v3.tools.daily` / `discover` / `fun`), in order. */
 internal enum class SmartToolGroup(@StringRes val titleRes: Int) {
@@ -136,25 +134,12 @@ internal val SMART_TOOLS: List<SmartTool> = listOf(
     SmartTool(SmartToolId.Split, R.string.smart_tool_split, R.string.smart_tool_split_desc, Icons.Filled.Calculate, SmartToolHue.Amber, R.drawable.tappy_welcome, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Safety, R.string.smart_tool_safety, R.string.smart_tool_safety_desc, Icons.Filled.VerifiedUser, SmartToolHue.Blue, R.drawable.tappy_recommendation, SmartToolGroup.Daily, home = true),
     SmartTool(SmartToolId.Together, R.string.smart_tool_together, R.string.smart_tool_together_desc, Icons.Filled.Group, SmartToolHue.Rose, R.drawable.tappy_food, SmartToolGroup.Discover, home = false, auth = true),
-    SmartTool(SmartToolId.Music, R.string.smart_tool_music, R.string.smart_tool_music_desc, Icons.Filled.MusicNote, SmartToolHue.Cobalt, R.drawable.tappy_aitools, SmartToolGroup.Discover, home = false),
     SmartTool(SmartToolId.Fortune, R.string.smart_tool_fortune, R.string.smart_tool_fortune_desc, Icons.Filled.AutoAwesome, SmartToolHue.Violet, R.drawable.tappy_thinking, SmartToolGroup.Fun, home = false),
     SmartTool(SmartToolId.Captions, R.string.smart_tool_captions, R.string.smart_tool_captions_desc, Icons.Filled.Edit, SmartToolHue.Pink, R.drawable.tappy_phone, SmartToolGroup.Fun, home = false),
 )
 
-/**
- * The tools this build actually offers — `smartTools()` on the web.
- *
- * [SMART_TOOLS] stays the full registry (identity, order and grouping, exactly as the web declares
- * them, which `SmartToolsTest` pins). This is the gated view of it: a hidden tool is ABSENT, not
- * greyed out, and it comes back with one boolean. Music is gated on every platform while its
- * licensing is open — web `SHOW_MUSIC`, `flags.showMusic` from `GET /api/config`, and
- * [ProductFlags.SHOW_MUSIC] here.
- */
-internal fun smartTools(): List<SmartTool> =
-    SMART_TOOLS.filter { it.id != SmartToolId.Music || ProductFlags.SHOW_MUSIC }
-
 /** The registry by group, in group order — `smartToolGroups()` on the web. */
-internal fun smartToolGroups(tools: List<SmartTool> = smartTools()): List<Pair<SmartToolGroup, List<SmartTool>>> =
+internal fun smartToolGroups(tools: List<SmartTool> = SMART_TOOLS): List<Pair<SmartToolGroup, List<SmartTool>>> =
     SmartToolGroup.entries.map { g -> g to tools.filter { it.group == g } }.filter { it.second.isNotEmpty() }
 
 /** A tool's colours: the card's gradient stops, its badge, and the badge glyph colour. */
