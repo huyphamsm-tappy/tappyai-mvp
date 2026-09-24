@@ -1,200 +1,228 @@
-# TappyAI — Manual UAT Handoff
+# TappyAI — Bàn giao UAT thủ công
 
-Prepared 2026-09-21 for a full manual UAT on localhost. This is the document to work
-from. It assumes the audit (non-production) Supabase project `zdaprdfgpbpnxyofagmc`.
+Cập nhật **2026-09-25** (PRELAUNCH Part 7). Tài liệu này thay bản 2026-09-21: bản cũ ghi port 3000 và nhánh `uat/release-audit-2026-09`, cả hai đã lỗi thời.
 
-> **This session's fixes to spot-check** (all committed on `uat/release-audit-2026-09`):
-> - **F-029** — sharing a large Vietnamese plan no longer 500s (byte-based trim). *Test: item 6 below.*
-> - **F-031** — a content-report channel is restored (`POST /api/reviews/[id]/report` + a Report menu on other people's clips). *Test: item 7 below.*
-> - **Android music-reuse removed** — no "use this sound"/sound sheet/music tile; clips still play their own audio. *Test: item 4 below.*
+**Bạn đang dùng bản nào?** Chạy lệnh dưới đây trong thư mục repo:
 
----
-
-## 1. Start everything from cold
-
-### Web (required for everything, including the Android app)
 ```bash
-npm install        # first time only
-npm run dev        # Next.js on http://localhost:3000
+npm run whoami
 ```
-- Expect: `▲ Next.js 14.2.35 … Local: http://localhost:3000`, ready in a few seconds.
-- Env is already in `.env.local` (points at the audit Supabase, Serper key, Anthropic key). Do **not** commit it.
-- Open http://localhost:3000 and sign in with an account from §2.
 
-### Reset to a clean state (if you break the dev server / caches)
+Kết quả đúng phải có: `branch: rc/web-uat`, `supabase: zdaprdfgpbpnxyofagmc ✅ audit/non-prod`, `dev port: 3007`. Trên web, góc dưới bên trái có huy hiệu `audit dev · g1-place-guard · rc/web-uat @ <sha> · supabase: zdaprdfgpbpnxyofagmc` cho biết cùng thông tin này.
+
+> Toàn bộ UAT chạy trên project Supabase **audit** (`zdaprdfgpbpnxyofagmc`). **Không có gì ở đây chạm vào production.** Guard `scripts/prodEnvGuard.mjs` chặn `dev`, `build` và `start` nếu thấy ref production.
+
+---
+
+## 1. Khởi động
+
+### Web
+
+Làm trong worktree `D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard`:
+
 ```bash
-npm run dev:reset          # stop port 3000 → clear .next + node_modules/.cache → reinstall only if corrupt → health-check → stop
-npm run dev:reset -- --keep   # same, but leaves the server running
+npm run dev
 ```
-- This resets the **dev environment only**. It never touches the database, your env files, or app code. The seeded accounts and data in §2/§3 persist across resets. If you need fresh data, re-run the provisioning (ask, or see §3).
 
-### Android (debug build, against your local web server)
-- Prereqs: Android Studio installed; an emulator running; the web dev server up on :3000.
-- The debug build's API base URL defaults to **`http://10.0.2.2:3000/`** (the emulator's route to your host's localhost) — so the **emulator**, not a physical device, is the zero-config path.
-- Build/install from the `android/` folder:
-  ```bash
-  cd android
-  # Windows (Git Bash): point Gradle at Android Studio's bundled JDK 21
-  export JAVA_HOME="/c/Program Files/Android/Android Studio/jbr"
-  ./gradlew :app:installDebug      # installs com.tappyai.app.debug on the running emulator
-  ```
-- Supabase URL/anon key for the debug build come from `android/gradle.properties` (already set to the audit project). App id: `com.tappyai.app.debug`.
-- A **physical device** needs the API base overridden to your machine's LAN IP: `./gradlew :app:installDebug -PTAPPYAI_API_BASE_URL_DEBUG=http://<your-LAN-ip>:3000/` (and the phone on the same network).
-- iOS: **not buildable here** (no macOS) and **must not be released** — see §5.
+- Server chạy ở **http://localhost:3007** và in `Ready` sau vài giây.
+- Lần mở đầu tiên mỗi trang sẽ chậm vì Next biên dịch khi được gọi.
+- `.env.local` đã trỏ sẵn vào audit. `NEXT_PUBLIC_APP_URL` và `NEXT_PUBLIC_SITE_URL` là `http://localhost:3007`. Không commit file này.
+- Dừng server: Ctrl+C. Nếu server kẹt hoặc cache hỏng:
+
+```bash
+PORT=3007 npm run dev:reset -- --keep
+```
+
+  ⚠️ Phải truyền `PORT=3007`. Script reset mặc định dùng 3000, còn `npm run dev` chạy ở 3007.
+- **Không chạy hai `next dev` cùng lúc trong cùng thư mục.** Cái thứ hai sẽ xoá CSS của cái đầu.
+
+### Android (emulator, bản debug trỏ vào web local)
+
+1. Mở Android Studio → Device Manager → chạy emulator (bản đã dùng: `Pixel_8_uat`, Android 15).
+2. Web phải đang chạy ở :3007.
+3. Build và cài (PowerShell, trong worktree):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\uat\build-android-local.ps1
+```
+
+   Script lấy URL và anon key Supabase audit từ `.env.local`, không in ra. API trỏ vào `http://10.0.2.2:3007/`, là đường emulator dùng để tới localhost của máy bạn. Script **từ chối chạy** nếu `.env.local` không phải audit. Thêm `-NoInstall` nếu chỉ muốn build: APK nằm ở `android\app\build\outputs\apk\debug\app-debug.apk`.
+4. Cài APK có sẵn bằng tay:
+
+```bash
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+   Muốn xoá sạch dữ liệu app để thử lần mở đầu:
+
+```bash
+adb shell pm clear com.tappyai.app.debug
+```
+
+- App id là `com.tappyai.app.debug`.
+- **Máy thật** phải cùng mạng Wi-Fi. Chạy script với `-Port 3007` và sửa dòng `10.0.2.2` thành IP LAN của máy (hiện script chỉ hỗ trợ emulator).
+- **iOS:** không build được ở đây (không có macOS) và **không được phát hành** (§6).
 
 ---
 
-## 2. Accounts (persistent — created directly, log in with email + password)
+## 2. Tài khoản (chỉ có trên project audit)
 
-All four use the same password: **`TappyUAT!2026`**. All are 18+ (age gate passed) and onboarded, so they land straight in the app.
+Cả bốn tài khoản dùng chung mật khẩu **`TappyUAT!2026`**. Cả bốn đã khai 18+ (có `user_demographics`) và đã qua onboarding.
 
-| Role | Email | What it's for |
+| Vai trò | Email | Trạng thái đã kiểm (đọc DB audit, 2026-09-25) | Dùng để |
+|---|---|---|---|
+| **User thường, có lịch sử** | `manual.uat.user@tappyai.com` | email đã xác nhận · 2 hội thoại · 3 review | Trải nghiệm người dùng quay lại |
+| **User mới** | `manual.uat.fresh@tappyai.com` | đã xác nhận · 0 hội thoại | Màn hình trống, lần chạy đầu, quiz sở thích |
+| **Pro** | `manual.uat.pro@tappyai.com` | đã xác nhận · gói `pro/active` · 11 hội thoại (do UAT của tôi tạo) | Hành vi Pro, không bị giới hạn quota miễn phí |
+| **Admin** | `manual.uat.admin@tappyai.com` | đã xác nhận · `admin_roles.role = admin` · 1 review | Back office (`/admin`) |
+
+- Tôi **không tự thử lại mật khẩu**, vì tôi không được đăng nhập bằng mật khẩu. Tôi chỉ đăng nhập bằng magic link admin.
+- Nếu mật khẩu sai, đặt lại trong Supabase Dashboard → project **audit** → Authentication → Users → user đó → *Send password recovery*, hoặc đặt mật khẩu mới.
+- Không có loại tài khoản merchant. Deal đối tác là nội dung do admin quản lý.
+
+---
+
+## 3. Dữ liệu trên audit
+
+Số liệu đọc chỉ-đọc ngày 2026-09-25:
+
+| Thứ | Có gì | Nghĩa là |
 |---|---|---|
-| **Plain user, with history** | `manual.uat.user@tappyai.com` | The product should not look empty: 2 saved conversations (a food chat + a Đà Lạt trip), 1 posted review (Phở Phú Vương, published), 1 saved review. Use for the "returning user" experience. |
-| **Fresh plain user** | `manual.uat.fresh@tappyai.com` | A brand-new signed-in user, no history. Use to see empty states and first-run flows. |
-| **Pro user** | `manual.uat.pro@tappyai.com` | Has an **active subscription** (`status=active`, expires ~1 year out), so it skips the free-question quota and gets the Pro daily cap. Use to test Pro-only behaviour. NOTE: the *purchase/upgrade* flow itself isn't testable locally (§5) — this account is already Pro. |
-| **Admin** | `manual.uat.admin@tappyai.com` | Has the `admin` back-office role. The email is `@tappyai.com` on purpose — the back office refuses any non-corporate identity, so an admin account must be on that domain. Use to reach admin/back-office surfaces. |
-
-**Merchant: not applicable.** There is **no merchant/partner/business account type** in this app. Partner deals and commerce providers are owner-managed *content* (written server-side, read publicly), not something a user logs in to manage. So there is no merchant login to hand you. If you need to exercise partner-deal content, it's admin-managed.
-
-> These accounts are **not** prefixed `uat2609_` — they're meant to persist. They live only on the audit project.
+| Địa điểm của 5 domain (ăn uống, mua sắm, du lịch, giải trí, spa) | **Không nằm trong DB**, lấy trực tiếp từ Serper | Hỏi là có dữ liệu thật. Mỗi lượt hỏi đồ ăn tốn khoảng 4 credit Serper |
+| Review / clip | **5 bài**: 1 ảnh + 4 video. Tác giả: user (3), pro (1), admin (1) | Feed Khám phá có nội dung. Thử báo cáo bài của người khác bằng một tài khoản khác |
+| Plan share / public result | `plan_shares` 4, `shared_results` 1 | Các link `/plan/<id>` và `/r/<slug>` mở được |
+| Deal đối tác (`partner_deals`) | **0** | Tab Deals sẽ **trống**. Đây là đúng dữ liệu, không phải lỗi |
+| `commerce_feed_items` | **0** | Câu trả lời mua sắm **không có nút "Mua trên …"**, chỉ có "Tìm trên …" (F-036) |
+| Nhóm | 1 | |
 
 ---
 
-## 3. Seeded data
+## 4. Danh sách bấm thử, theo mức rủi ro (làm từ trên xuống)
 
-- **Places / merchants for the 5 domains: nothing was seeded, and nothing needs to be.** Place/restaurant/hotel data is **not** in the database — it comes live from external providers. **Serper** (`google.serper.dev`) is the working provider and returns real Vietnamese places (verified: a "phở quận 1" query returned 12 real results). So FOOD / SHOPPING / TRAVEL / ENTERTAINMENT / SPA discovery, search, categories, filters, sorting and pagination all work live with real data — just start the server and ask.
-  - **Serper is the sole place provider — including photos.** Google Places was removed (2026-09-21): it is not available for Vietnam, so it was legacy code. Serper's `/maps` response carries a place thumbnail (`image`), and a Serper image search fills the rest of the gallery, so place cards show photos across all five domains (verified live).
-- **User data:** the four accounts above, plus history on account #1 (see §2). The rest of the audit DB is empty by design.
-- To re-seed the accounts/history (idempotent), the provisioning script lives in the session scratchpad; re-running it recreates or refreshes the four accounts.
+### A. Các sửa của đợt này: xác nhận trước, vì đây là thứ mới nhất
 
----
+- [ ] **Ranh giới public/app** (`PUBLIC-BOUNDARY-FIX.md`): mở cửa sổ ẩn danh mới vào `/plan/<id>`, `/r/<slug>`, `/reviews`, `/scam-shield`, `/about`. Trang **không** được hỏi vị trí, không hiện modal chọn ngôn ngữ, không có cổng tuổi, không bắt đăng nhập. Ngôn ngữ theo trình duyệt (thử cả EN).
+- [ ] Ngược lại, **phía app** (`/`, `/chat`, `/profile`) vẫn phải hỏi ngôn ngữ và vị trí như cũ.
+- [ ] **Chia sẻ lịch trình trên Android (F-070)**: Chat → "Lên lịch trình 1 ngày ở Đà Lạt cho 2 người" → 📤 Chia sẻ lịch trình. Sheet phải hiện link `…/plan/<id>` trong vài giây, không kẹt ở "Đang tạo…". Link luôn là `www.tappyai.com/…` (F-078), nên hãy mở cùng id trên `http://localhost:3007/plan/<id>`.
+- [ ] **Android, share từ thanh dưới tin nhắn có thẻ địa điểm**: phải ra brochure gợi ý có tiêu đề là câu bạn hỏi, không phải chỉ đoạn văn. *Chưa ai bấm thử trên thiết bị.*
+- [ ] **Ngân sách không đi theo sang chủ đề mới (F-069, 5a)**: "Tư vấn tai nghe chống ồn dưới 2 triệu" → "Lên lịch trình 1 ngày ở Vũng Tàu cho 2 người". Kế hoạch **không** được nhắc "2 triệu". Tương tự "trưa nay ăn gì dưới 100k" → "tư vấn điện thoại Samsung" không được mang 100k.
+- [ ] **Quận người dùng nêu (5b)**: "Quán phở ngon ở Quận 3" → mọi thẻ có địa chỉ ở Quận 3 (Xuân Hòa, Nhiêu Lộc, Bàn Cờ, Võ Thị Sáu). "Cà phê yên tĩnh ở Bình Thạnh" → mọi thẻ ở Bình Thạnh.
+- [ ] **"98-99%" không phải tiền**: "iPhone 15 Pro Max cũ pin 98-99%" không được ra ngân sách 98k.
+- [ ] **Brochure**: không có chip "chưa có giá". Ở tiếng Anh, dòng tổng ghi "1 day · 1 stop" (không phải "1 days").
 
-## 4. Highest-value checklist — work top to bottom
+### B. Năm domain cốt lõi (đăng nhập user thường)
 
-Ordered by risk: the top items are core product surfaces that have **never** been verified (the backend audit re-verified plumbing, not the product). Each line is something to click through.
+Làm cho mỗi domain ăn uống, mua sắm, du lịch, giải trí và spa:
 
-### A. The five core domains — **do these first** (never verified; now testable on live Serper data)
-Sign in as **plain-history**. For **each** domain — FOOD, SHOPPING, TRAVEL, ENTERTAINMENT, SPA/WELLNESS:
-- [ ] Ask a natural Vietnamese request (e.g. *"quán lẩu ngon quận 3 cho 4 người"*, *"khách sạn Đà Nẵng gần biển"*, *"spa massage quận 1"*). You should get real, relevant places.
-- [ ] Open a result's detail. **Check every field shown is actually backed by data** — name, address, rating, price, hours. Flag anything that looks invented or mismatched (this is the #1 risk).
-- [ ] Try a failure/empty path (a nonsense query, a place that shouldn't exist) — you should get a graceful "nothing found", not an error or a fabricated answer.
-- [ ] Categories, filters, sort, and "load more"/pagination each change the results sensibly.
+- [ ] Hỏi tự nhiên bằng tiếng Việt, có kèm ràng buộc (quận, giá, số người).
+- [ ] **Mọi thông tin trên thẻ phải có nguồn**: tên, địa chỉ, rating, số đánh giá, giá, giờ mở cửa. Ghi lại mọi chỗ trông như bịa. Đây là rủi ro số 1.
+- [ ] Văn bản không được mâu thuẫn với thẻ, ví dụ khen "tiện ăn khuya" cho quán đang đóng (F-072).
+- [ ] Hỏi tiếp vài lượt ("còn quán nào mở sau 21h?", "rẻ hơn?"): ràng buộc cũ vẫn phải giữ.
+- [ ] Hỏi một câu vô nghĩa: phải trả lời "không tìm thấy" một cách lịch sự, không lỗi, không bịa.
+- [ ] "Xem bản đồ" phải mở đúng quán trên Google Maps.
 
-### B. AI answer quality (Session C 2026-09-22 — re-test these on `uat/phase7-regressions`)
-The golden set (`docs/uat/ai-golden-set.jsonl`, 13 cases) was replayed before/after: **25/58 → 53/58** deterministic checks (`docs/uat/evidence/golden/compare-baseline-final.txt`). Re-test by hand, GPS = Quận 1, Pro account:
-- [ ] **G2 duplicate** — `Mình muốn đi Đà Nẵng 3 ngày, 2 người, thích tham quan và ăn hải sản` → `mai đi mốt về, budget 20 triệu` → `gần biển`. The reply must never repeat itself (was joined mid-line "…không?Tuyệt vời!…"); reload the conversation — the stored message is single too.
-- [ ] **G1 cards** — same thread: every turn shows the place card (no `![Ảnh địa điểm]` markdown images, no "Official Website · Google Maps" text links, no photo without a name above it, no GrabFood/BeFood button for a Đà Nẵng restaurant). `Rạp chiếu phim IMAX ở TP HCM` → `quận nào cũng được`: cinema cards on both turns; the wording is "phòng chiếu IMAX" (never "sàn/sảnh IMAX") and, since Maps rows carry no screen data, one honest line says IMAX is unconfirmed. `Tối nay đi xem phim ở rạp nào gần Quận 7`: first card is a cinema, not LOTTE Mart/Co.opmart.
-- [ ] **G3 constraints** — `trưa nay ăn gì cho ngon` → `chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng`: the card set shrinks (no "Nhà hàng …", no band starting above 60k), the pick in the text IS in the cards, an unpriced place is called "chưa xác nhận giá" (never "trong tầm giá"). `tìm quán nhậu ở Quận 1 tối nay` → `thôi không nhậu nữa, quán ăn gia đình thôi, 100-150k/người`: no nhậu/bia/bar cards, the reply acknowledges the change. `quán cà phê yên tĩnh ở Quận 3 dưới 50k, đang mở cửa`: a closed place is never first.
-- [ ] **G4 planning** — the Đà Nẵng thread above must deliver a `[TAPPY_PLAN]` plan on EVERY turn, never ask "máy bay hay xe khách?" (it states "mình tính đi máy bay, đổi thì nói mình"), read "mai đi mốt về" as **2 ngày 1 đêm** with a 2-day plan and budget_total 20.000.000 VND, and acknowledge the correction in one sentence. `Đi Đà Lạt cuối tuần này` and `Cuối tuần này đi Vũng Tàu 2 người, budget 5 triệu, thích hải sản`: a plan with stated assumptions (2 người / 2 ngày 1 đêm / xe khách), at most one question, never "khách sạn hay homestay" or "1 đêm hay 2 đêm".
-- [ ] **G5 high-stakes** — `muốn mua máy macbook pro m1` → `mua máy cũ thì cần check cái gì`; also `mua iPhone 13 cũ thì cần check gì`, `mua xe máy cũ Honda Wave cần kiểm tra gì`, `mua ô tô cũ tầm 300 triệu cần check gì`, `mua đồ cũ trên group Facebook thì lưu ý gì`. Each is ANSWERED (no "ngoài phạm vi"), opens with ownership / lock / fraud / safe-payment risks before condition checks, contains the sentence pointing to **Cảnh báo lừa đảo** — it must say "dán tin nhắn, link hoặc mã QR của người bán" and NEVER ask for a phone number or bank account (F-047, legal; `scamCheckerWording.test.ts` guards the source) — keeps its list shape. Known residual (F-043): a numeric threshold ("chênh >30%", "pin trên 80%") may still slip through (~1 run in 4 the whole answer regresses to cosmetic-first) — note it, don't file it again.
-- [ ] **T3 correction turn (F-048)** — `chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng` must re-run the search (never "bạn muốn ăn gì?"), drop upscale-typed venues (Google types "cao cấp / fine dining / steakhouse / buffet", or a name with "nhà hàng") and every band starting above 60k, and say "chưa xác nhận giá" for any kept place without a price band — never "trong tầm giá" for it. If Serper returned no bands at all that run (it happens), nothing is dropped on price and the reply says so.
-- [ ] **Small items** — under a Vietnamese reply the card's "Vì sao:" reads "đánh giá 4.7 · 279 lượt đánh giá" (not "rated … reviews"); a card's price band reads "dưới 100.000 ₫" (not "1-100.000 ₫"); "🔖 Lưu địa điểm" appears only under replies that carry a place (not under the MacBook checklist or a greeting).
-- [ ] **Android card copy (F-050/F-052)** — on the phone, a place card must read "Vì sao: đánh giá 4.9 · cách 0.9 km · 283 lượt đánh giá" (never "rated … reviews"), a band must read "dưới 100.000 ₫" / "100.000–200.000 ₫" (never "1-100.000 ₫"), and no card may show "Giá tham khảo: price_search_results". Switch the app to English (Tôi → Cài đặt → Ngôn ngữ) and re-check: "Why: rated 4.6 · 0.5 km away · 12,879 reviews", "100,000–300,000 ₫".
-- [ ] **F-044 — v2 attribution is now the DEFAULT** (`PLACE_GUARD_ATTRIBUTION_V2=0` rolls back): the pick sentence survives for venues Serper names with a "| tagline" (e.g. "ViDa Cafe | CÀ PHÊ NGON QUẬN 3") — the prose must name the same pick the card marks. Evidence: `docs/uat/evidence/golden/final2-v2/` vs `final2/` (`compare-final2-vs-v2.txt`).
-- [ ] Across the domains above, judge: did it honour the constraints (budget, area, party size)? Any hallucinated places, prices, or claims? Does the reply language match your input language?
-- [ ] Ask a multi-turn/consultative flow (it asks a clarifying question, you answer, it refines).
+### C. Lịch trình và chia sẻ
 
-### C. Web frontend sweep (no real-browser pass has been done)
-- [ ] Open the browser devtools console and watch for red errors / hydration warnings as you navigate.
-- [ ] Click through every primary nav destination; look for dead buttons, broken routes, and 404s.
-- [ ] Check empty / loading / error states (fresh account, offline, a failing search).
-- [ ] Resize to mobile width and toggle light/dark theme — layout should hold; nothing clipped or unreadable.
+- [ ] Lịch trình nhiều ngày, tiếng Việt dài → Chia sẻ → mở link bằng cửa sổ ẩn danh: brochure đầy đủ, không 500.
+- [ ] Chia sẻ public một câu trả lời (`/r/<slug>`) → mở ẩn danh.
 
-### D. Android app (music-reuse was just removed — confirm it's clean)
-Install the debug build (§1) and sign in.
-- [ ] **No music-reuse UI anywhere:** no "use this sound" pill on feed clips, no sound sheet/detail screen, no "add music" in the composer, no Music tile in Smart Tools / Home. (These would have called retired endpoints and are gone.)
-- [ ] **A clip still plays its own audio** — open the Explore feed, a video plays with sound. (Own-clip audio is embedded and was deliberately kept.)
-- [ ] General smoke: feed scrolls, chat works against localhost, profile loads, posting a review works.
+### D. Cảnh báo lừa đảo (web + Android)
 
-### E. Notifications & theme (unverified across surfaces)
-- [ ] Notification preferences toggle and persist (web + Android).
-- [ ] Default theme is correct on every entry path (fresh install, deep link, re-open).
+- [ ] URL giả (ví dụ `vietcombank-xacminh.top/dang-nhap`) → "Nguy cơ cao", kèm thông tin chính chủ.
+- [ ] QR (web: tải ảnh QR lên).
+- [ ] Tin nhắn "trúng thưởng … nhập OTP" → "Rất nguy hiểm". ⚠️ Mục "Vì sao đáng ngờ" hiện ra **tiếng Anh**. Lỗi này đã biết (F-068), không cần báo lại.
 
-### F. This session's fixes — spot-check
-- [ ] **F-029 (plan share):** as any account, generate a **large Vietnamese itinerary** (multi-day, many stops, diacritic-heavy text) and **share it**. It should return a share link and open the shared page — no 500. (Previously a large VN plan 500'd.)
-- [ ] **F-031 (content report):** as one account, open **another** user's clip/review in the feed (use the plain-history account's posted review, viewed from a different account) → the **⋮ Report** menu appears → pick a reason → you get a "report sent" confirmation. (Owners see delete/hide instead; guests see neither.)
-  - ⚠️ **Prep (F-037):** the seeded `manual.uat.user` review is **text-only**, and a media-less review is excluded from the Explore feed by design (it is visible only on that user's own profile). To make it appear so another account can report it, give it a photo — run this once against the audit DB:
-    ```sql
-    UPDATE public.reviews
-    SET photos = ARRAY['https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80']::text[],
-        thumbnail = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
-        media_url = 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80',
-        content_type = 'photo'
-    WHERE id = '62116a0d-54ee-4313-acf6-1393be8ac862';
-    ```
+### E. Đăng nhập, cổng tuổi, khách
 
-### G. Auth / age-gate / account flows
-- [ ] Sign out / sign in with email+password works for each account.
-- [ ] The 18+ age gate behaves (all four accounts are adults and should pass straight through). F-028: a mistyped DOB correction path is recoverable.
-- [ ] Pro account: confirm it isn't hitting the free-question quota; admin account: confirm back-office surfaces load.
-- [ ] **Guest / anonymous flow (now enabled — F-010).** Open the app signed-out and declare your age (18+). You get **5 trial AI questions for the lifetime of the guest identity** (not per day). Ask 5 questions, then the 6th should return a friendly message — *"Bạn đã dùng hết 5 câu hỏi AI dùng thử. Đăng nhập để có 15 câu hỏi AI mỗi ngày…"* — with a sign-in prompt, **not** a raw error. Then sign in and confirm you now get the 15/day registered allowance (a separate pool). *(Backend-verified already: anon session issues, the guest JWT cannot read/write other users' rows, and the quota is enforced + separate — this is the human-facing confirmation.)*
+- [ ] Đăng nhập bằng email + mật khẩu cho cả 4 tài khoản, rồi đăng xuất.
+- [ ] Khách: khai 18+ → có 5 câu hỏi dùng thử. Câu thứ 6 phải là lời nhắc đăng nhập, không phải lỗi. **Chưa ai kiểm quota khách hiển thị ra sao** (W2e).
+- [ ] Pro không bị chặn quota. Admin vào được `/admin`; một tài khoản không phải `@tappyai.com` thì không vào được.
 
-### H. Admin / back office
-- [ ] Sign in as **admin** and confirm the back-office/admin surfaces are reachable and render (moderation queue, etc.). A non-`@tappyai.com` account must **not** reach them.
+### F. Android riêng
 
-### I. Music-reuse fully gone (final cleanup — web this time)
-- [ ] **Feed shows NO sound disc.** Open the reviews feed and a clip's detail — there is no "sound"/music disc or "use this sound" affordance anywhere (it was removed on Android last pass and on web now).
-- [ ] **A clip plays its own audio.** Open an uploaded video clip (or post one, if Blob is on) — it plays its own embedded sound on tap-to-unmute; nothing borrows another clip's audio. *(This is the one Item-2 check best done visually here — the removal is source-verified but a seeded upload video confirms playback.)*
-- [ ] **Copyright policy is reachable.** Android: Settings → **Copyright Policy** opens the web `/copyright` page. Web: the footer's Copyright Policy link and `/copyright` render in EN + VI. *(Note for you: the policy text is still scoped to the removed music-upload feature — F-033 lists the legal-judgement rewrite for your decision.)*
+- [ ] Lần mở đầu (`pm clear`): splash → Home. Hiện splash là chữ "T" chung chung, và máy tiếng Anh vẫn mở tiếng Việt (F-077). Hãy quyết định có chấp nhận không.
+- [ ] Gõ tiếng Việt bằng bàn phím thật (Gboard/Laban): gõ, sửa, gửi.
+- [ ] Khám phá: video tự phát, có tiếng, không có nút "dùng âm thanh này".
+- [ ] QR hồ sơ: mở, chia sẻ, tải về (ảnh vào thư mục `Pictures/TappyAI`).
+- [ ] Back trong app luôn về đúng màn hình cha.
 
-### J. GA4 funnel events (F-001) — check each fires with no PII
-The web client is instrumented and client-verified; **delivery to the GA property is confirmed only in GA4 after you set the real Measurement ID** (`G-8GP7L7N516`) on production/preview. Two ways to check:
-- **In the browser (works on localhost, any/dummy ID):** open DevTools console and run `window.dataLayer` after each action below — the event and its params appear as a pushed `['event', name, params]` entry.
-- **In GA4 (after the real ID is set on a deployed/preview build):** GA4 → **Admin → DebugView** (or **Reports → Realtime**) and watch the events land.
+### G. Giao diện, ngôn ngữ, thông báo (web + Android)
 
-For EACH event, confirm it (a) fires, (b) fires **once**, (c) carries only the listed params, and (d) carries **no** email, phone, message text, AI output, place/product name, token, or raw URL:
+- [ ] Sáng / Tối / Theo hệ thống, trên mọi màn chính. Android sáng: icon status bar đang bị trắng trên nền trắng (F-077).
+- [ ] Đổi sang English rồi về Tiếng Việt.
+- [ ] Bật/tắt thông báo, tải lại trang, trạng thái phải được giữ.
 
-| Event | How to trigger | Expected params (and nothing else) |
+### H. GA4 funnel (F-001): mỗi event bắn một lần, không có PII
+
+- Trên localhost: sau mỗi thao tác, gõ `window.dataLayer` trong console.
+- Trên GA4: DebugView, chỉ làm được sau khi đặt ID thật trên bản deploy.
+
+| Event | Cách gây ra | Chỉ được có các param |
 |---|---|---|
-| `page_view` | Load a page; navigate to another (client-side) | `page_path` (query stripped, chat UUID → `/chat/_id`) |
-| `chat_opened` | Open a fresh main chat | *(none)* — must fire **once**, not on the `/chat/{id}` continuation |
-| `chat_response` | Ask an AI question, let it answer | `feature` (food/travel/… domain only) |
-| `recommendation_click` | Tap a place card / product row in a result | `domain` only |
-| `affiliate_click` | Tap a **buy / commerce** link on a card | `domain, provider, tracked` (needs a card carrying a CCP commerce link) |
-| `shopping_search_click` | Tap a shopping card's **"Tìm trên …"** search-redirect link (the non-buy-button offer link) | `domain: shopping`, `platform` (shopee·lazada·tiki·tiktok·other) — **never** the seller name, product or URL. Separate from `affiliate_click`. |
-| `search` | Run a **reviews** search | `search_type: reviews` (never the query) |
-| `report_submitted` | Report a review/message (§F F-031) | `reason` enum only |
-| `scam_check` | Run a Scam Shield url / QR / message check | `check_type` (url·qr·message) + `risk_level` — never the checked content |
-| `login` / `sign_up` | Sign in / create an account | `method` (+ `is_first_login` on login) |
+| `page_view` | Chuyển trang | `page_path` (bỏ query; UUID chat thành `/chat/_id`) |
+| `chat_opened` | Mở chat mới | (không có), **một lần** |
+| `chat_response` | Hỏi AI | `feature` |
+| `recommendation_click` | Bấm thẻ | `domain` |
+| `affiliate_click` | Bấm nút mua (cần commerce link) | `domain, provider, tracked` |
+| `shopping_search_click` | Bấm "Tìm trên …" | `domain: shopping`, `platform` |
+| `search` | Tìm review | `search_type: reviews` |
+| `report_submitted` | Báo cáo review | `reason` |
+| `scam_check` | Kiểm tra lừa đảo | `check_type`, `risk_level` |
+| `login` / `sign_up` | Đăng nhập / đăng ký | `method` (+ `is_first_login`) |
 
-### 🛒 Buy-button coverage count (do this before launch — F-036)
-Measure how sparse the revenue path actually is with the feed un-ingested (no Accesstrade creds). Run **10 varied shopping queries** — mix categories and specificity, e.g. *"tai nghe bluetooth chống ồn"*, *"iPhone 16 Pro 256GB"*, *"nồi chiên không dầu 5L"*, *"giày chạy bộ nam size 42"*, *"bàn phím cơ không dây"*, *"sữa rửa mặt cho da dầu"*, *"máy hút bụi cầm tay"*, *"áo khoác gió nữ"*, *"ổ cứng SSD 1TB"*, *"bình giữ nhiệt 500ml"*. For each, record:
-- [ ] a **real buy button** ("Mua trên …", a CCP commerce handoff), **or**
-- [ ] only a **"Tìm trên …" search link** (the offer row — fires `shopping_search_click`), **or**
-- [ ] neither.
+### I. Đếm nút mua (F-036), làm trước launch
 
-Tally `buy-button : search-only : neither` out of 10. This is the actual pre-launch coverage number; expect it heavily weighted to search-only until the feed-ingest cron runs (§6). `shopping_search_click` (§J) then measures demand on the search-only ones.
-
-- [ ] **Android label honesty (do these shopping queries on the Android app too).** A search-redirect offer link must read **"Tìm trên Google"** (EN: "Search on Google") — the SAME label web shows — **not** "Xem". A genuine merchant **product** page keeps **"Xem"** or **"Xem trên {platform}"** ("View on …"). Confirm EN and VI both read correctly (toggle app language). This is the fix for the old dishonest "Xem" on a google redirect; the classifier is shared-cases-pinned with web so the two cannot drift.
-
-**Android:** the same events go to **Firebase Analytics**, visible in GA4 DebugView once you (1) link Firebase project `aerobic-lock-498409-u7` to property `G-8GP7L7N516` and (2) install the updated `google-services.json`. Enable device debug with `adb shell setprop debug.firebase.analytics.app com.tappyai.app.debug`. All ten events are wired on Android now, including `recommendation_click`, `shopping_search_click`, `login` and `sign_up`. `login`/`sign_up` fire **only** on an explicit sign-in — **not** on app-launch session restore (so relaunching the app must NOT produce a `login` in DebugView). No Advertising ID is collected (both AD_ID permissions are stripped from the release manifest).
+- Chạy 10 câu mua sắm khác nhau (tai nghe, iPhone 16 Pro 256GB, nồi chiên không dầu, giày chạy bộ, bàn phím cơ, sữa rửa mặt, máy hút bụi cầm tay, áo khoác gió, SSD 1TB, bình giữ nhiệt).
+- Với mỗi câu, ghi lại: có nút **"Mua trên …"** / chỉ có **"Tìm trên …"** / không có gì.
+- Với dữ liệu audit hiện tại, kết quả dự kiến là toàn "Tìm trên …".
 
 ---
 
-## 5. What you canNOT exercise on localhost (and why)
+## 5. Không test được trên localhost
 
-| Area | Why | To enable |
+| Mảng | Vì sao | Cách mở khoá |
 |---|---|---|
-| **Affiliate / deal-link wrapping (F-020)** | `ACCESSTRADE_PUBLISHER_ID` is unset (pending provider approval); `CJ_API_KEY` also unset. | Set the publisher id once approved; the money path (real `go.isclix.com` links, tracking params) is unverified until then. |
-| **Photo / clip / avatar uploads** | `BLOB_READ_WRITE_TOKEN` (Vercel Blob) is unset — the upload endpoints have nowhere to store the file. | Set a Blob token. Until then, expect the composer's photo attach and avatar change to fail. |
-| **Pro purchase / upgrade flow** | `STRIPE_SECRET_KEY`/webhook unset (and Apple IAP needs a device). | Set Stripe test keys. NOTE: the Pro **state** is already testable via the seeded Pro account (§2). |
-| **Sign-in via Google / email OTP** | Google OAuth client id and the email sender (`RESEND_API_KEY`) are unset — no OAuth, no outbound email. | Use the seeded email+password accounts instead. Set the OAuth client id / email key to test those flows. |
-| **Google Analytics delivery (F-001)** | `NEXT_PUBLIC_GA_MEASUREMENT_ID` unset locally, so no hit leaves the browser (the client IS instrumented — see §J to observe events in `window.dataLayer`). | Set `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-8GP7L7N516` on production only, redeploy, then confirm in GA4 Realtime. Android delivery also needs the Firebase↔GA4 link (§J). |
-| **Query performance / load (F-025)** | The DB has no production-scale data. | Needs production-shaped data + load. |
-| **Buy buttons on shopping (F-036)** | `commerce_feed_items` is empty and `ACCESSTRADE_API_KEY`/`ACCESSTRADE_FEED_ENDPOINT` are unset, so no product-depth commerce link resolves → a shopping answer shows **no buy button** (expected, not a bug). | Set the Accesstrade env + `CRON_SECRET` and run the feed-ingest cron once (DEPLOY-CHECKLIST §6). Then a shopping query shows "Mua trên …" and `affiliate_click` becomes testable. |
+| **Upload ảnh/video/avatar** | `POST /api/reviews/upload` → 500 `WifExchangeError`: token OIDC Vercel trong `.env.local` đã hết hạn (W11) | Chạy `vercel env pull` lại (token sống khoảng 12 giờ), hoặc test trên preview |
+| **Đăng nhập Google / OTP email / Zalo** | OAuth client Google chưa tạo mới; không có email sender | Dùng email + mật khẩu (§2) |
+| **Mua Pro** | Không có khoá Stripe test; Apple IAP cần thiết bị | Trạng thái Pro đã test được qua tài khoản Pro |
+| **Affiliate / Accesstrade (F-020, F-036)** | Chưa có publisher id; feed rỗng | Sau khi được duyệt: đặt env và chạy cron feed-ingest |
+| **GA4 nhận event thật** | Không có Measurement ID ở local | Đặt `G-8GP7L7N516` trên production và xem Realtime |
+| **iOS** | Không có macOS | — |
+| **Quét QR bằng camera, mic, push thật, WebView trong Zalo/Messenger** | Emulator | Dùng máy thật |
+| **Tải lớn / hiệu năng** | DB không có dữ liệu cỡ production | — |
 
 ---
 
-## 6. Known-broken / expected-to-fail (don't file these as new bugs)
+## 6. Lỗi đã biết, không báo lại
 
-- **iOS still ships the music-reuse UI** and will hit the now-410 endpoints. iOS **must not be released** until that UI is removed (no macOS build env here, so it wasn't touched this session).
-- **F-002 (Next.js version)** — mitigated on Vercel; upgrade scheduled post-launch.
-- **F-001 (GA)** — the client is now instrumented and client-verified (web + Android); only **delivery** to the property is unconfirmed until the real ID is set and checked in GA4 Realtime (§J, §5). **F-020 (Accesstrade)** — open by decision; see §5. *(F-010 guest flow is now enabled and verified — see §G.)*
-- **Test-suite trust (F-030)** — a green unit suite does not prove DB write-paths satisfy real column constraints (mocked inserts can't fail like Postgres). Treat green as a logic guard, not a data-integrity one.
-- Anything under "can't test locally" (§5) that appears broken is an environment gap, not a product bug.
-- **Session C residuals (2026-09-22…24, `uat/phase7-regressions`)** — F-043 (a numeric threshold may still appear in a second-hand advice answer; the RISK_BACKSTOP hedges it). CLOSED since: F-044 (v2 attribution default ON), F-046 (db suites + ports + Music parity row), F-047 (scam-checker wording), F-048 (type-based venue exclusion), F-049 (flag inventory; Android place cards verified), F-050 (Android card copy mirrors web), F-051 (orphan pass), F-052 (price-signal marker). Still open: F-045 (one card set per turn on a trip). A plan reply may still end with a soft "Bạn muốn điều chỉnh gì không?" — allowed, not a re-ask.
+**Chặn launch, hoặc cần bạn quyết:**
 
----
+- **F-061 (P0)**: giá trị secret đã lộ trong phiên Claude. Phải **rotate** (danh sách ở `PRELAUNCH-REPORT.md` Part 2).
+- **F-064 (P1)**: token PAT Supabase nằm trong file local. **F-062 (P1)**: Preview của Vercel mang key production.
+- **F-065 (P1)**: các sửa bảo mật của `integration/v3-foundation` chưa vào nhánh ship. Bảng `groups`/`group_members` đang cho **ai cũng đọc được**.
+- **F-057 (P1)**: một ảnh review từ host không được `next/image` cho phép làm `/reviews/<id>` trả 500 và có thể làm sập feed.
+- **Merge `a6ca9f0` chưa được audit toàn bộ.** Nó đã làm mất dây nối share trên Android (F-070, đã sửa); có thể còn mất chỗ khác.
+- **iOS** vẫn còn UI music-reuse. Không được phát hành iOS.
 
-*Source of the checklist ordering: the release report's "What I did not verify" (§ What I did not verify in `docs/uat/RELEASE-REPORT.md`), re-ordered for a human clicking through the product, highest-risk first.*
+**Chất lượng (P2/P3):**
+
+- F-068: lý do trong phân tích tin nhắn bằng tiếng Anh.
+- F-071: câu văn mua sắm bị vỡ.
+- F-072: lý luận mâu thuẫn với thẻ.
+- F-073: thẻ mua sắm Android ghi "rated … reviews".
+- F-074: dòng "Đánh đổi: 912 lượt đánh giá" gây hiểu nhầm.
+- F-075: quiz sở thích che câu trả lời đầu tiên.
+- F-076: `/r` vẫn tiếng Việt cho khách EN.
+- F-077: các chi tiết nhỏ trên Android.
+- F-078: link share Android luôn là domain production.
+- F-067: memory giữ ngân sách một lần mua.
+- F-045: một lượt du lịch chỉ ra một bộ thẻ.
+- F-043: ngưỡng số trong câu trả lời rủi ro cao.
+- F-058: trang 404 chỉ có tiếng Việt.
+
+**Không phải lỗi:**
+
+- Deals trống, không có nút mua (§3).
+- `npm test` ghi đè `docs/audit/*.json`. Khôi phục bằng git sau khi chạy.
+- Lần mở đầu mỗi trang chậm vì Next đang biên dịch.
+- Home Android thoáng hiện "Chào bạn!" trước khi hiện tên.

@@ -357,7 +357,7 @@ Tổng cộng 54 lượt gọi LLM.
 
 ## Part 6 — Tôi tự UAT (web + Android)
 
-**Cách làm.** Web: Edge headless điều khiển qua CDP (Playwright Chromium trên máy bị hỏng), mỗi kịch bản một context mới. Android: emulator Pixel_8 (API 36) chạy APK debug trỏ vào `10.0.2.2:3007` và Supabase audit, gõ tiếng Việt bằng Telex của Gboard qua `adb input`. Đăng nhập bằng magic link admin, tôi không gõ mật khẩu. Evidence nằm ở `docs/uat/evidence/uat-2026-09-24/{web,android}/`. Kết quả máy đọc được nằm trong `web/results-web*.json`.
+**Cách làm.** Web: Edge headless điều khiển qua CDP (Playwright Chromium trên máy bị hỏng), mỗi kịch bản một context mới. Android: emulator Pixel_8 (Android 15) chạy APK debug trỏ vào `10.0.2.2:3007` và Supabase audit, gõ tiếng Việt bằng Telex của Gboard qua `adb input`. Đăng nhập bằng magic link admin, tôi không gõ mật khẩu. Evidence nằm ở `docs/uat/evidence/uat-2026-09-24/{web,android}/`. Kết quả máy đọc được nằm trong `web/results-web*.json`.
 
 ### Web
 
@@ -428,3 +428,27 @@ Tổng cộng 54 lượt gọi LLM.
 - **Share trên Android luôn tạo link `www.tappyai.com/…`**, kể cả bản debug trỏ local (F-078). Khi UAT, hãy mở id đó trên `localhost:3007`.
 - **Nút share trên thanh tin nhắn cho lượt có địa điểm** (Android): đã sửa dây nối và có test, nhưng **chưa bấm lại trên thiết bị** (UNVERIFIED).
 - Câu hỏi Android đầu tiên bị mất chữ "k" khi gõ qua `adb`, nên đi là "dưới 80" chứ không phải "80k". Server vẫn hiểu là 80.000. Đây là lỗi của harness, không phải của app.
+
+---
+
+## Part 7 — Chuẩn bị UAT thủ công
+
+Toàn bộ nằm trong **`docs/uat/MANUAL-UAT-HANDOFF.md`**, viết lại hoàn toàn. Bản cũ ghi port 3000 và nhánh cũ.
+
+- **Nhận diện một dòng**: `npm run whoami` phải ra `rc/web-uat` · `zdaprdfgpbpnxyofagmc ✅ audit/non-prod` · port 3007. Huy hiệu dev ở góc dưới trái web hiện cùng thông tin.
+- **Web**: chạy `npm run dev` trong worktree `g1-place-guard`, rồi mở http://localhost:3007.
+- **Android**: chạy `scripts/uat/build-android-local.ps1` (mới, commit này).
+  - Script build rồi `installDebug` lên emulator, API `10.0.2.2:3007`, Supabase audit. Secret lấy từ `.env.local` và **không in ra**.
+  - Script **từ chối chạy** nếu `.env.local` không phải audit.
+  - Đã chạy thật: `Installed on 1 device`, `BUILD SUCCESSFUL`.
+- **Tài khoản** (đọc chỉ-đọc DB audit): cả 4 tồn tại, email đã xác nhận, có `user_demographics` (18+).
+  - Pro là `pro/active`; admin có `admin_roles = admin`.
+  - Mật khẩu `TappyUAT!2026` lấy từ bàn giao trước. **Tôi không thử lại** vì tôi không được đăng nhập bằng mật khẩu. Handoff ghi cách đặt lại nếu sai.
+- **Dữ liệu audit**:
+  - Địa điểm của 5 domain lấy trực tiếp từ Serper.
+  - 5 review (1 ảnh + 4 video), `plan_shares` 4, `shared_results` 1.
+  - **`partner_deals` 0**: tab Deals trống. **`commerce_feed_items` 0**: không có nút mua.
+  - Đủ để bấm thử mọi luồng, trừ Deals có nội dung và nút mua.
+- **Checklist theo rủi ro**: phần A là các sửa của đợt này. Sau đó lần lượt: 5 domain, lịch trình/chia sẻ, lừa đảo, đăng nhập/khách, Android, giao diện/ngôn ngữ/thông báo, GA4, đếm nút mua.
+- **Handoff còn có**: danh sách không test được (§5), lỗi đã biết (§6, mọi finding còn mở P0–P3), và danh sách "không phải lỗi".
+- **Phát hiện nhỏ, chỉ báo cáo**: `npm run dev:reset` mặc định dùng port **3000**, trong khi `npm run dev` chạy **3007**. Handoff ghi phải dùng `PORT=3007`.
