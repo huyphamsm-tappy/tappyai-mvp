@@ -64,7 +64,7 @@ function summariseAnnotation(a) {
   // `tappy.places.v1` item keys (liveView.ts `LivePlace`): name, rating, ratingCount, priceRangeText,
   // priceLevel, categories, openingHours, openNow, distanceKm, recommended, reasons. The baseline
   // summariser read `priceRange`/`category`/`picked` and so recorded null for all of them.
-  if (Array.isArray(a.items)) out.items = a.items.map(it => ({ name: it.name ?? it.title ?? null, rating: it.rating ?? null, ratingCount: it.ratingCount ?? null, price: it.priceRangeText ?? it.priceSignal ?? (typeof it.priceLevel === 'number' ? '₫'.repeat(it.priceLevel) : null), categories: it.categories ?? null, hours: it.openingHours ?? null, open: it.openNow ?? null, distanceKm: it.distanceKm ?? null, recommended: it.recommended ?? null, reasons: Array.isArray(it.reasons) ? it.reasons.map(r => r.evidence) : null }))
+  if (Array.isArray(a.items)) out.items = a.items.map(it => ({ name: it.name ?? it.title ?? null, address: it.address ?? null, rating: it.rating ?? null, ratingCount: it.ratingCount ?? null, price: it.priceRangeText ?? it.priceSignal ?? (typeof it.priceLevel === 'number' ? '₫'.repeat(it.priceLevel) : null), categories: it.categories ?? null, hours: it.openingHours ?? null, open: it.openNow ?? null, distanceKm: it.distanceKm ?? null, recommended: it.recommended ?? null, reasons: Array.isArray(it.reasons) ? it.reasons.map(r => r.evidence) : null }))
   if (Array.isArray(a.items)) out.raw = a
   if (a.preliminary !== undefined) out.preliminary = a.preliminary
   if (a.picked !== undefined) out.picked = a.picked
