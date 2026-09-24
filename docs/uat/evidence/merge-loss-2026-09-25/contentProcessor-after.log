@@ -1,0 +1,9 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+
+ Test Files  2 passed (2)
+      Tests  48 passed (48)
+   Start at  06:38:52
+   Duration  557ms (transform 85ms, setup 38ms, import 106ms, tests 34ms, environment 0ms)
+

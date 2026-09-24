@@ -27,6 +27,9 @@ const PRODUCERS: Array<[string, string]> = [
   ['scam message', 'src/lib/scam-shield/message/ai/prompt.ts'],
   // A4 (2026-09-20): every tool result — third-party titles, snippets, names — bracketed for the model.
   ['tool results', 'src/lib/ai/security/toolResultFence.ts'],
+  // P3-F3 (a711181, restored 2026-09-25). The caption/title an upload submits were interpolated
+  // into the extraction prompt raw; registering the producer keeps `explore_content` enforced.
+  ['explore content', 'src/lib/explore/contentProcessor.ts'],
 ]
 
 describe('the fence is the single implementation', () => {
