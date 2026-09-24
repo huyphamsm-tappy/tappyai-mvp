@@ -26,6 +26,11 @@ export default function ZaloFinishPage() {
       // must end at the app's custom scheme instead of a web redirect (see /auth/confirm).
       const platformParam = params.get('platform')
       const platform = platformParam === 'ios' ? 'ios' : platformParam === 'android' ? 'android' : 'web'
+      // 🚨 The access token is now in memory; get it OUT of the address bar before anything else
+      // runs. Left in the fragment it lands in browser history, sync, screenshots and any
+      // extension that reads `location` — history is exactly where a token was recovered from
+      // during the 2026-09-24 region test. replaceState, not pushState: no entry keeps it.
+      window.history.replaceState(window.history.state, '', window.location.pathname + window.location.search)
       if (!at) { window.location.replace('/login?error=zalo_failed'); return }
 
       try {

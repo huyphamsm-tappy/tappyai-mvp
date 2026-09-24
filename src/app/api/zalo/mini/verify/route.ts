@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import {
-  createGraphZaloVerifier, createMockZaloVerifier, signZaloIdentity, zaloIdentitySecret, zaloIdentitySetCookie,
+  createZaloVerifier, createMockZaloVerifier, signZaloIdentity, zaloIdentitySecret, zaloIdentitySetCookie,
   type ZaloIdentityVerifier,
 } from '@/lib/zalo/identity'
 
@@ -42,7 +42,8 @@ function withNoIndex(res: NextResponse): NextResponse {
 
 function resolveVerifier(env: NodeJS.ProcessEnv = process.env): ZaloIdentityVerifier {
   if (env.ZALO_VERIFIER === 'mock' && env.NODE_ENV !== 'production') return createMockZaloVerifier()
-  return createGraphZaloVerifier()
+  // Through the Vietnam verifier (see lib/zalo/identity.ts); unconfigured → throws → 503.
+  return createZaloVerifier(env)
 }
 
 export async function POST(req: NextRequest) {

@@ -1,6 +1,6 @@
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
-import { createGraphZaloVerifier } from '@/lib/zalo/identity'
+import { createZaloVerifier } from '@/lib/zalo/identity'
 
 function originOf(req: NextRequest): string {
   const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host') ?? req.nextUrl.host
@@ -27,18 +27,18 @@ function originOf(req: NextRequest): string {
 //
 // 🔑 THE ID NOW COMES FROM ZALO. The access token in the httpOnly `zalo_at` cookie — the one
 // only a caller that performed the server-side code exchange can hold — is resolved through
-// `graph.zalo.me/v2.0/me` by the shared `createGraphZaloVerifier`, the same verifier the Mini
-// App boundary uses. The body no longer carries an id at all, so there is nothing to forge.
+// `graph.zalo.me/v2.0/me` by the shared `createZaloVerifier`, the same verifier the Mini App
+// boundary uses. The body no longer carries an id at all, so there is nothing to forge.
 //
 // 🚨🚨 DEPLOYMENT CONSEQUENCE, STATED NOT BURIED. `graph.zalo.me/v2.0/me` answers only to
 // VIETNAM IP addresses; from a US region it returns error -501. That restriction is exactly why
 // the profile fetch was pushed to the user's browser in the first place (see the note in
-// `api/auth/zalo/callback/route.ts`). So on a US deployment this route now answers 503
-// `verification_unavailable` and ZALO LOGIN STOPS WORKING — it does not silently fall back to
-// trusting the client, because that fallback IS the vulnerability. Making Zalo login work again
-// requires resolving `/me` from a Vietnam egress; that is an owner infrastructure decision, the
-// same one already recorded in `src/lib/zalo/identity.ts`. Nothing here can substitute for it:
-// the token is opaque, and no other Zalo endpoint returns the id.
+// `api/auth/zalo/callback/route.ts`). Measured with a real token on 2026-09-24: Vercel iad1,
+// Cloud Run us-central1 AND Cloud Run asia-southeast1 all get -501. So the lookup goes through
+// our own verifier on a VPS in Vietnam (`infra/zalo-verify/`, `ZALO_VERIFY_URL` +
+// `ZALO_VERIFY_SECRET`). Unconfigured or unreachable, this route answers 503
+// `verification_unavailable` — it never falls back to trusting the client, because that
+// fallback IS the vulnerability. The token is opaque and no other Zalo endpoint returns the id.
 //
 // `name` and `avatar` are still read from the body. They are DISPLAY fields written to the
 // freshly created user's metadata, never identity: they select no account and grant no access,
@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
   // answers and must not collapse into one.
   let zaloId: string
   try {
-    const resolved = await createGraphZaloVerifier().verify(at)
+    const resolved = await createZaloVerifier().verify(at)
     if (!resolved) return clear(NextResponse.json({ error: 'invalid_token' }, { status: 401 }))
     zaloId = resolved
   } catch (e) {

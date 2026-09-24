@@ -22,7 +22,7 @@ const createUser = vi.fn()
 const generateLink = vi.fn()
 
 vi.mock('@/lib/zalo/identity', () => ({
-  createGraphZaloVerifier: () => ({ verify }),
+  createZaloVerifier: () => ({ verify }),
 }))
 vi.mock('@/lib/supabase/admin', () => ({
   createAdminClient: () => ({ auth: { admin: { createUser, generateLink } } }),
@@ -126,7 +126,7 @@ describe('the client no longer claims an identity', () => {
   it('the route reads no id from the body', () => {
     const src = read('src/app/api/auth/zalo/complete/route.ts')
     expect(src).not.toMatch(/\bb\.zaloId\b/)
-    expect(src).toContain('createGraphZaloVerifier')
+    expect(src).toContain('createZaloVerifier()')
   })
 
   it('the finish page sends no id', () => {

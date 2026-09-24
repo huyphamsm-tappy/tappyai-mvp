@@ -126,9 +126,10 @@ that. Remove the dead localhost entry whenever the form next saves successfully.
 
 ### RULE 3 — production at release
 
-`ZALO_APP_ID` and `ZALO_APP_SECRET` already exist in Production; the R-1 fix needs no new env var.
-If the region test ends in a proxy design, Production additionally needs `ZALO_VERIFY_URL` and
-`ZALO_VERIFY_SECRET` with a secret **distinct from UAT's**. Rollback is a revert and redeploy —
+`ZALO_APP_ID` and `ZALO_APP_SECRET` already exist in Production. The region test DID end in a
+proxy design (section 5), so Production **must** also get `ZALO_VERIFY_URL` and `ZALO_VERIFY_SECRET`
+(secret **distinct from UAT's**; same VPS is fine) before the fix is deployed -- without them
+`/complete` answers 503 and Zalo login is off on production (fail-closed, by design). Rollback is a revert and redeploy —
 no migration, no data change. Post-deploy: sign in with Zalo and confirm the account is the
 token's own, then repeat with a forged `zaloId` in the body and confirm it is ignored.
 
@@ -137,3 +138,45 @@ token's own, then repeat with a forged `zaloId` in the body and confirm it is ig
 Android and iOS drive the same `/api/auth/zalo/*` routes with `platform=android|ios`, returning
 through a custom scheme via `/auth/confirm`. **Zalo login must be tested on a real Android build
 before the app ships** — web UAT does not cover the custom-scheme return leg.
+
+---
+
+## 5. Phase B -- real token: every non-Vietnamese region is blocked
+
+Real access token (owner's QR login on uat.tappyai.com, read once from Chrome history with the
+owner's written authorisation, memory only, never printed; temp copy deleted):
+
+| Where | Zalo answer |
+|---|---|
+| Vercel `iad1` (live UAT `/complete`, 18:28) | -501 -> `/complete` 503 `verification_unavailable`, no account created |
+| Cloud Run `asia-southeast1` (Singapore) | **-501 region restricted** |
+| Cloud Run `us-central1` (control) | -501 region restricted |
+
+So `graph.zalo.me/v2.0/me` only answers a Vietnamese address. Owner decision: a VPS in Vietnam.
+Bangkok / Jakarta not tried (owner's call). Both probes and their 4 IAM grants in
+`speedy-method-500203-f2` were deleted; the Artifact Registry repo `cloud-run-source-deploy`
+(probe images) is still there.
+
+### Design -- `infra/zalo-verify/`
+
+```
+browser --QR--> Zalo --code--> /api/auth/zalo/callback (Vercel, exchanges code, sets zalo_at)
+/api/auth/zalo/complete --POST {at} + x-zalo-verify-secret--> https://zalo-verify.tappyai.com/verify
+   (Caddy TLS -> 127.0.0.1:8787, VPS in VN) --GET /v2.0/me?fields=id, token in header--> Zalo
+```
+
+* App side: `createZaloVerifier()` in `src/lib/zalo/identity.ts`, used by `/complete` and the Mini
+  App `/api/zalo/mini/verify`. Needs `ZALO_VERIFY_URL` (https) + `ZALO_VERIFY_SECRET` (>= 32).
+  Missing env, unreachable, timeout (6s), wrong secret, 429, 502 -> throw -> **503**. Only the
+  service's `{error:"invalid_token"}` -> 401. No path uses a client-supplied id.
+* Service side: zero-dependency Node, secret checked first (constant-time), rate limits
+  (60/min/IP, 600/min total, 10 bad secrets/min/IP -> 15 min block), 5s upstream timeout,
+  logs outcome only. Tests: `src/lib/zalo/zaloVerifyService.test.ts` (incl. end-to-end against
+  the app-side verifier over a socket).
+* `/auth/zalo-finish` now strips `#at=` with `history.replaceState` right after reading it, so
+  the token no longer lands in browser history (which is exactly where Phase B found one).
+
+### Env (UAT only -- Preview, branch `rc/web-uat`)
+
+`ZALO_VERIFY_URL=https://zalo-verify.tappyai.com/verify`, `ZALO_VERIFY_SECRET=<generated, never
+printed>`. Set only when the VPS is up. Production: see RULE 3.
