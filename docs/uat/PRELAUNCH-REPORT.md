@@ -452,3 +452,36 @@ Toàn bộ nằm trong **`docs/uat/MANUAL-UAT-HANDOFF.md`**, viết lại hoàn 
 - **Checklist theo rủi ro**: phần A là các sửa của đợt này. Sau đó lần lượt: 5 domain, lịch trình/chia sẻ, lừa đảo, đăng nhập/khách, Android, giao diện/ngôn ngữ/thông báo, GA4, đếm nút mua.
 - **Handoff còn có**: danh sách không test được (§5), lỗi đã biết (§6, mọi finding còn mở P0–P3), và danh sách "không phải lỗi".
 - **Phát hiện nhỏ, chỉ báo cáo**: `npm run dev:reset` mặc định dùng port **3000**, trong khi `npm run dev` chạy **3007**. Handoff ghi phải dùng `PORT=3007`.
+
+---
+
+## FINISH — health check (2026-09-25, trên `rc/web-uat` @ `e52cbc7` + commit này)
+
+| Kiểm tra | Lệnh | Kết quả |
+|---|---|---|
+| Typecheck | `npx tsc --noEmit -p .` | ✅ 0 lỗi |
+| Lint | `npx next lint` | ✅ 0 lỗi, 42 cảnh báo (có sẵn từ trước, chủ yếu `react-hooks/exhaustive-deps`) |
+| Test web (app) | `npx vitest run --project app` | ✅ **13.806 pass**, 0 fail, 69 skip, 1 todo; 771 file pass, 11 file skip |
+| Test DB | `npx vitest run --project db` | ✅ **839/839**, 32 file |
+| Build production | `npm run build` | ✅ exit 0, 1 phút 18 giây. Có vài dòng log "Dynamic server usage" (route dùng `request.headers`). Đây là log thông tin, không phải lỗi build |
+| Test Android | `gradlew testDebugUnitTest` | ✅ **787 test, 0 fail**: 776 chạy lại trong `:app` + 11 `:core:analytics` (UP-TO-DATE) |
+| Build Android | `scripts/uat/build-android-local.ps1` (`:app:installDebug`) | ✅ BUILD SUCCESSFUL, đã cài lên emulator |
+
+- Sau khi chạy test, tôi khôi phục `docs/audit/*.json` về bản git (test ghi đè các file này).
+- **Không deploy, không push.** Tất cả commit chỉ nằm local.
+
+### Commit của đợt PRELAUNCH (sau phần ranh giới public/app)
+
+`97b0ad1` Part 1 · `6320364` guard · Part 2–5 (xem từng mục) · `6dcd524` Part 5 · `9163d5b` F-069 · `8e90514` F-070 · `a989465` Part 6 · `e52cbc7` Part 7 · commit này (FINISH).
+
+### Đường ngắn nhất tới launch (theo thứ tự)
+
+1. **Bạn**: xoá 6 file secret production và `.next` bằng lệnh ở Part 2. Tôi kiểm lại lúc 01:0x ngày 25/09: **cả 6 file vẫn còn**, `settings.local.json` vẫn có `sbp_`, `.env.local` vẫn có `SUPABASE_ACCESS_TOKEN`.
+2. **Bạn**: rotate các khoá đã lộ (**F-061**). Thu hồi PAT1 và PAT2 (**F-064**). Bỏ key production khỏi môi trường Preview của Vercel (**F-062**).
+3. **Code, P1**:
+   - **F-065**: đưa các sửa RLS của `integration/v3-foundation` vào nhánh ship. `groups`/`group_members` đang cho ai cũng đọc được.
+   - **F-057**: một host ảnh ngoài danh sách làm sập `/reviews/<id>`.
+4. **Audit merge `a6ca9f0`** (đã có chip task riêng). Nó đã làm mất dây nối share trên Android; có thể còn mất chỗ khác.
+5. **Migration production** theo DEPLOY-CHECKLIST §1: 12 file cần apply. Trong đó G1, `plan_shares` và `groups.avatar_url` là blocker; soundhelix thì SKIP.
+6. **UAT thủ công** theo `MANUAL-UAT-HANDOFF.md`, làm §4-A trước. Sau đó bạn ký duyệt.
+7. **Bạn quyết**: merge `rc/web-uat` → `main`, deploy, đặt GA4 ID, tạo OAuth client Google mới. **iOS không phát hành.**
