@@ -1,0 +1,69 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+ ❯ |app| src/app/publicBoundary.test.ts (36 tests | 2 failed) 2256ms
+     × the (app) layout is the one place the first-visit gates are mounted 157ms
+     × src/app/layout.tsx mounts no location gate, language modal, age gate or login wall 60ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |app| src/app/publicBoundary.test.ts > public / app boundary — a stranger on a shared link is never gated > the (app) layout is the one place the first-visit gates are mounted
+AssertionError: src/components/LocationProvider.tsx imported by a public route entry: expected [ 'src/app/layout.tsx' ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "src/app/layout.tsx",
++ ]
+
+ ❯ src/app/publicBoundary.test.ts:224:83
+    222|       if (file.endsWith(join(APP_GROUP, 'layout.tsx'))) continue
+    223|       const importers = allEntries.filter((e) => !isAppEntry(e) && loa…
+    224|       expect(importers.map(rel), `${rel(file)} imported by a public ro…
+       |                                                                                   ^
+    225|     }
+    226|   })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |app| src/app/publicBoundary.test.ts > public / app boundary — a stranger on a shared link is never gated > src/app/layout.tsx mounts no location gate, language modal, age gate or login wall
+AssertionError: 
+  ✗ location gate (LocationProvider)
+      via src\app\layout.tsx → src\components\LocationProvider.tsx
+  ✗ in useEffect: asks for location (navigator.geolocation)
+      in src\app\layout.tsx → src\components\LocationProvider.tsx
+  ✗ language modal (LanguagePicker)
+      via src\app\layout.tsx → src\components\LanguagePicker.tsx
+: expected [ …(3) ] to deeply equal []
+
+- Expected
++ Received
+
+- []
++ [
++   "location gate (LocationProvider)
++       via src\\app\\layout.tsx → src\\components\\LocationProvider.tsx",
++   "in useEffect: asks for location (navigator.geolocation)
++       in src\\app\\layout.tsx → src\\components\\LocationProvider.tsx",
++   "language modal (LanguagePicker)
++       via src\\app\\layout.tsx → src\\components\\LanguagePicker.tsx",
++ ]
+
+ ❯ src/app/publicBoundary.test.ts:230:46
+    228|   it.each(publicEntries.map((f) => [rel(f), f]))('%s mounts no locatio…
+    229|     const v = violations(file as string)
+    230|     expect(v, `\n  ✗ ${v.join('\n  ✗ ')}\n`).toEqual([])
+       |                                              ^
+    231|   })
+    232| })
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 34 passed (36)
+   Start at  21:14:59
+   Duration  3.18s (transform 112ms, setup 25ms, import 412ms, tests 2.26s, environment 0ms)
+
