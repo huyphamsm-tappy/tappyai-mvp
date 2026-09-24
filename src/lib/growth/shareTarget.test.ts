@@ -24,9 +24,9 @@ describe('Web Share Target', () => {
     expect(shareTargetDestination({})).toBe('/chat')
   })
   it('caps the prompt and strips control characters', () => {
-    const p = buildShareTargetPrompt({ text: 'ab'.repeat(2000) })!
+    const p = buildShareTargetPrompt({ text: 'a\x07b'.repeat(2000) })!
     expect(p.length).toBeLessThanOrEqual(1000)
-    expect(p).not.toContain('')
+    expect(p).not.toContain('\x07')
   })
   it('destination is the existing chat with the prompt prefilled', () => {
     expect(shareTargetDestination({ text: 'hi' })).toBe('/chat?q=hi')

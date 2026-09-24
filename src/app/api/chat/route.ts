@@ -521,14 +521,9 @@ export async function POST(req: Request) {
       // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
       // client never sends or computes quota information. No memory, preferences, or
       // subscription lookups for anonymous identities.
-      // 🚨 TWO INVARIANTS, BOTH SERVER-SIDE.
-      //   (1) DETERMINISTIC = FREE. `quotaExempt` (a canned reply or a clarification question — both
-      //       computed here from the messages/intent, never from a client body/header/query) answers
-      //       WITHOUT the model (see the `canned` return below, `llmCalls: 0`), so it spends nothing.
-      //   (2) R-4/R-3: on the model path, quotaMetered is set AFTER the spend, never before — a THROW
-      //       between here and the spend must fall through to the IP-keyed backstop, or the turn
-      //       reaches the model counted by nobody. Exempt still marks metered (it never reaches the
-      //       backstop) so nothing recharges it.
+      // Deterministic-is-free + R-3: quotaExempt (a canned/clarify turn, computed server-side; see
+      // the `canned` return, llmCalls:0) answers without the model and spends nothing; the model path
+      // sets quotaMetered AFTER the spend so a throw falls to the IP backstop.
       if (quotaExempt) {
         quotaMetered = true
       } else {
