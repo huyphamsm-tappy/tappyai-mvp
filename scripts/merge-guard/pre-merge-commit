@@ -1,7 +1,0 @@
-#!/bin/sh
-# Optional local hook: run merge-guard on every merge BEFORE git records it.
-# Install (opt-in, per clone):
-#   cp scripts/merge-guard/pre-merge-commit .git/hooks/pre-merge-commit && chmod +x .git/hooks/pre-merge-commit
-# A finding stops the commit; restore the dropped change, or add a trailer to the merge message:
-#   Merge-Drop: <path> — <reason>
-exec node "$(git rev-parse --show-toplevel)/scripts/merge-guard/merge-guard.mjs" --staged

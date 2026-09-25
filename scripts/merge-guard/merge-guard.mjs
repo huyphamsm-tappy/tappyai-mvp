@@ -21,6 +21,8 @@
 //   node scripts/merge-guard/merge-guard.mjs --range <base>..<head>  every merge commit in a range
 //   node scripts/merge-guard/merge-guard.mjs --staged                an in-progress merge (MERGE_HEAD),
 //                                                                    before it is committed
+//   add --message <file> with --staged to read the merge message (and its Merge-Drop trailers)
+//   from <file> instead of MERGE_MSG — the commit-msg hook passes the message being committed.
 //   add --json <file> to write the findings as JSON; --repo <dir> to point at another checkout.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
@@ -89,7 +91,7 @@ function print(r) {
 }
 
 function main() {
-  const args = parseArgs(process.argv.slice(2), { commit: '', range: '', staged: false, json: '', repo: process.cwd() })
+  const args = parseArgs(process.argv.slice(2), { commit: '', range: '', staged: false, message: '', json: '', repo: process.cwd() })
   const git = makeGit(args.repo)
   const results = []
   if (args.staged) {
@@ -99,7 +101,7 @@ function main() {
     const theirs = readFileSync(mh, 'utf8').trim().split('\n')
     const tree = git.strict(['write-tree'])?.trim()
     if (!tree) { console.error('merge-guard: unresolved conflicts in the index — resolve them first, then re-run'); return 1 }
-    const msgFile = join(gitDir, 'MERGE_MSG')
+    const msgFile = args.message || join(gitDir, 'MERGE_MSG')
     results.push(checkMerge(git, { label: `staged merge of ${theirs.map(h => h.slice(0, 7)).join(',')} into HEAD`, parents: ['HEAD', ...theirs], result: tree, message: existsSync(msgFile) ? readFileSync(msgFile, 'utf8') : '' }))
   } else {
     const shas = args.commit ? [args.commit] : args.range ? git.run(['rev-list', '--merges', '--reverse', args.range]).trim().split('\n').filter(Boolean) : []

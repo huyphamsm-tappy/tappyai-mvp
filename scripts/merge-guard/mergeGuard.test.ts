@@ -109,7 +109,19 @@ describe('merge-guard', () => {
     good.g(['merge', '-q', '--no-ff', '--no-commit', 'side'])
     const ok = spawnSync(process.execPath, [GUARD, '--staged', '--repo', good.dir], { encoding: 'utf8' })
     expect(ok.status).toBe(0)
-  })
+  }, 20_000)
+
+  it('--staged --message reads the waiver from the message being committed (the commit-msg hook path)', () => {
+    const r = setup('staged-msg')
+    r.g(['merge', '-q', '--no-ff', '--no-commit', 'side'])
+    r.write('src/app/Screen.kt', APP('  // slot A', '  val placeCards = computePlaceCards(message)'))
+    r.g(['add', '-A'])
+    const msg = join(r.dir, 'COMMIT_EDITMSG.test')
+    writeFileSync(msg, 'Merge side\n\nMerge-Drop: src/app/Screen.kt — plan card moved to its own screen\n')
+    const out = spawnSync(process.execPath, [GUARD, '--staged', '--message', msg, '--repo', r.dir], { encoding: 'utf8' })
+    expect(out.status).toBe(0)
+    expect(out.stdout).toContain('waived')
+  }, 20_000)
 })
 
 describe('branch-containment', () => {

@@ -18,6 +18,7 @@
     "check:sql-grants": "node scripts/architecture/check-sql-grants.mjs",
     "merge:guard": "node scripts/merge-guard/merge-guard.mjs",
     "merge:containment": "node scripts/merge-guard/branch-containment.mjs",
+    "merge:install-hook": "node scripts/merge-guard/install-hook.mjs",
     "validate:brands": "vitest run src/config/brandRegistry.validation.test.ts",
     "test:raw": "vitest run",
     "extension:package": "node scripts/extension/package.mjs"
