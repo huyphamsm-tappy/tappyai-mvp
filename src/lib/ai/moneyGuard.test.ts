@@ -327,6 +327,20 @@ describe('F3 — redaction never leaves a dangling connective', () => {
       expect(out.trim()).not.toBe('')
     })
   }
+  // F-092 (2026-09-25): a sentence-initial "Với …" / "With …" is a PREPOSITION opening a complete
+  // sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …") — not a conjunction hanging off
+  // the removed sentence. Stripping it ate the first word of the next sentence.
+  it('F-092: "Với …" after a removed sentence keeps its first word', async () => {
+    const { guardSnippetPricesInText } = await import('./snippetPriceGuard')
+    const out = guardSnippetPricesInText('Giá khoảng 999.000 VND cho cả tối. Với hai bạn thì rất vui.', [], 'an toi').text
+    expect(out).not.toContain('999.000')
+    expect(out).toBe('Với hai bạn thì rất vui.')
+  })
+  it('F-092: an English "With …" sentence keeps its first word too', () => {
+    const out = guardMoneyClaimsInText('It costs about 30 million. With two of you it is great value.', rs, ['Galaxy S24']).text
+    expect(out).not.toContain('30 million')
+    expect(out).toBe('With two of you it is great value.')
+  })
   it('a removed middle sentence leaves the neighbours intact and unjoined', () => {
     const text = 'Máy rất tốt. Giá khoảng 30 triệu. Pin dùng cả ngày.'
     const out = guardMoneyClaimsInText(text, rs, ['Galaxy S24']).text

@@ -410,7 +410,10 @@ export function sentenceSpans(text: string): Array<[number, number]> {
  * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
 const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
-const LEADING_CONNECTIVE = /^\s*(?:và|với|hoặc|nhưng|còn|and|with|or|but)\s+/iu
+// F-092 (2026-09-25): "với" / "with" are NOT here. Sentence-initial they are a PREPOSITION opening a
+// complete sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …"), and stripping them ate
+// the next sentence's first word. Only true conjunctions dangle off a removed sentence.
+const LEADING_CONNECTIVE = /^\s*(?:và|hoặc|nhưng|còn|and|or|but)\s+/iu
 /**
  * A clause cut that leaves the sentence ending on one of these is a stub ("bạn nên.", "giá là.",
  * measured live 2026-09-20 run 14): the sentence goes whole instead.

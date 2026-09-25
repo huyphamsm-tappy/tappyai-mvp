@@ -1,0 +1,47 @@
+
+ RUN  v4.1.9 D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard
+
+ ❯ |app| src/lib/ai/moneyGuard.test.ts (132 tests | 2 failed | 130 skipped) 17ms
+     × F-092: "Với …" after a removed sentence keeps its first word 13ms
+     × F-092: an English "With …" sentence keeps its first word too 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |app| src/lib/ai/moneyGuard.test.ts > F3 — redaction never leaves a dangling connective > F-092: "Với …" after a removed sentence keeps its first word
+AssertionError: expected 'hai bạn thì rất vui.' to be 'Với hai bạn thì rất vui.' // Object.is equality
+
+Expected: "Với hai bạn thì rất vui."
+Received: "hai bạn thì rất vui."
+
+ ❯ src/lib/ai/moneyGuard.test.ts:337:17
+    335|     const out = guardSnippetPricesInText('Giá khoảng 999.000 VND cho c…
+    336|     expect(out).not.toContain('999.000')
+    337|     expect(out).toBe('Với hai bạn thì rất vui.')
+       |                 ^
+    338|   })
+    339|   it('F-092: an English "With …" sentence keeps its first word too', (…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  |app| src/lib/ai/moneyGuard.test.ts > F3 — redaction never leaves a dangling connective > F-092: an English "With …" sentence keeps its first word too
+AssertionError: expected 'two of you it is great value.' to be 'With two of you it is great value.' // Object.is equality
+
+Expected: "With two of you it is great value."
+Received: "two of you it is great value."
+
+ ❯ src/lib/ai/moneyGuard.test.ts:342:17
+    340|     const out = guardMoneyClaimsInText('It costs about 30 million. Wit…
+    341|     expect(out).not.toContain('30 million')
+    342|     expect(out).toBe('With two of you it is great value.')
+       |                 ^
+    343|   })
+    344|   it('a removed middle sentence leaves the neighbours intact and unjoi…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 130 skipped (132)
+   Start at  07:44:46
+   Duration  676ms (transform 117ms, setup 24ms, import 132ms, tests 17ms, environment 0ms)
+
