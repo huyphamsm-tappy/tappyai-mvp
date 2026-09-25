@@ -298,11 +298,10 @@ describe('budget is not a cost — derived lines are the server\'s, never the mo
     expect(p.cost_breakdown).toEqual({ 'Tổng chi phí dự kiến': '1.300.000 VND' })
   })
 
-  // 🔶 OVERNIGHT 2026-09-17 (STEP C-2): skipped, not deleted. This case encodes the cool-vaughan
-  // policy "a user-echoed budget stated as a cost is redacted"; the merged branch runs the G2
-  // snippet-price guard (owner-approved 2026-09-17) whose contract is the OPPOSITE — an amount the
-  // user stated is `user_echo` and survives. Owner to choose; see docs/audit/overnight-2026-09-17.md.
-  it.skip('F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives', () => {
+  // ✅ OWNER DECISION 2026-09-25 (F-086): a user-echoed budget stated as a COST is redacted, on both
+  // the v1 and G2 paths; a budget named as a budget still survives (user_echo). Re-enabled after
+  // F-092 (the redaction no longer eats "Với" from the next sentence).
+  it('F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives', () => {
     const text = 'Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sách 3 triệu cho 2 người, bạn hoàn toàn thoải mái.\n\nChi phí khoảng 3 triệu. Budget: 3,000,000 VND is plenty. Remaining: 3,000,000 VND.'
     const out = snippetGuard(text, [], USER_3M)
     expect(out.text).not.toContain('Tổng ước tính 3.000.000')
@@ -312,11 +311,21 @@ describe('budget is not a cost — derived lines are the server\'s, never the mo
     expect(out.text).toContain('Budget: 3,000,000 VND is plenty')
   })
 
-  // 🔶 OVERNIGHT 2026-09-17 (STEP C-2): skipped, not deleted. This case encodes the cool-vaughan
-  // policy "a user-echoed budget stated as a cost is redacted"; the merged branch runs the G2
-  // snippet-price guard (owner-approved 2026-09-17) whose contract is the OPPOSITE — an amount the
-  // user stated is `user_echo` and survives. Owner to choose; see docs/audit/overnight-2026-09-17.md.
-  it.skip('H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost', async () => {
+  // F-086: the same rule on the G2 path (SNIPPET_PRICE_GUARD_V2) — its user_echo exemption is a
+  // separate code path, and an exemption fixed on one path only would leave the other open.
+  it('F2 — G2 path: the budget echoed as a cost is redacted and counted; the budget as a budget survives', () => {
+    const text = 'Tổng ước tính 3.000.000 VND cho cả tối. Với ngân sách 3 triệu cho 2 người, bạn hoàn toàn thoải mái.'
+    const out = snippetGuard(text, [], USER_3M, undefined, { v2: true, priceBandsByEntity: new Map() })
+    expect(out.text).not.toContain('Tổng ước tính 3.000.000')
+    expect(out.text).toContain('Với ngân sách 3 triệu cho 2 người')
+    expect(out.stats?.user_echo_as_cost).toBe(1)
+    expect(out.stats?.user_echo).toBe(1)
+  })
+
+  // ✅ OWNER DECISION 2026-09-25 (F-086): a user-echoed budget stated as a COST is redacted, on both
+  // the v1 and G2 paths; a budget named as a budget still survives (user_echo). Re-enabled after
+  // F-092 (the redaction no longer eats "Với" from the next sentence).
+  it('H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost', async () => {
     const osmRows = [
       { name: 'Nhà Hàng Jaspas', address: 'Quận 1, TP HCM', wifi: true, maps_link: 'https://www.google.com/maps?q=10.778168,106.7037041' },
       { name: 'Mimi Ultra Lounge', address: '61 Nam Kỳ Khởi Nghĩa, Quận 1', wifi: true, maps_link: 'https://www.google.com/maps?q=10.7718973,106.7005703' },

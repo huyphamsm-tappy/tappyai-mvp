@@ -20,6 +20,28 @@
 import { extractMoneyClaims, extractMoneyClaimsDetailed, redactUnsupportedClaims, sentenceSpans, proseOnly, type MoneyClaim } from './moneyGuard'
 import { placeTokensFor, textNamesPlace, attributePlace, placesNamedIn, fold } from '@/lib/links/placeAttribution'
 import { amountWithinBand, type PriceBand } from '@/lib/recommendation/priceBand'
+import { normalizeVN } from './intent'
+
+/**
+ * F-086 (owner decision 2026-09-25, restoring 15dd7c6's prose half): 🚨 A USER NUMBER ECHOED AS A
+ * COST IS NOT THE USER'S NUMBER ANY MORE. Measured 2026-09-15 on the planning UAT: "budget 3 triệu"
+ * came back as "Tổng ước tính 3.000.000 VND cho cả tối" under two venues with no price at all. The
+ * amount is the user's, the CLAIM is not — it presents the envelope as what the evening costs,
+ * which is inventing money (same class as inventing showtimes). So the echo exemption holds only
+ * while the sentence frames the number as a budget, or frames it as nothing in particular; a
+ * sentence that frames it as a total / estimate / spend / remainder — and does not say budget —
+ * is judged like any other claim, and with no evidence behind it, it goes. Applied at BOTH echo
+ * exemptions (v1 and G2): an exemption on one path only would leave the other open.
+ */
+const COST_FRAME_RE = /\btong\b|\btotal\b|\buoc tinh\b|\bestimated?\b|\bestimate\b|\bchi phi\b|\bcost\b|\bspend\b|\bcon lai\b|\bcon du\b|\bremaining\b|\bhet\b/
+const BUDGET_FRAME_RE = /\bngan sach\b|\bbudget\b|\btam gia\b|\btrong khoang\b|\btoi da\b/
+
+function framedAsCost(text: string, spans: Array<[number, number]>, pos: number): boolean {
+  const span = spans.find(([a, b]) => pos >= a && pos < b)
+  if (!span) return false
+  const sentence = normalizeVN(text.slice(span[0], span[1]).toLowerCase())
+  return COST_FRAME_RE.test(sentence) && !BUDGET_FRAME_RE.test(sentence)
+}
 
 // Snippets round loosely ("khoảng 50k", "45–55k"), so allow a wider match than
 // the shopping guard's 2%. Still far tighter than "any number goes".
@@ -89,6 +111,8 @@ export interface SnippetPriceOptions {
 export interface SnippetPriceStats {
   claims: number
   user_echo: number
+  /** F-086: the user's own amount restated as a total / estimate / remainder — judged, not exempt. */
+  user_echo_as_cost: number
   supported_by_band: number
   supported_by_snippet: number
   unsupported: number
@@ -110,6 +134,7 @@ export function guardSnippetPricesInText(
   const claims = extractMoneyClaims(text)
   if (claims.length === 0) return { text, redacted: 0 }
   const userClaims = extractMoneyClaims(userText || '')
+  const echoSpans = userClaims.length > 0 ? sentenceSpans(text) : []
 
   // Attribute each claim to a place by the sentence it sits in — the same shape
   // `judgeMoneyClaims` uses. A sentence naming two places is a comparison, not a
@@ -152,7 +177,7 @@ export function guardSnippetPricesInText(
 
   const judged: MoneyClaim[] = claims.map(c => {
     const userEcho = userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)
-    if (userEcho) return { ...c, entity: null, verdict: 'VERIFIED' as const }
+    if (userEcho && !framedAsCost(text, echoSpans, c.start)) return { ...c, entity: null, verdict: 'VERIFIED' as const }
 
     const entity = scope ? placeNamedAt(c.start) : null
     // A sentence about ONE named place may only rest on evidence about that
@@ -307,7 +332,7 @@ function guardSnippetPricesV2(
   scope: SnippetPriceScope | undefined,
   opts: SnippetPriceOptions,
 ): { text: string; redacted: number; stats: SnippetPriceStats } {
-  const stats: SnippetPriceStats = { claims: 0, user_echo: 0, supported_by_band: 0, supported_by_snippet: 0, unsupported: 0, clause_cut: 0, sentences_removed: 0, lowercase_m_skipped: 0, attributed: 0, multi: 0 }
+  const stats: SnippetPriceStats = { claims: 0, user_echo: 0, user_echo_as_cost: 0, supported_by_band: 0, supported_by_snippet: 0, unsupported: 0, clause_cut: 0, sentences_removed: 0, lowercase_m_skipped: 0, attributed: 0, multi: 0 }
   const { claims, lowercase_m_skipped } = extractMoneyClaimsDetailed(text)
   stats.lowercase_m_skipped = lowercase_m_skipped
   stats.claims = claims.length
@@ -361,7 +386,10 @@ function guardSnippetPricesV2(
   }
 
   const judged: MoneyClaim[] = claims.map(c => {
-    if (userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)) { stats.user_echo++; return { ...c, entity: null, verdict: 'VERIFIED' as const } }
+    if (userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)) {
+      if (!framedAsCost(text, spans, c.start)) { stats.user_echo++; return { ...c, entity: null, verdict: 'VERIFIED' as const } }
+      stats.user_echo_as_cost++
+    }
     const idx = spans.findIndex(([a, b]) => c.start >= a && c.start < b)
     // A sentence that names SEVERAL venues by identity is a comparison — judged first,
     // before any anaphora could hand it the previous sentence's subject: each amount
