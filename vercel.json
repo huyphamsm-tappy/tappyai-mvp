@@ -48,6 +48,10 @@
     {
       "path": "/api/cron/marketing-retention",
       "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/cron/decision-evidence-sweep",
+      "schedule": "15 18 * * *"
     }
   ]
 }

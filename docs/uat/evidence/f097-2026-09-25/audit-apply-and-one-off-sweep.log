@@ -1,0 +1,8 @@
+PRE-FLIGHT CHECK 2: target zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Apply 20260925b_decision_evidence_sweep.sql, then decision_evidence_sweep() once.
+BEFORE: {"total":26,"expired":23,"live":3,"orphans":9}
+APPLIED 20260925b. grants: ["postgres","service_role"]
+SWEEP deleted: 23
+AFTER: {"total":3,"expired":0,"live":3,"orphans":0}
+decision_evidence_owner_id_fkey validated before: false
+VALIDATE CONSTRAINT decision_evidence_owner_id_fkey (no orphan left; deletes nothing) → validated: true
+LIVE :3007 cron route (audit): {"noSecret":401,"withSecret":"UNVERIFIED: CRON_SECRET not set in .env.local"}

@@ -71,6 +71,7 @@ code on the shipping branch fails for users if the migration is missing when the
 | **S1** | `20260904_group_read_boundary` (**added 2026-09-25, F-065 P0**) | drops `"Anyone can read groups"` / `"Anyone can read group members"` (`USING (true)` to `public`); participant-only SELECT `TO authenticated` via `fn_group_participant()` | no (replaces 2 policies) | §1-S1 | **SECURITY** — without it anyone holding the public anon key reads every group and every member's name/area/budget/dietary restrictions (measured on audit 2026-09-25). ⚠️ **Apply AFTER the web deploy** (§2) |
 | **D1** | `20260911b_user_memory_auth_fk` (**added 2026-09-25, F-093 P1**) | `user_memory.user_id` text → uuid, FK → `auth.users` **ON DELETE CASCADE**; policy recreated as `auth.uid() = user_id`; removes orphan rows first, fingerprints them in `user_memory_fk_cleanup_log` | no (type change + FK) | rollback/ file | **DELETION PROMISE** — without it, deleting an account leaves its AI memory behind (`/delete-account` promises it is removed). ⚠️ **Owner authorization required** (migration header). Independent of the web deploy |
 | **D2** | `20260925_account_deletion_cascade_gaps` (**added 2026-09-25, F-093 P1**) | FK → `auth.users` **ON DELETE CASCADE** on `decision_evidence.owner_id` and `anon_chat_usage.user_id` (added `NOT VALID`, validated only when no orphan exists; deletes nothing) | no (2 FKs) | rollback/ file | same promise, the two other stores. After D1. ⚠️ **Owner authorization required** |
+| **D3** | `20260925b_decision_evidence_sweep` (**added 2026-09-25, F-097**) | function `decision_evidence_sweep(p_limit)` — deletes `decision_evidence` rows past `expires_at`, service_role only; called daily by `/api/cron/decision-evidence-sweep` (`vercel.json` 18:15 UTC) | no (1 function) | rollback/ file | **RETENTION** — without it expired shopping/place evidence of users who never return is kept forever. ⚠️ **Owner approval required**; the cron ships with the code and answers 500 until this is applied |
 | ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
 
 The detailed check / apply / verify blocks for #1–#8 follow unchanged; the new steps (G1, P1, G2, GR,
@@ -282,6 +283,21 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - **Verify after (the end-to-end check used on audit, rolled back):** in one transaction insert a test `auth.users` row, give it a `user_memory` row, `decision_evidence_save()`, an `anon_chat_usage` row;
   `DELETE FROM auth.users` for it; count rows carrying its id in every table → 0; `ROLLBACK`. Script: `docs/uat/evidence/f093-2026-09-25/`.
 - **Rollback:** `supabase/migrations/rollback/20260925_account_deletion_cascade_gaps_rollback.sql` (drops the two FKs only).
+
+### §1-D3) `supabase/migrations/20260925b_decision_evidence_sweep.sql` — the TTL sweep (F-097) — ⚠️ OWNER APPROVES
+- **Check first:** `SELECT count(*) FILTER (WHERE expires_at < now()) AS expired, count(*) AS total FROM public.decision_evidence;`
+  and `SELECT proname FROM pg_proc WHERE proname = 'decision_evidence_sweep';` → 0 rows = not applied.
+- **Apply** (any time after D2): the file. Then **the one-off cleanup**, same session: `SELECT public.decision_evidence_sweep();`
+  (returns the number deleted; bounded at 5000 per call — repeat while it returns 5000). It deletes only rows whose `expires_at` has passed.
+- **If D2 left `decision_evidence_owner_id_fkey` NOT VALID** (orphans existed): after the sweep re-count orphans
+  (`… WHERE NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id = d.owner_id)`); at 0,
+  `ALTER TABLE public.decision_evidence VALIDATE CONSTRAINT decision_evidence_owner_id_fkey;` (deletes nothing). On audit the sweep removed all 9 orphans (they were expired) and the constraint validated.
+- **The daily job:** `/api/cron/decision-evidence-sweep` is in `vercel.json` (`15 18 * * *` = 01:15 VN) and needs `CRON_SECRET`
+  (same as every cron). Verify once after deploy: `curl -H "Authorization: Bearer $CRON_SECRET" https://<prod-host>/api/cron/decision-evidence-sweep`
+  → `{"ok":true,"deleted":N,"more":false}`. Without the secret → 401. Before D3 is applied → 500 `sweep_failed` (harmless; nothing deleted).
+- **Verify after:** `SELECT has_function_privilege('authenticated','public.decision_evidence_sweep(integer)','EXECUTE');` → `f`; expired count → 0.
+- **Rollback:** `supabase/migrations/rollback/20260925b_decision_evidence_sweep_rollback.sql` (drops the function; the cron then answers 500).
+- Audit evidence: `docs/uat/evidence/f097-2026-09-25/audit-apply-and-one-off-sweep.log` (26 rows → 23 expired deleted, 3 live kept, orphans 9 → 0, FK validated).
 
 ### §1-V) Already on prod — verify, do NOT re-apply
 ```sql
