@@ -1,0 +1,52 @@
+[
+ {
+  "id": "J1",
+  "what": "link holder (no session) reads the group through GET /api/group",
+  "result": "PASS",
+  "detail": {
+   "status": 200,
+   "members": 2
+  }
+ },
+ {
+  "id": "J2",
+  "what": "a first-time joiner joins through POST /api/group/[id]/join",
+  "result": "PASS",
+  "detail": {
+   "status": 200,
+   "body": {
+    "ok": true
+   }
+  }
+ },
+ {
+  "id": "J3",
+  "what": "the new member now reads the group + members via PostgREST (participant)",
+  "result": "PASS",
+  "detail": {
+   "memberRowsVisible": 3
+  }
+ },
+ {
+  "id": "J4",
+  "what": "an outsider still reads nothing via PostgREST",
+  "result": "PASS",
+  "detail": {
+   "members": 0,
+   "groups": 0
+  }
+ },
+ {
+  "id": "J5",
+  "what": "with 10 members, a first-time joiner (who cannot see the group under RLS) is refused group_full — counted through the service role",
+  "result": "PASS",
+  "detail": {
+   "membersBefore": 3,
+   "accountlessFillerInserted": 7,
+   "membersNow": 10,
+   "status": 400,
+   "error": "group_full",
+   "note": "first attempt used real audit accounts as filler by mistake; those 5 rows (and the fresh join) were reverted before this run"
+  }
+ }
+]

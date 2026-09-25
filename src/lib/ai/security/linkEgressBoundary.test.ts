@@ -200,6 +200,33 @@ describe('P3-F4 · every link the rulebook orders the model to write still arriv
     expect(rendered(out)).toContain(earlier)
   })
 
+  // F-095 (live, 2026-09-25): search_places returned the museum's website as `https://…vn/`, the
+  // model wrote `**https://…vn**`, and the user received a bare `**`. The copy was faithful — the
+  // bold markers were read as part of the URL and the trailing slash did not match.
+  it('F-095 — a tool-given website copied in bold and without its trailing slash is kept', async () => {
+    const site = 'https://baotangchungtichchientranh.vn/'
+    const out = await run([
+      toolCall('search_places'),
+      toolResult({ results: [{ name: 'Bao tang', website: site }] }),
+      text('Trang chinh thuc:\n\n**https://baotangchungtichchientranh.vn**\n\nHet.'),
+      finish,
+    ])
+    expect(rendered(out)).toContain('**https://baotangchungtichchientranh.vn**')
+  })
+
+  it('F-095 — a removed bold URL takes its emphasis pair with it; appended data is still removed', async () => {
+    const out = await run([
+      toolCall('web_search'),
+      toolResult({ search_url: SEARCH_URL }),
+      text(`Xem: **${EXFIL}**, hoac **${SEARCH_URL}&leak=QuanBinhThanh_800k**. Het.`),
+      finish,
+    ])
+    const body = rendered(out)
+    expect(body).not.toContain('attacker.example')
+    expect(body).not.toContain('leak=QuanBinhThanh_800k')
+    expect(body).toBe('Xem: , hoac . Het.')
+  })
+
   // ── P3-F5 · the CTA button block ──────────────────────────────────────────
   //
   // A separate channel from prose, and a bigger prize: the model authors

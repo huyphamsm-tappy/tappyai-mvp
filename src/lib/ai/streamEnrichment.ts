@@ -445,11 +445,16 @@ export function extractUrls(text: string): string[] {
 
 /**
  * The form two spellings of the same URL are compared in: percent-decoded (the markdown copy is
- * encoded by `sanitizeUrlForMarkdown`, the tool JSON is raw), trailing sentence punctuation
- * dropped, lower-cased.
+ * encoded by `sanitizeUrlForMarkdown`, the tool JSON is raw), trailing sentence punctuation,
+ * markdown emphasis and slashes dropped, lower-cased.
+ *
+ * F-095: a tool's `https://site.vn/` copied as `**https://site.vn**` is the same link. Without
+ * the emphasis/slash trim, the bare-URL pass read `https://site.vn**` as an invented URL and
+ * deleted a place's real website (live, 2026-09-25). Nothing is appended by trimming, so a copy
+ * that ADDS data (`…&leak=…`) still fails to match.
  */
 function normalizeUrl(url: string): string {
-  return decodeSafe(url).replace(/[.,;:!?]+$/, '').toLowerCase()
+  return decodeSafe(url).replace(/[.,;:!?*_~/]+$/, '').toLowerCase()
 }
 
 /**
@@ -547,11 +552,13 @@ function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string 
     (whole, label: string, url: string) => (allowed.has(normalizeUrl(url)) ? whole : label),
   )
   const guardedProse = withLinks.replace(
-    /(?<!\]\()https?:\/\/[^\s<>()\\[\]]+/g,
-    (url: string) => {
-      const trailing = url.match(/[.,;:!?]+$/)?.[0] ?? ''
+    /(\*\*|__)?(?<!\]\()(https?:\/\/[^\s<>()\\[\]]+)/g,
+    (whole: string, lead: string | undefined, url: string) => {
+      const trailing = url.match(/[.,;:!?*_~]+$/)?.[0] ?? ''
       const bare = trailing ? url.slice(0, -trailing.length) : url
-      return allowed.has(normalizeUrl(bare)) ? url : trailing
+      if (allowed.has(normalizeUrl(bare))) return whole
+      // A removed `**url**` takes its emphasis pair with it rather than leaving a stray `**`.
+      return lead && trailing.startsWith(lead) ? trailing.slice(lead.length) : (lead ?? '') + trailing
     },
   )
   return guardedProse + guardPlanLinks(guardCtaButtons(tail, allowed), allowed)
@@ -1555,9 +1562,26 @@ export function applyPlaceEnrichmentStreamFilter(
   }
 
   /** End of stream: a still-forming token is no longer forming — release what it turned out to be, sanitised. */
+  /**
+   * Egress telemetry: how many URLs the guard withheld, and on which hosts — counts and hosts only,
+   * never the text. Without it a turn whose links vanished cannot be told apart from a turn whose
+   * model wrote none (live verification 2026-09-25).
+   */
+  let egressLogged = false
+  const logEgress = (path: 'live' | 'settle', before: string, after: string) => {
+    if (egressLogged) return
+    const kept = new Set(extractUrls(after).map(normalizeUrl))
+    const removed = extractUrls(before).filter(u => !kept.has(normalizeUrl(u)))
+    if (removed.length === 0) return
+    egressLogged = true
+    const hostOf = (u: string) => { try { return new URL(u).host } catch { return '?' } }
+    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'egress', path, removed: removed.length, hosts: [...new Set(removed.map(hostOf))].slice(0, 8) }))
+  }
+
   const flushLive = (controller: TransformStreamDefaultController) => {
     if (bufferMode) return
     const final = releasableLiveText(liveText, true, allowedUrls)
+    logEgress('live', liveText, final)
     if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
     controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
     liveReleased = final
@@ -1749,7 +1773,9 @@ export function applyPlaceEnrichmentStreamFilter(
      * plan branch alike, and nothing the server writes afterwards is judged by it. The released
      * progressive prefix went through the same rule (`egressSlice`), so it stays a prefix.
      */
+    const beforeEgress = mainText
     mainText = guardModelEgress(mainText, buildOwned(places), allowedUrls)
+    logEgress('settle', beforeEgress, mainText)
 
     /**
      * The card's payload, built here rather than at the end, because whether it
