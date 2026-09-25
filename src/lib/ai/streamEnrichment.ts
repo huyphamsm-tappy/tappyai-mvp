@@ -1344,6 +1344,11 @@ export function applyPlaceEnrichmentStreamFilter(
    * client exfiltrating to itself already holds the data.
    */
   publishedHistory: string[] = [],
+  /**
+   * F-094 measurement: receives the model's RAW text — every upstream `0:` delta, before any
+   * guard — once the stream ends. Only the golden harness supplies it (see goldenCapture.ts).
+   */
+  onRawModelText?: (raw: string) => void,
 ): Response {
   const body = response.body
   if (!body) return response
@@ -1359,6 +1364,10 @@ export function applyPlaceEnrichmentStreamFilter(
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
   let lineRemainder = ''
+  let rawModelText = '' // F-094: what the model said, before any guard (measurement only)
+  const captureRaw = (line: string) => {
+    if (onRawModelText && line.startsWith('0:')) { try { rawModelText += JSON.parse(line.slice(2)) as string } catch { /* malformed */ } }
+  }
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
@@ -2665,6 +2674,7 @@ export function applyPlaceEnrichmentStreamFilter(
       lineRemainder = lines.pop() ?? ''
 
       for (const line of lines) {
+        captureRaw(line)
         if (line.startsWith('0:')) {
           // B12 — the step boundary. Only ever inserted BETWEEN two pieces of model speech:
           // nothing is added before the first word, after a tool that the model does not follow
@@ -3068,6 +3078,10 @@ export function applyPlaceEnrichmentStreamFilter(
       flushLive(controller)
       await emitReconstructed(controller)
       if (lineRemainder) controller.enqueue(encoder.encode(lineRemainder + '\n'))
+      if (onRawModelText) {
+        captureRaw(lineRemainder)
+        try { onRawModelText(rawModelText) } catch { /* measurement only — never affects the reply */ }
+      }
       // Task 3C: hand the turn's grounded evidence to the caller AFTER the reply
       // is fully emitted, so persisting it can never delay a byte to the user.
       // Deliberately awaited-but-swallowed: a failed write costs the next turn

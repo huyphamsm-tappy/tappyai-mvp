@@ -2,6 +2,7 @@ import { tool } from 'ai'
 import { z } from 'zod'
 import { randomUUID, createHash } from 'crypto'
 import { appendFileSync } from 'fs'
+import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
@@ -2298,7 +2299,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // published — otherwise the model invented it, and an invented URL is an exfiltration channel
   // wearing the product's own "Xem thêm kết quả" clothing. Assistant turns only: what the USER
   // typed was never vetted by the guard, so echoing it back must not launder it.
-  messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')))
+  messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')),
+  // F-094 measurement: the golden harness's pre-guard capture. Never in production (goldenCapture.ts).
+  goldenCaptureSink(req))
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse

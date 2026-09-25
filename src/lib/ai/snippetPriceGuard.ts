@@ -193,7 +193,9 @@ export function guardSnippetPricesInText(
   })
   const bad = judged.filter(j => j.verdict !== 'VERIFIED').length
   if (bad === 0) return { text, redacted: 0 }
-  return { text: redactUnsupportedClaims(text, judged), redacted: bad }
+  // F-094 (owner 2026-09-25): v1 removes the WHOLE sentence. Its clause cut left headless fragments
+  // ("**Tổng ước tính, mua sắm, hoặc nâng cấp.") in 7 of 28 golden turns; V2 stays behind its flag.
+  return { text: redactUnsupportedClaims(text, judged, { wholeSentence: true }), redacted: bad }
 }
 
 // ── G2 · SNIPPET_PRICE_GUARD_V2 ───────────────────────────────────────────────

@@ -10,6 +10,10 @@
  *   - annotations (`8:`): the places card (`items`), progress, followups
  *   - duplication: the longest repeated span of the reply text
  *   - elapsed ms, HTTP status
+ *   - preGuard: the model's RAW reply before any server guard (F-094, 2026-09-25). The harness sends
+ *     `x-tappy-golden-capture: <id>`; a NON-production server writes the raw text to
+ *     <tmpdir>/tappy-golden-capture/<id>.txt (src/lib/ai/goldenCapture.ts) and it is read back here.
+ *     null when the server is production, remote, or older than the hook.
  * Output: docs/uat/evidence/golden/<label>/<case>.json + <label>/summary.json.
  *
  * Every POST is one real LLM-reaching request and is counted; the run refuses to
@@ -23,6 +27,7 @@
  */
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs'
 import { join } from 'node:path'
+import { tmpdir } from 'node:os'
 
 const PRODUCTION_REF = 'fwznnobrdctuskgrvuik'
 const AUDIT_REF = 'zdaprdfgpbpnxyofagmc'
@@ -97,13 +102,20 @@ function stripMarkers(t) {
     .trim()
 }
 
-async function chat(messages, location) {
-  const headers = { 'Content-Type': 'application/json', 'x-tappy-surface': 'web', Authorization: `Bearer ${BEARER}` }
+const CAPTURE_DIR = join(tmpdir(), 'tappy-golden-capture')
+const slug = (s) => String(s).replace(/[^A-Za-z0-9_.-]/g, '_').slice(0, 96)
+function readPreGuard(id) {
+  const f = join(CAPTURE_DIR, `${id}.txt`)
+  return existsSync(f) ? readFileSync(f, 'utf8') : null
+}
+
+async function chat(messages, location, captureId) {
+  const headers = { 'Content-Type': 'application/json', 'x-tappy-surface': 'web', Authorization: `Bearer ${BEARER}`, 'x-tappy-golden-capture': captureId }
   const body = { messages, ...(location ? { userLocation: location } : {}) }
   const t0 = Date.now()
   const res = await fetch(`${BASE}/api/chat`, { method: 'POST', headers, body: JSON.stringify(body) })
   const raw = await res.text()
-  return { status: res.status, elapsedMs: Date.now() - t0, raw, ...parseFrames(raw) }
+  return { status: res.status, elapsedMs: Date.now() - t0, raw, preGuard: readPreGuard(captureId), ...parseFrames(raw) }
 }
 
 const outDir = join('docs/uat/evidence/golden', LABEL)
@@ -117,13 +129,13 @@ for (const c of cases) {
   for (const user of c.turns) {
     messages.push({ role: 'user', content: user })
     calls++
-    const r = await chat(messages, location)
+    const r = await chat(messages, location, slug(`${LABEL}.${c.id}-t${messages.filter(m => m.role === 'user').length}.${Date.now()}`))
     const visible = stripMarkers(r.text)
     const turn = {
       user, status: r.status, elapsedMs: r.elapsedMs, textFrames: r.textFrames,
       tools: r.tools, toolResults: r.toolResults.map(t => t.name), annotations: r.annotations,
       cardItems: r.annotations.filter(a => a.items).map(a => a.items.map(i => i.name)),
-      duplicate: longestRepeat(visible), text: r.text, visible,
+      duplicate: longestRepeat(visible), text: r.text, visible, preGuard: r.preGuard,
     }
     turns.push(turn)
     messages.push({ role: 'assistant', content: r.text })

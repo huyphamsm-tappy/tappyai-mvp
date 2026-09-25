@@ -454,6 +454,14 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
   const boldMarks = (before.match(/\*\*/g) ?? []).length
   const hasBoldName = boldMarks >= 2 && boldMarks % 2 === 0
   if (afterSaysNothing && (boldMarks % 2 === 1 || (!hasBoldName && before.split(/\s+/).filter(Boolean).length <= 4))) return null
+  // F-094 (owner 2026-09-25): a cut that leaves a CLIPPED sentence takes the sentence whole.
+  // (a) the kept head opens a bold span the cut closed — "**Tổng ước tính, mua sắm, hoặc nâng cấp."
+  //     (golden T1 t3) — whatever follows it;
+  if (boldMarks % 2 === 1) return null
+  // (b) the head clause went and what stays starts in lower case where the sentence did not —
+  //     "nếu bạn ưu tiên **không dây**, …", "bao gồm xe khách khứ hồi, …" (golden B4). A list line
+  //     keeps its product and loses only the amount (S7), because there the amount is not the head.
+  if (before.length === 0 && startsLower(after) && !startsLower(sentence)) return null
   // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
   // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
   const lead = sentence.match(/^\s*/)?.[0] ?? ''
@@ -463,7 +471,25 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
   return rest + brk
 }
 
-export function redactUnsupportedClaims(text: string, claims: MoneyClaim[]): string {
+/** The first letter after leading space, list bullets and emphasis is lower case. */
+function startsLower(s: string): boolean {
+  return /^\p{Ll}/u.test(s.replace(/^[\s*_>#-]+/u, '').replace(/^[^\p{L}\p{N}]+/u, ''))
+}
+
+/** Upper-cases the first letter — the only character a redaction may change, and only its case. */
+function capitaliseFirst(s: string): string {
+  return s.replace(/^([\s*_>#-]*)(\p{Ll})/u, (_m, lead: string, ch: string) => lead + ch.toLocaleUpperCase('vi'))
+}
+
+export interface RedactOptions {
+  /**
+   * F-094 (owner 2026-09-25): remove every affected sentence WHOLE — no clause cut. The v1 snippet
+   * price guard uses it; its clause cuts produced the headless fragments the golden set measured.
+   */
+  wholeSentence?: boolean
+}
+
+export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
   const bad = claims.filter(c => c.verdict !== 'VERIFIED')
   if (bad.length === 0) return text
 
@@ -478,7 +504,12 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[]): str
   // 1) clause-level removal inside each affected sentence; 2) the sentence when the clause is all of it
   const spans = sentenceSpans(text)
   let dropped = false // the previous sentence went: a connective opening this one dangles
-  const stripConnective = (s: string) => s.replace(LEADING_CONNECTIVE, m => m.replace(/\S+\s+$/, ''))
+  // F-094: "Và phù hợp bữa trưa…" after a removed sentence became "phù hợp bữa trưa…" — a sentence
+  // with no capital. The connective goes and the first letter takes its case back.
+  const stripConnective = (s: string) => {
+    const stripped = s.replace(LEADING_CONNECTIVE, m => m.replace(/\S+\s+$/, ''))
+    return stripped === s ? s : capitaliseFirst(stripped)
+  }
   const pieces = spans.map(([a, b]) => {
     const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
     const raw = text.slice(a, b)
@@ -488,6 +519,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[]): str
       return out
     }
     let sentence = raw
+    if (opts.wholeSentence) { dropped = true; return '' }
     for (const c of inSentence) {
       const cut = removeClauseAround(sentence, c.start - a, c.end - a)
       if (cut === null) { dropped = true; return '' }

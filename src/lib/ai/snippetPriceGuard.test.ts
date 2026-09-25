@@ -72,3 +72,22 @@ describe('snippet price guard — a stated price must trace to a snippet', () =>
     expect(out.text).not.toMatch(/90\.000/)
   })
 })
+
+// F-094 (owner 2026-09-25): v1 removes the WHOLE sentence. Golden post-egress-f086 T1 t3 showed the
+// clause cut leaving "**Tổng ước tính, mua sắm, hoặc nâng cấp." — a headless, unclosed-bold fragment.
+describe('F-094 — v1 removes the whole sentence, never a clipped fragment', () => {
+  const user = 'Mình đi Đà Nẵng 2 ngày 1 đêm, 2 người, ngân sách 20 triệu'
+  it('the golden T1 t3 sentence goes whole; the next sentence is untouched', () => {
+    const text = 'Khách sạn sát biển Mỹ Khê. **Tổng ước tính: ~8.500.000 VND** cho 2 người, còn dư khoảng 11.500.000 VND cho ăn uống, mua sắm, hoặc nâng cấp. Chúc bạn vui!'
+    const out = guardSnippetPricesInText(text, [], user)
+    expect(out.text).toBe('Khách sạn sát biển Mỹ Khê. Chúc bạn vui!')
+  })
+  it('the user budget restated as a total (F-086) also goes whole', () => {
+    const out = guardSnippetPricesInText('**Tổng ước tính: khoảng 20 triệu cho 2 người**, đã gồm vé máy bay, khách sạn. Chúc bạn vui!', [], user)
+    expect(out.text).toBe('Chúc bạn vui!')
+  })
+  it('a traceable price and the budget named as a budget are still kept', () => {
+    const out = guardSnippetPricesInText('Phở ở đây khoảng 50.000đ/tô. Với ngân sách 20 triệu, bạn thoải mái.', [50000], user)
+    expect(out.text).toBe('Phở ở đây khoảng 50.000đ/tô. Với ngân sách 20 triệu, bạn thoải mái.')
+  })
+})

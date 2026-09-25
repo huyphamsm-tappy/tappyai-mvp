@@ -228,8 +228,25 @@ describe('redaction — POLICY R3 is PROPORTIONAL (B4, owner 2026-09-20; superse
   it('a sentence that is nothing but the amount still goes whole; the connective it leaves is tidied', () => {
     const out = guardMoneyClaimsInText('Daikin MC55UVM6 khoảng 9 triệu. Và máy rất êm.', rs, ['Daikin MC55UVM6']).text
     expect(out).not.toContain('9 triệu')
-    expect(out).toContain('máy rất êm')
+    // F-094: the stripped connective hands its capital to the next word — no lower-case sentence start.
+    expect(out).toBe('Máy rất êm.')
     expect(out.trim().toLowerCase().startsWith('và ')).toBe(false)
+  })
+
+  // F-094 (owner 2026-09-25): a cut that would leave a CLIPPED sentence takes the sentence whole.
+  it('F-094 — a head cut that leaves a lower-case remainder removes the sentence', () => {
+    const out = guardMoneyClaimsInText('Daikin MC55UVM6 khoảng 9 triệu, nếu bạn ưu tiên lọc bụi thì rất đáng. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Máy chạy êm.')
+  })
+  it('F-094 — a cut that would leave an unclosed bold head removes the sentence', () => {
+    const out = guardMoneyClaimsInText('**Tổng ước tính: ~9 triệu** cho Daikin MC55UVM6, còn dư cho phụ kiện, lọc thay thế. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('**Tổng ước tính,')
+    expect(out).toBe('Máy chạy êm.')
+  })
+  it('F-094 — a list line still keeps its product and loses only the amount (S7 unchanged)', () => {
+    const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 9.000.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('**Daikin MC55UVM6**')
+    expect(out).not.toContain('9.000.000')
   })
   it('a supported amount in the same list is untouched', () => {
     const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 6.990.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
