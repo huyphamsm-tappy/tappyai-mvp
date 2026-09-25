@@ -219,19 +219,25 @@ R10. WHEN BLOCKED, ASK
     me a specific question. Do not improvise around a missing credential.
 
 R11. PRE-EXISTING ACCOUNTS ARE NOT TEST FIXTURES  (owner rule, 2026-09-25)
-    Before ANY database write — insert, update, delete, upsert, RPC that writes —
-    that touches rows belonging to a manual.uat.* account or to ANY account that
-    existed before your session (real users, the owner's own account, earlier
-    smoke/consultative test users), STOP. Then do one of:
+    The rule is about DATA THAT IS ALREADY THERE. Before any write that would
+    MODIFY or DELETE existing rows belonging to a manual.uat.* account or to ANY
+    account that existed before your session (real users, the owner's own
+    account, earlier smoke/consultative test users) — UPDATE, DELETE, an upsert
+    that overwrites, an RPC that changes or removes their rows — STOP. Then either:
       - use synthetic rows you create yourself: account-less rows (user_id NULL
         where the schema allows) or users you insert inside a transaction that
         you ROLL BACK; or
       - ask me, naming the account, the table and the exact rows.
-    This covers "filler" rows, rows "just for a count", and writes to other
-    people's groups, threads or shares. Reading those rows is fine; picking
-    them as fixtures is not. Two audit sessions (2026-09-25) had to undo
-    writes to real accounts — do not be the third.
-    Exception: a write the owner has explicitly ordered for those rows by name
+    Also STOP before CREATING rows that attach a pre-existing account to
+    something it did not do: "filler" members in a group, rows "just for a
+    count", writes into other people's groups, threads or shares.
+    NOT covered — no permission needed: ordinary product use AS a test account
+    (manual.uat.* exist for this). Signing in, chatting, the golden set, quota
+    and usage counters, analytics events, sessions, evidence the product saves
+    — new rows the product itself creates for that account's own activity.
+    Reading any rows is always fine. Two audit sessions (2026-09-25) had to
+    undo modifications to real accounts' data — do not be the third.
+    Exception: a change the owner has explicitly ordered for those rows
     (e.g. "run the one-off cleanup on audit"). Quote the instruction in the
     report, and still scope the write to exactly what was ordered.
 ```
