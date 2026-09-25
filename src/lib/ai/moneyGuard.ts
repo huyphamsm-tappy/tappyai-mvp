@@ -443,9 +443,10 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
    * closing bracket. Phase 7 (2026-09-22, golden T1/G4a plan replies): cutting at the "(" left
    * "**Tổng ước tính(chưa bao gồm vé máy bay)." and "xe + khách sạn + ăn + tham quan)." behind.
    */
+  let qualifier = false
   if (bDelim === '(') {
     const close = sentence.indexOf(')', b)
-    if (close !== -1) { b = close + 1; bDelim = ')' }
+    if (close !== -1) { b = close + 1; bDelim = ')'; qualifier = true }
   }
   const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
   const after = sentence.slice(b)
@@ -474,7 +475,18 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
   // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
   const lead = sentence.match(/^\s*/)?.[0] ?? ''
-  const rest = before.length > 0 ? before + (bDelim.trim() === ')' ? '' : bDelim) + after : lead + after.replace(/^\s+/, '')
+  // (d) an item INSIDE a parenthetical keeps the bracket the cut does not own:
+  //     "**táo xanh** (19.19-19.39 triệu VND, đánh giá 5⭐ từ 31 người)" became "**táo xanh**, đánh giá
+  //     5⭐ từ 31 người)", "- **ATK N9 Ultra** (980.000đ, 4.6⭐)" became "**ATK N9 Ultra**, 4.6⭐)"
+  //     (golden post-f094c B1/B4). First item cut → its "(" stays; last item cut → its ")" stays;
+  //     the whole parenthetical cut → both go.
+  const opensHere = sentence[a] === '(' && a < at
+  let joint = bDelim
+  if (bDelim.trim() === ')') joint = opensHere || qualifier ? '' : ')'
+  else if (opensHere) joint = ' ('
+  const rest = before.length > 0
+    ? before + joint + (joint === ' (' ? after.replace(/^\s+/, '') : after)
+    : lead + after.replace(/^\s+/, '')
   const letters = (rest.match(/\p{L}/gu) ?? []).length
   if (letters < 3) return null
   return rest + brk

@@ -256,6 +256,18 @@ describe('redaction — POLICY R3 is PROPORTIONAL (B4, owner 2026-09-20; superse
     expect(out).not.toContain('**1.-')
     expect(out).toContain(NL + '- Tình trạng 99%')
   })
+  it('F-094 — an amount that is the FIRST item of a parenthetical keeps the "(" (golden post-f094c B4 t2)', () => {
+    const out = guardMoneyClaimsInText('- **Daikin MC55UVM6** (9.000.000đ, 4.6⭐) — không dây, êm', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('- **Daikin MC55UVM6** (4.6⭐) — không dây, êm')
+  })
+  it('F-094 — an amount that is the LAST item of a parenthetical keeps the ")"', () => {
+    const out = guardMoneyClaimsInText('Mình thấy **Daikin MC55UVM6** (táo xanh, 9.000.000đ) — gần nhất với yêu cầu.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Mình thấy **Daikin MC55UVM6** (táo xanh) — gần nhất với yêu cầu.')
+  })
+  it('F-094 — a parenthetical that is only the amount goes whole', () => {
+    const out = guardMoneyClaimsInText('Mình thấy **Daikin MC55UVM6** (9.000.000đ) — gần nhất với yêu cầu.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Mình thấy **Daikin MC55UVM6** — gần nhất với yêu cầu.')
+  })
   it('F-094 — a cut that would split a bold pair removes the sentence (golden post-f094 B4 t1: "Pro****")', () => {
     const out = guardMoneyClaimsInText('Mình chọn **Daikin MC55UVM6** — giá chỉ **9.000.000đ** với đánh giá **4.8⭐ (170 lượt)** từ Hoàng Hà. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
     expect(out).not.toContain('****')
