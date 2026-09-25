@@ -69,6 +69,8 @@ code on the shipping branch fails for users if the migration is missing when the
 | GR | `20260922_groups_avatar_url` | `groups.avatar_url` | yes (1 column) | file | **YES** — `GET /api/group` selects `avatar_url`; without it every group answers 404 `group_not_found` |
 | **L1** | `20260915b_review_likes_private` (**added 2026-09-25, merge-loss recovery**) | `review_likes` SELECT becomes owner-only; `review_likers(review)` + `hot_places_24h()` SECURITY DEFINER reads (anon-executable) | no (replaces 1 policy) | §1-L1 | **PRIVACY** — without it anyone with the anon key lists any user's whole like history (`?user_id=eq.<id>`, measured on audit 2026-09-25). ⚠️ Apply **immediately BEFORE** the web deploy (§2) |
 | **S1** | `20260904_group_read_boundary` (**added 2026-09-25, F-065 P0**) | drops `"Anyone can read groups"` / `"Anyone can read group members"` (`USING (true)` to `public`); participant-only SELECT `TO authenticated` via `fn_group_participant()` | no (replaces 2 policies) | §1-S1 | **SECURITY** — without it anyone holding the public anon key reads every group and every member's name/area/budget/dietary restrictions (measured on audit 2026-09-25). ⚠️ **Apply AFTER the web deploy** (§2) |
+| **D1** | `20260911b_user_memory_auth_fk` (**added 2026-09-25, F-093 P1**) | `user_memory.user_id` text → uuid, FK → `auth.users` **ON DELETE CASCADE**; policy recreated as `auth.uid() = user_id`; removes orphan rows first, fingerprints them in `user_memory_fk_cleanup_log` | no (type change + FK) | rollback/ file | **DELETION PROMISE** — without it, deleting an account leaves its AI memory behind (`/delete-account` promises it is removed). ⚠️ **Owner authorization required** (migration header). Independent of the web deploy |
+| **D2** | `20260925_account_deletion_cascade_gaps` (**added 2026-09-25, F-093 P1**) | FK → `auth.users` **ON DELETE CASCADE** on `decision_evidence.owner_id` and `anon_chat_usage.user_id` (added `NOT VALID`, validated only when no orphan exists; deletes nothing) | no (2 FKs) | rollback/ file | same promise, the two other stores. After D1. ⚠️ **Owner authorization required** |
 | ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
 
 The detailed check / apply / verify blocks for #1–#8 follow unchanged; the new steps (G1, P1, G2, GR,
@@ -262,6 +264,24 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
   → `groups_select_participant`, `group_members_select_participant`. Then, with ONLY the anon key:
   `curl "$SUPABASE_URL/rest/v1/group_members?select=group_id" -H "apikey: $ANON" -H "Authorization: Bearer $ANON"` → `[]`.
 - **Rollback (re-opens the leak — only if group sharing breaks):** re-create the two `USING (true)` policies from `add_groups.sql`.
+
+### §1-D1) `supabase/migrations/20260911b_user_memory_auth_fk.sql` — account deletion removes AI memory (F-093)
+- Recovered 2026-09-25 from `origin/claude/user-memory-auth-fk-f1z5nf` (`6964bfb`), found by branch-containment.
+- **Check first:** `SELECT data_type FROM information_schema.columns WHERE table_schema='public' AND table_name='user_memory' AND column_name='user_id';` → `text` = not applied;
+  `SELECT count(*) FROM public.user_memory m WHERE NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id::text = m.user_id);` = the orphans it will remove (logged to `user_memory_fk_cleanup_log`).
+- **Apply:** any time; the app reads/writes `user_memory` by `user.id` either way (verified on audit after the change: GET/PATCH /api/memory 200, upsert landed, RLS returns only the caller's row).
+  It aborts and changes nothing on a non-UUID `user_id` or an unrecognised policy.
+- **Verify after:** column `uuid`; `user_memory_user_id_fkey` ON DELETE CASCADE; policy `Users can manage own memory` present.
+- **Rollback:** `supabase/migrations/rollback/20260911b_user_memory_auth_fk_rollback.sql`.
+
+### §1-D2) `supabase/migrations/20260925_account_deletion_cascade_gaps.sql` — the two other stores (F-093)
+- **Check first:** `SELECT conname FROM pg_constraint WHERE conname IN ('decision_evidence_owner_id_fkey','anon_chat_usage_user_id_fkey');` → 0 rows = not applied;
+  orphans: `SELECT count(*) FROM public.decision_evidence d WHERE NOT EXISTS (SELECT 1 FROM auth.users u WHERE u.id = d.owner_id);` (same for `anon_chat_usage.user_id`).
+- **Apply after D1.** It deletes nothing. A WARNING naming a count means orphans exist: the cascade is already active for every future
+  deletion, the constraint stays `NOT VALID`, and the Owner-run purge + VALIDATE in the migration header completes it (audit: 9 orphan rows of 5 deleted accounts).
+- **Verify after (the end-to-end check used on audit, rolled back):** in one transaction insert a test `auth.users` row, give it a `user_memory` row, `decision_evidence_save()`, an `anon_chat_usage` row;
+  `DELETE FROM auth.users` for it; count rows carrying its id in every table → 0; `ROLLBACK`. Script: `docs/uat/evidence/f093-2026-09-25/`.
+- **Rollback:** `supabase/migrations/rollback/20260925_account_deletion_cascade_gaps_rollback.sql` (drops the two FKs only).
 
 ### §1-V) Already on prod — verify, do NOT re-apply
 ```sql

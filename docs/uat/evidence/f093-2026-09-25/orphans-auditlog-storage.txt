@@ -1,0 +1,47 @@
+user_memory user_id {"total":4,"orphans":0}
+decision_evidence owner_id {"total":26,"orphans":9,"oldest":"2026-09-20 08:03:12.210177+00"}
+anon_chat_usage user_id {"total":0,"orphans":0}
+audit_log actor_id {"total":28,"orphans":28,"oldest":"2026-09-20 11:56:04.669747+00"}
+marketing_campaigns created_by {"total":0,"orphans":0,"oldest":null}
+decision_evidence expired: { expired: 23, total: 26 }
+anon_chat_usage cols: user_id,day,count
+audit_log cols: id,actor_id,actor_email,actor_role,action,target_type,target_id,before_state,after_state,metadata,ip_address,user_agent,created_at,seq,prev_hash,row_hash
+storage buckets: []
+[
+  {
+    action: 'rbac.access_denied',
+    n: 27,
+    actors: 3,
+    with_email: 27,
+    with_ip: 27
+  },
+  {
+    action: 'user.date_of_birth.corrected',
+    n: 1,
+    actors: 1,
+    with_email: 1,
+    with_ip: 0
+  }
+]
+[
+  {
+    owners: 12,
+    orphan_rows: 9,
+    orphan_owners: 5,
+    newest_orphan: '2026-09-20 14:45:04.852335+00'
+  }
+]
+[
+  { k: 'sayableFacts', count: 4 },
+  { k: 'placeSearch', count: 22 },
+  { k: 'runnerUp', count: 4 },
+  { k: 'totalFound', count: 4 },
+  { k: 'v', count: 26 },
+  { k: 'decidedBy', count: 4 },
+  { k: 'unverified', count: 4 },
+  { k: 'rejected', count: 4 },
+  { k: 'pick', count: 4 },
+  { k: 'requested', count: 4 },
+  { k: 'conditional', count: 4 },
+  { k: 'configMatch', count: 4 }
+]

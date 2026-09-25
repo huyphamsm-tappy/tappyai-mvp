@@ -1,0 +1,25 @@
+{
+ "label": "before-fk-owner",
+ "email": "<redacted — see label>",
+ "at": "2026-09-25T05:26:26.628Z",
+ "columnsScanned": 493,
+ "before": {
+  "public.conversations.user_id": 7,
+  "public.decision_evidence.owner_id": 3,
+  "public.groups.creator_id": 1,
+  "public.profiles.id": 1,
+  "public.user_demographics.user_id": 1,
+  "public.user_events.user_id": 236,
+  "public.user_memory.user_id": 1
+ },
+ "deleteError": null,
+ "after": {
+  "public.decision_evidence.owner_id": 3,
+  "public.user_memory.user_id": 1
+ },
+ "survivors": {
+  "public.decision_evidence.owner_id": 3,
+  "public.user_memory.user_id": 1
+ },
+ "rolledBack": true
+}
