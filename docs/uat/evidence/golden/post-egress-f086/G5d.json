@@ -1,0 +1,23 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 11561,
+      "textFrames": 331,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook là rủi ro cao — bạn cần cẩn thận trước khi chuyển tiền. Dưới đây là những điều quan trọng:\n\n**🚨 Rủi ro chính (kiểm tra TRƯỚC khi thanh toán):**\n- **Lừa đảo**: người bán có thể lấy tiền rồi biến mất, hoặc gửi hàng khác với ảnh\n- **Hàng không đúng**: tinh trạng thực tế khác ảnh (hỏng, cũ hơn, thiếu phụ kiện)\n- **Không sang tên được**: nếu mua xe/điện thoại, kiểm tra giấy tờ có thể sang tên hay không (xe đang cấm, nợ trả góp, bị khóa từ xa...)\n- **Gặp trực tiếp ở chỗ vắng**: có thể bị cướp hoặc lừa\n\n**✅ Cách bảo vệ bản thân:**\n1. **Gặp trực tiếp** — xem hàng, thử máy, kiểm tra tình trạng trước khi trả tiền\n2. **Kiểm tra giấy tờ** — nếu là xe/điện thoại, xem IMEI, giấy chứng thực, hóa đơn gốc\n3. **Chọn nơi an toàn** — gặp ở chỗ đông người, ban ngày, có bạn đi cùng\n4. **Thanh toán an toàn** — chuyển khoản (có bằng chứng) thay vì tiền mặt; hoặc trả tiền sau khi kiểm tra xong\n5. **Kiểm tra người bán** — xem profile, số bài đăng, bình luận từ người khác\n6. **Báo cảnh báo lừa đảo** — trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé\n\n**Nên mua khi nào:**\n- Giá hợp lý (không quá rẻ so với thị trường)\n- Người bán có lịch sử tốt trên group\n- Hàng còn nguyên hộp, phụ kiện đầy đủ\n- Có thể kiểm tra trực tiếp trước khi thanh toán\n\nBạn đang tìm mua cái gì cụ thể không? Mình có thể giúp bạn kiểm tra giá tham khảo để so sánh 👍",
+      "visible": "Mua đồ cũ trên group Facebook là rủi ro cao — bạn cần cẩn thận trước khi chuyển tiền. Dưới đây là những điều quan trọng:\n\n**🚨 Rủi ro chính (kiểm tra TRƯỚC khi thanh toán):**\n- **Lừa đảo**: người bán có thể lấy tiền rồi biến mất, hoặc gửi hàng khác với ảnh\n- **Hàng không đúng**: tinh trạng thực tế khác ảnh (hỏng, cũ hơn, thiếu phụ kiện)\n- **Không sang tên được**: nếu mua xe/điện thoại, kiểm tra giấy tờ có thể sang tên hay không (xe đang cấm, nợ trả góp, bị khóa từ xa...)\n- **Gặp trực tiếp ở chỗ vắng**: có thể bị cướp hoặc lừa\n\n**✅ Cách bảo vệ bản thân:**\n1. **Gặp trực tiếp** — xem hàng, thử máy, kiểm tra tình trạng trước khi trả tiền\n2. **Kiểm tra giấy tờ** — nếu là xe/điện thoại, xem IMEI, giấy chứng thực, hóa đơn gốc\n3. **Chọn nơi an toàn** — gặp ở chỗ đông người, ban ngày, có bạn đi cùng\n4. **Thanh toán an toàn** — chuyển khoản (có bằng chứng) thay vì tiền mặt; hoặc trả tiền sau khi kiểm tra xong\n5. **Kiểm tra người bán** — xem profile, số bài đăng, bình luận từ người khác\n6. **Báo cảnh báo lừa đảo** — trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé\n\n**Nên mua khi nào:**\n- Giá hợp lý (không quá rẻ so với thị trường)\n- Người bán có lịch sử tốt trên group\n- Hàng còn nguyên hộp, phụ kiện đầy đủ\n- Có thể kiểm tra trực tiếp trước khi thanh toán\n\nBạn đang tìm mua cái gì cụ thể không? Mình có thể giúp bạn kiểm tra giá tham khảo để so sánh 👍"
+    }
+  ]
+}

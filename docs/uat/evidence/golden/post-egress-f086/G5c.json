@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 17083,
+      "textFrames": 497,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 **Rủi ro chính cần tránh**\n- **Giấy tờ không chính chủ** → không sang tên được, mất quyền sở hữu\n- **Xe bị khoá từ xa, nợ trả góp** → không thể sử dụng bình thường\n- **Lừa đảo giá** → giá quá rẻ so với thị trường là dấu hiệu cần nghi\n- **Gặp người lạ, chuyển tiền trước** → rủi ro cao nhất\n\n## ✅ **Kiểm tra giấy tờ & pháp lý (TRƯỚC TIÊN)**\n- **Giấy chứng nhận đăng ký xe** (màu xanh) → tên chủ xe, số khung, số máy\n- **Giấy kiểm định an toàn kỹ thuật** → còn hạn không\n- **Hóa đơn mua bán** → chứng minh nguồn gốc xe\n- **Sổ bảo hành** (nếu còn)\n- **Kiểm tra nợ trả góp** → liên hệ ngân hàng hoặc công ty tài chính\n\n## 🔧 **Kiểm tra tình trạng xe (GẶP TRỰC TIẾP)**\n- **Ngoại thất**: vết trầy xước, dấu hiệu tai nạn, sơn lại\n- **Nội thất**: ghế, vô lăng, bảng điều khiển có bị hư không\n- **Động cơ**: nghe tiếng gầm, khí thải, có dầu rò không\n- **Lốp xe**: độ mòn, còn bao lâu\n- **Phanh, vô lăng, hệ thống điện** → test lái thử\n- **Số km đã chạy** → so sánh với tình trạng xe (km cao mà xe còn mới là dấu hiệu lạ)\n\n## 💰 **Kiểm tra giá**\n- **So sánh giá thị trường** → tìm xe cùng dòng, năm sản xuất, km trên các trang như Oto.com.vn, Carvill, Xehay\n- **Giá quá rẻ** → cảnh báo lừa đảo hoặc xe có vấn đề lớn\n- **Thương lượng hợp lý** → thường có thể giảm 5-10% từ giá niêm yết\n\n## 🛡️ **Cách thanh toán an toàn**\n- **Gặp trực tiếp** → kiểm tra xe xong mới chuyển tiền\n- **Chuyển tiền sau khi kiểm tra** → không chuyển tiền trước\n- **Giữ bằng chứng** → hóa đơn, ảnh xe, giấy tờ\n- **Nên mua qua trung gian uy tín** (showroom, công ty mua bán xe) nếu không chắc\n\n---\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm xe cụ thể nào (dòng xe, năm sản xuất, km) hay cần tư vấn thêm về cách kiểm tra?\n\n[FOLLOWUPS]Tìm xe cũ trên Oto.com|Kiểm tra giá xe trên thị trường|Tư vấn mua xe an toàn[/FOLLOWUPS]",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 **Rủi ro chính cần tránh**\n- **Giấy tờ không chính chủ** → không sang tên được, mất quyền sở hữu\n- **Xe bị khoá từ xa, nợ trả góp** → không thể sử dụng bình thường\n- **Lừa đảo giá** → giá quá rẻ so với thị trường là dấu hiệu cần nghi\n- **Gặp người lạ, chuyển tiền trước** → rủi ro cao nhất\n\n## ✅ **Kiểm tra giấy tờ & pháp lý (TRƯỚC TIÊN)**\n- **Giấy chứng nhận đăng ký xe** (màu xanh) → tên chủ xe, số khung, số máy\n- **Giấy kiểm định an toàn kỹ thuật** → còn hạn không\n- **Hóa đơn mua bán** → chứng minh nguồn gốc xe\n- **Sổ bảo hành** (nếu còn)\n- **Kiểm tra nợ trả góp** → liên hệ ngân hàng hoặc công ty tài chính\n\n## 🔧 **Kiểm tra tình trạng xe (GẶP TRỰC TIẾP)**\n- **Ngoại thất**: vết trầy xước, dấu hiệu tai nạn, sơn lại\n- **Nội thất**: ghế, vô lăng, bảng điều khiển có bị hư không\n- **Động cơ**: nghe tiếng gầm, khí thải, có dầu rò không\n- **Lốp xe**: độ mòn, còn bao lâu\n- **Phanh, vô lăng, hệ thống điện** → test lái thử\n- **Số km đã chạy** → so sánh với tình trạng xe (km cao mà xe còn mới là dấu hiệu lạ)\n\n## 💰 **Kiểm tra giá**\n- **So sánh giá thị trường** → tìm xe cùng dòng, năm sản xuất, km trên các trang như Oto.com.vn, Carvill, Xehay\n- **Giá quá rẻ** → cảnh báo lừa đảo hoặc xe có vấn đề lớn\n- **Thương lượng hợp lý** → thường có thể giảm 5-10% từ giá niêm yết\n\n## 🛡️ **Cách thanh toán an toàn**\n- **Gặp trực tiếp** → kiểm tra xe xong mới chuyển tiền\n- **Chuyển tiền sau khi kiểm tra** → không chuyển tiền trước\n- **Giữ bằng chứng** → hóa đơn, ảnh xe, giấy tờ\n- **Nên mua qua trung gian uy tín** (showroom, công ty mua bán xe) nếu không chắc\n\n---\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm xe cụ thể nào (dòng xe, năm sản xuất, km) hay cần tư vấn thêm về cách kiểm tra?"
+    }
+  ]
+}
