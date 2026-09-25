@@ -155,7 +155,43 @@ Tôi quét 241 commit không có trên rc (`branch-containment-2026-09-24.txt`) 
 
 ---
 
-## 4. Phòng ngừa: một check chạy trước khi merge lọt vào (chưa làm, chờ bạn duyệt)
+## 4b. ĐÃ LÀM (owner duyệt 2026-09-25): hai check, chạy local và CI
+
+| Check | Chặn gì | Local | CI |
+|---|---|---|---|
+| `scripts/merge-guard/merge-guard.mjs` | R1: gỡ dòng mà git đã merge sạch. R2: xoá file mà một bên đã thêm. R3: bỏ nửa conflict ở đường dẫn được bảo vệ. Chỉ bỏ qua được bằng trailer `Merge-Drop: <path> — <lý do>` | `npm run merge:guard -- --staged` (khi merge đang dở, trước khi commit)<br>`npm run merge:guard -- --range origin/main..HEAD`<br>Hook tuỳ chọn: `scripts/merge-guard/pre-merge-commit` | `.github/workflows/merge-guard.yml`, job `merge-guard`: mọi PR và mọi push lên `main` / `rc/**` / `release/**` |
+| `scripts/merge-guard/branch-containment.mjs` | Commit không phải merge, chạm migration / test DB / security / auth / RLS / quota / payment / guard, **cũ hơn N ngày** (mặc định 7) mà chưa về nhánh ship. "Đã về" nghĩa là cùng patch-id, hoặc ≥60% dòng thêm có mặt, nên bắt được cả cherry-pick có sửa. Ngoại lệ ghi trong `containment-allow.json`, kèm lý do và hạn | `npm run merge:containment -- --ship origin/main` | Job `branch-containment`: mỗi push, PR, và mỗi đêm (cron) |
+
+Nhánh ship trên CI đọc từ biến repo `SHIP_BRANCH` (mặc định `main`; hiện nên đặt là `rc/web-uat`), N đọc từ `CONTAINMENT_DAYS`.
+
+**Chứng minh trên ca thật** (`docs/uat/evidence/merge-guard-2026-09-25/`):
+
+| Ca | Lệnh | Kết quả |
+|---|---|---|
+| a6ca9f0 | `merge-guard --commit a6ca9f0` | ✖ exit 1: **R1** `android/…/chat/ChatScreen.kt`, dòng `TripPlanCard(plan, planJson = message.planJson)` bị gỡ ở vùng merge sạch (`a6ca9f0.txt`) |
+| 1e7b77e | `merge-guard --commit 1e7b77e` | ✖ exit 1: **R2 [protected]** `supabase/migrations/20260915b_review_likes_private.sql` và `supabase/tests/review_likes_private.test.ts`, "file added by parent 2 is deleted" (`1e7b77e.txt`) |
+| F-065 (`integration/v3-foundation`) | `branch-containment --ship fb6494a --now 2026-09-24` (tái hiện nhánh ship trước khi sửa) | ✖ exit 1: `558ba49` (20 ngày), `supabase/migrations/20260904_group_read_boundary.sql` "file absent on ship" (`containment-f065-at-fb6494a.txt`) |
+| F-065 sau khi sửa | cùng lệnh, `--ship HEAD` | `558ba49`, `a3c342a`, `fc115b7` **không còn bị báo** (đã về). Các mục còn lại là text đã viết lại, needBrief (N/A) và 2caff4b (hoãn), ghi trong allowlist đến 2026-10-31 |
+| Đối chứng âm | `merge-guard --commit 842379b` (PR #251) | ✓ exit 0 |
+
+**Toàn bộ 14 merge trong tháng:**
+- 6 merge PR/main sạch.
+- 8 merge tích hợp bị bắt (`all-merges-summary.txt`). Lẽ ra mỗi merge này phải khai `Merge-Drop` cho phần nó bỏ.
+
+**Test tự động:** `scripts/merge-guard/mergeGuard.test.ts`, 9/9, dùng repo git tổng hợp. Mỗi quy tắc có ca fail và ca pass. Test phủ `--staged`, trailer, allow đã hết hạn, và cherry-pick có sửa.
+
+**Lần quét containment đầu tiên** trên mọi nhánh (2 phút 9 giây): 26 commit duy nhất, trên 44 nhánh (`containment-all-at-HEAD-by-commit.txt`).
+- Mục thật mới: **F-093** (`6964bfb`, khoá ngoại `user_memory.user_id` + migration + test DB, 13 ngày, P2).
+- `2fa8bb2` (returnTo): **đã có** bảo vệ tương đương trên rc.
+- Phần còn lại là snapshot `wip/*`, controller-v2, business-p0, phase6 và nhánh Android/iOS cũ. **Bạn cần triage**, vì CI sẽ đỏ cho tới khi mỗi nhánh được merge hoặc ghi vào allowlist kèm lý do.
+
+## Quyết định của owner (2026-09-25), đã ghi vào findings.json
+
+- **F-086: khôi phục** → ✅ `2ce8402`, làm sau khi sửa **F-092** ✅ `e30bdc3`. Golden set: chạy lại khi :3007 hoạt động.
+- **F-085: hoãn tới sau launch.** Không đụng service role của `/api/chat`.
+- **F-087, F-088, F-089, F-090, F-091: hoãn tới sau launch.** Riêng migration `20260922_groups_avatar_url` vẫn là blocker khi deploy.
+
+## 4. Phòng ngừa: đề xuất ban đầu (đã được duyệt; bản đã làm ở §4b)
 
 **`merge-guard`:** một script (dùng cùng thuật toán `merge_loss_audit.mjs`), chạy ở hai chỗ:
 - local, qua `npm run merge:guard` sau `git merge --no-commit` (so **index** với `git merge-tree --write-tree P1 P2`);

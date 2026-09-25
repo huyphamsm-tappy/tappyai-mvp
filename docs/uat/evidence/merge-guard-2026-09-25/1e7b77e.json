@@ -1,0 +1,313 @@
+[
+ {
+  "label": "1e7b77e Merge wip/cool-vaughan-b3c7ff-2026-09-17 (consultative decision core, ",
+  "base": "3731efa",
+  "findings": [
+   {
+    "rule": "R2",
+    "path": "src/app/api/profile/coverAndBio.test.ts",
+    "protected": false,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/api/profile/route.ts",
+    "protected": false,
+    "detail": "57 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// The profile row is the source of truth; auth metadata is where the bio",
+     "// lived before the column existed, and still holds the last value a user",
+     "// saved before the migration — shown until they save again."
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/api/reviews/[id]/likes/likeListRead.test.ts",
+    "protected": false,
+    "detail": "17 line(s) git merged cleanly were dropped",
+    "lines": [
+     "/** Every `rpc()` call — since 20260915b the likers come from `review_likers`, not the table. */",
+     "rpcs: [] as { fn: string; args: Record<string, unknown> }[],",
+     "/** The limit the like read asked for, and any cursor. */"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/api/reviews/[id]/likes/route.ts",
+    "protected": false,
+    "detail": "12 line(s) git merged cleanly were dropped",
+    "lines": [
+     "* Anonymous callers are allowed — this is a public read of ONE clip's likers, and only `id`,",
+     "* `full_name` and `avatar_url` are served; no email, no auth data.",
+     "* 🔑 Since `20260915b_review_likes_private.sql` the `review_likes` table is owner-read (a person's"
+    ]
+   },
+   {
+    "rule": "R2",
+    "path": "src/app/api/reviews/mine/selfScope.test.ts",
+    "protected": false,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/api/users/[id]/route.ts",
+    "protected": false,
+    "detail": "23 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// The columns every caller may see. `profiles` is public-read, and these are the",
+     "// social-identity fields — never `language`, `onboarded` or anything else the row",
+     "// carries for the owner's own use."
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/globals.css",
+    "protected": false,
+    "detail": "2 line(s) git merged cleanly were dropped",
+    "lines": [
+     "/* The shipped lockup (TappyLockup) sits here as-is: no letter-spacing, no uppercase. */",
+     ".v3-pb-brand { display: inline-flex; align-items: center; color: var(--pb-fg); text-decoration: none; }"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/profile/ProfileView.tsx",
+    "protected": false,
+    "detail": "23 line(s) git merged cleanly were dropped",
+    "lines": [
+     "import Image from 'next/image'",
+     "//   • CHANGE-COVER CONTROL — the cover itself is real since `profiles.cover_url`",
+     "//     (`20260915_profile_public_presentation.sql`, uploaded through POST /api/profile), and the"
+    ]
+   },
+   {
+    "rule": "R2",
+    "path": "src/app/profile/edit/editProfileCover.test.tsx",
+    "protected": false,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/profile/edit/page.tsx",
+    "protected": false,
+    "detail": "50 line(s) git merged cleanly were dropped",
+    "lines": [
+     "import { Check, Save, Loader2, Camera, ImagePlus, Trash2 } from 'lucide-react'",
+     "import { rejectCoverFile, uploadCover, removeCover } from '@/lib/profile/cover'",
+     "// Present (string or null) once `profiles.cover_url` exists; absent before the"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/profile/page.tsx",
+    "protected": false,
+    "detail": "3 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// `profiles.cover_url` — `20260915_profile_public_presentation.sql`. `select('*')` above",
+     "// means this is simply absent (null) until the column exists; the hero then stays a gradient.",
+     "coverUrl={typeof profile?.cover_url === 'string' && profile.cover_url ? profile.cover_url : null}"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/profile/profileHub.test.tsx",
+    "protected": false,
+    "detail": "12 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// the cover is real since `profiles.cover_url` (2026-09-15) and renders ONLY when the row has",
+     "// one; there is no username column in use, no location column, no points/rewards/tier table",
+     "it('offers no cover-photo upload HERE — the hub keeps one edit entry point (the avatar badge → /profile/edit)', () => {"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/reviews/ExploreStage.tsx",
+    "protected": false,
+    "detail": "10 line(s) git merged cleanly were dropped",
+    "lines": [
+     "*   · Trending today — the last day's most-liked places, the phone feed's own source:",
+     "*     `hot_places_24h()`, a place-name + count aggregate over visible reviews. Since",
+     "*     `20260915b_review_likes_private.sql` the like rows themselves are owner-read, so the"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/reviews/exploreStage.test.tsx",
+    "protected": false,
+    "detail": "12 line(s) git merged cleanly were dropped",
+    "lines": [
+     "/** What `hot_places_24h()` (the place + count aggregate over the last 24h of likes) returns, per test. */",
+     "let hotRows: Array<{ place_name: string | null; like_count: number | string }> = []",
+     "/** Every rpc the stage made — the like rows are owner-read, so the table must never be selected. */"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/reviews/page.tsx",
+    "protected": false,
+    "detail": "8 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// `hot_places_24h()` — the place-name + count aggregate over visible reviews. The like",
+     "// rows are owner-read since 20260915b_review_likes_private.sql; this is the public view.",
+     "const { data } = await supabase.rpc('hot_places_24h', { p_limit: 10 })"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/app/users/[id]/UserProfileView.tsx",
+    "protected": false,
+    "detail": "16 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// The Explore profile. The URL stays /users/[id]; the page is `PublicProfileView`,",
+     "// which renders in the Explore shell and decides from viewer vs owner what it may",
+     "// show: the public identity and content for everyone, the owner's private activity"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/components/share/shareMenuHistory.test.tsx",
+    "protected": false,
+    "detail": "3 line(s) git merged cleanly were dropped",
+    "lines": [
+     "fireEvent.click(screen.getByText('share.copyLink'))",
+     "fireEvent.click(screen.getByText('share.facebook'))",
+     "fireEvent.click(screen.getByText('share.zalo'))"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/consultative/decisionFrame.test.ts",
+    "protected": false,
+    "detail": "1 line(s) git merged cleanly were dropped",
+    "lines": [
+     "it('the measured embellishments go; the wifi fact and the name stay', () => {"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/placeClaimGuard.ts",
+    "protected": true,
+    "detail": "32 line(s) git merged cleanly were dropped",
+    "lines": [
+     "* Atmosphere and quality — \"không gian thoải mái\", \"sôi động\", \"chất lượng\",",
+     "* \"phục vụ tốt\". Measured 2026-09-15: written about OpenStreetMap rows that",
+     "* carried a name, a pin and (once) a wifi flag. These are claims about what a"
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/ai/placeClaimGuard.ts",
+    "protected": true,
+    "detail": "1 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "import { protectedSpans, sentenceSpans } from './moneyGuard'"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/planPriceGuard.test.ts",
+    "protected": false,
+    "detail": "2 line(s) git merged cleanly were dropped",
+    "lines": [
+     "it('F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives', () => {",
+     "it('H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost', async () => {"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/snippetPriceGuard.ts",
+    "protected": true,
+    "detail": "19 line(s) git merged cleanly were dropped",
+    "lines": [
+     "/** Words that present an amount as what something COSTS, and the words that name it as a budget. */",
+     "const COST_FRAME_RE = /\\btong\\b|\\btotal\\b|\\buoc tinh\\b|\\bestimated?\\b|\\bestimate\\b|\\bchi phi\\b|\\bcost\\b|\\bspend\\b|\\bcon lai\\b|\\bcon du\\b|\\bremaining\\b|\\bhet\\b/",
+     "const BUDGET_FRAME_RE = /\\bngan sach\\b|\\bbudget\\b|\\btam gia\\b|\\btrong khoang\\b|\\btoi da\\b/"
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/ai/snippetPriceGuard.ts",
+    "protected": true,
+    "detail": "1 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "import { normalizeVN } from './intent'"
+    ]
+   },
+   {
+    "rule": "R3",
+    "path": "src/lib/ai/streamEnrichment.ts",
+    "protected": true,
+    "detail": "4 line(s) of one side's change lost in a protected-path conflict",
+    "lines": [
+     "const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })",
+     "const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)",
+     "const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(placeGuarded), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/ai/tools/vnexpressTravel.test.ts",
+    "protected": false,
+    "detail": "2 line(s) git merged cleanly were dropped",
+    "lines": [
+     "for (const tool of ['searchPlaces(query, location, type, lang, userLocation), travelEditorialFor(location)', 'getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)', 'travelEditorialFor(destination)', 'webSearch(query, lang), travelEditorialFor(null)']) {",
+     "expect(prompt).toMatch(/bai bao VnExpress CHI khi 'url' nam trong 'travel_editorial'/)"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/i18n/w4/misc.ts",
+    "protected": false,
+    "detail": "16 line(s) git merged cleanly were dropped",
+    "lines": [
+     "'editProfile.cover': 'Ảnh bìa',",
+     "'editProfile.coverHint': 'Hiện trên trang cá nhân của bạn · JPG, PNG, WebP · Tối đa 5MB',",
+     "'editProfile.coverChange': 'Thay ảnh bìa',"
+    ]
+   },
+   {
+    "rule": "R1",
+    "path": "src/lib/media/key.ts",
+    "protected": false,
+    "detail": "3 line(s) git merged cleanly were dropped",
+    "lines": [
+     "// Profile cover images — same public bucket and the same server-only writer",
+     "// (POST /api/profile) as avatars; a prefix of its own so the two never collide.",
+     "'covers',"
+    ]
+   },
+   {
+    "rule": "R2",
+    "path": "src/lib/profile/cover.ts",
+    "protected": false,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R2",
+    "path": "supabase/migrations/20260915_profile_public_presentation.sql",
+    "protected": true,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R2",
+    "path": "supabase/migrations/20260915b_review_likes_private.sql",
+    "protected": true,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   },
+   {
+    "rule": "R2",
+    "path": "supabase/tests/review_likes_private.test.ts",
+    "protected": true,
+    "detail": "file added by parent 2 is deleted in the result",
+    "lines": []
+   }
+  ],
+  "waived": []
+ }
+]

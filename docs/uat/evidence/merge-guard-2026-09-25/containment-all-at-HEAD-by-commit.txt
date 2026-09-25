@@ -1,0 +1,79 @@
+beba191 7d   wip(main-repo): snapshot of uncommitted work on feat/consultative-d1-d2-r1-r2-d3
+      files: src/app/api/subscription/anonQuotaAuthority.test.ts (27%), src/app/subscription/SubscriptionView.tsx (absent)
+      on 1 branch(es): wip/main-repo-2026-09-17
+782ce59 7d   wip(tappyai-controller-v2): snapshot of uncommitted work on feat/controller-v2-f
+      files: src/lib/controller/auth/__tests__/corporateChain.test.ts (absent), src/lib/controller/auth/__tests__/ownerIdentityMigration.test.ts (absent), supabase/migrations/20260808_controller_org_foundation.sql (absent), supabase/migrations/20260808_controller_org_foundation_rollback.sql (absent), supabase/te
+      on 1 branch(es): wip/tappyai-controller-v2-2026-09-17
+67dab52 7d   wip(tappyai-memberapi): snapshot of uncommitted work on docs/controller-v2-phase
+      files: forensic/policy-snapshot-2026-08-16-1604/SNAPSHOT.sha256 (absent), forensic/policy-snapshot-2026-08-16-1604/files/scripts/policy/generate-registry.mjs (absent), forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/governanceInvariants.test.ts (absent), forensic/policy-snapshot-202
+      on 1 branch(es): wip/tappyai-memberapi-2026-09-17
+f2998b1 7d   wip(wtandroid): snapshot of uncommitted work on fix/android-scan-gallery-decode 
+      files: android/app/src/main/java/com/tappyai/app/profile/CopyrightPolicyScreen.kt (absent), src/app/admin/analytics/auth/page.tsx (absent), src/app/api/subscription/anonQuotaAuthority.test.ts (27%), src/app/api/subscription/route.ts (33%), src/app/subscription/SubscriptionView.tsx (absent), src/app/subscri
+      on 1 branch(es): wip/wtandroid-2026-09-17
+56a5726 11d  feat(ccp): Commerce Capability Platform — Phases 0–5 (isolated, flags off)
+      files: src/lib/ccp/adapters/index.ts (58%), src/lib/ccp/adapters/pasgo.ts (absent)
+      on 1 branch(es): feat/ccp-mvp
+6964bfb 13d  fix(db): restore referential integrity on user_memory.user_id
+      files: supabase/migrations/20260911b_user_memory_auth_fk.sql (absent), supabase/migrations/rollback/20260911b_user_memory_auth_fk_rollback.sql (absent), supabase/tests/user_memory_auth_fk.test.ts (absent)
+      on 1 branch(es): origin/claude/user-memory-auth-fk-f1z5nf
+23f5e30 15d  checkpoint(business): P0-P5 recovery point — the whole capability, in one commit
+      files: scripts/architecture/businessDataBoundary.test.ts (absent), scripts/architecture/check.mjs (2%), src/lib/auth/anonymousWriteBoundary.test.ts (0%), src/lib/business/routeGuard.ts (absent), src/lib/media/uploadPolicy.ts (0%), src/lib/security/turnstile.test.ts (absent), src/lib/security/turnstile.ts (
+      on 2 branch(es): feat/tappy-business-p0, wip/tappy-business-p0-2026-09-17
+254c28b 19d  feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+      files: scripts/architecture/check.mjs (7%), src/lib/ads/trustBoundaryArchitecture.test.ts (absent), supabase/migrations/20260903_phase6_contact_sync.sql (absent), supabase/migrations/20260903_phase6_governed_events.sql (absent), supabase/migrations/20260903_phase6_sponsored_discovery.sql (absent), supabase
+      on 6 branch(es): feat/ccp-mvp, feat/consultative-d1-d2-r1-r2-d3, feat/v3-qr-profile …
+ff55c27 21d  perf(v3): optimize AI cost
+      files: src/lib/ai/llm/providers/cacheBoundary.test.ts (absent)
+      on 2 branch(es): feat/v3-ai-consultative, integration/v3-foundation
+2caff4b 21d  refactor(security): /api/chat no longer performs a privileged operation
+      files: scripts/architecture/check.mjs (29%)
+      on 1 branch(es): integration/v3-foundation
+66e4c46 21d  fix(v3): close the three egress channels a compromised model could still use
+      files: src/lib/ai/streamEnrichment.ts (40%)
+      on 1 branch(es): integration/v3-foundation
+44d8f32 21d  test(v3): lock the one invariant Phase 1 satisfies by construction
+      files: src/lib/ai/security/needBriefBoundary.test.ts (absent)
+      on 1 branch(es): integration/v3-foundation
+a711181 21d  fix(v3): close the security findings Phase 0 deferred
+      files: src/lib/ai/security/fence.ts (0%), src/lib/ai/security/fenceBoundary.test.ts (25%), src/lib/ai/streamEnrichment.ts (28%)
+      on 2 branch(es): integration/v3-foundation, security/v3-phase3
+f83d3c0 25d  fix(controller): stop offering actions the origin guard will refuse
+      files: src/app/admin/analytics/auth/page.tsx (absent)
+      on 2 branch(es): fix/controller-origin-gate, origin/fix/controller-origin-gate
+efb5713 30d  fix(consultative): fold the shopping marker INTO finalText, before the grounding
+      files: src/lib/ai/streamEnrichment.ts (17%)
+      on 2 branch(es): phase9-shopping-marker, origin/phase9-shopping-marker
+95c88af 30d  fix(consultative): deliver the shopping decision via a persistent text marker (P
+      files: src/lib/ai/streamEnrichment.ts (0%)
+      on 2 branch(es): phase9-shopping-marker, origin/phase9-shopping-marker
+e568393 33d  fix(v2): close release-readiness findings B07–B17, C01–C53 and U01–U15
+      files: src/app/api/subscription/anonQuotaAuthority.test.ts (27%), src/app/api/subscription/route.ts (11%), src/app/subscription/SubscriptionView.tsx (absent), src/app/subscription/page.tsx (absent)
+      on 2 branch(es): fix/v2-fix-phase, origin/fix/v2-fix-phase
+abd11b6 36d  feat(ai): checkpoint consultative grounding work
+      files: src/lib/ai/mediaPolicy.test.ts (absent), src/lib/ai/mediaPolicy.ts (absent)
+      on 8 branch(es): feat/ccp-mvp, feat/consultative-d1-d2-r1-r2-d3, feat/consultative-d3 …
+8feaed6 36d  fix(ai): ground candidate identity on the consultative presentation turn
+      files: src/lib/ai/mediaPolicy.test.ts (absent)
+      on 2 branch(es): feat/consultative-d3, origin/feat/consultative-d3
+207658b 38d  feat(ai): finalize consultative v2
+      files: src/lib/ai/streamEnrichment.ts (41%)
+      on 1 branch(es): feat/consultative-v2-ranking
+2fa8bb2 46d  fix(auth): one canonical returnTo parameter for post-login redirects
+      files: src/lib/auth/returnTo.test.ts (absent), src/lib/auth/returnTo.ts (4%)
+      on 1 branch(es): origin/fix/login-return-to
+4bce517 56d  feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+      files: android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt (44%)
+      on 4 branch(es): arcade-v2/android, backup/pre-scrub-v1, fix/android-games-parity …
+e0b88ec 56d  feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+      files: android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt (44%)
+      on 12 branch(es): backup/ios-windows-sprint-pre-rebase, feat/anonymous-chat-android, feat/backoffice-phase0 …
+f661081 56d  feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+      files: android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt (44%)
+      on 3 branch(es): feat/backoffice-phase0-clean, release/android-games-hidden-clean, origin/release/android-games-hidden-clean
+cd4cb31 57d  build(android/auth): OTP input validation + R8 consumer rules
+      files: android/features/auth/consumer-rules.pro (18%), android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt (17%)
+      on 19 branch(es): arcade-v2/android, backup/ios-windows-sprint-pre-rebase, backup/pre-scrub-v1 …
+5e13751 59d  feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+      files: android/features/auth/build.gradle.kts (50%), android/features/auth/src/main/res/values-vi/strings.xml (33%), android/features/auth/src/main/res/values/strings.xml (33%)
+      on 19 branch(es): arcade-v2/android, backup/ios-windows-sprint-pre-rebase, backup/pre-scrub-v1 …
+unique commits: 26
