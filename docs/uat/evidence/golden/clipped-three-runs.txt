@@ -1,0 +1,26 @@
+post-egress-f086: turns=28 withPreGuard=0 CLIPPED=n/a (headless 0, broken-bold 0; middle-cut 0 + tail-cut 0 listed, not counted) · lower-case-start proxy=7
+   B2 t1  lower-start: phù hợp bữa trưa hay tối.
+   B4 t1  lower-start: nếu bạn ưu tiên **không dây**, **Huawei FreeBuds 7i** là lựa 
+   B4 t2  lower-start: nếu bạn có thêm budget, **HyperX Cloud Stinger 2 Core** là lự
+   B4 t3  lower-start: bao gồm xe khách khứ hồi, ăn uống và tham quan miễn phí. Thời
+   D2 t1  lower-start: có wifi và đồ ăn nhẹ.
+   T1 t2  lower-start: các hoạt động khác. Bạn có thể nâng cấp khách sạn hoặc thêm c
+   T3 t2  lower-start: mình có thể tìm thêm nhiều lựa chọn hơn không? 😊
+post-f094: turns=28 withPreGuard=28 CLIPPED=3 (headless 0, broken-bold 3; middle-cut 5 + tail-cut 0 listed, not counted) · lower-case-start proxy=0
+   B1 t1  broken-bold: **1.- Tình trạng 99% như tên ghi, nhưng tieu đề không rõ dung lượng và pin cụ thể bao nhiêu
+   B1 t1  broken-bold: **2.- Ghi rõ vỏ & kính 98-99%, **nhưng pin không đạt 98-99% như bạn muốn** Trước khi chuyển tiền, vì
+   B3 t1  (middle-cut, review) 🍚 Quán này có **4.5⭐**, đang mở cửa, và là quán ăn gia đình chuyên cơm Việt ngon.
+   B3 t2  (middle-cut, review) 📸 Chiếc này có **5⭐** từ người dùng, RAM 12GB và bộ nhớ 128GB.
+   B4 t1  broken-bold: Mình chọn **Tai nghe Headphone Bluetooth HAVIT H612BT Pro**** từ Hoàng Hà Mobile.
+   B4 t2  (middle-cut, review) Đây là lựa chọn cân bằng tốt nhất, nhưng vẫn có đánh giá **4.8⭐ từ 170 người dùng**, chứng tỏ chất lượng khá ổ
+   B4 t2  (middle-cut, review) **HyperX Cloud Stinger 2 Core** — nếu bạn chơi game, có mic tốt
+   B4 t3  (middle-cut, review) *Gợi ý dựa trên kết quả tìm kiếm thực tế, quyền quyết định là của bạn.*
+post-f094b: turns=28 withPreGuard=28 CLIPPED=1 (headless 1, broken-bold 0; middle-cut 7 + tail-cut 0 listed, not counted) · lower-case-start proxy=0
+   B2 t1  (middle-cut, review) 🎯 Quán này chỉ cách bạn 0.5km, không gian rộng rãi phù hợp cho gia đình 5-6 người, mở đến 23:30 nên rất linh 
+   B3 t2  (middle-cut, review) **Nếu bạn ưu tiên giá rẻ hơn**, **Samsung Galaxy A17 5G Chính Hãng** từ 24hStore cũng là lựa chọn tốt, có 489 
+   B3 t2  (middle-cut, review) **Samsung Galaxy A37 5G** — RAM 8GB, dung lượng 128GB, nếu bạn muốn cấu hình mạnh hơn
+   B3 t2  (middle-cut, review) **Samsung Galaxy Note 20 Ultra 5G** — cao cấp hơn, nhưng chỉ có 3 đánh giá nên chưa chắc
+   B4 t1  (middle-cut, review) Nếu muốn tiết kiệm hơn — rẻ hơn rất nhiều, nhưng đánh giá thấp hơn (4.2⭐, 74 lượt).
+   B4 t1  (middle-cut, review) Các lựa chọn khác như **Huawei FreeBuds 7i** hay **Philips H5205** cũng có đánh giá tốt, nhưng giá cao hơn.
+   B4 t2  (middle-cut, review) **4.2⭐ (497 đánh giá)** — thiết kế over-ear thoải mái, chống ồn chủ động ANC.
+   D2 t1  headless: **FOCUS SPACE** nếu bạn cần không gian chuyên dụng cho học tập & làm việc, mở đến 11h tối.

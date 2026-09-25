@@ -91,3 +91,20 @@ describe('F-094 — v1 removes the whole sentence, never a clipped fragment', ()
     expect(out.text).toBe('Phở ở đây khoảng 50.000đ/tô. Với ngân sách 20 triệu, bạn thoải mái.')
   })
 })
+
+// F-094, measured on golden post-f094b T3 t2 with the pre-guard capture: whole-sentence removal
+// deleted the pick's own list line and left a stray " 🤔".
+describe('F-094 — list lines keep their item; nothing non-prose is left behind', () => {
+  const user = 'chọn quán rẻ tiền thôi, 50-60k thôi'
+  it('a list line keeps the place and loses only the amount clause', () => {
+    const text = 'Có 2 quán:\n\n• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá) - khoảng giá lên tới 100k\n• **Hàng Dương Quán** (4.5⭐, 721 đánh giá) - chưa xác nhận giá\n\nBạn chọn quán nào?'
+    const out = guardSnippetPricesInText(text, [], user).text
+    expect(out).toContain('• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá)')
+    expect(out).not.toContain('100k')
+    expect(out).toContain('• **Hàng Dương Quán**')
+  })
+  it('the emoji after a removed question goes with it', () => {
+    const out = guardSnippetPricesInText('Không có quán nào đủ rẻ. Bạn có muốn nâng ngân sách lên khoảng 70-80k không? 🤔\n\nMình chờ bạn nhé.', [], user).text
+    expect(out).toBe('Không có quán nào đủ rẻ.\n\nMình chờ bạn nhé.')
+  })
+})

@@ -523,12 +523,21 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
     const raw = text.slice(a, b)
     if (inSentence.length === 0) {
+      // F-094: what a removed sentence leaves behind that is not prose — the " 🤔" after
+      // "… 70-80k để có thêm lựa chọn? 🤔" (golden post-f094b T3 t2) — goes with it.
+      if (dropped && raw.trim() && !/[\p{L}\p{N}]/u.test(raw)) return raw.match(/\n+$/)?.[0] ?? ''
       const out = dropped && raw.trim() ? stripConnective(raw) : raw
       if (raw.trim()) dropped = false
       return out
     }
     let sentence = raw
-    if (opts.wholeSentence) { dropped = true; return '' }
+    // F-094: a LIST LINE is not a prose sentence. Removing it whole deleted the pick itself —
+    // "• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá) - khoảng giá lên tới 100k" (golden post-f094b T3 t2)
+    // — so a list line keeps its item and loses the amount clause, as S7 decided for product lists;
+    // every anti-fragment rule of that path still applies.
+    const lineStart = text.lastIndexOf('\n', a - 1) + 1
+    const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
+    if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
     for (const c of inSentence) {
       const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
       if (cut === null) { dropped = true; return '' }

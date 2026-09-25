@@ -1,0 +1,24 @@
+{
+  "id": "G5d",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with payment/fraud: never transfer before seeing goods, COD/meet in person, seller-profile checks, fake payment screenshots; points to 'Cảnh báo lừa đảo'",
+    "No invented statistics"
+  ],
+  "turns": [
+    {
+      "user": "mua đồ cũ trên group Facebook thì lưu ý gì",
+      "status": 200,
+      "elapsedMs": 10605,
+      "textFrames": 300,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua đồ cũ trên group Facebook là rủi ro cao — bạn cần chú ý **rủi ro trước, tình trạng sau**:\n\n**🚨 Rủi ro mất tiền / mất hàng:**\n• **Quản lý & giấy tờ**: Xe máy/ô tô có chứng chỉ đăng ký đúng tên chủ không, có nợ trả góp hay khóa từ xa không, có thể sang tên được không\n• **Lừa đảo trong giao dịch**: Cọc tiền trước rồi người bán biến mất, link thanh toán giả, gặp ở chỗ vắng rồi bị cướp, hoặc hàng không như quảng cáo\n• **Cách trả tiền an toàn**: Gặp trực tiếp, kiểm tra xong mới trả tiền (không cọc trước), giữ bằng chứng giao dịch (ảnh, tin nhắn, video)\n\n**✅ Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**🔍 Kiểm tra tình trạng vật lý** (sau khi đã an toàn):\nVới xe máy/ô tô: kiểm tra khung, máy móc, pin, lốp, giấy tờ. Với điện thoại/laptop: màn hình, pin, tính năng. Nếu có dấu hiệu bất thường so với giá bán → đó là lý do để thương lượng hoặc từ chối.\n\n**Tóm lại**: Trước tiên bảo vệ tiền của bạn (kiểm tra người bán, gặp trực tiếp, không cọc), rồi mới kiểm tra hàng. Không nên vội vàng chỉ vì giá rẻ.\n\nBạn đang muốn mua cái gì cụ thể không? Mình có thể giúp bạn tìm hoặc kiểm tra thêm 👍",
+      "visible": "Mua đồ cũ trên group Facebook là rủi ro cao — bạn cần chú ý **rủi ro trước, tình trạng sau**:\n\n**🚨 Rủi ro mất tiền / mất hàng:**\n• **Quản lý & giấy tờ**: Xe máy/ô tô có chứng chỉ đăng ký đúng tên chủ không, có nợ trả góp hay khóa từ xa không, có thể sang tên được không\n• **Lừa đảo trong giao dịch**: Cọc tiền trước rồi người bán biến mất, link thanh toán giả, gặp ở chỗ vắng rồi bị cướp, hoặc hàng không như quảng cáo\n• **Cách trả tiền an toàn**: Gặp trực tiếp, kiểm tra xong mới trả tiền (không cọc trước), giữ bằng chứng giao dịch (ảnh, tin nhắn, video)\n\n**✅ Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**🔍 Kiểm tra tình trạng vật lý** (sau khi đã an toàn):\nVới xe máy/ô tô: kiểm tra khung, máy móc, pin, lốp, giấy tờ. Với điện thoại/laptop: màn hình, pin, tính năng. Nếu có dấu hiệu bất thường so với giá bán → đó là lý do để thương lượng hoặc từ chối.\n\n**Tóm lại**: Trước tiên bảo vệ tiền của bạn (kiểm tra người bán, gặp trực tiếp, không cọc), rồi mới kiểm tra hàng. Không nên vội vàng chỉ vì giá rẻ.\n\nBạn đang muốn mua cái gì cụ thể không? Mình có thể giúp bạn tìm hoặc kiểm tra thêm 👍",
+      "preGuard": "Mua đồ cũ trên group Facebook là rủi ro cao — bạn cần chú ý **rủi ro trước, tình trạng sau**:\n\n**🚨 Rủi ro mất tiền / mất hàng:**\n• **Quản lý & giấy tờ**: Xe máy/ô tô có chứng chỉ đăng ký đúng tên chủ không, có nợ trả góp hay khóa từ xa không, có thể sang tên được không\n• **Lừa đảo trong giao dịch**: Cọc tiền trước rồi người bán biến mất, link thanh toán giả, gặp ở chỗ vắng rồi bị cướp, hoặc hàng không như quảng cáo\n• **Cách trả tiền an toàn**: Gặp trực tiếp, kiểm tra xong mới trả tiền (không cọc trước), giữ bằng chứng giao dịch (ảnh, tin nhắn, video)\n\n**✅ Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**🔍 Kiểm tra tình trạng vật lý** (sau khi đã an toàn):\nVới xe máy/ô tô: kiểm tra khung, máy móc, pin, lốp, giấy tờ. Với điện thoại/laptop: màn hình, pin, tính năng. Nếu có dấu hiệu bất thường so với giá bán → đó là lý do để thương lượng hoặc từ chối.\n\n**Tóm lại**: Trước tiên bảo vệ tiền của bạn (kiểm tra người bán, gặp trực tiếp, không cọc), rồi mới kiểm tra hàng. Không nên vội vàng chỉ vì giá rẻ.\n\nBạn đang muốn mua cái gì cụ thể không? Mình có thể giúp bạn tìm hoặc kiểm tra thêm 👍"
+    }
+  ]
+}
