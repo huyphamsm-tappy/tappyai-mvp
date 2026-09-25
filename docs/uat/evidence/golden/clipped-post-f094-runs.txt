@@ -35,3 +35,10 @@ post-f094c: turns=28 withPreGuard=28 CLIPPED=5 (headless 1, broken-bold 0, broke
    B4 t2  broken-paren: **ATK N9 Ultra**, 4.6⭐) — không dây, giá gần HyperX
    B4 t2  broken-paren: **Huawei FreeBuds 7i**, 4.7⭐) — cao nhất trong danh sách, nhưng gần hết ngan sách
    T3 t2  (review) connective: **Bún Riêu Gánh Chợ Bến Thành** gần nhất (chỉ 0.4km), giá rẻ, nhưng đóng cửa lúc 19:00 nên bạn cần nhanh tay!
+post-f094d: turns=28 withPreGuard=28 CLIPPED=0 (headless 0, broken-bold 0, broken-paren 0; listed, not counted: connective 0, middle-cut 6, tail-cut 0) · lower-case-start proxy=0
+   B1 t1  (review) middle-cut: **táo xanh** — đây là lựa chọn mình nghiêng về vì pin đúng yêu cầu của bạn, danh giá cao, nhưng giá cao hơn cá
+   B1 t1  (review) middle-cut: **xoanstore.vn** - iPhone 15 Pro Max 256GB cũ 98-99%, có nhiều đánh giá hơn, không đúng yêu cầu 98-99% của bạn
+   B3 t2  (review) middle-cut: 📸 Chiếc này có rating 4.9⭐ từ 18 đánh giá — là lựa chọn tốt nhất về chất lượng và giá trong tầm trung.
+   B4 t1  (review) middle-cut: Nếu muốn tiết kiệm hơn — rẻ hơn rất nhiều, nhưng đánh giá thấp hơn (4.2⭐, 74 lượt).
+   B4 t1  (review) middle-cut: Ngoài ra còn **Huawei FreeBuds 7i** — tai nghe không dây, đánh giá cao 4.7⭐, nhưng gần sát ngân sách của bạn.
+   B4 t2  (review) middle-cut: Rẻ hơn rất nhiều, nhưng đánh giá thấp hơn và số lượt đánh giá ít.

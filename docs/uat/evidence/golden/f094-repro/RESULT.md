@@ -44,3 +44,27 @@ through the same cutter, so it can produce the same kind of fragment (row 2). Th
 (`v2: true`) removes the whole sentence instead and leaves no fragment in all three rows.
 → F-094 (open, raised to P1 by this measurement): the v1 clause cut leaves an unclosed `**` and headless clauses.
 To attribute future cases, the golden harness should record the pre-guard text (e.g. via the guard telemetry).
+
+---
+
+## Owner decision 2026-09-25 → fix + measurement (pre-guard text now recorded)
+
+Fix: v1 removes the WHOLE sentence (V2 flag NOT enabled); list lines keep their item and lose only the
+amount (S7); no cut may leave an unclosed/split `**`, an orphan bracket, a headless remainder or a
+stray emoji. Harness: `goldenSet.mjs` stores `preGuard` (the model's raw reply, dev-only capture);
+`scripts/audit/goldenClipped.mjs` classifies every received sentence against it.
+
+| run | code | CLIPPED (headless + broken bold + broken bracket) | what was found |
+|---|---|---|---|
+| post-egress-f086 | before the fix | n/a (no raw text) — lower-case proxy **7** | the 7 fragments reported earlier |
+| post-f094 | 09afdcf | **4** | `Pro****` (cut split a bold pair); `**1.-` (regression: bold counted per sentence, not per line); 1 bracket |
+| post-f094b | e7ddb1f | **0** | but the pick's own list line was deleted whole (T3 t2) + a stray " 🤔" → fixed in 06e0039 |
+| post-f094c | 06e0039 | **5** | 4 orphan brackets (fixed in 8ec927f); 1 "**bạn nên**." from the SPEC guard, not a price guard |
+| **post-f094d** | **8ec927f** | **0** | 6 middle-clause removals listed for review; they read whole |
+
+Criteria (goldenCompare) post-egress-f086 57/58 → post-f094d 52/58. Every WORSE line was checked
+against the raw text: T4 t2 / G5c / G5d "invented %" — the MODEL wrote them (present in preGuard);
+G5b / G5d "list shape" — the server's RISK_BACKSTOP block ("⚠️ Trước khi trả tiền, kiểm tra mấy điều
+này…", absent from preGuard) uses "- **Header:**" bullets, which the criterion regex `\S \*\*[^*]+:\*\*`
+also matches. None comes from the price guards. Detail: `../clipped-post-f094-runs.txt`,
+`../compare-post-egress-f086-vs-post-f094d.txt`.

@@ -250,5 +250,53 @@
         ]
       }
     ]
+  },
+  "post-f094d": {
+    "turns": 28,
+    "withPre": 28,
+    "headless": 0,
+    "broken-bold": 0,
+    "broken-paren": 0,
+    "connective": 0,
+    "middle-cut": 6,
+    "tail-cut": 0,
+    "lower": 0,
+    "clipped": 0,
+    "rows": [
+      {
+        "turn": "B1 t1",
+        "lowerCaseStarts": [],
+        "clipped": [],
+        "review": [
+          "middle-cut: **táo xanh** — đây là lựa chọn mình nghiêng về vì pin đúng yêu cầu của bạn, danh giá cao, nhưng giá cao hơn cá",
+          "middle-cut: **xoanstore.vn** - iPhone 15 Pro Max 256GB cũ 98-99%, có nhiều đánh giá hơn, không đúng yêu cầu 98-99% của bạn"
+        ]
+      },
+      {
+        "turn": "B3 t2",
+        "lowerCaseStarts": [],
+        "clipped": [],
+        "review": [
+          "middle-cut: 📸 Chiếc này có rating 4.9⭐ từ 18 đánh giá — là lựa chọn tốt nhất về chất lượng và giá trong tầm trung."
+        ]
+      },
+      {
+        "turn": "B4 t1",
+        "lowerCaseStarts": [],
+        "clipped": [],
+        "review": [
+          "middle-cut: Nếu muốn tiết kiệm hơn — rẻ hơn rất nhiều, nhưng đánh giá thấp hơn (4.2⭐, 74 lượt).",
+          "middle-cut: Ngoài ra còn **Huawei FreeBuds 7i** — tai nghe không dây, đánh giá cao 4.7⭐, nhưng gần sát ngân sách của bạn."
+        ]
+      },
+      {
+        "turn": "B4 t2",
+        "lowerCaseStarts": [],
+        "clipped": [],
+        "review": [
+          "middle-cut: Rẻ hơn rất nhiều, nhưng đánh giá thấp hơn và số lượt đánh giá ít."
+        ]
+      }
+    ]
   }
 }
