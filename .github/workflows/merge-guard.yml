@@ -26,8 +26,9 @@ on:
   workflow_dispatch:
 
 env:
-  # The branch that ships. Override with the repository variable SHIP_BRANCH (e.g. rc/web-uat).
-  SHIP_BRANCH: ${{ vars.SHIP_BRANCH || 'main' }}
+  # The branch that ships (owner decision 2026-09-25: rc/web-uat). The repository variable
+  # SHIP_BRANCH overrides it without a code change.
+  SHIP_BRANCH: ${{ vars.SHIP_BRANCH || 'rc/web-uat' }}
   CONTAINMENT_DAYS: ${{ vars.CONTAINMENT_DAYS || '7' }}
 
 jobs:
