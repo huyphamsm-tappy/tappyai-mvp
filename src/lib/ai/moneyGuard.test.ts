@@ -248,6 +248,19 @@ describe('redaction — POLICY R3 is PROPORTIONAL (B4, owner 2026-09-20; superse
     expect(out).toContain('**Daikin MC55UVM6**')
     expect(out).not.toContain('9.000.000')
   })
+  it('F-094 — a numbered bold list line keeps its product: "**1. X** — **amount**" loses only the amount (golden post-f094 B1)', () => {
+    const text = ['**1. Daikin MC55UVM6 cũ 99%** từ **táo xanh** — **9.000.000đ** (4.8⭐ từ 31 đánh giá)', '- Tình trạng 99% như tên ghi'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6']).text
+    expect(out).toContain('**1. Daikin MC55UVM6 cũ 99%** từ **táo xanh**')
+    expect(out).not.toContain('9.000.000')
+    expect(out).not.toContain('**1.-')
+    expect(out).toContain(NL + '- Tình trạng 99%')
+  })
+  it('F-094 — a cut that would split a bold pair removes the sentence (golden post-f094 B4 t1: "Pro****")', () => {
+    const out = guardMoneyClaimsInText('Mình chọn **Daikin MC55UVM6** — giá chỉ **9.000.000đ** với đánh giá **4.8⭐ (170 lượt)** từ Hoàng Hà. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('****')
+    expect(out).toBe('Máy chạy êm.')
+  })
   it('a supported amount in the same list is untouched', () => {
     const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 6.990.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
     expect(out).toContain('6.990.000')

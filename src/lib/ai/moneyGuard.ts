@@ -420,7 +420,12 @@ const LEADING_CONNECTIVE = /^\s*(?:và|hoặc|nhưng|còn|and|or|but)\s+/iu
  */
 const DANGLING_TAIL = /(?:^|\s)(?:nên|và|với|là|có|hoặc|nhưng|hay|để|khi|vì|từ|đến|khoảng|tầm|giá|chỉ|mà|thì|cho|của|and|or|with|for|at|about|around|only|is|are|costs?)$/iu
 
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number): string | null {
+/**
+ * @param linePrefix the text between the start of this LINE and the sentence. Bold balances per
+ *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
+ *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
+ */
+function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = ''): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
@@ -451,7 +456,7 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
   // with nothing under it, or an unclosed bold, says nothing — the sentence goes whole.
   // A complete bold span is content — "- **Sharp FP-J40E** — 4.200.000₫" keeps its product line
   // (B4: the list survives, only the amount goes); a bare label or an unclosed bold does not.
-  const boldMarks = (before.match(/\*\*/g) ?? []).length
+  const boldMarks = ((linePrefix + before).match(/\*\*/g) ?? []).length
   const hasBoldName = boldMarks >= 2 && boldMarks % 2 === 0
   if (afterSaysNothing && (boldMarks % 2 === 1 || (!hasBoldName && before.split(/\s+/).filter(Boolean).length <= 4))) return null
   // F-094 (owner 2026-09-25): a cut that leaves a CLIPPED sentence takes the sentence whole.
@@ -462,6 +467,10 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number):
   //     "nếu bạn ưu tiên **không dây**, …", "bao gồm xe khách khứ hồi, …" (golden B4). A list line
   //     keeps its product and loses only the amount (S7), because there the amount is not the head.
   if (before.length === 0 && startsLower(after) && !startsLower(sentence)) return null
+  // (c) the cut itself crosses a bold span — it takes one `**` of a pair and leaves the other:
+  //     "**…HAVIT H612BT Pro** — giá chỉ **380.000đ** với đánh giá **4.8⭐ (170 lượt)** từ …" became
+  //     "**…Pro**** từ Hoàng Hà Mobile." (golden post-f094 B4 t1, measured with the pre-guard capture).
+  if (((sentence.slice(a, b).match(/\*\*/g) ?? []).length % 2) === 1) return null
   // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
   // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
   const lead = sentence.match(/^\s*/)?.[0] ?? ''
@@ -521,7 +530,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     let sentence = raw
     if (opts.wholeSentence) { dropped = true; return '' }
     for (const c of inSentence) {
-      const cut = removeClauseAround(sentence, c.start - a, c.end - a)
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
       if (cut === null) { dropped = true; return '' }
       sentence = cut // claims are processed from the end, so earlier offsets are unaffected
     }
