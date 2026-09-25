@@ -214,6 +214,36 @@ describe('P3-F4 · every link the rulebook orders the model to write still arriv
     expect(rendered(out)).toContain('**https://baotangchungtichchientranh.vn**')
   })
 
+  // Owner decision 2026-09-25: the model shortened a given Facebook POST url to the PAGE url and
+  // the user got "**Fanpage Facebook chính thức:**" with nothing after it. A path-boundary prefix of
+  // a given URL carries nothing the tool did not supply, so it is publishable.
+  describe('a shortened copy (path-boundary prefix) of a given URL', () => {
+    const POST = 'https://www.facebook.com/baotangchungtichchientranh/posts/trong-ky-nguyen/1677201190471512/'
+    const PAGE = 'https://www.facebook.com/baotangchungtichchientranh'
+    const given = [toolCall('web_search'), toolResult({ results: [{ title: 'Bao tang', link: POST }] })]
+
+    it('is kept — bare, bold and as a markdown link', async () => {
+      const body = rendered(await run([...given, text(`Fanpage: **${PAGE}/** hoac [Trang](${PAGE}) hoac ${PAGE} nhe.`), finish]))
+      expect(body).toBe(`Fanpage: **${PAGE}/** hoac [Trang](${PAGE}) hoac ${PAGE} nhe.`)
+    })
+
+    it('is kept as a CTA button destination', async () => {
+      const block = `[CTA_BUTTONS]${JSON.stringify({ buttons: [{ label: 'Fanpage', type: 'website', url: `${PAGE}/` }] })}[/CTA_BUTTONS]`
+      expect(rendered(await run([...given, text(`Xem fanpage.\n\n${block}`), finish]))).toContain(`"url":"${PAGE}/"`)
+    })
+
+    it('🚨 a prefix that ends mid-segment or mid-host is not given', async () => {
+      const body = rendered(await run([...given, text('A https://www.facebook.com/baotang B https://www.face C'), finish]))
+      expect(body).toBe('A  B  C')
+    })
+
+    it('🚨 a prefix with anything appended is not given', async () => {
+      const body = rendered(await run([...given, text(`[Fanpage](${PAGE}/?d=QuanBinhThanh_800k) ${PAGE}/leak`), finish]))
+      expect(body).not.toContain('QuanBinhThanh_800k')
+      expect(body).not.toContain('/leak')
+    })
+  })
+
   it('F-095 — a removed bold URL takes its emphasis pair with it; appended data is still removed', async () => {
     const out = await run([
       toolCall('web_search'),

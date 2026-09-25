@@ -458,6 +458,27 @@ function normalizeUrl(url: string): string {
 }
 
 /**
+ * Was this URL given to the model — verbatim, or as a PREFIX of a given URL that ends at a
+ * path boundary ('/', '?', '#')?
+ *
+ * Owner decision 2026-09-25 (after F-095): the model shortens what it was given — a Facebook
+ * post URL from web_search becomes the page URL — and the shortened copy is the link the user
+ * wanted. A prefix cannot carry anything the tool result did not already contain, because
+ * nothing is appended, so the exfiltration property holds: copy-with-additions still fails.
+ * The boundary rule stops a prefix from ending mid-host or mid-segment
+ * ('https://bank' of 'https://bank-login.example/…' is not given).
+ */
+function isGivenUrl(url: string, allowed: ReadonlySet<string>): boolean {
+  const u = normalizeUrl(url)
+  if (allowed.has(u)) return true
+  if (!/^https?:\/\/[^/?#]+/.test(u)) return false
+  for (const a of allowed) {
+    if (a.length > u.length && a.startsWith(u) && '/?#'.includes(a[u.length])) return true
+  }
+  return false
+}
+
+/**
  * P3-F5 · where a model-CONSTRUCTED button or plan link may point. The original list (the
  * platforms the rulebook names) plus, since the shipping branch moved the hand-off set into the
  * CCP registry, every registry merchant host and every search template the prompt hands the
@@ -486,7 +507,7 @@ function isAllowedCtaHost(url: string): boolean {
  * `type:"internal_booking"` + `router.push(btn.url)` from becoming model-driven navigation.
  */
 function isPublishableStructuredUrl(url: unknown, allowed: ReadonlySet<string>): boolean {
-  return typeof url === 'string' && (isAllowedCtaHost(url) || allowed.has(normalizeUrl(url)))
+  return typeof url === 'string' && (isAllowedCtaHost(url) || isGivenUrl(url, allowed))
 }
 
 /**
@@ -549,14 +570,14 @@ function stripUnownedLinks(text: string, allowed?: ReadonlySet<string>): string 
   const tail = text.slice(cut)
   const withLinks = prose.replace(
     /(?<!!)\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g,
-    (whole, label: string, url: string) => (allowed.has(normalizeUrl(url)) ? whole : label),
+    (whole, label: string, url: string) => (isGivenUrl(url, allowed) ? whole : label),
   )
   const guardedProse = withLinks.replace(
     /(\*\*|__)?(?<!\]\()(https?:\/\/[^\s<>()\\[\]]+)/g,
     (whole: string, lead: string | undefined, url: string) => {
       const trailing = url.match(/[.,;:!?*_~]+$/)?.[0] ?? ''
       const bare = trailing ? url.slice(0, -trailing.length) : url
-      if (allowed.has(normalizeUrl(bare))) return whole
+      if (isGivenUrl(bare, allowed)) return whole
       // A removed `**url**` takes its emphasis pair with it rather than leaving a stray `**`.
       return lead && trailing.startsWith(lead) ? trailing.slice(lead.length) : (lead ?? '') + trailing
     },
