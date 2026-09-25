@@ -274,7 +274,10 @@ const PUBLIC_CONTENT_TABLES = new Map([
   ['music_tracks', 'public catalogue'],
   ['comment_reactions', 'public social signal on public comments'],
   ['review_milestones', 'public social signal'],
-  ['review_likes', 'public social signal'],
+  // 'review_likes' REMOVED 2026-09-25: a person's liked collection is PRIVATE (owner decision in
+  // 20260915b_review_likes_private.sql — measured: `?user_id=eq.<someone>` with the anon key
+  // returned that person's whole like history). Per-review likers / the 24h aggregate are served
+  // by the two SECURITY DEFINER reads registered in INTENTIONAL_ANON, never by a table policy.
   ['review_comments', 'public social content'],
   ['user_follows', 'the social graph is public in this product'],
   // 2026-09-25 (merge-loss recovery): one global row (`reachability`), no personal data, and

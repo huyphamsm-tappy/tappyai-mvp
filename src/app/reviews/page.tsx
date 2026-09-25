@@ -629,20 +629,17 @@ function ReviewsPageInner() {
     // Server-side read state (replaces the old client `notifSeenAt`).
     markAllRead()
     setHotPlacesLoading(true)
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     ;(async () => {
       try {
-        const { data } = await supabase
-          .from('review_likes')
-          .select('reviews!inner(place_name)')
-          .gte('created_at', since)
-          .limit(200)
-        const counts = new Map<string, number>()
-        for (const row of (data || []) as any[]) {
-          const name = row.reviews?.place_name
-          if (name && !isShareOnlyName(name)) counts.set(name, (counts.get(name) || 0) + 1)
+        // `hot_places_24h()` — the place-name + count aggregate over visible reviews. The like
+        // rows are owner-read since 20260915b_review_likes_private.sql; this is the public view.
+        const { data } = await supabase.rpc('hot_places_24h', { p_limit: 10 })
+        const hot: { place_name: string; count: number }[] = []
+        for (const row of (data || []) as Array<{ place_name?: string | null; like_count?: number | string | null }>) {
+          const name = row.place_name
+          if (name && !isShareOnlyName(name)) hot.push({ place_name: name, count: Number(row.like_count) || 0 })
         }
-        setHotPlaces(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([place_name, count]) => ({ place_name, count })))
+        setHotPlaces(hot.slice(0, 4))
       } catch {
         // Best-effort personalization row — degrade silently, section just won't render (no misleading empty-state message exists for it)
       } finally {

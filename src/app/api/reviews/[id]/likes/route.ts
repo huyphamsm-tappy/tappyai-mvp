@@ -31,10 +31,15 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
  * non-publishable rows are refused, and there is no author exemption. If you may not read the
  * post, you may not enumerate who liked it.
  *
- * Anonymous callers are allowed — this is a public read, and it exposes nothing new. `review_likes`
- * already carries a `FOR SELECT USING (true)` policy and `profiles` a public SELECT policy, so
- * every field below was already readable through PostgREST directly. Only `id`, `full_name` and
- * `avatar_url` are served; no email, no auth data.
+ * Anonymous callers are allowed — this is a public read of ONE clip's likers, and only `id`,
+ * `full_name` and `avatar_url` are served; no email, no auth data.
+ *
+ * 🔑 Since `20260915b_review_likes_private.sql` the `review_likes` table is owner-read (a person's
+ * liked COLLECTION is private), so this route no longer selects the table: it calls
+ * `review_likers(review, limit, before)`, a SECURITY DEFINER read scoped to one review that
+ * re-applies the visibility gate inside the database. There is no function that answers
+ * "everything user X liked" — that question is the one being closed. (Restored 2026-09-25 from
+ * 3fe8c12: merge 1e7b77e parked this with the profile-v2 UI and the leak stayed open.)
  */
 
 const DEFAULT_LIMIT = 30
@@ -66,15 +71,11 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   )
   const before = url.searchParams.get('before')
 
-  let query = supabase
-    .from('review_likes')
-    .select('user_id, created_at')
-    .eq('review_id', params.id)
-    .order('created_at', { ascending: false })
-    .limit(limit)
-  if (before) query = query.lt('created_at', before)
-
-  const { data: rows, error } = await query
+  const { data: rows, error } = await supabase.rpc('review_likers', {
+    p_review_id: params.id,
+    p_limit: limit,
+    p_before: before || null,
+  })
   if (error) {
     return NextResponse.json(
       { error: 'load_failed', message: serverMessage('server.loadFailed', requestLocale(req)) },
@@ -82,7 +83,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     )
   }
 
-  const likeRows = rows ?? []
+  const likeRows = (rows ?? []) as Array<{ user_id: string; created_at: string }>
 
   // 🚨 `review_likes.user_id` references `auth.users`, NOT `profiles`, so PostgREST has no
   // relationship to embed and `select('profiles(...)')` would fail. One batched fetch instead —

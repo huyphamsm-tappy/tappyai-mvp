@@ -67,6 +67,7 @@ code on the shipping branch fails for users if the migration is missing when the
 | 7 | `20260921_user_events_ga4_event_types` | widens a constraint **if present** | conditional | file | no — **no-op on prod** |
 | 8 | `20260921_user_events_shopping_search_event` | same pattern | conditional | file | no — **no-op on prod** |
 | GR | `20260922_groups_avatar_url` | `groups.avatar_url` | yes (1 column) | file | **YES** — `GET /api/group` selects `avatar_url`; without it every group answers 404 `group_not_found` |
+| **L1** | `20260915b_review_likes_private` (**added 2026-09-25, merge-loss recovery**) | `review_likes` SELECT becomes owner-only; `review_likers(review)` + `hot_places_24h()` SECURITY DEFINER reads (anon-executable) | no (replaces 1 policy) | §1-L1 | **PRIVACY** — without it anyone with the anon key lists any user's whole like history (`?user_id=eq.<id>`, measured on audit 2026-09-25). ⚠️ Apply **immediately BEFORE** the web deploy (§2) |
 | **S1** | `20260904_group_read_boundary` (**added 2026-09-25, F-065 P0**) | drops `"Anyone can read groups"` / `"Anyone can read group members"` (`USING (true)` to `public`); participant-only SELECT `TO authenticated` via `fn_group_participant()` | no (replaces 2 policies) | §1-S1 | **SECURITY** — without it anyone holding the public anon key reads every group and every member's name/area/budget/dietary restrictions (measured on audit 2026-09-25). ⚠️ **Apply AFTER the web deploy** (§2) |
 | ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
 
@@ -239,6 +240,18 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - **Verify after:** same → `t`. Then `GET /api/group?id=<a real group>` must answer 200, not 404.
 - **Rollback:** `supabase/migrations/rollback/20260922_groups_avatar_url_rollback.sql`
 
+### §1-L1) `supabase/migrations/20260915b_review_likes_private.sql` — a person's liked collection is private
+- Written 2026-09-15 (cool-vaughan snapshot 3fe8c12), parked by merge 1e7b77e together with the profile-v2
+  UI ("NOT merged … Parked verbatim under docs/audit/overnight/stepC/profile-v2-notmerged/ — OPEN"); the
+  privacy half is restored on its own (2026-09-25). Prod 09-17 snapshot: `"Anyone can read likes" … TO public USING (true)`.
+- **Check first (expect 1 row = still open):** `SELECT policyname FROM pg_policies WHERE tablename='review_likes' AND cmd='SELECT';` → `Anyone can read likes`.
+- **Apply immediately BEFORE the web deploy** — the new like-list route and both "hot places" panels call
+  `review_likers()` / `hot_places_24h()`; without them the like list 500s. The OLD code keeps working
+  degraded for the minutes in between (it then sees only the caller's own likes).
+- **Verify after:** the query above → `review_likes_select_own`; `SELECT has_function_privilege('anon','public.review_likers(uuid,integer,timestamptz)','EXECUTE'), has_function_privilege('anon','public.hot_places_24h(integer)','EXECUTE');` → `t, t`;
+  with ONLY the anon key `curl "$SUPABASE_URL/rest/v1/review_likes?select=user_id" -H "apikey: $ANON" -H "Authorization: Bearer $ANON"` → `[]`.
+- **Rollback (re-opens the leak):** re-create `"Anyone can read likes" FOR SELECT USING (true)` from `add_review_social.sql`.
+
 ### §1-S1) `supabase/migrations/20260904_group_read_boundary.sql` — groups / members readable only by participants (F-065)
 - Recovered 2026-09-25 from `integration/v3-foundation` (`558ba49`), which never reached the shipping branch.
 - **Check first (expect 2 rows = still open):** `SELECT tablename, policyname FROM pg_policies WHERE schemaname='public' AND policyname IN ('Anyone can read groups','Anyone can read group members');`
@@ -296,6 +309,8 @@ security change to land early):
 - **§1-GR groups.avatar_url** — REQUIRED before deploy. `GET /api/group` selects the column; without it every
   group page answers 404.
 - **§1-P1 profile presentation** — before deploy (recommended); the code degrades without it.
+- **§1-L1 review_likes private** — immediately before deploy (added 2026-09-25): the new like-list route
+  and hot-places panels call its two functions.
 - **#2 + #3 commerce** — before deploy **if** this release's code reads the commerce feed; otherwise
   any time. Safe to apply before regardless.
 - **#4 F-028** — before deploy, so the client's age-correction flow matches the new RPC behaviour.

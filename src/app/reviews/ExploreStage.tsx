@@ -606,20 +606,18 @@ function RightColumn({ rows, me, onFollow, t }: {
 
   useEffect(() => {
     let alive = true
-    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
     ;(async () => {
       try {
-        const { data } = await createClient()
-          .from('review_likes')
-          .select('reviews!inner(place_name)')
-          .gte('created_at', since)
-          .limit(200)
-        const counts = new Map<string, number>()
-        for (const row of (data || []) as Array<{ reviews?: { place_name?: string | null } | null }>) {
-          const name = row.reviews?.place_name
-          if (name && !isShareOnlyName(name)) counts.set(name, (counts.get(name) || 0) + 1)
+        // `hot_places_24h()` — the place-name + count aggregate over visible reviews. The like
+        // rows are owner-read since 20260915b_review_likes_private.sql; this is the public view,
+        // and it carries no user id.
+        const { data } = await createClient().rpc('hot_places_24h', { p_limit: 10 })
+        const hot: Hot[] = []
+        for (const row of (data || []) as Array<{ place_name?: string | null; like_count?: number | string | null }>) {
+          const name = row.place_name
+          if (name && !isShareOnlyName(name)) hot.push({ place_name: name, count: Number(row.like_count) || 0 })
         }
-        if (alive) setHot(Array.from(counts.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([place_name, count]) => ({ place_name, count })))
+        if (alive) setHot(hot.slice(0, 5))
       } catch {
         // Best-effort: the panel simply does not render.
       }
