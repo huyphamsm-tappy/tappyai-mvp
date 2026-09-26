@@ -1,0 +1,14 @@
+{
+ "webmCarriesLocationText": true,
+ "webm declared video/webm": [],
+ "same webm declared video/mp4": [
+  "unreadable"
+ ],
+ "GPS mp4 declared video/mp4": [
+  "creation-time",
+  "metadata-box",
+  "location",
+  "device-or-author"
+ ],
+ "SAME GPS mp4 declared video/webm": []
+}

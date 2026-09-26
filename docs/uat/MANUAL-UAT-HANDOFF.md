@@ -178,6 +178,17 @@ Làm cho mỗi domain ăn uống, mua sắm, du lịch, giải trí và spa:
 
 ---
 
+### J. Media sau thay đổi cache + metadata (F-099 / F-100), làm trên preview hoặc production sau deploy
+
+Upload không chạy được trên localhost (§5), nên phần này làm sau deploy. **Phát và tua trên đường phục vụ thật (URL public, HTTP range, `Cache-Control: private`) CHƯA ĐƯỢC KIỂM CHỨNG** — tôi chỉ test tua qua Blob URL trên cùng các byte.
+
+- [ ] **Web: đăng review có video quay bằng điện thoại thật** (một clip iPhone và một clip Android, có bật vị trí cho camera). Upload phải thành công (không 422). Tải file về từ URL của review và kiểm tra không còn vị trí / hãng / đời máy / ngày tạo (ví dụ `exiftool <file>` hoặc `ffprobe -show_format <file>`).
+- [ ] **Web: phát clip vừa đăng, rồi tua** tới đầu, giữa, gần cuối, lùi lại. Không đứng hình, không lỗi. Trong DevTools → Network: các request video trả **206**, header `Cache-Control: private, max-age=86400, immutable`.
+- [ ] **Android: mở cùng review, phát và tua** như trên.
+- [ ] **Clip CŨ (đăng trước thay đổi này)**: phát và tua trên web và Android vẫn chạy (header cũ vẫn là public 1 năm — bình thường).
+- [ ] **Ảnh review / ảnh đại diện / ảnh bìa mới**: `curl -sI <url ảnh>` phải có `Cache-Control: private, max-age=86400, immutable` (upload giờ là multipart — nếu upload ảnh lỗi 4xx/5xx thì báo ngay, đó là thay đổi `2d6e241`).
+- [ ] **(tuỳ chọn) Xoá**: xoá review có clip mới, mở lại URL clip trong cửa sổ ẩn danh → 404 ngay (không còn cache biên).
+
 ## 5. Không test được trên localhost
 
 | Mảng | Vì sao | Cách mở khoá |
