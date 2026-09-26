@@ -151,6 +151,19 @@ Rollback is a revert and redeploy — no migration, no data change. Post-deploy 
 Zalo and confirm the account is the token's own; confirm no URL in the browser ever shows a token;
 confirm `/api/auth/zalo/complete` and `/auth/zalo-finish` are 404.
 
+### ✅ Android Zalo login — ACCEPTED on a real device, 2026-09-26
+
+Debug APK (`com.tappyai.app.debug`, built from e870f934a0de with
+`TAPPYAI_API_BASE_URL_DEBUG=https://uat.tappyai.com/`), installed on the owner's phone, signed in
+with Zalo: straight into the app. The verifier logged `POST /verify 200 id` for each attempt
+(13:58, 13:59, 14:00, 14:19, 14:23 VN), 71–84 ms, no 401 and no fallback. Nothing left to do for
+Zalo on Android.
+
+**Open, and NOT a Zalo problem:** the app shows the new layout before sign-in and an older-looking
+one after. Under investigation; it blocks the release, not the Zalo work. Read-only findings so
+far: the Android Home path has no branch on session state at all, and the two Android files
+touched by unpushed local work (chat share wiring, plan price) are not layout.
+
 ### RULE 4 — mobile shares this backend
 
 Android and iOS drive the same `/api/auth/zalo/*` routes with `platform=android|ios`, returning
