@@ -1,0 +1,1131 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 19951,
+  "evidenceId": "763352a1-76d2-4082-a8ca-13a391a45673",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn trưa gia đình 6 người có chỗ đậu xe phù hợp trẻ em Phú Nhuận",
+        "location": "Phú Nhuận, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+      "rating": 4.9,
+      "count": 1872,
+      "price": "200-500 N ₫",
+      "hours": "10:00–22:30",
+      "distance_km": 2.5,
+      "address": "12/6 Cù Lao, Phường 2, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CƠM KHAY GỖ",
+      "rating": 4.8,
+      "count": 932,
+      "price": "1-100.000 ₫",
+      "hours": "10:00–21:00",
+      "distance_km": 3.8,
+      "address": "214 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "price": "100-200 N ₫",
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 406,
+      "price": "100-200 N ₫",
+      "hours": "08:00–22:00",
+      "distance_km": 2.5,
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "rating": 4.3,
+      "count": 572,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–11:00, 17:30–21:30",
+      "distance_km": 3.1,
+      "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1872,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "10:00–22:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "CƠM KHAY GỖ",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 932,
+        "distance_km": 3.8,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "10:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": false,
+        "opening_hours": "15:00–05:00",
+        "attributes": [
+          "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+        ]
+      }
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 406,
+        "distance_km": 2.5,
+        "open_now": true,
+        "opening_hours": "08:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 572,
+        "distance_km": 3.1,
+        "price_up_to_vnd": 100000,
+        "open_now": false,
+        "opening_hours": "06:30–11:00, 17:30–21:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý chính xác nhất, mình sẽ tìm ngay.\n\nMình chọn **FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1** — **4.9⭐ (1.872 đánh giá Google Maps)** vì có rating cao nhất, gần nhất (2.5km), mở cửa trưa.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍣 GrabFood - FAST SUSHI PHÚ NHUẬN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=FAST+SUSHI+PHU+NHUAN\",\"primary\":true},{\"label\":\"📍 Maps - FAST SUSHI PHÚ NHUẬN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16255983368168617903\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác nhất, mình sẽ tìm ngay.\n\nMình chọn **FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1** — **4.9⭐ (1.872 đánh giá Google Maps)** vì có rating cao nhất, gần nhất (2.5km), mở cửa trưa.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍣 GrabFood - FAST SUSHI PHÚ NHUẬN\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=FAST+SUSHI+PHU+NHUAN\",\"primary\":true},{\"label\":\"📍 Maps - FAST SUSHI PHÚ NHUẬN\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16255983368168617903\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Phú Nhuận, TP.HCM",
+      "results": [
+        {
+          "name": "FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+          "address": "12/6 Cù Lao, Phường 2, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 799 995 126",
+          "website_uri": "https://www.facebook.com/fastsushibylam/",
+          "place_id": "ChIJFUp6et0pdTERrzdZ1r7amOE",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (1.872 đánh giá Google Maps)",
+          "rating_count": 1872,
+          "price_range_text": "200-500 N ₫",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16255983368168617903",
+          "opening_hours": "10:00–22:30",
+          "open_now": true,
+          "distance_km": 2.5,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+              "url": "https://maps.google.com/?cid=16255983368168617903",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+              "url": "https://www.facebook.com/fastsushibylam/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=FAST%20SUSHI%20PH%C3%9A%20NHU%E1%BA%ACN%20CHI%20NH%C3%81NH%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "CƠM KHAY GỖ",
+          "address": "214 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 795 201 122",
+          "website_uri": "http://comkhaygo.vn/",
+          "place_id": "ChIJaftTLwApdTER_qo-jn9PDfI",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (932 đánh giá Google Maps)",
+          "rating_count": 932,
+          "price_range_text": "1-100.000 ₫",
+          "place_types": [
+            "Nhà hàng",
+            "Nhà hàng điểm tâm",
+            "Nhà hàng gia đình",
+            "Nhà hàng món lẩu",
+            "Quán mì",
+            "Nhà hàng cơm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17441684341141711614",
+          "opening_hours": "10:00–21:00",
+          "open_now": true,
+          "distance_km": 3.8,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — CƠM KHAY GỖ",
+              "url": "https://maps.google.com/?cid=17441684341141711614",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — CƠM KHAY GỖ",
+              "url": "http://comkhaygo.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20KHAY%20G%E1%BB%96%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 773 354 223",
+          "website_uri": "https://ngochuongsg.vn/",
+          "place_id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "rating_value": 4.5,
+          "google_rating": "4.5⭐ (100 đánh giá Google Maps)",
+          "rating_count": 100,
+          "price_range_text": "100-200 N ₫",
+          "place_types": [
+            "Nhà hàng hải sản"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9254574037706032307",
+          "opening_hours": "15:00–05:00",
+          "open_now": false,
+          "distance_km": 2.4,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://maps.google.com/?cid=9254574037706032307",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Quán Ăn Gia Đình Ngọc Hương",
+              "url": "https://ngochuongsg.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Nhà hàng Mô Rứa",
+          "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 898 894 545",
+          "website_uri": "http://fb.com/nhahangMoRua",
+          "place_id": "ChIJ8zi6qDcpdTERJqEmEeYXB70",
+          "rating_value": 4.4,
+          "google_rating": "4.4⭐ (406 đánh giá Google Maps)",
+          "rating_count": 406,
+          "price_range_text": "100-200 N ₫",
+          "place_types": [
+            "Nhà hàng Việt Nam"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13620881874903015718",
+          "opening_hours": "08:00–22:00",
+          "open_now": true,
+          "distance_km": 2.5,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Nhà hàng Mô Rứa",
+              "url": "https://maps.google.com/?cid=13620881874903015718",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Nhà hàng Mô Rứa",
+              "url": "http://fb.com/nhahangMoRua",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20M%C3%B4%20R%E1%BB%A9a%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Cơm Tấm Hẻm 33",
+          "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 933 616 230",
+          "place_id": "ChIJu6dThdYodTERPWbff_EopDI",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (572 đánh giá Google Maps)",
+          "rating_count": 572,
+          "price_range_text": "1-100.000 ₫",
+          "place_types": [
+            "Quán ăn nhỏ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3649086615774520893",
+          "opening_hours": "06:30–11:00, 17:30–21:30",
+          "open_now": false,
+          "distance_km": 3.1,
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Cơm Tấm Hẻm 33",
+              "url": "https://maps.google.com/?cid=3649086615774520893",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20review",
+              "attributed": false
+            }
+          ],
+          "has_order": true,
+          "has_delivery": true,
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20gia%20%C4%91%C3%ACnh%206%20ng%C6%B0%E1%BB%9Di%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20ph%C3%B9%20h%E1%BB%A3p%20tr%E1%BA%BB%20em%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Dân văn phòng Phú Nhuận ăn gì? Gợi ý quán ngon giao tận nơi",
+          "link": "https://www.galaxyoffice.vn/dan-van-phong-phu-nhuan-an-gi-quan-giao-tan-noi/",
+          "snippet": "1. Cơm tấm Ba Ghiền – Sườn bự, ăn một đĩa là no cả ngày · 2. Cơm văn phòng Ngon 123 – Menu đa dạng, giá mềm · 3. Bún chả Hà Nội Minh Hiếu – Chuẩn ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "YouTube",
+          "link": "https://www.youtube.com/watch?v=zC8aPukJ_vM",
+          "snippet": "Share your videos with friends, family, and the world.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "TOP các quán ăn ngon Phú Nhuận được review tốt - PasGo.vn",
+          "link": "https://pasgo.vn/kham-pha/ha-noi/top-10-quan-an-ngon-hut-khach-nhat-o-quan-phu-nhuan-337",
+          "snippet": "Với mức giá từ 150.000 đ/người thì đây là quán ăn ngon Phú Nhuận giá bình dân. Là địa chỉ phù hợp để họp mặt gia đình, liên hoan... Xem ngay ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Gia đình mình (10ng) tìm quán ăn gia đình khu vực Phú Nhuận hoặc ...",
+          "link": "https://www.facebook.com/groups/SaigonReviews/posts/2141028623496943/",
+          "snippet": "Quán ăn gia đình khu vực Phú Nhuận - Tân Bình • Quá Ngon, 306-308 Lê Văn Sỹ: ẩm thực 3 miền • Quán Ruốc, 298/3 Nguyễn Trọng Tuyển: ẩm thực ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Khám phá 27 quán ăn quận Phú Nhuận ngon quên lối về",
+          "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/chua-an-sach-bach-nhung-quan-ngon-o-phu-nhuan-thi-qua-la-phi-doi-1301500",
+          "snippet": "Địa chỉ:174/2 Đặng Văn Ngữ, phường 14, quận Phú Nhuận, TP. HCM. Giá thành: Khoảng 12.000 - 80.000 đồng. Giờ mở cửa: 10h00 - 21h00 từ thứ 2 đến chủ nhật.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Ăn gì ở Sài Gòn: 30 món ngon nhất định phải thử | Grab VN",
+          "link": "https://www.grab.com/vn/blog/30-mon-an-ngon-nen-thu-o-saigon/",
+          "snippet": "Khám phá 30 món ăn ngon ở Sài Gòn từ sáng đến tối: bánh mì, cơm tấm, hủ tiếu, lẩu, ăn vặt. Cập nhật địa chỉ tháng 9/2026, đặt giao hàng ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "area"
+      },
+      "order_search_results": [
+        {
+          "title": "Ông Cua Quán - 172 Phan Đình Phùng | ShopeeFood - Food Delivery",
+          "link": "https://shopeefood.vn/ho-chi-minh/ong-cua-quan-172-phan-dinh-phung",
+          "snippet": "Xem menu & đặt món trực tuyến từ Ông Cua Quán - 172 Phan Đình Phùng rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "BÒ BÍA PHÚ NHUẬN HẺM 2 - CÔ GIANG",
+          "link": "https://shopeefood.vn/ho-chi-minh/bo-bia-phu-nhuan-hem-96-phan-dinh-phung",
+          "snippet": "BÒ BÍA PHÚ NHUẬN HẺM 2 - CÔ GIANG. 2/1 Cô Giang, Phú Nhuận, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Cơm Tấm Hẻm 33"
+        },
+        {
+          "title": "Sweety Food & Drink - Trà Sữa & Ăn Vặt - Phan Đình Phùng",
+          "link": "https://shopeefood.vn/ho-chi-minh/sweety-food-drink-tra-sua-an-vat-phan-dinh-phung",
+          "snippet": "95 Phan Đình Phùng, P. 17, Phú Nhuận, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và được ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Gánh Bánh Tráng - Bánh Tráng Ăn Chay | Order & get it delivered",
+          "link": "https://shopeefood.vn/ho-chi-minh/ganh-banh-trang-banh-trang-an-chay",
+          "snippet": "270/4/1 Phan Đình Phùng, P. 1, Phú Nhuận, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+          "link": "https://food.grab.com/vn/vi//",
+          "snippet": "Tìm và đặt món ăn yêu thích trên khắp Việt Nam - đặt đồ ăn trực tuyến chỉ bằng vài thao tác, từ món Lifted Coffee & Brunch cho bữa sáng, đến Maazi Indian – Nhà ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJFUp6et0pdTERrzdZ1r7amOE",
+          "name": "FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 1872,
+            "distance_km": 2.5,
+            "open_now": true,
+            "opening_hours": "10:00–22:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "2.5km away",
+            "1872 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJaftTLwApdTER_qo-jn9PDfI",
+          "name": "CƠM KHAY GỖ",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 932,
+            "distance_km": 3.8,
+            "price_up_to_vnd": 100000,
+            "open_now": true,
+            "opening_hours": "10:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.8",
+            "3.8km away",
+            "932 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJD4p2kNMpdTERs0QF8Q3aboA",
+          "name": "Quán Ăn Gia Đình Ngọc Hương",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 100,
+            "distance_km": 2.4,
+            "open_now": false,
+            "opening_hours": "15:00–05:00",
+            "attributes": [
+              "hợp gia đình (\"Quán Ăn Gia Đình Ngọc Hương\")"
+            ]
+          },
+          "why": [
+            "rated 4.5",
+            "2.4km away",
+            "100 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJ8zi6qDcpdTERJqEmEeYXB70",
+          "name": "Nhà hàng Mô Rứa",
+          "role": null,
+          "evidence": {
+            "rating": 4.4,
+            "reviews": 406,
+            "distance_km": 2.5,
+            "open_now": true,
+            "opening_hours": "08:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.4",
+            "2.5km away",
+            "406 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJu6dThdYodTERPWbff_EopDI",
+          "name": "Cơm Tấm Hẻm 33",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 572,
+            "distance_km": 3.1,
+            "price_up_to_vnd": 100000,
+            "open_now": false,
+            "opening_hours": "06:30–11:00, 17:30–21:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.3",
+            "3.1km away",
+            "572 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_hard_gaps": [
+        "parking",
+        "kids"
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.79622,106.68960",
+            "domain": "food",
+            "kind": "place",
+            "name": "FAST SUSHI PHÚ NHUẬN CHI NHÁNH 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmmCNS27TqMVhtFa5f2Sy0dce5o4uDBFByukWELdlJscTfkH5dg79Bq3ZeDqnkUK8A3l6yqLf-O9o4RTvUyhF2YdIbfLarEm03Qh9iMwEewvkdkBYPd_mr1CZe1Cs6EEAC4cNoKWPRvB22A",
+            "address": "12/6 Cù Lao, Phường 2, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1872,
+            "openingHours": "10:00–22:30",
+            "openNow": true,
+            "phone": "+84 799 995 126",
+            "priceRangeText": "200-500 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–22:30",
+              "Thứ Bảy": "10:00–22:30",
+              "Chủ Nhật": "10:00–22:30",
+              "Thứ Hai": "10:00–22:30",
+              "Thứ Ba": "10:00–22:30",
+              "Thứ Tư": "10:00–22:30",
+              "Thứ Năm": "10:00–22:30"
+            },
+            "distanceKm": 2.5,
+            "categories": [
+              "Nhà hàng Nhật Bản"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=FAST%20SUSHI%20PH%C3%9A%20NHU%E1%BA%ACN%20CHI%20NH%C3%81NH%201%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16255983368168617903",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=FAST%20SUSHI%20PH%C3%9A%20NHU%E1%BA%ACN%20CHI%20NH%C3%81NH%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/fastsushibylam/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84799995126",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79787,106.67385",
+            "domain": "food",
+            "kind": "place",
+            "name": "CƠM KHAY GỖ",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmVPq1ZvAkh_QKhQsnLrEQWyHH7dzcrAEJanlUX0r4q_PYzPZgKhHDdwZouhOUlZxXvQqGb3bWJupRgwM8aB-449GIosRUhQcHm21U0g3F6Ekde9nQrRyIMLUcYXQuhmeNLh7m-JLrlb9j2",
+            "address": "214 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 932,
+            "openingHours": "10:00–21:00",
+            "openNow": true,
+            "phone": "+84 795 201 122",
+            "priceRangeText": "1-100.000 ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–21:00",
+              "Thứ Bảy": "10:00–21:00",
+              "Chủ Nhật": "10:00–21:00",
+              "Thứ Hai": "10:00–21:00",
+              "Thứ Ba": "10:00–21:00",
+              "Thứ Tư": "10:00–21:00",
+              "Thứ Năm": "10:00–21:00"
+            },
+            "distanceKm": 3.8,
+            "categories": [
+              "Nhà hàng",
+              "Nhà hàng điểm tâm",
+              "Nhà hàng gia đình",
+              "Nhà hàng món lẩu",
+              "Quán mì",
+              "Nhà hàng cơm"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@comkhaygo/video/7646363571101748487",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A0M%20KHAY%20G%E1%BB%96%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17441684341141711614",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84795201122",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20KHAY%20G%E1%BB%96%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79274,106.68545",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ăn Gia Đình Ngọc Hương",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmKTpH08u5Q0I84I0tohOu28nYSsozEIHRk2eYKqJLCWM_jWi1_Y7kWwnDOhm0ZszraVgTBvcq2LOXA6HMRPQPu8qrZaHaqyBNvL18tC6aF0hvkIb9D7AucHCfMLDAGY-SqGSTf",
+            "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 100,
+            "openingHours": "15:00–05:00",
+            "openNow": false,
+            "phone": "+84 773 354 223",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "15:00–05:00",
+              "Thứ Bảy": "15:00–05:00",
+              "Chủ Nhật": "15:00–05:00",
+              "Thứ Hai": "15:00–05:00",
+              "Thứ Ba": "15:00–05:00",
+              "Thứ Tư": "15:00–05:00",
+              "Thứ Năm": "15:00–05:00"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Nhà hàng hải sản"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9254574037706032307",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20Ng%E1%BB%8Dc%20H%C6%B0%C6%A1ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://ngochuongsg.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84773354223",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79719,106.69157",
+            "domain": "food",
+            "kind": "place",
+            "name": "Nhà hàng Mô Rứa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkfolria2CrjoXEl99AAl9BnUyTnYRKPgSsilfY-4GPDwIHLrZh86l9x9XBSGAb-f1ZcHYndQxupz7bW-EiOCjUM82pME9ubhoQdcb2MzMq_m62sTiGKPySejot3kL57TfC4Dn2",
+            "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 406,
+            "openingHours": "08:00–22:00",
+            "openNow": true,
+            "phone": "+84 898 894 545",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:00–22:00",
+              "Thứ Bảy": "07:00–22:00",
+              "Chủ Nhật": "07:00–22:00",
+              "Thứ Hai": "08:00–22:00",
+              "Thứ Ba": "08:00–22:00",
+              "Thứ Tư": "08:00–22:00",
+              "Thứ Năm": "08:00–22:00"
+            },
+            "distanceKm": 2.5,
+            "categories": [
+              "Nhà hàng Việt Nam"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20h%C3%A0ng%20M%C3%B4%20R%E1%BB%A9a%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13620881874903015718",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20M%C3%B4%20R%E1%BB%A9a%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84898894545",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79636,106.67996",
+            "domain": "food",
+            "kind": "place",
+            "name": "Cơm Tấm Hẻm 33",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnMpHV3HWjbyq3K7-iQTZ6xSfwnT2MoYx2gZwal8banVX-OMzmDTZ8LpIUP-gkQBtBRXa30GrAMfLOpsrzN57PQ46ce2ICw-YrHPlHV2dnfdXuBiLJN7NiHJMU73vPhq5rKCO_ASA",
+            "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 572,
+            "openingHours": "06:30–11:00, 17:30–21:30",
+            "openNow": false,
+            "phone": "+84 933 616 230",
+            "priceRangeText": "1-100.000 ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "06:30–11:00, 17:30–21:30",
+              "Thứ Bảy": "06:30–11:00, 17:30–21:30",
+              "Chủ Nhật": "06:30–11:00, 17:30–21:30",
+              "Thứ Hai": "Đóng cửa",
+              "Thứ Ba": "06:30–11:00, 17:30–21:30",
+              "Thứ Tư": "06:30–11:00, 17:30–21:30",
+              "Thứ Năm": "06:30–11:00, 17:30–21:30"
+            },
+            "distanceKm": 3.1,
+            "categories": [
+              "Quán ăn nhỏ"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "direct",
+                "url": "https://shopeefood.vn/ho-chi-minh/bo-bia-phu-nhuan-hem-96-phan-dinh-phung",
+                "labelKey": "v3.action.order",
+                "attributed": true
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@baogia2k3ha/video/7507650615456140562",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3649086615774520893",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933616230",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20T%E1%BA%A5m%20H%E1%BA%BBm%2033%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79885,106.68928",
+            "domain": "food",
+            "kind": "place",
+            "name": "Dookki Phú Nhuận",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkgr-rOIoM5ZiPHazugCrDqorM5mXrfX0SGeotLCcwo639TCNrVrCHpC2BxY6M_s5yc16uE3pisZ709KWs6ZnjhiIMp5keNbbcwVzDI65ZVIBbUzMdT231miI2fOyPPVBtmsf_V",
+            "address": "48 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 977,
+            "openingHours": "10:30–22:00",
+            "openNow": true,
+            "phone": "+84 1900 996601",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:30–22:00",
+              "Thứ Bảy": "10:30–22:00",
+              "Chủ Nhật": "10:30–22:00",
+              "Thứ Hai": "10:30–22:00",
+              "Thứ Ba": "10:30–22:00",
+              "Thứ Tư": "10:30–22:00",
+              "Thứ Năm": "10:30–22:00"
+            },
+            "distanceKm": 2.8,
+            "categories": [
+              "Nhà hàng Hàn Quốc",
+              "Nhà hàng tiệc đứng"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Dookki%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5739738115201123322",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Dookki%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/DookkiVietnam/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+841900996601",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79690,106.67247",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Cô Hồng - Phú Nhuận",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkl69Iygd70Gh4xSHmvVzzQ4H2_GFz3JRL8qCrDnz1u4raggsFXi6-Fd7aQwqB-ikOMbHpdS3YzvJOS1k_-GIbymkCxLQjqQZOb817J1xhpyCiWr4Ut0Qq_OMYWUOn6Ngvx5cWaEA",
+            "address": "44 Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh 72200, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 600,
+            "openingHours": "10:00–21:30",
+            "openNow": true,
+            "phone": "+84 935 565 788",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–21:30",
+              "Thứ Bảy": "10:00–21:30",
+              "Chủ Nhật": "10:00–21:30",
+              "Thứ Hai": "10:00–21:30",
+              "Thứ Ba": "10:00–21:30",
+              "Thứ Tư": "10:00–21:30",
+              "Thứ Năm": "10:00–21:30"
+            },
+            "distanceKm": 3.8,
+            "categories": [
+              "Nhà hàng"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20C%C3%B4%20H%E1%BB%93ng%20-%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9807092618621644325",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20C%C3%B4%20H%E1%BB%93ng%20-%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84935565788",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80278,106.68476",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Ốc Quỳnh 106A Phùng Văn Cung, F7, Q.Phú Nhuận",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1nlHCshRyzwhTDOOzkuEuzljB0iHAodSLucpq4DhzN5yfQc5oUTs0leSYK7yQ0TCjhxOZi-p7qf8oLX1enXCM-MXYv330CVTA_4qMWE_QtJ9jo-w9VuCA15ALS3dsYawO76-o",
+            "address": "106 Đ. Phùng Văn Cung, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 546,
+            "openingHours": "14:30–22:30",
+            "openNow": true,
+            "phone": "+84 937 857 185",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Sáu": "14:30–22:30",
+              "Thứ Bảy": "14:30–22:30",
+              "Chủ Nhật": "14:30–22:30",
+              "Thứ Hai": "14:30–22:30",
+              "Thứ Ba": "14:30–22:30",
+              "Thứ Tư": "14:30–22:30",
+              "Thứ Năm": "14:30–22:30"
+            },
+            "distanceKm": 3.4,
+            "categories": [
+              "Quán ăn nhẹ",
+              "Nhà hàng"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20%E1%BB%90c%20Qu%E1%BB%B3nh%20106A%20Ph%C3%B9ng%20V%C4%83n%20Cung%2C%20F7%2C%20Q.Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14882394776451551289",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%90c%20Qu%E1%BB%B3nh%20106A%20Ph%C3%B9ng%20V%C4%83n%20Cung%2C%20F7%2C%20Q.Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.foody.vn/ho-chi-minh/oc-quynh-phung-van-cung",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84937857185",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20gia%20%C4%91%C3%ACnh%206%20ng%C6%B0%E1%BB%9Di%20c%C3%B3%20ch%E1%BB%97%20%C4%91%E1%BA%ADu%20xe%20ph%C3%B9%20h%E1%BB%A3p%20tr%E1%BA%BB%20em%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

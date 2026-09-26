@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 15367,
+      "textFrames": 434,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe cấp, xe nợ trả góp, xe bị khoá từ xa). Yêu cầu chủ xe cung cấp đầy đủ giấy tờ trước khi gặp.\n- **Lịch sử sửa chữa & tai nạn**: Hỏi chủ xe về lịch sử tai nạn, sửa chữa lớn (động cơ, hộp số, khung gầm). Nếu từng bị tai nạn nặng, giá trị xe sẽ giảm đáng kể.\n- **Gặp trực tiếp & kiểm tra xe**: Không giao dịch qua điện thoại hay link lạ. Gặp chủ xe tại chỗ, xem xe trực tiếp, lái thử trước khi quyết định.\n- **Thanh toán an toàn**: Chuyển tiền sau khi kiểm tra xong, không cọc trước. Nếu gặp người lạ, nên gặp tại chỗ công khai hoặc qua trung gian uy tín.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Động cơ & hộp số**: Khởi động xe, nghe tiếng động cơ (có bất thường không), thử các cấp số, kiểm tra rò rỉ dầu.\n- **Khung gầm & thân xe**: Kiểm tra vết va đập, rỉ sét, độ chắc chắn của khung (có bị cong không).\n- **Lốp & phanh**: Kiểm tra độ mòn lốp, độ hiệu lực phanh, có rò rỉ dầu phanh không.\n- **Nội thất & điện**: Kiểm tra ghế, bảng điều khiển, đèn, gạt mưa, điều hòa, cửa sổ có hoạt động bình thường không.\n- **Số km đã chạy**: Kiểm tra đồng hồ km (nếu bị sửa, có dấu hiệu bất thường không), so sánh với tình trạng xe.\n\n**💡 LỜI KHUYÊN THÊM:**\n- Nên mua xe từ chủ xe cá nhân hoặc đại lý uy tín có nhiều đánh giá tích cực.\n- Nếu không chắc, có thể thuê thợ sửa xe tin cậy để kiểm tra kỹ trước khi mua.\n- Kiểm tra giá thị trường để tránh mua đắt — so sánh giá xe cùng dòng, cùng năm sản xuất trên các nền tảng bán xe cũ.\n\n**Bạn đang tìm mua xe cũ loại nào cụ thể?** (ví dụ: Honda, Toyota, Kia...) Mình có thể giúp bạn tìm kiếm và so sánh giá trên các nền tảng bán xe cũ nếu bạn muốn.\n\nNếu mua từ người lạ hoặc qua group/chợ online: dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra trước khi chuyển tiền.",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe cấp, xe nợ trả góp, xe bị khoá từ xa). Yêu cầu chủ xe cung cấp đầy đủ giấy tờ trước khi gặp.\n- **Lịch sử sửa chữa & tai nạn**: Hỏi chủ xe về lịch sử tai nạn, sửa chữa lớn (động cơ, hộp số, khung gầm). Nếu từng bị tai nạn nặng, giá trị xe sẽ giảm đáng kể.\n- **Gặp trực tiếp & kiểm tra xe**: Không giao dịch qua điện thoại hay link lạ. Gặp chủ xe tại chỗ, xem xe trực tiếp, lái thử trước khi quyết định.\n- **Thanh toán an toàn**: Chuyển tiền sau khi kiểm tra xong, không cọc trước. Nếu gặp người lạ, nên gặp tại chỗ công khai hoặc qua trung gian uy tín.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Động cơ & hộp số**: Khởi động xe, nghe tiếng động cơ (có bất thường không), thử các cấp số, kiểm tra rò rỉ dầu.\n- **Khung gầm & thân xe**: Kiểm tra vết va đập, rỉ sét, độ chắc chắn của khung (có bị cong không).\n- **Lốp & phanh**: Kiểm tra độ mòn lốp, độ hiệu lực phanh, có rò rỉ dầu phanh không.\n- **Nội thất & điện**: Kiểm tra ghế, bảng điều khiển, đèn, gạt mưa, điều hòa, cửa sổ có hoạt động bình thường không.\n- **Số km đã chạy**: Kiểm tra đồng hồ km (nếu bị sửa, có dấu hiệu bất thường không), so sánh với tình trạng xe.\n\n**💡 LỜI KHUYÊN THÊM:**\n- Nên mua xe từ chủ xe cá nhân hoặc đại lý uy tín có nhiều đánh giá tích cực.\n- Nếu không chắc, có thể thuê thợ sửa xe tin cậy để kiểm tra kỹ trước khi mua.\n- Kiểm tra giá thị trường để tránh mua đắt — so sánh giá xe cùng dòng, cùng năm sản xuất trên các nền tảng bán xe cũ.\n\n**Bạn đang tìm mua xe cũ loại nào cụ thể?** (ví dụ: Honda, Toyota, Kia...) Mình có thể giúp bạn tìm kiếm và so sánh giá trên các nền tảng bán xe cũ nếu bạn muốn.\n\nNếu mua từ người lạ hoặc qua group/chợ online: dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra trước khi chuyển tiền."
+    }
+  ]
+}

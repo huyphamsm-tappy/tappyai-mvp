@@ -11,6 +11,7 @@
 // something to lose in a storage migration.
 
 import type { MediaUploadKind } from './uploadPolicy'
+import { neutralizeClipMetadata } from './clipMetadata'
 
 export const CREATE_UPLOAD_SESSION_TYPE = 'media.create-upload-session'
 export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
@@ -53,10 +54,13 @@ export interface UploadMediaResult {
 
 export class MediaUploadError extends Error {
   readonly status?: number
-  constructor(message: string, status?: number) {
+  /** The server's machine code when it sent one alongside a readable message (e.g. `unsupported_format`). */
+  readonly code?: string
+  constructor(message: string, status?: number, code?: string) {
     super(message)
     this.name = 'MediaUploadError'
     this.status = status
+    this.code = code
   }
 }
 
@@ -65,6 +69,10 @@ export async function uploadMedia(
   transport: UploadTransport = defaultTransport
 ): Promise<UploadMediaResult> {
   const contentType = input.file.type || 'application/octet-stream'
+  // F-099 (P1, owner 2026-09-26): a clip must not publish where and with what it was filmed. The
+  // metadata boxes are neutralised in place (same length, so the session's declared size holds);
+  // the server refuses the upload at completion if anything identifying is still there.
+  const body: Blob = input.kind === 'video' ? await neutralizeClipMetadata(input.file) : input.file
 
   const res = await transport.postJson(
     input.endpoint,
@@ -72,7 +80,7 @@ export async function uploadMedia(
       type: CREATE_UPLOAD_SESSION_TYPE,
       kind: input.kind,
       contentType,
-      size: input.file.size,
+      size: body.size,
     },
     input.signal
   )
@@ -101,7 +109,7 @@ export async function uploadMedia(
   // The session was opened for exactly this content type; send the same one.
   const put = await transport.putBytes(
     session.uploadUrl,
-    input.file,
+    body,
     session.contentType ?? contentType,
     { signal: input.signal, onProgress: input.onProgress }
   )
@@ -121,12 +129,14 @@ export async function uploadMedia(
     { type: COMPLETE_UPLOAD_TYPE, kind: input.kind, key: session.key },
     input.signal
   )
-  const verdict = done.json as { ok?: boolean; url?: string; error?: string } | null
+  const verdict = done.json as { ok?: boolean; url?: string; error?: string; message?: string } | null
 
   if (done.status !== 200 || !verdict?.ok || !verdict.url) {
+    // A refusal that names its reason (`message`) is shown as that reason; its code rides along.
     throw new MediaUploadError(
-      verdict?.error ?? 'Tải lên chưa hoàn tất. Vui lòng thử lại.',
-      done.status
+      verdict?.message ?? verdict?.error ?? 'Tải lên chưa hoàn tất. Vui lòng thử lại.',
+      done.status,
+      verdict?.message ? verdict.error : undefined
     )
   }
 

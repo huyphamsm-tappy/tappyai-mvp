@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 458,
+  "evidenceId": "e14637aa-ae15-4a33-907b-1f6ed156eb2f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**CƠM KHAY GỖ** mở cửa 10:00–21:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **CƠM KHAY GỖ** cho bữa trưa gia đình hôm nay — **4.8⭐ (932 đánh giá Google Maps)**, cách bạn ~3.8km, mở cửa 10:00–21:00, lẩu, mì với không gian rộng phù hợp 6 người.\n\nNếu muốn chắc chắn hơn, **Fast Sushi Phú Nhuận** cũng là lựa chọn tốt — **4.9⭐ (1.873 đánh giá)**, gần hơn (~2.5km), nhưng chuyên sushi nên có thể hạn chế cho trẻ nhỏ.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":true},{\"label\":\"🛵 GrabFood - Cơm Khay Gỗ\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%E1%BB%A3m+Khay+G%E1%BB%97+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi chỗ đậu xe|Xem menu cơm khay gỗ|Tìm quán khác gần hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**CƠM KHAY GỖ** mở cửa 10:00–21:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

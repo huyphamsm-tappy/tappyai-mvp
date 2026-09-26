@@ -3,17 +3,20 @@ import { describe, it, expect } from 'vitest'
 import { buildFlightLinks } from './travel'
 
 describe('buildFlightLinks — VN-recognizable flight links (replaces Aviasales)', () => {
-  it('returns Traveloka + Google Flights, route-specific, with a valid future date', () => {
+  it('returns Trip.com + Traveloka + Google Flights, route-specific, with a valid future date', () => {
     const links = buildFlightLinks('SGN', 'PQC', '2026-07-28')
-    expect(links.map(l => l.name)).toEqual(['Traveloka', 'Google Flights'])
+    expect(links.map(l => l.name)).toEqual(['Trip.com', 'Traveloka', 'Google Flights'])
 
-    const traveloka = links[0].url
+    // Trip.com dated fare search (Completion Pass, verified 14 Sep 2026): route, date, one-way, adults.
+    expect(links[0].url).toBe('https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=pqc&ddate=2026-07-28&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND')
+
+    const traveloka = links[1].url
     // Traveloka one-way deep-link: route via ap=O.D and date as DD-MM-YYYY (verified in-browser).
     expect(traveloka).toContain('traveloka.com/vi-VN/flight/fullsearch')
     expect(traveloka).toContain('ap=SGN.PQC')
     expect(traveloka).toContain('dt=28-07-2026.null')
 
-    const google = links[1].url
+    const google = links[2].url
     expect(google).toContain('google.com/travel/flights?q=')
     expect(decodeURIComponent(google)).toContain('Flights from SGN to PQC on 2026-07-28')
 

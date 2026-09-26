@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 14043,
+      "textFrames": 373,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải máy có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 Rủi ro chính cần tránh\n- **Lừa đảo**: coc trước rồi biến mất, link thanh toán giả, gặp ở chỗ vắng\n- **Máy bị khóa**: tài khoản Apple ID còn khóa, không thể sử dụng được\n- **Máy bị cấm**: máy bị báo mất cắp, bị khóa từ xa, nợ trả góp\n- **Tình trạng thực tế**: pin chai, màn hình vỡ, camera hỏng, vết trầy xước\n\n## ✅ Cách kiểm tra an toàn\n**Trước khi gặp:**\n- Dùng tính năng **\"Canh báo lừa đảo\"** của TappyAI để kiểm tra số điện thoại/tài khoản người bán\n- Yêu cầu ảnh chụp thực tế máy (không phải ảnh quảng cáo)\n- Hỏi rõ tình trạng: pin bao %, màn hình nguyên vẹn không, có vết trầy không\n\n**Khi gặp trực tiếp:**\n1. **Kiểm tra tình trạng vật lý**: màn hình, camera, nút bấm, loa, mic\n2. **Kiểm tra pin**: vào Settings > Battery > Battery Health — pin trên 80% là tốt\n3. **Kiểm tra khóa iCloud**: vào Settings > [Tên] > iCloud — phải đã đăng xuất\n4. **Kiểm tra IMEI**: gọi cho Apple hoặc vào apple.com/support để xác nhận máy chính hãng, không bị khóa\n5. **Thử các tính năng**: gọi điện, chụp ảnh, quay video, kết nối WiFi, Bluetooth\n6. **Kiểm tra lưu trữ**: xem dung lượng còn lại\n\n**Thanh toán an toàn:**\n- Gặp trực tiếp, kiểm tra xong mới trả tiền (không coc trước)\n- Dùng chuyển khoản ngân hàng hoặc tiền mặt, giữ bằng chứng\n- Yêu cầu biên lai hoặc tin nhắn xác nhận giao dịch\n\nBạn định mua ở đâu (chợ online, người quen, cửa hàng)? Mình có thể giúp bạn tìm giá iPhone 13 cũ hiện tại nếu cần.",
+      "visible": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải máy có vấn đề. Dưới đây là những điều **cần check trước khi mua**:\n\n## 🚨 Rủi ro chính cần tránh\n- **Lừa đảo**: coc trước rồi biến mất, link thanh toán giả, gặp ở chỗ vắng\n- **Máy bị khóa**: tài khoản Apple ID còn khóa, không thể sử dụng được\n- **Máy bị cấm**: máy bị báo mất cắp, bị khóa từ xa, nợ trả góp\n- **Tình trạng thực tế**: pin chai, màn hình vỡ, camera hỏng, vết trầy xước\n\n## ✅ Cách kiểm tra an toàn\n**Trước khi gặp:**\n- Dùng tính năng **\"Canh báo lừa đảo\"** của TappyAI để kiểm tra số điện thoại/tài khoản người bán\n- Yêu cầu ảnh chụp thực tế máy (không phải ảnh quảng cáo)\n- Hỏi rõ tình trạng: pin bao %, màn hình nguyên vẹn không, có vết trầy không\n\n**Khi gặp trực tiếp:**\n1. **Kiểm tra tình trạng vật lý**: màn hình, camera, nút bấm, loa, mic\n2. **Kiểm tra pin**: vào Settings > Battery > Battery Health — pin trên 80% là tốt\n3. **Kiểm tra khóa iCloud**: vào Settings > [Tên] > iCloud — phải đã đăng xuất\n4. **Kiểm tra IMEI**: gọi cho Apple hoặc vào apple.com/support để xác nhận máy chính hãng, không bị khóa\n5. **Thử các tính năng**: gọi điện, chụp ảnh, quay video, kết nối WiFi, Bluetooth\n6. **Kiểm tra lưu trữ**: xem dung lượng còn lại\n\n**Thanh toán an toàn:**\n- Gặp trực tiếp, kiểm tra xong mới trả tiền (không coc trước)\n- Dùng chuyển khoản ngân hàng hoặc tiền mặt, giữ bằng chứng\n- Yêu cầu biên lai hoặc tin nhắn xác nhận giao dịch\n\nBạn định mua ở đâu (chợ online, người quen, cửa hàng)? Mình có thể giúp bạn tìm giá iPhone 13 cũ hiện tại nếu cần."
+    }
+  ]
+}

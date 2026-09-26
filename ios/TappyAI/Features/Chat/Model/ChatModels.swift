@@ -8,14 +8,26 @@ struct ChatMessage: Identifiable, Equatable, Sendable {
     var content: String
     var status: MessageStatus
     var toolInvocations: [ToolInvocation]
+    /// The LIVE place decision for this turn, from the `8:` annotation.
+    ///
+    /// Session-only, and deliberately NOT part of `content`: the chat persists `{role, content}`,
+    /// so this cannot survive a reload and is not meant to. A reopened conversation falls back to
+    /// the durable `[TAPPY_PLACES]` block inside the text, which is what that block exists for.
+    var livePlaces: PlacesLiveView?
+    /// The same decision projected for the share artifact (`SharePlacesView(from:)`). In memory
+    /// for the session; never persisted — Places data is live-only, and `persistConversation`
+    /// sends `content` alone.
+    var placesView: SharePlacesView? = nil
 
     init(id: String = UUID().uuidString, role: MessageRole, content: String,
-         status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = []) {
+         status: MessageStatus = .complete, toolInvocations: [ToolInvocation] = [],
+         livePlaces: PlacesLiveView? = nil) {
         self.id = id
         self.role = role
         self.content = content
         self.status = status
         self.toolInvocations = toolInvocations
+        self.livePlaces = livePlaces
     }
 
     var isUser: Bool { role == .user }
@@ -54,6 +66,19 @@ struct ParsedContent: Equatable, Sendable {
     let plan: TappyPlan?
     let followups: [String]
     let images: [ParsedImage]
+    /// D1 — the decoded shopping decision, or nil when the turn carried none.
+    /// Defaulted so existing call sites that build a ParsedContent keep compiling unchanged.
+    var shopping: ShoppingDecisionView? = nil
+    /// The `[TAPPY_PLAN]` block VERBATIM (the JSON between the tags), present exactly when `plan`
+    /// is. A plan SHARE sends this to `POST /api/plans/share` — the real payload the model emitted,
+    /// including fields `TappyPlan` does not model (the wire `label`/`items`/`photo_url`), so the
+    /// recipient's brochure is the whole plan. The server whitelists it before storing anything.
+    var planJSON: String? = nil
+    /// The DURABLE place cards carried by `[TAPPY_PLACES]`, best first. Empty on every turn that
+    /// carried none — which today is every turn, because the server emits the block only when
+    /// `EMIT_TAPPY_PLACES` is on. Parsing it now is what lets that flag be flipped without raw JSON
+    /// reaching a user, which is how `[TAPPY_SHOPPING]` and `[CTA_BUTTONS]` both leaked before.
+    var places: [PersistedPlace] = []
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

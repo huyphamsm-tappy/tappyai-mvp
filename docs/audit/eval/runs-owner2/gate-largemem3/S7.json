@@ -1,0 +1,220 @@
+{
+  "id": "S7",
+  "text": "Máy lọc không khí cho phòng ngủ 20m2",
+  "parent": null,
+  "status": 200,
+  "ms": 13647,
+  "evidenceId": "f97519a4-b0b3-4b1f-8793-7ec6a30531bc",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "máy lọc không khí phòng ngủ 20m2"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Máy lọc không khí Daikin",
+      "rating": 4.6,
+      "count": 8,
+      "price": 8090000
+    },
+    {
+      "name": "Máy lọc không khí",
+      "price": 26005
+    },
+    {
+      "name": "Máy lọc không khí phòng ngủ",
+      "price": 250000
+    },
+    {
+      "name": "Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19",
+      "price": 1500000
+    },
+    {
+      "name": "Máy Lọc Không Khí Michelin ML79",
+      "price": 1650000
+    },
+    {
+      "name": "Máy Lọc Không Khí Thông Minh Hàn Quốc the Made Kr",
+      "price": 3490000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm máy lọc không khí phù hợp cho phòng ngủ 20m2 của bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy lọc không khí Daikin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8090000,\"priceHigh\":8090000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ_jrQXMs3pSZWkdsk9YIJomfNYTJpWvLHEUSiyv1YlGLkC7o5cRzl22-6HBFtHzkWQuqsHkkA_XQRqdsO12BR7jUVir3_qMqg8KtZiNfqZ99lwxlJgHIt0CQ\",\"offers\":[{\"seller\":\"Điện máy XANH\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1865374539352311057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8090000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":8}]},{\"key\":\"uncertain:1\",\"name\":\"Máy lọc không khí\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":26005,\"priceHigh\":26005,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSQuxbg2Ne0I4SK0Aywsg0gpzbXM5nSx-ZEgZA-ZfdS84RRH4MTpaBCUks0DEEiZn6TPHRQ5jNl9iwNUjk7SdXtX8sSG8GMO-0qQC0v9519y_GemopBLAFd9g\",\"offers\":[{\"seller\":\"Dou Yee Biomed\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:10054354944690567302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":26005,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Máy lọc không khí phòng ngủ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":250000,\"priceHigh\":250000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQPoOzQAGh3gotCfBwZHJY9n6pkvHsEgAZ5nJR0C6VaDZoX1RdpPFD-0B6s1D93_7OcwEhe-rf34dQhBqz5ZszsjGx0ZBblV1SbWeEAOkHIq0TAFrX07q4dDQ\",\"offers\":[{\"seller\":\"Huy Phú\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:15872431945751840302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":250000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1500000,\"priceHigh\":1500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlwSarnMgfXEts7bY-65z1edBqVYkS4O0W69R9OYH1gz85cIUyWael9kaVQ02dNWo6yQdyKEveGkEEhuHXZknCRzWFgA5zdzBJ9b9zjuPEnsHOeuOKgPIYEw\",\"offers\":[{\"seller\":\"Trung Tín Auto\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,catalogid:11373717955494685866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1500000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Máy Lọc Không Khí Michelin ML79\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1650000,\"priceHigh\":1650000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRWjHsZT01OCge06Z8-q3DZpp5qOKR9H-rMDLZhmLeYANCBr8IhbBo4Lfe-kmOuKoCzgVMseKwjffoaTCPO4fVDA5JWMrDf4QHqXZgRs9WQ\",\"offers\":[{\"seller\":\"Ô Tô Hoàng Kim\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1349046923686144676,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1650000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Máy Lọc Không Khí Thông Minh Hàn Quốc the Made Kr\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":3490000,\"priceHigh\":3490000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR7NFpgM9XM8Z9ntZPPpp7HQUEhvNkM_vgNz1BYYQBWfMNJufgOlSZbg2tt9Myw7EoidicqQOXHC4qtJr1UCb0ZXJW32MQAVZbq5SpFxvp_ydtVXtHinF6igw\",\"offers\":[{\"seller\":\"Kangnam mart\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:9622143975187267299,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm được vài lựa chọn máy lọc không khí phù hợp cho phòng 20m2. Tuy nhiên, để gợi ý chính xác nhất, bạn có thể cho mình biết **ngân sách khoảng bao nhiêu** và **ưu tiên gì** (tiếng ồn thấp, lọc nhanh, thông minh hay tiết kiệm điện)?\n\nHiện tại mình thấy:\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Máy lọc không khí cho phòng ngủ 20m2"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm máy lọc không khí phù hợp cho phòng ngủ 20m2 của bạn nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Máy lọc không khí Daikin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8090000,\"priceHigh\":8090000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ_jrQXMs3pSZWkdsk9YIJomfNYTJpWvLHEUSiyv1YlGLkC7o5cRzl22-6HBFtHzkWQuqsHkkA_XQRqdsO12BR7jUVir3_qMqg8KtZiNfqZ99lwxlJgHIt0CQ\",\"offers\":[{\"seller\":\"Điện máy XANH\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1865374539352311057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8090000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":8}]},{\"key\":\"uncertain:1\",\"name\":\"Máy lọc không khí\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":26005,\"priceHigh\":26005,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSQuxbg2Ne0I4SK0Aywsg0gpzbXM5nSx-ZEgZA-ZfdS84RRH4MTpaBCUks0DEEiZn6TPHRQ5jNl9iwNUjk7SdXtX8sSG8GMO-0qQC0v9519y_GemopBLAFd9g\",\"offers\":[{\"seller\":\"Dou Yee Biomed\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:10054354944690567302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":26005,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Máy lọc không khí phòng ngủ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":250000,\"priceHigh\":250000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQPoOzQAGh3gotCfBwZHJY9n6pkvHsEgAZ5nJR0C6VaDZoX1RdpPFD-0B6s1D93_7OcwEhe-rf34dQhBqz5ZszsjGx0ZBblV1SbWeEAOkHIq0TAFrX07q4dDQ\",\"offers\":[{\"seller\":\"Huy Phú\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:15872431945751840302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":250000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1500000,\"priceHigh\":1500000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlwSarnMgfXEts7bY-65z1edBqVYkS4O0W69R9OYH1gz85cIUyWael9kaVQ02dNWo6yQdyKEveGkEEhuHXZknCRzWFgA5zdzBJ9b9zjuPEnsHOeuOKgPIYEw\",\"offers\":[{\"seller\":\"Trung Tín Auto\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,catalogid:11373717955494685866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1500000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Máy Lọc Không Khí Michelin ML79\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1650000,\"priceHigh\":1650000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRWjHsZT01OCge06Z8-q3DZpp5qOKR9H-rMDLZhmLeYANCBr8IhbBo4Lfe-kmOuKoCzgVMseKwjffoaTCPO4fVDA5JWMrDf4QHqXZgRs9WQ\",\"offers\":[{\"seller\":\"Ô Tô Hoàng Kim\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1349046923686144676,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1650000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Máy Lọc Không Khí Thông Minh Hàn Quốc the Made Kr\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":3490000,\"priceHigh\":3490000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR7NFpgM9XM8Z9ntZPPpp7HQUEhvNkM_vgNz1BYYQBWfMNJufgOlSZbg2tt9Myw7EoidicqQOXHC4qtJr1UCb0ZXJW32MQAVZbq5SpFxvp_ydtVXtHinF6igw\",\"offers\":[{\"seller\":\"Kangnam mart\",\"url\":\"https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:9622143975187267299,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":3490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm được vài lựa chọn máy lọc không khí phù hợp cho phòng 20m2. Tuy nhiên, để gợi ý chính xác nhất, bạn có thể cho mình biết **ngân sách khoảng bao nhiêu** và **ưu tiên gì** (tiếng ồn thấp, lọc nhanh, thông minh hay tiết kiệm điện)?\n\nHiện tại mình thấy:\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "máy lọc không khí phòng ngủ 20m2",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Máy lọc không khí Daikin",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1865374539352311057,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 8090000,
+          "price_vnd": 8090000,
+          "source": "Điện máy XANH",
+          "rating": 4.6,
+          "rating_count": 8,
+          "product_id": "1865374539352311057",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy lọc không khí",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:10054354944690567302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 26005,
+          "price_vnd": 26005,
+          "source": "Dou Yee Biomed",
+          "product_id": "10054354944690567302",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy lọc không khí phòng ngủ",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:15872431945751840302,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 250000,
+          "price_vnd": 250000,
+          "source": "Huy Phú",
+          "product_id": "15872431945751840302",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,catalogid:11373717955494685866,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 1500000,
+          "price_vnd": 1500000,
+          "source": "Trung Tín Auto",
+          "product_id": "11373717955494685866",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy Lọc Không Khí Michelin ML79",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:1349046923686144676,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 1650000,
+          "price_vnd": 1650000,
+          "source": "Ô Tô Hoàng Kim",
+          "product_id": "1349046923686144676",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Máy Lọc Không Khí Thông Minh Hàn Quốc the Made Kr",
+          "link": "https://www.google.com/search?ibp=oshop&q=m%C3%A1y+l%E1%BB%8Dc+kh%C3%B4ng+kh%C3%AD+ph%C3%B2ng+ng%E1%BB%A7+20m2&prds=localAnnotatedOfferId:1,productid:9622143975187267299,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 3490000,
+          "price_vnd": 3490000,
+          "source": "Kangnam mart",
+          "product_id": "9622143975187267299",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=m%C3%A1y%20l%E1%BB%8Dc%20kh%C3%B4ng%20kh%C3%AD%20ph%C3%B2ng%20ng%E1%BB%A7%2020m2"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=m%C3%A1y%20l%E1%BB%8Dc%20kh%C3%B4ng%20kh%C3%AD%20ph%C3%B2ng%20ng%E1%BB%A7%2020m2"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 14,
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Máy lọc không khí Daikin",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 8090000,
+            "priceHigh": 8090000,
+            "sellers": [
+              "Điện máy XANH"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy lọc không khí",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 26005,
+            "priceHigh": 26005,
+            "sellers": [
+              "Dou Yee Biomed"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy lọc không khí phòng ngủ",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 250000,
+            "priceHigh": 250000,
+            "sellers": [
+              "Huy Phú"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Michelin Máy Lọc Không Khí Và Khử Mùi Xe Hơi ML19",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 1500000,
+            "priceHigh": 1500000,
+            "sellers": [
+              "Trung Tín Auto"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy Lọc Không Khí Michelin ML79",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 1650000,
+            "priceHigh": 1650000,
+            "sellers": [
+              "Ô Tô Hoàng Kim"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Máy Lọc Không Khí Thông Minh Hàn Quốc the Made Kr",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 3490000,
+            "priceHigh": 3490000,
+            "sellers": [
+              "Kangnam mart"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": null
+      }
+    }
+  ],
+  "frames8Raw": []
+}

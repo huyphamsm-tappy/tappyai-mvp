@@ -1,0 +1,25 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 11889,
+      "textFrames": 332,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Rủi ro trước tiên:**\n- **Giấy tờ & quyền sở hữu**: Kiểm tra giấy đăng ký xe, biên lai mua bán, chứng thực công chứng. Đảm bảo tên chủ xe khớp với người bán, không bị thế chấp hay nợ trả góp.\n- **Lịch sử xe**: Hỏi lý do bán, xe từng tai nạn hay sửa chữa lớn không, số km đã chạy.\n- **Giao dịch an toàn**: Gặp trực tiếp ở nơi công cộng, kiểm tra xe xong mới chuyển tiền, giữ lại bằng chứng thanh toán.\n\n**Kiểm tra tình trạng vật lý:**\n- **Khung & thân xe**: Xem có dấu vết va chạm, rỉ sét, hay bị hàn sửa không.\n- **Động cơ**: Nổ máy nghe có bất thường không, khí thải màu gì, có dầu rò không.\n- **Phanh & lái**: Thử phanh trước/sau, lái xe xem có rơi vào hay bị lỏng không.\n- **Lốp & bánh**: Kiểm tra độ mòn lốp, vành bánh có cong không.\n- **Đèn & điện**: Thử tất cả đèn, còi, chế độ sáng.\n- **Khóa & chìa**: Chìa khóa hoạt động bình thường, khóa chặn bánh có chắc không.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang tìm xe máy cũ Honda Wave cụ thể nào, mình có thể giúp bạn tìm kiếm và so sánh giá trên các nền tảng bán hàng. Bạn có nhu cầu gì thêm không?",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Rủi ro trước tiên:**\n- **Giấy tờ & quyền sở hữu**: Kiểm tra giấy đăng ký xe, biên lai mua bán, chứng thực công chứng. Đảm bảo tên chủ xe khớp với người bán, không bị thế chấp hay nợ trả góp.\n- **Lịch sử xe**: Hỏi lý do bán, xe từng tai nạn hay sửa chữa lớn không, số km đã chạy.\n- **Giao dịch an toàn**: Gặp trực tiếp ở nơi công cộng, kiểm tra xe xong mới chuyển tiền, giữ lại bằng chứng thanh toán.\n\n**Kiểm tra tình trạng vật lý:**\n- **Khung & thân xe**: Xem có dấu vết va chạm, rỉ sét, hay bị hàn sửa không.\n- **Động cơ**: Nổ máy nghe có bất thường không, khí thải màu gì, có dầu rò không.\n- **Phanh & lái**: Thử phanh trước/sau, lái xe xem có rơi vào hay bị lỏng không.\n- **Lốp & bánh**: Kiểm tra độ mòn lốp, vành bánh có cong không.\n- **Đèn & điện**: Thử tất cả đèn, còi, chế độ sáng.\n- **Khóa & chìa**: Chìa khóa hoạt động bình thường, khóa chặn bánh có chắc không.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang tìm xe máy cũ Honda Wave cụ thể nào, mình có thể giúp bạn tìm kiếm và so sánh giá trên các nền tảng bán hàng. Bạn có nhu cầu gì thêm không?",
+      "preGuard": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Rủi ro trước tiên:**\n- **Giấy tờ & quyền sở hữu**: Kiểm tra giấy đăng ký xe, biên lai mua bán, chứng thực công chứng. Đảm bảo tên chủ xe khớp với người bán, không bị thế chấp hay nợ trả góp.\n- **Lịch sử xe**: Hỏi lý do bán, xe từng tai nạn hay sửa chữa lớn không, số km đã chạy.\n- **Giao dịch an toàn**: Gặp trực tiếp ở nơi công cộng, kiểm tra xe xong mới chuyển tiền, giữ lại bằng chứng thanh toán.\n\n**Kiểm tra tình trạng vật lý:**\n- **Khung & thân xe**: Xem có dấu vết va chạm, rỉ sét, hay bị hàn sửa không.\n- **Động cơ**: Nổ máy nghe có bất thường không, khí thải màu gì, có dầu rò không.\n- **Phanh & lái**: Thử phanh trước/sau, lái xe xem có rơi vào hay bị lỏng không.\n- **Lốp & bánh**: Kiểm tra độ mòn lốp, vành bánh có cong không.\n- **Đèn & điện**: Thử tất cả đèn, còi, chế độ sáng.\n- **Khóa & chìa**: Chìa khóa hoạt động bình thường, khóa chặn bánh có chắc không.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đang tìm xe máy cũ Honda Wave cụ thể nào, mình có thể giúp bạn tìm kiếm và so sánh giá trên các nền tảng bán hàng. Bạn có nhu cầu gì thêm không?"
+    }
+  ]
+}

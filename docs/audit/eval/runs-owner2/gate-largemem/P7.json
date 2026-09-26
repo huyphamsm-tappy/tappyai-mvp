@@ -1,0 +1,965 @@
+{
+  "id": "P7",
+  "text": "gội đầu dưỡng sinh gần đây",
+  "parent": null,
+  "status": 200,
+  "ms": 11961,
+  "evidenceId": "efeb81fe-9b30-415c-ad77-3bc859172b89",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "gội đầu dưỡng sinh",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "rating": 4.9,
+      "count": 882,
+      "hours": "09:00–22:00",
+      "distance_km": 1,
+      "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+      "rating": 5,
+      "count": 27,
+      "hours": "09:30–23:00",
+      "distance_km": 1.3,
+      "address": "95/21 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "distance_km": 1.2,
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+      "rating": 4.7,
+      "count": 99,
+      "hours": "09:00–23:00",
+      "distance_km": 0.9,
+      "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+      "rating": 5,
+      "count": 31,
+      "hours": "10:00–00:00",
+      "distance_km": 1.8,
+      "address": "47 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 882,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 27,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:30–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 443,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 99,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "09:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 31,
+        "distance_km": 1.8,
+        "open_now": true,
+        "opening_hours": "10:00–00:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay, tầm giá phổ thông. Để tìm spa phù hợp nhất, mình sẽ tìm ngay.\n\nMình chọn **An Miên Spa** — cách bạn chỉ 1km, đang mở cửa, và có **4.9⭐ từ 882 đánh giá Google Maps**. Đây là spa chuyên gội đầu dưỡng sinh với danh tiếng tốt ở Quận 1. Giờ mở 09:00–22:00, nên bạn có thể ghé bất cứ lúc nào hôm nay.\n\nNếu muốn chọn khác, **Như Ý Spa** gần nhất (0.9km) và cũng có rating 4.7⭐, hoặc **Nemo** nếu ưu tiên rating cao nhất (5⭐) mặc dù mới có 27 đánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay, tầm giá phổ thông. Để tìm spa phù hợp nhất, mình sẽ tìm ngay.\n\nMình chọn **An Miên Spa** — cách bạn chỉ 1km, đang mở cửa, và có **4.9⭐ từ 882 đánh giá Google Maps**. Đây là spa chuyên gội đầu dưỡng sinh với danh tiếng tốt ở Quận 1. Giờ mở 09:00–22:00, nên bạn có thể ghé bất cứ lúc nào hôm nay.\n\nNếu muốn chọn khác, **Như Ý Spa** gần nhất (0.9km) và cũng có rating 4.7⭐, hoặc **Nemo** nếu ưu tiên rating cao nhất (5⭐) mặc dù mới có 27 đánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+          "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam",
+          "phone": "+84 852 288 399",
+          "website_uri": "https://anmienspa.vn/",
+          "place_id": "ChIJ7xP9q6MvdTERQVkrSOl6J58",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (882 đánh giá Google Maps)",
+          "rating_count": 882,
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11468270118479026497",
+          "booking_links": [
+            "https://anmienspa.vn/",
+            "https://www.klook.com/en-US/activity/146006-133564-an-mien-herbal-hairwash-massage-experience-in-district-1/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_icyH8DjvJB59F0qwxoDkUNgh7ODnWUPTIc-2M2G8zdzW8jxpRqp4fKRNF3MolHSTW3wpeMvYsfoPgOTsVOVGzvRigRcubHtSzxxRFXaRrxKZNXFjE%3D"
+          ],
+          "opening_hours": "09:00–22:00",
+          "open_now": true,
+          "distance_km": 1,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+              "url": "https://maps.google.com/?cid=11468270118479026497",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+              "url": "https://anmienspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20%26%20Massage%20Qu%E1%BA%ADn%201%20-%20An%20Mi%C3%AAn%20Spa%E2%81%A0%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+          "address": "95/21 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 339 733 219",
+          "place_id": "ChIJx_TifQAvdTERi1n17XSk62U",
+          "rating_value": 5,
+          "google_rating": "5⭐ (27 đánh giá Google Maps)",
+          "rating_count": 27,
+          "place_types": [
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7344144439473166731",
+          "opening_hours": "09:30–23:00",
+          "open_now": true,
+          "distance_km": 1.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+              "url": "https://maps.google.com/?cid=7344144439473166731",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Nemo%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20-%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "WellNest Spa Quận 1",
+          "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 366 562 565",
+          "website_uri": "https://www.facebook.com/wellnestspaduongsinhq1",
+          "place_id": "ChIJMUapMUcrdTERBjUm-9iXKQA",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (443 đánh giá Google Maps)",
+          "rating_count": 443,
+          "place_types": [
+            "Spa sức khỏe",
+            "Spa ban ngày",
+            "Spa mặt"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11707432227452166",
+          "booking_links": [
+            "https://www.facebook.com/saigonwellnest",
+            "https://www.fresha.com/a/wellnest-nourishment-spa-d1-thanh-pho-ho-chi-minh-sai-gon-25-65-duong-nguyen-binh-khiem-x7mwek5w/all-offer?rwg_token=AE37R_hmBCaaHsTTR_p2GQXwXrVUupfIaQ_8DzwidiIdN3pB_5GXDsh_Q_YmBlcVhNGxhkoOsrRlP6deSgrkRckAmHmfPe9htFz_KFqNFSz-rqiHnw87z2E%3D"
+          ],
+          "opening_hours": "09:00–21:00",
+          "open_now": true,
+          "distance_km": 1.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — WellNest Spa Quận 1",
+              "url": "https://maps.google.com/?cid=11707432227452166",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — WellNest Spa Quận 1",
+              "url": "https://www.facebook.com/wellnestspaduongsinhq1",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=WellNest%20Spa%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+          "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 916 166 867",
+          "website_uri": "http://nhuyspa.com/",
+          "place_id": "ChIJ-WFrmGUvdTERqoWJY42AoAM",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (99 đánh giá Google Maps)",
+          "rating_count": 99,
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=261350123136189866",
+          "opening_hours": "09:00–23:00",
+          "open_now": true,
+          "distance_km": 0.9,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+              "url": "https://maps.google.com/?cid=261350123136189866",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+              "url": "http://nhuyspa.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Nh%C6%B0%20%C3%9D%20Spa%20%7C%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%201%20%7C%20Massage%20Th%C6%B0%20Gi%C3%A3n%20Qu%E1%BA%ADn%201%20%7C%20Ti%E1%BB%87m%20Nail%20G%E1%BA%A7n%20%C4%90%C3%A2y%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+          "address": "47 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 347 729 781",
+          "place_id": "ChIJgYbwFqcpdTERyXlf04NVBhE",
+          "rating_value": 5,
+          "google_rating": "5⭐ (31 đánh giá Google Maps)",
+          "rating_count": 31,
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1226761973180365257",
+          "opening_hours": "10:00–00:00",
+          "open_now": true,
+          "distance_km": 1.8,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — LYN - Gội đầu dưỡng sinh Quận 1",
+              "url": "https://maps.google.com/?cid=1226761973180365257",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=LYN%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJ7xP9q6MvdTERQVkrSOl6J58",
+          "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 882,
+            "distance_km": 1,
+            "open_now": true,
+            "opening_hours": "09:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1km away",
+            "rated 4.9",
+            "882 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJx_TifQAvdTERi1n17XSk62U",
+          "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 27,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "09:30–23:00",
+            "attributes": []
+          },
+          "why": [
+            "1.3km away",
+            "rated 5",
+            "27 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJMUapMUcrdTERBjUm-9iXKQA",
+          "name": "WellNest Spa Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 443,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "09:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "1.2km away",
+            "rated 4.7",
+            "443 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJ-WFrmGUvdTERqoWJY42AoAM",
+          "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 99,
+            "distance_km": 0.9,
+            "open_now": true,
+            "opening_hours": "09:00–23:00",
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "rated 4.7",
+            "99 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJgYbwFqcpdTERyXlf04NVBhE",
+          "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 31,
+            "distance_km": 1.8,
+            "open_now": true,
+            "opening_hours": "10:00–00:00",
+            "attributes": []
+          },
+          "why": [
+            "1.8km away",
+            "rated 5",
+            "31 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "1km away"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9 - Nemo Gội Đầu Dưỡng Sinh - Quận 1: rated 5 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "882 reviews"
+          }
+        ],
+        "not_chosen": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 5"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78576,106.70123",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk-A4cQwjlcGRkH7bfWRRSja76fh1iBHRKo_VlVEmVTMQXuVlDOoYpHGKylJCqmKzm-OT8lrEBFdC7W6fPx5ZzJPmEncohWMxmDuusL1JbwMBkcTzWfkvv0G9ELVubcJJ0Z8AM",
+            "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 882,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 852 288 399",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:00",
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "1km away"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "882 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "rating",
+              "evidence": "rated 5"
+            },
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://anmienspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11468270118479026497",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84852288399",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20%26%20Massage%20Qu%E1%BA%ADn%201%20-%20An%20Mi%C3%AAn%20Spa%E2%81%A0%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76953,106.69150",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlGLxe1HUiqekZDXIWxm10ztaA6VhI6_cGdgM5CbvrAp1uub6C8D0IUgBdnMPuRGa6Z9oHX8pXDB6T_lNyFEbW__DCWo5iNxpR5-wjse4RXMWP9KBxdxi63HfTYdC6_dnAEVzkFU8ffyTwr",
+            "address": "95/21 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 27,
+            "openingHours": "09:30–23:00",
+            "openNow": true,
+            "phone": "+84 339 733 219",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:30–23:00",
+              "Thứ Bảy": "09:30–23:00",
+              "Chủ Nhật": "09:30–23:00",
+              "Thứ Hai": "09:30–23:00",
+              "Thứ Ba": "09:30–23:00",
+              "Thứ Tư": "09:30–23:00",
+              "Thứ Năm": "09:30–23:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7344144439473166731",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84339733219",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nemo%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20-%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78760,106.70402",
+            "domain": "spa",
+            "kind": "place",
+            "name": "WellNest Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnUV_9CjN4ZuOiZmyGxz1NHOnBvwGVz9z9Qw39a7AC2r6v3sVcuIHKaxmQTbIQD2mewPxJj-7QzAiFZ0bosQog0_WIaolIYWRlhQ17bBfaUuc4Hgx278gVksBAaR4EEstnAIoiB3Q",
+            "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 443,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 366 562 565",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–21:00",
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Spa sức khỏe",
+              "Spa ban ngày",
+              "Spa mặt"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/wellnestspaduongsinhq1",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11707432227452166",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84366562565",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=WellNest%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76964,106.70386",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtr0zZ9KqQjjZfEvE3ycueRpzwwBgfFWbJjiIj0tQPdRH-mYEztYsqjKDCOkIniGwPIzRTQ43pSGaveGMLH_SQJw1aBsPtv106cqriIlEKhjBVcK6uDuZplPLWLZ9_E1HuLGX1j2T5VcEF",
+            "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 99,
+            "openingHours": "09:00–23:00",
+            "openNow": true,
+            "phone": "+84 916 166 867",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–23:00",
+              "Thứ Bảy": "09:00–23:00",
+              "Chủ Nhật": "09:00–23:00",
+              "Thứ Hai": "09:00–23:00",
+              "Thứ Ba": "09:00–23:00",
+              "Thứ Tư": "09:00–23:00",
+              "Thứ Năm": "09:00–23:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=261350123136189866",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84916166867",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nh%C6%B0%20%C3%9D%20Spa%20%7C%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%201%20%7C%20Massage%20Th%C6%B0%20Gi%C3%A3n%20Qu%E1%BA%ADn%201%20%7C%20Ti%E1%BB%87m%20Nail%20G%E1%BA%A7n%20%C4%90%C3%A2y%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79044,106.69228",
+            "domain": "spa",
+            "kind": "place",
+            "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnRcccWO888gbwx83-9eo6CgjxBPL9cL1RoXZM0mJ4gne1Fg7UsMABuBNYH1l367KNq6hmTkpQm2iINAuFNg1T9WHzXGGZHZkeDtlHyir1y53SXkzfq9frRMy4aLNfeiGY25d3jQWixG74N",
+            "address": "47 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam",
+            "rating": 5,
+            "ratingCount": 31,
+            "openingHours": "10:00–00:00",
+            "openNow": true,
+            "phone": "+84 347 729 781",
+            "openingHoursWeek": {
+              "Thứ Sáu": "10:00–00:00",
+              "Thứ Bảy": "10:00–00:00",
+              "Chủ Nhật": "10:00–00:00",
+              "Thứ Hai": "10:00–00:00",
+              "Thứ Ba": "10:00–00:00",
+              "Thứ Tư": "10:00–00:00",
+              "Thứ Năm": "10:00–00:00"
+            },
+            "distanceKm": 1.8,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1226761973180365257",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84347729781",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=LYN%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76614,106.68973",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlUzJDyeu95cMfXwioEG993XLeH_rqcSUeo15EZ84BDynFfbQaBaVfBJ8-7-M1fgKlTuqc4z0PNqIyZ9cCYuULnuOHTrfKUINzWu-sRzNHrJds34PbbXdqe4i4DIGkDLsOlroCcQEnP-uA",
+            "address": "166 Đ. Cống Quỳnh, quận 1, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 32,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "phone": "+84 384 047 409",
+            "openingHoursWeek": {
+              "Thứ Sáu": "Mở cửa cả ngày",
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Spa mát xa",
+              "Spa sức khỏe"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6334416899872607936",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84384047409",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=MOON%20SPA%20%7C%20MASSAGE%20FOOT%20%7C%20MASSAGE%20BODY%20%7C%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20%7C%20NAIL%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76395,106.69300",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Gội Đầu Dưỡng Sinh Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlCDJe-DIvu-Vu6GAFL80mSvhrvAauDs2eQ_h_nqJ318Lw-NHKg03yrTSJItzDeiSU4ReSw9GpBO5kC0qZ4_O9JQ0t7CB3skd2X-LJZyUi-OLzvw5W2rafqmLUpxRJ1OnBHS5QVv1cmIl8",
+            "address": "210 Nguyễn Khắc Nhu, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 6,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 972 163 525",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–21:00",
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17367766540744077197",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84972163525",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79302,106.68697",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Gội đầu dưỡng sinh Cô Giang Saigon",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlKtulndJMHJ50kgwDzFTo-guT9Mbdwznc6LybJJMj8g9JHhFYiTPo0thdoOTcHRIPdJhhfoetAIsFTrF1NtnPCxoobfJr7c9bvYgq1TnzIWEpfifGnNN8FuVP5VNcvd_6Cxh5REw",
+            "address": "375/9 Hoàng Sa, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 243,
+            "openingHours": "09:00–20:00",
+            "openNow": true,
+            "phone": "+84 768 299 799",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–20:00",
+              "Thứ Bảy": "09:00–20:00",
+              "Chủ Nhật": "09:00–20:00",
+              "Thứ Hai": "09:00–20:00",
+              "Thứ Ba": "09:00–20:00",
+              "Thứ Tư": "09:00–20:00",
+              "Thứ Năm": "09:00–20:00"
+            },
+            "distanceKm": 2.4,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/profile.php?id=100090325263970&mibextid=LQQJ4d",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9047588543522483521",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768299799",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20C%C3%B4%20Giang%20Saigon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

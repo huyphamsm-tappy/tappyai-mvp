@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 14929,
+      "textFrames": 457,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe trộm cắp, không bị khai tử, không nợ trả góp). Yêu cầu chủ xe xuất trình bản gốc.\n- **Chủ sở hữu**: Đảm bảo người bán là chủ xe thực sự (so khớp tên trên giấy tờ). Nếu mua qua trung gian/nhóm online, rủi ro cao — gặp trực tiếp chủ xe.\n- **Thanh toán an toàn**: Chuyển tiền sau khi kiểm tra xong xe, hoặc gặp trực tiếp + kiểm tra giấy tờ trước khi trả tiền. Không cọc tiền trước.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn xe (có bị sơn lại không), kính, gương, đèn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, hệ thống điều hòa, cửa sổ điện.\n- **Động cơ & khung gầm**: Nghe tiếng động cơ (có bất thường không), kiểm tra dầu, nước làm mát, dầu phanh. Nếu có vết rỉ sét hoặc hư hỏng khung gầm, giá trị xe giảm đáng kể.\n- **Lốp & phanh**: Độ mòn lốp, độ dày má phanh.\n- **Lịch sử bảo dưỡng**: Yêu cầu xem sổ bảo dưỡng để biết xe được chăm sóc tốt hay không.\n\n**💡 KINH NGHIỆM:**\n- Nên mua từ những người bán uy tín (có nhiều đánh giá tích cực trên Facebook/Zalo) hoặc qua các đại lý ô tô cũ có tiếng.\n- Nếu không hiểu rõ về ô tô, hãy nhờ một người bạn am hiểu hoặc thuê thợ sửa xe kiểm tra (chi phí ~200-500k nhưng đáng giá).\n- Giá 300 triệu có thể mua được xe 5-7 năm tuổi hoặc xe cũ hơn nhưng tình trạng tốt — so sánh giữa các lựa chọn để chọn xe có tình trạng tốt nhất.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm mua xe hãng nào, hoặc cần tư vấn thêm về dòng xe phù hợp với ngân sách này không?",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy đăng ký, chứng thực nguồn gốc xe (không phải xe trộm cắp, không bị khai tử, không nợ trả góp). Yêu cầu chủ xe xuất trình bản gốc.\n- **Chủ sở hữu**: Đảm bảo người bán là chủ xe thực sự (so khớp tên trên giấy tờ). Nếu mua qua trung gian/nhóm online, rủi ro cao — gặp trực tiếp chủ xe.\n- **Thanh toán an toàn**: Chuyển tiền sau khi kiểm tra xong xe, hoặc gặp trực tiếp + kiểm tra giấy tờ trước khi trả tiền. Không cọc tiền trước.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn xe (có bị sơn lại không), kính, gương, đèn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, hệ thống điều hòa, cửa sổ điện.\n- **Động cơ & khung gầm**: Nghe tiếng động cơ (có bất thường không), kiểm tra dầu, nước làm mát, dầu phanh. Nếu có vết rỉ sét hoặc hư hỏng khung gầm, giá trị xe giảm đáng kể.\n- **Lốp & phanh**: Độ mòn lốp, độ dày má phanh.\n- **Lịch sử bảo dưỡng**: Yêu cầu xem sổ bảo dưỡng để biết xe được chăm sóc tốt hay không.\n\n**💡 KINH NGHIỆM:**\n- Nên mua từ những người bán uy tín (có nhiều đánh giá tích cực trên Facebook/Zalo) hoặc qua các đại lý ô tô cũ có tiếng.\n- Nếu không hiểu rõ về ô tô, hãy nhờ một người bạn am hiểu hoặc thuê thợ sửa xe kiểm tra (chi phí ~200-500k nhưng đáng giá).\n- Giá 300 triệu có thể mua được xe 5-7 năm tuổi hoặc xe cũ hơn nhưng tình trạng tốt — so sánh giữa các lựa chọn để chọn xe có tình trạng tốt nhất.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm mua xe hãng nào, hoặc cần tư vấn thêm về dòng xe phù hợp với ngân sách này không?"
+    }
+  ]
+}

@@ -24,7 +24,9 @@ describe('money parsing — a currency unit is mandatory', () => {
   describe('Vietnamese forms are recognised', () => {
     for (const [text, expected] of [
       ['khoảng 7 triệu', 7e6], ['khoảng 7,5 triệu', 7.5e6], ['khoảng 7.5 triệu', 7.5e6],
-      ['giá 7,5M', 7.5e6], ['giá 7m', 7e6], ['giá 7000000đ', 7e6], ['giá 7.000.000₫', 7e6],
+      // "giá 7m" (lowercase m) sat here as 7e6 until G2: a lowercase m is metres now
+      // (owner Q2, documented residual) — pinned in moneyGuardMetres.test.ts.
+      ['giá 7,5M', 7.5e6], ['giá 7M', 7e6], ['giá 7000000đ', 7e6], ['giá 7.000.000₫', 7e6],
       ['chỉ 500k', 5e5], ['7 million VND', 7e6],
     ] as const) {
       it(`"${text}"`, () => {
@@ -208,6 +210,82 @@ describe('redaction — POLICY R3', () => {
   })
 })
 
+describe('redaction — POLICY R3 is PROPORTIONAL (B4, owner 2026-09-20; supersedes whole-sentence)', () => {
+  // S7 (GATE 40, 3/3 deterministic): a product list lost every line to the whole-sentence rule.
+  const rs = [rec('Máy lọc không khí Daikin MC55UVM6', '6.990.000 ₫'), rec('Máy lọc không khí Xiaomi 4 Lite', '2.790.000 ₫')]
+  const NL = '\n'
+  it('a product LINE keeps its product when only its amount is unsupported — the clause goes, the line stays', () => {
+    const text = ['Mình gợi ý:', '- **Daikin MC55UVM6** — 6.500.000₫, lọc HEPA tốt cho phòng ngủ', '- **Xiaomi 4 Lite** — 2.990.000₫, giá mềm', 'Bạn chọn Daikin nếu ưu tiên độ ồn thấp.'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('**Daikin MC55UVM6**')
+    expect(out).toContain('**Xiaomi 4 Lite**')
+    expect(out).toContain('lọc HEPA tốt cho phòng ngủ')
+    expect(out).toContain('giá mềm')
+    expect(out).not.toContain('6.500.000')
+    expect(out).not.toContain('2.990.000')
+    expect(out).toContain('Bạn chọn Daikin')
+  })
+  it('a sentence that is nothing but the amount still goes whole; the connective it leaves is tidied', () => {
+    const out = guardMoneyClaimsInText('Daikin MC55UVM6 khoảng 9 triệu. Và máy rất êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('9 triệu')
+    // F-094: the stripped connective hands its capital to the next word — no lower-case sentence start.
+    expect(out).toBe('Máy rất êm.')
+    expect(out.trim().toLowerCase().startsWith('và ')).toBe(false)
+  })
+
+  // F-094 (owner 2026-09-25): a cut that would leave a CLIPPED sentence takes the sentence whole.
+  it('F-094 — a head cut that leaves a lower-case remainder removes the sentence', () => {
+    const out = guardMoneyClaimsInText('Daikin MC55UVM6 khoảng 9 triệu, nếu bạn ưu tiên lọc bụi thì rất đáng. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Máy chạy êm.')
+  })
+  it('F-094 — a cut that would leave an unclosed bold head removes the sentence', () => {
+    const out = guardMoneyClaimsInText('**Tổng ước tính: ~9 triệu** cho Daikin MC55UVM6, còn dư cho phụ kiện, lọc thay thế. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('**Tổng ước tính,')
+    expect(out).toBe('Máy chạy êm.')
+  })
+  it('F-094 — a list line still keeps its product and loses only the amount (S7 unchanged)', () => {
+    const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 9.000.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('**Daikin MC55UVM6**')
+    expect(out).not.toContain('9.000.000')
+  })
+  it('F-094 — a numbered bold list line keeps its product: "**1. X** — **amount**" loses only the amount (golden post-f094 B1)', () => {
+    const text = ['**1. Daikin MC55UVM6 cũ 99%** từ **táo xanh** — **9.000.000đ** (4.8⭐ từ 31 đánh giá)', '- Tình trạng 99% như tên ghi'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6']).text
+    expect(out).toContain('**1. Daikin MC55UVM6 cũ 99%** từ **táo xanh**')
+    expect(out).not.toContain('9.000.000')
+    expect(out).not.toContain('**1.-')
+    expect(out).toContain(NL + '- Tình trạng 99%')
+  })
+  it('F-094 — an amount that is the FIRST item of a parenthetical keeps the "(" (golden post-f094c B4 t2)', () => {
+    const out = guardMoneyClaimsInText('- **Daikin MC55UVM6** (9.000.000đ, 4.6⭐) — không dây, êm', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('- **Daikin MC55UVM6** (4.6⭐) — không dây, êm')
+  })
+  it('F-094 — an amount that is the LAST item of a parenthetical keeps the ")"', () => {
+    const out = guardMoneyClaimsInText('Mình thấy **Daikin MC55UVM6** (táo xanh, 9.000.000đ) — gần nhất với yêu cầu.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Mình thấy **Daikin MC55UVM6** (táo xanh) — gần nhất với yêu cầu.')
+  })
+  it('F-094 — a parenthetical that is only the amount goes whole', () => {
+    const out = guardMoneyClaimsInText('Mình thấy **Daikin MC55UVM6** (9.000.000đ) — gần nhất với yêu cầu.', rs, ['Daikin MC55UVM6']).text
+    expect(out).toBe('Mình thấy **Daikin MC55UVM6** — gần nhất với yêu cầu.')
+  })
+  it('F-094 — a cut that would split a bold pair removes the sentence (golden post-f094 B4 t1: "Pro****")', () => {
+    const out = guardMoneyClaimsInText('Mình chọn **Daikin MC55UVM6** — giá chỉ **9.000.000đ** với đánh giá **4.8⭐ (170 lượt)** từ Hoàng Hà. Máy chạy êm.', rs, ['Daikin MC55UVM6']).text
+    expect(out).not.toContain('****')
+    expect(out).toBe('Máy chạy êm.')
+  })
+  it('a supported amount in the same list is untouched', () => {
+    const out = guardMoneyClaimsInText(['- **Daikin MC55UVM6** — 6.990.000₫, lọc HEPA', '- **Xiaomi 4 Lite** — 3.500.000₫, giá mềm'].join(NL), rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    expect(out).toContain('6.990.000')
+    expect(out).not.toContain('3.500.000')
+    expect(out).toContain('**Xiaomi 4 Lite**')
+  })
+  it('writes nothing: every word of the output was in the input', () => {
+    const text = ['- **Daikin MC55UVM6** — 6.500.000₫, lọc HEPA tốt', '- **Xiaomi 4 Lite** — 2.990.000₫, giá mềm'].join(NL)
+    const out = guardMoneyClaimsInText(text, rs, ['Daikin MC55UVM6', 'Xiaomi 4 Lite']).text
+    for (const word of out.split(/\s+/).filter(Boolean)) expect(text).toContain(word.replace(/[.,]$/, ''))
+  })
+})
+
 describe('the guard is inert without structured evidence', () => {
   // Organic retrieval carries no `price` field. Treating that as "nothing is
   // supported" would redact prices that are in fact grounded, so the guard
@@ -291,6 +369,20 @@ describe('F3 — redaction never leaves a dangling connective', () => {
       expect(out.trim()).not.toBe('')
     })
   }
+  // F-092 (2026-09-25): a sentence-initial "Với …" / "With …" is a PREPOSITION opening a complete
+  // sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …") — not a conjunction hanging off
+  // the removed sentence. Stripping it ate the first word of the next sentence.
+  it('F-092: "Với …" after a removed sentence keeps its first word', async () => {
+    const { guardSnippetPricesInText } = await import('./snippetPriceGuard')
+    const out = guardSnippetPricesInText('Giá khoảng 999.000 VND cho cả tối. Với hai bạn thì rất vui.', [], 'an toi').text
+    expect(out).not.toContain('999.000')
+    expect(out).toBe('Với hai bạn thì rất vui.')
+  })
+  it('F-092: an English "With …" sentence keeps its first word too', () => {
+    const out = guardMoneyClaimsInText('It costs about 30 million. With two of you it is great value.', rs, ['Galaxy S24']).text
+    expect(out).not.toContain('30 million')
+    expect(out).toBe('With two of you it is great value.')
+  })
   it('a removed middle sentence leaves the neighbours intact and unjoined', () => {
     const text = 'Máy rất tốt. Giá khoảng 30 triệu. Pin dùng cả ngày.'
     const out = guardMoneyClaimsInText(text, rs, ['Galaxy S24']).text
@@ -506,5 +598,44 @@ describe('P0 — the spelled-out currency word "đồng" is a money claim', () =
       expect(out.redacted).toBe(0)
       expect(out.text).toContain('500.000 đồng')
     })
+  })
+})
+
+describe('R3 proportional — a cut that would leave a stub takes the sentence instead (live run 14, 2026-09-20)', () => {
+  const rs = [rec('Nước hoa Chanel Chance 100ml', '3.200.000 ₫')]
+  it('"bạn nên (…giá…)" does not become "bạn nên."', () => {
+    const out = guardMoneyClaimsInText('Chanel Chance rất hợp. Bạn nên xem giá khoảng 2 triệu tại cửa hàng.', rs, ['Chanel Chance']).text
+    expect(out).toContain('Chanel Chance rất hợp.')
+    expect(out).not.toMatch(/nên\.\s*$/)
+    expect(out).not.toContain('2 triệu')
+  })
+})
+
+describe('R3 proportional — a parenthetical that qualifies the amount goes with it (Phase 7 plan replies, 2026-09-22)', () => {
+  // Measured on golden T1 / G4a once plans were actually delivered: the hotel rows made the guard
+  // enforce, the plan's own total was unsupported, and the cut at "(" left these behind:
+  //   "**Tổng ước tính(chưa bao gồm vé máy bay)."   and   "xe + khách sạn + ăn + tham quan)."
+  const rs = [rec('M Hotel Da Nang - Booking.com', '1.200.000 ₫')]
+  const text = [
+    'Thời tiết có mưa, nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng.',
+    '',
+    '**Tổng ước tính: ~12 triệu VND** (chưa bao gồm vé máy bay).',
+    '',
+    'Mình chọn **M Hotel** (4.8⭐) vì gần biển.',
+    '',
+    '**Tổng ước tính** khoảng 12 triệu (xe + khách sạn + ăn + tham quan).',
+    '',
+    'Bạn có thể điều chỉnh.',
+  ].join('\n')
+  it('🚨 no label stub, no orphaned bracket, the neighbours untouched', () => {
+    const out = guardMoneyClaimsInText(text, rs, ['M Hotel Da Nang']).text
+    expect(out).not.toContain('12 triệu')
+    expect(out).not.toContain('Tổng ước tính')
+    expect(out).not.toContain('tham quan).')
+    expect(out).toBe('Thời tiết có mưa, nên mình sẽ xếp các hoạt động ngoài trời vào buổi sáng.\n\nMình chọn **M Hotel** (4.8⭐) vì gần biển.\n\nBạn có thể điều chỉnh.')
+  })
+  it('a grounded sentence with a parenthetical keeps it', () => {
+    const out = guardMoneyClaimsInText('**M Hotel** giá 1.200.000 ₫ (đã gồm ăn sáng).', rs, ['M Hotel Da Nang']).text
+    expect(out).toContain('(đã gồm ăn sáng)')
   })
 })

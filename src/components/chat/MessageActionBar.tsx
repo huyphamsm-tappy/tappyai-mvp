@@ -10,6 +10,12 @@ import {
 import { cn } from '@/lib/utils'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
+import ShareMenu from '@/components/share/ShareMenu'
+import { buildPlacesArtifact, buildPlanArtifact, buildProseArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
+import type { PlacesLiveView } from '@/lib/recommendation/liveView'
+import type { TappyPlan } from '@/components/TripPlanCard'
+import { useTranslation } from '@/lib/i18n/useTranslation'
+import SharePreviewDialog from '@/components/share/SharePreviewDialog'
 
 interface Props {
   msgId: string
@@ -31,6 +37,19 @@ interface Props {
   // always re-runs the LAST turn). Omitting it on older messages hides the button so
   // the user can't click "Tạo lại" on turn 2 and silently regenerate turn 5.
   onRegenerate?: () => void
+  /**
+   * What this turn actually recommended, when it recommended anything.
+   *
+   * 🚨 THIS IS WHAT SHARE SHARES. Before it existed, Share handed the OS
+   * `stripMd(text)` — the prose with its markdown removed — and the recipient
+   * got a paragraph with no rating, no address, no links and no TappyAI. The
+   * card's own data (`PlacesLiveView`) and the plan (`[TAPPY_PLAN]`) are the
+   * recommendation; the prose is commentary on it.
+   */
+  share?: { placeView?: PlacesLiveView | null; plan?: TappyPlan | null; subject?: string }
+  /** G1: the client-side result id the `query` event carried for this turn, if known. */
+  resultId?: string
+  domain?: string
 }
 
 const SPEED_OPTIONS = [1, 1.5, 2]
@@ -56,6 +75,9 @@ export default function MessageActionBar({
   isThisSpeaking, isPaused, ttsElapsed, ttsTotal, ttsSpeed,
   onSpeak, onTTSPause, onTTSSkipBack, onTTSSkipForward, onTTSSpeedChange, onTTSStop,
   onRegenerate,
+  share,
+  resultId,
+  domain,
 }: Props) {
   const [liked, setLiked] = useState(false)
   const [disliked, setDisliked] = useState(false)
@@ -103,17 +125,41 @@ export default function MessageActionBar({
     } catch {}
   }
 
-  const handleShare = async () => {
-    const plain = stripMd(text)
+  /**
+   * Share opens the TappyAI share menu with the canonical artifact.
+   *
+   * 🚨 NEVER `navigator.share({ text: stripMd(text) })` AGAIN. That call is the
+   * measured defect: on Windows it opened the OS sheet (Nearby / Teams /
+   * Outlook / Copilot) and what it carried was stripped prose. The artifact is
+   * built from the card or the plan — structured, whitelisted, branded — and
+   * the menu offers the product's own targets; the OS sheet is one option.
+   *
+   * A turn with neither a card nor a plan still shares: the prose becomes the
+   * brochure body under the TappyAI header, which is strictly more than before.
+   */
+  const [shareOpen, setShareOpen] = useState(false)
+  const [artifact, setArtifact] = useState<ShareArtifact | null>(null)
+  // G1 "Public link": the same turn as a frozen, sanitized /r/<slug> page. Offered as a
+  // row inside the artifact ShareMenu (never instead of it) and only for a persisted turn,
+  // because the server reads the answer back from the caller's own conversation.
+  const [publicOpen, setPublicOpen] = useState(false)
+  const { t, locale } = useTranslation()
+  const shareLang = locale === 'en' ? 'en' : 'vi'
+  const handleShare = () => {
     posthog.capture('message_action', { action: 'share' })
-    if (typeof navigator !== 'undefined' && navigator.share) {
-      try { await navigator.share({ text: plain, title: 'TappyAI' }); return } catch {}
+    const firstLine = stripMd(text).split('\n').find(l => l.trim())?.trim().slice(0, 80)
+    const subject = share?.subject?.trim() || firstLine || 'TappyAI'
+    let a: ShareArtifact
+    if (share?.placeView && share.placeView.items.length > 0) {
+      a = buildPlacesArtifact(share.placeView, subject, shareLang)
+    } else if (share?.plan) {
+      a = buildPlanArtifact(share.plan, shareLang)
+    } else {
+      // Prose only: safe links survive as `label: url` — the useful half of a flight answer.
+      a = buildProseArtifact(subject, text)
     }
-    try {
-      await navigator.clipboard.writeText(plain)
-      setCopyState('copied')
-      setTimeout(() => setCopyState('idle'), 2000)
-    } catch {}
+    setArtifact(a)
+    setShareOpen(true)
   }
 
   const handleLike = () => {
@@ -177,7 +223,7 @@ export default function MessageActionBar({
         </button>
 
         {/* Share */}
-        <button onClick={handleShare} className={btnBase} title="Chia sẻ">
+        <button onClick={handleShare} className={btnBase} title={t('share.title')} data-testid="message-share">
           <Share2 size={14} />
         </button>
 
@@ -318,6 +364,24 @@ export default function MessageActionBar({
             <X size={14} />
           </button>
         </div>
+      )}
+      {artifact && (
+        <ShareMenu
+          artifact={artifact}
+          open={shareOpen}
+          onClose={() => setShareOpen(false)}
+          onPublicLink={conversationId ? () => { setShareOpen(false); setPublicOpen(true) } : undefined}
+        />
+      )}
+      {conversationId && (
+        <SharePreviewDialog
+          open={publicOpen}
+          onClose={() => setPublicOpen(false)}
+          conversationId={conversationId}
+          messageIndex={messageIndex}
+          resultId={resultId}
+          domain={domain}
+        />
       )}
     </div>
   )

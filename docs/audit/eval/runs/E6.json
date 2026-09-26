@@ -1,0 +1,195 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 15017,
+  "evidenceId": "353d05eb-8c43-48c2-a27b-ef317eaf2ec8",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Gò Vấp",
+        "location": "Gò Vấp, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke Avatar",
+      "rating": 4.9,
+      "count": 6371,
+      "price": "100-500 N ₫",
+      "hours": "12:00–05:00",
+      "distance_km": 2.3,
+      "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "rating": 4.8,
+      "count": 845,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.1,
+      "address": "41 Phan Chu Trinh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "rating": 4.8,
+      "count": 3047,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4,
+      "address": "120 Đ. Thành Thái, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "rating": 4.3,
+      "count": 2060,
+      "hours": "10:00–05:00",
+      "distance_km": 2.4,
+      "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "KARAO TALK",
+      "rating": 4.3,
+      "count": 520,
+      "price": "100-200 N ₫",
+      "hours": "11:00–02:00",
+      "distance_km": 2.5,
+      "address": "166 Xô Viết Nghệ Tĩnh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KARAOKE MONACO KTV",
+      "rating": 4.2,
+      "count": 1442,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.4,
+      "address": "676 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Làn Sóng Xanh",
+      "rating": 4.3,
+      "count": 55,
+      "price": "100-500 N ₫",
+      "hours": "09:00–04:00",
+      "distance_km": 3.2,
+      "address": "516 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Nnice 16 Cộng Hòa",
+      "rating": 4,
+      "count": 2376,
+      "price": "200-500 N ₫",
+      "hours": "09:00–02:00",
+      "distance_km": 5.1,
+      "address": "16 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Uyển Nhi",
+      "rating": 4.2,
+      "count": 6,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 6.7,
+      "address": "90 Bình Giã, Tân Bình, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke FYou III",
+      "rating": 3.6,
+      "count": 402,
+      "hours": "11:00–23:30",
+      "distance_km": 3.6,
+      "address": "519-521 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Karaoke Avatar",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6371,
+        "distance_km": 2.3,
+        "open_now": false,
+        "opening_hours": "12:00–05:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 845,
+        "distance_km": 3.1,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 3047,
+        "distance_km": 4,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 2060,
+        "distance_km": 2.4,
+        "open_now": true,
+        "opening_hours": "10:00–05:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "KARAO TALK",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 520,
+        "distance_km": 2.5,
+        "open_now": false,
+        "opening_hours": "11:00–02:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm karaoke ở Gò Vấp cho nhóm 10 người với ngân sách khoảng 100k/người nhé.\n\nMình chọn **Karaoke Avatar** cho nhóm bạn 👍 Quán này có 4.9⭐ từ 6.371 đánh giá Google Maps — con số này chứng tỏ chất lượng và độ tin cậy rất cao. Cách vị trí hiện tại của bạn khoảng 2.3km, mở cửa từ 12:00 đến 05:00 nên rất phù hợp cho cuối tuần.\n\nNgoài ra, **Karaoke ICOOL** (chi nhánh Bình Thạnh) cũng là lựa chọn tốt với 4.8⭐ và mở cửa cả ngày, nếu bạn muốn linh hoạt hơn về thời gian. **Kingdom Karaoke** gần hơn (2.4km) nếu ưu tiên khoảng cách.\n\nMình gợi ý liên hệ trước để đặt phòng cho 10 người và hỏi giá cụ thể — thường các quán karaoke có giá khác nhau tùy theo khung giờ (giờ vàng hay giờ thường) và loại phòng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps — Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🌐 Website — Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá cụ thể Avatar bao nhiêu?|Có quán karaoke nào gần hơn không?|Muốn tìm quán có nhạc sống thay vì karaoke[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm karaoke ở Gò Vấp cho nhóm 10 người với ngân sách khoảng 100k/người nhé.\n\nMình chọn **Karaoke Avatar** cho nhóm bạn 👍 Quán này có 4.9⭐ từ 6.371 đánh giá Google Maps — con số này chứng tỏ chất lượng và độ tin cậy rất cao. Cách vị trí hiện tại của bạn khoảng 2.3km, mở cửa từ 12:00 đến 05:00 nên rất phù hợp cho cuối tuần.\n\nNgoài ra, **Karaoke ICOOL** (chi nhánh Bình Thạnh) cũng là lựa chọn tốt với 4.8⭐ và mở cửa cả ngày, nếu bạn muốn linh hoạt hơn về thời gian. **Kingdom Karaoke** gần hơn (2.4km) nếu ưu tiên khoảng cách.\n\nMình gợi ý liên hệ trước để đặt phòng cho 10 người và hỏi giá cụ thể — thường các quán karaoke có giá khác nhau tùy theo khung giờ (giờ vàng hay giờ thường) và loại phòng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps — Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🌐 Website — Karaoke Avatar\",\"type\":\"website\",\"url\":\"https://karaokeavatar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá cụ thể Avatar bao nhiêu?|Có quán karaoke nào gần hơn không?|Muốn tìm quán có nhạc sống thay vì karaoke[/FOLLOWUPS]"
+    }
+  ]
+}

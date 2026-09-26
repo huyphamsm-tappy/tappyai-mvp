@@ -39,6 +39,26 @@ final class ChatViewModel: AppObservableObject {
     private let session: SessionStore
     private let locationCoordinator = LocationCoordinator()
     private var cachedLocation: [String: Double]?
+
+    /// DD-011 — whether the user's location may accompany a request.
+    ///
+    /// The location was already attached to every turn and shown nowhere, which is a trust problem
+    /// twice over: you cannot tell why an answer came out the way it did, and you cannot correct it
+    /// without guessing. The chip above the composer states that it is in use and this flag is what
+    /// the × clears. Nothing about the permission model changes — an existing input simply became
+    /// legible and refusable.
+    @Published var locationContextEnabled = true
+
+    /// The location actually sent, or nil once the user has switched it off.
+    var activeLocation: [String: Double]? { locationContextEnabled ? cachedLocation : nil }
+
+    /// Whether there is a location to disclose. The chip is shown only when one was actually
+    /// captured — announcing context the app does not have would be its own small dishonesty.
+    ///
+    /// Stored and @Published rather than computed from `cachedLocation`: that property is a
+    /// plain var, so a view reading through it would not re-render when the location finally
+    /// arrives, and the chip would stay hidden for the rest of the session.
+    @Published private(set) var hasLocationContext = false
     private var streamTask: Task<Void, Never>?
     private var thinkTimer: AnyCancellable?
     private var autoSendTask: Task<Void, Never>?
@@ -49,10 +69,15 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Init
 
+    /// Publishes a plan for sharing (`POST /api/plans/share`). Nil only in tests that never share.
+    let planShare: PlanSharing?
+
     init(service: ChatService, session: SessionStore, category: String = "general",
-         conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
+         conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
+         planShare: PlanSharing? = nil) {
         self.service = service
         self.session = session
+        self.planShare = planShare
         self.category = category
         self.conversationId = conversationId
         wireReadAloudLanguage()
@@ -130,6 +155,7 @@ final class ChatViewModel: AppObservableObject {
 
         if let loc = await locationCoordinator.requestOnce() {
             cachedLocation = ["lat": loc.coordinate.latitude, "lng": loc.coordinate.longitude]
+            hasLocationContext = true
         }
     }
 
@@ -209,17 +235,29 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Share
 
-    func shareText(_ text: String) {
-        let stripped = TTSManager.stripMarkdown(text)
-        let av = UIActivityViewController(activityItems: [stripped], applicationActivities: nil)
-        guard let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let root = scene.windows.first?.rootViewController else { return }
-        if let popover = av.popoverPresentationController {
-            popover.sourceView = root.view
-            popover.sourceRect = CGRect(x: root.view.bounds.midX, y: root.view.bounds.midY, width: 0, height: 0)
-            popover.permittedArrowDirections = []
+    /// The artifact the TappyAI share sheet is showing, or nil. Set by `share(messageIndex:)`.
+    @AppPublished var shareArtifact: ShareArtifact? = nil
+
+    /// Share one assistant turn as the branded brochure (web parity: one canonical artifact
+    /// + the TappyAI share sheet). Sources in priority order: the structured recommendation
+    /// (`8:` annotation) → the plan → the prose. The system sheet stays reachable as "More apps".
+    func share(messageIndex: Int, lang: String) {
+        guard messages.indices.contains(messageIndex) else { return }
+        let msg = messages[messageIndex]
+        let subject = messages[..<messageIndex].last(where: { $0.isUser })?.content
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            .prefix(80).description
+        let title = (subject?.isEmpty == false) ? subject! : "TappyAI"
+        let parsed = ContentParser.parse(msg.content)
+        if let view = msg.placesView, !view.items.isEmpty {
+            shareArtifact = ShareArtifactBuilder.buildPlacesArtifact(view, title: title, lang: lang)
+        } else if let plan = parsed.plan, !plan.days.isEmpty {
+            // The block rides along: the share sheet publishes it and delivers the plan's page.
+            shareArtifact = ShareArtifactBuilder.buildPlanArtifact(plan, title: title, lang: lang, planJSON: parsed.planJSON)
+        } else {
+            shareArtifact = ShareArtifactBuilder.buildProseArtifact(subject: title, prose: parsed.text)
         }
-        root.present(av, animated: true)
     }
 
     // MARK: - Feedback (like/dislike/report)
@@ -338,7 +376,7 @@ final class ChatViewModel: AppObservableObject {
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.cachedLocation
+                userLocation: self.activeLocation
             )
 
             do {
@@ -366,6 +404,13 @@ final class ChatViewModel: AppObservableObject {
                             }
                         }
                         self.activeTool = nil
+
+                    case .places(let view):
+                        // Held on the message, never appended to `content` — so it cannot leak into
+                        // the reply, into TTS or into what gets persisted.
+                        self.messages[assistantIndex].livePlaces = view
+                        // Share parity: the same decision, projected for the share sheet.
+                        self.messages[assistantIndex].placesView = SharePlacesView(from: view)
 
                     case .stepEnd:
                         self.activeTool = nil

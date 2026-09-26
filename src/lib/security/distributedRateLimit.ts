@@ -24,11 +24,33 @@ export interface RateLimitStore {
     limit: number,
     member: string
   ): Promise<[number, number]>
+  /**
+   * READ-ONLY: how many entries the window currently holds, after expiring stale ones. Never
+   * admits or adds — it exists so a quota can be DISPLAYED ("11/15 today") from the same set that
+   * enforces it, without the display consuming what it describes. Optional so a store (or a test
+   * double) that only limits keeps working; callers treat "unsupported" as "unknown".
+   */
+  countInWindow?(key: string, nowMs: number, windowMs: number): Promise<number>
+  /**
+   * Remove the ONE entry a prior `evalSlidingWindow` admitted, identified by the exact `member` it
+   * added. This is the refund half of consume: it releases a unit that was spent for work that then
+   * failed (F-015 — a failed AI answer must not be charged). It removes only that member, so a
+   * concurrent admission for the same key is never touched. Idempotent (ZREM of an absent member is
+   * a no-op) and optional — a store that cannot release keeps limiting, and the caller treats the
+   * unit as spent rather than crashing.
+   */
+  releaseSlidingWindow?(key: string, member: string): Promise<void>
 }
 
 export interface RateLimitResult {
   ok: boolean
   retryAfter: number
+  /**
+   * When `ok`, the sorted-set member this admission added. Pass it to `distributedRateLimitRelease`
+   * to refund the unit if the work it admitted then failed (F-015). Absent when rejected, when the
+   * fail-closed path answered, or when the store cannot report it.
+   */
+  member?: string
 }
 
 // Atomic sliding window. Atomicity matters: a read-then-write implementation
@@ -51,9 +73,29 @@ redis.call('ZADD', key, now, member)
 redis.call('PEXPIRE', key, window)
 return {1, 0}`
 
+/** Same sorted set, no write: expire what has left the window, then count what remains. */
+const COUNT_IN_WINDOW = `local key = KEYS[1]
+local now = tonumber(ARGV[1])
+local window = tonumber(ARGV[2])
+redis.call('ZREMRANGEBYSCORE', key, 0, now - window)
+return redis.call('ZCARD', key)`
+
 /** Upstash REST store. Credentials come from the Vercel Upstash integration. */
 export function createUpstashStore(url: string, token: string): RateLimitStore {
   return {
+    async countInWindow(key, nowMs, windowMs) {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(['EVAL', COUNT_IN_WINDOW, '1', key, String(nowMs), String(windowMs)]),
+      })
+      if (!res.ok) throw new Error(`rate-limit store HTTP ${res.status}`)
+      const body = (await res.json()) as { result?: unknown; error?: string }
+      if (body.error) throw new Error('rate-limit store error')
+      const n = Number(body.result)
+      if (!Number.isFinite(n)) throw new Error('rate-limit store malformed response')
+      return n
+    },
     async evalSlidingWindow(key, nowMs, windowMs, limit, member) {
       const res = await fetch(url, {
         method: 'POST',
@@ -76,7 +118,40 @@ export function createUpstashStore(url: string, token: string): RateLimitStore {
       if (!Array.isArray(result) || result.length < 2) throw new Error('rate-limit store malformed response')
       return [Number(result[0]), Number(result[1])]
     },
+    async releaseSlidingWindow(key, member) {
+      // ZREM the exact member this admission added. Only that entry is removed, so a concurrent
+      // admission for the same key is untouched; ZREM of an absent member is a harmless no-op.
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(['ZREM', key, member]),
+      })
+      if (!res.ok) throw new Error(`rate-limit store HTTP ${res.status}`)
+      const body = (await res.json()) as { error?: string }
+      if (body.error) throw new Error('rate-limit store error')
+    },
   }
+}
+
+// ── ENVIRONMENT NAMESPACE (1b-2, 2026-09-20) ─────────────────────────────────────────────────
+//
+// The Vercel Upstash integration provisions ONE database for All Environments, so Production,
+// Preview and a local `next dev` with pulled credentials all talk to the same Redis. Before this,
+// every key was bare (`chat:ip:1.2.3.4`, `serper:credits:2026-09-20`): a tester on a preview
+// deployment shared the burst bucket with a real user on the same IP, and preview traffic spent
+// the PRODUCTION Serper day. Every key that reaches the store is therefore prefixed with the
+// deployment environment — `production:`, `preview:`, `development:` — and `local:` when
+// VERCEL_ENV is unset (a local run, a test). Applied at the two store boundaries
+// (`evalSlidingWindow` / `countInWindow` here, the INCRBY pipeline in kvCounter.ts) so that no
+// caller can forget it: `chat:*`, `admin:*`, `ai:q:*`, `serper:credits`, `commerce:untracked`
+// are all covered by construction.
+export function envKeyPrefix(env: NodeJS.ProcessEnv = process.env): string {
+  return `${env.VERCEL_ENV || 'local'}:`
+}
+
+/** The key as it is stored: environment prefix + the caller's key. */
+export function namespacedKey(key: string, env: NodeJS.ProcessEnv = process.env): string {
+  return envKeyPrefix(env) + key
 }
 
 let counter = 0
@@ -104,6 +179,28 @@ function resolveStore(): RateLimitStore | null {
   const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
   store = url && token ? createUpstashStore(url, token) : null
   return store
+}
+
+/**
+ * Is a shared store CONFIGURED for this deployment?
+ *
+ * P1-5 needs to tell two failures apart that `distributedRateLimit` deliberately collapses:
+ *
+ *   NOT CONFIGURED     no credentials in the environment. A permanent, deployment-wide state.
+ *   CONFIGURED, DOWN   credentials present, the store did not answer. Transient.
+ *
+ * For an admin route the collapse is right — both mean "refuse", per the C10 contract. For a
+ * PUBLIC endpoint they are opposite: refusing everyone forever because a deployment never had
+ * credentials would turn a hardening change into an outage, while refusing during a store outage
+ * is the correct, temporary conservative answer. See publicRateLimit.ts.
+ *
+ * Reads the environment directly rather than calling `resolveStore()`, because that memoises a
+ * CLIENT and this question is about configuration. Same two pairs, same precedence, no I/O.
+ */
+export function isDistributedStoreConfigured(env: NodeJS.ProcessEnv = process.env): boolean {
+  const url = env.KV_REST_API_URL || env.UPSTASH_REDIS_REST_URL
+  const token = env.KV_REST_API_TOKEN || env.UPSTASH_REDIS_REST_TOKEN
+  return !!url && !!token
 }
 
 /** Test seam. Injecting a store lets the real limiter run against a real
@@ -139,15 +236,52 @@ export async function distributedRateLimit(
   if (!active) return failClosed
 
   const now = Date.now()
+  // The member must be unique per request. Sorted-set members are a SET: two
+  // requests in the same millisecond sharing a member would collapse into one
+  // entry and the counter would silently under-count. Hoisted so an admitted
+  // request can hand it back for a later refund (F-015).
+  const member = uniqueMember(now)
   try {
-    // The member must be unique per request. Sorted-set members are a SET: two
-    // requests in the same millisecond sharing a member would collapse into one
-    // entry and the counter would silently under-count.
-    const [admitted, oldest] = await active.evalSlidingWindow(key, now, windowMs, limit, uniqueMember(now))
-    if (admitted === 1) return { ok: true, retryAfter: 0 }
+    const [admitted, oldest] = await active.evalSlidingWindow(namespacedKey(key), now, windowMs, limit, member)
+    if (admitted === 1) return { ok: true, retryAfter: 0, member }
     const elapsed = Number.isFinite(oldest) && oldest > 0 ? now - oldest : 0
     return { ok: false, retryAfter: Math.max(1, Math.ceil((windowMs - elapsed) / 1000)) }
   } catch {
     return failClosed
+  }
+}
+
+/**
+ * Refund one admitted unit: remove the exact `member` a prior `distributedRateLimit` returned.
+ *
+ * Best-effort and never throws — a refund that fails leaves the unit spent, which is the safe
+ * direction (the user keeps being metered) rather than crashing the request that is already
+ * failing. Does nothing when no store is configured (the in-process path refunds elsewhere) or the
+ * store cannot release. Never logs the key.
+ */
+export async function distributedRateLimitRelease(key: string, member: string): Promise<void> {
+  const active = resolveStore()
+  if (!active?.releaseSlidingWindow) return
+  try {
+    await active.releaseSlidingWindow(namespacedKey(key), member)
+  } catch {
+    /* leave the unit spent; a failed refund must not surface into the request */
+  }
+}
+
+/**
+ * READ-ONLY count of entries in a key's window — for displaying a quota, never for enforcing one.
+ *
+ * `null` when there is no store, the store does not support counting, or it did not answer. A
+ * display that cannot be produced is reported as unknown rather than guessed: the caller decides
+ * whether to show nothing or to show the limit as used (the fail-closed display choice).
+ */
+export async function distributedCountInWindow(key: string, windowMs: number): Promise<number | null> {
+  const active = resolveStore()
+  if (!active?.countInWindow) return null
+  try {
+    return await active.countInWindow(namespacedKey(key), Date.now(), windowMs)
+  } catch {
+    return null
   }
 }

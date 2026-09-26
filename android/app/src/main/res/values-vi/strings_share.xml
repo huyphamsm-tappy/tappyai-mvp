@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_title">Chia sẻ với bạn bè</string>
+    <string name="share_preview_from">gợi ý</string>
+    <string name="share_facebook">Facebook</string>
+    <string name="share_messenger">Messenger</string>
+    <string name="share_zalo">Zalo</string>
+    <string name="share_whatsapp">WhatsApp</string>
+    <string name="share_telegram">Telegram</string>
+    <string name="share_viber">Viber</string>
+    <string name="share_line">LINE</string>
+    <string name="share_tiktok">TikTok</string>
+    <string name="share_email">Email</string>
+    <string name="share_inbox">Hộp thư TappyAI</string>
+    <string name="share_save">Lưu về máy</string>
+    <string name="share_copy_content">Sao chép nội dung</string>
+    <string name="share_more">Ứng dụng khác</string>
+    <string name="share_more_places">và %1$d địa điểm khác</string>
+
+    <string name="share_opened_with_text">Đã mở %1$s kèm gợi ý — chọn người để gửi</string>
+    <string name="share_app_not_opened">Chưa cài %1$s. Đã sao chép gợi ý — bạn dán vào đâu cũng được</string>
+    <string name="share_copied_and_opened">Đã sao chép gợi ý và mở %1$s — dán vào đó nhé</string>
+    <string name="share_email_opened">Đã mở email kèm gợi ý</string>
+    <string name="share_copied_content">Đã sao chép gợi ý</string>
+    <string name="share_copy_failed">Không sao chép được</string>
+    <string name="share_saved_image">Đã lưu ảnh vào Pictures/TappyAI</string>
+    <string name="share_saved_text">Đã lưu văn bản vào Downloads/TappyAI</string>
+    <string name="share_save_failed">Không lưu được</string>
+    <string name="share_inbox_opened">Đã sao chép — đang mở Hộp thư TappyAI, dán vào tin nhắn nhé</string>
+
+    <string name="share_plan_preparing">Đang tạo kế hoạch chia sẻ…</string>
+    <string name="share_copy_link">Sao chép liên kết</string>
+    <string name="share_copied_link">Đã sao chép liên kết kế hoạch</string>
+    <string name="share_plan_sign_in">Đăng nhập để tạo liên kết kế hoạch</string>
+    <string name="share_plan_offline">Mất kết nối — chưa tạo được liên kết kế hoạch</string>
+    <string name="share_plan_not_shareable">Kế hoạch này không chia sẻ được bằng liên kết</string>
+    <string name="share_plan_no_payload">Không chia sẻ được kế hoạch này từ đây — hãy hỏi Tappy lại</string>
+    <string name="share_plan_failed">Chưa tạo được liên kết kế hoạch</string>
+    <string name="share_plan_retry">Thử lại</string>
+</resources>

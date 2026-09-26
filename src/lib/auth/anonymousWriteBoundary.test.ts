@@ -49,11 +49,11 @@ const MUTATING = /export async function (POST|PUT|PATCH|DELETE)\b/
 const EXEMPT: Record<string, string> = {
   // ── The anonymous tier itself. Refusing anonymous here would refuse everything. ──
   'auth/anonymous': 'mints the anonymous session; rate-limited 5/min + 30/day per IP',
+  'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
-  'auth/zalo/complete': 'sign-in completion, runs before any account exists',
 
   // ── The product deliberately offers these to a visitor (see socialWriteAccess.ts). ──
-  'chat': 'the anonymous tier IS chat — capped at ANON_DAILY_LIMIT per identity, server-side',
+  'chat': 'the anonymous tier IS chat — capped at ANON_LIFETIME_LIMIT per identity (five, once), server-side, from the shared AI question pool',
   'conversations': "the visitor's own chat history; claimed into the account on sign-in",
   'memory': "the visitor's own chat memory; private, never shown to another user",
   'preferences': "the visitor's own preferences; private",
@@ -109,20 +109,28 @@ const EXEMPT: Record<string, string> = {
   // ── Anonymous-capable tools. Each carries its own cost control. ──
   'scam-shield/check': 'anonymous checks are a product feature; capped at dailyLimitAnon per IP',
   'scam-shield/qr': 'same surface as scam-shield/check; rate-limited',
+  // Analyze Message. Anonymous use is a product decision (FREE/TRIAL = 2 AI analyses per VN day),
+  // metered per IP through the shared limiter — a fresh anonymous session is NOT a fresh
+  // allowance — plus a per-IP burst cap; the deterministic link checks it runs are the same ones
+  // scam-shield/check already serves anonymously. See lib/scam-shield/message/quota.ts.
+  'scam-shield/analyze': 'anonymous AI analysis is a product feature; 2/day per IP via the shared limiter, burst-capped',
+  'scam-shield/share': 'publishes a SERVER-generated verdict page (no user content); burst + per-IP daily cap; G1 wedge',
   'translate': 'anonymous tool; rate-limited',
   'scan': 'anonymous tool',
   'viet-content': 'anonymous tool; rate-limited',
   'voice/tts': 'anonymous tool; rate-limited',
   'voice/language': 'anonymous tool; rate-limited',
   'links/resolve': 'link metadata for the composer; rate-limited',
-  'upload/audio': 'refuses unauthenticated callers and is rate-limited',
+  // upload/audio and sound/[trackId]/play were retired with music reuse (F-024) — they answer 410
+  // Gone and no longer mutate, so they are not exempted anonymous-write routes.
   'upload/video': 'refuses unauthenticated callers and is rate-limited',
 
   // ── Counters and analytics. Not content, not a graph edge. ──
-  'sound/[trackId]/play': 'play counter — anonymous listens count too; rate-limited 30/min per IP',
   'reviews/[id]/interact': "the caller's own watch row; rate-limited 10/min, values clamped, one view per user per review",
   'deals/[id]/click': 'click analytics, no user content',
   'track': 'analytics, no user content',
+  'commerce/handoff': 'CCP handoff counter (event 6) — body is two opaque ids the server minted, no user content, no URL; rate-limited 60/min per IP; dropped while CCP_ENABLED is false',
+  'zalo/mini/verify': 'exchanges a Zalo token for a server-signed rate-limit cookie; no user content, rate-limited 20/min per IP',
 
   // ── Machine-to-machine. No end user is present at all. ──
   'iap/apple/notifications': 'Apple server-to-server notification',
@@ -177,8 +185,23 @@ const guarded = (name: string) => /refuseAnonymousSocialWrite\s*\(/.test(code(na
  * anonymous-capable tools actually use, and does not contain the lower-case substring. The first
  * version of this guard reported `translate` and `scan` as uncapped when both are capped at 30/day
  * per IP — a false alarm that would have sent someone to "fix" working code.
+ *
+ * 🚨 AND IT HAPPENED AGAIN, for the same reason. P1-5 moved the three public LLM endpoints onto
+ * `publicRateLimit(` / `publicDailyRateLimit(` — the shared-store wrappers — and this guard, which
+ * only knew two spellings, reported `translate`, `scan` and `viet-content` as having "no rate
+ * limit at all" moments after they were given a STRONGER one. A guard that enumerates spellings
+ * has to be extended whenever a spelling is added; that is the cost of it being a source scan.
+ *
+ * The names, and what each means:
+ *   rateLimit / dailyRateLimit              in-process, per serverless instance
+ *   publicRateLimit / publicDailyRateLimit  shared store when configured, in-process otherwise
+ *   distributedRateLimit                    shared store, fail-closed (admin routes)
+ *
+ * This guard asks only "is there a cap at all". Which KIND the three public LLM endpoints must use
+ * is pinned separately, in security/__tests__/publicRateLimit.test.ts.
  */
-const capped = (name: string) => /\b(daily)?[Rr]ateLimit\(/.test(code(name))
+const capped = (name: string) =>
+  /\b(?:public|distributed)?(?:[Dd]aily)?[Rr]ateLimit\(/.test(code(name))
 
 describe('U02 — the guard can see the whole surface', () => {
   it('finds a realistic number of mutating routes', () => {

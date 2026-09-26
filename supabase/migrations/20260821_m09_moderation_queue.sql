@@ -2,9 +2,11 @@
 -- Module 09 Content Moderation - `moderation_queue`, `moderation_actions`
 -- and the ingestion that fills them.
 --
--- GATE: NOT YET AUTHORIZED FOR PRODUCTION. Every previous authorization named
---       its own table; none covers these. Applying this needs its own explicit
---       Owner authorization, preflight and rollback window (ADR-017 pattern).
+-- ✅ STATUS: LIVE. `moderation_queue` / `moderation_actions` (and their enums) are
+--    present in the 2026-09-17 prod schema snapshot (confirmed 2026-09-21) — this
+--    migration IS applied; do not re-run. (Historical: it required its own Owner
+--    authorization/preflight/rollback under the ADR-017 pattern; that has since
+--    happened — the "NOT YET AUTHORIZED" banner is stale.)
 --
 -- CONTRACT
 --   04 §4.4 / §4.5      the two tables and three enums, reproduced VERBATIM

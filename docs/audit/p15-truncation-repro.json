@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-09-19T10:39:35.701Z",
+  "P15-r1": {
+    "pick": "MASSAGE HẠ SPA QUẬN 1",
+    "pick_distinctive_tokens": [],
+    "pick_nameable_by_textNamesPlace": false,
+    "names_with_zero_distinctive_tokens": [
+      "MASSAGE HẠ SPA QUẬN 1",
+      "AN’s spa"
+    ],
+    "synthetic_sentence_len": 242,
+    "after_placeClaimGuard_len": 102,
+    "after_groundingGate_len": 102,
+    "after_placeClaimGuard": "Nằm ở 49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 141
+  },
+  "P15-r2": {
+    "pick": "Sunyata Retreat Hill Spa",
+    "pick_distinctive_tokens": [
+      "sunyata",
+      "retreat",
+      "hill"
+    ],
+    "pick_nameable_by_textNamesPlace": true,
+    "names_with_zero_distinctive_tokens": [
+      "MASSAGE HẠ SPA QUẬN 1",
+      "Sả Spa & Onsen"
+    ],
+    "synthetic_sentence_len": 236,
+    "after_placeClaimGuard_len": 236,
+    "after_groundingGate_len": 236,
+    "after_placeClaimGuard": "Mình chọn **Sunyata Retreat Hill Spa** cho bạn 👌 Spa này có **4.9⭐ (3.571 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh. Nằm ở 12a Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 793
+  },
+  "P2-r1": {
+    "pick": "Izakaya Unatoto Việt Nam",
+    "pick_distinctive_tokens": [
+      "unatoto",
+      "viet",
+      "nam"
+    ],
+    "pick_nameable_by_textNamesPlace": true,
+    "names_with_zero_distinctive_tokens": [],
+    "synthetic_sentence_len": 244,
+    "after_placeClaimGuard_len": 244,
+    "after_groundingGate_len": 244,
+    "after_placeClaimGuard": "Mình chọn **Izakaya Unatoto Việt Nam** cho bạn 👌 Spa này có **4.9⭐ (7.103 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh. Nằm ở 56 Trương Định, Bến Thành, Hồ Chí Minh 70000, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 383
+  },
+  "P2-r2": {
+    "pick": "Izakaya Unatoto Việt Nam",
+    "pick_distinctive_tokens": [
+      "unatoto",
+      "viet",
+      "nam"
+    ],
+    "pick_nameable_by_textNamesPlace": true,
+    "names_with_zero_distinctive_tokens": [],
+    "synthetic_sentence_len": 244,
+    "after_placeClaimGuard_len": 244,
+    "after_groundingGate_len": 244,
+    "after_placeClaimGuard": "Mình chọn **Izakaya Unatoto Việt Nam** cho bạn 👌 Spa này có **4.9⭐ (7.103 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh. Nằm ở 56 Trương Định, Bến Thành, Hồ Chí Minh 70000, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 429
+  },
+  "P6-r1": {
+    "pick": "Dangdo Cafe Thảo Điền",
+    "pick_distinctive_tokens": [
+      "dangdo"
+    ],
+    "pick_nameable_by_textNamesPlace": true,
+    "names_with_zero_distinctive_tokens": [],
+    "synthetic_sentence_len": 238,
+    "after_placeClaimGuard_len": 238,
+    "after_groundingGate_len": 238,
+    "after_placeClaimGuard": "Mình chọn **Dangdo Cafe Thảo Điền** cho bạn 👌 Spa này có **4.9⭐ (333 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh. Nằm ở 19 Đường số 65, An Khánh, Hồ Chí Minh 71107, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 413
+  },
+  "P8-r1": {
+    "pick": "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+    "pick_distinctive_tokens": [
+      "vua",
+      "cha",
+      "tran",
+      "hung",
+      "dao",
+      "hcm"
+    ],
+    "pick_nameable_by_textNamesPlace": false,
+    "names_with_zero_distinctive_tokens": [
+      "NHÀ HÀNG NGON",
+      "Quán ăn ngon Sài Gòn"
+    ],
+    "synthetic_sentence_len": 275,
+    "after_placeClaimGuard_len": 165,
+    "after_groundingGate_len": 165,
+    "after_placeClaimGuard": "Mình chọn **Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. Nằm ở 42 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh 700000, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 186
+  },
+  "P11-r1": {
+    "pick": "Hoff Coffee Brewers by BeanHop",
+    "pick_distinctive_tokens": [
+      "hoff",
+      "brewers",
+      "beanhop"
+    ],
+    "pick_nameable_by_textNamesPlace": true,
+    "names_with_zero_distinctive_tokens": [],
+    "synthetic_sentence_len": 250,
+    "after_placeClaimGuard_len": 250,
+    "after_groundingGate_len": 250,
+    "after_placeClaimGuard": "Mình chọn **Hoff Coffee Brewers by BeanHop** cho bạn 👌 Spa này có **4.8⭐ (358 đánh giá Google Maps)** — số lượng đánh giá lớn là bằng chứng mạnh. Nằm ở 42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam, không gian yên tĩnh. Mở từ 10:00–22:00.",
+    "recorded_final_len": 479
+  }
+}

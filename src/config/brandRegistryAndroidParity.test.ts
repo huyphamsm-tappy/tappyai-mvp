@@ -178,11 +178,14 @@ describe('the Deals card walks the §8 fallback chain', () => {
     // The exact branch text, so `if (false && hasBrandLogo(…))` — a mutation that disables the
     // registry without moving anything — fails here rather than sailing through an offset check.
     expect(screen).toContain('if (hasBrandLogo(deal.partnerName)) {')
-    expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = 48\.dp\)/)
+    expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = size, decorative = true\)/)
 
     const registryAt = screen.indexOf('hasBrandLogo(deal.partnerName)')
-    const logoImageAt = screen.indexOf('if (deal.logoImage != null)')
-    const initialAt = screen.indexOf('deal.partnerName.firstOrNull()?.uppercase()')
+    const logoImageAt = screen.indexOf('if (logo != null)')
+    // The initial is declared as a lambda ABOVE the branch (it is also the image's onError
+    // fallback); what the chain guarantees is that it is used only when the image is absent or
+    // fails, so the order asserted is registry → image branch, then the fallback wiring.
+    const initialAt = screen.indexOf('onError = monogram')
     expect(registryAt).toBeGreaterThan(-1)
     expect(logoImageAt).toBeGreaterThan(registryAt)
     expect(initialAt).toBeGreaterThan(logoImageAt)

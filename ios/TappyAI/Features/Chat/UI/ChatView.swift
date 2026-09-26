@@ -9,10 +9,12 @@ struct ChatView: View {
     init(deps: AppDependencies, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil) {
         let service = ChatService(api: deps.api, streaming: deps.streaming)
+        let session = deps.session
         _vm = AppStateObject(wrappedValue: ChatViewModel(
-            service: service, session: deps.session,
+            service: service, session: session,
             category: category, conversationId: conversationId,
-            savedMessages: savedMessages
+            savedMessages: savedMessages,
+            planShare: PlanShareService(api: deps.api, isAuthenticated: { session.state.isAuthenticated })
         ))
     }
 
@@ -46,7 +48,7 @@ struct ChatView: View {
                         onRetry: { vm.retry() },
                         onFollowup: { vm.sendQuickPrompt($0) },
                         onCopy: { UIPasteboard.general.string = $0 },
-                        onShare: { vm.shareText($0) },
+                        onShare: { vm.share(messageIndex: $0, lang: localization.language.rawValue) },
                         onLogin: { vm.stashPendingChat(); router.switchTo(.profile) },
                         onLike: { vm.likeFeedback(messageIndex: $0, isActive: $1) },
                         onDislike: { vm.dislikeFeedback(messageIndex: $0, isActive: $1) },
@@ -55,6 +57,33 @@ struct ChatView: View {
                         onSavePlaceFavorite: { vm.savePlaceFavorite(placeId: $0, name: $1, address: $2, type: $3) },
                         onZoomImage: { vm.zoomedImageUrl = $0 }
                     )
+                }
+
+                // DD-011 — device context, visible and revocable. The location was already going
+                // out with every turn and appearing nowhere; this states it and offers a way to
+                // stop. It requests nothing and grants nothing: the permission model is untouched.
+                if vm.locationContextEnabled, vm.hasLocationContext, !vm.isLoadingConversation {
+                    HStack(spacing: Spacing.xxs) {
+                        Text("📍").accessibilityHidden(true)
+                        Text(String(localized: "context.nearYou"))
+                            .font(TappyFont.caption)
+                            .foregroundStyle(TappyColor.textSecondary)
+                        Button {
+                            vm.locationContextEnabled = false
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 10, weight: .semibold))
+                                .foregroundStyle(TappyColor.textSecondary)
+                        }
+                        .accessibilityLabel(Text("context.removeLocation"))
+                        .minimumTapTarget()
+                    }
+                    .padding(.horizontal, Spacing.sm)
+                    .padding(.vertical, Spacing.xxs)
+                    .background(TappyColor.surface)
+                    .clipShape(Capsule())
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, Spacing.md)
                 }
 
                 if !vm.isLoadingConversation {
@@ -100,6 +129,12 @@ struct ChatView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $vm.shareArtifact) { artifact in
+            TappyShareSheet(artifact: artifact, lang: localization.language.rawValue, planShare: vm.planShare) {
+                vm.shareArtifact = nil
+            }
+            .presentationDetents([.large])
+        }
         .sheet(isPresented: $vm.showOnboarding) {
             OnboardingSheet { prefs in
                 vm.completeOnboarding(prefs: prefs)

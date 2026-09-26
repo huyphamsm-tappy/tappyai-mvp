@@ -5,44 +5,43 @@ import android.content.Intent
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.annotation.StringRes
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
-import com.tappyai.core.designsystem.component.TappyCard
-import com.tappyai.core.designsystem.theme.TappyContainers
-import com.tappyai.core.designsystem.theme.TappyShapes
+import com.tappyai.app.home.HomeV3
+import com.tappyai.app.personal.V3AccentPill
+import com.tappyai.app.personal.V3GlyphTile
+import com.tappyai.app.personal.V3Panel
+import com.tappyai.app.personal.V3PersonalPage
+import com.tappyai.app.personal.V3Tone
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.tappyai.core.designsystem.theme.TappySpacing
 
 /**
@@ -50,12 +49,16 @@ import com.tappyai.core.designsystem.theme.TappySpacing
  * Notifications). Two blocks: a **push toggle card** and a **"What you'll receive" card** that
  * appears only while the toggle is on, exactly like the web reveals it only when subscribed.
  *
- * UI-only: the switch flips a local [NotificationsViewModel] flag — no push engine, permission
- * request, persistence, or backend. Inline back header (the app shell keeps the top bar); content
- * capped to [TappyContainers.content] with `xl` edge padding per UI Consistency Baseline v1.
+ * The switch is the "Tappy notifications" PREFERENCE ([NotificationPreferenceStore]: ON by
+ * default, OFF only after the person switched it off, persisted). The OS PERMISSION is a separate
+ * fact, shown as its own status line under the switch when the preference is ON but the device
+ * blocks delivery — never folded into the switch, so a denied permission can never silently
+ * rewrite the person's choice, and a default-ON preference never fires a permission dialog by
+ * itself. The dialog is asked for only by the person's own tap: the switch going ON, or the
+ * "Allow" action on the status line.
  *
- * The web's permission-gated states (unsupported / denied) are omitted: they require notification
- * permission logic, which is out of scope for this foundation.
+ * Inline back header (the app shell keeps the top bar); content capped to
+ * [TappyContainers.content] with `xl` edge padding per UI Consistency Baseline v1.
  */
 @Composable
 fun NotificationsScreen(
@@ -65,6 +68,13 @@ fun NotificationsScreen(
     val pushEnabled by viewModel.pushEnabled.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val permissionState = remember { NotificationPermissionState(context) }
+    // Re-read whenever the screen comes back to the front — the person may have just returned
+    // from the system settings screen this page sends them to.
+    var osGranted by remember { mutableStateOf(TappyNotificationPermission.isGranted(context)) }
+    LifecycleResumeEffect(Unit) {
+        osGranted = TappyNotificationPermission.isGranted(context)
+        onPauseOrDispose { }
+    }
 
     // Same permission pattern the chat mic already uses (ChatScreen's RECORD_AUDIO launcher) —
     // deliberately not a second permission framework.
@@ -72,55 +82,47 @@ fun NotificationsScreen(
         contract = ActivityResultContracts.RequestPermission(),
     ) { granted ->
         permissionState.hasBeenRequested = true
-        // Reflect what the OS decided, not what the tap asked for. Showing the switch ON after a
-        // denial would promise notifications that can never arrive.
-        viewModel.setPushEnabled(granted)
+        // The OS answer is the OS's; it is shown on the status line. It does not rewrite the
+        // person's own preference — a denial is "wanted, but blocked by the device", not "off".
+        osGranted = granted
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.xl),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.common_back),
-                    )
-                }
-                Text(text = stringResource(R.string.notif_title), style = MaterialTheme.typography.titleLarge)
-            }
+    // The one place the OS is asked, and only on the person's own tap.
+    val askOs: () -> Unit = {
+        when (TappyNotificationPermission.actionFor(context, permissionState.hasBeenRequested)) {
+            NotificationPermissionAction.NOT_REQUIRED,
+            NotificationPermissionAction.ALREADY_GRANTED,
+            -> osGranted = true
 
+            NotificationPermissionAction.REQUEST ->
+                requestPermission.launch(TappyNotificationPermission.PERMISSION)
+
+            NotificationPermissionAction.DIRECT_TO_SETTINGS ->
+                openAppNotificationSettings(context)
+        }
+    }
+
+    // 2026-09-17: on the V3 personal page — this screen is what the V3 Inbox's settings control
+    // opens (the web embeds `NotificationSettings` inside the Inbox panel), so it wears the same
+    // ground, header and panel as the page that opens it. Content unchanged.
+    V3PersonalPage(
+        title = stringResource(R.string.notif_title),
+        subtitle = null,
+        onBack = onBack,
+    ) {
+        run {
             PushToggleCard(
                 enabled = pushEnabled,
+                osBlocked = pushEnabled && !osGranted,
                 onToggle = { wanted ->
-                    // Turning push OFF never revokes anything and never asks: it is the user's
-                    // in-app choice. Only turning it ON can need the OS permission.
-                    if (!wanted) {
-                        viewModel.setPushEnabled(false)
-                    } else when (
-                        TappyNotificationPermission.actionFor(context, permissionState.hasBeenRequested)
-                    ) {
-                        NotificationPermissionAction.NOT_REQUIRED,
-                        NotificationPermissionAction.ALREADY_GRANTED,
-                        -> viewModel.setPushEnabled(true)
-
-                        NotificationPermissionAction.REQUEST ->
-                            requestPermission.launch(TappyNotificationPermission.PERMISSION)
-
-                        NotificationPermissionAction.DIRECT_TO_SETTINGS ->
-                            openAppNotificationSettings(context)
-                    }
+                    // The switch records the person's choice, ON or OFF, as-is. Turning it OFF
+                    // never revokes anything and never asks. Turning it ON is the person's own
+                    // tap, so it is also the moment to ask the OS if the OS has not yet allowed
+                    // delivery — never on screen open, never because of the default.
+                    viewModel.setPushEnabled(wanted)
+                    if (wanted && !osGranted) askOs()
                 },
+                onAllow = askOs,
             )
 
             if (pushEnabled) {
@@ -131,41 +133,26 @@ fun NotificationsScreen(
 }
 
 @Composable
-private fun PushToggleCard(enabled: Boolean, onToggle: (Boolean) -> Unit) {
-    TappyCard(modifier = Modifier.fillMaxWidth()) {
+private fun PushToggleCard(enabled: Boolean, osBlocked: Boolean, onToggle: (Boolean) -> Unit, onAllow: () -> Unit) {
+    V3Panel {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(TappySpacing.lg),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(TappyShapes.input)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Notifications,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
+            V3GlyphTile(icon = Icons.Filled.Notifications, tint = HomeV3.Purple, size = 40.dp, radius = 12.dp, iconSize = 20.dp)
             Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.notif_push_title),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+                Text(text = stringResource(R.string.notif_push_title), color = HomeV3.OnSurface, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 Text(
                     text = if (enabled) {
                         stringResource(R.string.notif_push_on_description)
                     } else {
                         stringResource(R.string.notif_push_off_description)
                     },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = HomeV3.OnSurfaceVariant,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    modifier = Modifier.padding(top = 2.dp),
                 )
             }
             val toggleContentDescription = stringResource(R.string.notif_toggle_content_description)
@@ -173,19 +160,39 @@ private fun PushToggleCard(enabled: Boolean, onToggle: (Boolean) -> Unit) {
                 checked = enabled,
                 onCheckedChange = onToggle,
                 modifier = Modifier.semantics { contentDescription = toggleContentDescription },
+                colors = SwitchDefaults.colors(checkedTrackColor = HomeV3.Purple),
             )
+        }
+        // The OS permission, as its own fact: the preference is ON, the device blocks delivery.
+        if (osBlocked) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = TappySpacing.md),
+                horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.notif_os_blocked),
+                    color = V3Tone.Amber,
+                    fontSize = 12.sp,
+                    lineHeight = 16.sp,
+                    modifier = Modifier.weight(1f),
+                )
+                V3AccentPill(text = stringResource(R.string.notif_os_allow), onClick = onAllow)
+            }
         }
     }
 }
 
 @Composable
 private fun WhatYoullReceiveCard() {
-    TappyCard(modifier = Modifier.fillMaxWidth()) {
+    V3Panel {
         Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
             Text(
                 text = stringResource(R.string.notif_receive_header),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = HomeV3.OnSurfaceVariant,
+                fontSize = 10.sp,
+                letterSpacing = 1.2.sp,
+                fontWeight = FontWeight.SemiBold,
             )
             RECEIVE_ITEMS.forEach { item ->
                 Row(
@@ -193,19 +200,11 @@ private fun WhatYoullReceiveCard() {
                     horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(text = item.emoji, style = MaterialTheme.typography.titleMedium)
-                    Text(
-                        text = stringResource(item.textRes),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
+                    Text(text = item.emoji, fontSize = 17.sp)
+                    Text(text = stringResource(item.textRes), color = HomeV3.OnSurface, fontSize = 13.5.sp)
                 }
             }
-            Text(
-                text = stringResource(R.string.notif_receive_footer),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            Text(text = stringResource(R.string.notif_receive_footer), color = HomeV3.OnSurfaceVariant, fontSize = 12.sp, lineHeight = 16.sp)
         }
     }
 }

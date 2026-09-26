@@ -1,0 +1,161 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 17202,
+  "evidenceId": "e4cfabed-9cfc-49c0-9cac-c94d53839c39",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí buổi tối Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12774,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15637,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ sông",
+      "rating": 4.4,
+      "count": 8896,
+      "hours": "09:00–19:00",
+      "distance_km": 0.6,
+      "address": "Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ kè hầm Thủ Thiêm",
+      "rating": 4.7,
+      "count": 160,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.2,
+      "address": "14A, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10458,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27359,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MEOW BILLIARDS CLUB CỐNG QUỲNH - CÂU LẠC BỘ BIDA LỖ - BI-A LỖ",
+      "rating": 4.5,
+      "count": 533,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.9,
+      "address": "Hẻm 189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cột cờ Thủ Ngữ",
+      "rating": 4.4,
+      "count": 351,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1,
+      "address": "2 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Văn hoá Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 380,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công Viên Lê Văn Tám",
+      "rating": 4.4,
+      "count": 1372,
+      "distance_km": 1.5,
+      "address": "Hai Bà Trưng, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12774,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00"
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15637,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên bờ sông",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 8896,
+        "distance_km": 0.6,
+        "open_now": true,
+        "opening_hours": "09:00–19:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các địa điểm giải trí gần bạn ở Quận 1 cho buổi tối nay nhé!\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh** cho buổi tối nay! 📚 **4.6⭐ (12.774 đánh giá Google Maps)** · Cách bạn chỉ 0.5km, đang mở cửa đến 21:00 — hoàn hảo cho 5 người muốn chơi gì đó yên tĩnh và lãng mạn. Nơi đây kết hợp không gian sách, quán cà phê, và các hoạt động văn hóa, rất phù hợp để nhóm bạn dạo bộ, chụp ảnh, hoặc ngồi trò chuyện.\n\nNếu muốn năng động hơn, **Công viên Tao Đàn** (1km, mở đến 22:00) cũng là lựa chọn tuyệt vời với không gian xanh mát, hoặc **Phố đi bộ Bùi Viện** (1.3km) nếu thích không khí sôi động với quán ăn, bar và người đông.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Đường sách\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn gần đó|Phố đi bộ Bùi Viện sôi động|Quán cà phê decor đẹp Q1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các địa điểm giải trí gần bạn ở Quận 1 cho buổi tối nay nhé!\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh** cho buổi tối nay! 📚 **4.6⭐ (12.774 đánh giá Google Maps)** · Cách bạn chỉ 0.5km, đang mở cửa đến 21:00 — hoàn hảo cho 5 người muốn chơi gì đó yên tĩnh và lãng mạn. Nơi đây kết hợp không gian sách, quán cà phê, và các hoạt động văn hóa, rất phù hợp để nhóm bạn dạo bộ, chụp ảnh, hoặc ngồi trò chuyện.\n\nNếu muốn năng động hơn, **Công viên Tao Đàn** (1km, mở đến 22:00) cũng là lựa chọn tuyệt vời với không gian xanh mát, hoặc **Phố đi bộ Bùi Viện** (1.3km) nếu thích không khí sôi động với quán ăn, bar và người đông.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Đường sách\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn gần đó|Phố đi bộ Bùi Viện sôi động|Quán cà phê decor đẹp Q1[/FOLLOWUPS]"
+    }
+  ]
+}

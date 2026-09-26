@@ -8,21 +8,28 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import ShareMenu from '@/components/share/ShareMenu'
+import { recordReviewShare } from '@/lib/share/recordReviewShare'
+import { REPORT_REASONS } from '@/lib/reviews/reportReasons'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import {
   Heart, MessageCircle, Bookmark, Share2,
   ChevronLeft, ChevronRight, MoreVertical, Trash2, EyeOff,
-  X, Loader2, Plus, AlertCircle,
+  X, Loader2, Plus, AlertCircle, Sparkles, Flag,
 } from 'lucide-react'
 import VideoPlayer, { isFeedAudioUnlocked, type VideoPlayerHandle } from '@/components/explore/VideoPlayer'
 import LinkPoster from '@/components/LinkPoster'
 import { attachWatchTracker } from '@/lib/explore/behaviorTracker'
-import ReviewMusicDisc from './ReviewMusicDisc'
-import { useMusicTrack, getPreviewUrl } from '@/modules/music'
+import { track } from '@/lib/tracking/tracker'
+import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
+import { useOnlineStatus } from '@/hooks/useOnlineStatus'
+import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
+import { useMusicTrack, getPreviewUrl } from '@/modules/music'
+import { ReviewMusicCredit } from './ReviewMusicCard'
+import { SHOW_MUSIC } from '@/lib/config/product'
 
 /* ─── types ─── */
 export interface Profile { full_name: string | null; avatar_url: string | null }
@@ -35,14 +42,16 @@ export interface Review {
   content_type?: string | null; media_url?: string | null; thumbnail?: string | null
   source_type?: string | null; source_url?: string | null; hashtags?: string[] | null
   watch_time_avg?: number; score?: number
+  /** A LIBRARY soundtrack picked in the composer (`origin: 'attached'`), by reference. */
   music?: { version: number; trackId: string; startSec: number; volume: number; origin?: 'original' | 'attached' } | null
 }
 
 // A "share-only" post (clip/photo posted without adding a place) carries a
 // sentinel place_name, so it must not show a 📍 chip or count as a hot place.
-// Includes the legacy no-diacritic value written by older builds.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-export const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// Includes the legacy no-diacritic value written by older builds. The set
+// itself lives in lib/share/reviewShareTitle.ts, which also keeps the sentinel
+// out of the share title; this is the feed's name for the same check.
+export const isShareOnlyName = isShareOnlyPlaceName
 
 export function ago(d: string, t: (key: string, vars?: Record<string, string>) => string) {
   const m = Math.floor((Date.now() - new Date(d).getTime()) / 60000)
@@ -277,15 +286,18 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
   return (
     <ShareMenu
       url={absoluteUrl(`/reviews/${review.id}`)}
-      title={review.place_name}
+      // The place when there is one, else the caption, else the brand — never the sentinel.
+      title={reviewShareTitle(review)}
       open
       onClose={onClose}
+      // A completed share becomes a row of the self profile's "Đã share" history.
+      onShared={(channel) => { void recordReviewShare(review.id, channel) }}
     />
   )
 }
 
 /* ─── Single post (TikTok style) ─── */
-export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onSoundTap, onFollow, onOpenLikes }: {
+export function Post({ r, me, feedType, renderVideo, active = false, showFeedTabs = true, onFeedTypeChange, onLike, onLikeDouble, onSave, onComment, onShare, onDelete, onFollow, onOpenLikes }: {
   r: Review; me: string | null
   // Only the active slide (± 1 neighbour) mounts a real <video>. Off-screen
   // slides render just the thumbnail. iOS Safari caps how many HTMLMediaElements
@@ -300,7 +312,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   feedType: 'for-you' | 'latest' | 'following'; onFeedTypeChange: (ft: 'for-you' | 'latest' | 'following') => void
   onLike: (id: string) => void; onLikeDouble: (id: string) => void; onSave: (id: string) => void
   onComment: (r: Review) => void; onShare: (r: Review) => void; onDelete: (id: string) => void
-  onSoundTap?: (trackId: string) => void
   // Follow the clip's author straight from the feed (the red "+" on the avatar).
   // Optional: the profile clip viewer doesn't pass it, and without it the "+" is
   // not rendered at all — an inert badge was the bug (WEB-EXPLORE-FOLLOW-002).
@@ -310,11 +321,37 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
   onOpenLikes?: (r: Review) => void
 }) {
   const { t } = useTranslation()
+  // S-07 offline state. The feed itself stays readable when the connection drops —
+  // only the Ask-Tappy bridge is withheld, because it is the one control here that
+  // cannot do anything without the network. Same hook the chat composer uses.
+  const online = useOnlineStatus()
   const photos = (r.photos || []).filter(Boolean)
   const isMe = me === r.user_id
   const name = r.profiles?.full_name || t('reviews.anonymous')
   const handle = '@' + name.replace(/\s+/g, '').toLowerCase()
   const [menu, setMenu] = useState(false)
+  // F-031 — a non-owner can report someone else's clip/review. The owner sees the
+  // delete/hide menu above; a signed-in non-owner sees this. Guests (me === null)
+  // see neither: the report route requires an authenticated identity (ADR-026).
+  const [reportOpen, setReportOpen] = useState(false)
+  const [reporting, setReporting] = useState(false)
+  const submitReport = useCallback(async (reason: string) => {
+    if (reporting) return
+    setReporting(true)
+    try {
+      const res = await fetch(`/api/reviews/${r.id}/report`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reason }),
+      })
+      // report_submitted (F-031). Only the fixed reason enum — never the reported
+      // id, author or content. Fires once, on a report the server accepted.
+      if (res.ok) track('report', { reason })
+      alert(res.ok ? t('reviews.reportThanks') : t('reviews.reportFailed'))
+    } catch {
+      alert(t('reviews.reportFailed'))
+    } finally {
+      setReporting(false); setReportOpen(false); setMenu(false)
+    }
+  }, [r.id, reporting, t])
   const containerRef = useRef<HTMLDivElement>(null)
   const durationRef = useRef<number | null>(null)
   const videoHandleRef = useRef<VideoPlayerHandle>(null)
@@ -336,18 +373,21 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
     }
   }, [])
 
-
-  // Attached sound ("use this sound"): resolve the borrowed track's audio only
-  // for clips in the render window, then hand its URL to VideoPlayer, which plays
-  // it in place of the clip's own audio. An 'original' clip already IS its own
-  // audio, so only 'attached' needs substituting.
-  const attachedTrackId = renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
+  // Attached LIBRARY soundtrack: resolve the track (through /api/music, which
+  // serves library rows only) for clips in the render window, then hand its URL
+  // to VideoPlayer, which plays it in place of the clip's own audio. An
+  // 'original' clip already IS its own audio, so only 'attached' substitutes.
+  // Music hidden by default (SHOW_MUSIC, owner decision 2026-09-24): with it off, an attached
+  // library soundtrack is not resolved, so the clip plays its OWN embedded audio (F-034 behaviour)
+  // and no credit renders. Flip SHOW_MUSIC back to true to restore attached-soundtrack playback.
+  const attachedTrackId = SHOW_MUSIC && renderVideo && r.music?.origin === 'attached' ? r.music.trackId : null
   const { track: attachedTrack, loading: attachedLoading } = useMusicTrack(attachedTrackId)
   const attachedSoundUrl = attachedTrack ? getPreviewUrl(attachedTrack) : undefined
   // Known synchronously from the review row — VideoPlayer mutes the video from
   // frame one, BEFORE the track URL resolves (deciding by soundUrl alone left
   // the video unmuted during the fetch gap → double audio). Drops to false when
-  // the fetch finishes empty → VideoPlayer falls back to the clip's own audio.
+  // the fetch finishes empty (a track the library no longer serves) → VideoPlayer
+  // falls back to the clip's own audio.
   const hasAttachedSound = !!attachedTrackId && (attachedLoading || !!attachedTrack)
 
   useEffect(() => {
@@ -506,6 +546,29 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
             )}
           </div>
         )}
+        {!isMe && me && (
+          <div className="absolute right-4 top-12">
+            <button onClick={() => { setReportOpen(v => !v) }} aria-label={t('reviews.report')} className="w-8 h-8 flex items-center justify-center">
+              <MoreVertical size={20} className="text-white drop-shadow" />
+            </button>
+            {reportOpen && (
+              <>
+                <div className="fixed inset-0 z-30" onClick={() => setReportOpen(false)} />
+                <div className="absolute right-0 top-9 z-40 bg-[#1a1a1a] border border-gray-700 rounded-2xl overflow-hidden w-52 shadow-2xl">
+                  <div className="flex items-center gap-2 px-4 py-3 text-gray-400 text-xs font-medium border-b border-gray-800">
+                    <Flag size={13} /> {t('reviews.report')}
+                  </div>
+                  {REPORT_REASONS.map(reason => (
+                    <button key={reason} disabled={reporting} onClick={() => submitReport(reason)}
+                      className="flex items-center w-full px-4 py-2.5 text-gray-200 text-sm hover:bg-gray-800 disabled:opacity-50 border-t border-gray-900 first:border-t-0">
+                      {t(`reviews.reportReason.${reason}`)}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Right actions (TikTok style) */}
@@ -548,13 +611,6 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
         <RAction icon={<Bookmark size={24} className={r.saved_by_me ? 'fill-amber-400 text-amber-400' : 'text-white'} />} label={t('reviews.railSave')} onClick={() => onSave(r.id)} />
         {/* Share */}
         <RAction icon={<Share2 size={24} className="text-white" />} label={t('reviews.railShare')} onClick={() => onShare(r)} />
-        {/* The clip's sound — tap to open its sound page ("use this sound").
-            Shown for ALL upload video clips. If the clip has a registered track
-            (music.trackId), the disc links to the sound page; otherwise it's
-            a visual-only indicator (migrations may not be applied yet). */}
-        {r.content_type === 'video' && (r.source_type === 'upload' || !r.source_type) && r.media_url && (
-          <ReviewMusicDisc trackId={r.music?.trackId} onTap={onSoundTap} />
-        )}
       </div>
 
       {/* Bottom info */}
@@ -563,11 +619,88 @@ export function Post({ r, me, feedType, renderVideo, active = false, showFeedTab
           <p className="text-white font-bold text-[15px] mb-1 drop-shadow truncate">{handle}</p>
         </Link>
         {r.body ? <p className="text-white text-sm leading-snug line-clamp-3 drop-shadow">{r.body}</p> : null}
+        {/* The library soundtrack's credit (artist · licence). Attribution is the licence's
+            condition, so it sits with the caption; it is a label, not a "use this sound" CTA. */}
+        {SHOW_MUSIC && r.music?.origin === 'attached' && <ReviewMusicCredit trackId={r.music.trackId} />}
         {!isShareOnlyName(r.place_name) && (
-          <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
-            <span className="text-sm">📍</span> {r.place_name}
-            {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
-          </p>
+          <>
+            <p className="text-white/70 text-xs mt-1.5 flex items-center gap-1">
+              <span className="text-sm">📍</span> {r.place_name}
+              {r.rating > 0 && <span className="ml-2 text-amber-400">{'★'.repeat(r.rating)}</span>}
+            </p>
+
+            {/* ── Ask Tappy — the ONE thing V3 adds to Explore (OD-2 / IA-5) ────
+                It sits here, under the caption and the place, exactly where the
+                approved layout puts it — NOT in the action rail. On the rail it
+                would have been the largest, brightest control on the surface,
+                outweighing like/comment/share; those are Explore's own identity
+                and this pass does not touch them.
+
+                🚨 It carries WHAT THE ITEM IS, never what the user wants. The
+                prompt names the place and asks about it; it does not decide the
+                intent, because this text arrives in the thread as if the user
+                had typed it themselves.
+
+                🚨 It shares this `isShareOnlyName` guard with the place line for
+                a reason: no place, no subject. A bridge built from an empty name
+                would look like a working button and open a thread about nothing.
+                Same rule as Home's "Dành cho bạn" — no source, no affordance.
+
+                🔑 `ctx=<review id>` NAMES THE CLIP (audit 2026-09-12). The prompt
+                alone reached the route as a bare name, so with no GPS the place
+                search honestly asked "khu vực nào?" — to someone looking at the
+                place. The id lets the route read this row's own place name,
+                address and caption under the caller's RLS; the visible question
+                is exactly what it was. */}
+            {online ? (
+              <Link
+                href={`/chat?q=${encodeURIComponent(t('bridge.promptEntity', { subject: r.place_name }))}&ctx=${encodeURIComponent(r.id)}`}
+                onClick={e => {
+                  e.stopPropagation()
+                  // Measured (2026-09-12): the click, by surface. The verdict arrives from the
+                  // chat route as phase `target` on the same event, joined by review_id.
+                  const ev = askTappyPlaceEvent({ phase: 'click', reviewId: r.id, surface: 'feed', hasAddress: !!r.place_address?.trim() })
+                  track(ev.event_type, ev.metadata)
+                }}
+                /* min-h-[44px] is not decoration. Cross-screen invariant 5 puts the floor at
+                   44x44, and this control sits on a surface where every neighbouring tap
+                   scrolls the feed — an undersized target here mis-fires into a swipe.
+                   focus-visible is required by the same invariant: the feed is fully
+                   keyboard-reachable and an invisible focus ring is an invisible control. */
+                className="mt-2.5 inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                style={{ background: 'var(--v3-accent-fill)' }}
+              >
+                <Sparkles size={15} aria-hidden="true" />
+                {t('reviews.askAboutPlace')}
+              </Link>
+            ) : (
+              /* ── Offline (S-07 states) ───────────────────────────────────────
+                 The spec is precise: cached items stay READABLE and the ask
+                 affordance is DISABLED. So the caption, the place and the whole
+                 feed below are untouched — only this one control stops.
+
+                 It is dimmed AND says why. Dimming alone would leave the reason
+                 carried by colour, which cross-screen invariant 6 forbids, and
+                 a user who cannot see the difference would tap a dead control.
+
+                 `aria-disabled` on an element with no href keeps it announced
+                 but inert, matching how the chat composer withholds Send. */
+              <span
+                data-testid="ask-tappy-offline"
+                aria-disabled="true"
+                className="mt-2.5 inline-flex min-h-[44px] cursor-not-allowed items-center gap-1.5 rounded-full px-4 py-2.5 text-[13px] font-semibold text-white/60"
+                style={{ background: 'var(--v3-accent-fill)', opacity: 0.45 }}
+              >
+                <Sparkles size={15} aria-hidden="true" />
+                {t('reviews.askAboutPlace')}
+              </span>
+            )}
+            {!online && (
+              <p role="status" className="mt-1.5 text-[11px] text-white/60">
+                {t('reviews.askOfflineReason')}
+              </p>
+            )}
+          </>
         )}
       </div>
     </div>

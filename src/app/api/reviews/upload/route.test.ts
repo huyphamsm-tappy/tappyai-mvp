@@ -60,9 +60,17 @@ vi.mock('@/lib/media', () => ({
 
 import { POST } from './route'
 
-// A REAL PNG magic-byte header, so `sniffImageType` runs for real and a passing
-// upload passes for the right reason.
-const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00, 0x0d])
+// A REAL, DECODABLE 1x1 PNG — not just the magic bytes.
+//
+// 🚨 R-2 CHANGED WHAT THIS FIXTURE HAS TO BE. The route now strips EXIF before storing, which
+// means it DECODES the image; a header followed by nothing is no longer something the route will
+// accept, and it should not be — a payload that cannot be decoded is not an image we store. The
+// old 12-byte stub passed the sniffer and died in sharp, so the test would have failed for a
+// reason that had nothing to do with what it is testing.
+const PNG = new Uint8Array(Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAAPoAAAD6AG1e1JrAAAADElEQVQImWNgYGAAAAAEAAGjChXjAAAAAElFTkSuQmCC',
+  'base64',
+))
 
 const ELIGIBLE: AgeRow = { has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }
 const UNDER_18: AgeRow = { has_dob: true, age_years: 15, age_band: 'under_18', corrections_used: 0 }
@@ -121,6 +129,14 @@ describe('the upload route refuses everyone the review route refuses', () => {
     expect(status).toBe(200)
     expect(body.url).toContain('https://cdn.example/reviews/')
     expect(puts).toHaveLength(1)
+  })
+
+  it('the stored name carries 24 random characters, not just a timestamp (owner 2026-09-26)', async () => {
+    const a = (await upload()).puts[0]
+    h.state.puts = []
+    const b = (await upload()).puts[0]
+    expect(a).toMatch(/^reviews\/[^/]+\/\d+-[A-Za-z0-9]{24}\.[a-z]+$/)
+    expect(a.split('-').pop()).not.toBe(b.split('-').pop())
   })
 })
 
@@ -222,8 +238,8 @@ describe('the refusal is actionable on the client', () => {
     // Detail — including that neither kept a bare fetch — is owned by
     // `ageGateClient.test.ts`. This asserts only that both participate.
     for (const p of [
-      'src/app/reviews/new/page.tsx',
-      'src/app/profile/bookings/BookingReviewButton.tsx',
+      'src/app/(app)/reviews/new/page.tsx',
+      'src/app/(app)/profile/bookings/BookingReviewButton.tsx',
     ]) {
       expect(SRC(p), p).toContain("apiFetch('/api/reviews/upload'")
     }

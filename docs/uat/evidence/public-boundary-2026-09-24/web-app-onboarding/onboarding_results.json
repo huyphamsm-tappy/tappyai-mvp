@@ -1,0 +1,42 @@
+[
+ {
+  "page": "/",
+  "path": "/",
+  "geo": 2,
+  "langModal": true,
+  "appMarker": true,
+  "shot": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\D--Claude-Projects-TappyAI--worktrees-g1-growth\\89302721-91af-4d74-9d1b-c9d52232820f\\scratchpad\\fp\\onboarding/app_home_first_visit.png"
+ },
+ {
+  "page": "/chat",
+  "path": "/chat",
+  "geo": 2,
+  "langModal": true,
+  "appMarker": true,
+  "shot": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\D--Claude-Projects-TappyAI--worktrees-g1-growth\\89302721-91af-4d74-9d1b-c9d52232820f\\scratchpad\\fp\\onboarding/app_chat_first_visit.png"
+ },
+ {
+  "page": "/chat — tap \"near me\"",
+  "clicked": "📍 Tìm quanh đây",
+  "geoBefore": 2,
+  "geoAfter": 3,
+  "langModalAfterChoice": false,
+  "shot": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\D--Claude-Projects-TappyAI--worktrees-g1-growth\\89302721-91af-4d74-9d1b-c9d52232820f\\scratchpad\\fp\\onboarding/app_chat_after_near_me_tap.png"
+ },
+ {
+  "page": "/tools",
+  "path": "/tools",
+  "geo": 2,
+  "langModal": true,
+  "appMarker": true,
+  "shot": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\D--Claude-Projects-TappyAI--worktrees-g1-growth\\89302721-91af-4d74-9d1b-c9d52232820f\\scratchpad\\fp\\onboarding/app_tools_first_visit.png"
+ },
+ {
+  "page": "/onboarding",
+  "path": "/onboarding",
+  "geo": 2,
+  "langModal": true,
+  "appMarker": true,
+  "shot": "C:\\Users\\Admin\\AppData\\Local\\Temp\\claude\\D--Claude-Projects-TappyAI--worktrees-g1-growth\\89302721-91af-4d74-9d1b-c9d52232820f\\scratchpad\\fp\\onboarding/app_onboarding_first_visit.png"
+ }
+]

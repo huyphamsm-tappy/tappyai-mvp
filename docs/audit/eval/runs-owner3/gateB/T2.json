@@ -1,0 +1,683 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 20092,
+  "evidenceId": "1a12a808-5759-4466-9377-b7513bee09b5",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-09-26",
+        "checkOut": "2026-09-27"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm khách sạn gần biển Đà Nẵng cho cuối tuần tới (26-27/9), 1 đêm dưới 1 triệu VND. Để gợi ý chính xác, mình cần biết:\n\n**M Hotel Da Nang** — **4.8⭐ (2.824 đánh giá)** · 286 Võ Nguyên Giáp, Ngũ Hành Sơn.[Booking.com](https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27) để xem có nằm trong tầm 1 triệu VND không.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn khác gần biển|Giá phòng dưới 1 triệu|Chỉ định ngày khác[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm khách sạn gần biển Đà Nẵng cho cuối tuần tới (26-27/9), 1 đêm dưới 1 triệu VND. Để gợi ý chính xác, mình cần biết:\n\n**M Hotel Da Nang** — **4.8⭐ (2.824 đánh giá)** · 286 Võ Nguyên Giáp, Ngũ Hành Sơn.[Booking.com](https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27) để xem có nằm trong tầm 1 triệu VND không.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn khác gần biển|Giá phòng dưới 1 triệu|Chỉ định ngày khác[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "location": "Đà Nẵng",
+      "source": "Serper Maps",
+      "hotel_list": [
+        {
+          "name": "M Hotel Da Nang",
+          "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+          "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3816 868",
+          "google_rating": "4.8⭐ (2.824 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 2824,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+          "website_uri": "https://mhotel.vn/property/m-hotel-da-nang/"
+        },
+        {
+          "name": "Seahorse",
+          "place_id": "ChIJEa410zMYQjER3f11TKinbkU",
+          "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3589 888",
+          "google_rating": "4.8⭐ (1.835 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1835,
+          "place_types": [
+            "Khách sạn",
+            "Khách sạn nghỉ dưỡng",
+            "Căn hộ được phục vụ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5003120577334345181",
+          "website_uri": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland"
+        },
+        {
+          "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+          "place_id": "ChIJN75cdYQXQjERBUnemtIubGM",
+          "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3913 999",
+          "google_rating": "4.7⭐ (4.418 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 4418,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Quán cà phê",
+            "Trung tâm hội thảo",
+            "Spa sức khỏe",
+            "Sân pickleball",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7164152589315885317",
+          "website_uri": "https://nalod.com.vn/"
+        },
+        {
+          "name": "Sala Danang Beach Hotel",
+          "place_id": "ChIJMeyhoXgXQjERqCs6CuNR5yI",
+          "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3658 555",
+          "google_rating": "4.7⭐ (3.792 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 3792,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2515068952480721832",
+          "website_uri": "https://salahotelgroup.com/en/saladanangbeachhotel/"
+        },
+        {
+          "name": "Nhu Minh Plaza Danang Hotel",
+          "place_id": "ChIJrxxvlNsXQjERy-eJcpABRJA",
+          "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3555 666",
+          "google_rating": "4.7⭐ (2.715 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 2715,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10395435559786506187",
+          "website_uri": "http://www.nhuminhplazahotel.com/"
+        },
+        {
+          "name": "Khách sạn San Marino Boutique Danang",
+          "place_id": "ChIJ1zS44n8XQjERQTwAzzObvLo",
+          "address": "161 Võ Văn Kiệt, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3985 777",
+          "google_rating": "4.7⭐ (1.610 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1610,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13455800433494735937",
+          "website_uri": "http://sanmarinodanang.com/"
+        },
+        {
+          "name": "Khách Sạn Avatar Đà Nẵng",
+          "place_id": "ChIJkQZZEGUXQjER34_Ct2Z5aVA",
+          "address": "02 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 943 683 777",
+          "google_rating": "4.7⭐ (1.225 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 1225,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5794295877665460191",
+          "website_uri": "https://www.agoda.com/avatar-hotel_2/hotel/da-nang-vn.html?countryId=38&finalPriceView=1&isShowMobileAppPrice=false&cid=1948475&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-08-11&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&isFreeOccSearch=false&los=1&searchrequestid=4f4af986-6ebc-4fa4-a096-3adef9efefc3&ds=HkNokBHSp6OE70jx"
+        },
+        {
+          "name": "HAIAN Beach Hotel & Spa",
+          "place_id": "ChIJW7iIXnoXQjERwzVF2LpQ_m4",
+          "address": "278 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 2228 666",
+          "google_rating": "4.6⭐ (4.075 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 4075,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7997918751679133123",
+          "website_uri": "http://haianbeachhotelspa.com/"
+        },
+        {
+          "name": "DLG Hotel Danang",
+          "place_id": "ChIJUeabB3kXQjERFP2JL7c8YCg",
+          "address": "258 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3925 888",
+          "google_rating": "4.6⭐ (2.776 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2776,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2909392116755594516",
+          "website_uri": "https://dlghoteldanang.com/"
+        },
+        {
+          "name": "Khách sạn G8 Luxury Đà Nẵng",
+          "place_id": "ChIJe5tt-SgYQjERVO5xbqkTfLQ",
+          "address": "59 Lê Duẩn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3761 999",
+          "google_rating": "4.6⭐ (2.494 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2494,
+          "place_types": [
+            "Khách sạn lưu trú dài hạn",
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13005291442362510932",
+          "website_uri": "https://g8luxury.com/"
+        }
+      ],
+      "booking_link": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+      "agoda_link": "https://www.agoda.com/vi-vn/",
+      "note": "Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.",
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget dưới 1 triệu VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 18,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "M Hotel Da Nang",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.8"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "2824 reviews"
+          }
+        ],
+        "not_chosen": "Seahorse",
+        "conditional": true
+      },
+      "travel_editorial": [
+        {
+          "source": "VnExpress",
+          "article_id": "5119711",
+          "title": "11 'điểm du lịch đẹp nhất Việt Nam' trên tạp chí Anh",
+          "url": "https://vnexpress.net/11-diem-du-lich-dep-nhat-viet-nam-tren-tap-chi-anh-5119711.html",
+          "publishedAt": "2026-09-13T12:04:12+07:00",
+          "modifiedAt": "2026-09-14T11:28:05+07:00",
+          "section": "Điểm đến",
+          "summary": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times.",
+          "extract": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times. Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh). Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh).",
+          "freshness": "stable",
+          "provenance": "REVIEW_SUPPORTED",
+          "dated": "09/2026"
+        }
+      ],
+      "results_note": "Hien thi 10/18 ket qua (rut gon: chi cac truong de chon); the (card) cua user co day du."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "travel",
+        "ranked": true,
+        "items": [
+          {
+            "id": "stay:16.05165,108.24803",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "M Hotel Da Nang",
+            "image": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg",
+            "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2824,
+            "phone": "+84 236 3816 868",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 0,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "2824 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@explorelivetravel/video/7624989307203259669",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7069989189938949055",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://mhotel.vn/property/m-hotel-da-nang/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363816868",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%20Hotel%20Da%20Nang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "stay:16.06910,108.22291",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Seahorse",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt8o7miWpxydt4uBFH9nFtDH4dlO9is8GTpqd_gVgvcQ&s",
+            "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1835,
+            "phone": "+84 236 3589 888",
+            "categories": [
+              "Khách sạn",
+              "Khách sạn nghỉ dưỡng",
+              "Căn hộ được phục vụ"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5003120577334345181",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Seahorse%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363589888",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.07210,108.24466",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+            "image": "https://nalod.com.vn/uploads/files/Image-thumbnail.png",
+            "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 4418,
+            "phone": "+84 236 3913 999",
+            "categories": [
+              "Khách sạn nghỉ dưỡng",
+              "Quán cà phê",
+              "Trung tâm hội thảo",
+              "Spa sức khỏe",
+              "Sân pickleball",
+              "Nhà hàng"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@reviewkhachsandanang43rv/video/7623019870178921748",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7164152589315885317",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://nalod.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363913999",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=NALOD%20%C4%90%C3%80%20N%E1%BA%B4NG%20-%20KH%C3%81CH%20S%E1%BA%A0N%20%26%20TRUNG%20T%C3%82M%20H%E1%BB%98I%20NGH%E1%BB%8A%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "stay:16.06222,108.24518",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Sala Danang Beach Hotel",
+            "image": "https://salahotelgroup.com/wp-content/uploads/2025/09/DJI_0152-HDR-edit-V3-copy-4-1024x937.jpg",
+            "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 3792,
+            "phone": "+84 236 3658 555",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2515068952480721832",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Sala%20Danang%20Beach%20Hotel%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363658555",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.06984,108.23865",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Nhu Minh Plaza Danang Hotel",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRh8ySh5HbsTkX5tHSihFpCxD7A0LBHaEK6K5Qe9nL1hw&s=10",
+            "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 2715,
+            "phone": "+84 236 3555 666",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10395435559786506187",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Nhu%20Minh%20Plaza%20Danang%20Hotel%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363555666",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.06171,108.23763",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Khách sạn San Marino Boutique Danang",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ4mqmR7hbGizvOxadCZnj-GmNT6_yueDDcafRsotNNA&s=10",
+            "address": "161 Võ Văn Kiệt, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 1610,
+            "phone": "+84 236 3985 777",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13455800433494735937",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20San%20Marino%20Boutique%20Danang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363985777",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.04960,108.24706",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Khách Sạn Avatar Đà Nẵng",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAQjRJRFkCiVT0p3ewbnuRvjEezLBIQdAnBYhymjqnNw&s=10",
+            "address": "02 An Thượng 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 1225,
+            "phone": "+84 943 683 777",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5794295877665460191",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.agoda.com/avatar-hotel_2/hotel/da-nang-vn.html?countryId=38&finalPriceView=1&isShowMobileAppPrice=false&cid=1948475&numberOfBedrooms=&familyMode=false&adults=2&children=0&rooms=1&maxRooms=0&checkIn=2026-08-11&isCalendarCallout=false&childAges=&numberOfGuest=0&missingChildAges=false&travellerType=1&showReviewSubmissionEntry=false&currencyCode=VND&isFreeOccSearch=false&los=1&searchrequestid=4f4af986-6ebc-4fa4-a096-3adef9efefc3&ds=HkNokBHSp6OE70jx",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Avatar%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84943683777",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.05304,108.24753",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "HAIAN Beach Hotel & Spa",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdcv42hhVYDksIqtVmyzsHm-6lW6uzIT4XeeijdfZNKA&s=10",
+            "address": "278 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 4075,
+            "phone": "+84 236 2228 666",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7997918751679133123",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=HAIAN%20Beach%20Hotel%20%26%20Spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842362228666",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "picked": [
+          "stay:16.05165,108.24803",
+          "stay:16.06910,108.22291",
+          "stay:16.07210,108.24466"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

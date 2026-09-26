@@ -1,0 +1,27 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 5020,
+  "evidenceId": "c8a7c03f-76f0-4817-8608-516ac001d505",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn đi 2 người, 3 ngày 2 đêm, hôm nay check-in — để tìm resort sang trọng phù hợp kỷ niệm. Để gợi ý chính xác, mình cần biết:\n\n**Ngày check-in và check-out cụ thể là khi nào?** (Ví dụ: 19-21/9, hay cuối tuần tới?)\n\nCòn nếu bạn muốn mình tìm ngay cho cuối tuần này (19-21/9), mình sẽ search luôn! 🏝️",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 2 người, 3 ngày 2 đêm, hôm nay check-in — để tìm resort sang trọng phù hợp kỷ niệm. Để gợi ý chính xác, mình cần biết:\n\n**Ngày check-in và check-out cụ thể là khi nào?** (Ví dụ: 19-21/9, hay cuối tuần tới?)\n\nCòn nếu bạn muốn mình tìm ngay cho cuối tuần này (19-21/9), mình sẽ search luôn! 🏝️"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

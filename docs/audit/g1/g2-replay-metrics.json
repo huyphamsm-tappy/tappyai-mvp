@@ -1,0 +1,43 @@
+{
+  "notes": [],
+  "turns": 30,
+  "turns_with_price_claims": 17,
+  "turns_with_bands": 10,
+  "fabricated_amounts_in_inputs": 4,
+  "true_fact_sentences_with_price": 9,
+  "v1": {
+    "turns_le_35pct": 0,
+    "turns_with_fragments": 1,
+    "fabricated_surviving": 0,
+    "metre_sentences_removed": 0,
+    "true_fact_sentences_lost": 9,
+    "median_ratio": 1,
+    "min_ratio": 0.358
+  },
+  "v2": {
+    "turns_le_35pct": 0,
+    "turns_with_fragments": 0,
+    "fabricated_surviving": 0,
+    "metre_sentences_removed": 0,
+    "true_fact_sentences_lost": 1,
+    "median_ratio": 1,
+    "min_ratio": 0.659,
+    "totals": {
+      "claims": 27,
+      "user_echo": 6,
+      "supported_by_band": 15,
+      "supported_by_snippet": 2,
+      "unsupported": 4,
+      "clause_cut": 2,
+      "sentences_removed": 2,
+      "lowercase_m_skipped": 2,
+      "attributed": 17,
+      "multi": 3
+    }
+  },
+  "v2_vs_v1": {
+    "better": 11,
+    "worse": 0,
+    "equal": 19
+  }
+}

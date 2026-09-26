@@ -65,12 +65,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
@@ -84,7 +86,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.booleanResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -107,23 +112,67 @@ import java.util.Locale
 import kotlin.math.ceil
 
 @Composable
-fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
+fun ChatScreen(
+    viewModel: ChatViewModel = hiltViewModel(),
+    /**
+     * Reports whether the chat is currently IMMERSIVE — the full-screen listening UI owns the whole
+     * viewport, so the shell that hosts this screen hides its own chrome (app bar, bottom nav)
+     * while it is up. Always reset to false when this screen leaves composition.
+     */
+    onImmersiveChanged: (Boolean) -> Unit = {},
+    /**
+     * Opens the app's sign-in flow. An `auth_required` / `anon_limit_reached` refusal renders a
+     * bubble with a TAPPABLE sign-in (owner decision 2026-09-17) instead of a dead error line.
+     */
+    onSignIn: () -> Unit = {},
+) {
+    // Location: the first chat send asks ONCE for coarse location. Granted → the repository sends
+    // the last known position with every turn (ChatLocationSource) and the cards carry a distance;
+    // denied → nothing changes (the search stays centred on the named destination). No fix is
+    // requested here; this is only the permission prompt, which must come from a screen.
+    val locationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+    val context = LocalContext.current
+    val askLocationOnce = remember {
+        {
+            val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            if (!granted) locationLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+        }
+    }
     // Lifecycle-aware: an AI reply streams a token at a time, and plain collectAsState() keeps
     // recomposing this (invisible) tree on every token while the app is backgrounded. Pausing at
     // STOPPED stops that churn; the ViewModel's own stream is unaffected either way.
     val messages by viewModel.messages.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
+    val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
+    val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
+    val sharePublic by viewModel.sharePublic.collectAsStateWithLifecycle()
+    // G1 share-out dialog — rendered at the screen level so it survives list recomposition.
+    SharePublicDialog(
+        state = sharePublic,
+        onTitleChange = viewModel::onSharePublicTitleChange,
+        onConfirm = viewModel::onConfirmSharePublic,
+        onDismiss = viewModel::onDismissSharePublic,
+    )
     val isLoadingConversation by viewModel.isLoadingConversation.collectAsStateWithLifecycle()
     val speakingMessageId = viewModel.speakingMessageId
     val feedback by viewModel.feedback.collectAsStateWithLifecycle()
     val dynamicPrompts by viewModel.dynamicPrompts.collectAsStateWithLifecycle()
     val reportedMessageIds by viewModel.reportedMessageIds.collectAsStateWithLifecycle()
     val isListening by viewModel.isListening.collectAsStateWithLifecycle()
+    val voiceLevel by viewModel.voiceLevel.collectAsStateWithLifecycle()
 
     // Keyed on the language the RESOURCES resolved to, so switching language reloads the welcome
     // prompts in the new one instead of leaving the old language's prompts on screen. See
     // [ChatViewModel.loadDynamicPrompts] — this used to run once in the ViewModel's init.
+    // The composer chip and the decision card must ask for a price watch in the SAME words, or
+    // the model sees two different requests for one feature. Read once, used by both.
+    val pricePrefill = stringResource(R.string.chat_chip_price_watch_prefill)
+    // Commerce actions (CCP) report their render and their tap through the ViewModel's reporter;
+    // onCardTap fires the GA4 recommendation_click (the vertical only).
+    val commerceCallbacks = remember(viewModel) {
+        CommerceActionCallbacks(onRendered = viewModel::onCommerceActionRendered, onHandoff = viewModel::onCommerceHandoff, onCardTap = viewModel::onRecommendationClick, onSearchLinkTap = viewModel::onShoppingSearchClick)
+    }
     val promptsInEnglish = booleanResource(R.bool.resources_are_english)
     LaunchedEffect(promptsInEnglish) { viewModel.loadDynamicPrompts(promptsInEnglish) }
 
@@ -141,6 +190,25 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             Toast.makeText(ttsToastContext, message, Toast.LENGTH_LONG).show()
             viewModel.clearTtsError()
         }
+    }
+
+    // The listening screen replaces the whole chat while the mic is open. The shell is told so it
+    // can drop its chrome, and told again — unconditionally — when this screen goes away, so a
+    // navigation mid-listen cannot leave the shell stuck in immersive mode. Placed after the
+    // effects above so a voice turn neither reloads the prompts nor drops a pending TTS toast.
+    LaunchedEffect(isListening) { onImmersiveChanged(isListening) }
+    DisposableEffect(Unit) { onDispose { onImmersiveChanged(false) } }
+    if (isListening) {
+        VoiceListeningScreen(
+            transcript = viewModel.input,
+            voiceLevel = voiceLevel,
+            onCancel = viewModel::cancelVoiceInput,
+            onSend = {
+                viewModel.stopVoiceInput()
+                viewModel.onSend()
+            },
+        )
+        return
     }
 
     val listState = rememberLazyListState()
@@ -222,7 +290,10 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                             // galleries in stream order (web parity: formatMessage renders each run
                             // of image lines as a strip AT ITS POSITION, inside the bubble — a
                             // recommendation's photos belong to its block, never appended after the
-                            // whole text). Restored/error messages have no segments → plain text.
+                            // whole text). A RESTORED turn now has segments too — the stored content
+                            // is the raw reply and the restore path parses it, so reopening a chat
+                            // rebuilds the galleries and cards instead of showing flat prose. Error
+                            // bubbles still have none, and fall back to plain text.
                             val segments = message.segments.ifEmpty {
                                 if (message.text.isNotBlank()) listOf(ReplySegment.Text(message.text)) else emptyList()
                             }
@@ -238,7 +309,84 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                     }
                                 }
                             }
-                            message.plan?.let { plan -> TripPlanCard(plan) }
+                            message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
+                            // The place decision. Rendered only once generation is done, like every
+                            // other structured block: a half-arrived card is not a card, and showing
+                            // one mid-stream is how partial JSON reached users before.
+                            //
+                            // 🔑 LIVE FIRST, DURABLE AS THE FALLBACK — and never both, or the turn
+                            // would show the same places twice. The live annotation is the richer
+                            // projection and is present for the session that produced the turn; it
+                            // is never persisted, so a reopened conversation has only the durable
+                            // block, which is exactly what that block exists for.
+                            //
+                            // On a plan turn either projection can repeat venues the itinerary
+                            // above already presents; those are dropped (TravelPlaceFilter) so one
+                            // venue is one card. The projections themselves are untouched.
+                            //
+                            // Web parity (`ChatInterface.tsx`): a turn that carries a SHOPPING
+                            // decision shows that card and not the places, and any model-written
+                            // CTA button that points at a page a place card already offers is a
+                            // duplicate and is dropped — at render, the message keeps every button.
+                            val placeCards = if (message.shopping == null) {
+                                // Item 2: the model's picks first (renderOrder), engine order after.
+                                message.livePlaces?.renderOrder()
+                                    ?.let { livePlacesOutsideItinerary(message.plan, it) }
+                                    ?.map { it.toCardView() }
+                                    ?: placesOutsideItinerary(message.plan, message.places)
+                                        .mapNotNull { it.toCardView() }
+                            } else emptyList()
+                            val placesMapsUrl = message.livePlaces?.mapsSearchUrl
+                            if (!isResponding) {
+                                PlaceDecisionSection(
+                                    places = placeCards,
+                                    // The durable block never carries `ranked`: it is written only
+                                    // from a ranked decision, so its order is a ranking.
+                                    ranked = message.livePlaces?.positionsRanked() != false,
+                                    mapsSearchUrl = placesMapsUrl,
+                                    commerce = commerceCallbacks,
+                                    // Item 2: three above the fold when the server says so.
+                                    shown = message.livePlaces?.shown,
+                                )
+                            }
+                            // D1 — the shopping DECISION. Rendered only once generation is done,
+                            // like every other structured block: a half-arrived decision is not a
+                            // decision, and showing one mid-stream is how partial JSON reached
+                            // users in the first place.
+                            message.shopping?.let { view ->
+                                if (!isResponding) {
+                                    ShoppingDecisionCard(
+                                        view = view,
+                                        // Same prefill the composer chip uses, so the two entry
+                                        // points cannot phrase the request differently.
+                                        onPriceWatch = { name ->
+                                            viewModel.onInputChange(pricePrefill + name)
+                                        },
+                                        commerce = commerceCallbacks,
+                                    )
+                                    // Comparison (DD-005), derived from the SAME payload the card
+                                    // above renders — no extra request, nothing inferred. Opens in
+                                    // a bottom sheet: a four-column grid is unreadable inline on a
+                                    // phone, so the container differs while the data does not.
+                                    val labels = comparisonLabels()
+                                    val comparison = remember(view) { shoppingComparisonFrom(view, labels) }
+                                    if (comparison != null) {
+                                        var showComparison by rememberSaveable(message.id) { mutableStateOf(false) }
+                                        TappyButton(
+                                            text = stringResource(R.string.comparison_open, comparison.entities.size),
+                                            onClick = { showComparison = true },
+                                            variant = TappyButtonVariant.Secondary,
+                                            size = TappyButtonSize.Small,
+                                        )
+                                        if (showComparison) {
+                                            ShoppingComparisonSheet(
+                                                comparison = comparison,
+                                                onDismiss = { showComparison = false },
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                             if (!isResponding && !message.isError) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     MessageActionBar(
@@ -252,6 +400,11 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                                         onToggleFeedback = { type -> viewModel.onToggleFeedback(message.id, type) },
                                         onReport = { viewModel.onReportMessage(message.id) },
                                         onRegenerate = viewModel::onRegenerate,
+                                        placesView = message.placesView,
+                                        plan = message.plan,
+                                        planJson = message.planJson,
+                                        shareSubject = shareSubjectFor(messages, message),
+                                        onSharePublic = { viewModel.onSharePublic(message.id) },
                                     )
                                 }
                             }
@@ -284,20 +437,34 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                             // onRegenerate() already handles "last message is an error" correctly
                             // (drops it and re-sends the same history), this was just never reachable.
                             if (!isResponding && message.isError && isLast) {
-                                TappyButton(
-                                    text = stringResource(R.string.chat_action_regenerate),
-                                    onClick = viewModel::onRegenerate,
-                                    variant = TappyButtonVariant.Ghost,
-                                    size = TappyButtonSize.Small,
-                                    leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
-                                )
+                                when (message.errorAction) {
+                                    // The remedy the server named, as a tap target — never a dead line.
+                                    ChatErrorAction.SignIn -> TappyButton(
+                                        text = stringResource(R.string.chat_error_sign_in_cta),
+                                        onClick = onSignIn,
+                                        size = TappyButtonSize.Small,
+                                        modifier = Modifier.testTag("chat-error-sign-in"),
+                                    )
+                                    ChatErrorAction.DeclareAge -> GuestAgeDeclaration(
+                                        onDeclare = viewModel::onDeclareAge,
+                                        modifier = Modifier.testTag("chat-age-declaration"),
+                                    )
+                                    null -> TappyButton(
+                                        text = stringResource(R.string.chat_action_regenerate),
+                                        onClick = viewModel::onRegenerate,
+                                        variant = TappyButtonVariant.Ghost,
+                                        size = TappyButtonSize.Small,
+                                        leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
+                                    )
+                                }
                             }
                             // CTA buttons (maps/call/booking/internal_booking…) — web parity, shown
                             // under the reply once generation is done.
-                            if (message.ctaButtons.isNotEmpty() && !isResponding) {
+                            val ctaButtons = ctaButtonsOutsideCards(message.ctaButtons, placeCards, placesMapsUrl)
+                            if (ctaButtons.isNotEmpty() && !isResponding) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     ChatCtaButtons(
-                                        buttons = message.ctaButtons,
+                                        buttons = ctaButtons,
                                         onSaveFavorite = viewModel::addFavorite,
                                         onRemoveFavorite = viewModel::removeFavorite,
                                     )
@@ -318,6 +485,9 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
                         AssistantStreamingRow(
                             mascot = viewModel.category.mascot,
                             streamingText = streamingText,
+                            hint = streamingHint,
+                            places = streamingPlaces,
+                            commerce = commerceCallbacks,
                         )
                     }
                 }
@@ -329,7 +499,7 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
         // SpeechRecognizer drives live transcript + auto-send.
         val audioPermission = rememberLauncherForActivityResult(
             contract = ActivityResultContracts.RequestPermission(),
-        ) { granted -> if (granted) viewModel.startVoiceInput() }
+        ) { granted -> if (granted) viewModel.startVoiceInput(deferAutoSend = true) }
 
         viewModel.pendingImageUri?.let { uri ->
             PendingImagePreview(uri = uri, onClear = viewModel::onClearPendingImage)
@@ -349,14 +519,14 @@ fun ChatScreen(viewModel: ChatViewModel = hiltViewModel()) {
             hasPendingImage = viewModel.pendingImageUri != null,
             onInputChange = viewModel::onInputChange,
             onEmojiPicked = viewModel::onEmojiPicked,
-            onSend = viewModel::onSend,
+            onSend = { askLocationOnce(); viewModel.onSend() },
             onStop = viewModel::onStop,
             isListening = isListening,
             onVoice = {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
                     == PackageManager.PERMISSION_GRANTED
                 ) {
-                    viewModel.startVoiceInput()
+                    viewModel.startVoiceInput(deferAutoSend = true)
                 } else {
                     audioPermission.launch(Manifest.permission.RECORD_AUDIO)
                 }
@@ -630,13 +800,39 @@ private fun ChatComposer(
             // (ChatInterface: "Camera button hidden for MVP"). The staged-image plumbing
             // (pendingImageUri → preview → vision send) stays dormant like the web's hidden
             // file input, so re-enabling is a one-button change on both platforms.
+            // ── Vietnamese IME composition ───────────────────────────────────────────
+            // The value lives HERE as a TextFieldValue, not as the ViewModel's String.
+            //
+            // A String-valued field cannot hold an IME composing region: Compose rebuilds its
+            // internal TextFieldValue from the String it is handed, collapsing the selection and
+            // dropping the composition, so every keystroke that round-trips through hoisted state
+            // cancels what the keyboard was assembling. ASCII survives because each key commits on
+            // its own. Telex does not — "q-u-a-n-s" must stay composing across five keystrokes to
+            // become "quán", so the tone mark never lands.
+            //
+            // Committed text is still pushed straight to the ViewModel, so send, voice, prefill and
+            // persistence all keep reading exactly what they read before.
+            var field by remember { mutableStateOf(TextFieldValue(input)) }
+            // Only an EXTERNAL change resets the field — a voice transcript, a prefill, or the clear
+            // after send. Comparing text (not the whole value) is what keeps this from stamping on
+            // the user's own cursor and composing region while they type.
+            if (field.text != input) {
+                field = TextFieldValue(text = input, selection = TextRange(input.length))
+            }
             TappyTextField(
-                value = input,
-                onValueChange = onInputChange,
+                value = field,
+                onValueChange = {
+                    field = it
+                    onInputChange(it.text)
+                },
                 placeholder = stringResource(R.string.chat_composer_placeholder),
                 singleLine = false,
                 maxLines = 6,
                 modifier = Modifier.weight(1f),
+                // Enter sends, exactly as the send arrow does and under the same gate — web
+                // parity (Enter sends, Shift+Enter breaks the line). While a reply is still
+                // arriving Enter does nothing, like the arrow that is a Stop button then.
+                onSubmit = { if (canSend && !isResponding) onSend() },
             )
             // Emoji toggle — sits between the input and the mic, mirroring the web control order
             // (textarea → emoji → mic → send). Tinted while the panel is open (web accent state).
@@ -905,6 +1101,18 @@ private fun TtsPlayerBar(
     }
 }
 
+/**
+ * The share subject for an assistant turn is the user's question that produced it (≤80 chars),
+ * exactly like the web ChatInterface passes `subject` — so the brochure header reads
+ * "TappyAI gợi ý: <what was asked>". Null when there is no preceding user turn.
+ */
+private fun shareSubjectFor(messages: List<ChatMessage>, message: ChatMessage): String? {
+    val idx = messages.indexOfFirst { it.id == message.id }
+    if (idx <= 0) return null
+    val prev = messages.subList(0, idx).lastOrNull { it.role == TappyChatRole.User } ?: return null
+    return prev.text.trim().replace(Regex("\\s+"), " ").take(80).ifBlank { null }
+}
+
 private fun formatMinSec(totalSec: Int): String {
     val s = totalSec.coerceAtLeast(0)
     return "%d:%02d".format(s / 60, s % 60)
@@ -919,11 +1127,24 @@ private fun speedLabel(speed: Float): String = when (speed) {
 /**
  * The in-flight assistant reply. Mirrors the real assistant Row (mascot avatar + text column) so the
  * committed message takes over its exact position seamlessly. Before the first token it shows the
- * thinking dots + a rotating hint (web parity — no skeleton); once text arrives it renders the smooth
+ * thinking dots + a hint (web parity — no skeleton); once text arrives it renders the smooth
  * typewriter reveal + a blinking cursor.
+ *
+ * A1 (2026-09-20): the hint is the SERVER's progress sentence when the turn has sent one ("Đã có
+ * 10 chỗ phù hợp — đang chọn cho bạn…"), the rotating generic one otherwise; and the place set the
+ * turn has sent so far — the engine's `preliminary` fold the moment the rows land, the decision
+ * once the prose is done — renders under the bubble, so a place turn is never a blank for the
+ * 6–10 s its prose takes. The preliminary set is unranked and carries no pick; the section shows
+ * it exactly so (no badge, no "Vì sao").
  */
 @Composable
-private fun AssistantStreamingRow(mascot: Int, streamingText: String) {
+private fun AssistantStreamingRow(
+    mascot: Int,
+    streamingText: String,
+    hint: String? = null,
+    places: PlacesLiveView? = null,
+    commerce: CommerceActionCallbacks = CommerceActionCallbacks(),
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -947,13 +1168,24 @@ private fun AssistantStreamingRow(mascot: Int, streamingText: String) {
                 ) {
                     TypingDots()
                     Text(
-                        text = rememberRotatingHint(),
+                        text = hint ?: rememberRotatingHint(),
                         style = MaterialTheme.typography.bodySmall, // text-xs
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("turn-progress"),
                     )
                 }
             } else {
                 StreamingMarkdown(smooth)
+            }
+            places?.let { view ->
+                PlaceDecisionSection(
+                    places = view.renderOrder().map { it.toCardView() },
+                    ranked = view.positionsRanked(),
+                    mapsSearchUrl = view.mapsSearchUrl,
+                    commerce = commerce,
+                    shown = view.shown,
+                    modifier = Modifier.testTag(if (view.preliminary) "place-decision-preliminary" else "place-decision-live"),
+                )
             }
         }
     }

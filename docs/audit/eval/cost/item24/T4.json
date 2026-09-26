@@ -1,0 +1,25 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 5599,
+  "evidenceId": "5a767325-a465-41f5-a8e8-742780293eb4",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần với gia đình 4 người gần Sài Gòn. Để gợi ý đúng ý bạn, mình cần biết thêm một chút: **bạn muốn đi chơi ngoài trời (công viên, vườn thú, bãi biển...) hay ở trong nhà (mua sắm, ăn uống, bảo tàng...)?** \n\nHoặc nếu bạn đang nghĩ đến **bữa cơm gia đình** thì mình có thể gợi ý luôn những quán ăn hay cho 4 người cuối tuần 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần với gia đình 4 người gần Sài Gòn. Để gợi ý đúng ý bạn, mình cần biết thêm một chút: **bạn muốn đi chơi ngoài trời (công viên, vườn thú, bãi biển...) hay ở trong nhà (mua sắm, ăn uống, bảo tàng...)?** \n\nHoặc nếu bạn đang nghĩ đến **bữa cơm gia đình** thì mình có thể gợi ý luôn những quán ăn hay cho 4 người cuối tuần 😊"
+    }
+  ]
+}

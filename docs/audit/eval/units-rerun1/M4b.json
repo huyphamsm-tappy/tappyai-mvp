@@ -1,0 +1,36 @@
+{
+  "id": "M4b",
+  "text": "rạp đó có suất sau 21h không, vé bao nhiêu?",
+  "vertical": "entertainment",
+  "unit": "SCHEDULE_TICKET",
+  "parent": "M4a",
+  "surface": "web",
+  "status": 200,
+  "ttfb": 1166,
+  "ms": 3889,
+  "evidenceId": "790c33d8-1808-4935-97b7-0dc6335a3c07",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Bạn vào **CGV.vn** → chọn rạp **CGV Vincom Center Đồng Khởi** → chọn ngày hôm nay (20/9) → sẽ thấy tất cả suất chiếu và giá vé theo từng phim.\n\nBạn cần đăng nhập tài khoản CGV trước khi chọn ghế cụ thể.\n\nCó phim nào bạn đang muốn xem không? Mình có thể giúp tìm thêm thông tin! 🎥",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rạp CGV Vincom Đồng Khởi tối nay chiếu gì?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được **CGV Vincom Center Đồng Khởi** gần bạn lắm (chỉ 0.2km) 🎬. Tuy nhiên, TappyAI hiện chưa có dữ liệu về lịch chiếu cụ thể.\n\n- Truy cập trực tiếp trang CGV: [cgv.vn](https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi)\n\nRạp có đánh giá **4.3⭐ (4.500 đánh giá)** trên Google Maps, khá tốt! 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 CGV - Đặt vé\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true},{\"label\":\"📍 Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11214787039782498171\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay?|Quán ăn gần rạp|Quán karaoke gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "rạp đó có suất sau 21h không, vé bao nhiêu?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn vào **CGV.vn** → chọn rạp **CGV Vincom Center Đồng Khởi** → chọn ngày hôm nay (20/9) → sẽ thấy tất cả suất chiếu và giá vé theo từng phim.\n\nBạn cần đăng nhập tài khoản CGV trước khi chọn ghế cụ thể.\n\nCó phim nào bạn đang muốn xem không? Mình có thể giúp tìm thêm thông tin! 🎥"
+    }
+  ],
+  "at": "2026-09-20T06:42:40.891Z"
+}

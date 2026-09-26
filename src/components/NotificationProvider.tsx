@@ -4,13 +4,18 @@ import { createContext, useContext, useEffect, useState, useCallback, useMemo, u
 import { createClient } from '@/lib/supabase/client'
 import { usePushIdentityReconcile } from '@/hooks/usePushIdentityReconcile'
 import type { NotificationDTO } from '@/lib/notifications/contract'
+import { useNotificationPreference } from '@/lib/notifications/preference'
 
 interface NotificationContextValue {
   notifications: NotificationDTO[]
+  /** Unread badge count — 0 while Tappy notifications are switched off (`lib/notifications/preference.ts`). */
   unreadCount: number
   loading: boolean
   refetch: () => Promise<void>
   markAllRead: () => Promise<void>
+  /** The Tappy notifications preference: ON by default, OFF until the person switches it back. */
+  notificationsEnabled: boolean
+  setNotificationsEnabled: (enabled: boolean) => void
 }
 
 const NotificationContext = createContext<NotificationContextValue>({
@@ -19,6 +24,8 @@ const NotificationContext = createContext<NotificationContextValue>({
   loading: false,
   refetch: async () => {},
   markAllRead: async () => {},
+  notificationsEnabled: true,
+  setNotificationsEnabled: () => {},
 })
 
 export function useNotifications() {
@@ -45,6 +52,11 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   // root layout, and keeping the listener in a single provider is what stops two
   // copies from both writing on every sign-in.
   usePushIdentityReconcile()
+
+  // The person's ON/OFF choice. It does not change what is fetched or stored — the inbox still
+  // lists everything — only whether the app NUDGES: the badge here, the chime and the deal
+  // prompt read the same preference.
+  const { enabled: notificationsEnabled, setEnabled: setNotificationsEnabled } = useNotificationPreference()
 
   const refetch = useCallback(async () => {
     try {
@@ -110,8 +122,16 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   }, [])
 
   const value = useMemo<NotificationContextValue>(
-    () => ({ notifications, unreadCount, loading, refetch, markAllRead }),
-    [notifications, unreadCount, loading, refetch, markAllRead],
+    () => ({
+      notifications,
+      unreadCount: notificationsEnabled ? unreadCount : 0,
+      loading,
+      refetch,
+      markAllRead,
+      notificationsEnabled,
+      setNotificationsEnabled,
+    }),
+    [notifications, unreadCount, loading, refetch, markAllRead, notificationsEnabled, setNotificationsEnabled],
   )
 
   return <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>

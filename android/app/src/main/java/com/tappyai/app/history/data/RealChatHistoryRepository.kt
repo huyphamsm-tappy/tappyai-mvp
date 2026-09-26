@@ -1,6 +1,7 @@
 package com.tappyai.app.history.data
 
 import com.tappyai.app.history.Conversation
+import com.tappyai.app.history.ConversationWithMessages
 import com.tappyai.app.history.StoredChatMessage
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.core.network.safeApiCall
@@ -33,6 +34,16 @@ class RealChatHistoryRepository @Inject constructor(
             val match = api.getConversations().firstOrNull { it.id == id }
             match?.decodeMessages(json)?.map { StoredChatMessage(role = it.role, content = it.content) }
                 ?: emptyList()
+        }
+
+    override suspend fun getConversationsWithMessages(): NetworkResult<List<ConversationWithMessages>> =
+        safeApiCall {
+            api.getConversations().map { dto ->
+                ConversationWithMessages(
+                    conversation = dto.toDomain(),
+                    messages = dto.decodeMessages(json).map { StoredChatMessage(role = it.role, content = it.content) },
+                )
+            }
         }
 
     override suspend fun createConversation(

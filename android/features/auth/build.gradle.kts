@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":core:security"))
     implementation(project(":core:network"))
     implementation(project(":core:logging"))
+    implementation(project(":core:analytics"))
 
     // `core:network` keeps Retrofit as `implementation`, so it is not on this module's compile
     // classpath transitively. Declared here because features:auth now defines its own Retrofit

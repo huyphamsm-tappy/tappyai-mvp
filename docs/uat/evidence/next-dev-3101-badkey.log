@@ -1,0 +1,20 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 2s
+ ○ Compiling /api/subscription ...
+ ✓ Compiled /api/subscription in 837ms (173 modules)
+ GET /api/subscription 200 in 1566ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 720ms (435 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":0,"sentences_removed":0,"chars_in":0,"chars_removed":0,"chars_kept":0,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"unknown","promptTokens":null,"completionTokens":null,"totalTokens":null,"cacheReadTokens":null,"cacheCreationTokens":null,"llmCalls":null,"memoryExtract":1,"toolCalls":0,"elapsedMs":1206,"preModelMs":660,"ttftMs":null,"modelFinishMs":null,"ttuaMs":null,"postModelMs":null,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":null,"firstStepFinishMs":null,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 2168ms
+ GET /api/subscription 200 in 198ms
+[?25h

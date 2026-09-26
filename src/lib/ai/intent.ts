@@ -86,6 +86,40 @@ const VI_FUNCTION_WORDS = new Set([
   'cung', 'nhieu', 'rat', 'sao', 'uong', 'kiem', 'phai', 'chac', 'nua', 'luon',
 ])
 
+/**
+ * 🚨 NO-DIACRITIC VIETNAMESE IS VIETNAMESE (Consultative V1, 2026-09-18).
+ *
+ * Measured on the branch: 13 of 14 undiacriticked queries a phone user actually types
+ * ("tim quan an toi ngon gan quan 1 cho 2 nguoi", "spa nao tot re o da nang") detected as
+ * ENGLISH — the only Vietnamese evidence was accented letters plus the 30-word function list
+ * above, and an undiacriticked sentence has neither. This is the CONTENT lexicon: common
+ * Vietnamese words, diacritic-folded, that are not English words. `an`, `co`, `do`, `to`,
+ * `me`, `so`, `no`, `ok`, `view`, `cafe`, `spa`, `budget`, `chill`, `ban`, `be`, `may`, `con`,
+ * `la`, `ma`, `de`, `den`, `hen`, `yen`, `tram`, `sang`, `tour` are deliberately absent — they
+ * are English words or loanwords and would score both ways ("Good bun bo spots" is English).
+ *
+ * Scoring (countViContentWords): capitalised words after the first are proper nouns ("Hội An",
+ * "Đà Nẵng", "TP.HCM") and are ignored on both sides of the ratio — a place name is not
+ * grammar. The lexicon must carry at least half of the remaining words: "bun bo" inside an
+ * English sentence is a dish, "quan bun bo ngon o q1" is a sentence.
+ */
+const VI_CONTENT_WORDS = new Set([
+  'quan', 'ngon', 'gan', 'nguoi', 'tim', 'kiem', 'mua', 'tot', 'dep', 'nao', 'dau', 'day',
+  'nay', 'choi', 'xem', 'phim', 'hay', 'vui', 'minh', 'duoi', 'tren', 'trieu', 'nghin',
+  'khach', 'san', 'phong', 'dem', 'ngay', 'trua', 'chieu', 'toi', 'khuya', 'tuan', 'thang',
+  'bun', 'pho', 'com', 'lau', 'nuong', 'hai', 'oc', 'che', 'tra', 'sua', 'banh', 'mon', 'mi',
+  'nha', 'tiem', 'cho', 'duong', 'khu', 'thanh', 'tinh', 'huyen', 'phuong', 'xa',
+  'chon', 'tien', 'khac', 'nua', 'roi', 'chua', 'khong', 'ko', 'hok', 'dc', 'duoc',
+  'vat', 'gia', 'dinh', 'nhau', 'hoi', 'bao', 'nhieu', 'bnhieu',
+  'sinh', 'nhat', 'ky', 'niem', 'tiep', 'sep', 'dong', 'nghiep',
+  'dat', 'xe', 'lanh', 'ngoai', 'troi', 'chay', 'thit', 'ca', 'ga', 'bo', 'heo',
+  'ruou', 'bia', 've', 'bai', 'bien', 'nui', 'suoi', 'tai', 'nghe', 'di', 'o', 're',
+  'yen', 'hen', 'ho',
+  'lam', 'giup', 'goi', 'thu', 'thich', 'muon', 'nen', 'cung', 'voi', 'cua',
+  'va', 'hoac', 'nhung', 'thi', 'thoi', 'luon', 'qua', 'rat', 'kha',
+  'moi', 'cu', 'trung', 'tam', 'gio', 'tu',
+])
+
 // The mirror of VI_FUNCTION_WORDS: ENGLISH evidence.
 //
 // Until now the detector only ever scored Vietnamese-ness, so a short mixed query had no way to
@@ -120,6 +154,34 @@ const EN_FUNCTION_WORDS = new Set([
 // KNOWN LIMITATION (unchanged by either fix): Vietnamese typed with no
 // diacritics at all ("cho toi xem menu") carries no signal here and reads as
 // English — accepted, since the same input is genuinely ambiguous.
+/**
+ * Diacritic-folded content-word evidence for undiacriticked Vietnamese.
+ * `vi` = words found in the lexicon; `pool` = the words judged (proper nouns excluded).
+ * Vietnamese when `vi >= floor`, `vi > enFunctionWords` and `vi` is at least half of `pool`.
+ */
+function countViContentWords(words: readonly string[]): { vi: number; pool: number } {
+  let vi = 0
+  let pool = 0
+  words.forEach((w, i) => {
+    // A capital letter after the first word is a proper noun: "Hội An walking tour".
+    if (i > 0 && /^[A-ZÀ-Ỹ]/.test(w)) return
+    const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z0-9]/g, '')
+    if (!bare) return
+    pool++
+    if (VI_CONTENT_WORDS.has(bare) || VI_FUNCTION_WORDS.has(bare)) vi++
+    // District shorthand a phone user writes: q1, q3, q10.
+    else if (/^q\d{1,2}$/.test(bare)) vi++
+  })
+  return { vi, pool }
+}
+
+function isUndiacriticizedVi(
+  words: readonly string[], enFunctionWords: number, floor: number,
+): boolean {
+  const { vi, pool } = countViContentWords(words)
+  return vi >= floor && vi > enFunctionWords && vi * 2 >= pool
+}
+
 export function detectLang(text: string): string {
   // Encoding-safe: never short-circuits mid-loop for scripts that must scan to
   // completion (Chinese text with fullwidth punctuation still resolves to 'zh').
@@ -143,6 +205,118 @@ export function detectLang(text: string): string {
   let lowercaseAccentedWords = 0
   let viFunctionWords = 0
   let enFunctionWords = 0
+  const accentedFlags = words.map(w => {
+    for (const ch of w) {
+      if (isAccentedLatin(ch.codePointAt(0) ?? 0)) return true
+    }
+    return false
+  })
+
+  /**
+   * 🚨 THE FIRST WORD OF A SENTENCE IS CAPITALISED BY ORTHOGRAPHY, NOT BECAUSE IT
+   * IS A PROPER NOUN — and treating it as one is what answered a Vietnamese
+   * query in English.
+   *
+   * Measured: `detectLang('Quán cafe view đẹp')` returned 'en'. `Quán` is an
+   * ordinary Vietnamese noun (shop/eatery), accented, and capitalised only
+   * because it opens the sentence. The uppercase filter dropped it from the
+   * Vietnamese evidence, leaving `đẹp` alone against the two undiacriticked
+   * loanwords Vietnamese speakers actually write — `cafe` and `view`. Score
+   * 1/3 = 0.333, below the 0.4 threshold, so the answer came back in English.
+   *
+   * Counting it needs two guards, because the uppercase filter is doing real work
+   * the rest of the time — a place name must never turn an English sentence
+   * Vietnamese ("Phú Quốc is nice", "Best bún chả in Hà Nội?"):
+   *
+   *   1. NOT FOLLOWED BY ANOTHER CAPITALISED WORD. "Đà Nẵng is beautiful" opens
+   *      with a two-word proper noun; "Quán cafe …" does not. A capitalised word
+   *      followed by a lowercase one is a sentence opening, not a name.
+   *   2. THE MESSAGE CARRIES OTHER VIETNAMESE EVIDENCE. Without this a lone
+   *      loanword would decide on its own — "Café recommendations?" is English
+   *      and has to stay English.
+   *
+   * This only ever ADDS to the numerator; the denominator is untouched, so no
+   * sentence that already resolved to Vietnamese can be pulled the other way.
+   */
+  const sentenceInitialIsVietnamese =
+    words.length > 1 &&
+    accentedFlags[0] &&
+    STARTS_UPPERCASE.test(words[0]) &&
+    !STARTS_UPPERCASE.test(words[1]) &&
+    accentedFlags.slice(1).some(Boolean)
+
+  for (let i = 0; i < words.length; i++) {
+    const w = words[i]
+    const accented = accentedFlags[i]
+    if (accented) {
+      accentedWords++
+      if (!STARTS_UPPERCASE.test(w) || (i === 0 && sentenceInitialIsVietnamese)) lowercaseAccentedWords++
+    }
+    const bare = normalizeVN(w.toLowerCase()).replace(/[^a-z]/g, '')
+    if (bare && VI_FUNCTION_WORDS.has(bare)) viFunctionWords++
+    if (bare && EN_FUNCTION_WORDS.has(bare)) enFunctionWords++
+  }
+
+  // Every word accented — a bare Vietnamese phrase or place name on its own
+  // ("Đâu?", "Đà Nẵng"), with no English word to anchor it the other way.
+  if (accentedWords === words.length) return 'vi'
+  // Real Vietnamese vocabulary plus Vietnamese grammar words, even when tone
+  // marks are sparse.
+  if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
+  // Undiacriticked Vietnamese: content words that are not English, outnumbering the English
+  // function words and carrying at least half the sentence. Two is the floor so "quan nay"
+  // alone does not decide a mixed sentence.
+  if (isUndiacriticizedVi(words, enFunctionWords, 2)) return 'vi'
+  // An unambiguous English question/request word settles it. Reached only after the rules
+  // above, so a sentence with real Vietnamese grammar still wins first.
+  if (enFunctionWords > 0) return 'en'
+  // The ratio judges only the LOWERCASE words, on both sides of the division.
+  //
+  // The numerator already ignored capitalised tokens — deliberately, so a place name cannot make
+  // an English sentence Vietnamese. But they stayed in the DENOMINATOR, so an accented proper
+  // noun scored AGAINST Vietnamese. A long sentence absorbs that; a five-word search query does
+  // not. Production answered "Cafe view đẹp Hà Nội?" in English on 1/5 = 0.200, because `Cafe`
+  // and `view` are undiacriticked loanwords in ordinary Vietnamese use and `Hà`/`Nội` diluted
+  // what remained. Judging the lowercase words alone gives 1/2 = 0.500.
+  const scoredWords = words.filter(w => !STARTS_UPPERCASE.test(w)).length
+  if (scoredWords === 0) return 'en'
+  return lowercaseAccentedWords / scoredWords >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
+}
+
+/**
+ * The language the message is CLEARLY in, or null when the text does not settle it.
+ *
+ * `detectLang` always returns something, because it has to — every turn needs a language. That
+ * makes it unsuitable for deciding whether to trust the text over the user's locale: its answer
+ * for "Tim quan bun bo ngon o TPHCM" is `en`, and acting on that answers a Vietnamese user in
+ * English. Diacritic-free Vietnamese is ordinary typing, not an English sentence.
+ *
+ * So this reuses the same signals and reports only what they establish beyond doubt:
+ *   · a non-Latin script — nothing else writes in kana, hangul, Thai or Arabic;
+ *   · Vietnamese by tone marks, or by real Vietnamese grammar words alongside at least one;
+ *   · English by TWO or more English function words, so one stray loanword cannot flip a turn.
+ * Anything else returns null, and the caller falls back to the product locale.
+ *
+ * Deliberately no new inputs: no profile fields, no history, no account data. Only this message.
+ */
+export function detectLangConfident(text: string): string | null {
+  for (const ch of text) {
+    const cp = ch.codePointAt(0) ?? 0
+    if (cp <= 0x7F) continue
+    if (cp >= 0x3040 && cp <= 0x30FF) return 'ja'
+    if (cp >= 0xAC00 && cp <= 0xD7AF) return 'ko'
+    if (cp >= 0x4E00 && cp <= 0x9FFF) return 'zh'
+    if (cp >= 0x0600 && cp <= 0x06FF) return 'ar'
+    if (cp >= 0x0E00 && cp <= 0x0E7F) return 'th'
+  }
+
+  const words = text.split(/\s+/).filter(w => HAS_LETTER.test(w))
+  if (words.length === 0) return null
+
+  let accentedWords = 0
+  let lowercaseAccentedWords = 0
+  let viFunctionWords = 0
+  let enFunctionWords = 0
   for (const w of words) {
     let accented = false
     for (const ch of w) {
@@ -157,26 +331,16 @@ export function detectLang(text: string): string {
     if (bare && EN_FUNCTION_WORDS.has(bare)) enFunctionWords++
   }
 
-  // Every word accented — a bare Vietnamese phrase or place name on its own
-  // ("Đâu?", "Đà Nẵng"), with no English word to anchor it the other way.
-  if (accentedWords === words.length) return 'vi'
-  // Real Vietnamese vocabulary plus Vietnamese grammar words, even when tone
-  // marks are sparse.
+  // Vietnamese, on the same evidence detectLang already trusts most.
+  if (accentedWords > 0 && accentedWords === words.length) return 'vi'
   if (lowercaseAccentedWords >= 1 && viFunctionWords >= 2) return 'vi'
-  // An unambiguous English question/request word settles it. Reached only after the two rules
-  // above, so a sentence with real Vietnamese grammar still wins first.
-  if (enFunctionWords > 0) return 'en'
-  // The ratio judges only the LOWERCASE words, on both sides of the division.
-  //
-  // The numerator already ignored capitalised tokens — deliberately, so a place name cannot make
-  // an English sentence Vietnamese. But they stayed in the DENOMINATOR, so an accented proper
-  // noun scored AGAINST Vietnamese. A long sentence absorbs that; a five-word search query does
-  // not. Production answered "Cafe view đẹp Hà Nội?" in English on 1/5 = 0.200, because `Cafe`
-  // and `view` are undiacriticked loanwords in ordinary Vietnamese use and `Hà`/`Nội` diluted
-  // what remained. Judging the lowercase words alone gives 1/2 = 0.500.
-  const scoredWords = words.filter(w => !STARTS_UPPERCASE.test(w)).length
-  if (scoredWords === 0) return 'en'
-  return lowercaseAccentedWords / scoredWords >= VI_WORD_RATIO_THRESHOLD ? 'vi' : 'en'
+  // Undiacriticked Vietnamese, confidently: three or more content words and more of them than
+  // English function words — "cho toi 3 quan bun bo ngon o q1" is not a doubt.
+  if (isUndiacriticizedVi(words, enFunctionWords, 3)) return 'vi'
+  // English needs TWO function words. One ("best", "the") appears constantly inside Vietnamese
+  // sentences about products, and a single loanword must not decide the turn.
+  if (enFunctionWords >= 2 && lowercaseAccentedWords === 0) return 'en'
+  return null
 }
 
 // Language names this app can explicitly instruct the model to answer in —
@@ -225,9 +389,17 @@ export function detectForcedTool(text: string): 'search_places' | 'get_news' | '
   if (/ve may bay|chuyen bay|bay tu|bay den|hang khong|gia ve bay|dat ve bay|vietjet|bamboo airways|pacific airlines|vietnam airlines/.test(t)) return 'get_flight_prices'
   if (/gia phong|gia khach san|dat phong|booking\.com|\bagoda\b|(khach san|hotel|resort).*gia|gia.*(khach san|hotel|resort)/.test(t)) return 'get_hotel_prices'
   if (/xe khach|ve xe (khach|do)|limousine|tau hoa|tau lua|duong sat|\btaxi\b|\bgrab\b|xanh sm|\bxe om\b|di chuyen (tu|den|toi|trong|quanh)|gia ve xe|tu .* den .* (bao nhieu|het|gia|bang gi)/.test(t)) return 'get_transport_options'
-  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|cinema|xem phim|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
+  // Phase D (2026-09-20): a named cinema ("rạp CGV Vincom Đồng Khởi"), karaoke, a water park, an
+  // aquarium or a play venue is a VENUE — it takes the place tool, not `web_search` (measured live
+  // run 19: the cinema question fell through to the trailing "?" rule and got no card).
+  if (/nha hang|quan an|an gi|an ngon|cafe|ca phe|coffee|\bspa\b|massage|khach san|\bhotel\b|resort|\bbar\b|\bpub\b|\bgym\b|fitness|rap chieu|rap phim|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|\bcgv\b|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|xem phim|(?<!loa |dan |micro |mic |may |bo )karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|\bbida\b|billiards?|escape room|truot bang|ice rink|nha hat|benh vien|hospital|clinic|pharmacy|nha thuoc|\batm\b|ngan hang|\bbank\b|dia diem|o dau|gan day|gan toi|\btiem\b|tham quan|thang canh|diem du lich|danh lam|bao tang|khu du lich/.test(t)) return 'search_places'
+  // E3: a fact question about a venue the user NAMED ("CellphoneS Nguyễn Trãi mở cửa mấy giờ?") is a place lookup.
+  if (namedVenueIn(text) !== null && /mo cua|dong cua|may gio|gio mo|gio dong|dia chi|so dien thoai|\bo dau\b|co .{0,20}khong|gia ve|con mo/.test(t)) return 'search_places'
   if (/tin tuc|tin moi|bao chi|thoi su|tin nong|tin the gioi/.test(t)) return 'get_news'
-  if (/\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
+  // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
+  // and it used to route an evening-out request to shopping. A negative
+  // lookbehind on "nhay " keeps the verb and drops the dance.
+  if (/(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
   if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
   if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
@@ -364,6 +536,14 @@ const CONSTRAINT_ADDITION = new RegExp([
   '\\b(must|has to|needs to) (be|have)\\b',
   // Who is coming / what the occasion is — changes the answer as much as a budget does.
   '\\b(dan theo|di voi|di cung|cung voi|co them|dat cho|cho ca nha)\\b',
+  // 🚨 PARTY SIZE, the plainest form of the same thing. "Cho 2 nguoi" after
+  // "Massage thu gian o Quan 1" scored no stage at all, so the refinement block
+  // never rendered and the reply re-opened the request from scratch, asking again
+  // for the district it had already been told. The group above already covers
+  // "di cung" and "cho ca nha"; it simply never covered the bare count.
+  '\\b(cho|di|dat|book) \\d+ (nguoi|khach)\\b',
+  '^\\d+ (nguoi|khach)\\b',
+  '\\bfor \\d+ (people|persons|guests|adults|pax)\\b',
   "\\b(bringing|with my|for my|i'?ll have)\\b",
 ].join('|'), 'i')
 
@@ -437,28 +617,245 @@ export function detectDecisionStage(
   return null
 }
 
+/**
+ * EXPLICIT planning language, Vietnamese and English. Any of these is the user
+ * asking for a PLAN — not for a list — and is what activates the planning
+ * workflow (`buildPlanningBlock`, the `planning` model role, `maxSteps 8`).
+ *
+ * 🚨 MEASURED GAP (2026-09-14). The detector fired only on "tối nay + activity"
+ * and "destination + N ngày" shapes, so "lập kế hoạch đi chơi cuối tuần",
+ * "giúp tôi sắp xếp tối nay đi đâu làm gì", "tối ưu trong 5 triệu" and every
+ * English phrasing ("plan an evening out in Saigon") returned null — and a
+ * short one of those then read as a "simple" query and ran on the FAST model.
+ * The phrases below are the ones a person uses to ask for a plan; each is
+ * anchored on a word boundary against diacritic-stripped text (normalizeVN).
+ */
+const PLAN_REQUEST_RE = /\b(lap|len)\s+(ke\s*hoach|plan)\b|\bplan\s+(cho|for|an?|the|my|our|a)\b|\bhelp me plan\b|\bplan (an?\s+)?(evening|night|day|weekend|trip|date)\b|\bsap xep\b.{0,30}\b(di dau|lam gi|toi nay|cuoi tuan|ngay mai|buoi)\b|\bdi dau lam gi\b|\btoi uu\b.{0,20}\b(trieu|tr|k|budget|ngan sach)\b|\bgoi y lich\b/
+
+/**
+ * The activities a plan request names, in the vocabulary of `search_places`'s
+ * `type` parameter — so the planning block can say exactly which searches to
+ * run and the model never has to guess a tool per activity. "ăn chơi nhảy múa"
+ * → restaurant + bar; "ăn tối rồi xem phim" → restaurant + cinema. Order is the
+ * order the words appear in, which is usually the order of the evening.
+ *
+ * Deliberately a lexicon, not a model call: it decides WHICH tools run, and
+ * that decision must be the same on every platform and cost nothing.
+ */
+export type PlanActivity = 'restaurant' | 'cafe' | 'bar' | 'cinema' | 'spa' | 'attraction' | 'hotel'
+
+const PLAN_ACTIVITY_RE: ReadonlyArray<[RegExp, PlanActivity]> = [
+  [/\ban\b|\ban uong\b|\ban toi\b|\ban trua\b|\bnha hang\b|\bquan an\b|\bbua toi\b|\bdinner\b|\blunch\b|\beat\b|\bfood\b|\bhai san\b|\bnhau\b|\bbuffet\b/, 'restaurant'],
+  [/\bcafe\b|\bca phe\b|\bcoffee\b|\btra sua\b|\bdessert\b/, 'cafe'],
+  [/\bbar\b|\bpub\b|\bclub\b|\bnhay mua\b|\bnightlife\b|\bnight out\b|\bdancing\b|\bdance\b|\bbia\b|\bbeer\b|\bcocktail\b|\blounge\b|\bkaraoke\b|\bnhay\b/, 'bar'],
+  [/\bxem phim\b|\bphim\b|\brap\b|\bcinema\b|\bmovie\b/, 'cinema'],
+  [/\bspa\b|\bmassage\b|\blam dep\b|\bnail\b/, 'spa'],
+  [/\btham quan\b|\bdi choi\b|\bvui choi\b|\bcheck in\b|\bdanh lam\b|\bbao tang\b|\bthang canh\b|\bsightseeing\b|\bthings to do\b|\bactivities\b|\bhoat dong\b/, 'attraction'],
+  [/\bkhach san\b|\bhotel\b|\bresort\b|\bhomestay\b|\bo dau\b.{0,10}\bdem\b|\bstay\b/, 'hotel'],
+]
+
+export function detectPlanActivities(text: string): PlanActivity[] {
+  const t = normalizeVN(text.toLowerCase())
+  const found: Array<[number, PlanActivity]> = []
+  for (const [re, activity] of PLAN_ACTIVITY_RE) {
+    const m = re.exec(t)
+    if (m) found.push([m.index, activity])
+  }
+  // "ăn chơi" is one idiom for going out, not "eat + sightsee": when it is the
+  // only attraction cue, the outing is dinner + wherever the other words point.
+  const attractionOnlyFromAnChoi = found.some(([, a]) => a === 'attraction') && !/\btham quan\b|\bvui choi\b|\bcheck in\b|\bdanh lam\b|\bbao tang\b|\bthang canh\b|\bsightseeing\b|\bthings to do\b|\bactivities\b|\bhoat dong\b/.test(t)
+  return found
+    .sort((a, b) => a[0] - b[0])
+    .map(([, a]) => a)
+    .filter(a => !(a === 'attraction' && attractionOnlyFromAnChoi))
+}
+
+const EVENING_RE = /\btoi nay\b|\bbuoi toi\b|\bchieu toi\b|\bdem nay\b|\btonight\b|\bthis evening\b|\bevening\b|\bnight out\b|\ba night\b|\bdate night\b/
+const MULTI_DAY_RE = /\d+\s*(ngay|dem|night|day)s?\b|\bcuoi tuan\b|\bweekend\b|\bdu lich\b|\btrip\b|\bchuyen di\b|\btour\b/
+
+/**
+ * The bare NOUNS. "kế hoạch" / "lịch trình" / "itinerary" count as a plan
+ * keyword only next to a time or destination cue (the rules below), never on
+ * their own: "kế hoạch của Vingroup năm nay là gì" is a question about a
+ * company, and the audit of 2026-09-14 caught the bare noun routing it into
+ * planning mode. A REQUEST form (`PLAN_REQUEST_RE`) stands on its own.
+ */
+const PLAN_NOUN_RE = /\bke hoach\b|\blich trinh\b|\bitinerary\b/
+
+const TRIP_DESTINATIONS = 'da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|sai gon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul'
+const TRIP_DESTINATION_RE = new RegExp(`(${TRIP_DESTINATIONS})`)
+/** A go-verb immediately before a destination: "đi Đà Lạt", "lên Đà Lạt", "ra Hà Nội", "qua Thái Lan". */
+const GO_TO_DESTINATION_RE = new RegExp(`\\b(?:di|len|xuong|ra|vao|qua|den|toi|ve)\\s+(?:choi\\s+)?(?:o\\s+)?(?:${TRIP_DESTINATIONS})\\b`)
+/** A when for a trip: weekend, next week, a named month/holiday, or a depart/return phrase. */
+const TRIP_WHEN_RE = /\bcuoi tuan\b|\bweekend\b|\btuan (?:nay|sau|toi)\b|\bthang (?:nay|sau|toi|\d{1,2})\b|\ble\b|\btet\b|\bnghi le\b|\bmai di\b|\bngay mai\b|\bsang mai\b|\bcuoi thang\b|\bdau thang\b|\bnext week\b|\bthis week\b/
+const TRANSPORT_ASK_RE = /\bxe khach\b|\bve xe\b|\bve may bay\b|\bchuyen bay\b|\bve tau\b|\btau hoa\b|\bgia ve\b|\bnha xe\b|\bbus\b|\bflight\b|\bticket\b/
+
+export interface TripLength { days: number; nights: number; /** the phrase it was read from */ from: string }
+
+/** Rough centre of each destination the trip detector knows, for the transport default. */
+const DESTINATION_COORDS: ReadonlyArray<[re: RegExp, label: string, lat: number, lng: number]> = [
+  [/da nang|danang/, 'Đà Nẵng', 16.05, 108.20], [/phu quoc|phuquoc/, 'Phú Quốc', 10.23, 103.96],
+  [/nha trang/, 'Nha Trang', 12.24, 109.19], [/hoi an|hoian/, 'Hội An', 15.88, 108.34],
+  [/da lat|dalat/, 'Đà Lạt', 11.94, 108.44], [/vung tau/, 'Vũng Tàu', 10.35, 107.08],
+  [/ha long|halong/, 'Hạ Long', 20.95, 107.07], [/sapa|sa pa/, 'Sa Pa', 22.34, 103.84],
+  [/ninh binh/, 'Ninh Bình', 20.25, 105.97], [/\bhue\b/, 'Huế', 16.46, 107.59],
+  [/ha noi|hanoi/, 'Hà Nội', 21.03, 105.85], [/ho chi minh|saigon|sai gon/, 'TP HCM', 10.78, 106.70],
+  [/can tho/, 'Cần Thơ', 10.03, 105.78], [/mui ne/, 'Mũi Né', 10.93, 108.29],
+  [/con dao/, 'Côn Đảo', 8.68, 106.61], [/ly son/, 'Lý Sơn', 15.38, 109.11],
+  [/quy nhon/, 'Quy Nhơn', 13.78, 109.22], [/phan thiet/, 'Phan Thiết', 10.93, 108.10],
+]
+const ABROAD_RE = /thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul/
+
+export interface TransportDefault { mode: 'máy bay' | 'xe khách / ô tô' | 'tàu cao tốc'; destination: string; distanceKm: number | null }
+
+/**
+ * The transport a plan assumes, decided from distance so the model never has to ask "máy bay
+ * hay xe khách?" (Phase 7 group 4: it asked on T1 turns 1 AND 2 with the rule in the prompt;
+ * a stated default is what it followed on turn 3). ≥ 400 km or abroad → plane; an island →
+ * fast boat or plane; otherwise road. Null when the destination is unknown to this table.
+ */
+export function defaultTransportFor(text: string, origin: { lat: number; lng: number } | null | undefined): TransportDefault | null {
+  const t = normalizeVN(String(text ?? '').toLowerCase())
+  if (ABROAD_RE.test(t)) return { mode: 'máy bay', destination: 'nước ngoài', distanceKm: null }
+  const hit = DESTINATION_COORDS.find(([re]) => re.test(t))
+  if (!hit) return null
+  const [, label, lat, lng] = hit
+  if (!origin) return { mode: 'máy bay', destination: label, distanceKm: null }
+  const R = 6371
+  const dLat = (lat - origin.lat) * Math.PI / 180
+  const dLng = (lng - origin.lng) * Math.PI / 180
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(origin.lat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2
+  const km = Math.round(2 * R * Math.asin(Math.sqrt(a)))
+  if (/Phú Quốc|Côn Đảo/.test(label)) return { mode: km >= 250 ? 'máy bay' : 'tàu cao tốc', destination: label, distanceKm: km }
+  if (/Lý Sơn/.test(label)) return { mode: 'tàu cao tốc', destination: label, distanceKm: km }
+  return { mode: km >= 400 ? 'máy bay' : 'xe khách / ô tô', destination: label, distanceKm: km }
+}
+
+/**
+ * The trip's length as the user said it. "3 ngày 2 đêm" is literal; "mai đi mốt về" is TWO days
+ * (one night), "sáng đi chiều về" / "đi về trong ngày" is one day. Phase 7 group 4 (golden T1
+ * turn 2): the model read "mai đi mốt về" as three days and kept planning three — the length is
+ * decided here so the planning block can state it and the model cannot mis-count it.
+ */
+export function detectTripLength(text: string): TripLength | null {
+  const t = normalizeVN(String(text ?? '').toLowerCase())
+  let m = t.match(/\b(\d{1,2})\s*(?:ngay|days?)\b(?:\s*(\d{1,2})\s*(?:dem|nights?)\b)?/)
+  if (m) {
+    const days = Number(m[1])
+    if (days >= 1 && days <= 30) return { days, nights: m[2] ? Number(m[2]) : Math.max(0, days - 1), from: m[0].trim() }
+  }
+  m = t.match(/\b(\d{1,2})\s*(?:dem|nights?)\b/)
+  if (m) {
+    const nights = Number(m[1])
+    if (nights >= 1 && nights <= 30) return { days: nights + 1, nights, from: m[0].trim() }
+  }
+  if (/\bmai di\b.{0,12}\bmot ve\b|\bdi mai\b.{0,8}\bve mot\b/.test(t)) return { days: 2, nights: 1, from: 'mai đi mốt về' }
+  if (/\bsang di\b.{0,12}\b(?:chieu|toi) ve\b|\bdi ve trong ngay\b|\bve trong ngay\b|\bday trip\b|\bsame day\b/.test(t)) return { days: 1, nights: 0, from: 'đi về trong ngày' }
+  return null
+}
+
+/**
+ * Whether this turn is a REFINEMENT of the plan the thread is already building, as opposed to a
+ * new subject. The planning block is re-issued for a refinement ("mai đi mốt về, budget 20
+ * triệu", "gần biển") so the plan is actually delivered — group 4 measured the block dropping
+ * out on every follow-up, which is why the model kept asking instead of planning. A refinement
+ * is short and names no other tool subject (a product, the news, gold, a ticket).
+ */
+const OTHER_SUBJECT_RE = /\bmua\b|\bgia vang\b|\btin tuc\b|\bthoi tiet\b|\bty gia\b|\bdien thoai\b|\blaptop\b|\bmacbook\b|\biphone\b|\bxe may\b|\bo to\b|\bve xe\b|\bve may bay\b|\bcong thuc\b|\bdich\b|\btom tat\b/
+export function isPlanningRefinement(lastText: string): boolean {
+  const t = normalizeVN(String(lastText ?? '').toLowerCase()).trim()
+  if (t.length === 0 || t.length > 160) return false
+  if (OTHER_SUBJECT_RE.test(t)) return false
+  return true
+}
+
 export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   const t = normalizeVN(text.toLowerCase())
 
+  const hasPlanRequest = PLAN_REQUEST_RE.test(t)
+  const hasPlanKeyword = hasPlanRequest || PLAN_NOUN_RE.test(t)
+  const isEvening = EVENING_RE.test(t)
+
   // Evening: "tối nay" + multi-activity OR explicit plan request
-  const hasToiNay = t.includes('toi nay')
-  const hasEvening = t.includes('buoi toi') || t.includes('chieu toi')
   const hasMultiActivity =
-    (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau')) &&
-    (t.includes('an') || t.includes('cafe') || t.includes('ca phe'))
-  const hasPlanKeyword = t.includes('lich trinh') || t.includes('ke hoach') || t.includes('lap ke') || t.includes('goi y lich')
-  if ((hasToiNay || hasEvening) && (hasMultiActivity || hasPlanKeyword)) return 'evening'
+    (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau') || t.includes('nhay mua') || t.includes('club')) &&
+    (/\ban\b/.test(t) || t.includes('cafe') || t.includes('ca phe') || t.includes('dinner') || t.includes('eat'))
+  if (isEvening && (hasMultiActivity || hasPlanKeyword)) return 'evening'
 
   // Trip: destination + (days/nights pattern OR budget pattern OR trip keyword)
   const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
   const hasBudget = t.includes('budget') || t.includes('ngan sach') || /\d+\s*(trieu|tr\b|million)/.test(t)
-  const hasDestination = /(da nang|danang|phu quoc|phuquoc|nha trang|hoi an|hoian|da lat|dalat|vung tau|ha long|halong|sapa|sa pa|ninh binh|hue|ha noi|hanoi|ho chi minh|saigon|can tho|mui ne|con dao|ly son|quy nhon|phan thiet|thai lan|thailand|singapore|nhat ban|japan|han quoc|korea|bali|malaysia|paris|tokyo|osaka|seoul)/.test(t)
+  const hasDestination = TRIP_DESTINATION_RE.test(t)
   const hasTripKw = t.includes('trip') || t.includes('du lich') || t.includes('di choi') || t.includes('chuyen di') || hasPlanKeyword
 
   if (hasDays && (hasDestination || hasBudget || hasTripKw)) return 'trip'
   if (hasTripKw && hasDestination) return 'trip'
+  // Phase 7 group 4 (golden G4a): "Đi Đà Lạt cuối tuần này" is a trip — a go-verb right before a
+  // destination plus a when ("cuối tuần", "tuần sau", "mai đi mốt về"). It used to fall through
+  // to a plain place search, which asked two questions and planned nothing. A ticket question
+  // ("xe khách đi Đà Lạt cuối tuần") keeps its transport tool: no plan is asked for there.
+  if (hasDestination && GO_TO_DESTINATION_RE.test(t) && TRIP_WHEN_RE.test(t) && !TRANSPORT_ASK_RE.test(t)) return 'trip'
+
+  // An explicit plan request with no evening cue and no destination: the two
+  // existing plan types are the only ones the clients render, so it maps to the
+  // closest one — multi-day / weekend / travel wording → trip; otherwise evening
+  // (a single outing: "lập kế hoạch ăn chơi cho 2 người", "help me plan for 2").
+  if (hasPlanRequest) return MULTI_DAY_RE.test(t) ? 'trip' : 'evening'
 
   return null
+}
+
+// Phase D (2026-09-20): a cinema the user NAMED is its own place — the search-now directive calls it
+// exactly, and the decision frame does not ask for a location it does not need.
+/** A cinema the user NAMED ("rạp CGV Vincom Đồng Khởi") — the call is that venue, exactly. */
+// A bare "galaxy" / "bhd" is a brand only after "rạp" (Galaxy is also a phone).
+const CINEMA_BRAND_RE = /\b(?:rap (galaxy|bhd|cgv|lotte|cinestar)|(cgv|lotte cinema|galaxy cinema|bhd star|cinestar|mega gs))\b/
+const VENUE_NAME_STOP = new Set(['chieu', 'phim', 'toi', 'nay', 'mai', 'hom', 'co', 'gia', 've', 'may', 'gio', 'o', 'dau', 'gan', 'nao', 'ngay', 'lich', 'suat', 'bao', 'nhieu', 'khong', 'la', 'thi', 'de', 'cho', 'va', 'xem', 'gi', 'the', 'di', 'den', 'tu'])
+/** The named cinema, as a search query (unaccented is fine for Serper), or null when only the kind was named. */
+export function namedCinemaQuery(normalizedText: string): string | null {
+  const m = CINEMA_BRAND_RE.exec(normalizedText)
+  if (!m) return null
+  const words = [m[1] ?? m[2]]
+  for (const w of normalizedText.slice(m.index + m[0].length).split(/[^a-z0-9]+/).filter(Boolean)) {
+    if (VENUE_NAME_STOP.has(w) || words.length >= 5) break
+    words.push(w)
+  }
+  return words.join(' ')
+}
+
+/**
+ * E3 (2026-09-20, measured FK1 / PK2 / SK1): a question about a venue the user NAMED — "quán Cơm
+ * Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?", "Sả Spa Quận 1 mở cửa đến mấy giờ?" — is not a
+ * request to pick one, and the canned clarify asked "Tầm giá? Mấy người?". The name is read from
+ * the ORIGINAL text (case and diacritics intact): two or more capitalised tokens in a row that are
+ * not just an area, optionally introduced by a venue noun. Returns the name or null.
+ */
+const AREA_TOKENS = /^(?:Quận|Q\.?|Phường|P\.?|Huyện|Thành|Phố|TP\.?|Tỉnh|Sài|Gòn|Hà|Nội|Đà|Nẵng|Lạt|Phú|Quốc|Nhuận|Hội|An|Nha|Trang|Vũng|Tàu|Gò|Vấp|Bình|Thạnh|Tân|Thủ|Đức|Cần|Thơ|Huế|Sa|Pa|Hạ|Long|Việt|Nam|HCM|TPHCM|Hồ|Chí|Minh|Đồng|Nai|Biên|Hòa|Chánh|Tây|Ninh|Kiên|Giang|Lâm|Bà|Rịa|Mũi|Né|Phan|Thiết|Quy|Nhơn|Ninh|Cát|Bà|Mộc|Châu|Côn|Đảo|Cà|Mau|Bạc|Liêu|Sóc|Trăng|Vĩnh|Yên|Bái|Lào|Cai|Điện|Biên|Cao|Bằng|Lạng|Sơn|Hải|Phòng|Nam|Định|Thái|Nguyên|Bắc|Hưng|Hà|Nam|Thanh|Hóa|Nghệ|Vinh|Tĩnh|Quảng|Trị|Bình|Định|Tuy|Hòa|Khánh|Đắk|Lắk|Buôn|Ma|Thuột|Gia|Lai|Kon|Tum|Pleiku|Tây|Đô|Mỹ|Tho|Bến|Tre|Trà|Vinh|Long|Xuyên|Rạch|Giá|Hà|Tiên|Mekong|Chợ|Lớn)$/u
+const VENUE_NOUN_RE = /^(?:quán|quan|nhà hàng|tiệm|tiem|cafe|cà phê|spa|khách sạn|hotel|resort|rạp|rap|bar|karaoke|cửa hàng|siêu thị|homestay|shop|tiệm|salon|phòng khám)$/iu
+/** A venue-type word INSIDE a name ("Sả Spa", "Lotte Cinema", "Highlands Coffee") makes a sentence-initial run a name. */
+const VENUE_TYPE_WORD = /^(?:Spa|Cinema|Cine|Hotel|Resort|Karaoke|Cafe|Café|Coffee|Shop|Store|Mart|Plaza|Mall|Restaurant|Bistro|Kitchen|Garden|Lounge|Club|Bar|Pub|Villa|Homestay|Salon|Clinic|Center|Centre|Tower|Studio|Quán|Tiệm)$/iu
+export function namedVenueIn(originalText: string): string | null {
+  const tokens = originalText.replace(/[?!.,;:()]/g, ' ').split(/\s+/).filter(Boolean)
+  let best: string[] = []
+  for (let i = 0; i < tokens.length; i++) {
+    const run: string[] = []
+    let j = i
+    while (j < tokens.length && /^[\p{Lu}\p{N}][\p{L}\p{N}'’-]*$/u.test(tokens[j]) && !/^\d+$/.test(tokens[j])) { run.push(tokens[j]); j++ }
+    if (run.length >= 2) {
+      const introduced = i > 0 && VENUE_NOUN_RE.test(tokens[i - 1])
+      // Drop area tokens from the END ("Sả Spa Quận 1" → "Sả Spa"); a run that is ONLY an area is not a venue.
+      const core = [...run]
+      while (core.length > 0 && (AREA_TOKENS.test(core[core.length - 1]) || /^\d+$/.test(core[core.length - 1]))) core.pop()
+      const nonArea = core.filter(t => !AREA_TOKENS.test(t))
+      // At the very start of a message a capitalised run may just be sentence case ("Tìm quán…",
+      // "Resort Phú Quốc"): require the venue noun there, or a brand-shaped token (inner capital).
+      const startOk = i > 0 || introduced || core.some(t => /\p{Ll}\p{Lu}/u.test(t)) || core.length >= 3 || core.some(t => VENUE_TYPE_WORD.test(t))
+      if (nonArea.length >= (introduced ? 1 : 2) && core.length >= 2 && startOk && core.length > best.length) best = core
+      else if (introduced && nonArea.length >= 1 && core.length >= 1 && core.length > best.length) best = core
+    }
+    if (j > i) i = j - 1
+  }
+  return best.length > 0 ? best.join(' ') : null
 }
 
 // A MOVIE/SHOW something-to-watch cue: the reply is a recommendation from film
@@ -492,6 +889,16 @@ const weakWhereRe = /\bo\s+dau\b|\bcho\s+nao\b/
  *  also matches "mùa"/"mưa" once diacritics are stripped; that costs a place question its offline
  *  hint and nothing more, and detectForcedTool already accepts the same ambiguity. */
 const purchaseRe = /\bmua\b|\bco ban\b|san pham|dat hang|order hang|\bbuy\b|\bpurchase\b/
+
+/**
+ * Item 8 (2026-09-19): the physical-store prompt block ("dùng search_places, KHÔNG search_products")
+ * only matters when a PURCHASE is in play — it rode every turn that named a district, including
+ * "Tìm quán ăn tối gần Quận 1" (measured F8, E1): 130 tokens steering a choice that did not exist.
+ */
+export function isPurchaseShaped(text: string): boolean {
+  const t = normalizeVN(text.toLowerCase().trim())
+  return purchaseRe.test(t) || /\bcua\s*hang\b|\btiem\b|\bshop\b|\bsieu\s*thi\b|\bmall\b|\bplaza\b|\bchi\s*nhanh\b/.test(t)
+}
 
 export function detectLocationIntent(text: string): 'offline' | 'online' | 'unknown' {
   const t = normalizeVN(text.toLowerCase().trim())

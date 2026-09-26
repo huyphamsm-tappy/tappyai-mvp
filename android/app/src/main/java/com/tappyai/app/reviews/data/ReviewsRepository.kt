@@ -42,11 +42,12 @@ interface ReviewsRepository {
 
     suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>>
 
-    /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain).
-     *  [parentId] replies to another comment (one-level thread); null posts a top-level comment.
-     *  The backend enforces 1–300 chars and rate-limits (10/min); a validation or rate-limit
-     *  failure surfaces as a typed [NetworkResult.Error]. */
-    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<ReviewComment>
+    /** Posts a comment on [reviewId] and returns the created comment (already mapped to domain)
+     *  together with the review's updated comment count — see [PostedComment]. [parentId] replies
+     *  to another comment (one-level thread); null posts a top-level comment. The backend enforces
+     *  1–300 chars and rate-limits (10/min); a validation or rate-limit failure surfaces as a typed
+     *  [NetworkResult.Error]. */
+    suspend fun postComment(reviewId: String, body: String, parentId: String? = null): NetworkResult<PostedComment>
 
     /** Deletes one of the caller's own comments; returns the review's updated comment count. */
     suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int>
@@ -66,7 +67,14 @@ interface ReviewsRepository {
      *  state. Caller adjusts the follower count locally (±1); the backend also returns the count. */
     suspend fun toggleFollow(userId: String): NetworkResult<Boolean>
 
-    suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>>
+    /** The Inbox: `GET /api/notifications` grouped the way the web groups it, plus the server's unread total. */
+    suspend fun getNotifications(): NetworkResult<NotificationInbox>
+
+    /** Marks every unread notification of the caller read (`POST /api/notifications/read`, no body). */
+    suspend fun markAllNotificationsRead(): NetworkResult<Unit>
+
+    /** The people who like [reviewId] right now, newest first; [before] pages further back. */
+    suspend fun getLikers(reviewId: String, before: String?): NetworkResult<LikersPage>
 
     /**
      * Uploads a single review photo (multipart `POST /api/reviews/upload`) and returns its public
@@ -90,10 +98,7 @@ interface ReviewsRepository {
      */
     suspend fun getLinkProviders(): NetworkResult<List<String>>
 
-    /** [musicTrackId], when present, attaches a sound picked via Sound Detail's "Use this sound"
-     *  (`POST /api/reviews`'s `music` field, `origin: 'attached'`) — matches the web's own
-     *  attach-an-existing-track flow, independent of whether real media is attached.
-     *  [photos] carries public Blob URLs from [uploadReviewPhoto] (max 6, backend-capped).
+    /** [photos] carries public Blob URLs from [uploadReviewPhoto] (max 6, backend-capped).
      *  [link], when present, attaches an external clip (YouTube/TikTok/Facebook) — the web sends
      *  content_type='video', media_url=source_url, source_type, source_url and a best-effort thumb. */
     suspend fun createReview(
@@ -101,11 +106,6 @@ interface ReviewsRepository {
         placeName: String,
         body: String,
         rating: Int?,
-        musicTrackId: String? = null,
-        // Web parity: the composer's MusicSelectionPanel lets the user set a start offset + volume
-        // for the attached track; sent through in the `music` payload (defaults = whole track, full).
-        musicStartSec: Int = 0,
-        musicVolume: Double = 1.0,
         photos: List<String>? = null,
         link: LinkAttachment? = null,
         /**
@@ -118,14 +118,25 @@ interface ReviewsRepository {
     ): NetworkResult<ReviewModeration?>
 
     /**
-     * The tapped review, if it was served by a previous feed/search/profile fetch. There is no
-     * single-review GET endpoint, so the detail screen resolves its review from this in-memory
-     * cache. Returns null on a cache miss (e.g. cold deep-link) — the caller shows an empty state.
+     * The tapped review, if it was served by a previous feed/search/profile fetch. The detail
+     * screen resolves its review from this in-memory cache (it never fetches). Returns null on a
+     * cache miss (e.g. cold deep-link) — the caller shows an empty state.
      */
     fun getCachedReview(reviewId: String): Review?
 
     /** The caller's own reviews, including hidden ones — backs the My Reviews screen. */
     suspend fun getMine(): NetworkResult<List<Review>>
+
+    /**
+     * The caller's saved reviews (`GET /api/reviews/saved`), newest save first — the profile's
+     * "Đã lưu" grid. Self-only: the server keys the list on the bearer, never on a user id, so
+     * another creator's saves cannot be requested. Rows are reduced (no author, media or counts);
+     * see [getReview] for the full row.
+     */
+    suspend fun getSaved(): NetworkResult<List<Review>>
+
+    /** One review in full (`GET /api/reviews/{id}`), cached for [getCachedReview] on success. */
+    suspend fun getReview(reviewId: String): NetworkResult<Review>
 
     /** Hides or unhides one of the caller's own reviews. */
     suspend fun setHidden(reviewId: String, hidden: Boolean): NetworkResult<Unit>

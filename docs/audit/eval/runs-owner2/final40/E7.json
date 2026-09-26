@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 4740,
+  "evidenceId": "cae845c6-2059-43d9-a775-9643d4b09b17",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho tâm trạng thư giãn:\n\n**Deadpool & Wolverine** — nếu thích hành động hài hước, phim vừa có cảnh quay ấn tượng vừa hài hước, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Wicked** — nếu muốn xem musical/drama nhẹ nhàng, phim có âm nhạc hay và câu chuyện cảm động, tạo cảm giác ấm áp.\n\n**Alien: Romulus** — nếu thích kinh dị/sci-fi căng thẳng, phim có cốt truyện hấp dẫn và hiệu ứng hình ảnh đẹp.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho tâm trạng thư giãn:\n\n**Deadpool & Wolverine** — nếu thích hành động hài hước, phim vừa có cảnh quay ấn tượng vừa hài hước, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Wicked** — nếu muốn xem musical/drama nhẹ nhàng, phim có âm nhạc hay và câu chuyện cảm động, tạo cảm giác ấm áp.\n\n**Alien: Romulus** — nếu thích kinh dị/sci-fi căng thẳng, phim có cốt truyện hấp dẫn và hiệu ứng hình ảnh đẹp.\n"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

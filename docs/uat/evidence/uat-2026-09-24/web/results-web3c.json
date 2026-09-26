@@ -1,0 +1,49 @@
+[
+ {
+  "id": "W8a",
+  "area": "Scam Shield — URL path returns a verdict",
+  "status": "PASS",
+  "detail": {
+   "http": "200 /api/scam-shield/check",
+   "result": "đáng ngờ Cảnh báo lừa đảo Bảo vệ bạn khỏi các liên kết và website đáng ngờ Lịch sử kiểm tra DUYỆT WEB AN TOÀN HƠN Kiểm tra an toàn trước khi truy cập Tappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — k"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W8a-scam-url.png"
+ },
+ {
+  "id": "W8c",
+  "area": "Scam Shield — message path analyses the text and returns a verdict",
+  "status": "PASS",
+  "detail": {
+   "button": "Phân tích ngay",
+   "http": "200 /api/scam-shield/analyze",
+   "result": "đáng ngờ Cảnh báo lừa đảo Bảo vệ bạn khỏi các liên kết và website đáng ngờ Lịch sử kiểm tra DUYỆT WEB AN TOÀN HƠN Kiểm tra an toàn trước khi truy cập Tappy giúp bạn phát hiện liên kết và website đáng ngờ, lừa đảo — k"
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W8c-scam-message.png"
+ },
+ {
+  "id": "W13",
+  "area": "notifications control is present (Inbox → Thông báo → settings)",
+  "status": "PASS",
+  "detail": {
+   "switches": [
+    {
+     "label": "Bật/tắt thông báo từ Tappy",
+     "on": "true"
+    },
+    {
+     "label": "Bật/tắt thông báo đẩy",
+     "on": "false"
+    },
+    {
+     "label": "Bật/tắt tin khuyến mãi qua thông báo",
+     "on": "false"
+    },
+    {
+     "label": "Ngừng nhận tất cả tin khuyến mãi",
+     "on": "false"
+    }
+   ]
+  },
+  "shot": "docs/uat/evidence/uat-2026-09-24/web/W13-notifications.png"
+ }
+]

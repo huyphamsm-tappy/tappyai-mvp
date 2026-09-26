@@ -1,6 +1,9 @@
 package com.tappyai.app.profile
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import com.tappyai.app.R
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -19,13 +22,22 @@ import com.tappyai.app.membership.MembershipScreen
 import com.tappyai.app.memory.MemoryScreen
 import com.tappyai.app.myreviews.MyReviewsScreen
 import com.tappyai.app.groupdining.GroupDiningScreen
+import com.tappyai.app.messaging.ThreadScreen
+import com.tappyai.app.notifications.InboxScreen
 import com.tappyai.app.notifications.NotificationsScreen
+import com.tappyai.app.planner.PlannerScreen
 import com.tappyai.app.pricetracking.PriceTrackingScreen
+import com.tappyai.app.reviews.data.Review
+import com.tappyai.app.reviews.ui.ProfileClipsScreen
 import com.tappyai.app.reviews.ui.ReviewComposerHost
+import com.tappyai.app.reviews.ui.askTappySubject
 import com.tappyai.app.reviews.ui.ReviewDetailScreen
 import com.tappyai.app.reviews.ui.ReviewProfileScreen
 import com.tappyai.app.saved.SavedScreen
 import com.tappyai.app.servicedetail.ServiceDetailScreen
+import com.tappyai.app.social.SocialScreen
+import com.tappyai.app.home.HomeTab
+import com.tappyai.app.home.ReportNestedScreen
 
 /**
  * The Profile tab's content. Hosts its own nested NavHost (Hub → Settings → Notifications; Hub →
@@ -47,8 +59,32 @@ fun ProfileTab(
     /** Routed up to `AppNavHost` — this tab's NavController is nested and cannot reach the
      *  root graph's Login destination. Forwarded to both Profile and Settings. */
     onSignIn: () -> Unit,
+    /** The Planner's "Lập kế hoạch": Chat with the planner prompt pre-filled (web `/chat?q=`). */
+    onOpenChatWithPrefill: (String) -> Unit = { onOpenChat() },
+    /** Following's "Khám phá cộng đồng" and History's empty-state action → the Explore tab. */
+    onOpenExplore: () -> Unit = onOpenHome,
+    /** Home's bell: the shell selects this tab and asks for the Inbox; consumed once it is open. */
+    openInboxRequest: Boolean = false,
+    onInboxRequestHandled: () -> Unit = {},
 ) {
     val navController = rememberNavController()
+    val context = LocalContext.current
+    LaunchedEffect(openInboxRequest) {
+        if (openInboxRequest) {
+            navController.navigate(ProfileRoute.Inbox) { launchSingleTop = true }
+            onInboxRequestHandled()
+        }
+    }
+    // ✦ Hỏi Tappy from the pager — the same prompt the Explore graph builds (`askTappySubject`).
+    val askTappy: (Review) -> Unit = { review ->
+        askTappySubject(review)?.let { subject ->
+            onOpenChatWithPrefill(context.getString(R.string.reviews_ask_tappy_prefill, subject))
+        }
+    }
+    // The V3 landing draws its own header ("Tôi" + blurb + mascot), so the shell's title bar
+    // steps aside at the landing exactly as it does for Explore; nested screens keep their own.
+    ReportNestedScreen(HomeTab.Profile, navController, landingOwnsHeader = true)
+
     NavHost(navController = navController, startDestination = ProfileRoute.Hub) {
         composable<ProfileRoute.Hub> {
             ProfileScreen(
@@ -64,6 +100,54 @@ fun ProfileTab(
                 onOpenPriceTracking = { navController.navigate(ProfileRoute.PriceTracking) },
                 onOpenAccount = { navController.navigate(ProfileRoute.AccountGraph) },
                 onOpenAppConnections = { navController.navigate(ProfileRoute.AppConnections) },
+                // The privacy card: the same destination Settings' "Chính sách bảo mật" opens.
+                onOpenPrivacy = { navController.navigate(ProfileRoute.Privacy) },
+                onSignIn = onSignIn,
+                onOpenPlanner = { navController.navigate(ProfileRoute.Planner) },
+                onOpenSocial = { navController.navigate(ProfileRoute.Social) },
+                // The Account graph's edit screen — navigating to the nested destination builds
+                // the graph (and its start) underneath, so Back lands on Account as it always has.
+                onEditProfile = { navController.navigate(ProfileRoute.AccountEdit) },
+                // A tile opens the clip in ITS collection's pager: own posts and hidden posts page
+                // `/mine` (the pager includes hidden rows), saved pages `/saved`. Liked and Shared
+                // have no pager source in the (staged, untouched) Reviews ViewModel, so they open
+                // the existing detail screen instead — never a second viewer.
+                onOpenReview = { collection, reviewId ->
+                    when (collection) {
+                        ProfileContentTab.Posts, ProfileContentTab.Hidden ->
+                            navController.navigate(ProfileRoute.ProfileClips(userId = null, startReviewId = reviewId))
+                        ProfileContentTab.Saved ->
+                            navController.navigate(ProfileRoute.ProfileClips(userId = null, startReviewId = reviewId, saved = true))
+                        ProfileContentTab.Liked, ProfileContentTab.Shared, ProfileContentTab.Places ->
+                            navController.navigate(ProfileRoute.ReviewDetail(reviewId))
+                    }
+                },
+                onOpenCreator = { userId -> navController.navigate(ProfileRoute.AuthorProfile(userId)) },
+                onCompose = { navController.navigate(ProfileRoute.MyReviewsComposer) },
+            )
+        }
+        // The Explore feature's clip pager, over the self profile's own collections (see the route).
+        composable<ProfileRoute.ProfileClips> { entry ->
+            val route = entry.toRoute<ProfileRoute.ProfileClips>()
+            ProfileClipsScreen(
+                startReviewId = route.startReviewId,
+                onAuthorClick = { userId -> navController.navigate(ProfileRoute.AuthorProfile(userId)) },
+                onAskTappy = askTappy,
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable<ProfileRoute.Planner> {
+            PlannerScreen(
+                onBack = { navController.popBackStack() },
+                onOpenConversation = onResumeConversation,
+                onPlanWithTappy = onOpenChatWithPrefill,
+            )
+        }
+        composable<ProfileRoute.Social> {
+            SocialScreen(
+                onBack = { navController.popBackStack() },
+                onOpenProfile = { userId -> navController.navigate(ProfileRoute.AuthorProfile(userId)) },
+                onOpenExplore = onOpenExplore,
                 onSignIn = onSignIn,
             )
         }
@@ -93,6 +177,27 @@ fun ProfileTab(
         composable<ProfileRoute.Notifications> {
             NotificationsScreen(onBack = { navController.popBackStack() })
         }
+        composable<ProfileRoute.Inbox> {
+            InboxScreen(
+                onBack = { navController.popBackStack() },
+                onOpenNotification = { notification ->
+                    when {
+                        notification.url.startsWith("/reviews/") ->
+                            navController.navigate(ProfileRoute.ReviewDetail(notification.url.removePrefix("/reviews/").substringBefore('?')))
+                        notification.url.startsWith("/profile/") ->
+                            navController.navigate(ProfileRoute.AuthorProfile(notification.url.removePrefix("/profile/").substringBefore('?')))
+                        notification.url.startsWith("/users/") ->
+                            navController.navigate(ProfileRoute.AuthorProfile(notification.url.removePrefix("/users/").substringBefore('?')))
+                    }
+                },
+                onOpenSettings = { navController.navigate(ProfileRoute.Notifications) },
+                onSignIn = onSignIn,
+                onOpenThread = { threadId -> navController.navigate(ProfileRoute.MessageThread(threadId)) },
+            )
+        }
+        composable<ProfileRoute.MessageThread> {
+            ThreadScreen(onBack = { navController.popBackStack() })
+        }
         composable<ProfileRoute.Membership> {
             MembershipScreen(onBack = { navController.popBackStack() })
         }
@@ -104,12 +209,15 @@ fun ProfileTab(
                 onBack = { navController.popBackStack() },
                 onStartChat = onOpenChat,
                 onResumeConversation = onResumeConversation,
+                onOpenPlanner = { navController.navigate(ProfileRoute.Planner) },
+                onOpenExplore = onOpenExplore,
             )
         }
         composable<ProfileRoute.Saved> {
             SavedScreen(
                 onBack = { navController.popBackStack() },
-                onExploreNow = onOpenHome,
+                // The web's empty-state link is `/reviews` — the Explore tab, not Home.
+                onExploreNow = onOpenExplore,
                 onOpenReview = { reviewId -> navController.navigate(ProfileRoute.ReviewDetail(reviewId)) },
                 onOpenPlace = { fav ->
                     navController.navigate(
@@ -154,7 +262,9 @@ fun ProfileTab(
             val route = entry.toRoute<ProfileRoute.AuthorProfile>()
             ReviewProfileScreen(
                 userId = route.userId,
-                onReviewClick = { review -> navController.navigate(ProfileRoute.ReviewDetail(review.id)) },
+                // The screen now hands up the review id (Explore's author profile went V3 on
+                // 2026-09-13 and shares this composable); this graph still opens its own detail.
+                onReviewClick = { reviewId -> navController.navigate(ProfileRoute.ReviewDetail(reviewId)) },
                 onBack = { navController.popBackStack() },
             )
         }

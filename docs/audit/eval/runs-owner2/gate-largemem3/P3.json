@@ -1,0 +1,35 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 3981,
+  "evidenceId": "8f0c8bbf-edb5-4c87-b62d-269381d8f160",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm thông tin đặt trước cho Hyan Spa nhưng chưa có dữ liệu cụ thể về hình thức đặt lịch online. Bạn nên **gọi trực tiếp hoặc nhắn qua Facebook/website của spa** để hỏi về đặt trước — thường các spa ở Q1 đều hỗ trợ đặt lịch qua điện thoại hoặc fanpage.\n\nBạn muốn mình tìm thêm spa khác gần Q1 có thông tin đặt trước rõ ràng không, hay bạn sẽ liên hệ Hyan Spa trước?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, gội đầu dưỡng sinh — đúng những gì bạn cần. 👍\n\nLưu ý: Mình chưa tìm thấy giá cụ thể trên kết quả tìm kiếm, bạn nên gọi hoặc vào website để xác nhận giá massage chân có phù hợp với ngân sách dưới 300k không nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt lịch Hyan Spa|Xem review trên YouTube|Tìm spa khác gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin đặt trước cho Hyan Spa nhưng chưa có dữ liệu cụ thể về hình thức đặt lịch online. Bạn nên **gọi trực tiếp hoặc nhắn qua Facebook/website của spa** để hỏi về đặt trước — thường các spa ở Q1 đều hỗ trợ đặt lịch qua điện thoại hoặc fanpage.\n\nBạn muốn mình tìm thêm spa khác gần Q1 có thông tin đặt trước rõ ràng không, hay bạn sẽ liên hệ Hyan Spa trước?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

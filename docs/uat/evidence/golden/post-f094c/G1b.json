@@ -1,0 +1,1186 @@
+{
+  "id": "G1b",
+  "group": "entertainment-single",
+  "criteria": [
+    "Names cinemas near Quận 7 as cards with names",
+    "Does not ask which district again",
+    "Reply appears once"
+  ],
+  "turns": [
+    {
+      "user": "Tối nay đi xem phim ở rạp nào gần Quận 7",
+      "status": 200,
+      "elapsedMs": 14161,
+      "textFrames": 11,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "rạp chiếu phim gần Quận 7",
+            "location": "Quận 7, TP HCM",
+            "type": "cinema"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "address": "14 Đ. Tân Mỹ, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 33,
+              "price": null,
+              "categories": [
+                "Cửa hàng trò chơi điện tử"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "address": "55 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 142,
+              "price": null,
+              "categories": [
+                "Cửa hàng thiết bị âm thanh"
+              ],
+              "hours": "08:30–20:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "LOTTE Mart Quận 7",
+              "address": "469 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 25064,
+              "price": null,
+              "categories": [
+                "Đại siêu thị"
+              ],
+              "hours": "07:30–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Chiin Coffee & Cinema Quận 7",
+              "address": "B309 Đường Số 8, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 902,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Galaxy Cinema Huỳnh Tấn Phát",
+              "address": "PP6P+XPP, 1362 Huỳnh Tấn Phát, Khu phố 30, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2035,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Crescent Mall",
+              "address": "Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 4793,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vivo City",
+              "address": "Lầu 5, Trung tâm thương mại SC VivoCity, 1058 Đường Nguyễn Văn Linh, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 3895,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "address": "469 Đ Nguyễn Hữu Thọ, Quận 7, Hồ Chí Minh 72407, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 209,
+              "price": null,
+              "categories": [
+                "Trung tâm vui chơi dành cho trẻ em",
+                "Đại siêu thị"
+              ],
+              "hours": "08:30–21:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.73757,106.71818",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl54Y2sDeEvGm-zJ4Ke7uT3jEXpTqe9bZAQaiCjVioERi5Azf1oc0n9zNKivRWt0lrtdR6axc8AtokPFzGe4jHNKcw-zxtHrimM6cIyJp8Ms5D8NMVzjIDwVJTXLJG2mSpTocXpfHSTzPMh",
+                "address": "14 Đ. Tân Mỹ, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 33,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 345 789 200",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cửa hàng trò chơi điện tử"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1Bm1LmPfRB/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7507360052569497896",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FIGHT%20STATION%20-%20PS5%20PES%20Cinema%20Nintendo%20T%C3%82N%20M%E1%BB%B8%20QU%E1%BA%ACN%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84345789200",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73753,106.72786",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKC4yUr1Z3flQz7J8ka7-j39MN8va7co9IBIk0kFZf4I6BuamVbxQb00bvNLv6xS2z6JHrl-o0h0lxypZ5wM-X9ZnFYbafFG4ae4LA_uw3cBq6k64zAF4xsGkPK2QKxyZO6akz",
+                "address": "55 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 142,
+                "openingHours": "08:30–20:00",
+                "openNow": true,
+                "phone": "+84 1800 0042",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:30–20:00",
+                  "Thứ Bảy": "08:30–20:00",
+                  "Chủ Nhật": "08:30–20:00",
+                  "Thứ Hai": "08:30–20:00",
+                  "Thứ Ba": "08:30–20:00",
+                  "Thứ Tư": "08:30–20:00",
+                  "Thứ Năm": "08:30–20:00"
+                },
+                "categories": [
+                  "Cửa hàng thiết bị âm thanh"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hdradio.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7913584656472535996",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=HDRADIO%20Qu%E1%BA%ADn%207%20-%20Audio%20%26%20Home%20Cinema%20%26%20Karaoke%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8418000042",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74094,106.70181",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "LOTTE Mart Quận 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnbd56aGzp8xsbzKSeI-0RyaqhpOxDKrgKbG29SZXuo9A_egTqIBb_mpxid4QIEDALf-LDMd1mHcA_-QqN2vvmDvauceWLDKIVFNb-CFnv4OBTeATPgePkRBd6KqfQ5upGFIbTYUA",
+                "address": "469 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 25064,
+                "openingHours": "07:30–22:00",
+                "openNow": true,
+                "phone": "+84 901 057 057",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00",
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00",
+                  "Thứ Năm": "07:30–22:00"
+                },
+                "categories": [
+                  "Đại siêu thị"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://lottemart.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7688943793501163131",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=LOTTE%20Mart%20Qu%E1%BA%ADn%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901057057",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73204,106.70289",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Chiin Coffee & Cinema Quận 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyY0FLVRQmjpkVHTpiYi_YBuWj55_e2cM3VYSx8fYng4hAznJDQMp6R41L5E2d8dBKAs7eyidwsTFv0ZG1VBfvdkQFtjTQFHT1qJbvtz-InOc0JhBJlW7S8x26L1SXUQmDv6NXTyeduIeS",
+                "address": "B309 Đường Số 8, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 902,
+                "phone": "+84 917 979 455",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7868739630299472826",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Chiin%20Coffee%20%26%20Cinema%20Qu%E1%BA%ADn%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84917979455",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.71230,106.73629",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Galaxy Cinema Huỳnh Tấn Phát",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9hwe_6wXcp7pRTQ7Jhpxg4hHPzMCRzAuVPfsaV95JaK8wXnyc0SMooGQZFvI1-OVYmuXk_onFiW8GNxmXP-QfhL6JMGyUyPqrmvBqrt3C4S9HB_-QZFF16UVc2DDOqCYN2qyZ",
+                "address": "PP6P+XPP, 1362 Huỳnh Tấn Phát, Khu phố 30, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2035,
+                "phone": "+84 1900 2224",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://galaxycine.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10734165322862278143",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Hu%E1%BB%B3nh%20T%E1%BA%A5n%20Ph%C3%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419002224",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.72887,106.71886",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Crescent Mall",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWqdx92SqsghYXUBGSyoW3bnDwLS5SOkOrTTuhLZVC4mleXG4WNzIU3eC_mT9PzH_qTsviVqqt_H0uRtrwcxvaigRuOWe-WtL8WwM-rdrroBlUgarYTEysvPL_Tmwj3OXjQC0ovw",
+                "address": "Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 4793,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/default/cinox/site/cgv-crescent-mall",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3052235728779111771",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Crescent%20Mall%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73004,106.70435",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vivo City",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVQGL5QugNK4ofM75UkSXo46J_GGZkDM_TcU_9n0rXYzI8UtCmTeAlmCdVfqFZ0xPVQPEScexRPjcbQVJZ6wE2b-GFGefL1OllkVJKjl0XuuMDCdEhaaECL1fZeGVlEXcR7aEp",
+                "address": "Lầu 5, Trung tâm thương mại SC VivoCity, 1058 Đường Nguyễn Văn Linh, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 3895,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12696636265974567077",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vivo%20City%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74113,106.70210",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm1oHFzADebtsGdGdqkIAcM-WApzq-RJya-NbMDV6K6kYcT_68rL25jshIkfsU7EUYHlt55WmhlLmycAHGZ75NPrH6nJeFjZ-2d5Ewrr8_bQG9FS2NiykmjnF20JppYAde4xLeo",
+                "address": "469 Đ Nguyễn Hữu Thọ, Quận 7, Hồ Chí Minh 72407, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 209,
+                "openingHours": "08:30–21:30",
+                "openNow": true,
+                "phone": "+84 906 617 233",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:30–21:30",
+                  "Thứ Bảy": "08:00–21:30",
+                  "Chủ Nhật": "08:00–21:30",
+                  "Thứ Hai": "08:30–21:30",
+                  "Thứ Ba": "08:30–21:30",
+                  "Thứ Tư": "08:30–21:30",
+                  "Thứ Năm": "08:30–21:30"
+                },
+                "categories": [
+                  "Trung tâm vui chơi dành cho trẻ em",
+                  "Đại siêu thị"
+                ],
+                "rank": 8,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://aeonfantasy.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15263682654038032750",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=kidzooona%20%26%20Tiny%20Mollyfantasy%20LOTTE%20MART%20QU%E1%BA%ACN%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906617233",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20chi%E1%BA%BFu%20phim%20g%E1%BA%A7n%20Qu%E1%BA%ADn%207%20Qu%E1%BA%ADn%207%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "entertainment"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "address": "14 Đ. Tân Mỹ, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 33,
+              "price": null,
+              "categories": [
+                "Cửa hàng trò chơi điện tử"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "open now",
+                "rated 5",
+                "33 reviews"
+              ]
+            },
+            {
+              "name": "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "address": "55 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 142,
+              "price": null,
+              "categories": [
+                "Cửa hàng thiết bị âm thanh"
+              ],
+              "hours": "08:30–20:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "LOTTE Mart Quận 7",
+              "address": "469 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 25064,
+              "price": null,
+              "categories": [
+                "Đại siêu thị"
+              ],
+              "hours": "07:30–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Chiin Coffee & Cinema Quận 7",
+              "address": "B309 Đường Số 8, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 902,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Galaxy Cinema Huỳnh Tấn Phát",
+              "address": "PP6P+XPP, 1362 Huỳnh Tấn Phát, Khu phố 30, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2035,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Crescent Mall",
+              "address": "Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 4793,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vivo City",
+              "address": "Lầu 5, Trung tâm thương mại SC VivoCity, 1058 Đường Nguyễn Văn Linh, Tân Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 3895,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "address": "469 Đ Nguyễn Hữu Thọ, Quận 7, Hồ Chí Minh 72407, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 209,
+              "price": null,
+              "categories": [
+                "Trung tâm vui chơi dành cho trẻ em",
+                "Đại siêu thị"
+              ],
+              "hours": "08:30–21:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.73757,106.71818",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl54Y2sDeEvGm-zJ4Ke7uT3jEXpTqe9bZAQaiCjVioERi5Azf1oc0n9zNKivRWt0lrtdR6axc8AtokPFzGe4jHNKcw-zxtHrimM6cIyJp8Ms5D8NMVzjIDwVJTXLJG2mSpTocXpfHSTzPMh",
+                "address": "14 Đ. Tân Mỹ, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 33,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 345 789 200",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cửa hàng trò chơi điện tử"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 5",
+                    "params": {
+                      "value": 5
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "33 reviews",
+                    "params": {
+                      "count": 33
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "142 reviews",
+                  "params": {
+                    "count": 142
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1Bm1LmPfRB/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7507360052569497896",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FIGHT%20STATION%20-%20PS5%20PES%20Cinema%20Nintendo%20T%C3%82N%20M%E1%BB%B8%20QU%E1%BA%ACN%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84345789200",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73753,106.72786",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKC4yUr1Z3flQz7J8ka7-j39MN8va7co9IBIk0kFZf4I6BuamVbxQb00bvNLv6xS2z6JHrl-o0h0lxypZ5wM-X9ZnFYbafFG4ae4LA_uw3cBq6k64zAF4xsGkPK2QKxyZO6akz",
+                "address": "55 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 142,
+                "openingHours": "08:30–20:00",
+                "openNow": true,
+                "phone": "+84 1800 0042",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:30–20:00",
+                  "Thứ Bảy": "08:30–20:00",
+                  "Chủ Nhật": "08:30–20:00",
+                  "Thứ Hai": "08:30–20:00",
+                  "Thứ Ba": "08:30–20:00",
+                  "Thứ Tư": "08:30–20:00",
+                  "Thứ Năm": "08:30–20:00"
+                },
+                "categories": [
+                  "Cửa hàng thiết bị âm thanh"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hdradio.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7913584656472535996",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=HDRADIO%20Qu%E1%BA%ADn%207%20-%20Audio%20%26%20Home%20Cinema%20%26%20Karaoke%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8418000042",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74094,106.70181",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "LOTTE Mart Quận 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnbd56aGzp8xsbzKSeI-0RyaqhpOxDKrgKbG29SZXuo9A_egTqIBb_mpxid4QIEDALf-LDMd1mHcA_-QqN2vvmDvauceWLDKIVFNb-CFnv4OBTeATPgePkRBd6KqfQ5upGFIbTYUA",
+                "address": "469 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 25064,
+                "openingHours": "07:30–22:00",
+                "openNow": true,
+                "phone": "+84 901 057 057",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00",
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00",
+                  "Thứ Năm": "07:30–22:00"
+                },
+                "categories": [
+                  "Đại siêu thị"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://lottemart.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7688943793501163131",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=LOTTE%20Mart%20Qu%E1%BA%ADn%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901057057",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73204,106.70289",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Chiin Coffee & Cinema Quận 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyY0FLVRQmjpkVHTpiYi_YBuWj55_e2cM3VYSx8fYng4hAznJDQMp6R41L5E2d8dBKAs7eyidwsTFv0ZG1VBfvdkQFtjTQFHT1qJbvtz-InOc0JhBJlW7S8x26L1SXUQmDv6NXTyeduIeS",
+                "address": "B309 Đường Số 8, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 902,
+                "phone": "+84 917 979 455",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7868739630299472826",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Chiin%20Coffee%20%26%20Cinema%20Qu%E1%BA%ADn%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84917979455",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.71230,106.73629",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Galaxy Cinema Huỳnh Tấn Phát",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9hwe_6wXcp7pRTQ7Jhpxg4hHPzMCRzAuVPfsaV95JaK8wXnyc0SMooGQZFvI1-OVYmuXk_onFiW8GNxmXP-QfhL6JMGyUyPqrmvBqrt3C4S9HB_-QZFF16UVc2DDOqCYN2qyZ",
+                "address": "PP6P+XPP, 1362 Huỳnh Tấn Phát, Khu phố 30, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2035,
+                "phone": "+84 1900 2224",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://galaxycine.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10734165322862278143",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Hu%E1%BB%B3nh%20T%E1%BA%A5n%20Ph%C3%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419002224",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.72887,106.71886",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Crescent Mall",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWqdx92SqsghYXUBGSyoW3bnDwLS5SOkOrTTuhLZVC4mleXG4WNzIU3eC_mT9PzH_qTsviVqqt_H0uRtrwcxvaigRuOWe-WtL8WwM-rdrroBlUgarYTEysvPL_Tmwj3OXjQC0ovw",
+                "address": "Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 4793,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/default/cinox/site/cgv-crescent-mall",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3052235728779111771",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Crescent%20Mall%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.73004,106.70435",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vivo City",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVQGL5QugNK4ofM75UkSXo46J_GGZkDM_TcU_9n0rXYzI8UtCmTeAlmCdVfqFZ0xPVQPEScexRPjcbQVJZ6wE2b-GFGefL1OllkVJKjl0XuuMDCdEhaaECL1fZeGVlEXcR7aEp",
+                "address": "Lầu 5, Trung tâm thương mại SC VivoCity, 1058 Đường Nguyễn Văn Linh, Tân Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 3895,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12696636265974567077",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vivo%20City%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74113,106.70210",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm1oHFzADebtsGdGdqkIAcM-WApzq-RJya-NbMDV6K6kYcT_68rL25jshIkfsU7EUYHlt55WmhlLmycAHGZ75NPrH6nJeFjZ-2d5Ewrr8_bQG9FS2NiykmjnF20JppYAde4xLeo",
+                "address": "469 Đ Nguyễn Hữu Thọ, Quận 7, Hồ Chí Minh 72407, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 209,
+                "openingHours": "08:30–21:30",
+                "openNow": true,
+                "phone": "+84 906 617 233",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:30–21:30",
+                  "Thứ Bảy": "08:00–21:30",
+                  "Chủ Nhật": "08:00–21:30",
+                  "Thứ Hai": "08:30–21:30",
+                  "Thứ Ba": "08:30–21:30",
+                  "Thứ Tư": "08:30–21:30",
+                  "Thứ Năm": "08:30–21:30"
+                },
+                "categories": [
+                  "Trung tâm vui chơi dành cho trẻ em",
+                  "Đại siêu thị"
+                ],
+                "rank": 8,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://aeonfantasy.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15263682654038032750",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=kidzooona%20%26%20Tiny%20Mollyfantasy%20LOTTE%20MART%20QU%E1%BA%ACN%207%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906617233",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20chi%E1%BA%BFu%20phim%20g%E1%BA%A7n%20Qu%E1%BA%ADn%207%20Qu%E1%BA%ADn%207%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.73757,106.71818",
+              "place:osm:10.73753,106.72786",
+              "place:osm:10.74113,106.70210"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.73757,106.71818",
+            "place:osm:10.73753,106.72786",
+            "place:osm:10.74113,106.70210"
+          ],
+          "domain": "entertainment"
+        }
+      ],
+      "cardItems": [
+        [
+          "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+          "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+          "LOTTE Mart Quận 7",
+          "Chiin Coffee & Cinema Quận 7",
+          "Galaxy Cinema Huỳnh Tấn Phát",
+          "CGV Crescent Mall",
+          "CGV Vivo City",
+          "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7"
+        ],
+        [
+          "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+          "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+          "LOTTE Mart Quận 7",
+          "Chiin Coffee & Cinema Quận 7",
+          "Galaxy Cinema Huỳnh Tấn Phát",
+          "CGV Crescent Mall",
+          "CGV Vivo City",
+          "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm các rạp chiếu phim gần Quận 7 cho bạn nhé.Mình gợi ý **FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7** — **5⭐ (33 đánh giá Google Maps)**, đang mở cửa cả ngày, rất gần bạn ở Quận 7.\n\nBạn muốn xem phim nào hôm nay? 🎬\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - FIGHT STATION\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7507360052569497896\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - HDRADIO Quận 7\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7913584656472535996\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay|Rạp nào có IMAX|Giá vé bao nhiêu[/FOLLOWUPS]",
+      "visible": "Mình tìm các rạp chiếu phim gần Quận 7 cho bạn nhé.Mình gợi ý **FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7** — **5⭐ (33 đánh giá Google Maps)**, đang mở cửa cả ngày, rất gần bạn ở Quận 7.\n\nBạn muốn xem phim nào hôm nay? 🎬",
+      "preGuard": "Mình tìm các rạp chiếu phim gần Quận 7 cho bạn nhé.Mình gợi ý **FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7** — **5⭐ (33 đánh giá Google Maps)**, đang mở cửa cả ngày, rất gần bạn ở Quận 7. Ngoài ra còn có **HDRADIO Quận 7** (4.7⭐, 142 đánh giá) với dịch vụ home cinema & karaoke, hoặc **LOTTE Cinema Nam Sài Gòn** (4.2⭐, 4.620 đánh giá) tại LOTTE Mart Quận 7 nếu bạn muốn rạp lớn hơn.\n\nBạn muốn xem phim nào hôm nay? 🎬\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - FIGHT STATION\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7507360052569497896\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - HDRADIO Quận 7\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7913584656472535996\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay|Rạp nào có IMAX|Giá vé bao nhiêu[/FOLLOWUPS]"
+    }
+  ]
+}

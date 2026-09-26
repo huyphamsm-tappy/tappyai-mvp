@@ -1,0 +1,16 @@
+fatal: not a git repository (or any of the parent directories): .git
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!  ⚠️  ALLOW_PROD_SUPABASE_IN_DEV=1 — the production-database guard is OVERRIDDEN
+!!  command: next start   dir: C:\Users\Admin\AppData\Local\Temp\claude\D--Claude-Projects-TappyAI--worktrees-g1-growth\89302721-91af-4d74-9d1b-c9d52232820f\scratchpad\guardproof2
+!!  🔴 PRODUCTION project fwznnobrdctuskgrvuik IS REFERENCED:
+!!     files: .env.production.local
+!!     vars:  NEXT_PUBLIC_SUPABASE_URL
+!!  Every read AND WRITE from this process can hit production data.
+!!  Unset ALLOW_PROD_SUPABASE_IN_DEV to restore the guard.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Error: Could not find a production build in the '.next' directory. Try building your app with 'next build' before starting the production server. https://nextjs.org/docs/messages/production-start-no-build-id
+    at setupFsCheck (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\lib\router-utils\filesystem.js:151:19)
+    at async initialize (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\lib\router-server.js:64:23)
+    at async Server.<anonymous> (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\lib\start-server.js:249:36)

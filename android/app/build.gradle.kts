@@ -259,6 +259,12 @@ android {
         // Defaults to production; override with `-PTAPPYAI_WEB_APP_URL=https://...` (no trailing
         // slash). Applies to all variants.
         buildConfigField("String", "WEB_APP_URL", "\"$webAppUrl\"")
+
+        // App Links (prepared, off by default) — see the PublicLinkActivity alias in the manifest.
+        // `-PTAPPYAI_APP_LINKS_ENABLED=true` turns the alias on; the host is derived from the same
+        // WEB_APP_URL the app uses for share links so the claim can never name another origin.
+        resValue("bool", "tappy_app_links_enabled", (project.findProperty("TAPPYAI_APP_LINKS_ENABLED")?.toString() == "true").toString())
+        manifestPlaceholders["tappyPublicHost"] = Regex("^https?://([^/:]+)").find(webAppUrl)?.groupValues?.get(1) ?: "www.tappyai.com"
     }
 
     // Release signing (Production Readiness Sprint) — no signingConfigs block existed at all
@@ -380,6 +386,9 @@ dependencies {
     // only applied the kotlin-serialization compiler plugin, never the runtime library the
     // annotation itself comes from — "Unresolved reference 'serialization'".
     implementation(libs.kotlinx.serialization.json)
+    // App Links (prepared): the session-bound Custom Tab that shows a public result page in-app.
+    // Same library/version features/auth already uses for the Zalo sign-in tab — no new dependency.
+    implementation(libs.androidx.browser)
     // Firebase Cloud Messaging — transport only. The BOM decides the messaging version; nothing
     // else from Firebase is pulled in (no Analytics, no Crashlytics).
     implementation(platform(libs.firebase.bom))

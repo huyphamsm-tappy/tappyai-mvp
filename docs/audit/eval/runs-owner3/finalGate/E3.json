@@ -1,0 +1,865 @@
+{
+  "id": "E3",
+  "text": "quán bar nào chill có nhạc sống Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 13423,
+  "evidenceId": "a5deee8e-43ea-4c3b-a844-9da9a44ba1ce",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bar nhạc sống Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "21:00–03:00",
+      "distance_km": 1.2,
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "rating": 4.8,
+      "count": 2476,
+      "hours": "17:00–01:00",
+      "distance_km": 0.3,
+      "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Acoustic Bar",
+      "rating": 4.5,
+      "count": 3204,
+      "hours": "19:00–00:00",
+      "distance_km": 1.3,
+      "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "distance_km": 0.9,
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Kim's Tavern Girl Bar Saigon",
+      "rating": 4.8,
+      "count": 774,
+      "hours": "16:00–04:00",
+      "distance_km": 0.5,
+      "address": "20 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "RockBar - good bar in Saigon",
+      "rating": 4.4,
+      "count": 102,
+      "hours": "16:30–01:00",
+      "distance_km": 0.6,
+      "address": "68 Pasteur, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Carmen Bar",
+      "rating": 4.3,
+      "count": 1067,
+      "hours": "19:00–01:00",
+      "distance_km": 0.7,
+      "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phòng trà Bến Thành",
+      "rating": 4.3,
+      "count": 323,
+      "hours": "09:00–22:00",
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Snuffbox",
+      "rating": 4.6,
+      "count": 796,
+      "hours": "14:00–02:00",
+      "distance_km": 0.9,
+      "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mary Jane’s The Bar",
+      "rating": 4.8,
+      "count": 162,
+      "hours": "16:00–02:00",
+      "distance_km": 1.8,
+      "address": "85 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động, nhạc sống. Để gợi ý chính xác, mình sẽ tìm ngay các quán bar chill có nhạc sống gần bạn.\n\nMình chọn **Acoustic Bar** cho bạn, chill và có 4.5⭐ từ 3.204 đánh giá Google Maps. Nằm ở Võ Thị Sáu, cách bạn khoảng 1.3km, mở từ 19:00 đến 00:00 nên hoàn hảo cho buổi tối.\n\nHoặc **Snuffbox** (4.6⭐, 796 đánh giá) nếu thích không khí cocktail bar chill hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍹 Xem trên Maps - Acoustic Bar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8955316489872957300\",\"primary\":true},{\"label\":\"🍹 Xem trên Maps - Loop 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9807722277538374805\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Acoustic Bar có nhạc sống gì?|Snuffbox có đặt bàn được không?|Giá bia/cocktail bao nhiêu?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động, nhạc sống. Để gợi ý chính xác, mình sẽ tìm ngay các quán bar chill có nhạc sống gần bạn.\n\nMình chọn **Acoustic Bar** cho bạn, chill và có 4.5⭐ từ 3.204 đánh giá Google Maps. Nằm ở Võ Thị Sáu, cách bạn khoảng 1.3km, mở từ 19:00 đến 00:00 nên hoàn hảo cho buổi tối.\n\nHoặc **Snuffbox** (4.6⭐, 796 đánh giá) nếu thích không khí cocktail bar chill hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍹 Xem trên Maps - Acoustic Bar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8955316489872957300\",\"primary\":true},{\"label\":\"🍹 Xem trên Maps - Loop 1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9807722277538374805\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Acoustic Bar có nhạc sống gì?|Snuffbox có đặt bàn được không?|Giá bia/cocktail bao nhiêu?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP HCM",
+      "results": [
+        {
+          "name": "Empire Club Quận 1",
+          "place_id": "ChIJoSsI3G4vdTERFDRH9eDwLBw",
+          "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 933 219 179",
+          "google_rating": "4.7⭐ (49 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 49,
+          "distance_km": 1.2,
+          "open_now": false,
+          "opening_hours": "21:00–03:00",
+          "place_types": [
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2030262381015675924",
+          "booking_links": [
+            "https://empireclubq1.com/"
+          ],
+          "website_uri": "https://empireclubq1.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2030262381015675924",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Loop 1 - Cocktail Bar & Kitchen",
+          "place_id": "ChIJPQgd7EcvdTERlSRcqHIHHIg",
+          "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 919 115 910",
+          "google_rating": "4.8⭐ (2.476 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 2476,
+          "distance_km": 0.3,
+          "open_now": false,
+          "opening_hours": "17:00–01:00",
+          "place_types": [
+            "Quán bar cocktail"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9807722277538374805",
+          "website_uri": "https://www.facebook.com/loop1cocktailnkitchen1/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9807722277538374805",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Acoustic Bar",
+          "place_id": "ChIJjUR5AzAvdTERdF8TduasR3w",
+          "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam",
+          "phone": "+84 816 777 773",
+          "google_rating": "4.5⭐ (3.204 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 3204,
+          "distance_km": 1.3,
+          "open_now": false,
+          "opening_hours": "19:00–00:00",
+          "place_types": [
+            "Quán bar ca nhạc trực tiếp",
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8955316489872957300",
+          "website_uri": "http://facebook.com/acousticbarngothoinhiem",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8955316489872957300",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+          "place_id": "ChIJPZxk9QYvdTER572kEFw_gh4",
+          "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 931 785 555",
+          "google_rating": "4.8⭐ (94 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 94,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "14:00–03:00",
+          "place_types": [
+            "Nhà hàng",
+            "Quán bar karaoke"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2198389232758996455",
+          "website_uri": "http://127bbrestaurant.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2198389232758996455",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Kim's Tavern Girl Bar Saigon",
+          "place_id": "ChIJp9y4KUcvdTER5kymyvLBVbU",
+          "address": "20 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 907 775 141",
+          "google_rating": "4.8⭐ (774 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 774,
+          "distance_km": 0.5,
+          "open_now": true,
+          "opening_hours": "16:00–04:00",
+          "place_types": [
+            "Quán bar",
+            "Bar & Grill",
+            "Quán bar tiếp viên nữ",
+            "Quán rượu"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13066563142411504870",
+          "booking_links": [
+            "https://kimsbarsaigon.com/contact-kims-tavern-bar-ho-chi-minh-city/"
+          ],
+          "website_uri": "https://kimsbarsaigon.com/?utm_source=google_profile&utm_campaign=localo&utm_medium=mainlink",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=13066563142411504870",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "RockBar - good bar in Saigon",
+          "place_id": "ChIJD9nq3EAvdTER_ssbnqDZH_w",
+          "address": "68 Pasteur, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 984 924 552",
+          "google_rating": "4.4⭐ (102 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 102,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "16:30–01:00",
+          "place_types": [
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=18167478705706486782",
+          "website_uri": "http://rockbarsaigon.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=18167478705706486782",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Carmen Bar",
+          "place_id": "ChIJxYy5RkkvdTERLuTCr74_4xI",
+          "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 903 618 577",
+          "google_rating": "4.3⭐ (1.067 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 1067,
+          "distance_km": 0.7,
+          "open_now": false,
+          "opening_hours": "19:00–01:00",
+          "place_types": [
+            "Quán bar"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1361001600621143086",
+          "website_uri": "http://www.netblitz.app/portal/carmenbar",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=1361001600621143086",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Phòng trà Bến Thành",
+          "place_id": "ChIJ86SLou0vdTER8ScdhpwGUDc",
+          "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 348 486 066",
+          "google_rating": "4.3⭐ (323 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 323,
+          "distance_km": 0.8,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Quán bar ca nhạc trực tiếp"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3985692939557611505",
+          "website_uri": "https://www.facebook.com/phongtrabenthanh",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3985692939557611505",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Snuffbox",
+          "place_id": "ChIJXRaYoUEvdTERKREXSXS8tOg",
+          "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 902 338 559",
+          "google_rating": "4.6⭐ (796 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 796,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "14:00–02:00",
+          "place_types": [
+            "Quán bar cocktail"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16768234520235675945",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16768234520235675945",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Mary Jane’s The Bar",
+          "place_id": "ChIJW-ZoxkYpdTERaI7EHBkT6Ws",
+          "address": "85 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 966 427 642",
+          "google_rating": "4.8⭐ (162 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 162,
+          "distance_km": 1.8,
+          "open_now": true,
+          "opening_hours": "16:00–02:00",
+          "place_types": [
+            "Quán bar cocktail",
+            "Quán cà phê nghệ thuật",
+            "Quán bar",
+            "Quán cà phê"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7775767230209625704",
+          "website_uri": "https://www.facebook.com/maryjanethebar?mibextid=ZbWKwL",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=7775767230209625704",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77924,106.70231",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Loop 1 - Cocktail Bar & Kitchen",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkomMniwq7tUedQN38s_DLZJ9rQea8zQJUXLm7IoQhWWIbpPilAxhk_kt8iXZQFp4K9JC2tqnLtMvjOIPJd-Xi_eq_7v8qT1l43PT3QrThOrT2hz7yD_02vjZrWwP1yafBKCth0",
+            "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2476,
+            "openingHours": "17:00–01:00",
+            "openNow": false,
+            "phone": "+84 919 115 910",
+            "openingHoursWeek": {
+              "Thứ Bảy": "17:00–01:00",
+              "Chủ Nhật": "17:00–01:00",
+              "Thứ Hai": "17:00–01:00",
+              "Thứ Ba": "17:00–01:00",
+              "Thứ Tư": "17:00–01:00",
+              "Thứ Năm": "17:00–01:00",
+              "Thứ Sáu": "17:00–01:00"
+            },
+            "distanceKm": 0.3,
+            "categories": [
+              "Quán bar cocktail"
+            ],
+            "rank": 1,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/loop1cocktailnkitchen1/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9807722277538374805",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Loop%201%20-%20Cocktail%20Bar%20%26%20Kitchen%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84919115910",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76976,106.69265",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Empire Club Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmqE8OMayVLZ9kgafewPGcSM3uuwj73kwIryc4JbsWYAqoFt_o3AZ4YMCC4dVuk3rFehomjhlz-taLzq6qUO_za-qludWAetsoGqfBzjt5ofEQmh9T8qpaAvn8lVrsZHv1t7QK2ARkHrLOs",
+            "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 49,
+            "openingHours": "21:00–03:00",
+            "openNow": false,
+            "phone": "+84 933 219 179",
+            "openingHoursWeek": {
+              "Thứ Bảy": "21:00–03:00",
+              "Chủ Nhật": "21:00–03:00",
+              "Thứ Hai": "21:00–03:00",
+              "Thứ Ba": "21:00–03:00",
+              "Thứ Tư": "21:00–03:00",
+              "Thứ Năm": "21:00–03:00",
+              "Thứ Sáu": "21:00–03:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Quán bar karaoke"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://empireclubq1.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2030262381015675924",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Empire%20Club%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84933219179",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78119,106.68992",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Acoustic Bar",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmP39N5LkmRN3towxSzfe3vYnkG7AXd8JWF2oEekuZ-PYRL2590hIrwwXCeLDS-_lyVuY-gC-zqyxtrJ8CHFBvyIpUzb_7tq0OpGYPlc2BNVywpa908eeYJBfXn710uCnztL_5uLg",
+            "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 3204,
+            "openingHours": "19:00–00:00",
+            "openNow": false,
+            "phone": "+84 816 777 773",
+            "openingHoursWeek": {
+              "Thứ Bảy": "19:00–00:00",
+              "Chủ Nhật": "19:00–00:00",
+              "Thứ Hai": "19:00–00:00",
+              "Thứ Ba": "19:00–00:00",
+              "Thứ Tư": "19:00–00:00",
+              "Thứ Năm": "19:00–00:00",
+              "Thứ Sáu": "19:00–00:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Quán bar ca nhạc trực tiếp",
+              "Quán bar"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@acousticbarlullaby/video/7603682111651925256",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8955316489872957300",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84816777773",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Acoustic%20Bar%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76858,106.69922",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmkaYRD5d2dZduR6azu5GSjwM9fh0tgQzD_VBXwiEy_u3rDjCXARFbURVFigYk-UUtI3HHxPqtxZT3w1gskJaRu6im_M_iTavyd9PL6jd8eICpFgI-O8UrBUYKFK97-0Xifn1EV",
+            "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 94,
+            "openingHours": "14:00–03:00",
+            "openNow": true,
+            "phone": "+84 931 785 555",
+            "openingHoursWeek": {
+              "Thứ Bảy": "14:00–03:00",
+              "Chủ Nhật": "14:00–03:00",
+              "Thứ Hai": "14:00–03:00",
+              "Thứ Ba": "14:00–03:00",
+              "Thứ Tư": "14:00–03:00",
+              "Thứ Năm": "14:00–03:00",
+              "Thứ Sáu": "14:00–03:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng",
+              "Quán bar karaoke"
+            ],
+            "rank": 3,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2198389232758996455",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=BB%20Restaurant%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Qu%E1%BA%ADn%201%20%7C%20%C4%90%E1%BA%B7t%20ti%E1%BB%87c%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84931785555",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77312,106.70272",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Kim's Tavern Girl Bar Saigon",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlb6P5T87lcmQHeES1HS9hHFJWGRbNgHCH3XZnUVukgVnO4szPPnf_CKB9LdDBt6I2w-6m6m9XbbRNTq3ZTUypBi3kRL6p0xeNzTz8lZOfW6YH3YaAzI3bGUpwg9rkQWl3M5eXizCHHgn4R",
+            "address": "20 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 774,
+            "openingHours": "16:00–04:00",
+            "openNow": true,
+            "phone": "+84 907 775 141",
+            "openingHoursWeek": {
+              "Thứ Bảy": "16:00–04:00",
+              "Chủ Nhật": "16:00–04:00",
+              "Thứ Hai": "16:00–04:00",
+              "Thứ Ba": "16:00–04:00",
+              "Thứ Tư": "16:00–04:00",
+              "Thứ Năm": "16:00–04:00",
+              "Thứ Sáu": "16:00–04:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Quán bar",
+              "Bar & Grill",
+              "Quán bar tiếp viên nữ",
+              "Quán rượu"
+            ],
+            "rank": 4,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://kimsbarsaigon.com/?utm_source=google_profile&utm_campaign=localo&utm_medium=mainlink",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13066563142411504870",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kim's%20Tavern%20Girl%20Bar%20Saigon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84907775141",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77169,106.70232",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "RockBar - good bar in Saigon",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVJO9oKSNxoqfXZdA3gMveTOMoWqXlt3kJxtaGRLilAkcVMwWtw6JmlvCvhTLjw7ZDYMrsmGWrlW5SlxCBZPJzrlQ-o0PxpQcjI-XF1RSXX2zGCDjFjXQVg6k_QXKSGRNp-yY",
+            "address": "68 Pasteur, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 102,
+            "openingHours": "16:30–01:00",
+            "openNow": true,
+            "phone": "+84 984 924 552",
+            "openingHoursWeek": {
+              "Thứ Bảy": "16:30–01:00",
+              "Chủ Nhật": "16:30–01:00",
+              "Thứ Hai": "16:30–01:00",
+              "Thứ Ba": "16:30–01:00",
+              "Thứ Tư": "16:30–01:00",
+              "Thứ Năm": "16:30–01:00",
+              "Thứ Sáu": "16:30–01:00"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=18167478705706486782",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=RockBar%20-%20good%20bar%20in%20Saigon%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84984924552",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78229,106.70474",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Carmen Bar",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdA48riDDqMx4PmO0zjijC_wUpDZdVthTiBkxyyULQW3Sr4Ymhs_sLpPXJRF-5SANObzpaQYdmbfxzn1TlCZ0InrJ257QU6ZaLHe4bMYePbzIZXVtrL_2g3W6D2Sy2TL_CK9U",
+            "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 1067,
+            "openingHours": "19:00–01:00",
+            "openNow": false,
+            "phone": "+84 903 618 577",
+            "openingHoursWeek": {
+              "Thứ Bảy": "19:00–01:00",
+              "Chủ Nhật": "19:00–01:00",
+              "Thứ Hai": "19:00–01:00",
+              "Thứ Ba": "19:00–01:00",
+              "Thứ Tư": "19:00–01:00",
+              "Thứ Năm": "19:00–01:00",
+              "Thứ Sáu": "19:00–01:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Quán bar"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1361001600621143086",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Carmen%20Bar%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903618577",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78409,106.70089",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Phòng trà Bến Thành",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlDoQeKv6F5ux-n22vgTYf-VYWKI9nAzqvJ-a4naO5Sr9rGa8WCTVZZ3WebSs1s5JQTVUKH1MyivyW7LyxJw1CIN4eI5zQWeNess_hRiX7mrFsOCO9l3vXFdlL7Oo95XgyAAQ9U",
+            "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 323,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 348 486 066",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00",
+              "Thứ Sáu": "09:00–22:00"
+            },
+            "distanceKm": 0.8,
+            "categories": [
+              "Quán bar ca nhạc trực tiếp"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/phongtrabenthanh",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3985692939557611505",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ph%C3%B2ng%20tr%C3%A0%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84348486066",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=bar%20nh%E1%BA%A1c%20s%E1%BB%91ng%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+        "picked": [
+          "place:osm:10.78119,106.68992",
+          "place:osm:10.77924,106.70231"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

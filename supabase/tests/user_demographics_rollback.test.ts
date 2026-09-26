@@ -75,7 +75,7 @@ const CREATE_TABLE_ONLY = (() => {
   return MIGRATION.slice(start, end)
 })()
 
-const PORT = 54377
+const PORT = 54383 // 54377 belongs to phase6_messenger (V3); unique per suite, see portAllocation.test.ts
 const SELF = '11111111-1111-4111-8111-111111111111'
 const OTHER = '22222222-2222-4222-8222-222222222222'
 

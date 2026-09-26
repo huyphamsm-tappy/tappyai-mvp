@@ -1,0 +1,25 @@
+F-096 bucket-level proof — temporary bucket lifecycle, 2026-09-26 (owner-approved, constraints quoted in the report)
+GCP project confirmed BEFORE any call: aerobic-lock-498409-u7 / number 1023373437508 / ACTIVE
+  (gcloud had no default project; the ids are the app's own media config — SA tappyai-media-bridge@aerobic-lock-498409-u7, WIF project number 1023373437508)
+tappyai-media-prod: not read, not listed, not checked — no command named it.
+
+$ gcloud storage buckets create gs://tappyai-media-audit --project=aerobic-lock-498409-u7 --location=asia-southeast1 --uniform-bucket-level-access --public-access-prevention
+Creating gs://tappyai-media-audit/...
+$ gcloud storage buckets describe gs://tappyai-media-audit --format="value(name,location,uniform_bucket_level_access,public_access_prevention)"
+tappyai-media-audit	ASIA-SOUTHEAST1	True	enforced
+$ gcloud storage buckets get-iam-policy gs://tappyai-media-audit   (members redacted to their type)
+roles/storage.legacyBucketOwner: projectEditor, projectOwner · legacyBucketReader: projectViewer · legacyObjectOwner: projectEditor, projectOwner · legacyObjectReader: projectViewer
+allUsers/allAuthenticatedUsers present: false   → NOT public (public URL of every object answered 403 before and after)
+
+$ npx tsx docs/uat/evidence/f096-2026-09-26/prove-media-deletion.mts   → media-deletion-proof.json, PASS: true
+  3 synthetic PNGs (8 bytes each) uploaded with provider.put() under a synthetic audit account's keys
+  account deleted on audit → auth user 0, group 0, job queued, but 3 objects STILL in the bucket
+  worker (userId-scoped) → deleted 3, re-list empty, job done_at set, media_deleted 3
+
+$ gcloud storage ls --recursive "gs://tappyai-media-audit/**"      (independent of our code)
+ERROR: (gcloud.storage.ls) One or more URLs matched no objects.
+$ gcloud storage buckets delete gs://tappyai-media-audit --quiet
+Removing gs://tappyai-media-audit/...
+$ gcloud storage buckets describe gs://tappyai-media-audit
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-audit not found: 404.
+No permission was granted or changed at any point.

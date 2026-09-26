@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server'
 import {
   FREE_DAILY_LIMIT,
-  ANON_DAILY_LIMIT,
+  ANON_LIFETIME_LIMIT,
   SHOW_PRO_UPGRADE,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
+  SHOW_MUSIC,
   SCAM_SHIELD_DAILY_LIMIT_AUTH,
   SCAM_SHIELD_DAILY_LIMIT_ANON,
   MAX_PHOTOS_PER_REVIEW,
+  MAX_PHOTO_SIZE_MB,
   MAX_VIDEO_SIZE_MB,
   MAX_VIDEO_DURATION_SEC,
   MAX_VIDEO_DURATION_ACCEPT_SEC,
@@ -30,16 +32,32 @@ export async function GET() {
   return NextResponse.json(
     {
       freemium: {
+        // ONE shared AI question pool for every AI feature (chat in all areas, Scam Alerts).
+        /** Registered account: AI questions per VN day. */
         freeDailyLimit: FREE_DAILY_LIMIT,
-        anonDailyLimit: ANON_DAILY_LIMIT,
+        /**
+         * Anonymous identity: AI questions for its LIFETIME — one trial, once. Not per day.
+         * 🚨 Renamed from `anonDailyLimit` (2026-09-15): the old name said "daily" for a value
+         * that is not, and a client rendering "5/day" from it would be lying. No web code read
+         * the old field; the iOS `AppConfig.Freemium` model is renamed in the same change and
+         * Android ignores this block entirely.
+         */
+        anonLifetimeLimit: ANON_LIFETIME_LIMIT,
       },
       flags: {
         showProUpgrade: SHOW_PRO_UPGRADE,
         showAppConnections: SHOW_APP_CONNECTIONS,
         showScamShield: SHOW_SCAM_SHIELD,
+        // Music is hidden on every platform while the catalogue licensing is undecided.
+        // Native reads this; the underlying routes and catalogue are untouched.
+        showMusic: SHOW_MUSIC,
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,
+        // The per-photo ceiling POST /api/reviews/upload actually applies. It was the one upload
+        // rule the clients could not read, so iOS carried its own 5 * 1024 * 1024 literal and would
+        // have kept rejecting at 5MB after a server change.
+        maxPhotoSizeMb: MAX_PHOTO_SIZE_MB,
         maxVideoSizeMb: MAX_VIDEO_SIZE_MB,
         maxVideoDurationSec: MAX_VIDEO_DURATION_SEC,
         // The validation ceiling, so a client pre-checking for UX uses the same boundary the
@@ -49,6 +67,7 @@ export async function GET() {
       scamShield: {
         dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH,
         dailyLimitAnon: SCAM_SHIELD_DAILY_LIMIT_ANON,
+        // Analyze Message has NO allowance of its own: it spends from `freemium` above.
       },
       video: {
         linkProviders: LINK_VIDEO_PROVIDERS,

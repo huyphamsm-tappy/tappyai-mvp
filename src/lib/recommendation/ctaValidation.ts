@@ -1,0 +1,404 @@
+import { actionLabel } from './actionLabel'
+import { isDirectEntityUrl } from '@/lib/links/directUrl'
+import type { ActionKind } from './actions'
+// The registry module only (providers + domain types): this file is client-bundled.
+import { PROVIDER_REGISTRY, isRemovedMerchant } from '@/lib/ccp/registry'
+import { resultsPagePrefixes, searchTemplates } from '@/lib/ccp/adapters'
+// The pure depth judgement, NOT @/lib/commerce/outboundLink: that module imports the CCP barrel
+// (node:crypto) and the KV counter, and a client import of it fails `next build`.
+import { linkDepthClass } from '@/lib/commerce/linkDepth'
+
+// ── MODEL-AUTHORED CTA BUTTONS, VALIDATED DETERMINISTICALLY ─────────────────
+//
+// 🚨 THE MEASURED DEFECT. While `SERVER_AUTHORED_CTA` is off the model writes
+// its own `[CTA_BUTTONS]`, and `parseCTA` returned `parsed.buttons` with NO
+// validation at all — label, type and url straight from the model to the render.
+// On the event turn 2026-09-09 that produced:
+//
+//     "🎫 Ticketbox - Mua vé sự kiện"  →  https://ticketbox.vn/
+//
+// a purchase promise pointing at an aggregator HOMEPAGE, on a turn that had just
+// said it found no events. The card layer has been honest about this since
+// `actionLabel` was written — a `search` URL renders "Tìm vé trên …", never
+// "Mua vé" — but a model-authored button never went through it.
+//
+// 🔑 THE URL DECIDES THE KIND, THE LABEL NEVER DOES. A button cannot be promoted
+// from search to purchase by writing a stronger word: `urlKind` is derived from
+// the URL with `isDirectEntityUrl` — the same test the ticket prose rules use —
+// and the label is then RE-DERIVED from `actionLabel`. Nothing here invents a
+// destination: a downgraded button keeps its URL and only stops over-promising.
+
+/** A button as the model wrote it. */
+export interface ModelCtaButton {
+  label: string
+  type: string
+  url: string
+  primary?: boolean
+}
+
+/**
+ * Labels that PROMISE a completed transaction, mapped to the action kind they
+ * claim. Anything not listed here is left exactly as the model wrote it — this
+ * validator narrows over-promises, it does not rewrite prose.
+ */
+const PROMISE_KINDS: ReadonlyArray<[RegExp, ActionKind]> = [
+  [/(mua vé|đặt vé|mua ve|dat ve|buy tickets?|book tickets?|get tickets?)/iu, 'ticket'],
+  [/(đặt phòng|dat phong|book (?:a )?(?:room|hotel)|reserve (?:a )?room)/iu, 'booking'],
+  [/(đặt bàn|dat ban|đặt chỗ|dat cho|book (?:a )?table|reserve (?:a )?table)/iu, 'reservation'],
+  [/(đặt món|dat mon|gọi món|goi mon|order now|đặt hàng|dat hang)/iu, 'order'],
+  [/(mua ngay|mua hàng|mua hang|buy now|purchase now)/iu, 'purchase'],
+]
+
+/** The kind a label claims, or null when it promises nothing. */
+export function promisedKind(label: string): ActionKind | null {
+  for (const [re, kind] of PROMISE_KINDS) if (re.test(label)) return kind
+  return null
+}
+
+/**
+ * Validate one model-authored button against its own URL.
+ *
+ * A promise backed by a direct entity-level URL stands. A promise backed by a
+ * homepage or a search page is DOWNGRADED: the label is re-derived through
+ * `actionLabel` for the same kind at `urlKind: 'search'`, which is where "Tìm vé
+ * trên {platform}" comes from, and the wire `type` becomes `search` so no
+ * downstream reader can mistake it for a purchase.
+ */
+export function validateModelCtaButton(
+  btn: ModelCtaButton,
+  t: (key: string, vars?: Record<string, string>) => string,
+): ModelCtaButton {
+  const kind = promisedKind(btn.label)
+  if (!kind) return btn
+  // A registry RESULTS page (a dated fare list has a deep path and a query) is still a search.
+  if (isDirectEntityUrl(btn.url) && !isRegistryResultsPage(btn.url)) return btn
+  return {
+    ...btn,
+    type: 'search',
+    label: actionLabel({ kind, urlKind: 'search', url: btn.url, attributed: false }, t),
+  }
+}
+
+/** Hotel OTAs: a hotel search there is an honest "Tìm phòng"; a TICKET promise there is not. */
+const HOTEL_OTA_HOST = /(^|\.)(booking\.com|agoda\.[a-z.]+|traveloka\.[a-z.]+)$/i
+
+const hostOf = (url: string): string => {
+  try { return new URL(url).hostname.toLowerCase().replace(/^www\./, '') } catch { return '' }
+}
+
+/** Hosts the Commerce Capability Platform owns the handoff for (registry allow-lists, exact). */
+const CCP_MERCHANT_HOSTS = new Set(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, ''))))
+/** The marketplaces' declared search grammars (URL prefixes) — honest L2 searches the registry itself projects. */
+// Only a grammar that CARRIES the query is an honest search button. A front-door template (Agoda,
+// Vexere — declared so the legacy builders stay registry projections) is a front door here, and a
+// model button on it ("🏨 Agoda - Phú Quốc" → agoda.com/vi-vn/, live UAT 14 Sep 2026) is dropped.
+const MARKETPLACE_SEARCH_PREFIXES = searchTemplates().filter(t => t.template.includes('{q}')).map(t => t.template.slice(0, t.template.indexOf('{q}')))
+const isMarketplaceSearchLink = (url: string) => MARKETPLACE_SEARCH_PREFIXES.some(p => url.startsWith(p))
+/** A results page an adapter composes (dated fare lists, routes, OTA results) — honest as a search, relabelled never dropped. */
+const RESULTS_PAGE_PREFIXES = resultsPagePrefixes()
+const isRegistryResultsPage = (url: string) => RESULTS_PAGE_PREFIXES.some(p => url.startsWith(p))
+const isFlightResultsPage = (url: string) => /^https:\/\/(vn\.trip\.com\/flights\/|www\.traveloka\.com\/vi-vn\/flight\/)/i.test(url)
+/** A coach / rail ROUTE's dated fare list (Vexere route page, dsvn booking) — the route's own page, not a search (A3.3). */
+const isRouteResultsPage = (url: string) => /^https:\/\/(?:www\.)?vexere\.com\/vi-VN\/ve-xe-khach-tu-[a-z0-9-]+-di-[a-z0-9-]+-\d+t\d+\.html/i.test(url) || /^https:\/\/dsvn\.vn\/#\/|^https:\/\/dsvn\.vn\/[a-z-]+\?/i.test(url)
+// MERCHANT_BY_HOST (below) is a registry host → provider map; the depth rule reads it in isMisleadingModelCta.
+
+/**
+ * CCP Phase 8 (owner-like UAT R1, P1-7 / P2-4): two model-authored buttons that no relabelling
+ * can make honest, so they are DROPPED rather than downgraded.
+ *
+ *   · A ticket promise on a hotel OTA ("🎫 Tìm vé trên Booking.com" for a theme park): Booking
+ *     and Agoda sell rooms; "search for tickets there" sends the user to a hotel search.
+ *   · On a merchant host the Commerce Capability Platform owns (cgv.vn, klook.com,
+ *     dienmayxanh.com, trip.com, shopee.vn, tiktok — the registry allow-lists): a bare FRONT DOOR
+ *     (cgv.vn/), or a search page carrying a transaction PROMISE ("Mua ngay" on a search
+ *     page). The application is the only URL authority for those merchants: their
+ *     verified handoff arrives on the card as a Commerce Link when one exists. A DIRECT entity
+ *     page on such a host is left alone, and so is an honest search link — the marketplaces'
+ *     registry search grammars in particular (owner decision 14 Sep 2026), which the
+ *     downgrade below labels as searches.
+ */
+export function isMisleadingModelCta(btn: ModelCtaButton): boolean {
+  const host = hostOf(btn.url)
+  if (!host) return false
+  // 🚨 A REMOVED PROVIDER NEVER COMES BACK THROUGH THE MODEL (cross-platform UAT, 15 Sep 2026).
+  // The frozen registry is the allow-list of merchants TappyAI hands off to; Tiki, PasGo, TGDD and
+  // California Fitness were deliberately removed. The model still writes "📦 Tiki" / "Lazada, Tiki"
+  // buttons from its own training, and because those hosts are not in the registry no other rule
+  // here drops them — measured live on Android, a Tiki button under "mua … trên Shopee". A button
+  // that names or points at a forbidden merchant is dropped, on every client.
+  if (isForbiddenMerchant(btn.label, host)) return true
+  // Completion Pass live UAT (14 Sep 2026): "🚌 Vexere - Phương Trang" pointed at a redBus page. A
+  // label that NAMES a registry merchant must point at that merchant — anything else is a
+  // mislabelled destination, and no relabelling can make it honest.
+  if (namesOtherMerchant(btn.label, host)) return true
+  const kind = promisedKind(btn.label) ?? (btn.type === 'ticket' ? 'ticket' : null)
+  // A FLIGHT results page (Trip.com / Traveloka fare list) is judged before the hotel-OTA ticket
+  // rule — Traveloka is a "hotel OTA" host that sells flights: relabelled by the downgrade, never
+  // dropped. A ticket promise on a HOTEL results page (Booking.com "Tìm vé" for a theme park)
+  // stays dropped, as measured in Phase 8.
+  if (isFlightResultsPage(btn.url)) return false
+  if (kind === 'ticket' && HOTEL_OTA_HOST.test(host)) return true
+  // A3.3 (owner, 2026-09-20 — supersedes the 14 Sep "relabelled, never dropped" rule): a merchant
+  // button lands on the DEEPEST page or not at all. A search / results page, a front door or a
+  // Google Shopping intermediary is dropped, on every client. Measured live on Android (Phase F,
+  // turn A1): "🛵 GrabFood - Nhà Hàng Ngon" → food.grab.com/…/restaurants?search=… A dated ROUTE
+  // fare list (flights above, coach / rail) is the route's own page and is not a search.
+  // A Maps button is a map, not a merchant handoff — never judged here.
+  if (btn.type === 'maps' || /(^|\.)maps\.google\.[a-z.]+$|^goo\.gl$|^maps\.app\.goo\.gl$/i.test(host) || /^https:\/\/(www\.)?google\.[a-z.]+\/maps/i.test(btn.url)) return false
+  const depth = linkDepthClass(btn.url, undefined, undefined, isRouteResultsPage(btn.url))
+  if (depth === 'intermediary' && /shopping|ibp=oshop|tbm=shop|\/search/i.test(btn.url)) return true
+  if ((depth === 'search' || depth === 'homepage') && (MERCHANT_BY_HOST.has(host) || CCP_MERCHANT_HOSTS.has(host))) return true
+  // A results page on a host that is not a registry merchant (a cinema chain's own showtime page)
+  // keeps the 14 Sep treatment: honest as a search, relabelled by the downgrade.
+  if (isMarketplaceSearchLink(btn.url) || isRegistryResultsPage(btn.url)) return false
+  if (!CCP_MERCHANT_HOSTS.has(host)) return false
+  let path = '/'
+  try { path = new URL(btn.url).pathname.replace(/\/+$/, '') || '/' } catch { return true /* unparseable on a CCP host */ }
+  // A front door: the root, or a one-word section like tiktok.com/shop — never a product slug.
+  // A locale segment ("/vi-vn/", "/vn/vi/") is not a subject: agoda.com/vi-vn/ is a front door.
+  const segments = path.split('/').filter(Boolean).filter(s => !/^[a-z]{2}(?:-[a-z]{2})?$/i.test(s))
+  if (segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))) return true
+  if (isDirectEntityUrl(btn.url)) return false
+  return !!kind
+}
+
+/**
+ * Providers the owner deliberately REMOVED from the frozen registry and forbade reintroducing
+ * (PasGo / Tiki / TGDD / California Fitness). They have no registry entry, so the registry-driven
+ * rules above never see them — this list is what keeps a model-authored button or prose link to one
+ * of them from reaching a user. Hosts and a name matcher, so both "[Tiki](https://tiki.vn/…)" and a
+ * bare "📦 Tiki" button on a non-Tiki URL are caught.
+ */
+/** A button/link that names or points at a removed provider (never reintroduced through the model). Delegates to the CCP registry, which is the one place a removed merchant's host is spelled. */
+export function isForbiddenMerchant(label: string, host: string): boolean {
+  return isRemovedMerchant(label, host)
+}
+
+/** Registry merchants by name (longest first, so "ShopeeFood" is matched before "Shopee"). */
+const MERCHANTS_BY_NAME = PROVIDER_REGISTRY
+  .map(e => ({ name: e.merchantName, re: new RegExp(`(?<![\\p{L}\\p{N}])${e.merchantName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu'), hosts: e.allowedHosts.map(h => h.toLowerCase().replace(/^www\./, '')) }))
+  .sort((a, b) => b.name.length - a.name.length)
+
+/** Does the label name a registry merchant whose hosts do not include the URL's host? */
+export function namesOtherMerchant(label: string, host: string): boolean {
+  const named = MERCHANTS_BY_NAME.find(m => m.re.test(label))
+  return !!named && !named.hosts.includes(host)
+}
+
+const PROSE_LINK_RE = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g
+
+/**
+ * Prose hygiene for MODEL-authored markdown links (Final local live UAT, 14 Sep 2026): the reply
+ * to "Mua iPhone trên Điện Máy Xanh" carried "[Điện Máy Xanh](https://www.dienmaycholon.vn)" —
+ * a registry merchant's NAME on another retailer's site. A label that names a registry merchant
+ * must point at that merchant; otherwise the link is unmade and only the words remain. Nothing
+ * else in the prose is touched (system-provided links point where their labels say).
+ */
+export function unlinkMislabelledMerchantLinks(text: string, systemUrls?: ReadonlySet<string>, requestedProviderId?: string | null): string {
+  if (!text || text.indexOf('](http') === -1) return text
+  // URLs the SYSTEM placed (injected order / platform links, CCP handoffs) are never judged here.
+  return text.replace(PROSE_LINK_RE, (whole, label: string, url: string) => {
+    if (systemUrls?.has(url)) return whole
+    // A mislabelled destination, a registry front door, OR — when the user NAMED a merchant this
+    // turn — a link to ANY OTHER registry merchant (live UAT 14 Sep 2026: "… trên Trip.com" whose
+    // reply still linked "[Booking.com] hoặc [Agoda]"). The named merchant's own links stay.
+    const other = !!requestedProviderId && isOtherRegistryMerchant(url, requestedProviderId)
+    return other || isForbiddenMerchant(label, hostOf(url)) || namesOtherMerchant(label, hostOf(url)) || isRegistryFrontDoor(url) || isRegistrySearchPage(url) ? label : whole
+  })
+}
+
+/**
+ * A3.3 (owner 2026-09-20, measured Android turn B2: "[Booking.com](…/searchresults.vi.html?ss=Da+Nang)" in the
+ * prose of a hotel reply): a registry merchant's SEARCH / results page is never linked — the label stays as
+ * text. A dated flight / coach route fare list is the route's own page and stays linked.
+ */
+export function isRegistrySearchPage(url: string): boolean {
+  const host = hostOf(url)
+  if (!host || !(CCP_MERCHANT_HOSTS.has(host) || MERCHANT_BY_HOST.has(host))) return false
+  if (isFlightResultsPage(url) || isRouteResultsPage(url)) return false
+  return linkDepthClass(url) === 'search'
+}
+
+/** A registry merchant's front door (root or a bare section, locale segments ignored) — a button on it is dropped, a prose link to it is unmade. */
+export function isRegistryFrontDoor(url: string): boolean {
+  const host = hostOf(url)
+  if (!host || !CCP_MERCHANT_HOSTS.has(host)) return false
+  if (isMarketplaceSearchLink(url) || isRegistryResultsPage(url)) return false
+  let path = '/'
+  try { path = new URL(url).pathname.replace(/\/+$/, '') || '/' } catch { return false }
+  const segments = path.split('/').filter(Boolean).filter(s => !/^[a-z]{2}(?:-[a-z]{2})?$/i.test(s))
+  return segments.length === 0 || (segments.length === 1 && !/[-.\d]/.test(segments[0]))
+}
+
+/**
+ * 🚨 A CONNECTED PROVIDER IS NEVER CALLED "chưa kết nối" (cross-platform UAT, 15 Sep 2026).
+ *
+ * Rule 18b tells the model, in as many words, never to answer "chưa kết nối với X" for a platform in
+ * the frozen registry — yet it still did: a Trip.com hotel turn whose CARD correctly showed "Đặt
+ * phòng trên Trip.com" opened with "hệ thống mình chưa kết nối trực tiếp với Trip.com". The claim is
+ * provably false — `requestedProviderId` is only ever a REGISTRY provider — so the sentence carrying
+ * it (and only that sentence) is removed at settle time. Nothing else in the prose is touched;
+ * a genuinely unsupported capability (table reservation, showtimes) names no registry provider and
+ * so is never matched.
+ */
+// Negation of connectivity/support (Vietnamese + English). A short gap is allowed so
+// "Trip.com KHÔNG nằm trong danh sách nền tảng mình KẾT NỐI" and "not directly CONNECTED to Trip.com"
+// both match; the gap never crosses a sentence boundary.
+const NEG_SUPPORT = /(?:ch[ưu]a|kh[ôo]ng)[^.!?\n]{0,45}?(?:k[ếe]t n[ốo]i|h[ỗo] tr[ợo]|li[êe]n k[ếe]t|t[íi]ch h[ợo]p)|\b(?:not|isn'?t|aren'?t|do(?:es)?n'?t|don'?t|can'?t|cannot|no longer)\b[^.!?\n]{0,45}?(?:support|connect|integrat|work with|handle|available on)/iu
+
+// An EXCLUSIVE "only … support/connect/search" scope (Vietnamese + English). Paired below with
+// "names ANOTHER registry merchant but not the requested one", so a genuine capability/feature limit
+// ("chỉ hỗ trợ thanh toán thẻ", "I can only provide a direct handoff") is never caught — it lists no
+// other registry merchant as the scope.
+// NOTE: `ch[ỉi]\s` (whitespace), NOT `\b` — JS `\b` is ASCII-based, and the accented "ỉ" in "chỉ" is a
+// non-word char, so `ch[ỉi]\b` silently only ever matched the un-accented "chi". "chỉ" (the word "only")
+// is always followed by whitespace.
+const ONLY_LIMIT = /ch[ỉi]\s[^.!?\n]{0,30}?(?:h[ỗo] tr[ợo]|k[ếe]t n[ốo]i|li[êe]n k[ếe]t|t[íi]ch h[ợo]p|t[ìi]m ki[ếe]m|t[ìi]m)|\b(?:only|can only|i only)\b[^.!?\n]{0,30}?(?:support|connect|integrat|work with|handle|search)/iu
+
+/**
+ * 🚨 A CONNECTED PROVIDER IS NEVER "not connected" NOR "only Booking & Agoda" — in ANY language
+ * (final integrity pass, 17 Sep 2026, root-caused from the settle-path M2DIAG).
+ *
+ * `requestedProviderId` is only ever a REGISTRY (connected) provider, so a claim that TappyAI does not
+ * support it, or supports ONLY other platforms, is provably false. Rule 18b already tells the model this
+ * in words and it still violates it — in Vietnamese ("Trip.com không nằm trong danh sách nền tảng mình
+ * kết nối", "TappyAI chỉ hỗ trợ tìm khách sạn trên Booking.com và Agoda") AND English ("I only support
+ * hotel searches on Booking.com and Agoda", "I'm not connected to Trip.com"). Two sentence-level triggers:
+ *   (A) a negation/non-support that NAMES the requested provider; or
+ *   (B) an exclusive "only …" scope that lists ANOTHER registry merchant and EXCLUDES the requested one
+ *       (its name may sit BEFORE the "only" as the refused request; a name AFTER means it is IN the
+ *       connected list — a true statement — so keep).
+ * A genuine capability limit names no other registry merchant as its scope and does not negate the
+ * requested provider, so it survives: "only provide a direct handoff; pay on the merchant site",
+ * "Showtime data is unavailable", "TappyAI chưa hỗ trợ đặt bàn".
+ */
+export function stripFalseDisconnectClaims(text: string, requestedProviderId?: string | null): string {
+  if (!text || !requestedProviderId) return text
+  const entry = PROVIDER_REGISTRY.find(e => e.providerId === requestedProviderId)
+  if (!entry) return text
+  const nameRe = new RegExp(`(?<![\\p{L}\\p{N}])${entry.merchantName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'iu')
+  const otherMerchantRes = MERCHANTS_BY_NAME.filter(m => m.name !== entry.merchantName).map(m => m.re)
+  // Split into sentences at a "." / "!" / "?" that is FOLLOWED BY whitespace (so the "." inside
+  // "Trip.com" never splits the name), and at newlines; keep every delimiter so a rejoin is lossless.
+  const parts = text.split(/(?<=[.!?])(?=\s)|(?<=\S)(?=\n)/)
+  const kept = parts.filter(s => {
+    // (A) A false negation / non-support of the REQUESTED provider.
+    if (nameRe.test(s) && NEG_SUPPORT.test(s)) return false
+    // (B) An exclusive "only …" scope listing ANOTHER registry merchant, excluding the requested one.
+    const m = ONLY_LIMIT.exec(s)
+    if (m && otherMerchantRes.some(re => re.test(s)) && !nameRe.test(s.slice(m.index + m[0].length))) return false
+    return true
+  })
+  if (kept.length === parts.length) return text
+  return kept.join('').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+/**
+ * 🚨 A markdown link WRAPPED in emphasis is untappable on Android (cross-platform UAT, 15 Sep 2026).
+ *
+ * The Android chat renderer (`TappyMarkdown`) is a single-pass scanner that does NOT recurse into
+ * bold/italic — its `**…**` handler appends the inner text verbatim — so `**[label](url)**` renders
+ * as raw, unclickable markdown there (the web parser handles it fine). The model wraps entertainment
+ * event/film handoff links in bold; a Ticketbox turn's `**[Chào Show…](ticketbox.vn/…)**` was dead on
+ * Android while the identical-shape, UN-bolded flight links tapped through. The canonical handoff must
+ * render on every client, so emphasis that surrounds a single markdown link is unwrapped here (the
+ * link, not the bold, is what matters). Only link-wrapping emphasis is touched; ordinary bold text is
+ * left alone.
+ */
+export function unemphasizeLinks(text: string): string {
+  if (!text) return text
+  const link = '\\[[^\\]\\n]+\\]\\([^)\\s]+\\)'
+  return text
+    .replace(new RegExp(`\\*\\*(${link})\\*\\*`, 'g'), '$1')
+    .replace(new RegExp(`(?<!\\*)\\*(${link})\\*(?!\\*)`, 'g'), '$1')
+    .replace(new RegExp(`__(${link})__`, 'g'), '$1')
+    .replace(new RegExp(`(?<!_)_(${link})_(?!_)`, 'g'), '$1')
+}
+
+/**
+ * Every button, validated. Order is preserved; only a button that cannot be made honest is dropped.
+ * `requestedProviderId` (the registry merchant the user NAMED this turn, live UAT 14 Sep 2026):
+ * a model button on ANOTHER registry merchant is dropped — "… trên Agoda" never renders a
+ * Booking.com search button. Buttons on no registry merchant (Maps, a website) are untouched.
+ */
+export function validateModelCtaButtons(
+  buttons: readonly ModelCtaButton[],
+  t: (key: string, vars?: Record<string, string>) => string,
+  requestedProviderId?: string | null,
+): ModelCtaButton[] {
+  return buttons
+    .filter(b => !isMisleadingModelCta(b))
+    .filter(b => !requestedProviderId || !isOtherRegistryMerchant(b.url, requestedProviderId))
+    .map(b => validateModelCtaButton(b, t))
+}
+
+const MERCHANT_BY_HOST = new Map(PROVIDER_REGISTRY.flatMap(e => e.allowedHosts.map(h => [h.toLowerCase().replace(/^www\./, ''), e.providerId] as const)))
+
+// ── The model's [CTA_BUTTONS] block, validated ONCE on the server ─────────────
+//
+// 🚨 CROSS-PLATFORM CCP (14 Sep 2026): `validateModelCtaButtons` ran only in the web client
+// (`parseCTAValidated`). Android and iOS parse the same block and rendered it verbatim — so a
+// "🛒 Mua iPhone trên Shopee" button under a TikTok Shop request, dropped on web, would have opened
+// Shopee on a phone. The canonical layer is the URL authority for every client, so the block is
+// validated here, in the settle path of the stream, before the bytes leave the server; the web
+// client's own pass stays as defence in depth (it is idempotent on an already-validated block).
+//
+// The block is re-emitted in its CLOSED form, which all three parsers accept
+// (shared/structured-content/marker-fixtures.json `cta-closed`). A block whose JSON cannot be read
+// is left exactly as it was: the clients already strip an undecodable block, and rewriting bytes we
+// could not parse is how prose gets corrupted.
+const CTA_OPEN = '[CTA_BUTTONS]'
+const CTA_CLOSE = '[/CTA_BUTTONS]'
+
+/** Where the model's block sits inside the text, and its JSON, or null when there is none / it is unreadable. */
+function findModelCtaBlock(text: string): { start: number; end: number; json: string } | null {
+  const lower = text.toLowerCase()
+  const start = lower.indexOf(CTA_OPEN.toLowerCase())
+  if (start < 0) return null
+  const closeAt = lower.indexOf(CTA_CLOSE.toLowerCase(), start)
+  if (closeAt >= 0) return { start, end: closeAt + CTA_CLOSE.length, json: text.slice(start + CTA_OPEN.length, closeAt).trim() }
+  // Bare form: brace matching (strings and escapes honoured), never end-anchored, never greedy.
+  let open = start + CTA_OPEN.length
+  while (open < text.length && /\s/.test(text[open])) open++
+  if (text[open] !== '{') return null
+  let depth = 0, inString = false, escaped = false
+  for (let i = open; i < text.length; i++) {
+    const ch = text[i]
+    if (escaped) { escaped = false; continue }
+    if (inString) { if (ch === '\\') escaped = true; else if (ch === '"') inString = false; continue }
+    if (ch === '"') inString = true
+    else if (ch === '{') depth++
+    else if (ch === '}' && --depth === 0) return { start, end: i + 1, json: text.slice(open, i + 1) }
+  }
+  return null
+}
+
+/**
+ * Validate the model's `[CTA_BUTTONS]` block inside a reply, in place. Buttons that name another
+ * registry merchant than the one the user asked for, mislabelled destinations and merchant front
+ * doors are dropped; over-promises on results pages are relabelled — exactly the web client's rule
+ * set. Text without a readable block is returned unchanged.
+ */
+export function validateModelCtaBlock(
+  text: string,
+  t: (key: string, vars?: Record<string, string>) => string,
+  requestedProviderId?: string | null,
+): string {
+  if (!text || text.indexOf('[') === -1) return text
+  const block = findModelCtaBlock(text)
+  if (!block) return text
+  let parsed: unknown
+  try { parsed = JSON.parse(block.json) } catch { return text }
+  const raw = parsed && typeof parsed === 'object' ? (parsed as { buttons?: unknown }).buttons : undefined
+  if (!Array.isArray(raw)) return text
+  const buttons = raw.filter((b): b is ModelCtaButton => !!b && typeof b === 'object' && typeof (b as ModelCtaButton).url === 'string' && typeof (b as ModelCtaButton).label === 'string')
+  const kept = validateModelCtaButtons(buttons, t, requestedProviderId)
+  const before = text.slice(0, block.start).replace(/[ \t]+$/, '')
+  const after = text.slice(block.end)
+  if (kept.length === 0) return (before + after.replace(/^[ \t]*\n?/, '')).replace(/[ \t]+\n/g, '\n').trimEnd()
+  return `${before}${CTA_OPEN}${JSON.stringify({ buttons: kept })}${CTA_CLOSE}${after}`
+}
+function isOtherRegistryMerchant(url: string, requestedProviderId: string): boolean {
+  const owner = MERCHANT_BY_HOST.get(hostOf(url))
+  return !!owner && owner !== requestedProviderId
+}

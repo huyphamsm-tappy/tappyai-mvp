@@ -1,0 +1,27 @@
+{
+ "label": "after",
+ "ref": "zdaprdfgpbpnxyofagmc",
+ "at": "2026-09-25T00:12:37.417Z",
+ "review": "e681d4cd-6182-456e-ac43-b782bdf97c1b",
+ "owner": "manual.uat.user",
+ "reads": {
+  "anon_key_only": {
+   "owner_like_collection": 0,
+   "all_like_rows": 0,
+   "rpc_review_likers": 1,
+   "rpc_hot_places_24h": 1
+  },
+  "other_user (manual.uat.fresh)": {
+   "owner_like_collection": 0,
+   "all_like_rows": 0,
+   "rpc_review_likers": 1,
+   "rpc_hot_places_24h": 1
+  },
+  "owner (manual.uat.user)": {
+   "owner_like_collection": 1,
+   "all_like_rows": 1,
+   "rpc_review_likers": 1,
+   "rpc_hot_places_24h": 1
+  }
+ }
+}

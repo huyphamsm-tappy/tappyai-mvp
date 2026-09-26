@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -41,6 +43,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tappyai.app.R
+import com.tappyai.app.share.ShareArtifactBuilder
+import com.tappyai.app.share.TappyShareSheet
+import java.util.Locale
+import androidx.compose.ui.layout.ContentScale
+import com.tappyai.core.designsystem.component.TappyImage
 import com.tappyai.core.designsystem.theme.TappySpacing
 import androidx.compose.ui.res.stringResource
 
@@ -51,21 +58,19 @@ import androidx.compose.ui.res.stringResource
  * cost breakdown, and a share footer. Structure, sections and copy mirror the web one-for-one.
  */
 @Composable
-fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier) {
+fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: String? = null) {
     val context = LocalContext.current
     var activeDay by remember(plan) { mutableIntStateOf(0) }
     val currentDay = plan.days.getOrNull(activeDay) ?: plan.days.firstOrNull()
 
-    val shareText = plan.shareText?.takeIf { it.isNotBlank() }
-        ?: stringResource(R.string.chat_plan_share_text, plan.title)
-    val share = {
-        val send = Intent(Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(Intent.EXTRA_TEXT, shareText)
-            putExtra(Intent.EXTRA_SUBJECT, plan.title)
-        }
-        runCatching { context.startActivity(Intent.createChooser(send, null)) }
-        Unit
+    // Share = the plan's PUBLISHED page. The sheet publishes the plan (POST /api/plans/share)
+    // and every target then carries the canonical `/plan/<shareId>` — the same brochure a web
+    // share opens. The artifact starts as the text brochure; the sheet swaps in the link.
+    var shareOpen by remember(plan) { mutableStateOf(false) }
+    val share = { shareOpen = true }
+    if (shareOpen) {
+        val artifact = remember(plan, planJson) { ShareArtifactBuilder.buildPlanArtifact(plan, Locale.getDefault().language, planJson) }
+        TappyShareSheet(artifact = artifact, onDismiss = { shareOpen = false })
     }
 
     Column(
@@ -264,6 +269,28 @@ private fun PlanTimelineItem(item: PlanItem, isLast: Boolean, onOpenUrl: (String
                 .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
+            // This item's own photo, keyed to this item by the server. Sits above the title rather
+            // than beside it so the name/price/description keep their full width. Same neutral-box
+            // idiom ChatImageCarousel uses: the box shows while loading and stays for a broken URL
+            // instead of collapsing the row. Absent photo → nothing renders, no placeholder that
+            // would imply a picture exists.
+            item.photoUrl?.takeIf { it.isNotBlank() }?.let { photo ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(88.dp)
+                        .padding(top = 2.dp, bottom = 2.dp)
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)),
+                ) {
+                    TappyImage(
+                        url = photo,
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
             Row(verticalAlignment = Alignment.Top, modifier = Modifier.fillMaxWidth()) {
                 Text(text = item.emoji.ifBlank { "📍" }, fontSize = 16.sp)
                 Spacer(Modifier.width(TappySpacing.xs))

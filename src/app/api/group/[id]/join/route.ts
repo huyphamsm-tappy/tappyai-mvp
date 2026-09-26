@@ -1,4 +1,5 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -29,7 +30,16 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: 'invalid_input', message: serverMessage('validation.invalid', requestLocale(req)) }, { status: 400 })
   }
 
-  const { count } = await supabase
+  // S-1. The cap must be counted with the service role. Under the read boundary
+  // in 20260904_group_read_boundary.sql a caller only sees groups they already
+  // belong to — and someone joining for the first time, by definition, does not.
+  // Counted with their own client the answer would always be 0, so the ten-member
+  // cap would stop existing for exactly the callers it exists for.
+  //
+  // The INSERT below deliberately stays on the caller's client: the write is
+  // still gated by `group_members_insert_self`, so a member row can only ever be
+  // attributed to the authenticated user making the request.
+  const { count } = await createAdminClient()
     .from('group_members')
     .select('id', { count: 'exact', head: true })
     .eq('group_id', groupId)

@@ -1,0 +1,91 @@
+ref = zdaprdfgpbpnxyofagmc (matches AUDIT_CONFIRMED_NONPROD_REF, != PROD_REF)
+connected via db.zdaprdfgpbpnxyofagmc.supabase.co
+
+== public tables (name, rls, rowcount est, policies) ==
+account_status                             rls=Y force=N policies= 1 rows=0
+activation_daily_rollup                    rls=Y force=N policies= 0 rows=0
+admin_permissions                          rls=Y force=N policies= 0 rows=0
+admin_roles                                rls=Y force=N policies= 0 rows=0
+anon_chat_usage                            rls=Y force=N policies= 0 rows=0
+audit_log                                  rls=Y force=N policies= 0 rows=0
+auth_daily_rollup                          rls=Y force=N policies= 0 rows=0
+billing_customers                          rls=Y force=N policies= 1 rows=0
+bookings                                   rls=Y force=N policies= 1 rows=0
+chat_blocks                                rls=Y force=N policies= 3 rows=0
+chat_messages                              rls=Y force=N policies= 2 rows=0
+chat_participants                          rls=Y force=N policies= 1 rows=0
+chat_reads                                 rls=Y force=N policies= 3 rows=0
+chat_reports                               rls=Y force=N policies= 2 rows=0
+chat_settings                              rls=Y force=N policies= 1 rows=1
+chat_threads                               rls=Y force=N policies= 1 rows=0
+cohort_metrics                             rls=Y force=N policies= 0 rows=0
+comment_reactions                          rls=Y force=N policies= 4 rows=0
+commerce_feed_items                        rls=Y force=N policies= 0 rows=0
+commerce_feed_runs                         rls=Y force=N policies= 0 rows=0
+commerce_providers                         rls=Y force=N policies= 0 rows=17
+contact_identity_index                     rls=Y force=N policies= 0 rows=0
+contact_matches                            rls=Y force=N policies= 2 rows=0
+contact_sync_state                         rls=Y force=N policies= 1 rows=1
+content_reports                            rls=Y force=N policies= 1 rows=0
+conversations                              rls=Y force=N policies= 1 rows=0
+daily_snapshots                            rls=Y force=N policies= 0 rows=0
+decision_evidence                          rls=Y force=N policies= 0 rows=3
+department                                 rls=Y force=N policies= 0 rows=0
+department_membership                      rls=Y force=N policies= 0 rows=0
+event_outbox                               rls=Y force=N policies= 0 rows=0
+favorites                                  rls=Y force=N policies= 1 rows=0
+governed_events                            rls=Y force=Y policies= 0 rows=7
+group_members                              rls=Y force=N policies= 3 rows=0
+groups                                     rls=Y force=N policies= 2 rows=0
+marketing_campaigns                        rls=Y force=N policies= 0 rows=0
+marketing_consent                          rls=Y force=N policies= 0 rows=0
+message_feedback                           rls=Y force=N policies= 2 rows=0
+moderation_actions                         rls=Y force=N policies= 0 rows=0
+moderation_queue                           rls=Y force=N policies= 0 rows=0
+music_categories                           rls=Y force=N policies= 1 rows=0
+music_followed                             rls=Y force=N policies= 3 rows=0
+music_providers                            rls=Y force=N policies= 1 rows=0
+music_saved                                rls=Y force=N policies= 3 rows=0
+music_track_reports                        rls=Y force=N policies= 1 rows=0
+music_tracks                               rls=Y force=N policies= 4 rows=0
+music_usage                                rls=Y force=N policies= 1 rows=0
+notification_deliveries                    rls=Y force=N policies= 0 rows=0
+notification_subscriptions                 rls=Y force=N policies= 1 rows=0
+notifications                              rls=Y force=N policies= 2 rows=0
+organization                               rls=Y force=N policies= 0 rows=0
+partner_deal_translations                  rls=Y force=N policies= 1 rows=0
+partner_deals                              rls=Y force=N policies= 1 rows=0
+place_photos                               rls=Y force=N policies= 1 rows=0
+platform_owner                             rls=Y force=N policies= 0 rows=0
+platform_owner_recovery                    rls=Y force=N policies= 0 rows=0
+platform_settings                          rls=Y force=N policies= 0 rows=0
+price_watches                              rls=Y force=N policies= 1 rows=0
+profiles                                   rls=Y force=N policies= 9 rows=3
+query_texts                                rls=Y force=N policies= 0 rows=0
+review_comments                            rls=Y force=N policies= 3 rows=0
+review_interactions                        rls=Y force=N policies= 1 rows=0
+review_likes                               rls=Y force=N policies= 3 rows=0
+review_milestones                          rls=Y force=N policies= 1 rows=0
+review_saves                               rls=Y force=N policies= 4 rows=0
+review_shares                              rls=Y force=N policies= 3 rows=0
+reviews                                    rls=Y force=N policies= 6 rows=0
+services                                   rls=Y force=N policies= 1 rows=0
+subscriptions                              rls=Y force=N policies= 1 rows=1
+system_health_log                          rls=Y force=N policies= 0 rows=0
+user_acquisition                           rls=Y force=N policies= 0 rows=0
+user_demographics                          rls=Y force=N policies= 3 rows=1
+user_events                                rls=Y force=N policies= 3 rows=391
+user_follows                               rls=Y force=N policies= 3 rows=2
+user_integrations                          rls=Y force=N policies= 1 rows=0
+user_memory                                rls=Y force=N policies= 1 rows=1
+user_notes                                 rls=Y force=N policies= 0 rows=0
+user_preferences                           rls=Y force=N policies= 2 rows=0
+vouchers                                   rls=Y force=N policies= 1 rows=0
+
+== auth.users count == 3
+
+== public functions (count) == 186
+
+== views == analytics_ai_misses, analytics_funnel_daily, analytics_vertical_mix_daily
+
+== supabase_migrations.schema_migrations? == null

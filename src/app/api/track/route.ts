@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
 import { randomUUID } from 'crypto'
 import { ANALYTICS_FORBIDDEN_KEYS, stripForbiddenKeys } from '@/lib/account/userDataClassification'
+import { G1_KNOWN_EVENT_TYPES } from '@/lib/analytics/analytics-contract'
 
 // Unified analytics ingestion (Analytics v1.1 §8A). Accepts authenticated AND
 // anonymous events, dedups on the client-generated event_id, and is
@@ -19,12 +20,43 @@ const KNOWN_TYPES = new Set([
   'place_click', 'review_view', 'deal_click', 'feature_use',
   'review_search', 'review_like', 'review_share', 'review_post',
   'hide', 'not_interested', 'report',
+  // Explore → the Ask-Tappy-about-this-place CTA. Phase `click` from the three CTAs, phase
+  // `target` from the chat route with the resolved/ambiguous/unresolved verdict.
+  'ask_tappy_place',
+  // Funnel completeness (RUNBOOK §3.19, 2026-09-21). affiliate_click is NOT here:
+  // it is GA-only and never posts to /api/track (its internal record is the
+  // commerce-handoff beacon). These three DO write a user_events row, so they are
+  // also allowed by user_events_event_type_check where that constraint exists
+  // (migration 20260921_user_events_ga4_event_types.sql).
+  'recommendation_click', 'scam_check', 'chat_opened', 'shopping_search_click',
+  // G1 growth contract (analytics-contract.ts) — the seven canonical events, so a G1 growth event
+  // is tagged KNOWN rather than is_unknown_event. Merged with phase7's taxonomy 2026-09-24 (keeps
+  // phase7's batch robustness AND rc's growth events).
+  ...G1_KNOWN_EVENT_TYPES,
 ])
 const REBUILD_SIGNALS = new Set(['chat_search', 'review_search', 'hide', 'not_interested', 'report'])
 
 const MAX_BATCH = 100          // §8A.3 payload cap
 const MAX_EVENT_BYTES = 8_192  // §8A.3 per-event size cap
 const PII_RE = /[\w.+-]+@[\w-]+\.[\w-]{2,}|\+?\d[\d\s().-]{7,}\d/ // email / phone (§8A.3 PII reject)
+/**
+ * Row identifiers are not phone numbers. A UUID whose hex happens to run
+ * digit-heavy (`…-4271-8803-99504723…`) matches the phone half of PII_RE, and
+ * ~25% of random UUIDs do — so `review_like`/`place_save`/`ask_tappy_place`
+ * events carrying a `review_id` were being dropped silently, one in four.
+ * Masked before the PII test; the rule itself is unchanged.
+ */
+const UUID_RE = /\b[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\b/gi
+const hasPii = (metadata: unknown) => PII_RE.test(JSON.stringify(metadata ?? {}).replace(UUID_RE, 'uuid'))
+
+// `user_events.event_id` and `.anon_id` are UUID columns. A caller that sends a NON-uuid string
+// (a bug, an old client, a tampered request) makes Postgres reject the whole batch upsert, so ONE
+// malformed event silently loses every good event flushed with it — and the route reported success
+// because it never read the upsert error. Both halves are guarded now: this anchored check keeps a
+// bad value out of a strict column, and the write below is checked. (The `\b`-anchored UUID_RE
+// above is for masking inside free text; this one must be a full-string match.)
+const isUuid = (v: unknown): v is string =>
+  typeof v === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v)
 
 // V3 User Data Foundation — the KEY check, alongside the VALUE check above.
 //
@@ -87,8 +119,8 @@ export async function POST(req: NextRequest) {
     .slice(0, MAX_BATCH)
     .filter((e) => typeof e.event_type === 'string' && e.event_type.length > 0)
     .filter((e) => JSON.stringify(e).length <= MAX_EVENT_BYTES)
-    .filter((e) => !PII_RE.test(JSON.stringify(e.metadata ?? {})))
-    .filter((e) => user || e.anon_id) // must have an identity
+    .filter((e) => !hasPii(e.metadata))
+    .filter((e) => user || isUuid(e.anon_id)) // must have an identity: a session, or a VALID anon_id
     .map((e) => {
       // Applied to `metadata` AND `device_context`: both are caller-supplied
       // JSON that lands in a column verbatim, so both are places a profile row
@@ -102,10 +134,14 @@ export async function POST(req: NextRequest) {
       return { e, metadata: cleanedMeta.value, device_context: cleanedCtx.value }
     })
     .map(({ e, metadata, device_context }) => ({
-      event_id: e.event_id || randomUUID(),
+      // A valid client id is kept so retries dedup on it; a missing OR malformed one gets a fresh
+      // uuid (that event just cannot be deduplicated — the malformed-client case only).
+      event_id: isUuid(e.event_id) ? e.event_id : randomUUID(),
       schema_version: typeof e.schema_version === 'number' ? e.schema_version : 1,
       user_id: user?.id ?? null,
-      anon_id: e.anon_id ?? null,
+      // The identity filter guarantees a valid anon_id when there is no user; when there IS a user,
+      // a bad anon_id is dropped to null rather than poisoning the batch.
+      anon_id: isUuid(e.anon_id) ? e.anon_id : null,
       event_type: e.event_type as string,
       metadata,
       is_unknown_event: !KNOWN_TYPES.has(e.event_type as string),
@@ -128,13 +164,37 @@ export async function POST(req: NextRequest) {
     // server-controlled analytics write path (Analytics §8, DB Governance §4).
     // Idempotent: duplicate event_id (retries / double flush) is a no-op.
     const admin = createAdminClient()
-    await admin
-      .from('user_events')
-      .upsert(rows, { onConflict: 'event_id', ignoreDuplicates: true })
+    const upsert = (batch: typeof rows) =>
+      admin.from('user_events').upsert(batch, { onConflict: 'event_id', ignoreDuplicates: true })
+
+    // The write is now READ. Previously the error was discarded, so a failed batch returned
+    // `{ ok: true }` and the events vanished with no trace — the measurement layer could be dead and
+    // look healthy. A single bad event is enough to reject the whole batch: a value that violates a
+    // strict column, or an `event_type` outside the DB taxonomy CHECK (the route stopped gating on
+    // the taxonomy — is_unknown_event — but the DB CHECK still enforces it, a deliberate control we
+    // do not weaken here). So on a batch failure, salvage the valid rows one at a time; a row that
+    // still fails is dropped, logged (shape only), and no longer erases its good siblings.
+    const { error: batchError } = await upsert(rows)
+    let savedRows = rows
+    if (batchError) {
+      savedRows = []
+      const droppedCodes: Record<string, number> = {}
+      for (const row of rows) {
+        const { error } = await upsert([row])
+        if (error) { const c = (error as { code?: string }).code ?? 'unknown'; droppedCodes[c] = (droppedCodes[c] ?? 0) + 1 }
+        else savedRows.push(row)
+      }
+      console.error('[track] user_events batch salvaged:', JSON.stringify({
+        batch: rows.length, saved: savedRows.length, dropped: rows.length - savedRows.length, codes: droppedCodes,
+      }))
+      // Only a total failure (nothing persisted) is reported as not-ok. A partial salvage kept the
+      // valid events, which is the whole point. Best-effort: the client does not retry either way.
+      if (savedRows.length === 0) return NextResponse.json({ ok: false, error: 'persist_failed' })
+    }
 
     // Preserve existing behaviour: rebuild the preference profile on signal
-    // events, for authenticated users only (unchanged).
-    if (user && rows.some((r) => REBUILD_SIGNALS.has(r.event_type))) {
+    // events, for authenticated users only — now keyed off what actually persisted.
+    if (user && savedRows.some((r) => REBUILD_SIGNALS.has(r.event_type))) {
       rebuildProfile(user.id, supabase).catch(() => {})
     }
   }

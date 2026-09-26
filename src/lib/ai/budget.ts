@@ -64,29 +64,62 @@ function extractRepresentativePriceVND(text: string): number | null {
   return hasPromo ? Math.max(...prices) : Math.min(...prices)
 }
 
+/**
+ * 🚨 A PERCENTAGE IS NEVER MONEY (PRELAUNCH 5a, Session D 2026-09-24) — and neither is a head count,
+ * an age, a weight, a distance, a year, a time or a spec.
+ *
+ * The range / "dưới" / "khoảng" forms accept a number with NO unit and read a bare number ≤ 9999
+ * as thousands of đồng (`parseMoneyAmount`), which is right for "từ 50 đến 60" and "tầm 500". It
+ * also turned "iPhone cũ pin 98-99%" into a 98k–99k budget — measured: the reply offered to "nâng
+ * budget lên 119k" for an iPhone — and "5-6 người", "dưới 5 tuổi", "khoảng 2 km", "20-25kg",
+ * "2020-2023", "7-9h" into money the same way.
+ *
+ * So a UNITLESS match is money only when the words around it do not say otherwise: nothing in
+ * NON_MONEY_AFTER follows it (a trailing range half such as "-9" is skipped first), nothing in
+ * NON_MONEY_BEFORE precedes it, and it does not look like a year. A match that carries a money unit
+ * (k, tr, triệu, nghìn) is money regardless. Every match is tried, so a later real amount still
+ * wins: "pin 98-99%, giá dưới 15 triệu" → 15 triệu.
+ */
+const NON_MONEY_AFTER = /^\s*(?:%|phan tram|percent|kg|kilo|gram|gr?\b|km|kilomet|m\b|met\b|cm|mm|inch|in\b|"|mp\b|megapixel|gb|tb|mb\b|mah|w\b|kw|hz|nguoi|khach|be\b|chau|tre\b|tuoi|nam\b|thang|tuan|ngay|dem|gio|h\b|tieng|phut|giay|lan\b|cai|chiec|mon\b|phong|tang|lau\b|sao\b|ban\b|suat|ly\b|coc|chai|lon\b|hop\b|goi\b|ve\b|x\b|do\b|°|size|cho ngoi)/
+const NON_MONEY_BEFORE = /(?:size|sz|pin|ram|rom|bo nho|dung luong|doi|model|phien ban|version|ios|android|tang|lau|phong|so nha|lop|khoi|nam|ngay|thang|luc|gio|tu gio|mo cua|dong cua|iphone|galaxy|note|series|ban)\s*$/
+const RANGE_TAIL = /^\s*(?:-|den|toi)\s*[\d][\d.,]*/
+
+function unitlessIsMoney(t: string, start: number, end: number, nums: string[]): boolean {
+  const after = t.slice(end).replace(RANGE_TAIL, '')
+  if (NON_MONEY_AFTER.test(after)) return false
+  if (NON_MONEY_BEFORE.test(t.slice(Math.max(0, start - 24), start))) return false
+  // A year (or a year range) is a date, not an amount.
+  if (nums.every(n => /^\d{4}$/.test(n) && Number(n) >= 1900 && Number(n) <= 2100)) return false
+  return true
+}
+
 export function extractBudget(userMessage: string): Budget | null {
   const t = normalizeVN(userMessage.toLowerCase())
   const N = '([\\d][\\d.,]*)'
-  const U = '\\s*(k|tr|trieu|ngan|nghin)?'
+  // The unit must END at a word boundary: without `\b` the `k` of "25kg" read as "25k".
+  const U = '\\s*(?:(k|tr|trieu|ngan|nghin)\\b)?'
 
-  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`)
-  let m = t.match(rangeRe)
-  if (m) {
+  const rangeRe = new RegExp(`(?:tu\\s+)?${N}${U}\\s*(?:den|toi|-)\\s*${N}${U}`, 'g')
+  for (const m of t.matchAll(rangeRe)) {
+    const numStart = (m.index ?? 0) + m[0].indexOf(m[1])
+    if (!m[2] && !m[4] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1], m[3]])) continue
     const min = parseMoneyAmount(m[1], m[2] || '')
     const max = parseMoneyAmount(m[3], m[4] || '')
     if (min !== null && max !== null && max >= min && max > 0) return { min, max, type: 'range' as const }
   }
 
-  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`)
-  m = t.match(underRe)
-  if (m) {
+  const underRe = new RegExp(`(?:duoi|khong qua|toi da)\\s+${N}${U}`, 'g')
+  for (const m of t.matchAll(underRe)) {
+    const numStart = (m.index ?? 0) + m[0].indexOf(m[1], m[0].search(/\d/))
+    if (!m[2] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1]])) continue
     const max = parseMoneyAmount(m[1], m[2] || '')
     if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
   }
 
-  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`)
-  m = t.match(aroundRe)
-  if (m) {
+  const aroundRe = new RegExp(`(?:tam|khoang|xap xi)\\s+${N}${U}`, 'g')
+  for (const m of t.matchAll(aroundRe)) {
+    const numStart = (m.index ?? 0) + m[0].search(/\d/)
+    if (!m[2] && !unitlessIsMoney(t, numStart, (m.index ?? 0) + m[0].length, [m[1]])) continue
     const base = parseMoneyAmount(m[1], m[2] || '')
     if (base !== null && base > 0) return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
   }
@@ -113,13 +146,73 @@ export function extractBudget(userMessage: string): Budget | null {
   // a sentence boundary, so "ngân sách. Chuyến đi 3 ngày" cannot become 3.
   const bareRe = new RegExp(
     `(?:ngan sach|budget)[^.!?\\n]{0,25}?${N}\\s*(k|tr|trieu|ngan|nghin|m|mil|million)\\b`)
-  m = t.match(bareRe)
+  let m = t.match(bareRe)
   if (m) {
     const max = parseMoneyAmount(m[1], m[2] || '')
     if (max !== null && max > 0) return { min: 0, max, type: 'under' as const }
   }
 
+  /**
+   * 🚨 "gia 500k" - A STATED PRICE IS A CONSTRAINT, AND IT WAS BEING DROPPED.
+   *
+   * Measured on "muon mua op lung iphone 17pm gia 500k": every rule above needs
+   * "duoi" / "khoang" / "ngan sach", none of which is present, so extractBudget
+   * returned null. With no budget the filter, the ranker and
+   * `validateShoppingCandidates` all had nothing to enforce, and the reply
+   * offered cases at 620k, 719k, 1.05M, 1.09M and 1.33M against a stated 500k.
+   *
+   * Kept SEPARATE from the budget keywords above because it means something
+   * different: "ngan sach X" is a ceiling, while "gia X" names a target, so it
+   * gets the same +/-20% band "khoang X" already produces rather than becoming a
+   * hard cap. Both safety guards are unchanged - the match must start at the
+   * keyword and end at a money unit, so "gia re" and "gia tot" carry no number
+   * and cannot match.
+   */
+  const priceRe = new RegExp(
+    `\\b(?:gia|price)\\b[^.!?\\n]{0,25}?${N}\\s*(k|tr|trieu|ngan|nghin|m|mil|million)\\b`)
+  m = t.match(priceRe)
+  if (m) {
+    const base = parseMoneyAmount(m[1], m[2] || '')
+    if (base !== null && base > 0) {
+      return { min: Math.round(base * 0.8), max: Math.round(base * 1.2), type: 'around' as const }
+    }
+  }
+
   return null
+}
+
+/**
+ * The TOTAL budget of a plan, when the turn is a planning request.
+ *
+ * `extractBudget` names a per-item ceiling and, by design, refuses a bare
+ * amount ("2 người, 5 triệu" must not become a budget in a shopping turn). A
+ * plan is different: the amount a person states for an evening or a trip is
+ * the whole envelope, and the shapes they use — "budget 5 triệu", "trong 5
+ * triệu", "tầm 5 triệu", "dưới 5 triệu", "5 triệu cho 2 người", "20 triệu" —
+ * all mean that envelope. So on a planning turn every `extractBudget` form is
+ * accepted first (its band/ceiling becomes the total), then "trong / với /
+ * cho / có N triệu", then a bare amount with a money UNIT — the unit is the
+ * guard: "3 ngày" and "2 người" carry none and cannot become money.
+ *
+ * Returns the total in VND, or null when the message states no amount at all.
+ * Callers use it ONLY when `detectPlanningIntent` fired; nothing else reads it.
+ */
+export function extractPlanTotalBudget(userMessage: string): number | null {
+  const stated = extractBudget(userMessage)
+  if (stated) return stated.type === 'around' ? Math.round((stated.min + stated.max) / 2) : stated.max
+  const t = normalizeVN(userMessage.toLowerCase())
+  const N = '([\\d][\\d.,]*)'
+  // A full VND figure carries its own unit ("1.500.000đ", "1500000 vnd"); after
+  // normalizeVN the đ is a bare "d". Such a figure parses as-is (parseMoneyAmount
+  // strips the dots), so it is admitted here — never in the per-item extractor.
+  const UNIT = '(k|tr|trieu|ngan|nghin|m|mil|million|d|dong|vnd)\\b'
+  const withinRe = new RegExp(`\\b(?:trong|voi|co|chi co|tam|khoang|cho)\\s+${N}\\s*${UNIT}`)
+  const bareRe = new RegExp(`${N}\\s*${UNIT}`)
+  const m = t.match(withinRe) ?? t.match(bareRe)
+  if (!m) return null
+  const amount = parseMoneyAmount(m[1], m[2] || '')
+  // Below 100k is not a plan envelope ("2k" in a nickname, "50k" for one dish).
+  return amount !== null && amount >= 100_000 ? amount : null
 }
 
 function fmtBudget(budget: Budget): string {
@@ -200,7 +293,11 @@ export function applyBudgetFilter(result: unknown, budget: Budget, category: str
     r.flights = after
   }
 
-  if (budget.max < LUXURY_PRICE_FLOOR) {
+  // Item 6 (2026-09-19): this is a HOTEL rule (luxury hotel brands vs a low nightly budget). It used
+  // to ride every budgeted tool result — a restaurant search, a product search, a flight — as 160
+  // tokens of hotel text the model had no use for on that turn. Measured F8 ("nhà hàng … 500k/người"):
+  // the food result carried the Pullman/Marriott ban. Hotel results only.
+  if (budget.max < LUXURY_PRICE_FLOOR && /khach san|hotel/i.test(category)) {
     r._LENH_BAT_BUOC = `⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget ${fmtBudget(budget)} VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.`
   }
 

@@ -1,0 +1,72 @@
+<resources>
+    <!-- Smart Tool feature screens, V3 (2026-09-14) — hero copy from the web V3 pages
+         (design/v3-phase4: scan.*, translate.*, currency.*, splitBill.*, v3.scam.*, groupNew.*,
+         music.*; canonical vietContent.*). Verbatim, so both platforms read the same words. -->
+
+    <!-- Quét (/scan) -->
+    <string name="tool_scan_eyebrow">TappyAI OCR</string>
+    <string name="tool_scan_title1">Biến hình ảnh thành</string>
+    <string name="tool_scan_title2">văn bản</string>
+    <string name="tool_scan_body">Chụp hoặc tải ảnh tài liệu rồi bấm quét — TappyAI đọc và trích xuất toàn bộ chữ trong ảnh cho bạn.</string>
+    <string name="tool_scan_cap_capture">Chụp hoặc tải ảnh</string>
+    <string name="tool_scan_cap_langs">Tiếng Việt &amp; tiếng Anh</string>
+    <string name="tool_scan_camera_title">Chụp ảnh tài liệu</string>
+    <string name="tool_scan_camera_desc">Dùng camera của thiết bị</string>
+    <string name="tool_scan_camera_cta">Mở camera</string>
+    <string name="tool_scan_gallery_title">Chọn ảnh từ thư viện</string>
+    <string name="tool_scan_gallery_desc">Chọn ảnh có sẵn trong thiết bị</string>
+    <string name="tool_scan_gallery_cta">Chọn ảnh</string>
+    <string name="tool_scan_preview_label">Ảnh đã chọn</string>
+
+    <!-- Dịch (/translate) -->
+    <string name="tool_translate_eyebrow">Dịch ngôn ngữ tức thì</string>
+    <string name="tool_translate_title1">Kết nối thế giới</string>
+    <string name="tool_translate_title2">bằng ngôn ngữ</string>
+    <string name="tool_translate_body">Dịch nhanh và mượt mà sang %1$d ngôn ngữ.</string>
+    <string name="tool_translate_subtitle">30 ngôn ngữ · Không cần đăng nhập · Đọc to kết quả</string>
+
+    <!-- Tỷ giá (/currency) -->
+    <string name="tool_currency_subtitle">Tỷ giá cập nhật hàng giờ từ nguồn công khai</string>
+    <string name="tool_currency_chip_fast">Tính tức thì</string>
+    <string name="tool_currency_chip_currencies">%1$d loại tiền tệ</string>
+    <string name="tool_currency_chip_source">Nguồn: open.er-api.com</string>
+    <string name="tool_currency_result_label">Kết quả</string>
+
+    <!-- Chia bill (/split-bill) -->
+    <string name="tool_split_eyebrow">Tính tiền tip</string>
+    <string name="tool_split_subtitle">Chia sẻ dễ dàng, thanh toán công bằng</string>
+    <string name="tool_split_chip_people">%1$d–%2$d người</string>
+    <string name="tool_split_chip_tip">Tip tùy chỉnh</string>
+    <string name="tool_split_chip_modes">Chia đều hoặc theo món</string>
+
+
+    <!-- Nhóm ăn (/group/new) -->
+    <string name="tool_group_eyebrow">Tạo nhóm với TappyAI</string>
+    <string name="tool_group_title1">Đi đâu ăn gì</string>
+    <string name="tool_group_title2">cả team?</string>
+    <string name="tool_group_body">Tạo nhóm, chia sẻ link để mỗi người tự điền sở thích, rồi để Tappy gợi ý địa điểm ăn uống hợp cả nhóm.</string>
+    <string name="tool_group_form_title">Đặt tên nhóm của bạn</string>
+    <string name="tool_group_form_subtitle">Một cái tên hay giúp cả team dễ nhận ra nhóm hơn</string>
+    <string name="tool_group_bubble">Cùng đi ăn càng vui!</string>
+    <string name="tool_group_feat_plan">Lên kế hoạch cùng nhau</string>
+    <string name="tool_group_feat_plan_desc">Mỗi người tự điền ngân sách, sở thích, khu vực</string>
+    <string name="tool_group_feat_share">Chia sẻ một đường link</string>
+    <string name="tool_group_feat_share_desc">Sao chép link, ai mở là tham gia được</string>
+    <string name="tool_group_feat_suggest">Tappy gợi ý quán ăn</string>
+    <string name="tool_group_feat_suggest_desc">3 địa điểm hợp cả nhóm, dựa trên sở thích mọi người</string>
+    <string name="tool_group_quick_label">Gợi ý nhanh:</string>
+    <string name="tool_group_preset1">Team Marketing</string>
+    <string name="tool_group_preset2">Hội bạn thân</string>
+    <string name="tool_group_preset3">Đi ăn cuối tuần</string>
+    <string name="tool_group_preset4">Gia đình</string>
+    <string name="tool_group_preset5">Team công ty</string>
+    <string name="tool_group_counter">%1$d/%2$d</string>
+
+    <!-- Nhạc (/music) -->
+
+    <!-- Viết (/viet-content) -->
+    <string name="tool_viet_eyebrow">AI viết content ✍️</string>
+    <string name="tool_viet_title1">Caption hấp dẫn</string>
+    <string name="tool_viet_title2">trong vài giây</string>
+    <string name="tool_viet_body">Facebook, TikTok, Instagram — chọn tone, độ dài và để AI lo phần còn lại.</string>
+</resources>

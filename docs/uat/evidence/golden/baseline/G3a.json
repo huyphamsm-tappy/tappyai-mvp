@@ -1,0 +1,227 @@
+{
+  "id": "G3a",
+  "group": "food-hours-budget",
+  "criteria": [
+    "Every card is a cafe (not a restaurant/bar), within budget where price data exists",
+    "A closed place is not ranked first",
+    "Text and cards agree",
+    "If price data is missing, says so instead of presenting out-of-budget places as fitting"
+  ],
+  "turns": [
+    {
+      "user": "quán cà phê yên tĩnh ở Quận 3 dưới 50k, đang mở cửa",
+      "status": 200,
+      "elapsedMs": 22646,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán cà phê yên tĩnh Quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "cafe"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "rating": 5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–18:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Little HaNoi Egg Coffee (Dien Bien Phu)",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "07:00–19:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "The Hummingbird Café & Roastery",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "08:00–19:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "07:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Barista Collective",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "08:00–17:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "The Coffee House - Cao Thắng",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cooku’s nest café",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:30–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Tiệm cà phê Cư Xá 30",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "rating": 5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–18:00",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Little HaNoi Egg Coffee (Dien Bien Phu)",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "07:00–19:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "The Hummingbird Café & Roastery",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "08:00–19:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "07:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Barista Collective",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "08:00–17:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "The Coffee House - Cao Thắng",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cooku’s nest café",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:30–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Tiệm cà phê Cư Xá 30",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.78635,106.69256",
+            "place:osm:10.78642,106.69101"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+          "Little HaNoi Egg Coffee (Dien Bien Phu)",
+          "The Hummingbird Café & Roastery",
+          "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+          "Barista Collective",
+          "The Coffee House - Cao Thắng",
+          "Cooku’s nest café",
+          "Tiệm cà phê Cư Xá 30"
+        ],
+        [
+          "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+          "Little HaNoi Egg Coffee (Dien Bien Phu)",
+          "The Hummingbird Café & Roastery",
+          "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+          "Barista Collective",
+          "The Coffee House - Cao Thắng",
+          "Cooku’s nest café",
+          "Tiệm cà phê Cư Xá 30"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Quận 3 trong giờ này nhé.\n\nNgoài ra còn **The Hummingbird Café & Roastery** (4.6⭐, 1.5km) cũng là lựa chọn tốt nếu bạn muốn không gian sang trọng hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - ViDa Cafe\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16076696220924164963\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]The Hummingbird Café & Roastery|Phê La - Trương Định|Cooku's nest café[/FOLLOWUPS]",
+      "visible": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Quận 3 trong giờ này nhé.\n\nNgoài ra còn **The Hummingbird Café & Roastery** (4.6⭐, 1.5km) cũng là lựa chọn tốt nếu bạn muốn không gian sang trọng hơn."
+    }
+  ]
+}

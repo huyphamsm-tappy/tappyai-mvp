@@ -1,0 +1,27 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 4208,
+  "evidenceId": "6421e8c8-79d7-400d-bacc-3f880724b802",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử tối nay cần tìm nhé. Để gợi ý đúng ý bạn, mình cần biết: **bạn muốn ăn gì?** (lẩu, nướng, hải sản, Á Âu, hay mở rộng tìm?) — vì vậy mình mới chọn được quán phù hợp nhất cho dịp sinh nhật sếp.\n\n[FOLLOWUPS]Lẩu ngon Quận 1|Nướng riêng tư|Hải sản cao cấp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử tối nay cần tìm nhé. Để gợi ý đúng ý bạn, mình cần biết: **bạn muốn ăn gì?** (lẩu, nướng, hải sản, Á Âu, hay mở rộng tìm?) — vì vậy mình mới chọn được quán phù hợp nhất cho dịp sinh nhật sếp.\n\n[FOLLOWUPS]Lẩu ngon Quận 1|Nướng riêng tư|Hải sản cao cấp[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

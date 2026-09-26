@@ -72,3 +72,39 @@ describe('snippet price guard — a stated price must trace to a snippet', () =>
     expect(out.text).not.toMatch(/90\.000/)
   })
 })
+
+// F-094 (owner 2026-09-25): v1 removes the WHOLE sentence. Golden post-egress-f086 T1 t3 showed the
+// clause cut leaving "**Tổng ước tính, mua sắm, hoặc nâng cấp." — a headless, unclosed-bold fragment.
+describe('F-094 — v1 removes the whole sentence, never a clipped fragment', () => {
+  const user = 'Mình đi Đà Nẵng 2 ngày 1 đêm, 2 người, ngân sách 20 triệu'
+  it('the golden T1 t3 sentence goes whole; the next sentence is untouched', () => {
+    const text = 'Khách sạn sát biển Mỹ Khê. **Tổng ước tính: ~8.500.000 VND** cho 2 người, còn dư khoảng 11.500.000 VND cho ăn uống, mua sắm, hoặc nâng cấp. Chúc bạn vui!'
+    const out = guardSnippetPricesInText(text, [], user)
+    expect(out.text).toBe('Khách sạn sát biển Mỹ Khê. Chúc bạn vui!')
+  })
+  it('the user budget restated as a total (F-086) also goes whole', () => {
+    const out = guardSnippetPricesInText('**Tổng ước tính: khoảng 20 triệu cho 2 người**, đã gồm vé máy bay, khách sạn. Chúc bạn vui!', [], user)
+    expect(out.text).toBe('Chúc bạn vui!')
+  })
+  it('a traceable price and the budget named as a budget are still kept', () => {
+    const out = guardSnippetPricesInText('Phở ở đây khoảng 50.000đ/tô. Với ngân sách 20 triệu, bạn thoải mái.', [50000], user)
+    expect(out.text).toBe('Phở ở đây khoảng 50.000đ/tô. Với ngân sách 20 triệu, bạn thoải mái.')
+  })
+})
+
+// F-094, measured on golden post-f094b T3 t2 with the pre-guard capture: whole-sentence removal
+// deleted the pick's own list line and left a stray " 🤔".
+describe('F-094 — list lines keep their item; nothing non-prose is left behind', () => {
+  const user = 'chọn quán rẻ tiền thôi, 50-60k thôi'
+  it('a list line keeps the place and loses only the amount clause', () => {
+    const text = 'Có 2 quán:\n\n• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá) - khoảng giá lên tới 100k\n• **Hàng Dương Quán** (4.5⭐, 721 đánh giá) - chưa xác nhận giá\n\nBạn chọn quán nào?'
+    const out = guardSnippetPricesInText(text, [], user).text
+    expect(out).toContain('• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá)')
+    expect(out).not.toContain('100k')
+    expect(out).toContain('• **Hàng Dương Quán**')
+  })
+  it('the emoji after a removed question goes with it', () => {
+    const out = guardSnippetPricesInText('Không có quán nào đủ rẻ. Bạn có muốn nâng ngân sách lên khoảng 70-80k không? 🤔\n\nMình chờ bạn nhé.', [], user).text
+    expect(out).toBe('Không có quán nào đủ rẻ.\n\nMình chờ bạn nhé.')
+  })
+})

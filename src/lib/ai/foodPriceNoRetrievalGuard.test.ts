@@ -51,10 +51,24 @@ describe('A5 P0 — a food price invented on a no-retrieval turn', () => {
     expect(out).toContain('chưa có giá cụ thể')
   })
 
-  it('leaves the same turn untouched when it states no price at all', async () => {
-    const clean = 'Quán mở cửa từ 6h sáng, rất đông khách buổi trưa.'
-    const out = await runNoToolTurn(clean, { placeIntent: true })
-    expect(out).toContain('rất đông khách buổi trưa')
+  it('leaves the same turn untouched when it states no price at all', () => {
+    // The point of this case is that the MONEY guard is inert on a turn with no
+    // price. The original fixture said "rất đông khách buổi trưa", which the
+    // place guard now removes as an unsupported POPULARITY claim - correctly, on
+    // a turn that retrieved nothing at all. Kept as its own case below so the
+    // two boundaries are asserted separately instead of by accident.
+    // E1 (2026-09-20): an hour with no retrieval is now cut too, so the filler names no time.
+    return runNoToolTurn('Quán nằm trên đường Nguyễn Trãi, bạn có thể ghé sớm.', { placeIntent: true })
+      .then(out => { expect(out).toContain('bạn có thể ghé sớm') })
+  })
+
+  it('removes a popularity claim on a turn that retrieved nothing', () => {
+    return runNoToolTurn('Quán nằm trên đường Nguyễn Trãi, rất đông khách buổi trưa.', { placeIntent: true })
+      .then(out => {
+        expect(out).not.toContain('rất đông khách')
+        // Removal is clause-level: the supported half of the sentence survives.
+        expect(out).toContain('Quán nằm trên đường Nguyễn Trãi')
+      })
   })
 
   it("never redacts the user's own number", async () => {

@@ -1,0 +1,10 @@
+{
+ "tag": "B",
+ "email": "uat2609_b@tappyai.com",
+ "landed": "http://localhost:3101/register",
+ "authCalls": [
+  "POST <sb>/auth/v1/signup → 429"
+ ],
+ "sbCookies": [],
+ "bodyPreview": "T TappyAI Tạo tài khoản mới Quay lại đăng nhập email rate limit exceeded Họ và tên Email Mật khẩu Tạo tài khoản Bằng cách tạo tài khoản, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật"
+}

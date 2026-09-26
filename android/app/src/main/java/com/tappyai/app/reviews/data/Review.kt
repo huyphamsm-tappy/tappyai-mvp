@@ -26,7 +26,6 @@ data class Review(
     val hashtags: List<String>?,
     val watchTimeAvg: Double?,
     val score: Double?,
-    val music: ReviewMusic?,
     val isHidden: Boolean,
     /**
      * The safety gate's outcome for this post, or null.
@@ -36,6 +35,10 @@ data class Review(
      * unconditionally wherever it appears.
      */
     val moderation: ReviewModeration? = null,
+    /** Times the clip was watched ≥3s (server `view_count`), or null when the row has none. */
+    val viewCount: Int? = null,
+    /** Whether the viewer follows this post's author (feed row `is_following`); false when signed out. */
+    val isFollowingAuthor: Boolean = false,
 )
 
 /**
@@ -90,12 +93,4 @@ data class ReviewProfile(
     val followerCount: Int = 0,
     val followingCount: Int = 0,
     val reviewCount: Int = 0,
-)
-
-data class ReviewMusic(
-    val version: Int,
-    val trackId: String,
-    val startSec: Int,
-    val volume: Double,
-    val origin: String?,
 )

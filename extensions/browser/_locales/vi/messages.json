@@ -1,0 +1,47 @@
+{
+  "extName": {
+    "message": "TappyAI — Hỏi Tappy về trang này"
+  },
+  "extDescription": {
+    "message": "Hỏi Tappy về đoạn văn bạn bôi đen hoặc trang đang mở, và kiểm tra link lừa đảo với Scam Shield. Không theo dõi lịch sử duyệt web."
+  },
+  "actionTitle": {
+    "message": "Hỏi Tappy"
+  },
+  "menuAskSelection": {
+    "message": "Hỏi Tappy về “%s”"
+  },
+  "menuAskPage": {
+    "message": "Hỏi Tappy về trang này"
+  },
+  "menuCheckLink": {
+    "message": "Kiểm tra link này với Scam Shield"
+  },
+  "menuCheckPage": {
+    "message": "Kiểm tra trang này với Scam Shield"
+  },
+  "popupAsk": {
+    "message": "Hỏi Tappy"
+  },
+  "popupAskPlaceholder": {
+    "message": "Bạn muốn hỏi gì?"
+  },
+  "popupAskPage": {
+    "message": "Hỏi Tappy về trang này"
+  },
+  "popupCheckPage": {
+    "message": "Kiểm tra trang này với Scam Shield"
+  },
+  "popupOpen": {
+    "message": "Mở TappyAI"
+  },
+  "popupNotWebPage": {
+    "message": "Trang này không phải trang web, nên không có gì để gửi cho Tappy."
+  },
+  "popupLanguage": {
+    "message": "Ngôn ngữ"
+  },
+  "popupPrivacy": {
+    "message": "Chỉ gửi khi bạn bấm. Không lưu, không theo dõi."
+  }
+}

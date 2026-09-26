@@ -1,14 +1,30 @@
 <resources>
     <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
     <string name="settings_title">Settings</string>
+    <!-- Settings V3 (2026-09-14): the header blurb and one-line row blurbs. Presentation only. -->
+    <string name="settings_subtitle">Customise TappyAI the way you want</string>
+    <string name="settings_notifications_desc">Manage notifications from TappyAI</string>
+    <string name="settings_memory_desc">See and manage what Tappy remembers</string>
+    <string name="settings_language_desc">Choose the display language</string>
+    <string name="settings_how_to_use_desc">Learn how to use TappyAI</string>
+    <string name="settings_terms_of_service_desc">Read the terms and conditions</string>
+    <string name="settings_privacy_policy_desc">How we protect your data</string>
+    <string name="settings_copyright_policy_desc">Report infringing content</string>
+    <string name="settings_delete_account_desc">Request deletion of your account and data</string>
     <string name="settings_section_options">Options</string>
     <string name="settings_notifications">Notifications</string>
     <string name="settings_memory">Memory</string>
     <string name="settings_language">Language</string>
+    <string name="settings_appearance">Appearance</string>
+    <string name="settings_appearance_desc">Follow the system, or always light / dark</string>
+    <string name="settings_appearance_system">System</string>
+    <string name="settings_appearance_light">Light</string>
+    <string name="settings_appearance_dark">Dark</string>
     <string name="settings_section_other">Other</string>
     <string name="settings_how_to_use">How to use TappyAI</string>
     <string name="settings_terms_of_service">Terms of Service</string>
     <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_copyright_policy">Copyright Policy</string>
     <string name="settings_version">Version %1$s</string>
     <string name="settings_signing_out">Signing out…</string>
     <string name="settings_sign_out">Sign out</string>
@@ -41,13 +57,33 @@
     <string name="profile_settings_subtitle">Language, notifications, appearance</string>
     <string name="profile_header_title">Your profile</string>
     <string name="profile_header_subtitle">Sign in to personalize</string>
+    <!-- Tôi — V3 landing (2026-09-14): header blurb, row blurbs, the privacy card. Presentation
+         copy only; every row still opens the destination it always did. -->
+    <string name="profile_v3_subtitle">Manage your account and personalise your TappyAI experience</string>
+    <string name="profile_menu_account_desc">Manage your personal details</string>
+    <string name="profile_menu_chat_history_desc">Browse and manage your conversations</string>
+    <string name="profile_menu_bookings_desc">Manage your bookings</string>
+    <string name="profile_menu_preferences_desc">The content and topics you care about</string>
+    <string name="profile_menu_saved_desc">Saved posts, places and deals</string>
+    <string name="profile_menu_price_tracking_desc">Products and services you follow</string>
+    <string name="profile_menu_tappy_knows_desc">See and manage what Tappy remembers</string>
+    <string name="profile_menu_app_connections_desc">Apps linked to your account</string>
+    <string name="profile_menu_my_reviews_desc">The reviews you have posted</string>
+    <string name="profile_menu_group_dining_desc">Pick a place together with your group</string>
+    <string name="profile_privacy_card_title">Privacy &amp; Security</string>
+    <string name="profile_privacy_card_subtitle">Your data, protected — enjoy with peace of mind</string>
     <string name="profile_qr_button_content_description">Show QR profile</string>
     <string name="profile_qr_default_name">My profile</string>
-    <string name="profile_qr_scan_subtitle">Scan to see profile</string>
+    <string name="profile_qr_scan_subtitle">Scan this QR code to view my TappyAI profile</string>
     <string name="profile_qr_code_content_description">QR code linking to this profile</string>
     <string name="profile_qr_generate_error">Couldn\'t generate the QR code. Please try again.</string>
-    <string name="profile_qr_share_button">Share link</string>
+    <string name="profile_qr_share_button">Share profile</string>
     <string name="profile_qr_share_chooser_title">Share profile link</string>
+    <string name="profile_qr_title">Share profile</string>
+    <string name="profile_qr_download_button">Download QR</string>
+    <string name="profile_qr_save_hint">You can save or share this QR code.</string>
+    <string name="profile_qr_saved">QR code saved to Photos</string>
+    <string name="profile_qr_save_failed">Could not save the QR code</string>
 
     <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
     <string name="notif_title">Notifications</string>
@@ -55,6 +91,8 @@
     <string name="notif_push_on_description">On — Tappy will remind you at the right time</string>
     <string name="notif_push_off_description">Off — turn on to get reminders from Tappy</string>
     <string name="notif_toggle_content_description">Toggle push notifications</string>
+    <string name="notif_os_blocked">Your device is blocking TappyAI notifications. Allow them in system settings to receive reminders.</string>
+    <string name="notif_os_allow">Allow</string>
     <string name="notif_receive_header">WHAT YOU\'LL RECEIVE</string>
     <string name="notif_receive_morning_brief">A personalized morning brief at 7:30 AM</string>
     <string name="notif_receive_deals">Deals &amp; offers matched to your interests</string>

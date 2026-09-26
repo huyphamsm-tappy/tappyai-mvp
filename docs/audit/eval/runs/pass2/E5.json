@@ -1,0 +1,25 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 5378,
+  "evidenceId": "ad289792-6830-408d-b060-9b4646137a6c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cuối tuần này bạn muốn làm gì? 😊 Mình có thể giúp bạn tìm:\n\n- **Quán ăn/cafe** ngon ở Quận 1 (vì bạn hay quan tâm khu vực này)\n- **Bar nhạc sống** để thư giãn buổi tối\n- **Rạp phim** hoặc hoạt động giải trí khác\n- **Spa** nếu muốn thư giãn\n\nBạn đang nghĩ đến hoạt động nào? Hay bạn muốn đi cùng 5 người như thường lệ? 🎉",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Cuối tuần này bạn muốn làm gì? 😊 Mình có thể giúp bạn tìm:\n\n- **Quán ăn/cafe** ngon ở Quận 1 (vì bạn hay quan tâm khu vực này)\n- **Bar nhạc sống** để thư giãn buổi tối\n- **Rạp phim** hoặc hoạt động giải trí khác\n- **Spa** nếu muốn thư giãn\n\nBạn đang nghĩ đến hoạt động nào? Hay bạn muốn đi cùng 5 người như thường lệ? 🎉"
+    }
+  ]
+}

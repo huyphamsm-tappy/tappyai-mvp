@@ -1,0 +1,250 @@
+{
+  "id": "S4",
+  "text": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 23868,
+  "evidenceId": "5d94b300-382d-4487-b291-b611c92890aa",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "robot hút bụi nhà có chó 5 triệu 6 triệu 7 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "thắc mắc - Có nên mua robot hút bụi giá rẻ tầm 1 triệu?"
+    },
+    {
+      "name": "7 Robot hút bụi lau nhà nào tốt, giúp tiết kiệm thời gian làm ..."
+    },
+    {
+      "name": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ..."
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"vinet.com.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.6\",\"params\":{\"value\":4.6}},{\"attribute\":\"price\",\"evidence\":\"375000 VND\",\"params\":{\"priceVnd\":375000}},{\"attribute\":\"reviewCount\",\"evidence\":\"39 reviews\",\"params\":{\"count\":39}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[FOLLOWUPS]Ecovacs Deebot T5 Max giá bao nhiêu|Roborock Q7 TF+ có tốt không|Robot nào hút lông chó tốt nhất[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[],\"requested\":null,\"recommendation\":{\"entityKey\":null,\"seller\":\"vinet.com.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.6\",\"params\":{\"value\":4.6}},{\"attribute\":\"price\",\"evidence\":\"375000 VND\",\"params\":{\"priceVnd\":375000}},{\"attribute\":\"reviewCount\",\"evidence\":\"39 reviews\",\"params\":{\"count\":39}}],\"tradeOff\":{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[FOLLOWUPS]Ecovacs Deebot T5 Max giá bao nhiêu|Roborock Q7 TF+ có tốt không|Robot nào hút lông chó tốt nhất[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "robot hút bụi nhà có chó 5 triệu 6 triệu 7 triệu",
+      "source": "Google Search (Serper)",
+      "search_results": [
+        {
+          "title": "thắc mắc - Có nên mua robot hút bụi giá rẻ tầm 1 triệu?",
+          "link": "https://voz.vn/t/co-nen-mua-robot-hut-bui-gia-re-tam-1-trieu.183455/",
+          "snippet": "Ko biết các bác sao, em xài 1 thời gian dẹp luôn. Nếu nhà các bác gọn gàng, rộng rãi, ít bụi, cũng như ko có em bé, chó mèo thì ok, còn lại thì ...",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "7 Robot hút bụi lau nhà nào tốt, giúp tiết kiệm thời gian làm ...",
+          "link": "https://shopee.vn/blog/robot-hut-bui-lau-nha-nao-tot/",
+          "snippet": "Sản phẩm Ecovacs Deebot DD35 được thiết kế với tính năng vừa hút bụi vừa lau nhà đồng thời hiệu quả. Chế độ làm sạch đa dạng với nhu cầu sử dụng. Công nghệ cảm ...",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ...",
+          "link": "https://www.finhay.com.vn/robot-hut-bui-gia-re",
+          "snippet": "Xiaomi Robot Vacuum E10 (Tầm giá ~3.5 triệu) · Ecovacs Deebot U2 Pro (Tầm giá ~3 – 4 triệu) · Dreame F9 (Tầm giá ~4 triệu) · Xiaomi Vacuum S10 (Tầm ...",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "shopping_results": [
+        {
+          "title": "Robot Hút Bụi Lau Nhà Thông Minh BOWAI -Default Title",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:271674673344986329,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "vinet.com.vn",
+          "price": 375000,
+          "priceText": "375.000 ₫",
+          "productId": "271674673344986329",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQQDf02o-wjWxxWmNMVblbsMf5KA_8-yN1jSI0VhfGTURR1ia9RSInMFgKKppo-upfsnzG0BkTN7mmHxt_3yBrIghfSu07K9A",
+          "rating": 4.6,
+          "ratingCount": 39,
+          "position": 29
+        },
+        {
+          "title": "Robot hút bụi lau nhà Ecovacs T5 Max (DX65)",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:15952263622154360846,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Digihouse.vn",
+          "price": 4500000,
+          "priceText": "4.500.000 ₫",
+          "productId": "15952263622154360846",
+          "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRkxFyvqSqwup73MT50s8fZCz1HjjQtcgCslL22rQ-a2BgctH8uSf4JXgfEzQ8D1y1IJizrvJR6IBOCmYzHSuCr2kBaxkFvK8ZorEW_nVXSEdsiwjTpBYNw",
+          "rating": 4.8,
+          "ratingCount": 53,
+          "position": 32
+        },
+        {
+          "title": "Robot hút bụi Roborock Q7 TF+ (Plus) lau nhà",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:17047528322962589187,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "Điện Máy Thành Phát T&T",
+          "price": 5200000,
+          "priceText": "5.200.000 ₫",
+          "productId": "17047528322962589187",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ8EkAtwCBGdXSbL-39UoNvI4D-19Uri_2Ymz3Rdo0Ce7MiuPzZjD0mZGQL1rmXLiTgrK27Z9dyXifACdFlrKBp9MSdxvetfpKHAYmILgpgVGmw295gjqFxAA",
+          "rating": 5,
+          "ratingCount": 5,
+          "position": 30
+        },
+        {
+          "title": "Robot hút bụi lau nhà Ecovacs Deebot T5 MAX (DX65)",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,productid:3666726771084884051,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "KingShop.vn",
+          "price": 4950000,
+          "priceText": "4.950.000 ₫",
+          "productId": "3666726771084884051",
+          "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTK3oBzBeJxpdXcvWsuuBaCUBjf006_lH6F5HFjMJwB6SQpDa1tJ6vmCFjJ0Q9rOy2au2UrVjp9Z52uShZC25eoCeDRnu3LJvJxoemhQp7cH3glfHhLinyu",
+          "rating": 4.8,
+          "ratingCount": 53,
+          "position": 28
+        },
+        {
+          "title": "Robot hút bụi lau nhà Ecovacs Y1 Pro Plus",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,catalogid:12303255452421637825,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "KingShop.vn",
+          "price": 4489000,
+          "priceText": "4.489.000 ₫",
+          "productId": "12303255452421637825",
+          "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQC-gEQft3IYoMudWNrI8Bxd9MXmKwvsGfm8sWlmkn1GyJKwmXlXqyvD19lQ1yoWUlq9bn-CSc0YmlZvvIY2n1GK2y6biLeut0574TTTkTsmlE1ApCI5HHYXg",
+          "rating": 4.7,
+          "ratingCount": 87,
+          "position": 1
+        },
+        {
+          "title": "Robot Hút Bụi BlueStone RVB-9731",
+          "link": "https://www.google.com/search?ibp=oshop&q=robot+h%C3%BAt+b%E1%BB%A5i+nh%C3%A0+c%C3%B3+ch%C3%B3+5+tri%E1%BB%87u+6+tri%E1%BB%87u+7+tri%E1%BB%87u+*&prds=localAnnotatedOfferId:1,catalogid:1063786216252243540,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "source": "VietMart thegioidodung.vn",
+          "price": 5800000,
+          "priceText": "5.800.000 ₫",
+          "productId": "1063786216252243540",
+          "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQq6BWaU1Ppk4SdQFgxWUR0YvPiUXcfSpHjNkkI52xxA7MVjGZURdoNwTxKGVR4YBnnjAHSR4ySlshrkbzMlZtu8Z0pmLaijzPHd135OHvCp-afxQ8lNsC0bA",
+          "rating": 5,
+          "ratingCount": 2,
+          "position": 6
+        }
+      ],
+      "shop_info_results": [
+        {
+          "title": "[Review] Robot hút bụi lau nhà Hi cả nhà",
+          "link": "https://www.facebook.com/groups/groupyeubep/posts/1440488593001958/",
+          "snippet": "Nhà mình 2 tầng, diện tích mỗi tầng tầm 75m2, đồ đạc cũng khá nhiều. Em robot mình chọn là deebot T9 mua hàng chính hãng trên lazada mall. Mình ..."
+        },
+        {
+          "title": "HỘI NGƯỜI DÙNG ROBOT HÚT BỤI - ECOVACS, XIAOMI, ...",
+          "link": "https://www.facebook.com/groups/1141486105889203/",
+          "snippet": "Đây là cộng đồng dành cho những ai đang sử dụng hoặc quan tâm đến robot hút bụi thuộc các thương hiệu phổ biến như: Ecovacs, Xiaomi, Dreame, Roborock,..."
+        },
+        {
+          "title": "Top 5 robot hút bụi giá rẻ chỉ từ 3 triệu đồng đáng mua ...",
+          "link": "https://www.finhay.com.vn/robot-hut-bui-gia-re",
+          "snippet": "Ecovacs Deebot U2 Pro (Tầm giá ~3 – 4 triệu). Nếu nhà bạn nuôi chó mèo, đây là lựa chọn số 1 trong tầm giá mà không đối thủ nào qua mặt được."
+        },
+        {
+          "title": "Thực hư về những sản phẩm robot hút bụi, lau nhà mini với ...",
+          "link": "https://www.facebook.com/tintucvtv9/videos/c%E1%BA%A9n-tr%E1%BB%8Dng-v%E1%BB%9Bi-s%E1%BA%A3n-ph%E1%BA%A9m-robot-h%C3%BAt-b%E1%BB%A5i-gi%C3%A1-si%C3%AAu-r%E1%BA%BB/698611694219952/?locale=pl_PL",
+          "snippet": "Thực hư về những sản phẩm robot hút bụi, lau nhà mini với giá siêu rẻ, chỉ khoảng vài trăm ngàn đồng."
+        },
+        {
+          "title": "2025 RỒI, CÒN ROBOT HÚT BỤI 3-4 TRIỆU?  ...",
+          "link": "https://www.facebook.com/robotekvietnam/videos/1000-gia-%C4%91%C3%ACnh-%C4%91ang-d%C3%B9ng-robot-h%C3%BAt-b%E1%BB%A5i-t%E1%BA%A7m-gi%C3%A1-3-4-tri%E1%BB%87u/707056398948046/",
+          "snippet": "Nhà có Robot tự động rồi, sao chị khách vẫn sắm thêm Roborock F25 Ultra? Vì em này cầm tay tiện, vừa hút vừa lau, xử lý nhanh những chỗ Robot ..."
+        },
+        {
+          "title": "Kinh nghiệm chọn mua robot hút bụi dưới 15 triệu đồng ...",
+          "link": "https://roborock.com.vn/blogs/news/kinh-nghiem-chon-mua-robot-hut-bui-duoi-15-trieu?srsltid=AU7gw4WL1YB0Y2VJuquntwvmnlCQXTUcYZhuY9BB12Qyj_3DtlaZS-EQ",
+          "snippet": "Trong tầm giá dưới 15 triệu đồng, Roborock Qrevo 2 Pro vẫn sở hữu nhiều công nghệ thường chỉ xuất hiện trên các dòng robot hút bụi cao cấp. Sản ..."
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=robot%20h%C3%BAt%20b%E1%BB%A5i%20nh%C3%A0%20c%C3%B3%20ch%C3%B3%205%20tri%E1%BB%87u%206%20tri%E1%BB%87u%207%20tri%E1%BB%87u"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=robot%20h%C3%BAt%20b%E1%BB%A5i%20nh%C3%A0%20c%C3%B3%20ch%C3%B3%205%20tri%E1%BB%87u%206%20tri%E1%BB%87u%207%20tri%E1%BB%87u"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 19,
+      "_tappy_ranking": {
+        "pick": "Robot Hút Bụi Lau Nhà Thông Minh BOWAI -Default Title",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.6 - Robot hút bụi lau nhà Ecovacs T5 Max (DX65): rated 4.8 (KHONG duoc goi pick la \"nhat\" o rating)"
+          },
+          {
+            "attribute": "price",
+            "evidence": "375000 VND"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "39 reviews"
+          }
+        ],
+        "not_chosen": "Robot hút bụi lau nhà Ecovacs T5 Max (DX65)",
+        "not_chosen_leads_on": {
+          "attribute": "rating",
+          "evidence": "rated 4.8"
+        }
+      },
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [],
+        "de_xuat": {
+          "noi_ban": "vinet.com.vn",
+          "ly_do": [
+            {
+              "attribute": "rating",
+              "evidence": "rated 4.6",
+              "params": {
+                "value": 4.6
+              }
+            },
+            {
+              "attribute": "price",
+              "evidence": "375000 VND",
+              "params": {
+                "priceVnd": 375000
+              }
+            },
+            {
+              "attribute": "reviewCount",
+              "evidence": "39 reviews",
+              "params": {
+                "count": 39
+              }
+            }
+          ],
+          "danh_doi": {
+            "attribute": "rating",
+            "evidence": "rated 4.8",
+            "params": {
+              "value": 4.8
+            }
+          },
+          "nghieng_ve": false
+        }
+      }
+    }
+  ],
+  "frames8Raw": []
+}

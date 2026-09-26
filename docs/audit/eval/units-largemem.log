@@ -1,0 +1,5 @@
+FV1 200 ttfb=558ms total=11434ms tools=search_places rows=10 prose=692ch
+SP1 200 ttfb=1403ms total=21500ms tools=search_products rows=6 prose=7551ch
+TK2 200 ttfb=1483ms total=11701ms tools=get_transport_options rows=0 prose=814ch
+PK1 200 ttfb=421ms total=16833ms tools=search_places rows=10 prose=767ch
+EK1 200 ttfb=418ms total=9415ms tools=search_places rows=1 prose=632ch

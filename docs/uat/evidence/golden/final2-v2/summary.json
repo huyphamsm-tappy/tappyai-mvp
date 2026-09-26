@@ -1,0 +1,557 @@
+{
+  "label": "final2-v2",
+  "base": "http://localhost:3000",
+  "calls": 19,
+  "at": "2026-09-22T08:38:24.209Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 40195,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_flight_prices",
+            "get_hotel_prices"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ],
+            [
+              "Ngũ Hành Sơn",
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ]
+          ],
+          "dup": false,
+          "chars": 667
+        },
+        {
+          "status": 200,
+          "ms": 37567,
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ],
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ]
+          ],
+          "dup": false,
+          "chars": 738
+        },
+        {
+          "status": 200,
+          "ms": 29480,
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "M Hotel Da Nang",
+              "Seahorse",
+              "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "Nhu Minh Plaza Danang Hotel",
+              "Khách sạn Novotel Đà Nẵng",
+              "Khách sạn San Marino Boutique Danang"
+            ],
+            [
+              "M Hotel Da Nang",
+              "Seahorse",
+              "Seahorse Signature Da Nang Hotel By Sujet of Haviland",
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "Nhu Minh Plaza Danang Hotel",
+              "Khách sạn Novotel Đà Nẵng",
+              "Khách sạn San Marino Boutique Danang"
+            ]
+          ],
+          "dup": false,
+          "chars": 511
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14455,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ]
+          ],
+          "dup": false,
+          "chars": 825
+        },
+        {
+          "status": 200,
+          "ms": 11273,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ],
+            [
+              "CGV Liberty Citypoint",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Sư Vạn Hạnh",
+              "Cinestar Quốc Thanh",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81"
+            ]
+          ],
+          "dup": false,
+          "chars": 654
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14320,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ],
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ]
+          ],
+          "dup": false,
+          "chars": 481
+        },
+        {
+          "status": 200,
+          "ms": 18029,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "The Street Nguyễn Thái Bình",
+              "Hàng Dương Quán Quận 1",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+              "Quán ăn ngon Sài Gòn",
+              "Quán Ăn Thanh Bình",
+              "Sài Gòn Xưa và Nay"
+            ],
+            [
+              "Quán ăn ngon Sài Gòn",
+              "Cơm Ngon Hà Nội",
+              "The Street Nguyễn Thái Bình",
+              "Hàng Dương Quán Quận 1",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+              "Quán Ăn Thanh Bình",
+              "Sài Gòn Xưa và Nay"
+            ]
+          ],
+          "dup": false,
+          "chars": 424
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 18486,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 544
+        },
+        {
+          "status": 200,
+          "ms": 12122,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1525
+        }
+      ]
+    },
+    {
+      "id": "G1a",
+      "group": "travel-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 35198,
+          "tools": [
+            "search_places",
+            "get_hotel_prices",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Nhà hàng hải sản La Sirena",
+              "Hàu Nướng Oyster Box",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ],
+            [
+              "Nhà hàng hải sản La Sirena",
+              "Hàu Nướng Oyster Box",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Hải Sản Bờ Biển",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ]
+          ],
+          "dup": false,
+          "chars": 960
+        }
+      ]
+    },
+    {
+      "id": "G1b",
+      "group": "entertainment-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 19225,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "Chiin Coffee & Cinema Quận 7",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "LOTTE Cinema Nam Sài Gòn",
+              "CGV Vivo City",
+              "Cà Phê Phim Hd"
+            ],
+            [
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "HDRADIO Quận 7 - Audio & Home Cinema & Karaoke",
+              "Chiin Coffee & Cinema Quận 7",
+              "LOTTE Cinema Nam Sài Gòn",
+              "CGV Vivo City",
+              "Cà Phê Phim Hd"
+            ]
+          ],
+          "dup": false,
+          "chars": 489
+        }
+      ]
+    },
+    {
+      "id": "G3a",
+      "group": "food-hours-budget",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12452,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "OZ Coffee House 2",
+              "Phê La - Trương Định"
+            ],
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "OZ Coffee House 2",
+              "Phê La - Trương Định"
+            ]
+          ],
+          "dup": false,
+          "chars": 538
+        }
+      ]
+    },
+    {
+      "id": "G3b",
+      "group": "food-correction",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17370,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Pasteur Street Craft Beer",
+              "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+              "FunnyBone Bar & Coffe Quận 1",
+              "えびすEbisu District1( Udon & Sushi)",
+              "Ghiền Mồi bén & Bia",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1"
+            ],
+            [
+              "Pasteur Street Craft Beer",
+              "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm cảnh thành ...",
+              "FunnyBone Bar & Coffe Quận 1",
+              "えびすEbisu District1( Udon & Sushi)",
+              "Ghiền Mồi bén & Bia",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1"
+            ]
+          ],
+          "dup": false,
+          "chars": 334
+        },
+        {
+          "status": 200,
+          "ms": 15538,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán",
+              "NHÀ HÀNG NGON"
+            ],
+            [
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán",
+              "NHÀ HÀNG NGON"
+            ]
+          ],
+          "dup": false,
+          "chars": 542
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 36351,
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Quảng trường Lâm Viên",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Khu Du Lịch Cáp Treo Đà Lạt",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt",
+              "Đường Hầm Điêu Khắc",
+              "Vườn hoa Đà Lạt"
+            ],
+            [
+              "Quảng trường Lâm Viên",
+              "Khu du lịch Thác Datanla",
+              "Thung lũng Tình Yêu",
+              "Khu Du Lịch Cáp Treo Đà Lạt",
+              "Khu du lịch Fresh Garden Dalat",
+              "Đồi Mộng Mơ Đà Lạt",
+              "Đường Hầm Điêu Khắc",
+              "Vườn hoa Đà Lạt"
+            ]
+          ],
+          "dup": false,
+          "chars": 1112
+        }
+      ]
+    },
+    {
+      "id": "G5a",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12808,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1542
+        }
+      ]
+    },
+    {
+      "id": "G5b",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13820,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1470
+        }
+      ]
+    },
+    {
+      "id": "G5c",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 18230,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 2187
+        }
+      ]
+    },
+    {
+      "id": "G5d",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 11289,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1464
+        }
+      ]
+    }
+  ]
+}

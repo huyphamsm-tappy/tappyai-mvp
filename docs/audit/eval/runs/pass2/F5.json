@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 3145,
+  "evidenceId": "aada72ea-6b71-4971-8cad-813936400f46",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Zen Chinese Restaurant** mở từ **8h sáng đến 10h tối** 🕐\n\nVậy buổi trưa bạn hoàn toàn có thể đi được. Bạn có muốn mình tìm thêm thông tin về chỗ đậu xe hoặc các tiện ích khác cho gia đình không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Zen Chinese Restaurant** cho bữa trưa gia đình 6 người của bạn 👍 Quán có rating 4.9⭐ từ 597 đánh giá Google Maps, cách vị trí bạn khoảng 2.6km, mở cửa từ 8h sáng đến 10h tối.\n\nNgoài ra, **Tám Riêu - Phan Xích Long** cũng là lựa chọn tốt nếu bạn muốn thử ẩm thực Việt — 4.8⭐ (2.106 đánh giá), gần bạn 2.9km, mở từ 10h30 sáng.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Zen Chinese Restaurant\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16228067050023916156\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào phù hợp hơn với khẩu vị gia đình?|Bạn muốn ăn gì - Việt hay Trung?|Cần gợi ý quán khác không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Zen Chinese Restaurant** mở từ **8h sáng đến 10h tối** 🕐\n\nVậy buổi trưa bạn hoàn toàn có thể đi được. Bạn có muốn mình tìm thêm thông tin về chỗ đậu xe hoặc các tiện ích khác cho gia đình không?"
+    }
+  ]
+}

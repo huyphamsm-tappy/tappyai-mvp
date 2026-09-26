@@ -61,3 +61,4 @@ android/gradle.properties
 
 # U03 — vitest JSON report consumed by scripts/requiredSuites.mjs (regenerated every run)
 vitest-report.json
+extensions/browser/dist/

@@ -19,6 +19,11 @@ abstract class ChatModule {
     @Binds
     abstract fun bindMessageFeedbackRepository(impl: RealMessageFeedbackRepository): MessageFeedbackRepository
 
+    /** G1 share-out (public result pages) — same wiring shape as message feedback. */
+    @Singleton
+    @Binds
+    abstract fun bindSharedResultRepository(impl: RealSharedResultRepository): SharedResultRepository
+
     @Singleton
     @Binds
     abstract fun bindSuggestedPromptsRepository(impl: RealSuggestedPromptsRepository): SuggestedPromptsRepository
@@ -26,6 +31,10 @@ abstract class ChatModule {
     @Singleton
     @Binds
     abstract fun bindVoiceLanguageRepository(impl: RealVoiceLanguageRepository): VoiceLanguageRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindCommerceHandoffReporter(impl: RealCommerceHandoffReporter): CommerceHandoffReporter
 }
 
 /** [MessageFeedbackApi] is built from the shared singleton [Retrofit] (core:network) — a separate
@@ -41,6 +50,11 @@ object ChatNetworkModule {
 
     @Provides
     @Singleton
+    fun provideSharedResultApi(retrofit: Retrofit): SharedResultApi =
+        retrofit.create(SharedResultApi::class.java)
+
+    @Provides
+    @Singleton
     fun provideSuggestedPromptsApi(retrofit: Retrofit): SuggestedPromptsApi =
         retrofit.create(SuggestedPromptsApi::class.java)
 
@@ -48,4 +62,9 @@ object ChatNetworkModule {
     @Singleton
     fun provideVoiceLanguageApi(retrofit: Retrofit): VoiceLanguageApi =
         retrofit.create(VoiceLanguageApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideCommerceHandoffApi(retrofit: Retrofit): CommerceHandoffApi =
+        retrofit.create(CommerceHandoffApi::class.java)
 }

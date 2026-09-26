@@ -66,7 +66,8 @@ describe('the single self-correction', () => {
     expect(evaluateAgeEligibility(row({ corrections_used: 0 })).canSelfCorrect).toBe(true)
   })
 
-  it('is gone once spent', () => {
+  it('is gone once spent — for an ELIGIBLE user (age >= minimum), unchanged by F-028', () => {
+    // The default row is age 30 (eligible); a spent correction stays exhausted.
     expect(
       evaluateAgeEligibility(row({ corrections_used: MAX_SELF_CORRECTIONS })).canSelfCorrect
     ).toBe(false)
@@ -74,6 +75,19 @@ describe('the single self-correction', () => {
 
   it('treats a null counter as none spent', () => {
     expect(evaluateAgeEligibility(row({ corrections_used: null })).canSelfCorrect).toBe(true)
+  })
+
+  // F-028 — a mistyped date that reads as under-age must not be a lockout.
+  it('an INELIGIBLE user can always self-correct, even with the correction spent', () => {
+    const r = evaluateAgeEligibility(row({ age_years: MINIMUM_AGE - 1, corrections_used: MAX_SELF_CORRECTIONS }))
+    expect(r.status).toBe('ineligible')
+    expect(r.canSelfCorrect, 'ineligible → may re-correct regardless of the counter').toBe(true)
+  })
+
+  it('an ELIGIBLE user is still capped at one correction (the gate is not weakened)', () => {
+    const r = evaluateAgeEligibility(row({ age_years: 40, corrections_used: MAX_SELF_CORRECTIONS }))
+    expect(r.status).toBe('eligible')
+    expect(r.canSelfCorrect).toBe(false)
   })
 })
 

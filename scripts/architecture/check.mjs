@@ -39,6 +39,24 @@ const SUPABASE_ADMIN = 'src/lib/supabase/admin.ts'
 // admin.test.ts asserts the file contains no createClient( of its own so this
 // exemption cannot quietly grow into a bypass.
 const SERVICE_ROLE_FLAG_READ = 'src/app/api/users/search/route.ts'
+/** The only module that may read a forwarded-IP header (P3-F1 / S-2). */
+const RATE_LIMIT = 'src/lib/security/rateLimit.ts'
+
+// ── Commerce Capability Platform (CCP) zones ─────────────────────────────────
+// Merchant URL grammars and affiliate-network knowledge live ONLY under
+// src/lib/ccp (adapters + registry + tracking). The AI layer, tools and clients
+// consume CommerceLinks; they never spell a merchant host or an affiliate host.
+// Owner decisions D2/D4 (13 Sep 2026); CCP Architecture Plan v1 §5–§6; ADR-028.
+const CCP_LAYER = 'src/lib/ccp/'
+const CCP_TRACKING = 'src/lib/ccp/tracking/'
+// Legacy L0–L2 search-link builders keep their hosts until the Phase 6
+// migration replaces them with CCP-backed resolution (readiness review §3).
+const LEGACY_PLATFORM_LINKS = 'src/lib/platformLinks/'
+const LEGACY_AI_TOOLS = 'src/lib/ai/tools/'
+const LEGACY_PROMPT = 'src/lib/ai/promptBuilder.ts'
+// Scam Shield's official-directory lists merchant domains as DATA to warn users
+// about look-alikes; it builds no commerce links.
+const SCAM_SHIELD_DIRECTORY = 'src/lib/scam-shield/directory/'
 
 // Raw vendor SDK packages that must never be dependencies at all — they bypass
 // the neutral AI SDK entirely. (@ai-sdk/* adapter packages ARE allowed as deps;
@@ -214,6 +232,22 @@ const RULES = [
     hint: 'import { createAdminClient } from "@/lib/supabase/admin". A hand-rolled client omits the auth hardening (autoRefreshToken:false, persistSession:false) and quietly becomes a second admin factory — Component 9a removed two of those.',
   },
   {
+    id: 'no-adhoc-forwarded-ip',
+    title: 'Request IP read straight from a forwarded header',
+    patterns: [
+      // The caller writes these. Only the module that knows which of them the
+      // PLATFORM sets may read them.
+      /['"]x-forwarded-for['"]/,
+      /['"]x-real-ip['"]/,
+      /['"]x-vercel-forwarded-for['"]/,
+    ],
+    allow: [RATE_LIMIT],
+    // Naming these headers is how you WRITE the fixture — clientIpTrust.test.ts
+    // has to forge them to prove they are not trusted.
+    exemptTests: true,
+    hint: 'import { clientIp } from "@/lib/security/rateLimit". P3-F1: the LEFTMOST x-forwarded-for entry is text the caller wrote, so a limiter keyed on it is not a limiter — rotating the header mints a fresh bucket per request. S-2 found the account-existence oracle in /api/users/search throttled on exactly that. clientIp() prefers the platform-set headers, never a caller-authored hop, and always returns a valid IP or "unknown".',
+  },
+  {
     // Controller V2 — 01_CONTROLLER_V2_ARCHITECTURE.md §1, rule 4.
     id: 'no-consumer-app-import-in-controller',
     title: 'Consumer-app import inside the Controller',
@@ -288,6 +322,27 @@ const RULES = [
     allow: [PERMISSION_REGISTRY],
     exemptTests: true,
     hint: "use PERMISSIONS.<KEY> from '@/lib/admin/permissions/registry'. A raw string is a permission no manifest declares, which the architecture requires not to compile — and it is matched on the ARGUMENT POSITION, not the id shape, because i18n keys ('admin.nav.dashboard') are shaped identically.",
+  },
+  // ── CCP — merchant grammar and affiliate knowledge stay in the platform ────
+  {
+    id: 'no-commerce-merchant-hosts-outside-ccp',
+    title: 'Commerce merchant / affiliate hosts spelled outside src/lib/ccp',
+    patterns: [
+      /(www\.)?(dienmayxanh\.com|pasgo\.vn|vn\.trip\.com|cgv\.vn|klook\.com|go\.isclix\.com|isclix\.com|accesstrade\.(vn|me))/i,
+    ],
+    allow: [CCP_LAYER, LEGACY_PLATFORM_LINKS, LEGACY_AI_TOOLS, LEGACY_PROMPT, SCAM_SHIELD_DIRECTORY],
+    // Tests legitimately name merchant hosts as fixtures (CTA validation, card projection); the leak this rule prevents is in runtime code.
+    exemptTests: true,
+    hint: "a commerce destination is a CommerceLink resolved by src/lib/ccp (resolveCommerce / resolveDeepLink). Merchant URL grammars belong in src/lib/ccp/adapters/*, affiliate wrappers in src/lib/ccp/tracking/*. The AI layer and clients never compose merchant URLs.",
+  },
+  {
+    id: 'no-affiliate-keys-outside-ccp-tracking',
+    title: 'Affiliate-network credentials referenced outside the CCP tracking adapter',
+    patterns: [/(ACCESSTRADE_(API_KEY|PUBLISHER_ID)|CJ_(ACCESS_TOKEN|API_KEY)|AGODA_(API_KEY|SITE_ID))/],
+    allow: [CCP_TRACKING],
+    // Tests set/unset the publisher id as an env fixture; runtime reads stay in tracking/.
+    exemptTests: true,
+    hint: 'only src/lib/ccp/tracking/* may read affiliate credentials (mirrors no-vendor-api-keys for the AI layer). Gate on isAccesstradeConfigured() elsewhere.',
   },
 ]
 

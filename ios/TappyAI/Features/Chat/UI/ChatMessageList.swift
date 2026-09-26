@@ -16,7 +16,8 @@ struct ChatMessageList: View {
     let onRetry: () -> Void
     let onFollowup: (String) -> Void
     let onCopy: (String) -> Void
-    let onShare: (String) -> Void
+    /// Share by message INDEX (not text): the share artifact needs the turn's structured data.
+    let onShare: (Int) -> Void
     let onLogin: () -> Void
     let onLike: (Int, Bool) -> Void
     let onDislike: (Int, Bool) -> Void
@@ -59,13 +60,21 @@ struct ChatMessageList: View {
                                 status: msg.status,
                                 ctaButtons: parsed.ctaButtons,
                                 plan: parsed.plan,
+                                shopping: parsed.shopping,
+                                // LIVE first, DURABLE as the fallback — and never both, or the
+                                // turn would show the same places twice. The live annotation is
+                                // the richer projection and exists for the session that produced
+                                // the turn; it is never persisted, so a reopened conversation has
+                                // only the durable block, which is what that block is for.
+                                places: msg.livePlaces.map { $0.items.map { $0.toCardView() } }
+                                    ?? parsed.places.compactMap { $0.toCardView() },
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 isLastMessage: isLast,
                                 tts: tts,
                                 onRegenerate: isLast ? onRegenerate : nil,
                                 onFollowup: onFollowup,
                                 onCopy: { onCopy(parsed.text) },
-                                onShare: { onShare(parsed.text) },
+                                onShare: { onShare(index) },
                                 onLike: { onLike(index, $0) },
                                 onDislike: { onDislike(index, $0) },
                                 onReport: { onReport(index) },
@@ -163,6 +172,13 @@ private struct AssistantBubble: View {
     let status: MessageStatus
     let ctaButtons: [CTAButton]
     let plan: TappyPlan?
+    /// D1 — the shopping decision for this turn, when the reply carried one.
+    /// Defaulted so existing call sites keep compiling unchanged.
+    var shopping: ShoppingDecisionView? = nil
+    /// The turn's place cards, already projected from whichever payload was available.
+    var places: [PlaceCardView] = []
+    /// Whether the comparison sheet is open for this row.
+    @State private var showComparison = false
     let followups: [String]
     let isLastMessage: Bool
     let tts: TTSManager
@@ -202,6 +218,38 @@ private struct AssistantBubble: View {
                 // Plan card
                 if let plan {
                     TripPlanCardView(plan: plan)
+                }
+
+                // D1 — the shopping DECISION. Rendered only once streaming ends, like every other
+                // structured block: a half-arrived decision is not a decision, and showing one
+                // mid-stream is how partial JSON reached users in the first place.
+                // The place decision. Rendered only once streaming ends, like every other
+                // structured block: a half-arrived card is not a card, and showing one mid-stream
+                // is how partial JSON reached users in the first place.
+                if !places.isEmpty, !isStreaming {
+                    PlaceCardsView(places: places)
+                }
+
+                if let shopping, !isStreaming {
+                    ShoppingDecisionCardView(view: shopping)
+
+                    // Comparison (DD-005), derived from the SAME payload the card above renders —
+                    // no extra request, nothing inferred. Opens in a sheet: a four-column grid is
+                    // unreadable inline at phone width, so the container differs while the data
+                    // does not.
+                    if let comparison = shoppingComparison(from: shopping, labels: .localized) {
+                        Button {
+                            showComparison = true
+                        } label: {
+                            Text(String(localized: "comparison.titleShort"))
+                                .font(TappyFont.body)
+                                .foregroundStyle(TappyColor.primary)
+                        }
+                        .minimumTapTarget()
+                        .sheet(isPresented: $showComparison) {
+                            ShoppingComparisonSheet(comparison: comparison) { showComparison = false }
+                        }
+                    }
                 }
 
                 // Full action bar (not streaming)

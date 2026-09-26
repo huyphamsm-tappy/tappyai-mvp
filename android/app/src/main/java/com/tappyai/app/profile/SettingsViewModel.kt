@@ -12,8 +12,13 @@ import com.tappyai.app.profile.data.SettingsErrorMessages
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
+import com.tappyai.app.AppearanceMode
+import com.tappyai.app.AppearanceStore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
@@ -35,7 +40,16 @@ class SettingsViewModel @Inject constructor(
     private val logger: LoggerProvider,
     private val settingsErrorMessages: SettingsErrorMessages,
     @ApplicationContext private val appContext: android.content.Context,
+    private val appearance: AppearanceStore,
 ) : ViewModel() {
+
+    /** "Giao diện": Theo hệ thống / Sáng / Tối — the same store MainActivity resolves the theme from. */
+    val appearanceMode: StateFlow<AppearanceMode> = appearance.mode
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), appearance.initialMode())
+
+    fun selectAppearance(mode: AppearanceMode) {
+        viewModelScope.launch { appearance.set(mode) }
+    }
 
     private val notificationPrefs = TappyNotificationPreferences(appContext)
 

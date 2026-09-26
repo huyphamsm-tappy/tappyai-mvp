@@ -1,0 +1,1165 @@
+{
+  "id": "D2",
+  "group": "district-named",
+  "criteria": [
+    "Every card's ADDRESS is in Bình Thạnh (explicit 'Bình Thạnh' or a Bình Thạnh ward: Gia Định, Bình Lợi Trung, Thạnh Mỹ Tây, Bình Quới), or is explicitly marked as outside",
+    "The prose never presents a venue outside Bình Thạnh as being in Bình Thạnh",
+    "Stated Bình Thạnh beats the Quận 1 GPS"
+  ],
+  "turns": [
+    {
+      "user": "Quán cà phê yên tĩnh để làm việc ở Bình Thạnh",
+      "status": 200,
+      "elapsedMs": 13423,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán cà phê yên tĩnh làm việc Bình Thạnh",
+            "location": "Bình Thạnh, TP HCM",
+            "type": "cafe"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "PỜ CAFÉ - BÌNH THẠNH",
+              "address": "160/27 Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 812,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Muỗng coffee - Bình Thạnh",
+              "address": "Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 122,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Welike Bình Thạnh",
+              "address": "643 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 26,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+              "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2459,
+              "price": null,
+              "categories": [
+                "Quán cà phê",
+                "Quán cà phê nghệ thuật",
+                "Cửa hàng cà phê",
+                "Không gian làm việc chia sẻ",
+                "Quán cà phê internet"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+              "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 158,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "We.cafèteria",
+              "address": "99/2 Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 400,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+              "address": "443 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 50,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cà Kê Café",
+              "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 614,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.80866,106.70395",
+                "domain": "food",
+                "kind": "place",
+                "name": "PỜ CAFÉ - BÌNH THẠNH",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPSrCLvpp3gIUA0AannFpb-s2W8Md1OTbebFRMXz2hdKLZZWoi-mWp3M14S_zCPZcr-OGwy2vWuFlLx8nDEvLQ7WC0KnMm2oO9atH4-bXVhGLze5ppRKwQsq17y2Vpms2BUx0nLiwUaapQ",
+                "address": "160/27 Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 812,
+                "openingHours": "07:00–22:00",
+                "openNow": true,
+                "phone": "+84 866 110 624",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4284445071907901712",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=P%E1%BB%9C%20CAF%C3%89%20-%20B%C3%8CNH%20TH%E1%BA%A0NH%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://pocafe.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84866110624",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80970,106.70389",
+                "domain": "food",
+                "kind": "place",
+                "name": "Muỗng coffee - Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2b-iFme-6Zivv-dmuTUznydQZPPHu-hxkQ6m-wjluNKKbawaDhBVxa-tG6_BJnfNEQaZ0HqCARJ4DSJLGZtjqARpioFKRQUfCtp292aEam7dTVJVxlwxbTyr_pi0pAP3uvEVHbRZJM_DX",
+                "address": "Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 122,
+                "openingHours": "07:00–22:00",
+                "openNow": true,
+                "phone": "+84 774 572 828",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7745725949496660404",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mu%E1%BB%97ng%20coffee%20-%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84774572828",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.81135,106.71405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Welike Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNrmhjlyJQqhsSVxkyuAMOLhmYEHT8Mu_G2JL7oykKZj-EgjAzgimykrLj_Ktei5DuzrRKTT6s2G4x5A881Z4wuQeVMbBCP-uPtWoUe54R2hVXd7nYQF-gk0qmYDkwZGxyYbXtOfvJVPX1t",
+                "address": "643 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 26,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 339 464 871",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12766041338488201350",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Welike%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84339464871",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79312,106.71171",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOWEKaRcDD_4W2kqWmlN9il9Zl_ZYQ0wNEgVf04b77cRI7WET8GtUQg5NKopmt8Gvqm6HAJEJoXjj00j7Pt9KGozKU5XJKGf9KOWusZZB-7Cr5zAhCba6AGgLyWXd-tyyvwOUZh_g",
+                "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2459,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 707 014 095",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê",
+                  "Quán cà phê nghệ thuật",
+                  "Cửa hàng cà phê",
+                  "Không gian làm việc chia sẻ",
+                  "Quán cà phê internet"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11556591421643182041",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Bamos%20Coffee%20B%C3%ACnh%20Th%E1%BA%A1nh%20-%20C%C3%A0%20ph%C3%AA%2024h%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84707014095",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79940,106.70709",
+                "domain": "food",
+                "kind": "place",
+                "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmjGQTf59yMXt6urcfMQteOBNxpINY69dEYS-6tuu8z3hZ6ltvHqT34Tq0Idg1x55Eprx4UVDXyFoxxLmumrjmSTJUZK3yL8pTiGI7o85SsWniSyM0LH8RwitEIvW7lOUq9OhO2XKKrxw",
+                "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 158,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 779 184 722",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6053567326639024822",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FOCUS%20SPACE%20-%20Cafe%20h%E1%BB%8Dc%20t%E1%BA%ADp%20%26%20l%C3%A0m%20vi%E1%BB%87c%20(CN%20B%C3%ACnh%20Th%E1%BA%A1nh)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84779184722",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.81061,106.69488",
+                "domain": "food",
+                "kind": "place",
+                "name": "We.cafèteria",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO08mSqUqv7qQxzhDKY4CgiVI4Xjfbeo3op4hVSKrrucNDqy8Y2tChQ5Wm0JKvO6t_b72QtrfA82895m4zwceQ_gKeo7kBAGPD8779BcVhpw_tK-yBqhgCQHEuxdcTMar0rxmkZhGJ54FUn",
+                "address": "99/2 Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 400,
+                "openingHours": "08:00–22:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:00–22:00",
+                  "Thứ Bảy": "08:00–22:00",
+                  "Chủ Nhật": "08:00–22:00",
+                  "Thứ Hai": "08:00–22:00",
+                  "Thứ Ba": "08:00–22:00",
+                  "Thứ Tư": "08:00–22:00",
+                  "Thứ Năm": "08:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15150342089509223309",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=We.caf%C3%A8teria%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/wecafeteria",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80657,106.71146",
+                "domain": "food",
+                "kind": "place",
+                "name": "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNb2EYkpwDBZXruy8MsRdiaFFsk_pOuXJ80ThTwWpVuwXij2sdkU7vspyZnJbiMWVWNaLhDDmM_eKD71vmD_L3lMqceyF8YA4n94wz-xwodgZ_z6ZfV9wU3M0zf8iBoxoW77wvEFXzOo-VR",
+                "address": "443 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 50,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 768 651 656",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11115435259246121519",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=JACK%E2%80%99S%20COFFEE%20%7C%20Coffee%20Rooftop%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84768651656",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80279,106.71476",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cà Kê Café",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmObVa5mLf32l6cMgcgjkvMi5T4k7TkuZtH8fL_FozAaireXuqkF3uQ8O4hq2rknchqBhK5ARiRMuIqaKXZJIULYEVZSflxP2fuO6_4l2b4SHz_ww6RE4UD9MSaU-qDftIgqPaIv",
+                "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 614,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15434151642040852027",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%A0%20K%C3%AA%20Caf%C3%A9%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20l%C3%A0m%20vi%E1%BB%87c%20B%C3%ACnh%20Th%E1%BA%A1nh%20B%C3%ACnh%20Th%E1%BA%A1nh%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "PỜ CAFÉ - BÌNH THẠNH",
+              "address": "160/27 Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 812,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "812 reviews"
+              ]
+            },
+            {
+              "name": "Muỗng coffee - Bình Thạnh",
+              "address": "Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 122,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Welike Bình Thạnh",
+              "address": "643 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 26,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+              "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2459,
+              "price": null,
+              "categories": [
+                "Quán cà phê",
+                "Quán cà phê nghệ thuật",
+                "Cửa hàng cà phê",
+                "Không gian làm việc chia sẻ",
+                "Quán cà phê internet"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+              "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 158,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "We.cafèteria",
+              "address": "99/2 Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 400,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+              "address": "443 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 50,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cà Kê Café",
+              "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 614,
+              "price": null,
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.80866,106.70395",
+                "domain": "food",
+                "kind": "place",
+                "name": "PỜ CAFÉ - BÌNH THẠNH",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPSrCLvpp3gIUA0AannFpb-s2W8Md1OTbebFRMXz2hdKLZZWoi-mWp3M14S_zCPZcr-OGwy2vWuFlLx8nDEvLQ7WC0KnMm2oO9atH4-bXVhGLze5ppRKwQsq17y2Vpms2BUx0nLiwUaapQ",
+                "address": "160/27 Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 812,
+                "openingHours": "07:00–22:00",
+                "openNow": true,
+                "phone": "+84 866 110 624",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 0,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "812 reviews",
+                    "params": {
+                      "count": 812
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "rating",
+                  "evidence": "rated 4.9",
+                  "params": {
+                    "value": 4.9
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4284445071907901712",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=P%E1%BB%9C%20CAF%C3%89%20-%20B%C3%8CNH%20TH%E1%BA%A0NH%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://pocafe.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84866110624",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80970,106.70389",
+                "domain": "food",
+                "kind": "place",
+                "name": "Muỗng coffee - Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2b-iFme-6Zivv-dmuTUznydQZPPHu-hxkQ6m-wjluNKKbawaDhBVxa-tG6_BJnfNEQaZ0HqCARJ4DSJLGZtjqARpioFKRQUfCtp292aEam7dTVJVxlwxbTyr_pi0pAP3uvEVHbRZJM_DX",
+                "address": "Bùi Đình Tuý, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 122,
+                "openingHours": "07:00–22:00",
+                "openNow": true,
+                "phone": "+84 774 572 828",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7745725949496660404",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mu%E1%BB%97ng%20coffee%20-%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84774572828",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.81135,106.71405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Welike Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNrmhjlyJQqhsSVxkyuAMOLhmYEHT8Mu_G2JL7oykKZj-EgjAzgimykrLj_Ktei5DuzrRKTT6s2G4x5A881Z4wuQeVMbBCP-uPtWoUe54R2hVXd7nYQF-gk0qmYDkwZGxyYbXtOfvJVPX1t",
+                "address": "643 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 26,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 339 464 871",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12766041338488201350",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Welike%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84339464871",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79312,106.71171",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bamos Coffee Bình Thạnh - Cà phê 24h",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOWEKaRcDD_4W2kqWmlN9il9Zl_ZYQ0wNEgVf04b77cRI7WET8GtUQg5NKopmt8Gvqm6HAJEJoXjj00j7Pt9KGozKU5XJKGf9KOWusZZB-7Cr5zAhCba6AGgLyWXd-tyyvwOUZh_g",
+                "address": "69 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2459,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 707 014 095",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê",
+                  "Quán cà phê nghệ thuật",
+                  "Cửa hàng cà phê",
+                  "Không gian làm việc chia sẻ",
+                  "Quán cà phê internet"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11556591421643182041",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Bamos%20Coffee%20B%C3%ACnh%20Th%E1%BA%A1nh%20-%20C%C3%A0%20ph%C3%AA%2024h%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84707014095",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79940,106.70709",
+                "domain": "food",
+                "kind": "place",
+                "name": "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmjGQTf59yMXt6urcfMQteOBNxpINY69dEYS-6tuu8z3hZ6ltvHqT34Tq0Idg1x55Eprx4UVDXyFoxxLmumrjmSTJUZK3yL8pTiGI7o85SsWniSyM0LH8RwitEIvW7lOUq9OhO2XKKrxw",
+                "address": "298/1 Điện Biên Phủ, Gia Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 158,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 779 184 722",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@focus.space4/video/7688217392496774420",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6053567326639024822",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84779184722",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=FOCUS%20SPACE%20-%20Cafe%20h%E1%BB%8Dc%20t%E1%BA%ADp%20%26%20l%C3%A0m%20vi%E1%BB%87c%20(CN%20B%C3%ACnh%20Th%E1%BA%A1nh)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.81061,106.69488",
+                "domain": "food",
+                "kind": "place",
+                "name": "We.cafèteria",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO08mSqUqv7qQxzhDKY4CgiVI4Xjfbeo3op4hVSKrrucNDqy8Y2tChQ5Wm0JKvO6t_b72QtrfA82895m4zwceQ_gKeo7kBAGPD8779BcVhpw_tK-yBqhgCQHEuxdcTMar0rxmkZhGJ54FUn",
+                "address": "99/2 Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 400,
+                "openingHours": "08:00–22:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Sáu": "08:00–22:00",
+                  "Thứ Bảy": "08:00–22:00",
+                  "Chủ Nhật": "08:00–22:00",
+                  "Thứ Hai": "08:00–22:00",
+                  "Thứ Ba": "08:00–22:00",
+                  "Thứ Tư": "08:00–22:00",
+                  "Thứ Năm": "08:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15150342089509223309",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=We.caf%C3%A8teria%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/wecafeteria",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80657,106.71146",
+                "domain": "food",
+                "kind": "place",
+                "name": "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNb2EYkpwDBZXruy8MsRdiaFFsk_pOuXJ80ThTwWpVuwXij2sdkU7vspyZnJbiMWVWNaLhDDmM_eKD71vmD_L3lMqceyF8YA4n94wz-xwodgZ_z6ZfV9wU3M0zf8iBoxoW77wvEFXzOo-VR",
+                "address": "443 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 50,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 768 651 656",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11115435259246121519",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=JACK%E2%80%99S%20COFFEE%20%7C%20Coffee%20Rooftop%20B%C3%ACnh%20Th%E1%BA%A1nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84768651656",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80279,106.71476",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cà Kê Café",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmObVa5mLf32l6cMgcgjkvMi5T4k7TkuZtH8fL_FozAaireXuqkF3uQ8O4hq2rknchqBhK5ARiRMuIqaKXZJIULYEVZSflxP2fuO6_4l2b4SHz_ww6RE4UD9MSaU-qDftIgqPaIv",
+                "address": "29/12 Nguyễn Gia Trí, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 614,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15434151642040852027",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%A0%20K%C3%AA%20Caf%C3%A9%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20l%C3%A0m%20vi%E1%BB%87c%20B%C3%ACnh%20Th%E1%BA%A1nh%20B%C3%ACnh%20Th%E1%BA%A1nh%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.80866,106.70395",
+              "place:osm:10.80970,106.70389",
+              "place:osm:10.79940,106.70709"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.80866,106.70395",
+            "place:osm:10.80970,106.70389",
+            "place:osm:10.79940,106.70709"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "PỜ CAFÉ - BÌNH THẠNH",
+          "Muỗng coffee - Bình Thạnh",
+          "Welike Bình Thạnh",
+          "Bamos Coffee Bình Thạnh - Cà phê 24h",
+          "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+          "We.cafèteria",
+          "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+          "Cà Kê Café"
+        ],
+        [
+          "PỜ CAFÉ - BÌNH THẠNH",
+          "Muỗng coffee - Bình Thạnh",
+          "Welike Bình Thạnh",
+          "Bamos Coffee Bình Thạnh - Cà phê 24h",
+          "FOCUS SPACE - Cafe học tập & làm việc (CN Bình Thạnh)",
+          "We.cafèteria",
+          "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+          "Cà Kê Café"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Bình Thạnh nhé. Vì bạn hay ở Quận 7 nên mình sẽ ưu tiên những quán gần vị trí hiện tại của bạn.\n\nMình chọn **PỜ CAFÉ - BÌNH THẠNH** cho bạn 👍 Quán này có **4.8⭐ (812 đánh giá Google Maps)** — rất được tin tưởng. Mở từ 7h sáng đến 22h, không gian yên tĩnh phù hợp để làm việc, có WiFi và đồ uống chất lượng. Địa chỉ: 160/27 Bùi Đình Tuý, Bình Thạnh.\n\nNếu muốn thêm lựa chọn, **Muỗng coffee** cạnh đó cũng rất tốt (4.9⭐, 122 đánh giá) — có vibe yên tĩnh hơn vì ít khách hơn. Hoặc **FOCUS SPACE** (4.8⭐) chuyên dành cho học tập & làm việc, mở đến 23h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4284445071907901712\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muỗng coffee Bình Thạnh|FOCUS SPACE làm việc|Cà phê khác Bình Thạnh[/FOLLOWUPS]",
+      "visible": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Bình Thạnh nhé. Vì bạn hay ở Quận 7 nên mình sẽ ưu tiên những quán gần vị trí hiện tại của bạn.\n\nMình chọn **PỜ CAFÉ - BÌNH THẠNH** cho bạn 👍 Quán này có **4.8⭐ (812 đánh giá Google Maps)** — rất được tin tưởng. Mở từ 7h sáng đến 22h, không gian yên tĩnh phù hợp để làm việc, có WiFi và đồ uống chất lượng. Địa chỉ: 160/27 Bùi Đình Tuý, Bình Thạnh.\n\nNếu muốn thêm lựa chọn, **Muỗng coffee** cạnh đó cũng rất tốt (4.9⭐, 122 đánh giá) — có vibe yên tĩnh hơn vì ít khách hơn. Hoặc **FOCUS SPACE** (4.8⭐) chuyên dành cho học tập & làm việc, mở đến 23h.",
+      "preGuard": "Mình tìm giúp bạn những quán cà phê yên tĩnh ở Bình Thạnh nhé. Vì bạn hay ở Quận 7 nên mình sẽ ưu tiên những quán gần vị trí hiện tại của bạn.Mình chọn **PỜ CAFÉ - BÌNH THẠNH** cho bạn 👍 Quán này có **4.8⭐ (812 đánh giá Google Maps)** — rất được tin tưởng. Mở từ 7h sáng đến 22h, không gian yên tĩnh phù hợp để làm việc, có WiFi và đồ uống chất lượng. Địa chỉ: 160/27 Bùi Đình Tuý, Bình Thạnh.\n\nNếu muốn thêm lựa chọn, **Muỗng coffee** cạnh đó cũng rất tốt (4.9⭐, 122 đánh giá) — có vibe yên tĩnh hơn vì ít khách hơn. Hoặc **FOCUS SPACE** (4.8⭐) chuyên dành cho học tập & làm việc, mở đến 23h.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Tìm trên GrabFood - PỜ CAFÉ\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=P%E1%BB%9C+C%C3%81F%C3%89+B%C3%ACnh+Th%E1%BA%A1nh\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4284445071907901712\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muỗng coffee Bình Thạnh|FOCUS SPACE làm việc|Cà phê khác Bình Thạnh[/FOLLOWUPS]"
+    }
+  ]
+}

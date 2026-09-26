@@ -11,19 +11,22 @@ import { Share2 } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { absoluteUrl } from '@/lib/share/openGraph'
+import { reviewShareTitle } from '@/lib/share/reviewShareTitle'
 import ShareMenu from '@/components/share/ShareMenu'
+import { recordReviewShare } from '@/lib/share/recordReviewShare'
 
 export default function ReviewShareButton({
   reviewId,
   placeName,
+  body,
   variant,
   className,
   style,
 }: {
   reviewId: string
   placeName: string
-  /** Present for call-site compatibility; the menu shares a URL, not body text. */
-  body?: string
+  /** The caption — the share title when the review has no real place (the menu still shares the URL, not this text). */
+  body?: string | null
   /** 'bar' renders the RAction-style vertical button used in the action bar */
   variant?: 'bar'
   className?: string
@@ -36,7 +39,18 @@ export default function ReviewShareButton({
   // deployment would hand out a non-canonical host.
   const url = absoluteUrl(`/reviews/${reviewId}`)
 
-  const menu = <ShareMenu url={url} title={placeName} open={open} onClose={() => setOpen(false)} />
+  // `placeName` may be the composer's share-only sentinel ("Chia sẻ"); the title
+  // helper never lets that reach the preview or the outgoing message.
+  const menu = (
+    <ShareMenu
+      url={url}
+      title={reviewShareTitle({ place_name: placeName, body })}
+      open={open}
+      onClose={() => setOpen(false)}
+      // A completed share becomes a row of the self profile's "Đã share" history.
+      onShared={(channel) => { void recordReviewShare(reviewId, channel) }}
+    />
+  )
 
   if (variant === 'bar') {
     return (

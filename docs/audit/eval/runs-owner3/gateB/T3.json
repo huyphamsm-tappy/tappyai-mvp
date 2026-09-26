@@ -1,0 +1,35 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 3871,
+  "evidenceId": "9a42d111-d154-4906-94a4-73d1365148ab",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể từ lần tìm kiếm trước (như có ăn sáng hay không, tiện nghi gì). Để biết rõ khách sạn nào bao gồm ăn sáng, bạn cần vào [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang&checkin=2026-09-26&checkout=2026-09-27) hoặc Agoda để xem chi tiết từng phòng — phần mô tả sẽ ghi rõ \"Bao gồm ăn sáng\" hay không.\n\nBạn muốn mình tìm lại khách sạn gần biển Đà Nẵng dưới 1 triệu với bộ lọc ăn sáng không? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm khách sạn gần biển Đà Nẵng cho cuối tuần tới (26-27/9), 1 đêm dưới 1 triệu VND. Để gợi ý chính xác, mình cần biết:\n\n**M Hotel Da Nang** — **4.8⭐ (2.824 đánh giá)** · 286 Võ Nguyên Giáp, Ngũ Hành Sơn.[Booking.com](https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27) để xem có nằm trong tầm 1 triệu VND không.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang&checkin=2026-09-26&checkout=2026-09-27\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn khác gần biển|Giá phòng dưới 1 triệu|Chỉ định ngày khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể từ lần tìm kiếm trước (như có ăn sáng hay không, tiện nghi gì). Để biết rõ khách sạn nào bao gồm ăn sáng, bạn cần vào [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da+Nang&checkin=2026-09-26&checkout=2026-09-27) hoặc Agoda để xem chi tiết từng phòng — phần mô tả sẽ ghi rõ \"Bao gồm ăn sáng\" hay không.\n\nBạn muốn mình tìm lại khách sạn gần biển Đà Nẵng dưới 1 triệu với bộ lọc ăn sáng không? 😊"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

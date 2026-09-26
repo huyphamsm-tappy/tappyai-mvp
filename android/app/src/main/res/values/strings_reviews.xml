@@ -37,11 +37,6 @@
     <!-- Badge on the author's own post when the gate did not publish it. Short by necessity: it
          sits on a grid tile. Tapping the post shows the server's full explanation. -->
     <string name="reviews_moderation_not_public">Not public</string>
-    <string name="reviews_composer_using_sound">Using: %1$s</string>
-    <string name="reviews_composer_remove_sound">Remove sound</string>
-    <string name="reviews_composer_add_music">Add music</string>
-    <string name="reviews_notification_banner_title">Tappy\'s picks for today</string>
-    <string name="reviews_notification_banner_subtext">3 spots your friends love are open near you</string>
     <string name="reviews_notification_section_just_now">JUST NOW</string>
     <string name="reviews_notification_section_today">TODAY</string>
     <string name="reviews_notification_section_this_week">THIS WEEK</string>
@@ -67,7 +62,6 @@
     <string name="reviews_notifications_error_title">Couldn\'t load notifications</string>
     <string name="reviews_notification_empty_title">No notifications yet</string>
     <string name="reviews_notification_empty_message">Notifications will appear when someone interacts with your posts.</string>
-    <string name="reviews_notification_others">and %1$d more</string>
 
     <!-- Overflow menu -->
     <string name="reviews_overflow_more_options">More options</string>
@@ -108,6 +102,7 @@
     <string name="reviews_share_copied_label">Copied</string>
     <string name="reviews_share_copy_label">Copy</string>
     <string name="reviews_share_fallback_text">TappyAI Review</string>
+    <string name="reviews_share_preparing">Preparing to share…</string>
 
     <!-- Feed -->
     <string name="reviews_feed_title">Reviews</string>
@@ -139,4 +134,45 @@
     <string name="reviews_post_error_too_long">Content is too long. Please shorten it.</string>
     <string name="reviews_post_error_rate_limited">You\'ve posted too many times today. Try again tomorrow!</string>
     <string name="reviews_post_error_generic">Couldn\'t post. Please try again.</string>
+
+    <!-- Explore → My Profile (V3 self profile, mockup 05_17_48) -->
+    <string name="reviews_self_profile_open">My profile</string>
+    <string name="reviews_self_profile_title">My profile</string>
+    <string name="reviews_self_stat_following">Following</string>
+    <string name="reviews_self_stat_followers">Followers</string>
+    <string name="reviews_self_premium">Premium</string>
+    <string name="reviews_self_edit_profile">Edit profile</string>
+    <string name="reviews_self_share_link">Share profile link</string>
+    <string name="reviews_self_new_post">New post</string>
+    <string name="reviews_self_tab_posts">Posts</string>
+    <string name="reviews_self_tab_saved">Saved</string>
+    <string name="reviews_self_saved_empty_title">No saved posts yet</string>
+    <string name="reviews_self_saved_empty_message">Posts you save from Explore will show up here, only for you.</string>
+    <string name="reviews_self_empty_title">No posts yet</string>
+    <string name="reviews_self_empty_message">Clips you post will show up here.</string>
+    <string name="reviews_self_share_text">My TappyAI profile: %1$s</string>
+    <!-- Explore → My Profile → Edit Profile (V3) -->
+    <string name="reviews_self_edit_title">Edit profile</string>
+    <string name="reviews_self_profile_sign_in_title">Sign in to see your profile</string>
+    <string name="reviews_self_profile_sign_in_body">Your posts, saved items and profile settings live on your account. Sign in to use them.</string>
+    <string name="reviews_self_edit_save">Save</string>
+    <string name="reviews_self_edit_saved">Profile saved</string>
+    <string name="reviews_self_edit_change_avatar">Change profile photo</string>
+    <string name="reviews_self_edit_name_label">Display name</string>
+    <string name="reviews_self_edit_name_placeholder">Your name</string>
+    <string name="reviews_self_edit_name_required">Display name can\'t be empty.</string>
+    <string name="reviews_self_edit_bio_label">Bio</string>
+    <string name="reviews_self_edit_bio_placeholder">Tell people about yourself</string>
+    <string name="reviews_self_edit_scope_note">Your @handle comes from your display name. Website and location aren\'t available yet.</string>
+    <!-- Explore immersive feed (reference design "TappyAI — Immersive AI Discovery", 2026-09-13) -->
+    <string name="reviews_feed_tagline">Discover something better</string>
+    <string name="reviews_ask_tappy">Ask Tappy</string>
+    <string name="reviews_ask_tappy_prefill">Tell me more about %1$s</string>
+    <string name="reviews_action_more">More</string>
+    <string name="reviews_action_unsave">Unsave</string>
+    <string name="reviews_creator_open_profile">Open the profile of %1$s</string>
+    <string name="reviews_likes_title">Likes</string>
+    <string name="reviews_likes_empty">No likes on this post yet</string>
+    <string name="reviews_likes_error">Couldn\'t load the like list</string>
+    <string name="reviews_likes_more">Show more</string>
 </resources>

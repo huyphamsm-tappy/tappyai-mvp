@@ -1,0 +1,24 @@
+{
+ "label": "after-fk-uatpro",
+ "email": "<redacted — see label>",
+ "at": "2026-09-25T05:37:33.206Z",
+ "columnsScanned": 497,
+ "before": {
+  "public.admin_roles.granted_by": 1,
+  "public.conversations.user_id": 11,
+  "public.decision_evidence.owner_id": 3,
+  "public.group_members.user_id": 1,
+  "public.plan_shares.owner_id": 4,
+  "public.profiles.id": 1,
+  "public.reviews.user_id": 1,
+  "public.shared_results.owner_id": 1,
+  "public.subscriptions.user_id": 1,
+  "public.user_demographics.user_id": 1,
+  "public.user_events.user_id": 111,
+  "public.user_memory.user_id": 1
+ },
+ "deleteError": null,
+ "after": {},
+ "survivors": {},
+ "rolledBack": true
+}

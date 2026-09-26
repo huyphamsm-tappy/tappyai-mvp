@@ -74,6 +74,12 @@ export interface PlaybackSession {
   isAutoplayEligible(): boolean
   isAudioUnlocked(): boolean
   isDocumentVisible(): boolean
+  /**
+   * True once `dispose()` has run. A disposed session ignores every input, so a
+   * holder that outlives one has to be able to tell — see the StrictMode note in
+   * `VideoPlayer`.
+   */
+  isDisposed(): boolean
 
   /** The feed's single playback authority. */
   setActive(active: boolean): void

@@ -16,10 +16,6 @@ import com.tappyai.app.fortune.zodiac.ZodiacScreen
 import com.tappyai.app.games.GamesRoute
 import com.tappyai.app.games.GamesScreen
 import com.tappyai.app.groupdining.GroupDiningScreen
-import com.tappyai.app.music.MusicLibraryScreen
-import com.tappyai.app.music.MusicRoute
-import com.tappyai.app.profile.CopyrightPolicyScreen
-import com.tappyai.app.music.SoundDetailScreen
 import com.tappyai.app.recommendations.RecommendationsRoute
 import com.tappyai.app.recommendations.RecommendationsScreen
 import com.tappyai.app.scan.ScanRoute
@@ -34,7 +30,7 @@ import com.tappyai.app.vietwriter.VietWriterRoute
 import com.tappyai.app.vietwriter.VietWriterScreen
 
 /**
- * The Home tab's content. Hosts its own nested NavHost (Landing → Music → Fortune sub-screens)
+ * The Home tab's content. Hosts its own nested NavHost (Landing → Fortune sub-screens)
  * so each flow drills in with its own back stack without touching the app shell or other tabs.
  * [onNavigateToTab] is forwarded from the shell so the launchpad's quick actions can still
  * switch top-level tabs. [onOpenChatWithPrefill] likewise reaches back to the shell to open the
@@ -49,6 +45,8 @@ fun HomeTabHost(
     onOpenConversation: (String) -> Unit,
 ) {
     val navController = rememberNavController()
+    ReportNestedScreen(HomeTab.Home, navController)
+
     NavHost(navController = navController, startDestination = HomeTabRoute.Landing) {
         composable<HomeTabRoute.Landing> {
             HomeScreen(
@@ -56,11 +54,7 @@ fun HomeTabHost(
                 onOpenChatWithCategory = onOpenChatWithCategory,
                 onOpenChatWithPrefill = onOpenChatWithPrefill,
                 onOpenConversation = onOpenConversation,
-                onOpenMusic = { navController.navigate(MusicRoute.Library) },
                 onOpenRecommendations = { navController.navigate(RecommendationsRoute.Main) },
-                onOpenTarot = { navController.navigate(FortuneRoute.Tarot) },
-                onOpenTuVi = { navController.navigate(FortuneRoute.TuVi) },
-                onOpenZodiac = { navController.navigate(FortuneRoute.Zodiac) },
                 onOpenTranslate = { navController.navigate(TranslateRoute.Main) },
                 onOpenCurrency = { navController.navigate(CurrencyRoute.Main) },
                 onOpenDeals = { navController.navigate(DealsRoute.Main) },
@@ -70,6 +64,26 @@ fun HomeTabHost(
                 onOpenVietWriter = { navController.navigate(VietWriterRoute.Main) },
                 onOpenTappyTogether = { navController.navigate(HomeTabRoute.GroupDining) },
                 onOpenSplitBill = { navController.navigate(SplitBillRoute.Main) },
+                onOpenSmartTools = { navController.navigate(HomeTabRoute.SmartTools) },
+            )
+        }
+        // The catalogue page: the SAME destinations the landing's callbacks above navigate to,
+        // keyed by the registry id — one route table, read from two surfaces.
+        composable<HomeTabRoute.SmartTools> {
+            SmartToolsScreen(
+                onBack = { navController.popBackStack() },
+                onOpen = { id ->
+                    when (id) {
+                        SmartToolId.Scan -> navController.navigate(ScanRoute.Main)
+                        SmartToolId.Translate -> navController.navigate(TranslateRoute.Main)
+                        SmartToolId.Currency -> navController.navigate(CurrencyRoute.Main)
+                        SmartToolId.Split -> navController.navigate(SplitBillRoute.Main)
+                        SmartToolId.Safety -> navController.navigate(ScamShieldRoute.Main)
+                        SmartToolId.Together -> navController.navigate(HomeTabRoute.GroupDining)
+                        SmartToolId.Fortune -> navController.navigate(FortuneRoute.Hub)
+                        SmartToolId.Captions -> navController.navigate(VietWriterRoute.Main)
+                    }
+                },
             )
         }
         composable<HomeTabRoute.GroupDining> {
@@ -104,21 +118,6 @@ fun HomeTabHost(
         }
         composable<GamesRoute.Main> {
             GamesScreen(onBack = { navController.popBackStack() })
-        }
-        composable<MusicRoute.Library> {
-            MusicLibraryScreen(
-                onBack = { navController.popBackStack() },
-                onOpenSound = { trackId -> navController.navigate(MusicRoute.SoundDetail(trackId)) },
-            )
-        }
-        composable<MusicRoute.SoundDetail> {
-            SoundDetailScreen(
-                onBack = { navController.popBackStack() },
-                onOpenCopyrightPolicy = { navController.navigate(MusicRoute.CopyrightPolicy) },
-            )
-        }
-        composable<MusicRoute.CopyrightPolicy> {
-            CopyrightPolicyScreen(onBack = { navController.popBackStack() })
         }
         composable<FortuneRoute.Hub> {
             FortuneHubScreen(

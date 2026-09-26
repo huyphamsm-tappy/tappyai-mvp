@@ -1,4 +1,4 @@
-// Wave-3 dictionary module — Split Bill screen (src/app/split-bill/page.tsx).
+// Wave-3 dictionary module — Split Bill screen (src/app/(app)/split-bill/page.tsx).
 // Flat vi/en maps with keys namespaced under `splitBill.` so an object-spread
 // merge into the app dictionaries stays collision-free.
 
@@ -14,6 +14,7 @@ export const vi: Record<string, string> = {
   'splitBill.modeEqual': 'Chia đều',
   'splitBill.modeCustom': 'Chia theo món',
   'splitBill.perPersonLabel': 'Mỗi người trả',
+  'splitBill.bridgeSubject': 'chia bill {amount}đ cho {people} người',
   'splitBill.includesTip': '(Bao gồm {tip}% tip · Tổng: {total} đ)',
   'splitBill.billLabel': 'Hóa đơn',
   'splitBill.tipShortLabel': 'Tip',
@@ -24,6 +25,21 @@ export const vi: Record<string, string> = {
   'splitBill.totalAfterTip': 'Tổng (sau tip)',
   'splitBill.disclaimer': 'Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả.',
   'splitBill.personDefaultName': 'Người {n}',
+  // 2026-09-12 V3 reskin. The chips name the code's own limits: people 2–20 (syncPeopleCount),
+  // a free-form tip percentage, and the two modes this page really has.
+  'splitBill.heroEyebrow': 'Tính tiền tip',
+  'splitBill.heroSubtitle': 'Chia sẻ dễ dàng, thanh toán công bằng',
+  'splitBill.chipPeople': '{min}–{max} người',
+  'splitBill.chipTip': 'Tip tùy chỉnh',
+  'splitBill.chipModes': 'Chia đều hoặc theo món',
+  'splitBill.modeLabel': 'Chia tiền',
+  'splitBill.resultTitle': 'Số tiền mỗi người phải trả',
+  'splitBill.decrease': 'Giảm số người',
+  'splitBill.increase': 'Tăng số người',
+  'splitBill.tipCustomLabel': 'Tip tự nhập (%)',
+  'splitBill.removePerson': 'Xóa {name}',
+  'splitBill.addPerson': 'Thêm người',
+  'splitBill.personName': 'Tên',
 }
 
 export const en: Record<string, string> = {
@@ -38,6 +54,7 @@ export const en: Record<string, string> = {
   'splitBill.modeEqual': 'Split evenly',
   'splitBill.modeCustom': 'Split by item',
   'splitBill.perPersonLabel': 'Each person pays',
+  'splitBill.bridgeSubject': 'splitting {amount}đ between {people} people',
   'splitBill.includesTip': '(Includes {tip}% tip · Total: {total} đ)',
   'splitBill.billLabel': 'Bill',
   'splitBill.tipShortLabel': 'Tip',
@@ -48,4 +65,17 @@ export const en: Record<string, string> = {
   'splitBill.totalAfterTip': 'Total (after tip)',
   'splitBill.disclaimer': 'Amounts are estimates — round them to make paying easier.',
   'splitBill.personDefaultName': 'Person {n}',
+  'splitBill.heroEyebrow': 'Tip calculator',
+  'splitBill.heroSubtitle': 'Share easily, pay fairly',
+  'splitBill.chipPeople': '{min}–{max} people',
+  'splitBill.chipTip': 'Custom tip',
+  'splitBill.chipModes': 'Split evenly or by item',
+  'splitBill.modeLabel': 'Split',
+  'splitBill.resultTitle': 'Each person pays',
+  'splitBill.decrease': 'Fewer people',
+  'splitBill.increase': 'More people',
+  'splitBill.tipCustomLabel': 'Custom tip (%)',
+  'splitBill.removePerson': 'Remove {name}',
+  'splitBill.addPerson': 'Add a person',
+  'splitBill.personName': 'Name',
 }

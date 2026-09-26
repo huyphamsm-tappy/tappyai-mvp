@@ -1,0 +1,26 @@
+{
+  "$comment": "F-050 (2026-09-22): the place card's copy must read the same on web and Android. Web (src/lib/recommendation/placeCardCopy.test.ts) and Android (PlaceCardCopyContractTest.kt) both assert every case here; web's reasonText/formatPriceBandText are the reference, Android's PlaceCardCopy mirrors them. Reasons: {attribute, evidence, params} → expected per locale. Bands: provider text → expected per locale (null = shown verbatim is NOT allowed; a verbatim expectation is spelled out).",
+  "reasons": [
+    { "name": "rating from the pick (T3 card)", "reason": { "attribute": "rating", "evidence": "rated 4.9", "params": { "value": 4.9 } }, "vi": "đánh giá 4.9", "en": "rated 4.9" },
+    { "name": "review count with thousands grouping", "reason": { "attribute": "reviewCount", "evidence": "1103 reviews", "params": { "count": 1103 } }, "vi": "1.103 lượt đánh giá", "en": "1,103 reviews" },
+    { "name": "review count under a thousand", "reason": { "attribute": "reviewCount", "evidence": "279 reviews", "params": { "count": 279 } }, "vi": "279 lượt đánh giá", "en": "279 reviews" },
+    { "name": "distance", "reason": { "attribute": "distance", "evidence": "1.7km away", "params": { "km": 1.7 } }, "vi": "cách 1.7 km", "en": "1.7 km away" },
+    { "name": "price under a million", "reason": { "attribute": "price", "evidence": "150000 VND", "params": { "priceVnd": 150000 } }, "vi": "giá 150.000₫", "en": "priced 150,000₫" },
+    { "name": "price in millions", "reason": { "attribute": "price", "evidence": "15900000 VND", "params": { "priceVnd": 15900000 } }, "vi": "giá 15,9 triệu", "en": "priced 15.9M" },
+    { "name": "hotel stars", "reason": { "attribute": "stars", "evidence": "4-star", "params": { "stars": 4 } }, "vi": "4 sao", "en": "4-star" },
+    { "name": "eta", "reason": { "attribute": "eta", "evidence": "12 min", "params": { "minutes": 12 } }, "vi": "đón sau 12 phút", "en": "12 min to pickup" },
+    { "name": "direct page", "reason": { "attribute": "directPage", "evidence": "direct page" }, "vi": "trang đặt trực tiếp", "en": "direct booking page" },
+    { "name": "no params → evidence verbatim (a marker persisted before params existed)", "reason": { "attribute": "rating", "evidence": "rated 4.7" }, "vi": "rated 4.7", "en": "rated 4.7" },
+    { "name": "amenity → evidence verbatim (no dictionary on either side)", "reason": { "attribute": "wifi", "evidence": "có wifi", "params": { "attribute": "wifi" } }, "vi": "có wifi", "en": "có wifi" },
+    { "name": "unknown attribute → evidence verbatim", "reason": { "attribute": "cuisine", "evidence": "serves bún bò", "params": { "cuisine": "bún bò" } }, "vi": "serves bún bò", "en": "serves bún bò" }
+  ],
+  "bands": [
+    { "name": "Google's open lower bound", "text": "1-100.000 ₫", "vi": "dưới 100.000 ₫", "en": "under 100,000 ₫" },
+    { "name": "closed band in thousands (N)", "text": "100-200 N ₫", "vi": "100.000–200.000 ₫", "en": "100,000–200,000 ₫" },
+    { "name": "closed band spelled out", "text": "200.000-400.000 ₫", "vi": "200.000–400.000 ₫", "en": "200,000–400,000 ₫" },
+    { "name": "band crossing a million", "text": "200.000-1.500.000 ₫", "vi": "200.000–1,5 triệu ₫", "en": "200,000–1.5M ₫" },
+    { "name": "open above (Tr)", "text": "Trên 1 Tr ₫", "vi": "trên 1 triệu ₫", "en": "over 1M ₫" },
+    { "name": "open below (Dưới)", "text": "Dưới 50 N ₫", "vi": "dưới 50.000 ₫", "en": "under 50,000 ₫" },
+    { "name": "unknown shape stays verbatim", "text": "$$", "vi": "$$", "en": "$$" }
+  ]
+}

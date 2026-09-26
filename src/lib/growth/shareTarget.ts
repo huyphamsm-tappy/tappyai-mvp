@@ -1,0 +1,56 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// Web Share Target — G1-G. Pure helpers; the page is client-only.
+//
+// When the installed PWA is chosen in another app's share sheet, the browser
+// opens `/share-target?title=&text=&url=` (GET, per manifest `share_target`).
+// Nothing is processed server-side: the page reads the params, builds the
+// question, records `web_share_target` attribution and hands off to /chat —
+// the same chat, the same quota. No new backend, no upload, no storage.
+//
+// Files (POST + service worker) are deliberately NOT supported: the app has
+// no PWA service worker beyond push, and adding one for image shares would be
+// a second PWA architecture for a marginal surface.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export const SHARE_TARGET_PATH = '/share-target'
+const MAX_PROMPT = 1000
+
+export interface ShareTargetParams { title?: string | null; text?: string | null; url?: string | null }
+
+/** Some apps put the URL in `text`; recover it so the prompt reads naturally. */
+function firstUrl(s: string): string | null {
+  const m = s.match(/https?:\/\/[^\s]+/i)
+  return m ? m[0] : null
+}
+
+/**
+ * The question Tappy is asked about shared content. Pure.
+ *
+ * A URL becomes "what is this / is it worth it" in Vietnamese; text becomes the
+ * text itself. Returns null when there is nothing usable, so the page can fall
+ * back to the plain chat rather than sending an empty prompt.
+ */
+export function buildShareTargetPrompt(p: ShareTargetParams): string | null {
+  const title = (p.title ?? '').trim()
+  const text = (p.text ?? '').trim()
+  const url = (p.url ?? '').trim() || (text ? firstUrl(text) : null) || (title ? firstUrl(title) : null)
+  let prompt: string
+  if (url && /^https?:\/\//i.test(url)) {
+    const label = title && !firstUrl(title) ? title : text && text !== url && !firstUrl(text) ? text : ''
+    prompt = label ? `Cho mình biết về: ${label}\n${url}` : `Cho mình biết về link này: ${url}`
+  } else if (text) {
+    prompt = title && title !== text ? `${title}\n${text}` : text
+  } else if (title) {
+    prompt = title
+  } else {
+    return null
+  }
+  prompt = prompt.replace(/[\x00-\x08\x0b-\x1f]/g, ' ').trim()
+  return prompt.length > MAX_PROMPT ? `${prompt.slice(0, MAX_PROMPT - 1)}…` : prompt
+}
+
+/** Where the share-target page sends the visitor. Pure. */
+export function shareTargetDestination(p: ShareTargetParams): string {
+  const prompt = buildShareTargetPrompt(p)
+  return prompt ? `/chat?q=${encodeURIComponent(prompt)}` : '/chat'
+}

@@ -3,12 +3,18 @@ import './globals.css'
 import { buildSiteMetadata } from '@/lib/share/openGraph'
 import { PostHogProvider } from '@/components/PostHogProvider'
 import { NotificationProvider } from '@/components/NotificationProvider'
-import LocationProvider from '@/components/LocationProvider'
 import TrackingProvider from '@/components/TrackingProvider'
-import LanguagePicker from '@/components/LanguagePicker'
 import HtmlLangSync from '@/components/HtmlLangSync'
 import AppLanguageFetch from '@/components/AppLanguageFetch'
 import VersionWatcher from '@/components/VersionWatcher'
+import dynamic from 'next/dynamic'
+// Dev-only: the import lives inside a NODE_ENV branch that constant-folds to false in a
+// production build, so the DevEnvBadge module is dead-code-eliminated from the prod bundle.
+const DevEnvBadge = process.env.NODE_ENV === 'development'
+  ? dynamic(() => import('@/components/DevEnvBadge'))
+  : () => null
+import GoogleAnalytics from '@/components/GoogleAnalytics'
+import NavHistoryTracker from '@/components/NavHistoryTracker'
 
 // og:image / og:url / og:site_name / twitter:* all come from buildSiteMetadata.
 // They were absent before, which is why a pasted TappyAI link rendered as bare
@@ -52,18 +58,71 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="vi" suppressHydrationWarning>
+      <head>
+        {/* Browser/aggregator discovery (G1 free acquisition): the OpenSearch description lets
+            Firefox/Edge/Safari register "ask Tappy" as an address-bar engine on first visit
+            (Chrome keeps it inactive until enabled); the Atom feed lists the newest public
+            results for feed readers and crawlers. Both are static text — see browserFeeds.ts. */}
+        <link rel="search" type="application/opensearchdescription+xml" title="TappyAI" href="/opensearch.xml" />
+        <link rel="alternate" type="application/atom+xml" title="TappyAI" href="/feed.xml" />
+      </head>
       <body className="antialiased">
+        {/* ── The stored theme, applied BEFORE first paint ──────────────────
+            This is not a second theme mechanism. It reads the same
+            `localStorage.theme` key that `useThemeMode` owns and sets the same
+            `dark` class on <html> that Tailwind's `darkMode: 'class'` keys off;
+            the hook stays the authority for every change after this point.
+
+            It exists because the hook can only run in an effect, i.e. after
+            hydration. Two consequences, both of which the owner hit:
+
+              - a dark session repaints light for the length of the bundle
+                download and then flips, which is the classic theme flash;
+              - if hydration never happens at all - a broken bundle, blocked or
+                slow JS - the stored choice is silently lost and the toggle is
+                inert, which reads as "dark mode is broken".
+
+            Blocking and inline on purpose: it must run before the first paint,
+            so it cannot be `next/script` (deferred) or an effect. It is the
+            first node in <body>, so it executes before any markup below it is
+            painted. <html> already carries `suppressHydrationWarning`, which is
+            what lets the class it adds differ from the server's markup without
+            a hydration warning.
+
+            The no-stored-value branch mirrors the hook's own fallback: V3 is dark
+            unless the person chose Light (`useThemeMode.DEFAULT_IS_DARK`). If it did
+            not, a first-time visitor would get the flash this is here to remove. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "try{var s=localStorage.getItem('theme');var d=s!=='light';document.documentElement.classList.toggle('dark',d)}catch(e){document.documentElement.classList.add('dark')}",
+          }}
+        />
         {/* C29 — attaches the chosen UI language to every request this app makes to its own API.
             First in the tree so its module is evaluated before anything can fetch. */}
         <AppLanguageFetch />
         <PostHogProvider>
           <NotificationProvider>{children}</NotificationProvider>
         </PostHogProvider>
-        <LocationProvider />
+        {/* 🚨 THE PUBLIC / APP BOUNDARY. This root layout wraps EVERY route, including the pages a
+            stranger opens from a shared link (/plan/<id>, /r/<slug>, /reviews/<id>, /users/<id>, the
+            hubs, Scam Shield, the legal pages). So nothing here may prompt, gate or interrupt: no
+            location request, no language modal, no age gate, no login wall. Those belong to the
+            signed-in product and are mounted by `src/app/(app)/layout.tsx`, which only wraps routes
+            that live under `src/app/(app)/`. A new page added anywhere else is public-safe with no
+            list to update; `src/app/publicBoundary.test.ts` fails the build if a gate ever leaks back
+            into this file or into anything a public route imports. */}
+        {/* GA4 loader — renders nothing unless NEXT_PUBLIC_GA_MEASUREMENT_ID is set (Production
+            only). Events reach it through the in-app tracker's mirror, never directly. */}
+        <GoogleAnalytics />
         <TrackingProvider />
-        <LanguagePicker />
         <HtmlLangSync />
+        {/* Per-tab in-app history depth for every Back control (lib/nav/inAppBack). */}
+        <NavHistoryTracker />
         <VersionWatcher />
+        {/* Dev-only environment badge (worktree/branch/SHA/Supabase ref; RED on prod DB).
+            The NODE_ENV constant folds to false in a production build, so DevEnvBadge and
+            its NEXT_PUBLIC_DEV_* env are dead-code-eliminated from the prod bundle. */}
+        {process.env.NODE_ENV === 'development' && <DevEnvBadge />}
       </body>
     </html>
   )

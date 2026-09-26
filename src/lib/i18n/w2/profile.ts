@@ -1,4 +1,4 @@
-// i18n keys for the Profile screen (src/app/profile/ProfileView.tsx).
+// i18n keys for the Profile screen (src/app/(app)/profile/ProfileView.tsx).
 // Flat map: same keys referenced via t('profile.*'), Vietnamese original + English.
 export const vi: Record<string, string> = {
   'profile.conversationCount': '{n} cuộc trò chuyện',
@@ -31,7 +31,7 @@ export const vi: Record<string, string> = {
   'profile.settings': 'Cài đặt',
   'profile.settings.desc': 'Ngôn ngữ, thông báo, giao diện',
 
-  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': 'Bạn đang dùng thử',
   'profile.guest.subtitle': 'Trang chủ, Chat, Khám phá và Ưu đãi dùng thoải mái, không cần đăng nhập.',
   'profile.guest.signIn': 'Đăng nhập để lưu lại',
@@ -69,7 +69,7 @@ export const en: Record<string, string> = {
   'profile.settings': 'Settings',
   'profile.settings.desc': 'Language, notifications, appearance',
 
-  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': "You're exploring as a guest",
   'profile.guest.subtitle': 'Home, Chat, Explore and Deals are open — no account needed.',
   'profile.guest.signIn': 'Sign in to save your stuff',

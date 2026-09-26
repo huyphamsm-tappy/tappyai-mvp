@@ -116,3 +116,58 @@ describe('shouldExtractMemory', () => {
     expect(gate('    ')).toBe(false)
   })
 })
+
+describe('shouldExtractMemory — consultative mode (CONSULTATIVE_V1): default NO', () => {
+  // Measured 2026-09-18 (docs/audit/eval/memory/replay-first20.json): under the default-YES gate
+  // the first 20 eval turns paid 20 extraction calls and stored nothing the transient filter
+  // keeps — only search subjects as "tastes" and a district as a "destination". In this mode a
+  // plain request skips the call; its topic is written to history by the route without a model.
+  const cgate = (text: string) => shouldExtractMemory({
+    text, intent: classifyIntent(text), forcedTool: detectForcedTool(text), consultative: true,
+  })
+
+  describe('SKIP — a plain request, however long', () => {
+    for (const t of [
+      'Tìm quán ăn tối ngon gần Quận 1 cho 2 người',
+      'tim quan bun bo ngon o q1 duoi 80k',
+      'Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận',
+      'Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1',
+      'Mua tai nghe bluetooth dưới 1 triệu, pin trâu',
+      'Nồi chiên không dầu 5L loại nào tốt',
+      'spa massage chan gan q1 duoi 300k',
+      'Karaoke cho 10 người tầm 100k/người Gò Vấp',
+      'Gợi ý quán ăn ngon ở Quận 1 giá dưới 200k',
+      'quán này mở mấy giờ?',
+    ]) {
+      it(`"${t}"`, () => expect(cgate(t)).toBe(false))
+    }
+  })
+
+  describe('EXTRACT — the user says something about themselves', () => {
+    for (const t of [
+      'Tôi ăn chay.', 'Mình thích cay', 'Nhà mình ở Quận 3.', 'Mình bị dị ứng hải sản',
+      'Gia đình mình thường đi ăn cuối tuần', 'Ngân sách của mình khoảng 500k', 'I am allergic to peanuts.',
+      'Thời tiết Hà Nội thế nào? Mà mình thích quán ngoài trời',
+    ]) {
+      it(`"${t}"`, () => expect(cgate(t)).toBe(true))
+    }
+  })
+
+  describe('EXTRACT — a trip or a stay being planned (discovery_city)', () => {
+    for (const t of [
+      'Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu',
+      'khach san da nang gan bien duoi 1tr/dem',
+      'Resort Phú Quốc cho kỷ niệm 1 năm, sang chút',
+      'Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất',
+      'Lên lịch trình du lịch Đà Nẵng 3 ngày ngân sách 5 triệu',
+      'Hotels in Da Nang',
+    ]) {
+      it(`"${t}"`, () => expect(cgate(t)).toBe(true))
+    }
+  })
+
+  it('chitchat and the legacy default-YES path are unchanged', () => {
+    expect(cgate('Cảm ơn bạn.')).toBe(false)
+    expect(gate('Tìm quán ăn tối ngon gần Quận 1 cho 2 người')).toBe(true)
+  })
+})

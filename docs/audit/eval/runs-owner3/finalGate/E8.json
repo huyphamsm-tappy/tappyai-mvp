@@ -1,0 +1,766 @@
+{
+  "id": "E8",
+  "text": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+  "parent": null,
+  "status": 200,
+  "ms": 13074,
+  "evidenceId": "05063da1-e527-458b-8d77-e03ac27f29b5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "chỗ chơi cho trẻ em 5 tuổi Sài Gòn",
+        "location": "Sài Gòn",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu vui chơi trẻ em ngoài trời",
+      "rating": 5,
+      "count": 1,
+      "hours": "06:00–21:00",
+      "distance_km": 3.5,
+      "address": "722a Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 167,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Trẻ Em",
+      "rating": 4,
+      "count": 7,
+      "hours": "10:30–22:30",
+      "distance_km": 2.2,
+      "address": "3-3C 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "tiNiWorld",
+      "rating": 4.7,
+      "count": 893,
+      "hours": "09:30–21:30",
+      "distance_km": 6,
+      "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Jump Arena Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 609,
+      "hours": "09:00–22:00",
+      "distance_km": 4,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Meow Meow Kidsplay Cafe",
+      "rating": 4.6,
+      "count": 376,
+      "price": "100-200 N ₫",
+      "hours": "08:00–22:00",
+      "distance_km": 1.2,
+      "address": "39-39B Bến Vân Đồn, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36813,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8509,
+      "hours": "08:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Lilliput Diamond - Nhà hàng và Khu vui chơi cho bé",
+      "rating": 4.7,
+      "count": 601,
+      "price": "100-200 N ₫",
+      "hours": "09:00–21:00",
+      "distance_km": 0.6,
+      "address": "Diamond Plaza, 34 Lê Duẩn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Sân Khấu Thế Giới Trẻ",
+      "rating": 4.4,
+      "count": 908,
+      "distance_km": 1.8,
+      "address": "125 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm chỗ vui chơi phù hợp với trẻ em 5 tuổi vào cuối tuần ở Sài Gòn. Để gợi ý đúng ý, mình cần tìm các địa điểm gần vị trí bạn đang ở.\n\nMình chọn **Lilliput Diamond** cho bạn — nó cách bạn chỉ 0.6km, mở cửa từ 9h sáng, có cả khu vui chơi trong nhà và quán cà phê để bố mẹ thư giãn. Với 4.7⭐ từ 601 đánh giá, đây là lựa chọn tuyệt vời cho trẻ 5 tuổi vào cuối tuần 🎉\n\nNếu muốn chỗ lớn hơn với nhiều trò chơi hơn, **tiNiWorld** (4.7⭐, 893 đánh giá) cũng rất tốt — có nhà hàng bên trong, mở từ 9h30 sáng, nhưng cách bạn khoảng 6km.\n\nMình gợi ý **Lilliput Diamond** vì gần nhất, tiện lợi cho gia đình, và đánh giá rất cao 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Lilliput Diamond\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13549900989377012556\",\"primary\":true},{\"label\":\"🌐 Website - Lilliput Diamond\",\"type\":\"website\",\"url\":\"https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tiNiWorld có gì đặc biệt|Jump Arena phù hợp trẻ 5 tuổi không|Thảo Cầm Viên có vui không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm chỗ vui chơi phù hợp với trẻ em 5 tuổi vào cuối tuần ở Sài Gòn. Để gợi ý đúng ý, mình cần tìm các địa điểm gần vị trí bạn đang ở.\n\nMình chọn **Lilliput Diamond** cho bạn — nó cách bạn chỉ 0.6km, mở cửa từ 9h sáng, có cả khu vui chơi trong nhà và quán cà phê để bố mẹ thư giãn. Với 4.7⭐ từ 601 đánh giá, đây là lựa chọn tuyệt vời cho trẻ 5 tuổi vào cuối tuần 🎉\n\nNếu muốn chỗ lớn hơn với nhiều trò chơi hơn, **tiNiWorld** (4.7⭐, 893 đánh giá) cũng rất tốt — có nhà hàng bên trong, mở từ 9h30 sáng, nhưng cách bạn khoảng 6km.\n\nMình gợi ý **Lilliput Diamond** vì gần nhất, tiện lợi cho gia đình, và đánh giá rất cao 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Lilliput Diamond\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13549900989377012556\",\"primary\":true},{\"label\":\"🌐 Website - Lilliput Diamond\",\"type\":\"website\",\"url\":\"https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tiNiWorld có gì đặc biệt|Jump Arena phù hợp trẻ 5 tuổi không|Thảo Cầm Viên có vui không[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 19,
+      "location": "Sài Gòn",
+      "results": [
+        {
+          "name": "Khu vui chơi trẻ em ngoài trời",
+          "place_id": "ChIJVfKEHAAndTERE_MvNb-ZNfw",
+          "address": "722a Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "5⭐ (1 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 1,
+          "distance_km": 3.5,
+          "open_now": true,
+          "opening_hours": "06:00–21:00",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=18173600917833642771"
+        },
+        {
+          "name": "Tinker Box",
+          "place_id": "ChIJLwB-bsQvdTERXLdP2IuZvt4",
+          "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 847 120 325",
+          "google_rating": "4.4⭐ (167 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 167,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "08:30–21:00",
+          "place_types": [
+            "Sân chơi trong nhà",
+            "Dịch vụ tiệc cho trẻ em"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16050434947903633244"
+        },
+        {
+          "name": "Khu Vui Chơi Trẻ Em",
+          "place_id": "ChIJ_fYh7SYvdTERO0cOlbA7R10",
+          "address": "3-3C 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4⭐ (7 đánh giá Google Maps)",
+          "rating_value": 4,
+          "rating_count": 7,
+          "distance_km": 2.2,
+          "open_now": true,
+          "opening_hours": "10:30–22:30",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6721406598474778427"
+        },
+        {
+          "name": "tiNiWorld",
+          "place_id": "ChIJbxI50MEndTERfAUMCCuTNfM",
+          "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 909 650 828",
+          "google_rating": "4.7⭐ (893 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 893,
+          "distance_km": 6,
+          "open_now": true,
+          "opening_hours": "09:30–21:30",
+          "place_types": [
+            "Trung tâm vui chơi dành cho trẻ em",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17525075338010035580",
+          "website_uri": "https://tiniworld.com/"
+        },
+        {
+          "name": "Jump Arena Lê Thị Riêng",
+          "place_id": "ChIJacTdgFsvdTER_aIXqZFc4M0",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 1900 636808",
+          "google_rating": "4.5⭐ (609 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 609,
+          "distance_km": 4,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Sân chơi trong nhà"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14834958953235325693",
+          "website_uri": "https://jumparena.vn/"
+        },
+        {
+          "name": "Meow Meow Kidsplay Cafe",
+          "place_id": "ChIJf9tv6zAvdTEReDyOAe_Wb6Y",
+          "address": "39-39B Bến Vân Đồn, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 967 797 886",
+          "google_rating": "4.6⭐ (376 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 376,
+          "price_range_text": "100-200 N ₫",
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "08:00–22:00",
+          "place_types": [
+            "Quán cà phê"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11993040654722546808"
+        },
+        {
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "place_id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1425",
+          "google_rating": "4.3⭐ (36.813 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 36813,
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "07:00–18:30",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Vườn bách thú"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5600618488004010382",
+          "website_uri": "https://s.shopee.vn/8V7uC7gWA0"
+        },
+        {
+          "name": "Thiên Đường Giải Trí Thỏ Trắng",
+          "place_id": "ChIJ9YE09dEudTERNEcX1eDdajY",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3977 1975",
+          "google_rating": "4.3⭐ (8.509 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 8509,
+          "distance_km": 3.9,
+          "open_now": true,
+          "opening_hours": "08:00–22:00",
+          "place_types": [
+            "Công viên giải trí",
+            "Công viên giải trí",
+            "Công viên",
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3921190383296923444",
+          "website_uri": "https://www.facebook.com/GiaiTriThoTrang/?locale=vi_VN"
+        },
+        {
+          "name": "Lilliput Diamond - Nhà hàng và Khu vui chơi cho bé",
+          "place_id": "ChIJiwSPi5EvdTERTOOHzSjrCrw",
+          "address": "Diamond Plaza, 34 Lê Duẩn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 768 502 889",
+          "google_rating": "4.7⭐ (601 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 601,
+          "price_range_text": "100-200 N ₫",
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "09:00–21:00",
+          "place_types": [
+            "Quán cà phê"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13549900989377012556",
+          "website_uri": "https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html"
+        },
+        {
+          "name": "Sân Khấu Thế Giới Trẻ",
+          "place_id": "ChIJa-IZoxcvdTERZ3FWjpRyIhg",
+          "address": "125 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 2228 3825",
+          "google_rating": "4.4⭐ (908 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 908,
+          "distance_km": 1.8,
+          "place_types": [
+            "Nhà hát nghệ thuật biểu diễn",
+            "Đại lý giải trí"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1739078388487188839",
+          "website_uri": "https://sankhauthegioitre.vn/"
+        }
+      ],
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78135,106.69859",
+            "domain": "food",
+            "kind": "place",
+            "name": "Lilliput Diamond - Nhà hàng và Khu vui chơi cho bé",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjxpZcETL7JS0Ii77BQmfHdidngSZlucYoLRPlgiKkjJDLyEmH1CQWnjnsHVqjRHlBo4Jz83i0Z9s_hf2b7-goSNRhy5TUZkJZB12LeXzB8BEIXkNU_GGKoWRR1WGE_zPVzsSe",
+            "address": "Diamond Plaza, 34 Lê Duẩn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 601,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 768 502 889",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00",
+              "Thứ Sáu": "09:00–21:00"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Quán cà phê"
+            ],
+            "rank": 8,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13549900989377012556",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.24h.com.vn/tin-tuc-am-thuc/lilliput-kids-cafe-khi-tre-em-cung-coquan-cafe-rieng-c677a1432181.html",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Lilliput%20Diamond%20-%20Nh%C3%A0%20h%C3%A0ng%20v%C3%A0%20Khu%20vui%20ch%C6%A1i%20cho%20b%C3%A9%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768502889",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79714,106.72570",
+            "domain": "food",
+            "kind": "place",
+            "name": "Khu vui chơi trẻ em ngoài trời",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpL6iSq6fAvRAi7I9wl5nUteOOdz5b14DLXnCnJG2ZUeaz8sEANq7DEkAFS6Hwfrb_P81vX6ALGM8SFOC4jyXMlG762UtaHE9zwaqXHVswOudrnJWauYSqjD75h4YVTlYVnqBn27jfmN4",
+            "address": "722a Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 1,
+            "openingHours": "06:00–21:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–21:00",
+              "Chủ Nhật": "06:00–21:00",
+              "Thứ Hai": "06:00–21:00",
+              "Thứ Ba": "06:00–21:00",
+              "Thứ Tư": "06:00–21:00",
+              "Thứ Năm": "06:00–21:00",
+              "Thứ Sáu": "06:00–21:00"
+            },
+            "distanceKm": 3.5,
+            "categories": [
+              "Sân chơi"
+            ],
+            "rank": 0,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=18173600917833642771",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@dochoiquangcong/video/7658892976319450375",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Khu%20vui%20ch%C6%A1i%20tr%E1%BA%BB%20em%20ngo%C3%A0i%20tr%E1%BB%9Di%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78833,106.70299",
+            "domain": "food",
+            "kind": "place",
+            "name": "Tinker Box",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmX7HXZK4Bjw14w9hWJg388xv_JLDc1GwoO-fI40ig9-0IVxHTpLzvAbN7hfRs8SijNceLOHiWdDT_q5v_NbCGoPMXmGAebppwry3uJ1QaQXG5ZIIYYvzWa8k01ZoZRVfqiPFVlhjU_0XOb",
+            "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 167,
+            "openingHours": "08:30–21:00",
+            "openNow": true,
+            "phone": "+84 847 120 325",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–21:00",
+              "Chủ Nhật": "08:30–21:00",
+              "Thứ Hai": "Đóng cửa",
+              "Thứ Ba": "Đóng cửa",
+              "Thứ Tư": "Đóng cửa",
+              "Thứ Năm": "Đóng cửa",
+              "Thứ Sáu": "08:30–21:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Sân chơi trong nhà",
+              "Dịch vụ tiệc cho trẻ em"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16050434947903633244",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@haichi121/video/7356563424060476690",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84847120325",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Tinker%20Box%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77578,106.68063",
+            "domain": "food",
+            "kind": "place",
+            "name": "Khu Vui Chơi Trẻ Em",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm-N6BYVFno7sJNLjZ3KFE6WyWwex2WdOZP4zDntvqvrqF3etso7D_IJJwMNbO15_dKdGK6xq2PIFX9CVi-sZrq5wWDWkoqZBQovCYMlZ7PENofXqB2NLOOWkyrMfFSh3FLHEjcr0SsVcs",
+            "address": "3-3C 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam",
+            "rating": 4,
+            "ratingCount": 7,
+            "openingHours": "10:30–22:30",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:30",
+              "Chủ Nhật": "10:30–22:30",
+              "Thứ Hai": "10:30–22:30",
+              "Thứ Ba": "10:30–22:30",
+              "Thứ Tư": "10:30–22:30",
+              "Thứ Năm": "10:30–22:30",
+              "Thứ Sáu": "10:30–22:30"
+            },
+            "distanceKm": 2.2,
+            "categories": [
+              "Sân chơi"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6721406598474778427",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Khu%20Vui%20Ch%C6%A1i%20Tr%E1%BA%BB%20Em%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80197,106.74904",
+            "domain": "food",
+            "kind": "place",
+            "name": "tiNiWorld",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkNeWSeLKvcm_y1LaC1s7_lGU_yEfirXEFJzelEi6R9AntaFNx5nuLxyTqovT81S36k8rB_9h7O7Sh_khciRckQh7JioXCAVkC-0A2gj2l559amkjxMMc7nYQjHPkWGtpNOkvA",
+            "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 893,
+            "openingHours": "09:30–21:30",
+            "openNow": true,
+            "phone": "+84 909 650 828",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–21:30",
+              "Chủ Nhật": "09:30–21:30",
+              "Thứ Hai": "14:00–21:30",
+              "Thứ Ba": "09:30–21:30",
+              "Thứ Tư": "09:30–21:30",
+              "Thứ Năm": "09:30–21:30",
+              "Thứ Sáu": "09:30–21:30"
+            },
+            "distanceKm": 6,
+            "categories": [
+              "Trung tâm vui chơi dành cho trẻ em",
+              "Nhà hàng"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17525075338010035580",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://tiniworld.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=tiNiWorld%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909650828",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78482,106.66497",
+            "domain": "food",
+            "kind": "place",
+            "name": "Jump Arena Lê Thị Riêng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlM6t-L9F8G21U9duABf3hKPQA7iKnwEtnqohENL6YqV-ZgfBfe350afG3_njFb0DQa8i4bm7xVjbpEQ3UA4fRIWxJHe9JZwA1GhDXZUdYgurSldkFF9tt8TQecz1BuE5-ZBMD-4kNQH_Sr",
+            "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 609,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 1900 636808",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 4,
+            "categories": [
+              "Sân chơi trong nhà"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14834958953235325693",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://jumparena.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Jump%20Arena%20L%C3%AA%20Th%E1%BB%8B%20Ri%C3%AAng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+841900636808",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76655,106.70342",
+            "domain": "food",
+            "kind": "place",
+            "name": "Meow Meow Kidsplay Cafe",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm8lxlqej4H7uEyT9k4-M04y_iK2VWPX8dN9TgTHu8GTYz1-TZTYAj4ZC8MRVrokiwY4oHHCUAVt3ZNfeknKiS6kUOABMtkPvq8XJyckWmFh4v0PLVkoJ5_nPs1D97Sixlc5hjIBQz0vvw",
+            "address": "39-39B Bến Vân Đồn, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 376,
+            "openingHours": "08:00–22:00",
+            "openNow": true,
+            "phone": "+84 967 797 886",
+            "priceRangeText": "100-200 N ₫",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–22:00",
+              "Chủ Nhật": "08:00–22:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00",
+              "Thứ Sáu": "09:00–21:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Quán cà phê"
+            ],
+            "rank": 5,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11993040654722546808",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Meow%20Meow%20Kidsplay%20Cafe%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84967797886",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78733,106.70506",
+            "domain": "food",
+            "kind": "place",
+            "name": "Thảo Cầm Viên Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdB6JXA66tPsweA9UnT4TGaKgaKScpI6conEzUNzlw2FUc1MjO-jVKy213mwN5ggdzCT6-PhsSSZBqsm1Jk5GYpUXMPNi5Uop0GyL6oVTfEvrx8T0QskZ7Wv_taTwR8in4AuM",
+            "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 36813,
+            "openingHours": "07:00–18:30",
+            "openNow": true,
+            "phone": "+84 28 3829 1425",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–18:30",
+              "Chủ Nhật": "07:00–18:30",
+              "Thứ Hai": "07:00–18:30",
+              "Thứ Ba": "07:00–18:30",
+              "Thứ Tư": "07:00–18:30",
+              "Thứ Năm": "07:00–18:30",
+              "Thứ Sáu": "07:00–18:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Vườn bách thú"
+            ],
+            "rank": 6,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5600618488004010382",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://s.shopee.vn/8V7uC7gWA0",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Th%E1%BA%A3o%20C%E1%BA%A7m%20Vi%C3%AAn%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291425",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=ch%E1%BB%97%20ch%C6%A1i%20cho%20tr%E1%BA%BB%20em%205%20tu%E1%BB%95i%20S%C3%A0i%20G%C3%B2n%20S%C3%A0i%20G%C3%B2n",
+        "picked": [
+          "place:osm:10.80197,106.74904",
+          "place:osm:10.79714,106.72570",
+          "place:osm:10.78833,106.70299"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

@@ -1,0 +1,44 @@
+{
+ "at": "2026-09-26T02:26:29.067Z",
+ "note": "synthetic users, rolled back",
+ "steps": {
+  "auth user f096-u-22f": "ok",
+  "auth user f096-o-b6d": "ok",
+  "public share owned by U": "ok",
+  "group created by U": "ok",
+  "google integration of U (fake token)": "ok",
+  "notification in O inbox caused by U": "ok",
+  "admin audit row with email/IP/UA/DOB": "ok",
+  "DELETE auth user U": "ok"
+ },
+ "checks": {
+  "audit_row": {
+   "actor_email": null,
+   "ip_address": null,
+   "user_agent": null,
+   "before_state": {
+    "age_band": "35_44",
+    "date_of_birth": "***"
+   },
+   "after_state": {
+    "phone": "***"
+   },
+   "has_client_digest": true,
+   "side_row": {
+    "ip": "203.0.113.9",
+    "user_agent": "Mozilla/5.0 probe"
+   }
+  },
+  "chain_problems_after_insert": 0,
+  "share_page_left": 0,
+  "notification_by_U_left": 0,
+  "group_left": 0,
+  "deletion_job": {
+   "queued": true,
+   "group_ids_match": true,
+   "google_tokens_captured": 1,
+   "done_at": null
+  }
+ },
+ "rolled_back": true
+}

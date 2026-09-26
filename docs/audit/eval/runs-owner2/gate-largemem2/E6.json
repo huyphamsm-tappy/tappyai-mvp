@@ -1,0 +1,27 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 3366,
+  "evidenceId": "8c9f6d6b-c897-49d2-87e2-78f9d3627904",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn cần karaoke hôm nay ở gần Gò Vấp cho 10 người với budget khoảng 100k/người. Để tìm được phòng phù hợp, mình cần biết:\n\n**Bạn muốn hát vào lúc mấy giờ?** (buổi chiều, tối, hay đêm khuya?) — Điều này sẽ giúp mình chọn karaoke có giá phù hợp vào khung giờ đó.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn cần karaoke hôm nay ở gần Gò Vấp cho 10 người với budget khoảng 100k/người. Để tìm được phòng phù hợp, mình cần biết:\n\n**Bạn muốn hát vào lúc mấy giờ?** (buổi chiều, tối, hay đêm khuya?) — Điều này sẽ giúp mình chọn karaoke có giá phù hợp vào khung giờ đó."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

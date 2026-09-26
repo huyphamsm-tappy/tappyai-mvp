@@ -78,12 +78,12 @@ export default async function AgeCheckPage({
     data: { user },
   } = await supabase.auth.getUser()
 
-  if (!user || user.is_anonymous) {
-    // Preserve where they were headed THROUGH the login hop, so a user who is
-    // bounced here from a deep link still lands on it once they are eligible.
-    const returnTo = next === '/' ? '/age-check' : `/age-check?next=${encodeURIComponent(next)}`
-    redirect(`/login?returnTo=${encodeURIComponent(returnTo)}`)
-  }
+  // A GUEST (no account, or an anonymous trial session) declares here too — the
+  // same screen, but the answer is stored on the device through
+  // POST /api/age-declaration, never in a profile row (owner D1, revised
+  // 2026-09-17). Nothing to pre-check: the chat route re-evaluates the device
+  // declaration on every request.
+  if (!user || user.is_anonymous) return <AgeCheckView guest />
 
   const eligibility = await getAgeEligibility(supabase)
   if (eligibility.status === 'eligible') redirect(next)

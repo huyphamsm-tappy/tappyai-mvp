@@ -119,13 +119,35 @@ function toNumber(raw: string, hasScaleUnit: boolean): number {
   return parseFloat(raw)
 }
 
+/**
+ * G2 (owner Q2) — A LOWERCASE "m" IS NEVER MONEY.
+ *
+ * `UNIT_ALT` carries `M` (million) and the patterns run with the `i` flag, so
+ * "cách bạn chỉ 100m" was 100 000 000 ₫ and the snippet-price guard deleted both
+ * recommendation paragraphs of a "quán cafe chill gần đây" reply (2026-09-17 V3
+ * capture). Decided on the MATCHED TEXT with `===`, never inside the regex: the
+ * "đồng" incident recorded what an `i`-flag rule does silently. Uppercase "M"
+ * ("7-8M", "14.7M VND") stays a million.
+ *
+ * Documented residual: chat slang "tầm 2m" (= 2 triệu) is invisible from now on,
+ * so an echoed one passes unchecked. Pinned in moneyGuardMetres.test.ts.
+ */
+const isLowercaseMetre = (unit: string): boolean => unit === 'm'
+
 /** Every monetary claim in the prose, with its offsets in the ORIGINAL text. */
 export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> {
+  return extractMoneyClaimsDetailed(text).claims
+}
+
+/** Same, plus what the extractor deliberately skipped — for guard telemetry. */
+export function extractMoneyClaimsDetailed(text: string): { claims: Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>>; lowercase_m_skipped: number } {
   // Blank the machine blocks in place so offsets stay aligned with `text`.
   const masked = maskNonProse(text)
   const out: Array<Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>> = []
+  let lowercaseMSkipped = 0
   for (const m of masked.matchAll(RANGE_RE)) {
     const unit = m[3]
+    if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
     const scale = unitScale(unit)
     out.push({
       raw: m[0].trim(), kind: 'range',
@@ -148,6 +170,7 @@ export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdic
   for (const m of masked.matchAll(SINGLE_RE)) {
     if (overlaps(m.index!)) continue
     const unit = m[2]
+    if (isLowercaseMetre(unit)) { lowercaseMSkipped++; continue }
     const scale = unitScale(unit)
     const v = toNumber(m[1], scale > 1) * scale
     out.push({
@@ -155,7 +178,7 @@ export function extractMoneyClaims(text: string): Array<Omit<MoneyClaim, 'verdic
       currency: isUSD(unit) ? 'USD' : 'VND', start: m.index!, end: m.index! + m[0].length,
     })
   }
-  return out.sort((a, b) => a.start - b.start)
+  return { claims: out.sort((a, b) => a.start - b.start), lowercase_m_skipped: lowercaseMSkipped }
 }
 
 /** The structured price of a record, in VND. Never read from title/snippet. */
@@ -333,8 +356,16 @@ const HAS_LETTER = /\p{L}/u
 /** Hedges that only exist to introduce the amount, so they go with it. */
 const HEDGE_BEFORE = /(?:\b(?:khoảng|tầm|chừng|cỡ|độ|around|about|approximately|roughly|only|chỉ|từ|from)\b|~)\s*$/iu
 
-/** Spans that are machine payload, not prose — never removed, never split on. */
-function protectedSpans(text: string): Array<[number, number]> {
+/**
+ * Spans that are machine payload, not prose — never removed, never split on.
+ *
+ * Exported so every guard that walks `sentenceSpans` can tell a machine block
+ * from a sentence: `sentenceSpans` keeps each of these whole as ONE span, and a
+ * guard that judges that span as prose deletes the whole block. Measured
+ * 2026-09-14 in `placeClaimGuard` — a complete [TAPPY_PLAN] deleted because a
+ * Google-Maps longitude inside its `maps_link` read as a phone number.
+ */
+export function protectedSpans(text: string): Array<[number, number]> {
   const spans: Array<[number, number]> = []
   for (const m of text.matchAll(NON_PROSE_RE)) spans.push([m.index!, m.index! + m[0].length])
   return spans
@@ -364,32 +395,175 @@ export function sentenceSpans(text: string): Array<[number, number]> {
 }
 
 /**
- * POLICY R3, as locked by the owner in C3-B.10.2.
+ * POLICY R3 — PROPORTIONAL (owner, 2026-09-20; supersedes the whole-sentence default locked in
+ * C3-B.10.2).
  *
- * Default: remove the WHOLE SENTENCE containing an unsupported amount. That is
- * what stops the dangling-connective output the audit found ("và phù hợp…").
+ * Measured S7 (3/3 deterministic, GATE 40): a product list — one line per product, each with an
+ * amount — lost EVERY line to the whole-sentence rule, leaving "mình gợi ý:" and nothing. The
+ * amount was the unsupported part; the product line was not.
  *
- * Widen only when that would leave no prose at all: then remove just the amount
- * and the hedge that introduces it, so a one-sentence reply degrades to its
- * remaining words instead of to "" — which the stream filter would drop
- * entirely, giving the user an empty answer.
- *
- * Both paths write nothing: every character of the output comes from the input.
+ * Order now: (1) the CLAUSE that carries the amount — bounded by `,` `;` `:` a dash or a
+ * parenthesis — goes, with the hedge that introduces it; the rest of the sentence stays when it
+ * still says something (has letters). (2) When the clause IS the sentence, the sentence goes —
+ * that is what stopped the dangling-connective output the audit found ("và phù hợp…"). (3) When
+ * that would leave no prose at all, only the amounts go. Every path writes nothing: every output
+ * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
-export function redactUnsupportedClaims(text: string, claims: MoneyClaim[]): string {
+const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
+// F-092 (2026-09-25): "với" / "with" are NOT here. Sentence-initial they are a PREPOSITION opening a
+// complete sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …"), and stripping them ate
+// the next sentence's first word. Only true conjunctions dangle off a removed sentence.
+const LEADING_CONNECTIVE = /^\s*(?:và|hoặc|nhưng|còn|and|or|but)\s+/iu
+/**
+ * A clause cut that leaves the sentence ending on one of these is a stub ("bạn nên.", "giá là.",
+ * measured live 2026-09-20 run 14): the sentence goes whole instead.
+ */
+const DANGLING_TAIL = /(?:^|\s)(?:nên|và|với|là|có|hoặc|nhưng|hay|để|khi|vì|từ|đến|khoảng|tầm|giá|chỉ|mà|thì|cho|của|and|or|with|for|at|about|around|only|is|are|costs?)$/iu
+
+/**
+ * @param linePrefix the text between the start of this LINE and the sentence. Bold balances per
+ *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
+ *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
+ */
+function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = ''): string | null {
+  // The line break that closes a list line is structure, not clause: it always survives.
+  const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
+  const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
+  // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
+  // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
+  let a = 0, b = sentence.length, bDelim = ''
+  for (const m of sentence.matchAll(CLAUSE_DELIM)) {
+    const i = m.index!
+    if (i < at) a = i
+    else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
+  }
+  /**
+   * A parenthesis that OPENS right after the amount qualifies the amount ("~12 triệu (chưa bao
+   * gồm vé máy bay)", "khoảng 12 triệu (xe + khách sạn + ăn)"): it goes with it, through its
+   * closing bracket. Phase 7 (2026-09-22, golden T1/G4a plan replies): cutting at the "(" left
+   * "**Tổng ước tính(chưa bao gồm vé máy bay)." and "xe + khách sạn + ăn + tham quan)." behind.
+   */
+  let qualifier = false
+  if (bDelim === '(') {
+    const close = sentence.indexOf(')', b)
+    if (close !== -1) { b = close + 1; bDelim = ')'; qualifier = true }
+  }
+  const before = sentence.slice(0, a).replace(HEDGE_BEFORE, '').replace(/\s+$/, '')
+  const after = sentence.slice(b)
+  const afterSaysNothing = after.replace(/[\s.!?…]/g, '') === ''
+  // The clause ran to the end and what stays ends on a connective / a verb waiting for its object.
+  if (afterSaysNothing && DANGLING_TAIL.test(before)) return null
+  // …or what stays is only the LABEL the amount hung on ("**Tổng ước tính", "Giá vé"): a heading
+  // with nothing under it, or an unclosed bold, says nothing — the sentence goes whole.
+  // A complete bold span is content — "- **Sharp FP-J40E** — 4.200.000₫" keeps its product line
+  // (B4: the list survives, only the amount goes); a bare label or an unclosed bold does not.
+  const boldMarks = ((linePrefix + before).match(/\*\*/g) ?? []).length
+  const hasBoldName = boldMarks >= 2 && boldMarks % 2 === 0
+  if (afterSaysNothing && (boldMarks % 2 === 1 || (!hasBoldName && before.split(/\s+/).filter(Boolean).length <= 4))) return null
+  // F-094 (owner 2026-09-25): a cut that leaves a CLIPPED sentence takes the sentence whole.
+  // (a) the kept head opens a bold span the cut closed — "**Tổng ước tính, mua sắm, hoặc nâng cấp."
+  //     (golden T1 t3) — whatever follows it;
+  if (boldMarks % 2 === 1) return null
+  // (b) the head clause went and what stays starts in lower case where the sentence did not —
+  //     "nếu bạn ưu tiên **không dây**, …", "bao gồm xe khách khứ hồi, …" (golden B4). A list line
+  //     keeps its product and loses only the amount (S7), because there the amount is not the head.
+  if (before.length === 0 && startsLower(after) && !startsLower(sentence)) return null
+  // (c) the cut itself crosses a bold span — it takes one `**` of a pair and leaves the other:
+  //     "**…HAVIT H612BT Pro** — giá chỉ **380.000đ** với đánh giá **4.8⭐ (170 lượt)** từ …" became
+  //     "**…Pro**** từ Hoàng Hà Mobile." (golden post-f094 B4 t1, measured with the pre-guard capture).
+  if (((sentence.slice(a, b).match(/\*\*/g) ?? []).length % 2) === 1) return null
+  // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
+  // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
+  const lead = sentence.match(/^\s*/)?.[0] ?? ''
+  // (d) an item INSIDE a parenthetical keeps the bracket the cut does not own:
+  //     "**táo xanh** (19.19-19.39 triệu VND, đánh giá 5⭐ từ 31 người)" became "**táo xanh**, đánh giá
+  //     5⭐ từ 31 người)", "- **ATK N9 Ultra** (980.000đ, 4.6⭐)" became "**ATK N9 Ultra**, 4.6⭐)"
+  //     (golden post-f094c B1/B4). First item cut → its "(" stays; last item cut → its ")" stays;
+  //     the whole parenthetical cut → both go.
+  const opensHere = sentence[a] === '(' && a < at
+  let joint = bDelim
+  if (bDelim.trim() === ')') joint = opensHere || qualifier ? '' : ')'
+  else if (opensHere) joint = ' ('
+  const rest = before.length > 0
+    ? before + joint + (joint === ' (' ? after.replace(/^\s+/, '') : after)
+    : lead + after.replace(/^\s+/, '')
+  const letters = (rest.match(/\p{L}/gu) ?? []).length
+  if (letters < 3) return null
+  return rest + brk
+}
+
+/** The first letter after leading space, list bullets and emphasis is lower case. */
+function startsLower(s: string): boolean {
+  return /^\p{Ll}/u.test(s.replace(/^[\s*_>#-]+/u, '').replace(/^[^\p{L}\p{N}]+/u, ''))
+}
+
+/** Upper-cases the first letter — the only character a redaction may change, and only its case. */
+function capitaliseFirst(s: string): string {
+  return s.replace(/^([\s*_>#-]*)(\p{Ll})/u, (_m, lead: string, ch: string) => lead + ch.toLocaleUpperCase('vi'))
+}
+
+export interface RedactOptions {
+  /**
+   * F-094 (owner 2026-09-25): remove every affected sentence WHOLE — no clause cut. The v1 snippet
+   * price guard uses it; its clause cuts produced the headless fragments the golden set measured.
+   */
+  wholeSentence?: boolean
+}
+
+export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
   const bad = claims.filter(c => c.verdict !== 'VERIFIED')
   if (bad.length === 0) return text
 
-  const tidy = (s: string) => s.replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
+  // Seams only, never across a line break: a list bullet after a newline is structure, not a
+  // doubled delimiter.
+  const tidy = (s: string) => s
+    .replace(/([,;:])[ \t]*(?:[,;:—–][ \t]*)+/g, '$1 ')
+    .replace(/[ \t][—–-][ \t]*([.!?\n])/g, '$1')
+    .replace(/[,;][ \t]*([.!?\n])/g, '$1')
+    .replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
 
-  // 1) sentence-level removal
+  // 1) clause-level removal inside each affected sentence; 2) the sentence when the clause is all of it
   const spans = sentenceSpans(text)
-  const doomed = new Set<number>()
-  spans.forEach(([a, b], i) => { if (bad.some(c => c.start >= a && c.start < b)) doomed.add(i) })
-  const sentenceLevel = tidy(spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join(''))
-  if (HAS_LETTER.test(sentenceLevel)) return sentenceLevel
+  let dropped = false // the previous sentence went: a connective opening this one dangles
+  // F-094: "Và phù hợp bữa trưa…" after a removed sentence became "phù hợp bữa trưa…" — a sentence
+  // with no capital. The connective goes and the first letter takes its case back.
+  const stripConnective = (s: string) => {
+    const stripped = s.replace(LEADING_CONNECTIVE, m => m.replace(/\S+\s+$/, ''))
+    return stripped === s ? s : capitaliseFirst(stripped)
+  }
+  const pieces = spans.map(([a, b]) => {
+    const inSentence = bad.filter(c => c.start >= a && c.start < b).sort((x, y) => y.start - x.start)
+    const raw = text.slice(a, b)
+    if (inSentence.length === 0) {
+      // F-094: what a removed sentence leaves behind that is not prose — the " 🤔" after
+      // "… 70-80k để có thêm lựa chọn? 🤔" (golden post-f094b T3 t2) — goes with it.
+      if (dropped && raw.trim() && !/[\p{L}\p{N}]/u.test(raw)) return raw.match(/\n+$/)?.[0] ?? ''
+      const out = dropped && raw.trim() ? stripConnective(raw) : raw
+      if (raw.trim()) dropped = false
+      return out
+    }
+    let sentence = raw
+    // F-094: a LIST LINE is not a prose sentence. Removing it whole deleted the pick itself —
+    // "• **Cơm Ngon Hà Nội** (4.9⭐, 283 đánh giá) - khoảng giá lên tới 100k" (golden post-f094b T3 t2)
+    // — so a list line keeps its item and loses the amount clause, as S7 decided for product lists;
+    // every anti-fragment rule of that path still applies.
+    const lineStart = text.lastIndexOf('\n', a - 1) + 1
+    const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
+    if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
+    for (const c of inSentence) {
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
+      if (cut === null) { dropped = true; return '' }
+      sentence = cut // claims are processed from the end, so earlier offsets are unaffected
+    }
+    dropped = false
+    const trailing = sentence.match(/[\n]+$/)?.[0] ?? ''
+    const core = stripConnective(sentence.replace(/[\n]+$/, ''))
+    return core + trailing
+  })
+  const proportional = tidy(pieces.join(''))
+  if (HAS_LETTER.test(proportional)) return proportional
 
-  // 2) removing the sentences would leave nothing — take only the amounts.
+  // 3) removing the clauses would leave nothing — take only the amounts.
   let out = text
   for (const claim of [...bad].sort((a, b) => b.start - a.start)) {
     const head = out.slice(0, claim.start).replace(HEDGE_BEFORE, '')

@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 15051,
+      "textFrames": 455,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ pháp lý** — kiểm tra giấy đăng ký xe, chứng thực nguồn gốc (không phải xe trộm cắp, không nợ trả góp, không bị khoá từ xa). Yêu cầu người bán cung cấp bản gốc, không phải bản sao.\n• **Chủ sở hữu** — đảm bảo người bán là chủ xe trên giấy tờ, hoặc có giấy ủy quyền hợp lệ nếu không phải chủ.\n• **Gặp trực tiếp** — không chuyển tiền qua link lạ hay trước khi xem xe. Gặp ở nơi công cộng, mang theo người thân.\n\n**Kiểm tra tình trạng xe:**\n• **Khung gầm & thân xe** — xem có bị va chạm, hàn vá, gỉ sét hay không. Kiểm tra số khung, số máy có khớp với giấy tờ không.\n• **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không, kiểm tra dầu máy (màu sắc, mùi).\n• **Hệ thống phanh** — phanh trước/sau có còn hiệu lực, không bị mềm hay cứng bất thường.\n• **Lốp & bánh xe** — độ mòn lốp, có bị nứt hay không, vành có bị cong không.\n• **Đèn & điện** — đèn pha, đèn phanh, còi, chỉnh số có hoạt động bình thường không.\n• **Số km** — kiểm tra đồng hồ công tơ mét, so sánh với tình trạng xe (xe chạy 50.000km không nên quá mới, 100.000km không nên quá cũ).\n\n**Dấu hiệu cảnh báo:**\nNếu giá rẻ bất thường so với mặt bằng, người bán vội vàng, không cho xem giấy tờ gốc, hoặc xe từng bị tai nạn nặng → cần cẩn thận. Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Lời khuyên cuối:** Chỉ mua khi đã xem xe trực tiếp, kiểm tra giấy tờ gốc, và đã thoát hết tài khoản của người bán (nếu xe có tài khoản đăng nhập). Nếu cần, có thể đưa xe đi kiểm tra tại xưởng uy tín trước khi quyết định.\n\n[FOLLOWUPS]Tìm xe máy cũ ở Quận 7|Kiểm tra giấy tờ xe máy|Mua xe máy ở đâu uy tín[/FOLLOWUPS]",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ pháp lý** — kiểm tra giấy đăng ký xe, chứng thực nguồn gốc (không phải xe trộm cắp, không nợ trả góp, không bị khoá từ xa). Yêu cầu người bán cung cấp bản gốc, không phải bản sao.\n• **Chủ sở hữu** — đảm bảo người bán là chủ xe trên giấy tờ, hoặc có giấy ủy quyền hợp lệ nếu không phải chủ.\n• **Gặp trực tiếp** — không chuyển tiền qua link lạ hay trước khi xem xe. Gặp ở nơi công cộng, mang theo người thân.\n\n**Kiểm tra tình trạng xe:**\n• **Khung gầm & thân xe** — xem có bị va chạm, hàn vá, gỉ sét hay không. Kiểm tra số khung, số máy có khớp với giấy tờ không.\n• **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không, kiểm tra dầu máy (màu sắc, mùi).\n• **Hệ thống phanh** — phanh trước/sau có còn hiệu lực, không bị mềm hay cứng bất thường.\n• **Lốp & bánh xe** — độ mòn lốp, có bị nứt hay không, vành có bị cong không.\n• **Đèn & điện** — đèn pha, đèn phanh, còi, chỉnh số có hoạt động bình thường không.\n• **Số km** — kiểm tra đồng hồ công tơ mét, so sánh với tình trạng xe (xe chạy 50.000km không nên quá mới, 100.000km không nên quá cũ).\n\n**Dấu hiệu cảnh báo:**\nNếu giá rẻ bất thường so với mặt bằng, người bán vội vàng, không cho xem giấy tờ gốc, hoặc xe từng bị tai nạn nặng → cần cẩn thận. Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Lời khuyên cuối:** Chỉ mua khi đã xem xe trực tiếp, kiểm tra giấy tờ gốc, và đã thoát hết tài khoản của người bán (nếu xe có tài khoản đăng nhập). Nếu cần, có thể đưa xe đi kiểm tra tại xưởng uy tín trước khi quyết định."
+    }
+  ]
+}

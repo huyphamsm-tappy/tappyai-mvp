@@ -21,7 +21,14 @@ interface ProfileAgeState {
 /** Two digits, so a single-digit day or month still forms a valid ISO date. */
 const pad = (v: string) => v.padStart(2, '0')
 
-function AgeCheckInner() {
+/**
+ * `guest` — the trial's self-declaration (owner D1, revised 2026-09-17). The SAME
+ * screen and form; only where the answer goes differs: `POST /api/age-declaration`
+ * stores it on the device (an HttpOnly cookie) instead of the profile. There is
+ * no eligibility to load, no correction allowance to spend and no session to
+ * sign out of, so those three affordances are simply not rendered for a guest.
+ */
+function AgeCheckInner({ guest = false }: { guest?: boolean }) {
   const { t, locale, setLocale } = useTranslation()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -42,6 +49,7 @@ function AgeCheckInner() {
 
   useEffect(() => {
     let cancelled = false
+    if (guest) { setState({ ageStatus: 'unknown', canCorrectAge: false }); return () => { cancelled = true } }
     fetch('/api/profile')
       .then((r) => (r.ok ? r.json() : null))
       .then((body) => {
@@ -57,7 +65,7 @@ function AgeCheckInner() {
       })
       .catch(() => { if (!cancelled) setState({ ageStatus: 'unknown', canCorrectAge: true }) })
     return () => { cancelled = true }
-  }, [router, safeNext])
+  }, [router, safeNext, guest])
 
   const submit = useCallback(async () => {
     setError(null)
@@ -72,8 +80,8 @@ function AgeCheckInner() {
 
     setSaving(true)
     try {
-      const res = await fetch('/api/profile', {
-        method: 'PATCH',
+      const res = await fetch(guest ? '/api/age-declaration' : '/api/profile', {
+        method: guest ? 'POST' : 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ dateOfBirth: iso }),
       })
@@ -108,7 +116,7 @@ function AgeCheckInner() {
     } finally {
       setSaving(false)
     }
-  }, [day, month, year, router, safeNext, t])
+  }, [day, month, year, router, safeNext, t, guest])
 
   const signOut = useCallback(async () => {
     // The ONE sign-out primitive (`src/lib/auth/signOut.ts`). A second
@@ -301,7 +309,7 @@ function AgeCheckInner() {
                 </>
               )}
 
-              {blocked && !correcting && (
+              {blocked && !correcting && !guest && (
                 <div className="mt-7 flex flex-col gap-3">
                   {state.canCorrectAge ? (
                     <button
@@ -438,10 +446,10 @@ function AgeCheckInner() {
 
 // `useSearchParams()` needs a Suspense boundary above it — same reason as
 // /onboarding, where the app-root loading.tsx no longer provides one.
-export function AgeCheckView() {
+export function AgeCheckView({ guest = false }: { guest?: boolean } = {}) {
   return (
     <Suspense fallback={null}>
-      <AgeCheckInner />
+      <AgeCheckInner guest={guest} />
     </Suspense>
   )
 }

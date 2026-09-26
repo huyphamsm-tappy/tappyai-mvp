@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 14050,
+      "textFrames": 390,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ xe**: Kiểm tra giấy đăng ký, chứng chỉ kiểm định an toàn kỹ thuật (nếu có), và xác nhận chủ sở hữu hiện tại khớp với người bán. Tránh mua xe có giấy tờ không rõ ràng hoặc đang bị cấm chuyển nhượng.\n• **Lịch sử xe**: Hỏi xe từng bị tai nạn, ngập nước hay sửa chữa lớn không. Nếu mua qua trung gian, hỏi rõ nguồn gốc.\n• **Gặp trực tiếp**: Luôn gặp người bán trực tiếp, xem xe ngoài đời, và kiểm tra trước khi trả tiền. Tránh chuyển tiền trước qua link lạ hoặc cho người lạ.\n\n**Kiểm tra tình trạng xe:**\n• **Khung gầm & thân xe**: Xem có dấu vết va chạm, rỉ sét, hoặc bị hàn vá không. Nếu khung bị cong hay hàn, chi phí sửa sẽ rất cao.\n• **Động cơ**: Nổ máy xem có tiếng lạ, khí thải màu gì (bình thường là nhạt, nếu đen/xanh là dấu hiệu động cơ có vấn đề). Kiểm tra dầu máy có đủ và sạch không.\n• **Lốp & phanh**: Xem lốp còn hạn sử dụng không, phanh có hiệu lực, dây cáp phanh không bị rỉ.\n• **Đèn & điện**: Thử tất cả đèn (pha, xi nhan, phanh), còi, và chức năng điện khác.\n• **Số km**: Xem đồng hồ công tơ mét, nếu quá thấp so với tuổi xe có thể bị chỉnh sửa.\n\n**Lái thử:**\nNếu có thể, lái thử để cảm nhận độ êm, phản ứng ga, phanh, và xem có tiếng lạ khi chạy không.\n\n**Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đã tìm được chiếc xe cụ thể nào, mình có thể giúp bạn tìm thông tin thêm về giá thị trường hoặc các chi tiết khác! 👍",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Trước khi chuyển tiền:**\n• **Giấy tờ xe**: Kiểm tra giấy đăng ký, chứng chỉ kiểm định an toàn kỹ thuật (nếu có), và xác nhận chủ sở hữu hiện tại khớp với người bán. Tránh mua xe có giấy tờ không rõ ràng hoặc đang bị cấm chuyển nhượng.\n• **Lịch sử xe**: Hỏi xe từng bị tai nạn, ngập nước hay sửa chữa lớn không. Nếu mua qua trung gian, hỏi rõ nguồn gốc.\n• **Gặp trực tiếp**: Luôn gặp người bán trực tiếp, xem xe ngoài đời, và kiểm tra trước khi trả tiền. Tránh chuyển tiền trước qua link lạ hoặc cho người lạ.\n\n**Kiểm tra tình trạng xe:**\n• **Khung gầm & thân xe**: Xem có dấu vết va chạm, rỉ sét, hoặc bị hàn vá không. Nếu khung bị cong hay hàn, chi phí sửa sẽ rất cao.\n• **Động cơ**: Nổ máy xem có tiếng lạ, khí thải màu gì (bình thường là nhạt, nếu đen/xanh là dấu hiệu động cơ có vấn đề). Kiểm tra dầu máy có đủ và sạch không.\n• **Lốp & phanh**: Xem lốp còn hạn sử dụng không, phanh có hiệu lực, dây cáp phanh không bị rỉ.\n• **Đèn & điện**: Thử tất cả đèn (pha, xi nhan, phanh), còi, và chức năng điện khác.\n• **Số km**: Xem đồng hồ công tơ mét, nếu quá thấp so với tuổi xe có thể bị chỉnh sửa.\n\n**Lái thử:**\nNếu có thể, lái thử để cảm nhận độ êm, phản ứng ga, phanh, và xem có tiếng lạ khi chạy không.\n\n**Trước khi chuyển tiền, bạn dán số điện thoại / tài khoản / link của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nNếu bạn đã tìm được chiếc xe cụ thể nào, mình có thể giúp bạn tìm thông tin thêm về giá thị trường hoặc các chi tiết khác! 👍"
+    }
+  ]
+}

@@ -243,7 +243,11 @@ describe('BUG-011 · 5 — same-city keeps the nearby behaviour', () => {
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    // 1500, not the 2000 this test shipped with: measured 2026-09-08 in District 1,
+    // r=2000 timed out against both Overpass mirrors and returned 0 rows while r=1500
+    // returned 10. What this assertion protects is that a nearby search uses the TIGHT
+    // radius; the tight value itself is owned by that measurement.
+    expect(c.radius).toBe(1500)
     expect(rows(r)[0]).toHaveProperty('distance_km')
   })
 })
@@ -257,7 +261,11 @@ describe('BUG-011 · 6 — no location supplied leaves "near me" untouched', () 
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    // 1500, not the 2000 this test shipped with: measured 2026-09-08 in District 1,
+    // r=2000 timed out against both Overpass mirrors and returned 0 rows while r=1500
+    // returned 10. What this assertion protects is that a nearby search uses the TIGHT
+    // radius; the tight value itself is owned by that measurement.
+    expect(c.radius).toBe(1500)
   })
 
   it('does not filter results when no destination was named', async () => {
@@ -298,66 +306,3 @@ describe('BUG-011 · 8 — a previous destination cannot contaminate the next se
   })
 })
 
-// ── 9 · The Google provider path ────────────────────────────────────────────
-
-describe('BUG-011 · 9 — the Google path is scoped too', () => {
-  const googlePlace = (name: string, address: string) => ({
-    id: `id-${name}`, displayName: { text: name }, formattedAddress: address,
-    rating: 4.5, userRatingCount: 100, googleMapsUri: 'https://maps.google.com/x',
-  })
-
-  /**
-   * `searchPlaces` memoises on (query, location, type, GPS, lang) in the module-level cache in
-   * ./common, which has no reset hook and lives for the whole test file. Two cases sharing a
-   * query would have the second silently assert the FIRST one's stubbed response — green, and
-   * measuring nothing. A unique query per case is what keeps each one honest.
-   */
-  let n = 0
-  const uniqueQuery = () => `cong vien case ${++n}`
-
-  beforeEach(() => vi.stubEnv('GOOGLE_PLACES_API_KEY', 'test-key'))
-
-  it('drops the GPS locationBias for a remote destination', async () => {
-    stubFetch({ places: [googlePlace('Quy Nhon park', 'Quy Nhơn, Bình Định')] })
-    await searchPlaces(uniqueQuery(), 'Quy Nhơn', 'attraction', 'vi', gps(HCMC))
-
-    expect(captured.googleBodies[0]).not.toHaveProperty('locationBias')
-    // The destination still reaches the provider, through the text query.
-    expect(String(captured.googleBodies[0].textQuery)).toContain('Quy Nhơn')
-  })
-
-  it('keeps the locationBias for a nearby search', async () => {
-    stubFetch({ places: [googlePlace('Quán gần đây', 'Quận 1, Hồ Chí Minh')] })
-    await searchPlaces(uniqueQuery(), 'Ho Chi Minh', undefined, 'vi', gps(HCMC))
-    expect(captured.googleBodies[0]).toHaveProperty('locationBias')
-  })
-
-  it('rejects a place whose address is a different city', async () => {
-    stubFetch({
-      places: [
-        googlePlace('Công viên bờ sông Sài Gòn', 'Thủ Thiêm, Quận 2, Hồ Chí Minh'),
-        googlePlace('Quảng trường Quy Nhơn', 'Nguyễn Tất Thành, Quy Nhơn, Bình Định'),
-      ],
-      elements: [],
-    })
-    const r = await searchPlaces(uniqueQuery(), 'Quy Nhơn', 'attraction', 'vi', gps(HCMC))
-    expect(names(r)).toEqual(['Quảng trường Quy Nhơn'])
-  })
-
-  it('keeps a place whose address names no known city', async () => {
-    stubFetch({ places: [googlePlace('Quán không rõ', '12 đường không tên')] })
-    const r = await searchPlaces(uniqueQuery(), 'Quy Nhơn', undefined, 'vi', gps(HCMC))
-    expect(names(r)).toEqual(['Quán không rõ'])
-  })
-
-  it('falls through to OSM when every Google result is out of scope', async () => {
-    // Returning an empty Google set for a real city would be worse than asking the other
-    // provider — which is now centred on the destination.
-    stubFetch({
-      places: [googlePlace('Saigon only', 'Quận 1, Hồ Chí Minh')],
-      elements: [venueIn(QUY_NHON, 'OSM Quy Nhon place')],
-    })
-    const r = await searchPlaces(uniqueQuery(), 'Quy Nhơn', 'attraction', 'vi', gps(HCMC))
-    expect(names(r)).toEqual(['OSM Quy Nhon place'])
-  })
-})

@@ -28,8 +28,29 @@ import {
 import { isSafeKeySegment } from './key'
 import { getMediaProvider } from './index'
 import type { MediaProvider } from './types'
+import { findIdentifyingMetadata, type IdentifyingReason } from './clipMetadata'
 
 export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
+
+/**
+ * Client-direct kinds whose bytes the server never re-encodes — checked for format and identifying
+ * metadata. Deal images joined in F-103: admin-only, but a logo photographed on a phone carries GPS too.
+ * (`audio` / `audioCover` are minted by no route today; add them here if one ever does.)
+ */
+const CHECKED_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail', 'dealLogo', 'dealBanner']
+const CLIENT_DIRECT_CHECKED_KINDS = new Set<MediaUploadKind>(CHECKED_KINDS)
+
+/** What each checked kind accepts, said plainly — the refusal names the formats, not "an error". */
+const UNSUPPORTED_FORMAT_MESSAGE: Partial<Record<MediaUploadKind, string>> = {
+  video: 'Chỉ nhận video MP4 hoặc MOV. Bạn xuất lại thành một trong hai định dạng này rồi thử lại nhé.',
+  videoThumbnail: 'Ảnh bìa video phải là JPEG, PNG hoặc WebP.',
+  dealLogo: 'Chỉ nhận ảnh JPEG, PNG, WebP hoặc SVG.',
+  dealBanner: 'Chỉ nhận ảnh JPEG, PNG, WebP hoặc SVG.',
+}
+const IDENTIFYING_MESSAGE = {
+  video: 'Video chứa thông tin vị trí hoặc thiết bị. Vui lòng cập nhật ứng dụng rồi tải lên lại.',
+  image: 'Ảnh còn kèm thông tin vị trí hoặc thiết bị. Bạn chụp màn hình ảnh này rồi tải ảnh chụp màn hình lên, hoặc xuất lại ảnh không kèm metadata.',
+}
 
 export interface CompleteUploadBody {
   type: typeof COMPLETE_UPLOAD_TYPE
@@ -151,6 +172,37 @@ export async function completeUploadResponse(
   const stored = (found.contentType || '').split(';')[0].trim().toLowerCase()
   if (!policy.contentTypes.includes(stored)) {
     return { status: 422, body: { error: 'Định dạng tệp không được hỗ trợ' } }
+  }
+
+  // F-099 (P1, owner 2026-09-26): a clip, its poster frame or a deal image must not publish where and
+  // with what it was made. The client neutralises clip metadata before the PUT; this is the
+  // enforcement. Anything identifying left in the stored object means it bypassed the client (old
+  // build, native app, direct API call): the object is deleted and no URL is ever returned. Fails
+  // CLOSED on a read error. F-102: the format is judged from the BYTES, never the declared type —
+  // anything that is not what the kind accepts is refused the same way.
+  const kind = input.kind as MediaUploadKind
+  if (CLIENT_DIRECT_CHECKED_KINDS.has(kind)) {
+    if (!provider.readRange) return { status: 502, body: { error: 'Không xác nhận được tệp. Vui lòng thử lại.' } }
+    let reasons: IdentifyingReason[]
+    try {
+      reasons = await findIdentifyingMetadata((o, n) => provider.readRange!(key, o, n), found.size, stored)
+    } catch {
+      return { status: 502, body: { error: 'Không xác nhận được tệp. Vui lòng thử lại.' } }
+    }
+    if (reasons.length > 0) {
+      try { await provider.deleteObject?.(key) } catch { /* the URL is never returned either way */ }
+      if (reasons.includes('unrecognised-format')) {
+        return { status: 422, body: { error: 'unsupported_format', message: UNSUPPORTED_FORMAT_MESSAGE[kind] } }
+      }
+      return {
+        status: 422,
+        body: {
+          error: 'identifying_metadata',
+          reasons,
+          message: kind === 'video' ? IDENTIFYING_MESSAGE.video : IDENTIFYING_MESSAGE.image,
+        },
+      }
+    }
   }
 
   // Derived from the verified key — never echoed from the request.

@@ -1,0 +1,96 @@
+[
+  {
+    tgname: 'on_auth_user_created',
+    d: 'CREATE TRIGGER on_auth_user_created AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user()'
+  }
+]
+auth.identities.user_id CASCADE
+auth.sessions.user_id CASCADE
+auth.mfa_factors.user_id CASCADE
+auth.one_time_tokens.user_id CASCADE
+auth.oauth_authorizations.user_id CASCADE
+auth.oauth_consents.user_id CASCADE
+auth.webauthn_credentials.user_id CASCADE
+auth.webauthn_challenges.user_id CASCADE
+auth.scim_users.user_id SET NULL
+auth.mfa_recovery_code_sets.user_id CASCADE
+anon_chat_usage.user_id CASCADE
+billing_customers.user_id CASCADE
+bookings.user_id CASCADE
+chat_blocks.blocker_id CASCADE
+chat_blocks.blocked_id CASCADE
+chat_messages.sender_id SET NULL
+chat_participants.user_id CASCADE
+chat_reads.user_id CASCADE
+chat_threads.created_by SET NULL
+comment_reactions.user_id CASCADE
+conversations.user_id CASCADE
+decision_evidence.owner_id CASCADE
+favorites.user_id CASCADE
+group_members.user_id CASCADE
+groups.creator_id CASCADE
+marketing_consent.user_id CASCADE
+message_feedback.user_id CASCADE
+music_followed.user_id CASCADE
+music_saved.user_id CASCADE
+music_track_reports.reporter_id SET NULL
+music_tracks.uploaded_by SET NULL
+music_usage.user_id SET NULL
+notification_deliveries.user_id CASCADE
+notification_subscriptions.user_id CASCADE
+notifications.user_id CASCADE
+notifications.actor_id SET NULL
+price_watches.user_id CASCADE
+profiles.id CASCADE
+review_comments.user_id CASCADE
+review_interactions.user_id CASCADE
+review_likes.user_id CASCADE
+review_saves.user_id CASCADE
+review_shares.user_id CASCADE
+user_events.user_id CASCADE
+user_follows.following_id CASCADE
+user_follows.follower_id CASCADE
+user_integrations.user_id CASCADE
+user_memory.user_id CASCADE
+user_preferences.user_id CASCADE
+chat_reports.reporter_id CASCADE
+chat_reports.reported_user_id CASCADE
+contact_sync_state.user_id CASCADE
+contact_identity_index.user_id CASCADE
+contact_matches.owner_user_id CASCADE
+contact_matches.matched_user_id CASCADE
+governed_events.user_id CASCADE
+ads.advertisers.owner_user_id SET NULL
+ads.attribution_events.user_id SET NULL
+query_texts.user_id CASCADE
+plan_shares.owner_id CASCADE
+shared_results.owner_id SET NULL
+anon_identity_map.user_id CASCADE
+--- FK to public.profiles/users
+account_status.user_id -> profiles c
+admin_permissions.user_id -> profiles c
+admin_permissions.granted_by -> profiles n
+admin_roles.granted_by -> profiles n
+admin_roles.user_id -> profiles c
+department_membership.user_id -> profiles c
+moderation_actions.actor_id -> profiles a
+moderation_actions.target_user_id -> profiles n
+moderation_queue.resolved_by -> profiles n
+moderation_queue.assigned_to -> profiles n
+moderation_queue.reported_by -> profiles n
+platform_owner.user_id -> profiles r
+platform_owner_recovery.target_user_id -> profiles r
+platform_settings.updated_by -> profiles a
+reviews.user_id -> profiles c
+subscriptions.user_id -> profiles c
+user_acquisition.user_id -> profiles c
+user_demographics.user_id -> profiles c
+user_notes.author_id -> profiles a
+user_notes.user_id -> profiles c
+--- user-id-like columns in public WITHOUT any FK
+audit_log.actor_id (uuid)
+event_outbox.actor (jsonb)
+marketing_campaigns.created_by (uuid)
+user_integrations.provider_user_id (text)
+user_memory_fk_cleanup_log.orphan_user_id (text)
+user_preferences.preference_profile (jsonb)

@@ -1,0 +1,35 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 3590,
+  "evidenceId": "beb1ac07-ec39-4dcb-9333-268494974fde",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình không có thông tin chi tiết về việc Seahorse có bao gồm ăn sáng hay không từ kết quả tìm kiếm hiện tại. Để biết chắc, bạn cần kiểm tra trực tiếp trên trang đặt phòng — thường sẽ có mục \"Bao gồm\" hoặc \"Tiện nghi\" liệt kê rõ ăn sáng có hay không.\n\nBạn có thể xem chi tiết trên [Booking.com - Seahorse](https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang) hoặc Agoda khi chọn ngày ở cụ thể — giá sẽ khác nhau tùy theo gói phòng (có/không ăn sáng).",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy kết quả tìm kiếm chưa có thông tin giá cụ thể từ các khách sạn này. Tuy nhiên, dựa trên danh sách, **M Hotel Da Nang** là lựa chọn mình nghiêng về nhất — có **4.8⭐ từ 2.823 đánh giá Google Maps**, nằm trên đường Võ Nguyên Giáp gần biển, và là khách sạn 3 sao phù hợp với tầm giá dưới 1 triệu.\n\nCác khách sạn khác như **Seahorse** (4.8⭐, 1.835 đánh giá) hay **NALOD Đà Nẵng** (4.7⭐, 4.419 đánh giá) cũng là lựa chọn tốt nếu bạn muốn so sánh thêm.\n\nĐể xem giá chính xác theo ngày bạn muốn ở, bạn có thể kiểm tra trực tiếp trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27) hoặc Agoda Bạn định ở bao nhiêu đêm và ngày nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào khác gần biển|Giá phòng khoảng bao nhiêu|Ở bao nhiêu đêm[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình không có thông tin chi tiết về việc Seahorse có bao gồm ăn sáng hay không từ kết quả tìm kiếm hiện tại. Để biết chắc, bạn cần kiểm tra trực tiếp trên trang đặt phòng — thường sẽ có mục \"Bao gồm\" hoặc \"Tiện nghi\" liệt kê rõ ăn sáng có hay không.\n\nBạn có thể xem chi tiết trên [Booking.com - Seahorse](https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang) hoặc Agoda khi chọn ngày ở cụ thể — giá sẽ khác nhau tùy theo gói phòng (có/không ăn sáng)."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

@@ -1,0 +1,867 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling / ...
+ ✓ Compiled / in 7.1s (1188 modules)
+ GET / 200 in 7949ms
+ ✓ Compiled in 897ms (501 modules)
+ ○ Compiling /api/config ...
+ ✓ Compiled /api/config in 2.8s (715 modules)
+ GET /api/config 200 in 2863ms
+ GET / 200 in 230ms
+ GET / 200 in 39ms
+ ✓ Compiled /api/auth/anonymous in 160ms (721 modules)
+ GET /api/auth/anonymous 405 in 215ms
+ GET / 200 in 261ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 795ms (941 modules)
+ GET /_next/static/chunks/app/page.js 404 in 1009ms
+ GET /_next/static/chunks/app/page.js 404 in 32ms
+ GET /_next/static/chunks/app/page.js 404 in 67ms
+ ✓ Compiled /register in 410ms (937 modules)
+ GET /register 200 in 642ms
+ ✓ Compiled /api/track in 479ms (547 modules)
+ POST /api/track 200 in 1365ms
+ GET /register 200 in 211ms
+ GET /register 200 in 68ms
+ ✓ Compiled /api/profile in 178ms (561 modules)
+ PATCH /api/profile 401 in 240ms
+ GET /register 200 in 148ms
+ PATCH /api/profile 401 in 20ms
+ GET /register 200 in 58ms
+ PATCH /api/profile 401 in 27ms
+ ○ Compiling /login ...
+ ✓ Compiled /login in 824ms (1128 modules)
+ GET /login?email=1 200 in 1046ms
+ PATCH /api/profile 401 in 80ms
+ ✓ Compiled /api/track in 109ms (628 modules)
+ POST /api/track 200 in 683ms
+ GET /login?email=1 200 in 202ms
+ PATCH /api/profile 401 in 24ms
+ GET /login?email=1 200 in 41ms
+ PATCH /api/profile 401 in 25ms
+ POST /api/track 200 in 242ms
+ GET /login?email=1 200 in 50ms
+ PATCH /api/profile 401 in 23ms
+ GET /login 200 in 43ms
+ PATCH /api/profile 401 in 24ms
+ GET /login 200 in 83ms
+ PATCH /api/profile 401 in 20ms
+ ○ Compiling /api/notifications ...
+ ✓ Compiled /age-check in 2s (1401 modules)
+ GET /api/notifications 200 in 2850ms
+ GET /api/profile 200 in 325ms
+ GET /api/profile 200 in 183ms
+ GET /login 200 in 237ms
+ PATCH /api/profile 401 in 22ms
+ GET /api/notifications 200 in 515ms
+ GET /api/profile 200 in 246ms
+ GET /api/profile 200 in 157ms
+ GET /login 200 in 73ms
+ PATCH /api/profile 401 in 19ms
+ GET /api/notifications 200 in 402ms
+ GET /api/profile 200 in 242ms
+ GET /api/profile 200 in 160ms
+ ✓ Compiled /api/age-declaration in 173ms (640 modules)
+ POST /api/age-declaration 200 in 236ms
+ POST /api/age-declaration 200 in 20ms
+ POST /api/age-declaration 200 in 16ms
+ POST /api/age-declaration 200 in 16ms
+ POST /api/age-declaration 200 in 19ms
+ GET /api/profile 200 in 404ms
+ POST /api/age-declaration 200 in 16ms
+ GET /api/profile 200 in 373ms
+ POST /api/age-declaration 200 in 15ms
+ POST /api/age-declaration 200 in 16ms
+ GET /api/profile 200 in 149ms
+ PATCH /api/profile 200 in 450ms
+ GET /api/profile 200 in 202ms
+ PATCH /api/profile 200 in 225ms
+ GET /api/profile 200 in 177ms
+ PATCH /api/profile 200 in 230ms
+ GET /api/profile 200 in 172ms
+ PATCH /api/profile 200 in 196ms
+ GET /api/profile 200 in 147ms
+ GET /api/profile 200 in 437ms
+ ○ Compiling /api/onboarding ...
+ ✓ Compiled /api/onboarding in 513ms (690 modules)
+ POST /api/onboarding 200 in 1470ms
+ ✓ Compiled /api/preferences in 134ms (695 modules)
+ POST /api/preferences 400 in 229ms
+ ✓ Compiled /api/memory in 144ms (697 modules)
+ PATCH /api/memory 200 in 337ms
+ ✓ Compiled /api/conversations in 150ms (700 modules)
+ POST /api/conversations 200 in 407ms
+ POST /api/conversations 200 in 193ms
+ ✓ Compiled /api/favorites in 150ms (702 modules)
+ POST /api/favorites 200 in 326ms
+ POST /api/favorites 200 in 130ms
+ ✓ Compiled /api/price-watch in 250ms (707 modules)
+ POST /api/price-watch 200 in 526ms
+ POST /api/price-watch 200 in 372ms
+ ✓ Compiled /api/reviews in 453ms (750 modules)
+ POST /api/reviews 200 in 1045ms
+ POST /api/reviews 200 in 394ms
+ ✓ Compiled /api/bookings in 153ms (752 modules)
+ POST /api/bookings 200 in 309ms
+ POST /api/bookings 200 in 133ms
+ ✓ Compiled /api/group in 152ms (754 modules)
+ POST /api/group 200 in 324ms
+ POST /api/group 200 in 138ms
+ ✓ Compiled /api/plans/share in 192ms (761 modules)
+ POST /api/plans/share 200 in 435ms
+ POST /api/plans/share 200 in 213ms
+ ✓ Compiled /api/track in 144ms (765 modules)
+ POST /api/track 200 in 245ms
+ ✓ Compiled /api/notifications/subscribe in 160ms (767 modules)
+ POST /api/notifications/subscribe 200 in 312ms
+ POST /api/notifications/subscribe 200 in 129ms
+ ✓ Compiled /api/users/[id]/follow in 495ms (833 modules)
+ POST /api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/follow 200 in 1332ms
+ POST /api/onboarding 200 in 197ms
+ POST /api/preferences 400 in 79ms
+ PATCH /api/memory 200 in 130ms
+ POST /api/conversations 200 in 191ms
+ POST /api/conversations 200 in 186ms
+ POST /api/favorites 200 in 126ms
+ POST /api/favorites 200 in 124ms
+ POST /api/price-watch 200 in 253ms
+ POST /api/price-watch 200 in 448ms
+ POST /api/reviews 200 in 521ms
+ POST /api/reviews 200 in 363ms
+ POST /api/bookings 200 in 128ms
+ POST /api/bookings 200 in 135ms
+ POST /api/group 200 in 149ms
+ POST /api/group 200 in 161ms
+ POST /api/plans/share 200 in 217ms
+ POST /api/plans/share 200 in 197ms
+ POST /api/track 200 in 76ms
+ POST /api/notifications/subscribe 200 in 143ms
+ POST /api/notifications/subscribe 200 in 138ms
+ POST /api/users/4d6429c1-8270-4fa6-b114-5a61238bc78a/follow 200 in 292ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/messaging/threads in 201ms (836 modules)
+ POST /api/messaging/threads 200 in 393ms
+ ✓ Compiled /api/messaging/threads/[id]/messages in 203ms (839 modules)
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 780ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 195ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 216ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 200 in 197ms
+ ✓ Compiled /api/messaging/threads/[id]/read in 204ms (841 modules)
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read 200 in 679ms
+ ✓ Compiled /api/message-feedback in 188ms (843 modules)
+ POST /api/message-feedback 400 in 280ms
+ POST /api/message-feedback 400 in 79ms
+ POST /api/message-feedback 400 in 74ms
+ POST /api/message-feedback 400 in 72ms
+ POST /api/preferences 200 in 338ms
+ POST /api/message-feedback 200 in 151ms
+ POST /api/message-feedback 200 in 139ms
+ POST /api/message-feedback 200 in 140ms
+ POST /api/message-feedback 200 in 119ms
+ ✓ Compiled /api/reviews/[id]/like in 456ms (706 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/like 200 in 1144ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/reviews/[id]/save in 174ms (708 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/save 200 in 771ms
+ ✓ Compiled /api/reviews/[id]/comments in 280ms (713 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/comments 200 in 975ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ ✓ Compiled /api/reviews/[id]/share in 146ms (715 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share 200 in 783ms
+ ✓ Compiled /api/reviews/[id]/interact in 148ms (717 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/interact 200 in 541ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/like 200 in 263ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/save 200 in 192ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/comments 200 in 435ms
+[notifications] Dispatch failed for sub 6b646bdd-4889-49b4-b462-2dfb44f42ee9: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/share 200 in 279ms
+ POST /api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/interact 200 in 72ms
+ ✓ Compiled /api/track in 243ms (720 modules)
+ POST /api/track 200 in 399ms
+ POST /api/preferences 200 in 119ms
+ POST /api/message-feedback 200 in 116ms
+ POST /api/message-feedback 200 in 115ms
+ POST /api/message-feedback 200 in 118ms
+ POST /api/message-feedback 200 in 117ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/like 200 in 237ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/save 200 in 210ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/comments 200 in 367ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/share 200 in 292ms
+ POST /api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/interact 200 in 74ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/like 200 in 417ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/save 200 in 228ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/comments 200 in 422ms
+[notifications] Dispatch failed for sub a23fda4b-1bc3-426a-a964-e04355853d44: Error: No key set vapidDetails.publicKey
+    at Object.validatePublicKey (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/vapid-helper.js:96:11)
+    at WebPushLib.setVapidDetails (webpack-internal:///(rsc)/../v3-phase4-design/node_modules/web-push/src/web-push-lib.js:60:17)
+    at dispatchWebPush (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:15:53)
+    at dispatch (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:36:19)
+    at eval (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:60)
+    at Array.map (<anonymous>)
+    at sendNotificationToUser (webpack-internal:///(rsc)/./src/lib/notifications/send.ts:82:51)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async emitNotification (webpack-internal:///(rsc)/./src/lib/notifications/emit.ts:82:16)
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/share 200 in 344ms
+ POST /api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/interact 200 in 101ms
+ POST /api/track 200 in 161ms
+ ✓ Compiled /api/conversations in 385ms (627 modules)
+ GET /api/conversations 200 in 1082ms
+ GET /api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61 200 in 159ms
+[conversations] {
+  code: 'PGRST116',
+  details: 'The result contains 0 rows',
+  hint: null,
+  message: 'Cannot coerce the result to a single JSON object'
+}
+ PUT /api/conversations 500 in 279ms
+ DELETE /api/conversations 200 in 172ms
+ DELETE /api/conversations?id=447fa0b0-7cc0-4e49-9543-b07de86cff61 200 in 148ms
+ ✓ Compiled /api/price-watch in 106ms (632 modules)
+ DELETE /api/price-watch 404 in 436ms
+ ✓ Compiled /api/favorites in 115ms (634 modules)
+ DELETE /api/favorites 400 in 239ms
+ ✓ Compiled /api/reviews/[id] in 135ms (637 modules)
+ PATCH /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c 404 in 681ms
+ DELETE /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c 404 in 173ms
+ GET /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c 200 in 371ms
+ ✓ Compiled /api/bookings in 100ms (639 modules)
+ GET /api/bookings 200 in 316ms
+ GET /api/price-watch 200 in 199ms
+ ✓ Compiled /api/memory in 362ms (707 modules)
+ GET /api/memory 200 in 537ms
+ GET /api/notifications 200 in 368ms
+ ✓ Compiled /api/reviews/mine in 145ms (710 modules)
+ GET /api/reviews/mine 200 in 376ms
+ ✓ Compiled /api/reviews/saved in 135ms (712 modules)
+ GET /api/reviews/saved 200 in 323ms
+ ✓ Compiled /api/reviews/shared in 160ms (714 modules)
+ GET /api/reviews/shared 200 in 349ms
+ ✓ Compiled /api/reviews/liked in 141ms (716 modules)
+ GET /api/reviews/liked 200 in 334ms
+ ✓ Compiled /api/users/[id] in 108ms (253 modules)
+ GET /api/users/18bb5d88-1a3f-4e67-b370-6453e53222ab 200 in 830ms
+ ✓ Compiled /api/group/[id]/join in 167ms (718 modules)
+ POST /api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/join 400 in 622ms
+ ✓ Compiled /api/group/[id]/suggest in 264ms (722 modules)
+ POST /api/group/72843ec3-7ab4-42a3-9821-aee41e4f6fe9/suggest 403 in 787ms
+ ✓ Compiled /api/messaging/threads/[id]/messages in 303ms (791 modules)
+ GET /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 404 in 478ms
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/messages 404 in 116ms
+ ✓ Compiled /api/messaging/threads/[id]/read in 198ms (793 modules)
+ POST /api/messaging/threads/5489640c-dcb2-453f-9c0b-a423f7561ed7/read 404 in 384ms
+ ✓ Compiled /api/messaging/threads in 165ms (796 modules)
+ GET /api/messaging/threads 200 in 314ms
+ POST /api/messaging/threads 400 in 128ms
+ ○ Compiling /plan/[shareId] ...
+ ✓ Compiled /plan/[shareId] in 1379ms (1425 modules)
+ GET /plan/hovkM05pMlOG 200 in 2093ms
+ GET /plan/AAAAAAAAAAAA 404 in 137ms
+ ✓ Compiled /api/admin/users in 396ms (905 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=users.list.read
+ GET /api/admin/users 403 in 582ms
+ ✓ Compiled /api/admin/users/[id] in 234ms (909 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=users.detail.read
+ GET /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab 403 in 617ms
+ ✓ Compiled /api/admin/users/[id]/ban in 217ms (912 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=users.account.ban
+ POST /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban 403 in 737ms
+ ✓ Compiled /api/admin/audit in 221ms (914 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=audit.log.read
+ GET /api/admin/audit 403 in 266ms
+ ✓ Compiled /api/admin/settings in 268ms (931 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=settings.config.read
+ GET /api/admin/settings 403 in 322ms
+ ✓ Compiled /api/admin/deals in 234ms (935 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=commerce.deals.read
+ GET /api/admin/deals 403 in 401ms
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=commerce.deals.create
+ POST /api/admin/deals 403 in 68ms
+ ✓ Compiled /api/admin/notifications/broadcast in 265ms (942 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=notifications.send.broadcast
+ POST /api/admin/notifications/broadcast 403 in 447ms
+ ✓ Compiled /api/admin/security/sessions in 230ms (945 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=security.sessions.read
+ GET /api/admin/security/sessions 403 in 280ms
+ ✓ Compiled /api/admin/users/[id]/date-of-birth in 223ms (948 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=users.date_of_birth.correct
+ POST /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth 403 in 717ms
+ ✓ Compiled /api/admin/moderation in 238ms (952 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=moderation.queue.read
+ GET /api/admin/moderation 403 in 289ms
+ ✓ Compiled /api/admin/marketing/campaigns in 218ms (955 modules)
+[controller][rbac] deny NO_GRANT user=4d6429c1-8270-4fa6-b114-5a61238bc78a permission=marketing.campaigns.read
+ GET /api/admin/marketing/campaigns 403 in 378ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=users.list.read
+ GET /api/admin/users 403 in 120ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=users.detail.read
+ GET /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab 403 in 23ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=users.account.ban
+ POST /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/ban 403 in 239ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=audit.log.read
+ GET /api/admin/audit 403 in 25ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=settings.config.read
+ GET /api/admin/settings 403 in 44ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=commerce.deals.read
+ GET /api/admin/deals 403 in 74ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=commerce.deals.create
+ POST /api/admin/deals 403 in 86ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=notifications.send.broadcast
+ POST /api/admin/notifications/broadcast 403 in 69ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=security.sessions.read
+ GET /api/admin/security/sessions 403 in 18ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=users.date_of_birth.correct
+ POST /api/admin/users/18bb5d88-1a3f-4e67-b370-6453e53222ab/date-of-birth 403 in 90ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=moderation.queue.read
+ GET /api/admin/moderation 403 in 20ms
+[controller][rbac] deny NO_GRANT user=c35fe627-ac44-4767-96b7-665494829015 permission=marketing.campaigns.read
+ GET /api/admin/marketing/campaigns 403 in 80ms
+ GET /api/conversations 401 in 26ms
+ GET /api/favorites 401 in 38ms
+ GET /api/notifications 200 in 128ms
+ GET /api/memory 200 in 23ms
+ ✓ Compiled /api/profile in 225ms (964 modules)
+ GET /api/profile 401 in 266ms
+ GET /api/price-watch 401 in 19ms
+ GET /api/bookings 401 in 19ms
+ GET /api/reviews/mine 401 in 32ms
+ GET /api/messaging/threads 401 in 15ms
+ ✓ Compiled /api/social/connections in 218ms (966 modules)
+ GET /api/social/connections 401 in 257ms
+ GET /api/admin/users 401 in 21ms
+ ✓ Compiled /api/plans/share in 231ms (969 modules)
+ POST /api/plans/share 401 in 270ms
+ ✓ Compiled /api/reviews/[id]/share in 374ms (971 modules)
+ POST /api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share 401 in 456ms
+ ○ Compiling /api/cron/feed-ingest ...
+ ✓ Compiled /api/cron/feed-ingest in 545ms (1011 modules)
+ GET /api/cron/feed-ingest 401 in 609ms
+ ✓ Compiled /api/cron/price-check in 274ms (1016 modules)
+ GET /api/cron/price-check 401 in 337ms
+ ✓ Compiled /api/cron/outbox-drain in 238ms (1019 modules)
+ GET /api/cron/outbox-drain 401 in 283ms
+ ✓ Compiled /api/cron/analytics-snapshot in 294ms (1028 modules)
+ GET /api/cron/analytics-snapshot 401 in 331ms
+ ✓ Compiled /api/cron/deal-notifications in 262ms (1030 modules)
+ GET /api/cron/deal-notifications 401 in 308ms
+ GET /api/cron/feed-ingest 401 in 27ms
+ GET /api/cron/feed-ingest 401 in 16ms
+ ✓ Compiled /api/debug-places in 404ms (1044 modules)
+ GET /api/debug-places?q=uat2609 200 in 12591ms
+ ✓ Compiled /api/test-photos in 338ms (1046 modules)
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"ChIJtest1","placeName":"Atispho - Pho Atiso","imageCount":8,"pickedCount":1,"chosenHost":"encrypted-tbn0.gstatic.com"}
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"ChIJtest2","placeName":"Hai San Hoang Gia quan 1","imageCount":8,"pickedCount":1,"chosenHost":"encrypted-tbn0.gstatic.com"}
+ GET /api/test-photos 200 in 3827ms
+ ✓ Compiled /api/health in 311ms (1048 modules)
+ GET /api/health 200 in 584ms
+ ✓ Compiled /api/version in 344ms (1050 modules)
+ GET /api/version 200 in 381ms
+ ✓ Compiled /api/admin/media/wif-check in 324ms (1053 modules)
+ GET /api/admin/media/wif-check 401 in 373ms
+ ✓ Compiled /api/auth/anonymous in 269ms (1055 modules)
+[auth/anonymous] sign-in failed: Anonymous sign-ins are disabled
+ POST /api/auth/anonymous 503 in 472ms
+ GET /api/debug-places?q=x 200 in 936ms
+ GET /api/profile 200 in 480ms
+ GET /api/profile 401 in 215ms
+ GET /api/profile 401 in 128ms
+ ✓ Compiled /api/group in 308ms (639 modules)
+ GET /api/group 400 in 373ms
+ ○ Compiling /api/subscription ...
+ ✓ Compiled /api/subscription in 1854ms (630 modules)
+ GET /api/subscription 200 in 2872ms
+ GET /api/subscription 200 in 519ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 1782ms (891 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"quán ăn tối Quận 1 ngân sách 200k","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"quán ăn tối Quận 1 ngân sách 200k","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","won":false}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":0,"total":10,"needed":["price"],"action":"search_again","goal":"recommend","criteria":["price"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"RIKYU","rows":10}
+{"type":"tappyai_cards_error","reason":"pick_unmatched","headers":["ban muon an mon gi?"],"rows":["RIKYU","えびすEbisu District1( Udon & Sushi)","Gogi House Trần Hưng Đạo Quận 1","Lẩu Soái Tướng Quân - Lead General Hotpot Landmark 81 Ho Chi Minh City | 帅将军(胡志明店)火锅","Lẩu HongKong Tiêm Sa Chuỷ 80s - Dakao Q1","Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine","Hàng Dương Quán Quận 1","Ốc Đào"]}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":0,"batch":false}
+{"type":"tappyai_cards_error","reason":"emphasis_dropped_no_model_pick","engine_pick":"RIKYU"}
+{"type":"tappyai_cards","shown":3,"picked":0,"items":8,"named_in_prose":0,"pick_unmatched":true,"emphasis":"none","card1":"RIKYU","model_pick":null,"engine_pick":"RIKYU"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":11,"sentences_removed":0,"chars_in":415,"chars_removed":0,"chars_kept":415,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":0,"query":"quán ăn tối Quận 1 ngân sách 200k"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3573,"completionTokens":375,"totalTokens":3948,"cacheReadTokens":23718,"cacheCreationTokens":23718,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":11552,"preModelMs":693,"ttftMs":1805,"modelFinishMs":9898,"ttuaMs":2363,"postModelMs":1654,"toolMs":3732,"providerId":"claude","modelRole":"smart","generationMs":8093,"firstStepFinishMs":6650,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 13542ms
+ GET /api/subscription 200 in 206ms
+ GET /api/subscription 200 in 202ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"phở Quận 3","location":"Quận 3, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"phở Quận 3","location":"Quận 3, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_tool_called","tool":"search_places","query":"phở Quận 3","location":"Quận 3, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"single_flight_join","key":"places:phở quận 3:quận 3, tp hcm:restaurant:vi"}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Atispho - Phở Atiso","role":"best_overall","attributes":null},{"name":"Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn","role":null,"attributes":null},{"name":"Phở Phú Vương | Phở Ngon Quận 3","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Atispho - Phở Atiso","role":"best_overall","attributes":null},{"name":"Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn","role":null,"attributes":null},{"name":"Phở Phú Vương | Phở Ngon Quận 3","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Atispho - Phở Atiso","rows":10}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Atispho - Phở Atiso","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"same","card1":"Atispho - Phở Atiso","model_pick":"Atispho - Phở Atiso","engine_pick":"Atispho - Phở Atiso"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":16,"sentences_removed":2,"chars_in":869,"chars_removed":259,"chars_kept":610,"reasons":{"quality":1,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":2,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"phở Quận 3"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3647,"completionTokens":537,"totalTokens":4184,"cacheReadTokens":23295,"cacheCreationTokens":23295,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":10984,"preModelMs":681,"ttftMs":1681,"modelFinishMs":9511,"ttuaMs":2434,"postModelMs":1473,"toolMs":1656,"providerId":"claude","modelRole":"smart","generationMs":7830,"firstStepFinishMs":4093,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 11021ms
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":2,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"same","card1":"Atispho - Phở Atiso","model_pick":"Atispho - Phở Atiso","engine_pick":"Atispho - Phở Atiso"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":16,"sentences_removed":2,"chars_in":864,"chars_removed":259,"chars_kept":605,"reasons":{"quality":1,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":2,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"phở Quận 3"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3647,"completionTokens":534,"totalTokens":4181,"cacheReadTokens":23295,"cacheCreationTokens":23295,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":11743,"preModelMs":592,"ttftMs":1491,"modelFinishMs":9351,"ttuaMs":2229,"postModelMs":2392,"toolMs":1867,"providerId":"claude","modelRole":"smart","generationMs":7860,"firstStepFinishMs":4096,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 11778ms
+ GET /api/subscription 200 in 176ms
+ GET /api/subscription 200 in 435ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"cafe yên tĩnh Quận 1","location":"Quận 1, TP HCM","placeType":"cafe","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"cafe"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"cafe yên tĩnh Quận 1","location":"Quận 1, TP HCM","placeType":"cafe","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"XLIII Specialty Coffee","role":"best_overall","attributes":null},{"name":"Tonkin Specialty Coffee","role":null,"attributes":null},{"name":"Tilly House - Matcha, Coffee & Tea - Quận 1","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":[],"action":"recommend","goal":"recommend","criteria":["atmosphere"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"XLIII Specialty Coffee","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":2,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"same","card1":"XLIII Specialty Coffee","model_pick":"XLIII Specialty Coffee","engine_pick":"XLIII Specialty Coffee"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":19,"sentences_removed":1,"chars_in":925,"chars_removed":40,"chars_kept":885,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"cafe yên tĩnh Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3328,"completionTokens":576,"totalTokens":3904,"cacheReadTokens":43897,"cacheCreationTokens":2617,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":11047,"preModelMs":627,"ttftMs":1558,"modelFinishMs":9661,"ttuaMs":1831,"postModelMs":1386,"toolMs":2047,"providerId":"claude","modelRole":"smart","generationMs":8103,"firstStepFinishMs":4479,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 11065ms
+ GET /api/subscription 200 in 173ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"bún bò Quận 3","location":"Quận 3, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"bún bò Quận 3","location":"Quận 3, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Bún Bò Sa Tế Sả - Nguyễn Thông Quận 3","role":"best_overall","attributes":null},{"name":"Bún Bò Huế Mỡ Nổi Cô Như","role":null,"attributes":null},{"name":"ĐEN BÚN BÒ","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Bún Bò Sa Tế Sả - Nguyễn Thông Quận 3","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":2,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"same","card1":"Bún Bò Sa Tế Sả - Nguyễn Thông Quận 3","model_pick":"Bún Bò Sa Tế Sả - Nguyễn Thông Quận 3","engine_pick":"Bún Bò Sa Tế Sả - Nguyễn Thông Quận 3"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":15,"sentences_removed":1,"chars_in":875,"chars_removed":223,"chars_kept":652,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"bún bò Quận 3"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3745,"completionTokens":599,"totalTokens":4344,"cacheReadTokens":43927,"cacheCreationTokens":2647,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":10685,"preModelMs":569,"ttftMs":1302,"modelFinishMs":9066,"ttuaMs":1554,"postModelMs":1619,"toolMs":1835,"providerId":"claude","modelRole":"smart","generationMs":7764,"firstStepFinishMs":3870,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 10703ms
+ GET /api/subscription 200 in 196ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"spa giá tốt","location":"Quận 1, TP HCM","placeType":"spa","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"spa"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"spa giá tốt","location":"Quận 1, TP HCM","placeType":"spa","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","won":false}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"MASSAGE HẠ SPA QUẬN 1","role":"best_overall","attributes":null},{"name":"SIZ SPA - Best Massage Spa and Packages - District 1","role":null,"attributes":null},{"name":"Charm Spa Garden","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"MASSAGE HẠ SPA QUẬN 1","rows":10}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":1,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":2,"scope":"distributed"}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"rehomed","card1":"MASSAGE HẠ SPA QUẬN 1","model_pick":"MASSAGE HẠ SPA QUẬN 1","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":23,"sentences_removed":3,"chars_in":1054,"chars_removed":309,"chars_kept":745,"reasons":{"quality":1,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":2,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"spa giá tốt"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":5178,"completionTokens":669,"totalTokens":5847,"cacheReadTokens":43941,"cacheCreationTokens":2661,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":20272,"preModelMs":591,"ttftMs":1317,"modelFinishMs":18712,"ttuaMs":1605,"postModelMs":1560,"toolMs":10178,"providerId":"claude","modelRole":"smart","generationMs":17395,"firstStepFinishMs":12357,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["spa"],"frameClarify":null}
+ POST /api/chat 200 in 20289ms
+ GET /api/subscription 200 in 191ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":5,"sentences_removed":0,"chars_in":254,"chars_removed":0,"chars_kept":254,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":148,"totalTokens":151,"cacheReadTokens":0,"cacheCreationTokens":23232,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":4574,"preModelMs":755,"ttftMs":1666,"modelFinishMs":3258,"ttuaMs":2905,"postModelMs":1316,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":1592,"firstStepFinishMs":3255,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["entertainment"],"frameClarify":"location"}
+ POST /api/chat 200 in 4592ms
+ GET /api/subscription 200 in 179ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_commerce_link","provider":"tiktokshop","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"shopping","host":"shop.tiktok.com"}
+{"type":"tappyai_commerce_link","provider":"lazada","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"shopping","host":"www.lazada.vn"}
+{"type":"tappyai_commerce_link","provider":"shopee","tier":2,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"shopping","host":"shopee.vn"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_link","provider":"unknown","tier":null,"tracked":false,"depth":"intermediary","kind":"purchase","domain":"shopping","host":"www.google.com","error":"shallow_commerce_link","rule":"deepest page only — never homepage / search / intermediary"}
+{"type":"tappyai_commerce_untracked","provider":"lazada","tier":1,"today":1,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"tiktokshop","tier":1,"today":1,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"shopee","tier":2,"today":1,"scope":"distributed"}
+{"type":"tappyai_consultative_v1","step":"attributes","tool":"search_products","rows":6,"venues_with_attributes":0,"hard":[],"hard_gaps":[],"hard_contrary":[],"hard_assumed":[],"hard_row_backed":[],"hard_row_backed_by":{},"hard_field_missing":[],"hard_unclassified":[],"budget_gap":false}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":0,"batch":false}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":4323,"completionTokens":625,"totalTokens":4948,"cacheReadTokens":27362,"cacheCreationTokens":27362,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":13056,"preModelMs":634,"ttftMs":1503,"modelFinishMs":11520,"ttuaMs":1504,"postModelMs":1536,"toolMs":3985,"providerId":"claude","modelRole":"smart","generationMs":10017,"firstStepFinishMs":6033,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_products","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["shopping"],"frameClarify":null}
+ POST /api/chat 200 in 13072ms
+ GET /api/subscription 200 in 171ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":191,"totalTokens":194,"cacheReadTokens":20788,"cacheCreationTokens":1534,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":5456,"preModelMs":571,"ttftMs":2104,"modelFinishMs":4195,"ttuaMs":2104,"postModelMs":1261,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":2091,"firstStepFinishMs":4195,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":"location"}
+ POST /api/chat 200 in 5471ms
+ GET /api/subscription 200 in 326ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"trà sữa quận 10","location":"Quận 10, TP HCM","placeType":"cafe","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"cafe"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"trà sữa quận 10","location":"Quận 10, TP HCM","placeType":"cafe","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Tiệm Trà Sữa Băng Thành","role":"best_overall","attributes":null},{"name":"Cha Cha Rang Milktea & Fruittea| Trà Sữa Đài Loan Quận 10","role":null,"attributes":null},{"name":"Cotea Vĩnh Viễn - Cafe & Trà Sữa Quận 10","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Tiệm Trà Sữa Băng Thành","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"rehomed","card1":"Tiệm Trà Sữa Băng Thành","model_pick":"Tiệm Trà Sữa Băng Thành","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":19,"sentences_removed":3,"chars_in":908,"chars_removed":342,"chars_kept":566,"reasons":{"quality":1,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":3,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"trà sữa quận 10"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3568,"completionTokens":605,"totalTokens":4173,"cacheReadTokens":44002,"cacheCreationTokens":2722,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":11649,"preModelMs":576,"ttftMs":1284,"modelFinishMs":10151,"ttuaMs":1607,"postModelMs":1498,"toolMs":1861,"providerId":"claude","modelRole":"smart","generationMs":8867,"firstStepFinishMs":4014,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 11665ms
+ GET /api/subscription 200 in 366ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"massage chân","location":"Quận 1, TP HCM","placeType":"spa","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"spa"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"massage chân","location":"Quận 1, TP HCM","placeType":"spa","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"MASSAGE HẠ SPA QUẬN 1","role":"best_overall","attributes":null},{"name":"Quynh Nhu 137 Foot Massage","role":null,"attributes":null},{"name":"Vĩnh Khang Spa - Foot Massage - Body Massage","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"spa","host":"www.klook.com"}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"MASSAGE HẠ SPA QUẬN 1","rows":10}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":3,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":4,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":5,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":6,"scope":"distributed"}
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"Trải nghiệm Elle'B Beaute Spa tại Chợ Bến Thành, Hồ Chí Minh","placeName":"Trải nghiệm Elle'B Beaute Spa tại Chợ Bế","imageCount":8,"pickedCount":3,"chosenHost":"encrypted-tbn0.gstatic.com"}
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh","placeName":"Trải nghiệm Ha Spa & Massage tại Quận 1,","imageCount":8,"pickedCount":3,"chosenHost":"encrypted-tbn0.gstatic.com"}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"rehomed","card1":"MASSAGE HẠ SPA QUẬN 1","model_pick":"MASSAGE HẠ SPA QUẬN 1","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":20,"sentences_removed":3,"chars_in":978,"chars_removed":329,"chars_kept":649,"reasons":{"quality":1,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":3,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"massage chân"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3100,"completionTokens":608,"totalTokens":3708,"cacheReadTokens":43987,"cacheCreationTokens":2707,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":18397,"preModelMs":635,"ttftMs":1836,"modelFinishMs":14409,"ttuaMs":2156,"postModelMs":3988,"toolMs":5870,"providerId":"claude","modelRole":"smart","generationMs":12573,"firstStepFinishMs":8584,"photoTotalMs":2477,"photoMaxPlaceMs":2477,"photoPlacesSelected":2,"photoPlacesEnriched":2,"photoSteps":{"serper":{"n":2,"totalMs":3860,"maxMs":2476,"hits":2,"timeouts":0}},"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["spa"],"frameClarify":null}
+ POST /api/chat 200 in 18412ms
+ GET /api/subscription 200 in 305ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"lẩu Quận 5","location":"Quận 5, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"lẩu Quận 5","location":"Quận 5, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Lẩu Sữa Ông Mã - Q5","role":"best_overall","attributes":null},{"name":"Phong Vị 24h | Nhà Hàng Lẩu Quận 5","role":null,"attributes":null},{"name":"Lẩu Bò Kho Xương Ống","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Lẩu Sữa Ông Mã - Q5","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"rehomed","card1":"Lẩu Sữa Ông Mã - Q5","model_pick":"Lẩu Sữa Ông Mã - Q5","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":17,"sentences_removed":1,"chars_in":817,"chars_removed":53,"chars_kept":764,"reasons":{"quality":0,"popularity":0,"ordering":1,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"lẩu Quận 5"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3480,"completionTokens":620,"totalTokens":4100,"cacheReadTokens":43051,"cacheCreationTokens":1771,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":10846,"preModelMs":668,"ttftMs":1818,"modelFinishMs":9427,"ttuaMs":1818,"postModelMs":1419,"toolMs":1188,"providerId":"claude","modelRole":"smart","generationMs":7609,"firstStepFinishMs":3895,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 10862ms
+ GET /api/subscription 200 in 176ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"bánh mì ngon","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"bánh mì ngon","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Đỉnh Bread & Tea | Bánh Mì Ngon Quận 1","role":"best_overall","attributes":null},{"name":"Bánh mỳ Thanks","role":null,"attributes":null},{"name":"Bánh Mì Mẹ Ỉn","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Đỉnh Bread & Tea | Bánh Mì Ngon Quận 1","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":0,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"same","card1":"Đỉnh Bread & Tea | Bánh Mì Ngon Quận 1","model_pick":"Đỉnh Bread & Tea | Bánh Mì Ngon Quận 1","engine_pick":"Đỉnh Bread & Tea | Bánh Mì Ngon Quận 1"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":18,"sentences_removed":0,"chars_in":938,"chars_removed":0,"chars_kept":938,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"bánh mì ngon"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3855,"completionTokens":617,"totalTokens":4472,"cacheReadTokens":43989,"cacheCreationTokens":2709,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":13139,"preModelMs":633,"ttftMs":1367,"modelFinishMs":10318,"ttuaMs":1645,"postModelMs":2821,"toolMs":2030,"providerId":"claude","modelRole":"smart","generationMs":8951,"firstStepFinishMs":4174,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 13156ms
+ GET /api/subscription 200 in 177ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"karaoke Quận 3","location":"Quận 3, TP HCM","placeType":"bar","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"bar"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"karaoke Quận 3","location":"Quận 3, TP HCM","placeType":"bar","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Karaoke Avatar","role":"best_overall","attributes":null},{"name":"Karaoke ICOOL","role":null,"attributes":null},{"name":"Karaoke ICOOL","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"entertainment","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"entertainment","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"entertainment","host":"www.klook.com"}
+{"type":"tappyai_commerce_link","provider":"klook","tier":1,"tracked":false,"depth":"product","kind":"DETAIL_HANDOFF","domain":"entertainment","host":"www.klook.com"}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Karaoke Avatar","rows":10}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":7,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":8,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":9,"scope":"distributed"}
+{"type":"tappyai_commerce_untracked","provider":"klook","tier":1,"today":10,"scope":"distributed"}
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí Minh","placeName":"Golden Lotus Healing World & Jjimjilbang","imageCount":8,"pickedCount":3,"chosenHost":"encrypted-tbn0.gstatic.com"}
+{"type":"tappyai_photo_debug","step":"serper_result","placeId":"Trải Nghiệm Bắn Súng Ánh Sáng Laser + Trò Chơi Bổ Sung (90 Phút)","placeName":"Trải Nghiệm Bắn Súng Ánh Sáng Laser + Tr","imageCount":8,"pickedCount":3,"chosenHost":"encrypted-tbn0.gstatic.com"}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"rehomed","card1":"Karaoke Avatar","model_pick":"Karaoke Avatar","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":15,"sentences_removed":0,"chars_in":809,"chars_removed":0,"chars_kept":809,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"karaoke Quận 3"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3120,"completionTokens":532,"totalTokens":3652,"cacheReadTokens":43978,"cacheCreationTokens":2698,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":19180,"preModelMs":576,"ttftMs":1493,"modelFinishMs":14840,"ttuaMs":1757,"postModelMs":4340,"toolMs":7036,"providerId":"claude","modelRole":"smart","generationMs":13347,"firstStepFinishMs":9296,"photoTotalMs":2808,"photoMaxPlaceMs":2807,"photoPlacesSelected":2,"photoPlacesEnriched":2,"photoSteps":{"serper":{"n":2,"totalMs":4781,"maxMs":2807,"hits":2,"timeouts":0}},"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["entertainment"],"frameClarify":null}
+ POST /api/chat 200 in 19196ms
+ GET /api/subscription 200 in 165ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":180,"totalTokens":183,"cacheReadTokens":20640,"cacheCreationTokens":1338,"llmCalls":1,"memoryExtract":0,"toolCalls":0,"elapsedMs":3335,"preModelMs":602,"ttftMs":1344,"modelFinishMs":3335,"ttuaMs":1344,"postModelMs":0,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":1991,"firstStepFinishMs":3335,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":false,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 3354ms
+ GET /api/subscription 200 in 320ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"cơm tấm Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"cơm tấm Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Cơm Tấm Chị Hằng - 361A Phạm Ngũ Lão, Phường Bến Thành, Tp Hồ","role":"best_overall","attributes":null},{"name":"Cơm tấm 701 - Sườn bì chả chuẩn vị Sài Gòn - 35 Nguyễn Văn Tráng Q1","role":null,"attributes":null},{"name":"Cơm Tấm Sài Gòn Quận 1 (Vinhomes Golden River Bason)","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Cơm Tấm Chị Hằng - 361A Phạm Ngũ Lão, Phường Bến Thành, Tp Hồ","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":0,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"rehomed","card1":"Cơm Tấm Chị Hằng - 361A Phạm Ngũ Lão, Phường Bến Thành, Tp Hồ","model_pick":"Cơm Tấm Chị Hằng - 361A Phạm Ngũ Lão, Phường Bến Thành, Tp Hồ","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":22,"sentences_removed":4,"chars_in":943,"chars_removed":390,"chars_kept":553,"reasons":{"quality":1,"popularity":0,"ordering":1,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":4,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"cơm tấm Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3545,"completionTokens":625,"totalTokens":4170,"cacheReadTokens":43991,"cacheCreationTokens":2711,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":12113,"preModelMs":384,"ttftMs":1382,"modelFinishMs":10742,"ttuaMs":1677,"postModelMs":1371,"toolMs":2649,"providerId":"claude","modelRole":"smart","generationMs":9360,"firstStepFinishMs":4907,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 12128ms
+ GET /api/subscription 200 in 219ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"hủ tiếu Quận 6","location":"Quận 6, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"hủ tiếu Quận 6","location":"Quận 6, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"QUÁN MỘT TÁM MỘT | QUÁN NHẬU NGON QUẬN 6","role":"best_overall","attributes":null},{"name":"Hủ Tiếu Hồ 237","role":null,"attributes":null},{"name":"Quán Hủ Tiếu Hồ Chay","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"QUÁN MỘT TÁM MỘT | QUÁN NHẬU NGON QUẬN 6","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":false}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"rehomed","card1":"Hủ Tiếu Hồ 237","model_pick":"Hủ Tiếu Hồ 237","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":16,"sentences_removed":1,"chars_in":812,"chars_removed":64,"chars_kept":748,"reasons":{"quality":0,"popularity":0,"ordering":1,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"hủ tiếu Quận 6"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3532,"completionTokens":592,"totalTokens":4124,"cacheReadTokens":43995,"cacheCreationTokens":2715,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":11468,"preModelMs":693,"ttftMs":1410,"modelFinishMs":9760,"ttuaMs":1747,"postModelMs":1708,"toolMs":2287,"providerId":"claude","modelRole":"smart","generationMs":8350,"firstStepFinishMs":4620,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 11484ms
+ GET /api/subscription 200 in 527ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+ POST /api/chat 429 in 589ms
+ POST /api/chat 429 in 695ms
+ POST /api/chat 429 in 704ms
+ POST /api/chat 429 in 704ms
+{"type":"tappyai_tool_called","tool":"search_places","query":"quán ăn ngon Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"quán ăn ngon Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","role":"best_overall","attributes":null},{"name":"A Xỉu - Quán Ăn Ngon","role":null,"attributes":null},{"name":"Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":0,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"same","card1":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","model_pick":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","engine_pick":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":14,"sentences_removed":1,"chars_in":906,"chars_removed":138,"chars_kept":768,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"quán ăn ngon Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":4607,"completionTokens":631,"totalTokens":5238,"cacheReadTokens":43996,"cacheCreationTokens":2716,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":12656,"preModelMs":544,"ttftMs":1254,"modelFinishMs":10470,"ttuaMs":1492,"postModelMs":2186,"toolMs":2225,"providerId":"claude","modelRole":"smart","generationMs":9216,"firstStepFinishMs":5140,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 12687ms
+ GET /api/subscription 200 in 165ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+ POST /api/chat 429 in 548ms
+[?25h
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 1845ms
+ ○ Compiling /api/health ...
+ ✓ Compiled /api/health in 717ms (145 modules)
+ GET /api/health 200 in 860ms
+ GET /api/health 200 in 28ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 974ms (435 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":182,"totalTokens":185,"cacheReadTokens":20788,"cacheCreationTokens":1341,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":5843,"preModelMs":1627,"ttftMs":2642,"modelFinishMs":4983,"ttuaMs":2642,"postModelMs":860,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":2341,"firstStepFinishMs":4981,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 7065ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":442,"totalTokens":445,"cacheReadTokens":0,"cacheCreationTokens":22178,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":8012,"preModelMs":1450,"ttftMs":3212,"modelFinishMs":7054,"ttuaMs":3212,"postModelMs":958,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":3842,"firstStepFinishMs":7054,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 8127ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":211,"totalTokens":214,"cacheReadTokens":20788,"cacheCreationTokens":1315,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6209,"preModelMs":740,"ttftMs":1651,"modelFinishMs":4622,"ttuaMs":1651,"postModelMs":1587,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2971,"firstStepFinishMs":4622,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 6228ms
+ ✓ Compiled /api/memory in 280ms (435 modules)
+ PATCH /api/memory 200 in 934ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"quán ăn tối Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"quán ăn tối Quận 1","location":"Quận 1, TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Nori - Modern Izakaya","role":"best_overall","attributes":null},{"name":"えびすEbisu District1( Udon & Sushi)","role":null,"attributes":null},{"name":"Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Nori - Modern Izakaya","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":3,"items":8,"named_in_prose":3,"pick_unmatched":false,"emphasis":"same","card1":"Nori - Modern Izakaya","model_pick":"Nori - Modern Izakaya","engine_pick":"Nori - Modern Izakaya"}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":15,"sentences_removed":2,"chars_in":1031,"chars_removed":230,"chars_kept":801,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":2,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":2,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":1,"query":"quán ăn tối Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":4919,"completionTokens":714,"totalTokens":5633,"cacheReadTokens":23361,"cacheCreationTokens":23361,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":15519,"preModelMs":706,"ttftMs":1680,"modelFinishMs":13752,"ttuaMs":1958,"postModelMs":1767,"toolMs":2404,"providerId":"claude","modelRole":"smart","generationMs":12072,"firstStepFinishMs":4957,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":null}
+ POST /api/chat 200 in 15647ms
+ PATCH /api/memory 200 in 158ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":198,"totalTokens":201,"cacheReadTokens":20640,"cacheCreationTokens":1587,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":4898,"preModelMs":1059,"ttftMs":1949,"modelFinishMs":3878,"ttuaMs":1949,"postModelMs":1020,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":1929,"firstStepFinishMs":3878,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 4914ms
+ ✓ Compiled /api/links/resolve in 216ms (439 modules)
+ POST /api/links/resolve 400 in 247ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 15ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 16ms
+ POST /api/links/resolve 400 in 19ms
+ ○ Compiling /api/scam-shield/check ...
+ ✓ Compiled /api/scam-shield/check in 2.2s (836 modules)
+ POST /api/scam-shield/check 400 in 2356ms
+ POST /api/scam-shield/check 200 in 603ms
+ POST /api/scam-shield/check 400 in 92ms
+ POST /api/scam-shield/check 400 in 78ms
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":240,"totalTokens":243,"cacheReadTokens":20788,"cacheCreationTokens":1349,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6187,"preModelMs":1182,"ttftMs":3015,"modelFinishMs":5367,"ttuaMs":3016,"postModelMs":820,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2352,"firstStepFinishMs":5365,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":null,"planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 6327ms
+ ✓ Compiled /api/commerce/handoff in 221ms (162 modules)
+ POST /api/commerce/handoff 400 in 281ms
+ POST /api/commerce/handoff 400 in 20ms
+ POST /api/commerce/handoff 400 in 16ms
+ POST /api/commerce/handoff 200 in 15ms
+ ✓ Compiled /api/sound/[trackId] in 468ms (177 modules)
+ GET /api/sound/00000000-0000-0000-0000-000000000000 404 in 1433ms
+ ○ Compiling /sound/[trackId] ...
+ ✓ Compiled /sound/[trackId] in 5s (1064 modules)
+ GET /sound/00000000-0000-0000-0000-000000000000 200 in 5686ms
+ ✓ Compiled in 731ms (458 modules)
+ ✓ Compiled /music in 343ms (1074 modules)
+ GET /music 200 in 605ms
+ ✓ Compiled /api/music/tracks in 147ms (625 modules)
+ GET /api/music/tracks 200 in 417ms

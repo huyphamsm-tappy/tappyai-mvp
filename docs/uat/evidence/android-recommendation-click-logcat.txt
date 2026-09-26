@@ -1,0 +1,2 @@
+09-22 17:10:49.344 10337 10337 I Analytics: track: recommendation_click {domain=food}
+09-22 17:10:49.583  1124 10744 V FA-SVC  : Logging event: origin=app,name=recommendation_click,params=Bundle[{domain=food, ga_event_origin(_o)=app, ga_screen_class(_sc)=MainActivity, ga_screen_id(_si)=7576216491119684282}]

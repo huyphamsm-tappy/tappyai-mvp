@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { ChevronLeft } from 'lucide-react'
 import type { MusicTrack } from '../types/track'
 import type { MusicSelection } from '../types/selection'
-import { createSelection } from '../services/musicService'
+import { createSelection } from '../services/musicHelpers'
 import { formatDuration } from '../utils/formatDuration'
 import { MusicThumbnail } from './MusicThumbnail'
 

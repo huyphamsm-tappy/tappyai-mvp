@@ -28,6 +28,15 @@ data class Deal(
     val discountLabel: String?,
     val voucherCode: String?,
     val endAt: String?,
+    // V3 Deals UI fields (the feed already sends them — `partnerDeals.ts` projects `partner_slug`,
+    // `is_featured`, `banner_image`). Defaulted and LAST so every existing constructor call keeps
+    // compiling; absent on a row → the card renders without them, never with a placeholder.
+    /** Stable partner identifier used to group deals under a platform and to pick its brand colour. */
+    val partnerSlug: String = "",
+    /** Editorially featured — the V3 screen leads with these. */
+    val isFeatured: Boolean = false,
+    /** Wide banner artwork for the featured card; null on rows without one. */
+    val bannerImage: String? = null,
 )
 
 /**

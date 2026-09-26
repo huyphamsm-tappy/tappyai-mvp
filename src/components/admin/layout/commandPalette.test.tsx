@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { CommandPalette } from './CommandPalette'
 import { AdminShell } from './AdminShell'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
@@ -20,6 +21,10 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ push: vi.fn(), refresh: vi.fn(), replace: vi.fn(), back: vi.fn() }),
 }))
 
+// Most assertions here query English names ("Quick find", hub labels from `enStrings`), so each
+// test STATES the locale. Removing the key afterwards is not enough on its own: with no stored
+// choice the product default is Vietnamese, and these queries would find nothing.
+beforeEach(() => setLocale('en'))
 afterEach(() => {
   cleanup()
   window.localStorage.removeItem('tappy_lang')

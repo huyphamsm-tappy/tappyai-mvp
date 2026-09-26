@@ -37,8 +37,8 @@ function mockFetch(res: Response) {
 }
 
 describe('the code list is the single source of truth', () => {
-  it('covers exactly the two codes the server can return', () => {
-    expect([...AGE_GATE_CODES]).toEqual(['age_verification_required', 'age_ineligible'])
+  it('covers exactly the three codes the server can return (the third is the GUEST form, owner D1 revised 2026-09-17)', () => {
+    expect([...AGE_GATE_CODES]).toEqual(['age_verification_required', 'age_ineligible', 'age_declaration_required'])
   })
 
   it('recognises both, and nothing else', () => {
@@ -179,14 +179,14 @@ describe('apiFetch intercepts an age refusal', () => {
 const SRC = (p: string) => readFileSync(join(process.cwd(), p), 'utf8')
 
 const GATED_SURFACES = [
-  ['conversation persistence (new)', 'src/app/chat/page.tsx'],
-  ['conversation persistence (existing)', 'src/app/chat/[id]/ChatConversation.tsx'],
-  ['recommendations', 'src/app/recommendations/page.tsx'],
-  ['review posting + explore import', 'src/app/reviews/new/page.tsx'],
+  ['conversation persistence (new)', 'src/app/(app)/chat/page.tsx'],
+  ['conversation persistence (existing)', 'src/app/(app)/chat/[id]/ChatConversation.tsx'],
+  ['recommendations', 'src/app/(app)/recommendations/page.tsx'],
+  ['review posting + explore import', 'src/app/(app)/reviews/new/page.tsx'],
   // The booking flow posts a review too. It was the surface this list existed
   // to catch: a second composer, reached from a different screen, hitting the
   // SAME gated endpoint with a bare fetch.
-  ['review posting (booking flow)', 'src/app/profile/bookings/BookingReviewButton.tsx'],
+  ['review posting (booking flow)', 'src/app/(app)/profile/bookings/BookingReviewButton.tsx'],
 ] as const
 
 describe('every gated surface uses the shared handler', () => {
@@ -217,15 +217,15 @@ describe('every gated surface uses the shared handler', () => {
 
   it('the gated surfaces no longer call bare fetch for the gated endpoints', () => {
     const pairs: Array<[string, RegExp]> = [
-      ['src/app/chat/page.tsx', /fetch\('\/api\/conversations'/],
-      ['src/app/chat/[id]/ChatConversation.tsx', /fetch\('\/api\/conversations'/],
-      ['src/app/recommendations/page.tsx', /fetch\('\/api\/recommendations'/],
-      ['src/app/reviews/new/page.tsx', /fetch\('\/api\/explore\/process'/],
-      ['src/app/profile/bookings/BookingReviewButton.tsx', /fetch\(`\/api\/reviews\?lang=/],
+      ['src/app/(app)/chat/page.tsx', /fetch\('\/api\/conversations'/],
+      ['src/app/(app)/chat/[id]/ChatConversation.tsx', /fetch\('\/api\/conversations'/],
+      ['src/app/(app)/recommendations/page.tsx', /fetch\('\/api\/recommendations'/],
+      ['src/app/(app)/reviews/new/page.tsx', /fetch\('\/api\/explore\/process'/],
+      ['src/app/(app)/profile/bookings/BookingReviewButton.tsx', /fetch\(`\/api\/reviews\?lang=/],
       // The upload endpoint is age-gated too, so BOTH composers must reach it
       // through the shared handler or an age refusal shows as a generic upload error.
-      ['src/app/reviews/new/page.tsx', /fetch\('\/api\/reviews\/upload'/],
-      ['src/app/profile/bookings/BookingReviewButton.tsx', /fetch\('\/api\/reviews\/upload'/],
+      ['src/app/(app)/reviews/new/page.tsx', /fetch\('\/api\/reviews\/upload'/],
+      ['src/app/(app)/profile/bookings/BookingReviewButton.tsx', /fetch\('\/api\/reviews\/upload'/],
     ]
     for (const [path, bare] of pairs) {
       // `apiFetch(` contains `Fetch(` but not `fetch('` — the regexes are

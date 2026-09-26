@@ -1,0 +1,29 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 1849ms
+ ✓ Compiled /api/health in 275ms (145 modules)
+ GET /api/health 200 in 399ms
+ GET /api/health 200 in 19ms
+ ○ Compiling /api/scam-shield/analyze ...
+ ✓ Compiled /api/scam-shield/analyze in 1403ms (658 modules)
+[scam-shield] analyze {"input":"message","tier":0,"ai":"not_needed","provider":null,"role":null,"level":"INCONCLUSIVE","score":0,"confidence":0,"urls":0,"signals":0,"quota":null,"ms":5}
+ POST /api/scam-shield/analyze 200 in 2430ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 1088ms (845 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":259,"totalTokens":262,"cacheReadTokens":0,"cacheCreationTokens":22234,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":5689,"preModelMs":1011,"ttftMs":2414,"modelFinishMs":5002,"ttuaMs":2414,"postModelMs":687,"toolMs":null,"providerId":"claude","modelRole":"smart","generationMs":2588,"firstStepFinishMs":5000,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":"location"}
+ POST /api/chat 200 in 7018ms
+ ✓ Compiled /api/scam-shield/check in 484ms (830 modules)
+ POST /api/scam-shield/check 400 in 794ms
+ ✓ Compiled /api/scam-shield/analyze in 108ms (845 modules)
+[scam-shield] analyze {"input":"message","tier":1,"ai":"used","provider":"claude","role":"fast","level":"CRITICAL","score":89,"confidence":97,"urls":0,"signals":3,"quota":{"kind":"user","period":"day","ok":true},"ms":5002}
+ POST /api/scam-shield/analyze 200 in 5512ms
+[scam-shield] analyze {"input":"message","tier":1,"ai":"used","provider":"claude","role":"fast","level":"CRITICAL","score":89,"confidence":97,"urls":0,"signals":4,"quota":{"kind":"user","period":"day","ok":true},"ms":6116}
+ POST /api/scam-shield/analyze 200 in 6599ms
+[?25h

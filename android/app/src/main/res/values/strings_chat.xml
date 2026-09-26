@@ -74,6 +74,12 @@
     <string name="chat_error_generic_with_code">Something went wrong (code %1$d)</string>
     <string name="chat_error_message_too_long">Message is too long. Please try again with shorter content.</string>
     <string name="chat_error_ai_service_down">The AI service is temporarily having issues. Please try again later.</string>
+    <string name="chat_error_login_required">Sign in to keep chatting with Tappy.</string>
+    <string name="chat_error_sign_in_cta">Sign in</string>
+    <string name="chat_age_declaration_hint">Tappy is for people 18 and over. Tell us your birth year, or confirm you are an adult.</string>
+    <string name="chat_age_declaration_year_placeholder">Birth year</string>
+    <string name="chat_age_declaration_confirm_year">Continue</string>
+    <string name="chat_age_declaration_adult">I am 18 or older</string>
 
     <string name="chat_followup_food_1">Find another place</string>
     <string name="chat_followup_food_2">See menu prices</string>
@@ -115,7 +121,7 @@
     <string name="chat_plan_share_short">Share</string>
     <string name="chat_plan_share_cta">📤 Share itinerary</string>
     <string name="chat_plan_cost_title">💰 Estimated cost</string>
-    <string name="chat_plan_cost_total">Total estimate</string>
+    <string name="chat_plan_cost_total">Budget</string>
     <string name="chat_plan_map">Map</string>
     <string name="chat_plan_book">Book now</string>
     <string name="chat_save_place">Save place</string>
@@ -123,4 +129,175 @@
     <!-- Read aloud. Two distinct outcomes: one says do not bother, the other says try again. -->
     <string name="chat_tts_language_unsupported">This reply is in a language Tappy can\'t read aloud yet. You can still read it above.</string>
     <string name="chat_tts_language_failed">Couldn\'t read that answer aloud. Please try again.</string>
+
+    <!-- D1 — the shopping DECISION card (web parity: ShoppingDecision.tsx / w5/shoppingDecision.ts).
+         A value the server did not supply renders as "price unknown", never as a fabricated number. -->
+    <string name="shopping_decision_recommended">Best pick</string>
+    <string name="shopping_decision_match_exact">Matches what you asked for</string>
+    <string name="shopping_decision_match_different">Different config</string>
+    <string name="shopping_decision_match_unknown">Config unclear</string>
+    <string name="shopping_decision_no_price">price unknown</string>
+    <string name="shopping_decision_unknown_seller">Seller unknown</string>
+    <string name="shopping_decision_trade_off">Trade-off</string>
+    <string name="shopping_decision_conditional">Depends on your needs.</string>
+    <string name="shopping_decision_options_title">Your options</string>
+    <string name="shopping_decision_other_options">Other options</string>
+    <string name="shopping_decision_view">View</string>
+    <!-- Shopping information parity (web w5/shoppingDecision.ts + reasonText.ts) -->
+    <string name="shopping_decision_rating_line">%1$s · %2$s reviews</string>
+    <string name="shopping_decision_rating_only">%1$s</string>
+    <string name="shopping_decision_view_on">View on %1$s</string>
+    <string name="shopping_decision_view_on_search">Search on %1$s</string>
+    <string name="shopping_spec_chip">%1$s</string>
+    <string name="shopping_spec_ram">%1$sGB RAM</string>
+    <string name="shopping_spec_storage">%1$sGB storage</string>
+    <string name="shopping_spec_size">%1$s</string>
+    <string name="shopping_condition_dealer_official">Authorised dealer</string>
+    <string name="shopping_condition_warranty_official">Official warranty</string>
+    <string name="shopping_condition_genuine">Genuine</string>
+    <string name="shopping_condition_official">Official</string>
+    <string name="shopping_condition_like_new">Like new</string>
+    <string name="shopping_condition_refurbished">Refurbished</string>
+    <string name="shopping_condition_sealed">Sealed</string>
+    <string name="shopping_condition_grade_high">Grade 99%</string>
+    <string name="shopping_condition_used">Used</string>
+    <string name="shopping_reason_rating">rated %1$s</string>
+    <string name="shopping_reason_review_count">%1$s reviews</string>
+    <string name="shopping_reason_price">priced %1$s</string>
+    <string name="shopping_reason_distance">%1$s km away</string>
+    <string name="shopping_reason_stars">%1$s-star</string>
+    <string name="shopping_reason_eta">%1$s min to pickup</string>
+    <string name="shopping_reason_direct_page">direct booking page</string>
+
+    <!-- P4-06 — comparison (DD-005) and confirmation (DD-006). An unknown value is stated as
+         unknown; a recommendation always carries its reason. -->
+    <string name="comparison_title">Comparing %1$d options</string>
+    <string name="comparison_attribute">Attribute</string>
+    <string name="comparison_recommended">Recommended</string>
+    <string name="comparison_unknown">unknown</string>
+    <string name="comparison_same_for_all">Same for all options</string>
+    <string name="comparison_reason">Why this one</string>
+    <string name="comparison_open">Compare %1$d options</string>
+    <string name="comparison_attr_price">Price</string>
+    <string name="comparison_attr_match">Matches request</string>
+    <string name="comparison_attr_sellers">Sellers</string>
+    <string name="comparison_seller_count">%1$d sellers</string>
+    <string name="confirm_confirm">Confirm</string>
+    <string name="confirm_cancel">Cancel</string>
+    <string name="confirm_what_changes">What changes</string>
+    <string name="confirm_booking_consequence">Tappy will open the booking page for %1$s. You review the details before anything is sent.</string>
+    <string name="confirm_booking_confirm">Continue to booking</string>
+    <string name="confirm_this_place">this place</string>
+    <!-- Durable place card ([TAPPY_PLACES]). Labels mirror web's w5/placeDecision catalogue,
+         which is where the same strings are defined for the browser. -->
+    <string name="place_card_recommended">Tappy&#8217;s pick</string>
+    <string name="place_card_popular">Popular</string>
+    <string name="place_card_rating_count">%1$d reviews</string>
+    <string name="place_card_open_now">open now</string>
+    <string name="place_card_closed_now">closed now</string>
+    <string name="place_card_away">%1$s km away</string>
+    <string name="place_card_trade_off">Trade-off</string>
+    <string name="place_action_maps">Open in Maps</string>
+    <string name="place_action_directions">Directions</string>
+    <string name="place_action_website">Website</string>
+    <string name="place_action_order">Order</string>
+    <string name="place_action_delivery">Order delivery</string>
+    <string name="place_action_booking">Book</string>
+    <string name="place_action_reservation">Reserve</string>
+    <string name="place_action_ticket">Tickets</string>
+    <string name="place_action_call">Call</string>
+    <string name="place_action_review">Read reviews</string>
+    <string name="place_action_social">Social page</string>
+    <string name="place_action_open">Open</string>
+    <string name="place_action_search_on">Search on %1$s</string>
+    <string name="place_action_search_generic">Search</string>
+    <!-- Commerce handoff labels (CCP): the key is RESOLVED on the server; %1$s is the merchant. Must say what web says (shared/ccp/commerce-action-fixtures.json). -->
+    <string name="place_action_purchase">View product</string>
+    <string name="place_action_search_login_on">Search on %1$s · login required</string>
+    <string name="place_action_booking_search">Find rooms on %1$s</string>
+    <string name="place_action_ticket_search">Find tickets on %1$s</string>
+    <string name="place_action_order_search">Search on %1$s</string>
+    <string name="place_action_view_on">View on %1$s</string>
+    <string name="place_action_purchase_on">Buy on %1$s</string>
+    <string name="place_action_purchase_login_on">Buy on %1$s · login required</string>
+    <string name="place_action_purchase_app_on">View on %1$s · buy in the app</string>
+    <string name="place_action_booking_on">Book on %1$s</string>
+    <string name="place_action_booking_login_on">Book on %1$s · login required</string>
+    <string name="place_action_booking_app_on">View on %1$s · book in the app</string>
+    <string name="place_action_reservation_on">Reserve on %1$s</string>
+    <string name="place_action_reservation_login_on">Reserve on %1$s · login required</string>
+    <string name="place_action_reservation_app_on">View on %1$s · reserve in the app</string>
+    <string name="place_action_ticket_on">Buy tickets on %1$s</string>
+    <string name="place_action_ticket_login_on">Buy tickets on %1$s · login required</string>
+    <string name="place_action_ticket_app_on">View on %1$s · tickets in the app</string>
+    <string name="place_action_order_on">Order on %1$s</string>
+    <string name="place_action_order_login_on">Order on %1$s · login required</string>
+    <string name="place_action_order_app_on">View on %1$s · order in the app</string>
+    <string name="place_action_delivery_on">Order delivery on %1$s</string>
+    <string name="place_action_delivery_login_on">Order delivery on %1$s · login required</string>
+    <string name="place_action_delivery_app_on">View on %1$s · order in the app</string>
+    <string name="place_card_stars">%1$d-star hotel</string>
+    <string name="place_card_reference_price">Reference price</string>
+    <string name="shopping_decision_price_watch">Track this price</string>
+    <string name="place_card_flag_wifi">Wi-Fi</string>
+    <string name="place_card_flag_outdoor">Outdoor seating</string>
+    <string name="place_card_flag_vegetarian">Vegetarian options</string>
+    <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
+    <string name="place_filter_all">All (%1$d)</string>
+    <string name="place_show_more">Show %1$d more</string>
+    <string name="place_show_less">Show fewer</string>
+    <string name="place_filter_open">Open now</string>
+    <string name="place_filter_rated">Top rated</string>
+    <string name="place_rank">#%1$d</string>
+    <string name="place_explore_map">See all of these on the map</string>
+    <string name="place_explore_map_hint">Opens Google Maps to explore more places</string>
+    <string name="place_action_review_search_on">Find reviews on %1$s</string>
+    <string name="place_action_review_on">Reviews on %1$s</string>
+    <string name="place_action_review_search_generic">Search reviews</string>
+    <string name="place_action_booking_search_on">Find rooms on %1$s</string>
+    <string name="place_action_ticket_search_on">Find tickets on %1$s</string>
+    <string name="place_pager_position">Place %1$d of %2$d</string>
+    <string name="place_card_tappy_rating">Tappy %1$s · %2$d reviews</string>
+    <string name="place_card_why">Why</string>
+    <!-- The tag of the locale these strings belong to: one authority (the resources), read per Context. -->
+    <string name="place_card_lang">en</string>
+    <!-- F-050: the ranker's reason and the provider's price band, worded like web
+         (src/lib/i18n/w5/shoppingDecision.ts reason.* and priceBand.ts formatPriceBandText). -->
+    <string name="place_reason_rating">rated %1$s</string>
+    <string name="place_reason_review_count">%1$s reviews</string>
+    <string name="place_reason_price">priced %1$s</string>
+    <string name="place_reason_distance">%1$s km away</string>
+    <string name="place_reason_stars">%1$s-star</string>
+    <string name="place_reason_eta">%1$s min to pickup</string>
+    <string name="place_reason_direct_page">direct booking page</string>
+    <string name="place_band_under">under %1$s ₫</string>
+    <string name="place_band_over">over %1$s ₫</string>
+    <string name="place_band_range">%1$s–%2$s ₫</string>
+
+    <!-- V3 (ported from A 77b0bb7): voice listening screen -->
+    <string name="voice_listening_cancel">Hủy</string>
+    <string name="voice_listening_hint_example">“Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này”</string>
+    <string name="voice_listening_hint_label">Thử nói:</string>
+    <string name="voice_listening_pill">Đang nghe…</string>
+    <string name="voice_listening_send">Gửi</string>
+    <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
+    <string name="voice_listening_title_accent">lắng nghe…</string>
+    <string name="voice_listening_title_lead">Tôi đang</string>
+
+    <!-- G1 share-out: a finished turn becomes a public result page (parity with the web's share preview). -->
+    <string name="chat_share_public_link">Public link (share page)</string>
+    <string name="chat_share_public_title">What others will see</string>
+    <string name="chat_share_public_hint">This is the public version with personal details removed. No link exists until you confirm.</string>
+    <string name="chat_share_public_loading">Preparing preview…</string>
+    <string name="chat_share_public_title_field">Public title</string>
+    <string name="chat_share_public_question">Question (generalised)</string>
+    <string name="chat_share_public_answer">Answer</string>
+    <string name="chat_share_public_counts">%1$d action buttons · %2$d images</string>
+    <string name="chat_share_public_privacy">Not included: your name, phone, email, home address, memory and chat history.</string>
+    <string name="chat_share_public_unlisted">You are not signed in: the link opens for anyone but stays out of search until you create an account.</string>
+    <string name="chat_share_public_confirm">Create public link</string>
+    <string name="chat_share_public_published">Public link created</string>
+    <string name="chat_share_public_copy">Copy link</string>
+    <string name="chat_share_public_rate_limited">You have created enough public links for today. Try again tomorrow.</string>
+    <string name="chat_share_public_not_shareable">This answer cannot be shared publicly.</string>
 </resources>

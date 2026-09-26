@@ -1,0 +1,242 @@
+# Commits in the last month NOT in rc/web-uat (by patch-id AND by subject). Generated 2026-09-24 at rc/web-uat 98571da
+2026-07-26 03548b7 [wip/tappyai-ios-sprint-2026-09-17] build(android): commit gradle foundation so a clean checkout builds
+2026-07-26 06292c1 [wip/tappyai-ios-sprint-2026-09-17] feat(android/fortune): Tu-vi Lifetime + By-Year tabs (P1-8, P1-9)
+2026-07-26 0ae3731 [wip/tappyai-ios-sprint-2026-09-17] fix(android): two P3 web-parity gaps — split-bill tip % + memory last-updated
+2026-07-26 124c866 [wip/tappyai-ios-sprint-2026-09-17] fix(android): commit VideoMediaReader — needed by the committed composer VM
+2026-07-26 1588085 [wip/tappyai-ios-sprint-2026-09-17] fix(android): define Theme.TappyAI.Splash referenced by the manifest
+2026-07-26 1d6b3b7 [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): self-healing 300ms video watchdog (P2-3)
+2026-07-26 2947e37 [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): Explore Users search segment + optimistic follow (P2-6)
+2026-07-26 2bde168 [wip/tappyai-ios-sprint-2026-09-17] fix(android): attach the shared analytics envelope to /api/track (P2 web parity)
+2026-07-26 3093d5e [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): comment replies + reactions, feed back-restore by clip id
+2026-07-26 41efd93 [wip/tappyai-ios-sprint-2026-09-17] feat(android/music): CC-BY attribution + real "videos using this sound" grid
+2026-07-26 49aaebc [wip/tappyai-ios-sprint-2026-09-17] chore(android): remove dead Room database module (P3)
+2026-07-26 4a8dc23 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): Fortune complete — all non-blocked P1 done; P2 next
+2026-07-26 5672140 [wip/tappyai-ios-sprint-2026-09-17] feat(android/preferences): persist gender to Supabase auth metadata (P2-7)
+2026-07-26 57d8932 [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): in-feed attached-sound ("use this sound") playback (P2-5)
+2026-07-26 59ea9e2 [wip/tappyai-ios-sprint-2026-09-17] feat(android/fortune): full 78-card tarot deck (P2-11)
+2026-07-26 69ae879 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): progress — tarot 78 done; Fortune engine is next major task
+2026-07-26 6e56884 [wip/tappyai-ios-sprint-2026-09-17] feat(android/splitbill): Split Bill calculator (P1-10)
+2026-07-26 76a0c49 [wip/tappyai-ios-sprint-2026-09-17] fix(android): TAPPY_PLAN block with no days falls back to text (P2 web parity)
+2026-07-26 8425bf7 [wip/tappyai-ios-sprint-2026-09-17] docs(android): RC UAT checklist (30 sections) + RC hardening progress log
+2026-07-26 89321c3 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): P2-5 done — entire doable client-side backlog complete
+2026-07-26 89d26f3 [wip/tappyai-ios-sprint-2026-09-17] feat(android/analytics): POST events to /api/track for personalization (P2-10)
+2026-07-26 8c12cbd [wip/tappyai-ios-sprint-2026-09-17] feat(android/chat): incremental token rendering + [TAPPY_PLAN] itinerary card
+2026-07-26 9af66b7 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): progress — P2-1/7/9/10 + P3 done
+2026-07-26 9e261d2 [wip/tappyai-ios-sprint-2026-09-17] feat(android/fortune): deterministic engine — zodiac + tu-vi period readings (P1-7)
+2026-07-26 a17ce84 [wip/tappyai-ios-sprint-2026-09-17] feat(android/deals): partner_deals model + promo UI + click counter (P1-Deals)
+2026-07-26 acc8b1a [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): progress — location P1-6 done (9 P1 items shipped)
+2026-07-26 b28ecd4 [wip/tappyai-ios-sprint-2026-09-17] feat(android/location): device location capability + chat location bias (P1-6)
+2026-07-26 b726ae5 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): audit report, prod-worktree corrections (§8), progress log
+2026-07-26 bde15d8 [wip/tappyai-ios-sprint-2026-09-17] feat(android/config): drive review upload caps from /api/config (P2-9)
+2026-07-26 be1187d [wip/tappyai-ios-sprint-2026-09-17] docs(android): RC Release Report — gates, fixes, parity, Google Play verdict
+2026-07-26 bec1a3c [wip/tappyai-ios-sprint-2026-09-17] chore(android): remove 9 dead string resources (RC cleanup, P2)
+2026-07-26 c29a366 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): progress — P2-3 + P2-12 done
+2026-07-26 c2daa5c [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): client-side backlog complete — final status
+2026-07-26 c45193b [wip/tappyai-ios-sprint-2026-09-17] fix(android): commit ReviewComposerScreen matching the committed composer contract
+2026-07-26 c4a06d8 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): satisfy Lint media3 opt-in (RC, P2)
+2026-07-26 c60b70c [wip/tappyai-ios-sprint-2026-09-17] fix(android): commit untracked review-upload sources referenced by HEAD
+2026-07-26 c9c2609 [wip/tappyai-ios-sprint-2026-09-17] feat(android/chat): Save-place affordance on replies (P2-2, partial)
+2026-07-26 cf3304c [wip/tappyai-ios-sprint-2026-09-17] chore(android): remove two dead files that break a clean build
+2026-07-26 d75442a [wip/tappyai-ios-sprint-2026-09-17] fix(android): currency missing-rate error, no silent x1 fallback (P1 web parity)
+2026-07-26 dc7d9b0 [wip/tappyai-ios-sprint-2026-09-17] fix(android/translate): TTS checks setLanguage(), never reads wrong-language (P2-12)
+2026-07-26 dc7e9eb [wip/tappyai-ios-sprint-2026-09-17] feat(android/home): dynamic suggested prompts from /api/suggested-prompts (P2-1)
+2026-07-26 ef6a822 [wip/tappyai-ios-sprint-2026-09-17] build(android): track gradle.properties (build config only); relocate secrets
+2026-07-26 f630c11 [wip/tappyai-ios-sprint-2026-09-17] docs(android-parity): progress — Deals P1 done (10 P1 items); Fortune spec ready
+2026-07-27 1b1dfe8 [wip/tappyai-ios-sprint-2026-09-17] docs(android): QA trackers + release build runbook
+2026-07-27 274cb55 [wip/tappyai-ios-sprint-2026-09-17] docs(android): UAT & Release Readiness plan (QA/Release Manager deliverable)
+2026-07-27 4505044 [wip/tappyai-ios-sprint-2026-09-17] feat(android/memory): persist response style + loading state (complete MemoryViewModel)
+2026-07-27 5e13751 [wip/tappyai-ios-sprint-2026-09-17] feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+2026-07-27 ad5e294 [wip/tappyai-ios-sprint-2026-09-17] fix(android): mark app_name translatable=false to satisfy lint MissingTranslation
+2026-07-27 f7bc832 [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): complete Follow / profile-stats refactor
+2026-07-29 063c206 [wip/tappyai-ios-sprint-2026-09-17] refactor(android): remove standalone Discovery hub for Web parity (5c8dc38)
+2026-07-29 07251dc [wip/tappyai-ios-sprint-2026-09-17] docs: archive root-level audit, verification + parity reports
+2026-07-29 1821dd8 [wip/tappyai-ios-sprint-2026-09-17] docs: backoffice phase reports, design baseline, freeze + release records
+2026-07-29 2a33195 [wip/tappyai-ios-sprint-2026-09-17] docs(android): release runbook + P0-004 YouTube parity + upload-limits ADR
+2026-07-29 2a7045c [wip/tappyai-ios-sprint-2026-09-17] chore(android): scope backup + data-extraction rules
+2026-07-29 48c34f1 [wip/tappyai-ios-sprint-2026-09-17] feat(android/theme): persist dark/light choice across process death + splash
+2026-07-29 5432d80 [wip/tappyai-ios-sprint-2026-09-17] feat(android/profile): add "My Profile" self viewing-profile entry (web parity)
+2026-07-29 6e7a276 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): play YouTube-link videos in feed + detail (web parity)
+2026-07-29 7424d10 [wip/tappyai-ios-sprint-2026-09-17] chore: track sound-duration backfill script; gitignore Supabase CLI temp
+2026-07-29 764a06c [wip/tappyai-ios-sprint-2026-09-17] feat(android/auth): login screen visual parity with web 5c8dc38 (P0-002)
+2026-07-29 82f932d [wip/tappyai-ios-sprint-2026-09-17] fix(android): survive process death for in-progress text edits (SavedStateHandle)
+2026-07-29 be4a6b0 [wip/tappyai-ios-sprint-2026-09-17] fix(android): web-parity UI/i18n polish (round-2/3 audit fixes)
+2026-07-29 cd4cb31 [wip/tappyai-ios-sprint-2026-09-17] build(android/auth): OTP input validation + R8 consumer rules
+2026-07-29 cf0ce1b [wip/tappyai-ios-sprint-2026-09-17] feat(android/settings): dark-mode toggle + Delete-Account request (Play blocker)
+2026-07-29 fe2008f [wip/tappyai-ios-sprint-2026-09-17] chore(web): track landing branding assets
+2026-07-30 04ff299 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): legible comment input text on the dark comment bar (P0-2)
+2026-07-30 1a964b8 [wip/tappyai-ios-sprint-2026-09-17] feat(android): official TappyAI infinity-mark launcher icon
+2026-07-30 1d4ff87 [wip/tappyai-ios-sprint-2026-09-17] feat(android/profile): per-row descriptions + truncate email (Web parity)
+2026-07-30 2019687 [wip/tappyai-ios-sprint-2026-09-17] feat(android/settings): Notifications + Memory row descriptions (Web parity)
+2026-07-30 2199b73 [wip/tappyai-ios-sprint-2026-09-17] feat(android/auth): login feature-tile tints + brand ✦ accent (P1-5 WIP)
+2026-07-30 2ffeab0 [wip/tappyai-ios-sprint-2026-09-17] feat(android/home): add "Explore by category" section for web parity (P1-4)
+2026-07-30 3235306 [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): hero orange accent gradient + localized greeting
+2026-07-30 4be532a [wip/tappyai-ios-sprint-2026-09-17] fix(android/deals): map all web deal categories to a badge colour
+2026-07-30 5394523 [wip/tappyai-ios-sprint-2026-09-17] feat(android/home): gradient hero card + Web section order (visual parity)
+2026-07-30 6531f3c [wip/tappyai-ios-sprint-2026-09-17] feat(android/chat): action chips + emoji composer, drop attachment (Web parity)
+2026-07-30 679e737 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): render profile posts as a clip grid, not a text list (P0-1)
+2026-07-30 68bd6ef [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): category pills wrap so all 5 are visible (no swipe)
+2026-07-30 81be701 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): self-profile stat order + purple avatar ring (Web parity)
+2026-07-30 9979127 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): Explore header to match web order + labels (P0-3)
+2026-07-30 a251b5a [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): rebuild Review Detail to match web ReviewDetailView (visual parity)
+2026-07-30 b314e05 [wip/tappyai-ios-sprint-2026-09-17] feat(android/home): filled category pills + Web-style quick-action tiles
+2026-07-30 d8cd70e [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): white ring on the feed avatar (Explore visual parity)
+2026-07-30 db21dcb [wip/tappyai-ios-sprint-2026-09-17] fix(android/chat): orange #FF9500 mic in composer (Web visual parity)
+2026-07-30 df636f8 [wip/tappyai-ios-sprint-2026-09-17] feat(android/reviews): "use this sound" disc on feed clips → sound page (Explore parity)
+2026-07-30 e0b88ec [wip/tappyai-ios-sprint-2026-09-17] feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+2026-07-31 4255459 [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): Suggested-for-you follows app language, not system locale
+2026-07-31 4aa02b4 [wip/tappyai-ios-sprint-2026-09-17] fix(android/notifications): match Web DTO contract — real message, actor, unread, badge
+2026-07-31 7eca4fb [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): Fortune section as Web 3 mini-cards (P1-7 parity)
+2026-07-31 8c6b27c [wip/tappyai-ios-sprint-2026-09-17] fix(android/explore): feed avatar + username open author profile (Web parity)
+2026-07-31 d93b2fc [wip/tappyai-ios-sprint-2026-09-17] polish(android/explore): immersive feed + TikTok-proportion overlays
+2026-07-31 e992f9b [wip/tappyai-ios-sprint-2026-09-17] polish(android/explore): neutral music-library icon (drop TikTok-style disc)
+2026-07-31 f8946f1 [wip/tappyai-ios-sprint-2026-09-17] feat(android/notifications): full unread lifecycle — mark-read on open + live badge clear
+2026-07-31 fdd36a3 [wip/tappyai-ios-sprint-2026-09-17] feat(android/home): Tappy Together entry point on Home (Web parity)
+2026-08-01 07d9f8f [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): stop quick-action labels breaking mid-word
+2026-08-01 0e6f8ca [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): localize relative timestamps in notifications + comments
+2026-08-01 1a27da7 [wip/tappyai-ios-sprint-2026-09-17] fix(android/reviews): notification -> review detail no longer dead-ends
+2026-08-01 42a6929 [wip/tappyai-ios-sprint-2026-09-17] fix(android/bookings): monochrome empty-state icon (consistency)
+2026-08-01 44ca0d0 [wip/tappyai-ios-sprint-2026-09-17] fix(android/profile): hide "Chia sẻ" share-only sentinel on Author Profile grid tiles
+2026-08-01 6354189 [wip/tappyai-ios-sprint-2026-09-17] fix(android/account): hide empty "Joined" row (Web parity)
+2026-08-01 658070d [wip/tappyai-ios-sprint-2026-09-17] fix(android/explore): don't show "No results found" before searching
+2026-08-01 6e0f25e [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): drop duplicate "For you" section header (Web parity)
+2026-08-01 ba9c1da [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): Home page background parity with Web (gray-50 / gray-950)
+2026-08-01 dc1f71f [wip/tappyai-ios-sprint-2026-09-17] fix(android/account): left-align screen header (consistency)
+2026-08-01 e181f0e [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): hide Games from production UI (not production ready)
+2026-08-01 e1ee595 [wip/tappyai-ios-sprint-2026-09-17] fix(android/vietwriter): unify Tone chip selection colour with Platform/Length
+2026-08-01 ee39206 [wip/tappyai-ios-sprint-2026-09-17] feat(android/deals): send app language to /api/deals + stable category colour
+2026-08-01 f7d550c [wip/tappyai-ios-sprint-2026-09-17] fix(android/home): hero internal decorative layers (Web parity)
+2026-08-02 4fa12bc [wip/tappyai-ios-sprint-2026-09-17] feat(android): replace temporary mascot with the official Tappy artwork
+2026-08-02 e00c2b8 [wip/tappyai-ios-sprint-2026-09-17] fix(android): align YouTube surface with Web lifecycle and poster behavior
+2026-08-03 4afeddf [wip/tappyai-ios-sprint-2026-09-17] fix(astrology): correct Nạp Âm ngũ hành and add one canonical engine per platform
+2026-08-03 7744733 [wip/tappyai-ios-sprint-2026-09-17] feat(release): remove SuperTux from V1 and defer to GAME V2
+2026-08-04 3e31ca5 [wip/tappyai-ios-sprint-2026-09-17] fix(android): restore planner messages and implement voice auto-send
+2026-08-04 504eccb [wip/tappyai-ios-sprint-2026-09-17] fix(android): make the launcher icon a real adaptive foreground
+2026-08-04 6746d33 [wip/tappyai-ios-sprint-2026-09-17] fix(android): render planner timeline connector using drawBehind
+2026-08-04 77ccf67 [wip/tappyai-ios-sprint-2026-09-17] fix(android): stop the splash screen cropping the otter
+2026-08-04 e693ffb [wip/tappyai-ios-sprint-2026-09-17] chore(android): finalize Android V1 release assets
+2026-08-04 edf9345 [wip/tappyai-ios-sprint-2026-09-17] feat(legal): publish English Privacy Policy at /privacy for Google Play
+2026-08-04 fc66008 [wip/tappyai-ios-sprint-2026-09-17] feat(legal): disclose real production data flows, add Vietnamese edition
+2026-08-06 043ecd3 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/profile): add an account-deletion request, and localize Profile
+2026-08-06 163b86c [wip/tappyai-ios-sprint-2026-09-17] fix(android): route account-deletion requests to support@tappyai.com
+2026-08-06 23f1506 [wip/tappyai-ios-sprint-2026-09-17] fix(ios/reviews): only YouTube links can be posted
+2026-08-06 2caad42 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/home): surface Scam Shield, and localize the Home screen
+2026-08-06 2cdb514 [wip/tappyai-ios-sprint-2026-09-17] docs(ios): record production state and parity gaps since d57f5ef
+2026-08-06 3140b65 [wip/tappyai-ios-sprint-2026-09-17] fix(ios/chat): stop reading English replies in a Vietnamese voice
+2026-08-06 36f1ee8 [wip/tappyai-ios-sprint-2026-09-17] docs(ios): correct the API contract and drop the SuperTux architecture
+2026-08-06 47636aa [wip/tappyai-ios-sprint-2026-09-17] docs(ios): close the Windows sprint with a completion report and Mac checklist
+2026-08-06 64504f8 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/reviews): play YouTube clips in the feed instead of linking out
+2026-08-06 679cd12 [wip/tappyai-ios-sprint-2026-09-17] fix(ios/currency): never convert at a guessed rate, and fix rate precision
+2026-08-06 6a0490c [wip/tappyai-ios-sprint-2026-09-17] fix(ios): use one word for booking guest counts
+2026-08-06 734bd3d [wip/tappyai-ios-sprint-2026-09-17] fix(ios/reviews): dedupe feed pages, and stop playback on background
+2026-08-06 94af433 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): add a runtime string catalog
+2026-08-06 a179b1f [wip/tappyai-ios-sprint-2026-09-17] feat(ios/deals): build the Deals tab against the DB-backed API
+2026-08-06 b40f4c8 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/shell): route the new feature screens
+2026-08-06 be674f5 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/notifications): in-app inbox and unread badge (ADR-014)
+2026-08-06 c9e49f3 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/scam-shield): add the URL risk checker
+2026-08-06 d60b6a0 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/reviews): support comment replies and reactions
+2026-08-06 d697092 [wip/tappyai-ios-sprint-2026-09-17] fix(ios/legal): make the Privacy Policy describe what the app actually does
+2026-08-06 e229919 [wip/tappyai-ios-sprint-2026-09-17] fix(ios): remove the duplicate SuggestedPrompt declaration
+2026-08-06 f89b338 [wip/tappyai-ios-sprint-2026-09-17] fix(android): default release endpoints to production, fail on placeholders
+2026-08-07 3a9b842 [wip/tappyai-ios-sprint-2026-09-17] fix(android): show the Scam Shield tile unconditionally, matching the web
+2026-08-07 65e544f [wip/tappyai-ios-sprint-2026-09-17] feat(android): Scam Shield, a strict parity port of the web feature
+2026-08-07 d9f9f0f [wip/tappyai-ios-sprint-2026-09-17] fix(android): keep the itinerary when the user stops a streaming reply
+2026-08-07 e61c2eb [wip/tappyai-ios-sprint-2026-09-17] fix(android): stop a long price pill squeezing the plan item name
+2026-08-08 90686d9 [wip/tappyai-ios-sprint-2026-09-17] fix(chat): stop BODY-level http logging from buffering the reply stream
+2026-08-10 0225e87 [feat/ccp-mvp] perf(chat): B7-A defer photo resolution + B7-B-0 normalize cache keys
+2026-08-10 3f6816c [feat/ccp-mvp] fix(ai): probe must not read a vendor key outside the provider layer
+2026-08-10 59ff89a [feat/ccp-mvp] fix(chat): C2.1 — the refinement turn was asking instead of answering
+2026-08-10 5be2b3a [feat/ccp-mvp] perf(chat): B4 — keep enrichment out of the model, not out of the answer
+2026-08-10 704bdae [feat/ccp-mvp] perf(chat): B3 — cache + LLM-call telemetry, and a probe that proves the cache is dead
+2026-08-10 845440b [feat/ccp-mvp] perf(chat): B2 — stop sending tools chitchat can't use, and fix what that exposed
+2026-08-10 8ecb156 [feat/ccp-mvp] perf(chat): B6 — gate memory extraction on signal, not on message length
+2026-08-10 916f853 [feat/ccp-mvp] perf(chat): B1 — split the system prompt at the cache boundary
+2026-08-10 b26aee7 [feat/ccp-mvp] feat(chat): C2 — decision-stage signals, one consolidated clarification rule
+2026-08-10 fe7b26f [feat/ccp-mvp] docs(perf): Phase B baseline — measured, and it withdraws Phase A finding P0-2
+2026-08-12 4db520f [feat/ccp-mvp] fix(android): prevent Deals duplicate lazy keys
+2026-08-12 f49d6c0 [feat/ccp-mvp] chore(android): update target api to 36
+2026-08-19 abd11b6 [feat/ccp-mvp] feat(ai): checkpoint consultative grounding work
+2026-08-23 0bb9061 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): localize Tappy-knows, Saved, App connections and Edit profile
+2026-08-23 1242a7b [wip/wtandroid-2026-09-17] fix(android): Deals rendered seven grey rows because the DTO named fields the feed no longer sends
+2026-08-23 3516bce [wip/tappyai-ios-sprint-2026-09-17] docs(ios): correct the localization figures and record what is deliberately deferred
+2026-08-23 367e013 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): localize Split bill, and catch copy the language heuristic missed
+2026-08-23 37dc30c [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): localize notification settings
+2026-08-23 7fbf5ec [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): share one string catalog with Web instead of translating twice
+2026-08-23 7fca811 [wip/wtandroid-2026-09-17] fix(android): the Explore comment composer sat behind the keyboard
+2026-08-23 8152594 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): localize Preferences, Bookings, Chat history and Price watches
+2026-08-23 8dfec64 [wip/wtandroid-2026-09-17] fix(api): F03 — an anonymous visitor may not create recurring paid work
+2026-08-23 b69478b [wip/wtandroid-2026-09-17] fix(android): restore the branded login — the mascot screen existed but was never merged
+2026-08-23 e82ac34 [wip/wtandroid-2026-09-17] fix(android): Deals kept the language it was fetched in until the next force stop
+2026-08-23 e8f36a4 [wip/wtandroid-2026-09-17] fix(android): Deals showed a partner initial where the web shows the official logo
+2026-08-23 f0a6055 [wip/wtandroid-2026-09-17] fix(android): the Home greeting was frozen at the language the ViewModel was built in
+2026-08-23 f44e32b [wip/wtandroid-2026-09-17] fix(ai): F01 — validate WHERE the weather answer came from, not just the country
+2026-08-23 f8304f9 [wip/tappyai-ios-sprint-2026-09-17] feat(ios/i18n): localize Translate and Scan
+2026-08-25 e621f7f [wip/wtandroid-2026-09-17] fix(android): gallery scan failed on every image — decode null-guard was on the bounds pass
+2026-09-03 2caff4b [integration/v3-foundation] refactor(security): /api/chat no longer performs a privileged operation
+2026-09-03 44d8f32 [integration/v3-foundation] test(v3): lock the one invariant Phase 1 satisfies by construction
+2026-09-03 558ba49 [integration/v3-foundation] fix(security): group membership was readable by the open internet
+2026-09-03 66e4c46 [integration/v3-foundation] fix(v3): close the three egress channels a compromised model could still use
+2026-09-03 a3c342a [integration/v3-foundation] fix(security): the account-existence oracle was not actually throttled
+2026-09-03 a711181 [integration/v3-foundation] fix(v3): close the security findings Phase 0 deferred
+2026-09-03 f9a1fa2 [integration/v3-foundation] feat(v3): implement AI consultative
+2026-09-03 fc115b7 [integration/v3-foundation] fix(security): disconnecting an integration now revokes it at the provider
+2026-09-03 ff55c27 [integration/v3-foundation] perf(v3): optimize AI cost
+2026-09-05 254c28b [feat/ccp-mvp] feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+2026-09-05 2d9f3f2 [feat/ccp-mvp] feat(home): V3 Android Home — AI Agent screen
+2026-09-06 002f8c8 [feat/ccp-mvp] feat(history): V3 history UI
+2026-09-06 20066ae [feat/ccp-mvp] feat(post): V3 upload composer UI
+2026-09-06 2e078d8 [feat/ccp-mvp] feat(saved): V3 saved items UI
+2026-09-06 3cb9aa3 [feat/ccp-mvp] refactor: share explore sentinel and gate header notifications
+2026-09-06 4e3673d [feat/v3-qr-profile] feat(qr-profile): V3 modal UI
+2026-09-06 5a266fb [integration/scam-shield-v3] feat(scam-shield): V3 safety UI
+2026-09-06 66d34e7 [feat/ccp-mvp] feat(explore): V3 Android video feed UI
+2026-09-06 8224ccd [feat/ccp-mvp] feat(deals): V3 promotion discovery UI
+2026-09-06 b3e9883 [feat/ccp-mvp] feat(profile): V3 Android Me UI
+2026-09-09 23f5e30 [wip/tappy-business-p0-2026-09-17] checkpoint(business): P0-P5 recovery point — the whole capability, in one commit
+2026-09-11 77b0bb7 [feat/ccp-mvp] feat(android): Deals V3 pass, chat structured cards, and their tests
+2026-09-11 98d0cf1 [feat/ccp-mvp] fix(android): keep the IME composing region so Vietnamese Telex can compose
+2026-09-11 ec2c813 [feat/ccp-mvp] feat(home): V3 Android Home rebuilt to the approved master mockup
+2026-09-13 56a5726 [feat/ccp-mvp] feat(ccp): Commerce Capability Platform — Phases 0–5 (isolated, flags off)
+2026-09-18 0625b3e [wip/tappyai-ios-sprint-2026-09-17] wip(tappyai-ios-sprint): snapshot of uncommitted work on feat/backoffice-phase0 at 3516bce
+2026-09-18 1504f18 [wip/adoring-stonebraker-13f20e-2026-09-17] wip(adoring-stonebraker-13f20e): snapshot of uncommitted work on claude/ecstatic-mclaren-c5aa0e at ff0480e
+2026-09-18 2275d51 [wip/audit-nonprod-2026-09-17] wip(audit-nonprod): snapshot of uncommitted work on (detached) at f6712b8
+2026-09-18 366f0a8 [wip/g1-growth-2026-09-17] wip(g1-growth): snapshot of uncommitted work on feat/g1-growth at 7b0ee0c
+2026-09-18 4be2d6b [wip/tappy-business-p0-2026-09-17] wip(tappy-business-p0): snapshot of uncommitted work on feat/tappy-business-p0 at 23f5e30
+2026-09-18 59d62a7 [wip/gcs-media-bridge-2026-09-17] wip(gcs-media-bridge): snapshot of uncommitted work on rca/place-id-flow at 4a849e8
+2026-09-18 5e0f050 [wip/v3-user-data-foundation-2026-09-17] wip(v3-user-data-foundation): snapshot of uncommitted work on feat/v3-user-data-foundation at 08a6aed
+2026-09-18 67dab52 [wip/tappyai-memberapi-2026-09-17] wip(tappyai-memberapi): snapshot of uncommitted work on docs/controller-v2-phase2-m08-migration-artifact at d8412a8
+2026-09-18 782ce59 [wip/tappyai-controller-v2-2026-09-17] wip(tappyai-controller-v2): snapshot of uncommitted work on feat/controller-v2-foundation-integration at 3a15fc4
+2026-09-18 a892575 [wip/tappyai-label-2026-09-17] wip(tappyai-label): snapshot of uncommitted work on fix/controller-shell-terminology at 9b83ff6
+2026-09-18 b311f30 [wip/tappyai-notif-2026-09-17] wip(tappyai-notif): snapshot of uncommitted work on feat/notif-unification-impl at 8a1be53
+2026-09-18 bd681bf [wip/tappyai-i18n-recover-2026-09-17] wip(tappyai-i18n-recover): snapshot of uncommitted work on feat/account-settings-i18n at 4387d25
+2026-09-18 beba191 [wip/main-repo-2026-09-17] wip(main-repo): snapshot of uncommitted work on feat/consultative-d1-d2-r1-r2-d3 at 77b0bb7
+2026-09-18 dda4935 [wip/tappyai-shopping-contract-2026-09-17] wip(tappyai-shopping-contract): snapshot of uncommitted work on fix/shopping-marker-product-identity at b85ddd9
+2026-09-18 f2998b1 [wip/wtandroid-2026-09-17] wip(wtandroid): snapshot of uncommitted work on fix/android-scan-gallery-decode at e621f7f
+2026-09-19 153035d [feat/scam-shield-public-utility] feat(scam-shield): public utility — /kiem-tra landing, message share-out, screenshot QR pre-stage, funnel
+2026-09-19 174cb3b [integration/phase6-release] feat(inbox): close the Inbox DoD and verify the Messenger → Inbox client contract
+2026-09-19 3f23149 [integration/phase6-release] feat(android): Contact Sync native foundation behind contact_sync_enabled
+2026-09-19 461de76 [integration/phase6-release] fix(phase6): give the trust-boundary DB suite its own port
+2026-09-19 471b5e0 [integration/phase6-release] fix(build): the Messenger deep link is client-safe; the emitter is server-only (A-1)
+2026-09-19 4c596e1 [integration/phase6-release] feat(phase6): server-side kill switches for every new surface
+2026-09-19 50aa4a8 [integration/phase6-release] fix(track): the unknown_event_type refusal ships a message like every other user-facing code
+2026-09-19 57b861b [integration/phase6-release] fix(phase6): port the foundation's tests to the V3 organic ranker
+2026-09-19 5b0261a [integration/phase6-release] audit(phase6): non-prod rehearsal — migrations applied, evidence, two-account walkthrough
+2026-09-19 6773c56 [integration/phase6-release] feat(analytics): Phase 6 measurement layer — closed catalogue, text apart, 3 views
+2026-09-19 708ec5e [integration/phase6-release] docs(release): owner-run production migration checklist for Phase 6
+2026-09-19 853c9eb [integration/phase6-release] feat(android): read the Phase 6 kill switches, gate Inbox/Messenger, route the message deep link
+2026-09-19 921ac42 [integration/phase6-release] feat(messenger): close the release DoD on the web UI
+2026-09-19 a7eb9df [integration/phase6-release] feat(android): real analytics to /api/track, and Messenger block/report
+2026-09-19 c3d5871 [integration/phase6-release] fix(phase6): bring the foundation's routes under the repo's boundaries
+2026-09-19 cfcc5ca [integration/phase6-release] feat(messenger): block and report — API, migration, DB + route tests
+2026-09-19 d78e759 [integration/phase6-release] docs(release): 24/9 UAT checklist (non-prod) and the privacy / Data Safety review
+2026-09-19 e20d595 [integration/phase6-release] chore: drop test-generated audit JSON churn from the branch
+2026-09-19 f01c125 [integration/phase6-release] feat(contacts): Contact Sync web surface + privacy policy section
+2026-09-19 f554eea [integration/phase6-release] fix(messenger): message notification reaches the thread on Android, and the guest invite
+2026-09-24 23f157d [phase8-master] P8-17: user safety — blocks, reports, sanctions, account deletion (Task 17)
+2026-09-24 2c90744 [phase8-master] P8-12: subscription model & global AI quota (Task 12)
+2026-09-24 3ec26a0 [phase8-master] P8-S2-0b: Task 17 UI (web + Android), F-11 comment visibility, F-12 contact discoverability
+2026-09-24 754d28f [phase8-master] P8-07: Tappy Feature Knowledge registry (vi + en, static, gate-aware)
+2026-09-24 7a5f9e2 [phase8-master] P8-S1: Sub 1 summary in PHASE8_MASTER.md
+2026-09-24 bd06274 [phase8-master] P8-00: Phase 8 scaffold — PHASE8_MASTER.md, no-op track() stub, disable Vercel deploys for phase8-master
+2026-09-24 c3db9ba [phase8-master] P8-01: security audit & hardening (Task 01)
+2026-09-24 ccc2176 [phase8-master] P8-04: image reliability & fallback (Task 04)
+2026-09-24 f2d7103 [phase8-master] P8-S2-0a: R-11 review insert RPC, legacy-pro grandfather, guest IP ceiling 150, image fallback on Home + Android screens

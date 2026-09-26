@@ -428,7 +428,12 @@ describe('the guard never invents, never empties, never breaks structure', () =>
   })
 
   it('a short generic word alone never identifies a candidate', () => {
-    const r = guardSpecClaimsInText('Máy này rất nhẹ.', [{ name: 'Máy' }])
+    // The probe is the CARRY, not the removal. "Máy này rất nhẹ." is now caught
+    // by the deictic rule below whether or not "Máy" identified anything, so it
+    // can no longer tell the two apart. A bare "Rất nhẹ." can: it points at
+    // nothing, so it is checked only against a subject a previous sentence
+    // established — and one is established only if the short token identified.
+    const r = guardSpecClaimsInText('Máy ổn. Rất nhẹ.', [{ name: 'Máy' }])
     expect(r.removed).toEqual([])
   })
 })
@@ -544,8 +549,47 @@ describe('SPEC-GUARD-24 — a claim about "Máy này" belongs to the last candid
   })
 
   it('the carry does not reach a reply with no candidate named at all', () => {
-    const t = 'Mình tìm được vài lựa chọn. Máy này rất nhẹ.'
+    // No deictic, so nothing points at a product: only a carried subject could
+    // attribute this, and none was established.
+    const t = 'Mình tìm được vài lựa chọn. Rất nhẹ.'
     expect(guardSpecClaimsInText(t, C).removed).toEqual([])
+  })
+
+  // ── The loophole that shipped: a deictic names nobody, and used to escape ──
+  //
+  // Measured on a localhost shopping turn. The reply opened "Máy này nhẹ, pin
+  // tốt, màn hình cảm ứng…" twice and never wrote a product name, so every claim
+  // was attributed to nobody and both the weight claim and the battery claim
+  // went out untouched — the exact two attributes this guard exists to stop.
+
+  it('🚨 a deictic claim is checked against EVERY candidate, and fails closed', () => {
+    const r = guardSpecClaimsInText('Máy này nhẹ, pin tốt, màn hình cảm ứng.', C)
+    expect(r.text).not.toMatch(/nhẹ|pin tốt/)
+    // The screen is not an attribute this guard governs, so it survives — promoted
+    // to the front of the sentence, and recapitalised, by the clause surgery.
+    expect(r.text).toMatch(/màn hình cảm ứng/i)
+    expect(r.removed).toContain('ASUS Vivobook S14 S3407CA-LY096WS:weight')
+    expect(r.removed).toContain('HP 14 ep1137TU:battery')
+  })
+
+  it('🚨 …and survives the moment ONE candidate carries the evidence', () => {
+    // Ambiguity is not absence. With a real weight on one of them, "máy này nhẹ"
+    // is a sentence we cannot prove wrong, and deleting it would be the guard
+    // inventing a certainty of its own.
+    const withWeight: SpecEvidence[] = [{ name: 'ASUS Vivobook S14 S3407CA-LY096WS', weightKg: 1.3 }, { name: 'HP 14 ep1137TU' }]
+    const r = guardSpecClaimsInText('Máy này rất nhẹ.', withWeight)
+    expect(r.text).toContain('nhẹ')
+    expect(r.removed).toEqual([])
+  })
+
+  it('EN: "this laptop is light" obeys the same rule', () => {
+    const r = guardSpecClaimsInText('This laptop is very light.', C)
+    expect(r.text).not.toMatch(/light/i)
+  })
+
+  it('a deictic sentence that only echoes the user is still not a claim', () => {
+    const r = guardSpecClaimsInText('Bạn cần máy nhẹ, nên máy này có thể phù hợp.', C)
+    expect(r.text).toContain('Bạn cần máy nhẹ')
   })
 })
 
@@ -676,5 +720,106 @@ describe('SPEC-GUARD-28 — a connector with nothing left to introduce is droppe
   it('a connector that still introduces real content survives', () => {
     const t = '**Laptop Dell 15 DC15250** giá 17.99 triệu. Tuy nhiên, RAM 8GB hơi ít.'
     expect(guardSpecClaimsInText(t, D).text.trim()).toBe(t)
+  })
+})
+
+// ── SPEC-GUARD-26 — the edit must not wreck the layout it edits ─────────────
+//
+// Once the guard actually started running on shopping turns (its evidence had
+// been collected from the wrong array, so it was inert), a live comparison came
+// back as a run-on paragraph with a stray fragment in it: the guard split on the
+// whitespace between sentences, dropped it, and rejoined with single spaces —
+// and a list marker that rode on a removed clause went with it.
+describe('SPEC-GUARD-26 — line structure survives clause surgery', () => {
+  const C: SpecEvidence[] = [{ name: 'Asus Vivobook 16 A1607QA' }, { name: 'Dell 15 DC15250' }]
+
+  const REPLY = 'Mình nghiêng về **Asus Vivobook 16 A1607QA** hơn cho việc làm văn phòng.\n\n'
+    + '**Lý do chính:**\n'
+    + '- RAM 16GB so với 8GB của Dell, mở nhiều tab mượt hơn.\n'
+    + '- Màn hình 16 inch rộng hơn, đỡ mỏi mắt khi làm tài liệu.\n'
+    + '- Pin trâu hơn nên mang đi làm cả ngày thoải mái.\n'
+    + '- Máy nhẹ hơn, dễ mang theo.'
+
+  it('🚨 keeps the bullets on their own lines', () => {
+    const out = guardSpecClaimsInText(REPLY, C).text
+    expect(out).toContain('**Lý do chính:**\n')
+    expect(out.split('\n').filter(l => l.trim().startsWith('-')).length).toBeGreaterThanOrEqual(3)
+  })
+
+  it('still removes exactly the ungrounded claims, and nothing else', () => {
+    const r = guardSpecClaimsInText(REPLY, C)
+    expect(r.text).not.toMatch(/Pin trâu/)
+    expect(r.text).not.toMatch(/Máy nhẹ hơn/)
+    expect(r.text).toContain('RAM 16GB so với 8GB')
+    expect(r.text).toContain('Màn hình 16 inch')
+  })
+
+  it('🚨 gives a surviving fragment its list marker back', () => {
+    // "- Máy nhẹ hơn, dễ mang theo." loses its first clause; the marker belongs
+    // to the LINE, so what is left is still a bullet, not loose prose.
+    const out = guardSpecClaimsInText(REPLY, C).text
+    expect(out).toContain('- dễ mang theo.')
+  })
+
+  it('a single-line reply is unchanged in shape', () => {
+    // Comma-separated, because the clause splitter's `\bvà\b` cannot fire: JS
+    // word boundaries are ASCII, so there is none after the 'à'. A sentence it
+    // cannot split is removed whole — a pre-existing limit, not this test's subject.
+    const one = '**Dell 15 DC15250** giá 17 triệu, rất nhẹ.'
+    const out = guardSpecClaimsInText(one, C).text
+    expect(out).not.toContain('\n')
+    expect(out).toContain('17 triệu')
+  })
+
+  it('🚨 closes a bracket the removed clause had opened', () => {
+    // Measured: "… Dell có 8GB (vẫn đủ." — the parenthetical was the claim.
+    const t = '**Dell 15 DC15250** có 8GB (máy khá nhẹ nên dễ mang).'
+    const out = guardSpecClaimsInText(t, C).text
+    expect(out).not.toMatch(/nhẹ/)
+    expect((out.match(/\(/g) ?? []).length).toBe((out.match(/\)/g) ?? []).length)
+  })
+})
+
+// ── Phase 7 group 5 (2026-09-22): a checklist is advice, not a claim ────────────
+//
+// Golden G5a "mua iPhone 13 cũ thì cần check gì": the retrieved listing carried no battery
+// evidence, the reply's "Pin: kiểm tra Battery Health…" line was cut as an unsupported battery
+// claim, and — because the unpunctuated list lines formed one "sentence" — the surviving lines
+// were rejoined with spaces and the whole checklist came back flattened.
+describe('advice lines and list shape', () => {
+  const C: SpecEvidence[] = [{ name: 'iPhone 13 128GB Cũ (LikeNew)' }]
+  const CHECKLIST = [
+    '**[iPhone 13 128GB Cũ (LikeNew)](https://x.example/p)** — 7.499.000đ.',
+    '',
+    'Những điều **cần check kỹ** khi mua iPhone 13 cũ:',
+    '',
+    '**Tình trạng vật lý:**',
+    '- Nút bấm (âm lượng, nguồn, im lặng) có hoạt động không',
+    '- Pin: kiểm tra Battery Health, dưới 70% nên cân nhắc',
+    '- Kiểm tra loa, mic, loa ngoài có hoạt động bình thường',
+    '',
+    '**Nguồn gốc & bảo hành:**',
+    '- Hỏi rõ máy từ đâu',
+  ].join('\n')
+
+  it('🚨 G5a: an instruction to check the battery is not a battery claim, and the list keeps its lines', () => {
+    const out = guardSpecClaimsInText(CHECKLIST, C)
+    expect(out.removed).toEqual([])
+    expect(out.text).toBe(CHECKLIST)
+  })
+
+  it('an assertion about the candidate on a list line is still cut — without flattening its neighbours', () => {
+    const t = CHECKLIST + '\n- Máy này pin rất trâu, dùng cả ngày'
+    const out = guardSpecClaimsInText(t, C)
+    expect(out.removed).toEqual(['iPhone 13 128GB Cũ (LikeNew):battery'])
+    expect(out.text).not.toContain('pin rất trâu')
+    expect(out.text).toContain('**Nguồn gốc & bảo hành:**\n- Hỏi rõ máy từ đâu')
+  })
+
+  it('advice shields its own clause only', () => {
+    const t = '**[iPhone 13 128GB Cũ (LikeNew)](https://x.example/p)** — kiểm tra pin trước, máy này pin rất trâu.'
+    const out = guardSpecClaimsInText(t, C)
+    expect(out.text).toContain('kiểm tra pin')
+    expect(out.text).not.toContain('pin rất trâu')
   })
 })

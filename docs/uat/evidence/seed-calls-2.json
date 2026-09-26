@@ -1,0 +1,226 @@
+[
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/preferences",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/like",
+  "status": 200,
+  "resp": "{\"liked\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/save",
+  "status": 200,
+  "resp": "{\"saved\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/comments",
+  "status": 200,
+  "resp": "{\"comment\":{\"id\":\"47d44e4f-40c5-4c7c-86e3-0f095f38cdca\",\"body\":\"uat2609 comment by A on B\",\"created_at\":\"2026-09-20T11:59:16.435974+00:00\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"parent_comm"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/share",
+  "status": 200,
+  "resp": "{\"shared\":true,\"id\":\"50ce4632-4161-47d1-ab1a-83dcdf1dc240\",\"created_at\":\"2026-09-20T11:59:17.383607+00:00\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/f2cb8179-9f2d-4ab0-9a01-9dd697f3bd5c/interact",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/like",
+  "status": 200,
+  "resp": "{\"liked\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/save",
+  "status": 200,
+  "resp": "{\"saved\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/comments",
+  "status": 200,
+  "resp": "{\"comment\":{\"id\":\"cd437136-8af8-4158-af0b-ee15e4f67ecf\",\"body\":\"uat2609 comment by A on B\",\"created_at\":\"2026-09-20T11:59:18.634846+00:00\",\"user_id\":\"4d6429c1-8270-4fa6-b114-5a61238bc78a\",\"parent_comm"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/share",
+  "status": 200,
+  "resp": "{\"shared\":true,\"id\":\"ed51acbc-33ec-4336-9f25-5e85fde19c46\",\"created_at\":\"2026-09-20T11:59:19.110996+00:00\"}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/reviews/467c47a0-62b0-43cb-9280-cf14639b6d6a/interact",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "A",
+  "method": "POST",
+  "path": "/api/track",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/preferences",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/message-feedback",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/like",
+  "status": 200,
+  "resp": "{\"liked\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/save",
+  "status": 200,
+  "resp": "{\"saved\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/comments",
+  "status": 200,
+  "resp": "{\"comment\":{\"id\":\"48838171-f860-4e32-ae9f-2e114089cfbd\",\"body\":\"uat2609 comment by B on A\",\"created_at\":\"2026-09-20T11:59:20.840316+00:00\",\"user_id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"parent_comm"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/share",
+  "status": 200,
+  "resp": "{\"shared\":true,\"id\":\"a9323ec2-3dd2-4664-a5f2-f351f39f1c4d\",\"created_at\":\"2026-09-20T11:59:21.300163+00:00\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/48ba6fad-413c-4b2b-9edf-585b61bb4446/interact",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/like",
+  "status": 200,
+  "resp": "{\"liked\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/save",
+  "status": 200,
+  "resp": "{\"saved\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/comments",
+  "status": 200,
+  "resp": "{\"comment\":{\"id\":\"9e1fce0b-2b94-4262-b34d-21437b47b2fc\",\"body\":\"uat2609 comment by B on A\",\"created_at\":\"2026-09-20T11:59:22.260235+00:00\",\"user_id\":\"18bb5d88-1a3f-4e67-b370-6453e53222ab\",\"parent_comm"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/share",
+  "status": 200,
+  "resp": "{\"shared\":true,\"id\":\"7721a582-4595-41ae-a56f-daa39101f2fc\",\"created_at\":\"2026-09-20T11:59:22.807987+00:00\"}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/reviews/8906525f-0083-4b3c-9429-f12e8ad6f8cf/interact",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ },
+ {
+  "who": "B",
+  "method": "POST",
+  "path": "/api/track",
+  "status": 200,
+  "resp": "{\"ok\":true}"
+ }
+]

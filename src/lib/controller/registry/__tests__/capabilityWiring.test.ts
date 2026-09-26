@@ -50,7 +50,7 @@ describe("the Home page's audit panel is gated on the binding, not only on the P
   // would need a Supabase client, an Actor and a session, and would prove the
   // wiring only for whichever actor the fixture happened to build. What must
   // hold is structural: the page consults the kernel before it reads audit rows.
-  const source = readFileSync('src/app/admin/page.tsx', 'utf8')
+  const source = readFileSync('src/app/(app)/admin/page.tsx', 'utf8')
 
   it('resolves the capability through the kernel', () => {
     expect(source).toContain("core.bindCapability('audit.read')")

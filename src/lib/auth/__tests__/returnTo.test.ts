@@ -54,7 +54,7 @@ describe('every Controller producer goes through the shared contract', () => {
   // the login URL it builds, and feed it to the real consumer. If a producer
   // hand-writes a different parameter name, the extracted URL stops resolving.
   it.each([
-    ['src/app/admin/layout.tsx', 'admin layout'],
+    ['src/app/(app)/admin/layout.tsx', 'admin layout'],
     ['src/lib/admin/permissions/guards.ts', 'page permission guard'],
   ])('%s (%s) builds its login URL via loginPathFor', (path) => {
     const src = read(path)

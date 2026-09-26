@@ -1,0 +1,87 @@
+
+T1 — 3 turn(s)
+  FAIL → PASS  no duplicate
+  PASS → PASS  no orphan image (no ![ in prose)
+  PASS → PASS  no GrabFood for Đà Nẵng
+  PASS → PASS  cards every turn
+  FAIL → PASS  never asks máy bay hay xe khách
+  PASS → PASS  t2 reads 2 ngày 1 đêm
+  PASS → PASS  plan block by t2 and t3
+  PASS → PASS  t2 plan has 2 days
+  PASS → PASS  t2 budget_total = 20 triệu
+
+T2 — 2 turn(s)
+  PASS → PASS  cards both turns
+  PASS → PASS  no "sàn/sảnh IMAX" wording
+  PASS → PASS  IMAX honesty line present when IMAX claimed
+
+T3 — 2 turn(s)
+  PASS → PASS  t2 cards drop nhà hàng / over-budget rows
+  FAIL → PASS  t2 model pick is in the cards
+  FAIL → PASS  t2 prose names the pick
+  PASS → PASS  no duplicate
+
+T4 — 2 turn(s)
+  PASS → PASS  t2 risk-first (ownership/lock/fraud in first 500 chars)
+  PASS → PASS  t2 points to Cảnh báo lừa đảo
+  FAIL → PASS  t2 no invented % / star thresholds
+  PASS → PASS  t2 not cosmetic-first
+
+G1a — 1 turn(s)
+  PASS → PASS  cards
+  PASS → PASS  plan block
+  PASS → PASS  at most one question
+  PASS → PASS  no transport/lodging-type question
+
+G1b — 1 turn(s)
+  PASS → PASS  cards
+  PASS → PASS  first card is a cinema (not a mall/karaoke)
+
+G3a — 1 turn(s)
+  PASS → PASS  cards
+  PASS → PASS  no band starting above 50k in cards
+  FAIL → PASS  closed rows not first
+  PASS → PASS  prose names the pick
+
+G3b — 2 turn(s)
+  PASS → PASS  cards both turns
+  PASS → PASS  t2 no nhậu/bia/bar rows
+  PASS → PASS  t2 acknowledges the change
+
+G4a — 1 turn(s)
+  PASS → PASS  plan block
+  PASS → PASS  tools ran
+  PASS → PASS  states assumptions (2 người / 2 ngày 1 đêm / xe)
+  PASS → PASS  at most one question
+  PASS → PASS  plan has 2 days
+
+G5a — 1 turn(s)
+  PASS → PASS  answered (not refused as out of scope)
+  PASS → PASS  risk-first in the first 500 chars
+  PASS → PASS  points to Cảnh báo lừa đảo
+  FAIL → FAIL  no invented % / star thresholds
+  PASS → PASS  list shape kept (no flattened headers)
+
+G5b — 1 turn(s)
+  PASS → PASS  answered (not refused as out of scope)
+  PASS → PASS  risk-first in the first 500 chars
+  PASS → PASS  points to Cảnh báo lừa đảo
+  PASS → PASS  no invented % / star thresholds
+  PASS → PASS  list shape kept (no flattened headers)
+
+G5c — 1 turn(s)
+  PASS → PASS  answered (not refused as out of scope)
+  PASS → PASS  risk-first in the first 500 chars
+  PASS → PASS  points to Cảnh báo lừa đảo
+  PASS → PASS  no invented % / star thresholds
+  PASS → PASS  list shape kept (no flattened headers)
+
+G5d — 1 turn(s)
+  PASS → PASS  answered (not refused as out of scope)
+  PASS → PASS  risk-first in the first 500 chars
+  PASS → PASS  points to Cảnh báo lừa đảo
+  PASS → PASS  no invented % / star thresholds
+  PASS → PASS  list shape kept (no flattened headers)
+
+TOTAL prelaunch-after: 51/58  post-egress-f086: 57/58
+WORSE: none

@@ -1,2 +1,7 @@
+# Normalise every text file to LF in the repository and in the working tree.
+# Windows checkouts had been writing CRLF into edited files (a 4-line append to
+# product.ts showed as a 538-line diff); git detects binaries itself (`-text`).
+* text=auto eol=lf
+
 # supertux2.data and supertux2.wasm are now in Vercel Blob storage (not git).
 # See scripts/upload-supertux-blob.mjs to re-upload if needed.

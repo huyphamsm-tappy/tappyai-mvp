@@ -1,0 +1,223 @@
+-- ============================================================================
+-- ROLLBACK for supabase/migrations/20260908_user_demographics_foundation.sql
+-- V3 User Data Foundation -- the private `public.user_demographics` companion.
+--
+-- NOT applied automatically. Kept beside the migration so the rollback is a
+-- rehearsed file rather than something improvised during an incident.
+--
+-- !! THIS FILE HAS TWO HALVES AND THEY ARE NOT EQUALLY SAFE.
+--
+--    SECTIONS 1 AND 2 RUN AS WRITTEN. Together they disable the Foundation
+--    completely -- no function remains callable, no client role retains any
+--    privilege -- and they destroy NOTHING. Every date of birth stays exactly
+--    where it is, reachable by `service_role` alone.
+--
+--    SECTION 3 -- the one that removes the table -- IS COMMENTED OUT and must
+--    be uncommented by hand. That is deliberate, and it is the whole design of
+--    this file. Dropping this table deletes user-entered dates of birth that
+--    exist nowhere else in this database. A rollback that did that by default
+--    would eventually do it by accident, at 3am, to real people.
+--
+-- ---------------------------------------------------------------------------
+-- WHICH SECTIONS TO RUN
+-- ---------------------------------------------------------------------------
+--   Run VERIFY query 0 first. It answers the only question that matters.
+--
+--   `rows_that_would_be_destroyed = 0`
+--     Nobody has answered yet. Sections 1 and 2 are sufficient, and section 3
+--     is safe to uncomment if you want the schema returned to its exact
+--     pre-migration shape. Nothing is lost either way.
+--
+--   `rows_that_would_be_destroyed > 0`
+--     Real users have given real dates of birth. Run sections 1 and 2 and
+--     STOP. Section 3 is a data-deletion event from here on, and it needs its
+--     own authorization -- it is not part of "rolling back a migration" any
+--     more. This file does not export, copy or transform that data, and must
+--     not be read as if it did.
+--
+-- ---------------------------------------------------------------------------
+-- SAFE WHILE: no deployed code reads these objects.
+-- ---------------------------------------------------------------------------
+-- `b85ddd9` -- the application currently serving production -- contains ZERO
+-- references to `user_demographics`, `user_age_status()`,
+-- `set_user_date_of_birth()`, `admin_set_user_date_of_birth()` or
+-- `age_band_of()` (verified by `git grep` at that commit). While that build is
+-- serving, this rollback is invisible to users and cannot break anything.
+--
+-- The moment `6c6450f` (Foundation + Controller) starts serving, that stops
+-- being true, and in a specific and severe way: `getAgeEligibility` FAILS
+-- CLOSED. A missing `user_age_status()` is caught, returns `unknown`, and every
+-- authenticated account is refused chat, conversations, recommendations, review
+-- posting, explore and both upload paths -- while `/age-check`, the remedy,
+-- calls the equally-missing `set_user_date_of_birth()` and can never succeed.
+-- That is not a degraded experience; it is a total lockout of every signed-in
+-- user with no self-service recovery. It has already happened once, on
+-- 2026-09-09, for the same reason.
+--
+-- SO: ROLLBACK IS CODE-FIRST, SCHEMA-SECOND. Return the application to a build
+-- that does not reference these objects BEFORE running this file. Running it
+-- against a live Foundation deployment causes the outage it is meant to undo.
+--
+-- ---------------------------------------------------------------------------
+-- !! WHAT SECTION 3 DESTROYS, AND WHY IT IS NOT RECOVERABLE
+-- ---------------------------------------------------------------------------
+--   * `date_of_birth` -- typed by the user. Nothing else in this database holds
+--     it. `audit_log` records administrative corrections as an age BAND and
+--     never as a date (migration section 6, by design), and a self-declaration
+--     is not audited at all. There is no source to reconstruct it from.
+--
+--   * `dob_corrections` -- the one-self-correction counter. Losing it hands
+--     EVERY user a fresh allowance. Re-applying the migration recreates the
+--     table empty, so the rule resets silently rather than visibly.
+--
+--   * `admin_corrections`, `age_declared_at`, and the professional/demographic
+--     columns (`gender`, `city`, `country`, `occupation`, `industry`,
+--     `education_level`) -- all user-entered.
+--
+-- The direction of the loss is at least FAIL-CLOSED: with no row, a user reads
+-- as `unknown`, which withholds access rather than granting it. Nobody under 18
+-- is admitted by this rollback. But every adult who answered is asked again,
+-- and their answer is gone.
+--
+-- ---------------------------------------------------------------------------
+-- WHAT THIS FILE MUST NOT TOUCH
+-- ---------------------------------------------------------------------------
+--   * `public.profiles` -- the migration never altered it (no ALTER, no UPDATE;
+--     verified against the SQL). There is nothing to restore, and touching it
+--     here would be a change the migration never made.
+--
+--   * `public.audit_log` -- pre-existing (20260713_backoffice_phase0.sql). The
+--     migration only INSERTs into it at function-call time. Rows written by
+--     `admin_set_user_date_of_birth()` SURVIVE this rollback, which is correct:
+--     they are the record that a correction happened, and they carry no date.
+--
+--   * `public.set_updated_at()` -- NOT DROPPED, deliberately. The migration
+--     creates it only when absent (section 0, guarded `DO` block) because
+--     production already has it and `profiles` depends on it. This file cannot
+--     tell whether the migration created it or found it, and guessing wrong
+--     breaks `profiles`. Leaving one unused trigger function behind is the
+--     cheap error; dropping a shared one is not.
+-- ============================================================================
+
+-- ---------------------------------------------------------------------------
+-- 1. The four functions, in reverse creation order.
+--
+--    FUNCTIONS FIRST. These carry the EXECUTE grants -- they are the only path
+--    by which `authenticated` can reach a date of birth at all (no PostgREST
+--    role holds a privilege on the column itself). Dropping them first closes
+--    that path immediately, before anything else is touched.
+--
+--    No CASCADE. Nothing in this database depends on these functions -- no
+--    other migration references them (verified by grep across
+--    supabase/migrations) -- so a plain DROP is sufficient, and CASCADE would
+--    silently remove anything that later did.
+--
+--    Signatures are written in full: `age_band_of` and `set_user_date_of_birth`
+--    both take a single DATE, and an unqualified DROP would be ambiguous if
+--    either is ever overloaded.
+-- ---------------------------------------------------------------------------
+DROP FUNCTION IF EXISTS public.admin_set_user_date_of_birth(UUID, DATE, UUID, TEXT, TEXT, TEXT);
+DROP FUNCTION IF EXISTS public.set_user_date_of_birth(DATE);
+DROP FUNCTION IF EXISTS public.user_age_status();
+DROP FUNCTION IF EXISTS public.age_band_of(DATE);
+
+-- ---------------------------------------------------------------------------
+-- 2. Close the table to every client role, and keep the data.
+--
+--    This is the DEFAULT rollback and it is not destructive. After it runs:
+--      * no PostgREST role holds any privilege, at table OR column level --
+--        `REVOKE ... ON TABLE` revokes the column-level grants too, which is
+--        the form the migration used;
+--      * no policy remains, and RLS is still enabled, so `authenticated` is
+--        denied twice over;
+--      * `service_role` is untouched -- it is the administrative path
+--        (`19_Security.md` section 4, Layer 3) and the only way the preserved
+--        data can be read or, later, re-enabled.
+--
+--    GUARDED, because the migration carries no BEGIN/COMMIT and is applied by
+--    hand section by section: it can stop before the table exists. Neither
+--    `REVOKE ... ON TABLE` nor `DROP POLICY IF EXISTS ... ON <table>` has a
+--    table-level IF EXISTS -- both raise 42P01 on a missing relation, and the
+--    `IF EXISTS` in DROP POLICY refers to the policy, not the table. The
+--    `to_regclass` guard is what makes this file safe to run at any point.
+-- ---------------------------------------------------------------------------
+DO $$
+BEGIN
+  IF to_regclass('public.user_demographics') IS NOT NULL THEN
+    EXECUTE 'REVOKE ALL ON TABLE public.user_demographics FROM PUBLIC, anon, authenticated';
+    EXECUTE 'DROP POLICY IF EXISTS user_demographics_select_own ON public.user_demographics';
+    EXECUTE 'DROP POLICY IF EXISTS user_demographics_insert_own ON public.user_demographics';
+    EXECUTE 'DROP POLICY IF EXISTS user_demographics_update_own ON public.user_demographics';
+  END IF;
+END $$;
+
+-- ---------------------------------------------------------------------------
+-- 3. !! FULL REMOVAL -- DELETES USER DATA. COMMENTED OUT ON PURPOSE.
+--
+--    Uncomment this line ONLY after VERIFY query 0 below has told you what it
+--    would cost. Dropping the table takes its remaining trigger and its
+--    definition with it; sections 1 and 2 have already removed everything else.
+--
+--    `rows_that_would_be_destroyed = 0`  -> nothing is lost; uncomment freely.
+--    `rows_that_would_be_destroyed > 0`  -> this permanently deletes real dates
+--                                           of birth. Get authorization first.
+--                                           Sections 1 and 2 have already made
+--                                           the Foundation inert without it.
+--
+--    There is no export step here, and none is implied. This file deletes or
+--    it does not; it never moves the data somewhere else.
+-- ---------------------------------------------------------------------------
+-- DROP TABLE IF EXISTS public.user_demographics;
+
+-- ============================================================================
+-- VERIFY
+--
+--   -- 0. RUN THIS FIRST. It is the difference between a rollback and a
+--   --    data-destruction event, and it decides whether section 3 may be
+--   --    uncommented at all.
+--   SELECT count(*) AS rows_that_would_be_destroyed FROM public.user_demographics;
+--   -- 0  -> section 3 is safe. Anything else -> sections 1 and 2 only.
+--
+--   -- 1. The four functions are gone (after section 1).
+--   SELECT count(*) AS foundation_fns FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+--    WHERE n.nspname='public' AND p.proname IN
+--      ('user_age_status','set_user_date_of_birth','admin_set_user_date_of_birth','age_band_of');
+--   -- Expect: 0.
+--
+--   -- 2. No client role retains any privilege, at table or column level
+--   --    (after section 2). This is the check that matters: the migration
+--   --    granted at COLUMN level, so a table-level test alone proves nothing.
+--   SELECT has_any_column_privilege('authenticated','public.user_demographics','SELECT') AS auth_any,
+--          has_any_column_privilege('anon','public.user_demographics','SELECT')          AS anon_any,
+--          has_column_privilege('authenticated','public.user_demographics','gender','SELECT') AS auth_gender,
+--          has_any_column_privilege('service_role','public.user_demographics','SELECT')  AS svc_any;
+--   -- Expect: false, false, false, true -- service_role keeps the admin path.
+--
+--   -- 3. No policy remains, and RLS is still on (after section 2).
+--   SELECT (SELECT relrowsecurity FROM pg_class WHERE oid='public.user_demographics'::regclass) AS rls,
+--          (SELECT count(*) FROM pg_policies
+--            WHERE schemaname='public' AND tablename='user_demographics')                       AS policies;
+--   -- Expect: true, 0.
+--
+--   -- 4. The table is gone -- ONLY if section 3 was deliberately uncommented.
+--   SELECT to_regclass('public.user_demographics') AS tbl;
+--   -- Expect: NULL after section 3; the table name otherwise, which is correct
+--   -- and means the data was preserved.
+--
+--   -- 5. The shared trigger function SURVIVED -- `profiles` still needs it.
+--   SELECT count(*) AS shared_fn FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+--    WHERE n.nspname='public' AND p.proname='set_updated_at';
+--   -- Expect: 1.
+--
+--   -- 6. `profiles` is untouched -- same columns, same policies, before and after.
+--   SELECT (SELECT count(*) FROM information_schema.columns
+--            WHERE table_schema='public' AND table_name='profiles')            AS profiles_columns,
+--          (SELECT count(*) FROM pg_policies
+--            WHERE schemaname='public' AND tablename='profiles')               AS profiles_policies;
+--   -- Expect: unchanged from the values recorded before the rollback.
+--
+--   -- 7. `audit_log` is untouched, and the correction record survives.
+--   SELECT count(*) AS dob_correction_audit_rows FROM public.audit_log
+--    WHERE action = 'user.date_of_birth.corrected';
+--   -- Expect: unchanged from the value recorded before the rollback.
+-- ============================================================================

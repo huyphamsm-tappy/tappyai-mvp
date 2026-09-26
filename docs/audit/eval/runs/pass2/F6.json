@@ -1,0 +1,65 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 12650,
+  "evidenceId": "69498a14-b22d-4258-bd05-9269f5b61dd2",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Quán Bụi Lê Thánh Tôn",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1188,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Tôi sẽ kiểm tra thông tin chi tiết về Quán Bụi - Lê Thánh Tôn cho bạn.\n\nQuán Bụi - Lê Thánh Tôn là quán nổi tiếng nên **có khả năng khá đông**, đặc biệt vào giờ tối. Với 1.188 đánh giá Google Maps, đó là dấu hiệu quán rất được yêu thích và thu hút khách.\n\nNếu bạn muốn tránh đông, mình gợi ý **đặt bàn trước** — quán có hỗ trợ đặt bàn qua website hoặc Google Maps. Hoặc bạn có thể đến sớm hơn (khoảng 17:30-18:00) để tránh giờ cao điểm.\n\nQuán mở từ 7:00 đến 23:00 hàng ngày, nên bạn có thời gian linh hoạt để chọn giờ phù hợp nhất 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Đặt bàn - Quán Bụi\",\"type\":\"website\",\"url\":\"https://quan-bui.com/eforms/reservation-form/6/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6387801295899804773\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Muốn tìm quán khác ít đông hơn|Cần gợi ý quán khác[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bữa tối của bạn — quán có rating 4.7⭐ từ 961 đánh giá Google Maps, chuyên hải sản tươi ngon, phù hợp cho 2 người. Quán mở đến nửa đêm nên bạn có thể đến thoải mái 👍\n\nNếu bạn muốn gần hơn, **Quán Bụi - Lê Thánh Tôn** cách bạn chỉ 0.7km, cũng có 4.5⭐ từ 1.188 đánh giá, chuyên ẩm thực Việt authentic, giá khoảng 200-600k/người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Haisanhoanggia\",\"type\":\"search\",\"url\":\"https://haisanhoanggia.com/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi gần hơn|Nhà hàng Việt khác|Quán lẩu Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ kiểm tra thông tin chi tiết về Quán Bụi - Lê Thánh Tôn cho bạn.\n\nQuán Bụi - Lê Thánh Tôn là quán nổi tiếng nên **có khả năng khá đông**, đặc biệt vào giờ tối. Với 1.188 đánh giá Google Maps, đó là dấu hiệu quán rất được yêu thích và thu hút khách.\n\nNếu bạn muốn tránh đông, mình gợi ý **đặt bàn trước** — quán có hỗ trợ đặt bàn qua website hoặc Google Maps. Hoặc bạn có thể đến sớm hơn (khoảng 17:30-18:00) để tránh giờ cao điểm.\n\nQuán mở từ 7:00 đến 23:00 hàng ngày, nên bạn có thời gian linh hoạt để chọn giờ phù hợp nhất 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Đặt bàn - Quán Bụi\",\"type\":\"website\",\"url\":\"https://quan-bui.com/eforms/reservation-form/6/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6387801295899804773\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Muốn tìm quán khác ít đông hơn|Cần gợi ý quán khác[/FOLLOWUPS]"
+    }
+  ]
+}

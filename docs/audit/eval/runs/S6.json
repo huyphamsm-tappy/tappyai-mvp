@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 3905,
+  "evidenceId": "f0eb0406-f9b4-4378-8702-55602a0834a3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn mua gì đó ngay bây giờ ở gần vị trí hiện tại (Quận 1). Nhưng mình cần biết **bạn định mua cái gì** để tìm được nơi tốt nhất cho bạn — là đồ ăn, quần áo, điện tử, hay thứ khác?\n\n[FOLLOWUPS]đồ ăn vặt|quần áo|điện thoại|laptop[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn mua gì đó ngay bây giờ ở gần vị trí hiện tại (Quận 1). Nhưng mình cần biết **bạn định mua cái gì** để tìm được nơi tốt nhất cho bạn — là đồ ăn, quần áo, điện tử, hay thứ khác?\n\n[FOLLOWUPS]đồ ăn vặt|quần áo|điện thoại|laptop[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { serperPost } from './serperClient'
 import { messages } from '@/lib/ai/messages'
-import { webSearchCacheKey } from './cacheKeys'
+import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -13,46 +14,66 @@ export function getCache(key: string): unknown | null {
   return null
 }
 
+/**
+ * In-flight requests, keyed exactly like the cache above.
+ *
+ * The cache only helps once an answer exists. Two callers who ask the same question a few hundred
+ * milliseconds apart both miss it and both pay Google — and with a 100/day SearchText quota, two
+ * users typing the same thing at the same time is a real way to lose a call for nothing.
+ *
+ * Deliberately process-local, exactly like `cache`. Vercel runs several instances, so this cannot
+ * deduplicate across them; it is not pretending to. It removes the duplicate work inside one
+ * instance, which is where a burst of identical requests actually lands, and it needs no new
+ * infrastructure to do it.
+ */
+const inFlight = new Map<string, Promise<unknown>>()
+
+/**
+ * Runs `fn` for `key`, or joins the call already running for it.
+ *
+ * The entry is removed as soon as the promise settles — success OR failure. A rejected promise
+ * left in the map would hand the same error to every later caller for the life of the process,
+ * which is a far worse failure than the duplicate call this is trying to avoid.
+ */
+export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  const running = inFlight.get(key)
+  if (running) {
+    console.log(JSON.stringify({ type: 'tappyai_places_budget', step: 'single_flight_join', key }))
+    return running as Promise<T>
+  }
+  const p = (async () => fn())()
+  inFlight.set(key, p)
+  try {
+    return await p
+  } finally {
+    inFlight.delete(key)
+  }
+}
+
+/** Test seam: how many requests are in flight. Never used by production code. */
+export function inFlightCount(): number {
+  return inFlight.size
+}
+
+/**
+ * Empties the in-memory tool cache.
+ *
+ * A TEST SEAM, and named so it cannot be mistaken for product behaviour. The
+ * cache is module-scoped, so a suite that calls the same tool twice with the
+ * same arguments would otherwise read the previous test answer - which is what
+ * the photo-step timing tests hit the moment image lookups became memoised.
+ * Clearing between tests keeps each one measuring the call it actually makes.
+ */
+export function __clearToolCache(): void {
+  cache.clear()
+}
+
 export function setCache(key: string, data: unknown, ttlMs: number) {
   if (cache.size > 300) {
     const firstKey = cache.keys().next().value
     if (firstKey !== undefined) cache.delete(firstKey)
   }
   cache.set(key, { data, expires: Date.now() + ttlMs })
-}
-
-// ===== GOOGLE PLACES PHOTO — LIVE SOURCE ONLY =====
-// Google Maps Platform Terms of Service: Places content (photos) must not be pre-fetched,
-// cached, or stored beyond the request — only place_id (indefinitely) and lat/lng (<=30 days)
-// are exempt. This function therefore never persists the result; every call hits Google live.
-// photoName is the full resource path returned by Places API (New), e.g. "places/ChIJ.../photos/AeZ..."
-export async function fetchPlacePhoto(placeId: string, photoName: string): Promise<string | null> {
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (!key || !photoName) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_skipped', placeId, hasKey: !!key, hasPhotoName: !!photoName }))
-    return null
-  }
-  const controller = new AbortController()
-  const tid = setTimeout(() => controller.abort(), 3000)
-  try {
-    // New API resource names (places/ChIJ.../photos/AeZ...) → use Places API (New) media endpoint
-    // Legacy photo_reference tokens → use old Maps API endpoint
-    const photoApiUrl = photoName.includes('/')
-      ? `https://places.googleapis.com/v1/${photoName}/media?maxWidthPx=400&key=${key}`
-      : `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${photoName}&key=${key}`
-    const resp = await fetch(photoApiUrl, { signal: controller.signal, redirect: 'follow' })
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_result', placeId, status: resp.status, ok: resp.ok, finalUrl: resp.url?.slice(0, 60) || null }))
-    if (!resp.ok) return null
-    const photoUri = resp.url
-    const safe = !!photoUri && !photoUri.includes('maps.googleapis.com')
-    if (!photoUri || !safe) return null
-    return photoUri
-  } catch (e) {
-    clearTimeout(tid)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'api_exception', placeId, error: String(e) }))
-    return null
-  }
 }
 
 // ===== OFFICIAL WEBSITE IMAGE (og:image) — live only, short timeout, never blocks =====
@@ -258,20 +279,30 @@ export function pickEmbeddableImageUrl(images: SerperImage[] | undefined): strin
 // sole responsibility of those who make it available"), so it is treated the same as Google:
 // last-resort fallback, resolved fresh on every call, never written to a database.
 export async function fetchPlacePhotosByName(placeId: string, placeName: string, max = 3, context: ImageContext = 'default'): Promise<string[]> {
+  /**
+   * 🚨 THE SAME VENUE WAS BOUGHT OVER AND OVER.
+   *
+   * Serper bills per request and this is the highest-volume call in the product:
+   * every place a reply names, plus every hotel row, plus every product row.
+   * Nothing memoised it, so the same restaurant in the same city cost a request
+   * on every turn - and a travel turn fetching 8 hotels re-bought whichever ones
+   * the route-level resolver then asked for again by name.
+   *
+   * ONLY NON-EMPTY RESULTS ARE STORED. Caching a miss would let one timeout
+   * suppress a venue images for the whole TTL, which trades cost for quality -
+   * the exact trade this optimisation is forbidden to make.
+   */
+  const photoCacheKey = placePhotosCacheKey(placeName, max, context)
+  const cachedPhotos = getCache(photoCacheKey)
+  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) return cachedPhotos as string[]
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
     return []
   }
   try {
-    const resp = await Promise.race([
-      fetch('https://google.serper.dev/images', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: placeName, gl: 'vn', hl: 'vi', num: 8 }),
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000)),
-    ])
+    const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
+    if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
     if (!(resp as Response).ok) {
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
       return []
@@ -280,6 +311,9 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
     const images = data?.images as SerperImage[] | undefined
     const photoUris = pickEmbeddableImageUrls(images, max, context)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
+    // 15 minutes, matching the products cache: long enough that a conversation
+    // and its follow-ups pay once, short enough that these stay live URLs.
+    if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
     return photoUris
   } catch (e) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
@@ -305,7 +339,9 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
  * these to decide anything, and emitting them cannot change what is fetched.
  */
 export interface PhotoStepTiming {
-  step: 'website' | 'places_detail' | 'places_media' | 'serper'
+  // `places_detail` and `places_media` were removed with the Google Places photo
+  // lookup (Google Places is unavailable for Vietnam). Nothing emits them any more.
+  step: 'website' | 'serper'
   ms: number
   /** The step produced at least one usable URL. */
   hit: boolean
@@ -346,33 +382,10 @@ export async function resolvePlacePhotos(
     mark('website', t, before)
   }
 
-  const key = process.env.GOOGLE_PLACES_API_KEY
-  if (collected.length < max && key && place.place_id) {
-    const tDetail = Date.now(); const beforeDetail = collected.length
-    let detailTimedOut = false
-    try {
-      const detailResp = await Promise.race([
-        fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${place.place_id}&fields=photos&key=${key}`),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 2500)),
-      ])
-      const detail = await (detailResp as Response).json()
-      const photoRef = (detail.result?.photos as Array<{ photo_reference: string }>)?.[0]?.photo_reference
-      mark('places_detail', tDetail, beforeDetail)
-      if (photoRef) {
-        const tMedia = Date.now(); const beforeMedia = collected.length
-        addUnique(await fetchPlacePhoto(place.place_id, photoRef))
-        mark('places_media', tMedia, beforeMedia)
-      }
-    } catch (e) {
-      // Unchanged behaviour: skip on timeout or error, fall through to Serper.
-      // The mark is emitted from the catch too, because a step that BURNED its
-      // timeout is exactly the one worth seeing — reporting only the successes
-      // would hide the slowest case there is.
-      detailTimedOut = e instanceof Error && e.message === 'timeout'
-      mark('places_detail', tDetail, beforeDetail, detailTimedOut)
-    }
-  }
-
+  // Google Places photo lookup removed (2026-09-21): Google Places is not available
+  // for Vietnam, so it was legacy code. Serper supplies the place card's photo
+  // directly (its /maps thumbnailUrl → photo_url), and the Serper image search
+  // below fills the rest of the gallery.
   if (collected.length < max && place.name) {
     const t = Date.now(); const before = collected.length
     const serperPhotos = await fetchPlacePhotosByName(
@@ -393,17 +406,25 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
 export async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+  /**
+   * 🚨 `webSearch` CACHED; ITS SIBLINGS DID NOT.
+   *
+   * Every direct caller - the food price/order/TikTok queries, travel four
+   * hotel queries, shopping three organic queries - went straight out to a
+   * billed endpoint with no memoisation, so an identical query on the next turn
+   * was paid for again. Same rule as the photo cache: only a non-empty result is
+   * stored, so a timeout never becomes a 5-minute hole in the data.
+   */
+  const searchCacheKey = serperSearchCacheKey(query)
+  const cachedSearch = getCache(searchCacheKey)
+  if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
+    return cachedSearch as Array<{ title: string; link: string; snippet: string }>
+  }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
-    const resp = await Promise.race([
-      fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num: 8 })
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-    ])
+    const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000)
+    if (!resp) return null // A2: over today's Serper ceiling
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string }>
@@ -411,6 +432,8 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
       .filter(r => r.title && r.link)
       .slice(0, 6)
       .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
+    // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
+    if (results.length > 0) setCache(searchCacheKey, results, 5 * 60 * 1000)
     return results
   } catch {
     return null
@@ -483,18 +506,12 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
   try {
-    const resp = await Promise.race([
-      fetch('https://google.serper.dev/shopping', {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
-        // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
-        // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
-        // and 6s was measured cutting it off.
-        body: JSON.stringify({ q: query, gl: 'vn', hl: 'vi', num }),
-      }),
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 8000)),
-    ])
+    // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
+    // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
+    // default. The timeout goes to D3's 8s for the same reason — a 20-row request is slower,
+    // and 6s was measured cutting it off.
+    const resp = await serperPost('shopping', apiKey, { q: query, gl: 'vn', hl: 'vi', num }, 8000)
+    if (!resp) return null // A2: over today's Serper ceiling
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const rows = (data?.shopping || []) as Array<Record<string, unknown>>

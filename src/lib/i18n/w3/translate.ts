@@ -1,4 +1,4 @@
-// Wave-3 i18n module — /translate screen (src/app/translate/page.tsx).
+// Wave-3 i18n module — /translate screen (src/app/(app)/translate/page.tsx).
 // Merged into useTranslation via the w3 index.
 
 export const vi: Record<string, string> = {
@@ -19,6 +19,20 @@ export const vi: Record<string, string> = {
   'translate.copy': 'Sao chép',
   'translate.copied': 'Đã chép!',
   'translate.footerTip': 'Miễn phí · Tối đa 30 lần/ngày · Không cần tài khoản',
+  // 2026-09-12 V3 reskin. Every number below is the code's: 30 targets in LANGUAGES, 2000 chars
+  // (maxLength + the route's too_long guard), 30/day (DAILY_LIMIT). Read-aloud and copy exist.
+  'translate.heroEyebrow': 'Dịch ngôn ngữ tức thì',
+  'translate.heroTitle1': 'Kết nối thế giới',
+  'translate.heroTitle2': 'bằng ngôn ngữ',
+  'translate.heroBody': 'Dịch nhanh và mượt mà sang {n} ngôn ngữ.',
+  'translate.sourceAuto': 'Tự nhận diện ngôn ngữ gốc',
+  'translate.featFast': 'Nhanh chóng',
+  'translate.featFastDesc': 'Dịch tức thì',
+  'translate.featLangs': '{n} ngôn ngữ',
+  'translate.featLangsDesc': 'Chọn ngôn ngữ cần dịch sang',
+  'translate.featEasy': 'Dễ sử dụng',
+  'translate.featEasyDesc': 'Không cần đăng nhập · Đọc to kết quả',
+  'translate.langPickerLabel': 'Chọn ngôn ngữ đích',
 }
 
 export const en: Record<string, string> = {
@@ -39,4 +53,16 @@ export const en: Record<string, string> = {
   'translate.copy': 'Copy',
   'translate.copied': 'Copied!',
   'translate.footerTip': 'Free · Up to 30 translations/day · No account needed',
+  'translate.heroEyebrow': 'Instant translation',
+  'translate.heroTitle1': 'Connect the world',
+  'translate.heroTitle2': 'through language',
+  'translate.heroBody': 'Fast, smooth translation into {n} languages.',
+  'translate.sourceAuto': 'Source language detected automatically',
+  'translate.featFast': 'Fast',
+  'translate.featFastDesc': 'Instant translation',
+  'translate.featLangs': '{n} languages',
+  'translate.featLangsDesc': 'Pick the language to translate into',
+  'translate.featEasy': 'Easy to use',
+  'translate.featEasyDesc': 'No sign-in · Read results aloud',
+  'translate.langPickerLabel': 'Choose the target language',
 }

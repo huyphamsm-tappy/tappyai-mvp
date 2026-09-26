@@ -6,16 +6,14 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import {
-  Heart, Bookmark, ChevronLeft, ChevronUp, ChevronDown,
+  ChevronLeft, ChevronUp, ChevronDown,
   Trash2, EyeOff, Eye, Loader2, Plus, Grid3X3, AlertCircle,
 } from 'lucide-react'
-import { createClient } from '@/lib/supabase/client'
 import { trailingFillerCount } from '@/lib/ui/gridFill'
 import { getUserPreferences } from '@/lib/userMemory'
 import type { UserPreferences } from '@/lib/userMemory'
-import SoundSheet from './SoundSheet'
 import LikeListSheet from './LikeListSheet'
 import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -44,7 +42,6 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
   const [activeIndex, setActiveIndex] = useState(startIndex)
   const [commentOf, setCommentOf] = useState<Review | null>(null)
   const [shareOf, setShareOf] = useState<Review | null>(null)
-  const [soundTrackId, setSoundTrackId] = useState<string | null>(null)
   const [likesOf, setLikesOf] = useState<string | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -131,7 +128,7 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
             <Post key={r.id} r={r} me={me} feedType="latest" showFeedTabs={false}
               renderVideo={Math.abs(i - activeIndex) <= 1} active={i === activeIndex}
               onFeedTypeChange={() => {}} onLike={like} onLikeDouble={likeOnly} onSave={save}
-              onComment={setCommentOf} onShare={setShareOf} onDelete={del} onSoundTap={setSoundTrackId}
+              onComment={setCommentOf} onShare={setShareOf} onDelete={del}
               onOpenLikes={rev => setLikesOf(rev.id)} />
           ))}
         </div>
@@ -145,26 +142,33 @@ export function ClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts
       </div>
       {commentOf && <CommentDrawer review={commentOf} me={me} onClose={() => setCommentOf(null)} onAdded={addComment} />}
       {shareOf && <ShareModal review={shareOf} onClose={() => setShareOf(null)} />}
-      {soundTrackId && <SoundSheet trackId={soundTrackId} onClose={() => setSoundTrackId(null)} />}
       {likesOf && <LikeListSheet reviewId={likesOf} onClose={() => setLikesOf(null)} />}
     </div>
   )
 }
 
-/* ─── Profile Tab (TikTok style) ───
-   Shared between viewing your OWN profile (reviews?tab=profile, viewerId===userId)
-   and viewing ANOTHER user's profile (/users/[id]) — same grid, same swipeable
-   viewer, same everything, so the two experiences can never drift apart again. */
+/* ─── Creator profile (TikTok style) ───
+   The PUBLIC profile of one user — the posts grid `/api/reviews/feed?userId=` serves to
+   everyone — with the same swipeable viewer as the feed.
+
+   🚨 NOT the signed-in user's own profile any more (2026-09-17). That has exactly one
+   implementation, the V3 `/profile` hub with the five personal collections (Posts / Liked /
+   Saved / Hidden / Shared) read through the gated routes. This component used
+   to carry a second one — Saved and Liked tabs over direct `review_likes` / `review_saves`
+   reads and a hidden-posts query — which is how web and Android drifted. Those reads are
+   gone, not merely unreachable: a creator profile never requests a private collection, its
+   own or anyone else's. `/reviews?tab=profile` and `/users/<me>` both hand over to `/profile`.
+*/
 // Exported for the profile-grid delete-reflow regression test (profileGridDelete.test.tsx).
 //
 // Two independent axes, never mixed:
 //   variant       — LAYOUT. Decided by the ROUTE, identical for every viewer.
 //                   'page' = the standalone /users/[id] profile (horizontal hero,
 //                   responsive columns, 3:4 tiles — the Product Owner's reference);
-//                   'tab' = the bottom-nav "Hồ sơ" tab's classic centred layout.
-//   isOwnProfile  — PERMISSIONS ONLY. Which actions and private data exist:
-//                   edit-profile vs follow, the + upload badge, the private
-//                   Saved/Liked tabs, hidden posts, preferences, delete/hide.
+//                   'tab' = the classic centred layout.
+//   isOwnProfile  — PERMISSIONS ONLY. Which ACTIONS exist on the public grid:
+//                   edit-profile vs follow, the + upload badge, preferences, delete/hide.
+//                   It never adds data: the private collections live on /profile.
 export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant = 'tab' }: { userId: string; viewerId: string | null; showBackButton?: boolean; onBack?: () => void; variant?: 'tab' | 'page' }) {
   const { t, locale } = useTranslation()
   const isOwnProfile = viewerId === userId
@@ -176,63 +180,33 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
   const [following, setFollowing] = useState(false)
   const [followBusy, setFollowBusy] = useState(false)
   const [posts, setPosts] = useState<Review[]>([])
-  const [hidden, setHidden] = useState<Review[]>([])
-  const [likedPosts, setLikedPosts] = useState<Review[]>([])
-  const [savedPosts, setSavedPosts] = useState<Review[]>([])
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(false)
-  const [activeTab, setActiveTab] = useState<'posts' | 'saved' | 'liked'>('posts')
   const [sel, setSel] = useState<Review | null>(null)
-  const [viewerStart, setViewerStart] = useState<number | null>(null) // index into displayPosts when the swipe viewer is open
+  const [viewerStart, setViewerStart] = useState<number | null>(null) // index into posts when the swipe viewer is open
   const [prefs, setPrefs] = useState<UserPreferences | null>(null)
-  const supabase = createClient()
 
   useEffect(() => {
     const load = async () => {
       setLoading(true)
       setLoadError(false)
       try {
-        const [profileRes, reviewsRes, likedRes, savedRes, prefsRes] = await Promise.all([
+        // 🚨 Two reads, both PUBLIC, for every viewer: the profile header and the public posts
+        // feed. Nothing private is requested here whoever is looking — the owner's collections
+        // (liked / saved / hidden / shared) are `/profile`'s, through the gated routes.
+        const [profileRes, reviewsRes, prefsRes] = await Promise.all([
           fetch(`/api/users/${userId}`).then(r => { if (!r.ok) throw new Error('profile_failed'); return r.json() }),
           // `?lang=` because on your OWN profile the response carries the moderation notice
           // for any post the safety gate held, and the server words it from the request
           // language. Falling through to Accept-Language would word it in the BROWSER's
           // language rather than the one picked in-app.
           fetch(`/api/reviews/feed?userId=${userId}&limit=50&lang=${encodeURIComponent(locale)}`).then(r => { if (!r.ok) throw new Error('feed_failed'); return r.json() }),
-          // Hidden posts, saved and liked are fetched ONLY for your own profile.
-          // On someone else's profile they are not merely hidden from the UI —
-          // they are never requested, so a misconfigured RLS policy cannot leak
-          // another user's private lists to a visitor.
-          isOwnProfile
-            ? supabase.from('review_likes').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] })
-            : Promise.resolve([]),
-          isOwnProfile
-            ? supabase.from('review_saves').select('review_id').eq('user_id', userId).then(r => { if (r.error) throw r.error; return r.data || [] })
-            : Promise.resolve([]),
           isOwnProfile ? getUserPreferences(userId) : Promise.resolve(null),
         ])
         setProfile(profileRes)
         setFollowing(!!profileRes.is_following)
         setPrefs(prefsRes)
-        const allPosts = (reviewsRes.reviews || []).map((r: Review) => ({ ...r, is_hidden: false }))
-        setPosts(allPosts)
-        if (isOwnProfile) {
-          const { data: hiddenData, error: hiddenError } = await supabase.from('reviews').select('id,place_name,body,photos,rating,is_hidden,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').eq('user_id', userId).eq('is_hidden', true).order('created_at', { ascending: false })
-          if (hiddenError) throw hiddenError
-          setHidden((hiddenData || []).map((r: any) => ({ ...r } as Review)))
-        }
-        if (likedRes.length > 0) {
-          const likedIds = (likedRes as { review_id: string }[]).map(l => l.review_id)
-          const { data: likedData, error: likedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').in('id', likedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
-          if (likedError) throw likedError
-          setLikedPosts((likedData || []).map((r: any) => ({ ...r, liked_by_me: true, saved_by_me: false })))
-        }
-        if (savedRes.length > 0) {
-          const savedIds = (savedRes as { review_id: string }[]).map(s => s.review_id)
-          const { data: savedData, error: savedError } = await supabase.from('reviews').select('id,user_id,place_name,place_address,rating,body,photos,is_verified,like_count,comment_count,created_at,content_type,media_url,thumbnail,source_type,source_url').in('id', savedIds).or('is_hidden.is.null,is_hidden.eq.false').order('created_at', { ascending: false }).limit(30)
-          if (savedError) throw savedError
-          setSavedPosts((savedData || []).map((r: any) => ({ ...r, liked_by_me: false, saved_by_me: true })))
-        }
+        setPosts((reviewsRes.reviews || []) as Review[])
       } catch {
         setLoadError(true)
       } finally {
@@ -243,7 +217,7 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
     // `locale` re-fetches on a language switch, so the held-post notice changes language
     // with the rest of the page instead of keeping whatever it loaded with.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userId, isOwnProfile, supabase, locale])
+  }, [userId, isOwnProfile, locale])
 
   // Follow/unfollow the profile being VIEWED — only meaningful when it isn't your
   // own. Same optimistic + revert-on-failure pattern already used for review likes.
@@ -273,33 +247,26 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
   const doDelete = async (id: string) => {
     if (!confirm(t('reviews.deleteConfirm'))) return
     const res = await fetch(`/api/reviews/${id}`, { method: 'DELETE' })
-    if (res.ok) { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)); setSel(null) }
+    if (res.ok) { setPosts(p => p.filter(r => r.id !== id)); setSel(null) }
   }
-  const doHide = async (id: string, hide: boolean) => {
-    const res = await fetch(`/api/reviews/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_hidden: hide }) })
+  // Hiding takes the post off the PUBLIC grid (this one). It reappears under /profile's
+  // "Đã ẩn", which is also where "Hiện lại" lives — a hidden post is not a public row.
+  const doHide = async (id: string) => {
+    const res = await fetch(`/api/reviews/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ is_hidden: true }) })
     if (!res.ok) return
-    if (hide) { const p = posts.find(r => r.id === id); if (p) { setPosts(prev => prev.filter(r => r.id !== id)); setHidden(prev => [{ ...p, is_hidden: true } as Review, ...prev]) } }
-    else { const h = hidden.find(r => r.id === id); if (h) { setHidden(prev => prev.filter(r => r.id !== id)); setPosts(prev => [{ ...h, is_hidden: false } as Review, ...prev]) } }
+    setPosts(prev => prev.filter(r => r.id !== id))
     setSel(null)
   }
 
   const firstName = profile?.full_name?.split(' ').pop() || t('reviews.me')
   const handle = '@' + (profile?.full_name?.replace(/\s+/g, '').toLowerCase() || 'user')
-  const allMyPosts = [...posts, ...hidden].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as (Review & { is_hidden?: boolean })[]
-  const displayPosts = activeTab === 'posts' ? allMyPosts : activeTab === 'saved' ? savedPosts : likedPosts
 
   // Tapping any grid tile opens the swipeable clip viewer at that clip — same
   // feed UX (swipe, tap-pause, double-tap like, comment/save/share) instead of
   // a dead-end single detail page.
   const handleGridClick = (r: Review) => {
-    const idx = displayPosts.findIndex(p => p.id === r.id)
+    const idx = posts.findIndex(p => p.id === r.id)
     if (idx >= 0) setViewerStart(idx)
-  }
-
-  const emptyState = {
-    posts: { icon: <Grid3X3 size={36} className="mb-3 opacity-30" />, text: t('reviews.emptyPosts'), cta: <Link href="/reviews/new" className="mt-4 bg-[#fe2c55] text-white px-5 py-2 rounded-full text-sm font-semibold">{t('reviews.emptyPostsCta')}</Link> },
-    saved: { icon: <Bookmark size={36} className="mb-3 opacity-30" />, text: t('reviews.emptySaved'), cta: null },
-    liked: { icon: <Heart size={36} className="mb-3 opacity-30" />, text: t('reviews.emptyLiked'), cta: null },
   }
 
   return (
@@ -400,28 +367,9 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
         </div>
       )}
 
-      {/* Tab bar — Saved/Liked are this account's own private lists (same convention
-          as TikTok's default-private Likes tab), so someone else's profile only ever
-          shows their public posts grid. */}
-      {isOwnProfile ? (
-        <div className="flex border-b border-gray-800">
-          <button onClick={() => setActiveTab('posts')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'posts' ? 'border-b-2 border-white' : ''}`}>
-            <Grid3X3 size={18} className={activeTab === 'posts' ? 'text-white' : 'text-gray-500'} />
-            <span className={`text-[10px] ${activeTab === 'posts' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabPosts')}</span>
-          </button>
-          <button onClick={() => setActiveTab('saved')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'saved' ? 'border-b-2 border-white' : ''}`}>
-            <Bookmark size={18} className={activeTab === 'saved' ? 'text-white' : 'text-gray-500'} />
-            <span className={`text-[10px] ${activeTab === 'saved' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabSaved')}</span>
-          </button>
-          <button onClick={() => setActiveTab('liked')} className={`flex-1 py-2.5 flex flex-col justify-center items-center gap-0.5 transition-colors ${activeTab === 'liked' ? 'border-b-2 border-white' : ''}`}>
-            <Heart size={18} className={activeTab === 'liked' ? 'text-white' : 'text-gray-500'} />
-            <span className={`text-[10px] ${activeTab === 'liked' ? 'text-white' : 'text-gray-500'}`}>{t('reviews.profileTabLiked')}</span>
-          </button>
-        </div>
-      ) : null}
-      {/* No tab bar on someone else's profile: there is only one tab, so a bar
-          carrying a single static label communicates nothing and costs the grid
-          a row of viewport. The grid below is the content. */}
+      {/* No tab bar: a creator profile has one public dataset, the posts grid, and a bar
+          carrying a single static label communicates nothing and costs the grid a row of
+          viewport. The private collections are /profile's. The grid below is the content. */}
 
       {/* Grid */}
       {loading ? (
@@ -431,11 +379,11 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
           <AlertCircle size={36} className="opacity-30" />
           <p className="text-sm">{t('reviews.profileLoadError')}</p>
         </div>
-      ) : displayPosts.length === 0 ? (
+      ) : posts.length === 0 ? (
         <div className="flex flex-col items-center py-16 text-gray-500">
-          {emptyState[activeTab].icon}
-          <p className="text-sm">{emptyState[activeTab].text}</p>
-          {emptyState[activeTab].cta}
+          <Grid3X3 size={36} className="mb-3 opacity-30" />
+          <p className="text-sm">{t('reviews.emptyPosts')}</p>
+          {isOwnProfile && <Link href="/reviews/new" className="mt-4 bg-[#fe2c55] text-white px-5 py-2 rounded-full text-sm font-semibold">{t('reviews.emptyPostsCta')}</Link>}
         </div>
       ) : (
         /* The page grid scales its column count with the viewport — locked at 3
@@ -451,11 +399,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
            EMPTY cells. From sm up the container bg is black so empty cells read
            as page background; phones keep the gray hairlines untouched. */
         <div className={`grid gap-px ${isPage ? 'bg-gray-800 sm:bg-black grid-cols-3 sm:grid-cols-4' : 'bg-gray-800 grid-cols-3'}`}>
-          {displayPosts.map(r => {
+          {posts.map(r => {
             // Video posts have no photos[] — their poster frame lives in `thumbnail`.
             // Without this the tile fell through to the body-text placeholder, so a
             // profile of clips showed only captions instead of the video thumbnails.
-            const isHidden = activeTab === 'posts' && (r as Review & { is_hidden?: boolean }).is_hidden
             return (
               <button key={r.id} onClick={() => handleGridClick(r as Review)}
                 className={`relative bg-gray-900 ${isPage ? 'aspect-[3/4]' : 'aspect-[9/16]'} ${sel?.id === r.id ? 'ring-2 ring-inset ring-[#fe2c55]' : ''}`}>
@@ -470,7 +417,6 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
                     ))}
                   </div>
                 </div>
-                {isHidden && <div className="absolute inset-0 bg-black/60 flex items-center justify-center"><EyeOff size={20} className="text-white" /></div>}
               </button>
             )
           })}
@@ -479,7 +425,7 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
               hairline separators. The filler must match the PAGE background — the
               profile scrolls on `bg-black` — NOT the tile colour (gray-900, which is
               lighter than black and so still read as a box). bg-black → fully blends. */}
-          {Array.from({ length: trailingFillerCount(displayPosts.length, 3) }).map((_, i) => (
+          {Array.from({ length: trailingFillerCount(posts.length, 3) }).map((_, i) => (
             <div key={`filler-${i}`} aria-hidden
               className={`bg-black ${isPage ? 'aspect-[3/4]' : 'aspect-[9/16]'}`} />
           ))}
@@ -487,7 +433,7 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
       )}
 
       {/* Action sheet for my posts */}
-      {sel && activeTab === 'posts' && (
+      {sel && (
         <>
           <div className="fixed inset-0 z-30" onClick={() => setSel(null)} />
           <div className="fixed bottom-[60px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[390px] z-40 bg-[#1a1a1a] rounded-t-3xl px-5 pt-3 pb-8">
@@ -502,9 +448,9 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
                 <Eye size={18} className="text-blue-400" /> {t('reviews.sheetViewPost')}
               </Link>
-              <button onClick={() => doHide(sel.id, !(sel as Review & { is_hidden?: boolean }).is_hidden)}
+              <button onClick={() => doHide(sel.id)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gray-800 text-white text-sm font-medium active:bg-gray-700">
-                {(sel as Review & { is_hidden?: boolean }).is_hidden ? <><Eye size={18} className="text-green-400" /> {t('reviews.sheetShowPost')}</> : <><EyeOff size={18} className="text-orange-400" /> {t('reviews.sheetHidePost')}</>}
+                <EyeOff size={18} className="text-orange-400" /> {t('reviews.sheetHidePost')}
               </button>
               <button onClick={() => doDelete(sel.id)}
                 className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-red-950/40 text-red-400 text-sm font-medium active:bg-red-950/60">
@@ -522,8 +468,8 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
           review on this grid already belongs to userId — surfacing the delete/hide
           menu to people who do not own the post. */}
       {viewerStart !== null && (
-        <ClipViewer posts={displayPosts} startIndex={viewerStart} me={viewerId} onClose={() => setViewerStart(null)}
-          onDelete={(id) => { setPosts(p => p.filter(r => r.id !== id)); setHidden(h => h.filter(r => r.id !== id)) }} />
+        <ClipViewer posts={posts} startIndex={viewerStart} me={viewerId} onClose={() => setViewerStart(null)}
+          onDelete={(id) => setPosts(p => p.filter(r => r.id !== id))} />
       )}
       </div>
     </div>

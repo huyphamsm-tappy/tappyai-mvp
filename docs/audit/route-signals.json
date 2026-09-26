@@ -1,0 +1,1124 @@
+{
+  "generatedAt": "2026-09-19T10:39:39.386Z",
+  "note": "Pure-function reproduction of route.ts pre-model classification. No LLM/search. Setup queries use a placeholder assistant turn ONLY to set hasPriorAssistantTurn; nothing else is fabricated.",
+  "rows": [
+    {
+      "id": 1,
+      "kind": "Contextual factual",
+      "text": "Quán này mở cửa mấy giờ?",
+      "setupUser": "Tìm cho tôi một quán Nhật yên tĩnh ở Quận 1.",
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "web_search",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": false,
+      "hasPriorAssistantTurn": true,
+      "decisionStage": "refinement",
+      "turnIntent": "refinement",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": "quan 1",
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "quiet",
+            "weight": 1,
+            "source": "stated"
+          },
+          {
+            "key": "cuisine:japanese",
+            "weight": 1,
+            "source": "stated"
+          },
+          {
+            "key": "openNow",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": "refinement",
+        "wordLimit": "250 words",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": "NO DATA (needs real setup reply)"
+    },
+    {
+      "id": 2,
+      "kind": "Recommendation",
+      "text": "Tìm cho tôi một quán Nhật ngon và yên tĩnh.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": null,
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "rating",
+            "weight": 1,
+            "source": "stated"
+          },
+          {
+            "key": "quiet",
+            "weight": 1,
+            "source": "stated"
+          },
+          {
+            "key": "cuisine:japanese",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": true
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 3,
+      "kind": "Constraint-based recommendation",
+      "text": "Tìm quán ăn tối dưới 500k cho 2 người, yên tĩnh.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": {
+        "min": 0,
+        "max": 500000,
+        "type": "under"
+      },
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "restaurant",
+        "budgetStated": 500000,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "quiet",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": true
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": true,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 4,
+      "kind": "Open recommendation",
+      "text": "Cuối tuần đi đâu được?",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "web_search",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "fast",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 5,
+      "kind": "Contextual comparison",
+      "text": "So sánh 3 quán này.",
+      "setupUser": "Cho tôi 3 quán cafe đẹp ở Thảo Điền.",
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": null,
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": false,
+      "hasPriorAssistantTurn": true,
+      "decisionStage": "comparison",
+      "turnIntent": "refinement",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "cafe",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": "comparison",
+        "wordLimit": "250 words",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": "NO DATA (needs real setup reply)"
+    },
+    {
+      "id": 6,
+      "kind": "Multi-result recommendation",
+      "text": "Cho tôi 5 quán cafe đẹp ở Thảo Điền.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "cafe",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 7,
+      "kind": "Contextual refinement",
+      "text": "Có chỗ nào rẻ hơn không?",
+      "setupUser": "Tìm nhà hàng tầm 300-500k/người ở Quận 1.",
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "web_search",
+      "locationIntent": "offline",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": false,
+      "hasPriorAssistantTurn": true,
+      "decisionStage": "refinement",
+      "turnIntent": "refinement",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "restaurant",
+        "budgetStated": 500000,
+        "location": {
+          "text": "quan 1",
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "price",
+            "weight": 2,
+            "source": "comparative"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": "refinement",
+        "wordLimit": "250 words",
+        "budgetBlock": false,
+        "locationBlock": true,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": "NO DATA (needs real setup reply)"
+    },
+    {
+      "id": 8,
+      "kind": "Nearby recommendation",
+      "text": "Tôi đang ở đây, tìm chỗ ăn gần tôi.",
+      "setupUser": null,
+      "mockLocation": {
+        "lat": 10.7769,
+        "lng": 106.7009
+      },
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": {
+            "lat": 10.7769,
+            "lng": 106.7009
+          }
+        },
+        "priorities": [
+          {
+            "key": "distance",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": true
+      },
+      "role": "fast",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": true
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 9,
+      "kind": "Named-location recommendation",
+      "text": "Tìm giúp tôi một quán cafe gần Landmark 81.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "cafe",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "distance",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 10,
+      "kind": "English nearby recommendation",
+      "text": "Find me a quiet Japanese restaurant nearby.",
+      "setupUser": null,
+      "mockLocation": {
+        "lat": 10.7769,
+        "lng": 106.7009
+      },
+      "intent": "tool",
+      "lang": "en",
+      "explicitLang": null,
+      "forcedTool": null,
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "restaurant",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": {
+            "lat": 10.7769,
+            "lng": 106.7009
+          }
+        },
+        "priorities": [
+          {
+            "key": "quiet",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": true
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 11,
+      "kind": "Mixed-language nearby recommendation",
+      "text": "Find giúp tôi một quán cafe chill gần đây.",
+      "setupUser": null,
+      "mockLocation": {
+        "lat": 10.7769,
+        "lng": 106.7009
+      },
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "offline",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "cafe",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": {
+            "lat": 10.7769,
+            "lng": 106.7009
+          }
+        },
+        "priorities": [
+          {
+            "key": "distance",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": true,
+        "gpsBlock": true
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 12,
+      "kind": "Shopping recommendation",
+      "text": "Tìm cho tôi một chiếc tai nghe tốt dưới 2 triệu.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": null,
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": {
+        "min": 0,
+        "max": 2000000,
+        "type": "under"
+      },
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "shopping",
+        "subject": "headphones",
+        "budgetStated": 2000000,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": true
+      },
+      "role": "fast",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": true,
+        "synthesisInstruction": true,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": true,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 13,
+      "kind": "Travel recommendation",
+      "text": "Cuối tuần này tôi muốn đi Đà Lạt, gợi ý giúp tôi.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": null,
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": "da lat",
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": true,
+        "implicitPurchaseIntent": true
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 14,
+      "kind": "Time-sensitive entertainment",
+      "text": "Tối nay ở TP.HCM có gì vui?",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "web_search",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": null,
+        "subject": null,
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [
+          {
+            "key": "openNow",
+            "weight": 1,
+            "source": "stated"
+          }
+        ],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": false
+      },
+      "role": "fast",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": false,
+      "dynamicBlocks": {
+        "rankingInstruction": false,
+        "renderedDecision": false,
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    },
+    {
+      "id": 15,
+      "kind": "Spa recommendation",
+      "text": "Tìm cho tôi một spa thư giãn, sạch sẽ, giá hợp lý.",
+      "setupUser": null,
+      "mockLocation": null,
+      "intent": "tool",
+      "lang": "vi",
+      "explicitLang": null,
+      "forcedTool": "search_places",
+      "locationIntent": "unknown",
+      "planningIntent": null,
+      "movieRecommend": false,
+      "travelIntent": false,
+      "budget": null,
+      "isFirstReply": true,
+      "hasPriorAssistantTurn": false,
+      "decisionStage": null,
+      "turnIntent": "new_consultation",
+      "worthExtract": true,
+      "needProfile": {
+        "domain": "places",
+        "subject": "spa",
+        "budgetStated": null,
+        "location": {
+          "text": null,
+          "gps": null
+        },
+        "priorities": [],
+        "mustHave": [],
+        "useCases": []
+      },
+      "pickSignals": {
+        "explicitChoiceRequest": false,
+        "implicitPurchaseIntent": true
+      },
+      "role": "smart",
+      "modelId_default": "claude-haiku-4-5-20251001 (all roles; env override NO DATA)",
+      "noToolTurn": false,
+      "maxTokens": 3072,
+      "maxSteps": 5,
+      "toolChoice": "auto (SDK default; route passes none)",
+      "temperature": "unset (route passes none)",
+      "isDecisionDomain": true,
+      "dynamicBlocks": {
+        "rankingInstruction": true,
+        "renderedDecision": "only if x-tappy-surface: web",
+        "shoppingGrounding": false,
+        "synthesisInstruction": false,
+        "stageBlock": null,
+        "wordLimit": "150 words (first reply)",
+        "budgetBlock": false,
+        "locationBlock": false,
+        "gpsBlock": false
+      },
+      "toolsOffered": [
+        "search_places",
+        "get_news",
+        "search_products",
+        "web_search",
+        "get_weather",
+        "get_gold_price",
+        "get_flight_prices",
+        "get_hotel_prices",
+        "get_transport_options"
+      ],
+      "assistantAskedClarification": false
+    }
+  ]
+}

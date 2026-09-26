@@ -8,6 +8,8 @@ import com.tappyai.app.chat.ChatMessage
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.designsystem.component.TappyChatRole
 import com.tappyai.core.logging.LoggerProvider
+import com.tappyai.core.security.JwtDecoder
+import com.tappyai.core.security.TokenProvider
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
@@ -20,6 +22,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -35,9 +38,19 @@ class RealChatRepository @Inject constructor(
     private val logger: LoggerProvider,
     private val stringProvider: StringProvider,
     @ApplicationContext private val context: Context,
+    private val tokenProvider: TokenProvider,
+    private val guestAge: GuestAgeStore,
+    private val location: ChatLocationSource,
 ) : ChatRepository {
 
-    override fun streamReply(messages: List<ChatMessage>): Flow<String> = callbackFlow {
+    /** A visitor with no account: no session at all, or a Supabase anonymous session. */
+    private fun isGuest(): Boolean {
+        val token = tokenProvider.getAccessToken()
+        if (token.isNullOrBlank()) return true
+        return JwtDecoder.decode(token)?.isAnonymous == true
+    }
+
+    override fun streamReply(messages: List<ChatMessage>): Flow<ChatStreamEvent> = callbackFlow {
         // Error bubbles (isError) are a UI artifact, not real model output. They live in the
         // ViewModel's message list with role=Assistant, so without this filter a prior failed
         // turn's error text (e.g. a connection-error message) would be replayed to the backend as a genuine
@@ -51,13 +64,12 @@ class RealChatRepository @Inject constructor(
         val dtoMessages = withContext(Dispatchers.IO) {
             messages.filterNot { it.isError }.map { msg -> msg.toDto() }
         }
-        val body = json.encodeToString(ChatRequest(dtoMessages))
+        // The device's last known position rides along when the user granted it (see
+        // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
+        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown()))
             .toRequestBody("application/json".toMediaType())
 
-        val request = Request.Builder()
-            .url("${baseUrl}api/chat")
-            .post(body)
-            .build()
+        val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)
 
         // The shared client's 30s readTimeout is an inter-byte idle limit — fine for normal
         // request/response, but too aggressive here. Before the first token, /api/chat runs
@@ -87,7 +99,7 @@ class RealChatRepository @Inject constructor(
 
                 while (!source.exhausted()) {
                     val line = source.readUtf8Line() ?: break
-                    parseTextDelta(line)?.let { trySend(it) }
+                    ChatStreamFrames.parse(line)?.let { trySend(it) }
                 }
                 close()
             } catch (e: IOException) {
@@ -143,76 +155,12 @@ class RealChatRepository @Inject constructor(
         )
     }
 
-    /**
-     * Is this string something a human wrote, or a machine code?
-     *
-     * Machine codes in this API are `lower_snake_case` throughout — `invalid_request`,
-     * `anon_limit_reached`, `group_not_found`. A sentence has a space in it, or a capital, or
-     * punctuation. Older routes did put real sentences in `error`, and those must keep working,
-     * so this admits anything that is not unambiguously a code rather than the reverse.
-     */
-    private fun looksLikeSentence(value: String): Boolean {
-        val trimmed = value.trim()
-        if (trimmed.isEmpty()) return false
-        return !trimmed.matches(Regex("^[a-z0-9]+(_[a-z0-9]+)*$"))
-    }
-
+    /** Decodes a failed response body and classifies it — see [chatErrorFor] for the rules. */
     private fun parseChatError(code: Int, body: String?): ChatException {
         val dto = body?.let {
             try { json.decodeFromString<ChatErrorDto>(it) } catch (_: Exception) { null }
         }
-        // `dto.message` is always human text. `dto.error` is NOT — it is a stable machine code, and
-        // only some older routes ever put a sentence there.
-        //
-        // ============================================================================
-        // 🚨 U07 — WHY `dto.error` IS NO LONGER A FALLBACK
-        // ============================================================================
-        // `POST /api/chat` answers a malformed request with `{"error":"invalid_request"}` and NO
-        // `message`, deliberately: the server treats a bad request shape as a client bug and takes
-        // the view that there is no sentence worth showing a user whose client sent something
-        // impossible. That is a defensible server decision — but this method used to fall through
-        // to `dto.error`, and `ChatViewModel` renders whatever it gets as an assistant chat
-        // bubble. The user was shown a bubble reading, in full, `invalid_request`.
-        //
-        // The two sides now agree: a machine code is never prose. Anything that is not a real
-        // sentence falls through to the localized generic message, which is also the only branch
-        // that respects the app's language — a machine code has no translation.
-        val serverSentence = dto?.message?.takeIf { it.isNotBlank() }
-            ?: dto?.error?.takeIf { looksLikeSentence(it) }
-        val message = serverSentence ?: stringProvider.get(R.string.chat_error_generic_with_code, code)
-        return when {
-            code == 429 && dto?.error == "free_limit_reached" ->
-                ChatException.DailyLimitReached(message)
-            code == 429 ->
-                ChatException.RateLimited(message)
-            code == 401 && dto?.error == "anon_limit_reached" ->
-                ChatException.AnonLimitReached(message)
-            code == 413 ->
-                ChatException.MessageTooLong(stringProvider.get(R.string.chat_error_message_too_long))
-            code == 502 ->
-                ChatException.AiError(stringProvider.get(R.string.chat_error_ai_service_down))
-            else ->
-                ChatException.ServerError(code, message)
-        }
-    }
-
-    /**
-     * Extracts a text delta from one line of the Vercel AI SDK data stream.
-     *
-     * Stream lines are `{partType}:{jsonPayload}`. Part type `0` carries text deltas whose
-     * payload is a JSON-encoded string (e.g. `0:"Hello "`). All other part types — tool
-     * calls (`2`), annotations (`a`), step finish (`e`), done (`d`) — are skipped.
-     * An optional `data: ` SSE wrapper is stripped defensively in case the stream format
-     * ever changes to full SSE.
-     */
-    private fun parseTextDelta(line: String): String? {
-        val stripped = if (line.startsWith("data: ")) line.removePrefix("data: ") else line
-        if (!stripped.startsWith("0:")) return null
-        return try {
-            json.decodeFromString<String>(stripped.removePrefix("0:"))
-        } catch (_: Exception) {
-            null
-        }
+        return chatErrorFor(code, dto, stringProvider)
     }
 
     /** Text-only turns send `content` as a plain string; a turn with [ChatMessage.imageUri] reads
@@ -237,5 +185,104 @@ class RealChatRepository @Inject constructor(
 
     private companion object {
         const val TAG = "RealChatRepository"
+    }
+}
+
+/**
+ * The surface this app declares on `/api/chat`. The server reads `x-tappy-surface` to learn
+ * whether the client draws the place/shopping decision as a card under the reply
+ * (`src/lib/ai/decisionSurface.ts`); the web chat sends `web`. With it, the model is told the
+ * card shows photo / rating / address / hours / actions so the prose must not repeat them, and
+ * the per-place photo + `ShopeeFood · GrabFood · BeFood` block is not injected into the text.
+ *
+ * Measured on Pixel_8 (2026-09-12) before this header existed: the same query returned the same
+ * `8:` annotation, but the prose carried three injected images and three provider rows, and
+ * [com.tappyai.app.chat.PlaceDecisionSection] started on the third screen. Android renders that
+ * section (and the shopping decision) from the annotation, so it declares itself.
+ */
+internal const val SURFACE_HEADER = "x-tappy-surface"
+internal const val SURFACE_ANDROID = "android"
+
+/**
+ * The `/api/chat` request: the JSON body, the surface header and — for a GUEST that has declared
+ * on this device — the `x-tappy-age-declared` header (`GuestAgeStore`). Everything else is the
+ * shared client's (the Bearer, when there is a session, comes from its interceptor).
+ */
+internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String? = null): Request = Request.Builder()
+    .url("${baseUrl}api/chat")
+    .header(SURFACE_HEADER, SURFACE_ANDROID)
+    .apply { if (!ageDeclared.isNullOrBlank()) header(GuestAgeStore.HEADER, ageDeclared) }
+    .post(body)
+    .build()
+
+/**
+ * Is this string something a human wrote, or a machine code?
+ *
+ * Machine codes in this API are `lower_snake_case` throughout — `invalid_request`,
+ * `anon_limit_reached`, `group_not_found`. A sentence has a space in it, or a capital, or
+ * punctuation. Older routes did put real sentences in `error`, and those must keep working,
+ * so this admits anything that is not unambiguously a code rather than the reverse.
+ */
+internal fun looksLikeSentence(value: String): Boolean {
+    val trimmed = value.trim()
+    if (trimmed.isEmpty()) return false
+    return !trimmed.matches(Regex("^[a-z0-9]+(_[a-z0-9]+)*$"))
+}
+
+/**
+ * The [ChatException] for a failed `POST /api/chat`, from its status and decoded error body.
+ *
+ * `dto.message` is always human text. `dto.error` is NOT — it is a stable machine code, and
+ * only some older routes ever put a sentence there.
+ *
+ * ============================================================================
+ * 🚨 U07 — WHY `dto.error` IS NO LONGER A FALLBACK
+ * ============================================================================
+ * `POST /api/chat` answers a malformed request with `{"error":"invalid_request"}` and NO
+ * `message`, deliberately: the server treats a bad request shape as a client bug and takes
+ * the view that there is no sentence worth showing a user whose client sent something
+ * impossible. That is a defensible server decision — but this method used to fall through
+ * to `dto.error`, and `ChatViewModel` renders whatever it gets as an assistant chat
+ * bubble. The user was shown a bubble reading, in full, `invalid_request`.
+ *
+ * The two sides now agree: a machine code is never prose. Anything that is not a real
+ * sentence falls through to the localized generic message, which is also the only branch
+ * that respects the app's language — a machine code has no translation.
+ *
+ * ============================================================================
+ * 🚨 UAT-CHAT-001 — WHY 401 `auth_required` DOES NOT SHOW THE SERVER'S SENTENCE
+ * ============================================================================
+ * The product-access gate on `/api/chat` refuses a visitor without an account with
+ * `{"error":"auth_required","message":…}`, and the sentence it attaches is the SOCIAL one —
+ * `auth.accountRequired`, "Hãy đăng nhập để đăng bài, bình luận và theo dõi." — because the gate
+ * shares that catalogue entry with every write surface it protects. Rendered verbatim in an
+ * assistant bubble, the user was told to sign in to "post, comment and follow" after asking
+ * Tappy about bún bò. The code is the contract here, not the prose: this client keeps the
+ * server's sentence for every other state and substitutes its own Chat copy for this one.
+ * `anon_limit_reached` is untouched — the server's sentence for it is already Chat copy.
+ */
+internal fun chatErrorFor(code: Int, dto: ChatErrorDto?, strings: StringProvider): ChatException {
+    val serverSentence = dto?.message?.takeIf { it.isNotBlank() }
+        ?: dto?.error?.takeIf { looksLikeSentence(it) }
+    val message = serverSentence ?: strings.get(R.string.chat_error_generic_with_code, code)
+    return when {
+        code == 429 && dto?.error == "free_limit_reached" ->
+            ChatException.DailyLimitReached(message)
+        code == 429 ->
+            ChatException.RateLimited(message)
+        code == 401 && dto?.error == "anon_limit_reached" ->
+            ChatException.AnonLimitReached(message)
+        code == 401 && dto?.error == "auth_required" ->
+            ChatException.AuthRequired(strings.get(R.string.chat_error_login_required))
+        code == 403 && dto?.error == "age_declaration_required" ->
+            ChatException.AgeDeclarationRequired(message)
+        code == 403 && (dto?.error == "age_ineligible" || dto?.error == "age_verification_required") ->
+            ChatException.AgeGate(dto.error, message)
+        code == 413 ->
+            ChatException.MessageTooLong(strings.get(R.string.chat_error_message_too_long))
+        code == 502 ->
+            ChatException.AiError(strings.get(R.string.chat_error_ai_service_down))
+        else ->
+            ChatException.ServerError(code, message)
     }
 }

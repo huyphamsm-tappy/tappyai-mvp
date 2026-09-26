@@ -1,10 +1,10 @@
 'use client'
 
-import { getStoredLocale } from './useTranslation'
+import { appLocale } from './useTranslation'
 
 /**
- * Sends `Accept-Language: <the language the user chose in TappyAI>` on every request this app makes
- * to its own API.
+ * Sends `Accept-Language: <the language TappyAI is speaking to this user>` on every request this
+ * app makes to its own API.
  *
  * ============================================================================
  * WHAT WAS WRONG (C29)
@@ -63,14 +63,22 @@ function isOwnApi(url: string): boolean {
 }
 
 /**
- * The language to send.
+ * The language to send: `appLocale()` — the explicit choice, else the product default.
  *
- * `getStoredLocale()` is the persisted explicit choice. When the user has never chosen, it returns
- * null and we send nothing at all — the browser's own `Accept-Language` is then the honest answer,
- * and it is also what `detectLocale()` seeds the UI from, so header and UI still agree.
+ * 🚨 It used to send NOTHING when the user had never chosen, on the reasoning that the browser's
+ * own header was then the honest answer "and it is also what seeds the UI, so header and UI still
+ * agree". That premise is gone: the UI now settles on the product default rather than on
+ * `navigator.language`, so silence meant a visitor on an en-US browser READ Vietnamese and was
+ * ANSWERED in English.
+ *
+ * That is not only a wording mismatch any more. `/api/chat` resolves the AI's reply language from
+ * this header (ADR-027) whenever the message text does not settle it by itself — which is exactly
+ * what diacritic-free Vietnamese does not do. So a fresh visitor typing "Tim quan bun bo ngon o
+ * TPHCM" in a Vietnamese-looking app would have got an English answer, the very defect ADR-027
+ * exists to remove.
  */
-function chosenLanguage(): string | null {
-  return getStoredLocale()
+function chosenLanguage(): string {
+  return appLocale()
 }
 
 /** Reads the request URL out of whatever shape the caller used. */
@@ -96,7 +104,6 @@ export function installAppLanguageFetch(): void {
     if (!isOwnApi(urlOf(input))) return original(input, init)
 
     const language = chosenLanguage()
-    if (!language) return original(input, init)
 
     // A Request object carries its own headers, so it has to be rebuilt rather than decorated —
     // `init.headers` is ignored by fetch when the first argument is already a Request.

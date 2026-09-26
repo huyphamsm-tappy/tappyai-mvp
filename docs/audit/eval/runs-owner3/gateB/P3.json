@@ -1,0 +1,1189 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 14633,
+  "evidenceId": "077d3900-15eb-4d9e-8fd9-02ff6e95f170",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hyan Spa Quận 1 đặt trước booking",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "AN’s spa",
+      "rating": 4.9,
+      "count": 3375,
+      "hours": "10:00–23:30",
+      "distance_km": 0.9,
+      "address": "12 Đặng Trần Côn, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "AN’s spa",
+      "rating": 4.9,
+      "count": 3033,
+      "hours": "10:00–22:00",
+      "distance_km": 1,
+      "address": "130 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AYen Spa & Healing",
+      "rating": 5,
+      "count": 482,
+      "hours": "10:30–22:00",
+      "distance_km": 1.1,
+      "address": "24/2 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700901, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 100,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hum Spa - Body Massage - Nape, Neck & Shoulder therapy - Headcare -マッサージ - 마사지 - 按摩 - Masaje",
+      "rating": 4.7,
+      "count": 974,
+      "hours": "10:00–22:00",
+      "distance_km": 1.3,
+      "address": "114 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3519,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa Quận 1",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 1.3,
+      "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Charm Spa Garden",
+      "rating": 4.9,
+      "count": 217,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "HB SPA",
+      "rating": 4.9,
+      "count": 29,
+      "hours": "08:00–20:00",
+      "distance_km": 1.8,
+      "address": "22 Nguyễn Huy Tự, P, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "HẠ SPA",
+      "rating": 5,
+      "count": 411,
+      "hours": "08:30–21:00",
+      "distance_km": 4.7,
+      "address": "334 Nguyễn Trọng Tuyển, Tân Sơn Hòa, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "AN’s spa",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3375,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–23:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "AN’s spa",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3033,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "AYen Spa & Healing",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 482,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "10:30–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 100,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hum Spa - Body Massage - Nape, Neck & Shoulder therapy - Headcare -マッサージ - 마사지 - 按摩 - Masaje",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 974,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **AN’s spa** — 4.9⭐ (3.375 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–23:30.\n\nMình tìm thông tin đặt trước cho Hyan Spa ngay.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Hyan Spa\",\"type\":\"website\",\"url\":\"tel:0932665046\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false},{\"label\":\"🌐 Website AN's spa\",\"type\":\"website\",\"url\":\"https://an-spa.vn/en/booking\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, mở cửa đến 21:00 hôm nay. Đây là lựa chọn gần nhất với chất lượng tuyệt vời 👍\n\nNếu muốn thêm lựa chọn: **CHẠM SPA** (1.3km, 4.9⭐, 190 đánh giá) hoặc **RELAX SPA** (1.2km, 4.8⭐, 532 đánh giá) cũng đều tốt và gần.\n\nCả ba đều chưa có giá cụ thể trên Google, nhưng bạn có thể gọi hoặc vào website để hỏi giá massage chân.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gói combo rẻ?|Cần đặt chỗ trước không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **AN’s spa** — 4.9⭐ (3.375 đánh giá Google Maps); giờ mở cửa theo Google Maps: 10:00–23:30.\n\nMình tìm thông tin đặt trước cho Hyan Spa ngay.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Hyan Spa\",\"type\":\"website\",\"url\":\"tel:0932665046\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false},{\"label\":\"🌐 Website AN's spa\",\"type\":\"website\",\"url\":\"https://an-spa.vn/en/booking\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "AN’s spa",
+          "place_id": "ChIJNXoOqRMvdTERiDdaJueyODw",
+          "address": "12 Đặng Trần Côn, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 768 924 300",
+          "google_rating": "4.9⭐ (3.375 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 3375,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "10:00–23:30",
+          "place_types": [
+            "Spa mát xa",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4339414946822109064",
+          "booking_links": [
+            "https://an-spa.vn/en/booking",
+            "https://zalo.me/ansspa"
+          ],
+          "website_uri": "https://an-spa.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4339414946822109064",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "AN’s spa",
+          "place_id": "ChIJJ60ImIgvdTERPCSCMBfWbKA",
+          "address": "130 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 768 924 300",
+          "google_rating": "4.9⭐ (3.033 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 3033,
+          "distance_km": 1,
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11559849738639647804",
+          "booking_links": [
+            "https://an-spa.vn/en/booking",
+            "https://www.klook.com/en-US/activity/149630-an-s-spa-nguyen-thai-binh-massage-experience-in-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_hXXUzfK02fkaF6RSwhYaTth4AmDxl6iB3jjDp26D3KcHmYWMV_RnVob2Oo0o93ZqjjycdK-7FH9yOIysJF8hY54LUq68OSOUWccpbj1NQZflDEBHI%3D"
+          ],
+          "website_uri": "https://an-spa.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=11559849738639647804",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "AYen Spa & Healing",
+          "place_id": "ChIJ0y5JlRMvdTER08McIBwe8HI",
+          "address": "24/2 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700901, Việt Nam",
+          "phone": "+84 903 911 109",
+          "google_rating": "5⭐ (482 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 482,
+          "distance_km": 1.1,
+          "open_now": true,
+          "opening_hours": "10:30–22:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8282152820881015763",
+          "booking_links": [
+            "https://ayenspa.myspa.vn/dat-hen?lang=en"
+          ],
+          "website_uri": "https://www.ayenspa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8282152820881015763",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+          "place_id": "ChIJtZLG52UvdTERa390w1OP10M",
+          "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 932 665 046",
+          "google_rating": "5⭐ (100 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 100,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "10:00–21:00",
+          "place_types": [
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4888533510458212203",
+          "website_uri": "https://hyanspa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4888533510458212203",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Hum Spa - Body Massage - Nape, Neck & Shoulder therapy - Headcare -マッサージ - 마사지 - 按摩 - Masaje",
+          "place_id": "ChIJY3TwV78vdTERqOEEHbsTOtM",
+          "address": "114 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 856 300 066",
+          "google_rating": "4.7⭐ (974 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 974,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "10:00–22:00",
+          "place_types": [
+            "Spa sức khỏe",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15220499585018683816",
+          "booking_links": [
+            "https://www.fresha.com/book-now/hum-spa-massage-spa-psurlope/all-offer?id=3122410&pId=3021161&rwg_token=AE37R_iwYprBPfWrgBJhSOVThWCObA9bRMtVEILf7CWPoetbmAAQgTDhjTVsZh0iAc7ZTzGxiJiSBB26ZJVP0Z6OAeESizewQ56TBoXcAmdL-hJCiT3eMoI%3D",
+            "https://m.me/humspavn",
+            "https://www.klook.com/en-US/activity/134254-hum-spa-massage-experience-in-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_hA0QPbglHzRkeuPGLgPnEirRIGNaEDhOI8MhxA2A4OTVU7WYyZrnI7Rebp063idau4G8ygqAJVUsbL_Mm8lJ2z9GQyCT9Qs4mllineRHxRr0s81jU%3D"
+          ],
+          "website_uri": "https://humspa.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15220499585018683816",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "MASSAGE HẠ SPA QUẬN 1",
+          "place_id": "ChIJHW16QcUvdTERm0lIAkAWOU0",
+          "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 945 705 000",
+          "google_rating": "4.9⭐ (3.519 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 3519,
+          "distance_km": 2.3,
+          "open_now": true,
+          "opening_hours": "09:30–22:30",
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Bác sĩ trị liệu xoa bóp",
+            "Câu lạc bộ spa và sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5564503278764968347",
+          "booking_links": [
+            "https://haspamassage.vn/",
+            "https://www.fresha.com/book-now/ha-spa-massage-dgcon1r3/all-offer?id=1530289&pId=1453251&rwg_token=AE37R_jU1oi2yh14rCMjWlzW7PAZOq73Kt4MyTJ48LAdRJu0YcJC9CvSxYjxS6GWBrp19Mwpw3WHISr6_Gak9LG98ktzB5BLOSYid2d4txVzdcneNPK1Kso%3D"
+          ],
+          "website_uri": "https://haspamassage.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5564503278764968347",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Phaya Thai Spa Quận 1",
+          "place_id": "ChIJ6ciwWOAvdTER7XeWuR51ut4",
+          "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 915 156 535",
+          "google_rating": "4.6⭐ (620 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 620,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Spa sức khỏe",
+            "Spa mát xa",
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16049268996911298541",
+          "website_uri": "http://www.phayathaispa.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16049268996911298541",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Charm Spa Garden",
+          "place_id": "ChIJJ5PQXQMvdTERg6uN4ZfL5C8",
+          "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 339 499 889",
+          "google_rating": "4.9⭐ (217 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 217,
+          "distance_km": 2.1,
+          "open_now": true,
+          "opening_hours": "10:00–00:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3451107067657300867",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_iEQQIWvHZGS-IdMHM7qCDVPzTNPkhaAd22zlhWSrY9u8Z9o8SoF-JmaiHTf79ydneVVMfxyxqy6W-4TO_m4lm1NK2OeRcpf5BC3a30y3Z5TOWUPFU%3D",
+            "https://zalo.me/0339499889"
+          ],
+          "website_uri": "https://charmspa.com.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=3451107067657300867",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "HB SPA",
+          "place_id": "ChIJISEITywvdTERBytw_2U3BtY",
+          "address": "22 Nguyễn Huy Tự, P, Quận 1, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3820 7049",
+          "google_rating": "4.9⭐ (29 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 29,
+          "distance_km": 1.8,
+          "open_now": true,
+          "opening_hours": "08:00–20:00",
+          "place_types": [
+            "Spa",
+            "Spa sức khỏe",
+            "Spa mát xa",
+            "Trung tâm chăm sóc sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15422074885193607943",
+          "website_uri": "https://www.hbspa.com.vn/combo399gg",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15422074885193607943",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "HẠ SPA",
+          "place_id": "ChIJC_WeMmIpdTERn3FwfWn91Ms",
+          "address": "334 Nguyễn Trọng Tuyển, Tân Sơn Hòa, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 908 661 683",
+          "google_rating": "5⭐ (411 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 411,
+          "distance_km": 4.7,
+          "open_now": true,
+          "opening_hours": "08:30–21:00",
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Phòng mát-xa chân",
+            "Spa sức khỏe",
+            "Spa đá nóng",
+            "Spa y tế",
+            "Spa",
+            "Câu lạc bộ spa và sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14687642914279944607",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/43345-ha-spa-massage-ho-chi-minh/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_iKb_5dMewx5UslTcf0qCjFloxlh3SgOmhq6RVMF7ZoV157ZB_c0Wuj1kFOl0ECukoConjPZDg4wOTF6EbvnanE3eU3ekZLCdQtXfWk6YpaBnTKY10%3D"
+          ],
+          "website_uri": "http://haspamassage.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=14687642914279944607",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Cập nhật 2025 giá dịch vụ Spa tại TP.HCM, so sánh giá 7 spa uy tín",
+          "link": "https://bookingcare.vn/cam-nang/cap-nhat-2025-gia-dich-vu-spa-tai-tphcm-so-sanh-gia-7-spa-uy-tin-p7129.html",
+          "snippet": "Chăm sóc tóc hư tổn khô xơ, 350.000 ; Chăm sóc tóc rụng, 300.000 ; Chăm sóc tóc gàu/bết, 280.000 ; Massage body thư giãn ; Massage thư giãn toàn thân, 400.000 - ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Hyan Head Spa & Massage | Ho Chi Minh City - Facebook",
+          "link": "https://www.facebook.com/Hyanheadspamassage/",
+          "snippet": "Hyan Spa – Head Spa & Massage 17C Nguyễn Thị Minh Khai, Quận 1, TP.HCM Hotline/Zalo: 0903 073 823 ✨ Đừng quên đặt lịch trước để Hyan chuẩn bị ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Massage body Quận 1 - Spa & Thư giãn - Traveloka",
+          "link": "https://www.traveloka.com/vi-vn/activities/find/massage-body-quan-1",
+          "snippet": "Khám phá các spa massage body ở Quận 1 TPHCM có chất lượng tốt nhất. Giá từ 457.629 VND. Chỉ từ 410.407 VND/khách Địa chỉ: 30/2 Hai Bà Trưng, Phường Bến Nghé, ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "HYAN SPA - Instagram",
+          "link": "https://www.instagram.com/p/DZFgdjTE7-3/",
+          "snippet": "HYAN SPA – CHÍNH THỨC … 📍353/11a Nguyễn Trọng Tuyển, Phường 1, Quận Tân Bình, Tp HCM. 📞0773.222.558. 🌐https://ngoispa.com. #MassageBody #Triệt",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh",
+          "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+          "snippet": "Mua trước, đặt lịch sau · Chat với spa dễ dàng · Đặt lịch nhanh chóng và đơn giản · Linh hoạt chọn khung giờ, đổi lịch hoặc huỷ lịch.",
+          "evidence_scope": "entity",
+          "evidence_about": "Charm Spa Garden"
+        },
+        {
+          "title": "hỷ lạc spa",
+          "link": "https://hylacspa.vn/",
+          "snippet": "- Massage body đá nóng Thụy Điển ấn huyệt giảm stress, đả thông kinh lạc. - Chăm sóc massage nâng cơ mặt trẻ hóa. - Gội đầu dưỡng sinh cùng các dòng sản phẩm ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "entity"
+      },
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJNXoOqRMvdTERiDdaJueyODw",
+          "name": "AN’s spa",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 3375,
+            "distance_km": 0.9,
+            "open_now": true,
+            "opening_hours": "10:00–23:30",
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "rated 4.9",
+            "3375 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJJ60ImIgvdTERPCSCMBfWbKA",
+          "name": "AN’s spa",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 3033,
+            "distance_km": 1,
+            "open_now": true,
+            "opening_hours": "10:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1km away",
+            "rated 4.9",
+            "3033 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJ0y5JlRMvdTER08McIBwe8HI",
+          "name": "AYen Spa & Healing",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 482,
+            "distance_km": 1.1,
+            "open_now": true,
+            "opening_hours": "10:30–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1.1km away",
+            "rated 5",
+            "482 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJtZLG52UvdTERa390w1OP10M",
+          "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 100,
+            "distance_km": 0.9,
+            "open_now": true,
+            "opening_hours": "10:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "rated 5",
+            "100 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJY3TwV78vdTERqOEEHbsTOtM",
+          "name": "Hum Spa - Body Massage - Nape, Neck & Shoulder therapy - Headcare -マッサージ - 마사지 - 按摩 - Masaje",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 974,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "10:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "1.3km away",
+            "rated 4.7",
+            "974 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        }
+      ],
+      "_tappy_budget_evidence": false,
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "AN’s spa",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "0.9km away"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "3375 reviews"
+          }
+        ],
+        "not_chosen": "AN’s spa",
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77251,106.69420",
+            "domain": "spa",
+            "kind": "place",
+            "name": "AN’s spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlMR2y-UFCMkYnapZOXMPOLkUhDq0W5qUWnHA_E1RrIyAIYDsKHA_2Y_qZCbyMZgx1zoo90bE0awG19g13Bha0ooPUD4VSkWb3qPkgxXwo2_BuRCn1KkoL3l9ZmIwK1MvfXzR9L",
+            "address": "12 Đặng Trần Côn, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3375,
+            "openingHours": "10:00–23:30",
+            "openNow": true,
+            "phone": "+84 768 924 300",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–23:30",
+              "Chủ Nhật": "10:00–23:30",
+              "Thứ Hai": "10:00–23:30",
+              "Thứ Ba": "10:00–23:30",
+              "Thứ Tư": "10:00–23:30",
+              "Thứ Năm": "10:00–23:30",
+              "Thứ Sáu": "10:00–23:30"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa mát xa",
+              "Spa"
+            ],
+            "rank": 0,
+            "shortlistPosition": 2,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "0.9km away"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "3375 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://an-spa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4339414946822109064",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768924300",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=AN%E2%80%99s%20spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76822,106.69847",
+            "domain": "spa",
+            "kind": "place",
+            "name": "AN’s spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlMR2y-UFCMkYnapZOXMPOLkUhDq0W5qUWnHA_E1RrIyAIYDsKHA_2Y_qZCbyMZgx1zoo90bE0awG19g13Bha0ooPUD4VSkWb3qPkgxXwo2_BuRCn1KkoL3l9ZmIwK1MvfXzR9L",
+            "address": "130 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3033,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 768 924 300",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://an-spa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11559849738639647804",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84768924300",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=AN%E2%80%99s%20spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78452,106.69455",
+            "domain": "spa",
+            "kind": "place",
+            "name": "AYen Spa & Healing",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmna0scFxV5iDZWTNLjK4GJjxSzUADEbOvXc8Rbw4QuFFqQj-PiZkJyY1WEf2ZpbLadEc0n51MeYnuVfn6FewQ2_nLBxx8wbIBoF2qgYAMQVkXZy-KGfGsReGai2Wm-Q8Un14TFmY0fUyHU",
+            "address": "24/2 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700901, Việt Nam",
+            "rating": 5,
+            "ratingCount": 482,
+            "openingHours": "10:30–22:00",
+            "openNow": true,
+            "phone": "+84 903 911 109",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:30–22:00",
+              "Chủ Nhật": "10:30–22:00",
+              "Thứ Hai": "10:30–22:00",
+              "Thứ Ba": "10:30–22:00",
+              "Thứ Tư": "10:30–22:00",
+              "Thứ Năm": "10:30–22:00",
+              "Thứ Sáu": "10:30–22:00"
+            },
+            "distanceKm": 1.1,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.ayenspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8282152820881015763",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903911109",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=AYen%20Spa%20%26%20Healing%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78526,106.70049",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmPxEnQYQa8lUqYW5Rv3OzZKdY50LW_dxwVezooBfezfEitq8N20Wb9StaQ18QylwEIN1cLqH_oLpsF9J1wMVLpuzl2RgjH4gLeW7G3X4G5oXBd1Vrx2HZ4pPPb88BlOkUM_it1nA8SOc0m",
+            "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 100,
+            "openingHours": "10:00–21:00",
+            "openNow": true,
+            "phone": "+84 932 665 046",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–21:00",
+              "Chủ Nhật": "10:00–21:00",
+              "Thứ Hai": "10:00–21:00",
+              "Thứ Ba": "10:00–21:00",
+              "Thứ Tư": "10:00–21:00",
+              "Thứ Năm": "10:00–21:00",
+              "Thứ Sáu": "10:00–21:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://hyanspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4888533510458212203",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84932665046",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hyan%20Spa%20%7C%20Foot%20Spa%20%7C%20Body%20Massage%20%7C%20Hair%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77111,106.69025",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Hum Spa - Body Massage - Nape, Neck & Shoulder therapy - Headcare -マッサージ - 마사지 - 按摩 - Masaje",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_RN8TuSCswNIMMaenShpCEMFUUTk5ZxmJgP7nBDnzZDvT0qQS_ZZh0a0SExGrXNUh2FTVDnANw3NfkUJNrnyhK3oT_UwYk1fgSrVNztkn8d4_ZZq9czz7zjk6EsklTLqg4Vce",
+            "address": "114 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 974,
+            "openingHours": "10:00–22:00",
+            "openNow": true,
+            "phone": "+84 856 300 066",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–22:00",
+              "Chủ Nhật": "10:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa sức khỏe",
+              "Spa"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://humspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15220499585018683816",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84856300066",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hum%20Spa%20-%20Body%20Massage%20-%20Nape%2C%20Neck%20%26%20Shoulder%20therapy%20-%20Headcare%20-%E3%83%9E%E3%83%83%E3%82%B5%E3%83%BC%E3%82%B8%20-%20%EB%A7%88%EC%82%AC%EC%A7%80%20-%20%E6%8C%89%E6%91%A9%20-%20Masaje%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76618,106.68293",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MASSAGE HẠ SPA QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2bsMKqeBLBH_a5_nDbiS5aHwHzIQ-5cJy4WCaus6LYoDedfomAjAM6IlfO62V-aLBpgxSplKtM0UglElDgxUW60Xp8ZhSg7SlKKHh0Sdv4qR1Z5LPQi-xCcC19s5Y7d-83e6eFnarK8Oc",
+            "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3519,
+            "openingHours": "09:30–22:30",
+            "openNow": true,
+            "phone": "+84 945 705 000",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–22:30",
+              "Chủ Nhật": "09:30–22:30",
+              "Thứ Hai": "09:30–22:30",
+              "Thứ Ba": "09:30–22:30",
+              "Thứ Tư": "09:30–22:30",
+              "Thứ Năm": "09:30–22:30",
+              "Thứ Sáu": "09:30–22:30"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Bác sĩ trị liệu xoa bóp",
+              "Câu lạc bộ spa và sức khỏe"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haspamassage.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5564503278764968347",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84945705000",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=MASSAGE%20H%E1%BA%A0%20SPA%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77303,106.68959",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Phaya Thai Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlbm2uEtEV21JU8GD9rnuxogIH4NOVE0fdqSEFiGImzR5HhRoSMvynQHujA1KTfjGstcPRKHN-41YjCEorR2n9wVYy5BT0WObE9MuyqpVPcI65zGiXOCvej6tkxC1EiURugWsKV",
+            "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 620,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 915 156 535",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00",
+              "Thứ Sáu": "09:00–22:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa sức khỏe",
+              "Spa mát xa",
+              "Điểm thu hút khách du lịch"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16049268996911298541",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84915156535",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Phaya%20Thai%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76216,106.68915",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Charm Spa Garden",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7TWbgoJ90DvJoQQtpQ_v3bEEvkKsPYD5RoIMkCr-Utpd4RPIXfPWrV5foZXg4UaQIWU2IySNJ9wl22IW17VJytNaHh3MaLc4EnDhjC6pdQ41-99YGqQlpv31fyFIF_jaMIEqgCiaaaO3J",
+            "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 217,
+            "openingHours": "10:00–00:00",
+            "openNow": true,
+            "phone": "+84 339 499 889",
+            "priceSignal": "price_search_results",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–00:00",
+              "Chủ Nhật": "10:00–00:00",
+              "Thứ Hai": "10:00–00:00",
+              "Thứ Ba": "10:00–00:00",
+              "Thứ Tư": "10:00–00:00",
+              "Thứ Năm": "10:00–00:00",
+              "Thứ Sáu": "10:00–00:00"
+            },
+            "distanceKm": 2.1,
+            "categories": [
+              "Spa mát xa",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Spa"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://charmspa.com.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3451107067657300867",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84339499889",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Charm%20Spa%20Garden%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Hyan%20Spa%20Qu%E1%BA%ADn%201%20%C4%91%E1%BA%B7t%20tr%C6%B0%E1%BB%9Bc%20booking%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.77251,106.69420",
+          "place:osm:10.76822,106.69847",
+          "place:osm:10.78452,106.69455"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

@@ -1,4 +1,5 @@
 import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
+import { mayRedactPlaceClaim } from './placeClaimGuard'
 
 // ── How much of a streaming places reply may be released early ───────────────
 //
@@ -16,23 +17,99 @@ import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
 //
 // ── Why the answer is safe ──────────────────────────────────────────────────
 //
-// `guardSnippetPricesInText` removes only sentences that contain a money claim (`sentenceSpans`
-// + `redactUnsupportedClaims`), or — in the fallback it takes when removing those sentences would
-// leave nothing at all — only the amounts themselves.
+// A prefix returned here ends on a sentence boundary AND contains no sentence that ANY
+// deterministic prose guard downstream could remove. Two families can remove one:
 //
-// A prefix returned here ends on a sentence boundary AND contains no money claim anywhere in it.
-// So no sentence it contains is a candidate for removal, and it holds no amount to excise.
-// Therefore nothing released can ever be something the guard would have taken away. The fallback
-// path cannot reach it either: that path only runs when NO money-free sentence exists, and in that
-// case this function has already released nothing.
+//   · MONEY - `guardSnippetPricesInText` / `guardMoneyClaimsInText` remove a sentence containing
+//     an unsupported amount (`sentenceSpans` + `redactUnsupportedClaims`), or in their
+//     leave-nothing fallback only the amounts. So the prefix stops before the first money claim.
 //
-// Both halves of the argument are computed with the guard's OWN `extractMoneyClaims` and
-// `sentenceSpans`, so "sentence" and "amount" cannot come to mean two different things in the two
-// places — which is precisely how a boundary like this rots.
+//   · PLACE CLAIMS - `guardPlaceClaimsInText` removes a sentence whose rating, popularity,
+//     ordering or distance claim the retrieval does not support. So the prefix also stops before
+//     the first sentence `mayRedactPlaceClaim` recognises.
+//
+// 🚨 THE SECOND FAMILY WAS MISSING, AND IT LEAKED. This proof was written when money was the only
+// prose guard, and it was not revisited when the place guards were added. Measured on localhost
+// 2026-09-09, the adversarial turn "quán bún bò ở Quận 1 nào có giao hàng...":
+//
+//     safeFlushPoint(reply) released "Mình tìm các quán bún bò ở Quận 1 có giao hàng cho bạn nhé."
+//     guardPlaceClaimsInText(reply) -> redacted = 1, that exact sentence REMOVED
+//
+// The sentence carried no amount, so the money test passed it straight through to the client
+// before the place guard ever ran. The fingerprint in the stream is the missing space in
+// "nhé.Mình chọn" - the released prefix and the guarded remainder concatenated.
+//
+// ── Why no sentence released here can later be ORPHANED ─────────────────────
+//
+// `guardPlaceClaimsInText` also drops a sentence that lost its antecedent ("Quán này ..." whose
+// introduction it removed). That cannot reach released text: an antecedent is only removed when it
+// carried a claim, and such a sentence STOPS this function - nothing after the first claim
+// sentence is ever released. So every released sentence is preceded only by sentences no guard
+// will touch. (Clause-level trimming keeps the venue's name by construction, so it never orphans
+// anything either.) Orphaning also propagates forward only, and a prefix has no later text in it.
+//
+// ── Why this does not just delay everything ─────────────────────────────────
+//
+// Only sentences that actually CARRY a claim wait. The ordinary opening - "Mình tìm bún bò ngon ở
+// Quận 1 cho bạn nhé!" - names no amount, no rating and no distance, so it still streams the
+// moment it lands, which is the latency win A5-P1 bought. And `progressive` is
+// `placeIntent && !travelIntent`, so this path only ever runs on the very turns
+// `guardPlaceClaimsInText` runs on: no other domain pays for it.
+//
+// Both halves are computed with the guards' OWN readings - `extractMoneyClaims`, `sentenceSpans`
+// and the place guard's own regexes via `mayRedactPlaceClaim` - so "sentence", "amount" and
+// "claim" cannot come to mean different things in the two places.
 //
 // 🚨 Evidence is NOT consulted, and must not be: while the reply is streaming the retrieval
 // snippets may not have arrived, so a price that will turn out to be supported is still unknown
 // at this moment. Fail-closed — it waits.
+
+/**
+ * Where, in the SETTLED reply, the text the client has already received ends.
+ *
+ * ============================================================================
+ * THE THIRD FAMILY — WHITESPACE — AND THE WHOLE-REPLY DUPLICATE IT CAUSED
+ * ============================================================================
+ * The proof above covers the two guard families that can REMOVE a sentence. A released prefix
+ * survives both by construction. But the settled text is also passed through
+ * `stripModelScaffolding`, which folds `[ \t]+\n` to `\n` and trims the end, and the released
+ * bytes were not. So a model that writes "**Bạn muốn đi máy bay hay xe khách?** \n" (one trailing
+ * space before the line break) produced a released prefix that the settled text no longer
+ * `startsWith`, the belt fired, and the WHOLE reply — released prefix included — went out a
+ * second time: "…chuyến đi.Hiểu rồi! Bạn muốn ở gần biển…" (Phase 7 golden set T1 turn 3,
+ * 2026-09-22; the owner's screenshot shows the same joined seam). The belt was designed for a
+ * short opening line; here the released part WAS the reply, so the belt doubled it.
+ *
+ * This aligns the two strings ignoring how whitespace RUNS are written — a run of spaces, tabs
+ * and newlines on one side matches any run on the other — and nothing else: every non-whitespace
+ * character must match in order. That is exactly the difference the normaliser can introduce,
+ * and no more. It returns the offset in `settled` just past the released material, or `null`
+ * when the released text is not (whitespace-insensitively) a prefix of the settled text — the
+ * case the guard proof says cannot happen, which the caller still treats as before.
+ */
+export function alignReleasedPrefix(settled: string, released: string): number | null {
+  if (!released) return 0
+  const isWs = (c: string) => c === ' ' || c === '\t' || c === '\n' || c === '\r'
+  let i = 0
+  let j = 0
+  while (j < released.length) {
+    const rc = released[j]
+    if (isWs(rc)) {
+      // A whitespace run on the released side: consume it, and consume whatever whitespace run
+      // the settled side has here (possibly none — the normaliser may have trimmed it away).
+      while (j < released.length && isWs(released[j])) j++
+      while (i < settled.length && isWs(settled[i])) i++
+      continue
+    }
+    // The settled side may carry a whitespace run the released side does not (be tolerant in
+    // this direction too).
+    while (i < settled.length && isWs(settled[i])) i++
+    if (i >= settled.length || settled[i] !== rc) return null
+    i++
+    j++
+  }
+  return i
+}
 
 /**
  * The number of characters of `accumulated` that may be streamed to the client now.
@@ -49,7 +126,7 @@ export function safeFlushPoint(accumulated: string, segmentComplete = false): nu
   const firstClaimStart = claims.length > 0 ? Math.min(...claims.map(c => c.start)) : Infinity
 
   let point = 0
-  for (const [, end] of sentenceSpans(accumulated)) {
+  for (const [start, end] of sentenceSpans(accumulated)) {
     // Never release a sentence that has not finished arriving: its amount may still be in flight.
     // `sentenceSpans` always closes the final span at text end, so mid-stream that last span is
     // not a real boundary — it is just where the text happens to stop.
@@ -62,6 +139,19 @@ export function safeFlushPoint(accumulated: string, segmentComplete = false): nu
     if (end >= accumulated.length && !segmentComplete) break
     // Stop at the first sentence that reaches into a money claim.
     if (end > firstClaimStart) break
+    // ...and at the first sentence carrying a claim the PLACE guard could remove.
+    // Evidence-blind on purpose: see `mayRedactPlaceClaim`.
+    if (mayRedactPlaceClaim(accumulated.slice(start, end))) break
+    // 🚨 A LINK SPAN END IS NOT A SENTENCE END. `sentenceSpans` keeps a markdown link / bare URL as
+    // its own span, so a sentence with an inline link arrives here in three pieces. Measured live
+    // (C3 run 20, 2026-09-20): "Bạn có thể vào **[trang CGV](…)** để xem … giá vé (thường từ
+    // 80k-150k …)." — the money claim sat in the third piece, the first two were released, the
+    // guard then cut the clause, and the reply reached the client with its opening repeated. Only a
+    // boundary that is a real sentence end (terminal punctuation, a line break, or the completed
+    // segment's end) may be released; a piece cut off by a link waits with the rest of its sentence.
+    const last = accumulated[end - 1]
+    const realEnd = end >= accumulated.length || last === '\n' || last === '.' || last === '!' || last === '?'
+    if (!realEnd) continue
     point = end
   }
   return point

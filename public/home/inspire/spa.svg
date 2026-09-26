@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" width="440" height="220" role="img" aria-hidden="true">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="23" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.04"/></feComponentTransfer>
+    </filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="softer" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="haze" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5.5"/>
+    </filter>
+
+    <linearGradient id="air" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#07211E"/><stop offset="55%" stop-color="#123F38"/>
+      <stop offset="100%" stop-color="#1D5B4E"/>
+    </linearGradient>
+    <linearGradient id="pool" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A7A68"/><stop offset="100%" stop-color="#062018"/>
+    </linearGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8FA39C"/><stop offset="100%" stop-color="#2C3D39"/>
+    </linearGradient>
+    <radialGradient id="flame" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFE9B8" stop-opacity=".95"/>
+      <stop offset="45%" stop-color="#FFB65E" stop-opacity=".4"/>
+      <stop offset="100%" stop-color="#FF9430" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vig" cx="50%" cy="45%" r="72%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".42"/>
+    </radialGradient>
+    <clipPath id="frame"><rect width="440" height="220"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+
+    <rect width="440" height="220" fill="url(#air)"/>
+    <!-- a shaft of daylight from the upper left, and mist catching it -->
+    <path d="M40 0 L150 0 L96 220 L-30 220 Z" fill="#BFEBDD" opacity=".1" filter="url(#soft)"/>
+    <g filter="url(#softer)" opacity=".3">
+      <ellipse cx="120" cy="66" rx="130" ry="16" fill="#CFEDE2"/>
+      <ellipse cx="320" cy="42" rx="110" ry="12" fill="#B6E2D4"/>
+    </g>
+
+    <!-- three candles, staggered in depth: nearest is largest and warmest -->
+    <g>
+      <ellipse cx="352" cy="150" rx="40" ry="30" fill="url(#flame)"/>
+      <rect x="338" y="146" width="28" height="42" rx="4" fill="#EFE6D6"/>
+      <ellipse cx="352" cy="146" rx="14" ry="4.5" fill="#FFF9EC"/>
+      <path d="M352 132 q-6 8 0 13 q6 -5 0 -13 Z" fill="#FFD37A"/>
+    </g>
+    <g opacity=".9">
+      <ellipse cx="398" cy="160" rx="30" ry="22" fill="url(#flame)"/>
+      <rect x="388" y="158" width="21" height="32" rx="3" fill="#E4DACA"/>
+      <ellipse cx="398" cy="158" rx="10.5" ry="3.5" fill="#FBF4E6"/>
+      <path d="M398 148 q-4 6 0 10 q4 -4 0 -10 Z" fill="#FFCE6E"/>
+    </g>
+    <g opacity=".8">
+      <ellipse cx="310" cy="140" rx="24" ry="18" fill="url(#flame)"/>
+      <rect x="302" y="140" width="16" height="24" rx="3" fill="#D8CEBE"/>
+      <path d="M310 132 q-3 5 0 8 q3 -3 0 -8 Z" fill="#FFC960"/>
+    </g>
+
+    <!-- rolled towels -->
+    <g transform="translate(232 158)">
+      <ellipse cx="0" cy="0" rx="17" ry="17" fill="#DCEAE3"/>
+      <ellipse cx="0" cy="0" rx="10" ry="10" fill="#B9CFC6"/>
+      <ellipse cx="0" cy="0" rx="4"  ry="4"  fill="#93AFA5"/>
+      <rect x="-18" y="-3" width="36" height="6" rx="3" fill="#8FB3A6" opacity=".5"/>
+    </g>
+    <g transform="translate(266 168)" opacity=".92">
+      <ellipse cx="0" cy="0" rx="13" ry="13" fill="#CFE1D9"/>
+      <ellipse cx="0" cy="0" rx="7"  ry="7"  fill="#A9C4BA"/>
+    </g>
+
+    <!-- stacked stones, the classic silhouette, lit from the left -->
+    <g>
+      <ellipse cx="120" cy="182" rx="46" ry="14" fill="#1A2E2A"/>
+      <ellipse cx="120" cy="176" rx="42" ry="13" fill="url(#stone)"/>
+      <ellipse cx="118" cy="172" rx="34" ry="10" fill="#9FB2AB" opacity=".35"/>
+      <ellipse cx="122" cy="158" rx="32" ry="11" fill="url(#stone)"/>
+      <ellipse cx="120" cy="155" rx="25" ry="8" fill="#A6B8B1" opacity=".3"/>
+      <ellipse cx="124" cy="142" rx="22" ry="8.5" fill="url(#stone)"/>
+      <ellipse cx="122" cy="139" rx="16" ry="5.5" fill="#AEBFB8" opacity=".28"/>
+    </g>
+
+    <!-- orchid: stem, two open blooms, one bud -->
+    <g>
+      <path d="M56 190 q-6 -50 14 -78 q10 -14 24 -18" stroke="#3E6B54" stroke-width="3"
+            fill="none" stroke-linecap="round"/>
+      <g transform="translate(96 92)">
+        <ellipse cx="0" cy="-6" rx="8"  ry="11" fill="#F6E7EE"/>
+        <ellipse cx="-9" cy="2" rx="10" ry="7"  fill="#EFDAE4"/>
+        <ellipse cx="9"  cy="2" rx="10" ry="7"  fill="#EFDAE4"/>
+        <ellipse cx="0"  cy="9" rx="7"  ry="8"  fill="#E3C6D6"/>
+        <circle cx="0" cy="1" r="3.4" fill="#C98BA9"/>
+      </g>
+      <g transform="translate(70 124) scale(.78)" opacity=".92">
+        <ellipse cx="0" cy="-6" rx="8"  ry="11" fill="#F3E1EA"/>
+        <ellipse cx="-9" cy="2" rx="10" ry="7"  fill="#E9D2DE"/>
+        <ellipse cx="9"  cy="2" rx="10" ry="7"  fill="#E9D2DE"/>
+        <circle cx="0" cy="1" r="3.2" fill="#C282A2"/>
+      </g>
+      <ellipse cx="62" cy="150" rx="5" ry="8" fill="#DCC6D4" opacity=".85" transform="rotate(-20 62 150)"/>
+    </g>
+
+    <!-- water: the bottom fifth, with reflections of the candles broken into ripples -->
+    <rect x="0" y="188" width="440" height="32" fill="url(#pool)"/>
+    <g opacity=".5">
+      <rect x="344" y="192" width="18" height="3" rx="1.5" fill="#FFCF88"/>
+      <rect x="340" y="199" width="26" height="2.4" rx="1.2" fill="#FFC97E" opacity=".7"/>
+      <rect x="390" y="196" width="16" height="2.6" rx="1.3" fill="#FFCB84" opacity=".6"/>
+      <rect x="336" y="208" width="34" height="2" rx="1" fill="#FFBE6E" opacity=".45"/>
+    </g>
+    <g stroke="#7FBFAC" stroke-width="1.1" opacity=".35">
+      <path d="M22 198 h70"/><path d="M140 206 h60"/><path d="M226 196 h52"/>
+    </g>
+    <!-- petals floating -->
+    <ellipse cx="188" cy="200" rx="7" ry="4" fill="#E9CEDC" opacity=".8" transform="rotate(-14 188 200)"/>
+    <ellipse cx="298" cy="210" rx="6" ry="3.4" fill="#DEC0D2" opacity=".7" transform="rotate(10 298 210)"/>
+
+    <rect width="440" height="220" fill="url(#vig)"/>
+    <rect width="440" height="220" filter="url(#grain)" opacity=".5"/>
+  </g>
+</svg>

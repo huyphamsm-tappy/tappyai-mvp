@@ -3,6 +3,7 @@ package com.tappyai.app.navigation
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tappyai.app.BuildConfig
 import com.tappyai.app.R
 import com.tappyai.core.common.StringProvider
 import com.tappyai.core.deeplink.DeepLinkParser
@@ -40,6 +41,8 @@ class AppNavHostViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val onboardingRepository: OnboardingRepository,
     private val groupDeepLinkParser: GroupDeepLinkParser,
+    private val webLinkDeepLinkParser: WebLinkDeepLinkParser,
+    private val pendingShellDestination: PendingShellDestination,
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
 ) : ViewModel() {
@@ -87,6 +90,29 @@ class AppNavHostViewModel @Inject constructor(
      * [AppRoute.GroupDetail] and is published on [deepLinkTarget] for [AppNavHost] to navigate to.
      * Unrecognized links are ignored.
      */
+    /**
+     * G1-F — an inbound system share (or a Process-Text selection, G1 completion). Parsed by the pure [IncomingShareParser] into the
+     * existing chat-with-prefill destination and handed to the shell exactly the way a
+     * notification's chat link is ([PendingShellDestination] + [AppRoute.HomeShell]), so the
+     * cold-start and authenticated-gating behaviour is the one already proven for deep links.
+     * An unrecognised share is ignored and the app opens normally.
+     */
+    fun handleIncomingShare(intent: Intent) {
+        val route = runCatching {
+            IncomingShareParser.parse(
+                action = intent.action,
+                type = intent.type,
+                // ACTION_SEND carries EXTRA_TEXT; ACTION_PROCESS_TEXT carries the selection in
+                // EXTRA_PROCESS_TEXT (a CharSequence). Either is one plain string to the parser.
+                text = intent.getStringExtra(Intent.EXTRA_TEXT)
+                    ?: intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString(),
+                subject = intent.getStringExtra(Intent.EXTRA_SUBJECT),
+            )
+        }.getOrNull() ?: return
+        pendingShellDestination.set(route)
+        _deepLinkTarget.value = AppRoute.HomeShell
+    }
+
     fun handleDeepLink(intent: Intent) {
         val uri = intent.data ?: return
         if (uri.host == "auth-callback") {
@@ -100,7 +126,33 @@ class AppNavHostViewModel @Inject constructor(
                 }
             }
         } else {
-            groupDeepLinkParser.parse(uri.toString())?.let { _deepLinkTarget.value = it }
+            // P4-14. The chain, not a single parser: a notification carries the WEB entity URL
+            // (`emitNotification` puts `entityUrl` in `data.url`), while a shared link uses the
+            // custom `tappyai://` scheme. Both are external entry points and both should resolve
+            // through the same list — which is exactly what `TappyNotificationRouting` already
+            // does on its side. Before this, an https notification link matched nothing and a tap
+            // simply opened the app wherever it was.
+            //
+            // Order is not significant: the two parsers accept disjoint schemes. A parser that
+            // throws on a malformed link is contained, because a bad link in a payload the app did
+            // not write must not become a crash on tap.
+            val link = uri.toString()
+            val appRoute = listOf(groupDeepLinkParser, webLinkDeepLinkParser)
+                .firstNotNullOfOrNull { parser -> runCatching { parser.parse(link) }.getOrNull() }
+
+            if (appRoute != null) {
+                _deepLinkTarget.value = appRoute
+            } else {
+                // No app-wide route matched. The link may still name a destination INSIDE the
+                // post-auth shell, whose vocabulary is deliberately private to it. Navigate to the
+                // shell — a route that already exists — and hand the nested destination across for
+                // the shell to consume itself, rather than promoting its tabs into the global
+                // vocabulary for the sake of one entry point.
+                ShellDeepLink.destinationFor(link, BuildConfig.WEB_APP_URL)?.let { shellRoute ->
+                    pendingShellDestination.set(shellRoute)
+                    _deepLinkTarget.value = AppRoute.HomeShell
+                }
+            }
         }
     }
 }

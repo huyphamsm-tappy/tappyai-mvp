@@ -1,17 +1,19 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
 import * as musicRepository from '../repository/musicRepository'
-import { formatDuration, normalizeSearch, validateSelection } from '../utils'
+import { normalizeSearch } from '../utils'
 import type { MusicTrack } from '../types/track'
 import type { MusicCategory } from '../types/category'
 import type { MusicProvider } from '../types/provider'
-import type { MusicSelection } from '../types/selection'
 import type { MusicBrowseFilter, MusicSearchFilter, MusicTracksPage } from '../types/search'
 
-const DEFAULT_LOCALE = 'vi'
-
-// --- Browse / Search / Track / Category / Provider reads ---
-// Thin delegations to the Repository: this is the required indirection layer
-// so Hooks never import the Repository (or Supabase) directly.
+// SERVER service: the reads the `/api/music/*` route handlers call. It imports
+// the service-role repository, so it must never be imported by a browser
+// bundle — hooks go through `./musicClient` (fetch) instead, and the pure
+// helpers live in `./musicHelpers` so both sides share one implementation.
+//
+// The usage log (`recordUsage`) and original-sound registration
+// (`createOriginalSound`) that used to live here were the reuse path — one
+// user borrowing another user's clip audio — retired in F-024/F-034 and NOT
+// restored. The library is browse / search / by-id / categories / providers.
 
 export async function browseTracks(filter?: MusicBrowseFilter): Promise<MusicTracksPage> {
   return musicRepository.getTracks(filter)
@@ -35,80 +37,11 @@ export async function getProviders(): Promise<MusicProvider[]> {
   return musicRepository.getProviders()
 }
 
-// --- Selection helper ---
-// Builds and validates a MusicSelection value object. Throws on invalid
-// input rather than silently returning a broken selection.
-export function createSelection(trackId: string, startSec: number, volume: number): MusicSelection {
-  const selection: MusicSelection = { trackId, startSec, volume }
-  if (!validateSelection(selection)) {
-    throw new Error('Invalid music selection')
-  }
-  return selection
-}
-
-// --- Usage recording ---
-// Records that a track was used by a consuming entity (e.g. a posted review),
-// through the caller's authenticated client so the music_usage RLS policy is
-// satisfied. entityType is an opaque convention string owned by the caller —
-// the Music Module never enumerates feature names.
-export async function recordUsage(
-  client: SupabaseClient,
-  row: { trackId: string; entityType: string; entityId: string; userId: string }
-): Promise<void> {
-  return musicRepository.recordUsage(client, row)
-}
-
-// --- Original sound registration ---
-// Registers a clip's own audio as a reusable "original sound" (see repository).
-// Phase 1 keeps audio_url as a pointer to the clip's media_url — the audioUrl
-// field stays the only abstraction, so upgrading to extracted audio later is a
-// swap, not a rewrite. Returns the new track id, or null (best-effort).
-export async function createOriginalSound(
-  client: SupabaseClient,
-  row: { title: string; artist: string | null; durationSec: number; audioUrl: string; coverUrl: string | null; uploadedBy: string }
-): Promise<string | null> {
-  return musicRepository.insertOriginalSoundTrack(client, row)
-}
-
-// --- Preview metadata ---
-// A track's short pre-cut preview clip is the intended preview source;
-// fall back to the full track when no preview clip was cut.
-export function getPreviewUrl(track: MusicTrack): string {
-  return track.previewUrl ?? track.audioUrl
-}
-
-// --- Duration helper ---
-export function getTrackDurationLabel(track: MusicTrack): string {
-  return formatDuration(track.durationSec)
-}
-
-// --- Category helper ---
-/**
- * Resolves a category's localized label: requested locale → the app's primary locale → the raw
- * slug as a last resort (never renders blank).
- *
- * ============================================================================
- * WHY `locale` IS REQUIRED — B11
- * ============================================================================
- * 🚨 IT USED TO DEFAULT TO `DEFAULT_LOCALE`, WHICH IS `'vi'`, AND THAT DEFAULT WAS THE BUG.
- *
- * `MusicCategoryTabs` called `getCategoryLabel(category)` with no second argument, so every
- * category rendered Vietnamese no matter what language the app was in — an English user saw
- * "Thịnh hành" and "Sôi động". Nothing was missing: the API returns
- * `labelI18n: { en: "Trending", vi: "Thịnh hành" }` and the English label was sitting right
- * there, simply never asked for. Android reads the same payload and gets it right.
- *
- * The parameter is now REQUIRED, so forgetting it is a compile error rather than a screen in the
- * wrong language. A default that silently picks a language is worse than no default at all —
- * it turns an omission into plausible-looking output.
- */
-export function getCategoryLabel(category: MusicCategory, locale: string): string {
-  return category.labelI18n[locale] ?? category.labelI18n[DEFAULT_LOCALE] ?? category.slug
-}
-
-// --- Provider helper ---
-// Distinguishes first-party tracks from external-licensor tracks, e.g. so a
-// consumer can decide whether to render a provider attribution badge.
-export function isInternalProvider(provider: MusicProvider): boolean {
-  return provider.slug === 'internal'
-}
+export {
+  createSelection,
+  getPreviewUrl,
+  getTrackDurationLabel,
+  getCategoryLabel,
+  isInternalProvider,
+  attributionLine,
+} from './musicHelpers'

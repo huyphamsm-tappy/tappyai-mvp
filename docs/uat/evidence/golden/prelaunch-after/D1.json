@@ -1,0 +1,1190 @@
+{
+  "id": "D1",
+  "group": "district-stated-vs-gps",
+  "criteria": [
+    "Every card's ADDRESS is in Quận 3 (explicit 'Quận 3' or a Quận 3 ward: Bàn Cờ, Xuân Hòa, Nhiêu Lộc, Võ Thị Sáu), or the card is explicitly marked as outside Quận 3",
+    "The prose never claims a venue outside Quận 3 is in Quận 3",
+    "If nothing in Quận 3 is found, it says so honestly and labels the alternatives as outside Quận 3 with their real district",
+    "The stated Quận 3 beats the user's GPS (Quận 1): results are not simply the places nearest the user"
+  ],
+  "turns": [
+    {
+      "user": "Quán phở ngon ở Quận 3",
+      "status": 200,
+      "elapsedMs": 13122,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "phở ngon Quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Atispho - Phở Atiso",
+              "address": "72c Trần Quốc Toản, Xuân Hòa, Hồ Chí Minh 27139, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 1328,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+              "address": "52 Nguyễn Thông, Nhiêu Lộc, Hồ Chí Minh 74000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 871,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Phú Vương | Phở Ngon Quận 3",
+              "address": "445-447 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 370,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–23:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Chua Thành",
+              "address": "242/101 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 634,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "11:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Phở Trang",
+              "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 166,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở 34 Cao Thắng",
+              "address": "34 Cao Thắng, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 158,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–14:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Ông Cả",
+              "address": "66B Cao Thắng, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 281,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–13:00, 16:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Thìn 13 Lò Đúc",
+              "address": "39-41 Bà Huyện Thanh Quan, quận 3, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 230,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–13:30, 16:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78758,106.68831",
+                "domain": "food",
+                "kind": "place",
+                "name": "Atispho - Phở Atiso",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPbST2xQf2EuH_aVoNMevMb7V9uojgK1HbxFpV65d4wSOHkb7vmTOepTvJ-CEobR6OHTPuSsUiBpF5hTuBUpyinoC_RPghGYspwdUZVCIWUrVBvv5v7fNltwjicetlD8VS17uWxaeNKf9A",
+                "address": "72c Trần Quốc Toản, Xuân Hòa, Hồ Chí Minh 27139, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 1328,
+                "openingHours": "06:30–21:30",
+                "openNow": false,
+                "phone": "+84 849 199 275",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:30–21:30",
+                  "Thứ Sáu": "06:30–21:30",
+                  "Thứ Bảy": "06:30–21:30",
+                  "Chủ Nhật": "06:30–21:30",
+                  "Thứ Hai": "06:30–21:30",
+                  "Thứ Ba": "06:30–21:30",
+                  "Thứ Tư": "06:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7664339604106097960",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Atispho%20-%20Ph%E1%BB%9F%20Atiso%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84849199275",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77997,106.68166",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNUbcNR8cEuQbM_HYD0XtDOEUic2_XeasdR1H3wllkJhBnUYLwVFVJc6p8iBkBj8KfLIVbCX5A8Ur9zS0IZP4LzY-y3kYmH-nXArMGUeGDO-wLPHbBa-O4COV-z2vOEbm_wk2cHM5Fu3ewQ",
+                "address": "52 Nguyễn Thông, Nhiêu Lộc, Hồ Chí Minh 74000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 871,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 828 200 200",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00",
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16328525708642007153",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20NHON%20-%20Ph%E1%BB%9F%20B%C3%B2%20%7C%20Ph%E1%BB%9F%20G%C3%A0%20Tr%E1%BB%91ng%20Thi%E1%BA%BFn%20%7C%20Mi%E1%BA%BFn%20G%C3%A0%20%7C%20C%C6%A1m%20G%C3%A0%20%7C%20X%C3%B4i%20G%C3%A0%20%7C%20Ph%E1%BB%9F%20Ngon%20Ph%C6%B0%E1%BB%9Dng%20Nhi%C3%AAu%20L%E1%BB%99c%20%7C%20Ph%E1%BB%9F%20NHON%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phonhon.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84828200200",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79138,106.68733",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Phú Vương | Phở Ngon Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_LDA_Vf6F23w7J-d0CKrzuTvPB4h9eaicIxY3imOPENp06hV2DsdTnN-OYBVnYp8ynvzUt_nd7-WKNn2wqlsbFOPpomxxtVHfuQbjg5QQMHj6waQ19T5llgAwY33d3cglONyeLH_9v54",
+                "address": "445-447 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 370,
+                "openingHours": "06:00–23:30",
+                "openNow": true,
+                "phone": "+84 28 3526 2992",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–23:30",
+                  "Thứ Sáu": "06:00–23:30",
+                  "Thứ Bảy": "06:00–23:30",
+                  "Chủ Nhật": "06:00–23:30",
+                  "Thứ Hai": "06:00–23:30",
+                  "Thứ Ba": "06:00–23:30",
+                  "Thứ Tư": "06:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7320181156462049780",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Ph%C3%BA%20V%C6%B0%C6%A1ng%20%7C%20Ph%E1%BB%9F%20Ngon%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842835262992",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77100,106.67954",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Chua Thành",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOuX8qA1JU11Q7EXXKhOANopskqf21EvAQSXkjCyqHTIpzXEQxLSNBPcEmYFJFzeJzr4NXc44h2Bo5dfu5XnWYe_bhg1EYIj_hUMP-rPfLHGOj_7QBDURRpniJSOi72TYy6uYl_",
+                "address": "242/101 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 634,
+                "openingHours": "11:00–20:00",
+                "openNow": false,
+                "phone": "+84 938 624 882",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–20:00",
+                  "Thứ Sáu": "11:00–20:00",
+                  "Thứ Bảy": "11:00–20:00",
+                  "Chủ Nhật": "11:00–20:00",
+                  "Thứ Hai": "11:00–20:00",
+                  "Thứ Ba": "11:00–20:00",
+                  "Thứ Tư": "11:00–20:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7570440280677029047",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Chua%20Tha%CC%80nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938624882",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76965,106.68361",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Phở Trang",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPENguAF0sHv2_4P8MI9tEaOATTDW8Y6QwsgzxiM6TIXhnj4T07RlC10ER9z6RT3aSK8xDg9EO3fohDQA1CY4RpYPsPvQFg9JQGylJgdpxVQ-DhVp_1zCydhQovah_fTdycVWgp",
+                "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 166,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "phone": "+84 938 731 123",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6490164852976737810",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Ph%E1%BB%9F%20Trang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/pho-trang-vo-van-tan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938731123",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76935,106.68303",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở 34 Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKKAY9AQJXs4W4grAzZhrVPQYnFig8YnAtX4_BFec7KWgZLnyoOoz1tUmTjSBxPaqrzE1yBu2cNNtvFVSHzbljRb0tAsB9C8BpiMJqwq9hrjFcxeIdTq57izd2r0kQOZHxXgxQ",
+                "address": "34 Cao Thắng, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 158,
+                "openingHours": "06:00–14:00",
+                "openNow": false,
+                "phone": "+84 903 074 883",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–14:00",
+                  "Thứ Sáu": "06:00–14:00",
+                  "Thứ Bảy": "06:00–14:00",
+                  "Chủ Nhật": "06:00–14:00",
+                  "Thứ Hai": "06:00–14:00",
+                  "Thứ Ba": "06:00–14:00",
+                  "Thứ Tư": "06:00–14:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=702188102079407329",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%2034%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903074883",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77031,106.68205",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Ông Cả",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPtfS9pni8bQJnGr6Zcb5v6rr4PXwNJtTto3kBiwQSrtMEjau3V9LMOkCS0PUoVl2MBPwbIYUJ5cRR3Bjq4jbCcLRTiv_pHIQ8DcKWhVas4Ub3cwPOjevOyK4iygTdo8BlZFm0EKw",
+                "address": "66B Cao Thắng, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 281,
+                "openingHours": "06:00–13:00, 16:00–20:30",
+                "openNow": false,
+                "phone": "+84 985 848 382",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–13:00, 16:00–20:30",
+                  "Thứ Sáu": "06:00–13:00, 16:00–20:30",
+                  "Thứ Bảy": "06:00–13:00, 16:00–20:30",
+                  "Chủ Nhật": "06:00–13:00, 16:00–20:30",
+                  "Thứ Hai": "06:00–13:00, 16:00–20:30",
+                  "Thứ Ba": "06:00–13:00, 16:00–20:30",
+                  "Thứ Tư": "06:00–13:00, 16:00–20:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8372855634561973306",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20%C3%94ng%20C%E1%BA%A3%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/ong-ca-quan-pho",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84985848382",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77545,106.68963",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Thìn 13 Lò Đúc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN8iP4L2siWtXmPm4zvZyAHvbym8_6OqxoFzw2cblAmUG96IfNhoRyD2HFpbrnlvHH9eTXrd7m0Y-zOp3Kx087qqjefywgcgQXmf5YeCYqeNnm0N67vDmIgjm3KjBQMz83CruxC_ovJxruE",
+                "address": "39-41 Bà Huyện Thanh Quan, quận 3, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 230,
+                "openingHours": "06:00–13:30, 16:30–21:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–13:30, 16:30–21:30",
+                  "Thứ Sáu": "06:00–13:30, 16:30–21:30",
+                  "Thứ Bảy": "06:00–13:30, 16:30–21:30",
+                  "Chủ Nhật": "06:00–13:30, 16:30–21:30",
+                  "Thứ Hai": "06:00–13:30, 16:30–21:30",
+                  "Thứ Ba": "06:00–13:30, 16:30–21:30",
+                  "Thứ Tư": "06:00–13:30, 16:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18200352413333496251",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Th%C3%ACn%2013%20L%C3%B2%20%C4%90%C3%BAc%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=ph%E1%BB%9F%20ngon%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Atispho - Phở Atiso",
+              "address": "72c Trần Quốc Toản, Xuân Hòa, Hồ Chí Minh 27139, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 1328,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.9",
+                "1328 reviews"
+              ]
+            },
+            {
+              "name": "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+              "address": "52 Nguyễn Thông, Nhiêu Lộc, Hồ Chí Minh 74000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 871,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Phú Vương | Phở Ngon Quận 3",
+              "address": "445-447 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 370,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–23:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Chua Thành",
+              "address": "242/101 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 634,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "11:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Phở Trang",
+              "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 166,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở 34 Cao Thắng",
+              "address": "34 Cao Thắng, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 158,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–14:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Ông Cả",
+              "address": "66B Cao Thắng, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 281,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–13:00, 16:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phở Thìn 13 Lò Đúc",
+              "address": "39-41 Bà Huyện Thanh Quan, quận 3, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 230,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng phở"
+              ],
+              "hours": "06:00–13:30, 16:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.78758,106.68831",
+                "domain": "food",
+                "kind": "place",
+                "name": "Atispho - Phở Atiso",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPbST2xQf2EuH_aVoNMevMb7V9uojgK1HbxFpV65d4wSOHkb7vmTOepTvJ-CEobR6OHTPuSsUiBpF5hTuBUpyinoC_RPghGYspwdUZVCIWUrVBvv5v7fNltwjicetlD8VS17uWxaeNKf9A",
+                "address": "72c Trần Quốc Toản, Xuân Hòa, Hồ Chí Minh 27139, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 1328,
+                "openingHours": "06:30–21:30",
+                "openNow": false,
+                "phone": "+84 849 199 275",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:30–21:30",
+                  "Thứ Sáu": "06:30–21:30",
+                  "Thứ Bảy": "06:30–21:30",
+                  "Chủ Nhật": "06:30–21:30",
+                  "Thứ Hai": "06:30–21:30",
+                  "Thứ Ba": "06:30–21:30",
+                  "Thứ Tư": "06:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.9",
+                    "params": {
+                      "value": 4.9
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "1328 reviews",
+                    "params": {
+                      "count": 1328
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7664339604106097960",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Atispho%20-%20Ph%E1%BB%9F%20Atiso%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84849199275",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77997,106.68166",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNUbcNR8cEuQbM_HYD0XtDOEUic2_XeasdR1H3wllkJhBnUYLwVFVJc6p8iBkBj8KfLIVbCX5A8Ur9zS0IZP4LzY-y3kYmH-nXArMGUeGDO-wLPHbBa-O4COV-z2vOEbm_wk2cHM5Fu3ewQ",
+                "address": "52 Nguyễn Thông, Nhiêu Lộc, Hồ Chí Minh 74000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 871,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 828 200 200",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00",
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@zenda0410/video/7560319823134166290",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16328525708642007153",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phonhon.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84828200200",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20NHON%20-%20Ph%E1%BB%9F%20B%C3%B2%20%7C%20Ph%E1%BB%9F%20G%C3%A0%20Tr%E1%BB%91ng%20Thi%E1%BA%BFn%20%7C%20Mi%E1%BA%BFn%20G%C3%A0%20%7C%20C%C6%A1m%20G%C3%A0%20%7C%20X%C3%B4i%20G%C3%A0%20%7C%20Ph%E1%BB%9F%20Ngon%20Ph%C6%B0%E1%BB%9Dng%20Nhi%C3%AAu%20L%E1%BB%99c%20%7C%20Ph%E1%BB%9F%20NHON%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79138,106.68733",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Phú Vương | Phở Ngon Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_LDA_Vf6F23w7J-d0CKrzuTvPB4h9eaicIxY3imOPENp06hV2DsdTnN-OYBVnYp8ynvzUt_nd7-WKNn2wqlsbFOPpomxxtVHfuQbjg5QQMHj6waQ19T5llgAwY33d3cglONyeLH_9v54",
+                "address": "445-447 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 370,
+                "openingHours": "06:00–23:30",
+                "openNow": true,
+                "phone": "+84 28 3526 2992",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–23:30",
+                  "Thứ Sáu": "06:00–23:30",
+                  "Thứ Bảy": "06:00–23:30",
+                  "Chủ Nhật": "06:00–23:30",
+                  "Thứ Hai": "06:00–23:30",
+                  "Thứ Ba": "06:00–23:30",
+                  "Thứ Tư": "06:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7320181156462049780",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Ph%C3%BA%20V%C6%B0%C6%A1ng%20%7C%20Ph%E1%BB%9F%20Ngon%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842835262992",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77100,106.67954",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Chua Thành",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOuX8qA1JU11Q7EXXKhOANopskqf21EvAQSXkjCyqHTIpzXEQxLSNBPcEmYFJFzeJzr4NXc44h2Bo5dfu5XnWYe_bhg1EYIj_hUMP-rPfLHGOj_7QBDURRpniJSOi72TYy6uYl_",
+                "address": "242/101 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 634,
+                "openingHours": "11:00–20:00",
+                "openNow": false,
+                "phone": "+84 938 624 882",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–20:00",
+                  "Thứ Sáu": "11:00–20:00",
+                  "Thứ Bảy": "11:00–20:00",
+                  "Chủ Nhật": "11:00–20:00",
+                  "Thứ Hai": "11:00–20:00",
+                  "Thứ Ba": "11:00–20:00",
+                  "Thứ Tư": "11:00–20:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7570440280677029047",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Chua%20Tha%CC%80nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938624882",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76965,106.68361",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Phở Trang",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPENguAF0sHv2_4P8MI9tEaOATTDW8Y6QwsgzxiM6TIXhnj4T07RlC10ER9z6RT3aSK8xDg9EO3fohDQA1CY4RpYPsPvQFg9JQGylJgdpxVQ-DhVp_1zCydhQovah_fTdycVWgp",
+                "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 166,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "phone": "+84 938 731 123",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6490164852976737810",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20Ph%E1%BB%9F%20Trang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/pho-trang-vo-van-tan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938731123",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76935,106.68303",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở 34 Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKKAY9AQJXs4W4grAzZhrVPQYnFig8YnAtX4_BFec7KWgZLnyoOoz1tUmTjSBxPaqrzE1yBu2cNNtvFVSHzbljRb0tAsB9C8BpiMJqwq9hrjFcxeIdTq57izd2r0kQOZHxXgxQ",
+                "address": "34 Cao Thắng, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 158,
+                "openingHours": "06:00–14:00",
+                "openNow": false,
+                "phone": "+84 903 074 883",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–14:00",
+                  "Thứ Sáu": "06:00–14:00",
+                  "Thứ Bảy": "06:00–14:00",
+                  "Chủ Nhật": "06:00–14:00",
+                  "Thứ Hai": "06:00–14:00",
+                  "Thứ Ba": "06:00–14:00",
+                  "Thứ Tư": "06:00–14:00"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=702188102079407329",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%2034%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903074883",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77031,106.68205",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Ông Cả",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPtfS9pni8bQJnGr6Zcb5v6rr4PXwNJtTto3kBiwQSrtMEjau3V9LMOkCS0PUoVl2MBPwbIYUJ5cRR3Bjq4jbCcLRTiv_pHIQ8DcKWhVas4Ub3cwPOjevOyK4iygTdo8BlZFm0EKw",
+                "address": "66B Cao Thắng, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 281,
+                "openingHours": "06:00–13:00, 16:00–20:30",
+                "openNow": false,
+                "phone": "+84 985 848 382",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–13:00, 16:00–20:30",
+                  "Thứ Sáu": "06:00–13:00, 16:00–20:30",
+                  "Thứ Bảy": "06:00–13:00, 16:00–20:30",
+                  "Chủ Nhật": "06:00–13:00, 16:00–20:30",
+                  "Thứ Hai": "06:00–13:00, 16:00–20:30",
+                  "Thứ Ba": "06:00–13:00, 16:00–20:30",
+                  "Thứ Tư": "06:00–13:00, 16:00–20:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8372855634561973306",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20%C3%94ng%20C%E1%BA%A3%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/ong-ca-quan-pho",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84985848382",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77545,106.68963",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phở Thìn 13 Lò Đúc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN8iP4L2siWtXmPm4zvZyAHvbym8_6OqxoFzw2cblAmUG96IfNhoRyD2HFpbrnlvHH9eTXrd7m0Y-zOp3Kx087qqjefywgcgQXmf5YeCYqeNnm0N67vDmIgjm3KjBQMz83CruxC_ovJxruE",
+                "address": "39-41 Bà Huyện Thanh Quan, quận 3, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 230,
+                "openingHours": "06:00–13:30, 16:30–21:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:00–13:30, 16:30–21:30",
+                  "Thứ Sáu": "06:00–13:30, 16:30–21:30",
+                  "Thứ Bảy": "06:00–13:30, 16:30–21:30",
+                  "Chủ Nhật": "06:00–13:30, 16:30–21:30",
+                  "Thứ Hai": "06:00–13:30, 16:30–21:30",
+                  "Thứ Ba": "06:00–13:30, 16:30–21:30",
+                  "Thứ Tư": "06:00–13:30, 16:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng phở"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18200352413333496251",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%9F%20Th%C3%ACn%2013%20L%C3%B2%20%C4%90%C3%BAc%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=ph%E1%BB%9F%20ngon%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.78758,106.68831",
+              "place:osm:10.77997,106.68166",
+              "place:osm:10.79138,106.68733"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.78758,106.68831",
+            "place:osm:10.77997,106.68166",
+            "place:osm:10.79138,106.68733"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Atispho - Phở Atiso",
+          "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+          "Phở Phú Vương | Phở Ngon Quận 3",
+          "Phở Chua Thành",
+          "Quán Phở Trang",
+          "Phở 34 Cao Thắng",
+          "Phở Ông Cả",
+          "Phở Thìn 13 Lò Đúc"
+        ],
+        [
+          "Atispho - Phở Atiso",
+          "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+          "Phở Phú Vương | Phở Ngon Quận 3",
+          "Phở Chua Thành",
+          "Quán Phở Trang",
+          "Phở 34 Cao Thắng",
+          "Phở Ông Cả",
+          "Phở Thìn 13 Lò Đúc"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm quán phở ngon ở Quận 3 cho bạn nhé!\n\nMình chọn **Atispho - Phở Atiso** cho bạn! 🍲 Quán này có **4.9⭐ (1.328 đánh giá Google Maps)** — đánh giá cao nhất ở Quận 3, với hơn 1.300 khách đã review tích cực. Phở ở đây được khen ngon, nước dùng đậm đà\n\nQuán mở từ 6:30–21:30. Bạn có thể gọi **0849 199 275** hoặc xem thêm trên website của quán.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Atispho\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7664339604106097960\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phở NHON ở Quận 3|Phở Phú Vương mở khuya|Quán phở khác ở Quận 1[/FOLLOWUPS]",
+      "visible": "Mình tìm quán phở ngon ở Quận 3 cho bạn nhé!\n\nMình chọn **Atispho - Phở Atiso** cho bạn! 🍲 Quán này có **4.9⭐ (1.328 đánh giá Google Maps)** — đánh giá cao nhất ở Quận 3, với hơn 1.300 khách đã review tích cực. Phở ở đây được khen ngon, nước dùng đậm đà\n\nQuán mở từ 6:30–21:30. Bạn có thể gọi **0849 199 275** hoặc xem thêm trên website của quán."
+    }
+  ]
+}

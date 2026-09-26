@@ -43,6 +43,9 @@ const INTENTIONAL_ANON = new Map([
   ['music_increment_play', 'public play counter — 20260711_music_ugc_combined.sql:37'],
   ['music_saved_count', 'public aggregate read — 20260706b_add_music_count_fns.sql:9'],
   ['music_followed_count', 'public aggregate read — 20260706b_add_music_count_fns.sql:14'],
+  ['plan_share_public', 'public read of one published plan snapshot by capability id — 20260913_plan_shares.sql'],
+  ['review_likers', 'public like list of ONE readable review, no per-user collection — 20260915b_review_likes_private.sql'],
+  ['hot_places_24h', 'public aggregate read (place name + count, no user ids) — 20260915b_review_likes_private.sql'],
 ])
 
 /**
@@ -244,6 +247,161 @@ function ruleG2(sql) {
 }
 
 /** G3 — the two allowlists must stay separate and well-formed. */
+// ── G5: a world-readable SELECT policy on a table holding personal data ──────
+//
+// 🚨 THIS RULE EXISTS BECAUSE OF S-1. `add_groups.sql` published
+// `group_members` — name, area, budget, dietary_restrictions, and later a
+// user_id — with `FOR SELECT USING (true)`, and it read as "share by link"
+// to everyone who saw it.
+//
+// It is not. The anon key is PUBLIC: it ships in the browser bundle and the iOS
+// app. PostgREST takes the filter from the CALLER, so RLS cannot tell "asked for
+// one id" from "asked for every row" — only the predicate decides, and `true`
+// decides nothing. `USING (true)` therefore means "readable by anyone on the
+// internet, all rows at once". The identical mechanism was MEASURED against
+// `reviews` on 2026-08-18.
+//
+// The allowlist below is the set of tables where that is the INTENT: catalogue
+// and social content that is already public in the product. Anything else must
+// name a predicate. Temporal enforcement (G4) applies — historical files are
+// INFO, a file you touch becomes an ERROR.
+
+/** Tables whose rows are public product content by design. Each needs a reason. */
+const PUBLIC_CONTENT_TABLES = new Map([
+  ['place_photos', 'cached place imagery, no personal data'],
+  ['music_categories', 'public catalogue'],
+  ['music_providers', 'public catalogue'],
+  ['music_tracks', 'public catalogue'],
+  ['comment_reactions', 'public social signal on public comments'],
+  ['review_milestones', 'public social signal'],
+  // 'review_likes' REMOVED 2026-09-25: a person's liked collection is PRIVATE (owner decision in
+  // 20260915b_review_likes_private.sql — measured: `?user_id=eq.<someone>` with the anon key
+  // returned that person's whole like history). Per-review likers / the 24h aggregate are served
+  // by the two SECURITY DEFINER reads registered in INTENTIONAL_ANON, never by a table policy.
+  ['review_comments', 'public social content'],
+  ['user_follows', 'the social graph is public in this product'],
+  // 2026-09-25 (merge-loss recovery): one global row (`reachability`), no personal data, and
+  // 20260906_phase6_messenger_reachability.sql REVOKEs every anon grant on the table.
+  ['chat_settings', 'single global messaging-rule row, no personal data; anon has no SELECT grant'],
+])
+
+/**
+ * Every `DROP POLICY <name> ON <table>` across the whole migration set, as
+ * `table::name`.
+ *
+ * A policy a later migration removes is not a live grant, and flagging it would
+ * make the guard un-silenceable: migrations are never edited retroactively, so
+ * the only way to "fix" a historical `USING (true)` is exactly what
+ * 20260904_group_read_boundary.sql does — drop it and create a scoped one. The
+ * guard has to be able to see that, or the correct fix still fails CI.
+ */
+let droppedPolicies = null
+function allDroppedPolicies() {
+  if (droppedPolicies) return droppedPolicies
+  droppedPolicies = new Set()
+  for (const file of sqlFiles(MIGRATIONS)) {
+    const sql = stripComments(readFileSync(file, 'utf8'))
+    const re = /DROP\s+POLICY\s+(?:IF\s+EXISTS\s+)?(?:"([^"]+)"|(\S+))\s+ON\s+(?:public\.)?("?[a-z_]+"?)/gi
+    let m
+    while ((m = re.exec(sql)) !== null) {
+      const name = (m[1] ?? m[2]).replace(/"/g, '')
+      droppedPolicies.add(`${m[3].replace(/"/g, '')}::${name}`)
+    }
+  }
+  return droppedPolicies
+}
+
+function ruleG5(sql) {
+  const findings = []
+  const stripped = stripComments(sql)
+  const dropped = allDroppedPolicies()
+  // CREATE POLICY <name> ON [public.]<table> ... FOR SELECT ... USING (true)
+  const re = /CREATE\s+POLICY\s+(?:"([^"]+)"|(\S+))\s+ON\s+(?:public\.)?("?[a-z_]+"?)([\s\S]*?);/gi
+  let m
+  while ((m = re.exec(stripped)) !== null) {
+    const policy = (m[1] ?? m[2]).replace(/"/g, '')
+    const table = m[3].replace(/"/g, '')
+    const body = m[4]
+    const isSelect = /FOR\s+SELECT/i.test(body) || !/FOR\s+(INSERT|UPDATE|DELETE)/i.test(body)
+    const worldReadable = /USING\s*\(\s*true\s*\)/i.test(body)
+    if (!isSelect || !worldReadable) continue
+    if (PUBLIC_CONTENT_TABLES.has(table)) continue
+    if (dropped.has(`${table}::${policy}`)) continue // superseded by a later migration
+    findings.push({
+      ruleId: 'sql-world-readable-select',
+      line: stripped.slice(0, m.index).split('\n').length,
+      text: `${table} gets a SELECT policy with USING (true) — readable by anon, in bulk`,
+      hint: `the anon key is public, so this grants every row to the open internet (S-1). Scope the predicate to the owner/participant, or add "${table}" to PUBLIC_CONTENT_TABLES with a reason if it really is public product content.`,
+    })
+  }
+  return findings
+}
+
+// ── G6: sensitive-table isolation may not be removed by a migration ──────────
+//
+// `conversations`, `user_memory` and `profiles` carry the most sensitive data in
+// the product and their RLS lives ONLY in production — applied out of band, so
+// there is no policy text in this repository to test against
+// (docs/ios/05_DATABASE_CONTRACT.md §Clients records it from live introspection).
+//
+// That leaves two ways isolation could disappear, and they are not equally
+// visible:
+//
+//   · someone drops or disables it IN THE DASHBOARD — CI cannot see this at all,
+//     and it stays an infrastructure limitation with an owner verification query
+//     recorded in V3_THREAT_MODEL.md;
+//   · someone drops or disables it IN A MIGRATION — which is exactly what this
+//     rule makes impossible to do quietly.
+//
+// A DROP paired with a CREATE on the same table in the same file is a REPLACE,
+// which is the legitimate shape (20260904_group_read_boundary.sql does it). A
+// DROP with nothing putting a policy back is a removal.
+
+/** Tables whose row isolation is load-bearing. Removing it is never routine. */
+const SENSITIVE_TABLES = new Set([
+  'conversations', 'user_memory', 'profiles', 'user_integrations',
+  'billing_customers', 'subscriptions', 'price_watches', 'user_preferences',
+  'user_events', 'user_notes', 'audit_log', 'account_status',
+  'groups', 'group_members', 'decision_evidence', 'notification_subscriptions',
+])
+
+function ruleG6(sql) {
+  const findings = []
+  const stripped = stripComments(sql)
+  const lineOf = (i) => stripped.slice(0, i).split('\n').length
+
+  const disable = /ALTER\s+TABLE\s+(?:public\.)?("?[a-z_]+"?)\s+DISABLE\s+ROW\s+LEVEL\s+SECURITY/gi
+  let m
+  while ((m = disable.exec(stripped)) !== null) {
+    const table = m[1].replace(/"/g, '')
+    if (!SENSITIVE_TABLES.has(table)) continue
+    findings.push({
+      ruleId: 'sql-sensitive-isolation-removed',
+      line: lineOf(m.index),
+      text: `${table} has ROW LEVEL SECURITY disabled`,
+      hint: 'the anon key is public, so disabling RLS publishes this table to the internet. If this is genuinely intended, it needs an owner decision on the record — not a migration.',
+    })
+  }
+
+  // Which tables does this file put a policy back on?
+  const replaced = new Set()
+  const create = /CREATE\s+POLICY\s+(?:"[^"]+"|\S+)\s+ON\s+(?:public\.)?("?[a-z_]+"?)/gi
+  while ((m = create.exec(stripped)) !== null) replaced.add(m[1].replace(/"/g, ''))
+
+  const drop = /DROP\s+POLICY\s+(?:IF\s+EXISTS\s+)?(?:"[^"]+"|\S+)\s+ON\s+(?:public\.)?("?[a-z_]+"?)/gi
+  while ((m = drop.exec(stripped)) !== null) {
+    const table = m[1].replace(/"/g, '')
+    if (!SENSITIVE_TABLES.has(table) || replaced.has(table)) continue
+    findings.push({
+      ruleId: 'sql-sensitive-isolation-removed',
+      line: lineOf(m.index),
+      text: `${table} loses a policy with nothing replacing it in this file`,
+      hint: 'a DROP paired with a CREATE on the same table is a replace and passes. A DROP on its own removes isolation from a table holding sensitive data — restate the policy, or make the removal an explicit owner decision.',
+    })
+  }
+  return findings
+}
+
 function validateConfig() {
   const problems = []
   for (const name of INTENTIONAL_ANON.keys()) {
@@ -315,7 +473,7 @@ const legacySeen = new Set()
 for (const full of sqlFiles(MIGRATIONS)) {
   const file = toPosix(relative(ROOT, full))
   const sql = stripComments(readFileSync(full, 'utf8'))
-  const findings = [...ruleG1(sql), ...ruleG2(sql)]
+  const findings = [...ruleG1(sql), ...ruleG2(sql), ...ruleG5(sql), ...ruleG6(sql)]
   if (findings.length === 0) continue
 
   const isChanged = changed.has(file)
@@ -374,7 +532,7 @@ if (retired.length > 0) {
 }
 
 console.log(`Base ref: ${base.ref} (${base.sha.slice(0, 7)})  ·  changed files in scope: ${[...changed].filter((f) => f.startsWith('supabase/migrations/')).length}`)
-console.log(`Rules: G1 declare-roles · G2 revoke-public-is-not-enough · G3 allowlist-integrity · G4 legacy-ratchet`)
+console.log(`Rules: G1 declare-roles · G2 revoke-public-is-not-enough · G3 allowlist-integrity · G4 legacy-ratchet · G5 world-readable-select · G6 sensitive-isolation`)
 console.log(`Result: ${errors.length} error(s), ${info.length} info, ${LEGACY_UNCOMPLIANT.size} pinned legacy file(s).`)
 
 process.exit(errors.length === 0 ? 0 : 1)

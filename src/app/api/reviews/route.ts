@@ -6,15 +6,16 @@ import { decidePublication } from '@/lib/safety/gate/publishDecision'
 import { stripUnservableMedia } from '@/lib/media/servableMedia'
 import { NextRequest, NextResponse } from 'next/server'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
-import { createSelection, getTrack, recordUsage, createOriginalSound } from '@/modules/music/server'
+import { gone } from '@/lib/http/gone'
 import { dailyRateLimit, clientIp } from '@/lib/security/rateLimit'
 import { isAcceptableVideoDuration, MAX_VIDEO_DURATION_ACCEPT_SEC } from '@/lib/config/product'
 import { searchParam } from '@/lib/http/searchParams'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
+import { getTrack } from '@/modules/music/server'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -23,10 +24,9 @@ interface ReviewMusic {
   trackId: string
   startSec: number
   volume: number
-  // 'original' = this clip's own audio, auto-registered as a reusable sound.
-  // 'attached' = a sound borrowed from another clip / the music library.
-  // The feed uses this to decide playback: original clips play their own video
-  // audio; attached clips mute the video and play the borrowed sound over it.
+  // 'attached' = a soundtrack picked from the Music LIBRARY: the feed mutes the clip's
+  // own audio and plays the track over it. ('original' — a clip's own audio registered
+  // as a reusable sound — is the retired reuse path and is never written any more.)
   origin?: 'original' | 'attached'
 }
 
@@ -85,7 +85,8 @@ export async function POST(req: NextRequest) {
   if (restriction.blocked) {
     return NextResponse.json(
       { error: accountRestrictionMessage(restriction), code: accountRestrictionCode(restriction.reason!) },
-      { status: 403 }
+      // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+      { status: accountRestrictionStatus(restriction.reason!) }
     )
   }
 
@@ -97,8 +98,10 @@ export async function POST(req: NextRequest) {
 
   let placeId: string, placeName: string, placeAddress: string, rating: number, body: string, photos: string[]
   let media_url: string, thumbnail: string, content_type: string, source_type: string, source_url: string, hashtags: string[]
-  let music: ReviewMusic | null
   let videoDuration = 0
+  // A soundtrack from the Music LIBRARY (Phase 7). The client sends {trackId, startSec, volume};
+  // only the id is trusted after the library check below. A clip's OWN audio is unaffected.
+  let music: ReviewMusic | null = null
   try {
     const b = await req.json()
     placeId = b.placeId?.trim()
@@ -114,16 +117,12 @@ export async function POST(req: NextRequest) {
     source_url = b.source_url?.trim() || ''
     hashtags = Array.isArray(b.hashtags) ? b.hashtags.filter((t: unknown) => typeof t === 'string').slice(0, 10) : []
     videoDuration = Number(b.duration) || 0
-    music = null
     if (b.music) {
-      if (b.music.version !== MUSIC_PAYLOAD_VERSION) throw new Error('unsupported music version')
-      // createSelection validates shape (trackId non-empty, startSec/volume in range)
-      // and throws on invalid input — reuses the Music Module's own public validator
-      // rather than re-implementing the checks here.
-      const selection = createSelection(String(b.music.trackId), Number(b.music.startSec), Number(b.music.volume))
-      // A track the user picked from another clip / the library → 'attached':
-      // the feed mutes this clip's video and plays the borrowed sound over it.
-      music = { version: MUSIC_PAYLOAD_VERSION, ...selection, origin: 'attached' }
+      const trackId = typeof b.music.trackId === 'string' ? b.music.trackId.trim() : ''
+      if (!trackId) throw new Error('invalid music')
+      const startSec = Math.max(0, Number(b.music.startSec) || 0)
+      const volume = Math.min(1, Math.max(0, Number(b.music.volume) || 1))
+      music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec, volume, origin: 'attached' }
     }
     if (!placeId || !placeName) throw new Error('missing fields')
     if (!body && photos.length === 0 && !media_url) throw new Error('need body or photos or media')
@@ -151,11 +150,15 @@ export async function POST(req: NextRequest) {
     )
   }
 
+  // 🚨 THE ONE PLACE THAT DECIDES WHAT A CLIP MAY ATTACH. `getTrack` is the Music Module's
+  // server read and it returns ONLY library rows (`music_type` royalty_free / licensed,
+  // active). A user's clip audio ("original sound"), a removed track or a made-up id all
+  // resolve to null here and the post is refused with 410 — the same answer F-024 gave every
+  // borrowed-sound attempt, because that is exactly what a non-library id is. The reuse path
+  // (one user taking another user's clip audio) stays withdrawn; the licensed library is back.
   if (music) {
     const track = await getTrack(music.trackId)
-    if (!track) {
-      return NextResponse.json({ error: 'track_gone', message: serverMessage('music.trackGone', requestLocale(req)) }, { status: 400 })
-    }
+    if (!track) return gone('music-reuse:attach-sound')
   }
 
   // Check if user has a past booking here → verified badge
@@ -183,26 +186,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'already_reviewed', message: serverMessage('review.alreadyReviewed', requestLocale(req)) }, { status: 409 })
   }
 
-  // Auto-register the clip's OWN audio as a reusable "original sound" (TikTok
-  // model): a native video upload that didn't borrow a sound gets an
-  // original_sound track pointing at the clip itself (Phase 1 — audio_url = the
-  // video's media_url, no extraction). Others can then "use this sound", and the
-  // clip shows up under it. Best-effort — a failure here never blocks the post.
-  if (!music && content_type === 'video' && source_type === 'upload' && media_url) {
-    try {
-      const { data: prof } = await supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle()
-      const durationSec = Math.min(600, Math.max(1, Math.round(videoDuration) || 15))
-      const trackId = await createOriginalSound(supabase, {
-        title: 'Âm thanh gốc',
-        artist: prof?.full_name?.trim() || null,
-        durationSec,
-        audioUrl: media_url,
-        coverUrl: thumbnail || null,
-        uploadedBy: user.id,
-      })
-      if (trackId) music = { version: MUSIC_PAYLOAD_VERSION, trackId, startSec: 0, volume: 1, origin: 'original' }
-    } catch (e) { console.error('[reviews] original sound registration failed:', e instanceof Error ? e.message : e) }
-  }
+  // Music reuse is retired: a clip's audio is no longer auto-registered as a
+  // reusable "original sound" (that only existed so others could "use this
+  // sound", which is gone). A clip plays its OWN embedded audio unless the poster
+  // picked a LIBRARY soundtrack above, in which case `reviewData.music` records
+  // that choice by reference (never a copy of the audio).
 
   const reviewData: Record<string, unknown> = {
     user_id: user.id,
@@ -263,35 +251,10 @@ export async function POST(req: NextRequest) {
     insertError = retryError2 ?? null
   }
 
-  // If music column doesn't exist yet, retry without it
-  if (insertError && music && insertError.message?.includes('music')) {
-    console.warn('music column missing, retrying without music:', insertError.message)
-    const dataNoMusic = { ...reviewData }
-    delete dataNoMusic.music
-    const { error: retryError3 } = await supabase.from('reviews').insert(dataNoMusic)
-    insertError = retryError3 ?? null
-  }
-
   if (insertError) {
     // Log concise detail server-side for debugging; never leak DB error text to the client.
     console.error('Review insert error:', insertError.code ?? insertError.message)
     return NextResponse.json({ error: 'save_failed', message: serverMessage('review.saveFailed', requestLocale(req)) }, { status: 500 })
-  }
-
-  // Record music usage for the "sound page" virality loop (how many videos use
-  // a track, and which ones). Append-only history — best-effort, never blocks
-  // or fails the post. entity_type 'review' is this feature's own convention.
-  if (music) {
-    let reviewId = insData?.id as string | undefined
-    if (!reviewId) {
-      // A column-mismatch retry above may have re-inserted without returning id.
-      const { data: found } = await supabase
-        .from('reviews').select('id').eq('user_id', user.id).eq('place_id', placeId).maybeSingle()
-      reviewId = found?.id
-    }
-    if (reviewId) {
-      recordUsage(supabase, { trackId: music.trackId, entityType: 'review', entityId: reviewId, userId: user.id }).catch(() => {})
-    }
   }
 
   rebuildProfile(user.id, supabase).catch(() => {})

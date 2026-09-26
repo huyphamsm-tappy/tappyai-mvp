@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -95,6 +96,10 @@ fun AppNavHost(
     // skips acting on that first value so cold start doesn't immediately re-navigate to
     // where it already is; only *later* transitions (login completing, sign-out) act here.
     var hasHandledInitialState by remember { mutableStateOf(false) }
+    // True once the session has resolved (left Loading) for the first time — from then on the
+    // NavHost stays composed and the start destination is fixed; see the two notes below.
+    var hasResolvedSession by remember { mutableStateOf(false) }
+    if (sessionState != AuthSessionState.Loading) hasResolvedSession = true
     LaunchedEffect(sessionState) {
         if (!hasHandledInitialState) {
             hasHandledInitialState = true
@@ -104,12 +109,22 @@ fun AppNavHost(
         // doesn't apply here — `graph.id` is the correct, type-safe-API way to clear the
         // entire back stack down to (and including) the graph root when switching between
         // the auth graph and the post-auth destination.
-        when (sessionState) {
-            // This branch fires only on a real login transition (cold-start restore is skipped by
-            // hasHandledInitialState above) — the same point the web gates onboarding at its auth
-            // callback. A brand-new user is routed to the wizard first; everyone else to the shell.
+        //
+        // WHICH transitions act is decided by [sessionRedirectFor] from WHERE the user is, not
+        // only from the new state. A signed-in session is re-announced by the auth SDK every time
+        // the process comes back to the foreground (auth-kt resets its status to Initializing on
+        // process stop and reloads the stored session on start), so `Authenticated` arrives again
+        // after every Share → Gmail/Drive → back round trip, every launcher visit, every picker.
+        // That is the SAME session, not a login: the app is already inside the post-auth graph
+        // and its back stack — Explore tab, the clip pager, a profile — must stay exactly as it
+        // was. Only a session resolved while the user is on an AUTH screen (Login, OTP, the OAuth
+        // callback) is a real login transition and enters the app, clearing the auth screens.
+        // Unauthenticated still always returns to Login (sign-out, a cleared session), unchanged.
+        when (sessionRedirectFor(sessionState, onAuthScreen = navController.currentDestination.isAuthScreen())) {
+            // A real login — the same point the web gates onboarding at its auth callback. A
+            // brand-new user is routed to the wizard first; everyone else to the shell.
             // needsOnboarding() fails open (false) so a check failure never blocks entry.
-            AuthSessionState.Authenticated -> {
+            SessionRedirect.EnterApp -> {
                 // A pending deep link (e.g. a shared group link tapped while logged out) owns
                 // navigation for this transition — the deepLinkTarget effect above navigates
                 // straight to it and consumes it. This generic redirect must not also fire: its
@@ -127,37 +142,45 @@ fun AppNavHost(
             // /api/profile reports onboarded = false forever and the gate would trap the user in
             // the wizard. Signing in with Google/Zalo creates the profile and restores the normal
             // onboarding decision.
-            AuthSessionState.Anonymous -> {
+            SessionRedirect.EnterShell -> {
                 if (deepLinkTarget != null) return@LaunchedEffect
                 navController.navigate(AppRoute.HomeShell) {
                     popUpTo(navController.graph.id) { inclusive = true }
                 }
             }
-            AuthSessionState.Unauthenticated -> navController.navigate(AuthRoute.Login) {
+            SessionRedirect.Login -> navController.navigate(AuthRoute.Login) {
                 popUpTo(navController.graph.id) { inclusive = true }
             }
-            AuthSessionState.Loading -> Unit
+            null -> Unit
         }
     }
 
-    if (sessionState == AuthSessionState.Loading) {
+    // The spinner is the COLD-START gate only: before the first resolution there is nothing to
+    // show. A later `Loading` (the SDK's foreground re-announcement above passes through it) must
+    // not take the NavHost out of composition — that would drop every nested screen's state (the
+    // shell's tab, Explore's own back stack, the pager's page) even without any navigation.
+    if (sessionState == AuthSessionState.Loading && !hasResolvedSession) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             TappyLoadingIndicator()
         }
         return
     }
 
-    NavHost(
-        navController = navController,
-        // Anonymous starts in the app for the same reason it is routed there above — it is a
-        // real session. Only Unauthenticated starts on Login.
-        startDestination = if (sessionState == AuthSessionState.Authenticated ||
-            sessionState == AuthSessionState.Anonymous
-        ) {
+    // Fixed at the first resolution: NavHost rebuilds its graph — and resets the back stack —
+    // whenever `startDestination` changes, so it must not follow later session transitions
+    // (those navigate explicitly above). Anonymous starts in the app for the same reason it is
+    // routed there above — it is a real session. Only Unauthenticated starts on Login.
+    val startDestination = remember {
+        if (sessionState == AuthSessionState.Authenticated || sessionState == AuthSessionState.Anonymous) {
             AppRoute.HomeShell
         } else {
             AuthRoute.Login
-        },
+        }
+    }
+
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
     ) {
         composable<AuthRoute.Login> { LoginScreen() }
         composable<AuthRoute.EmailOtpVerification> {
@@ -176,7 +199,13 @@ fun AppNavHost(
             // stay on the back stack — backing out of Login has to return the guest to their
             // app exactly as they left it. The automatic auth transitions above still clear the
             // stack, so a completed sign-in lands correctly and Login does not linger.
-            HomeShellScreen(onSignIn = { navController.navigate(AuthRoute.Login) })
+            HomeShellScreen(
+                onSignIn = { navController.navigate(AuthRoute.Login) },
+                // The Home header hosts the app's light/dark toggle; both values come straight
+                // from MainActivity, so the header reflects and drives the one global theme.
+                isDarkTheme = isDarkTheme,
+                onToggleDarkTheme = onToggleDarkTheme,
+            )
         }
         // Post-login onboarding wizard; on finish it replaces itself with the shell so Back can't
         // return to it (mirrors the web's router.replace to the destination).
@@ -198,13 +227,6 @@ fun AppNavHost(
         composable<AppRoute.GroupDetail> {
             GroupDetailScreen(onBack = { navController.popBackStack() })
         }
-        // ReviewComposerViewModel reads trackId/trackTitle from this entry's SavedStateHandle
-        // (same convention as ChatViewModel's conversationId) — no need to thread them through
-        // this composable's params. See AppRoute.ComposerWithSound's doc for why this is a
-        // top-level route rather than living inside the Reviews tab's own nested NavHost.
-        composable<AppRoute.ComposerWithSound> {
-            ReviewComposerHost(onBack = { navController.popBackStack() })
-        }
         // Same host, reached from a past booking's Review button — ReviewComposerViewModel reads
         // placeId/placeName from this entry's SavedStateHandle.
         composable<AppRoute.ComposerForPlace> {
@@ -212,3 +234,26 @@ fun AppNavHost(
         }
     }
 }
+
+/** What the root host does when the session state changes after the first resolution. */
+internal enum class SessionRedirect { EnterApp, EnterShell, Login }
+
+/**
+ * The root host's redirect for a session transition, from the new [state] and WHERE the user
+ * is: [onAuthScreen] is true on Login, OTP verification and the OAuth callback. A session that
+ * resolves there is a login → [SessionRedirect.EnterApp] (onboarding gate) for a signed-in
+ * user, [SessionRedirect.EnterShell] for an anonymous one. The same states arriving while the
+ * user is already inside the app (the foreground re-announcement, a token refresh) redirect
+ * nowhere: the current back stack is the right place to be. [AuthSessionState.Unauthenticated]
+ * always goes to [SessionRedirect.Login]; [AuthSessionState.Loading] never redirects.
+ */
+internal fun sessionRedirectFor(state: AuthSessionState, onAuthScreen: Boolean): SessionRedirect? = when (state) {
+    AuthSessionState.Authenticated -> if (onAuthScreen) SessionRedirect.EnterApp else null
+    AuthSessionState.Anonymous -> if (onAuthScreen) SessionRedirect.EnterShell else null
+    AuthSessionState.Unauthenticated -> SessionRedirect.Login
+    AuthSessionState.Loading -> null
+}
+
+/** True when [this] is one of the auth graph's screens — the only places a session resolution is a login. */
+private fun NavDestination?.isAuthScreen(): Boolean =
+    this != null && (hasRoute<AuthRoute.Login>() || hasRoute<AuthRoute.EmailOtpVerification>() || hasRoute<AuthRoute.AuthCallback>())

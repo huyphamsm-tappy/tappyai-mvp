@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 6190,
+  "evidenceId": "09bab8b4-8bbe-4f05-bebf-7ad63ae5b106",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình không tìm thấy thông tin về khả năng đặt trước của Hyan Spa trên Google Maps. Để chắc chắn, bạn nên:\n\n- **Gọi trực tiếp** Hyan Spa để hỏi về đặt trước và giá massage chân\n- **Kiểm tra website hoặc Facebook** của spa (nếu có) để xem có hỗ trợ đặt online không\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hyan+Spa+Q1+Ho+Chi+Minh\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hyan Spa** cho bạn — cách vị trí hiện tại chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và mở cửa đến 21:00 nên bạn có thể ghé vào chiều tối hôm nay 👍\n\nNgoài ra, **CHẠM SPA** (1.3km, 4.9⭐, 189 đánh giá) cũng là lựa chọn tốt nếu bạn muốn nhiều review hơn, nhưng đóng cửa sớm hơn lúc 19:30 vào thứ Ba.\n\nCần lưu ý là mình chưa tìm thấy giá cụ thể trên Google Maps — bạn nên gọi hoặc ghé trực tiếp để hỏi giá massage chân, hoặc kiểm tra website của từng spa để chắc chắn nằm trong ngân sách 300k của bạn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có dịch vụ gội đầu?|Có spa nào mở 24/24 không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình không tìm thấy thông tin về khả năng đặt trước của Hyan Spa trên Google Maps. Để chắc chắn, bạn nên:\n\n- **Gọi trực tiếp** Hyan Spa để hỏi về đặt trước và giá massage chân\n- **Kiểm tra website hoặc Facebook** của spa (nếu có) để xem có hỗ trợ đặt online không\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hyan+Spa+Q1+Ho+Chi+Minh\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

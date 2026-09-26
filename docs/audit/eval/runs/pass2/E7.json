@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6494,
+  "evidenceId": "10841b0d-4e8a-4f6f-aa8e-78cf68314b40",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa ra mắt, rất được yêu thích 🎬",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa ra mắt, rất được yêu thích 🎬"
+    }
+  ]
+}

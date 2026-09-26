@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import * as musicService from '../services/musicService'
+import * as musicService from '../services/musicClient'
 import type { MusicCategory } from '../types/category'
 
 interface UseMusicCategoriesResult {

@@ -1,0 +1,27 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 6658,
+  "evidenceId": "9c615626-6afd-4696-8cfe-0e6e65f0e707",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh với ăn, ở, chơi. Để gợi ý tốt nhất, mình cần biết:\n\n**Bạn muốn tập trung vào hoạt động nào?** Ví dụ:\n- Thắng cảnh/tham quan (Bà Nà, Hội An, bãi biển...)\n- Ăn uống/khám phá ẩm thực\n- Thư giãn/spa\n- Vui chơi giải trí (bar, karaoke...)\n\nCứ nói sơ qua là mình sẽ lập kế hoạch chi tiết với địa điểm cụ thể, giá, và lịch trình cho 3 ngày 2 đêm nhé! 😊\n\n[FOLLOWUPS]Thắng cảnh Đà Nẵng|Ăn uống ngon|Thư giãn spa|Vui chơi tối[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi cuối tuần tới (26-28/9) và cần lên kế hoạch hoàn chỉnh với ăn, ở, chơi. Để gợi ý tốt nhất, mình cần biết:\n\n**Bạn muốn tập trung vào hoạt động nào?** Ví dụ:\n- Thắng cảnh/tham quan (Bà Nà, Hội An, bãi biển...)\n- Ăn uống/khám phá ẩm thực\n- Thư giãn/spa\n- Vui chơi giải trí (bar, karaoke...)\n\nCứ nói sơ qua là mình sẽ lập kế hoạch chi tiết với địa điểm cụ thể, giá, và lịch trình cho 3 ngày 2 đêm nhé! 😊\n\n[FOLLOWUPS]Thắng cảnh Đà Nẵng|Ăn uống ngon|Thư giãn spa|Vui chơi tối[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

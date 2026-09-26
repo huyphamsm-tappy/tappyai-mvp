@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, within, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { AdminShell } from './AdminShell'
 import { ADMIN_HUBS, ADMIN_MODULES } from '@/lib/controller/registry/adminModules'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
@@ -31,11 +32,13 @@ vi.mock('next/navigation', () => ({
 
 // No global auto-cleanup in this config: without this, each render stacks another
 // copy of the sidebar into document.body and getAllByRole sees every one of them.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
-// useTranslation resolves to the DEFAULT locale (en) under test. Asserting the
-// Vietnamese strings here would be asserting a locale the component was never
-// asked to render; the vi/en coverage is proven separately below.
+// The shell is rendered in English ON PURPOSE (the hook above), because the assertions read
+// `enStrings`. This used to say "useTranslation resolves to the DEFAULT locale (en) under test" —
+// it never did: that English was jsdom's `navigator.language`, and the product default is
+// Vietnamese. The vi/en coverage itself is proven separately below.
 const T = enStrings
 
 const GROUPS: NavGroup[] = [

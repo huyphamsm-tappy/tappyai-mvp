@@ -22,6 +22,10 @@
       "schedule": "0 6 * * *"
     },
     {
+      "path": "/api/cron/feed-ingest",
+      "schedule": "30 19 * * *"
+    },
+    {
       "path": "/api/cron/analytics-snapshot",
       "schedule": "5 17 * * *"
     },
@@ -44,6 +48,18 @@
     {
       "path": "/api/cron/marketing-retention",
       "schedule": "0 5 * * *"
+    },
+    {
+      "path": "/api/cron/decision-evidence-sweep",
+      "schedule": "15 18 * * *"
+    },
+    {
+      "path": "/api/cron/account-deletion-jobs",
+      "schedule": "45 18 * * *"
+    },
+    {
+      "path": "/api/cron/audit-retention",
+      "schedule": "0 19 * * *"
     }
   ]
 }

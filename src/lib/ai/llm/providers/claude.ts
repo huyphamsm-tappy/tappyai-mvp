@@ -10,12 +10,35 @@ import type { ModelOverrides, ModelRole } from '../types'
 
 // Default model per semantic role. Override per-deployment with LLM_*_MODEL
 // env vars (resolved in registry.ts and passed in as `overrides`).
+//
+// ── Why every role is PINNED to the same dated snapshot (P1-4) ───────────────
+// `fast` used to carry the floating alias 'claude-haiku-4-5'. That was two
+// defects in one string:
+//
+//   1. The vendor can repoint an alias with no deploy on our side, so the model
+//      serving production could change without a diff.
+//   2. A prompt cache is keyed PER MODEL ID. `fast` and `smart` therefore could
+//      not share a cached prefix even when the bytes were byte-identical — and
+//      they routinely are: route.ts picks `fast` for a short FIRST message
+//      (isSimpleQuery), which is the most common opening turn of a
+//      conversation, and it is built from the same ~11k-token `shared` prefix
+//      buildSystem() gives every tool turn. That turn paid a cache WRITE at
+//      1.25x on a lineage the next turn (role `smart`) could never read back.
+//
+// Roles stay a ROUTING concept — they are free to diverge the day the fleet has
+// more than one tier. Today they deliberately resolve to one model, and the
+// invariant that matters is that roles resolving to the same model use the
+// SAME identifier string. modelIdentity.test.ts holds both properties.
 const DEFAULT_MODELS: Record<ModelRole, string> = {
-  fast:     'claude-haiku-4-5',
+  fast:     'claude-haiku-4-5-20251001',
   smart:    'claude-haiku-4-5-20251001',
   planning: 'claude-haiku-4-5-20251001',
   vision:   'claude-haiku-4-5-20251001',
 }
+
+/** The resolved default model id per role. Exported for the identity test, which
+ *  must assert on the SHIPPED table rather than a copy that can drift from it. */
+export const CLAUDE_DEFAULT_MODELS: Readonly<Record<ModelRole, string>> = DEFAULT_MODELS
 
 export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
   const anthropic = createAnthropic({
@@ -51,9 +74,25 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
     // mapped by @ai-sdk/anthropic to separate `system` blocks, each carrying its
     // own cache_control, so this is a real breakpoint and not an approximation.
     // With a single system message the behaviour is unchanged.
+    //
+    // SECOND BREAKPOINT — the last user message (cost optimization, 2026-09-18).
+    // A tool turn is two requests: step 1 (system + history + user → tool call)
+    // and step 2 (the same prefix + the tool call + its result → the reply).
+    // With only the system breakpoint, step 2 re-pays the whole request-shaped
+    // system segment (measured 3.3k–5k tokens) and the history at the uncached
+    // rate. Marking the last user message caches the prefix that ENDS there, so
+    // step 2 reads it at 10% of the price; the write premium (+25% on that
+    // segment, once) is smaller than the read saving whenever the turn has a
+    // second step. A one-step turn pays the premium and gains nothing — accepted:
+    // ~65% of measured turns call a tool. Anthropic allows four breakpoints, so
+    // the two never conflict, and responses stay identical either way.
     decorateMessages: (messages: CoreMessage[]) => {
       let marked = false
-      return messages.map((m) => {
+      const lastUser = messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
+      return messages.map((m, i) => {
+        if (i === lastUser) {
+          return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }
+        }
         if (m.role !== 'system' || marked) return m
         marked = true
         return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }

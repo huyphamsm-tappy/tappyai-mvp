@@ -1,6 +1,7 @@
 package com.tappyai.app.reviews.data
 
 import okhttp3.MultipartBody
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -97,6 +98,16 @@ interface ReviewsApi {
     @GET("api/notifications")
     suspend fun getNotifications(): NotificationsResponseDto
 
+    /** `GET /api/reviews/{id}/likes` — who likes this review RIGHT NOW (`review_likes`), newest
+     *  first, paged with `before` (the last row's `created_at`). A public read, gated on the review. */
+    @GET("api/reviews/{id}/likes")
+    suspend fun getLikers(@Path("id") reviewId: String, @Query("before") before: String? = null): LikersResponseDto
+
+    /** `POST /api/notifications/read` with no body marks EVERY unread row of the caller read —
+     *  the Inbox's "Đánh dấu đã đọc". Scoped server-side to the bearer. */
+    @POST("api/notifications/read")
+    suspend fun markAllNotificationsRead(): MarkReadResponseDto
+
     @POST("api/reviews")
     suspend fun createReview(@Body body: CreateReviewRequestDto): CreateReviewResponseDto
 
@@ -129,6 +140,23 @@ interface ReviewsApi {
     /** The caller's own reviews, including hidden ones — see My Reviews. */
     @GET("api/reviews/mine")
     suspend fun getMine(): FeedResponseDto
+
+    /**
+     * The caller's saved (bookmarked) reviews — `review_saves` rows for the bearer's own user id,
+     * newest save first, hidden/held posts filtered out, up to 100. Self-only by construction: the
+     * route has no user parameter. The rows are REDUCED (id, place_name, body, photos, thumbnail,
+     * content_type, created_at, saved_at): enough for a grid tile, not for the player — the pager
+     * hydrates each through [getReview].
+     */
+    @GET("api/reviews/saved")
+    suspend fun getSaved(): FeedResponseDto
+
+    /**
+     * One review in full (`GET /api/reviews/[id]`: author profile, media, counts, liked_by_me /
+     * saved_by_me for the bearer). 404 when hidden, held or gone.
+     */
+    @GET("api/reviews/{id}")
+    suspend fun getReview(@Path("id") reviewId: String): ReviewDto
 
     @PATCH("api/reviews/{id}")
     suspend fun setHidden(@Path("id") reviewId: String, @Body body: SetHiddenRequestDto): OkResponseDto

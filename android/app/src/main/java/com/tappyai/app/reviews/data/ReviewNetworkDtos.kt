@@ -52,9 +52,14 @@ data class ReviewDto(
     @SerialName("source_url") val sourceUrl: String? = null,
     val hashtags: List<String>? = null,
     @SerialName("watch_time_avg") val watchTimeAvg: Double? = null,
+    /** On the wire from every reviews endpoint (`EXPLORE_SELECT`); the self-profile grid prints it
+     *  under the play badge (V3 mockup 05_17_48). Null when the row predates the column. */
+    @SerialName("view_count") val viewCount: Int? = null,
     val score: Double? = null,
-    val music: MusicDto? = null,
     @SerialName("is_hidden") val isHidden: Boolean? = false,
+    /** Whether the viewer follows this row's author — the feed route computes it per row for a
+     *  signed-in viewer (`is_following`); absent/false when signed out. */
+    @SerialName("is_following") val isFollowing: Boolean = false,
     /**
      * Present ONLY on the author's own profile feed — the server attaches it when the requesting
      * identity is the author, and strips the raw lifecycle columns for everyone. So a row that
@@ -68,16 +73,6 @@ data class ReviewDto(
 data class ProfileDto(
     @SerialName("full_name") val fullName: String? = null,
     @SerialName("avatar_url") val avatarUrl: String? = null,
-)
-
-/** Stored JSON payload — its keys are camelCase server-side, unlike every other response field. */
-@Serializable
-data class MusicDto(
-    val version: Int = 1,
-    val trackId: String = "",
-    val startSec: Int = 0,
-    val volume: Double = 1.0,
-    val origin: String? = null,
 )
 
 @Serializable
@@ -189,21 +184,64 @@ data class UserProfileDto(
     @SerialName("is_self") val isSelf: Boolean = false,
 )
 
+/**
+ * `GET /api/notifications` — ADR-014 contract v1 (`src/lib/notifications/contract.ts`), the ONE
+ * shape every client reads. `unread_count` is the server-side unread total the web's badge and
+ * "N chưa đọc" pill show; it is not derived from the page.
+ */
 @Serializable
 data class NotificationsResponseDto(
     val notifications: List<NotificationDto> = emptyList(),
+    @SerialName("unread_count") val unreadCount: Int = 0,
 )
 
+/**
+ * One v1 row. 2026-09-17: this used to be decoded as the pre-ADR shape (`actor_name`, `text`,
+ * `url`), none of which the route has emitted since 2026-07-26 — every row decoded to blanks.
+ * The v1 fields: an `actor` object (null for a platform-originated row), `title` + `body`, the
+ * `category` the Inbox filters on (social | deal | explore | system), `entity_url` for the tap,
+ * and the server-side `read_at`.
+ */
 @Serializable
 data class NotificationDto(
     val id: String = "",
     val type: String = "",
-    @SerialName("actor_id") val actorId: String = "",
-    @SerialName("actor_name") val actorName: String = "",
-    @SerialName("actor_avatar") val actorAvatar: String? = null,
-    val text: String = "",
-    val url: String = "",
+    val category: String = "",
+    val title: String = "",
+    val body: String = "",
+    val actor: NotificationActorDto? = null,
+    @SerialName("entity_url") val entityUrl: String? = null,
+    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName("read_at") val readAt: String? = null,
     @SerialName("created_at") val createdAt: String = "",
+)
+
+/** `GET /api/reviews/{id}/likes` → `{ likers, next_cursor }` (`LikeListSheet.tsx`'s `LikesResponse`). */
+@Serializable
+data class LikersResponseDto(
+    val likers: List<LikerDto> = emptyList(),
+    @SerialName("next_cursor") val nextCursor: String? = null,
+)
+
+@Serializable
+data class LikerDto(
+    val id: String = "",
+    @SerialName("full_name") val fullName: String? = null,
+    @SerialName("avatar_url") val avatarUrl: String? = null,
+    @SerialName("created_at") val createdAt: String = "",
+)
+
+fun LikerDto.toDomain(): Liker = Liker(id = id, fullName = fullName, avatarUrl = avatarUrl, createdAt = createdAt)
+
+/** `POST /api/notifications/read` → `{ ok: true }`. */
+@Serializable
+data class MarkReadResponseDto(val ok: Boolean = false)
+
+@Serializable
+data class NotificationActorDto(
+    val id: String = "",
+    val name: String = "",
+    val avatar: String? = null,
 )
 
 /** POST /api/reviews request body. Place fields are camelCase inbound (backend contract). */
@@ -213,7 +251,6 @@ data class CreateReviewRequestDto(
     val placeName: String,
     val body: String,
     val rating: Int? = null,
-    val music: MusicSelectionDto? = null,
     // Public Blob URLs of already-uploaded photos (via [PhotoUploadResponseDto]). The backend reads
     // `b.photos` (camelCase, unlike the snake_case response fields) and caps the array at 6. Null
     // when the review has no photos — with encodeDefaults=false it's then omitted from the wire,
@@ -261,28 +298,6 @@ data class ProductConfigDto(
 data class VideoConfigDto(
     val linkProviders: List<String> = listOf("youtube"),
 )
-
-/**
- * A track attached to the review being composed — the ONE cross-platform music payload
- * (`{version, trackId, startSec, volume}`, web `src/app/api/reviews/route.ts`). The backend hard-
- * rejects a missing/mismatched `version` ("unsupported music version"), and `Number(undefined)` on
- * a missing startSec/volume NaN-fails its validator — so NO field may carry a default value: the
- * shared prod Json has `encodeDefaults=false`, which silently drops default-valued fields from the
- * wire (the same trap that broke Blob uploads — see `BlobTokenRequestDto`). Every field is a
- * required constructor param and is therefore always serialized.
- */
-@Serializable
-data class MusicSelectionDto(
-    val version: Int,
-    val trackId: String,
-    val startSec: Int,
-    val volume: Double,
-) {
-    companion object {
-        /** Web `MUSIC_PAYLOAD_VERSION` — bump only in lockstep with the backend. */
-        const val PAYLOAD_VERSION = 1
-    }
-}
 
 /**
  * The safety gate's author-facing outcome, as `POST /api/reviews` and `GET /api/reviews/feed`
@@ -351,8 +366,9 @@ fun ReviewDto.toDomain(): Review = Review(
     hashtags = hashtags,
     watchTimeAvg = watchTimeAvg,
     score = score,
-    music = music?.toDomain(),
+    viewCount = viewCount,
     isHidden = isHidden ?: false,
+    isFollowingAuthor = isFollowing,
     moderation = moderation?.toDomain(),
 )
 
@@ -373,14 +389,6 @@ fun ModerationDto.toDomain(): ReviewModeration = ReviewModeration(
     assertsViolation = assertsViolation,
 )
 
-fun MusicDto.toDomain(): ReviewMusic = ReviewMusic(
-    version = version,
-    trackId = trackId,
-    startSec = startSec,
-    volume = volume,
-    origin = origin,
-)
-
 fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     id = id,
     body = body,
@@ -390,6 +398,16 @@ fun CommentDto.toDomain(): ReviewComment = ReviewComment(
     parentCommentId = parentCommentId,
     reactions = reactions,
     myReaction = myReaction,
+)
+
+/**
+ * The 2xx body carries `{ comment, count }`; `comment` is present on success. A missing comment is
+ * a contract violation, raised here so `safeApiCall` turns it into a typed error — and `count` is
+ * carried through instead of dropped, so the feed rail can show the server's number.
+ */
+fun PostCommentResponseDto.toPosted(): PostedComment = PostedComment(
+    comment = (comment ?: error("comments endpoint returned no comment")).toDomain(),
+    count = count,
 )
 
 fun UserSearchResultDto.toDomain(): UserSearchResult = UserSearchResult(
@@ -414,12 +432,15 @@ fun UserProfileDto.toReviewProfile(): ReviewProfile = ReviewProfile(
 fun NotificationDto.toDomain(): ReviewNotification = ReviewNotification(
     id = id,
     type = type,
-    actorId = actorId,
-    actorName = actorName,
-    actorAvatar = actorAvatar,
-    text = text,
-    url = url,
+    category = category,
+    title = title,
+    actorId = actor?.id.orEmpty(),
+    actorName = actor?.name.orEmpty(),
+    actorAvatar = actor?.avatar,
+    text = body,
+    url = entityUrl.orEmpty(),
     createdAt = createdAt,
+    readAt = readAt,
 )
 
 private fun String?.toReviewContentType(): ReviewContentType? = when (this?.lowercase()) {

@@ -26,7 +26,7 @@
 
 ```json
 {
-  "freemium": { "freeDailyLimit": 15, "anonDailyLimit": 5 },
+  "freemium": { "freeDailyLimit": 15, "anonLifetimeLimit": 5 },   // anon = 5 for the identity's LIFETIME (renamed from anonDailyLimit, 2026-09-15)
   "flags":    { "showProUpgrade": false },
   "upload":   { "maxPhotosPerReview": 6, "maxVideoSizeMb": 50, "maxVideoDurationSec": 15 }
 }

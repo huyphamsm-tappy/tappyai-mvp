@@ -1,6 +1,9 @@
 -- Content Safety Gate — minimum lifecycle state.
 --
--- ⚠ NOT APPLIED TO PRODUCTION. Written, tested locally, and left for the Owner.
+-- ✅ APPLIED TO PRODUCTION. Confirmed 2026-09-21 against the 2026-09-17 prod schema
+--    snapshot (docs/audit/schema-baseline/prod-schema-only.sql): `content_reports`
+--    and the lifecycle columns are live. (Historical: written and tested locally,
+--    then applied by the Owner — the original "NOT APPLIED" banner was stale.)
 --
 -- ============================================================================
 -- BACKWARD COMPATIBILITY IS THE WHOLE DESIGN

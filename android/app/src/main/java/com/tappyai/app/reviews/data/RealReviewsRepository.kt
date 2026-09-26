@@ -69,12 +69,11 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun getComments(reviewId: String): NetworkResult<List<ReviewComment>> =
         safeApiCall { api.getComments(reviewId).comments.map { it.toDomain() } }
 
-    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<ReviewComment> =
+    override suspend fun postComment(reviewId: String, body: String, parentId: String?): NetworkResult<PostedComment> =
         safeApiCall {
-            // The backend returns { comment, count } on 2xx; comment is present on success. Guard
-            // the nullable DTO field defensively — a null here becomes a typed error via safeApiCall.
-            (api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).comment
-                ?: error("comments endpoint returned no comment")).toDomain()
+            // The backend returns { comment, count } on 2xx; the mapper guards the nullable comment
+            // (a null becomes a typed error via safeApiCall) and keeps the count.
+            api.postComment(reviewId, PostCommentRequestDto(body = body, parentId = parentId)).toPosted()
         }
 
     override suspend fun deleteComment(reviewId: String, commentId: String): NetworkResult<Int> =
@@ -95,8 +94,20 @@ class RealReviewsRepository @Inject constructor(
     override suspend fun toggleFollow(userId: String): NetworkResult<Boolean> =
         safeApiCall { api.toggleFollow(userId).following }
 
-    override suspend fun getNotifications(): NetworkResult<List<ReviewGroupedNotification>> =
-        safeApiCall { groupNotifications(api.getNotifications().notifications.map { it.toDomain() }) }
+    override suspend fun getNotifications(): NetworkResult<NotificationInbox> =
+        safeApiCall {
+            val page = api.getNotifications()
+            NotificationInbox(
+                groups = groupNotifications(page.notifications.map { it.toDomain() }),
+                unreadCount = page.unreadCount,
+            )
+        }
+
+    override suspend fun markAllNotificationsRead(): NetworkResult<Unit> =
+        safeApiCall { api.markAllNotificationsRead(); Unit }
+
+    override suspend fun getLikers(reviewId: String, before: String?): NetworkResult<LikersPage> =
+        safeApiCall { api.getLikers(reviewId, before).let { LikersPage(it.likers.map { l -> l.toDomain() }, it.nextCursor) } }
 
     override suspend fun uploadReviewPhoto(bytes: ByteArray, mimeType: String): NetworkResult<String> =
         safeApiCall {
@@ -119,9 +130,6 @@ class RealReviewsRepository @Inject constructor(
         placeName: String,
         body: String,
         rating: Int?,
-        musicTrackId: String?,
-        musicStartSec: Int,
-        musicVolume: Double,
         photos: List<String>?,
         link: LinkAttachment?,
     ): NetworkResult<ReviewModeration?> = safeApiCall {
@@ -131,14 +139,6 @@ class RealReviewsRepository @Inject constructor(
                 placeName = placeName,
                 body = body,
                 rating = rating,
-                music = musicTrackId?.let {
-                    MusicSelectionDto(
-                        version = MusicSelectionDto.PAYLOAD_VERSION,
-                        trackId = it,
-                        startSec = musicStartSec,
-                        volume = musicVolume,
-                    )
-                },
                 photos = photos?.takeIf { it.isNotEmpty() },
                 // Mirror the web's link payload: content_type='video', media_url = the source URL.
                 contentType = link?.let { "video" },
@@ -160,6 +160,17 @@ class RealReviewsRepository @Inject constructor(
         if (result is NetworkResult.Success) {
             result.data.forEach { reviewCache[it.id] = it }
         }
+        return result
+    }
+
+    // Reduced rows are NOT cached: a grid tile's row must never stand in for the full review the
+    // detail/comment screens read from the cache.
+    override suspend fun getSaved(): NetworkResult<List<Review>> =
+        safeApiCall { api.getSaved().reviews.map { it.toDomain() } }
+
+    override suspend fun getReview(reviewId: String): NetworkResult<Review> {
+        val result = safeApiCall { api.getReview(reviewId).toDomain() }
+        if (result is NetworkResult.Success) reviewCache[result.data.id] = result.data
         return result
     }
 

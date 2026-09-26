@@ -1,0 +1,25 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 4529,
+  "evidenceId": "c2dd9c0a-400c-4d7e-9bcf-a21037fe0a9e",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn đi 2 người, trong hôm nay, và tìm resort sang trọng ở Phú Quốc cho dịp kỷ niệm. Để gợi ý chính xác nhất, mình cần biết:\n\n**Bạn dự định ở bao lâu?** (1 đêm, 2-3 đêm, hay cả tuần?)\n\nThông tin này sẽ giúp mình tìm resort phù hợp với ngân sách và trải nghiệm lãng mạn bạn mong muốn.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 2 người, trong hôm nay, và tìm resort sang trọng ở Phú Quốc cho dịp kỷ niệm. Để gợi ý chính xác nhất, mình cần biết:\n\n**Bạn dự định ở bao lâu?** (1 đêm, 2-3 đêm, hay cả tuần?)\n\nThông tin này sẽ giúp mình tìm resort phù hợp với ngân sách và trải nghiệm lãng mạn bạn mong muốn."
+    }
+  ]
+}

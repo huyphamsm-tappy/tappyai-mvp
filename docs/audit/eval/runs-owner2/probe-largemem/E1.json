@@ -1,0 +1,29 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 2299,
+  "evidenceId": "aba06c5e-3405-4863-a5a9-026528ba2e0b",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tôi sẽ tìm các địa điểm vui chơi giải trí phù hợp cho bạn và hội bạn tối nay ở Quận 1.",
+  "other": [
+    "3:\"An error occurred.\""
+  ],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ tìm các địa điểm vui chơi giải trí phù hợp cho bạn và hội bạn tối nay ở Quận 1."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

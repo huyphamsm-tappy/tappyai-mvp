@@ -1,0 +1,19 @@
+branch-containment — protected work older than 7 day(s) that has not reached HEAD (docs/uat/MERGE-LOSS-AUDIT.md §4)
+(evaluated as of 2026-09-24)
+
+○ integration/v3-foundation  — allowed: Reviewed 2026-09-25 (docs/uat/MERGE-LOSS-AUDIT.md §2): the security content was restored onto the shipping branch in adapted form (be3beba, 3adc151, 61fe4a9, 932ac2c, b4a427b, 129f6c9, eea5c12), so the remaining line-match gap is rewritten text, not missing code. 2caff4b deferred to after launch by the owner (F-085, 2026-09-25); 44d8f32's needBrief module does not exist on the shipping branch (invariant re-locked as decisionFrameBoundary.test.ts); ff55c27 is a perf test. (until 2026-10-31)
+    2caff4b (20d) refactor(security): /api/chat no longer performs a privileged operation
+        scripts/architecture/check.mjs  — 29% of 7 added lines on ship
+    66e4c46 (20d) fix(v3): close the three egress channels a compromised model could still use
+        src/lib/ai/streamEnrichment.ts  — 40% of 211 added lines on ship
+    44d8f32 (20d) test(v3): lock the one invariant Phase 1 satisfies by construction
+        src/lib/ai/security/needBriefBoundary.test.ts  — file absent on ship (79 added lines)
+    a711181 (20d) fix(v3): close the security findings Phase 0 deferred
+        src/lib/ai/security/fence.ts  — 0% of 1 added lines on ship
+        src/lib/ai/security/fenceBoundary.test.ts  — 25% of 4 added lines on ship
+        src/lib/ai/streamEnrichment.ts  — 28% of 92 added lines on ship
+    ff55c27 (20d) perf(v3): optimize AI cost
+        src/lib/ai/llm/providers/cacheBoundary.test.ts  — file absent on ship (51 added lines)
+
+✓ nothing protected is stranded
+exit=0

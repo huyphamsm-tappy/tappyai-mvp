@@ -1,0 +1,64 @@
+{
+  "label": "final2-t3",
+  "base": "http://localhost:3000",
+  "calls": 2,
+  "at": "2026-09-22T08:31:02.419Z",
+  "cases": [
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13839,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+              "Cơm Ngon Hà Nội",
+              "Hoa Túc Saigon",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1"
+            ],
+            [
+              "Vua Chả Cá - Số 42-44-46 Trần Hưng Đạo, Q.1, TP. HCM",
+              "Cơm Ngon Hà Nội",
+              "Hoa Túc Saigon",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1"
+            ]
+          ],
+          "dup": false,
+          "chars": 312
+        },
+        {
+          "status": 200,
+          "ms": 14212,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Xù Food - Đồ Ăn Hàn Việt",
+              "Cơm tấm Đề Thám"
+            ],
+            [
+              "Xù Food - Đồ Ăn Hàn Việt",
+              "Cơm tấm Đề Thám"
+            ]
+          ],
+          "dup": false,
+          "chars": 538
+        }
+      ]
+    }
+  ]
+}

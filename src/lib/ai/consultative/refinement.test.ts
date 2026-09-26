@@ -170,3 +170,45 @@ describe('REF-03 — the ranking and the Pick actually move', () => {
     expect(vi.ranked.map(x => x.candidate.name)).toEqual(en.ranked.map(x => x.candidate.name))
   })
 })
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 🚨 RESIDUAL 4 — PARTY SIZE IS A REFINEMENT, AND SCORED AS NOTHING.
+//
+// MEASURED: after "Massage thư giãn ở Quận 1", the follow-up "Cho 2 người thì
+// sao?" produced no stage, so the refinement block never rendered — and the
+// reply re-opened the request from scratch, asking which district and which
+// kind of massage it had already been told.
+//
+// `deriveNeedProfile` had kept the context the whole time (location.text stays
+// 'quan 1' across turns). Nothing needed to be stored; the turn simply needed to
+// be RECOGNISED as a refinement so the existing block would tell the model to
+// keep what it already knew.
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe('🚨 party size is a refinement, not a new request', () => {
+  const after = (text: string) => resolveDecisionStage([
+    { role: 'user', content: 'Massage thư giãn ở Quận 1' },
+    { role: 'assistant', content: 'Mình tìm được Tiệm Spa Blue Moon và Quán Liberty Massage 45 ở Quận 1.' },
+    { role: 'user', content: text },
+  ])
+
+  it('🚨 the measured follow-up now resolves to refinement', () => {
+    expect(after('Cho 2 người thì sao?')).toBe('refinement')
+  })
+
+  it('covers the other plain party-size phrasings', () => {
+    for (const q of ['cho 2 người', 'Cho 4 người nhé', 'đặt cho 3 người', '2 người thì sao', 'for 2 people']) {
+      expect(after(q), q).toBe('refinement')
+    }
+  })
+
+  it('needs a prior assistant turn — a cold start is still a fresh request', () => {
+    expect(resolveDecisionStage([{ role: 'user', content: 'Cho 2 người' }])).toBeNull()
+  })
+
+  it('the new markers require a COUNT OF PEOPLE, not just any number', () => {
+    // "cho" alone must not fire — it is one of the commonest words in Vietnamese.
+    expect(after('Cho mình xem ảnh')).toBeNull()
+    expect(after('Cho 2 tấm ảnh')).toBeNull()
+  })
+})

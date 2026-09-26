@@ -134,8 +134,9 @@ describe('BUG-004 — the app-root Suspense boundary must not come back', () => 
   it('the Home skeleton still exists, scoped to the (home) route group', () => {
     // Option (b): the boundary was moved, not deleted. Home is an async server component and is
     // the one route the skeleton was ever drawn for.
-    expect(existsSync(join(APP, '(home)', 'loading.tsx'))).toBe(true)
-    expect(existsSync(join(APP, '(home)', 'page.tsx'))).toBe(true)
+    // (Home now sits inside the (app) route group as well — route groups change no URL.)
+    expect(existsSync(join(APP, '(app)', '(home)', 'loading.tsx'))).toBe(true)
+    expect(existsSync(join(APP, '(app)', '(home)', 'page.tsx'))).toBe(true)
   })
 
   it('no OTHER route group at the app root re-creates a global boundary', () => {

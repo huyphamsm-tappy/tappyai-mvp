@@ -17,9 +17,14 @@
 import { describe, it, expect } from 'vitest'
 import {
   SHARE_TARGETS,
+  WEB_SHARE_TARGETS,
+  TEXT_HANDOFF_MAX,
   buildShareUrl,
+  buildTextShareUrl,
+  canOpenMessenger,
   isShareableUrl,
   shareTarget,
+  zaloMobileHandoff,
   type ShareTargetId,
 } from './shareTargets'
 
@@ -29,23 +34,45 @@ const REVIEW = `${SITE}/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d`
 
 // ------------------------------------------------------------ the target set
 describe('SHARE_TARGETS', () => {
+  // The messaging apps first (Facebook, Messenger, Zalo, WhatsApp, Telegram,
+  // Viber, LINE, the pre-existing TikTok from Reviews, Email), then the actions
+  // (Tappy Inbox, Save, Copy) and the system sheet as the optional last resort.
+  const PRODUCT_ORDER: ShareTargetId[] = [
+    'facebook', 'messenger', 'zalo', 'whatsapp', 'telegram', 'viber', 'line', 'tiktok', 'email',
+    'inbox', 'save', 'copy', 'native',
+  ]
+
   it('offers exactly the product-required targets, in order', () => {
-    expect(SHARE_TARGETS.map((t) => t.id)).toEqual([
-      'facebook',
-      'tiktok',
-      'zalo',
-      'copy',
-      'native',
-    ])
+    expect(SHARE_TARGETS.map((t) => t.id)).toEqual(PRODUCT_ORDER)
   })
 
-  it.each(['facebook', 'tiktok', 'zalo', 'copy', 'native'] as ShareTargetId[])(
-    '%s has a localization key rather than a hardcoded label',
-    (id) => {
-      const target = shareTarget(id)
-      expect(target.labelKey).toMatch(/^share\./)
-    }
-  )
+  it('classifies each target by what it actually does', () => {
+    const kinds = Object.fromEntries(SHARE_TARGETS.map((t) => [t.id, t.kind]))
+    expect(kinds).toEqual({
+      facebook: 'url-handoff',
+      messenger: 'url-handoff',
+      zalo: 'url-handoff',
+      whatsapp: 'text-handoff',
+      telegram: 'text-handoff',
+      viber: 'text-handoff',
+      line: 'text-handoff',
+      tiktok: 'clipboard',
+      email: 'text-handoff',
+      inbox: 'inbox',
+      save: 'save',
+      copy: 'clipboard',
+      native: 'native',
+    })
+  })
+
+  it.each(PRODUCT_ORDER)('%s has a localization key rather than a hardcoded label', (id) => {
+    const target = shareTarget(id)
+    expect(target.labelKey).toMatch(/^share\./)
+  })
+
+  it.each(['messenger', 'whatsapp', 'telegram'] as ShareTargetId[])('%s is labelled by its own key', (id) => {
+    expect(shareTarget(id).labelKey).toBe(`share.${id}`)
+  })
 
   // TikTok is the social app, never the commerce partner.
   it('labels TikTok as TikTok, never TikTok Shop', () => {
@@ -54,17 +81,57 @@ describe('SHARE_TARGETS', () => {
   })
 })
 
+// ------------------------------------------------ the web menu's destinations
+describe('WEB_SHARE_TARGETS — the web menu shows the cross-platform contract, nothing web-only', () => {
+  it('is the same list as SHARE_TARGETS', () => {
+    expect(WEB_SHARE_TARGETS).toBe(SHARE_TARGETS)
+    expect(new Set(WEB_SHARE_TARGETS.map((t) => t.id)).size).toBe(SHARE_TARGETS.length)
+  })
+
+  // Messenger has only an app scheme. Offering it where nothing can open it would be a dead tile.
+  it('Messenger is offered on phones and tablets, not on a desktop browser', () => {
+    expect(canOpenMessenger('Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (iPad; CPU OS 17_0 like Mac OS X) AppleWebKit/605.1.15')).toBe(true)
+    expect(canOpenMessenger('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36')).toBe(false)
+    expect(canOpenMessenger('Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 Safari/605.1.15')).toBe(false)
+    expect(canOpenMessenger(undefined)).toBe(false)
+  })
+})
+
 // ------------------------------------------------------- URL construction
 describe('buildShareUrl', () => {
+  it('sends Messenger its own share deep link with the canonical URL, encoded', () => {
+    expect(buildShareUrl('messenger', REVIEW)).toBe(`fb-messenger://share?link=${encodeURIComponent(REVIEW)}`)
+    expect(buildShareUrl('messenger', `${SITE}/reviews/x?token=secret123`, env)).toBeNull()
+  })
+
+  it.each(['whatsapp', 'telegram'] as ShareTargetId[])('returns null for %s — it carries text, not a bare url', (id) => {
+    expect(buildShareUrl(id, REVIEW)).toBeNull()
+  })
+
   it('sends Facebook the canonical URL, encoded', () => {
     const out = buildShareUrl('facebook', REVIEW)
     expect(out).toBe(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(REVIEW)}`)
   })
 
-  it('sends Zalo the canonical URL, encoded', () => {
-    const out = buildShareUrl('zalo', REVIEW)
-    expect(out).toContain('zalo.me')
-    expect(out).toContain(encodeURIComponent(REVIEW))
+  // 🚨 Zalo publishes no standalone web share URL: the former `sp.zalo.me` plugin url
+  // answers an empty page. Its own SDK hands the link to the app on a phone and
+  // draws an in-page widget on desktop, so the builder says so with null.
+  it('builds no web handoff for Zalo — the old sp.zalo.me endpoint is gone for good', () => {
+    expect(buildShareUrl('zalo', REVIEW)).toBeNull()
+  })
+
+  it('zaloMobileHandoff: Zalo’s own app handoff on a phone’s browser, carrying the canonical URL; nothing on desktop', () => {
+    const android = zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Linux; Android 14; Pixel 8) Mobile Safari/537.36')
+    expect(android).toBe(`intent://zaloapp.com/#Intent;action=android.intent.action.SEND;type=text/plain;S.android.intent.extra.SUBJECT=;S.android.intent.extra.TEXT=${encodeURIComponent(REVIEW)};B.hidePostFeed=false;B.backToSource=true;end`)
+    const ios = zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) Mobile/15E148')
+    expect(ios).toBe(`zaloshareext://shareext?url=${encodeURIComponent(REVIEW)}&type=8&version=1`)
+    expect(zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/128')).toBeNull()
+    expect(zaloMobileHandoff(REVIEW, 'Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) Safari/605.1')).toBeNull()
+    // The same guard as every handoff: an unshareable url gets nothing.
+    expect(zaloMobileHandoff('https://www.tappyai.com/chat/abc', 'Android')).toBeNull()
+    expect(zaloMobileHandoff('http://www.tappyai.com/reviews/abc', 'iPhone')).toBeNull()
   })
 
   // The honest answer: TikTok has no public web share endpoint.
@@ -72,12 +139,15 @@ describe('buildShareUrl', () => {
     expect(buildShareUrl('tiktok', REVIEW)).toBeNull()
   })
 
-  it.each(['copy', 'native'] as ShareTargetId[])('returns null for %s — not a URL handoff', (id) => {
-    expect(buildShareUrl(id, REVIEW)).toBeNull()
-  })
+  it.each(['viber', 'line', 'email', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
+    'returns null for %s — not a URL handoff',
+    (id) => {
+      expect(buildShareUrl(id, REVIEW)).toBeNull()
+    }
+  )
 
   it('produces https handoff URLs', () => {
-    for (const id of ['facebook', 'zalo'] as ShareTargetId[]) {
+    for (const id of ['facebook'] as ShareTargetId[]) {
       expect(buildShareUrl(id, REVIEW)).toMatch(/^https:\/\//)
     }
   })
@@ -94,6 +164,75 @@ describe('buildShareUrl', () => {
   ])('refuses to build a handoff for %s', (bad) => {
     expect(buildShareUrl('facebook', bad, env)).toBeNull()
     expect(buildShareUrl('zalo', bad, env)).toBeNull()
+  })
+})
+
+// ------------------------------------------------------- text handoffs
+describe('buildTextShareUrl — the brochure travels INSIDE the URL', () => {
+  const subject = 'TappyAI gợi ý: bún bò'
+  const text = 'TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n   Bản đồ: https://maps.google.com/?cid=1\n\nGợi ý bởi TappyAI · www.tappyai.com'
+
+  it('email: mailto with subject and the full body, round-trippable', () => {
+    const out = buildTextShareUrl('email', subject, text)!
+    expect(out.startsWith('mailto:?subject=')).toBe(true)
+    const u = new URL(out)
+    expect(u.searchParams.get('subject')).toBe(subject)
+    expect(u.searchParams.get('body')).toBe(text)
+  })
+
+  it('viber: viber://forward?text= with the body, round-trippable', () => {
+    const out = buildTextShareUrl('viber', subject, text)!
+    expect(out.startsWith('viber://forward?text=')).toBe(true)
+    expect(decodeURIComponent(out.slice('viber://forward?text='.length))).toBe(text)
+  })
+
+  it('line: https://line.me/R/share?text= with the body, round-trippable', () => {
+    const out = buildTextShareUrl('line', subject, text)!
+    expect(out.startsWith('https://line.me/R/share?text=')).toBe(true)
+    expect(new URL(out).searchParams.get('text')).toBe(text)
+  })
+
+  // No fabricated endpoints: Zalo/Messenger/TikTok have no text handoff, and
+  // the non-handoff targets never produce a URL.
+  it.each(['facebook', 'zalo', 'tiktok', 'inbox', 'save', 'copy', 'native'] as ShareTargetId[])(
+    'returns null for %s',
+    (id) => {
+      expect(buildTextShareUrl(id, subject, text)).toBeNull()
+    }
+  )
+
+  it('whatsapp: wa.me click-to-chat with the body as the message, round-trippable', () => {
+    const body = 'Bún bò Cô Ba — 123 Lê Lợi\nhttps://www.tappyai.com'
+    const out = buildTextShareUrl('whatsapp', 'subj', body)!
+    expect(out.startsWith('https://wa.me/?text=')).toBe(true)
+    expect(new URL(out).searchParams.get('text')).toBe(body)
+  })
+
+  it('telegram: t.me/share/url with the link AND the body when they differ', () => {
+    const out = buildTextShareUrl('telegram', 'subj', 'Bún bò Cô Ba — 123 Lê Lợi', 'https://www.tappyai.com')!
+    const u = new URL(out)
+    expect(u.origin + u.pathname).toBe('https://t.me/share/url')
+    expect(u.searchParams.get('url')).toBe('https://www.tappyai.com')
+    expect(u.searchParams.get('text')).toBe('Bún bò Cô Ba — 123 Lê Lợi')
+  })
+
+  it('telegram: when the text IS the link (a review), the link goes once, as the url', () => {
+    const out = buildTextShareUrl('telegram', 'Review', REVIEW, REVIEW)!
+    const u = new URL(out)
+    expect(u.searchParams.get('url')).toBe(REVIEW)
+    expect(u.searchParams.has('text')).toBe(false)
+    // …and with no url given, the text is still the link.
+    expect(new URL(buildTextShareUrl('telegram', 'Review', REVIEW)!).searchParams.get('url')).toBe(REVIEW)
+  })
+
+  it('returns null for an empty body', () => {
+    expect(buildTextShareUrl('email', subject, '   ')).toBeNull()
+  })
+
+  it('bounds the body at TEXT_HANDOFF_MAX characters', () => {
+    const long = 'a'.repeat(TEXT_HANDOFF_MAX + 500)
+    const out = buildTextShareUrl('line', subject, long)!
+    expect(new URL(out).searchParams.get('text')!.length).toBe(TEXT_HANDOFF_MAX)
   })
 })
 
@@ -154,7 +293,7 @@ describe('private chat is not shareable', () => {
     'Ngày 1 - Đến & Khám phá',
   ])('no message text can appear in a handoff URL: %s', (secret) => {
     const url = `${SITE}/reviews/abc`
-    const out = [buildShareUrl('facebook', url, env), buildShareUrl('zalo', url, env)].join(' ')
+    const out = [buildShareUrl('facebook', url, env), zaloMobileHandoff(url, 'Android', env), zaloMobileHandoff(url, 'iPhone', env)].join(' ')
     expect(out).not.toContain(secret)
     expect(out).not.toContain(encodeURIComponent(secret))
   })

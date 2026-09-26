@@ -1,0 +1,20 @@
+fatal: not a git repository (or any of the parent directories): .git
+ ⨯ Failed to load next.config.mjs, see more info here https://nextjs.org/docs/messages/next-config-error
+Error: 
+
+🛑 REFUSING TO START `next start` — this checkout points at the PRODUCTION Supabase project (fwznnobrdctuskgrvuik).
+   Env files with the production ref: .env.production.local
+   Variables with the production ref: NEXT_PUBLIC_SUPABASE_URL
+   Dir: C:\Users\Admin\AppData\Local\Temp\claude\D--Claude-Projects-TappyAI--worktrees-g1-growth\89302721-91af-4d74-9d1b-c9d52232820f\scratchpad\guardproof2
+
+   Fix: remove/delete those files (production values live in Vercel), and point .env.local at the
+   AUDIT project (zdaprdfgpbpnxyofagmc).
+   Override (NOT recommended, and loud): ALLOW_PROD_SUPABASE_IN_DEV=1
+
+    at assertNotProduction (file:///C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/89302721-91af-4d74-9d1b-c9d52232820f/scratchpad/guardproof2/scripts/prodEnvGuard.mjs:93:11)
+    at file:///C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/89302721-91af-4d74-9d1b-c9d52232820f/scratchpad/guardproof2/next.config.mjs:20:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:633:26
+    at async loadConfig (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\config.js:711:36)
+    at async initialize (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\lib\router-server.js:57:20)
+    at async Server.<anonymous> (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\node_modules\next\dist\server\lib\start-server.js:249:36)

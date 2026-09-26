@@ -19,24 +19,25 @@ import { readFileSync } from 'node:fs'
 //
 // The Android half is an interceptor (`AppLanguageInterceptor`) with its own behavioural test,
 // because there `Accept-Language` can be set and setting it once fixes every endpoint at once.
-// The web half has to be `?lang=`: `Accept-Language` is a forbidden header name, so a browser
-// will not let fetch() override it. Hence a per-call-site guard, here.
+// The web half was written as a per-call-site `?lang=` guard, below, on the belief that
+// `Accept-Language` is a forbidden header name that fetch() may not set. That belief is wrong —
+// it was removed from the Fetch spec's forbidden list — and C29 relies on it being wrong: the web
+// now has its own interceptor (`appLanguageFetch`, behaviour pinned in appLanguageFetch.test.ts)
+// setting the header on every same-origin /api/** call. These per-call-site guards stay because
+// `?lang=` takes precedence over the header and these four call sites carry the safety notice, so
+// pinning them costs nothing and removes a class of regression the interceptor cannot see.
 
 const read = (path: string) => readFileSync(path, 'utf8')
 
 /** Call sites that receive the author-facing moderation notice and must ask for a language. */
 const OWN_CONTENT_CALLERS = [
   {
-    file: 'src/app/reviews/new/page.tsx',
+    file: 'src/app/(app)/reviews/new/page.tsx',
     what: 'the composer POSTs a review and renders the held-post notice from the response',
   },
   {
-    file: 'src/app/profile/bookings/BookingReviewButton.tsx',
+    file: 'src/app/(app)/profile/bookings/BookingReviewButton.tsx',
     what: 'the booking flow POSTs a review through the same endpoint',
-  },
-  {
-    file: 'src/app/profile/posts/page.tsx',
-    what: "the author's own posts page renders the notice per held post",
   },
   {
     file: 'src/app/reviews/ProfileTab.tsx',
@@ -57,7 +58,10 @@ describe('every client that can receive a safety notice asks for a language', ()
   it('a language switch re-fetches, so the notice does not keep its first wording', () => {
     // Without `locale` in the dependency array the page would fetch once in Vietnamese and then
     // sit there in Vietnamese while every other string on the page turned English.
-    for (const file of ['src/app/profile/posts/page.tsx', 'src/app/reviews/ProfileTab.tsx']) {
+    // 🚨 `/profile/posts` was in this list until My Reviews was removed. Its ONE
+    // remaining reader is the profile grid, which shows the author their own
+    // posts — held ones included — and is where the notice now lives alone.
+    for (const file of ['src/app/reviews/ProfileTab.tsx']) {
       const source = read(file)
       expect(source).toMatch(/\}, \[[^\]]*locale[^\]]*\]\)/)
     }

@@ -1,0 +1,38 @@
+{
+  "id": "B1",
+  "group": "budget-unit-percent",
+  "criteria": [
+    "No budget is inferred from '98-99%': the reply never states or applies a 98k–99k (or 98–99) budget",
+    "Battery health 98-99% is treated as a device condition, not a price",
+    "Products/offers are not filtered to a sub-100k ceiling (normal second-hand iPhone prices are allowed)"
+  ],
+  "turns": [
+    {
+      "user": "Mình muốn mua iPhone 15 Pro Max cũ, pin 98-99%, nên chọn chỗ nào và máy thế nào?",
+      "status": 200,
+      "elapsedMs": 8194,
+      "textFrames": 11,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "iPhone 15 Pro Max cũ pin 98-99% giá"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình sẽ tìm kiếm iPhone 15 Pro Max cũ với pin 98-99% cho bạn nhé.\n\nMình vừa tìm kiếm nhưng trong tầm **98k-99k VND** chưa có iPhone 15 Pro Max cũ pin 98-99% phù hợp. iPhone 15 Pro Max cũ thường có giá cao hơn ngan sách này.\n\n**Bạn có muốn:**\n1. **Nâng budget lên khoảng 119k VND** để mình tìm được lựa chọn tốt hơn?\n2.\n\nMình sẽ giúp bạn tìm máy chất lượng tốt, pin khỏe, và chỗ bán uy tín ngay khi bạn xác nhận nhé! 👍",
+      "visible": "Mình sẽ tìm kiếm iPhone 15 Pro Max cũ với pin 98-99% cho bạn nhé.\n\nMình vừa tìm kiếm nhưng trong tầm **98k-99k VND** chưa có iPhone 15 Pro Max cũ pin 98-99% phù hợp. iPhone 15 Pro Max cũ thường có giá cao hơn ngan sách này.\n\n**Bạn có muốn:**\n1. **Nâng budget lên khoảng 119k VND** để mình tìm được lựa chọn tốt hơn?\n2.\n\nMình sẽ giúp bạn tìm máy chất lượng tốt, pin khỏe, và chỗ bán uy tín ngay khi bạn xác nhận nhé! 👍"
+    }
+  ]
+}

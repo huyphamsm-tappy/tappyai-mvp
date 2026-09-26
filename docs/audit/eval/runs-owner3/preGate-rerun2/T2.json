@@ -1,0 +1,677 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 13332,
+  "evidenceId": "2a6e910c-28fc-45cf-bad7-45119eec1535",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-09-26",
+        "checkOut": "2026-09-27"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn lưu trú cuối tuần tới (26-27/9) ở Đà Nẵng, 1 đêm. Để tìm khách sạn gần biển trong tầm giá, mình sẽ tìm ngay.\n\nMình thấy kết quả tìm được nhiều khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể trong danh sách này.\n\nDựa trên đánh giá Google Maps, mình gợi ý **M Hotel Da Nang** (4.8⭐ 2.824 đánh giá) — nằm trên đường Võ Nguyên Giáp gần biển, đánh giá cao nhất trong danh sách. Hoặc **Seahorse** (4.8⭐ 1.835 đánh giá) nếu bạn muốn khách sạn boutique nhỏ gọn hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Seahorse\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào bạn thích?|Bạn muốn ở gần bãi biển nào?|Cần giúp tìm quán ăn gần khách sạn?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn lưu trú cuối tuần tới (26-27/9) ở Đà Nẵng, 1 đêm. Để tìm khách sạn gần biển trong tầm giá, mình sẽ tìm ngay.\n\nMình thấy kết quả tìm được nhiều khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể trong danh sách này.\n\nDựa trên đánh giá Google Maps, mình gợi ý **M Hotel Da Nang** (4.8⭐ 2.824 đánh giá) — nằm trên đường Võ Nguyên Giáp gần biển, đánh giá cao nhất trong danh sách. Hoặc **Seahorse** (4.8⭐ 1.835 đánh giá) nếu bạn muốn khách sạn boutique nhỏ gọn hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"🏨 Booking.com - Seahorse\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Seahorse+Da+Nang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn nào bạn thích?|Bạn muốn ở gần bãi biển nào?|Cần giúp tìm quán ăn gần khách sạn?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "location": "Đà Nẵng",
+      "source": "Serper Maps",
+      "hotel_list": [
+        {
+          "name": "Hanami Hotel Danang",
+          "place_id": "ChIJn4s4cmMXQjERZUHbVzA2l4s",
+          "address": "61-63 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 905 432 992",
+          "google_rating": "4.6⭐ (2.233 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2233,
+          "place_types": [
+            "Khách sạn lưu trú dài hạn",
+            "Khách sạn",
+            "Khách sạn nghỉ dưỡng",
+            "Căn hộ nghỉ mát"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10058567874015609189",
+          "website_uri": "https://hanamihotel.com/"
+        },
+        {
+          "name": "M Hotel Da Nang",
+          "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+          "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3816 868",
+          "google_rating": "4.8⭐ (2.824 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 2824,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+          "website_uri": "https://mhotel.vn/property/m-hotel-da-nang/"
+        },
+        {
+          "name": "Sala Danang Beach Hotel",
+          "place_id": "ChIJMeyhoXgXQjERqCs6CuNR5yI",
+          "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3658 555",
+          "google_rating": "4.7⭐ (3.792 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 3792,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2515068952480721832",
+          "website_uri": "https://salahotelgroup.com/en/saladanangbeachhotel/"
+        },
+        {
+          "name": "DLG Hotel Danang",
+          "place_id": "ChIJUeabB3kXQjERFP2JL7c8YCg",
+          "address": "258 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3925 888",
+          "google_rating": "4.6⭐ (2.776 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2776,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2909392116755594516",
+          "website_uri": "https://dlghoteldanang.com/"
+        },
+        {
+          "name": "Khách sạn G8 Luxury Đà Nẵng",
+          "place_id": "ChIJe5tt-SgYQjERVO5xbqkTfLQ",
+          "address": "59 Lê Duẩn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3761 999",
+          "google_rating": "4.6⭐ (2.494 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 2494,
+          "place_types": [
+            "Khách sạn lưu trú dài hạn",
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13005291442362510932",
+          "website_uri": "https://g8luxury.com/"
+        },
+        {
+          "name": "Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)",
+          "place_id": "ChIJ1Qe7OicXQjERALcB30TWnG0",
+          "address": "76 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 865 087 679",
+          "google_rating": "4.7⭐ (68 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 68,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7898423437788559104"
+        },
+        {
+          "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+          "place_id": "ChIJN75cdYQXQjERBUnemtIubGM",
+          "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3913 999",
+          "google_rating": "4.7⭐ (4.421 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 4421,
+          "place_types": [
+            "Khách sạn nghỉ dưỡng",
+            "Quán cà phê",
+            "Trung tâm hội thảo",
+            "Spa sức khỏe",
+            "Sân pickleball",
+            "Nhà hàng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7164152589315885317",
+          "website_uri": "https://nalod.com.vn/"
+        },
+        {
+          "name": "Khách sạn Mường Thanh Luxury Đà Nẵng",
+          "place_id": "ChIJW7SBUHoXQjERdpSIWHkCuh0",
+          "address": "270 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3956 789",
+          "google_rating": "4.3⭐ (6.572 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 6572,
+          "place_types": [
+            "Khách sạn lưu trú dài hạn",
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2142027292967736438",
+          "website_uri": "https://booking.muongthanh.com/hotel-muong-thanh-luxury-da-nang"
+        },
+        {
+          "name": "Seahorse",
+          "place_id": "ChIJEa410zMYQjER3f11TKinbkU",
+          "address": "29 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3589 888",
+          "google_rating": "4.8⭐ (1.835 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 1835,
+          "place_types": [
+            "Khách sạn",
+            "Khách sạn nghỉ dưỡng",
+            "Căn hộ được phục vụ"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5003120577334345181",
+          "website_uri": "https://havilandhouse.com/seahorse-tropical-da-nang-hotel-by-haviland"
+        },
+        {
+          "name": "Nhu Minh Plaza Danang Hotel",
+          "place_id": "ChIJrxxvlNsXQjERy-eJcpABRJA",
+          "address": "41 Phạm Văn Đồng, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 236 3555 666",
+          "google_rating": "4.7⭐ (2.715 đánh giá Google Maps)",
+          "rating_value": 4.7,
+          "rating_count": 2715,
+          "place_types": [
+            "Khách sạn"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10395435559786506187",
+          "website_uri": "http://www.nhuminhplazahotel.com/"
+        }
+      ],
+      "booking_link": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+      "agoda_link": "https://www.agoda.com/vi-vn/",
+      "note": "Gia trong search_results la tham khao tu ket qua tim kiem hien tai, co the khong dung loai phong/ngay user hoi va da thay doi - bam booking_link de xem gia chinh xac realtime theo ngay cu the.",
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget dưới 1 triệu VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 18,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "search_again"
+      },
+      "travel_editorial": [
+        {
+          "source": "VnExpress",
+          "article_id": "5119711",
+          "title": "11 'điểm du lịch đẹp nhất Việt Nam' trên tạp chí Anh",
+          "url": "https://vnexpress.net/11-diem-du-lich-dep-nhat-viet-nam-tren-tap-chi-anh-5119711.html",
+          "publishedAt": "2026-09-13T12:04:12+07:00",
+          "modifiedAt": "2026-09-14T11:28:05+07:00",
+          "section": "Điểm đến",
+          "summary": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times.",
+          "extract": "Các điểm đến quen thuộc như Huế, Hà Nội, Đà Nẵng được giới thiệu trong danh sách 11 điểm đẹp và đáng khám phá nhất Việt Nam năm 2026, theo tờ The Times. Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Thánh địa Mỹ Sơn, Đà Nẵng được giới thiệu là điểm đến mang vẻ đẹp cổ kính, với quần thể đền tháp Chăm Pa cổ kính được xây dựng từ thế kỷ IV đến thế kỷ XIII. Du khách nên tham quan di tích vào buổi sáng sớm để tránh thời tiết nắng nóng và lượng khách đông; kết hợp tìm hiểu lịch sử kiến trúc Chăm Pa. Ảnh: heritagewanderlust Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh). Địa điểm khác ở Đà Nẵng có tên trong danh sách là bán đảo Sơn Trà. Khu vực này được xem là bức tường xanh chắn gió cho thành phố Đà Nẵng và là nơi sinh sống của loài vượn chà vá chân nâu (ảnh).",
+          "freshness": "stable",
+          "provenance": "REVIEW_SUPPORTED",
+          "dated": "09/2026"
+        }
+      ],
+      "results_note": "Hien thi 10/18 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien (rut gon: chi cac truong de chon); the (card) cua user co day du.",
+      "_tappy_budget_evidence": false
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "travel",
+        "ranked": true,
+        "items": [
+          {
+            "id": "stay:16.05165,108.24803",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "M Hotel Da Nang",
+            "image": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg",
+            "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 2824,
+            "phone": "+84 236 3816 868",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "2824 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@callumhirst_/video/7547007596809424150",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7069989189938949055",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://mhotel.vn/property/m-hotel-da-nang/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363816868",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%20Hotel%20Da%20Nang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "stay:16.04860,108.24245",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Hanami Hotel Danang",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4gMFp1EHEAgQzxSUd6dBO-I4oNAdSq9GQFZoDuUNK-A&s=10",
+            "address": "61-63 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 2233,
+            "phone": "+84 905 432 992",
+            "categories": [
+              "Khách sạn lưu trú dài hạn",
+              "Khách sạn",
+              "Khách sạn nghỉ dưỡng",
+              "Căn hộ nghỉ mát"
+            ],
+            "rank": 0,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10058567874015609189",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://hanamihotel.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Hanami%20Hotel%20Danang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84905432992",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.06222,108.24518",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Sala Danang Beach Hotel",
+            "image": "https://salahotelgroup.com/wp-content/uploads/2025/09/DJI_0152-HDR-edit-V3-copy-4-1024x937.jpg",
+            "address": "36-38 Lâm Hoành, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 3792,
+            "phone": "+84 236 3658 555",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2515068952480721832",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://salahotelgroup.com/en/saladanangbeachhotel/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Sala%20Danang%20Beach%20Hotel%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363658555",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.05819,108.24632",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "DLG Hotel Danang",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrFb_0xFdW3eKzSjAiVB92Y-6ON2QIKAyoNQGhnCdqQA&s=10",
+            "address": "258 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 2776,
+            "phone": "+84 236 3925 888",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2909392116755594516",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://dlghoteldanang.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=DLG%20Hotel%20Danang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363925888",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.07083,108.21708",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Khách sạn G8 Luxury Đà Nẵng",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJCE071puAZ5JxeHCmgMFWpRu8w3kCu9vjX5bz75FKw&s=10",
+            "address": "59 Lê Duẩn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 2494,
+            "phone": "+84 236 3761 999",
+            "categories": [
+              "Khách sạn lưu trú dài hạn",
+              "Khách sạn"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13005291442362510932",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://g8luxury.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20G8%20Luxury%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363761999",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.07718,108.24263",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)",
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUBHJwzRspOhpw5Ce4g57fyX5sFearVtcC56mjm1f51g&s",
+            "address": "76 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 68,
+            "phone": "+84 865 087 679",
+            "categories": [
+              "Khách sạn"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7898423437788559104",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Bluzen%20Hotel%20Danang%20(Kh%C3%A1ch%20s%E1%BA%A1n%20Bluzen%20%C4%90%C3%A0%20N%E1%BA%B5ng)%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84865087679",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.07210,108.24466",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+            "image": "https://nalod.com.vn/uploads/files/Image-thumbnail.png",
+            "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 4421,
+            "phone": "+84 236 3913 999",
+            "categories": [
+              "Khách sạn nghỉ dưỡng",
+              "Quán cà phê",
+              "Trung tâm hội thảo",
+              "Spa sức khỏe",
+              "Sân pickleball",
+              "Nhà hàng"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7164152589315885317",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://nalod.com.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=NALOD%20%C4%90%C3%80%20N%E1%BA%B4NG%20-%20KH%C3%81CH%20S%E1%BA%A0N%20%26%20TRUNG%20T%C3%82M%20H%E1%BB%98I%20NGH%E1%BB%8A%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363913999",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "stay:16.05372,108.24733",
+            "domain": "travel",
+            "kind": "stay",
+            "name": "Khách sạn Mường Thanh Luxury Đà Nẵng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnuzdWMveoiEPFZL1OJ33tVV3FQDeQ3MsMkEMluNxSTjU0PE-AqlOHkBdtsyu0AJQp-ebMwpPjhHBmThqyqc1-xNjGPfA58T_FzCOiHIPrTbqJFu84WGShsP578Jp1Pqo-9rb1Q",
+            "address": "270 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 6572,
+            "phone": "+84 236 3956 789",
+            "categories": [
+              "Khách sạn lưu trú dài hạn",
+              "Khách sạn"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "booking",
+                "urlKind": "search",
+                "url": "https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27",
+                "labelKey": "v3.action.bookingSearch",
+                "platform": "Booking.com"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2142027292967736438",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://booking.muongthanh.com/hotel-muong-thanh-luxury-da-nang",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20M%C6%B0%E1%BB%9Dng%20Thanh%20Luxury%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842363956789",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "picked": [
+          "stay:16.05165,108.24803"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

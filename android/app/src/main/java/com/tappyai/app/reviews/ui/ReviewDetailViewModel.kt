@@ -5,8 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewComment
 import com.tappyai.app.reviews.data.ReviewErrorMessages
-import com.tappyai.app.music.MusicTrack
-import com.tappyai.app.music.data.MusicRepository
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.core.logging.LoggerProvider
@@ -35,6 +33,8 @@ sealed interface DetailEvent {
 
 data class ReviewDetailUiState(
     val review: Review? = null,
+    /** True while an uncached review is being fetched by id — the screen waits instead of saying "unavailable". */
+    val isLoadingReview: Boolean = false,
     val comments: List<ReviewComment> = emptyList(),
     val isLoadingComments: Boolean = false,
     val commentsError: String? = null,
@@ -45,17 +45,12 @@ data class ReviewDetailUiState(
     // The comment currently being replied to (composer shows a "Replying to …" chip), or null for a
     // top-level comment. Mirrors the web CommentDrawer's reply target.
     val replyingTo: ReviewComment? = null,
-    // Metadata for the review's attached background track, once resolved — backs the attached-music
-    // card (web ReviewMusicCard, which fetches the track via useMusicTrack). Null when the review
-    // has no music or the lookup failed (the card then simply doesn't render).
-    val attachedTrack: MusicTrack? = null,
 )
 
 @HiltViewModel
 class ReviewDetailViewModel @Inject constructor(
     private val repository: ReviewsRepository,
     private val authRepository: AuthRepository,
-    private val musicRepository: MusicRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
 ) : ViewModel() {
@@ -75,15 +70,23 @@ class ReviewDetailViewModel @Inject constructor(
 
         val cached = repository.getCachedReview(reviewId)
         _uiState.update {
-            it.copy(review = cached, isLoadingComments = true, commentsError = null)
+            it.copy(review = cached, isLoadingReview = cached == null, isLoadingComments = true, commentsError = null)
         }
-        // Resolve the attached track's metadata for the attached-music card (best-effort: a failure
-        // just leaves the card unrendered, mirroring the web's silent useMusicTrack error path).
-        cached?.music?.trackId?.takeIf { it.isNotBlank() }?.let { trackId ->
+        if (cached == null) {
+            // Not in the in-memory cache — a row reached from the "Đã thích" / "Đã share" grids (their
+            // list routes return reduced rows and cache nothing), a notification, a deep link. Fetch
+            // the full review by id (`GET /api/reviews/{id}`, which also fills the cache); only a
+            // failed fetch reads as "unavailable" (UAT 2026-09-17: a liked post opened as
+            // "không còn khả dụng" although the route returned it).
             viewModelScope.launch {
-                when (val result = musicRepository.getSoundDetail(trackId)) {
-                    is NetworkResult.Success -> _uiState.update { it.copy(attachedTrack = result.data.track) }
-                    is NetworkResult.Error -> logger.e(TAG, "Attached track load failed: ${result.error}")
+                when (val result = repository.getReview(reviewId)) {
+                    is NetworkResult.Success -> {
+                        _uiState.update { it.copy(review = result.data, isLoadingReview = false) }
+                    }
+                    is NetworkResult.Error -> {
+                        logger.e(TAG, "Review load failed: ${result.error}")
+                        _uiState.update { it.copy(isLoadingReview = false) }
+                    }
                 }
             }
         }
@@ -150,8 +153,16 @@ class ReviewDetailViewModel @Inject constructor(
         _uiState.update { it.copy(isPostingComment = true) }
         viewModelScope.launch {
             when (val result = repository.postComment(reviewId, trimmed, parentId)) {
+                // The review's count becomes the server's `count` (as delete already does) — the
+                // feed rail reads it back through the comment sheet's dismiss, and the web's
+                // CommentDrawer does the same with `onAdded(id, count)`.
                 is NetworkResult.Success -> _uiState.update {
-                    it.copy(comments = it.comments + result.data, isPostingComment = false, replyingTo = null)
+                    it.copy(
+                        comments = it.comments + result.data.comment,
+                        review = it.review?.copy(commentCount = result.data.count),
+                        isPostingComment = false,
+                        replyingTo = null,
+                    )
                 }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Post comment failed: ${result.error}")

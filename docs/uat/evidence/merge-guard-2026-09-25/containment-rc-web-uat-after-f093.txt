@@ -1,0 +1,444 @@
+branch-containment — protected work older than 7 day(s) that has not reached rc/web-uat (docs/uat/MERGE-LOSS-AUDIT.md §4)
+
+✖ arcade-v2/android
+    4bce517 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ backup/ios-windows-sprint-pre-rebase
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ backup/pre-scrub-v1
+    4bce517 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ feat/anonymous-chat-android
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ feat/backoffice-phase0
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ feat/backoffice-phase0-clean
+    f661081 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ feat/ccp-mvp
+    56a5726 (11d) feat(ccp): Commerce Capability Platform — Phases 0–5 (isolated, flags off)
+        src/lib/ccp/adapters/index.ts  — 58% of 19 added lines on ship
+        src/lib/ccp/adapters/pasgo.ts  — file absent on ship (56 added lines)
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ feat/consultative-d1-d2-r1-r2-d3
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ feat/consultative-d3
+    8feaed6 (36d) fix(ai): ground candidate identity on the consultative presentation turn
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (21 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ feat/consultative-v2-ranking
+    207658b (38d) feat(ai): finalize consultative v2
+        src/lib/ai/streamEnrichment.ts  — 41% of 27 added lines on ship
+
+✖ feat/tappy-business-p0
+    23f5e30 (16d) checkpoint(business): P0-P5 recovery point — the whole capability, in one commit
+        scripts/architecture/businessDataBoundary.test.ts  — file absent on ship (135 added lines)
+        scripts/architecture/check.mjs  — 2% of 51 added lines on ship
+        src/lib/auth/anonymousWriteBoundary.test.ts  — 0% of 13 added lines on ship
+        src/lib/business/routeGuard.ts  — file absent on ship (34 added lines)
+        src/lib/media/uploadPolicy.ts  — 0% of 5 added lines on ship
+        src/lib/security/turnstile.test.ts  — file absent on ship (64 added lines)
+        src/lib/security/turnstile.ts  — file absent on ship (52 added lines)
+        supabase/migrations/20260908_tappy_business_p0.sql  — file absent on ship (411 added lines)
+        supabase/migrations/20260909_tappy_business_p2_order_invariants.sql  — file absent on ship (254 added lines)
+        supabase/migrations/20260910_tappy_business_p3_order_transitions.sql  — file absent on ship (110 added lines)
+        supabase/migrations/20260911_tappy_business_p4_order_immutability.sql  — file absent on ship (79 added lines)
+        supabase/tests/tappy_business_p0_boundary.test.ts  — file absent on ship (482 added lines)
+        supabase/tests/tappy_business_p2_order_invariants.test.ts  — file absent on ship (455 added lines)
+        supabase/tests/tappy_business_p3_order_transitions.test.ts  — file absent on ship (495 added lines)
+        supabase/tests/tappy_business_p4_lifecycle.test.ts  — file absent on ship (351 added lines)
+
+✖ feat/v3-ai-consultative
+    ff55c27 (22d) perf(v3): optimize AI cost
+        src/lib/ai/llm/providers/cacheBoundary.test.ts  — file absent on ship (51 added lines)
+
+✖ feat/v3-qr-profile
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ feat/v3-scam-shield-ui
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ fix/android-games-parity
+    4bce517 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ fix/android-plan-item-name-wrap
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ fix/android-release-config
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ fix/controller-origin-gate
+    f83d3c0 (25d) fix(controller): stop offering actions the origin guard will refuse
+        src/app/admin/analytics/auth/page.tsx  — file absent on ship (6 added lines)
+
+✖ fix/v2-fix-phase
+    e568393 (34d) fix(v2): close release-readiness findings B07–B17, C01–C53 and U01–U15
+        src/app/api/subscription/anonQuotaAuthority.test.ts  — 27% of 179 added lines on ship
+        src/app/api/subscription/route.ts  — 11% of 72 added lines on ship
+        src/app/subscription/SubscriptionView.tsx  — file absent on ship (135 added lines)
+        src/app/subscription/page.tsx  — file absent on ship (9 added lines)
+
+✖ integration/scam-shield-v3
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ integration/v3-foundation
+    2caff4b (21d) refactor(security): /api/chat no longer performs a privileged operation
+        scripts/architecture/check.mjs  — 29% of 7 added lines on ship
+    66e4c46 (21d) fix(v3): close the three egress channels a compromised model could still use
+        src/lib/ai/streamEnrichment.ts  — 38% of 211 added lines on ship
+    44d8f32 (21d) test(v3): lock the one invariant Phase 1 satisfies by construction
+        src/lib/ai/security/needBriefBoundary.test.ts  — file absent on ship (79 added lines)
+    a711181 (22d) fix(v3): close the security findings Phase 0 deferred
+        src/lib/ai/security/fence.ts  — 0% of 1 added lines on ship
+        src/lib/ai/security/fenceBoundary.test.ts  — 25% of 4 added lines on ship
+        src/lib/ai/streamEnrichment.ts  — 28% of 92 added lines on ship
+    ff55c27 (22d) perf(v3): optimize AI cost
+        src/lib/ai/llm/providers/cacheBoundary.test.ts  — file absent on ship (51 added lines)
+
+✖ phase9-shopping-marker
+    efb5713 (31d) fix(consultative): fold the shopping marker INTO finalText, before the grounding detector
+        src/lib/ai/streamEnrichment.ts  — 17% of 12 added lines on ship
+    95c88af (31d) fix(consultative): deliver the shopping decision via a persistent text marker (Phase 9)
+        src/lib/ai/streamEnrichment.ts  — 0% of 8 added lines on ship
+
+✖ release/android-games-hidden
+    4bce517 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ release/android-games-hidden-clean
+    f661081 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ security/v3-phase3
+    a711181 (22d) fix(v3): close the security findings Phase 0 deferred
+        src/lib/ai/security/fence.ts  — 0% of 1 added lines on ship
+        src/lib/ai/security/fenceBoundary.test.ts  — 25% of 4 added lines on ship
+        src/lib/ai/streamEnrichment.ts  — 28% of 92 added lines on ship
+
+✖ tmp/i18n-sprint-base
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ uat/android-release-fixes
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ wip/main-repo-2026-09-17
+    beba191 (7d) wip(main-repo): snapshot of uncommitted work on feat/consultative-d1-d2-r1-r2-d3 at 77b0bb
+        src/app/api/subscription/anonQuotaAuthority.test.ts  — 27% of 179 added lines on ship
+        src/app/subscription/SubscriptionView.tsx  — file absent on ship (135 added lines)
+    254c28b (19d) feat(phase6): Discovery/Monetization, Contact Sync and the shared governance
+        scripts/architecture/check.mjs  — 7% of 61 added lines on ship
+        src/lib/ads/trustBoundaryArchitecture.test.ts  — file absent on ship (160 added lines)
+        supabase/migrations/20260903_phase6_contact_sync.sql  — file absent on ship (149 added lines)
+        supabase/migrations/20260903_phase6_governed_events.sql  — file absent on ship (87 added lines)
+        supabase/migrations/20260903_phase6_sponsored_discovery.sql  — file absent on ship (195 added lines)
+        supabase/tests/phase6_trust_boundary.test.ts  — file absent on ship (361 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ wip/tappy-business-p0-2026-09-17
+    23f5e30 (16d) checkpoint(business): P0-P5 recovery point — the whole capability, in one commit
+        scripts/architecture/businessDataBoundary.test.ts  — file absent on ship (135 added lines)
+        scripts/architecture/check.mjs  — 2% of 51 added lines on ship
+        src/lib/auth/anonymousWriteBoundary.test.ts  — 0% of 13 added lines on ship
+        src/lib/business/routeGuard.ts  — file absent on ship (34 added lines)
+        src/lib/media/uploadPolicy.ts  — 0% of 5 added lines on ship
+        src/lib/security/turnstile.test.ts  — file absent on ship (64 added lines)
+        src/lib/security/turnstile.ts  — file absent on ship (52 added lines)
+        supabase/migrations/20260908_tappy_business_p0.sql  — file absent on ship (411 added lines)
+        supabase/migrations/20260909_tappy_business_p2_order_invariants.sql  — file absent on ship (254 added lines)
+        supabase/migrations/20260910_tappy_business_p3_order_transitions.sql  — file absent on ship (110 added lines)
+        supabase/migrations/20260911_tappy_business_p4_order_immutability.sql  — file absent on ship (79 added lines)
+        supabase/tests/tappy_business_p0_boundary.test.ts  — file absent on ship (482 added lines)
+        supabase/tests/tappy_business_p2_order_invariants.test.ts  — file absent on ship (455 added lines)
+        supabase/tests/tappy_business_p3_order_transitions.test.ts  — file absent on ship (495 added lines)
+        supabase/tests/tappy_business_p4_lifecycle.test.ts  — file absent on ship (351 added lines)
+
+✖ wip/tappyai-controller-v2-2026-09-17
+    782ce59 (7d) wip(tappyai-controller-v2): snapshot of uncommitted work on feat/controller-v2-foundation-
+        src/lib/controller/auth/__tests__/corporateChain.test.ts  — file absent on ship (202 added lines)
+        src/lib/controller/auth/__tests__/ownerIdentityMigration.test.ts  — file absent on ship (183 added lines)
+        supabase/migrations/20260808_controller_org_foundation.sql  — file absent on ship (109 added lines)
+        supabase/migrations/20260808_controller_org_foundation_rollback.sql  — file absent on ship (11 added lines)
+        supabase/tests/controller_org_foundation.test.ts  — file absent on ship (257 added lines)
+
+✖ wip/tappyai-ios-sprint-2026-09-17
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ wip/tappyai-memberapi-2026-09-17
+    67dab52 (7d) wip(tappyai-memberapi): snapshot of uncommitted work on docs/controller-v2-phase2-m08-migr
+        forensic/policy-snapshot-2026-08-16-1604/SNAPSHOT.sha256  — file absent on ship (21 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/scripts/policy/generate-registry.mjs  — file absent on ship (324 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/governanceInvariants.test.ts  — file absent on ship (243 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/policyEngine.test.ts  — file absent on ship (268 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/registryProvider.test.ts  — file absent on ship (303 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__tests__/uatMatrix.test.ts  — file absent on ship (153 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/__uat__/matrix.ts  — file absent on ship (447 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/engine/evaluator.ts  — file absent on ship (304 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/engine/expression.ts  — file absent on ship (161 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/infra/obligations.ts  — file absent on ship (145 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/legal/protectedTargets.ts  — file absent on ship (79 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/provider.ts  — file absent on ship (145 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/source/registry.ts  — file absent on ship (369 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/source/sourceSnapshot.ts  — file absent on ship (123 added lines)
+        forensic/policy-snapshot-2026-08-16-1604/files/src/lib/policy/types.ts  — file absent on ship (351 added lines)
+
+✖ wip/wtandroid-2026-09-17
+    f2998b1 (7d) wip(wtandroid): snapshot of uncommitted work on fix/android-scan-gallery-decode at e621f7f
+        android/app/src/main/java/com/tappyai/app/profile/CopyrightPolicyScreen.kt  — file absent on ship (48 added lines)
+        src/app/admin/analytics/auth/page.tsx  — file absent on ship (8 added lines)
+        src/app/api/subscription/anonQuotaAuthority.test.ts  — 27% of 179 added lines on ship
+        src/app/api/subscription/route.ts  — 33% of 95 added lines on ship
+        src/app/subscription/SubscriptionView.tsx  — file absent on ship (135 added lines)
+        src/app/subscription/page.tsx  — file absent on ship (35 added lines)
+        src/lib/security/urlGuard.ts  — 51% of 35 added lines on ship
+        supabase/migrations/add_user_language_preference.sql  — 57% of 7 added lines on ship
+
+✖ origin/feat/anonymous-chat-android
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ origin/feat/backoffice-phase0
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ origin/feat/consultative-d3
+    8feaed6 (36d) fix(ai): ground candidate identity on the consultative presentation turn
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (21 added lines)
+    abd11b6 (37d) feat(ai): checkpoint consultative grounding work
+        src/lib/ai/mediaPolicy.test.ts  — file absent on ship (240 added lines)
+        src/lib/ai/mediaPolicy.ts  — file absent on ship (62 added lines)
+
+✖ origin/fix/android-plan-item-name-wrap
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ origin/fix/android-release-config
+    e0b88ec (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ origin/fix/controller-origin-gate
+    f83d3c0 (25d) fix(controller): stop offering actions the origin guard will refuse
+        src/app/admin/analytics/auth/page.tsx  — file absent on ship (6 added lines)
+
+✖ origin/fix/login-return-to
+    2fa8bb2 (46d) fix(auth): one canonical returnTo parameter for post-login redirects
+        src/lib/auth/returnTo.test.ts  — file absent on ship (71 added lines)
+        src/lib/auth/returnTo.ts  — 4% of 54 added lines on ship
+
+✖ origin/fix/v2-fix-phase
+    e568393 (34d) fix(v2): close release-readiness findings B07–B17, C01–C53 and U01–U15
+        src/app/api/subscription/anonQuotaAuthority.test.ts  — 27% of 179 added lines on ship
+        src/app/api/subscription/route.ts  — 11% of 72 added lines on ship
+        src/app/subscription/SubscriptionView.tsx  — file absent on ship (135 added lines)
+        src/app/subscription/page.tsx  — file absent on ship (9 added lines)
+
+✖ origin/phase9-shopping-marker
+    efb5713 (31d) fix(consultative): fold the shopping marker INTO finalText, before the grounding detector
+        src/lib/ai/streamEnrichment.ts  — 17% of 12 added lines on ship
+    95c88af (31d) fix(consultative): deliver the shopping decision via a persistent text marker (Phase 9)
+        src/lib/ai/streamEnrichment.ts  — 0% of 8 added lines on ship
+
+✖ origin/release/android-games-hidden-clean
+    f661081 (57d) feat(android/auth): login layout closer to web parity — WIP, not PASS (P1-5)
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt  — 44% of 16 added lines on ship
+    cd4cb31 (57d) build(android/auth): OTP input validation + R8 consumer rules
+        android/features/auth/consumer-rules.pro  — 18% of 11 added lines on ship
+        android/features/auth/src/main/java/com/tappyai/features/auth/ui/otp/EmailOtpVerificationViewModel.kt  — 17% of 6 added lines on ship
+    5e13751 (59d) feat(android/auth): Zalo login (Custom Tab) + fragment-token session import
+        android/features/auth/build.gradle.kts  — 50% of 2 added lines on ship
+        android/features/auth/src/main/res/values-vi/strings.xml  — 33% of 3 added lines on ship
+        android/features/auth/src/main/res/values/strings.xml  — 33% of 3 added lines on ship
+
+✖ 43 branch(es) hold protected work that has not reached rc/web-uat. Merge it, or record the decision in <empty allowlist> (reason + until).

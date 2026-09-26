@@ -88,7 +88,8 @@ describe('GCS provider writes', () => {
     expect(calls).toHaveLength(1)
     expect(calls[0].url).toContain(`/b/${BUCKET}/o`)
     expect(calls[0].url).toContain(`name=${encodeURIComponent(key)}`)
-    expect((calls[0].init.headers as Record<string, string>)['Content-Type']).toBe(ct)
+    expect((calls[0].init.headers as Record<string, string>)['Content-Type']).toMatch(/^multipart\/related; boundary=/)
+    expect(await (calls[0].init.body as Blob).text()).toContain(`Content-Type: ${ct}\r\n`)
   })
 
   it('never writes outside the bucket even if a producer passes a hostile key', async () => {

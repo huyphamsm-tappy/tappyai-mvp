@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 445,
+  "evidenceId": "fa0073cb-a4b1-4ed1-ad50-dfff321144f0",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội** cho bữa trưa gia đình hôm nay. Quán có **4.8⭐ (1.667 đánh giá Google Maps)**, cách bạn khoảng 2.8km, mở cửa từ 10:30–21:30 nên hoàn toàn phù hợp. Bún đậu mắm tôm là món ăn dân dã, ngon miệng, rất hợp cho cả gia đình 6 người.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Google Maps — Hoài Niệm Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10886696256767899571\",\"primary\":true},{\"label\":\"🔎 Tìm video review trên YouTube\",\"type\":\"website\",\"url\":\"https://www.youtube.com/results?search_query=Ho%C3%A0i%20Ni%E1%BB%87m%20Qu%C3%A1n%20-%20B%C3%BAn%20%C4%90%E1%BA%ADu%20M%E1%BA%AFm%20T%C3%B4m%20H%C3%A0%20N%E1%BB%99i%20review\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán xác nhận chỗ đậu xe|Xem King BBQ nếu muốn ăn nướng|Đặt bàn trước để chắc chắn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội** mở cửa 10:30–21:30.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

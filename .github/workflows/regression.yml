@@ -51,6 +51,7 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      - run: npm run check:control-bytes
       - run: npx tsc --noEmit
       - run: npm run lint
       - name: Ensure origin/main resolves for the SQL grants diff

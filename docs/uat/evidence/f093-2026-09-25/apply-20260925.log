@@ -1,0 +1,44 @@
+PRE-FLIGHT CHECK 2: target zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Applying 20260925_account_deletion_cascade_gaps.sql in one transaction.
+BEFORE: {
+ "col": [
+  "decision_evidence.owner_id uuid",
+  "anon_chat_usage.user_id uuid",
+  "user_memory.user_id uuid"
+ ],
+ "fks": [
+  "user_memory.user_memory_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE valid=true"
+ ],
+ "policies": [
+  "Users can manage own memory ALL"
+ ],
+ "rows": {
+  "user_memory": 4,
+  "decision_evidence": 26,
+  "anon_chat_usage": 0
+ }
+}
+  NOTICE: deletion gaps: decision_evidence_owner_id_fkey added (ON DELETE CASCADE).
+  WARNING: deletion gaps: 9 decision_evidence row(s) belong to already-deleted accounts; constraint left NOT VALID until the Owner-run purge.
+  NOTICE: deletion gaps: anon_chat_usage_user_id_fkey added (ON DELETE CASCADE).
+  NOTICE: deletion gaps: anon_chat_usage_user_id_fkey validated.
+APPLIED
+AFTER : {
+ "col": [
+  "decision_evidence.owner_id uuid",
+  "anon_chat_usage.user_id uuid",
+  "user_memory.user_id uuid"
+ ],
+ "fks": [
+  "anon_chat_usage.anon_chat_usage_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE valid=true",
+  "user_memory.user_memory_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE valid=true",
+  "decision_evidence.decision_evidence_owner_id_fkey FOREIGN KEY (owner_id) REFERENCES auth.users(id) ON DELETE CASCADE NOT VALID valid=false"
+ ],
+ "policies": [
+  "Users can manage own memory ALL"
+ ],
+ "rows": {
+  "user_memory": 4,
+  "decision_evidence": 26,
+  "anon_chat_usage": 0
+ }
+}

@@ -3,6 +3,7 @@ package com.tappyai.features.auth.data
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkError
 import com.tappyai.core.network.NetworkResult
@@ -25,7 +26,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.emitAll
+import javax.inject.Named
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -50,14 +54,34 @@ class AuthRepository @Inject constructor(
     private val supabaseClient: SupabaseClient,
     private val tokenProvider: TokenProvider,
     private val logger: LoggerProvider,
+    private val analytics: AnalyticsProvider,
     private val zaloSignInClient: ZaloSignInClient,
     // dagger.Lazy, not a direct injection: AuthRepository is bound as core:network's
     // SessionRefresher, which TokenAuthenticator needs to build OkHttp, which Retrofit needs to
     // build AnonymousAuthApi — a genuine Dagger dependency cycle. Deferring resolution to first
     // use breaks it, and costs nothing: by the time any anonymous call runs, the graph is built.
     private val anonymousAuthApi: Lazy<AnonymousAuthApi>,
+    /** `BuildConfig.DEBUG` of the app module (`AppModule.provideIsDebug`). Never true in a release build. */
+    @Named("isDebug") private val isDebug: Boolean,
 ) : SessionRefresher {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
+    /**
+     * DEBUG-ONLY guest entry (overnight 2026-09-17, for the emulator layout/eval runs).
+     *
+     * The audit Supabase project has Anonymous Sign-ins disabled, so `ensureAnonymousSession()`
+     * fails open and the app lands on the sign-in wall with no way to reach Chat as a guest —
+     * while the server's guest path (5-question trial behind the 18+ declaration) is exactly
+     * what needs to be exercised. With this flag a `NotAuthenticated` SDK status is REPORTED as
+     * [AuthSessionState.Anonymous]: the shell opens, no token exists, so every request goes out
+     * without a Bearer and the server treats it as the identity-less guest it is (IP-keyed
+     * quota). Nothing is minted, nothing is stored, and the flag cannot be set in a release
+     * build (`isDebug` gates the setter and the mapping).
+     */
+    private val debugGuest = MutableStateFlow(false)
+    val debugGuestActive: Boolean get() = isDebug && debugGuest.value
+    fun enterDebugGuest() { if (isDebug) debugGuest.value = true }
+    fun exitDebugGuest() { debugGuest.value = false }
 
     // Guards session restoration so it runs at most once per process, even when
     // WhileSubscribed(5_000) restarts the cold sessionState flow after a long background pause.
@@ -117,7 +141,10 @@ class AuthRepository @Inject constructor(
         // sessionStatus is a StateFlow — replays the current value immediately, so there is no
         // gap between importSession completing and the first AuthSessionState emission.
         emitAll(
-            supabaseClient.auth.sessionStatus.map { status ->
+            combine(supabaseClient.auth.sessionStatus, debugGuest) { status, guest -> status to guest }.map { (status, guest) ->
+                if (isDebug && guest && (status is SessionStatus.NotAuthenticated || status is SessionStatus.RefreshFailure)) {
+                    return@map AuthSessionState.Anonymous
+                }
                 when (status) {
                     // An anonymous session is `Authenticated` as far as the SDK is concerned —
                     // it is a real auth.users row with a real JWT. The token's `is_anonymous`
@@ -165,6 +192,21 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    /**
+     * Emits login / sign_up for an EXPLICIT user sign-in only. Called from the three explicit
+     * success paths (Google id-token, email-OTP verify, OAuth deep-link) — NEVER from the session
+     * collector or the cold-start restore, both of which reach Authenticated via importSession /
+     * SDK refresh and must not count as a login. `is_first_login` (and the extra sign_up) come from
+     * the account's created-at vs last-sign-in timestamps. See [authAnalyticsEventsFor], unit-tested.
+     */
+    private fun emitSignInAnalytics(method: String) {
+        val user = runCatching { supabaseClient.auth.currentUserOrNull() }.getOrNull()
+        val first = isFirstLoginFromTimestamps(user?.createdAt?.epochSeconds, user?.lastSignInAt?.epochSeconds)
+        for (event in authAnalyticsEventsFor(AuthTrigger.EXPLICIT_SIGN_IN, method, first)) {
+            analytics.track(event.name, event.params)
+        }
+    }
+
     /** [idToken] comes from Credential Manager's native Google Sign-In (UI-layer concern, not
      *  this repository's — see `GoogleSignInClient` in the same package). */
     suspend fun signInWithGoogleIdToken(idToken: String, rawNonce: String?): NetworkResult<Unit> =
@@ -175,6 +217,7 @@ class AuthRepository @Inject constructor(
                 nonce = rawNonce
             }
             persistSession()
+            emitSignInAnalytics("google")
         }.logOnError("signInWithGoogleIdToken")
 
     /**
@@ -214,6 +257,7 @@ class AuthRepository @Inject constructor(
     suspend fun verifyEmailOtp(email: String, code: String): NetworkResult<Unit> = safeAuthCall {
         supabaseClient.auth.verifyEmailOtp(type = OtpType.Email.EMAIL, email = email, token = code)
         persistSession()
+        emitSignInAnalytics("email")
     }.logOnError("verifyEmailOtp")
 
     /**
@@ -250,6 +294,11 @@ class AuthRepository @Inject constructor(
             supabaseClient.handleDeeplinks(intent)
         }
         persistSession()
+        // Explicit sign-in completion arriving via the auth-callback deep link (Facebook / Zalo /
+        // email magic link). This is NOT the cold-start restore — that path is [sessionState]'s
+        // importSession at process launch, which never calls this method. Provider isn't
+        // distinguishable from the intent, so the method is the generic "oauth".
+        emitSignInAnalytics("oauth")
     }.logOnError("handleOAuthRedirectIntent")
 
     /**

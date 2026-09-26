@@ -1,29 +1,40 @@
 import { tool } from 'ai'
 import { z } from 'zod'
-import { randomUUID } from 'crypto'
+import { randomUUID, createHash } from 'crypto'
+import { appendFileSync } from 'fs'
+import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
+import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode } from '@/lib/account/accountStatus'
+import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
-import { buildMemoryBlock, extractMemoryFromConversation, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
+import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
+import { buildMemoryBlock, extractMemoryFromConversation, lastMemoryExtractionUsage, updateMemory, type UserMemory } from '@/lib/memory/memoryService'
 import { webSearch, resolvePlacePhotos } from '@/lib/ai/tools/common'
 import { getWeather, getGoldPrice } from '@/lib/ai/tools/weather'
 import { searchProducts } from '@/lib/ai/tools/shopping'
 import { getNews, searchPlaces } from '@/lib/ai/tools/food'
 import { getFlightPrices, getHotelPrices, getTransportOptions } from '@/lib/ai/tools/travel'
+import { createTurnEditorial, editorialGate, withTravelEditorial, type TravelEditorialItem } from '@/lib/ai/tools/vnexpressTravel'
 import { AI, type ModelRole } from '@/lib/ai/llm'
-import { validateClientInput, readDecisionEvidenceId } from '@/lib/ai/security/clientInput'
+import { validateClientInput, readDecisionEvidenceId, readExploreClipContext } from '@/lib/ai/security/clientInput'
+import { loadExploreClipContext, buildExploreClipBlock, exploreClipLocationHint, type ExploreClipContext } from '@/lib/ai/exploreClipContext'
+import { applyClipTarget, applyClipAlternatives, asksForAlternatives, type ClipTargetStatus } from '@/lib/ai/exploreClipTarget'
+import { withPlacesVerification, clipTargetMetric, askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
-import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectMovieRecommendationIntent, isSimpleQuery } from '@/lib/ai/intent'
+import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
-import { resolveDecisionStage, taskSwitched } from '@/lib/ai/consultative/refinement'
+import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
 import { rankCandidates } from '@/lib/ai/consultative/rank'
 import { shortlistShopping, shortlistCandidates } from '@/lib/ai/consultative/shortlist'
+import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSummary, buildDecisionFrameBlock } from '@/lib/ai/consultative/decisionFrame'
+import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
 import { proposeRelaxation } from '@/lib/ai/consultative/relaxation'
 import { classifyTurnIntent } from '@/lib/ai/consultative/intentGate'
 import { derivePick, buildPickPayload, buildRankingInstructionBlock, buildShoppingGroundingBlock, isExplicitChoiceRequest, hasImplicitPurchaseIntent } from '@/lib/ai/consultative/pick'
@@ -31,27 +42,88 @@ import { buildShoppingSynthesis, buildSynthesisPayload, buildSynthesisInstructio
 import { buildSynthesisView, renderShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { buildDecisionEvidence, renderDecisionEvidenceBlock, renderMissingEvidenceBlock, type DecisionEvidence } from '@/lib/ai/consultative/decisionEvidence'
 import { resolveTripContext, buildTransportModeBlock } from '@/lib/ai/consultative/tripContext'
-import { pw, normalizePwLang } from '@/lib/priceWatch/messages'
-import { type Budget, extractBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
-import { buildSystem, buildSystemSimple, buildPrefBlock } from '@/lib/ai/promptBuilder'
+import { placeRecommendations, productRecommendations, stayRecommendations } from '@/lib/recommendation/fromToolResult'
+import { producerSubject } from '@/lib/recommendation/slotAdmission'
+import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
+import { serperSearch } from '@/lib/ai/tools/common'
+import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decisionSurface'
+import { normalizePwLang } from '@/lib/priceWatch/messages'
+import { runAiWriteAction } from '@/lib/ai/actions/runAction'
+import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
+import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
+import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
+import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
 import { sanitizePriorAssistantContent } from '@/lib/ai/sanitizePriorAssistantContent'
 import { buildChatPromptContext, buildIdentityBlock } from '@/lib/ai/contextBuilder'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
-import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib/config/product'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicRateLimit, publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
+import { guardShareFollowUp } from '@/lib/share/followUpGuard'
+import { readZaloIdentity, zaloIdentitySecret } from '@/lib/zalo/identity'
+import { flushPending, recordEvent, type UsageEvent } from '@/lib/observability'
+import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
+import { aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
+import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
+// Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
+import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
+import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
+import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
+import { scheduleTimesIn } from '@/lib/ai/travelGuard'
+import { priorVenuesIn, resolveReferences, referencedVenues, factsAsked, priorTextStates, renderReferencedBlock, carriedFacts } from '@/lib/ai/consultative/referenceResolver'
+import { extractAttributes, attributeSummary } from '@/lib/ai/consultative/reviewAttributes'
+import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/hardConstraintGate'
+import { admitsForHard } from '@/lib/ai/consultative/upscale'
+import { closesLate } from '@/lib/ai/consultative/hardConstraints'
+import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation } from '@/lib/ai/consultative/actionability'
+import { currentSubjectMessages, currentSubjectUserTexts } from '@/lib/ai/consultative/subjectScope'
+import { statedDistrict } from '@/lib/ai/districts'
+import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
+import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
+import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
+import { planPresearch, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
+import { coercePlaceType } from '@/lib/ai/tools/placeType'
+import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
+import { clampPassengers } from '@/lib/ai/tools/passengers'
+import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
+import { compactHistory } from '@/lib/ai/historyCompaction'
+import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
 
 export async function POST(req: Request) {
   const startTime = Date.now()
+  /** Audit cost sink (env `AUDIT_USAGE_LOG_FILE`): Serper calls attributed to this turn. */
+  const serperAtStart = serperSnapshot()
+  const auditTurn = req.headers.get('x-audit-turn')
+
+  // ── P1-3: deliver whatever the previous request buffered ───────────────────
+  //
+  // Events are recorded synchronously into a module-level buffer and delivered at the START of a
+  // LATER request, where the network call overlaps work the handler was already going to await.
+  // Never awaited: awaiting it would put Cloud Logging's latency in front of the user's reply,
+  // which is the exact cost this design exists to avoid. It cannot reject.
+  //
+  // Chat is where this call belongs. Before P1-3 the only flush sites were TTS and the three media
+  // uploads — all low-traffic — so a chat-dominant workload would record usage events into a
+  // 200-entry buffer and overflow it long before anything drained. Recording without flushing here
+  // would have produced a cost pipeline that silently measured a small, biased sample.
+  void flushPending(req)
 
   // Flood guard: cap requests per client IP (applies to anonymous and
   // authenticated callers alike, before any expensive LLM/tool work). The
   // per-user daily freemium cap below is a separate, longer-window control.
-  const rl = rateLimit(`chat:${clientIp(req)}`, 30, 60_000)
+  // A2 (2026-09-20): the cap is SHARED across instances when the KV store is configured
+  // (publicRateLimit → distributedRateLimit, fail-closed on a store outage); without credentials
+  // it is the in-process limiter this line always was — 🚨 NOT PRODUCTION SAFE as a real cap
+  // (N warm lambdas = N × 30/min), and `scope` says which one answered.
+  const rl = await publicRateLimit(`chat:ip:${clientIp(req)}`, CHAT_IP_BURST_PER_MINUTE, 60_000)
   if (!rl.ok) {
+    console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_ip_burst', scope: rl.scope }))
     return new Response(
       JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
       { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(rl.retryAfter) } },
@@ -99,9 +171,11 @@ export async function POST(req: Request) {
 
   const messages = validated.messages
   const rawUserPrefs = validated.preferences
-  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle } = (rawBody ?? {}) as {
+  const { userLocation: rawUserLocation, responseStyle: rawResponseStyle, shareSlug: rawShareSlug } = (rawBody ?? {}) as {
     userLocation?: { lat?: unknown; lng?: unknown; address?: string }
     responseStyle?: unknown
+    /** G1: set only by the public shared-result page's follow-up box. Validated in the guard. */
+    shareSlug?: unknown
   }
 
   // User-controlled response style (Personalization — MFS 2.6: lets the user shape tone).
@@ -121,6 +195,14 @@ export async function POST(req: Request) {
       ? { lat: rawUserLocation.lat, lng: rawUserLocation.lng, address: rawUserLocation.address || '' }
       : null
 
+  // "Hỏi Tappy về chỗ này" (Explore). Shape-only read of a review REFERENCE; the
+  // facts are loaded server-side below, under the caller's own RLS. See
+  // `lib/ai/exploreClipContext.ts` for why one string was not enough.
+  const clipRef = readExploreClipContext(rawBody)
+  let clipContext: ExploreClipContext | null = null
+  /** Who pressed the button, for the `ask_tappy_place` metric row. Null for a guest. */
+  let clipUserId: string | null = null
+
   const lastUserMsg = [...messages].reverse().find((m: { role: string }) => m.role === 'user')
   const rawContent = lastUserMsg?.content
   const lastText = typeof rawContent === 'string'
@@ -134,19 +216,39 @@ export async function POST(req: Request) {
     (c: { type?: string }) => c.type === 'image' || c.type === 'image_url'
   )
 
-  const intent = classifyIntent(lastText)
+  // Item 1: after a clarify turn the deterministic readers (intent, need profile, decision frame,
+  // situation, search-now) see the original request and the answer as ONE user turn
+  // (actionability.ts) — "2 người" alone would classify as chitchat and drop the tools. The model
+  // receives the real thread.
+  const framingMessages = mergeClarifyAnswer(messages)
+  const framingText: string = (() => { const last = framingMessages[framingMessages.length - 1]; return typeof last?.content === 'string' ? last.content : lastText })()
+  const intent = classifyIntent(framingText)
   const budget = extractBudget(lastText)
   const locationIntent = detectLocationIntent(lastText)
-  const planningIntent = detectPlanningIntent(lastText)
   // A "recommend me a movie/show" turn must NOT be routed to the place search
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
   const movieRecommend = detectMovieRecommendationIntent(lastText)
-  // Response language = the user's LATEST message, unless they explicitly ask
-  // for another one ("Answer in English", "Trả lời bằng tiếng Việt") — that
-  // request always wins. Never derived from UI locale, browser language,
-  // profile, country, or earlier turns (none of those are read here).
-  const lang = detectExplicitLangRequest(lastText) ?? detectLang(lastText)
+  // Response language, in priority order:
+  //   1. an explicit request in the message ("Answer in English", "Trả lời bằng tiếng Việt"),
+  //   2. the language the CLIENT says the user is using (`Accept-Language` / `?lang`),
+  //   3. detection from the message text.
+  //
+  // Step 2 is new, and it reverses the previous rule, which read the language out of the message
+  // text alone and deliberately ignored the UI locale. That rule breaks on the most ordinary
+  // Vietnamese input there is: typing without diacritics. "Tim quan bun bo ngon o TPHCM" has no
+  // accented characters and no Vietnamese function words that `detectLang` weighs, so it scores as
+  // English and the assistant answers a Vietnamese user in English — reproduced repeatedly on
+  // 2026-09-08 against the live pipeline.
+  //
+  // Text detection remains the fallback for a client that sends no locale at all, so nothing
+  // regresses for callers that never had one, and an explicit in-message request still wins over
+  // both — asking for English in a Vietnamese app still gets English, for that turn.
+  const clientLocale = requestLocale(req)
+  const lang = detectExplicitLangRequest(lastText)
+    ?? detectLangConfident(lastText)
+    ?? clientLocale
+    ?? detectLang(lastText)
   const forcedTool = detectForcedTool(lastText)
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
@@ -154,10 +256,62 @@ export async function POST(req: Request) {
   // Whether this turn earns a third LLM call for memory extraction. Was
   // `lastText.length > 20`, which measured wrong in both directions: it fired on
   // weather/gold/news lookups that store nothing, and dropped "Tôi ăn chay."
-  // (12 chars) — a hard dietary constraint. See memoryGate.ts.
-  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool })
+  // (12 chars) — a hard dietary constraint. See memoryGate.ts. Consultative V1 flips the
+  // default to NO (measured: ordinary requests yield nothing the transient filter keeps) and the
+  // topic of a plain request is written to `history` below without a model call.
+  const worthExtract = shouldExtractMemory({ text: lastText, intent, forcedTool, consultative: consultativeV1Enabled() })
   const userMessages = messages.filter((m: { role: string }) => m.role === 'user')
   const isFirstReply = userMessages.length <= 1
+  // CCP Phase 8 (P1-2): the commerce seam reads the capability and the reservation party/time/date
+  // from the last few USER turns, so a reply to Tappy's clarifying question keeps them. Text only.
+  const recentUserTexts: string[] = userMessages.slice(-3).map((m: { content?: unknown }) => {
+    const c = m.content
+    return typeof c === 'string' ? c : Array.isArray(c) ? c.map((p: { text?: string }) => p.text || '').join(' ') : ''
+  })
+  // PRELAUNCH 5a/5b: what a follow-up may INHERIT (a budget, a district, a meal time) comes from the
+  // CURRENT subject's turns only — a lunch budget must not follow the user into a phone purchase.
+  // The boundary is `turnStartsNewConsultation` applied to every user turn (subjectScope.ts).
+  const subjectUserTexts: string[] = currentSubjectUserTexts(messages, { hasGps: !!userLocation, lang })
+  const recentSubjectUserTexts = subjectUserTexts.slice(-3)
+  // A district the USER named (never the model's own location string, which it fills from the GPS).
+  // It centres the place search and constrains the rows by address (placeConstraintFilter.ts).
+  const statedArea = statedDistrict(lastText)
+    ?? subjectUserTexts.slice(0, -1).reverse().map(t => statedDistrict(t)).find(d => d !== null)
+    ?? null
+  // Phase 7 group 4 (golden T1/G4a): a plan is built across turns. The planning block used to be
+  // decided from the LAST message alone, so "mai đi mốt về, budget 20 triệu" and "gần biển" — the
+  // answers to the plan's own questions — arrived without it, the model re-asked instead of
+  // planning, and the plan never came. A short refinement inside a planning thread inherits the
+  // thread's plan type; the envelope, the named activities and the trip length are folded from
+  // the user turns of the CURRENT SUBJECT (nearest statement wins for budget and length).
+  // PRELAUNCH UAT (Android, golden B4, 2026-09-25): "tai nghe dưới 2 triệu" → "Lên lịch trình 1
+  // ngày ở Vũng Tàu" folded the headphone ceiling in as the trip's total budget ("ngân sách 2 triệu"
+  // in the reply, budget_max 2,000,000 on the place rows) — the fold read the last 3 user turns
+  // whatever their subject.
+  const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)
+  const ownPlanningIntent = detectPlanningIntent(lastText)
+  const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
+    ? (priorUserTexts.map(detectPlanningIntent).reverse().find(p => p !== null) ?? null)
+    : null
+  const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
+  // A plan's budget is the WHOLE envelope, and its searches are the activities
+  // the user named — both decided here, deterministically, so the planning block
+  // can state the total and list exactly the searches to run (see promptBuilder).
+  const planning = planningIntent
+    ? (() => {
+        const thread = [...priorUserTexts, lastText]
+        const nearest = <T,>(read: (s: string) => T | null): T | null => thread.slice().reverse().map(read).find(v => v !== null) ?? null
+        return {
+          totalBudget: nearest(extractPlanTotalBudget),
+          activities: [...new Set(thread.flatMap(detectPlanActivities))],
+          tripLength: nearest(detectTripLength),
+          transport: planningIntent === 'trip' ? defaultTransportFor(thread.join(' '), userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null) : null,
+          inherited: inheritedPlanningIntent !== null,
+          refinement: inheritedPlanningIntent !== null ? lastText : null,
+        }
+      })()
+    : undefined
+  if (inheritedPlanningIntent) console.log(JSON.stringify({ type: 'tappyai_planning', step: 'inherited', planType: inheritedPlanningIntent, tripLength: planning?.tripLength ?? null, totalBudget: planning?.totalBudget ?? null }))
   // Where in the decision this turn sits (C2). "Rẻ hơn" only means "tighten the
   // current task" if there IS one, so refinement is gated on a prior assistant
   // turn — read from the history already on the request, not a second LLM call.
@@ -197,6 +351,13 @@ export async function POST(req: Request) {
   // short-circuited. With the lexicon fixed (needProfile DOMAIN_HINTS) the
   // detector works, so the real value is read here — a food → hotel switch is a
   // new consultation, not a follow-up to the meal.
+  // 🚨 A broad turn of ANOTHER domain is a new consultation too (Android re-test B4/B9,
+  // 2026-09-19): "cuối tuần đi chơi đâu" after a food consultation has no venue noun, so
+  // `taskSwitched` saw no switch; the thread's budget and area then made the clarify gate call it
+  // actionable for FOOD, no clarify fired, and the model asked instead of searching. The gate's own
+  // domain reading of the turn alone decides (turnStartsNewConsultation); when it fires, the
+  // intent gate, the clarify gate and the situation frame all read the turn as a first turn.
+  const ownDomainSwitch = consultativeV1Enabled() && turnStartsNewConsultation({ messages, hasGps: !!userLocation, lang })
   const turnIntent = classifyTurnIntent({
     stage: decisionStage,
     hasPriorAssistantTurn,
@@ -205,7 +366,7 @@ export async function POST(req: Request) {
     // storedPreferences (cuisine/dietary/budget) nor gps (location) participates
     // in domain detection. Passing them would also cross a temporal dead zone —
     // `storedPrefs` is not assigned until the memory load further down.
-    taskSwitched: taskSwitched(messages),
+    taskSwitched: taskSwitched(messages) || ownDomainSwitch,
     assistantAskedClarification,
   })
   console.log(JSON.stringify({ type: 'tappyai_intent_gate', turnIntent, decisionStage, hasPriorAssistantTurn, assistantAskedClarification }))
@@ -219,29 +380,58 @@ export async function POST(req: Request) {
   let authedUserId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
-  // True once a token-based ANONYMOUS session's quota was enforced server-side
-  // (keyed by anonymous_id) — the legacy cookie counter below is then skipped.
-  let anonQuotaByToken = false
+  // ── The ONE AI question quota ─────────────────────────────────────────────
+  //
+  // Every model-invoking feature spends from `lib/ai/quota/aiQuestionQuota.ts`; this route is one
+  // spender among several (Cảnh báo lừa đảo message analysis is another). Anonymous = 5 for the
+  // lifetime of the identity, registered = 15 per VN day, Pro exempt. The spend is atomic in the
+  // shared store and happens here, before any model or tool work, exactly once per turn.
+  //
+  // The previous three mechanisms — the per-day anonymous-usage RPC in Postgres, the httpOnly
+  // cookie mirror, and the count of today's chat rows — are gone from this route: none of them
+  // could express a lifetime allowance or be shared with a non-chat feature.
+  //
+  // True once a VERIFIED identity (anonymous session or account) has been metered above; the
+  // identity-less fallback below then stays out of the way.
+  let quotaMetered = false
+  // F-015: the refund handle for the ONE question this turn spends, and a single-shot guard so a
+  // failed answer is given back exactly once. Set at whichever consume site meters the turn; stays
+  // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
+  let quotaRefund: AiQuotaRefund | null = null
+  let quotaRefunded = false
   /**
-   * The count the token authority reported, mirrored into the cookie.
-   *
-   * ============================================================================
-   * WHY THE COOKIE IS MIRRORED AND NOT MERELY SKIPPED — dual-authority closure
-   * ============================================================================
-   * There are two anonymous counters: the `anon_chat_usage` row (keyed by anonymous_id,
-   * durable) and the `tappy_anon` cookie (keyed by browser). The row is authoritative; the
-   * cookie exists so a guest is still capped when the RPC is unavailable.
-   *
-   * 🚨 They were INDEPENDENT, which made the fallback a second allowance: a guest who used
-   * all five through the RPC and then hit one transient RPC failure met a cookie counter that
-   * had never been written and started again at zero. "Authoritative with a fallback" only
-   * holds if the fallback inherits what the authority already counted.
-   *
-   * Mirroring costs one header on a request that is already setting none. The row stays the
-   * authority — the cookie is never read while the RPC answers, and a cleared cookie still
-   * cannot raise the cap, because the row is what the next successful call reads.
+   * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
+   * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
+   * not charged to the AI-question quota (owner decision, 2026-09-18). Decided HERE, before the
+   * quota is spent, from the same pure inputs the canned path below reads; the later canned check
+   * reuses this value, so "not charged" and "not modelled" can never disagree.
    */
-  let anonTokenCount: number | null = null
+  const cannedEarly: string | null = (() => {
+    if (intent === 'chitchat') return cannedChitchat(lastText, lang)
+    if (!consultativeV1Enabled() || clipContext || decisionStage === 'confirmation') return null
+    const priorVenues = priorVenuesIn(lastAssistantText)
+    if (priorVenues.length === 0) return null
+    const referenced = referencedVenues(resolveReferences(lastText, priorVenues))
+    const facts = factsAsked(lastText)
+    if (referenced.some(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
+    return cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+  })()
+  /**
+   * Item 1 (owner decision 2026-09-19): a request too broad to advise on is answered with ONE
+   * clarify turn — server-authored, no tool, no model, not charged — from the single gate in
+   * actionability.ts. Decided here, beside the canned decision and before the quota is spent,
+   * from the thread and GPS only (memory loads after the quota branch).
+   */
+  let clarifyGate = (() => {
+    if (cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
+    // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
+    const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
+    const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
+    console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
+    return a.actionable ? null : a
+  })()
+  // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
+  let quotaExempt = cannedEarly !== null || clarifyGate !== null
 
   // ── ADR-024: decision evidence state ──────────────────────────────────────
   //
@@ -259,79 +449,111 @@ export async function POST(req: Request) {
   let evidenceDb: SupabaseClient | null = null
   /** Evidence from a PREVIOUS turn, loaded when the client presented its id. */
   let priorEvidence: DecisionEvidence | null = null
+  /** The raw evidence row this turn was handed (shopping evidence and/or the last place search). */
+  let loadedEvidenceRow: Record<string, unknown> | null = null
   /** True when an id WAS presented but did not resolve — the fail-safe path. */
   let priorEvidenceMissing = false
 
+  // True once the 18+ gate has admitted THIS request — the guest declaration or
+  // the account's eligibility. Checked again after the try/catch below, because
+  // that catch favours availability and must never mean "ungated".
+  let ageGatePassed = false
   try {
     const { user, supabase } = await getRequestUser(req)
+    // The clip the user is asking about, read through THIS caller's client —
+    // guests included (the anon-key client sees exactly what the public feed
+    // sees). Null on any miss; the turn then runs as plain chat.
+    if (clipRef) clipContext = await loadExploreClipContext(supabase, clipRef.reviewId)
+    if (clipContext) clipUserId = user?.id ?? null
     // Anonymous sessions qualify: a Supabase anonymous identity is a real
     // auth.uid() on the `authenticated` role, which is exactly what the RPCs
     // key on. Guests are the majority web path and the one that fabricated.
     if (user) evidenceDb = supabase
 
-    // ── V3 User Data Foundation: product access requires an account, then 18+ ──
+    // ── The 18+ gate, BEFORE quota and before any model or tool call ──────────
     //
-    // Chat is product functionality, so it is gated. The check sits at the very
-    // top of the authenticated path — before memory, preferences, subscription,
-    // quota and any LLM or third-party call — so a refused turn costs nothing,
-    // the same discipline the Module 08 suspension gate already follows below.
+    // Chat is product functionality, so it is gated — at the very top of the
+    // path, before memory, preferences, subscription, quota and any LLM or
+    // third-party call, so a refused turn costs nothing (the discipline the
+    // Module 08 suspension gate below already follows).
     //
-    // 🚨 BEHAVIOUR CHANGE, stated plainly: anonymous sessions previously reached
-    //    the model under a daily quota. Under the instruction that Chat
-    //    constitutes actual TappyAI usage, they are now refused with
-    //    `auth_required`. The anonymous quota code below is deliberately left
-    //    intact and unreferenced by this branch — deleting it would be an
-    //    unrelated refactor, and it still governs any surface that stays
-    //    anonymous-accessible.
+    // Two populations, two sources of truth (owner decision D1, revised
+    // 2026-09-17: the guest trial stays, and so does the gate):
+    //   · GUEST (no account, or an anonymous session): a self-declaration stored
+    //     on the device — the `tappy_guest_age` cookie the web sets through
+    //     POST /api/age-declaration, or the `x-tappy-age-declared` header an
+    //     installed app sends. Evaluated server-side from the stored value on
+    //     every request (`lib/account/guestAgeDeclaration.ts`). Nothing declared
+    //     ⇒ 403 `age_declaration_required`; declared under 18 ⇒ 403
+    //     `age_ineligible`; 18+ ⇒ on to V3's lifetime trial quota below.
+    //   · ACCOUNT: main #251's `getAgeEligibility()` — a date of birth on file,
+    //     underage blocked, unknown withheld.
+    let ageBand: string | null = null
     if (!user || user.is_anonymous) {
-      return new Response(
-        JSON.stringify({
-          error: 'auth_required',
-          message: serverMessage('auth.accountRequired', requestLocale(req)),
-          upgradeUrl: '/login',
-        }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      )
-    }
-
-    const ageGate = await getAgeEligibility(supabase)
-    if (ageGate.status !== 'eligible') {
-      return new Response(
-        JSON.stringify({
-          error: ageEligibilityCode(ageGate.status),
-          message: serverMessage(
-            ageGate.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
-            requestLocale(req)
-          ),
-        }),
-        { status: 403, headers: { 'Content-Type': 'application/json' } }
-      )
+      const declaration = readGuestAgeDeclaration(req.headers)
+      if (declaration.status !== 'eligible') {
+        const ineligible = declaration.status === 'ineligible'
+        return new Response(
+          JSON.stringify({
+            error: ineligible ? 'age_ineligible' : GUEST_AGE_DECLARATION_REQUIRED,
+            message: serverMessage(ineligible ? 'age.ineligible' : 'age.declarationRequired', requestLocale(req)),
+            upgradeUrl: '/age-check',
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
+      ageGatePassed = true
+    } else {
+      // 🚨 FAILS CLOSED PAST THE ROUTE'S OWN CATCH. `getAgeEligibility` already
+      // returns `unknown` on a read error, but an unexpected throw used to land in
+      // the "auth/quota resolution failed" catch below — and back when that catch
+      // let the turn through unmetered, unmetered also meant UNGATED: the turn reached the model with no
+      // age check at all (found by ageGate.route.test.ts in the main → V3 merge).
+      // An unknown age withholds the model; it never admits.
+      const ageGate = await getAgeEligibility(supabase).catch((e: unknown) => {
+        console.error('[chat] age eligibility threw — withholding:', e instanceof Error ? e.message : String(e))
+        return { status: 'unknown' as const, ageBand: null, age: null, canSelfCorrect: true }
+      })
+      if (ageGate.status !== 'eligible') {
+        return new Response(
+          JSON.stringify({
+            error: ageEligibilityCode(ageGate.status),
+            message: serverMessage(
+              ageGate.status === 'ineligible' ? 'age.ineligible' : 'age.verificationRequired',
+              requestLocale(req)
+            ),
+          }),
+          { status: 403, headers: { 'Content-Type': 'application/json' } }
+        )
+      }
+      ageGatePassed = true
+      ageBand = ageGate.ageBand
     }
 
     if (user?.is_anonymous) {
-      // Anonymous session minted by POST /api/auth/anonymous. Same Bearer
-      // pipeline as logged-in users (getRequestUser verified the JWT); quota is
-      // keyed by anonymous_id = auth.uid() inside a SECURITY DEFINER function —
-      // the client never sends or computes quota information. No memory,
-      // preferences, or subscription lookups for anonymous identities.
-      const { data: usedToday, error: quotaError } = await supabase.rpc('anon_chat_usage_increment')
-      if (!quotaError && typeof usedToday === 'number') {
-        anonQuotaByToken = true
-        anonTokenCount = usedToday
-        if (usedToday > ANON_DAILY_LIMIT) {
+      // Anonymous session minted by POST /api/auth/anonymous. Same Bearer pipeline as logged-in
+      // users (getRequestUser verified the JWT); the quota is keyed by that verified id, so the
+      // client never sends or computes quota information. No memory, preferences, or
+      // subscription lookups for anonymous identities.
+      // Deterministic-is-free + R-3: quotaExempt (a canned/clarify turn, computed server-side; see
+      // the `canned` return, llmCalls:0) answers without the model and spends nothing; the model path
+      // sets quotaMetered AFTER the spend so a throw falls to the IP backstop.
+      if (quotaExempt) {
+        quotaMetered = true
+      } else {
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
           return new Response(
             JSON.stringify({
               error: 'anon_limit_reached',
-              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
+              message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
               upgradeUrl: '/login',
             }),
             { status: 401, headers: { 'Content-Type': 'application/json' } }
           )
         }
-      } else {
-        // RPC unavailable (migration not applied yet / transient) — fall back to
-        // the legacy cookie cap below rather than leaving the request uncapped.
-        console.error('[chat] anon quota rpc failed, falling back to cookie cap:', quotaError?.message)
+        quotaMetered = true
+        quotaRefund = spend.refund
       }
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
@@ -345,22 +567,27 @@ export async function POST(req: Request) {
             error: accountRestrictionCode(restriction.reason!),
             message: accountRestrictionMessage(restriction),
           }),
-          { status: 403, headers: { 'Content-Type': 'application/json' } }
+          // 503 when the status could not be READ (R-4) — retryable, and not a verdict on the user.
+          { status: accountRestrictionStatus(restriction.reason!), headers: { 'Content-Type': 'application/json' } }
         )
       }
 
       authedUserId = user.id
 
-      // Four reads that need nothing but `user.id` and never feed each other.
+      // Three reads that need nothing but `user.id` and never feed each other.
       // Run serially they were ~2-3s of dead air before the model was even
       // called (measured on prod 1e6c867: authenticated TTFB 3.6-4.0s against
       // 1.0s anonymous on the same tool-free question).
       //
       // Their position AFTER the restriction gate is deliberately unchanged: a
       // blocked account still returns above, so it still costs no LLM tokens and
-      // no third-party calls. Only the four post-gate reads move in parallel.
-      const [chatContext, calendarBlock, subResult, todayMsgCount] = await Promise.all([
-        buildChatPromptContext(user.id, supabase, ageGate.ageBand),
+      // no third-party calls. Only the post-gate reads move in parallel.
+      //
+      // The quota is NOT in this batch any more: it is a SPEND, not a read, and a Pro account
+      // must not spend — so it waits for `isPro`, one store round-trip after the batch.
+      // The age band (main #251) rides into the prompt context; the gate itself returned above.
+      const [chatContext, calendarBlock, subResult] = await Promise.all([
+        buildChatPromptContext(user.id, supabase, ageBand),
         // Calendar keeps its own catch INSIDE the batch. Hoisting it without one
         // would let an integration outage reject the whole Promise.all and take
         // memory, subscription and quota down with it — which the sequential
@@ -378,19 +605,12 @@ export async function POST(req: Request) {
           .select('status, current_period_end')
           .eq('user_id', user.id)
           .single(),
-        // Speculative on purpose. The count is only ENFORCED for non-Pro users,
-        // but waiting for `isPro` to decide whether to ask would put this read
-        // straight back on the serial path it was moved off. A Pro user's count
-        // is computed and then ignored: one read, no behavioural change.
-        //
-        // Shared VN-day measurement from @/lib/config/product — the same helper
-        // the subscription page displays from, so display and enforcement can
-        // never disagree.
-        countTodayUserMessages(supabase, user.id),
       ])
 
       existingMemory = chatContext.memory
-      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool)
+      // Consultative V1: the capped block whose instruction is "use it to choose, never to ask"
+      // (memoryBlock.ts). Flag OFF: the legacy block, byte-identical.
+      if (existingMemory) memoryBlock = buildMemoryBlock(existingMemory, forcedTool, { consultative: consultativeV1Enabled() })
 
       // V3 User Data Foundation — the canonical identity block (preferred name,
       // city, age band, gender). Appended to the memory block for the same
@@ -410,6 +630,16 @@ export async function POST(req: Request) {
       // at its declaration, so `+=` needs no null guard.
       memoryBlock += buildIdentityBlock(chatContext.identity)
       if (chatContext.prefs) { prefBlock = buildPrefBlock(chatContext.prefs); storedPrefs = chatContext.prefs }
+      // Item 1: memory is a signal — a returning user's stored budget / tastes / companions unblock
+      // a request a stranger would be asked about (owner 2026-09-18: memory chooses, never asks).
+      if (clarifyGate) {
+        const unblockedBy = memorySignal(existingMemory, storedPrefs, clarifyGate)
+        if (unblockedBy) {
+          console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: true, unblocked_by: unblockedBy, domain: clarifyGate.domain }))
+          clarifyGate = null
+          quotaExempt = cannedEarly !== null
+        }
+      }
       // Appended AFTER the memory block is built, exactly as the sequential
       // version did — calendar events extend the memory block, never replace it.
       if (calendarBlock) memoryBlock = (memoryBlock || '') + calendarBlock
@@ -419,22 +649,80 @@ export async function POST(req: Request) {
         isPro = new Date(subData.current_period_end) > new Date()
       }
 
-      if (!isPro && todayMsgCount >= FREE_DAILY_LIMIT) {
+      // One question from the shared daily pool. Same pool every AI feature draws on, so a
+      // Cảnh báo lừa đảo analysis earlier today is already counted here.
+      // A2: a signed-in account has its own burst cap on top of the IP one — one account behind
+      // many IPs (a script through proxies) is the case the IP cap cannot see.
+      const userBurst = await publicRateLimit(`chat:user:${user.id}`, CHAT_USER_BURST_PER_MINUTE, 60_000)
+      if (!userBurst.ok) {
+        console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_user_burst', scope: userBurst.scope, pro: isPro }))
         return new Response(
-          JSON.stringify({
-            error: 'free_limit_reached',
-            message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
-          }),
-          { status: 429, headers: { 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }),
+          { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(userBurst.retryAfter) } },
         )
+      }
+      // 🚨 R-3 + DETERMINISTIC-IS-FREE. quotaMetered is SET AFTER THE SPEND, never before: setting
+      // it first meant a throw between here and the spend left the flag true and the IP-keyed
+      // backstop skipped — the turn reached the model counted by nobody, a metering bypass an
+      // attacker can provoke by failing the quota store. Pro is metered by nothing (unlimited); a
+      // deterministic/canned turn (quotaExempt) answers WITHOUT the model, so it spends nothing
+      // either. Both still mark metered so the backstop does not recharge them. One spend per turn.
+      if (isPro || quotaExempt) {
+        quotaMetered = true
+      } else {
+        const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok) {
+          return new Response(
+            JSON.stringify({
+              error: 'free_limit_reached',
+              message: serverMessage('chat.freeLimit', requestLocale(req), { n: FREE_DAILY_LIMIT }),
+            }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } }
+          )
+        }
+        quotaMetered = true
+        quotaRefund = spend.refund
+      }
+      // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
+      // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
+      // worst day of one account; canned turns ($0) are not counted.
+      if (isPro && !quotaExempt) {
+        const proDay = await publicDailyRateLimit(`chat:pro:${user.id}`, PRO_DAILY_CHAT_CAP)
+        if (!proDay.ok) {
+          console.warn(JSON.stringify({ type: 'tappyai_rate_limit', limit: 'chat_pro_daily', scope: proDay.scope }))
+          return new Response(
+            JSON.stringify({ error: 'pro_daily_limit_reached', message: serverMessage('chat.proDailyLimit', requestLocale(req), { n: PRO_DAILY_CHAT_CAP }) }),
+            { status: 429, headers: { 'Content-Type': 'application/json' } },
+          )
+        }
       }
     }
   } catch (e) {
-    // Identity/quota resolution is best-effort so a transient auth/DB error can't
-    // hard-fail chat. This favors availability over strict enforcement: on error
-    // the daily cap for THIS request may be skipped. Log it so the fail-open is
-    // observable rather than silent.
-    console.error('[chat] auth/quota resolution failed (proceeding unmetered):', e)
+    // Identity/quota resolution is best-effort so a transient auth/DB error can't hard-fail
+    // chat. What it must NOT do is let the turn through uncounted: `quotaMetered` is only true
+    // once a spend actually happened (R-3), so anything that lands here falls through to the
+    // IP-keyed backstop below and is metered as the anonymous tier — stricter than the tier the
+    // user would have had, which is the right direction to fail. Logged so it stays observable.
+    console.error('[chat] auth/quota resolution failed (falling back to IP-keyed metering):', e)
+  }
+  // 🚨 "UNMETERED" MUST NEVER MEAN "UNGATED". If identity resolution threw before
+  // the gate above could run, the request is treated as a guest: the device
+  // declaration is the one thing that can be evaluated without identity, and
+  // without it the model is withheld. Fails closed (owner D1: never reach the
+  // model before the gate and quota checks pass).
+  if (!ageGatePassed) {
+    const declaration = readGuestAgeDeclaration(req.headers)
+    if (declaration.status !== 'eligible') {
+      const ineligible = declaration.status === 'ineligible'
+      return new Response(
+        JSON.stringify({
+          error: ineligible ? 'age_ineligible' : GUEST_AGE_DECLARATION_REQUIRED,
+          message: serverMessage(ineligible ? 'age.ineligible' : 'age.declarationRequired', requestLocale(req)),
+          upgradeUrl: '/age-check',
+        }),
+        { status: 403, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
   }
 
   // ── ADR-024: recover the PREVIOUS turn's evidence ─────────────────────────
@@ -462,8 +750,11 @@ export async function POST(req: Request) {
         ? await evidenceDb.rpc('decision_evidence_load', { p_id: presentedEvidenceId })
         : { data: null }
       // A jsonb row comes back as an object; anything else means "nothing usable".
-      if (data && typeof data === 'object') priorEvidence = data as DecisionEvidence
-      else priorEvidenceMissing = true
+      if (data && typeof data === 'object') {
+        loadedEvidenceRow = data as Record<string, unknown>
+        // A place-only row (A1(d) moreFromSet.ts) has no shopping pick; it is not shopping evidence.
+        if ((data as { pick?: unknown }).pick) priorEvidence = data as DecisionEvidence
+      } else priorEvidenceMissing = true
     } catch (e) {
       // Fail SAFE, not open: an unreachable RPC must not become licence to
       // answer from memory, which is the exact failure this feature exists for.
@@ -481,45 +772,69 @@ export async function POST(req: Request) {
   //
   // If this turn DOES shop, `freezeShoppingEvidence` writes the same id again
   // with fresher facts and wins; the RPC upserts, so the order is safe either way.
-  if (priorEvidence && evidenceDb) {
+  if (loadedEvidenceRow && evidenceDb) {
     try {
-      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: priorEvidence })
+      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: loadedEvidenceRow })
     } catch (e) {
       console.error('[chat] decision evidence carry-forward failed:', e)
     }
   }
 
-  // Freemium policy: anonymous visitors get a small taste — FREE_ANON_LIMIT basic
-  // questions per day — then must log in. The count lives in an httpOnly cookie
-  // (server-set, so ordinary users can't tamper; clearing cookies resets it,
-  // which is acceptable for a top-of-funnel teaser). Everything past chat
-  // (reviews, saves, upload, …) still requires an account.
-  let anonSetCookie: string | null = null
-  if (anonTokenCount !== null) {
-    // Mirror the authoritative count into the fallback counter — see `anonTokenCount`. Written
-    // even when the RPC has already refused this request, so a guest at the cap stays at the cap
-    // if the next request has to fall back.
-    anonSetCookie = `tappy_anon=${vnToday()}:${anonTokenCount}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
-  } else if (!authedUserId && !anonQuotaByToken) {
-    const today = vnToday()
-    const cookieHeader = req.headers.get('cookie') || ''
-    const m = cookieHeader.match(/(?:^|;\s*)tappy_anon=([^;]+)/)
-    let anonCount = 0
-    if (m) {
-      const [d, c] = decodeURIComponent(m[1]).split(':')
-      if (d === today) anonCount = parseInt(c, 10) || 0
-    }
-    if (anonCount >= ANON_DAILY_LIMIT) {
+  // A caller with no verified identity at all — a direct API call, or a browser whose anonymous
+  // mint failed. Metered as the lifetime anonymous tier keyed by IP: the same five, once. The
+  // previous cookie counter is gone — a counter the client carries is a counter the client resets.
+  if (!quotaMetered) {
+    const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
+    if (!spend.ok) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
-          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_DAILY_LIMIT }),
+          message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }),
           upgradeUrl: '/login',
         }),
         { status: 401, headers: { 'Content-Type': 'application/json' } }
       )
     }
-    anonSetCookie = `tappy_anon=${today}:${anonCount + 1}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax; Secure`
+    quotaRefund = spend.refund
+  }
+
+  // ── G1-E: per-Zalo-identity daily cap ────────────────────────────────────
+  //
+  // A request from the Zalo Mini App carries a SERVER-SIGNED identity cookie
+  // (see src/lib/zalo/identity.ts). It is an additional rate-limit key over the
+  // canonical quota above — never an authentication, never a bypass. A forged or
+  // absent cookie simply means this cap does not apply and the ordinary anonymous
+  // quota does. Same number as the anonymous tier (ANON_LIFETIME_LIMIT), applied
+  // per VN day to the Zalo identity — one place to change it.
+  const zaloHash = readZaloIdentity(req.headers.get('cookie'), zaloIdentitySecret())
+  if (zaloHash) {
+    const zrl = await publicDailyRateLimit(`chat-zalo:${zaloHash}`, ANON_LIFETIME_LIMIT)
+    if (!zrl.ok) {
+      return new Response(
+        JSON.stringify({ error: 'anon_limit_reached', message: serverMessage('chat.anonLimit', requestLocale(req), { n: ANON_LIFETIME_LIMIT, d: FREE_DAILY_LIMIT }), upgradeUrl: '/login' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } },
+      )
+    }
+  }
+
+  // ── G1: anonymous follow-up from a public shared result ──────────────────
+  //
+  // Same pipeline, two additions (see src/lib/share/followUpGuard.ts): a per-slug
+  // daily cap keyed on the strongest identity we have, and a short PUBLIC context
+  // line so the model knows which shared result the question refers to. Runs
+  // AFTER the identity/quota resolution above (the lifetime anonymous tier and
+  // the guest 18+ declaration have already been enforced) and BEFORE any model
+  // or tool work, so a refused request costs nothing.
+  let shareContextBlock = ''
+  if (rawShareSlug !== undefined) {
+    const decision = await guardShareFollowUp(req, rawShareSlug, authedUserId)
+    if (!decision.ok) {
+      return new Response(
+        JSON.stringify({ error: 'share_follow_up_limit', message: serverMessage('chat.shareFollowUpLimit', requestLocale(req)) }),
+        { status: 429, headers: { 'Content-Type': 'application/json', 'Retry-After': String(decision.retryAfter || 3600) } },
+      )
+    }
+    shareContextBlock = decision.contextBlock
   }
 
   // Inject freeform user preferences from client request body
@@ -541,7 +856,24 @@ export async function POST(req: Request) {
   // applyPlaceEnrichmentStreamFilter injects them positionally afterwards. This
   // const lives and dies with this request: no module state, no key to collide
   // on, nothing shared between users or carried across warm invocations.
-  const enrichment = createEnrichmentCollector()
+  // The turn's own words decide which producer may claim the recommendation card.
+  // Passed in at construction because the collector outlives every individual
+  // tool call and must judge them all against the SAME question. Phase 7: the earlier user
+  // turns ride along so a bare follow-up ("gần biển", "quận nào cũng được") is judged by what
+  // the CONVERSATION asked, not misread as a new, narrower question (slotAdmission.ts).
+  const enrichment = createEnrichmentCollector(lastText, recentSubjectUserTexts.slice(0, -1))
+  // Observability for the TikTok cost/quality trade-off. Nothing branches on these.
+  let tiktokEntitiesAsked = 0
+  let tiktokSearched = false
+  let tiktokAttributed = 0
+  /**
+   * The city THIS turn actually searched, captured from the tool call.
+   *
+   * 🚨 NOT the bare identifier `location`, which at this scope resolves to the
+   * DOM's global `Location` — a real trap the compiler happened to catch here,
+   * and would not have if the parameter took `unknown`.
+   */
+  let turnPlaceLocation: string | undefined
   const forModel = (toolName: string, result: unknown) => {
     const { model, enrichment: carved, batchTikTokUrl } = splitToolResult(toolName, result)
     enrichment.add(carved)
@@ -558,10 +890,107 @@ export async function POST(req: Request) {
   // ranker orders against and what the Pick is FOR; without it there is nothing
   // user-specific to rank by. Derived here because durable preferences (a
   // low-weight prior) are only loaded above.
-  const needProfile = deriveNeedProfile(messages, {
+  // Folded over the CURRENT SUBJECT only (golden B4): the profile resets itself on a venue-noun
+  // switch, but "Lên lịch trình … Vũng Tàu" names no venue, so the headphone budget stayed on the
+  // profile and filtered the trip's place rows to 2,000,000.
+  const needProfile = deriveNeedProfile(currentSubjectMessages(framingMessages, { hasGps: !!userLocation, lang }), {
     storedPreferences: storedPrefs,
     gps: userLocation ? { lat: userLocation.lat, lng: userLocation.lng } : null,
   })
+
+  /**
+   * The decision frame — what the user is trying to DO, decided before any tool
+   * runs: goal, occasion, criteria and the evidence a recommendation needs. The
+   * ranker still orders against `needProfile`; the frame decides which ranked
+   * rows may be recommended at all, what the model is told to search for, and
+   * what to do when the evidence does not come back. Deterministic; no call.
+   */
+  const decisionFrame = deriveDecisionFrame({
+    messages: framingMessages,
+    need: needProfile,
+    planningIntent,
+    forcedTool,
+    hasGps: !!userLocation,
+    storedPreferences: storedPrefs,
+    now: new Date(),
+  })
+
+  /**
+   * Consultative V1 — the situation frame (who / occasion / when / mood / hard
+   * constraints), read from the user's own words the same way the need profile
+   * is, and null with the flag OFF so nothing below can consult it by accident.
+   * Deterministic; still exactly ONE AI.stream() call per turn.
+   */
+  const consultativeV1 = consultativeV1Enabled()
+  // Consultative V1: the memory block was built before the decision frame existed (the parallel
+  // context load); now that the domains are known, the unscoped block is swapped for the one that
+  // renders only this turn's categories (memoryBlock.ts). Same values, fewer of them; the identity
+  // and calendar blocks appended after it are untouched.
+  if (consultativeV1 && existingMemory && decisionFrame.domains.length > 0) {
+    const unscoped = buildMemoryBlock(existingMemory, forcedTool, { consultative: true })
+    const scoped = buildMemoryBlock(existingMemory, forcedTool, { consultative: true, domains: decisionFrame.domains })
+    if (unscoped !== scoped && memoryBlock.includes(unscoped)) memoryBlock = memoryBlock.replace(unscoped, scoped)
+  }
+  // 🚨 A TASK SWITCH STARTS THE FRAME OVER. The frame folds the last three user turns so
+  // "cho 2 người" said earlier still holds — but only within ONE consultation. Android E2E
+  // turns 5–6 (2026-09-19): "tim resort o phu quoc sang chut cho 2 nguoi" right after "spa nao
+  // mo khuya sau 22h o quan 3" was classified new_consultation (places → hotel), yet the frame
+  // still carried `late_open` and `time: late_night` from the spa turn — and so did the
+  // "goi y them" refinement after it. The hotel rows have no hours, so the reply hedged "chưa
+  // thấy bằng chứng về giờ mở khuya" about resorts nobody asked to be open late. The fold now
+  // reads only the user turns since the last task switch (consultationUserTexts).
+  const situation: SituationFrame | null = consultativeV1
+    ? deriveSituation(ownDomainSwitch ? consultationUserTexts(framingMessages).slice(-1) : consultationUserTexts(framingMessages), needProfile, { hasGps: !!userLocation })
+    : null
+  // The concrete first step for a VAGUE place request (searchNow.ts) — computed once here, read by
+  // the V1 block below and by the pre-search (A1(c)). The turn after a clarify (item 1) is the first
+  // REAL reply: it must search now, never ask again.
+  const afterClarify = isClarifyReply(lastAssistantText)
+  // A1(d), measured on the web as a guest (2026-09-20): "còn quán nào khác không" after a café turn
+  // went to the model with no directive (not a first reply) and no evidence row (anonymous writes
+  // are refused), the model answered from memory, and the place guard cut 356 of 523 chars. A
+  // "more" turn inside the same consultation is a search turn: the directive is derived as for the
+  // first reply, and the venues the previous reply named are what the model must pick around.
+  const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && wantsMoreFromSet(lastText) && priorVenuesIn(lastAssistantText).length > 0
+  const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null
+  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
+  // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
+  // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
+  // users) is exact; without a row the directive's call stands in and the prior reply's names do.
+  const priorPlaceSearch = reusablePlaceSearch(loadedEvidenceRow, !ownDomainSwitch)
+  if (consultativeV1 && priorPlaceSearch && wantsMoreFromSet(lastText) && !clipContext && !planningIntent) {
+    presearchPlan = { toolName: 'search_places', args: priorPlaceSearch.args, exact: true, reuse: { shown: priorPlaceSearch.shown } }
+  } else if (presearchPlan && moreTurn) {
+    presearchPlan = { ...presearchPlan, reuse: { shown: priorVenuesIn(lastAssistantText).map(v => v.name).slice(0, 8) } }
+  }
+
+  /**
+   * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
+   *
+   * Gated on the frame, deterministically: a TRAVEL turn whose goal is inform /
+   * recommend / plan, with a destination the city table knows — from the tool's
+   * own `location` argument when it has one, else the user's text. Anything else
+   * (shopping, food-at-home, a hotel PRICE lookup without a city, an unknown
+   * place) asks VnExpress for nothing at all.
+   *
+   * It runs INSIDE the tool's execute(), alongside the live call, so the model
+   * reads it in the same single reasoning pass; it never fails the turn (the
+   * module resolves every failure to an empty list, and an empty list attaches
+   * nothing). The live providers stay authoritative for every dynamic fact — the
+   * items are REVIEW_SUPPORTED and carry no structured field a guard would read.
+   *
+   * ONE retrieval per destination per turn: the SDK runs a step's tool calls
+   * concurrently and a planning turn has up to 8 steps, so several tools may ask
+   * for the supplement — they share one in-flight promise (`createTurnEditorial`).
+   */
+  const turnEditorial = createTurnEditorial()
+  const travelEditorialFor = async (toolLocation?: string | null): Promise<TravelEditorialItem[]> => {
+    const gate = editorialGate(decisionFrame, toolLocation, lastText)
+    if (!gate) return []
+    const travel_editorial = await turnEditorial(gate.destination.term, gate.intent, lang)
+    if (travel_editorial.length) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'vnexpress_travel', destination: gate.destination.term, count: travel_editorial.length }))
+    return travel_editorial
+  }
 
   // Whether this turn ASKED Tappy to decide. The need profile cannot carry it —
   // it models what the user wants from the PRODUCT, not what they want from us —
@@ -584,13 +1013,82 @@ export async function POST(req: Request) {
    * removed from the model's view exactly as applyBudgetFilter already does, and
    * every surviving record keeps its own link, photo and enrichment fields.
    */
+  /**
+   * The Pick, in the shape the recommendation adapter reads.
+   *
+   * 🚨 THE DECISION USED TO STOP HERE. `placeRecommendations` looked for the
+   * chosen name on `result._tappy_ranking`, and that block is built INSIDE the
+   * object returned to the model - never on the result this adapter receives. So
+   * every canonical recommendation came back `recommended: false`, and the card
+   * layer had no pick to render even though the engine had made one.
+   *
+   * Same source and same caps as `buildPickPayload`, so the model's text and the
+   * rendered card can never describe different choices.
+   */
+  const pickContext = (pick: ReturnType<typeof derivePick> | null) => {
+    if (!pick) return undefined
+    const leadsOn = pick.runnerUp?.leadsOn
+    return {
+      name: pick.candidate.name,
+      // Phase 7 small item: `params` travel with the reason so the card can say it in the
+      // reader's language (`reasonText.ts`) — "rated 4.7 · 279 reviews" was English under a
+      // Vietnamese "Vì sao:".
+      reasons: pick.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => ({ attribute: r.key, evidence: r.detail, ...(r.params ? { params: r.params } : {}) })),
+      tradeOff: leadsOn ? { attribute: leadsOn.key, evidence: leadsOn.detail, ...(leadsOn.params ? { params: leadsOn.params } : {}) } : null,
+    }
+  }
+
+  /**
+   * The explicit shopping constraints this CONVERSATION carries.
+   *
+   * Folded from every user turn, not just the last one: a "cheaper options?"
+   * follow-up names no product, and one that forgot the subject came back
+   * with laptop screens and a mouse. The budget falls back to the last turn that
+   * stated one for the same reason.
+   */
+  const shoppingConstraints = deriveShoppingConstraints(
+    messages,
+    budget ?? budgetFromHistory(currentSubjectMessages(messages, { hasGps: !!userLocation, lang }), extractBudget),
+  )
+
+
   const rankForModel = (toolName: 'search_places' | 'get_hotel_prices' | 'search_products', result: unknown) => {
     if (!result || typeof result !== 'object') return { result, pick: null }
     const r = result as Record<string, unknown>
-    const candidates = toolName === 'search_places' ? normalizePlaces(r)
+    const allCandidates = toolName === 'search_places' ? normalizePlaces(r)
       : toolName === 'get_hotel_prices' ? normalizeHotels(r)
         : normalizeShopping(r)
-    if (candidates.length < 2) return { result, pick: null }
+
+    /**
+     * 🚨 VALIDATE, THEN RANK — IN THAT ORDER, AND ONLY FOR SHOPPING.
+     *
+     * Ranking answers "which of these fits best". It has no way to say "this is
+     * not the thing you asked for", so a 399k laptop SCREEN scored brilliantly on
+     * the price term and became recommendation #1 on the "cheaper?" turn. Measured,
+     * with a laptop chassis at #3 and a mouse alongside.
+     *
+     * The rejected rows are removed from the array the MODEL reads as well, not
+     * just from the ranking — otherwise the prose can still cite a product the
+     * card refuses to show. See `shoppingConstraints.ts` for the four rules and
+     * for what they deliberately do NOT do.
+     */
+    let candidates = allCandidates
+    if (toolName === 'search_products' && allCandidates.length > 0) {
+      const { kept, rejected } = validateShoppingCandidates(allCandidates, shoppingConstraints)
+      if (rejected.length > 0) {
+        const rejectedRaw = new Set(rejected.map(x => x.candidate.raw))
+        for (const key of ['shopping_results', 'search_results']) {
+          if (Array.isArray(r[key])) r[key] = (r[key] as unknown[]).filter(row => !rejectedRaw.has(row))
+        }
+        // Fail closed, and say why. Nothing is relaxed here and nothing is put
+        // back: the model is told the constraint could not be met so it can offer
+        // to widen it, which is the user's call to make, not ours.
+        if (kept.length === 0) r._tappy_constraint_unmet = unmetConstraintPayload(shoppingConstraints, rejected)
+      }
+      candidates = kept
+    }
+
+    if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
 
@@ -620,15 +1118,72 @@ export async function POST(req: Request) {
     // reference the 1–3 top-of-decision entries + their role. Never
     // manufactures a third slot; dedupes on canonical id.
     if (toolName === 'search_places' || toolName === 'get_hotel_prices') {
-      const sl = shortlistCandidates(ranked.ranked, 3)
+      // Only candidates that carry evidence for THIS decision may take a slot;
+      // the rest stay in `results` as what they are — search results.
+      // Consultative V1 widens the cap to five (`shortlistMax`); the default is the Rule of 1–3.
+      // An upscale request never shortlists a guest house / hostel (upscale.ts, owner T8 2026-09-19);
+      // the exclusion is logged so a row leaving the shortlist is never a silent drop.
+      // A.2: under `late_open` the same rule keeps rows with no late-closing evidence off the
+      // shortlist whenever some row has it (upscale.ts `admitsForHard`).
+      const anyRowClosesLate = ranked.ranked.some(e => closesLate(((e.candidate.raw ?? {}) as Record<string, unknown>).opening_hours) === true)
+      const sl = shortlistCandidates(ranked.ranked, undefined, e => {
+        if (!qualifiesFor(decisionFrame, e)) return false
+        if (situation) {
+          const verdict = admitsForHard(situation.hard, e.candidate, { anyRowClosesLate })
+          if (!verdict.admitted) {
+            console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'shortlist_excluded', reason: verdict.reason, name: e.candidate.name }))
+            return false
+          }
+        }
+        return true
+      })
+      // Consultative V1: atmosphere / audience attributes from the text this
+      // turn ALREADY fetched (entity-scoped snippets) — zero new calls. They
+      // ride the shortlist evidence as the only such words the model may use.
+      // Never fails the turn: a V1 extraction error is logged and the turn runs as before.
+      // A.3: hotels get the same review-attribute evidence as places (hotel_list rows are read by
+      // the shared `entityTextsOf`).
+      const v1Attrs = (() => {
+        if (!situation) return null
+        try { return extractAttributes(entityTextsOf(result)) } catch (e) { console.error('[consultative-v1] attributes failed:', e); return null }
+      })()
       if (sl.selected.length > 0) {
         (result as Record<string, unknown>)._tappy_shortlist = sl.selected.map((s, idx) => ({
           rank: idx,
           id: s.entry.candidate.id,
           name: s.entry.candidate.name,
           role: s.role,
+          // The evidence the recommendation may rest on — real fields only — and
+          // the reasons the ranker actually counted, so the model reasons over the
+          // same numbers the engine ordered by instead of over the row's absence.
+          evidence: v1Attrs
+            ? { ...evidenceSummary(s.entry.candidate.attrs), attributes: attributeSummary(v1Attrs.get(s.entry.candidate.name ?? '') ?? []) }
+            : evidenceSummary(s.entry.candidate.attrs),
+          why: s.entry.reasons.filter(r => r.contribution > 0).slice(0, 3).map(r => r.detail),
+          missing: missingFor(decisionFrame, s.entry),
+        }))
+        // The engine's shortlist is server-side evidence only under V1 (1.4: it no longer travels
+        // to the model), so it is logged here — the one place its content can be checked.
+        console.log(JSON.stringify({
+          type: 'tappyai_consultative_v1', step: 'shortlist', tool: toolName, v1: v1Active,
+          selected: (result as { _tappy_shortlist: Array<{ name: string; role: string | null; evidence: { attributes?: string[] } }> })._tappy_shortlist
+            .map(s => ({ name: s.name, role: s.role, attributes: s.evidence.attributes ?? null })),
         }))
       }
+      // The hard-constraint / budget gate no longer lives here (A.3, 2026-09-19): it runs once
+      // for EVERY tool result in `gateTools`, on the copy the model reads — see
+      // `hardConstraintGate.ts`. Keeping it inside one tool's branch is how the hotel path
+      // went ungated.
+      // What the reply may do with this evidence. The OpenStreetMap fallback
+      // carries no rating, price, hours or reviews for any row, so a repeat
+      // search there cannot help; a Google/Serper result can.
+      const providerCanImprove = typeof r.source === 'string' && !/openstreetmap/i.test(r.source)
+      const gap = evidenceGap(decisionFrame, ranked.ranked, providerCanImprove)
+      ;(result as Record<string, unknown>)._tappy_evidence_gap = gap
+      // A recommendation that is possible, or a gap no question can close,
+      // leaves no room for a reflex "what kind?" — only a bounded retry does.
+      enrichment.setClarificationPolicy(gap.action === 'search_again' ? 'allow' : 'no_reflex')
+      console.log(JSON.stringify({ type: 'tappyai_evidence_gap', tool: toolName, ...gap, goal: decisionFrame.goal, criteria: decisionFrame.criteria.map(c => c.key) }))
     }
 
     // ADR-024: the rows that survive the shortlist, as CANDIDATES. The evidence
@@ -645,8 +1200,18 @@ export async function POST(req: Request) {
     // has two paths that collide on a key: when Serper /shopping answers, its structured rows land
     // in `search_results` and there is no `shopping_results` at all. Naming only the latter meant
     // the live shopping path was reordered by nothing.
-    const keys = toolName === 'search_places' ? ['results']
-      : toolName === 'get_hotel_prices' ? ['search_results']
+    //
+    // 🚨 PLACES AND HOTELS ARE NO LONGER REORDERED (owner decision 2026-09-19, T8). The ranker's
+    // order is rating-first; handing the model the rows in that order — with the top-rated one
+    // first and a `_tappy_shortlist` naming it `best_overall` — is the code-side selection the
+    // two-stage design exists to remove, only invisible. Measured T8: a 5⭐/138 guest house sat
+    // at row 0 for "resort … sang chút" and was chosen. The rows now stay in the PROVIDER's order
+    // (Google relevance, not our score); the model chooses among all of them. The ranker still
+    // runs: its Pick and shortlist feed the card's emphasis, the server-authored backstop
+    // sentence and the evidence gap — never the model's reading order. With the flag OFF the
+    // pre-V1 product is byte-identical: the rows are still ranked for its shortlist rulebook.
+    const keys = toolName === 'search_places' ? (v1Active ? [] : ['results'])
+      : toolName === 'get_hotel_prices' ? (v1Active ? [] : ['search_results', 'hotel_list'])
         : ['shopping_results', 'search_results']
     for (const key of keys) {
       if (!Array.isArray(r[key])) continue
@@ -730,7 +1295,12 @@ export async function POST(req: Request) {
   // BEFORE the model sees them — the model cannot echo what it cannot read.
   // Applied ONLY to the messages fed to the LLM: the memory extractor below
   // still uses raw `trimmedMessages` because it summarizes what happened.
-  const modelMessages = trimmedMessages.map((m) => {
+  //
+  // 🚨 THE CANNED CLARIFY NEVER REACHES THE MODEL ONCE ANSWERED (collapseClarifyTurns, P1
+  // 2026-09-19): the model imitated that assistant turn — a question with options — and asked
+  // again instead of searching, three turns in a row on Android. Request + answer become one
+  // user message for the model; the UI transcript and the memory extractor keep the real thread.
+  const modelMessages = compactHistory(collapseClarifyTurns(trimmedMessages).map((m) => {
     if (m.role !== 'assistant') return m
     if (typeof m.content === 'string') {
       return { ...m, content: sanitizePriorAssistantContent(m.content) }
@@ -746,7 +1316,7 @@ export async function POST(req: Request) {
       return { ...m, content: parts as typeof m.content }
     }
     return m
-  })
+  }))
 
   // Split so the provider can cache the invariant rulebook and leave everything
   // request-shaped (clock, language, memory, prefs, budget, GPS, style) after
@@ -757,21 +1327,123 @@ export async function POST(req: Request) {
   // nothing to search for, and the previous turn already produced the result the
   // user is agreeing to. Cheaper AND the right behaviour — a confirmation must
   // never restart a search.
-  const noToolTurn = intent === 'chitchat' || decisionStage === 'confirmation'
+  // A clip question is a place question by construction — the button exists only
+  // on an item with a place — so it is never a no-tool turn even when the short
+  // bridge text alone would have read as chitchat.
+  const noToolTurn = !clipContext && (intent === 'chitchat' || decisionStage === 'confirmation')
   // The ranking instruction is only carried on turns that can actually produce a
   // ranked result — Places and Hotel are the two domains with structured
   // candidate attributes today. A weather or gold lookup pays nothing for it.
+  // A planning turn runs the place searches the ranker orders, so it carries the
+  // ranking instruction even when the multi-activity wording resolved to no
+  // single domain — measured 2026-09-14: "ăn chơi nhảy múa" → `domain: null`.
   const isDecisionDomain = needProfile.domain === 'places'
     || needProfile.domain === 'hotel'
     || needProfile.domain === 'shopping'
+    || planningIntent !== null
 
   // The transport-mode stage is decided HERE, deterministically, not by the
   // model noticing it should ask. resolveTripContext folds the history, so the
   // question is asked exactly once and never on a non-trip turn.
   const tripContext = resolveTripContext(messages)
 
+  // Which client is asking. The web chat and the Android app render the decision
+  // as a card (`x-tappy-surface: web` / `android`, see decisionSurface.ts), so
+  // their reply is told to stop repeating what the card shows. A client that
+  // sends no header - iOS, an older Android build, a script - keeps today's
+  // prose (and, with MEDIA_PLACEMENT_V2, the G3 block placement).
+  const surfaceHeader = req.headers.get('x-tappy-surface')
+  const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader)
+  // CommerceContext for the CCP seam: the surface header is the only platform signal the route
+  // has, and the response language is what the merchant page should open in. No user identifier.
+  const commercePlatform: 'web' | 'android' | 'ios' | undefined =
+    surfaceHeader === 'web' || surfaceHeader === 'android' || surfaceHeader === 'ios' ? surfaceHeader : undefined
+  const commerceLocale: 'vi' | 'en' | undefined = lang === 'en' ? 'en' : lang === 'vi' ? 'vi' : undefined
+  // The stream filter reads this to decide whether the per-place photo/link block
+  // still belongs in the text: with a card, it is the same content twice.
+  enrichment.setRendersDecisionCard(rendersDecisionCard)
+
+  /**
+   * Consultative V1 — the prompt block and the follow-up references.
+   *
+   * Only on a decision-domain tool turn. The references are resolved against
+   * the venues the PREVIOUS reply named (its bolded names — the only durable
+   * record of a place turn); a fact the carried prose lacks is asked for as a
+   * real `search_places` call BY NAME, one venue, made by the model on this
+   * same single stream (the architecture lock forbids a forced tool choice and
+   * a second model call, see consultativeArchitecture.test.ts), and reported
+   * as `named_refetch` when it happens. The stream filter's search-claim guard
+   * removes any "I have checked" claim on a turn where no tool ran at all.
+   */
+  // Active on every turn that is a decision — by need-profile domain, by the
+  // decision frame's goal, or because the previous reply named venues the user
+  // is now asking about. Measured 2026-09-18 on the CONSULTATIVE-40 pass: "Cả
+  // nhà 6 người … ăn trưa … Phú Nhuận", "Đi date với gấu …", "Sinh nhật sếp,
+  // tiếp khách 8 người …" all resolve to `domain: null` (no dish word), and the
+  // follow-up "quán này mở mấy giờ?" to `forcedTool: web_search` — none was a
+  // decision by `isDecisionDomain` alone, and V1 silently skipped them.
+  // …and "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?" reached
+  // the model as `goal: inform, domains: [], forcedTool: web_search`. The
+  // situation frame itself knows better: a stated who / occasion / mood / hard
+  // constraint / budget is a decision by definition.
+  const v1PriorVenues = priorVenuesIn(lastAssistantText)
+  const frameSaysDecision = !!situation && (
+    situation.who !== null || situation.occasion !== null || situation.mood !== null || situation.hard.length > 0 || situation.budget !== null
+  )
+  const v1Active = !!situation && !noToolTurn && (
+    isDecisionDomain
+    || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
+    || forcedTool === 'search_places'
+    || frameSaysDecision
+    || v1PriorVenues.length > 0
+  )
+  /** Cost optimization item 8: a follow-up fully answerable from the carried facts, or null. */
+  let cannedFollowUp: string | null = null
+  const v1Block = (() => {
+    if (!situation || !v1Active) return ''
+    const priorVenues = v1PriorVenues
+    const refs = resolveReferences(lastText, priorVenues)
+    const referenced = referencedVenues(refs)
+    const facts = factsAsked(lastText)
+    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))
+    if (refetch.length === 0 && !clipContext) {
+      cannedFollowUp = cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+    }
+    console.log(JSON.stringify({
+      type: 'tappyai_consultative_v1', step: 'frame',
+      who: situation.who, occasion: situation.occasion, time: situation.time, mood: situation.mood, hard: situation.hard,
+      assumptions: situation.assumptions.length, confidence: situation.confidence,
+      prior_venues: priorVenues.length, referenced: referenced.length, facts, named_refetch: refetch.length,
+    }))
+    enrichment.setConsultativeV1({
+      on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
+      referenced: referenced.map(v => v.name),
+      carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
+      budget: needProfile.budget,
+      priorTimes: scheduleTimesIn(lastAssistantText ?? ''),
+    })
+    const refetchLines = refetch.length > 0
+      ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
+      : ''
+    // The concrete first step for a VAGUE place request (searchNow.ts): measured, abstract rules
+    // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
+    // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
+    if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null, reuseShown: presearchPlan?.reuse?.shown })
+      + renderReferencedBlock(referenced, []) + refetchLines
+  })()
+
   const consultativeBlock = [
+    // Explore clip → "this place" is the clip's place. Fenced row values plus the
+    // rule that a clip address stands in for the missing GPS/city. Absent on
+    // every turn that did not come from the button, so generic chat is unchanged.
+    clipContext ? buildExploreClipBlock(clipContext, lang) : '',
+    // The frame first: what the user is trying to do, what to search for and
+    // what evidence settles it — read before the ranking/pick instructions that
+    // explain how to present the result.
+    buildDecisionFrameBlock(decisionFrame, needProfile),
     isDecisionDomain ? buildRankingInstructionBlock() : '',
+    isDecisionDomain && rendersDecisionCard ? buildRenderedDecisionBlock() : '',
     // Shopping evidence carries price/store/rating and nothing else, so the
     // model must be told what it may NOT assert — measured live 2026-08-17
     // asserting weight and battery that no candidate supplied.
@@ -786,7 +1458,9 @@ export async function POST(req: Request) {
     // Either the real numbers go in, or an explicit instruction not to invent
     // them does; there is no third branch that leaves the model guessing.
     priorEvidence ? renderDecisionEvidenceBlock(priorEvidence, true) : '',
-    priorEvidenceMissing ? renderMissingEvidenceBlock() : '',
+    priorEvidenceMissing && needProfile.domain === 'shopping' ? renderMissingEvidenceBlock() : '',
+    // Consultative V1: situation + rule overrides + follow-up references. Empty with the flag OFF.
+    v1Block,
     tripContext.shouldAskTransportMode ? buildTransportModeBlock() : '',
     // Movie/show recommendation turn: the place tool is already dropped above, so
     // the model answers from film knowledge. This keeps that answer grounded —
@@ -800,12 +1474,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
 =====================================` : '',
   ].filter(Boolean).join('')
 
+  // Item 8: the physical-store steer block is a SHOPPING block; a district name on a food turn does
+  // not need it. The tool set still reads the raw `locationIntent` (search_products dropped offline).
+  const storeIntent = locationIntent === 'offline' && !isPurchaseShaped(lastText) ? 'unknown' : locationIntent
   const built = noToolTurn ? null : buildSystem(
-    budget, locationIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
+    budget, storeIntent, isFirstReply, memoryBlock, lang, prefBlock, userLocation, planningIntent, hasImage, decisionStage,
     consultativeBlock || undefined,
+    planning,
   )
   const systemShared = built?.shared
-  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock
+  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -848,16 +1526,508 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     return tools
   }
+  /**
+   * 🚨 THE HARD-CONSTRAINT GATE, AT THE ONE POINT EVERY TOOL PASSES THROUGH (A.3, 2026-09-19).
+   * Wraps each tool's execute() by NAME: the result the tool returns (the model's copy) is judged
+   * against the stated hard constraints and budget, annotated, and the stream context updated.
+   * A tool the gate does not apply to is logged with the constraints it could not judge — never
+   * ungated in silence. Only Consultative V1 turns (`situation` set) are judged.
+   */
+  const gateTools = <T extends Record<string, unknown>>(tools: T): T => {
+    for (const [name, t] of Object.entries(tools)) {
+      const def = t as { execute?: (...a: unknown[]) => Promise<unknown> }
+      const orig = def.execute
+      if (typeof orig !== 'function') continue
+      def.execute = async (...a: unknown[]) => {
+        const out = await orig(...a)
+        // B1 (2026-09-20): the product unit is judged too — against the shopping constraints.
+        const gate = applyHardConstraintGate(name, out, situation, lang, { shopping: shoppingConstraints })
+        const ctx = enrichment.consultativeV1
+        if (gate.applicable && gate.report && ctx) {
+          ctx.hardGaps = [...gate.report.gaps]
+          ctx.hardContrary = [...gate.report.contrary]
+          ctx.budgetGap = gate.budgetGap
+        }
+        // A4 (2026-09-20): the model reads every tool result as fenced DATA (toolResultFence.ts) —
+        // here, at the one wrapper every tool and the pre-search pass through.
+        return wrapToolResultAsData(out)
+      }
+    }
+    return tools
+  }
   /** Set once at onFinish: absolute ms of model generation complete (T9). */
   let modelFinishAt: number | null = null
+  /**
+   * Planning contract, measured: whether a turn that ran in planning mode
+   * actually produced the `[TAPPY_PLAN]` block. Null on non-planning turns.
+   * The route cannot safely force the block (one model call, streamed), so the
+   * gap is made visible instead of silent — see promptBuilder's planning rules.
+   */
+  let planEmitted: boolean | null = null
   /** onFinish accounting, captured synchronously so the flush-time record can ship it. */
+  /** Audit cost sink: bytes of tool results the model read this turn. */
+  let auditToolResultChars = 0
   let usageAcct: {
     finishReason: string
     promptTokens: number | null; completionTokens: number | null; totalTokens: number | null
     cacheReadTokens: number | null; cacheCreationTokens: number | null
     llmCalls: number | null; toolCalls: number
+    /** A1(c): the route-run first search, when the turn had one. */
+    presearch?: { ms: number; exact: boolean | null } | null
   } | null = null
 
+  /**
+   * This turn's Google Places allowance.
+   *
+   * `maxSteps` above is why one is needed: the model may take up to eight tool steps, and each may
+   * call `search_places` with different words. Different words are a different cache key, so the
+   * cache cannot collapse them — measured, one Food consultation spent SEVEN SearchText calls
+   * against a 100/day project quota.
+   *
+   * A planning turn asks genuinely different questions (eat / see / stay) and gets three; every
+   * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
+   * collector, so one conversation can never spend another's allowance.
+   */
+  const placesBudget = createPlacesBudget(planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+
+  /**
+   * NO-MODEL TURNS (cost optimization item 8, 2026-09-18). A pure greeting / thanks /
+   * acknowledgement, or a follow-up that asks one concrete fact (hours, phone, address) the
+   * previous reply already stated about one referenced venue, is answered deterministically in
+   * the same data-stream shape the clients parse. Quota was spent above exactly as before; the
+   * usage line records `llmCalls: 0` so the saving is visible. Everything else — including a
+   * fact the prior prose lacks — still reaches the model, which may re-search by name.
+   */
+  const canned = cannedEarly ?? clarifyGate?.reply ?? cannedFollowUp
+  if (canned) {
+    const kind = intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
+    console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
+    const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+    if (auditFile) {
+      try {
+        appendFileSync(auditFile, JSON.stringify({
+          turn: auditTurn, at: new Date().toISOString(), type: 'tappyai_usage_canned', intent, finishReason: 'canned',
+          promptTokens: 0, completionTokens: 0, totalTokens: 0, cacheReadTokens: 0, cacheCreationTokens: 0, llmCalls: 0, memoryExtract: 0, toolCalls: 0,
+          elapsedMs: Date.now() - startTime, serper: serperDelta(serperAtStart), canned: kind,
+          flags: { consultativeV1: consultativeV1Enabled(), v1Active }, sections: { sharedChars: 0, dynamicChars: 0, consultativeChars: 0, v1Chars: 0, memoryChars: 0, prefChars: 0, historyChars: 0, lastUserChars: lastText.length, toolResultChars: 0 },
+        }) + '\n')
+      } catch { /* audit only */ }
+    }
+    return cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
+  }
+
+  /**
+   * AUDIT MODEL-REQUEST CAPTURE (pre-release P1 diagnosis, 2026-09-19). Active only when
+   * `AUDIT_MODEL_REQUEST_FILE` is set (never in production): appends, BEFORE the model is called,
+   * exactly what this turn is about to send — the validated client messages, the model-facing
+   * history, both system prompt parts, the tool names and the request facts that differ between
+   * clients (surface, locale, auth, GPS, age header) — so two clients' requests for the same
+   * conversation can be diffed field by field. With `AUDIT_DRY_RUN=1` the turn ends here with a
+   * canned frame instead of a model call, so a capture costs no run. A write failure is swallowed.
+   */
+  const captureFile = process.env.AUDIT_MODEL_REQUEST_FILE
+  if (captureFile) {
+    try {
+      appendFileSync(captureFile, JSON.stringify({
+        at: new Date().toISOString(), auditTurn,
+        request: {
+          surface: surfaceHeader, acceptLanguage: req.headers.get('accept-language'), hasAuth: !!req.headers.get('authorization'),
+          ageHeader: req.headers.get('x-tappy-age-declared'), userLocation: userLocation ?? null, messageCount: messages.length,
+          messages: messages.map((m: { role: string; content: unknown }) => ({ role: m.role, content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content) })),
+        },
+        gate: { turnIntent, decisionStage, assistantAskedClarification, forcedTool, intent, clarifyGate: clarifyGate ? 'fired' : null, cannedEarly: cannedEarly !== null, v1Active, noToolTurn, role },
+        model: {
+          systemSharedChars: systemShared?.length ?? 0, systemSharedSha: systemShared ? createHash('sha256').update(systemShared).digest('hex').slice(0, 12) : null,
+          system: systemPrompt, messages: modelMessages,
+          tools: noToolTurn ? [] : [...(movieRecommend ? [] : ['search_places']), 'get_news', ...(locationIntent !== 'offline' ? ['search_products'] : []), 'web_search', 'get_weather', 'get_gold_price', 'get_flight_prices', 'get_hotel_prices', 'get_transport_options'],
+          memoryChars: memoryBlock.length, v1Chars: v1Block.length, consultativeChars: consultativeBlock.length,
+        },
+      }) + '\n')
+    } catch { /* audit only */ }
+    if (process.env.AUDIT_DRY_RUN === '1') return cannedDataStreamResponse('[audit dry-run — no model call]', { 'X-Decision-Evidence-Id': evidenceId })
+  }
+
+  /** A1(d): the place search this turn ran — saved with the names shown, for a "gợi ý thêm" follow-up. */
+  let lastPlaceSearch: PlaceSearchEvidence | null = null
+  const tools = noToolTurn ? undefined : gateTools(timeTools({
+      // A movie/show RECOMMENDATION turn drops the place search entirely, so the
+      // model can't answer "recommend a movie" with a list of cinemas — it
+      // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
+      ...(movieRecommend ? {} : { search_places: tool({
+        description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
+        parameters: z.object({
+          query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
+          location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
+          // 'mall' exists because without it the model had no way to say "shopping
+          // centre" and picked 'attraction' instead - measured on "Trung tam mua sam
+          // lon Sai Gon", which then searched tourist attractions and produced a reply
+          // that told the user its own results were wrong.
+          // A free string, coerced in execute (placeType.ts): an off-enum value from the model
+          // ("entertainment") used to fail SDK validation and end the whole turn with an error.
+          type: z.string().optional().describe('Loai dia diem: restaurant | cafe | spa | hotel | bar | gym | cinema | attraction | mall')
+        }),
+        execute: async ({ query, location: modelLocation, type: rawType }) => {
+          const type = coercePlaceType(rawType)
+          lastPlaceSearch = { args: { query, ...(type ? { type } : {}), ...(modelLocation ? { location: modelLocation } : {}) }, shown: [], at: new Date().toISOString() }
+          if (rawType !== undefined && type !== rawType) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'type_coerced', from: String(rawType).slice(0, 40), to: type ?? null }))
+          // Explore clip: when the model names no area, the clip's own address is
+          // the area — the author wrote it, and `searchPlaces` already knows how to
+          // read a city out of free text and how to refuse when it cannot. A
+          // location the model DID name still wins; this only fills a blank.
+          const location = modelLocation ?? exploreClipLocationHint(clipContext)
+          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
+          // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
+          // a stated budget (this turn or the thread) or a price word in the request.
+          const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
+          // The editorial supplement runs beside the live search, not after it.
+          const [placesResult, editorial] = await Promise.all([searchPlaces(query, location, type, lang, userLocation, placesBudget, { priceRetry, ...(statedArea ? { areaCentre: { ...statedArea.centre, label: statedArea.label } } : {}) }), travelEditorialFor(location)])
+          let r: unknown = placesResult
+          // A type the lexicon could not place ran as a type-less search — said so, not swallowed.
+          if (rawType !== undefined && rawType !== null && String(rawType).trim() !== '' && type === undefined && r && typeof r === 'object') {
+            (r as Record<string, unknown>)._tappy_type_note = `type "${String(rawType).slice(0, 40)}" khong nam trong danh sach loai; da tim KHONG loc theo loai.`
+          }
+          // Explore clip: "this place" is ONE venue. The tool just returned the
+          // 8-10 places around the address — as it must for discovery — so the
+          // rows are narrowed HERE, deterministically, to the one(s) that carry
+          // the clip's name, before ranking or cards ever see them. Skipped when
+          // the user asked for more/other/similar places, and absent entirely on
+          // every turn without a clip (see `exploreClipTarget.ts`).
+          let clipTarget: ClipTargetStatus | null = null
+          if (clipContext && !asksForAlternatives(lastText)) {
+            const narrowed = applyClipTarget(r, clipContext, lang)
+            r = narrowed.result
+            clipTarget = narrowed.status
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_target', status: clipTarget, kept: narrowed.result.count }))
+            // The Places verdict, in the clip-evidence vocabulary — the one place the
+            // candidate can become `resolved`. Today it feeds the product metric below
+            // and nothing else; a future persisted result would be written from here.
+            const venue = withPlacesVerification(clipContext.venue, {
+              status: narrowed.status,
+              results: narrowed.result.results as Record<string, unknown>[],
+              provider: typeof narrowed.result.source === 'string' ? narrowed.result.source : null,
+            })
+            // `ask_tappy_place` · phase `target`: what the CTA actually resolved to. The
+            // click itself is tracked on the client (phase `click`); this row is the
+            // server's answer, joined by review_id. Same taxonomy and same table as
+            // `/api/track`; fire-and-forget, and nothing here may fail the turn.
+            try {
+              void createAdminClient()
+                .from('user_events')
+                .upsert({
+                  event_id: randomUUID(),
+                  schema_version: 1,
+                  user_id: clipUserId,
+                  anon_id: null,
+                  ...askTappyPlaceEvent({ phase: 'target', reviewId: clipContext.reviewId, surface: 'chat_server', status: clipTargetMetric(venue), hasAddress: !!clipContext.placeAddress }),
+                  is_unknown_event: false,
+                  platform: 'web',
+                  created_at: new Date().toISOString(),
+                }, { onConflict: 'event_id', ignoreDuplicates: true })
+                .then(() => undefined, () => undefined)
+            } catch { /* analytics only */ }
+          } else if (clipContext) {
+            // The user asked for OTHER places. Still Explore-scoped and still
+            // deterministic: the target is not listed as an alternative to itself,
+            // the list is capped at what was asked for, and the result says these
+            // are alternatives TO the clip's venue — which stays the subject, since
+            // the next turn narrows to it again (see `exploreClipTarget.ts`).
+            const alt = applyClipAlternatives(r, clipContext, lang, lastText)
+            r = alt.result
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'clip_alternatives', requested: alt.requested, kept: alt.kept }))
+          }
+          const budgeted = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'results')
+          // Phase 7 group 3: the user's stated constraints (budget band, ruled-out venue type,
+          // "now") shape the ROWS here, before ranking, so the set the model reads and the card
+          // the client renders are the same set. `applyBudgetFilter` above only ever touched web
+          // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
+          const constraints = detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1))
+          const constrained = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
+          if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
+          }
+          const filtered = constrained.result
+          // Deterministic ranking runs BEFORE the model sees the result, so the
+          // order it reads is already the order that fits this user.
+          //
+          // An AMBIGUOUS clip target is not ranked: a Pick would tell the model to
+          // argue for one branch when the honest move is to ask which branch. A
+          // resolved target ranks as normal — one candidate yields no Pick anyway.
+          const { result, pick } = clipTarget === 'ambiguous'
+            ? { result: filtered, pick: null }
+            : rankForModel('search_places', filtered)
+          if (pick) turnPick = pick
+          // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
+          // `commerce_links`, read by buildActions below and carved from the model by forModel.
+          // Identity-preserving and a no-op while CCP_ENABLED is false.
+          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          // Unified recommendation architecture — canonical entities and their
+          // recommendations are built on EVERY place turn, whether or not the
+          // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
+          // keeps the data layer exercised (and its tests honest) while the
+          // emission flag stays off; the collector holds them until the stream
+          // filter has photos to fold in.
+          turnPlaceLocation = location
+          enrichment.setPlacesRecommendations(
+            placeRecommendations(result, location, pickContext(pick)),
+            producerSubject('search_places', (result as Record<string, unknown>)._tappy_place_domain),
+          )
+          // The map destination the provider itself returned for this search.
+          const mapsUrl = (result as Record<string, unknown>).google_maps_search
+            ?? (result as Record<string, unknown>).search_url
+          enrichment.setPlacesMapsUrl(typeof mapsUrl === 'string' ? mapsUrl : undefined)
+          // The model reads the decision set only (cost optimization item 4); the card above
+          // was built from the full result and is unaffected. Trimmed AFTER `forModel` carved the
+          // enrichment (photos, links) off the FULL row set — trimming first starved the collector
+          // of photos and the late resolver bought five /images calls per turn (measured). See
+          // `modelPayload.ts`.
+          return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
+            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active })
+        }
+      }) }),
+      get_news: tool({
+        description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
+        parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
+        execute: async ({ query }) => getNews(query, lang)
+      }),
+      ...(locationIntent !== 'offline' ? { search_products: tool({
+        description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
+        execute: async ({ query }) => {
+          const r = await searchProducts(query, lang)
+          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
+          if (pick) turnPick = pick
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
+          /**
+           * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
+           *
+           * This used to `return` here when `derivePick` declined, before
+           * evidence, synthesis or the marker were built - so a turn that ranked
+           * 31 laptops and shortlisted 6 of them reached the user as unstructured
+           * prose with no card at all. Measured on localhost three times running:
+           * every live shopping turn produced `_tappy_total_found` (proving the
+           * ranker HAD ranked) and no `_tappy_ranking`, no `_tappy_synthesis` and
+           * no `[TAPPY_SHOPPING]` marker.
+           *
+           * `derivePick` declining is not "nothing to show". It means no option
+           * won by enough to crown one - a tie, or a need too vague to decide
+           * FOR. The ranker's order is still the answer to "which of these should
+           * I look at first", and `buildShoppingSynthesis` already accepts a null
+           * pick and returns `recommendation: null`, which the card renders as a
+           * shortlist without a winner.
+           *
+           * What stays gated on a real Pick: `_tappy_ranking`, the ADR-024
+           * evidence freeze (it is built FROM the pick), and `recommended: true`
+           * on any entity. Nothing here manufactures a winner.
+           */
+          const evidenceBlock = pick ? await freezeShoppingEvidence(result, pick, shortlistedCandidates) : ''
+          // Phase 4 — the grounded, GROUPED decision the model verbalises instead
+          // of dumping rows: entities (one per configuration) with their offers,
+          // a recommendation from the same Pick, and how each group compares to
+          // what the user asked. No new model call — dynamic tool-result content
+          // on the single AI.stream(), same as _tappy_ranking/_tappy_evidence.
+          const shoppingSynthesis = shortlistedCandidates
+            ? buildShoppingSynthesis(shortlistedCandidates, pick, lastText)
+            : null
+          const synthesis = shoppingSynthesis ? buildSynthesisPayload(shoppingSynthesis) : null
+          // Phase 9 — the SAME grouping/recommendation, projected for the chat UI
+          // and delivered as a TEXT MARKER appended to the reply (persists with the
+          // message; a tool-result field does not survive reload). No image, no new
+          // grouping, and the model never sees it — see synthesisView.ts /
+          // streamEnrichment. It adds only each offer's own link/price.
+          const synthesisView = shoppingSynthesis ? buildSynthesisView(shoppingSynthesis) : null
+          if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
+          return forModel('search_products', {
+            ...(result as Record<string, unknown>),
+            ...(pick ? { _tappy_ranking: buildPickPayload(pick) } : {}),
+            // The exact figures, plus what the evidence does NOT establish. The
+            // rows above carry the same numbers, but silently: a listing with no
+            // `ram_gb` simply has no key, and that silence is what production
+            // filled in with "32GB/512GB".
+            ...(evidenceBlock ? { _tappy_evidence: evidenceBlock } : {}),
+            ...(synthesis ? { _tappy_synthesis: synthesis } : {}),
+          })
+        }
+      }) } : {}),
+      web_search: tool({
+        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
+        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
+        execute: async ({ query }) => {
+          // A travel turn that reaches for the general search still gets the editorial supplement.
+          const [r, editorial] = await Promise.all([webSearch(query, lang), travelEditorialFor(null)])
+          // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
+          // tool — Ticketbox listings are discovered and validated by CCP and projected as
+          // `event_links` (when CCP is on); the result is untouched otherwise.
+          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return withTravelEditorial(r, editorial)
+        }
+      }),
+      get_weather: tool({
+        description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
+        parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
+        execute: async ({ location }) => getWeather(location, lang)
+      }),
+      get_gold_price: tool({
+        description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
+        parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
+        execute: async ({ query }) => getGoldPrice(query || '', lang)
+      }),
+      get_flight_prices: tool({
+        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales), kem link dat ve theo dung chang/ngay',
+        parameters: z.object({
+          origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
+          destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
+          departDate: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          returnDate: z.string().optional().describe('Ngay ve dang YYYY-MM-DD neu user noi ro (khong bat buoc)'),
+          // No min/max in the schema: `.max(9)` was validated by the SDK before execute() and a
+          // party of ten ended the turn. The cap is applied below, with a message, never silently.
+          passengers: z.number().optional().describe('So hanh khach nguoi lon neu user noi ro (khong bat buoc; toi da 9 tren mot ve le)'),
+        }),
+        execute: async ({ origin, destination, departDate, returnDate, passengers: rawPassengers }) => {
+          const { passengers, note: passengersNote } = clampPassengers(rawPassengers, lang)
+          if (passengersNote) console.warn(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_flight_prices', step: 'passengers_clamped', from: rawPassengers, to: passengers }))
+          const r0 = await getFlightPrices(origin, destination, lang, departDate)
+          const r = passengersNote && r0 && typeof r0 === 'object' ? { ...(r0 as Record<string, unknown>), passengers_note: passengersNote } : r0
+          const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
+          // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
+          // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
+          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return filtered
+        }
+      }),
+      get_hotel_prices: tool({
+        description: 'Tim gia phong khach san/resort tai mot dia diem, ket hop tim kiem web (Booking.com/Agoda) va danh sach khach san tu OpenStreetMap'
+          + (budget ? `. BUDGET FILTER: Chi duoc de cap khach san co gia duoi ${budget.max.toLocaleString('vi-VN')} VND. KHONG duoc de cap: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Imperial, hay bat ky khach san 4-5 sao nao (gia > 1.500.000 VND/dem). Chi lay tu search results, khong them tu kien thuc co san.` : ''),
+        parameters: z.object({
+          location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
+          checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
+          checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
+        }),
+        execute: async ({ location, checkIn, checkOut }) => {
+          const [r, editorial] = await Promise.all([getHotelPrices(location, checkIn, checkOut, budget?.max, lang), travelEditorialFor(location)])
+          const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
+          const { result, pick } = rankForModel('get_hotel_prices', filtered)
+          if (pick) turnPick = pick
+          turnPlaceLocation = location
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
+          // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
+          // from the full list above. Same trim as places (cost item 4).
+          return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
+            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active })
+        }
+      }),
+      get_transport_options: tool({
+        description: 'Tim phuong an di chuyen: ve xe khach/tau hoa giua 2 tinh/thanh pho (tim kiem web, kem link dat ve cu the), hoac uoc tinh khoang cach + gia taxi/xe cong nghe (Grab/Be/Xanh SM) cho di chuyen trong thanh pho/quang duong ngan',
+        parameters: z.object({
+          origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
+          destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
+          // A free string, coerced in execute (transportMode.ts): same class as search_places.type —
+          // an off-enum value ("bus", "grab") used to fail SDK validation and end the whole turn.
+          mode: z.string().optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
+          date: z.string().optional().describe('Ngay di dang YYYY-MM-DD neu user noi ro (chi cho xe khach/tau, khong bat buoc)'),
+        }),
+        execute: async ({ origin, destination, mode: rawMode, date }) => {
+          const m = coerceTransportMode(rawMode)
+          if (m.coerced) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_coerced', from: String(m.raw).slice(0, 40), to: m.mode }))
+          if (m.mode === 'unknown') {
+            // Not a silent default: the tool would have run the intercity branch for a word that
+            // names neither kind of trip. The model gets the value back and asks the user.
+            console.warn(JSON.stringify({ type: 'tappyai_tool_called', tool: 'get_transport_options', step: 'mode_unknown', mode_received: m.raw.slice(0, 40) }))
+            return {
+              error: 'mode_unknown', mode_received: m.raw, origin, destination,
+              accepted_modes: ['intercity', 'taxi'],
+              ask: lang === 'en'
+                ? `"${m.raw}" is not a trip kind I know. Ask the user ONE short question: intercity bus/train, or taxi/ride-hailing within the city?`
+                : `"${m.raw}" khong phai loai di chuyen minh biet. Hoi user MOT cau ngan: xe khach/tau giua 2 tinh, hay taxi/xe cong nghe trong thanh pho?`,
+            }
+          }
+          const mode = m.mode
+          const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
+          // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          return withTravelEditorial(r, editorial)
+        }
+      }),
+      ...(authedUserId ? {
+        save_price_watch: tool({
+          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
+          parameters: z.object({
+            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
+            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
+            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
+          }),
+          // ── P0-2: the ONE AI write, routed through the action boundary ────
+          //
+          // The permission, argument, scope, execute and audit steps used to live inline here and
+          // were correct only because this particular function was written carefully. They now run
+          // in `runAiWriteAction`, so the next write tool inherits them instead of copying them.
+          //
+          // NOTHING THE MODEL OR THE CLIENTS SEE HAS CHANGED: same parameters, same limit, same
+          // messages, same returned object. `authedUserId` is passed as the ACTOR — resolved from
+          // the verified session far above — and the model has no way to name an owner.
+          execute: async (rawArgs) => {
+            const outcome = await runAiWriteAction({
+              tool: 'save_price_watch',
+              actor: { userId: authedUserId },
+              rawArgs,
+              policy: savePriceWatchPolicy(pwLang),
+              req,
+            })
+            // The tool result shape is part of the model-facing contract: `{ ok, id, … }` on
+            // success, `{ error }` on refusal. A denial reason is never handed to the model — it
+            // gets the user-facing sentence and nothing about why the boundary said no.
+            return outcome.ok ? outcome.result : { error: outcome.message }
+          }
+        }),
+      } : {}),
+  }))
+
+  /**
+   * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
+   * (4.3 s measured cold on a food turn, 2026-09-20), and while it ran the client had nothing —
+   * no bytes, so no frame, so the generic "thinking" dots. On a pre-search turn the response
+   * is returned NOW with a `searching` progress frame, and the rest of the turn — the search, the
+   * one AI.stream(), every filter — produces its body behind it (`deferredBody`). Nothing about the
+   * turn changes: same code, same order, same frames; only the first byte moves from after the
+   * search to before it. A failure inside becomes an SDK error frame (`3:`), never a hung stream.
+   */
+  const willPresearch = !!(presearchPlan && !noToolTurn && tools && typeof (tools as Record<string, { execute?: unknown }>).search_places?.execute === 'function')
+  const finishTurn = async (): Promise<Response> => {
+  /**
+   * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
+   * that one wrapped tool here — same object, same side effects — and hands the model a completed
+   * tool-call / tool-result pair, so the turn is a single model step. The client stream gets the
+   * same `9:` / `a:` frames the SDK would have written. Logged; a failure becomes a tool error
+   * result the model reads exactly as it reads a failed live call.
+   */
+  let presearchOutcome: PresearchOutcome | null = null
+  if (willPresearch && presearchPlan) {
+    const t0 = Date.now()
+    const toolCallId = 'presearch_' + randomUUID().slice(0, 8)
+    let result: unknown
+    try {
+      result = await (tools as unknown as { search_places: { execute: (args: PresearchPlan['args'], ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> } }).search_places.execute(presearchPlan.args, { toolCallId, messages: [] })
+    } catch (e) {
+      result = { error: e instanceof Error ? e.message.slice(0, 200) : 'presearch_failed' }
+    }
+    presearchOutcome = { toolCallId, toolName: 'search_places', args: presearchPlan.args, result, ms: Date.now() - t0 }
+    console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
+  }
+  const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
+  // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a
+  // successful `onFinish` never refunds; a terminal error part (`onError`) or a streamText init
+  // throw refunds exactly once. The tools in this route catch their own errors and never throw, so
+  // `onError` here means the turn produced no usable answer.
+  const refundQuotaOnFailure = async (reason: string): Promise<void> => {
+    if (quotaRefunded || !quotaRefund) return
+    quotaRefunded = true
+    console.warn(JSON.stringify({ type: 'tappyai_quota_refund', reason, scope: quotaRefund.scope }))
+    await refundAiQuestion(quotaRefund)
+  }
   let result
   try {
   // Provider-specific optimizations (e.g. prompt caching of this large system
@@ -871,6 +2041,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     onChunk: ({ chunk }) => {
       if (firstTokenAt === null && chunk.type === 'text-delta') firstTokenAt = Date.now()
     },
+    // F-015: a terminal error part (provider/network failure, or an unrepairable argument
+    // rejection) means the model produced no answer. Refund the spent question before the client
+    // sees the error stream. Never charges a failed turn; a successful onFinish never reaches here.
+    onError: ({ error }) => {
+      console.error('[chat] stream error:', error)
+      void refundQuotaOnFailure('stream_error')
+    },
     // Closes the first step (the tool-planning round-trip on a tool turn; the
     // only step on a chitchat turn). Diagnostic — nothing branches on it.
     onStepFinish: () => {
@@ -882,12 +2059,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     abortSignal: req.signal,
     systemShared,
     system: systemPrompt,
-    messages: modelMessages,
+    messages: modelMessagesWithPresearch as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
     // now injected by streamEnrichment instead of written by the LLM (see prompt),
     // so actual output is smaller — this raised ceiling is headroom, not the norm.
-    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 3072,
+    // Completion cap (cost optimization item 7, 2026-09-18): measured on 38 audit turns with
+    // CONSULTATIVE_V1 on, the longest reply was 821 completion tokens (a two-step tool turn
+    // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
+    // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
+    // generated, so this changes no cost on a normal reply — it bounds a runaway one.
+    maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     maxSteps: noToolTurn ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
@@ -912,167 +2094,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools: noToolTurn ? undefined : timeTools({
-      // A movie/show RECOMMENDATION turn drops the place search entirely, so the
-      // model can't answer "recommend a movie" with a list of cinemas — it
-      // recommends titles from film knowledge instead (see detectMovieRecommendationIntent).
-      ...(movieRecommend ? {} : { search_places: tool({
-        description: 'Tim dia diem, nha hang, cafe, spa, khach san, diem tham quan/du lich (thang canh, bao tang, cong vien, danh lam), benh vien, giai tri (rap phim, karaoke, gym, bar...) tai Viet Nam. Voi quan an/nha hang/cafe/spa/giai tri se kem gia mon/dich vu/ve tham khao tu Google Search (Serper)',
-        parameters: z.object({
-          query: z.string().describe('Tu khoa tim kiem (vd: pho ngon, cafe dep, spa tot, diem tham quan)'),
-          location: z.string().optional().describe('Khu vuc (vd: Ha Noi, Quan 1 Ho Chi Minh, Da Nang)'),
-          type: z.enum(['restaurant', 'cafe', 'spa', 'hotel', 'bar', 'gym', 'cinema', 'attraction']).optional()
-        }),
-        execute: async ({ query, location, type }) => {
-          console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation }))
-          const r = await searchPlaces(query, location, type, lang, userLocation)
-          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
-          // Deterministic ranking runs BEFORE the model sees the result, so the
-          // order it reads is already the order that fits this user.
-          const { result, pick } = rankForModel('search_places', filtered)
-          if (pick) turnPick = pick
-          return forModel('search_places', pick
-            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
-        }
-      }) }),
-      get_news: tool({
-        description: 'Lay tin tuc moi nhat tu VnExpress, Tuoi Tre, Dan Tri',
-        parameters: z.object({ query: z.string().describe('Tu khoa tin tuc can tim') }),
-        execute: async ({ query }) => getNews(query, lang)
-      }),
-      ...(locationIntent !== 'offline' ? { search_products: tool({
-        description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
-        execute: async ({ query }) => {
-          const r = await searchProducts(query, lang)
-          const filtered = budget ? applyBudgetFilter(r, budget, query) : r
-          const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
-          if (pick) turnPick = pick
-          if (!pick) return forModel('search_products', result)
-          const evidenceBlock = await freezeShoppingEvidence(result, pick, shortlistedCandidates)
-          // Phase 4 — the grounded, GROUPED decision the model verbalises instead
-          // of dumping rows: entities (one per configuration) with their offers,
-          // a recommendation from the same Pick, and how each group compares to
-          // what the user asked. No new model call — dynamic tool-result content
-          // on the single AI.stream(), same as _tappy_ranking/_tappy_evidence.
-          const shoppingSynthesis = shortlistedCandidates
-            ? buildShoppingSynthesis(shortlistedCandidates, pick, lastText)
-            : null
-          const synthesis = shoppingSynthesis ? buildSynthesisPayload(shoppingSynthesis) : null
-          // Phase 9 — the SAME grouping/recommendation, projected for the chat UI
-          // and delivered as a TEXT MARKER appended to the reply (persists with the
-          // message; a tool-result field does not survive reload). No image, no new
-          // grouping, and the model never sees it — see synthesisView.ts /
-          // streamEnrichment. It adds only each offer's own link/price.
-          const synthesisView = shoppingSynthesis ? buildSynthesisView(shoppingSynthesis) : null
-          if (synthesisView) enrichment.setShoppingMarker(renderShoppingMarker(synthesisView))
-          return forModel('search_products', {
-            ...(result as Record<string, unknown>),
-            _tappy_ranking: buildPickPayload(pick),
-            // The exact figures, plus what the evidence does NOT establish. The
-            // rows above carry the same numbers, but silently: a listing with no
-            // `ram_gb` simply has no key, and that silence is what production
-            // filled in with "32GB/512GB".
-            ...(evidenceBlock ? { _tappy_evidence: evidenceBlock } : {}),
-            ...(synthesis ? { _tappy_synthesis: synthesis } : {}),
-          })
-        }
-      }) } : {}),
-      web_search: tool({
-        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
-        parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
-        execute: async ({ query }) => webSearch(query, lang)
-      }),
-      get_weather: tool({
-        description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
-        parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
-        execute: async ({ location }) => getWeather(location, lang)
-      }),
-      get_gold_price: tool({
-        description: 'Lay gia vang SJC, PNJ, DOJI, vang the gioi (XAU/USD) realtime, cap nhat moi 5 phut tu vang.today',
-        parameters: z.object({ query: z.string().optional().describe('Loai vang user hoi, vd: SJC, PNJ, vang the gioi (khong bat buoc)') }),
-        execute: async ({ query }) => getGoldPrice(query || '', lang)
-      }),
-      get_flight_prices: tool({
-        description: 'Tim gia ve may bay re gan nhat giua 2 thanh pho/san bay, du lieu tu Travelpayouts (Aviasales)',
-        parameters: z.object({
-          origin: z.string().describe('Diem di (ten thanh pho hoac ma san bay IATA, vd: Ha Noi, HAN)'),
-          destination: z.string().describe('Diem den (ten thanh pho hoac ma san bay IATA, vd: TP HCM, SGN)'),
-        }),
-        execute: async ({ origin, destination }) => {
-          const r = await getFlightPrices(origin, destination, lang)
-          return budget ? applyBudgetFilter(r, budget, 've may bay') : r
-        }
-      }),
-      get_hotel_prices: tool({
-        description: 'Tim gia phong khach san/resort tai mot dia diem, ket hop tim kiem web (Booking.com/Agoda) va danh sach khach san tu OpenStreetMap'
-          + (budget ? `. BUDGET FILTER: Chi duoc de cap khach san co gia duoi ${budget.max.toLocaleString('vi-VN')} VND. KHONG duoc de cap: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Imperial, hay bat ky khach san 4-5 sao nao (gia > 1.500.000 VND/dem). Chi lay tu search results, khong them tu kien thuc co san.` : ''),
-        parameters: z.object({
-          location: z.string().describe('Dia diem/thanh pho can tim khach san (vd: Da Nang, Phu Quoc, Ha Noi)'),
-          checkIn: z.string().optional().describe('Ngay check-in dang YYYY-MM-DD (khong bat buoc)'),
-          checkOut: z.string().optional().describe('Ngay check-out dang YYYY-MM-DD (khong bat buoc)'),
-        }),
-        execute: async ({ location, checkIn, checkOut }) => {
-          const r = await getHotelPrices(location, checkIn, checkOut, budget?.max, lang)
-          const filtered = budget ? applyBudgetFilter(r, budget, 'khach san') : r
-          const { result, pick } = rankForModel('get_hotel_prices', filtered)
-          if (pick) turnPick = pick
-          return forModel('get_hotel_prices', pick
-            ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result)
-        }
-      }),
-      get_transport_options: tool({
-        description: 'Tim phuong an di chuyen: ve xe khach/tau hoa giua 2 tinh/thanh pho (tim kiem web, kem link dat ve cu the), hoac uoc tinh khoang cach + gia taxi/xe cong nghe (Grab/Be/Xanh SM) cho di chuyen trong thanh pho/quang duong ngan',
-        parameters: z.object({
-          origin: z.string().describe('Diem di (ten tinh/thanh pho hoac dia diem cu the)'),
-          destination: z.string().describe('Diem den (ten tinh/thanh pho hoac dia diem cu the)'),
-          mode: z.enum(['intercity', 'taxi']).optional().describe('"intercity" cho xe khach/tau giua 2 tinh thanh, "taxi" cho di chuyen trong thanh pho/quang duong ngan bang taxi/xe cong nghe. Bo trong neu khong ro.'),
-        }),
-        execute: async ({ origin, destination, mode }) => getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang)
-      }),
-      ...(authedUserId ? {
-        save_price_watch: tool({
-          description: 'Lưu theo dõi giá sản phẩm để thông báo khi giá đạt mức mong muốn. Dùng khi user nói "theo dõi giá", "báo mình khi giá xuống", "alert giá", "Tappy theo dõi giá X khi dưới Y"',
-          parameters: z.object({
-            product_name: z.string().describe('Tên sản phẩm cần theo dõi, ví dụ: AirPods Pro, Samsung Galaxy S25'),
-            target_price: z.number().describe('Giá mục tiêu bằng VND (số nguyên), ví dụ: 2000000'),
-            search_query: z.string().describe('Query tìm kiếm giá sản phẩm này, ví dụ: AirPods Pro 2 giá Shopee Tiki'),
-          }),
-          execute: async ({ product_name, target_price, search_query }) => {
-            if (!authedUserId) return { error: pw.needLogin(pwLang) }
-            try {
-              // authedUserId is already verified above via getRequestUser (cookie or
-              // Bearer JWT) — use the admin client for this write instead of a fresh
-              // cookie-based createClient(), which would silently find no session for
-              // a Bearer-authenticated (native) request.
-              const supabaseW = createAdminClient()
-              const { count } = await supabaseW
-                .from('price_watches')
-                .select('id', { count: 'exact', head: true })
-                .eq('user_id', authedUserId)
-                .eq('status', 'active')
-              if ((count ?? 0) >= 10) return { error: pw.limitReached(pwLang) }
-              const { data, error } = await supabaseW
-                .from('price_watches')
-                .insert({ user_id: authedUserId, product_name, target_price: Math.round(target_price), search_query })
-                .select('id')
-                .single()
-              if (error) {
-                console.error('[chat/save_price_watch] insert failed:', error.code ?? error.message)
-                return { error: pw.saveError(pwLang) }
-              }
-              return { ok: true, id: data.id, product_name, target_price, message: pw.saved(pwLang, product_name, Math.round(target_price)) }
-            } catch (e) {
-              // W2/C44 — String(e) put a raw exception into a tool result the model then reads out.
-              console.error('[chat/save_price_watch] failed:', e instanceof Error ? e.message : e)
-              return { error: pw.saveError(pwLang) }
-            }
-          }
-        }),
-      } : {}),
-    }),
+    tools,
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
@@ -1095,6 +2117,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // client-emit transform (logUsage / timeClientEmit) so a buffered turn's
       // enrichment tail lands in the SAME record instead of being missed.
       modelFinishAt = Date.now()
+      if (planningIntent) planEmitted = /\[TAPPY_PLAN\][\s\S]*\[\/TAPPY_PLAN\]/.test(text)
+      auditToolResultChars = (steps ?? []).reduce((n, s) => n + (s.toolResults ?? []).reduce((m, r) => m + JSON.stringify((r as { result?: unknown }).result ?? null).length, 0), 0)
       usageAcct = {
         finishReason,
         promptTokens: usage?.promptTokens ?? null,
@@ -1107,7 +2131,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         // One LLM request per step. The memory-extraction generate() below is a
         // SEPARATE call, so total LLM calls = llmCalls + memoryExtract.
         llmCalls: steps?.length ?? null,
-        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0),
+        toolCalls: (steps ?? []).reduce((n, s) => n + (s.toolCalls?.length ?? 0), 0) + (presearchOutcome ? 1 : 0),
+        presearch: presearchOutcome ? { ms: presearchOutcome.ms, exact: presearchPlan?.exact ?? null } : null,
       }
       if (authedUserId && worthExtract) {
         try {
@@ -1118,7 +2143,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             })),
             { role: 'assistant', content: text },
           ]
-          const extracted = await extractMemoryFromConversation(convMessages, existingMemory)
+          // Consultative V1 reads the LATEST user turn only (earlier turns were extracted on
+          // their own turn); the habit markers the filter needs are read from the same text.
+          const extractedRaw = await extractMemoryFromConversation(convMessages, existingMemory, { lastUserOnly: !!situation })
+          const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+          if (auditFile) {
+            try { appendFileSync(auditFile, JSON.stringify({ turn: auditTurn, type: 'tappyai_usage_memory', ...(lastMemoryExtractionUsage() ?? {}) }) + '\n') } catch { /* audit only */ }
+          }
+          // Consultative V1: what was said about TONIGHT is not a trait — the
+          // deterministic post-filter drops transient timing / per-turn budget /
+          // atmosphere wishes unless the user stated them as a habit.
+          const extracted = situation
+            ? (() => {
+              const userTexts = convMessages.filter(m => m.role === 'user').map(m => m.content)
+              const { memory, stats } = filterTransientMemory(extractedRaw, userTexts.slice(-1))
+              console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'memory_filter', ...stats }))
+              return memory
+            })()
+            : extractedRaw
           if (Object.keys(extracted).length > 0) {
             // Write with the admin client (pinned user_id) so the upsert works
             // under Bearer-token (native) auth — a fresh cookie client would
@@ -1137,6 +2179,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         } catch (e) {
           console.error('Memory extract/save error:', e)
         }
+      } else if (authedUserId && situation) {
+        // Consultative V1: the plain request that did not earn an extraction call still leaves
+        // its topic in `history` — deterministically, from the user's own words, no model call.
+        const topic = plainRequestTopic({ text: lastText, intent, isFirstReply })
+        if (topic) {
+          try {
+            await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, createAdminClient())
+          } catch (e) {
+            console.error('Memory history save error:', e)
+          }
+        }
       }
     },
   })
@@ -1145,6 +2198,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // the AI registry's own error text enumerates provider/model names, which the
     // client must never learn (AI Platform boundary). Return a generic code.
     console.error('streamText init error:', e)
+    // F-015: the model never ran, so the question this turn spent must be given back.
+    await refundQuotaOnFailure('init_throw')
     return new Response(
       JSON.stringify({ error: 'ai_error' }),
       { status: 502, headers: { 'Content-Type': 'application/json' } },
@@ -1154,13 +2209,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Declared out here because the resolver closure fills them while the usage
   // record — emitted after the last byte leaves — reads them. Diagnostic only.
   type PhotoStepAgg = { n: number; totalMs: number; maxMs: number; hits: number; timeouts: number }
-  const photoSteps: Partial<Record<'website' | 'places_detail' | 'places_media' | 'serper', PhotoStepAgg>> = {}
+  const photoSteps: Partial<Record<'website' | 'places_media' | 'serper', PhotoStepAgg>> = {}
   let photoPlacesSelected = 0
   let photoPlacesEnriched = 0
   let photoTotalMs = 0
   let photoMaxPlaceMs = 0
 
-  const baseResponse = result.toDataStreamResponse()
+  const sdkResponse = result.toDataStreamResponse()
+  // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
+  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
@@ -1200,12 +2257,54 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // skip the boundary entirely and state a price reconstructed from general knowledge.
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
-  }, undefined, undefined, travelIntent, lastText, needProfile.domain === 'places')
+  }, async (evidence) => {
+    // A1(d): carry this turn's place search (args + the venues shown) under this turn's evidence id.
+    if (!lastPlaceSearch || !evidenceDb) return
+    const row = { ...(loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } }
+    try {
+      await evidenceDb.rpc('decision_evidence_save', { p_id: evidenceId, p_evidence: row })
+      console.log(JSON.stringify({ type: 'tappyai_place_evidence', step: 'saved', shown: row.placeSearch.shown.length, query: lastPlaceSearch.args.query }))
+    } catch (e) {
+      console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
+    }
+  }, undefined, travelIntent, lastText, needProfile.domain === 'places',
+  /**
+   * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
+   * THAT CAN ACTUALLY BE ATTRIBUTED.
+   *
+   * V1/V2 asked the AREA ("<user query> review site:tiktok.com") and V3 kept the
+   * same query behind a `wantsReviewContent` gate. Re-measured 2026-09-10: that
+   * area query returns EIGHT valid TikTok posts — all listicles or videos about
+   * other venues, so `attributeTikTok` refuses every one. Retrieval was never the
+   * failure; asking about a district and hoping for a venue was.
+   *
+   * This asks about the venues on the card, batched into ONE request — the same
+   * single search per turn V1/V2 paid for, now yielding attributable results.
+   */
+  async (names, location) => {
+    tiktokEntitiesAsked = names.length
+    const result = await enrichWithTikTok(names, location, serperSearch)
+    tiktokSearched = result.searched
+    tiktokAttributed = result.perPlace.size
+    console.log(JSON.stringify({
+      type: 'tappyai_tiktok_enrichment',
+      entities: names.length, searched: result.searched,
+      attributed: result.perPlace.size, batch: !!result.batch,
+    }))
+    return { perPlace: result.perPlace, batch: result.batch }
+  },
+  turnPlaceLocation,
+  // P3-F4 (66e4c46, restored 2026-09-25): the URLs this conversation has ALREADY shown the user.
+  // A URL is publishable only if it came from this turn's tool results or from a reply we already
+  // published — otherwise the model invented it, and an invented URL is an exfiltration channel
+  // wearing the product's own "Xem thêm kết quả" clothing. Assistant turns only: what the USER
+  // typed was never vetted by the guard, so echoing it back must not launder it.
+  messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : '')),
+  // F-094 measurement: the golden harness's pre-guard capture. Never in production (goldenCapture.ts).
+  goldenCaptureSink(req))
   const finalResponse = (budget && budget.max < LUXURY_PRICE_FLOOR)
     ? applyLuxuryStreamFilter(enrichedResponse)
     : enrichedResponse
-  // Persist the incremented anonymous question count for the day.
-  if (anonSetCookie) finalResponse.headers.set('Set-Cookie', anonSetCookie)
   // ADR-024. The key to this turn's evidence, if a shopping decision writes one.
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
@@ -1217,7 +2316,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // transform is a byte-identical pass-through; it changes nothing on the wire.
   const logUsage = (ttuaMs: number | null) => {
     const a = usageAcct
-    console.log(JSON.stringify({
+    const now = Date.now()
+
+    // ── P1-3: the cost record, built ONCE ────────────────────────────────────
+    //
+    // This object is both the structured event and the shared half of the console line. Building
+    // it once is the point: the two used to be one literal, and the moment a field was added to
+    // only one of them the reconciliation the event type promises ("mirrors the console line
+    // field-for-field") would quietly stop being true.
+    //
+    // Typed as UsageEvent, so a field that is not on the allow-listed vocabulary does not compile.
+    const usageEvent: UsageEvent = {
       type: 'tappyai_usage',
       intent,
       finishReason: a?.finishReason ?? 'unknown',
@@ -1232,20 +2341,35 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // Total: t0 → final byte to the client (T10). Wider than the model-finish it
       // used to mark — on a buffered turn it now also covers the enrichment tail
       // the user waits through. modelFinishMs keeps the old T9 value.
-      elapsedMs: Date.now() - startTime,
+      elapsedMs: now - startTime,
       preModelMs,
       ttftMs: firstTokenAt === null ? null : firstTokenAt - startTime,
-      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? Date.now()) - firstTokenAt,
       // T9 generation complete; T7 first content the client can SEE (== ttft on a
       // live turn, the whole-reply emit on a buffered one); postModelMs is the
       // enrichment/emit tail between T9 and the final byte.
       modelFinishMs: modelFinishAt === null ? null : modelFinishAt - startTime,
       ttuaMs,
-      postModelMs: modelFinishAt === null ? null : Date.now() - modelFinishAt,
+      postModelMs: modelFinishAt === null ? null : now - modelFinishAt,
+      toolMs: toolMs > 0 ? toolMs : null,
+      providerId: AI.providerId(),
+      modelRole: role,
+    }
+
+    // Buffered for delivery by a LATER request's flushPending (see the top of this handler).
+    // recordEvent is an array push that cannot throw — an observability failure must never be
+    // able to break the reply it is observing.
+    recordEvent(usageEvent)
+
+    console.log(JSON.stringify({
+      ...usageEvent,
+      // ── Console-only diagnostics ─────────────────────────────────────────
+      // Deliberately NOT on the event. The allow-listed vocabulary is a privacy surface, and each
+      // of these is either derivable from the fields above or too fine-grained to justify a
+      // permanent field: keep the cost record small and the diagnostics where they already were.
+      generationMs: firstTokenAt === null ? null : (modelFinishAt ?? now) - firstTokenAt,
       // Splits the tool-turn gap: firstStepFinishMs closes the tool-planning step,
       // toolMs is the summed tool execute() time.
       firstStepFinishMs,
-      toolMs: toolMs > 0 ? toolMs : null,
       // ── Photo-enrichment tail (Phase 2) ──────────────────────────────────
       // postModelMs says the tail is ~1.5s; these say where inside it. null on
       // turns that resolved no photos, so "no enrichment ran" stays distinct
@@ -1259,16 +2383,60 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       // timeout. A step that runs every turn and contributes nothing is the
       // clearest possible signal, and only this breakdown can show it.
       photoSteps: photoPlacesSelected > 0 ? photoSteps : null,
-      providerId: AI.providerId(),
-      modelRole: role,
       retryCount: 'unknown',
       worthExtract,
       forcedTool,
+      planningIntent,
+      planEmitted,
+      frameGoal: decisionFrame.goal,
+      frameDomains: decisionFrame.domains,
+      frameClarify: decisionFrame.clarify?.about ?? null,
     }))
+    /**
+     * AUDIT COST SINK — cost-optimization measurement (2026-09-18). Active only when
+     * `AUDIT_USAGE_LOG_FILE` is set (never in production); appends one JSON line per turn with the
+     * usage record, the Serper calls this turn made, and the SIZE of every prompt section, so a
+     * per-section token breakdown can be derived offline. Nothing here changes the reply; a write
+     * failure is swallowed.
+     */
+    const auditFile = process.env.AUDIT_USAGE_LOG_FILE
+    if (auditFile) {
+      try {
+        const historyChars = modelMessages.slice(0, -1).reduce((n, m) => n + (typeof m.content === 'string' ? m.content.length : JSON.stringify(m.content).length), 0)
+        appendFileSync(auditFile, JSON.stringify({
+          turn: auditTurn, at: new Date().toISOString(), ...usageEvent,
+          serper: serperDelta(serperAtStart),
+          flags: { consultativeV1: consultativeV1Enabled(), v1Active, placeGuardV2: placeGuardAttributionV2Enabled(), snippetV2: snippetPriceGuardV2Enabled(), mediaV2: mediaPlacementV2Enabled() },
+          sections: {
+            sharedChars: systemShared?.length ?? 0,
+            dynamicChars: (built ? built.dynamic.length : 0),
+            simpleSystemChars: built ? 0 : systemPrompt.length,
+            styleChars: styleBlock.length,
+            consultativeChars: consultativeBlock.length,
+            v1Chars: v1Block.length,
+            memoryChars: memoryBlock.length,
+            prefChars: prefBlock.length,
+            historyChars,
+            lastUserChars: lastText.length,
+            toolResultChars: auditToolResultChars,
+            noToolTurn,
+            maxTokens: noToolTurn ? 300 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+          },
+        }) + '\n')
+      } catch { /* audit only */ }
+    }
   }
   const timedBody = finalResponse.body
     ? finalResponse.body.pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
+  }
+  if (willPresearch) {
+    return new Response(deferredBody(searchingFrame(lang), finishTurn), {
+      status: 200,
+      headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'X-Decision-Evidence-Id': evidenceId },
+    })
+  }
+  return finishTurn()
 }
 

@@ -1,0 +1,146 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 14778,
+  "evidenceId": "99cf11d7-5511-4c82-a5a0-06a11666c785",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi gia đình gần Sài Gòn cuối tuần",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12774,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Đường Sách TP. Hồ Chí Minh",
+      "rating": 4.7,
+      "count": 75,
+      "distance_km": 0.4,
+      "address": "39 Lê Duẩn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15637,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "rating": 4.6,
+      "count": 629,
+      "hours": "06:00–22:00",
+      "distance_km": 1.1,
+      "address": "QPC5+MWF, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+      "rating": 4.6,
+      "count": 660,
+      "hours": "08:00–22:00",
+      "distance_km": 1.3,
+      "address": "25 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12774,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Đường Sách TP. Hồ Chí Minh",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 75,
+        "distance_km": 0.4,
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15637,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công Viên Bờ Sông Sài Gòn Tp Thủ Đức",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 629,
+        "distance_km": 1.1,
+        "open_now": true,
+        "opening_hours": "06:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 660,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "08:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé.\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh**. Cách bạn chỉ 0.5km, có **4.6⭐ (12.774 đánh giá)**, mở từ 8h-21h.\n\nBạn đang nghĩ đến hoạt động nào — thư giãn hay chơi năng động? 🏞️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đi ăn ở đâu gần đó|Có chỗ nào vui chơi cho trẻ em|Đi vào buổi sáng hay chiều[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé.\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh**. Cách bạn chỉ 0.5km, có **4.6⭐ (12.774 đánh giá)**, mở từ 8h-21h.\n\nBạn đang nghĩ đến hoạt động nào — thư giãn hay chơi năng động? 🏞️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đi ăn ở đâu gần đó|Có chỗ nào vui chơi cho trẻ em|Đi vào buổi sáng hay chiều[/FOLLOWUPS]"
+    }
+  ]
+}

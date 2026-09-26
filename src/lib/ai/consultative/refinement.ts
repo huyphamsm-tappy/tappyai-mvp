@@ -66,6 +66,33 @@ export function taskSwitched(
   return after.domain !== before.domain
 }
 
+/**
+ * The user texts of the CURRENT consultation: from the most recent task switch
+ * (the same domain test `taskSwitched` applies to the last turn, applied to every
+ * user turn) to the end. The situation frame folds a few user turns so "cho 2
+ * người" said earlier still holds — that fold must stop at the consultation
+ * boundary. Measured 2026-09-19 (Android E2E turns 5–6): "spa … mở khuya sau
+ * 22h" → "tìm resort Phú Quốc sang chút" → "gợi ý thêm" carried `late_open` into
+ * both resort turns; bounding at the switch turn alone fixed turn 5 and not the
+ * refinement after it. No switch anywhere ⇒ every user text, as before.
+ */
+export function consultationUserTexts(
+  messages: Array<{ role: string; content: unknown }>,
+  opts: DeriveOptions = {},
+): string[] {
+  let start = 0
+  let before: NeedProfile | null = null
+  for (let i = 0; i < messages.length; i++) {
+    if (messages[i]?.role !== 'user') continue
+    const after = deriveNeedProfile(messages.slice(0, i + 1), opts)
+    if (before && before.domain !== null && after.domain !== null && after.domain !== before.domain) start = i
+    before = after
+  }
+  return messages.slice(start)
+    .filter(m => m.role === 'user' && typeof m.content === 'string')
+    .map(m => m.content as string)
+}
+
 export function profileChanged(
   messages: Array<{ role: string; content: unknown }>,
   opts: DeriveOptions = {},

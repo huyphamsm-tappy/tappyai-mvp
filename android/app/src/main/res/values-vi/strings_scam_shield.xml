@@ -4,14 +4,14 @@
     <string name="scam_shield_url_label">Đường dẫn</string>
     <string name="scam_shield_url_placeholder">vidu.com hoặc https://…</string>
     <string name="scam_shield_check">Kiểm tra link này</string>
-    <string name="scam_shield_checking">Đang kiểm tra…</string>
+    <string name="scam_shield_checking">Đang kiểm tra...</string>
 
-    <string name="scam_shield_level_safe">Có vẻ an toàn</string>
-    <string name="scam_shield_level_low">Rủi ro thấp</string>
-    <string name="scam_shield_level_medium">Hãy cẩn thận</string>
-    <string name="scam_shield_level_high">Rủi ro cao</string>
-    <string name="scam_shield_level_critical">Đừng mở link này</string>
-    <string name="scam_shield_level_inconclusive">Chưa đủ căn cứ</string>
+    <string name="scam_shield_level_safe">An toàn</string>
+    <string name="scam_shield_level_low">Nguy cơ thấp</string>
+    <string name="scam_shield_level_medium">Cần cẩn thận</string>
+    <string name="scam_shield_level_high">Nguy cơ cao</string>
+    <string name="scam_shield_level_critical">Rất nguy hiểm</string>
+    <string name="scam_shield_level_inconclusive">Chưa kết luận được</string>
 
     <string name="scam_shield_score">Điểm rủi ro %1$d · độ tin cậy %2$d%%</string>
     <string name="scam_shield_official_match">Trang chính thức của %1$s (%2$s)</string>
@@ -28,6 +28,32 @@
 
     <string name="scam_shield_disclaimer">Lá chắn lừa đảo giúp bạn nhận ra link nguy hiểm, nhưng không thể phát hiện mọi trường hợp. Đừng bao giờ chuyển tiền hay đọc mã OTP chỉ vì một đường link.</string>
 
-    <string name="home_scam_shield_title">🛡️ Kiểm tra an toàn</string>
-    <string name="home_scam_shield_desc">Kiểm tra link trước khi mở</string>
+    <string name="home_scam_shield_title">Cảnh báo lừa đảo</string>
+    <string name="home_scam_shield_desc">Kiểm tra link, website và mã QR trước khi mở</string>
+    <!-- Cảnh báo lừa đảo — the canonical web /scam-shield (v3.scam.*, scamShield.*), 2026-09-17 -->
+    <string name="scam_shield_v3_name">Cảnh báo lừa đảo</string>
+    <string name="scam_shield_v3_tagline">Bảo vệ bạn khỏi các liên kết và website đáng ngờ</string>
+    <string name="scam_shield_v3_check_title">Kiểm tra link / website</string>
+    <string name="scam_shield_v3_cta">Kiểm tra ngay</string>
+    <string name="scam_shield_v3_url_placeholder">Nhập URL hoặc tên miền...</string>
+    <string name="scam_shield_v3_qr_upload">Quét mã QR</string>
+    <string name="scam_shield_v3_confidence_high">Độ tin cậy cao</string>
+    <string name="scam_shield_v3_confidence_medium">Dữ liệu hạn chế</string>
+    <string name="scam_shield_v3_confidence_low">Dữ liệu không đủ</string>
+    <string name="scam_shield_v3_evidence">Chi tiết phân tích</string>
+    <string name="scam_shield_v3_actions">Khuyến nghị</string>
+    <string name="scam_shield_v3_official">Thông tin chính thức</string>
+    <string name="scam_shield_v3_official_website">Website chính thức</string>
+    <string name="scam_shield_v3_official_hotline">Hotline</string>
+    <string name="scam_shield_v3_score">Score</string>
+    <string name="scam_shield_v3_history_title">Lịch sử kiểm tra</string>
+    <string name="scam_shield_v3_history_empty">Chưa có lượt kiểm tra nào.</string>
+    <string name="scam_shield_v3_history_local">Lịch sử chỉ được lưu trên thiết bị này.</string>
+    <string name="scam_shield_v3_history_clear">Xóa lịch sử</string>
+    <string name="scam_shield_v3_history_all">Xem tất cả</string>
+    <string name="scam_shield_v3_history_less">Thu gọn</string>
+    <string name="scam_shield_v3_recheck">Kiểm tra lại</string>
+    <string name="scam_shield_error_qr_decode">Không thể đọc mã QR</string>
+    <string name="scam_shield_error_qr_no_url">Mã QR không chứa liên kết</string>
+    <string name="scam_shield_error_qr_failed">Không thể kiểm tra mã QR</string>
 </resources>

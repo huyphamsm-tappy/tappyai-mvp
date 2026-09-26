@@ -11,6 +11,7 @@
 
 import {
   MediaCredentialsUnavailableError,
+  MediaStorageError,
   MediaTimeoutError,
   MediaUploadFailedError,
   MediaUploadSessionError,
@@ -21,7 +22,10 @@ import {
   type UploadSession,
   type UploadSessionRequest,
 } from '../types'
-import { assertSafeMediaKey } from '../key'
+import { assertOwnerScopedPrefix, assertSafeMediaKey } from '../key'
+
+/** A listing larger than this many pages is not one user's uploads — stop rather than loop. */
+const MAX_LIST_PAGES = 50
 
 export interface GcsProviderDeps {
   bucket: string
@@ -43,7 +47,7 @@ const UPLOAD_HOST = 'https://storage.googleapis.com'
 export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
 
 /**
- * Cache lifetime stamped on every client-direct upload.
+ * Cache lifetime stamped on every upload — client-direct sessions and server-side `put()` alike.
  *
  * Safe only because these objects are immutable BY CONSTRUCTION: `resolveUploadTarget` mints each
  * key as `${prefix}/${ownerId}/${24 random chars}.${ext}`, server-side, per upload. A caller cannot
@@ -54,9 +58,22 @@ export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
  * object hourly. Egress, not storage, is the cost that matters here.
  *
  * If key generation ever becomes caller-influenced or deterministic, this becomes a correctness
- * bug that stays invisible for a year — immutableCache.test.ts pins both halves together.
+ * bug — immutableCache.test.ts pins both halves together.
+ *
+ * ONE DAY, not one year (owner decision 2026-09-26). The bytes never change, so a year was safe
+ * for correctness — but the lifetime is also how long a copy can outlive a DELETION: the bucket is
+ * publicly readable, and a cached copy (browser, shared cache, Google's edge) may keep serving a
+ * deleted clip until max-age runs out. Account deletion (F-096) promises the files go; a year-long
+ * max-age would make that promise unenforceable. A day bounds it, and still spares viewers the
+ * hourly re-download that GCS's own default (max-age=3600) caused.
+ *
+ * PRIVATE, not public (owner decision 2026-09-26, F-100). Measured: a deleted PUBLIC object kept
+ * being served from Google's shared edge cache until its max-age ran out, and GCS built-in caching
+ * cannot be invalidated. `private` forbids shared caches from storing it at all, so a deletion takes
+ * effect at Google at once; only a viewer's own browser/app keeps a copy, for at most a day.
+ * Cost: no edge hits — every first view per device is served by the bucket itself.
  */
-export const IMMUTABLE_MEDIA_CACHE_CONTROL = 'public, max-age=31536000, immutable'
+export const IMMUTABLE_MEDIA_CACHE_CONTROL = 'private, max-age=86400, immutable'
 
 export function gcsPublicUrl(bucket: string, key: string): string {
   return `${UPLOAD_HOST}/${bucket}/${key}`
@@ -79,17 +96,28 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
       if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
 
       const token = await deps.getAccessToken()
+      // Multipart, not a plain media upload: a plain upload cannot carry object metadata, so the
+      // object would get GCS's default `public, max-age=3600` — shared-cacheable at Google's edge,
+      // where a deleted photo stays reachable for up to an hour (F-100, owner decision 2026-09-26).
+      // The name stays in the query string, as in createUploadSession — one source of truth.
       const url =
         `${UPLOAD_HOST}/upload/storage/v1/b/${encodeURIComponent(deps.bucket)}/o` +
-        `?uploadType=media&name=${encodeURIComponent(safeKey)}`
+        `?uploadType=multipart&name=${encodeURIComponent(safeKey)}`
+      const boundary = `tappy-${crypto.randomUUID()}`
+      const metadata = JSON.stringify({ contentType: opts.contentType, cacheControl: IMMUTABLE_MEDIA_CACHE_CONTROL })
 
       const res = await doFetch(url, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': opts.contentType,
+          'Content-Type': `multipart/related; boundary=${boundary}`,
         },
-        body: body as BodyInit,
+        body: new Blob([
+          `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n`,
+          `--${boundary}\r\nContent-Type: ${opts.contentType}\r\n\r\n`,
+          body as BlobPart,
+          `\r\n--${boundary}--\r\n`,
+        ]),
       })
 
       // A non-2xx must never be reported as success. The provider's response
@@ -200,6 +228,89 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
         size: Number.parseInt(meta.size ?? '0', 10) || 0,
         contentType: meta.contentType ?? '',
       }
+    },
+
+    /**
+     * F-096 · every object name under ONE owner's prefix, following pages. `storage.objects.list`
+     * is in the bridge account's `roles/storage.objectUser` (PHASE7-AUDIT §bucket IAM).
+     * The prefix guard is the whole safety of account deletion: '' or 'avatars/' would list —
+     * and the caller would then delete — every user's files.
+     */
+    async listObjects(prefix: string): Promise<string[]> {
+      const safePrefix = assertOwnerScopedPrefix(prefix)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      const token = await deps.getAccessToken()
+      const names: string[] = []
+      let pageToken: string | undefined
+      for (let page = 0; page < MAX_LIST_PAGES; page++) {
+        const url =
+          `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}/o` +
+          `?prefix=${encodeURIComponent(safePrefix)}&maxResults=1000&fields=${encodeURIComponent('items(name),nextPageToken')}` +
+          (pageToken ? `&pageToken=${encodeURIComponent(pageToken)}` : '')
+        let res: Response
+        try {
+          res = await doFetch(url, { headers: { Authorization: `Bearer ${token}` }, signal: makeSignal(timeoutMs) })
+        } catch (e) {
+          const name = (e as { name?: string } | undefined)?.name
+          if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object list', timeoutMs)
+          throw new MediaStorageError('gcs', 'list')
+        }
+        if (!res.ok) throw new MediaStorageError('gcs', 'list', res.status)
+        const body = (await res.json()) as { items?: Array<{ name?: string }>; nextPageToken?: string }
+        for (const it of body.items ?? []) {
+          // Defence in depth: only names under the requested prefix are ever returned to a deleter.
+          if (typeof it.name === 'string' && it.name.startsWith(safePrefix)) names.push(it.name)
+        }
+        if (!body.nextPageToken) return names
+        pageToken = body.nextPageToken
+      }
+      throw new MediaStorageError('gcs', 'list')
+    },
+
+    /**
+     * F-099 · a byte range of a stored object, read with the service account (`storage.objects.get`,
+     * already in the bridge role). Used to inspect a clip's metadata boxes without downloading it.
+     */
+    async readRange(key: string, offset: number, length: number): Promise<Uint8Array> {
+      const safeKey = assertSafeMediaKey(key)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      if (length <= 0) return new Uint8Array(0)
+      const token = await deps.getAccessToken()
+      const url = `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}/o/${encodeURIComponent(safeKey)}?alt=media`
+      let res: Response
+      try {
+        res = await doFetch(url, {
+          headers: { Authorization: `Bearer ${token}`, Range: `bytes=${offset}-${offset + length - 1}` },
+          signal: makeSignal(timeoutMs),
+        })
+      } catch (e) {
+        const name = (e as { name?: string } | undefined)?.name
+        if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object range read', timeoutMs)
+        throw new MediaStorageError('gcs', 'read')
+      }
+      if (res.status !== 206 && res.status !== 200) throw new MediaStorageError('gcs', 'read', res.status)
+      const bytes = new Uint8Array(await res.arrayBuffer())
+      // A 200 means the server ignored the range and sent the whole object: take the slice asked for.
+      return res.status === 200 ? bytes.slice(offset, offset + length) : bytes
+    },
+
+    /** F-096 · deletes one object. 404 = already gone, which is the state deletion wants. */
+    async deleteObject(key: string): Promise<boolean> {
+      const safeKey = assertSafeMediaKey(key)
+      if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
+      const token = await deps.getAccessToken()
+      const url = `${UPLOAD_HOST}/storage/v1/b/${encodeURIComponent(deps.bucket)}/o/${encodeURIComponent(safeKey)}`
+      let res: Response
+      try {
+        res = await doFetch(url, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` }, signal: makeSignal(timeoutMs) })
+      } catch (e) {
+        const name = (e as { name?: string } | undefined)?.name
+        if (name === 'TimeoutError' || name === 'AbortError') throw new MediaTimeoutError('object delete', timeoutMs)
+        throw new MediaStorageError('gcs', 'delete')
+      }
+      if (res.status === 404) return false
+      if (!res.ok) throw new MediaStorageError('gcs', 'delete', res.status)
+      return true
     },
   }
 }

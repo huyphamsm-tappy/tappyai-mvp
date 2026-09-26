@@ -3,19 +3,34 @@ import { filterShoppingResults } from './shoppingValidity'
 import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
+import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
 
 export async function searchProducts(query: string, lang = 'vi') {
   const cacheKey = productsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
-  const links = [
-    { name: 'Shopee', url: 'https://shopee.vn/search?keyword=' + encodeURIComponent(query) },
-    { name: 'Tiki', url: 'https://tiki.vn/search?q=' + encodeURIComponent(query) },
-    { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=' + encodeURIComponent(query) },
-  ]
+  // The marketplaces' own SEARCH pages, from the CCP registry (owner decision 14 Sep 2026): the
+  // model may cite them as "xem thêm lựa chọn"; verified product handoffs ride the rows as
+  // `commerce_links` when the platform is enabled.
+  const links = buildShoppingLinks(query)
 
   let result: unknown
+  /**
+   * `/shopping` ANSWERED, and the answer was "no listings".
+   *
+   * 🚨 THE SAME REQUEST WAS BOUGHT TWICE (Pass 2, 2026-09-13). The organic
+   * fallback below opens with `serperShopping(query)` — the identical body
+   * ({q, gl, hl, num: 20}) the block underneath has just sent. When that first
+   * call returned an EMPTY array, the second could not change the turn:
+   * `hasStructured` is false either way and `shopping_results` is omitted either
+   * way. One billed request, zero information.
+   *
+   * Only a definitive empty answer sets this. A `null` (timeout, non-2xx, no key)
+   * leaves it false, so the fallback's attempt still runs exactly as before — a
+   * failure is not an answer, and a retry that can succeed is kept.
+   */
+  let structuredAnsweredEmpty = false
 
   // ── Shopping listings first ───────────────────────────────────────────────
   // Google Shopping returns a SELLER and a PRICE per row; web search returns
@@ -55,6 +70,7 @@ export async function searchProducts(query: string, lang = 'vi') {
       setCache(cacheKey, result, 15 * 60 * 1000)
       return result
     }
+    structuredAnsweredEmpty = rows !== null
   } catch {
     // fall through to the web-search path below
   }
@@ -66,7 +82,9 @@ export async function searchProducts(query: string, lang = 'vi') {
     // shop-info/direct-link enrichment the prompt rules already depend on —
     // removing them would change shipped behaviour beyond this task's scope.
     const [shoppingRecords, searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
-      serperShopping(query),
+      // Not re-asked when the provider has already said "no listings" — see
+      // `structuredAnsweredEmpty`. An empty array here is what that answer was.
+      structuredAnsweredEmpty ? Promise.resolve([] as Awaited<ReturnType<typeof serperShopping>>) : serperShopping(query),
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
       serperSearch(query + ' shop website địa chỉ facebook'),
@@ -108,7 +126,8 @@ export async function searchProducts(query: string, lang = 'vi') {
     // capped at 8 above), not just the first few — the AI doesn't always describe the
     // first array entries, so a "top N" cap left whichever ones it picked imageless.
     if (searchResults && searchResults.length > 0) {
-      const photoLists = await Promise.all(searchResults.map(r => fetchPlacePhotosByName(r.link, r.title, 3, 'shopping')))
+      const photoLists = await Promise.all(searchResults.map(r =>
+        (r as { photo_url?: string }).photo_url ? Promise.resolve([] as string[]) : fetchPlacePhotosByName(r.link, r.title, 3, 'shopping')))
       searchResults = searchResults.map((r, idx) =>
         photoLists[idx].length > 0
           ? { ...r, photo_url: photoLists[idx][0], photo_urls: photoLists[idx] }

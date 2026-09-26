@@ -244,6 +244,11 @@ export const ROUTE_TITLES: Record<string, { vi: string; en: string }> = {
   '/terms': { en: 'Terms of Service — TappyAI', vi: 'Điều khoản dịch vụ — TappyAI' },
   '/viet-content': { en: 'Social media content writer — TappyAI', vi: 'Viết content mạng xã hội — TappyAI' },
   '/game/supertux': { en: 'SuperTux — TappyAI Games', vi: 'SuperTux — Trò chơi TappyAI' },
+  '/scam-shield': { en: 'Scam Shield — free scam link checker — TappyAI', vi: 'Scam Shield — kiểm tra link lừa đảo miễn phí — TappyAI' },
+  '/about': { en: 'About TappyAI — what it is and how it answers', vi: 'Giới thiệu TappyAI — Tappy là gì và trả lời như thế nào' },
+  '/extension': { en: 'TappyAI browser extension — ask Tappy about any page', vi: 'Tiện ích TappyAI cho trình duyệt — hỏi Tappy về bất kỳ trang nào' },
+  '/extension/welcome': { en: 'TappyAI extension installed — try it', vi: 'Đã cài tiện ích TappyAI — thử ngay' },
+  '/extension/privacy': { en: 'Privacy policy — TappyAI browser extension', vi: 'Chính sách riêng tư — Tiện ích TappyAI' },
 }
 
 /**

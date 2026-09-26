@@ -26,6 +26,14 @@ export interface CandidateAttrs {
   stars?: number
   cuisine?: string[]
   openingHours?: string
+  /** Provider-computed "open right now", when the row carried it. */
+  openNow?: boolean
+  /**
+   * The provider's own price band for a PLACE — Google `price_range` {low, high}
+   * or the Serper "1-100.000 ₫" band — as its upper bound in VND. Distinct from
+   * `priceVnd` (a product's structured price): a band says "up to", never "is".
+   */
+  priceHighVnd?: number
   wifi?: boolean
   vegetarian?: boolean
   outdoorSeating?: boolean
@@ -121,6 +129,24 @@ function str(v: unknown): string {
  * return `price_search_results`, but those are menu/service prices for the venue
  * found by a separate web search — not a structured field on the venue itself.
  */
+/**
+ * The upper bound of a place's price band, from the two shapes the tools emit.
+ * Google: `price_range: { low, high, currency }` in VND. Serper: `price_range_text`
+ * like "1-100.000 ₫" or "100.000-200.000 ₫" — the LAST number is the bound; the
+ * first may be the placeholder 1 the shopping guard exists to reject, which is
+ * why the low end is never read. Absent or non-VND ⇒ undefined: no band, no term.
+ */
+function priceBandHigh(r: Record<string, unknown>): number | undefined {
+  const range = r.price_range as { high?: number; currency?: string } | undefined
+  if (range && typeof range.high === 'number' && range.high > 0 && (range.currency === undefined || range.currency === 'VND')) return range.high
+  const text = str(r.price_range_text)
+  if (!text || !/₫|đ|vnd/i.test(text)) return undefined
+  const nums = text.match(/\d[\d.]*/g)
+  if (!nums) return undefined
+  const last = parseInt(nums[nums.length - 1].replace(/\./g, ''), 10)
+  return Number.isFinite(last) && last > 1000 ? last : undefined
+}
+
 export function normalizePlaces(toolResult: unknown): Candidate[] {
   const root = (toolResult && typeof toolResult === 'object') ? toolResult as Record<string, unknown> : {}
   const out: Candidate[] = []
@@ -141,6 +167,8 @@ export function normalizePlaces(toolResult: unknown): Candidate[] {
     // OSM shape — every one of these is present ONLY when the tag existed
     put(attrs, 'distanceKm', typeof r.distance_km === 'number' ? r.distance_km : undefined)
     put(attrs, 'openingHours', str(r.opening_hours) || undefined)
+    put(attrs, 'openNow', typeof r.open_now === 'boolean' ? r.open_now : undefined)
+    put(attrs, 'priceHighVnd', priceBandHigh(r))
     put(attrs, 'wifi', typeof r.wifi === 'boolean' ? r.wifi : undefined)
     put(attrs, 'vegetarian', typeof r.vegetarian === 'boolean' ? r.vegetarian : undefined)
     put(attrs, 'outdoorSeating', typeof r.outdoor_seating === 'boolean' ? r.outdoor_seating : undefined)
@@ -304,7 +332,15 @@ export function normalizeTransport(toolResult: unknown): Candidate[] {
  * Two sources with very different evidence quality:
  *   `search_results` — Serper web results (title/link/snippet). The ONLY structured
  *      signal is whether the link is a specific hotel page, derived from the URL.
- *   `hotel_list` — OSM nodes, which do carry stars and distance.
+ *   `hotel_list` — Serper `/maps` records (Phase 4: the primary source — name, address,
+ *      `google_rating`, `rating_value`/`rating_count`, phone, price band, photo) or, as the
+ *      fallback, OSM nodes, which carry stars and distance only.
+ *
+ * 🚨 Measured 2026-09-18 (T2/T8 of CONSULTATIVE-40): `/maps` returned 18 real Đà Nẵng hotels
+ * with ratings, and this function read only `distance_km`/`stars` from them — so no hotel
+ * carried evidence, the shortlist was empty, the model had no pick, and G1 cut every sentence
+ * that named a hotel. The provider was fine; the candidate was blind. The `/maps` rating is
+ * read here exactly as `normalizePlaces` reads it.
  *
  * The room price is visible in snippet text ("Từ 393.582 VND/đêm") and is
  * deliberately NOT read. `applyBudgetFilter` already uses snippet text for the
@@ -340,12 +376,18 @@ export function normalizeHotels(toolResult: unknown): Candidate[] {
     if (!name) continue
 
     const attrs: CandidateAttrs = {}
+    // `/maps` shape — same formatted string `normalizePlaces` parses; absent on an OSM node.
+    const { rating, reviewCount } = parseGoogleRating(r.google_rating)
+    put(attrs, 'rating', rating)
+    put(attrs, 'reviewCount', reviewCount)
+    put(attrs, 'priceHighVnd', priceBandHigh(r))
+    // OSM shape
     put(attrs, 'distanceKm', typeof r.distance_km === 'number' ? r.distance_km : undefined)
     const starsRaw = str(r.stars).trim()
     if (/^[1-5]$/.test(starsRaw)) put(attrs, 'stars', parseInt(starsRaw, 10))
 
     out.push({
-      id: str(r.maps_link) || name,
+      id: str(r.place_id) || str(r.maps_link) || name,
       name,
       domain: 'hotel',
       attrs,

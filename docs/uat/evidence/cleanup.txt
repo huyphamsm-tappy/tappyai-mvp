@@ -1,0 +1,31 @@
+deleted   4 from review_comments (user_id)
+deleted   4 from review_likes (user_id)
+deleted   4 from review_saves (user_id)
+deleted   4 from review_shares (user_id)
+deleted   8 from message_feedback (user_id)
+deleted   1 from chat_reads (user_id)
+deleted   4 from chat_messages (sender_id)
+deleted   2 from chat_participants (user_id)
+deleted   1 from chat_threads (id)
+deleted  10 from notifications (user_id)
+deleted   2 from notification_subscriptions (user_id)
+deleted   2 from user_follows (follower_id)
+deleted   4 from reviews (user_id)
+deleted   4 from favorites (user_id)
+deleted   4 from price_watches (user_id)
+deleted   4 from bookings (user_id)
+deleted   4 from groups (creator_id)
+deleted   5 from plan_shares (owner_id)
+deleted   4 from conversations (user_id)
+deleted   4 from user_events (user_id)
+deleted   2 from user_memory (user_id)
+deleted   2 from user_preferences (user_id)
+deleted   3 from user_demographics (user_id)
+rows deleted: 86
+delete user 4d6429c1 ok
+delete user 18bb5d88 ok
+delete user c35fe627 ok
+reviews remaining rows: 0
+conversations remaining rows: 0
+plan_shares remaining rows: 0
+chat_threads remaining rows: 0

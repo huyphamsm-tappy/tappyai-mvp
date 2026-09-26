@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { resolvePlacePhotos, type PhotoStepTiming } from './common'
+import { resolvePlacePhotos, __clearToolCache, type PhotoStepTiming } from './common'
 
 // ── Phase 2: the photo chain must be measurable WITHOUT becoming different ──
 //
@@ -42,9 +42,9 @@ function stubFetch(handler: (url: string) => { status?: number; headers?: Record
   return calls
 }
 
-const detailWithPhoto = JSON.stringify({ result: { photos: [{ photo_reference: 'ref-1' }] } })
-
 beforeEach(() => {
+  // Image lookups are memoised; clear between tests so each measures its own call.
+  __clearToolCache()
   process.env.GOOGLE_PLACES_API_KEY = PLACES_KEY
   process.env.SERPER_API_KEY = SERPER_KEY
 })
@@ -67,50 +67,12 @@ describe('the sink observes the steps that actually ran', () => {
   it('does not report a step that never ran', async () => {
     stubFetch(() => ({ body: JSON.stringify({ images: [] }) }))
     const steps: PhotoStepTiming[] = []
-    // No website_uri and no place_id → website and Places steps cannot run.
+    // No website_uri → the website step cannot run; only Serper does. (The Google
+    // Places photo step was removed — Google Places is not available for Vietnam.)
     await resolvePlacePhotos({ name: 'Quán A' }, 3, t => steps.push(t))
     expect(steps.some(s => s.step === 'website')).toBe(false)
-    expect(steps.some(s => s.step === 'places_detail')).toBe(false)
-    expect(steps.some(s => s.step === 'places_media')).toBe(false)
+    expect(steps.map(s => s.step)).toEqual(['serper'])
   })
-
-  it('reports the Places detail step, and the media step only when a photo_reference came back', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? { body: detailWithPhoto }
-        : url.includes('serper') ? { body: JSON.stringify({ images: [] }) }
-        : { body: '{}' })
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    const names = steps.map(s => s.step)
-    expect(names).toContain('places_detail')
-    expect(names.indexOf('places_detail')).toBeLessThan(names.indexOf('places_media'))
-  })
-
-  it('omits the media step when the detail carried no photo_reference', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? { body: JSON.stringify({ result: { photos: [] } }) }
-        : { body: JSON.stringify({ images: [] }) })
-    const steps: PhotoStepTiming[] = []
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    expect(steps.some(s => s.step === 'places_media')).toBe(false)
-  })
-})
-
-describe('a step that burns its timeout is reported, not hidden', () => {
-  it('marks the Places detail step timedOut and still falls through to Serper', async () => {
-    stubFetch(url =>
-      url.includes('place/details') ? 'hang'
-        : { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) })
-    const steps: PhotoStepTiming[] = []
-    const urls = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, t => steps.push(t))
-    const detail = steps.find(s => s.step === 'places_detail')!
-    expect(detail, 'the timed-out step must still be reported').toBeDefined()
-    expect(detail.timedOut).toBe(true)
-    expect(detail.hit).toBe(false)
-    // Unchanged behaviour: the fallback still runs and still returns its photo.
-    expect(steps.some(s => s.step === 'serper')).toBe(true)
-    expect(urls).toEqual(['https://cdn.example/s.jpg'])
-  }, 10_000)
 })
 
 describe('`hit` reports contribution, not mere completion', () => {
@@ -138,26 +100,31 @@ describe('`hit` reports contribution, not mere completion', () => {
 
 describe('measuring changes nothing', () => {
   const scenario = () => stubFetch(url =>
-    url.includes('place/details') ? { body: detailWithPhoto }
-      : url.includes('serper') ? { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) }
+    url.includes('serper') ? { body: JSON.stringify({ images: [{ imageUrl: 'https://cdn.example/s.jpg' }] }) }
       : { body: 'binary', headers: { 'content-type': 'image/jpeg' } })
+  const place = { name: 'Quán A', place_id: 'pid-1' }
 
   it('returns the same photos with and without the sink', async () => {
     const c1 = scenario()
-    const withSink = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => {})
+    const withSink = await resolvePlacePhotos(place, 3, () => {})
     vi.unstubAllGlobals()
+    // The two halves must make the SAME calls to be comparable. Image lookups
+    // are memoised, so without this the second half is served from the first
+    // half's answer and "same number of requests" would compare 2 against 0 —
+    // measuring the cache instead of the sink this test is about.
+    __clearToolCache()
     const c2 = scenario()
-    const without = await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3)
+    const without = await resolvePlacePhotos(place, 3)
     expect(withSink).toEqual(without)
     expect(c1.length, 'the sink must not add or remove a request').toBe(c2.length)
   })
 
   it('issues no request of its own', async () => {
     const calls = scenario()
-    await resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => {})
+    await resolvePlacePhotos(place, 3, () => {})
     // Every URL requested must belong to the chain's own steps.
     for (const u of calls) {
-      expect(/place\/details|maps\.googleapis|serper|^https:\/\/cdn\.example/.test(u), `unexpected request: ${u}`).toBe(true)
+      expect(/places\.googleapis|serper|^https:\/\/cdn\.example/.test(u), `unexpected request: ${u}`).toBe(true)
     }
   })
 
@@ -165,7 +132,7 @@ describe('measuring changes nothing', () => {
     // Instrumentation must never be able to fail the thing it measures.
     scenario()
     await expect(
-      resolvePlacePhotos({ name: 'Quán A', place_id: 'pid-1' }, 3, () => { throw new Error('sink blew up') }),
+      resolvePlacePhotos(place, 3, () => { throw new Error('sink blew up') }),
     ).rejects.toBeInstanceOf(Error)
   })
 })
@@ -183,16 +150,28 @@ describe('the usage record carries the tail breakdown, and no content', () => {
    * record and the assertion would still pass. Mutation M9 survived on exactly
    * that.
    */
-  function usageRecord(): string {
-    const anchor = CODE.indexOf("type: 'tappyai_usage'")
-    expect(anchor, 'the usage record must exist').toBeGreaterThan(-1)
-    const open = CODE.lastIndexOf('{', anchor)
+  function literalAt(from: number, what: string): string {
+    expect(from, `${what} must exist`).toBeGreaterThan(-1)
+    const open = CODE.lastIndexOf('{', from)
     let depth = 0
     for (let i = open; i < CODE.length; i++) {
       if (CODE[i] === '{') depth++
       else if (CODE[i] === '}') { depth--; if (depth === 0) return CODE.slice(open, i + 1) }
     }
-    throw new Error('unterminated usage literal')
+    throw new Error(`unterminated ${what} literal`)
+  }
+
+  /**
+   * P1-3 split the record in two: `usageEvent` is the typed, allow-listed half that goes to the
+   * cost pipeline, and the console line spreads it and adds console-only diagnostics — which is
+   * where the photo breakdown lives, deliberately (it is operational detail, not cost input).
+   * Both halves are emitted on the same line, so both are in scope. Reading only the first would
+   * report every field below as missing, which is exactly what happened.
+   */
+  function usageRecord(): string {
+    const event = literalAt(CODE.indexOf("type: 'tappyai_usage'"), 'the usageEvent record')
+    const printed = literalAt(CODE.indexOf('...usageEvent,'), 'the console line')
+    return `${event}\n${printed}`
   }
 
   it.each(['photoTotalMs', 'photoMaxPlaceMs', 'photoPlacesSelected', 'photoPlacesEnriched', 'photoSteps'])(
@@ -212,8 +191,8 @@ describe('the usage record carries the tail breakdown, and no content', () => {
   })
 
   it('logs no place name, URL or photo payload', () => {
-    const rec = CODE.slice(CODE.indexOf("type: 'tappyai_usage'"))
-      .slice(0, CODE.slice(CODE.indexOf("type: 'tappyai_usage'")).indexOf('}))'))
+    // Both halves of the record — see usageRecord() on why there are two.
+    const rec = usageRecord()
     for (const forbidden of ['placeName', 'photoUrl', 'photoUrls', 'byName', 'urls']) {
       expect(rec, `${forbidden} must never be logged`).not.toMatch(new RegExp(`(^|[{,\\s])${forbidden}\\s*(:|,)`))
     }

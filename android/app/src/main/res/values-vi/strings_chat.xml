@@ -73,6 +73,12 @@
     <string name="chat_error_generic_with_code">Có lỗi xảy ra (mã %1$d)</string>
     <string name="chat_error_message_too_long">Tin nhắn quá dài. Vui lòng thử lại với nội dung ngắn hơn.</string>
     <string name="chat_error_ai_service_down">Dịch vụ AI tạm thời gặp sự cố. Vui lòng thử lại sau.</string>
+    <string name="chat_error_sign_in_cta">Đăng nhập</string>
+    <string name="chat_age_declaration_hint">Tappy dành cho người từ 18 tuổi. Cho Tappy biết năm sinh của bạn, hoặc xác nhận bạn đã đủ 18 tuổi.</string>
+    <string name="chat_age_declaration_year_placeholder">Năm sinh</string>
+    <string name="chat_age_declaration_confirm_year">Tiếp tục</string>
+    <string name="chat_age_declaration_adult">Tôi đủ 18 tuổi</string>
+    <string name="chat_error_login_required">Đăng nhập để tiếp tục trò chuyện với Tappy nhé!</string>
 
     <string name="chat_followup_food_1">Tìm quán khác</string>
     <string name="chat_followup_food_2">Xem giá menu</string>
@@ -114,7 +120,7 @@
     <string name="chat_plan_share_short">Chia sẻ</string>
     <string name="chat_plan_share_cta">📤 Chia sẻ lịch trình</string>
     <string name="chat_plan_cost_title">💰 Chi phí ước tính</string>
-    <string name="chat_plan_cost_total">Tổng ước tính</string>
+    <string name="chat_plan_cost_total">Ngân sách</string>
     <string name="chat_plan_map">Bản đồ</string>
     <string name="chat_plan_book">Đặt ngay</string>
     <string name="chat_save_place">Lưu địa điểm</string>
@@ -122,4 +128,173 @@
     <!-- Đọc to. Hai tình huống khác nhau: một cái bảo đừng thử nữa, một cái bảo thử lại. -->
     <string name="chat_tts_language_unsupported">Câu trả lời này ở ngôn ngữ Tappy chưa đọc được. Bạn vẫn xem được nội dung bên trên.</string>
     <string name="chat_tts_language_failed">Chưa đọc được câu trả lời. Bạn thử lại giúp mình nhé.</string>
+
+    <!-- D1 — the shopping DECISION card (web parity: ShoppingDecision.tsx / w5/shoppingDecision.ts). -->
+    <string name="shopping_decision_recommended">Nên chọn</string>
+    <string name="shopping_decision_match_exact">Đúng cấu hình bạn cần</string>
+    <string name="shopping_decision_match_different">Khác cấu hình</string>
+    <string name="shopping_decision_match_unknown">Chưa rõ cấu hình</string>
+    <string name="shopping_decision_no_price">chưa rõ giá</string>
+    <string name="shopping_decision_unknown_seller">Người bán chưa rõ</string>
+    <string name="shopping_decision_trade_off">Đánh đổi</string>
+    <string name="shopping_decision_conditional">Tùy nhu cầu của bạn.</string>
+    <string name="shopping_decision_options_title">Các lựa chọn phù hợp</string>
+    <string name="shopping_decision_other_options">Lựa chọn khác</string>
+    <string name="shopping_decision_view">Xem</string>
+    <!-- Shopping information parity (web w5/shoppingDecision.ts + reasonText.ts) -->
+    <string name="shopping_decision_rating_line">%1$s · %2$s đánh giá</string>
+    <string name="shopping_decision_rating_only">%1$s</string>
+    <string name="shopping_decision_view_on">Xem trên %1$s</string>
+    <string name="shopping_decision_view_on_search">Tìm trên %1$s</string>
+    <string name="shopping_spec_chip">%1$s</string>
+    <string name="shopping_spec_ram">%1$sGB RAM</string>
+    <string name="shopping_spec_storage">%1$sGB bộ nhớ</string>
+    <string name="shopping_spec_size">%1$s</string>
+    <string name="shopping_condition_dealer_official">Đại lý chính thức</string>
+    <string name="shopping_condition_warranty_official">Bảo hành chính hãng</string>
+    <string name="shopping_condition_genuine">Chính hãng</string>
+    <string name="shopping_condition_official">Chính thức</string>
+    <string name="shopping_condition_like_new">Như mới</string>
+    <string name="shopping_condition_refurbished">Tân trang</string>
+    <string name="shopping_condition_sealed">Nguyên seal</string>
+    <string name="shopping_condition_grade_high">Máy 99%</string>
+    <string name="shopping_condition_used">Đã qua sử dụng</string>
+    <string name="shopping_reason_rating">đánh giá %1$s</string>
+    <string name="shopping_reason_review_count">%1$s lượt đánh giá</string>
+    <string name="shopping_reason_price">giá %1$s</string>
+    <string name="shopping_reason_distance">cách %1$s km</string>
+    <string name="shopping_reason_stars">%1$s sao</string>
+    <string name="shopping_reason_eta">đón sau %1$s phút</string>
+    <string name="shopping_reason_direct_page">trang đặt trực tiếp</string>
+
+    <!-- P4-06 — comparison (DD-005) and confirmation (DD-006). -->
+    <string name="comparison_title">So sánh %1$d lựa chọn</string>
+    <string name="comparison_attribute">Tiêu chí</string>
+    <string name="comparison_recommended">Đề xuất</string>
+    <string name="comparison_unknown">chưa rõ</string>
+    <string name="comparison_same_for_all">Giống nhau ở mọi lựa chọn</string>
+    <string name="comparison_reason">Vì sao đề xuất</string>
+    <string name="comparison_open">So sánh %1$d lựa chọn</string>
+    <string name="comparison_attr_price">Giá</string>
+    <string name="comparison_attr_match">Khớp yêu cầu</string>
+    <string name="comparison_attr_sellers">Nơi bán</string>
+    <string name="comparison_seller_count">%1$d nơi bán</string>
+    <string name="confirm_confirm">Xác nhận</string>
+    <string name="confirm_cancel">Huỷ</string>
+    <string name="confirm_what_changes">Thay đổi</string>
+    <string name="confirm_booking_consequence">Tappy sẽ mở trang đặt chỗ của %1$s. Bạn xem lại thông tin rồi mới gửi yêu cầu.</string>
+    <string name="confirm_booking_confirm">Tiếp tục đặt chỗ</string>
+    <string name="confirm_this_place">chỗ này</string>
+    <!-- Durable place card ([TAPPY_PLACES]). Labels mirror web's w5/placeDecision catalogue,
+         which is where the same strings are defined for the browser. -->
+    <string name="place_card_recommended">Tappy gợi ý</string>
+    <string name="place_card_popular">Phổ biến</string>
+    <string name="place_card_rating_count">%1$d đánh giá</string>
+    <string name="place_card_open_now">đang mở</string>
+    <string name="place_card_closed_now">đang đóng</string>
+    <string name="place_card_away">%1$s km từ chỗ bạn</string>
+    <string name="place_card_trade_off">Đánh đổi</string>
+    <string name="place_action_maps">Xem bản đồ</string>
+    <string name="place_action_directions">Chỉ đường</string>
+    <string name="place_action_website">Website</string>
+    <string name="place_action_order">Đặt món</string>
+    <string name="place_action_delivery">Đặt giao hàng</string>
+    <string name="place_action_booking">Đặt phòng</string>
+    <string name="place_action_reservation">Đặt chỗ</string>
+    <string name="place_action_ticket">Mua vé</string>
+    <string name="place_action_call">Gọi</string>
+    <string name="place_action_review">Xem review</string>
+    <string name="place_action_social">Trang mạng xã hội</string>
+    <string name="place_action_open">Mở</string>
+    <string name="place_action_search_on">Tìm trên %1$s</string>
+    <string name="place_action_search_generic">Tìm kiếm</string>
+    <!-- Commerce handoff labels (CCP): the key is RESOLVED on the server; %1$s is the merchant. Must say what web says (shared/ccp/commerce-action-fixtures.json). -->
+    <string name="place_action_purchase">Xem sản phẩm</string>
+    <string name="place_action_search_login_on">Tìm trên %1$s · cần đăng nhập</string>
+    <string name="place_action_booking_search">Tìm phòng trên %1$s</string>
+    <string name="place_action_ticket_search">Tìm vé trên %1$s</string>
+    <string name="place_action_order_search">Tìm trên %1$s</string>
+    <string name="place_action_view_on">Xem trên %1$s</string>
+    <string name="place_action_purchase_on">Mua trên %1$s</string>
+    <string name="place_action_purchase_login_on">Mua trên %1$s · cần đăng nhập</string>
+    <string name="place_action_purchase_app_on">Xem trên %1$s · mua trong ứng dụng</string>
+    <string name="place_action_booking_on">Đặt phòng trên %1$s</string>
+    <string name="place_action_booking_login_on">Đặt phòng trên %1$s · cần đăng nhập</string>
+    <string name="place_action_booking_app_on">Xem trên %1$s · đặt trong ứng dụng</string>
+    <string name="place_action_reservation_on">Đặt bàn trên %1$s</string>
+    <string name="place_action_reservation_login_on">Đặt bàn trên %1$s · cần đăng nhập</string>
+    <string name="place_action_reservation_app_on">Xem trên %1$s · đặt trong ứng dụng</string>
+    <string name="place_action_ticket_on">Mua vé trên %1$s</string>
+    <string name="place_action_ticket_login_on">Mua vé trên %1$s · cần đăng nhập</string>
+    <string name="place_action_ticket_app_on">Xem trên %1$s · mua vé trong ứng dụng</string>
+    <string name="place_action_order_on">Đặt món trên %1$s</string>
+    <string name="place_action_order_login_on">Đặt món trên %1$s · cần đăng nhập</string>
+    <string name="place_action_order_app_on">Xem trên %1$s · đặt món trong ứng dụng</string>
+    <string name="place_action_delivery_on">Đặt giao hàng trên %1$s</string>
+    <string name="place_action_delivery_login_on">Đặt giao hàng trên %1$s · cần đăng nhập</string>
+    <string name="place_action_delivery_app_on">Xem trên %1$s · đặt giao trong ứng dụng</string>
+    <string name="place_card_stars">Khách sạn %1$d sao</string>
+    <string name="place_card_reference_price">Giá tham khảo</string>
+    <string name="shopping_decision_price_watch">Theo dõi giá</string>
+    <string name="place_card_flag_wifi">Có Wi-Fi</string>
+    <string name="place_card_flag_outdoor">Chỗ ngồi ngoài trời</string>
+    <string name="place_card_flag_vegetarian">Có món chay</string>
+    <!-- V3 place decision section (web parity: PlaceDecision.tsx / w5/placeDecision.ts) -->
+    <string name="place_filter_all">Tất cả (%1$d)</string>
+    <string name="place_show_more">Xem thêm %1$d chỗ</string>
+    <string name="place_show_less">Thu gọn</string>
+    <string name="place_filter_open">Đang mở cửa</string>
+    <string name="place_filter_rated">Đánh giá cao</string>
+    <string name="place_rank">#%1$d</string>
+    <string name="place_explore_map">Xem tất cả trên bản đồ</string>
+    <string name="place_explore_map_hint">Mở Google Maps để khám phá thêm địa điểm</string>
+    <string name="place_action_review_search_on">Tìm review trên %1$s</string>
+    <string name="place_action_review_on">Review trên %1$s</string>
+    <string name="place_action_review_search_generic">Tìm review</string>
+    <string name="place_action_booking_search_on">Tìm phòng trên %1$s</string>
+    <string name="place_action_ticket_search_on">Tìm vé trên %1$s</string>
+    <string name="place_pager_position">Địa điểm %1$d/%2$d</string>
+    <string name="place_card_tappy_rating">Tappy %1$s · %2$d đánh giá</string>
+    <string name="place_card_why">Vì sao</string>
+    <!-- Tag của locale mà chuỗi này thuộc về: một nguồn duy nhất (resources), đọc theo Context. -->
+    <string name="place_card_lang">vi</string>
+    <!-- F-050: lý do của ranker và dải giá của provider, cùng lời với web
+         (src/lib/i18n/w5/shoppingDecision.ts reason.* và priceBand.ts formatPriceBandText). -->
+    <string name="place_reason_rating">đánh giá %1$s</string>
+    <string name="place_reason_review_count">%1$s lượt đánh giá</string>
+    <string name="place_reason_price">giá %1$s</string>
+    <string name="place_reason_distance">cách %1$s km</string>
+    <string name="place_reason_stars">%1$s sao</string>
+    <string name="place_reason_eta">đón sau %1$s phút</string>
+    <string name="place_reason_direct_page">trang đặt trực tiếp</string>
+    <string name="place_band_under">dưới %1$s ₫</string>
+    <string name="place_band_over">trên %1$s ₫</string>
+    <string name="place_band_range">%1$s–%2$s ₫</string>
+
+    <!-- V3 (ported from A 77b0bb7): voice listening screen -->
+    <string name="voice_listening_cancel">Hủy</string>
+    <string name="voice_listening_hint_example">“Tìm cho tôi một quán cafe yên tĩnh có view đẹp ở Đà Lạt cuối tuần này”</string>
+    <string name="voice_listening_hint_label">Thử nói:</string>
+    <string name="voice_listening_pill">Đang nghe…</string>
+    <string name="voice_listening_send">Gửi</string>
+    <string name="voice_listening_subtitle">Hãy nói điều bạn cần, TappyAI luôn sẵn sàng hỗ trợ bạn!</string>
+    <string name="voice_listening_title_accent">lắng nghe…</string>
+    <string name="voice_listening_title_lead">Tôi đang</string>
+
+    <!-- G1 share-out: lượt trả lời trở thành trang kết quả công khai (tương đương bản xem trước trên web). -->
+    <string name="chat_share_public_link">Liên kết công khai (trang chia sẻ)</string>
+    <string name="chat_share_public_title">Người khác sẽ thấy gì</string>
+    <string name="chat_share_public_hint">Đây là bản công khai đã ẩn thông tin cá nhân. Chỉ khi bạn xác nhận, liên kết mới được tạo.</string>
+    <string name="chat_share_public_loading">Đang chuẩn bị bản xem trước…</string>
+    <string name="chat_share_public_title_field">Tiêu đề công khai</string>
+    <string name="chat_share_public_question">Câu hỏi (đã rút gọn)</string>
+    <string name="chat_share_public_answer">Câu trả lời</string>
+    <string name="chat_share_public_counts">%1$d nút hành động · %2$d ảnh</string>
+    <string name="chat_share_public_privacy">Không bao gồm: tên, số điện thoại, email, địa chỉ nhà, trí nhớ và lịch sử trò chuyện của bạn.</string>
+    <string name="chat_share_public_unlisted">Bạn chưa đăng nhập: liên kết vẫn mở được cho mọi người nhưng không xuất hiện trên tìm kiếm cho đến khi bạn tạo tài khoản.</string>
+    <string name="chat_share_public_confirm">Tạo liên kết công khai</string>
+    <string name="chat_share_public_published">Đã tạo liên kết công khai</string>
+    <string name="chat_share_public_copy">Sao chép liên kết</string>
+    <string name="chat_share_public_rate_limited">Bạn đã tạo đủ số liên kết công khai hôm nay. Thử lại vào ngày mai nhé.</string>
+    <string name="chat_share_public_not_shareable">Câu trả lời này chưa thể chia sẻ công khai.</string>
 </resources>

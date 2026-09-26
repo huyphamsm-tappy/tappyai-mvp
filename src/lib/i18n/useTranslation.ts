@@ -6,18 +6,22 @@ import { w2vi, w2en } from './w2'
 import { w3vi, w3en } from './w3'
 import { w4vi, w4en } from './w4'
 import { w5vi, w5en } from './w5'
+import { v3vi, v3en } from './v3'
 import { w6vi, w6en } from './w6'
 import { vi as adminVi, en as adminEn } from './admin'
 import { vi as landingVi, en as landingEn } from './landing'
 import { vi as legalVi, en as legalEn } from './legal'
-import { vi as shareVi, en as shareEn } from './share'
+import { vi as shareVi, en as shareEn, publicResultVi, publicResultEn } from './share'
 import { vi as guideVi, en as guideEn } from './guide'
+import { vi as discoveryVi, en as discoveryEn } from './discovery'
+import { browserLocale, isAppSurface } from './appSurface'
 
 // Full lookup maps: base dictionary + per-screen wave modules layered on top.
 // Namespaced keys make the merge collision-free.
 const full: Record<Locale, Record<string, string>> = {
-  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...guideVi },
-  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...guideEn },
+  // w6 (age gate, main #251) before v3 so the V3 copy wins any duplicate key.
+  vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi, ...landingVi, ...legalVi, ...shareVi, ...publicResultVi, ...guideVi, ...discoveryVi },
+  en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn, ...landingEn, ...legalEn, ...shareEn, ...publicResultEn, ...guideEn, ...discoveryEn },
 }
 
 const STORAGE_KEY = 'tappy_lang'
@@ -29,9 +33,38 @@ const STORAGE_KEY = 'tappy_lang'
 let current: Locale | null = null
 const listeners = new Set<() => void>()
 
-function detectLocale(): Locale {
-  if (typeof navigator === 'undefined' || !navigator.language) return 'en'
-  return navigator.language.toLowerCase().startsWith('vi') ? 'vi' : 'en'
+/**
+ * The product's language, and what the client answers with until the user chooses otherwise.
+ *
+ * 🚨 ONE default, read by everything. It used to be `navigator.language`, which meant an en-US
+ * browser rendered the whole UI in English even though every string is translated — the same
+ * defect Android had when an en-US handset resolved the default resource set. SSR already renders
+ * `'vi'` (getServerSnapshot), so the browser hint also produced a hydration mismatch.
+ *
+ * Anything that needs "what language is this client speaking" must come through [[appLocale]] —
+ * the store, `resolvedClientLocale`, and the `Accept-Language` interceptor all do. Three copies of
+ * `?? something` is how the UI and the header came to disagree in the first place (ADR-027 §3).
+ */
+const PRODUCT_LOCALE: Locale = 'vi'
+
+/**
+ * The language this client is actually speaking: the user's explicit choice, else the default for
+ * the side of the public / app boundary this document is on (see `appSurface.ts`):
+ *
+ *   · inside the app (`src/app/(app)/`) — the product default, until the first-visit
+ *     LanguagePicker records a choice;
+ *   · on a public page (a shared link, a hub, the legal pages) — the browser's own language, the
+ *     same preference it sends as `Accept-Language`. A stranger is never asked; the page simply
+ *     speaks their language.
+ *
+ * Safe outside React and outside the browser — on the server there is no stored choice and no
+ * document, and the answer is the same default SSR renders in.
+ */
+export function appLocale(): Locale {
+  const stored = getStoredLocale()
+  if (stored) return stored
+  if (typeof document === 'undefined') return PRODUCT_LOCALE
+  return isAppSurface() ? PRODUCT_LOCALE : browserLocale()
 }
 
 /**
@@ -48,7 +81,7 @@ function detectLocale(): Locale {
  */
 export function resolvedClientLocale(): Locale | null {
   if (typeof window === 'undefined') return null
-  return getStoredLocale() ?? detectLocale()
+  return appLocale()
 }
 
 export function getStoredLocale(): Locale | null {
@@ -64,7 +97,7 @@ export function setStoredLocale(locale: Locale) {
 
 function getSnapshot(): Locale {
   if (current) return current
-  current = getStoredLocale() ?? detectLocale()
+  current = appLocale()
   return current
 }
 
@@ -83,8 +116,8 @@ function subscribe(cb: () => void): () => void {
 // subscriber so the whole UI re-renders in the new language immediately.
 export function setLocale(next: Locale) {
   // ALWAYS persist the explicit choice first — even when `next` already equals the
-  // in-memory `current`. On first visit `current` is seeded to the auto-detected
-  // locale (getSnapshot → detectLocale) BEFORE the user picks, so a user choosing the
+  // in-memory `current`. On first visit `current` is seeded to the product default
+  // (getSnapshot → appLocale) BEFORE the user picks, so a user choosing the
   // language that matches their browser (the common case) hit the old early-return and
   // `tappy_lang` was never written → getStoredLocale() stayed null → the first-visit
   // LanguagePicker reappeared on every refresh / restart / logout. Writing here fixes it.

@@ -1,0 +1,1052 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 16384,
+  "evidenceId": "4492471c-3ca8-48e6-bc56-43bb10527090",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí Quận 1 tối nay",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12775,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15638,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8981,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10462,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36811,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27368,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Văn hoá Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 380,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên dạ cầu Sài Gòn 1",
+      "rating": 4.3,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 17947,
+      "distance_km": 0.3,
+      "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12775,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15638,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 8981,
+        "distance_km": 3.2,
+        "open_now": true,
+        "opening_hours": "06:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 10462,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36811,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "07:00–18:30",
+        "attributes": [
+          "hợp trẻ em (\"Top 12 địa điểm đi chơi ở Sài Gòn cuối tuần vui quên lối về - BestPrice 1. Bảo t\")"
+        ]
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm địa điểm vui chơi giải trí gần đây tối nay. Để gợi ý đúng ý, mình sẽ tìm các quán/địa điểm đang mở cửa lúc này ở Quận 1 nhé.\n\nMình chọn **Đường sách Thành phố Hồ Chí Minh** cho tối nay — **4.6⭐ (12.775 đánh giá Google Maps)**, chỉ cách bạn 0.5km, đang mở cửa đến 21:00.\n\nNếu muốn năng động hơn, **Công viên Tao Đàn** (1km, 4.5⭐) cũng hay — mở đến 22:00, rộng rãi, phù hợp đi bộ và chụp ảnh nhóm.\n\nMình gợi ý Đường sách vì gần nhất và đang mở, phù hợp để tụ tập thoải mái tối nay 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn gần đó|Phố Bùi Viện sôi động hơn|Quán ăn tối gần Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm địa điểm vui chơi giải trí gần đây tối nay. Để gợi ý đúng ý, mình sẽ tìm các quán/địa điểm đang mở cửa lúc này ở Quận 1 nhé.\n\nMình chọn **Đường sách Thành phố Hồ Chí Minh** cho tối nay — **4.6⭐ (12.775 đánh giá Google Maps)**, chỉ cách bạn 0.5km, đang mở cửa đến 21:00.\n\nNếu muốn năng động hơn, **Công viên Tao Đàn** (1km, 4.5⭐) cũng hay — mở đến 22:00, rộng rãi, phù hợp đi bộ và chụp ảnh nhóm.\n\nMình gợi ý Đường sách vì gần nhất và đang mở, phù hợp để tụ tập thoải mái tối nay 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn gần đó|Phố Bùi Viện sôi động hơn|Quán ăn tối gần Quận 1[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Đường sách Thành phố Hồ Chí Minh",
+          "place_id": "ChIJS8Yv1zcvdTERUI2V47UxkPw",
+          "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.6⭐ (12.775 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 12775,
+          "distance_km": 0.5,
+          "open_now": true,
+          "opening_hours": "08:00–21:00",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Hiệu sách"
+          ],
+          "maps_link": "https://maps.google.com/?cid=18199100751481245008",
+          "website_uri": "https://duongsachtphcm.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=18199100751481245008",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Công viên Tao Đàn",
+          "place_id": "ChIJsXOVajkvdTERcBdP0Xow8j4",
+          "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.5⭐ (15.638 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 15638,
+          "distance_km": 1,
+          "open_now": true,
+          "opening_hours": "07:00–22:00",
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=4535741078771275632",
+          "website_uri": "https://congvientaodan.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=4535741078771275632",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Công viên Vinhomes Central Park",
+          "place_id": "ChIJyS548sYndTERx_fKlYIochM",
+          "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 903 158 325",
+          "google_rating": "4.6⭐ (8.981 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 8981,
+          "distance_km": 3.2,
+          "open_now": true,
+          "opening_hours": "06:00–21:30",
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=1401226975389611975",
+          "website_uri": "http://vinhomes.vn/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=1401226975389611975",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Công viên 23 tháng 9",
+          "place_id": "ChIJu4YK_j4vdTERfSn0egKOyug",
+          "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.4⭐ (10.462 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 10462,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16774375903398734205",
+          "website_uri": "https://congvien23thang9.com/",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=16774375903398734205",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "place_id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1425",
+          "google_rating": "4.3⭐ (36.811 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 36811,
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "07:00–18:30",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Vườn bách thú"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5600618488004010382",
+          "website_uri": "https://s.shopee.vn/8V7uC7gWA0",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=5600618488004010382",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Phố đi bộ Bùi Viện",
+          "place_id": "ChIJCdzLBRYvdTERpsMyNScNwPE",
+          "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.3⭐ (27.368 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 27368,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=17419937820716483494",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=17419937820716483494",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Công viên Văn hoá Lê Thị Riêng",
+          "place_id": "ChIJJenkHgAvdTERPzJF69yFr90",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.5⭐ (380 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 380,
+          "distance_km": 4.1,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15974133587192918591",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=15974133587192918591",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Công viên dạ cầu Sài Gòn 1",
+          "place_id": "ChIJq39DtBsndTER41T_Uh88bh8",
+          "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.3⭐ (189 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 189,
+          "distance_km": 4.1,
+          "open_now": true,
+          "opening_hours": "Mở cửa cả ngày",
+          "place_types": [
+            "Công viên"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2264813767848056035",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=2264813767848056035",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Nhà hát Thành phố Hồ Chí Minh",
+          "place_id": "ChIJKcrnSUYvdTERO64MErYx9VU",
+          "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "google_rating": "4.6⭐ (17.947 đánh giá Google Maps)",
+          "rating_value": 4.6,
+          "rating_count": 17947,
+          "distance_km": 0.3,
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Nhà hát Opera"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6193911520574615099",
+          "website_uri": "https://ticket-stations.com/a-o-show",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6193911520574615099",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "place_id": "ChIJp-SfCAAvdTERzLubTbe7EoI",
+          "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 766 011 411",
+          "google_rating": "3.6⭐ (133 đánh giá Google Maps)",
+          "rating_value": 3.6,
+          "rating_count": 133,
+          "distance_km": 1.2,
+          "open_now": false,
+          "opening_hours": "17:00–22:00",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9372760170466884556",
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=9372760170466884556",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Top 12 địa điểm đi chơi ở Sài Gòn cuối tuần vui quên lối về - BestPrice",
+          "link": "https://www.bestprice.vn/blog/diem-den-8/ho-chi-minh-3/top-12-dia-diem-di-choi-o-sai-gon-cuoi-tuan-vui-quen-loi-ve_26-3983.html?srsltid=AU7gw4UNaD6-zR6DhQzRGiac0ntmkMmYrSftp7-UYwVzCiwkRsfO-IQV",
+          "snippet": "1. Bảo tàng thành phố Hồ Chí Minh · 2. Khu vui chơi giải trí Snow Town Sài Gòn · 3. Thảo Cầm Viên · 4. Địa đạo Củ Chi · 5. Công Viên Giải Trí Bạt Nhún Jump Arena · 6 ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Thảo Cầm Viên Sài Gòn"
+        },
+        {
+          "title": "Khám phá 16 khu vui chơi ở Thành phố Hồ Chí Minh thú vị nhất",
+          "link": "https://suoitien.vn/khu-vui-choi-o-thanh-pho-ho-chi-minh",
+          "snippet": "Ở Sài Gòn có nhiều khu vui chơi phù hợp với các lứa tuổi và sở thích khác nhau, bao gồm Suối Tiên và Đầm Sen, Snow Town, Jump Arena, ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Quận 1 có gì chơi? 15+ địa điểm vui chơi Quận 1 thú vị nhất",
+          "link": "https://vinwonders.com/vi/wonderpedia/news/dia-diem-vui-choi-quan-1-sai-gon/",
+          "snippet": "1. Địa điểm vui chơi Quận 1 nổi tiếng – chợ Bến Thành · 2. Dinh Độc Lập · 3. Khu vui chơi Quận 1 cho bé – Thảo Cầm Viên · 4. Quận 1 có gì chơi? · 5.",
+          "evidence_scope": "entity",
+          "evidence_about": "Thảo Cầm Viên Sài Gòn"
+        },
+        {
+          "title": "Quận 1 Có Gì Chơi Về Đêm? Top 10 Điểm Sài Gòn Về Đêm",
+          "link": "https://silverlandhotels.com/vi/quan-1-co-gi-choi-ve-dem/",
+          "snippet": "Nếu bạn đang tìm kiếm một không khí vui vẻ, con người dễ dàng hoà đồng, náo nhiệt thì phố Tây Bùi Viện chính là lựa chọn rất phù hợp. Nơi đây ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Phố đi bộ Bùi Viện"
+        },
+        {
+          "title": "Tổng Hợp 30+ địa điểm Vui Chơi Tại Quận 1 Dành Cho Những Ai ...",
+          "link": "https://huttons.com.vn/30-dia-diem-vui-choi-tai-quan-1-11764",
+          "snippet": "Từ những biểu tượng lịch sử như Dinh Độc Lập, Nhà thờ Đức Bà, đến các địa điểm giải trí mới mẻ như phố đi bộ Nguyễn Huệ hay tòa nhà Bitexco, mỗi ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Top 30 địa điểm đi chơi ở Sài Gòn hấp dẫn được giới trẻ yêu thích",
+          "link": "https://www.traveloka.com/vi-vn/explore/destination/dia-diem-di-choi-o-sai-gon/250819",
+          "snippet": "1. Tòa nhà Landmark 81 · 2. Khu du lịch Văn hoá Suối Tiên · 3. Saigon Sniper · 4. Bitexco Saigon Skydeck · 5. Thảo Cầm Viên Sài Gòn · 6. Nhà hát Rồng Vàng · 7. Nhà ...",
+          "evidence_scope": "area"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "entity"
+      },
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJS8Yv1zcvdTERUI2V47UxkPw",
+          "name": "Đường sách Thành phố Hồ Chí Minh",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 12775,
+            "distance_km": 0.5,
+            "open_now": true,
+            "opening_hours": "08:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.6",
+            "0.5km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJsXOVajkvdTERcBdP0Xow8j4",
+          "name": "Công viên Tao Đàn",
+          "role": null,
+          "evidence": {
+            "rating": 4.5,
+            "reviews": 15638,
+            "distance_km": 1,
+            "open_now": true,
+            "opening_hours": "07:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.5",
+            "1km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJyS548sYndTERx_fKlYIochM",
+          "name": "Công viên Vinhomes Central Park",
+          "role": null,
+          "evidence": {
+            "rating": 4.6,
+            "reviews": 8981,
+            "distance_km": 3.2,
+            "open_now": true,
+            "opening_hours": "06:00–21:30",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.6",
+            "3.2km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJu4YK_j4vdTERfSn0egKOyug",
+          "name": "Công viên 23 tháng 9",
+          "role": null,
+          "evidence": {
+            "rating": 4.4,
+            "reviews": 10462,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "Mở cửa cả ngày",
+            "attributes": []
+          },
+          "why": [
+            "open now",
+            "rated 4.4",
+            "1.3km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 36811,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "07:00–18:30",
+            "attributes": [
+              "hợp trẻ em (\"Top 12 địa điểm đi chơi ở Sài Gòn cuối tuần vui quên lối về - BestPrice 1. Bảo t\")"
+            ]
+          },
+          "why": [
+            "open now",
+            "rated 4.3",
+            "1.2km away"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "distance",
+          "openingHours"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Đường sách Thành phố Hồ Chí Minh",
+        "decided_by": [
+          {
+            "attribute": "openNow",
+            "evidence": "open now"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.6"
+          },
+          {
+            "attribute": "distance",
+            "evidence": "0.5km away"
+          }
+        ],
+        "not_chosen": "Công viên Tao Đàn",
+        "conditional": true
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.78096,106.70007",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Đường sách Thành phố Hồ Chí Minh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlPiblzHL6zGoHSdFFaNjGesVb4AFEi0mSdtT5UjhJYdzRJ80dgwXd53MSxGUb3hFq2VqnYONaTjOg0T0JH4bH78QWYiOr-XaUilfrINrKxwAw0iX52ePqAM-a2SFPjitzlFTU",
+            "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 12775,
+            "openingHours": "08:00–21:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–21:00",
+              "Chủ Nhật": "08:00–21:00",
+              "Thứ Hai": "08:00–21:00",
+              "Thứ Ba": "08:00–21:00",
+              "Thứ Tư": "08:00–21:00",
+              "Thứ Năm": "08:00–21:00",
+              "Thứ Sáu": "08:00–21:00"
+            },
+            "distanceKm": 0.5,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Hiệu sách"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "openNow",
+                "evidence": "open now"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.6"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.5km away"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://duongsachtphcm.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=18199100751481245008",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=%C4%90%C6%B0%E1%BB%9Dng%20s%C3%A1ch%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77558,106.69208",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Công viên Tao Đàn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWFW-OAaLgRVa9LvNo_quSCWYiEoHFKL4EqKLHUfZatmG6Q6S5kBDR_r838Xcvcp18wVdoUIfL8ds6c6tzL4LbzwY2Dn41DaXmBdISNcCip3gni2ut6Fdix1mbuhMgxUVIJ0c",
+            "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 15638,
+            "openingHours": "07:00–22:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–22:00",
+              "Chủ Nhật": "07:00–22:00",
+              "Thứ Hai": "07:00–22:00",
+              "Thứ Ba": "07:00–22:00",
+              "Thứ Tư": "07:00–22:00",
+              "Thứ Năm": "07:00–22:00",
+              "Thứ Sáu": "07:00–22:00"
+            },
+            "distanceKm": 1,
+            "categories": [
+              "Công viên"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://congvientaodan.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=4535741078771275632",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Tao%20%C4%90%C3%A0n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79343,106.72440",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Công viên Vinhomes Central Park",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3qpmZXEl3Snsm2xcPCfeqaR9caKn_eF-CV3xaz6Udc9pbZMot6zrbCDVQraWnckCaKa-h-Ebb0S5VE0QR4VNa-D9_q4TlKnfUuXiHGHrs8tZ7ynKlHzW-m9g6ubC2HCFdlUs",
+            "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+            "rating": 4.6,
+            "ratingCount": 8981,
+            "openingHours": "06:00–21:30",
+            "openNow": true,
+            "phone": "+84 903 158 325",
+            "openingHoursWeek": {
+              "Thứ Bảy": "06:00–21:30",
+              "Chủ Nhật": "06:00–21:30",
+              "Thứ Hai": "06:00–21:30",
+              "Thứ Ba": "06:00–21:30",
+              "Thứ Tư": "06:00–21:30",
+              "Thứ Năm": "06:00–21:30",
+              "Thứ Sáu": "06:00–21:30"
+            },
+            "distanceKm": 3.2,
+            "categories": [
+              "Công viên"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1401226975389611975",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Vinhomes%20Central%20Park%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903158325",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76871,106.69234",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Công viên 23 tháng 9",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn3Qp0PovJl084PR_QYdzgRGwrgE8EChRb0rjqs1VuuHTitf9GRCf5H9btoUexuorQRD0VuFaJh5cmV4hVuxJCZeDxne7DfnNtVP54gD6r2uJ3jnQLlY1bKZNtPL-wegwyxGgNROA",
+            "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 10462,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Công viên"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://congvien23thang9.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16774375903398734205",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%2023%20th%C3%A1ng%209%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78733,106.70506",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Thảo Cầm Viên Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnn-hZ8GRwC5P1G22AfkBTOdFGCFfZq1tSYtkOvlnIZyutJK0QMvu_6UT5qyfbZqbO5M_xFwlsCipMch-pPhMoXuTn2e1msPXMxCjVM2p_E0aL3FH5emvahsuI_SeQgKc7vMwby9Q",
+            "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 36811,
+            "openingHours": "07:00–18:30",
+            "openNow": true,
+            "phone": "+84 28 3829 1425",
+            "priceSignal": "price_search_results",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–18:30",
+              "Chủ Nhật": "07:00–18:30",
+              "Thứ Hai": "07:00–18:30",
+              "Thứ Ba": "07:00–18:30",
+              "Thứ Tư": "07:00–18:30",
+              "Thứ Năm": "07:00–18:30",
+              "Thứ Sáu": "07:00–18:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Vườn bách thú"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://s.shopee.vn/8V7uC7gWA0",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5600618488004010382",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Th%E1%BA%A3o%20C%E1%BA%A7m%20Vi%C3%AAn%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291425",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76735,106.69388",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Phố đi bộ Bùi Viện",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkechMbVXKhTb2zE0sa_mAmYoArIXZiUDMSR6FRtY6zSjqkoJviSm0UPqP9l0L4euZCxI_66-4eYfPrGXWaq95OJMXU-A6UeyNGJwM7C1e94bBrRyWzLjojQ0g4nhRgMO13JjaSDA",
+            "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 27368,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "priceSignal": "price_search_results",
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Điểm thu hút khách du lịch"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@phodibobuivien/video/7541394653497642258",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=17419937820716483494",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%91%20%C4%91i%20b%E1%BB%99%20B%C3%B9i%20Vi%E1%BB%87n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78515,106.66475",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Công viên Văn hoá Lê Thị Riêng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIS-zNcS7mhLA4eI7nMBif4riT6e8b-bD3nfaF5TnZSI2tEdMBuM2Eu4K9mv-VpDWOVNzkWRJkSjEM_60VLJfKOQV7ZCgquAPTmnh15OcxoMal47AKJy3-IipCveHf3w8ZAy3JNRyHcjqT",
+            "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 380,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 4.1,
+            "categories": [
+              "Công viên"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15974133587192918591",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20V%C4%83n%20ho%C3%A1%20L%C3%AA%20Th%E1%BB%8B%20Ri%C3%AAng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79855,106.73150",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Công viên dạ cầu Sài Gòn 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl9Z95QjQvpDCIgK3pIH-eqPJ4s6L_3RCaeV1jgQUMHcjhufahsC8P8QV8YZInTNKFcbU3VzvN6EtjrpAm1zPW-1S1jzL7NqUKRcxFSp1zL1yB03Cijd555uFX-8_Qr-Dpr-bM",
+            "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 189,
+            "openingHours": "Mở cửa cả ngày",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "Mở cửa cả ngày",
+              "Chủ Nhật": "Mở cửa cả ngày",
+              "Thứ Hai": "Mở cửa cả ngày",
+              "Thứ Ba": "Mở cửa cả ngày",
+              "Thứ Tư": "Mở cửa cả ngày",
+              "Thứ Năm": "Mở cửa cả ngày",
+              "Thứ Sáu": "Mở cửa cả ngày"
+            },
+            "distanceKm": 4.1,
+            "categories": [
+              "Công viên"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2264813767848056035",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20d%E1%BA%A1%20c%E1%BA%A7u%20S%C3%A0i%20G%C3%B2n%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20vui%20ch%C6%A1i%20gi%E1%BA%A3i%20tr%C3%AD%20Qu%E1%BA%ADn%201%20t%E1%BB%91i%20nay%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.78096,106.70007",
+          "place:osm:10.77558,106.69208",
+          "place:osm:10.76735,106.69388"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5440,
+  "evidenceId": "0b5759c8-43da-4102-8b76-614c0422fe40",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay để bạn chọn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng. Phim vừa có tính giải trí cao, vừa có những khoảnh khắc cảm xúc.\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem thứ gì đó nhẹ nhàng, có chút buồn man mác nhưng đẹp lắm. Phim phù hợp khi bạn muốn thư giãn sau một ngày dài.\n\n**Alien: Romulus** — nếu bạn thích kinh dị, căng thẳng và những cảnh quay tuyệt đẹp. Phim có không khí rất hấp dẫn, không nhàm chán.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay để bạn chọn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng. Phim vừa có tính giải trí cao, vừa có những khoảnh khắc cảm xúc.\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem thứ gì đó nhẹ nhàng, có chút buồn man mác nhưng đẹp lắm. Phim phù hợp khi bạn muốn thư giãn sau một ngày dài.\n\n**Alien: Romulus** — nếu bạn thích kinh dị, căng thẳng và những cảnh quay tuyệt đẹp. Phim có không khí rất hấp dẫn, không nhàm chán."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

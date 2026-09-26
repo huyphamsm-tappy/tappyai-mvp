@@ -1,14 +1,29 @@
 <resources>
     <!-- Settings screen (profile/SettingsScreen.kt, SettingsViewModel.kt) -->
     <string name="settings_title">Cài đặt</string>
+    <string name="settings_subtitle">Tùy chỉnh TappyAI theo cách bạn muốn</string>
+    <string name="settings_notifications_desc">Quản lý thông báo từ TappyAI</string>
+    <string name="settings_memory_desc">Xem và quản lý thông tin Tappy đã nhớ</string>
+    <string name="settings_language_desc">Chọn ngôn ngữ hiển thị</string>
+    <string name="settings_how_to_use_desc">Tìm hiểu cách sử dụng TappyAI</string>
+    <string name="settings_terms_of_service_desc">Xem điều khoản và điều kiện</string>
+    <string name="settings_privacy_policy_desc">Cách chúng tôi bảo vệ dữ liệu của bạn</string>
+    <string name="settings_copyright_policy_desc">Báo cáo nội dung vi phạm</string>
+    <string name="settings_delete_account_desc">Gửi yêu cầu xóa tài khoản và dữ liệu của bạn</string>
     <string name="settings_section_options">Tùy chọn</string>
     <string name="settings_notifications">Thông báo</string>
     <string name="settings_memory">Bộ nhớ</string>
     <string name="settings_language">Ngôn ngữ</string>
+    <string name="settings_appearance">Giao diện</string>
+    <string name="settings_appearance_desc">Theo hệ thống, hoặc luôn sáng / tối</string>
+    <string name="settings_appearance_system">Theo hệ thống</string>
+    <string name="settings_appearance_light">Sáng</string>
+    <string name="settings_appearance_dark">Tối</string>
     <string name="settings_section_other">Khác</string>
     <string name="settings_how_to_use">Hướng dẫn sử dụng</string>
     <string name="settings_terms_of_service">Điều khoản dịch vụ</string>
     <string name="settings_privacy_policy">Chính sách bảo mật</string>
+    <string name="settings_copyright_policy">Chính sách bản quyền</string>
     <string name="settings_version">Phiên bản %1$s</string>
     <string name="settings_signing_out">Đang đăng xuất…</string>
     <string name="settings_sign_out">Đăng xuất</string>
@@ -39,13 +54,31 @@
     <string name="profile_settings_subtitle">Ngôn ngữ, thông báo, giao diện</string>
     <string name="profile_header_title">Hồ sơ của bạn</string>
     <string name="profile_header_subtitle">Đăng nhập để cá nhân hóa</string>
+    <string name="profile_v3_subtitle">Quản lý tài khoản và cá nhân hóa trải nghiệm của bạn với TappyAI</string>
+    <string name="profile_menu_account_desc">Quản lý thông tin cá nhân</string>
+    <string name="profile_menu_chat_history_desc">Xem và quản lý lịch sử</string>
+    <string name="profile_menu_bookings_desc">Quản lý các đặt chỗ của bạn</string>
+    <string name="profile_menu_preferences_desc">Nội dung và chủ đề bạn quan tâm</string>
+    <string name="profile_menu_saved_desc">Bài viết, địa điểm, ưu đãi đã lưu</string>
+    <string name="profile_menu_price_tracking_desc">Sản phẩm và dịch vụ bạn quan tâm</string>
+    <string name="profile_menu_tappy_knows_desc">Xem và quản lý thông tin Tappy đã nhớ</string>
+    <string name="profile_menu_app_connections_desc">Ứng dụng đã liên kết với tài khoản</string>
+    <string name="profile_menu_my_reviews_desc">Những đánh giá bạn đã đăng</string>
+    <string name="profile_menu_group_dining_desc">Cùng nhóm chọn địa điểm ăn uống</string>
+    <string name="profile_privacy_card_title">Quyền riêng tư &amp; Bảo mật</string>
+    <string name="profile_privacy_card_subtitle">An toàn dữ liệu, an tâm trải nghiệm</string>
     <string name="profile_qr_button_content_description">Hiển thị hồ sơ QR</string>
     <string name="profile_qr_default_name">Hồ sơ của tôi</string>
-    <string name="profile_qr_scan_subtitle">Quét để xem hồ sơ</string>
+    <string name="profile_qr_scan_subtitle">Quét mã QR để xem hồ sơ TappyAI của tôi</string>
     <string name="profile_qr_code_content_description">Mã QR liên kết đến hồ sơ này</string>
     <string name="profile_qr_generate_error">Không thể tạo mã QR. Vui lòng thử lại.</string>
-    <string name="profile_qr_share_button">Chia sẻ liên kết</string>
+    <string name="profile_qr_share_button">Chia sẻ profile</string>
     <string name="profile_qr_share_chooser_title">Chia sẻ liên kết hồ sơ</string>
+    <string name="profile_qr_title">Chia sẻ hồ sơ</string>
+    <string name="profile_qr_download_button">Tải mã QR</string>
+    <string name="profile_qr_save_hint">Bạn có thể lưu hoặc chia sẻ mã QR này.</string>
+    <string name="profile_qr_saved">Đã lưu mã QR vào Ảnh</string>
+    <string name="profile_qr_save_failed">Không lưu được mã QR</string>
 
     <!-- Notifications screen (notifications/NotificationsScreen.kt) -->
     <string name="notif_title">Thông báo</string>
@@ -53,6 +86,8 @@
     <string name="notif_push_on_description">Đang bật — Tappy sẽ nhắc bạn đúng lúc</string>
     <string name="notif_push_off_description">Đang tắt — bật để nhận nhắc nhở từ Tappy</string>
     <string name="notif_toggle_content_description">Bật/tắt thông báo đẩy</string>
+    <string name="notif_os_blocked">Thiết bị đang chặn thông báo của TappyAI. Hãy cho phép trong cài đặt hệ thống để nhận nhắc nhở.</string>
+    <string name="notif_os_allow">Cho phép</string>
     <string name="notif_receive_header">BẠN SẼ NHẬN ĐƯỢC GÌ</string>
     <string name="notif_receive_morning_brief">Bản tin buổi sáng riêng cho bạn lúc 7:30 sáng</string>
     <string name="notif_receive_deals">Ưu đãi &amp; khuyến mãi phù hợp với sở thích của bạn</string>

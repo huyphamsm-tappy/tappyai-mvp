@@ -1,0 +1,35 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 516,
+  "evidenceId": "3bfde0b3-2738-4da6-92f6-4dcd0b58aab4",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Cơm Khay Gỗ** mở cửa 10:00–21:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Cơm Khay Gỗ** cho bữa trưa gia đình hôm nay — **4.8⭐ (932 đánh giá Google Maps)**, cách bạn ~3.8km, mở từ 10:00–21:00.\n\nNếu muốn thêm lựa chọn, **Fast Sushi** (4.9⭐, 1.873 đánh giá) cũng gần (~2.5km) và rất được yêu thích, nhưng là sushi nên có thể không phù hợp bữa cơm gia đình truyền thống.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":true},{\"label\":\"📍 Gọi: 0795 201 122\",\"type\":\"website\",\"url\":\"tel:+84795201122\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi chỗ đậu xe|Xem thêm quán khác|Đặt bàn trước không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Cơm Khay Gỗ** mở cửa 10:00–21:00.\n\n(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

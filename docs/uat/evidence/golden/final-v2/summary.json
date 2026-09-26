@@ -1,0 +1,101 @@
+{
+  "label": "final-v2",
+  "base": "http://localhost:3000",
+  "calls": 3,
+  "at": "2026-09-22T07:51:44.230Z",
+  "cases": [
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15168,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ],
+            [
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Hàng Dương Quán Quận 1",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine"
+            ]
+          ],
+          "dup": false,
+          "chars": 393
+        },
+        {
+          "status": 200,
+          "ms": 13558,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "Hàng Dương Quán Quận 1"
+            ],
+            [
+              "Cơm Ngon Hà Nội",
+              "Hàng Dương Quán Quận 1"
+            ]
+          ],
+          "dup": false,
+          "chars": 306
+        }
+      ]
+    },
+    {
+      "id": "G3a",
+      "group": "food-hours-budget",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12436,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "OZ Coffee House 2",
+              "Phê La - Trương Định"
+            ],
+            [
+              "ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3",
+              "The Hummingbird Café & Roastery",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Tiệm cà phê Cư Xá 30",
+              "OZ Coffee House 2",
+              "Phê La - Trương Định"
+            ]
+          ],
+          "dup": false,
+          "chars": 422
+        }
+      ]
+    }
+  ]
+}

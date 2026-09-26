@@ -28,6 +28,18 @@ export interface GroupedNotif {
   comment_body?: string
   created_at: string
   count: number
+  /**
+   * True when ANY notification collapsed into this row is still unread.
+   *
+   * 🔑 IT LIVES HERE BECAUSE GROUPING IS WHERE THE INFORMATION IS LOST. `read_at` is per
+   * notification, and a "like" row can carry twenty of them; a consumer holding only the group
+   * cannot recover which members were unread without re-deriving the grouping key, which would be
+   * a second copy of the rule below and free to drift from it.
+   *
+   * ANY, not ALL: one unread like inside a collapsed stack means the row has something the user
+   * has not seen, and marking it read is what clears it.
+   */
+  unread: boolean
 }
 
 export const NOTIF_COLOR: Record<string, string> = {
@@ -50,6 +62,25 @@ export const NOTIF_COLOR: Record<string, string> = {
  * NOT `/logo.png` or `/logo.svg` — those are the retired infinity mark, named
  * as retired in `send.ts` and `push-sw.js`.
  */
+/**
+ * The colour + emoji a notification category is drawn with.
+ *
+ * 🚨 THIS WAS DECLARED TWICE, BYTE-IDENTICAL. `reviews/page.tsx` and
+ * `profile/notifications/NotificationsView.tsx` each carried their own copy, and
+ * each renders its own `NotifRow` from it — so a branding change (a new
+ * category, a recoloured chip) had to be made in two places or the two inboxes
+ * would disagree. They had not drifted yet; this is the cheap moment to stop it.
+ *
+ * It lives here because `NOTIF_COLOR` and `notificationBrandMark` already do:
+ * the notification taxonomy has one owner, and this is it.
+ */
+export const CATEGORY_STYLE: Record<string, { color: string; icon: string }> = {
+  social: { color: '#ff6b35', icon: '🎉' },
+  deal: { color: '#F59E0B', icon: '🏷️' },
+  explore: { color: '#8B5CF6', icon: '✨' },
+  system: { color: '#64748B', icon: '🔔' },
+}
+
 export const TAPPY_NOTIFICATION_MARK = '/tappy/wave.png'
 
 /**
@@ -97,6 +128,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
       if (n.actor_id && !existing.actors.find(a => a.id === n.actor_id))
         existing.actors.push({ name: n.actor_name, avatar: n.actor_avatar, id: n.actor_id })
       existing.count++
+      if (!n.read_at) existing.unread = true
       if (new Date(n.created_at) > new Date(existing.created_at)) existing.created_at = n.created_at
     } else {
       map.set(key, {
@@ -106,6 +138,7 @@ export function groupNotifs(notifs: InboxNotif[]): GroupedNotif[] {
         text: n.text,
         comment_body: n.type === 'comment' ? n.text : undefined,
         created_at: n.created_at, count: 1,
+        unread: !n.read_at,
       })
     }
   }

@@ -66,7 +66,7 @@ describe('M-F5 — the org layer is INERT while the feature flag is OFF', () => 
 })
 
 describe('M-F6 — the department nav filter is REACHABLE, not merely mentioned', () => {
-  const layout = readFileSync(join(ROOT, 'src/app/admin/layout.tsx'), 'utf8')
+  const layout = readFileSync(join(ROOT, 'src/app/(app)/admin/layout.tsx'), 'utf8')
 
   it('the filter call is guarded by orgMembershipEnabled(), not stranded in dead code', () => {
     // `toContain('filterNavByDepartment')` alone passes even when the call sits
@@ -107,7 +107,7 @@ describe('M-F7 — a denial on /admin leaves the Controller (documented redirect
   })
 
   it('the Home page therefore passes no /admin denial target of its own', () => {
-    const page = readFileSync(join(ROOT, 'src/app/admin/page.tsx'), 'utf8')
+    const page = readFileSync(join(ROOT, 'src/app/(app)/admin/page.tsx'), 'utf8')
 
     // If someone reintroduces an override, it must still not point into /admin.
     const override = page.match(/deniedRedirect:\s*'([^']+)'/)

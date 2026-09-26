@@ -1,0 +1,35 @@
+{
+  "id": "S5b",
+  "text": "nước hoa",
+  "parent": "S5",
+  "status": 200,
+  "ms": 3732,
+  "evidenceId": "0f43e2e7-d927-41d7-9026-cccb001b56c1",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn mua nước hoa chính hãng, chất lượng tốt trong tầm 1 triệu đồng. Để tìm được đúng ý, mình cần thêm một chút:\n\n**Bạn thích hương nước hoa kiểu gì?** (ví dụ: hương hoa, hương trái cây, hương gỗ, hương ngọt ngào, hương tươi mát...) hay mình tìm luôn những chai nước hoa nổi tiếng trong tầm giá này?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Quà loại gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "nước hoa"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn mua nước hoa chính hãng, chất lượng tốt trong tầm 1 triệu đồng. Để tìm được đúng ý, mình cần thêm một chút:\n\n**Bạn thích hương nước hoa kiểu gì?** (ví dụ: hương hoa, hương trái cây, hương gỗ, hương ngọt ngào, hương tươi mát...) hay mình tìm luôn những chai nước hoa nổi tiếng trong tầm giá này?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

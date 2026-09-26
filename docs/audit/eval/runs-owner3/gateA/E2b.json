@@ -1,0 +1,914 @@
+{
+  "id": "E2b",
+  "text": "dưới 200k/người",
+  "parent": "E2",
+  "status": 200,
+  "ms": 14770,
+  "evidenceId": "38ea3dda-240c-4bd8-bd7e-4c61d8345a3f",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim giá rẻ dưới 200k",
+        "location": "Quận 1 TP HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1745,
+      "distance_km": 0.2,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4500,
+      "distance_km": 0.2,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9369,
+      "distance_km": 0.9,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1258,
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas - Cao Thắng",
+      "rating": 4.3,
+      "count": 3434,
+      "distance_km": 2.2,
+      "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 1745,
+        "distance_km": 0.2,
+        "attributes": []
+      }
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4500,
+        "distance_km": 0.2,
+        "attributes": []
+      }
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 9369,
+        "distance_km": 0.9,
+        "attributes": []
+      }
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 1258,
+        "distance_km": 0.8,
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mega GS Cinemas - Cao Thắng",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 3434,
+        "distance_km": 2.2,
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **CGV Liberty Citypoint** — cách bạn chỉ 0.2km, đánh giá 4.4⭐ (1.745 đánh giá Google Maps), gần nhất trong khu vực. Rạp này nằm trong khách sạn Liberty Citypoint trên đường Pasteur, rất tiện để xem phim tối nay.\n\nNếu muốn chọn khác, **CGV Vincom Center Đồng Khởi** cũng cách 0.2km nhưng có nhiều đánh giá hơn (4.500 reviews), hoặc **Galaxy Cinema Nguyễn Du** (0.9km, 9.369 reviews) nếu bạn thích rạp lớn hơn.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 200k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **CGV Liberty Citypoint** — cách bạn chỉ 0.2km, đánh giá 4.4⭐ (1.745 đánh giá Google Maps), gần nhất trong khu vực. Rạp này nằm trong khách sạn Liberty Citypoint trên đường Pasteur, rất tiện để xem phim tối nay.\n\nNếu muốn chọn khác, **CGV Vincom Center Đồng Khởi** cũng cách 0.2km nhưng có nhiều đánh giá hơn (4.500 reviews), hoặc **Galaxy Cinema Nguyễn Du** (0.9km, 9.369 reviews) nếu bạn thích rạp lớn hơn.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8041718674423256569\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 19,
+      "location": "Quận 1 TP HCM",
+      "results": [
+        {
+          "name": "CGV Liberty Citypoint",
+          "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 1900 6017",
+          "place_id": "ChIJc4NjcEcvdTER-ZWfDIfsmW8",
+          "rating_value": 4.4,
+          "google_rating": "4.4⭐ (1.745 đánh giá Google Maps)",
+          "rating_count": 1745,
+          "place_types": [
+            "Rạp chiếu phim"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8041718674423256569",
+          "distance_km": 0.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — CGV Liberty Citypoint",
+              "url": "https://maps.google.com/?cid=8041718674423256569",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=CGV%20Liberty%20Citypoint%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_photo": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "CGV Vincom Center Đồng Khởi",
+          "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 1900 6017",
+          "website_uri": "https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi",
+          "place_id": "ChIJpQeTd0gvdTERe-_j6WTtops",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (4.500 đánh giá Google Maps)",
+          "rating_count": 4500,
+          "place_types": [
+            "Rạp chiếu phim"
+          ],
+          "maps_link": "https://maps.google.com/?cid=11214787039782498171",
+          "distance_km": 0.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — CGV Vincom Center Đồng Khởi",
+              "url": "https://maps.google.com/?cid=11214787039782498171",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — CGV Vincom Center Đồng Khởi",
+              "url": "https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Galaxy Cinema Nguyễn Du",
+          "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "website_uri": "https://galaxycine.vn/",
+          "place_id": "ChIJK_qJATwvdTERfaDb1DbcdW4",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (9.369 đánh giá Google Maps)",
+          "rating_count": 9369,
+          "place_types": [
+            "Rạp chiếu phim"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7959510044504727677",
+          "distance_km": 0.9,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Galaxy Cinema Nguyễn Du",
+              "url": "https://maps.google.com/?cid=7959510044504727677",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Galaxy Cinema Nguyễn Du",
+              "url": "https://galaxycine.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Nguy%E1%BB%85n%20Du%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "DCINE Bến Thành",
+          "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 868 760 420",
+          "website_uri": "http://www.dcine.vn/",
+          "place_id": "ChIJjQfUymkvdTERd2ucqjvtfNc",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (1.258 đánh giá Google Maps)",
+          "rating_count": 1258,
+          "place_types": [
+            "Rạp chiếu phim"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15527546455787858807",
+          "distance_km": 0.8,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — DCINE Bến Thành",
+              "url": "https://maps.google.com/?cid=15527546455787858807",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — DCINE Bến Thành",
+              "url": "http://www.dcine.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=DCINE%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Mega GS Cinemas - Cao Thắng",
+          "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+          "phone": "+84 28 6264 9911",
+          "website_uri": "https://www.megagscinemas.vn/",
+          "place_id": "ChIJN9BZBSIvdTERoXABllBVgW0",
+          "rating_value": 4.3,
+          "google_rating": "4.3⭐ (3.434 đánh giá Google Maps)",
+          "rating_count": 3434,
+          "place_types": [
+            "Rạp chiếu phim"
+          ],
+          "maps_link": "https://maps.google.com/?cid=7890681826732241057",
+          "distance_km": 2.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Mega GS Cinemas - Cao Thắng",
+              "url": "https://maps.google.com/?cid=7890681826732241057",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Mega GS Cinemas - Cao Thắng",
+              "url": "https://www.megagscinemas.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20-%20Cao%20Th%E1%BA%AFng%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=r%E1%BA%A1p%20phim%20gi%C3%A1%20r%E1%BA%BB%20d%C6%B0%E1%BB%9Bi%20200k%20Qu%E1%BA%ADn%201%20TP%20HCM",
+      "_tappy_place_domain": "entertainment",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Tổng hợp danh sách rạp chiếu phim ở TP.HCM giá rẻ mà ...",
+          "link": "https://vnpay.vn/ve-xem-phim/blog/cac-rap-chieu-phim-o-tp-hcm",
+          "snippet": "1. Rạp chiếu phim CGV Sư Vạn Hạnh · 2. Rạp chiếu phim Cinestar Quốc Thanh · 3. Rạp chiếu phim Mega GS Cao Thắng · 4. Rạp chiếu phim ở TP HCM - BHD ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Top 6 rạp chiếu phim Quận 1 cho fan điện ảnh chân chính",
+          "link": "https://www.greensm.com/vn-vi/news/rap-chieu-phim-quan-1",
+          "snippet": "Cinestar Quốc Thanh – Hệ thống rạp chiếu phim giá rẻ tại Quận 1 · Địa chỉ: 271 Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, TP. HCM. · Hotline: ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Cinestar - Hệ thống rạp chiếu phim giá rẻ, hiện đại",
+          "link": "https://cinestar.com.vn/",
+          "snippet": "Hệ thống rạp chiếu phim Cinestar phục vụ khán giả với những thước phim điện ảnh chất lượng, dịch vụ tốt với giá vé chỉ từ 45.000đ. Đặt vé ngay hôm nay để nhận",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Rạp chiếu phim gần đây trên MoMo",
+          "link": "https://www.momo.vn/cinema/rap",
+          "snippet": "Hiện tại bạn có thể đặt vé tại rạp phim cũng như xem lịch chiếu phim các rạp sau: CGV Cinemas, Lotte Cinema, Galaxy Cinema, BHD Star, Mega GS, Dcine, Cinestar.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Rạp chiếu phim Sài Gòn: Review 11 địa điểm kèm giá vé",
+          "link": "https://vinwonders.com/vi/wonderpedia/news/rap-chieu-phim-sai-gon/",
+          "snippet": "Mức giá xem phim tại rạp chiếu phim xịn nhất Sài Gòn này dao động từ 45.000 VND đối với phim 2D và từ 65.000 VNĐ đối với phim 3D. · CGV là một ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Các rạp chiếu phim ở TPHCM HOT nhất hiện nay",
+          "link": "https://aeonmall-binhtan.com.vn/tin-tuc/cac-rap-chieu-phim-o-tphcm",
+          "snippet": "1. CGV AEON MALL Bình Tân - Chất lượng âm thanh hình ảnh đỉnh cao · 2. Galaxy Thiso Sala - Rạp chiếu phim cho mọi lứa tuổi · 3. Rạp chiếu phim ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Mega GS Cinemas - Cao Thắng"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "entity"
+      },
+      "_LENH_BAT_BUOC": "⚠️ LENH BAT BUOC - DOC TRUOC KHI VIET PHAN HOI: Nguoi dung co budget dưới 200k VND - THAP HON gia khach san cao cap. TUYET DOI KHONG duoc de cap bat ky thuong hieu nao sau day du chi la de so sanh hay goi y: Pullman, Marriott, Hilton, Sheraton, Intercontinental, Sofitel, Novotel, Melia, Hyatt, Wyndham, Movenpick, Radisson, Imperial, Renaissance, Lotte, JW Marriott, Grand Mercure. Chi de cap cac khach san co trong search_results (da duoc loc theo budget). Neu khong con search_results phu hop, bao user nang budget.",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJc4NjcEcvdTER-ZWfDIfsmW8",
+          "name": "CGV Liberty Citypoint",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.4,
+            "reviews": 1745,
+            "distance_km": 0.2,
+            "attributes": []
+          },
+          "why": [
+            "0.2km away",
+            "rated 4.4",
+            "1745 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 1,
+          "id": "ChIJpQeTd0gvdTERe-_j6WTtops",
+          "name": "CGV Vincom Center Đồng Khởi",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 4500,
+            "distance_km": 0.2,
+            "attributes": []
+          },
+          "why": [
+            "0.2km away",
+            "rated 4.3",
+            "4500 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 2,
+          "id": "ChIJK_qJATwvdTERfaDb1DbcdW4",
+          "name": "Galaxy Cinema Nguyễn Du",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 9369,
+            "distance_km": 0.9,
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "rated 4.3",
+            "9369 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 3,
+          "id": "ChIJjQfUymkvdTERd2ucqjvtfNc",
+          "name": "DCINE Bến Thành",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 1258,
+            "distance_km": 0.8,
+            "attributes": []
+          },
+          "why": [
+            "0.8km away",
+            "rated 4.3",
+            "1258 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        },
+        {
+          "rank": 4,
+          "id": "ChIJN9BZBSIvdTERoXABllBVgW0",
+          "name": "Mega GS Cinemas - Cao Thắng",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 3434,
+            "distance_km": 2.2,
+            "attributes": []
+          },
+          "why": [
+            "2.2km away",
+            "rated 4.3",
+            "3434 reviews"
+          ],
+          "missing": [
+            "price"
+          ]
+        }
+      ],
+      "_tappy_budget_evidence": false,
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "CGV Liberty Citypoint",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "0.2km away"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.4"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "1745 reviews - CGV Vincom Center Đồng Khởi: 4500 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "CGV Vincom Center Đồng Khởi",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "4500 reviews"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "entertainment",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77470,106.70063",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "CGV Liberty Citypoint",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkXJEJ845yzenwoHSuBc1Cb6Uu6r5UHtCT99bymJabTcUmoKcAmsq6lRT3hXUg1qMrTbh6YfcuoBEigq7xMa9Zmv-NgtZ9l8vqDSJg2wPQYc0oujGbNS1QEopuSYBeJ6vpZgDoz",
+            "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 1745,
+            "phone": "+84 1900 6017",
+            "distanceKm": 0.2,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "0.2km away"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.4"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1745 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "reviewCount",
+              "evidence": "4500 reviews"
+            },
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@dotialia/video/7651223653295639826",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8041718674423256569",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419006017",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=CGV%20Liberty%20Citypoint%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77792,106.70195",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "CGV Vincom Center Đồng Khởi",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgVc6vZXjk-Ivfzo32I1KfKoSccoEdGfQ48NQ7u1nOKUirg08rhZwE5skN85vZpGYuIxJ7Ac928ea5eUMwgwL2sW3lNkKjcGbI2X1emvru8EW_Emia8Z53dmeAIMU4kss5FO-1-A",
+            "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 4500,
+            "phone": "+84 1900 6017",
+            "distanceKm": 0.2,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11214787039782498171",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419006017",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.77313,106.69319",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Galaxy Cinema Nguyễn Du",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-1J9rKqqc6RjtTg46M3oYgAiydFs_dPVm4bNLpXtJrJZ-1XzsjLcYxM-MT7GnUzyem4_GysoI9KGpPYqa2FP5kK5olJ_DAbxAH7eF0dznwWudiLv91aMvHIeNqdduW2nsdoGo5g",
+            "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 9369,
+            "distanceKm": 0.9,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://galaxycine.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7959510044504727677",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Nguy%E1%BB%85n%20Du%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78387,106.70083",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "DCINE Bến Thành",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmYtpAgbhdwK2EVGypryNpgOZHMDsrqAe1BKe9rJK1E2BKfC0V2xdunJait0L2puahO6Gqxd2oz2tNhTxY_SrAKX8lMj1D0pG_5TEKhwMYyxrshH3ynSpkjVG25yjJwepnSm5Z6-Q",
+            "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 1258,
+            "phone": "+84 868 760 420",
+            "distanceKm": 0.8,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@anchoidieunghe/video/6950226353425763586",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15527546455787858807",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84868760420",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=DCINE%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76899,106.68294",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Mega GS Cinemas - Cao Thắng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSkRr90jSoPMrDPJoo5binw7jR7map_f2tQZWoNt4nwUuuLdSVwA0Dtm7LbZYqsOgitq6lpd_Lohy7qEJfyJjIlIWwQqmpXnuAHQwf0rx9EC9dypblxvkGmy19spmxwYXMwk6q",
+            "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 3434,
+            "phone": "+84 28 6264 9911",
+            "priceSignal": "price_search_results",
+            "distanceKm": 2.2,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.megagscinemas.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=7890681826732241057",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20-%20Cao%20Th%E1%BA%AFng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842862649911",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76384,106.68735",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Cinestar Quốc Thanh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm1TQEySAEL1NWmDiQkJppeAyIJ8yhafDCnqv6FsYMpsmyf8Ur7odR8plUgAmamoOk-eT6v1LeryDks1IG34rCQi_G3EKkjdbBsV783bcs65LUM2y464r8Jwwhd19k_oYl-TOkB",
+            "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.2,
+            "ratingCount": 6028,
+            "phone": "+84 1900 0085",
+            "distanceKm": 2.1,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@cinestarquocthanh/video/7676721698053393682",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15331409235007030248",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+8419000085",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Cinestar%20Qu%E1%BB%91c%20Thanh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.75633,106.69169",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "LOTTE Cinema Goldview",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlNPdT3LFjEa6AcFxCfE26AaBV9v8rDro5V5RAi-c5g6JO8csbix5sy6kLL9ps52yA_peDYb1xEESQPN9bQZcw-cEX-M-IXujtpvRWDwOQTtoaBdnlB6hlY2W_dXELr6FpCSpMpr67CHhG8",
+            "address": "346 Bến Vân Đồn, Vĩnh Hội, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 1036,
+            "phone": "+84 28 3620 0304",
+            "distanceKm": 2.5,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=1723631444022454141",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=LOTTE%20Cinema%20Goldview%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842836200304",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79254,106.69398",
+            "domain": "entertainment",
+            "kind": "place",
+            "name": "Beta Cinemas Trần Quang Khải",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlOBqkKwoD4kAXI7uJtDG6Iz_VeoW9uUUog39YsQwZZPvUkHzAoeniaEl3xCiS-jto17VG4ylomZyqK3FOXQzAGTrJXrHtVVTmJLk-qGHZ9zufdPm7qkhjIfC53xWzW8keO5Nw",
+            "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.1,
+            "ratingCount": 1315,
+            "phone": "+84 28 7300 9079",
+            "distanceKm": 1.9,
+            "categories": [
+              "Rạp chiếu phim"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6230359609267203257",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Beta%20Cinemas%20Tr%E1%BA%A7n%20Quang%20Kh%E1%BA%A3i%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842873009079",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20phim%20gi%C3%A1%20r%E1%BA%BB%20d%C6%B0%E1%BB%9Bi%20200k%20Qu%E1%BA%ADn%201%20TP%20HCM"
+      }
+    ]
+  ]
+}

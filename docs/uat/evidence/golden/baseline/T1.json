@@ -1,0 +1,317 @@
+{
+  "id": "T1",
+  "group": "travel-multiturn",
+  "criteria": [
+    "Turn 2: understands 'mai đi mốt về' = 2 days / 1 night and explicitly corrects the earlier 3-day plan",
+    "Hotel and places appear as structured cards (annotation items) with names — never a bare image",
+    "At most ONE clarifying question before a first useful plan is given",
+    "No delivery apps (GrabFood/BeFood) for a trip in another city",
+    "Budget split consistent with 2 people, 1 night, 20 triệu",
+    "Reply text appears exactly once (T5)"
+  ],
+  "turns": [
+    {
+      "user": "Mình muốn đi Đà Nẵng 3 ngày, 2 người, thích tham quan và ăn hải sản",
+      "status": 200,
+      "elapsedMs": 17312,
+      "textFrames": 5,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Nẵng"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "10:00–02:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "09:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "10:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "11:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "06:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải sản My Hanh Seafood",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "07:30–02:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "10:00–23:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "06:00–23:00",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "10:00–02:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "09:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "10:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "11:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải sản My Hanh Seafood",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "07:30–02:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "10:00–23:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:16.08011,108.22310",
+            "place:osm:16.06572,108.24337",
+            "place:osm:16.08235,108.24742"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "Hải sản My Hanh Seafood",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ],
+        [
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Hải sản My Hanh Seafood",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch 3 ngày ở Đà Nẵng cho 2 người với tham quan và ăn hải sản. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn đi máy bay hay xe khách từ TP.HCM?** (Hay bạn đang ở thành phố khác?)\n\nTrong khi đó, mình sẽ tìm các điểm tham quan và nhà hàng hải sản tốt ở Đà Nẵng để chuẩn bị kế hoạch.\n\nTuyệt vời! Mình đã tìm được các điểm tham quan và nhà hàng hải sản tuyệt vời ở Đà Nẵng. Thời tiết hôm nay có mây và có khả năng mưa nhẹ (46%), nhiệt độ khoảng 27°C — bạn nên mang theo áo khoác nhẹ và ô.\n\n**Trước khi lập kế hoạch chi tiết, mình cần xác nhận:**\n\nKhi bạn trả lời, mình sẽ lập kế hoạch 3 ngày hoàn chỉnh với:\n- **Ngày 2:** Khám phá Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn + ăn buffet hải sản tại **Mr Mộc** (4.9⭐)\n\nCùng với ước tính ngân sách cho cả chuyến đi 👍",
+      "visible": "Mình sẽ lập kế hoạch 3 ngày ở Đà Nẵng cho 2 người với tham quan và ăn hải sản. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn đi máy bay hay xe khách từ TP.HCM?** (Hay bạn đang ở thành phố khác?)\n\nTrong khi đó, mình sẽ tìm các điểm tham quan và nhà hàng hải sản tốt ở Đà Nẵng để chuẩn bị kế hoạch.\n\nTuyệt vời! Mình đã tìm được các điểm tham quan và nhà hàng hải sản tuyệt vời ở Đà Nẵng. Thời tiết hôm nay có mây và có khả năng mưa nhẹ (46%), nhiệt độ khoảng 27°C — bạn nên mang theo áo khoác nhẹ và ô.\n\n**Trước khi lập kế hoạch chi tiết, mình cần xác nhận:**\n\nKhi bạn trả lời, mình sẽ lập kế hoạch 3 ngày hoàn chỉnh với:\n- **Ngày 2:** Khám phá Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn + ăn buffet hải sản tại **Mr Mộc** (4.9⭐)\n\nCùng với ước tính ngân sách cho cả chuyến đi 👍"
+    },
+    {
+      "user": "mai đi mốt về, budget 20 triệu",
+      "status": 200,
+      "elapsedMs": 4876,
+      "textFrames": 2,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Hiểu rồi! Mai đi, mốt về, 3 ngày 2 người, budget 20 triệu. Mình cần xác nhận nhanh:\n\n**Bạn muốn đi máy bay hay xe khách từ TP.HCM đến Đà Nẵng?**\n\nCái này quyết định lịch trình và chi phí chuyến đi của bạn:\n- **Máy bay:** nhanh hơn, nhưng tốn tiền vé + taxi sân bay\n- **Xe khách:** rẻ hơn, nhưng mất 16h đêm",
+      "visible": "Hiểu rồi! Mai đi, mốt về, 3 ngày 2 người, budget 20 triệu. Mình cần xác nhận nhanh:\n\n**Bạn muốn đi máy bay hay xe khách từ TP.HCM đến Đà Nẵng?**\n\nCái này quyết định lịch trình và chi phí chuyến đi của bạn:\n- **Máy bay:** nhanh hơn, nhưng tốn tiền vé + taxi sân bay\n- **Xe khách:** rẻ hơn, nhưng mất 16h đêm"
+    },
+    {
+      "user": "gần biển",
+      "status": 200,
+      "elapsedMs": 19158,
+      "textFrames": 6,
+      "tools": [
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Nẵng",
+            "checkIn": "2026-09-23",
+            "checkOut": "2026-09-25"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn hải sản Đà Nẵng gần biển",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "tham quan Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": {
+        "len": 158,
+        "at": [
+          0,
+          219
+        ],
+        "sample": "Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở "
+      },
+      "text": "Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở Đà Nẵng, nhưng trước tiên cần xác nhận:\n\n**Bạn muốn đi máy bay hay xe khách?** \n\nCái này ảnh hưởng đến lịch trình và chi phí của chuyến đi.Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở Đà Nẵng, nhưng trước tiên cần xác nhận:\n\n**Bạn muốn đi máy bay hay xe khách?**\n\nCái này ảnh hưởng đến lịch trình và chi phí của chuyến đi.\n\nMình tìm được khách sạn gần biển và quán hải sản ngon rồi! Nhưng để hoàn thiện kế hoạch, mình cần biết:\n\n![Ảnh địa điểm](https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg)\n\n**Ăn hải sản:** **Hải Sản Ku Tom Đà Nẵng** (4.9⭐, 3.440 đánh giá) - quán nổi tiếng, tươi ngon, mở từ 10h-2h sáng. Hoặc\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQpneDqikO5ZlKltzyNMHimLrgPCKEzrzyeW2R3SRZHMMRrpkmcyODog0gRzxgH0uFQ6CCF4w9y73V_CQjCtKiJ-FWCdkShu-Za34ISfEExVP-ge9_O1HVAANP83YmLmE6xi9m9TDte3CD)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng) · [BeFood](https://be.com.vn/)\n\n**Mộc quán Seafood** (4.8⭐, 29.876 đánh giá) - quán lâu đời, được yêu thích nhất, mở 10:30-22:30.\n\nSau khi bạn chọn máy bay hay xe khách, mình sẽ lập chi tiết lịch trình 3 ngày + tham quan cho bạn! 🏖️\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn7g5FHg9CW8HBdHFujGc4WjgQc3WhItI3DTXB8wnBRI9OhLLboHVKTEysHJXlbOk_UL5oADkeh89-v3B8jEJkumpKe8sGP0dOfNZ34VwASAz4KdENZM8b2kJyqhGFPcAUyLuc)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng) · [BeFood](https://be.com.vn/)",
+      "visible": "Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở Đà Nẵng, nhưng trước tiên cần xác nhận:\n\n**Bạn muốn đi máy bay hay xe khách?** \n\nCái này ảnh hưởng đến lịch trình và chi phí của chuyến đi.Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở Đà Nẵng, nhưng trước tiên cần xác nhận:\n\n**Bạn muốn đi máy bay hay xe khách?**\n\nCái này ảnh hưởng đến lịch trình và chi phí của chuyến đi.\n\nMình tìm được khách sạn gần biển và quán hải sản ngon rồi! Nhưng để hoàn thiện kế hoạch, mình cần biết:\n\n![Ảnh địa điểm](https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg)\n\n**Ăn hải sản:** **Hải Sản Ku Tom Đà Nẵng** (4.9⭐, 3.440 đánh giá) - quán nổi tiếng, tươi ngon, mở từ 10h-2h sáng. Hoặc\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQpneDqikO5ZlKltzyNMHimLrgPCKEzrzyeW2R3SRZHMMRrpkmcyODog0gRzxgH0uFQ6CCF4w9y73V_CQjCtKiJ-FWCdkShu-Za34ISfEExVP-ge9_O1HVAANP83YmLmE6xi9m9TDte3CD)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng) · [BeFood](https://be.com.vn/)\n\n**Mộc quán Seafood** (4.8⭐, 29.876 đánh giá) - quán lâu đời, được yêu thích nhất, mở 10:30-22:30.\n\nSau khi bạn chọn máy bay hay xe khách, mình sẽ lập chi tiết lịch trình 3 ngày + tham quan cho bạn! 🏖️\n\n![Ảnh địa điểm](https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn7g5FHg9CW8HBdHFujGc4WjgQc3WhItI3DTXB8wnBRI9OhLLboHVKTEysHJXlbOk_UL5oADkeh89-v3B8jEJkumpKe8sGP0dOfNZ34VwASAz4KdENZM8b2kJyqhGFPcAUyLuc)\n[GrabFood](https://food.grab.com/vn/vi/restaurants?search=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng) · [BeFood](https://be.com.vn/)"
+    }
+  ]
+}

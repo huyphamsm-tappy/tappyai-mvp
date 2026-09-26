@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 7754,
+  "evidenceId": "096a73b2-3076-4b47-8e36-abbbbc0a8c83",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Twisters** — nếu bạn muốn xem thứ gì đó kịch tính nhưng nhẹ nhàng hơn. Phim về những cơn lốc xoáy, có tình yêu, có hành động, không quá nặng nề.\n\n**Trap** — nếu bạn thích phim tâm lý, ly kỳ. Phim của M. Night Shyamalan, có twist bất ngờ, giữ bạn căng thẳng từ đầu đến cuối.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Twisters** — nếu bạn muốn xem thứ gì đó kịch tính nhưng nhẹ nhàng hơn. Phim về những cơn lốc xoáy, có tình yêu, có hành động, không quá nặng nề.\n\n**Trap** — nếu bạn thích phim tâm lý, ly kỳ. Phim của M. Night Shyamalan, có twist bất ngờ, giữ bạn căng thẳng từ đầu đến cuối.\n"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

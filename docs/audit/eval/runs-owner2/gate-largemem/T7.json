@@ -1,0 +1,27 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 4532,
+  "evidenceId": "b0cce406-f311-4e2f-a366-0c07eb6eaa70",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn đi tuần sau (khoảng 22-28/9), 1-2 người, và tìm vé rẻ nhất. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn đi?** (ví dụ: 22/9, 25/9...) và **có muốn về cùng ngày hay ở lại Hà Nội mấy ngày?**\n\nThông tin này sẽ giúp mình tìm được vé rẻ nhất cho bạn.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi tuần sau (khoảng 22-28/9), 1-2 người, và tìm vé rẻ nhất. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn đi?** (ví dụ: 22/9, 25/9...) và **có muốn về cùng ngày hay ở lại Hà Nội mấy ngày?**\n\nThông tin này sẽ giúp mình tìm được vé rẻ nhất cho bạn."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

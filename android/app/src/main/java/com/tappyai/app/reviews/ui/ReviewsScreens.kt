@@ -1,10 +1,9 @@
 package com.tappyai.app.reviews.ui
 
-import android.content.Context
-import android.content.Intent
 import android.widget.Toast
-import com.tappyai.app.music.MusicPickerSheet
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,21 +13,35 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items as gridItems
-import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.NotificationsNone
+import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.RateReview
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -44,13 +57,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,17 +76,20 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import com.tappyai.app.notifications.InboxBadgeViewModel
+import com.tappyai.app.notifications.UnreadBadge
 import com.tappyai.app.R
+import com.tappyai.app.explore.ExploreV3
 import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewFeedType
-import com.tappyai.app.reviews.data.ReviewGroupedNotification
-import com.tappyai.app.reviews.data.isShareOnlyName
 import androidx.compose.runtime.saveable.listSaver
 import com.tappyai.core.designsystem.component.TappyDialog
 import com.tappyai.core.designsystem.component.TappyEmptyState
 import com.tappyai.core.designsystem.component.TappyErrorState
 import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.theme.TappySpacing
+import kotlinx.coroutines.launch
 
 private val ScreenBackground = Color(0xFF000000)
 private val ScreenTextPrimary = Color(0xFFFFFFFF)
@@ -77,54 +97,45 @@ private val ScreenIconColor = Color(0xFFFFFFFF)
 
 @Composable
 internal fun ReviewsFeedScreen(
-    onReviewClick: (String) -> Unit,
     onAuthorClick: (String) -> Unit,
     onCompose: () -> Unit,
     onNotifications: () -> Unit,
     onSearch: () -> Unit,
+    /** Opens the signed-in user's own profile (`ReviewsRoute.SelfProfile`). */
+    onProfile: () -> Unit = {},
     onBack: (() -> Unit)? = null,
     /** Set when another screen asks the feed to switch tab — web parity: the Inbox digest banner
      *  hands off to the Following feed. Applied once, then cleared by the nav host. */
     requestedFeedType: ReviewFeedType? = null,
-    /** Opens the compact SoundSheet for a clip's attached track (web: the feed music disc). */
-    onMusicDiscClick: (String) -> Unit = {},
+    /**
+     * ✦ Hỏi Tappy: opens Chat pre-filled with the question about the given clip — the native
+     * `/chat?q=` bridge the Deals and Home surfaces already use. Null hides the rail action.
+     */
+    onAskTappy: ((Review) -> Unit)? = null,
     viewModel: ReviewsFeedViewModel = hiltViewModel(),
+    inboxBadge: InboxBadgeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val reviews = uiState.reviews
-    val context = LocalContext.current
+    // The bell's unread count, re-read whenever the feed comes back to the front.
+    LifecycleResumeEffect(Unit) {
+        inboxBadge.refresh()
+        onPauseOrDispose { }
+    }
     val pagerState = rememberPagerState(pageCount = { reviews.size })
 
     LaunchedEffect(requestedFeedType) {
         requestedFeedType?.let { viewModel.onFeedTypeChange(it) }
     }
 
-    // Advance pagination as the user swipes toward the end of the loaded pages.
-    LaunchedEffect(pagerState.currentPage) {
-        viewModel.onPageSettled(pagerState.currentPage)
-    }
-
-    // Explore clips autoplay WITH sound immediately (product requirement 2026-07-20). Unlike a
-    // browser <video>, ExoPlayer has no muted-until-gesture autoplay restriction, so audio is on
-    // from the first frame — the user never has to Pause→Play to hear it. The single tap is
-    // play/pause only. rememberSaveable keeps the flag across config changes.
-    var audioUnlocked by rememberSaveable { mutableStateOf(true) }
-
-    // Watch-time analytics: when the settled clip changes (swipe or first load) finalize the previous
-    // clip's watch (posts to /interact when ≥3s) and start timing the new one — the same behaviour as
-    // the web's behaviorTracker, driven by the pager's settled page instead of an IntersectionObserver.
-    val activeReview = reviews.getOrNull(pagerState.settledPage)
-    LaunchedEffect(activeReview?.id) {
-        viewModel.onActiveReviewChanged(activeReview)
-    }
-    DisposableEffect(Unit) {
-        onDispose { viewModel.flushWatch() }
-    }
-
+    // Immersive Explore (reference "TappyAI — Immersive AI Discovery", 2026-09-13): the video is
+    // the canvas, edge to edge under the status bar and under the floating dock; the brand
+    // header and the discovery segment FLOAT over it at the top. The pager fills the whole box;
+    // each card keeps ExploreV3.DockClearance free at the bottom for the dock.
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(ScreenBackground),
+            .background(ExploreV3.Background),
     ) {
         when {
             uiState.isInitialLoading && reviews.isEmpty() -> {
@@ -148,71 +159,151 @@ internal fun ReviewsFeedScreen(
                 )
             }
             else -> {
-                VerticalPager(
-                    state = pagerState,
+                // The pager, card, audio default, comment sheet and analytics — shared with the
+                // profile clip pager (ReviewClipPager.kt); moved there unchanged.
+                ReviewClipPager(
+                    reviews = reviews,
+                    pagerState = pagerState,
+                    currentUserId = uiState.currentUserId,
+                    viewModel = viewModel,
+                    onAuthorClick = onAuthorClick,
+                    onAskTappy = onAskTappy,
+                    bottomClearance = ExploreV3.DockClearance,
                     modifier = Modifier.fillMaxSize(),
-                    beyondViewportPageCount = 1,
-                ) { page ->
-                    val review = reviews[page]
-                    ReviewCard(
-                        review = review,
-                        isMe = uiState.currentUserId != null && review.userId == uiState.currentUserId,
-                        active = pagerState.settledPage == page,
-                        audioUnlocked = audioUnlocked,
-                        onVideoDuration = { viewModel.onVideoDuration(review.id, it) },
-                        onRequestAudioUnlock = { audioUnlocked = true },
-                        onLike = { viewModel.toggleLike(review) },
-                        onSave = { viewModel.toggleSave(review) },
-                        onComment = { onReviewClick(review.id) },
-                        onShare = { shareReview(context, review) },
-                        onAvatarClick = { onAuthorClick(review.userId) },
-                        onDelete = { viewModel.deleteReview(review) },
-                        onHide = { viewModel.hideReview(review) },
-                        // Web parity: the disc opens the SoundSheet for the clip's attached track.
-                        onMusicDiscClick = review.music?.trackId
-                            ?.takeIf { it.isNotBlank() }
-                            ?.let { trackId -> { onMusicDiscClick(trackId) } },
-                    )
-                }
+                )
             }
         }
-
-        Column(modifier = Modifier.align(Alignment.TopCenter)) {
+        // The floating chrome, drawn last so it sits over the clip.
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .fillMaxWidth()
+                .statusBarsPadding(),
+        ) {
             FeedTopBar(
                 onBack = onBack,
+                onCompose = onCompose,
                 onSearch = onSearch,
                 onNotifications = onNotifications,
+                unreadCount = inboxBadge.unreadCount,
+                onProfile = onProfile,
             )
             FeedTabs(
                 selected = uiState.feedType,
                 onSelect = viewModel::onFeedTypeChange,
-                onCompose = onCompose,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
     }
 }
 
-/** For You / Following / Latest tab switcher, centered under the feed's top bar — mirrors the web's
- *  top-of-feed tab row (active tab bold + underlined). */
+/**
+ * A profile's clips as a full-height vertical pager — web parity `ClipViewer({ posts, startIndex })`
+ * (reviews/ProfileTab.tsx), reached from the Self Profile and Author Profile grids
+ * (`ReviewsRoute.ProfileClips`). Before this a grid tile opened `ReviewsRoute.Detail`, a single
+ * clip with no way to the next one but Back (UAT 2026-09-13).
+ *
+ * The rows are the profile's own — [ReviewsFeedViewModel] reads [ReviewsFeedSource.Profile] from
+ * the route and calls the grid's endpoint (`getMine()` / `getFeed(userId=…)`), never the discovery
+ * feed — and the pager is [ReviewClipPager], the feed's own block, so card, player, sound, rail,
+ * comment sheet and analytics are exactly the feed's. The pager is composed only once the list
+ * has loaded, with `initialPage` = the tapped clip's row (or 0 when that clip is gone), so the
+ * tapped clip is the first thing on screen and no watch is recorded for a clip never shown.
+ */
+@Composable
+internal fun ProfileClipsScreen(
+    startReviewId: String,
+    onAuthorClick: (String) -> Unit,
+    onBack: () -> Unit,
+    onAskTappy: ((Review) -> Unit)? = null,
+    viewModel: ReviewsFeedViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val reviews = uiState.reviews
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(ScreenBackground),
+    ) {
+        ScreenHeader(
+            title = stringResource(
+                if (viewModel.source == ReviewsFeedSource.Saved) R.string.reviews_self_tab_saved else R.string.reviews_profile_stat_posts,
+            ),
+            onBack = onBack,
+        )
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .background(ScreenBackground),
+        ) {
+            when {
+                uiState.isInitialLoading && reviews.isEmpty() -> {
+                    TappyLoadingIndicator(modifier = Modifier.align(Alignment.Center))
+                }
+                uiState.error != null && reviews.isEmpty() -> {
+                    TappyErrorState(
+                        title = stringResource(R.string.reviews_feed_error_title),
+                        message = uiState.error,
+                        retryText = stringResource(R.string.common_try_again),
+                        onRetry = { viewModel.refresh() },
+                        modifier = Modifier.align(Alignment.Center),
+                    )
+                }
+                reviews.isEmpty() -> {
+                    TappyEmptyState(
+                        icon = Icons.Filled.RateReview,
+                        title = stringResource(R.string.reviews_detail_unavailable_title),
+                        message = stringResource(R.string.reviews_detail_unavailable_message),
+                    )
+                }
+                else -> {
+                    // The list is here: start on the tapped clip. `rememberPagerState` is saveable,
+                    // so a later change of `initialPage` (never expected) would not move it.
+                    val pagerState = rememberPagerState(
+                        initialPage = initialPageFor(reviews, startReviewId),
+                        pageCount = { reviews.size },
+                    )
+                    ReviewClipPager(
+                        reviews = reviews,
+                        pagerState = pagerState,
+                        currentUserId = uiState.currentUserId,
+                        viewModel = viewModel,
+                        onAuthorClick = onAuthorClick,
+                        onAskTappy = onAskTappy,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+/**
+ * The discovery segment of the reference design: a centered floating pill — translucent
+ * near-black, thin light border — holding exactly the three real feeds, the selected one drawn
+ * as the indigo pill with white text. Same [ReviewFeedType]s, same `onSelect`, same backend
+ * queries behind each as before; only the dress changed.
+ *
+ * Three segments, not five: `Food` / `Travel` / `Life` would need a category filter the feed
+ * endpoint does not have, so they are not drawn rather than wired to a fake query.
+ */
 @Composable
 private fun FeedTabs(
     selected: ReviewFeedType,
     onSelect: (ReviewFeedType) -> Unit,
-    onCompose: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // Android-only top nav (owner-approved): a "Đăng bài" action tab is the single post entry point
-    // (the floating + was removed), followed by the three feed filters in the owner's order.
     Row(
-        modifier = modifier.padding(vertical = 4.dp),
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xl),
+        modifier = modifier
+            .padding(top = 6.dp)
+            .clip(RoundedCornerShape(50))
+            .background(ExploreV3.Glass)
+            .border(1.dp, ExploreV3.GlassBorder, RoundedCornerShape(50))
+            .padding(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        FeedActionTab(
-            label = stringResource(R.string.reviews_tab_compose),
-            onClick = onCompose,
-        )
         FeedTab(
             label = stringResource(R.string.reviews_tab_for_you),
             selected = selected == ReviewFeedType.ForYou,
@@ -231,47 +322,29 @@ private fun FeedTabs(
     }
 }
 
-/** The "Đăng bài" action tab — always full-opacity (never a selected feed state); opens the
- *  composer. Replaces the removed floating "+" so posting has a single entry point. */
-@Composable
-private fun FeedActionTab(label: String, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(vertical = 4.dp),
-    ) {
-        Text(
-            text = label,
-            color = ScreenTextPrimary,
-            fontSize = 13.sp,
-            fontWeight = FontWeight.Bold,
-        )
-    }
-}
-
 @Composable
 private fun FeedTab(label: String, selected: Boolean, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    // The selection slides between segments as a colour change, nothing more — the reference is restrained.
+    val fill by animateColorAsState(if (selected) ExploreV3.SegmentSelected else Color.Transparent, label = "segment-fill")
+    Box(
         modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(vertical = 4.dp),
+            .clip(RoundedCornerShape(50))
+            .background(fill)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            )
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = label,
-            color = if (selected) ScreenTextPrimary else ScreenTextPrimary.copy(alpha = 0.6f),
-            fontSize = 13.sp,
-            fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium,
+            color = if (selected) ExploreV3.OnSurface else ExploreV3.OnVideoMuted,
+            fontSize = 15.sp,
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+            maxLines = 1,
         )
-        if (selected) {
-            Box(
-                modifier = Modifier
-                    .padding(top = 2.dp)
-                    .size(width = 16.dp, height = 2.dp)
-                    .background(ScreenTextPrimary),
-            )
-        }
     }
 }
 
@@ -309,37 +382,161 @@ private fun FeedEmptyState(
     }
 }
 
+/**
+ * The floating brand header of the reference design: the TAPPYAI wordmark with the ✦ spark and
+ * the "Discover something better" tagline on the left; three glass circles — search, bell,
+ * profile — on the right. It floats over the clip (no opaque bar), below the status bar.
+ *
+ * The "+" is Create Post (owner ruling 2026-09-13: the header keeps its own "+", distinct from the
+ * rail avatar's follow badge). No unread dot on the bell: there is no unread state anywhere in the
+ * Android app, so none is drawn.
+ *
+ * The person button opens the user's OWN profile inside Explore (`SelfProfile`); a post's
+ * avatar and handle keep opening the AUTHOR's profile.
+ */
 @Composable
 private fun FeedTopBar(
     onBack: (() -> Unit)?,
+    onCompose: () -> Unit,
     onSearch: () -> Unit,
     onNotifications: () -> Unit,
+    onProfile: () -> Unit,
     modifier: Modifier = Modifier,
+    /** The Inbox's unread count for the bell's badge (web `V3Shell` bell); 0 draws nothing. */
+    unreadCount: Int = 0,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 4.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
+            .padding(start = TappySpacing.xl, end = TappySpacing.xl, top = 24.dp, bottom = TappySpacing.sm),
+        horizontalArrangement = Arrangement.spacedBy(TappySpacing.md),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (onBack != null) {
             IconButton(onClick = onBack) {
                 Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back), tint = ScreenIconColor)
             }
-        } else {
-            Spacer(modifier = Modifier.size(48.dp))
         }
-        // No "Bài viết" title (owner decision + web parity: the feed header is just the tab row
-        // below + the action icons).
-        Row {
-            IconButton(onClick = onSearch) {
-                Icon(Icons.Filled.Search, contentDescription = stringResource(R.string.reviews_search_label), tint = ScreenIconColor)
+        Column {
+            // The approved brand lockup: "Tappy" white + "AI" brand blue, with a little depth, and
+            // the official mascot (the "searching" pose from the owner's pose library,
+            // public/tappy/searching.png → drawable tappy_searching) beside it as one element.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                BrandWordmark3D()
+                Image(
+                    painter = painterResource(R.drawable.tappy_searching),
+                    contentDescription = null,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .size(40.dp),
+                )
             }
-            IconButton(onClick = onNotifications) {
-                Icon(Icons.Filled.Notifications, contentDescription = stringResource(R.string.reviews_notifications_label), tint = ScreenIconColor)
+            Text(
+                text = stringResource(R.string.reviews_feed_tagline),
+                color = ExploreV3.OnVideoMuted,
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        // Create Post — the header's own "+", separate from the rail avatar's follow badge.
+        ExploreHeaderAction(onClick = onCompose, contentDescription = stringResource(R.string.reviews_tab_compose)) {
+            Icon(Icons.Filled.Add, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+        }
+        ExploreHeaderAction(onClick = onSearch, contentDescription = stringResource(R.string.reviews_search_label)) {
+            Icon(Icons.Filled.Search, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+        }
+        ExploreHeaderAction(onClick = onNotifications, contentDescription = stringResource(R.string.reviews_notifications_label)) {
+            Box {
+                Icon(Icons.Filled.NotificationsNone, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+                UnreadBadge(count = unreadCount)
             }
         }
+        ExploreHeaderAction(onClick = onProfile, contentDescription = stringResource(R.string.reviews_self_profile_open)) {
+            Icon(Icons.Filled.PersonOutline, contentDescription = null, tint = ExploreV3.OnSurface, modifier = Modifier.size(22.dp))
+        }
+    }
+}
+
+/**
+ * The dimensional TappyAI wordmark of the approved branding — "Tappy" white, "AI" brand blue.
+ *
+ * 🚨 There is no official standalone wordmark asset in the repository (the only wordmarks are
+ * baked into the full lockups `public/branding/otter-logo.png` / `drawable/tappyai_logo.png`,
+ * which must not be cropped — docs/branding/LOGO_MIGRATION_PLAN.md), so the depth is drawn here:
+ * a short extrusion of darker layers stepping down behind the top face, a slightly lighter face,
+ * and one soft contact shadow underneath. A layered build, not a drop shadow. Swap for the
+ * official wordmark asset the moment Design supplies one.
+ */
+@Composable
+private fun BrandWordmark3D() {
+    val tappy = stringResource(R.string.home_v3_brand_tappy)
+    val ai = stringResource(R.string.home_v3_brand_ai)
+    val style = LocalTextStyle.current.copy(fontSize = 26.sp, lineHeight = 30.sp, fontWeight = FontWeight.ExtraBold)
+    val layers = 7
+    Box {
+        // The extrusion: the same glyphs stepped down-and-right seven times, darker the deeper —
+        // the letters' sides, lit from the upper left. The deepest layer also throws the soft
+        // contact shadow that lifts the whole mark off the video.
+        for (i in layers downTo 1) {
+            val t = i / layers.toFloat()
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(color = lerp(WordmarkTappySideNear, WordmarkTappySideFar, t))) { append(tappy) }
+                    withStyle(SpanStyle(color = lerp(WordmarkAiSideNear, WordmarkAiSideFar, t))) { append(ai) }
+                },
+                style = if (i == layers) style.copy(shadow = Shadow(color = Color(0xCC000000), offset = Offset(2f, 8f), blurRadius = 12f)) else style,
+                modifier = Modifier.offset(x = (i * 0.45f).dp, y = (i * 0.85f).dp),
+            )
+        }
+        // A thin bright rim just above the face — the lit top edge of each letter.
+        Text(
+            text = buildAnnotatedString {
+                withStyle(SpanStyle(color = Color.White)) { append(tappy) }
+                withStyle(SpanStyle(color = WordmarkAiRim)) { append(ai) }
+            },
+            style = style,
+            modifier = Modifier.offset(y = (-0.7f).dp),
+        )
+        // The face: a top-to-bottom sheen (bright at the top, a touch cooler at the base), which
+        // is what makes the letters read as a solid, polished slab rather than flat type.
+        Text(
+            text = buildAnnotatedString {
+                withStyle(SpanStyle(brush = Brush.verticalGradient(listOf(Color.White, WordmarkTappyFaceBase)))) { append(tappy) }
+                withStyle(SpanStyle(brush = Brush.verticalGradient(listOf(WordmarkAiFaceTop, WordmarkAiFaceBase)))) { append(ai) }
+            },
+            style = style,
+        )
+    }
+}
+
+private val WordmarkTappyFaceBase = Color(0xFFD6DDF0)
+private val WordmarkTappySideNear = Color(0xFFAEB8D6)
+private val WordmarkTappySideFar = Color(0xFF3F4A68)
+private val WordmarkAiRim = Color(0xFF9CCBFF)
+private val WordmarkAiFaceTop = Color(0xFF5FAEFF)
+private val WordmarkAiFaceBase = Color(0xFF1877E8)
+private val WordmarkAiSideNear = Color(0xFF0F5CB8)
+private val WordmarkAiSideFar = Color(0xFF052A58)
+
+/** A 48dp glass circle over the video — translucent near-black, thin light border, white glyph. */
+@Composable
+private fun ExploreHeaderAction(
+    onClick: () -> Unit,
+    contentDescription: String,
+    icon: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .clip(CircleShape)
+            .background(ExploreV3.Glass)
+            .border(1.dp, ExploreV3.GlassBorder, CircleShape)
+            .clickable(onClickLabel = contentDescription, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        icon()
     }
 }
 
@@ -353,10 +550,14 @@ internal fun ReviewDetailScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     LaunchedEffect(reviewId) { viewModel.load(reviewId) }
     val context = LocalContext.current
+    val shareScope = rememberCoroutineScope()
     val nowMillis = System.currentTimeMillis()
     val review = uiState.review
     // Id of the comment whose emoji picker is open (only one at a time), or null.
     var reactionPickerFor by rememberSaveable { mutableStateOf<String?>(null) }
+    // The like list (the count's tap), as on the pager.
+    var likesFor by rememberSaveable { mutableStateOf<String?>(null) }
+    likesFor?.let { id -> ReviewLikeListSheet(reviewId = id, onDismiss = { likesFor = null }) }
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -387,11 +588,15 @@ internal fun ReviewDetailScreen(
     ) {
         ScreenHeader(title = stringResource(R.string.reviews_detail_title), onBack = onBack)
         if (review == null) {
-            TappyEmptyState(
-                icon = Icons.Filled.RateReview,
-                title = stringResource(R.string.reviews_detail_unavailable_title),
-                message = stringResource(R.string.reviews_detail_unavailable_message),
-            )
+            if (uiState.isLoadingReview) {
+                TappyLoadingIndicator(modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = TappySpacing.xxl))
+            } else {
+                TappyEmptyState(
+                    icon = Icons.Filled.RateReview,
+                    title = stringResource(R.string.reviews_detail_unavailable_title),
+                    message = stringResource(R.string.reviews_detail_unavailable_message),
+                )
+            }
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 item(key = "review-card") {
@@ -414,23 +619,13 @@ internal fun ReviewDetailScreen(
                             active = true,
                             audioUnlocked = true,
                             onLike = { viewModel.toggleLike() },
+                            onOpenLikes = { likesFor = review.id },
                             onSave = { viewModel.toggleSave() },
                             onComment = {},
-                            onShare = { shareReview(context, review) },
+                            onShare = { shareScope.launch { shareReview(context, review) } },
                             onAvatarClick = { onAvatarClick(review.userId) },
                             onDelete = {},
                             onHide = {},
-                        )
-                    }
-                }
-                // Web parity: the attached-music card sits under the clip on the detail view, with
-                // its own play/pause honoring the review's saved startSec + volume.
-                uiState.attachedTrack?.let { track ->
-                    item(key = "attached-music") {
-                        ReviewMusicCard(
-                            track = track,
-                            startSec = review.music?.startSec ?: 0,
-                            volume = (review.music?.volume ?: 1.0).toFloat(),
                         )
                     }
                 }
@@ -481,119 +676,6 @@ internal fun ReloadOnResume(onResume: () -> Unit) {
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
-    }
-}
-
-@Composable
-internal fun ReviewProfileScreen(
-    userId: String,
-    onReviewClick: (Review) -> Unit,
-    onBack: () -> Unit,
-    viewModel: ReviewProfileViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    LaunchedEffect(userId) { viewModel.load(userId) }
-    // Reflow the clip grid after a clip is deleted/hidden elsewhere (e.g. the feed) and the user
-    // returns here — mirrors web ProfileTab refetching and MyReviews' resume-reload.
-    ReloadOnResume { viewModel.retry() }
-    val profile = uiState.profile
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScreenBackground),
-    ) {
-        ScreenHeader(title = profile?.fullName ?: stringResource(R.string.reviews_profile_fallback_title), onBack = onBack)
-        when {
-            uiState.isLoading && profile == null -> {
-                TappyLoadingIndicator()
-            }
-            uiState.error != null && profile == null -> {
-                TappyErrorState(
-                    title = stringResource(R.string.reviews_profile_error_title),
-                    message = uiState.error,
-                    retryText = stringResource(R.string.common_try_again),
-                    onRetry = { viewModel.retry() },
-                )
-            }
-            profile != null -> {
-                // 3-column clip-thumbnail grid (mirrors web ProfileTab): the header spans all
-                // columns, then the author's posted clips render as tappable thumbnails.
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(3),
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                ) {
-                    item(span = { GridItemSpan(maxLineSpan) }) {
-                        ReviewProfileHeader(
-                            profile = profile,
-                            reviewCount = uiState.reviews.size,
-                            totalLikes = uiState.reviews.sumOf { it.likeCount },
-                            totalSaves = uiState.reviews.sumOf { it.saveCount ?: 0 },
-                            isTogglingFollow = uiState.isTogglingFollow,
-                            onToggleFollow = viewModel::toggleFollow,
-                        )
-                    }
-                    if (uiState.reviews.isEmpty()) {
-                        item(span = { GridItemSpan(maxLineSpan) }) {
-                            TappyEmptyState(
-                                icon = Icons.Filled.RateReview,
-                                title = stringResource(R.string.reviews_profile_empty_title),
-                                message = stringResource(R.string.reviews_profile_empty_message),
-                            )
-                        }
-                    } else {
-                        gridItems(items = uiState.reviews, key = { it.id }) { review ->
-                            ReviewClipTile(review = review, onClick = { onReviewClick(review) })
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-internal fun ReviewNotificationsScreen(
-    onNotificationClick: (ReviewGroupedNotification) -> Unit,
-    onBack: () -> Unit,
-    onOpenDigest: () -> Unit = {},
-    viewModel: ReviewNotificationsViewModel = hiltViewModel(),
-) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val nowMillis = System.currentTimeMillis()
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(ScreenBackground),
-    ) {
-        ScreenHeader(title = stringResource(R.string.reviews_notifications_label), onBack = onBack)
-        when {
-            uiState.isLoading && uiState.notifications.isEmpty() -> {
-                TappyLoadingIndicator()
-            }
-            uiState.error != null && uiState.notifications.isEmpty() -> {
-                TappyErrorState(
-                    title = stringResource(R.string.reviews_notifications_error_title),
-                    message = uiState.error,
-                    retryText = stringResource(R.string.common_try_again),
-                    onRetry = { viewModel.load() },
-                )
-            }
-            else -> {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
-                    // Web parity: the AI-digest banner sits above the notification list.
-                    item(key = "inbox-digest-banner") { InboxDigestBanner(onClick = onOpenDigest) }
-                    reviewNotificationItems(
-                        notifications = uiState.notifications,
-                        nowMillis = nowMillis,
-                        onNotificationClick = onNotificationClick,
-                    )
-                }
-            }
-        }
     }
 }
 
@@ -691,9 +773,6 @@ internal fun ReviewComposerHost(
     // behind a collapsed disclosure.
     var showPlaceInput by rememberSaveable { mutableStateOf(viewModel.prefilledPlaceName != null) }
     var showRating by rememberSaveable { mutableStateOf(false) }
-    // The in-composer music picker (web MusicPickerSheet). The attached track itself now lives in the
-    // ViewModel's uiState, so add/replace/remove/trim all go through the ViewModel.
-    var showMusicPicker by rememberSaveable { mutableStateOf(false) }
     // The safety gate's outcome when it did not publish. A dialog rather than a Toast, and
     // deliberately: a Toast is dismissible by looking away, and this is the only moment the author
     // is told their post is not public. The web gives this its own screen for the same reason.
@@ -750,9 +829,6 @@ internal fun ReviewComposerHost(
         onToggleRating = { showRating = !showRating },
         onBack = onBack,
         onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName) },
-        attachedSoundTitle = uiState.attachedTrackTitle,
-        onRemoveSound = viewModel::onRemoveSound,
-        onAddMusic = { showMusicPicker = true },
         photoUrls = uiState.photoUrls,
         isUploadingPhoto = uiState.isUploadingPhoto,
         onPickPhotos = {
@@ -765,16 +841,6 @@ internal fun ReviewComposerHost(
         linkThumbnailUrl = uiState.linkThumbnailUrl,
         isFetchingLinkMeta = uiState.isFetchingLinkMeta,
     )
-
-    if (showMusicPicker) {
-        MusicPickerSheet(
-            onSelect = { trackId, title, startSec, volume ->
-                viewModel.onMusicSelected(trackId, title, startSec, volume)
-                showMusicPicker = false
-            },
-            onDismiss = { showMusicPicker = false },
-        )
-    }
 }
 
 @Composable
@@ -795,31 +861,4 @@ private fun ScreenHeader(title: String, onBack: () -> Unit) {
             fontWeight = FontWeight.Bold,
         )
     }
-}
-
-/**
- * Fires the system share sheet with the review's text. There is no backend share endpoint and no
- * production web domain configured in the app, so this shares the place + body (+ source link if
- * the review has one) rather than a canonical review URL. Uses ACTION_SEND — a system overlay, not
- * an in-app UI change.
- */
-private fun shareReview(context: Context, review: Review) {
-    val text = buildString {
-        if (review.placeName.isNotBlank() && !isShareOnlyName(review.placeName)) {
-            append(review.placeName)
-            append("\n")
-        }
-        if (review.body.isNotBlank()) append(review.body)
-        val source = review.sourceUrl
-        if (!source.isNullOrBlank()) {
-            append("\n")
-            append(source)
-        }
-    }.trim().ifBlank { review.placeName.ifBlank { context.getString(R.string.reviews_share_fallback_text) } }
-
-    val sendIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, text)
-    }
-    context.startActivity(Intent.createChooser(sendIntent, context.getString(R.string.reviews_action_share)))
 }

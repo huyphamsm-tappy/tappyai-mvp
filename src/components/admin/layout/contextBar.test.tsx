@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { ContextBar } from './ContextBar'
 import { AdminShell } from './AdminShell'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
@@ -32,7 +33,10 @@ vi.mock('next/navigation', () => ({
 }))
 
 // setLocale persists to localStorage, so a click test would leave every later
-// render in Vietnamese. Clearing it keeps each test independent.
+// render in Vietnamese. Clearing it keeps each test independent — and each test
+// then STATES English, because with no stored choice the product default is
+// Vietnamese and the English these assertions read is not a default at all.
+beforeEach(() => setLocale('en'))
 afterEach(() => {
   cleanup()
   window.localStorage.removeItem('tappy_lang')

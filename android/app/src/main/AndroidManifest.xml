@@ -13,8 +13,18 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Chat: "gần đây" is measured from the phone when granted (userLocation on /api/chat). Optional. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- In-app voice input (SpeechRecognizer) — mirrors the web chat's mic (Web Speech API). -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- Firebase Analytics merges the Advertising ID permissions by default; we do NOT collect the
+         Advertising ID (analytics events are anonymous, enum/boolean only), so strip BOTH the
+         legacy GMS permission and the newer AdServices one from the merged manifest. Paired with
+         the google_analytics_adid_collection_enabled=false meta-data below; together they keep the
+         Play Data Safety form free of Advertising ID. -->
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove" />
+    <uses-permission android:name="android.permission.ACCESS_ADSERVICES_AD_ID" tools:node="remove" />
     <!-- Android 13+ delivers no notification at all without this. Undeclared, the permission can
          never be granted, so it gates delivery only — never Tappy's identity sound setting. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -32,6 +42,14 @@
             <action android:name="android.intent.action.SENDTO" />
             <data android:scheme="mailto" />
         </intent>
+        <!-- Share sheet direct handoff (share/TappyShare.packageFor): ACTION_SEND + setPackage to
+             exactly these six apps. Must stay identical to TappyShare.queriedPackages. -->
+        <package android:name="com.facebook.orca" />
+        <package android:name="com.zing.zalo" />
+        <package android:name="com.whatsapp" />
+        <package android:name="org.telegram.messenger" />
+        <package android:name="com.viber.voip" />
+        <package android:name="jp.naver.line.android" />
     </queries>
 
     <application
@@ -46,6 +64,12 @@
         android:theme="@style/Theme.TappyAI"
         android:resizeableActivity="true"
         tools:targetApi="31">
+
+        <!-- Disable Firebase Analytics' Advertising ID collection (paired with the AD_ID
+             permission removal above). No Advertising ID is gathered or sent. -->
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <!-- Locale persistence below API 33 — NOT optional, and not a decorative service.
 
@@ -119,6 +143,28 @@
                     android:host="auth-callback" />
             </intent-filter>
 
+            <!-- G1-F Android Direct Share (inbound): "another app → Share → Tappy". Text and
+                 links only; the payload is parsed by IncomingShareParser into the existing
+                 chat-with-prefill destination. image/* is deliberately not claimed — see the
+                 parser. Post-install utility, not acquisition: nothing here runs before the
+                 app is installed. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <!-- G1 completion — Android "Process Text": select text in ANY app → toolbar →
+                 "Ask Tappy". The Android counterpart of the browser extension's selection
+                 menu. Same parser, same chat-with-prefill destination, same quota; nothing
+                 runs before the person taps, and nothing is read but the selection Android
+                 hands over. Post-install utility, not acquisition. -->
+            <intent-filter>
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
             <!-- Shared group link (Group Dining). Custom scheme → no domain verification needed,
                  same as the OAuth callback above. Parsed by GroupDeepLinkParser into
                  AppRoute.GroupDetail. NOTE: the link actually shared with users is the public web
@@ -135,6 +181,49 @@
                     android:host="group" />
             </intent-filter>
         </activity>
+
+        <!-- App Links (PREPARED, OFF BY DEFAULT). An alias of MainActivity that claims
+             https://<web origin>/r/<slug> — public shared results — with autoVerify, so that once
+             the owner (a) publishes the release signing fingerprint to
+             /.well-known/assetlinks.json and (b) builds with -PTAPPYAI_APP_LINKS_ENABLED=true, a
+             shared link opens the app when it is installed. The app has no native result screen
+             on purpose: MainActivity shows the same public page in a session-bound Custom Tab
+             (growth/PublicLinkOpener), which keeps the navigation in the tab instead of looping.
+             android:enabled is bound to a resValue that is FALSE unless that property is set, so
+             this block changes nothing for any current build; an unverified claim would otherwise
+             only make Android 12+ ignore it and open the browser, never break a link. The host is
+             a manifest placeholder derived from TAPPYAI_WEB_APP_URL so it cannot drift from the
+             origin the app already uses for share links. -->
+        <activity-alias
+            android:name=".PublicLinkActivity"
+            android:targetActivity=".MainActivity"
+            android:exported="true"
+            android:enabled="@bool/tappy_app_links_enabled">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="${tappyPublicHost}" />
+                <data android:pathPrefix="/r/" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Share sheet: exposes ONLY the rendered share card (cache/share/) to the receiving
+             app via a content:// URI, so an image can travel with the brochure text. -->
+        <!-- Shared review media (ReviewShare.kt): a clip or photo fetched into cacheDir/share/ is
+             handed to the chosen app as a content:// URI with a temporary read grant, which is what
+             the system share contract requires for a video/* or image/* payload. Not exported —
+             receivers get access only through the per-intent grant. -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.share"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/share_paths" />
+        </provider>
     </application>
 
 </manifest>

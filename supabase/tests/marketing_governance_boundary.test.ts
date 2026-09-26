@@ -104,6 +104,8 @@ beforeAll(async () => {
   dataDir = mkdtempSync(join(tmpdir(), 'pg-mkt-'))
   pg = new EmbeddedPostgres({
     databaseDir: dataDir, user: 'postgres', password: 'postgres', port: PORT, persistent: false,
+    // Without these, initdb inherits the Windows locale and builds a WIN1252 cluster (audit_chain.test.ts).
+    initdbFlags: ['--encoding=UTF8', '--locale=C'],
   })
   await pg.initialise()
   await pg.start()

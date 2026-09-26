@@ -6,6 +6,12 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // 🚨 `src/modules` renders UI too (the Music Module's components) and was never scanned, so
+    // any utility used ONLY there was silently dropped from the build — `max-h-[80vh]` on the
+    // picker sheet, `pr-9` on its search field and `accent-primary-500` on the selection panel
+    // were all missing from the compiled CSS while the source read as if they applied. Measured
+    // against the dev stylesheet (2026-09-12); the Music Library redesign is what surfaced it.
+    './src/modules/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     // Ordered breakpoints incl. xs(480) + 3xl(1920)/4xl(2560) per docs/UI_GUIDELINES.md §3.
@@ -76,7 +82,7 @@ const config: Config = {
       },
       fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
       animation: { 'fade-in': 'fadeIn 0.2s ease-in-out', 'slide-up': 'slideUp 0.3s ease-out', 'pulse-dot': 'pulseDot 1.4s ease-in-out infinite', 'shake': 'shake 0.4s ease-in-out', 'heart-pop': 'heartPop 0.7s ease-out forwards' },
-      keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }, slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }, pulseDot: { '0%, 80%, 100%': { transform: 'scale(0)', opacity: '0.5' }, '40%': { transform: 'scale(1)', opacity: '1' } }, shake: { '0%, 100%': { transform: 'translateX(0)' }, '20%': { transform: 'translateX(-6px)' }, '40%': { transform: 'translateX(6px)' }, '60%': { transform: 'translateX(-4px)' }, '80%': { transform: 'translateX(4px)' } }, heartPop: { '0%': { transform: 'scale(0.8)', opacity: '0' }, '20%': { transform: 'scale(1.3)', opacity: '1' }, '45%': { transform: 'scale(1)', opacity: '1' }, '100%': { transform: 'scale(1)', opacity: '0' } } }
+      keyframes: { tappyFloat: { '0%, 100%': { transform: 'translateY(0)', opacity: '0.5' }, '50%': { transform: 'translateY(-5px)', opacity: '0.85' } }, fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }, slideUp: { '0%': { transform: 'translateY(10px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } }, pulseDot: { '0%, 80%, 100%': { transform: 'scale(0)', opacity: '0.5' }, '40%': { transform: 'scale(1)', opacity: '1' } }, shake: { '0%, 100%': { transform: 'translateX(0)' }, '20%': { transform: 'translateX(-6px)' }, '40%': { transform: 'translateX(6px)' }, '60%': { transform: 'translateX(-4px)' }, '80%': { transform: 'translateX(4px)' } }, heartPop: { '0%': { transform: 'scale(0.8)', opacity: '0' }, '20%': { transform: 'scale(1.3)', opacity: '1' }, '45%': { transform: 'scale(1)', opacity: '1' }, '100%': { transform: 'scale(1)', opacity: '0' } } }
     }
   },
   plugins: [require('tailwindcss-animate')]

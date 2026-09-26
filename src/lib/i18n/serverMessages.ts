@@ -29,13 +29,20 @@ const MESSAGES = {
     vi: 'Vui lòng thử lại vào ngày mai.',
     en: 'Please try again tomorrow.',
   },
+  // ONE shared AI question pool (2026-09-15): the anonymous allowance is a one-time trial, not a
+  // daily one — so its copy must not promise "tomorrow". The registered copy keeps "today".
   'chat.anonLimit': {
-    vi: 'Bạn đã dùng hết {n} câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!',
-    en: "You've used all {n} free questions for today. Sign in to keep chatting with Tappy!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI dùng thử. Đăng nhập để có {d} câu hỏi AI mỗi ngày với Tappy!',
+    en: "You've used all {n} free trial AI questions. Sign in for {d} AI questions a day with Tappy!",
   },
   'chat.freeLimit': {
-    vi: 'Bạn đã dùng hết {n} tin nhắn miễn phí hôm nay. Hẹn gặp lại bạn vào ngày mai nhé!',
-    en: "You've used all {n} free messages for today. See you again tomorrow!",
+    vi: 'Bạn đã dùng hết {n} câu hỏi AI hôm nay (tính chung mọi tính năng). Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've used all {n} AI questions for today (across every feature). See you again tomorrow!",
+  },
+  // A2 (2026-09-20): a Pro account's daily ceiling — far above real use; a graceful sentence, never a wall.
+  'chat.proDailyLimit': {
+    vi: 'Hôm nay bạn đã dùng tới {n} lượt hỏi Tappy — mức trần để giữ dịch vụ ổn định cho mọi người. Hẹn gặp lại bạn vào ngày mai nhé!',
+    en: "You've reached today's ceiling of {n} Tappy turns — a limit that keeps the service steady for everyone. See you again tomorrow!",
   },
   'chat.tooLong': {
     vi: 'Tin nhắn quá dài. Vui lòng rút gọn.',
@@ -74,6 +81,13 @@ const MESSAGES = {
     vi: 'Hãy đăng nhập để đăng bài, bình luận và theo dõi.',
     en: 'Sign in to post, comment and follow.',
   },
+  // Chat's own sign-in prompt (owner D1, 2026-09-17: chat requires an account). The social
+  // sentence above talks about posting and following, which is not what a guest asked Tappy;
+  // Android shows this sentence verbatim in the error bubble, so it must read as the prompt.
+  'auth.chatAccountRequired': {
+    vi: 'Hãy đăng nhập để trò chuyện với Tappy.',
+    en: 'Sign in to chat with Tappy.',
+  },
 
   // ── 18+ eligibility ────────────────────────────────────────────────────────
   // Two states, two sentences. "We need your date of birth" and "you may not use
@@ -86,6 +100,13 @@ const MESSAGES = {
   'age.ineligible': {
     vi: 'TappyAI chỉ dành cho người từ 18 tuổi trở lên.',
     en: 'TappyAI is only available to people aged 18 and over.',
+  },
+  // A GUEST on the chat trial has not declared their age yet (owner D1 revised,
+  // 2026-09-17). Android shows this sentence verbatim in the error bubble, so it
+  // must read as the instruction, not as a refusal.
+  'age.declarationRequired': {
+    vi: 'Vui lòng xác nhận bạn đủ 18 tuổi để dùng thử Tappy.',
+    en: 'Please confirm you are 18 or older to try Tappy.',
   },
   // The single self-correction has been used. Says what to do next rather than
   // restating the refusal.
@@ -158,6 +179,8 @@ const MESSAGES = {
   'content.badFormat': { vi: 'Kết quả không đúng định dạng, vui lòng thử lại.', en: 'The result came back malformed — please try again.' },
 
   // Per-feature rate limits. `{n}` is the daily allowance.
+  'share.notShareable': { vi: 'Kết quả này chưa thể chia sẻ công khai.', en: 'This result cannot be shared publicly.' },
+  'chat.shareFollowUpLimit': { vi: 'Bạn đã hỏi đủ số câu cho kết quả này hôm nay. Đăng nhập để hỏi Tappy thoải mái hơn nhé.', en: "You've asked all the follow-ups this result allows today. Sign in to keep asking Tappy." },
   'rate.tooFast': { vi: 'Bạn thao tác quá nhanh, vui lòng thử lại sau giây lát.', en: "You're going a bit fast — please try again in a moment." },
   'rate.postLimit': { vi: 'Bạn đã đăng quá {n} bài hôm nay. Thử lại vào ngày mai nhé.', en: "You've posted {n} times today. Please try again tomorrow." },
   'rate.uploadLimit': { vi: 'Bạn đã tải lên {n} ảnh hôm nay. Thử lại vào ngày mai nhé.', en: "You've uploaded {n} images today. Please try again tomorrow." },
@@ -167,7 +190,9 @@ const MESSAGES = {
   'review.signInToReview': { vi: 'Cần đăng nhập để đánh giá', en: 'Please sign in to write a review' },
   'review.alreadyReviewed': { vi: 'Bạn đã đánh giá địa điểm này rồi.', en: "You've already reviewed this place." },
   'media.signInToUpload': { vi: 'Cần đăng nhập để tải ảnh', en: 'Please sign in to upload images' },
-  'media.imageTooLarge5': { vi: 'File ảnh phải nhỏ hơn 5MB', en: 'Images must be smaller than 5MB' },
+  // {n} is MAX_PHOTO_SIZE_MB. The number was baked into the key name AND the copy, so raising
+  // the constant would have kept telling the user 5MB while the server enforced something else.
+  'media.imageTooLarge': { vi: 'File ảnh phải nhỏ hơn {n}MB', en: 'Images must be smaller than {n}MB' },
   'media.videoTooLongSec': { vi: 'Video quá dài. Vui lòng chọn video tối đa {n} giây.', en: 'That video is too long. Please choose one up to {n} seconds.' },
   'media.noFile': { vi: 'Không có file', en: 'No file was provided' },
   'media.uploadProtocol': { vi: 'Giao thức tải lên không còn được hỗ trợ', en: 'That upload method is no longer supported' },
@@ -249,6 +274,10 @@ const MESSAGES = {
   'scam.checkFailed': { vi: 'Chưa kiểm tra được liên kết này. Vui lòng thử lại.', en: "Couldn't check this link. Please try again." },
   'scam.tooManyChecks': { vi: 'Bạn kiểm tra quá nhiều lần. Vui lòng thử lại sau.', en: 'Too many checks. Please try again later.' },
   'scam.dailyLimit': { vi: 'Bạn đã dùng hết lượt kiểm tra hôm nay.', en: "You've used all of today's checks." },
+  // Scam Shield · Analyze Message.
+  'scam.analyzeEmpty': { vi: 'Hãy dán tin nhắn, thêm liên kết hoặc tải ảnh chụp màn hình.', en: 'Paste a message, add a link, or upload a screenshot.' },
+  'scam.analyzeInvalidImage': { vi: 'Ảnh không hợp lệ hoặc quá lớn (tối đa 5 MB, JPEG/PNG/WebP).', en: 'The image is not valid or too large (max 5 MB, JPEG/PNG/WebP).' },
+  'scam.analyzeFailed': { vi: 'Chưa phân tích được tin nhắn này. Vui lòng thử lại.', en: "Couldn't analyze this message. Please try again." },
 
 
   // ── W2 · voice ──────────────────────────────────────────────────────────────

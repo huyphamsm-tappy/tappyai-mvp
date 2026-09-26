@@ -1,0 +1,885 @@
+{
+  "id": "P1",
+  "text": "Spa nào tốt rẻ ở Đà Nẵng",
+  "parent": null,
+  "status": 200,
+  "ms": 16135,
+  "evidenceId": "68319cc5-f369-4d0d-954b-85fe74d1d895",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage rẻ Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bliss Spa Đà Nẵng",
+      "rating": 5,
+      "count": 3148,
+      "hours": "08:00–23:00",
+      "address": "122 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Jang Mi Spa & Massage",
+      "rating": 4.9,
+      "count": 8564,
+      "hours": "09:00–22:00",
+      "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Spa & Massage Đà Nẵng",
+      "rating": 5,
+      "count": 259,
+      "hours": "08:30–23:30",
+      "address": "147 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Mo Ran Spa Massage Da Nang",
+      "rating": 4.9,
+      "count": 873,
+      "hours": "09:00–22:30",
+      "address": "88 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 553300, Việt Nam"
+    },
+    {
+      "name": "Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+      "rating": 4.8,
+      "count": 1431,
+      "hours": "08:30–23:00",
+      "address": "266 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm spa massage rẻ ở Đà Nẵng hôm nay. Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần vị trí bạn.\n\nMình chọn **Bliss Spa Đà Nẵng** cho bạn — spa này có đánh giá **5⭐ (3.148 đánh giá Google Maps)** và mở từ 8h sáng đến 23h, rất tiện. Tuy nhiên, mình chưa tìm được giá cụ thể để so sánh xem có phải rẻ nhất không. \n\nNếu bạn muốn so sánh giá, **Jang Mi Spa & Massage** cũng là lựa chọn tốt với **4.9⭐ (8.564 đánh giá)** — spa này được nhiều người review hơn, nên có thể là giá cạnh tranh.\n\nBạn muốn biết giá cụ thể của spa nào để chọn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Bliss Spa Đà Nẵng\",\"type\":\"website\",\"url\":\"https://blissspadanang.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Bliss Spa Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13248382995551822102\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá Jang Mi Spa bao nhiêu?|Spa nào gần nhất từ vị trí tôi?|Nên massage bao lâu?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm spa massage rẻ ở Đà Nẵng hôm nay. Để gợi ý đúng ý, mình sẽ tìm ngay các spa gần vị trí bạn.\n\nMình chọn **Bliss Spa Đà Nẵng** cho bạn — spa này có đánh giá **5⭐ (3.148 đánh giá Google Maps)** và mở từ 8h sáng đến 23h, rất tiện. Tuy nhiên, mình chưa tìm được giá cụ thể để so sánh xem có phải rẻ nhất không. \n\nNếu bạn muốn so sánh giá, **Jang Mi Spa & Massage** cũng là lựa chọn tốt với **4.9⭐ (8.564 đánh giá)** — spa này được nhiều người review hơn, nên có thể là giá cạnh tranh.\n\nBạn muốn biết giá cụ thể của spa nào để chọn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Bliss Spa Đà Nẵng\",\"type\":\"website\",\"url\":\"https://blissspadanang.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Bliss Spa Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13248382995551822102\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá Jang Mi Spa bao nhiêu?|Spa nào gần nhất từ vị trí tôi?|Nên massage bao lâu?[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Đà Nẵng",
+      "results": [
+        {
+          "name": "Bliss Spa Đà Nẵng",
+          "address": "122 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 932 587 597",
+          "website_uri": "https://blissspadanang.com/",
+          "place_id": "ChIJE8BJGUwXQjERFiExOiS227c",
+          "rating_value": 5,
+          "google_rating": "5⭐ (3.148 đánh giá Google Maps)",
+          "rating_count": 3148,
+          "place_types": [
+            "Spa",
+            "Spa sức khỏe",
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=13248382995551822102",
+          "booking_links": [
+            "https://blissspadanang.com/",
+            "https://www.klook.com/en-US/activity/145620-bliss-spa-massage-experience-in-da-nang/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_hm5ksEADWvwy26mKjkZSgQ3N0GwTx5vHzTR3MMhuvLWLkOdBLCQPAR7y9S6oh3Go4fVgYuEqTYWv3hfR2kiLC6TaqrpYfRooRRBLlpDDdiBLdw-Vs%3D",
+            "https://wa.me/+84932587597"
+          ],
+          "opening_hours": "08:00–23:00",
+          "open_now": true,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Bliss Spa Đà Nẵng",
+              "url": "https://maps.google.com/?cid=13248382995551822102",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Bliss Spa Đà Nẵng",
+              "url": "https://blissspadanang.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Bliss%20Spa%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Jang Mi Spa & Massage",
+          "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 363 457 969",
+          "website_uri": "http://www.jangmispa.vn/",
+          "place_id": "ChIJEwAAALAZQjERyXCN5eSBt1Q",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (8.564 đánh giá Google Maps)",
+          "rating_count": 8564,
+          "place_types": [
+            "Spa mát xa",
+            "Spa ban ngày",
+            "Spa sức khỏe",
+            "Spa đá nóng"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6104490640027775177",
+          "booking_links": [
+            "http://wa.me/84369931468",
+            "https://m.me/JangMiSpaDaNang",
+            "https://zalo.me/0363457969"
+          ],
+          "opening_hours": "09:00–22:00",
+          "open_now": true,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Jang Mi Spa & Massage",
+              "url": "https://maps.google.com/?cid=6104490640027775177",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Jang Mi Spa & Massage",
+              "url": "http://www.jangmispa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Jang%20Mi%20Spa%20%26%20Massage%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Spa & Massage Đà Nẵng",
+          "address": "147 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 936 789 168",
+          "website_uri": "https://chilloutspa.vn/",
+          "place_id": "ChIJD_KLo4cZQjERpAAtPY2TsIM",
+          "rating_value": 5,
+          "google_rating": "5⭐ (259 đánh giá Google Maps)",
+          "rating_count": 259,
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9489246649695666340",
+          "opening_hours": "08:30–23:30",
+          "open_now": true,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Spa & Massage Đà Nẵng",
+              "url": "https://maps.google.com/?cid=9489246649695666340",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Spa & Massage Đà Nẵng",
+              "url": "https://chilloutspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Spa%20%26%20Massage%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Mo Ran Spa Massage Da Nang",
+          "address": "88 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 553300, Việt Nam",
+          "phone": "+84 333 245 247",
+          "website_uri": "https://moranspa.com/",
+          "place_id": "ChIJb8MdQWoXQjERRQj0l__rlCU",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (873 đánh giá Google Maps)",
+          "rating_count": 873,
+          "place_types": [
+            "Spa sức khỏe",
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2708048758955051077",
+          "booking_links": [
+            "https://wa.me/84393044230",
+            "https://zalo.me/0333245247"
+          ],
+          "opening_hours": "09:00–22:30",
+          "open_now": true,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Mo Ran Spa Massage Da Nang",
+              "url": "https://maps.google.com/?cid=2708048758955051077",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Mo Ran Spa Massage Da Nang",
+              "url": "https://moranspa.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Mo%20Ran%20Spa%20Massage%20Da%20Nang%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+          "address": "266 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+          "phone": "+84 909 433 086",
+          "website_uri": "https://cloverspa.vn/",
+          "place_id": "ChIJs3Rt4-QZQjERPTSZ7G6XAK0",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (1.431 đánh giá Google Maps)",
+          "rating_count": 1431,
+          "place_types": [
+            "Spa mát xa",
+            "Spa sức khỏe",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12466130271233193021",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/32296-clover-spa-massage-da-nang/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_hRU_H2JPEBqMRK9VPV6Z9vmVnG2HVcGDRUKrC_35xrIXsZjk2XL9ivpoSdUu6qKtIwhT-IqdV8qunXcZ84l0iMK0Rjxi2Rd8MzBrwntgKxX1RGapU%3D",
+            "https://www.gowabi.com/en/provider/clover-spa-da-nang?utm_medium=shop_link&utm_source=rwg&rwg_token=AE37R_i5eRU454InPKXXe40VD1OhdYX8DGUVDAgd37qPHnmNx5fqMIbCA2U7xnykxs8GcNe7rh-n0nOQv6CDTkk4m7ODW5U0k15Dj8alsIi65sZ6m7pbRBM%3D"
+          ],
+          "opening_hours": "08:30–23:00",
+          "open_now": true,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+              "url": "https://maps.google.com/?cid=12466130271233193021",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+              "url": "https://cloverspa.vn/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Clover%20Spa%20-%20Best%20Spa%20Massage%20Da%20Nang%20%EB%8B%A4%EB%82%AD%20%EB%A7%88%EC%82%AC%EC%A7%80%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=spa%20massage%20r%E1%BA%BB%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "price_search_results": [
+        {
+          "title": "Bảng giá dịch vụ Spa massage tại Đà Nẵng",
+          "link": "https://mhealthyspadanang.com/bang-gia-dich-vu-spa-massage-da-nang.html",
+          "snippet": "Bảng giá dịch vụ · 1. INDIAN HEAD MASSAGE 30mins | 60mins | 90mins - 400k | 500k | 650k. Xoa bóp dầu cùng dầu dừa nóng với kỹ thuật của Ấn Độ · 2. BACK, NECK & ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Top 16 trung tâm spa Đà Nẵng giá rẻ uy tín tốt nhất hiện nay",
+          "link": "https://daivietourist.vn/trung-tam-spa-da-nang/",
+          "snippet": "1. Tigon – Spa & Massage Đà Nẵng · 2. Spa Loan Nguyễn Đà Nẵng · 3. Bliss Spa in Danang · 4. Charm Spa Đà Nẵng · 5. Trung tâm Spa Hương Đà Nẵng · 6.",
+          "evidence_scope": "entity",
+          "evidence_about": "Bliss Spa Đà Nẵng"
+        },
+        {
+          "title": "Chi Tiết Bảng Giá Panda Spa Đà Nẵng Cập Nhật Năm 2026",
+          "link": "https://pandaspa.vn/vi/price-list",
+          "snippet": "Khám phá chi tiết bảng giá dịch vụ massage và chăm sóc sức khỏe mới nhất 2026 tại Panda Spa Đà Nẵng. Chi phí minh bạch, không phụ phí. Đặt lịch ngay!",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "An Spa - Đà Nẵng | Da Nang",
+          "link": "https://www.facebook.com/AnspaDaNang/?locale=vi_VN",
+          "snippet": "An Spa mời bạn bước vào không gian thư giãn sang trọng, tận hưởng các liệu pháp massage chuyên sâu giúp thả lỏng cơ thể, tái tạo năng lượng và tìm lại sự cân ...",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "Bảng Giá Massage Đà Nẵng – Chi Tiết & Ưu Đãi Mới",
+          "link": "https://anhspa.vn/pages/bang-gia-massage-da-nang",
+          "snippet": "Thông thường, giá massage Đà Nẵng dao động từ 250.000đ – 1.200.000đ tùy dịch vụ và thời gian. Nên chọn massage 60 hay 90 phút? 60 phút: phù hợp thư giãn nhanh.",
+          "evidence_scope": "area"
+        },
+        {
+          "title": "TOP 20 địa chỉ massage Đà Nẵng đông khách nhất hiện nay",
+          "link": "https://haspamassage.vn/massage-da-nang/",
+          "snippet": "Review 20 cơ sở massage tại Đà Nẵng có chất lượng tốt, giá cả hợp lý, nhân viên chuyên nghiệp nhất · 1. Massage Mercury VIP – Đà Nẵng · 2. Jang Mi Spa & Massage ...",
+          "evidence_scope": "entity",
+          "evidence_about": "Jang Mi Spa & Massage"
+        }
+      ],
+      "price_note": "Gia tham khao tu ket qua tim kiem hien tai (menu/dich vu/ve...), co the khac theo chi nhanh, thoi diem va da thay doi theo thoi gian.",
+      "price_evidence": {
+        "evidence_type": "REVIEW_SUPPORTED",
+        "source_type": "search_snippet",
+        "evidence_scope": "entity"
+      },
+      "_tappy_evidence_gap": {
+        "qualified": 0,
+        "total": 10,
+        "needed": [
+          "price",
+          "distance"
+        ],
+        "action": "search_again"
+      },
+      "_tappy_ranking": {
+        "pick": "Bliss Spa Đà Nẵng",
+        "decided_by": [
+          {
+            "attribute": "rating",
+            "evidence": "rated 5"
+          },
+          {
+            "attribute": "reviewCount",
+            "evidence": "3148 reviews - Jang Mi Spa & Massage: 8564 reviews (KHONG duoc goi pick la \"nhat\" o reviewCount)"
+          }
+        ],
+        "not_chosen": "Jang Mi Spa & Massage",
+        "not_chosen_leads_on": {
+          "attribute": "reviewCount",
+          "evidence": "8564 reviews"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:16.06523,108.22229",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Bliss Spa Đà Nẵng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkokinpqr6SBBokYNA5gqLUE4y-AyaKSRpQtGWPlx7VQDqlKb4c-xjf3O4QJo78WmRlwXTVZGTvRDevajGr7JCjHHtTQmCeyNPaaHMJFKWTZ_yJE71m0nXt4bNr4yzYFCWO3k2PNXAs0ig",
+            "address": "122 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 3148,
+            "openingHours": "08:00–23:00",
+            "openNow": true,
+            "phone": "+84 932 587 597",
+            "priceSignal": "price_search_results",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:00–23:00",
+              "Thứ Bảy": "08:00–23:00",
+              "Chủ Nhật": "08:00–23:00",
+              "Thứ Hai": "08:00–23:00",
+              "Thứ Ba": "08:00–23:00",
+              "Thứ Tư": "08:00–23:00",
+              "Thứ Năm": "08:00–23:00"
+            },
+            "categories": [
+              "Spa",
+              "Spa sức khỏe",
+              "Spa mát xa"
+            ],
+            "rank": 0,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 5"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "3148 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "reviewCount",
+              "evidence": "8564 reviews"
+            },
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://blissspadanang.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13248382995551822102",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84932587597",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Bliss%20Spa%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06864,108.24168",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Jang Mi Spa & Massage",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmnPl3cAnzO1yJYHEAUOQbhCUQhnYX7uUGuWqudb70BzZnZKoJqousXXBFwggpSaPKlyskzbEDj7-3oiAUMOKuPIgzdghWnlW5RYbKwEmyxJT5ZnNUgy7uiPoaazVtAK3qu4inX4w",
+            "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 8564,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 363 457 969",
+            "priceSignal": "price_search_results",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:00",
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00"
+            },
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa sức khỏe",
+              "Spa đá nóng"
+            ],
+            "rank": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6104490640027775177",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84363457969",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Jang%20Mi%20Spa%20%26%20Massage%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.05142,108.24514",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Spa & Massage Đà Nẵng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLyAQ5oDNPz3ljZpJQQpFqV8uoKnCsKOgm8ajY2-wsyIUbM-6Vm9sU-B-p3UYYWFfx4rz5f2CB0bIoITWs9YTq08pZHhaK9PTMl676lV5Bf0uzj_qNIW6z8JKQq2Ci21JjA0V69tLPRH4",
+            "address": "147 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 259,
+            "openingHours": "08:30–23:30",
+            "openNow": true,
+            "phone": "+84 936 789 168",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:30–23:30",
+              "Thứ Bảy": "08:30–23:30",
+              "Chủ Nhật": "08:30–23:30",
+              "Thứ Hai": "08:30–23:30",
+              "Thứ Ba": "08:30–23:30",
+              "Thứ Tư": "08:30–23:30",
+              "Thứ Năm": "08:30–23:30"
+            },
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 2,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://chilloutspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=9489246649695666340",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84936789168",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Spa%20%26%20Massage%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.05524,108.24590",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Mo Ran Spa Massage Da Nang",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkPPNd29nceM4l_d_tFlo4s4TCnw3lTAI9xLAu0FqZ3HWUzBSSHKYAexze0VKmAh4A2f-M6fgYVLNcrOOnNwf_0eGGYTX6DKXMt3Ejwh1c2PRxC_xo9uRyOlOYME5Si6WQXpWBBy86v8x4",
+            "address": "88 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 553300, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 873,
+            "openingHours": "09:00–22:30",
+            "openNow": true,
+            "phone": "+84 333 245 247",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:30",
+              "Thứ Bảy": "09:00–22:30",
+              "Chủ Nhật": "09:00–22:30",
+              "Thứ Hai": "09:00–22:30",
+              "Thứ Ba": "09:00–22:30",
+              "Thứ Tư": "09:00–22:30",
+              "Thứ Năm": "09:00–22:30"
+            },
+            "categories": [
+              "Spa sức khỏe",
+              "Spa mát xa"
+            ],
+            "rank": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://moranspa.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2708048758955051077",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84333245247",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Mo%20Ran%20Spa%20Massage%20Da%20Nang%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06221,108.22319",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkx_pRSeRpJRAXmgdCscb-2I_6-Zg71b7M-fbMiOBiMX8dewQxT2hS9FEOzLZIwqm2Yycli6Z20eKcIBcMdtzLXgWHotpMXEN9z1tId81Ro9PiNKnMVM0IdSZNjc34sJalcrv2YxtdVua0",
+            "address": "266 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 1431,
+            "openingHours": "08:30–23:00",
+            "openNow": true,
+            "phone": "+84 909 433 086",
+            "openingHoursWeek": {
+              "Thứ Sáu": "08:30–23:00",
+              "Thứ Bảy": "08:30–23:00",
+              "Chủ Nhật": "08:30–23:00",
+              "Thứ Hai": "08:30–23:00",
+              "Thứ Ba": "08:30–23:00",
+              "Thứ Tư": "08:30–23:00",
+              "Thứ Năm": "08:30–23:00"
+            },
+            "categories": [
+              "Spa mát xa",
+              "Spa sức khỏe",
+              "Spa"
+            ],
+            "rank": 4,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://cloverspa.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@bloom.clover.spa/video/7637379409414081810",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12466130271233193021",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909433086",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Clover%20Spa%20-%20Best%20Spa%20Massage%20Da%20Nang%20%EB%8B%A4%EB%82%AD%20%EB%A7%88%EC%82%AC%EC%A7%80%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.05294,108.21064",
+            "domain": "spa",
+            "kind": "place",
+            "name": "RƠM SPA- Gội đầu dưỡng sinh-Massage body",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmRz1o5vYAy2ky0KwD56HY3V-5wq2P0KlHhgGblk5nXxm99ca7tTJag2eM8dNzZjO8wCaV3r9JqjiOEfM2E-ZcrpGF0wXz0bw2mrJIIHFmiRNwLv2-3gnTb5RDF2rWolf5l7Vz9nnXEKCfp",
+            "address": "158 Lê Đình Lý, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 186,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 935 622 133",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–21:00",
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00"
+            },
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=13623941132805588846",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84935622133",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=R%C6%A0M%20SPA-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh-Massage%20body%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.05154,108.24424",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Serene Spa Da Nang - Massage & relaxation -마사지-按摩",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmEkqSrRzl0RI9JUsWTQFYodzOlB4W-yHPIUOeSPJ9kvIjHtoSd6a0-dSJdeU7PS_RrnD0TUCXUNT09b0WcpR7X1M2K-2_G7mkcXzkqz_FYI-D30zv59nYdDbHYPLvO7VL6rZsbroMoa5A",
+            "address": "83 An Thượng 29, Ngũ Hành Sơn, Đà Nẵng 50000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 115,
+            "openingHours": "09:00–00:00",
+            "openNow": true,
+            "phone": "+84 967 196 874",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–00:00",
+              "Thứ Bảy": "09:00–00:00",
+              "Chủ Nhật": "09:00–00:00",
+              "Thứ Hai": "09:00–00:00",
+              "Thứ Ba": "09:00–00:00",
+              "Thứ Tư": "09:00–00:00",
+              "Thứ Năm": "09:00–00:00"
+            },
+            "categories": [
+              "Spa"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15755972167945590425",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84967196874",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Serene%20Spa%20Da%20Nang%20-%20Massage%20%26%20relaxation%20-%EB%A7%88%EC%82%AC%EC%A7%80-%E6%8C%89%E6%91%A9%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:16.06363,108.23179",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Anna Spa Da Nang — Massage & Gội Đầu Dưỡng Sinh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn-XBD-PRv30WxEGXPNtj9tGwh0KLRuuyMpEsquNt-p2FmfYXJE-k-fuNepTesgXMjnEUEZkpreLWpMBghSb905xa7SScFSYUrL5tRl4NvXN16GPbnIC-iYUJ-26IFS38jToeWcdfmDVKMH",
+            "address": "55 Mai Hắc Đế, An Hải, Đà Nẵng 550000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 109,
+            "openingHours": "09:00–22:30",
+            "openNow": true,
+            "phone": "+84 985 015 330",
+            "openingHoursWeek": {
+              "Thứ Sáu": "09:00–22:30",
+              "Thứ Bảy": "09:00–22:30",
+              "Chủ Nhật": "09:00–22:30",
+              "Thứ Hai": "09:00–22:30",
+              "Thứ Ba": "09:00–22:30",
+              "Thứ Tư": "09:00–22:30",
+              "Thứ Năm": "09:00–22:30"
+            },
+            "categories": [
+              "Spa mát xa",
+              "Liệu pháp mát xa hộp sọ-xương cùng",
+              "Spa mặt",
+              "Phòng mát-xa chân",
+              "Spa đá nóng",
+              "Tiệm chăm sóc móng",
+              "Spa"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/SpaAnnaSaiGon",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2279692191178065571",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84985015330",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Anna%20Spa%20Da%20Nang%20%E2%80%94%20Massage%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20massage%20r%E1%BA%BB%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng"
+      }
+    ]
+  ]
+}

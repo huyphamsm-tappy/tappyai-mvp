@@ -165,10 +165,14 @@ describe('Home takes its greeting language from the resolved resources', () => {
     expect(read(BOOLS_VI)).toMatch(/<bool name="resources_are_english">false<\/bool>/)
   })
 
-  it('the hero greeting is passed the resource-resolved flag', () => {
-    expect(read(HOME_SCREEN)).toMatch(
-      /viewModel\.greeting\(booleanResource\(R\.bool\.resources_are_english\)\)/,
-    )
+  it('the hero greeting is resolved from resources, never computed from a language flag', () => {
+    // V3 home (canonical Android): the greeting is a plain `stringResource(...)` — the resource
+    // set the system resolved IS the language authority, so there is no flag to pass and nothing
+    // for a ViewModel to decide.
+    const screen = read(HOME_SCREEN)
+    expect(screen).toMatch(/viewModel\.greeting\(booleanResource\(R\.bool\.resources_are_english\)\)/)
+    expect(screen).toMatch(/resources\.getString\(R\.string\.home_v3_greeting_named, name\)/)
+    expect(screen).toMatch(/resources\.getString\(R\.string\.home_v3_greeting_generic\)/)
   })
 
   it('HomeViewModel no longer consults the language store', () => {

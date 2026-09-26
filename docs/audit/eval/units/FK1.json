@@ -1,0 +1,28 @@
+{
+  "id": "FK1",
+  "text": "quán Cơm Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?",
+  "vertical": "food",
+  "unit": "SCHEDULE_TICKET",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 315,
+  "ms": 315,
+  "evidenceId": "af2a67dc-4ebd-46e2-a52f-fc49eeb41def",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán Cơm Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    }
+  ],
+  "at": "2026-09-20T06:25:33.372Z"
+}

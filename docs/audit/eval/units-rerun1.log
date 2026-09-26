@@ -1,0 +1,8 @@
+FP1 200 ttfb=3499ms total=15270ms tools=search_products rows=6 prose=8794ch
+FP2 200 ttfb=1139ms total=15247ms tools=search_products rows=6 prose=6056ch
+FK1 200 ttfb=446ms total=7156ms tools=search_places rows=2 prose=670ch
+PP2 200 ttfb=595ms total=595ms tools=- rows=0 prose=256ch
+PK2 200 ttfb=345ms total=16272ms tools=search_places rows=10 prose=621ch
+EP1 200 ttfb=569ms total=19779ms tools=search_places,search_products rows=16 prose=6066ch
+EK2 200 ttfb=438ms total=14757ms tools=search_places,web_search rows=16 prose=991ch
+M4b 200 ttfb=1166ms total=3889ms tools=- rows=0 prose=280ch

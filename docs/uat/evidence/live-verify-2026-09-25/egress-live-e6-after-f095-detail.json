@@ -1,0 +1,63 @@
+[
+ {
+  "id": "E6a",
+  "what": "a URL reaches the client only if a tool result this turn contained it",
+  "result": "FAIL",
+  "detail": {
+   "status": 200,
+   "tools": [
+    "web_search"
+   ],
+   "replyUrlHosts": [
+    "www.google.com",
+    "www.facebook.com"
+   ],
+   "mentionsSiteWithoutUrl": false,
+   "reply": "Tôi sẽ tìm kiếm thông tin chính thức về Bảo tàng Chứng tích Chiến tranh cho bạn.\n\nDựa trên kết quả tìm kiếm, Bảo tàng Chứng tích Chiến tranh hiện chưa có website chính thức riêng. Tuy nhiên, bạn có thể liên hệ qua các kênh chính thức sau:\n\n📍 **Fanpage Facebook chính thức:** \n\n**Thông tin liên hệ:**\n- Địa chỉ: Số 28 đường Võ Văn Tần, Phường Võ Thị Sáu, Quận 3, TP.HCM\n- Mở cửa: 365 ngày/năm (bao gồ",
+   "toolResultHosts": [
+    "www.facebook.com",
+    "vov.vn:88",
+    "bvhttdl.gov.vn",
+    "www.instagram.com",
+    "duckduckgo.com"
+   ],
+   "toolFacebookUrls": [
+    "https://www.facebook.com/baotangchungtichchientranh/posts/trong-k%E1%BB%B7-nguy%C3%AAn-v%C6%B0%C6%A1n-m%C3%ACnh-c%E1%BB%A7a-d%C3%A2n-t%E1%BB%99c-c%C3%A1c-b%E1%BA%A3o-t%C3%A0ng-di-t%C3%ADch-c%C5%A9ng-v%C6%B0%C6%A1n-m%C3%ACnh-kh%C3%B4ng-/1677201190471512/",
+    "https://www.facebook.com/AKARXIC/videos/b%E1%BA%A3o-t%C3%A0ng-ch%E1%BB%A9ng-t%C3%ADch-chi%E1%BA%BFn-tranh-%C4%91%E1%BB%8Ba-ch%E1%BB%89-s%E1%BB%91-28-%C4%91%C6%B0%E1%BB%9Dng-v%C3%B5-v%C4%83n-t%E1%BA%A7n-ph%C6%B0%E1%BB%9Dng-v%C3%B5-th%E1%BB%8B-s%C3%A1u/2421964218315919/",
+    "https://www.facebook.com/baotangchungtichchientranh/posts/3%EF%B8%8F%E2%83%A30%EF%B8%8F%E2%83%A3-ph%C3%BAt-n%E1%BB%AFa-b%E1%BA%A1n-%C4%91%C3%A3-s%E1%BA%B5n-s%C3%A0ng-baotangvihoabinh-viyeuthuonglahoabinh51nam-museu/1566373491554283/"
+   ],
+   "fullReply": "Tôi sẽ tìm kiếm thông tin chính thức về Bảo tàng Chứng tích Chiến tranh cho bạn.\n\nDựa trên kết quả tìm kiếm, Bảo tàng Chứng tích Chiến tranh hiện chưa có website chính thức riêng. Tuy nhiên, bạn có thể liên hệ qua các kênh chính thức sau:\n\n📍 **Fanpage Facebook chính thức:** \n\n**Thông tin liên hệ:**\n- Địa chỉ: Số 28 đường Võ Văn Tần, Phường Võ Thị Sáu, Quận 3, TP.HCM\n- Mở cửa: 365 ngày/năm (bao gồm cả lễ, Tết)\n\nBạn có thể truy cập Fanpage để xem giờ mở cửa cụ thể, giá vé, và các thông tin cập nhật mới nhất về các triển lãm tại bảo tàng nhé! 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Google Maps\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/B%E1%BA%A3o+t%C3%A0ng+Ch%E1%BB%A9ng+t%C3%ADch+Chi%E1%BA%BFn+tranh+TP.HCM\"}},{\"label\":\"👍 Fanpage Facebook\",\"type\":\"website\",\"url\":\"https://www.facebook.com/baotangchungtichchientranh/\"}]}[/CTA_BUTTONS]",
+   "replyUrlsAllInToolResults": false
+  }
+ },
+ {
+  "id": "E6b",
+  "what": "a URL reaches the client only if a tool result this turn contained it",
+  "result": "PASS",
+  "detail": {
+   "status": 200,
+   "tools": [
+    "web_search"
+   ],
+   "replyUrlHosts": [
+    "saigonzoo.vn"
+   ],
+   "mentionsSiteWithoutUrl": false,
+   "reply": "Mình cần tìm trang chủ chính thức của Thảo Cầm Viên Sài Gòn cho bạn. Để đảm bảo link chính xác, mình sẽ tìm kiếm thông tin này.\n\nDạy bạn link markdown tới trang chủ chính thức của Thảo Cầm Viên Sài Gòn:\n\n[Thảo Cầm Viên Sài Gòn](https://saigonzoo.vn/)",
+   "toolResultHosts": [
+    "saigonzoo.vn",
+    "www.facebook.com",
+    "www.klook.com",
+    "vi.wikipedia.org",
+    "vinwonders.com",
+    "suoitien.vn",
+    "duckduckgo.com"
+   ],
+   "toolFacebookUrls": [
+    "https://www.facebook.com/thaocamviensaigon.official/?locale=vi_VN"
+   ],
+   "fullReply": "Mình cần tìm trang chủ chính thức của Thảo Cầm Viên Sài Gòn cho bạn. Để đảm bảo link chính xác, mình sẽ tìm kiếm thông tin này.\n\nDạy bạn link markdown tới trang chủ chính thức của Thảo Cầm Viên Sài Gòn:\n\n[Thảo Cầm Viên Sài Gòn](https://saigonzoo.vn/)",
+   "replyUrlsAllInToolResults": true
+  }
+ }
+]
