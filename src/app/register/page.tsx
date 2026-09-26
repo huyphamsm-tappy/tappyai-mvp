@@ -4,14 +4,35 @@ import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, ArrowLeft } from 'lucide-react'
+import Image from 'next/image'
+import { Loader2, ArrowRight, User, Mail, Lock, Eye, EyeOff, Globe, Compass, Heart, Sparkles } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { markAuthPending, emitAuthLoginFailed } from '@/lib/analytics/authEvents'
+import { TappyMascot } from '@/components/TappyMascot'
+
+// Visual layer redesigned 2026-09-26 (owner brief: light, two-column, real brand assets).
+// Everything the page DOES — the fields, `signUp`, validation, the age-check hand-off, the
+// check-your-email state — is unchanged. What it shows:
+//   · top-left: `/branding/otter-logo.png`, the approved lockup (mascot + wordmark in one image).
+//   · card: the approved `welcome` pose. There is no icon-only logo asset yet, and brand rules
+//     forbid cropping the lockup, so the pose stands in for "the logo without the wordmark".
+//   · left column: `/branding/otter-mascot.png`, the approved full-body illustration.
+
+const BENEFITS = [
+  { icon: Compass, title: 'register.benefit1Title', desc: 'register.benefit1Desc', tone: 'bg-primary-50 text-primary-500' },
+  { icon: Heart, title: 'register.benefit2Title', desc: 'register.benefit2Desc', tone: 'bg-accent-50 text-accent-500' },
+  { icon: Sparkles, title: 'register.benefit3Title', desc: 'register.benefit3Desc', tone: 'bg-primary-50 text-primary-500' },
+] as const
+
+const inputClass =
+  'h-[54px] w-full rounded-[14px] border border-slate-200 bg-white pl-11 text-[15px] text-slate-900 ' +
+  'placeholder:text-slate-400 outline-none transition-[border-color,box-shadow] ' +
+  'hover:border-slate-300 focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10'
 
 export default function RegisterPage() {
   const router = useRouter()
   const supabase = createClient()
-  const { t } = useTranslation()
+  const { t, locale, setLocale } = useTranslation()
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -19,6 +40,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -80,97 +102,201 @@ export default function RegisterPage() {
     setDone(true)
   }
 
+  // `{brand}` in the headline is where the TappyAI name goes; split so it can carry the brand colour.
+  const [titleBefore, titleAfter = ''] = t('register.heroTitle').split('{brand}')
+
   return (
-    <div className="min-h-dvh bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-3xl bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg">
-            <span className="text-4xl font-black text-white">T</span>
-          </div>
-          <h1 className="text-3xl font-black text-white">TappyAI</h1>
-          <p className="text-primary-100 mt-2 text-sm">{t('register.subtitle')}</p>
-        </div>
+    <div
+      className="relative min-h-dvh overflow-x-hidden bg-white text-slate-900 sm:bg-[#FAFCFF]"
+      style={{
+        backgroundImage:
+          'radial-gradient(circle at 8% 14%, rgba(0,122,255,0.07), transparent 36%),' +
+          'radial-gradient(circle at 94% 88%, rgba(0,122,255,0.05), transparent 40%)',
+      }}
+    >
+      <div className="mx-auto flex min-h-dvh w-full max-w-[1200px] flex-col px-5 sm:px-8 lg:px-10">
+        {/* Header — the real lockup on the left, a compact language toggle on the right
+            (same control as /age-check, the next screen in this flow). */}
+        <header className="flex items-center justify-between py-4 sm:py-5">
+          <Link href="/" className="hidden rounded-[14px] sm:block" aria-label="TappyAI">
+            <Image
+              src="/branding/otter-logo.png"
+              alt="TappyAI"
+              width={112}
+              height={112}
+              priority
+              className="h-12 w-12 rounded-[14px] shadow-[0_1px_2px_rgba(15,23,42,0.08)]"
+            />
+          </Link>
+          <button
+            type="button"
+            onClick={() => setLocale(locale === 'vi' ? 'en' : 'vi')}
+            aria-label={t('register.changeLanguage')}
+            className="ml-auto flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-3 text-[13px] font-semibold text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900"
+          >
+            <Globe size={15} className="text-slate-400" aria-hidden />
+            {locale === 'vi' ? 'VI' : 'EN'}
+          </button>
+        </header>
 
-        {done ? (
-          <div className="text-center space-y-4">
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-6">
-              <p className="text-white font-semibold mb-2">{t('register.checkEmailTitle')}</p>
-              <p className="text-primary-100 text-sm">
-                {t('register.checkEmailDesc', { email })}
-              </p>
+        <main className="grid flex-1 items-center gap-12 pb-10 pt-2 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-14 lg:pb-8 lg:pt-0 xl:gap-20">
+          {/* LEFT — brand introduction. Desktop only: on a phone the card is the screen. */}
+          <section className="hidden lg:block">
+            <h1 className="text-[44px] font-bold leading-[1.1] tracking-[-0.02em] text-slate-900 xl:text-[52px]">
+              {titleBefore}
+              <span className="text-primary-500">TappyAI</span>
+              {titleAfter}
+            </h1>
+            <p className="mt-4 max-w-[460px] text-[17px] leading-relaxed text-slate-600">{t('register.heroDesc')}</p>
+
+            <div className="mt-9 flex items-center gap-6 xl:gap-10">
+              <ul className="min-w-0 flex-1 space-y-5">
+                {BENEFITS.map(({ icon: Icon, title, desc, tone }) => (
+                  <li key={title} className="flex items-start gap-3.5">
+                    <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${tone}`}>
+                      <Icon size={18} aria-hidden />
+                    </span>
+                    <span className="min-w-0 pt-0.5">
+                      <span className="block text-[15px] font-semibold leading-tight text-slate-900">{t(title)}</span>
+                      <span className="mt-1 block text-[14px] leading-snug text-slate-500">{t(desc)}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <Image
+                src="/branding/otter-mascot.png"
+                alt=""
+                aria-hidden
+                width={560}
+                height={761}
+                priority
+                className="h-auto w-[180px] shrink-0 xl:w-[210px]"
+              />
             </div>
-            <Link href="/login" className="text-white underline text-sm">
-              {t('register.backToLogin')}
-            </Link>
-          </div>
-        ) : (
-          <form onSubmit={handleRegister} className="space-y-4">
-            <Link href="/login" className="flex items-center gap-2 text-white/80 text-sm mb-2">
-              <ArrowLeft size={16} /> {t('register.backToLogin')}
-            </Link>
+          </section>
 
-            {error && (
-              <div className="bg-red-500/20 border border-red-300/40 text-white text-sm rounded-2xl px-4 py-3 text-center">
-                {error}
+          {/* RIGHT — the card. On a phone it drops its frame and becomes the page. */}
+          <div className="mx-auto w-full max-w-[460px] rounded-[24px] sm:border sm:border-black/[0.06] sm:bg-white sm:px-10 sm:py-8 sm:shadow-[0_1px_2px_rgba(15,23,42,0.04),0_16px_40px_-16px_rgba(15,23,42,0.14)]">
+            <div className="flex flex-col items-center text-center">
+              <span className="grid h-[76px] w-[76px] place-items-center overflow-hidden rounded-full bg-primary-50 ring-1 ring-primary-100">
+                <TappyMascot pose="welcome" size={104} alt="" eager className="h-[104px] w-[104px] max-w-none translate-y-2" />
+              </span>
+              <h2 className="mt-3 text-[22px] font-bold tracking-[-0.01em] text-slate-900">{t('register.subtitle')}</h2>
+            </div>
+
+            {done ? (
+              <div className="mt-7 space-y-5 text-center">
+                <div className="rounded-2xl border border-primary-100 bg-primary-50/60 px-5 py-6">
+                  <span className="mx-auto mb-3 grid h-11 w-11 place-items-center rounded-full bg-white text-primary-500 shadow-[0_1px_2px_rgba(15,23,42,0.06)]">
+                    <Mail size={20} aria-hidden />
+                  </span>
+                  <p className="font-semibold text-slate-900">{t('register.checkEmailTitle')}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                    {t('register.checkEmailDesc', { email })}
+                  </p>
+                </div>
+                <Link href="/login" className="inline-block text-sm font-semibold text-primary-500 hover:text-primary-600">
+                  {t('register.backToLogin')}
+                </Link>
               </div>
+            ) : (
+              <form onSubmit={handleRegister} className="mt-7 space-y-4">
+                {error && (
+                  <div role="alert" className="rounded-[14px] border border-red-200 bg-red-50 px-4 py-3 text-center text-sm text-red-700">
+                    {error}
+                  </div>
+                )}
+
+                <div>
+                  <label htmlFor="register-name" className="mb-1.5 block text-[13px] font-medium text-slate-700">{t('register.fullName')}</label>
+                  <span className="relative block">
+                    <User size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
+                    <input
+                      id="register-name"
+                      type="text"
+                      required
+                      autoFocus
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder={t('register.fullNamePlaceholder')}
+                      className={`${inputClass} pr-4`}
+                    />
+                  </span>
+                </div>
+
+                <div>
+                  <label htmlFor="register-email" className="mb-1.5 block text-[13px] font-medium text-slate-700">{t('register.email')}</label>
+                  <span className="relative block">
+                    <Mail size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
+                    <input
+                      id="register-email"
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t('register.emailPlaceholder')}
+                      className={`${inputClass} pr-4`}
+                    />
+                  </span>
+                </div>
+
+                <div>
+                  <label htmlFor="register-password" className="mb-1.5 block text-[13px] font-medium text-slate-700">{t('register.password')}</label>
+                  <span className="relative block">
+                    <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
+                    <input
+                      id="register-password"
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder={t('register.passwordPlaceholder')}
+                      className={`${inputClass} pr-12`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((v) => !v)}
+                      aria-label={t(showPassword ? 'register.hidePassword' : 'register.showPassword')}
+                      aria-pressed={showPassword}
+                      className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
+                    >
+                      {showPassword ? <EyeOff size={18} aria-hidden /> : <Eye size={18} aria-hidden />}
+                    </button>
+                  </span>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading || !fullName || !email || !password}
+                  className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[14px] bg-primary-500 px-6 text-[15px] font-semibold text-white transition-colors hover:bg-primary-600 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary-500/25 disabled:cursor-not-allowed disabled:bg-primary-500/45"
+                >
+                  {loading && <Loader2 size={18} className="animate-spin" aria-hidden />}
+                  {loading ? t('register.creating') : t('register.submit')}
+                  {!loading && <ArrowRight size={18} aria-hidden />}
+                </button>
+
+                <p className="text-center text-[12.5px] leading-relaxed text-slate-500">
+                  {t('register.agreePrefix')}{' '}
+                  <Link href="/terms" target="_blank" rel="noopener" className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-primary-600">
+                    {t('settings.terms')}
+                  </Link>
+                  {' '}{t('common.and')}{' '}
+                  <Link href="/privacy" target="_blank" rel="noopener" className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-primary-600">
+                    {t('settings.privacy')}
+                  </Link>
+                </p>
+
+                <p className="border-t border-slate-100 pt-4 text-center text-sm text-slate-500">
+                  {t('register.haveAccount')}{' '}
+                  <Link href="/login" className="font-semibold text-primary-500 hover:text-primary-600">
+                    {t('register.backToLogin')}
+                  </Link>
+                </p>
+              </form>
             )}
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">{t('register.fullName')}</label>
-              <input
-                type="text"
-                required
-                autoFocus
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder={t('register.fullNamePlaceholder')}
-                className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
-              />
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">{t('register.email')}</label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder={t('register.emailPlaceholder')}
-                className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
-              />
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-2xl px-4 py-3">
-              <label className="text-primary-100 text-xs">{t('register.password')}</label>
-              <input
-                type="password"
-                required
-                minLength={6}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder={t('register.passwordPlaceholder')}
-                className="w-full bg-transparent text-white placeholder-white/40 outline-none text-lg mt-1"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading || !fullName || !email || !password}
-              className="w-full bg-white hover:bg-gray-50 text-gray-900 font-semibold py-4 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all shadow-lg disabled:opacity-70"
-            >
-              {loading && <Loader2 size={20} className="animate-spin" />}
-              {loading ? t('register.creating') : t('register.submit')}
-            </button>
-
-            <p className="text-center text-primary-100/70 text-xs mt-2">
-              {t('register.agreePrefix')}{' '}
-              <span className="text-white underline cursor-pointer">{t('settings.terms')}</span>
-              {' '}{t('common.and')}{' '}
-              <span className="text-white underline cursor-pointer">{t('settings.privacy')}</span>
-            </p>
-          </form>
-        )}
+          </div>
+        </main>
       </div>
     </div>
   )

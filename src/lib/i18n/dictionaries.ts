@@ -111,6 +111,20 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.creating': 'Đang tạo tài khoản...',
     'register.submit': 'Tạo tài khoản',
     'register.agreePrefix': 'Bằng cách tạo tài khoản, bạn đồng ý với',
+    // Register page redesign (owner brief 2026-09-26). `{brand}` marks where the TappyAI name sits in
+    // the headline — the page splits on it to colour the brand, it is never substituted.
+    'register.heroTitle': 'Tạo tài khoản {brand}',
+    'register.heroDesc': 'Khám phá địa điểm, món ăn, mua sắm, du lịch và những trải nghiệm phù hợp với bạn.',
+    'register.benefit1Title': 'Khám phá dễ dàng',
+    'register.benefit1Desc': 'Nhận gợi ý phù hợp với nhu cầu của bạn',
+    'register.benefit2Title': 'Lưu những nơi yêu thích',
+    'register.benefit2Desc': 'Xây dựng danh sách riêng của bạn',
+    'register.benefit3Title': 'Trải nghiệm cá nhân hóa',
+    'register.benefit3Desc': 'TappyAI hiểu sở thích của bạn theo thời gian',
+    'register.showPassword': 'Hiện mật khẩu',
+    'register.hidePassword': 'Ẩn mật khẩu',
+    'register.changeLanguage': 'Đổi ngôn ngữ',
+    'register.haveAccount': 'Đã có tài khoản?',
 
     // Onboarding
     'common.next': 'Tiếp theo',
@@ -373,6 +387,18 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.creating': 'Creating account...',
     'register.submit': 'Create account',
     'register.agreePrefix': 'By creating an account, you agree to our',
+    'register.heroTitle': 'Create your {brand} account',
+    'register.heroDesc': 'Discover places, food, shopping, travel and experiences that suit you.',
+    'register.benefit1Title': 'Discover with ease',
+    'register.benefit1Desc': 'Get suggestions that fit what you need',
+    'register.benefit2Title': 'Save the places you love',
+    'register.benefit2Desc': 'Build lists of your own',
+    'register.benefit3Title': 'A personal experience',
+    'register.benefit3Desc': 'TappyAI learns what you like over time',
+    'register.showPassword': 'Show password',
+    'register.hidePassword': 'Hide password',
+    'register.changeLanguage': 'Change language',
+    'register.haveAccount': 'Already have an account?',
 
     // Onboarding
     'common.next': 'Next',
