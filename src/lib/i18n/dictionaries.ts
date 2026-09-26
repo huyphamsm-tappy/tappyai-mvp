@@ -121,9 +121,6 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.benefit2Desc': 'Xây dựng danh sách riêng của bạn',
     'register.benefit3Title': 'Trải nghiệm cá nhân hóa',
     'register.benefit3Desc': 'TappyAI hiểu sở thích của bạn theo thời gian',
-    'register.showPassword': 'Hiện mật khẩu',
-    'register.hidePassword': 'Ẩn mật khẩu',
-    'register.changeLanguage': 'Đổi ngôn ngữ',
     'register.haveAccount': 'Đã có tài khoản?',
 
     // Onboarding
@@ -395,9 +392,6 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.benefit2Desc': 'Build lists of your own',
     'register.benefit3Title': 'A personal experience',
     'register.benefit3Desc': 'TappyAI learns what you like over time',
-    'register.showPassword': 'Show password',
-    'register.hidePassword': 'Hide password',
-    'register.changeLanguage': 'Change language',
     'register.haveAccount': 'Already have an account?',
 
     // Onboarding

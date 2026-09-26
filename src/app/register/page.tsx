@@ -5,14 +5,14 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { Loader2, ArrowRight, User, Mail, Lock, Eye, EyeOff, Globe, Compass, Heart, Sparkles } from 'lucide-react'
+import { Loader2, ArrowRight, User, Mail, Lock, Compass, Heart, Sparkles } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { markAuthPending, emitAuthLoginFailed } from '@/lib/analytics/authEvents'
 import { TappyMascot } from '@/components/TappyMascot'
 
 // Visual layer redesigned 2026-09-26 (owner brief: light, two-column, real brand assets).
 // Everything the page DOES — the fields, `signUp`, validation, the age-check hand-off, the
-// check-your-email state — is unchanged. What it shows:
+// check-your-email state, the fields' behaviour — is unchanged; no control was added. What it shows:
 //   · top-left: `/branding/otter-logo.png`, the approved lockup (mascot + wordmark in one image).
 //   · card: the approved `welcome` pose. There is no icon-only logo asset yet, and brand rules
 //     forbid cropping the lockup, so the pose stands in for "the logo without the wordmark".
@@ -32,7 +32,7 @@ const inputClass =
 export default function RegisterPage() {
   const router = useRouter()
   const supabase = createClient()
-  const { t, locale, setLocale } = useTranslation()
+  const { t } = useTranslation()
 
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
@@ -40,7 +40,6 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -115,31 +114,20 @@ export default function RegisterPage() {
       }}
     >
       <div className="mx-auto flex min-h-dvh w-full max-w-[1200px] flex-col px-5 sm:px-8 lg:px-10">
-        {/* Header — the real lockup on the left, a compact language toggle on the right
-            (same control as /age-check, the next screen in this flow). */}
-        <header className="flex items-center justify-between py-4 sm:py-5">
-          <Link href="/" className="hidden rounded-[14px] sm:block" aria-label="TappyAI">
-            <Image
-              src="/branding/otter-logo.png"
-              alt="TappyAI"
-              width={112}
-              height={112}
-              priority
-              className="h-12 w-12 rounded-[14px] shadow-[0_1px_2px_rgba(15,23,42,0.08)]"
-            />
-          </Link>
-          <button
-            type="button"
-            onClick={() => setLocale(locale === 'vi' ? 'en' : 'vi')}
-            aria-label={t('register.changeLanguage')}
-            className="ml-auto flex h-9 items-center gap-1.5 rounded-full border border-slate-200 bg-white/80 px-3 text-[13px] font-semibold text-slate-600 transition-colors hover:border-slate-300 hover:text-slate-900"
-          >
-            <Globe size={15} className="text-slate-400" aria-hidden />
-            {locale === 'vi' ? 'VI' : 'EN'}
-          </button>
+        {/* Header — the real lockup. On a phone the card's own mascot is the brand, so the
+            header is not rendered there at all. */}
+        <header className="hidden items-center py-5 sm:flex">
+          <Image
+            src="/branding/otter-logo.png"
+            alt="TappyAI"
+            width={112}
+            height={112}
+            priority
+            className="h-14 w-14 rounded-[16px] shadow-[0_1px_2px_rgba(15,23,42,0.08)]"
+          />
         </header>
 
-        <main className="grid flex-1 items-center gap-12 pb-10 pt-2 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-14 lg:pb-8 lg:pt-0 xl:gap-20">
+        <main className="grid flex-1 items-center gap-12 pb-10 pt-10 sm:pt-2 lg:grid-cols-[minmax(0,1fr)_460px] lg:gap-14 lg:pb-8 lg:pt-0 xl:gap-20">
           {/* LEFT — brand introduction. Desktop only: on a phone the card is the screen. */}
           <section className="hidden lg:block">
             <h1 className="text-[44px] font-bold leading-[1.1] tracking-[-0.02em] text-slate-900 xl:text-[52px]">
@@ -246,23 +234,14 @@ export default function RegisterPage() {
                     <Lock size={18} className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" aria-hidden />
                     <input
                       id="register-password"
-                      type={showPassword ? 'text' : 'password'}
+                      type="password"
                       required
                       minLength={6}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder={t('register.passwordPlaceholder')}
-                      className={`${inputClass} pr-12`}
+                      className={`${inputClass} pr-4`}
                     />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword((v) => !v)}
-                      aria-label={t(showPassword ? 'register.hidePassword' : 'register.showPassword')}
-                      aria-pressed={showPassword}
-                      className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-lg text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-                    >
-                      {showPassword ? <EyeOff size={18} aria-hidden /> : <Eye size={18} aria-hidden />}
-                    </button>
                   </span>
                 </div>
 
@@ -278,13 +257,13 @@ export default function RegisterPage() {
 
                 <p className="text-center text-[12.5px] leading-relaxed text-slate-500">
                   {t('register.agreePrefix')}{' '}
-                  <Link href="/terms" target="_blank" rel="noopener" className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-primary-600">
+                  <span className="cursor-pointer font-medium text-slate-700 underline decoration-slate-300 underline-offset-2">
                     {t('settings.terms')}
-                  </Link>
+                  </span>
                   {' '}{t('common.and')}{' '}
-                  <Link href="/privacy" target="_blank" rel="noopener" className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-2 hover:text-primary-600">
+                  <span className="cursor-pointer font-medium text-slate-700 underline decoration-slate-300 underline-offset-2">
                     {t('settings.privacy')}
-                  </Link>
+                  </span>
                 </p>
 
                 <p className="border-t border-slate-100 pt-4 text-center text-sm text-slate-500">
