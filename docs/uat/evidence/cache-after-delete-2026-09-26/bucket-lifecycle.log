@@ -1,0 +1,25 @@
+== project confirm
+aerobic-lock-498409-u7	1023373437508	ACTIVE
+== create
+Creating gs://tappyai-media-cachetest/...
+== grant allUsers legacyObjectReader (object GET only)
+kind: storage#policy
+resourceId: projects/_/buckets/tappyai-media-cachetest
+version: 1
+== upload 2 synthetic 8-byte objects
+..................
+..................
+== anonymous LIST (must be refused)
+403
+401
+== delete both objects at 2026-09-26T03:04:01Z
+Removing gs://tappyai-media-cachetest/s86400...
+.......................................
+== poll finished at 2026-09-26T03:39:20Z
+== independent listing
+ERROR: (gcloud.storage.ls) One or more URLs matched no objects.
+== delete bucket
+...........................
+== describe after delete
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-cachetest not found: 404.
+tappyai-media-prod: not named by any command.

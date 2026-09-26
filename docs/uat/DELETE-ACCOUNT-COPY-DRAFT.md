@@ -72,7 +72,7 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 > - **Security logs of administrative actions**, kept for up to 12 months. The IP address and browser information in them are deleted after 90 days, and these logs do not store email addresses.
 > - **Server logs** used to keep the service running, kept for **[XÁC NHẬN: số ngày]** and then deleted.
 >
-> Copies outside our control — for example a link preview that a social network or messaging app saved when someone shared your page — may remain until that service refreshes it.
+> Copies outside our control may remain for a while: a video or photo that someone already watched can remain reachable through its old link, and in their browser or app, for up to one day, and a link preview that a social network or messaging app saved when someone shared your page can remain until that service refreshes it.
 
 **VI**
 > Chúng tôi chỉ giữ lại một lượng thông tin hạn chế sau khi xóa, khi pháp luật hoặc nghĩa vụ hợp pháp yêu cầu:
@@ -80,7 +80,7 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 > - **Nhật ký bảo mật về các thao tác quản trị**, lưu tối đa 12 tháng. Địa chỉ IP và thông tin trình duyệt trong nhật ký được xóa sau 90 ngày, và nhật ký không lưu địa chỉ email.
 > - **Nhật ký máy chủ** dùng để vận hành dịch vụ, lưu trong **[XÁC NHẬN: số ngày]** rồi xóa.
 >
-> Các bản sao nằm ngoài tầm kiểm soát của chúng tôi — ví dụ bản xem trước đường link mà mạng xã hội hoặc ứng dụng nhắn tin đã lưu khi ai đó chia sẻ trang của bạn — có thể còn cho tới khi dịch vụ đó làm mới.
+> Một số bản sao nằm ngoài tầm kiểm soát của chúng tôi có thể còn trong một thời gian: video hoặc ảnh mà người khác đã xem có thể vẫn mở được qua đường link cũ, và còn trong trình duyệt hoặc ứng dụng của họ, tối đa một ngày, và bản xem trước đường link mà mạng xã hội hoặc ứng dụng nhắn tin đã lưu khi ai đó chia sẻ trang của bạn có thể còn cho tới khi dịch vụ đó làm mới.
 
 ---
 
@@ -99,3 +99,10 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 | kiểm duyệt | `moderation_*` SET NULL / giữ | có sẵn |
 | nhật ký bảo mật 12 tháng / IP+trình duyệt 90 ngày / không email | D5 + cron `audit-retention` | kiểm chứng trên audit |
 | nhật ký máy chủ | Vercel/GCP — chưa đo | **[XÁC NHẬN]** |
+
+---
+
+### Cập nhật 2026-09-26 — cache sau khi xoá (ĐO 35 phút, `evidence/cache-after-delete-2026-09-26/`)
+- **Một URL đã bị xoá vẫn có thể mở được qua cache biên dùng chung của Google cho tới hết `max-age` của file.** Đo: file max-age=300 còn được phục vụ tới +257 s sau khi xoá rồi dừng; file max-age=86400 vẫn được phục vụ ở 46/68 lần gọi tới hết 35 phút đo. Không có cách buộc dừng: cache tích hợp của GCS **không hỗ trợ vô hiệu hoá** (tài liệu GCS). Suy ra (không đo): clip upload từ nay (max-age 1 ngày) có thể còn mở được tới **1 ngày** sau khi xoá; clip upload trước `6c19924` (max-age 1 năm) tới **1 năm** nếu đã được xem gần đây.
+- Hệ quả cho lời văn: **không được hứa gỡ ngay.** Mục 4 phải nói rõ: "bản sao có thể vẫn mở được qua đường link cũ tối đa 24 giờ". Với clip cũ: **[XÁC NHẬN]** — hoặc đổi Cache-Control clip cũ trước khi đăng lời văn (bản đã nằm trong cache biên vẫn sống tới hết hạn cũ), hoặc ghi "tối đa một năm với video tải lên trước <ngày>".
+- Nếu muốn xoá có hiệu lực ngay tại phía Google: dùng `private, max-age=86400` (cache biên không được lưu, chỉ thiết bị người xem) hoặc Cloud CDN (có vô hiệu hoá) — xem `CACHE-AFTER-DELETE-2026-09-26.md`.
