@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import Link from 'next/link'
 import { ArrowLeft, Heart, Play, Loader2, UserPlus, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'

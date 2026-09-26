@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Search, X, Check, Loader2 } from 'lucide-react'
 

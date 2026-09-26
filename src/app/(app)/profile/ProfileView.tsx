@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import UserAvatar from '@/components/UserAvatar'
 import QRProfileButton from '@/components/QRProfileButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'

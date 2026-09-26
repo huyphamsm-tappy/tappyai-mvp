@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { createClient } from '@/lib/supabase/client'
 import { uploadMedia } from '@/lib/media/client'
 import {

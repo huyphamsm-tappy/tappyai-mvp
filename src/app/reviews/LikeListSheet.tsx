@@ -11,7 +11,7 @@
 // geometry and the same surface colours, so this is not a second visual language.
 
 import { useCallback, useEffect, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { X, Loader2, Heart } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 

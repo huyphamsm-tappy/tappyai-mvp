@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useRouter } from 'next/navigation'
 import type { ComponentProps } from 'react'
 import type Header from '@/components/Header'

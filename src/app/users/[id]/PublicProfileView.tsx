@@ -43,7 +43,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent, type MouseEvent } from 'react'
 import { SHOW_MUSIC } from '@/lib/config/product'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import {
   ArrowLeft, Grid3X3, Share2, Heart, Bookmark, EyeOff, Eye, Loader2, AlertCircle, UserPlus, Check, Pencil,
   ImagePlus, Trash2, Bell, UserRound, Lock,

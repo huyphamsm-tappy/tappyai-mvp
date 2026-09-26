@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import Header from '@/components/Header'
 import BottomNav from '@/components/BottomNav'
 import { ArrowLeft, CheckCircle, AlertCircle, Loader2, Unlink, ExternalLink } from 'lucide-react'

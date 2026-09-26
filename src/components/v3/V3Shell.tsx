@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import {

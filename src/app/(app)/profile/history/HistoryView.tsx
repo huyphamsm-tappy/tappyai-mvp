@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import type { ComponentProps, ReactNode } from 'react'
 import type Header from '@/components/Header'
 import { useTranslation } from '@/lib/i18n/useTranslation'

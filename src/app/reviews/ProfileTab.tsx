@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import {
   ChevronLeft, ChevronUp, ChevronDown,
   Trash2, EyeOff, Eye, Loader2, Plus, Grid3X3, AlertCircle,

@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import Link from 'next/link'
 import { MapPin } from 'lucide-react'
 import ReviewBackButton from './ReviewBackButton'

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import UserAvatar from '@/components/UserAvatar'
 import { ChevronLeft, Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'

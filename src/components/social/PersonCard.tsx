@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Check, Loader2, UserPlus } from 'lucide-react'

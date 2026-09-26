@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { linkifySafe } from './linkify'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'

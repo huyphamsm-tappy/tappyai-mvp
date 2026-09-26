@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { SHOW_MUSIC } from '@/lib/config/product'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import {
   Search, Bell, ChevronLeft, ChevronRight, Heart, MessageCircle, Share2, Bookmark, Sparkles,
   Loader2, AlertCircle, PlayCircle, Play, Pause, MapPin, MoreHorizontal, Maximize2, Trash2, EyeOff,

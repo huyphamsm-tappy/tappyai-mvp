@@ -8,7 +8,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import ShareMenu from '@/components/share/ShareMenu'
 import { recordReviewShare } from '@/lib/share/recordReviewShare'
 import { REPORT_REASONS } from '@/lib/reviews/reportReasons'

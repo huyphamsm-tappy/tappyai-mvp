@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useRef, useMemo, Suspense, type MouseEvent as ReactMouseEvent, type WheelEvent as ReactWheelEvent } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
   Heart, MessageCircle, ChevronRight, ChevronUp, ChevronDown,
