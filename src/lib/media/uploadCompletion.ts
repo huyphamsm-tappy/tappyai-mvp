@@ -28,8 +28,13 @@ import {
 import { isSafeKeySegment } from './key'
 import { getMediaProvider } from './index'
 import type { MediaProvider } from './types'
+import { findIdentifyingMetadata, type IdentifyingReason } from './clipMetadata'
 
 export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
+
+/** Client-direct kinds whose bytes the server never re-encodes — checked for identifying metadata. */
+const CLIP_KINDS: readonly MediaUploadKind[] = ['video', 'videoThumbnail']
+const CLIENT_DIRECT_CLIP_KINDS = new Set<MediaUploadKind>(CLIP_KINDS)
 
 export interface CompleteUploadBody {
   type: typeof COMPLETE_UPLOAD_TYPE
@@ -151,6 +156,31 @@ export async function completeUploadResponse(
   const stored = (found.contentType || '').split(';')[0].trim().toLowerCase()
   if (!policy.contentTypes.includes(stored)) {
     return { status: 422, body: { error: 'Định dạng tệp không được hỗ trợ' } }
+  }
+
+  // F-099 (P1, owner 2026-09-26): a clip or its poster frame must not publish where and with what it
+  // was filmed. The client neutralises the metadata before the PUT; this is the enforcement. Anything
+  // identifying left in the stored object means it bypassed the client (old build, native app, direct
+  // API call): the object is deleted and no URL is ever returned. Fails CLOSED on a read error.
+  if (CLIENT_DIRECT_CLIP_KINDS.has(input.kind as MediaUploadKind)) {
+    if (!provider.readRange) return { status: 502, body: { error: 'Không xác nhận được tệp. Vui lòng thử lại.' } }
+    let reasons: IdentifyingReason[]
+    try {
+      reasons = await findIdentifyingMetadata((o, n) => provider.readRange!(key, o, n), found.size, stored)
+    } catch {
+      return { status: 502, body: { error: 'Không xác nhận được tệp. Vui lòng thử lại.' } }
+    }
+    if (reasons.length > 0) {
+      try { await provider.deleteObject?.(key) } catch { /* the URL is never returned either way */ }
+      return {
+        status: 422,
+        body: {
+          error: 'identifying_metadata',
+          reasons,
+          message: 'Video chứa thông tin vị trí hoặc thiết bị. Vui lòng cập nhật ứng dụng rồi tải lên lại.',
+        },
+      }
+    }
   }
 
   // Derived from the verified key — never echoed from the request.

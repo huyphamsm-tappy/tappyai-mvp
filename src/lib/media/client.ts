@@ -11,6 +11,7 @@
 // something to lose in a storage migration.
 
 import type { MediaUploadKind } from './uploadPolicy'
+import { neutralizeClipMetadata } from './clipMetadata'
 
 export const CREATE_UPLOAD_SESSION_TYPE = 'media.create-upload-session'
 export const COMPLETE_UPLOAD_TYPE = 'media.complete-upload'
@@ -65,6 +66,10 @@ export async function uploadMedia(
   transport: UploadTransport = defaultTransport
 ): Promise<UploadMediaResult> {
   const contentType = input.file.type || 'application/octet-stream'
+  // F-099 (P1, owner 2026-09-26): a clip must not publish where and with what it was filmed. The
+  // metadata boxes are neutralised in place (same length, so the session's declared size holds);
+  // the server refuses the upload at completion if anything identifying is still there.
+  const body: Blob = input.kind === 'video' ? await neutralizeClipMetadata(input.file) : input.file
 
   const res = await transport.postJson(
     input.endpoint,
@@ -72,7 +77,7 @@ export async function uploadMedia(
       type: CREATE_UPLOAD_SESSION_TYPE,
       kind: input.kind,
       contentType,
-      size: input.file.size,
+      size: body.size,
     },
     input.signal
   )
@@ -101,7 +106,7 @@ export async function uploadMedia(
   // The session was opened for exactly this content type; send the same one.
   const put = await transport.putBytes(
     session.uploadUrl,
-    input.file,
+    body,
     session.contentType ?? contentType,
     { signal: input.signal, onProgress: input.onProgress }
   )
