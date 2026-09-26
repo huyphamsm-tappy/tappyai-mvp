@@ -96,7 +96,7 @@ export function mp4Metadata(buf) {
       else if (type === 'mvhd') {
         const v = buf[p + 8]
         const t = v === 1 ? Number(buf.readBigUInt64BE(p + 12)) : buf.readUInt32BE(p + 12)
-        if (t > 0) found['mvhd creation time'] = new Date((t + MAC_EPOCH) * 1000).toISOString()
+        if (t > 0) { const d = new Date((t + MAC_EPOCH) * 1000); found['mvhd creation time'] = isNaN(d.getTime()) ? `raw ${t}` : d.toISOString() }
       } else if (type === 'keys') {
         const n = buf.readUInt32BE(p + 12); let q = p + 16
         for (let i = 0; i < n; i++) { const ks = buf.readUInt32BE(q); keys.push(buf.toString('latin1', q + 8, q + ks)); q += ks }
