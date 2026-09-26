@@ -46,6 +46,15 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 >    `mvhd`/`tkhd`/`mdhd` times, same length). Verify: upload an iPhone camera clip → 200, and the stored file
 >    has no location/make/model/creation date. Web is unaffected (neutralises before PUT); Android uploads
 >    photos only (server path).
+>
+> **🛑 ANDROID RELEASE BLOCKERS — do not ship an Android build until each is checked on a real device (owner 2026-09-26):**
+> 1. **Post-login layout regression (F-107).** The app shows the new V3 layout before sign-in and an
+>    older-looking one after. Found by the Zalo session on a real device (`docs/uat/ZALO-REGION-PROBE.md`,
+>    commit `d7a830d`) — **that session owns the investigation**. Check in UAT: sign in on Android and compare
+>    Home before/after sign-in (MANUAL-UAT-HANDOFF, Android section).
+> 2. **Minified release build (F-098).** Release/staging builds are minified and the supabase-kt R8 keep rules from
+>    `cd4cb31` never reached this branch. Sign in with Google on a minified build and stay signed in across a
+>    restart and a token refresh; `SerializationException` / `MissingFieldException` in logcat = add the keep block.
 
 ---
 
