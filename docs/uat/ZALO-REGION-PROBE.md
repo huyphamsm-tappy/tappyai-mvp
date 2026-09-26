@@ -113,7 +113,7 @@ meta tag, since the deployment is ours.
 It is one click, self-service, effective immediately, and the app is shared with production, which
 still runs `842379b`. The inactive state is the *only* thing making that unexploitable.
 
-Owner's decision, 2026-09-26. Both conditions, not either:
+Owner's decision, 2026-09-26. All three conditions, not any one of them:
 
 **(a) The R-1 fix AND the server-side callback (section 7) are live on production.**
 Order: merge to `main` -> deploy -> verify on production that a Zalo login never puts a token in
@@ -122,6 +122,13 @@ the URL and that `/auth/zalo-finish` and `/api/auth/zalo/complete` return 404.
 **(b) Production has its own `ZALO_VERIFY_URL` and `ZALO_VERIFY_SECRET`, with a secret DIFFERENT
 from UAT's.** Without them production answers `?error=zalo_unavailable` for every Zalo login —
 fail-closed, by design — so the env has to land with, or before, the deploy.
+
+**(c) The new Android build is live on Play.** The app is approved and ships in the same release.
+Android opens the web flow in a Chrome Custom Tab, so it follows whatever production serves — an
+older app on the new backend still works. The condition exists because the reverse does not: the
+app that is out there today drove the browser leg, and activation is what makes the Zalo app
+usable by people who are not admins. Do not flip it while the shipped app and the deployed
+backend disagree about the flow. Verify on a real device first (RULE 4).
 
 Only then flip activation. Remove any production firewall rule only after (a) is verified.
 The owner is already an admin, so UAT never needed activation.
@@ -144,11 +151,28 @@ Rollback is a revert and redeploy — no migration, no data change. Post-deploy 
 Zalo and confirm the account is the token's own; confirm no URL in the browser ever shows a token;
 confirm `/api/auth/zalo/complete` and `/auth/zalo-finish` are 404.
 
-### RULE 4 — mobile is not released yet and shares this backend
+### RULE 4 — mobile shares this backend
 
 Android and iOS drive the same `/api/auth/zalo/*` routes with `platform=android|ios`, returning
-through a custom scheme via `/auth/confirm`. **Zalo login must be tested on a real Android build
+through a custom scheme via `/auth/confirm`. **Zalo login must be tested on a real Android device
 before the app ships** — web UAT does not cover the custom-scheme return leg.
+
+Checked in the repo 2026-09-26: Android needed **no** code change for the server-side flow. It
+only opens `${baseUrl}api/auth/zalo?platform=android&returnTo=/` in a Chrome Custom Tab and waits
+for `tappyai://auth-callback`, which carries a Supabase session — it never handled `zalo-finish`,
+`/api/auth/zalo/complete`, the `zalo_at` cookie or a Zalo token, and
+`ZaloLoginFlowTest` now fails if any Kotlin source starts to. iOS is the same shape
+(`ZaloAuthController` opens `/api/auth/zalo`) but has never been run — no macOS here.
+
+QA build for a real phone (the debug default is the emulator loopback, which is why a phone build
+needs the override):
+
+```bash
+ORG_GRADLE_PROJECT_TAPPYAI_API_BASE_URL_DEBUG=https://uat.tappyai.com/ ORG_GRADLE_PROJECT_TAPPYAI_WEB_APP_URL=https://uat.tappyai.com ORG_GRADLE_PROJECT_TAPPYAI_SUPABASE_URL=<prod url> ORG_GRADLE_PROJECT_TAPPYAI_SUPABASE_ANON_KEY=<prod anon key> ./gradlew :app:assembleDebug
+```
+
+Env vars, not `-P`, so the values stay out of the process list. The phone's Chrome must be signed
+in to Vercel once, because the UAT preview is behind Vercel's SSO gate.
 
 ---
 
