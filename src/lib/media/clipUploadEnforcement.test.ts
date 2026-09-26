@@ -71,6 +71,7 @@ describe('the video kind no longer takes images — photos go through the server
 const WEBM = new Uint8Array([0x1a, 0x45, 0xdf, 0xa3, 0x9f, 0x42, 0x86, 0x81, 0x01, 0x42, 0x82, 0x84, 0x77, 0x65, 0x62, 0x6d])
 const EXIF_JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe1, 0x00, 0x10, ...Array.from('Exif\0\0', c => c.charCodeAt(0)), 0x4d, 0x4d, 0, 0x2a, 0, 0, 0, 8, 0xff, 0xd9])
 const CLEAN_PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, 0, 0, 0, 0x90, 0x77, 0x53, 0xde])
+const SVG = new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"/>')
 
 describe('the format is judged from the bytes, never the declared type', () => {
   it('🚨 WebM bytes declared as video/mp4: 422 unsupported_format, the object is DELETED, the message names MP4/MOV', async () => {
@@ -101,6 +102,33 @@ describe('the format is judged from the bytes, never the declared type', () => {
     const thumb = { type: COMPLETE_UPLOAD_TYPE, kind: 'videoThumbnail', key: `thumbnails/${OWNER}/abcdefghijklmnopqrstuvwx.png` }
     expect((await completeUploadResponse(thumb, ctx, storedAs(EXIF_JPEG, 'image/png').p)).body.error).toBe('unsupported_format')
     expect((await completeUploadResponse(thumb, ctx, storedAs(CLEAN_PNG, 'image/png').p)).status).toBe(200)
+  })
+})
+
+describe('F-103: deal images get the same check (admin-only, same class)', () => {
+  const dealCtx = { ownerId: OWNER, allowedKinds: ['dealLogo', 'dealBanner'] as const }
+  const deal = (kind: string, ext: string) => ({ type: COMPLETE_UPLOAD_TYPE, kind, key: `deals/${OWNER}/abcdefghijklmnopqrstuvwx.${ext}` })
+
+  it('🚨 a logo JPEG carrying EXIF: 422 identifying_metadata, DELETED, no URL', async () => {
+    const { p, deleteObject } = storedAs(EXIF_JPEG, 'image/jpeg')
+    const out = await completeUploadResponse(deal('dealLogo', 'jpg'), dealCtx, p)
+    expect(out.status).toBe(422)
+    expect(out.body.error).toBe('identifying_metadata')
+    expect(out.body.message).toMatch(/thông tin vị trí hoặc thiết bị/)
+    expect(out.body.message).not.toMatch(/EXIF/) // owner 2026-09-26: say what to do, not the jargon
+    expect(out.body.url).toBeUndefined()
+    expect(deleteObject).toHaveBeenCalled()
+  })
+
+  it('a clean PNG banner and an SVG logo pass', async () => {
+    expect((await completeUploadResponse(deal('dealBanner', 'png'), dealCtx, storedAs(CLEAN_PNG, 'image/png').p)).status).toBe(200)
+    expect((await completeUploadResponse(deal('dealLogo', 'svg'), dealCtx, storedAs(SVG, 'image/svg+xml').p)).status).toBe(200)
+  })
+
+  it('a JPEG declared as SVG is refused', async () => {
+    const out = await completeUploadResponse(deal('dealLogo', 'svg'), dealCtx, storedAs(EXIF_JPEG, 'image/svg+xml').p)
+    expect(out.body.error).toBe('unsupported_format')
+    expect(out.body.message).toMatch(/JPEG, PNG, WebP hoặc SVG/)
   })
 })
 

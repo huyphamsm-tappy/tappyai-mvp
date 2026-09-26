@@ -33,11 +33,15 @@ const OTHER = '4dcce7cf-5f49-4c58-9901-2d586e31352d'
 const BUCKET = 'tappyai-media-prod'
 const KEY = `deals/${OWNER}/gNo9UHx2a6ADO3bHymj1E4Uf.png`
 
+/** A clean 1×1 PNG — what the ranged reads return (deal images are format/EXIF-checked since F-103). */
+const CLEAN_PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 13, 0x49, 0x48, 0x44, 0x52, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, 0, 0, 0, 0x90, 0x77, 0x53, 0xde])
+
 /** A gcs provider whose statObject answer is scripted. */
 function provider(stat: { size: number; contentType: string } | null, id: 'gcs' | 'blob' = 'gcs') {
   const statObject = vi.fn(async () => stat)
+  const readRange = async (_k: string, o: number, n: number) => CLEAN_PNG.slice(o, o + n)
   return {
-    p: { id, statObject, publicUrl: (k: string) => `https://storage.googleapis.com/${BUCKET}/${k}` } as unknown as MediaProvider,
+    p: { id, statObject, readRange, publicUrl: (k: string) => `https://storage.googleapis.com/${BUCKET}/${k}` } as unknown as MediaProvider,
     statObject,
   }
 }
