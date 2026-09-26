@@ -49,6 +49,133 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 
 ---
 
+## 0. Pre-deploy backup — BEFORE the first migration (added 2026-09-26)
+
+> **Why this exists.** Production (`fwznnobrdctuskgrvuik`) is on the Supabase **Free** plan (seen in the
+> dashboard header 2026-09-26): **no automated backups, nothing to restore from** unless you make it.
+> §1 hand-applies 12+ migrations, including a column **type change** (D1 `user_memory.user_id`
+> text → uuid, which also deletes orphan rows) and **CASCADE** foreign keys (D1, D2, D4). Every
+> migration has a rollback file, but a rollback restores *structure*, not rows that were already
+> deleted. This dump is the only copy of those rows.
+>
+> **Owner-run only.** Nothing in this section is run by Claude. Claude never connects to production.
+
+**Handling the file — it is the whole user base.** The dump contains `auth.users` (emails, password
+hashes) and every user's content.
+- Store it only under `D:\TappyAI-backups\` — **outside every git worktree**, and **not** inside a
+  OneDrive / Google Drive / Dropbox synced folder. A BitLocker-encrypted drive if you have one.
+- Never commit it, never upload it, never attach it to a chat or a ticket.
+- Delete it once the release has been stable for a period you choose (write the date in `README.txt` next to it).
+
+### 0.1 Connection details (read-only look at the dashboard)
+
+1. Dashboard → project `fwznnobrdctuskgrvuik` → **Connect** (top bar) → **Session pooler** (port **5432**, IPv4).
+   Copy the **host** and the **user** (`postgres.fwznnobrdctuskgrvuik`).
+   - Not the *Transaction* pooler (port 6543): `pg_dump` needs a session.
+   - Not the *Direct connection* (`db.fwznnobrdctuskgrvuik.supabase.co`): IPv6-only on the Free plan.
+2. Password = the **database password**. If you do not have it, resetting it (Settings → Database) is a
+   production change: anything using the old password (check Vercel env for `DATABASE_URL` / `POSTGRES_*`)
+   breaks until updated. Decide that before resetting.
+3. Version: production is **PostgreSQL 17.6** (`docs/audit/nonprod-environment-readiness.md:384`). Use
+   `pg_dump` **17** — an older `pg_dump` refuses a newer server. Nothing is installed locally; the commands
+   below run the official `postgres:17` image in Docker (Docker Desktop is installed on this machine).
+
+### 0.2 Take the dump (PowerShell, immediately before §1 step G1)
+
+Writes made after the dump are not in it — take it right before the first migration, ideally in a quiet hour.
+
+```powershell
+$d = "D:\TappyAI-backups\prod-$(Get-Date -Format yyyyMMdd-HHmm)"
+New-Item -ItemType Directory -Force $d | Out-Null
+$h = "<SESSION POOLER HOST from 0.1>"
+$s = Read-Host "Production DB password" -AsSecureString          # typed hidden, not kept in history
+$env:PGPASSWORD = [Net.NetworkCredential]::new('', $s).Password
+
+# 1) full dump: schema + data of public, auth, storage (custom format, compressed; grants kept)
+docker run --rm -e PGPASSWORD -v "${d}:/backup" postgres:17 pg_dump -h $h -p 5432 -U postgres.fwznnobrdctuskgrvuik -d postgres --format=custom --schema=public --schema=auth --schema=storage --file=/backup/prod.dump --verbose *> "$d\pg_dump.log"
+"exit=$LASTEXITCODE" | Add-Content "$d\pg_dump.log"
+
+# 2) readable schema-only copy (for diffing what a migration changed)
+docker run --rm -e PGPASSWORD -v "${d}:/backup" postgres:17 pg_dump -h $h -p 5432 -U postgres.fwznnobrdctuskgrvuik -d postgres --schema-only --schema=public --schema=auth --schema=storage --file=/backup/prod-schema.sql
+
+Remove-Item Env:PGPASSWORD
+Get-FileHash "$d\prod.dump" -Algorithm SHA256 | Format-List | Out-File "$d\SHA256.txt"
+```
+
+### 0.3 Prove the dump is real — do not start §1 until (a)–(c) pass
+
+**(a) It finished cleanly.** The last line of `pg_dump.log` is `exit=0`, and this finds nothing:
+```powershell
+Select-String -Path "$d\pg_dump.log" -Pattern "error|fatal|permission denied"
+```
+If it reports permission errors on individual `auth` / `storage` objects, those objects are Supabase-managed —
+note which, and check (c) still lists the `public` data you need.
+
+**(b) It is not empty.** A schema-only-sized file is a few hundred KB; a real one is larger.
+```powershell
+"{0:N1} MB" -f ((Get-Item "$d\prod.dump").Length / 1MB)
+```
+
+**(c) The data the migrations touch is inside it.**
+```powershell
+docker run --rm -v "${d}:/backup" postgres:17 pg_restore --list /backup/prod.dump | Out-File "$d\toc.txt"
+Select-String -Path "$d\toc.txt" -Pattern "TABLE DATA (auth users|public (profiles|reviews|user_memory|decision_evidence|anon_chat_usage|notifications|review_likes|groups|group_members|audit_log)) "
+```
+Every one of those tables must appear as a `TABLE DATA` line. (A table missing from the list is a table
+whose rows are not in the backup.)
+
+**(d) Recommended: the row counts match.** Just before the dump, in the SQL editor (counts only, no rows are read out):
+```sql
+select 'auth.users' t, count(*) from auth.users
+union all select 'profiles', count(*) from public.profiles
+union all select 'reviews', count(*) from public.reviews
+union all select 'user_memory', count(*) from public.user_memory
+union all select 'decision_evidence', count(*) from public.decision_evidence
+union all select 'anon_chat_usage', count(*) from public.anon_chat_usage
+union all select 'notifications', count(*) from public.notifications
+union all select 'review_likes', count(*) from public.review_likes
+union all select 'audit_log', count(*) from public.audit_log;
+```
+(If a line errors because that table does not exist on production, delete the line.) Then restore into a
+throwaway local database and run the same query there:
+```powershell
+docker run -d --name tappy-restore-check -e POSTGRES_PASSWORD=scratch postgres:17
+Start-Sleep 10
+docker exec tappy-restore-check psql -U postgres -c "create role anon; create role authenticated; create role service_role; create role supabase_auth_admin; create role supabase_storage_admin; create role supabase_admin;"
+docker cp "$d\prod.dump" tappy-restore-check:/tmp/prod.dump
+docker exec tappy-restore-check pg_restore -U postgres -d postgres --no-owner --no-privileges /tmp/prod.dump
+docker exec -it tappy-restore-check psql -U postgres     # paste the count query
+docker rm -f tappy-restore-check
+```
+Errors about Supabase-only extensions, functions or roles are **expected** in a plain Postgres. What matters is
+that the counted tables exist and their counts equal production's. A counted table that failed to create makes
+(d) inconclusive for that table only — (c) still proves its data is in the file.
+
+### 0.4 If a migration fails
+
+1. **Stop.** Apply nothing further and do not deploy.
+2. **First choice — the migration's own rollback** (§1 "Rollback" column, order in §3). It restores structure.
+3. **Rows lost** (e.g. D1 removed orphan `user_memory` rows; a CASCADE removed children): put back just that table's
+   rows from the dump. `--data-only` into a table that still has rows fails on duplicate keys, so:
+   - table now **empty** → restore it directly:
+     ```powershell
+     docker run --rm -e PGPASSWORD -v "${d}:/backup" postgres:17 pg_restore -h $h -p 5432 -U postgres.fwznnobrdctuskgrvuik -d postgres --data-only --schema=public --table=<table> /backup/prod.dump
+     ```
+   - table still **partly** there → restore into the scratch container of 0.3(d), export the missing rows
+     (`\copy (select … where id not in (…)) to …`), and insert them on production with `on conflict do nothing`.
+4. **Last resort — the whole `public` schema back to the moment of the dump.** Every write since the dump is lost;
+   put the site in maintenance first. Never restore `auth` or `storage` over production (Supabase manages them).
+   ```powershell
+   docker run --rm -e PGPASSWORD -v "${d}:/backup" postgres:17 pg_restore -h $h -p 5432 -U postgres.fwznnobrdctuskgrvuik -d postgres --clean --if-exists --schema=public /backup/prod.dump
+   ```
+   `--clean` drops only objects that are in the dump; objects created by migrations applied after it (e.g. `shared_results`)
+   stay — remove them with their rollback files.
+
+**Not verified:** none of these commands has been run against production (by design). The pooler host, the exact
+permission errors on Supabase-managed schemas and the dump size are only known once you run 0.2.
+
+---
+
 ## 1. The release delta — migrations to apply, in this exact order
 
 > **Rewritten 2026-09-24 (PRELAUNCH Part 3).** The 2026-09-21 version said "only eight". That was true
