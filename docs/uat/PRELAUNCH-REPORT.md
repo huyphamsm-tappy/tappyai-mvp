@@ -4,7 +4,7 @@
 > npm run whoami
   worktree : D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard
   branch   : rc/web-uat
-  commit   : 4e70b02 (+ local changes)      ← lúc bắt đầu PRELAUNCH; SHA cuối cùng ở mục FINISH
+  commit   : d9f1c0b (+ local changes)      ← lúc bắt đầu PRELAUNCH; SHA cuối cùng ở mục FINISH
   supabase : zdaprdfgpbpnxyofagmc  ✅ audit/non-prod
   dev port : 3007
 ```
@@ -13,7 +13,7 @@ Chưa deploy, chưa push. Không kết nối DB production. Mỗi mục một co
 
 ---
 
-## Part 1 — Quyết định đã chốt (áp dụng, không bàn lại) — commit `97b0ad1`
+## Part 1 — Quyết định đã chốt (áp dụng, không bàn lại) — commit `a631189`
 
 - **Số thẻ vẫn là 8 (3 thẻ trên màn hình đầu).** Đóng hạng mục Session D bằng **F-060 closed-not-a-bug**.
   - Số đo: 3 câu hỏi đồ ăn × 3 lần chạy (MAX_ITEMS 3 và 8). Lượt nào cũng gọi Serper 2 lần, 4 credit; model nhận cùng 10 địa điểm.
@@ -97,7 +97,7 @@ Sau đó mở hai file sau và xoá tay:
 
 Chạy xong, bảo tôi; tôi sẽ chạy lại `find_prod_secrets.ps1` và `scan_content.ps1` để xác nhận còn 0 file.
 
-### Guard mở rộng — commit `6320364`
+### Guard mở rộng — commit `ed7e534`
 
 `scripts/prodEnvGuard.mjs`, được gọi từ `next.config.mjs` ở **mọi** lệnh `next`:
 - Từ chối `dev`, `build`, `start` khi **bất kỳ** giá trị env nào của process, **hoặc bất kỳ file env nào Next nạp** (`.env`, `.env.local`, `.env.development[.local]`, `.env.production[.local]`, đọc trực tiếp từ đĩa), chứa ref production. Thông báo nêu tên file/biến, không bao giờ nêu giá trị.
@@ -105,7 +105,7 @@ Chạy xong, bảo tôi; tôi sẽ chạy lại `find_prod_secrets.ps1` và `sca
 - `ALLOW_PROD_SUPABASE_IN_DEV=1` in **banner lớn mỗi lần khởi động**, nêu đích danh cái nó cho qua. Nếu không có gì production, banner nhắc gỡ override.
 - Test: `scripts/prodEnvGuard.test.mjs`, 13 ca, đều đạt.
 
-**Chứng minh** (bản sao `git archive` của `6320364`; không có credential; mạng bị chặn bằng preload `netblock.cjs`, thứ ghi lại mọi DNS/connect và chặn mọi thứ không phải loopback):
+**Chứng minh** (bản sao `git archive` của `ed7e534`; không có credential; mạng bị chặn bằng preload `netblock.cjs`, thứ ghi lại mọi DNS/connect và chặn mọi thứ không phải loopback):
 - Fixture duy nhất là `.env.production.local` chứa `NEXT_PUBLIC_SUPABASE_URL="https://fwznnobrdctuskgrvuik.supabase.co"` và `VERCEL="1"`, không có khoá nào.
 - Log đầy đủ: `docs/uat/evidence/prod-guard-2026-09-24/`.
 
@@ -264,9 +264,9 @@ Hiện tại:
 | `wip/*-2026-09-17` (15 nhánh) | 1–151 | Snapshot công việc chưa commit của 15 worktree, chụp khi hợp nhất 09-17 | ba snapshot đã được merge (cool-vaughan, v3-canonical, v3-phase4); **15 cái này chưa**. Đáng chú ý: `wtandroid` (10 sửa Android 08-23: Deals DTO, bàn phím composer, F03 "khách ẩn danh không được tạo việc trả phí định kỳ", màn đăng nhập có mascot…), `tappy-business-p0` (checkpoint năng lực Business), `ios-sprint` (151 commit, 07-26→; iOS không thuộc bản này) |
 | `feat/ccp-mvp`, `feat/consultative-…`, `integration/scam-shield-v3`, `feat/v3-scam-shield-ui`, `feat/v3-qr-profile` | 20–30 | Phần lớn là cùng một chồng commit perf/consultative từ 08-10 (B2–B7…) | nhiều khả năng đã được làm lại trên mainline; **UNVERIFIED** |
 
-### STEP-3 (`ccee15b`) có tới được nhánh ship không
+### STEP-3 (`1e45f25`) có tới được nhánh ship không
 
-- **Có, trên `rc/web-uat` local**, dưới dạng `e687225`, sau khi phiên Zalo rebase. Bằng chứng: `git patch-id` của hai commit giống hệt nhau (`f18d0ed0b261`).
+- **Có, trên `rc/web-uat` local**, dưới dạng `1e45f25`, sau khi phiên Zalo rebase. Bằng chứng: `git patch-id` của hai commit giống hệt nhau (`f18d0ed0b261`).
 - **Chưa có trên origin**: `origin/rc/web-uat` = `b7a9586`. Nó chỉ lên origin khi `rc/web-uat` được push; tôi không push.
 
 ### Hai dòng để giữ lại
@@ -285,9 +285,9 @@ Lý do (đo được trong phiên này): hai phiên cùng dùng một worktree. 
 ## Part 5 — Hai lỗi AI còn lại
 
 **Trình tự làm:**
-1. Viết golden case và unit test **trước** (commit `98571da`, cùng log RED trong `docs/uat/evidence/prelaunch-5/`).
+1. Viết golden case và unit test **trước** (commit `399aeac`, cùng log RED trong `docs/uat/evidence/prelaunch-5/`).
 2. Chạy **toàn bộ** golden set trên code chưa sửa (`golden/prelaunch-before`, 25 lượt gọi LLM).
-3. Sửa (commit `00ae32a`).
+3. Sửa (commit `a724df2`).
 4. Chạy lại **toàn bộ** set (`golden/prelaunch-after`, 25 lượt) và chạy thêm T3 hai lần (4 lượt).
 
 Tổng cộng 54 lượt gọi LLM.
@@ -394,8 +394,8 @@ Tổng cộng 54 lượt gọi LLM.
 | A3 | Chat đồ ăn Quận 3: thẻ có ảnh, địa chỉ Xuân Hòa, "Xem bản đồ" mở Google Maps đúng quán | ✅ PASS | A3a/b/c. **F-072**: "mở từ 6h sáng nên tiện ăn khuya" trong khi quán đang đóng. **F-074**: dòng "Đánh đổi: 912 lượt đánh giá" dễ hiểu nhầm |
 | A4 | Hỏi tiếp nhiều lượt ("còn quán nào mở sau 21h") | ✅ PASS | Log: vẫn giữ `district:"Quận 3"` và `budget_max: 80000`; `open_now: true` |
 | A5 | Đổi chủ đề sang tai nghe dưới 2 triệu (có câu hỏi làm rõ) | ✅ PASS về ràng buộc | 980k ≤ 2tr, không có 80k. **F-071**: câu văn vỡ ("dư ngân sách.", "Danh đổi: … nhưng…"). **F-073**: thẻ ghi "rated 4.7 · 980000 VND · 310 reviews" bằng tiếng Anh |
-| A7a | Lịch trình Vũng Tàu sau chủ đề tai nghe | ❌ **FAIL → đã sửa** | **F-069 (P1)**: "tổng ngân sách 2 triệu" lấy từ tai nghe. Sửa ở `9163d5b` (xem dưới) |
-| A7b | Chia sẻ lịch trình | ❌ **FAIL → đã sửa** | **F-070 (P1)**: kẹt ở "Đang tạo kế hoạch chia sẻ…", không có request nào đi ra. Sửa ở `8e90514`; sau sửa `POST /api/plans/share` 200 và brochure `/plan/LHlhAZ9qQBvF` mở được |
+| A7a | Lịch trình Vũng Tàu sau chủ đề tai nghe | ❌ **FAIL → đã sửa** | **F-069 (P1)**: "tổng ngân sách 2 triệu" lấy từ tai nghe. Sửa ở `979eb9c` (xem dưới) |
+| A7b | Chia sẻ lịch trình | ❌ **FAIL → đã sửa** | **F-070 (P1)**: kẹt ở "Đang tạo kế hoạch chia sẻ…", không có request nào đi ra. Sửa ở `2153944`; sau sửa `POST /api/plans/share` 200 và brochure `/plan/LHlhAZ9qQBvF` mở được |
 | A7c | Xin quyền vị trí khi đang lập lịch trình | 🟡 quan sát | Hộp thoại hệ thống hiện ngay giữa lượt chat (A7-location-prompt-during-plan.png). Đây là phía app nên được phép, nhưng hiện ra đột ngột |
 | A8 | Scam Shield: URL giả Vietcombank | ✅ PASS | "Nguy cơ cao", điểm 79, hiện hotline/website chính thức |
 | A8c | Scam Shield: phân tích tin nhắn | ✅ PASS (verdict) | "Rất nguy hiểm", 100 điểm, "Lấy mã OTP của bạn". **F-068**: 4 lý do bằng tiếng Anh |
@@ -407,13 +407,13 @@ Tổng cộng 54 lượt gọi LLM.
 
 ### Hai lỗi P1 đã sửa trong Part 6
 
-- **F-069 — `9163d5b`.** Kế hoạch đi chơi không còn nhận ngân sách của chủ đề trước. Có hai chỗ mang ngân sách sang: phép gộp ngân sách kế hoạch (đọc 3 lượt user gần nhất) và `deriveNeedProfile` (chỉ reset khi gặp danh từ địa điểm). Giờ cả hai chỉ đọc **chủ đề hiện tại**, dùng cùng ranh giới với 5a.
+- **F-069 — `979eb9c`.** Kế hoạch đi chơi không còn nhận ngân sách của chủ đề trước. Có hai chỗ mang ngân sách sang: phép gộp ngân sách kế hoạch (đọc 3 lượt user gần nhất) và `deriveNeedProfile` (chỉ reset khi gặp danh từ địa điểm). Giờ cả hai chỉ đọc **chủ đề hiện tại**, dùng cùng ranh giới với 5a.
   - Golden **B4** mới, trước sửa: câu trả lời ghi "với ngân sách 2 triệu VND" và `budget_max 2000000` trên thẻ địa điểm của chuyến đi.
   - B4 sau sửa: không còn cả hai.
   - T1 (kế hoạch qua nhiều lượt, 20 triệu) vẫn được kế thừa đúng. G4a không đổi.
   - Unit test `planSubjectBudget.test.ts`: 1 fail trên route cũ, 5/5 pass sau sửa (log trong `evidence/golden/`).
   - T1 lượt 3 có đoạn văn lặp lại (dup). Baseline cũng có hiện tượng này, nên đây là lỗi có sẵn của model, không phải hồi quy.
-- **F-070 — `8e90514`.** Merge `a6ca9f0` ("uncommitted canonical work") đã làm mất phần nối dây mà `3731efa` thêm: `planJson` → `TripPlanCard`, và `placesView/plan/planJson/shareSubject` → `MessageActionBar`. Tôi khôi phục nguyên văn.
+- **F-070 — `2153944`.** Merge `a6ca9f0` ("uncommitted canonical work") đã làm mất phần nối dây mà `3731efa` thêm: `planJson` → `TripPlanCard`, và `placesView/plan/planJson/shareSubject` → `MessageActionBar`. Tôi khôi phục nguyên văn.
   - Nếu không có `planJson`, ViewModel thoát sớm và quay "preparing" mãi. Giờ nó báo `NoPlanPayload`.
   - `ChatShareWiringTest` fail 3/3 trước sửa, pass 3/3 sau sửa.
   - 🚨 **`a6ca9f0` chưa được audit toàn bộ.** Đây là cùng loại với lần mất CSS ở `1e7b77e`. Nên diff merge này với parent thứ nhất trước khi launch.
@@ -455,7 +455,7 @@ Toàn bộ nằm trong **`docs/uat/MANUAL-UAT-HANDOFF.md`**, viết lại hoàn 
 
 ---
 
-## FINISH — health check (2026-09-25, trên `rc/web-uat` @ `e52cbc7` + commit này)
+## FINISH — health check (2026-09-25, trên `rc/web-uat` @ `ac4e819` + commit này)
 
 | Kiểm tra | Lệnh | Kết quả |
 |---|---|---|
@@ -472,7 +472,7 @@ Toàn bộ nằm trong **`docs/uat/MANUAL-UAT-HANDOFF.md`**, viết lại hoàn 
 
 ### Commit của đợt PRELAUNCH (sau phần ranh giới public/app)
 
-`97b0ad1` Part 1 · `6320364` guard · Part 2–5 (xem từng mục) · `6dcd524` Part 5 · `9163d5b` F-069 · `8e90514` F-070 · `a989465` Part 6 · `e52cbc7` Part 7 · commit này (FINISH).
+`a631189` Part 1 · `ed7e534` guard · Part 2–5 (xem từng mục) · `bc72d7d` Part 5 · `979eb9c` F-069 · `2153944` F-070 · `9c7353a` Part 6 · `ac4e819` Part 7 · commit này (FINISH).
 
 ### Đường ngắn nhất tới launch (theo thứ tự)
 

@@ -29,7 +29,7 @@ continue the warm-phase clock, i.e. the same cached copy kept being served.
    until its cached age reached the max-age, never after). For one day: **derived, not measured** from
    the same mechanism, the 35-minute evidence (still serving, Age still climbing) and the GCS docs
    ("caches respect `max-age`; stale objects are not served"): a deleted clip can stay reachable through
-   its old URL for **up to one day** (new uploads, `6c19924`) or **up to one year** (clips uploaded
+   its old URL for **up to one day** (new uploads, `1318b95`) or **up to one year** (clips uploaded
    before, stamped `max-age=31536000`) — at any edge that fetched it recently.
 2. **Edge cache or only clients that already fetched it?** **Google's own shared edge cache.** The
    prober had no client cache, the origin was already 404 (cache-busted requests), and the old URL
@@ -59,6 +59,6 @@ continue the warm-phase clock, i.e. the same cached copy kept being served.
 
 ## Consequence for /delete-account
 A deleted clip **can** remain reachable for up to 24 hours (new uploads) and we cannot force it sooner
-with the current setup — the copy must say so (draft updated). For clips uploaded before `6c19924`:
+with the current setup — the copy must say so (draft updated). For clips uploaded before `1318b95`:
 up to a year, unless the owner chooses `private` caching or Cloud CDN. Decision needed before the copy
 is published.

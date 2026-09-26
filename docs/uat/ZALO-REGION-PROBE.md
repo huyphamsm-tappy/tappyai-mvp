@@ -153,7 +153,7 @@ confirm `/api/auth/zalo/complete` and `/auth/zalo-finish` are 404.
 
 ### ✅ Android Zalo login — ACCEPTED on a real device, 2026-09-26
 
-Debug APK (`com.tappyai.app.debug`, built from e870f934a0de with
+Debug APK (`com.tappyai.app.debug`, built from a3dd1fee0d1f with
 `TAPPYAI_API_BASE_URL_DEBUG=https://uat.tappyai.com/`), installed on the owner's phone, signed in
 with Zalo: straight into the app. The verifier logged `POST /verify 200 id` for each attempt
 (13:58, 13:59, 14:00, 14:19, 14:23 VN), 71–84 ms, no 401 and no fallback. Nothing left to do for

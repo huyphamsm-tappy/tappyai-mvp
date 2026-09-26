@@ -85,7 +85,7 @@ which the unstripped object is already public unless a private staging area is a
   identifying fields download → neutralise in place (same technique as B) → re-upload to the **same key**
   (URL unchanged, no DB change). Cost ≈ one download + one upload per affected clip.
 - **What clean-up cannot reach:** copies already saved by viewers' browsers or apps. Those clips were
-  written with `max-age=31536000` (one year) before 6c19924, so a device that played one may keep its
+  written with `max-age=31536000` (one year) before 1318b95, so a device that played one may keep its
   copy up to a year — and, measured 2026-09-26, **Google's shared edge cache keeps serving a cleaned or
   deleted object's OLD bytes until its max-age runs out**, with no way to invalidate it
   (`CACHE-AFTER-DELETE-2026-09-26.md`). Re-uploading clean bytes to the same key therefore does not

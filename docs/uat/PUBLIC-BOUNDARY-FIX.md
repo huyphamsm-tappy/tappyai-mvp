@@ -4,7 +4,7 @@
 > npm run whoami
   worktree : D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard
   branch   : rc/web-uat
-  commit   : 4e70b02 (+ local changes)
+  commit   : d9f1c0b (+ local changes)
   supabase : zdaprdfgpbpnxyofagmc  ✅ audit/non-prod
   dev port : 3007
 ```
@@ -15,14 +15,14 @@ Thay đổi chưa commit lúc chạy lệnh trên chỉ gồm `docs/uat/*` (báo
 
 | Mục | Commit | Nội dung |
 |---|---|---|
-| 3 + 4 | `701ab7d` | Ranh giới `(app)`; 2 cổng chuyển khỏi layout gốc; ngôn ngữ trang public theo trình duyệt |
-| 9 | `05a3994` | Test chặn hồi quy `src/app/publicBoundary.test.ts` |
-| 10a | `17cd171` | Khôi phục 2 dòng CSS của e35a9b5 |
-| 10b | `9eafefd` | "chưa có giá" không bao giờ được vẽ như giá (web + Android) |
-| 10d | `4e70b02` | "1 days" → "1 day" |
+| 3 + 4 | `6900362` | Ranh giới `(app)`; 2 cổng chuyển khỏi layout gốc; ngôn ngữ trang public theo trình duyệt |
+| 9 | `fb976c1` | Test chặn hồi quy `src/app/publicBoundary.test.ts` |
+| 10a | `b6525e3` | Khôi phục 2 dòng CSS của e35a9b5 |
+| 10b | `b0045ab` | "chưa có giá" không bao giờ được vẽ như giá (web + Android) |
+| 10d | `d9f1c0b` | "1 days" → "1 day" |
 | 10c | — | Chỉ sửa `.env.local`; file này bị gitignore nên không commit |
 
-⚠️ Có một phiên Claude khác (làm Zalo) chạy song song trong **cùng worktree** này. Phiên đó đã commit `b7a9586` rồi rebase các commit của tôi lên trên, nên SHA đổi (`afeb8d9`→`701ab7d`, `ac32f73`→`05a3994`). Tôi đã kiểm bằng `git diff ac32f73 05a3994`: khác biệt chỉ nằm ở 3 file Zalo của họ, nội dung của tôi không đổi.
+⚠️ Có một phiên Claude khác (làm Zalo) chạy song song trong **cùng worktree** này. Phiên đó đã commit `b7a9586` rồi rebase các commit của tôi lên trên, nên SHA đổi (`6900362`→`6900362`, `fb976c1`→`fb976c1`). Tôi đã kiểm bằng `git diff fb976c1 fb976c1`: khác biệt chỉ nằm ở 3 file Zalo của họ, nội dung của tôi không đổi.
 
 ---
 
@@ -245,10 +245,10 @@ Giới hạn (nói thẳng):
 
 ## 10. Brochure
 
-- **10a**: 2 dòng CSS của e35a9b5 đã khôi phục đúng từng ký tự (`17cd171`).
+- **10a**: 2 dòng CSS của e35a9b5 đã khôi phục đúng từng ký tự (`b6525e3`).
   - Computed style: `letter-spacing: normal`, không còn rule `.v3-pb-brand-mark`.
   - So pixel trước/sau: **0 pixel khác** ở 375px và 1280px (`evidence/brochure-2026-09-24/10a_header_before_after.png`).
-- **10b**: "chưa có giá" không bao giờ thành giá nữa (`9eafefd`).
+- **10b**: "chưa có giá" không bao giờ thành giá nữa (`b0045ab`).
   - Web: `lib/plans/planPrice.ts`, áp tại `parsePlan` (thẻ chat, Planner, payload chia sẻ) và `toPlanShareSnapshot`. Đường đọc của snapshot chiếu lại, nên các dòng đã lưu như `cZAI86wdjVH7` cũng sạch; mini preview và ảnh OG dùng cùng snapshot.
   - Android: `chat/PlanPrice.kt` trong `ChatResponseParser` (thẻ chat, Planner, ShareArtifact).
   - Quy tắc: giữ khi có chữ số hoặc là "Miễn phí"/"Free"; bỏ sentinel, "$$", "Liên hệ", chuỗi rỗng.
@@ -262,7 +262,7 @@ Giới hạn (nói thẳng):
   - `og:url` và `twitter:image` giờ ở :3007; ảnh OG có lại logo rái cá (`og_image_after_10c.png`).
   - **Production không bị ảnh hưởng**: `git check-ignore -v .env.local` → `.gitignore:44:.env*`; file không bao giờ được commit hay deploy; production đọc env của Vercel.
   - RUNBOOK §0 vẫn ghi 3101. Mục đó do owner quản, nên tôi không sửa.
-- **10d**: một dòng trong `fill()` (`4e70b02`). `curl -H 'Accept-Language: en-US'` → "1 day" (4 lần), 0 lần "1 days".
+- **10d**: một dòng trong `fill()` (`d9f1c0b`). `curl -H 'Accept-Language: en-US'` → "1 day" (4 lần), 0 lần "1 days".
 - **Chỉ báo cáo, không đổi** (theo chỉ thị):
   - nhãn tiếng Anh trộn nội dung tiếng Việt của plan (nhãn theo ngôn ngữ người xem, nội dung là của người gửi);
   - plan này không có ảnh (quy tắc ảnh của 21f7833);

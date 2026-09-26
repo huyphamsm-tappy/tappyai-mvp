@@ -109,12 +109,12 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 ---
 
 ### Cập nhật 2026-09-26 — cache sau khi xoá (ĐO 35 phút, `evidence/cache-after-delete-2026-09-26/`)
-- **Một URL đã bị xoá vẫn có thể mở được qua cache biên dùng chung của Google cho tới hết `max-age` của file.** Đo: file max-age=300 còn được phục vụ tới +257 s sau khi xoá rồi dừng; file max-age=86400 vẫn được phục vụ ở 46/68 lần gọi tới hết 35 phút đo. Không có cách buộc dừng: cache tích hợp của GCS **không hỗ trợ vô hiệu hoá** (tài liệu GCS). Suy ra (không đo): clip upload từ nay (max-age 1 ngày) có thể còn mở được tới **1 ngày** sau khi xoá; clip upload trước `6c19924` (max-age 1 năm) tới **1 năm** nếu đã được xem gần đây.
+- **Một URL đã bị xoá vẫn có thể mở được qua cache biên dùng chung của Google cho tới hết `max-age` của file.** Đo: file max-age=300 còn được phục vụ tới +257 s sau khi xoá rồi dừng; file max-age=86400 vẫn được phục vụ ở 46/68 lần gọi tới hết 35 phút đo. Không có cách buộc dừng: cache tích hợp của GCS **không hỗ trợ vô hiệu hoá** (tài liệu GCS). Suy ra (không đo): clip upload từ nay (max-age 1 ngày) có thể còn mở được tới **1 ngày** sau khi xoá; clip upload trước `1318b95` (max-age 1 năm) tới **1 năm** nếu đã được xem gần đây.
 - Hệ quả cho lời văn: **không được hứa gỡ ngay.** Mục 4 phải nói rõ: "bản sao có thể vẫn mở được qua đường link cũ tối đa 24 giờ". Với clip cũ: **[XÁC NHẬN]** — hoặc đổi Cache-Control clip cũ trước khi đăng lời văn (bản đã nằm trong cache biên vẫn sống tới hết hạn cũ), hoặc ghi "tối đa một năm với video tải lên trước <ngày>".
 - Nếu muốn xoá có hiệu lực ngay tại phía Google: dùng `private, max-age=86400` (cache biên không được lưu, chỉ thiết bị người xem) hoặc Cloud CDN (có vô hiệu hoá) — xem `CACHE-AFTER-DELETE-2026-09-26.md`.
 
-### Cập nhật 2026-09-26 (sau quyết định của anh) — video cache `private` (`2a1ce82`)
+### Cập nhật 2026-09-26 (sau quyết định của anh) — video cache `private` (`1fce328`)
 - Video tải lên từ nay mang `Cache-Control: private, max-age=86400, immutable` → cache biên dùng chung của Google **không được lưu**; xoá có hiệu lực tại Google ngay. Cửa sổ còn lại = **bản đã tải về thiết bị người xem** (trình duyệt/ứng dụng), tối đa 1 ngày. Lời văn mục 4 đã đổi đúng như vậy.
 - **Video tải lên trước thay đổi này** (max-age 1 năm, public) — bản đã nằm trong cache biên sống tới hết hạn cũ, **tối đa 1 năm, không thu hồi được**. Job `scripts/ops/clean-existing-clips.mts --fix-cache-control` chỉ đổi header của object; **không** xoá được bản đã nằm trong cache. Vì vậy câu "video tải lên trước [NGÀY]" phải giữ.
 - ~~[XÁC NHẬN — ảnh]~~ → anh chọn (b) 2026-09-26: ảnh/ảnh đại diện/ảnh bìa đi đường server giờ cũng mang `private, max-age=86400, immutable` (upload multipart); câu "ảnh tối đa một giờ" đã bỏ. Ảnh tải lên TRƯỚC thay đổi này vẫn mang `public, max-age=3600` trên từng object. **Anh quyết 2026-09-26:** đổi header đó trong job dọn ảnh cũ sau launch (chỉ PATCH metadata); **không** thêm câu nào vào lời văn.
-- Điền **[NGÀY TRIỂN KHAI]** = ngày `2a1ce82` lên production.
+- Điền **[NGÀY TRIỂN KHAI]** = ngày `1fce328` lên production.

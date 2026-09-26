@@ -3,7 +3,7 @@
 **Chủ sở hữu quyết định.** Tài liệu này chỉ đề xuất; không có gì từ 44 nhánh được merge.
 Nguồn: `docs/uat/evidence/merge-guard-2026-09-25/containment-all-at-HEAD-by-commit.txt` (lần chạy đầu, ship = HEAD),
 và lần chạy lại với **ship = `rc/web-uat`** (SHIP_BRANCH đã đặt): `containment-rc-web-uat-after-f093.txt`.
-Kết quả lần chạy lại (allowlist rỗng, sau `51fa3f8`): **25 commit / 43 nhánh** — `6964bfb` đã được nhận là có trên nhánh ship; 25 commit còn lại đúng như bảng dưới.
+Kết quả lần chạy lại (allowlist rỗng, sau `ee481d8`): **25 commit / 43 nhánh** — `6964bfb` đã được nhận là có trên nhánh ship; 25 commit còn lại đúng như bảng dưới.
 
 Ba loại đề xuất:
 - **Đưa vào (bring in)** — nội dung còn thiếu trên nhánh ship và cần cho launch.
@@ -19,7 +19,7 @@ là **đổi tên / di chuyển** (vd. `src/app/subscription` → `src/app/(app)
 
 | commit | nội dung | kiểm chứng | đề xuất |
 |---|---|---|---|
-| `6964bfb` (13d, `origin/claude/user-memory-auth-fk-f1z5nf`) | FK `user_memory.user_id` → `auth.users` ON DELETE CASCADE | Chủ sở hữu đã quyết (F-093 P1) | **Đưa vào — ĐÃ LÀM** `51fa3f8` (nguyên văn; đổi port test 54379→54392). Áp lên audit; prod = DEPLOY-CHECKLIST D1 |
+| `6964bfb` (13d, `origin/claude/user-memory-auth-fk-f1z5nf`) | FK `user_memory.user_id` → `auth.users` ON DELETE CASCADE | Chủ sở hữu đã quyết (F-093 P1) | **Đưa vào — ĐÃ LÀM** `ee481d8` (nguyên văn; đổi port test 54379→54392). Áp lên audit; prod = DEPLOY-CHECKLIST D1 |
 
 ## B. Bảo mật AI — nhánh `integration/v3-foundation` / `security/v3-phase3` — 4 commit
 
