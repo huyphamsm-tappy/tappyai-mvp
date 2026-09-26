@@ -58,9 +58,16 @@ export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
  * object hourly. Egress, not storage, is the cost that matters here.
  *
  * If key generation ever becomes caller-influenced or deterministic, this becomes a correctness
- * bug that stays invisible for a year — immutableCache.test.ts pins both halves together.
+ * bug — immutableCache.test.ts pins both halves together.
+ *
+ * ONE DAY, not one year (owner decision 2026-09-26). The bytes never change, so a year was safe
+ * for correctness — but the lifetime is also how long a copy can outlive a DELETION: the bucket is
+ * publicly readable, and a cached copy (browser, shared cache, Google's edge) may keep serving a
+ * deleted clip until max-age runs out. Account deletion (F-096) promises the files go; a year-long
+ * max-age would make that promise unenforceable. A day bounds it, and still spares viewers the
+ * hourly re-download that GCS's own default (max-age=3600) caused.
  */
-export const IMMUTABLE_MEDIA_CACHE_CONTROL = 'public, max-age=31536000, immutable'
+export const IMMUTABLE_MEDIA_CACHE_CONTROL = 'public, max-age=86400, immutable'
 
 export function gcsPublicUrl(bucket: string, key: string): string {
   return `${UPLOAD_HOST}/${bucket}/${key}`

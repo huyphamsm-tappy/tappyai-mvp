@@ -6,7 +6,7 @@
 // viewer first watched it, their browser re-downloaded all 45,683,721 bytes from GCS. Egress is
 // the cost line that matters here, and it was being paid again every hour, per viewer, per clip.
 //
-// WHY A ONE-YEAR LIFETIME IS SAFE HERE, and would not be in general: these objects are immutable
+// WHY A LONG LIFETIME IS SAFE FOR CORRECTNESS HERE (now one day — see below), and would not be in general: these objects are immutable
 // by CONSTRUCTION, not by convention. `resolveUploadTarget` builds every key as
 // `${prefix}/${ownerId}/${randomMediaSuffix(24)}.${ext}` — 24 random characters minted server-side
 // per upload. A caller cannot choose a key, cannot reuse one, and cannot overwrite an existing
@@ -15,8 +15,12 @@
 // needs cache invalidation, because nothing is ever invalidated — a new upload is a new URL.
 //
 // The corollary is what keeps this honest: if key generation ever becomes caller-influenced or
-// deterministic, this cache policy turns into a correctness bug that is invisible for a year. The
+// deterministic, this cache policy turns into a correctness bug for the whole lifetime. The
 // last describe block ties the two together so they cannot drift apart silently.
+//
+// ONE DAY, NOT ONE YEAR (owner decision 2026-09-26): the lifetime also bounds how long a cached copy
+// can outlive a DELETION (F-096, account deletion removes the file). A year-long max-age made that
+// promise unenforceable for clips; a day bounds it while still avoiding the hourly re-download.
 
 import { describe, it, expect, vi } from 'vitest'
 import { createGcsProvider } from './providers/gcs'
@@ -53,13 +57,18 @@ const openSession = async (contentType = 'video/mp4') => {
 }
 
 describe('the cache policy constant', () => {
-  it('is one year and marked immutable', () => {
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('public, max-age=31536000, immutable')
+  it('is one day and marked immutable', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('public, max-age=86400, immutable')
   })
 
-  it('is a year in seconds, not a transcription slip', () => {
+  it('is a day in seconds, not a transcription slip', () => {
     const seconds = Number(/max-age=(\d+)/.exec(IMMUTABLE_MEDIA_CACHE_CONTROL)![1])
-    expect(seconds).toBe(365 * 24 * 60 * 60)
+    expect(seconds).toBe(24 * 60 * 60)
+  })
+
+  it('🚨 never longer than a day — a deletion must take effect within it (F-096)', () => {
+    const seconds = Number(/max-age=(\d+)/.exec(IMMUTABLE_MEDIA_CACHE_CONTROL)![1])
+    expect(seconds).toBeLessThanOrEqual(86400)
   })
 
   it('is public, so a shared cache or CDN may serve it too', () => {
@@ -114,9 +123,9 @@ describe('the session binding is unchanged', () => {
   })
 })
 
-describe('what makes the one-year lifetime safe', () => {
+describe('what makes the long lifetime safe', () => {
   // If this block ever fails, IMMUTABLE_MEDIA_CACHE_CONTROL has become unsafe — a mutable or
-  // guessable key means a cached URL could later point at different bytes, for up to a year.
+  // guessable key means a cached URL could later point at different bytes, for the whole max-age.
   it('mints a fresh random key per upload, so no URL is ever reused', () => {
     const a = resolveUploadTarget({ kind: 'video', contentType: 'video/mp4', sizeBytes: 10, ownerId: OWNER }, ['video'])
     const b = resolveUploadTarget({ kind: 'video', contentType: 'video/mp4', sizeBytes: 10, ownerId: OWNER }, ['video'])
