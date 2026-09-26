@@ -51,7 +51,6 @@ const EXEMPT: Record<string, string> = {
   'auth/anonymous': 'mints the anonymous session; rate-limited 5/min + 30/day per IP',
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
-  'auth/zalo/complete': 'sign-in completion, runs before any account exists',
 
   // ── The product deliberately offers these to a visitor (see socialWriteAccess.ts). ──
   'chat': 'the anonymous tier IS chat — capped at ANON_LIFETIME_LIMIT per identity (five, once), server-side, from the shared AI question pool',

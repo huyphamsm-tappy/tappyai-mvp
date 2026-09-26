@@ -54,7 +54,18 @@ say "1/7 packages + security updates"
 apt-get update -q
 apt-get install -y -q ca-certificates curl gnupg openssl ufw unattended-upgrades \
   debian-keyring debian-archive-keyring apt-transport-https
-apt-get upgrade -y -q
+# KEEP the provider's config files. A cloud image ships a modified /etc/cloud/cloud.cfg, and the
+# upgrade asks what to do with it -- with no tty that prompt aborts dpkg and left the whole
+# install dead at step 1 on CloudFly (2026-09-26). confold/confdef answers it the safe way.
+# Non-fatal: the service does not depend on the upgrade, and stopping here installs nothing.
+APT_KEEP_CONF='-o Dpkg::Options::=--force-confold -o Dpkg::Options::=--force-confdef'
+# shellcheck disable=SC2086
+if ! apt-get upgrade -y -q $APT_KEEP_CONF; then
+  # A half-configured package from an earlier interrupted run blocks everything after it.
+  dpkg --force-confold --configure -a || true
+  # shellcheck disable=SC2086
+  apt-get upgrade -y -q $APT_KEEP_CONF || { warn "apt-get upgrade failed; continuing (check 'apt-get check' later)"; INCOMPLETE=1; }
+fi
 timedatectl set-timezone Asia/Ho_Chi_Minh || true
 cat > /etc/apt/apt.conf.d/20auto-upgrades <<'CONF'
 APT::Periodic::Update-Package-Lists "1";
@@ -104,6 +115,8 @@ if [ -n "$SECRET" ]; then
 elif [ -f "$ENV_FILE" ] && grep -q '^ZALO_VERIFY_SECRET=.\{32,\}' "$ENV_FILE"; then
   SECRET="$(sed -n 's/^ZALO_VERIFY_SECRET=//p' "$ENV_FILE")"
   echo "keeping the existing secret (not shown)"
+  # To add a SECOND secret (e.g. production alongside UAT) without disturbing the first, append
+  # it to the same line separated by a comma; the service accepts any listed secret."
 else
   SECRET="$(openssl rand -hex 32)"
   echo "generated a new secret (not shown). Read it with: sudo cat $ENV_FILE"

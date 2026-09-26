@@ -7,13 +7,14 @@ import type { AddressInfo } from 'node:net'
 import type { Server } from 'node:http'
 import {
   createHandler, secretMatches, startServer, lookupZaloId,
-  SECRET_HEADER, ZALO_ME_URL, MAX_BODY_BYTES,
+  SECRET_HEADER, ZALO_ME_URL, ZALO_ME_PROFILE_URL, MAX_BODY_BYTES,
 } from '../../../infra/zalo-verify/server.mjs'
 import { createProxyZaloVerifier, ZALO_VERIFY_SECRET_HEADER } from './identity'
 
 const SECRET = 'k'.repeat(48)
 const TOKEN = 'zalo-test-token-ABCDEFGHIJKLMNOP'
-const zalo = (body: unknown) => vi.fn(async () => new Response(JSON.stringify(body), { status: 200 }))
+const zalo = (body: unknown) =>
+  vi.fn(async (_url: string, _init?: RequestInit) => new Response(JSON.stringify(body), { status: 200 }))
 const post = (body: unknown, headers: Record<string, string> = { [SECRET_HEADER]: SECRET }, ip = '1.2.3.4') => ({
   method: 'POST', path: '/verify', headers, ip, body: typeof body === 'string' ? body : JSON.stringify(body),
 })
@@ -188,5 +189,90 @@ describe('over a real socket', () => {
   it('binds to loopback by default', async () => {
     await boot(zalo({}) as unknown as typeof fetch)
     expect((server!.address() as AddressInfo).address).toBe('127.0.0.1')
+  })
+})
+
+// ── profile mode: one extra field in the request, one extra call's worth of data back ─────────
+describe('the profile flavour', () => {
+  const profilePost = (body: unknown) => post({ at: TOKEN, profile: true, ...(body as object) })
+
+  it('asks Zalo for name and picture, and maps them', async () => {
+    const f = zalo({ id: '1234567890123', name: 'Huy Phạm', picture: { data: { url: 'https://s120.avatar/x.jpg' } } })
+    const h = createHandler({ secret: SECRET, fetchImpl: f as unknown as typeof fetch })
+
+    expect(await h(profilePost({}))).toEqual({
+      status: 200, body: { id: '1234567890123', name: 'Huy Phạm', avatar: 'https://s120.avatar/x.jpg' },
+    })
+    expect(f.mock.calls[0][0]).toBe('https://graph.zalo.me/v2.0/me?fields=id,name,picture')
+    expect(f.mock.calls[0][0]).toBe(ZALO_ME_PROFILE_URL)
+  })
+
+  it('without the flag it asks for the id alone and answers with the id alone', async () => {
+    const f = zalo({ id: '1234567890123', name: 'Huy Phạm' })
+    const h = createHandler({ secret: SECRET, fetchImpl: f as unknown as typeof fetch })
+
+    expect(await h(post({ at: TOKEN }))).toEqual({ status: 200, body: { id: '1234567890123' } })
+    expect(f.mock.calls[0][0]).toBe(ZALO_ME_URL)
+  })
+
+  it.each([
+    ['no picture at all', { id: '1234567890123', name: 'Huy' }, { name: 'Huy', avatar: null }],
+    ['a non-https avatar', { id: '1234567890123', picture: { data: { url: 'http://x/a.jpg' } } }, { name: null, avatar: null }],
+    ['an empty name', { id: '1234567890123', name: '  ' }, { name: null, avatar: null }],
+  ])('%s → null, never a broken value', async (_l, zaloBody, expected) => {
+    const h = createHandler({ secret: SECRET, fetchImpl: zalo(zaloBody) as unknown as typeof fetch })
+    expect(await h(profilePost({}))).toEqual({ status: 200, body: { id: '1234567890123', ...expected } })
+  })
+
+  it('the display fields never rescue a rejected token', async () => {
+    const h = createHandler({ secret: SECRET, fetchImpl: zalo({ error: 452, name: 'Huy' }) as unknown as typeof fetch })
+    expect(await h(profilePost({}))).toEqual({ status: 200, body: { error: 'invalid_token' } })
+  })
+
+  it('a name is never logged', async () => {
+    const logs: string[] = []
+    const server = startServer({
+      secret: SECRET, port: 0, log: (l: string) => logs.push(l),
+      handlerOpts: { fetchImpl: zalo({ id: '1234567890123', name: 'Huy Phạm' }) as unknown as typeof fetch },
+    })
+    await new Promise<void>((r) => server.on('listening', () => r()))
+    const port = (server.address() as AddressInfo).port
+    await fetch(`http://127.0.0.1:${port}/verify`, {
+      method: 'POST',
+      headers: { [SECRET_HEADER]: SECRET, 'content-type': 'application/json' },
+      body: JSON.stringify({ at: TOKEN, profile: true }),
+    })
+    await new Promise<void>((r) => server.close(() => r()))
+    expect(logs.join('\n')).not.toContain('Huy')
+    expect(logs.join('\n')).toMatch(/POST \/verify 200 id/)
+  })
+})
+
+// ── one VPS, two callers: UAT and production each hold their own secret (RULE 3) ──────────────
+describe('several accepted secrets', () => {
+  const PROD = 'p'.repeat(40)
+  const both = `${SECRET},${PROD}`
+
+  it('accepts either secret and refuses everything else', async () => {
+    const h = createHandler({ secret: both, fetchImpl: zalo({ id: '1234567890123' }) as unknown as typeof fetch })
+    for (const s of [SECRET, PROD]) {
+      expect((await h(post({ at: TOKEN }, { [SECRET_HEADER]: s }))).status).toBe(200)
+    }
+    expect((await h(post({ at: TOKEN }, { [SECRET_HEADER]: 'q'.repeat(40) }))).status).toBe(401)
+    // The list itself is not a secret anyone can present.
+    expect((await h(post({ at: TOKEN }, { [SECRET_HEADER]: both }))).status).toBe(401)
+  })
+
+  it('secretMatches handles the list form directly', () => {
+    expect(secretMatches(SECRET, both)).toBe(true)
+    expect(secretMatches(PROD, both)).toBe(true)
+    expect(secretMatches(PROD, `${SECRET} ${PROD}`)).toBe(true)
+    expect(secretMatches('short', both)).toBe(false)
+    // A too-short entry is discarded rather than accepted.
+    expect(secretMatches('abc', `abc,${SECRET}`)).toBe(false)
+  })
+
+  it('a list with nothing long enough refuses to start', () => {
+    expect(() => createHandler({ secret: 'a,b,c' })).toThrow(/32/)
   })
 })

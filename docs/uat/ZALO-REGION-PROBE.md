@@ -108,16 +108,23 @@ meta tag, since the deployment is ours.
 
 ## 4. Release checklist — Zalo
 
-### 🛑 RULE 1 — the activation toggle stays OFF until the R-1 fix is on production
+### 🛑 RULE 1 — the activation toggle stays OFF until BOTH conditions below are true
 
 It is one click, self-service, effective immediately, and the app is shared with production, which
 still runs `842379b`. The inactive state is the *only* thing making that unexploitable.
 
-1. The owner is already an admin, so UAT needs no activation.
-2. Merge the fix to `main`, deploy to production.
-3. Verify on production that `/complete` no longer reads a body id.
-4. **Only then** flip activation.
-5. Remove any firewall rule only after step 3.
+Owner's decision, 2026-09-26. Both conditions, not either:
+
+**(a) The R-1 fix AND the server-side callback (section 7) are live on production.**
+Order: merge to `main` -> deploy -> verify on production that a Zalo login never puts a token in
+the URL and that `/auth/zalo-finish` and `/api/auth/zalo/complete` return 404.
+
+**(b) Production has its own `ZALO_VERIFY_URL` and `ZALO_VERIFY_SECRET`, with a secret DIFFERENT
+from UAT's.** Without them production answers `?error=zalo_unavailable` for every Zalo login —
+fail-closed, by design — so the env has to land with, or before, the deploy.
+
+Only then flip activation. Remove any production firewall rule only after (a) is verified.
+The owner is already an admin, so UAT never needed activation.
 
 ### RULE 2 — callback URLs are gated by domain verification
 
@@ -127,11 +134,15 @@ that. Remove the dead localhost entry whenever the form next saves successfully.
 ### RULE 3 — production at release
 
 `ZALO_APP_ID` and `ZALO_APP_SECRET` already exist in Production. The region test DID end in a
-proxy design (section 5), so Production **must** also get `ZALO_VERIFY_URL` and `ZALO_VERIFY_SECRET`
-(secret **distinct from UAT's**; same VPS is fine) before the fix is deployed -- without them
-`/complete` answers 503 and Zalo login is off on production (fail-closed, by design). Rollback is a revert and redeploy —
-no migration, no data change. Post-deploy: sign in with Zalo and confirm the account is the
-token's own, then repeat with a forged `zaloId` in the body and confirm it is ignored.
+proxy design (section 5), so Production **must** also get `ZALO_VERIFY_URL` and
+`ZALO_VERIFY_SECRET`, with a secret **different from UAT's**. One VPS serves both: the service
+accepts a comma-separated list, so append the production secret to `ZALO_VERIFY_SECRET` in
+`/etc/zalo-verify/env` and give Vercel Production only that one. Without the env, every Zalo
+login on production ends at `?error=zalo_unavailable`.
+
+Rollback is a revert and redeploy — no migration, no data change. Post-deploy checks: sign in with
+Zalo and confirm the account is the token's own; confirm no URL in the browser ever shows a token;
+confirm `/api/auth/zalo/complete` and `/auth/zalo-finish` are 404.
 
 ### RULE 4 — mobile is not released yet and shares this backend
 
@@ -173,22 +184,62 @@ browser --QR--> Zalo --code--> /api/auth/zalo/callback (Vercel, exchanges code, 
   (60/min/IP, 600/min total, 10 bad secrets/min/IP -> 15 min block), 5s upstream timeout,
   logs outcome only. Tests: `src/lib/zalo/zaloVerifyService.test.ts` (incl. end-to-end against
   the app-side verifier over a socket).
-* `/auth/zalo-finish` now strips `#at=` with `history.replaceState` right after reading it.
-  **Correction (e5488ae's message overstated this):** replaceState only removes it from the
-  address bar and the back/forward entry. It is NOT confirmed to remove it from Chrome's History
-  database, which records the URL when the navigation commits -- exactly where Phase B found a
-  token. Treat it as a mitigation, not a fix.
+* `/auth/zalo-finish` stripped `#at=` with `history.replaceState`. **MEASURED 2026-09-26: that
+  did NOT remove the token from Chrome's History database** (see section 6). The page is gone
+  now -- section 7.
 
-### Next round (owner-approved 2026-09-24, after the VPS runs stably) -- token never reaches the browser
+---
 
-The server now verifies through zalo-verify, so the browser leg is unnecessary:
-`/api/auth/zalo/callback` does everything server-side -- PKCE code exchange -> access token ->
-zalo-verify -> id -> Supabase session -- and redirects to `/auth/confirm`. Delete
-`/auth/zalo-finish`, the `#at=` fragment and the `zalo_at` cookie. The client-side profile fetch
-(name / avatar) goes with it; those fields are cosmetic. Covers web and the native
-`platform=android|ios` return leg, which must be re-tested on a real Android build (RULE 4).
+## 6. replaceState does NOT clear the browser's history -- measured
 
-### Env (UAT only -- Preview, branch `rc/web-uat`)
+On 2026-09-26 the owner logged in on UAT three times. Chrome's History database afterwards, read
+with the owner's authorisation (shapes only, no values printed):
 
-`ZALO_VERIFY_URL=https://zalo-verify.tappyai.com/verify`, `ZALO_VERIFY_SECRET=<generated, never
-printed>`. Set only when the VPS is up. Production: see RULE 3.
+```
+09-26 04:28:56  uat.tappyai.com/auth/zalo-finish        (no params)          <- the replaceState row
+09-26 04:28:56  uat.tappyai.com/auth/zalo-finish        frag.at[len=382]     <- the token, still there
+09-26 04:28:56  uat.tappyai.com/api/auth/zalo/callback  query.code[len=419]
+09-26 04:28:49  uat.tappyai.com/auth/zalo-finish        frag.at[len=384]
+09-26 04:28:40  uat.tappyai.com/auth/zalo-finish        frag.at[len=386]
+```
+
+`history.replaceState` ADDS a clean row; it does not rewrite the one Chrome recorded when the
+navigation committed. So every Zalo login left a live access token, and the OAuth code, in
+history -- and in browser sync, screenshots, and reach of any extension that reads `location`.
+The first pass through this evidence picked the stripped row and briefly read as "the token is
+gone"; the query has to filter on `at=` to see the truth.
+
+This is why the browser leg was removed the same day (section 7), and why the correction in
+b7a9586 was right to distrust replaceState.
+
+Owner action still open: delete the `zalo-finish` and `api/auth/zalo/callback` rows in
+chrome://history on that machine. The tokens are expired, but the rows should not linger.
+
+---
+
+## 7. The token never reaches the browser (2026-09-26)
+
+`/api/auth/zalo/callback` now does the whole flow server-side: code exchange -> verifier in
+Vietnam (`{at, profile: true}` -> id + name + avatar) -> Supabase user -> one-time magic-link
+hash -> `302 /auth/confirm?token_hash=...`. No fragment, no `zalo_at` cookie, no client step.
+
+Deleted: `src/app/auth/zalo-finish/` and `src/app/api/auth/zalo/complete/`. The session logic
+moved to `src/lib/zalo/session.ts` (create-only, so a returning user keeps the avatar they chose).
+
+Failure mapping, all fail-closed, none of them creating or signing in anything:
+
+| What happened | Redirect |
+|---|---|
+| bad state / no code | `/login?error=zalo_denied` |
+| code exchange failed | `/login?error=zalo_failed` |
+| verifier unreachable / -501 / wrong secret / unconfigured | `/login?error=zalo_unavailable` |
+| Zalo rejected the token | `/login?error=zalo_invalid` |
+| Supabase failed | `/login?error=zalo_failed` |
+
+Pinned by `src/app/api/auth/zalo/callback/serverSideCallback.test.ts`, including the owner's
+test: no response header on any path -- success or failure -- contains the access token, the
+OAuth code or a `#` fragment, and the two deleted directories must stay deleted.
+
+Native apps are unaffected in shape: they still open `/api/auth/zalo` and come back through
+`/auth/confirm?...&platform=ios|android`. **Still to do before the mobile release: run this on a
+real Android build** (RULE 4).

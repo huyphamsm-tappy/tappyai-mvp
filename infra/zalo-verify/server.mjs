@@ -7,12 +7,17 @@
 //
 // CONTRACT (the app side is createProxyZaloVerifier in src/lib/zalo/identity.ts):
 //   POST /verify   header x-zalo-verify-secret: <shared secret>   body {"at":"<access token>"}
+//                  body may add "profile": true to also get the display name and avatar
 //     200 {"id":"<digits>"}                  Zalo returned the user id
+//     200 {"id","name","avatar"}             ... with "profile": true
 //     200 {"error":"invalid_token"}          Zalo rejected the token (the app answers 401)
 //     502 {"error":"region_restricted"}      Zalo -501: this box is not seen as Vietnamese
 //     502 {"error":"upstream_error","code"}  any other Zalo answer, timeout or network error
 //     400 {"error":"bad_request"}            malformed body
 //     401 {"error":"unauthorized"}           missing / wrong secret (checked FIRST, constant-time)
+//                                            ZALO_VERIFY_SECRET may list several secrets
+//                                            (comma/space separated) so UAT and production can
+//                                            each hold their own against one VPS
 //     429 {"error":"rate_limited"}
 //   GET  /healthz  200 {"ok":true}           no secret needed, reveals nothing
 //
@@ -26,6 +31,8 @@ import { pathToFileURL } from 'node:url'
 
 export const SECRET_HEADER = 'x-zalo-verify-secret'
 export const ZALO_ME_URL = 'https://graph.zalo.me/v2.0/me?fields=id'
+// Login creates the account, so it also needs what to call the person. Same single call.
+export const ZALO_ME_PROFILE_URL = 'https://graph.zalo.me/v2.0/me?fields=id,name,picture'
 export const UPSTREAM_TIMEOUT_MS = 5000
 export const MAX_BODY_BYTES = 4096
 // Zalo codes that mean "this token is not valid" -- a verdict on the user, not an outage.
@@ -38,10 +45,21 @@ const TOKEN_SHAPE = /^[\x21-\x7e]{16,2048}$/
 
 const digest = (s) => createHash('sha256').update(String(s), 'utf8').digest()
 
-/** Constant-time: both sides hashed to 32 bytes first, so a length difference leaks nothing. */
+/**
+ * Constant-time: both sides hashed to 32 bytes first, so a length difference leaks nothing.
+ *
+ * `expected` may hold SEVERAL secrets separated by commas or whitespace, so one VPS can serve
+ * UAT and production with a different secret each (release checklist RULE 3). Every candidate is
+ * compared — no early exit — so the time taken does not say which one matched.
+ */
 export function secretMatches(given, expected) {
-  if (typeof given !== 'string' || typeof expected !== 'string' || expected.length === 0) return false
-  return timingSafeEqual(digest(given), digest(expected))
+  if (typeof given !== 'string' || typeof expected !== 'string') return false
+  const candidates = expected.split(/[,\s]+/).filter((x) => x.length >= 32)
+  if (candidates.length === 0) return false
+  const g = digest(given)
+  let ok = false
+  for (const c of candidates) if (timingSafeEqual(g, digest(c))) ok = true
+  return ok
 }
 
 /** Fixed-window counter per key. Small and in-memory: one process, one box. */
@@ -63,10 +81,10 @@ export function createRateLimiter({ limit, windowMs, now = Date.now, maxKeys = 1
 }
 
 /** Ask Zalo. Returns the response this service should send. Never throws. */
-export async function lookupZaloId(at, fetchImpl = fetch, timeoutMs = UPSTREAM_TIMEOUT_MS) {
+export async function lookupZaloId(at, fetchImpl = fetch, timeoutMs = UPSTREAM_TIMEOUT_MS, wantProfile = false) {
   let body
   try {
-    const res = await fetchImpl(ZALO_ME_URL, {
+    const res = await fetchImpl(wantProfile ? ZALO_ME_PROFILE_URL : ZALO_ME_URL, {
       method: 'GET',
       headers: { access_token: at },
       signal: AbortSignal.timeout(timeoutMs),
@@ -78,7 +96,11 @@ export async function lookupZaloId(at, fetchImpl = fetch, timeoutMs = UPSTREAM_T
   }
   const code = typeof body?.error === 'number' ? body.error : null
   if (body && typeof body.id === 'string' && ZALO_ID.test(body.id) && !code) {
-    return { status: 200, body: { id: body.id } }
+    if (!wantProfile) return { status: 200, body: { id: body.id } }
+    const name = typeof body.name === 'string' && body.name.trim() ? body.name.trim() : null
+    const url = body.picture?.data?.url
+    const avatar = typeof url === 'string' && /^https:\/\//.test(url) ? url : null
+    return { status: 200, body: { id: body.id, name, avatar } }
   }
   if (code === REGION_RESTRICTED) return { status: 502, body: { error: 'region_restricted' } }
   if (code !== null && INVALID_TOKEN_CODES.has(code)) return { status: 200, body: { error: 'invalid_token' } }
@@ -99,8 +121,9 @@ export function createHandler({
   blockMs = 15 * 60_000,
   timeoutMs = UPSTREAM_TIMEOUT_MS,
 }) {
-  if (typeof secret !== 'string' || secret.length < 32) {
-    throw new Error('ZALO_VERIFY_SECRET must be at least 32 characters')
+  // One secret, or several separated by commas/whitespace; each must be at least 32 characters.
+  if (typeof secret !== 'string' || !secret.split(/[,\s]+/).some((x) => x.length >= 32)) {
+    throw new Error('ZALO_VERIFY_SECRET must hold at least one secret of 32+ characters')
   }
   const perIp = createRateLimiter({ limit: perIpPerMinute, windowMs: 60_000, now })
   const global = createRateLimiter({ limit: globalPerMinute, windowMs: 60_000, now })
@@ -127,14 +150,16 @@ export function createHandler({
       return { status: 401, body: { error: 'unauthorized' } }
     }
 
-    let at
+    let at, wantProfile
     try {
-      at = JSON.parse(req.body)?.at
+      const parsed = JSON.parse(req.body)
+      at = parsed?.at
+      wantProfile = parsed?.profile === true
     } catch {
       return { status: 400, body: { error: 'bad_request' } }
     }
     if (typeof at !== 'string' || !TOKEN_SHAPE.test(at)) return { status: 400, body: { error: 'bad_request' } }
-    return lookupZaloId(at, fetchImpl, timeoutMs)
+    return lookupZaloId(at, fetchImpl, timeoutMs, wantProfile)
   }
 }
 
@@ -156,7 +181,7 @@ export function startServer({ secret, port = 8787, host = '127.0.0.1', log = con
       })
       res.end(payload)
       // Outcome only. Never the token, the body, the headers or the secret.
-      const outcome = body.error ?? (body.id ? 'id' : 'ok')
+      const outcome = body.error ?? (body.id ? 'id' : 'ok')  // never the id itself, never a name
       const code = body.code !== undefined ? ` code=${body.code}` : ''
       log(`${req.method} ${path} ${status} ${outcome}${code} ${Date.now() - started}ms`)
     }

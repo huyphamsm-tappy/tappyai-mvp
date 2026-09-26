@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import {
-  createProxyZaloVerifier, createZaloVerifier,
+  createProxyZaloVerifier, createZaloVerifier, createZaloProfileVerifier,
   ZALO_VERIFY_SECRET_HEADER, ZALO_VERIFY_URL_ENV, ZALO_VERIFY_SECRET_ENV,
 } from './identity'
 
@@ -116,14 +116,63 @@ describe('createZaloVerifier — configuration', () => {
 })
 
 describe('both server boundaries use it', () => {
-  it('login /complete and the Mini App verify route', async () => {
+  it('the login callback and the Mini App verify route', async () => {
     const { readFileSync } = await import('node:fs')
     const { join } = await import('node:path')
     const root = join(__dirname, '..', '..', '..')
-    for (const rel of ['src/app/api/auth/zalo/complete/route.ts', 'src/app/api/zalo/mini/verify/route.ts']) {
+    const boundaries: [string, string][] = [
+      // Login needs the display fields too, so it takes the profile flavour of the same proxy.
+      ['src/app/api/auth/zalo/callback/route.ts', 'createZaloProfileVerifier('],
+      ['src/app/api/zalo/mini/verify/route.ts', 'createZaloVerifier('],
+    ]
+    for (const [rel, expected] of boundaries) {
       const src = readFileSync(join(root, rel), 'utf8')
-      expect(src).toContain('createZaloVerifier(')
+      expect(src).toContain(expected)
       expect(src).not.toContain('createGraphZaloVerifier(')
     }
+  })
+})
+
+// ── The profile flavour: same proxy, same fail-closed rules, plus the display fields ──────────
+//
+// Login creates accounts, so it needs a name and an avatar. Those used to come from the browser
+// calling graph.zalo.me itself — the reason the access token was ever handed to the browser.
+describe('createZaloProfileVerifier', () => {
+  const ok = { [ZALO_VERIFY_URL_ENV]: URL_, [ZALO_VERIFY_SECRET_ENV]: SECRET } as unknown as NodeJS.ProcessEnv
+
+  const answering = (res: Response) => {
+    const fetchImpl = vi.fn(async () => res) as unknown as typeof fetch
+    return { v: createZaloProfileVerifier(ok, fetchImpl), fetchImpl }
+  }
+
+  it('asks for the profile explicitly and returns all three fields', async () => {
+    const { v, fetchImpl } = answering(json(200, { id: '1234567890123', name: 'Huy Phạm', avatar: 'https://z/a.jpg' }))
+    await expect(v.verify('t')).resolves.toEqual({ id: '1234567890123', name: 'Huy Phạm', avatar: 'https://z/a.jpg' })
+    const [, init] = (fetchImpl as unknown as ReturnType<typeof vi.fn>).mock.calls[0]
+    expect(JSON.parse(init.body)).toEqual({ at: 't', profile: true })
+  })
+
+  it('a verifier that answers with the id alone is still valid — the extras are optional', async () => {
+    const { v } = answering(json(200, { id: '1234567890123' }))
+    await expect(v.verify('t')).resolves.toEqual({ id: '1234567890123', name: null, avatar: null })
+  })
+
+  it('blank display fields become null rather than empty strings', async () => {
+    const { v } = answering(json(200, { id: '1234567890123', name: '   ', avatar: '' }))
+    await expect(v.verify('t')).resolves.toEqual({ id: '1234567890123', name: null, avatar: null })
+  })
+
+  it('id still decides everything: a bad id is refused even with a name attached', async () => {
+    const { v } = answering(json(200, { id: 'admin', name: 'Huy' }))
+    await expect(v.verify('t')).rejects.toThrow(/no id/)
+  })
+
+  it('invalid_token → null; a failure → throw; unconfigured → throw', async () => {
+    await expect(answering(json(200, { error: 'invalid_token' })).v.verify('t')).resolves.toBeNull()
+    await expect(answering(json(502, { error: 'region_restricted' })).v.verify('t')).rejects.toThrow(/region_restricted/)
+    const fetchImpl = vi.fn() as unknown as typeof fetch
+    await expect(createZaloProfileVerifier({} as NodeJS.ProcessEnv, fetchImpl).verify('t'))
+      .rejects.toThrow('zalo verify proxy not configured')
+    expect(fetchImpl).not.toHaveBeenCalled()
   })
 })

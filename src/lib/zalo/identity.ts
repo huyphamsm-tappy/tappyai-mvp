@@ -72,68 +72,99 @@ export const ZALO_VERIFY_TIMEOUT_MS = 6000
 
 const ZALO_ID = /^\d{6,32}$/
 
-/** The adapter the app uses: POST `{at}` to our Vietnam-hosted verifier, get `{id}` back. */
-export function createProxyZaloVerifier(opts: {
-  url: string
-  secret: string
-  fetchImpl?: typeof fetch
-  timeoutMs?: number
-}): ZaloIdentityVerifier {
+/** What Zalo knows about the person behind a token. Only `id` is identity; the rest is display. */
+export type ZaloProfile = { id: string; name: string | null; avatar: string | null }
+
+export type ZaloProfileVerifier = { verify(accessToken: string): Promise<ZaloProfile | null> }
+
+type ProxyOpts = { url: string; secret: string; fetchImpl?: typeof fetch; timeoutMs?: number }
+
+const str = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim() : null)
+
+/**
+ * One round trip to the verifier. Resolves to the profile, to null when Zalo rejected the token,
+ * and THROWS for everything else — see the fail-closed note above.
+ */
+async function proxyResolve(opts: ProxyOpts, accessToken: string, wantProfile: boolean): Promise<ZaloProfile | null> {
   const fetchImpl = opts.fetchImpl ?? fetch
-  const timeoutMs = opts.timeoutMs ?? ZALO_VERIFY_TIMEOUT_MS
-  return {
-    async verify(accessToken) {
-      let res: Response
-      try {
-        res = await fetchImpl(opts.url, {
-          method: 'POST',
-          headers: { 'content-type': 'application/json', [ZALO_VERIFY_SECRET_HEADER]: opts.secret },
-          body: JSON.stringify({ at: accessToken }),
-          signal: AbortSignal.timeout(timeoutMs),
-          cache: 'no-store',
-        })
-      } catch (e) {
-        // Timeout, DNS, TLS, connection refused — the verifier did not answer.
-        throw new Error(`zalo verify proxy unreachable: ${e instanceof Error ? e.name : 'error'}`)
-      }
-      // 401/403 is OUR secret being refused — a configuration fault, never a verdict on the user.
-      if (res.status === 401 || res.status === 403) throw new Error('zalo verify proxy rejected our secret')
-      let body: { id?: unknown; error?: unknown }
-      try {
-        body = (await res.json()) as { id?: unknown; error?: unknown }
-      } catch {
-        throw new Error(`zalo verify proxy HTTP ${res.status}: unparseable body`)
-      }
-      if (res.ok && typeof body.id === 'string' && ZALO_ID.test(body.id)) return body.id
-      // The one answer that means "this token is not valid": Zalo itself rejected it.
-      if (res.ok && body.error === 'invalid_token') return null
-      throw new Error(`zalo verify proxy HTTP ${res.status}: ${typeof body.error === 'string' ? body.error : 'no id'}`)
-    },
+  let res: Response
+  try {
+    res = await fetchImpl(opts.url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', [ZALO_VERIFY_SECRET_HEADER]: opts.secret },
+      body: JSON.stringify(wantProfile ? { at: accessToken, profile: true } : { at: accessToken }),
+      signal: AbortSignal.timeout(opts.timeoutMs ?? ZALO_VERIFY_TIMEOUT_MS),
+      cache: 'no-store',
+    })
+  } catch (e) {
+    // Timeout, DNS, TLS, connection refused — the verifier did not answer.
+    throw new Error(`zalo verify proxy unreachable: ${e instanceof Error ? e.name : 'error'}`)
   }
+  // 401/403 is OUR secret being refused — a configuration fault, never a verdict on the user.
+  if (res.status === 401 || res.status === 403) throw new Error('zalo verify proxy rejected our secret')
+  let body: { id?: unknown; name?: unknown; avatar?: unknown; error?: unknown }
+  try {
+    body = (await res.json()) as typeof body
+  } catch {
+    throw new Error(`zalo verify proxy HTTP ${res.status}: unparseable body`)
+  }
+  if (res.ok && typeof body.id === 'string' && ZALO_ID.test(body.id)) {
+    return { id: body.id, name: str(body.name), avatar: str(body.avatar) }
+  }
+  // The one answer that means "this token is not valid": Zalo itself rejected it.
+  if (res.ok && body.error === 'invalid_token') return null
+  throw new Error(`zalo verify proxy HTTP ${res.status}: ${typeof body.error === 'string' ? body.error : 'no id'}`)
+}
+
+/** The adapter the app uses: POST `{at}` to our Vietnam-hosted verifier, get `{id}` back. */
+export function createProxyZaloVerifier(opts: ProxyOpts): ZaloIdentityVerifier {
+  return { verify: async (at) => (await proxyResolve(opts, at, false))?.id ?? null }
 }
 
 /**
- * The verifier every route should use.
+ * The same call, asking the verifier for the display fields too (`{at, profile: true}`).
  *
- * Proxy when `ZALO_VERIFY_URL` (https only) and `ZALO_VERIFY_SECRET` (≥ 32 chars) are both set;
- * otherwise a verifier that always throws. Missing configuration is therefore a 503, never a
- * silent fall back to calling `graph.zalo.me` directly — which from our hosting region is a
- * guaranteed -501 and would only hide the misconfiguration behind a vaguer error.
+ * Login needs them: the browser used to read name and avatar from `graph.zalo.me` itself, and
+ * that was the only reason the access token was ever handed to the browser. The token stays on
+ * the server now, so the one machine allowed to ask Zalo — the verifier — asks for all three.
  */
+export function createProxyZaloProfileVerifier(opts: ProxyOpts): ZaloProfileVerifier {
+  return { verify: (at) => proxyResolve(opts, at, true) }
+}
+
+/**
+ * `ZALO_VERIFY_URL` (https only) + `ZALO_VERIFY_SECRET` (≥ 32 chars), or null when either is
+ * missing or malformed. Null means every verifier below throws instead of running, so missing
+ * configuration is a 503 — never a silent fall back to calling `graph.zalo.me` directly, which
+ * from our hosting region is a guaranteed -501 behind a vaguer error.
+ */
+function proxyOpts(env: NodeJS.ProcessEnv, fetchImpl?: typeof fetch): ProxyOpts | null {
+  const url = env[ZALO_VERIFY_URL_ENV]
+  const secret = env[ZALO_VERIFY_SECRET_ENV]
+  if (!url || !url.startsWith('https://') || !secret || secret.length < 32) return null
+  return { url, secret, fetchImpl }
+}
+
+const NOT_CONFIGURED = 'zalo verify proxy not configured'
+
+/** The id-only verifier every route should use. */
 export function createZaloVerifier(
   env: NodeJS.ProcessEnv = process.env,
   fetchImpl?: typeof fetch,
 ): ZaloIdentityVerifier {
-  const url = env[ZALO_VERIFY_URL_ENV]
-  const secret = env[ZALO_VERIFY_SECRET_ENV]
-  if (!url || !url.startsWith('https://') || !secret || secret.length < 32) {
-    return {
-      async verify() {
-        throw new Error('zalo verify proxy not configured')
-      },
-    }
-  }
-  return createProxyZaloVerifier({ url, secret, fetchImpl })
+  const opts = proxyOpts(env, fetchImpl)
+  if (!opts) return { async verify() { throw new Error(NOT_CONFIGURED) } }
+  return createProxyZaloVerifier(opts)
+}
+
+/** The id + display-fields verifier, for the one caller that creates accounts: login. */
+export function createZaloProfileVerifier(
+  env: NodeJS.ProcessEnv = process.env,
+  fetchImpl?: typeof fetch,
+): ZaloProfileVerifier {
+  const opts = proxyOpts(env, fetchImpl)
+  if (!opts) return { async verify() { throw new Error(NOT_CONFIGURED) } }
+  return createProxyZaloProfileVerifier(opts)
 }
 
 /** A deterministic verifier for tests and local runs. Accepts `mock:<id>` tokens only. */
