@@ -71,7 +71,9 @@ code on the shipping branch fails for users if the migration is missing when the
 | **S1** | `20260904_group_read_boundary` (**added 2026-09-25, F-065 P0**) | drops `"Anyone can read groups"` / `"Anyone can read group members"` (`USING (true)` to `public`); participant-only SELECT `TO authenticated` via `fn_group_participant()` | no (replaces 2 policies) | §1-S1 | **SECURITY** — without it anyone holding the public anon key reads every group and every member's name/area/budget/dietary restrictions (measured on audit 2026-09-25). ⚠️ **Apply AFTER the web deploy** (§2) |
 | **D1** | `20260911b_user_memory_auth_fk` (**added 2026-09-25, F-093 P1**) | `user_memory.user_id` text → uuid, FK → `auth.users` **ON DELETE CASCADE**; policy recreated as `auth.uid() = user_id`; removes orphan rows first, fingerprints them in `user_memory_fk_cleanup_log` | no (type change + FK) | rollback/ file | **DELETION PROMISE** — without it, deleting an account leaves its AI memory behind (`/delete-account` promises it is removed). ⚠️ **Owner authorization required** (migration header). Independent of the web deploy |
 | **D2** | `20260925_account_deletion_cascade_gaps` (**added 2026-09-25, F-093 P1**) | FK → `auth.users` **ON DELETE CASCADE** on `decision_evidence.owner_id` and `anon_chat_usage.user_id` (added `NOT VALID`, validated only when no orphan exists; deletes nothing) | no (2 FKs) | rollback/ file | same promise, the two other stores. After D1. ⚠️ **Owner authorization required** |
-| **D3** | `20260925b_decision_evidence_sweep` (**added 2026-09-25, F-097**) | function `decision_evidence_sweep(p_limit)` — deletes `decision_evidence` rows past `expires_at`, service_role only; called daily by `/api/cron/decision-evidence-sweep` (`vercel.json` 18:15 UTC) | no (1 function) | rollback/ file | **RETENTION** — without it expired shopping/place evidence of users who never return is kept forever. ⚠️ **Owner approval required**; the cron ships with the code and answers 500 until this is applied |
+| **D3** | `20260925b_decision_evidence_sweep` (**added 2026-09-25, F-097**) | function `decision_evidence_sweep(p_limit)` — deletes `decision_evidence` rows past `expires_at`, service_role only; called daily by `/api/cron/decision-evidence-sweep` (`vercel.json` 18:15 UTC) | no (1 function) | rollback/ file | **RETENTION** — without it expired shopping/place evidence of users who never return is kept forever. ✅ **Owner APPROVED 2026-09-25**; the cron ships with the code and answers 500 until this is applied |
+| **D4** | `20260925c_account_deletion_f096` (**added 2026-09-25, F-096**) | `shared_results.owner_id` and `notifications.actor_id` SET NULL → **CASCADE**; table `account_deletion_jobs` + BEFORE DELETE trigger on `auth.users` that queues the deleted user's group ids and Google Calendar token; cron `/api/cron/account-deletion-jobs` deletes their uploads from the bucket and revokes the grant | no (2 FKs, 1 table, 1 trigger) | rollback/ file | **DELETION PROMISE** — public share pages, notifications carrying the user's name, and uploaded files outlive the account without it. ⚠️ **Owner authorization required.** Apply BEFORE publishing the new /delete-account copy |
+| **D5** | `20260925d_audit_log_pii_retention` (**added 2026-09-25, F-096**) | new audit rows store **no email**; IP + user-agent → `audit_log_client` (90 days) with a salted digest in the chained row; sensitive before/after/metadata keys masked; 12-month prune behind a verified anchor (`audit_log_anchor`, anchor-aware `fn_verify_audit_chain`); cron `/api/cron/audit-retention` | no (column made nullable, trigger, 2 tables, verifier replaced) | rollback/ file | **RETENTION** — without it every admin action keeps email, IP and user-agent forever. ⚠️ **Owner authorization required.** Independent of the deploy |
 | ✗ | `20260922_music_soundhelix_attribution` | data UPDATE on `music_tracks` | — | none | **SKIP on prod.** It requires `license`/`source_url` from `add_music_attribution.sql`, which prod does NOT have (09-17 snapshot) → it would fail. Music is hidden and not launching. |
 
 The detailed check / apply / verify blocks for #1–#8 follow unchanged; the new steps (G1, P1, G2, GR,
@@ -284,7 +286,7 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
   `DELETE FROM auth.users` for it; count rows carrying its id in every table → 0; `ROLLBACK`. Script: `docs/uat/evidence/f093-2026-09-25/`.
 - **Rollback:** `supabase/migrations/rollback/20260925_account_deletion_cascade_gaps_rollback.sql` (drops the two FKs only).
 
-### §1-D3) `supabase/migrations/20260925b_decision_evidence_sweep.sql` — the TTL sweep (F-097) — ⚠️ OWNER APPROVES
+### §1-D3) `supabase/migrations/20260925b_decision_evidence_sweep.sql` — the TTL sweep (F-097) — ✅ OWNER APPROVED 2026-09-25
 - **Check first:** `SELECT count(*) FILTER (WHERE expires_at < now()) AS expired, count(*) AS total FROM public.decision_evidence;`
   and `SELECT proname FROM pg_proc WHERE proname = 'decision_evidence_sweep';` → 0 rows = not applied.
 - **Apply** (any time after D2): the file. Then **the one-off cleanup**, same session: `SELECT public.decision_evidence_sweep();`
@@ -298,6 +300,25 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - **Verify after:** `SELECT has_function_privilege('authenticated','public.decision_evidence_sweep(integer)','EXECUTE');` → `f`; expired count → 0.
 - **Rollback:** `supabase/migrations/rollback/20260925b_decision_evidence_sweep_rollback.sql` (drops the function; the cron then answers 500).
 - Audit evidence: `docs/uat/evidence/f097-2026-09-25/audit-apply-and-one-off-sweep.log` (26 rows → 23 expired deleted, 3 live kept, orphans 9 → 0, FK validated).
+
+### §1-D4) `supabase/migrations/20260925c_account_deletion_f096.sql` — what deleting an account takes with it (F-096) — ⚠️ OWNER APPROVES
+- **Check first:** `SELECT conrelid::regclass, confdeltype FROM pg_constraint WHERE contype='f' AND confrelid='auth.users'::regclass AND conrelid IN ('public.shared_results'::regclass,'public.notifications'::regclass);` → `n` = not applied; `SELECT tgname FROM pg_trigger WHERE tgname='trg_enqueue_account_deletion';` → 0 rows.
+- **Apply:** the file (any time after D1/D2). Nothing is deleted by applying it; it changes what the NEXT account deletion does.
+- **Needs in production:** `CRON_SECRET` (as every cron) and the deployment's Workload Identity for the bucket — already what uploads use; the bridge account holds `roles/storage.objectUser` (list + delete).
+- **Verify after:** both `confdeltype` = `c`; trigger present; `SELECT has_table_privilege('authenticated','public.account_deletion_jobs','SELECT')` → `f`. Then, with a synthetic test account (never a real one): upload an avatar, delete the account in the dashboard, run
+  `curl -H "Authorization: Bearer $CRON_SECRET" https://<prod-host>/api/cron/account-deletion-jobs` → `completed ≥ 1`, and the avatar URL answers 404/403.
+- **Operator runbook:** `docs/ops/ACCOUNT-DELETION.md`; staff accounts: `docs/ops/STAFF-LEAVER-RUNBOOK.md`.
+- **Rollback:** `supabase/migrations/rollback/20260925c_account_deletion_f096_rollback.sql` — drain the queue first (pending jobs are lost with the table).
+- Audit evidence: `docs/uat/evidence/f096-2026-09-26/` (apply log; rolled-back E2E with synthetic users).
+
+### §1-D5) `supabase/migrations/20260925d_audit_log_pii_retention.sql` — audit log without email; IP/UA 90 days; 12-month chain (F-096) — ⚠️ OWNER APPROVES
+- **Check first:** `SELECT count(*) FROM fn_verify_audit_chain();` → must be 0 **before** applying (a chain that does not verify now would be reported by the prune later, not caused by it). `SELECT tgname FROM pg_trigger WHERE tgname='aaa_audit_log_pii';` → 0 rows = not applied.
+- **Apply:** the file. Existing rows are NOT rewritten (rewriting a chained row is indistinguishable from tampering); they keep their email/IP/UA until they age out at 12 months.
+- **Verify after:** `fn_verify_audit_chain()` still 0 rows; one admin action in the back office → its row has `actor_email` NULL, `ip_address` NULL, `metadata.client_digest` set, and one `audit_log_client` row.
+- **Cron:** `/api/cron/audit-retention` (daily 19:00 UTC) — sweeps IP/UA at 90 days, prunes the chain at 12 months; a prefix that does not verify is refused (the cron answers 500 with `pruneError: 55000`) — investigate, never force.
+- **Admin screens:** the recent-activity list and the audit API show "—" for the email of rows written after D5 (the actor id is still there).
+- **Rollback:** `supabase/migrations/rollback/20260925d_audit_log_pii_retention_rollback.sql` — 🚨 not after a prune without exporting `audit_log_anchor` first (the restored verifier would report the pruned head).
+- Audit evidence: `docs/uat/evidence/f096-2026-09-26/` (applied; chain 0 problems before and after, 28 rows untouched).
 
 ### §1-V) Already on prod — verify, do NOT re-apply
 ```sql

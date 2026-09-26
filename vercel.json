@@ -52,6 +52,14 @@
     {
       "path": "/api/cron/decision-evidence-sweep",
       "schedule": "15 18 * * *"
+    },
+    {
+      "path": "/api/cron/account-deletion-jobs",
+      "schedule": "45 18 * * *"
+    },
+    {
+      "path": "/api/cron/audit-retention",
+      "schedule": "0 19 * * *"
     }
   ]
 }
