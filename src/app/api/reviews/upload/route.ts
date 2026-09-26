@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia } from '@/lib/media'
+import { randomMediaSuffix } from '@/lib/media/key'
 import { sniffImageType, imageExt, imageMime } from '@/lib/security/imageType'
 import { stripImageMetadata } from '@/lib/media/stripImageMetadata'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -83,7 +84,10 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const path = `reviews/${user.id}/${Date.now()}.${imageExt(kind)}`
+    // Owner decision 2026-09-26: the same 24-char random suffix every other upload path uses. A bare
+    // `Date.now()` was guessable from the (public) user id and the rough upload time; the bucket is
+    // publicly readable by URL. The timestamp stays in front only for ordering in a listing.
+    const path = `reviews/${user.id}/${Date.now()}-${randomMediaSuffix()}.${imageExt(kind)}`
     // `req` carries the deployment's OIDC token in production — without it a
     // GCS write has no identity to federate with.
     const blob = await putMedia(

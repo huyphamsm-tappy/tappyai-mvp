@@ -130,6 +130,14 @@ describe('the upload route refuses everyone the review route refuses', () => {
     expect(body.url).toContain('https://cdn.example/reviews/')
     expect(puts).toHaveLength(1)
   })
+
+  it('the stored name carries 24 random characters, not just a timestamp (owner 2026-09-26)', async () => {
+    const a = (await upload()).puts[0]
+    h.state.puts = []
+    const b = (await upload()).puts[0]
+    expect(a).toMatch(/^reviews\/[^/]+\/\d+-[A-Za-z0-9]{24}\.[a-z]+$/)
+    expect(a.split('-').pop()).not.toBe(b.split('-').pop())
+  })
 })
 
 describe('the pre-existing refusals are unchanged', () => {
