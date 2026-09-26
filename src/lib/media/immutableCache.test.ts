@@ -153,3 +153,53 @@ describe('what makes the long lifetime safe', () => {
     expect(random).toHaveLength(24)
   })
 })
+
+describe('server-side put() carries the same policy (photos, avatars, covers)', () => {
+  // A plain media upload cannot carry object metadata, so it got GCS's default public
+  // max-age=3600 — shared-cacheable, so a deleted photo stayed reachable for up to an hour (F-100).
+  const putOnce = async (bytes: Uint8Array, contentType: string) => {
+    const calls: Array<{ url: string; init: RequestInit }> = []
+    const fetchImpl = vi.fn(async (url: string, init: RequestInit) => {
+      calls.push({ url: String(url), init })
+      return { ok: true, status: 200 } as Response
+    }) as unknown as typeof fetch
+    const provider = createGcsProvider({ bucket: BUCKET, getAccessToken: async () => 'ya29.test', fetchImpl })
+    await provider.put(`reviews/${OWNER}/1-abcdefghijklmnopqrstuvwx.jpg`, bytes, { contentType })
+    const headers = calls[0].init.headers as Record<string, string>
+    const boundary = /boundary=(\S+)$/.exec(headers['Content-Type'])![1]
+    const raw = Buffer.from(await (calls[0].init.body as Blob).arrayBuffer())
+    return { url: calls[0].url, headers, boundary, raw }
+  }
+
+  it('sends one multipart request whose metadata part sets the private one-day policy', async () => {
+    const { url, headers, boundary, raw } = await putOnce(new Uint8Array([1, 2, 3]), 'image/jpeg')
+    expect(url).toContain('uploadType=multipart')
+    expect(url).toContain(`name=${encodeURIComponent(`reviews/${OWNER}/1-abcdefghijklmnopqrstuvwx.jpg`)}`)
+    expect(headers['Content-Type']).toBe(`multipart/related; boundary=${boundary}`)
+    expect(headers.Authorization).toBe('Bearer ya29.test')
+    const text = raw.toString('latin1')
+    const json = /application\/json; charset=UTF-8\r\n\r\n(\{.*?\})\r\n/.exec(text)![1]
+    expect(JSON.parse(json)).toEqual({ contentType: 'image/jpeg', cacheControl: IMMUTABLE_MEDIA_CACHE_CONTROL })
+  })
+
+  it('passes the bytes through unchanged, framed by the boundary', async () => {
+    const bytes = new Uint8Array(256).map((_, i) => i) // every byte value, including CR and LF
+    const { boundary, raw } = await putOnce(bytes, 'image/png')
+    const head = Buffer.from(`--${boundary}\r\nContent-Type: image/png\r\n\r\n`, 'latin1')
+    const start = raw.indexOf(head) + head.length
+    const tail = Buffer.from(`\r\n--${boundary}--\r\n`, 'latin1')
+    expect(raw.subarray(raw.length - tail.length).equals(tail)).toBe(true)
+    expect(raw.subarray(start, raw.length - tail.length).equals(Buffer.from(bytes))).toBe(true)
+  })
+
+  it('every server-side upload key carries a random suffix, so `immutable` stays true', async () => {
+    const { readFileSync } = await import('node:fs')
+    for (const file of ['src/app/api/reviews/upload/route.ts', 'src/app/api/profile/route.ts', 'src/app/api/group/[id]/avatar/route.ts']) {
+      const src = readFileSync(file, 'utf8')
+      const keys = [...src.matchAll(/putMedia\(\s*([^,]+),/g)].map(m => m[1].trim())
+      const resolved = keys.map(k => (/^[A-Za-z_]\w*$/.test(k) ? new RegExp(`const ${k} = ([^\n]+)`).exec(src)?.[1] ?? k : k))
+      expect(resolved.length, file).toBeGreaterThan(0)
+      for (const k of resolved) expect(k, file).toContain('randomMediaSuffix()')
+    }
+  })
+})

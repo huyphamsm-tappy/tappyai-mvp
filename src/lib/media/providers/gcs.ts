@@ -47,7 +47,7 @@ const UPLOAD_HOST = 'https://storage.googleapis.com'
 export const DEFAULT_SESSION_TIMEOUT_MS = 10_000
 
 /**
- * Cache lifetime stamped on every client-direct upload.
+ * Cache lifetime stamped on every upload — client-direct sessions and server-side `put()` alike.
  *
  * Safe only because these objects are immutable BY CONSTRUCTION: `resolveUploadTarget` mints each
  * key as `${prefix}/${ownerId}/${24 random chars}.${ext}`, server-side, per upload. A caller cannot
@@ -96,17 +96,28 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
       if (!deps.getAccessToken) throw new MediaCredentialsUnavailableError('gcs')
 
       const token = await deps.getAccessToken()
+      // Multipart, not a plain media upload: a plain upload cannot carry object metadata, so the
+      // object would get GCS's default `public, max-age=3600` — shared-cacheable at Google's edge,
+      // where a deleted photo stays reachable for up to an hour (F-100, owner decision 2026-09-26).
+      // The name stays in the query string, as in createUploadSession — one source of truth.
       const url =
         `${UPLOAD_HOST}/upload/storage/v1/b/${encodeURIComponent(deps.bucket)}/o` +
-        `?uploadType=media&name=${encodeURIComponent(safeKey)}`
+        `?uploadType=multipart&name=${encodeURIComponent(safeKey)}`
+      const boundary = `tappy-${crypto.randomUUID()}`
+      const metadata = JSON.stringify({ contentType: opts.contentType, cacheControl: IMMUTABLE_MEDIA_CACHE_CONTROL })
 
       const res = await doFetch(url, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': opts.contentType,
+          'Content-Type': `multipart/related; boundary=${boundary}`,
         },
-        body: body as BodyInit,
+        body: new Blob([
+          `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${metadata}\r\n`,
+          `--${boundary}\r\nContent-Type: ${opts.contentType}\r\n\r\n`,
+          body as BlobPart,
+          `\r\n--${boundary}--\r\n`,
+        ]),
       })
 
       // A non-2xx must never be reported as success. The provider's response

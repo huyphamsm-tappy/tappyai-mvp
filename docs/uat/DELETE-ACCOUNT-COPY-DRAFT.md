@@ -74,7 +74,6 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 >
 > Some copies are outside our control and may remain for a while:
 > - A photo or video that someone already viewed can stay on their own device — in their browser or app — for up to one day.
-> - **[XÁC NHẬN — ảnh]** A photo can remain reachable through its old link for up to one hour.
 > - Videos uploaded before **[NGÀY TRIỂN KHAI]** may remain reachable through their old link for up to one year, because copies of them were stored in Google's network before we changed how videos are stored, and we cannot recall those copies.
 > - A link preview that a social network or messaging app saved when someone shared your page can remain until that service refreshes it.
 
@@ -86,7 +85,6 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 >
 > Một số bản sao nằm ngoài tầm kiểm soát của chúng tôi và có thể còn trong một thời gian:
 > - Ảnh hoặc video mà người khác đã xem có thể còn trên chính thiết bị của họ — trong trình duyệt hoặc ứng dụng — tối đa một ngày.
-> - **[XÁC NHẬN — ảnh]** Ảnh có thể vẫn mở được qua đường link cũ tối đa một giờ.
 > - Video tải lên trước **[NGÀY TRIỂN KHAI]** có thể vẫn mở được qua đường link cũ tối đa một năm, vì bản sao của chúng đã được lưu trong mạng của Google trước khi chúng tôi thay đổi cách lưu video, và chúng tôi không thể thu hồi các bản sao đó.
 > - Bản xem trước đường link mà mạng xã hội hoặc ứng dụng nhắn tin đã lưu khi ai đó chia sẻ trang của bạn có thể còn cho tới khi dịch vụ đó làm mới.
 
@@ -118,5 +116,5 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 ### Cập nhật 2026-09-26 (sau quyết định của anh) — video cache `private` (`2a1ce82`)
 - Video tải lên từ nay mang `Cache-Control: private, max-age=86400, immutable` → cache biên dùng chung của Google **không được lưu**; xoá có hiệu lực tại Google ngay. Cửa sổ còn lại = **bản đã tải về thiết bị người xem** (trình duyệt/ứng dụng), tối đa 1 ngày. Lời văn mục 4 đã đổi đúng như vậy.
 - **Video tải lên trước thay đổi này** (max-age 1 năm, public) — bản đã nằm trong cache biên sống tới hết hạn cũ, **tối đa 1 năm, không thu hồi được**. Job `scripts/ops/clean-existing-clips.mts --fix-cache-control` chỉ đổi header của object; **không** xoá được bản đã nằm trong cache. Vì vậy câu "video tải lên trước [NGÀY]" phải giữ.
-- **[XÁC NHẬN — ảnh]:** ảnh đánh giá/ảnh đại diện đi đường server (`provider.put`) **không đặt Cache-Control** → GCS dùng mặc định cho object public `public, max-age=3600` (theo tài liệu GCS — **chưa đo** trên bucket thật). Tức ảnh đã xoá có thể còn mở được qua link cũ tối đa 1 giờ. Hai lựa chọn: (a) giữ câu "tối đa một giờ"; (b) cho tôi đặt cùng header `private, max-age=86400` cho `put()` (1 dòng + test) rồi bỏ câu đó. Tôi đề xuất (b) — cùng nguyên tắc anh vừa chọn cho video.
+- ~~[XÁC NHẬN — ảnh]~~ → anh chọn (b) 2026-09-26: ảnh/ảnh đại diện/ảnh bìa đi đường server giờ cũng mang `private, max-age=86400, immutable` (upload multipart); câu "ảnh tối đa một giờ" đã bỏ. ⚠️ Còn sót: ảnh tải lên TRƯỚC thay đổi này vẫn mang header mặc định `public, max-age=3600` trên từng object — header không tự đổi, nên mỗi lần một tài khoản cũ bị xoá sau này, ảnh cũ của họ vẫn có thể mở được qua link cũ tối đa 1 giờ. Chọn một: (i) đổi header ảnh cũ (chỉ PATCH metadata, không đụng nội dung — có thể gộp vào job dọn ảnh cũ sau launch), hoặc (ii) thêm "ảnh tải lên trước [NGÀY] — tối đa một giờ" vào câu video cũ. Cho tới khi làm (i), lời văn hiện tại thiếu đúng một giờ đó cho ảnh cũ.
 - Điền **[NGÀY TRIỂN KHAI]** = ngày `2a1ce82` lên production.
