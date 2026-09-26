@@ -34,6 +34,18 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 >   A mirror flag `FeatureFlags.showMusic = false` (`ios/TappyAI/Core/Config/FeatureFlags.swift`) now
 >   gates the iOS composer section and the feed music disc, but **this has NOT been compiled** (no macOS
 >   in this environment). iOS must not be released until it is built and the gate is verified.
+>
+> **🛑 iOS RELEASE BLOCKERS — do not ship an iOS build until BOTH are done and verified on a device:**
+> 1. **Music reuse UI removed/gated** — the `showMusic` gate above, compiled and verified (F-024 / PHASE7-MUSIC-HIDDEN).
+> 2. **Clip metadata stripped client-side (F-101).** Since `3b70ed1` the server refuses any clip that still
+>    carries location, device, creation time or metadata boxes (`POST /api/upload/video` completion → **422
+>    `identifying_metadata`**, object deleted). iOS uploads the picked file unchanged
+>    (`ios/TappyAI/Features/Reviews/Data/CreateReviewService.swift`), and every camera clip has at least a
+>    non-zero creation time — so **every iOS clip upload fails** until iOS ports `neutralizeClipMetadata`
+>    (`src/lib/media/clipMetadata.ts`: retype `udta`/`meta`/XMP-`uuid` to `free` and zero-fill them, zero the
+>    `mvhd`/`tkhd`/`mdhd` times, same length). Verify: upload an iPhone camera clip → 200, and the stored file
+>    has no location/make/model/creation date. Web is unaffected (neutralises before PUT); Android uploads
+>    photos only (server path).
 
 ---
 
