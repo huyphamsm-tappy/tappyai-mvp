@@ -84,7 +84,10 @@ export async function writeAuditLogAwaited(params: AuditParams): Promise<boolean
     const supabase = createAdminClient()
     const { error } = await supabase.from('audit_log').insert({
       actor_id: params.actorId,
-      actor_email: params.actorEmail,
+      // F-096 (owner 2026-09-25): no email in new audit rows — "not storing it is simpler than
+      // deleting it". actor_id identifies the actor; the DB trigger (20260925d) nulls it too, for
+      // writers that bypass this function. `actorEmail` stays in AuditParams so no caller changes.
+      actor_email: null,
       actor_role: params.actorRole,
       action: params.action,
       target_type: params.targetType ?? null,
