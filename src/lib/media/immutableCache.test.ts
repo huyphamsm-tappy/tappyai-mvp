@@ -57,8 +57,8 @@ const openSession = async (contentType = 'video/mp4') => {
 }
 
 describe('the cache policy constant', () => {
-  it('is one day and marked immutable', () => {
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('public, max-age=86400, immutable')
+  it('is one day, private and marked immutable', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('private, max-age=86400, immutable')
   })
 
   it('is a day in seconds, not a transcription slip', () => {
@@ -71,9 +71,16 @@ describe('the cache policy constant', () => {
     expect(seconds).toBeLessThanOrEqual(86400)
   })
 
-  it('is public, so a shared cache or CDN may serve it too', () => {
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toMatch(/\bpublic\b/)
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bprivate\b|\bno-store\b|\bno-cache\b/)
+  // F-100 (owner 2026-09-26): a deleted PUBLIC object kept serving from Google's shared edge cache
+  // until max-age (measured) and built-in caching cannot be invalidated. `private` keeps shared caches
+  // out, so deletion is immediate at Google; the viewer's own browser may still keep it ≤ one day.
+  it('🚨 is private — no shared cache (Google edge, CDN) may store a clip', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toMatch(/\bprivate\b/)
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bpublic\b|\bs-maxage\b/)
+  })
+
+  it('still lets the viewer’s browser cache it (no no-store / no-cache)', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bno-store\b|\bno-cache\b/)
   })
 })
 
