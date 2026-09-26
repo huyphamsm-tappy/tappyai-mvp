@@ -28,6 +28,11 @@ export interface DeletionDeps {
   revoke: (token: string) => Promise<boolean>
   limit?: number
   maxAttempts?: number
+  /**
+   * Process only this user's job. A run pointed at a bucket other than the production one (the
+   * audit proof) must never mark somebody else's job done — their files are not in that bucket.
+   */
+  userId?: string
 }
 
 export interface DeletionRunResult {
@@ -54,11 +59,13 @@ export async function processAccountDeletionJobs(deps: DeletionDeps): Promise<De
   const maxAttempts = deps.maxAttempts ?? DEFAULT_MAX_ATTEMPTS
   const result: DeletionRunResult = { processed: 0, completed: 0, failed: 0, objectsDeleted: 0, tokensRevoked: 0 }
 
-  const { data, error } = await deps.db
+  let query = deps.db
     .from('account_deletion_jobs')
     .select('id, user_id, group_ids, google_tokens, attempts, media_deleted')
     .is('done_at', null)
     .lt('attempts', maxAttempts)
+  if (deps.userId) query = query.eq('user_id', deps.userId)
+  const { data, error } = await query
     .order('created_at', { ascending: true })
     .limit(limit)
   if (error) throw new Error(`account_deletion_jobs read failed (${error.code ?? 'unknown'})`)

@@ -28,6 +28,8 @@ const bucket = process.env.GCS_PROOF_BUCKET ?? ''
 const token = process.env.GCS_PROOF_TOKEN ?? ''
 if (!String(env.NEXT_PUBLIC_SUPABASE_URL).includes(AUDIT_REF)) throw new Error('REFUSING: .env.local is not the audit project')
 if (!bucket || bucket === PROD_BUCKET || /prod/i.test(bucket)) throw new Error('REFUSING: GCS_PROOF_BUCKET must be a non-production bucket')
+// Owner constraint 2026-09-26: exactly this one temporary, NON-public bucket.
+if (bucket !== 'tappyai-media-audit') throw new Error('REFUSING: the proof runs only against gs://tappyai-media-audit')
 if (!token) throw new Error('GCS_PROOF_TOKEN required (gcloud auth print-access-token)')
 
 const admin = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE_ROLE_KEY, { auth: { persistSession: false } })
@@ -56,12 +58,15 @@ const del = await admin.auth.admin.deleteUser(uid)
 if (del.error) throw new Error('deleteUser failed: ' + del.error.message)
 const { data: jobRows } = await admin.from('account_deletion_jobs').select('id, group_ids').eq('user_id', uid)
 out.jobQueued = { rows: jobRows?.length ?? 0, groupIdsMatch: jobRows?.[0]?.group_ids?.[0] === grp.id }
+out.dbRowsAfterAccountDeletion = { authUser: (await admin.auth.admin.getUserById(uid)).data.user ? 1 : 0, group: (await admin.from('groups').select('id').eq('id', grp.id)).data?.length ?? 0 }
+out.objectsStillInBucketBeforeWorker = (await Promise.all(keys.map(async k => (await gcs.statObject!(k)) !== null))).filter(Boolean).length
 
 // 5. the real worker, real DB, real bucket (no Google token in this account → nothing to revoke)
 out.worker = await processAccountDeletionJobs({
   db: admin,
   media: { listObjects: p => gcs.listObjects!(p), deleteObject: k => gcs.deleteObject!(k) },
   revoke: async () => true,
+  userId: uid, // only this synthetic account's job — never anybody else's
 })
 
 // 6. gone from the bucket

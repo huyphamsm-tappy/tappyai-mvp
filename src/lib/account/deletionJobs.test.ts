@@ -15,8 +15,10 @@ function fakeDb(jobs: Job[]) {
   const db = {
     from: () => {
       const q: Record<string, unknown> = {}
+      let onlyUser: string | null = null
       q.select = () => q; q.is = () => q; q.lt = () => q; q.order = () => q
-      q.limit = async () => ({ data: jobs.filter(j => !j.done_at), error: null })
+      q.eq = (_c: string, v: string) => { onlyUser = v; return q }
+      q.limit = async () => ({ data: jobs.filter(j => !j.done_at && (onlyUser === null || j.user_id === onlyUser)), error: null })
       q.update = (patch: Record<string, unknown>) => ({ eq: async (_c: string, id: string) => { updates.push({ id, patch }); return { error: null } } })
       return q
     },
@@ -93,6 +95,15 @@ describe('processAccountDeletionJobs', () => {
     expect(r.failed).toBe(1)
     expect(bucket.listed).toEqual([])
     expect(bucket.store.size).toBe(FILES.length)
+  })
+
+  it('🚨 with userId it touches only that user\'s job — a proof run cannot mark others done', async () => {
+    const other = '22222222-2222-4222-8222-222222222222'
+    const { db, updates } = fakeDb([job({ id: 'mine', google_tokens: [] }), job({ id: 'theirs', user_id: other, group_ids: [], google_tokens: [] })])
+    const bucket = fakeBucket(FILES)
+    const r = await processAccountDeletionJobs({ db, media: bucket.media, revoke: async () => true, userId: U })
+    expect(r.processed).toBe(1)
+    expect(updates.map(u => u.id)).toEqual(['mine'])
   })
 
   it('🚨 tokens and object names never appear in what the worker records as an error', async () => {

@@ -309,7 +309,7 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
   `curl -H "Authorization: Bearer $CRON_SECRET" https://<prod-host>/api/cron/account-deletion-jobs` → `completed ≥ 1`, and the avatar URL answers 404/403.
 - **Operator runbook:** `docs/ops/ACCOUNT-DELETION.md`; staff accounts: `docs/ops/STAFF-LEAVER-RUNBOOK.md`.
 - **Rollback:** `supabase/migrations/rollback/20260925c_account_deletion_f096_rollback.sql` — drain the queue first (pending jobs are lost with the table).
-- Audit evidence: `docs/uat/evidence/f096-2026-09-26/` (apply log; rolled-back E2E with synthetic users).
+- Audit evidence: `docs/uat/evidence/f096-2026-09-26/` (apply log; rolled-back E2E with synthetic users; bucket-level proof on a temporary non-public audit bucket — files gone from the bucket itself, bucket deleted afterwards).
 
 ### §1-D5) `supabase/migrations/20260925d_audit_log_pii_retention.sql` — audit log without email; IP/UA 90 days; 12-month chain (F-096) — ⚠️ OWNER APPROVES
 - **Check first:** `SELECT count(*) FROM fn_verify_audit_chain();` → must be 0 **before** applying (a chain that does not verify now would be reported by the prune later, not caused by it). `SELECT tgname FROM pg_trigger WHERE tgname='aaa_audit_log_pii';` → 0 rows = not applied.
