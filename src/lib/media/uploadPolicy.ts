@@ -31,7 +31,7 @@ export interface UploadKindPolicy {
 
 const MB = 1024 * 1024
 
-const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm'] as const
+const VIDEO_TYPES = ['video/mp4', 'video/quicktime'] as const
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const
 const AUDIO_TYPES = [
   'audio/mpeg',

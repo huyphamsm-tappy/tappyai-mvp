@@ -15,7 +15,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { flushPending } from '@/lib/observability'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 
-const VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
+const VIDEO_TYPES = ['video/mp4', 'video/quicktime']
 const IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 // Size limit from the shared product config — same number the composer enforces.
 const MAX_VIDEO_BYTES = MAX_VIDEO_SIZE_MB * 1024 * 1024

@@ -31,10 +31,10 @@ export const vi: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Chọn video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  tối đa 5 phút · 150MB',
+  'reviewNew.videoHint': 'mp4 · mov  ·  tối đa 5 phút · 150MB',
   // ── Media step (V3) ──────────────────────────────────────────────────────
   // 🚨 EVERY FORMAT AND NUMBER BELOW IS THE ONE THE SERVER ACTUALLY ENFORCES. The design
-  // reference offered "MP4, MOV – Tối đa 2GB"; the real policy is mp4/mov/webm at 150MB and five
+  // reference offered "MP4, MOV – Tối đa 2GB"; the real policy is mp4/mov (WebM dropped, F-102) at 150MB and five
   // minutes, and photos are jpg/png/gif/webp at 5MB each. Copy that promises more than the
   // upload accepts turns a validation error into a broken product.
   'reviewNew.mediaSubtitle': 'Chia sẻ hình ảnh, video hoặc nội dung của bạn',
@@ -51,7 +51,7 @@ export const vi: Record<string, string> = {
   'reviewNew.cancel': 'Hủy',
   'reviewNew.videoUploaded': 'Video đã tải lên',
   'reviewNew.remove': 'Xóa',
-  'reviewNew.videoUnsupportedFormat': 'Chỉ hỗ trợ mp4, mov, webm',
+  'reviewNew.videoUnsupportedFormat': 'Video này chưa đúng định dạng. Bạn quay hoặc xuất lại thành MP4 hoặc MOV rồi thử lại nhé.',
   'reviewNew.videoTooLarge': 'Video quá lớn. Vui lòng chọn video tối đa 150MB.',
   'reviewNew.videoReadError': 'Không đọc được thông tin video',
   // Giới hạn sản phẩm nói "5 phút"; chỉ thông báo lỗi mới nêu dung sai 5 giây.
@@ -125,7 +125,7 @@ export const en: Record<string, string> = {
 
   // Video tab
   'reviewNew.selectVideo': 'Choose a video',
-  'reviewNew.videoHint': 'mp4 · mov · webm  ·  up to 5 minutes · 150MB',
+  'reviewNew.videoHint': 'mp4 · mov  ·  up to 5 minutes · 150MB',
   // ── Media step (V3) — see the note in the Vietnamese block above ─────────
   'reviewNew.mediaSubtitle': 'Share images, videos or your content',
   'reviewNew.dropTitle': 'Drop a file here',
@@ -141,7 +141,7 @@ export const en: Record<string, string> = {
   'reviewNew.cancel': 'Cancel',
   'reviewNew.videoUploaded': 'Video uploaded',
   'reviewNew.remove': 'Remove',
-  'reviewNew.videoUnsupportedFormat': 'Only mp4, mov, webm are supported',
+  'reviewNew.videoUnsupportedFormat': 'This video format isn\'t supported. Please record or export it as MP4 or MOV and try again.',
   'reviewNew.videoTooLarge': 'Video is too large. Please choose a video up to 150MB.',
   'reviewNew.videoReadError': "Couldn't read video info",
   // The product limit is stated as "5 minutes"; only the failure names the 5s tolerance.

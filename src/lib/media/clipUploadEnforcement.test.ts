@@ -57,10 +57,13 @@ describe('the video kind no longer takes images — photos go through the server
   it('image/jpeg under kind video is refused before any session is opened', () => {
     expect(() => resolveUploadTarget({ kind: 'video', contentType: 'image/jpeg', sizeBytes: 100, ownerId: OWNER }, ['video'])).toThrow(MediaUploadRejectedError)
   })
-  it('video types are still accepted', () => {
-    for (const t of ['video/mp4', 'video/quicktime', 'video/webm']) {
+  it('MP4 and MOV are accepted', () => {
+    for (const t of ['video/mp4', 'video/quicktime']) {
       expect(resolveUploadTarget({ kind: 'video', contentType: t, sizeBytes: 100, ownerId: OWNER }, ['video']).contentType).toBe(t)
     }
+  })
+  it('WebM is refused before any session is opened (F-102: no checker for it, so no upload of it)', () => {
+    expect(() => resolveUploadTarget({ kind: 'video', contentType: 'video/webm', sizeBytes: 100, ownerId: OWNER }, ['video'])).toThrow(MediaUploadRejectedError)
   })
 })
 

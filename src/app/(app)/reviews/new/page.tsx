@@ -51,7 +51,9 @@ const MAX_VIDEO_SIZE = MAX_VIDEO_SIZE_MB * 1024 * 1024
 function fileChangeEvent(files: File[]): React.ChangeEvent<HTMLInputElement> {
   return { target: { files, value: '' } } as unknown as React.ChangeEvent<HTMLInputElement>
 }
-const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime', 'video/webm']
+// MP4 / MOV only (F-102, owner 2026-09-26): the only containers whose location/device metadata we can
+// strip and verify. Same list as the server's upload policy.
+const ALLOWED_VIDEO_TYPES = ['video/mp4', 'video/quicktime']
 
 /**
  * The media modes this composer actually has. One row per REAL capability - adding a mode is an
@@ -522,6 +524,11 @@ export default function NewReviewPage() {
       if ((e as Error)?.name === 'AbortError') {
         vfail('video-upload', tVideo, e, { note: 'user aborted' })
         setError(t('reviewNew.uploadCancelled'))
+      } else if ((e as { code?: string })?.code === 'unsupported_format') {
+        // The server read the bytes and they are not MP4/MOV (e.g. a WebM renamed to .mp4): say which
+        // formats we take, in the user's language, rather than "upload failed".
+        vfail('video-upload', tVideo, e, { note: 'unsupported format' })
+        setError(t('reviewNew.videoUnsupportedFormat'))
       } else {
         vfail('video-upload', tVideo, e)
         setError(t('reviewNew.videoUploadError'))
@@ -927,7 +934,7 @@ export default function NewReviewPage() {
                   <p className="mt-1 text-[14px] sm:text-[15px]" style={{ color: 'var(--v3-fg-secondary)' }}>
                     {t('reviewNew.dropHint')}
                   </p>
-                  {/* mp4 . mov . webm . 5 minutes . 150MB - the existing string, which already
+                  {/* mp4 . mov . 5 minutes . 150MB - the existing string, which already
                       matches `ALLOWED_VIDEO_TYPES` and the shared config. */}
                   <p className="v3-post-formats mt-2 text-[12.5px] sm:text-[13px]">
                     {t('reviewNew.videoHint')}
@@ -1001,7 +1008,7 @@ export default function NewReviewPage() {
                 </div>
               )}
 
-              <input ref={videoInputRef} type="file" accept="video/mp4,video/quicktime,video/webm" className="hidden" onChange={handleVideoSelect} />
+              <input ref={videoInputRef} type="file" accept="video/mp4,video/quicktime" className="hidden" onChange={handleVideoSelect} />
             </div>
           )}
 
