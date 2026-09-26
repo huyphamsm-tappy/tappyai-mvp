@@ -54,10 +54,13 @@ export interface UploadMediaResult {
 
 export class MediaUploadError extends Error {
   readonly status?: number
-  constructor(message: string, status?: number) {
+  /** The server's machine code when it sent one alongside a readable message (e.g. `unsupported_format`). */
+  readonly code?: string
+  constructor(message: string, status?: number, code?: string) {
     super(message)
     this.name = 'MediaUploadError'
     this.status = status
+    this.code = code
   }
 }
 
@@ -126,12 +129,14 @@ export async function uploadMedia(
     { type: COMPLETE_UPLOAD_TYPE, kind: input.kind, key: session.key },
     input.signal
   )
-  const verdict = done.json as { ok?: boolean; url?: string; error?: string } | null
+  const verdict = done.json as { ok?: boolean; url?: string; error?: string; message?: string } | null
 
   if (done.status !== 200 || !verdict?.ok || !verdict.url) {
+    // A refusal that names its reason (`message`) is shown as that reason; its code rides along.
     throw new MediaUploadError(
-      verdict?.error ?? 'Tải lên chưa hoàn tất. Vui lòng thử lại.',
-      done.status
+      verdict?.message ?? verdict?.error ?? 'Tải lên chưa hoàn tất. Vui lòng thử lại.',
+      done.status,
+      verdict?.message ? verdict.error : undefined
     )
   }
 

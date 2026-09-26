@@ -17,10 +17,12 @@
 //                                  object is deleted and no URL is ever returned.
 // Images uploaded client-direct (the clip's canvas-drawn poster frame) must carry no EXIF/XMP at all.
 
+import { imageMime, sniffImageType } from '../security/imageType'
+
 export type RangeReader = (offset: number, length: number) => Promise<Uint8Array>
 
 /** What the server refuses. Codes only — never values (they are the personal data). */
-export type IdentifyingReason = 'location' | 'device-or-author' | 'metadata-box' | 'creation-time' | 'xmp' | 'image-metadata' | 'unreadable'
+export type IdentifyingReason = 'location' | 'device-or-author' | 'metadata-box' | 'creation-time' | 'xmp' | 'image-metadata' | 'unreadable' | 'unrecognised-format'
 
 const MAX_MOOV_BYTES = 32 * 1024 * 1024
 const MAX_TOP_LEVEL_BOXES = 64
@@ -101,8 +103,8 @@ function timeFields(m: Uint8Array, offset: number): Array<[number, number]> {
 
 /**
  * Returns a Blob of the same length with every metadata box retyped to `free` and every creation
- * time zeroed. Files that are not ISO-BMFF (WebM) are returned unchanged — phone cameras do not
- * produce them, and the server check covers what matters.
+ * time zeroed. Files that are not ISO-BMFF are returned unchanged — the server refuses them as an
+ * unsupported format (F-102), so nothing unchecked is ever published.
  */
 export async function neutralizeClipMetadata(file: Blob): Promise<Blob> {
   const read: RangeReader = async (o, n) => new Uint8Array(await file.slice(o, o + n).arrayBuffer())
@@ -143,10 +145,21 @@ const DEVICE_RE = /make|model|software|serial|author|artist|creator|©mak|©mod|
 
 /** Identifying metadata left in a stored clip, read through ranged reads. [] = clean. */
 export async function findIdentifyingMetadata(read: RangeReader, total: number, contentType: string): Promise<IdentifyingReason[]> {
-  if (contentType.startsWith('image/')) return findImageMetadata(read, total, contentType)
-  if (contentType === 'video/webm') return [] // no standard location field; phone cameras do not record WebM
+  // F-102 (owner 2026-09-26): the DECLARED type is the uploader's claim, not evidence. The parser is
+  // chosen by the bytes, and bytes that are not what the declared type says are refused outright —
+  // otherwise a GPS-carrying MP4 labelled as some unchecked type walks straight past this check.
+  const head = await read(0, Math.min(total, 16))
+  if (contentType.startsWith('image/')) {
+    const sniffed = sniffImageType(head)
+    // SVG is text (deal logos only): no EXIF container exists to check.
+    if (!sniffed) return contentType === 'image/svg+xml' ? [] : ['unrecognised-format']
+    if (imageMime(sniffed) !== contentType) return ['unrecognised-format']
+    return findImageMetadata(read, total, contentType)
+  }
+  // Only ISO-BMFF (MP4 / MOV) is accepted — the one container this module can inspect and clean.
+  if (contentType !== 'video/mp4' && contentType !== 'video/quicktime') return ['unrecognised-format']
   const boxes = await topLevelBoxes(read, total)
-  if (!boxes) return ['unreadable']
+  if (!boxes || !boxes.some(b => b.type === 'moov')) return ['unrecognised-format']
   const reasons = new Set<IdentifyingReason>()
   for (const b of boxes) {
     if (isXmp(b)) reasons.add('xmp')

@@ -35,9 +35,16 @@ describe('server check — what an unneutralised phone clip carries', () => {
     expect(await findIdentifyingMetadata(reader(f), f.length, 'video/quicktime')).toEqual(expect.arrayContaining(['location', 'device-or-author']))
   })
 
-  it('a file that is not ISO-BMFF under a video/mp4 type is refused as unreadable', async () => {
+  it('a file that is not ISO-BMFF under a video/mp4 type is refused as an unrecognised format', async () => {
     const junk = new Uint8Array(64).fill(7)
-    expect(await findIdentifyingMetadata(reader(junk), junk.length, 'video/mp4')).toEqual(['unreadable'])
+    expect(await findIdentifyingMetadata(reader(junk), junk.length, 'video/mp4')).toEqual(['unrecognised-format'])
+  })
+
+  it('F-102: WebM is never waved through, whatever it is declared as', async () => {
+    const webm = new Uint8Array([0x1a, 0x45, 0xdf, 0xa3, 0x9f, 0x42, 0x86, 0x81, 0x01, 0x42, 0x82, 0x84, 0x77, 0x65, 0x62, 0x6d])
+    for (const ct of ['video/webm', 'video/mp4', 'video/quicktime']) {
+      expect(await findIdentifyingMetadata(reader(webm), webm.length, ct)).toEqual(['unrecognised-format'])
+    }
   })
 })
 
