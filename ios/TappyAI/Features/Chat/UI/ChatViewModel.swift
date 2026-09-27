@@ -418,7 +418,8 @@ final class ChatViewModel: AppObservableObject {
                     case .done:
                         break
 
-                    case .messageStart, .unknown:
+                    // Non-places annotations carry nothing the chat UI renders yet.
+                    case .messageStart, .annotation, .unknown:
                         break
                     }
                 }
