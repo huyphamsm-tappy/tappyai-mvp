@@ -41,7 +41,7 @@ struct AuthFlowView: View {
         }
         .overlay(alignment: .topTrailing) {
             Button { onClose() } label: { Image(systemName: TappyIcon.close) }
-                .padding(Spacing.md).tappyTappable(NSLocalizedString("common.close", comment: ""))
+                .padding(Spacing.md).tappyTappable("common.close")
         }
         .task { await vm.loadProviders() }
         .sheet(isPresented: $vm.showRegister) {
