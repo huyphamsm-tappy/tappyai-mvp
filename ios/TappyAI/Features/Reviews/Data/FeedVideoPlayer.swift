@@ -13,7 +13,7 @@ final class FeedVideoPlayer: AppObservableObject {
     let player = AVPlayer()
     private var watchdogTimer: AnyCancellable?
     private var currentURL: URL?
-    private var endObserver: Any?
+    private var endObserver: AnyCancellable?
     private var watchStart: Date?
 
     static var feedAudioUnlocked = false
@@ -24,12 +24,9 @@ final class FeedVideoPlayer: AppObservableObject {
         configureAudioSession()
     }
 
-    deinit {
-        watchdogTimer?.cancel()
-        if let obs = endObserver {
-            NotificationCenter.default.removeObserver(obs)
-        }
-    }
+    // No deinit: both subscriptions are `AnyCancellable`s, which cancel themselves when the
+    // player is released (a nonisolated deinit may not touch these main-actor, non-Sendable
+    // properties under Swift 6).
 
     // MARK: - Load
 
@@ -39,26 +36,22 @@ final class FeedVideoPlayer: AppObservableObject {
         userPaused = false
         watchStart = nil
 
-        if let obs = endObserver {
-            NotificationCenter.default.removeObserver(obs)
-            endObserver = nil
-        }
+        endObserver = nil   // cancels the previous item's end-of-playback subscription
 
         let item = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: item)
 
-        endObserver = NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
-            object: item,
-            queue: .main
-        ) { [weak self] _ in
-            Task { @MainActor in
-                guard let self else { return }
-                self.fireInteract(completionRate: 1.0)
-                self.player.seek(to: .zero)
-                self.player.play()
+        endObserver = NotificationCenter.default
+            .publisher(for: .AVPlayerItemDidPlayToEndTime, object: item)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                Task { @MainActor in
+                    guard let self else { return }
+                    self.fireInteract(completionRate: 1.0)
+                    self.player.seek(to: .zero)
+                    self.player.play()
+                }
             }
-        }
     }
 
     // MARK: - Active-driven playback (matches Web's `active` prop)
