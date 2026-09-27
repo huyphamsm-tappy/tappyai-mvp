@@ -198,16 +198,16 @@ struct TappyPlan: Equatable, Sendable, Decodable {
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        // Required: the one field web `parsePlan` validates. Per DAY it is lossy: one malformed day
-        // (no `items`, or none with a name) is dropped and the rest of the plan still renders. Only
-        // a block with no usable day at all is not a plan — never a card of empty days.
-        let usable = try c.decode([Lossy<PlanDay>].self, forKey: .days)
-            .compactMap(\.value)
-            .filter { !$0.items.isEmpty }
-        guard !usable.isEmpty else {
-            throw DecodingError.dataCorruptedError(forKey: .days, in: c, debugDescription: "no usable plan day")
+        // Required: the one field web `parsePlan` validates. Per DAY it is lossy: a malformed day
+        // (no `items` array) is dropped and the rest of the plan still renders. A day whose `items`
+        // is empty is well-formed and stays — the backend emits one (e.g. a trailing "Chi tiết chi
+        // phí"). When EVERY day is malformed — a block in another shape — it is not a plan.
+        let entries = try c.decode([Lossy<PlanDay>].self, forKey: .days)
+        let decoded = entries.compactMap(\.value)
+        guard entries.isEmpty || !decoded.isEmpty else {
+            throw DecodingError.dataCorruptedError(forKey: .days, in: c, debugDescription: "no well-formed plan day")
         }
-        days = usable
+        days = decoded
         type = (try? c.decodeIfPresent(String.self, forKey: .type)) ?? nil
         title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""

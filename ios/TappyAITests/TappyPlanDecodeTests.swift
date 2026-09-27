@@ -65,14 +65,15 @@ final class TappyPlanDecodeTests: XCTestCase {
     }
 
     func testOneBrokenDayIsDroppedNotTheWholePlan() throws {
-        // Day 2 has no items, day 3's items have no names: only those days go.
+        // Day 2 has no `items` array: only that day goes. Day 3's items have no names, so it stays
+        // as a well-formed day with no stops (like the backend's empty trailing day).
         let p = try XCTUnwrap(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1","items":[{"name":"A"}]},{"label":"Ngày 2"},{"label":"Ngày 3","items":[{"time":"09:00"}]},{"label":"Ngày 4","items":[{"name":"B"}]}]}"#))
-        XCTAssertEqual(p.days.map(\.label), ["Ngày 1", "Ngày 4"])
+        XCTAssertEqual(p.days.map(\.label), ["Ngày 1", "Ngày 3", "Ngày 4"])
+        XCTAssertEqual(p.days.map(\.items.count), [1, 0, 1])
     }
 
-    func testNoUsableDayIsNotAPlan() {
-        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1"},{"label":"Ngày 2","items":[]}]}"#))
-        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[]}"#))
+    func testNoWellFormedDayIsNotAPlan() {
+        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1"},{"label":"Ngày 2","stops":[]}]}"#))
     }
 
     // MARK: - Card content (web TripPlanCard)
