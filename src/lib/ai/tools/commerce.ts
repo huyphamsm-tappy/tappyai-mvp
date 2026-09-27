@@ -67,6 +67,8 @@ import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, ty
 export type CommerceToolName = 'search_places' | 'search_products' | 'get_hotel_prices' | 'get_flight_prices' | 'get_transport_options' | 'web_search'
 
 export interface CommerceAttachContext {
+  /** Internal (UAT4 P1-g): the second hotel pass, over `hotel_list` — the rows the card is built from. */
+  hotelListPass?: boolean
   /** The user's stated area / city for this turn — narrows discovery and is the request's city constraint. */
   location?: string
   /** B5: the feed reader (test seam). `null` disables the feed for this call; undefined = the ingested table. */
@@ -208,7 +210,7 @@ interface Plan {
   domain: CommerceDomain
   intents: PlannedIntent[]
   /** Which carved list key the rows live under — only `results` / `search_results` are carved by toolResultSplit. */
-  listKey: 'results' | 'search_results'
+  listKey: 'results' | 'search_results' | 'hotel_list'
   subjectOf(row: Row): string | undefined
   knownUrlsOf(row: Row): string[]
   /** Rows that must not be resolved (or shown) because they contradict the request — wrong city. */
@@ -340,7 +342,7 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
           }
           : null,
       }],
-      listKey: 'search_results',
+      listKey: ctx.hotelListPass ? 'hotel_list' : 'search_results',
       maxLinks: MAX_HOTEL_LINKS_PER_ROW,
       maxQueries: MAX_HOTEL_QUERIES,
       // P1-8: the OTA title, reduced to the hotel's name ("Book Oc Tien Sa Hotel Danang i Da Nang
@@ -503,7 +505,7 @@ export async function dropInactiveMerchantRows(result: unknown, listKey: 'result
   return result
 }
 
-export async function attachCommerceLinks(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
+async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
   const enabled = ctx.enabled ?? CCP_ENABLED
   if (!enabled || !isRecord(result)) return result
   // A3.1: the runtime registry (owner's `commerce_providers` table, 60 s cache) answers per link
@@ -684,6 +686,20 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
     // A commerce failure must never cost the user the search result it decorates.
     return result
   }
+}
+
+/**
+ * UAT4 P1-g: the hotel tool carries TWO lists — `search_results` (Booking/Agoda snippets, what the
+ * model reads) and `hotel_list` (the venue rows the CARD is built from). Commerce Links went to the
+ * snippets only, so the card rows never had a booking action. The card's rows get their own pass:
+ * each hotel's Trip.com page discovered by name (undated detail page).
+ */
+export async function attachCommerceLinks(toolName: CommerceToolName, result: unknown, ctx: CommerceAttachContext = {}): Promise<unknown> {
+  const out = await attachOnce(toolName, result, ctx)
+  if (toolName === 'get_hotel_prices' && !ctx.hotelListPass && isRecord(out) && Array.isArray(out.hotel_list) && out.hotel_list.length > 0) {
+    await attachOnce(toolName, out, { ...ctx, hotelListPass: true })
+  }
+  return out
 }
 
 // ── Route-level handoffs: flights and coaches (Completion Pass, 14 Sep 2026) ─

@@ -277,3 +277,13 @@ describe('UAT4: lodging from search_places is bookable', () => {
     expect(calls.some(q => q.includes('trip.com'))).toBe(false)
   })
 })
+
+describe('UAT4: the hotel tool\'s CARD rows (hotel_list) get the booking link too', () => {
+  it('get_hotel_prices: a hotel_list row finds its Trip.com page by name', async () => {
+    const { search } = searchStub({ 'site:vn.trip.com/hotels': [{ title: 'M Hotel Da Nang', link: 'https://vn.trip.com/hotels/da-nang-hotel-detail-1234567/m-hotel-da-nang/', snippet: '' }] })
+    const cardRow = { name: 'M Hotel Da Nang', website_uri: 'https://mhotel.vn' }
+    const result = { search_results: [{ title: 'Some OTA snippet', link: 'https://www.agoda.com/x/hotel/da-nang-vn.html' }], hotel_list: [cardRow] }
+    await attachCommerceLinks('get_hotel_prices', result, { enabled: true, search, now: NOW, location: 'Đà Nẵng' })
+    expect(links(cardRow).find(l => l.providerId === 'tripcom')).toMatchObject({ intentType: 'book_hotel', domain: 'travel' })
+  })
+})
