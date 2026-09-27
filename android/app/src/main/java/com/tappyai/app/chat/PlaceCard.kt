@@ -188,9 +188,13 @@ internal fun showsFilterRow(items: List<PlaceCardView>, filters: List<PlaceFilte
 data class GroupedActions(
     val lead: PlaceCardAction?,
     val maps: PlaceCardAction?,
-    val orders: List<PlaceCardAction>,
+    /** UAT4 P1-b: order / delivery / booking / reservation / ticket / purchase — rendered BEFORE Maps. */
+    val books: List<PlaceCardAction>,
     val others: List<PlaceCardAction>,
 )
+
+/** Web `BOOK_KINDS` (PlaceDecision.tsx): the actions that DO the thing. */
+internal val BOOK_KINDS = setOf("order", "delivery", "booking", "reservation", "ticket", "purchase")
 
 /**
  * An action with no URL is not a button — it is a lie, and the live projection drops it for the
@@ -200,9 +204,9 @@ internal fun groupActions(actions: List<PlaceCardAction>): GroupedActions {
     val usable = actions.filter { it.url.isNotBlank() }
     val lead = usable.firstOrNull { it.commerce?.primary == true }
     val maps = usable.firstOrNull { it !== lead && (it.kind == "maps" || it.kind == "directions") }
-    val orders = usable.filter { it !== lead && it !== maps && (it.kind == "order" || it.kind == "delivery") }
-    val others = usable.filter { it !== lead && it !== maps && it !in orders }
-    return GroupedActions(lead, maps, orders, others)
+    val books = usable.filter { it !== lead && it !== maps && it.kind in BOOK_KINDS }
+    val others = usable.filter { it !== lead && it !== maps && it !in books }
+    return GroupedActions(lead, maps, books, others)
 }
 
 /** Web `actionLabel.ts` HOST_BRAND: the platform a URL's host names, when the action did not say. */
@@ -839,14 +843,14 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
             }
         }
 
-        // ── Actions: the commerce handoff leads, then the map, ordering, the rest secondary ──
+        // ── Actions: the commerce handoff leads, then order/book (UAT4 P1-b), then the map, the rest secondary ──
         val grouped = facts.actions
         // CCP event 6: every commerce action on a drawn card is reported once.
         LaunchedEffect(grouped) {
             grouped.lead?.commerce?.let(commerce.onRendered)
-            (grouped.orders + grouped.others).forEach { a -> a.commerce?.let(commerce.onRendered) }
+            (grouped.books + grouped.others).forEach { a -> a.commerce?.let(commerce.onRendered) }
         }
-        if (grouped.lead != null || grouped.maps != null || grouped.orders.isNotEmpty() || grouped.others.isNotEmpty()) {
+        if (grouped.lead != null || grouped.maps != null || grouped.books.isNotEmpty() || grouped.others.isNotEmpty()) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -863,6 +867,22 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                         onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, lead, commerce) },
                     )
                 }
+                if (grouped.books.isNotEmpty()) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                        verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
+                    ) {
+                        grouped.books.forEach { a ->
+                            ActionButton(
+                                label = actionLabel(a),
+                                icon = if (a.kind == "order" || a.kind == "delivery") Icons.Filled.Restaurant else Icons.Filled.ShoppingCart,
+                                border = tappyCategoryColors.red.accent.copy(alpha = 0.6f),
+                                tint = tappyCategoryColors.red.accent,
+                                onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, a, commerce) },
+                            )
+                        }
+                    }
+                }
                 grouped.maps?.let { maps ->
                     ActionButton(
                         label = actionLabel(maps),
@@ -872,22 +892,6 @@ private fun PlaceCard(facts: PlaceCardFacts, commerce: CommerceActionCallbacks =
                         modifier = Modifier.fillMaxWidth(),
                         onClick = { commerce.onCardTap(facts.domain); openUrl(context, maps.url) },
                     )
-                }
-                if (grouped.orders.isNotEmpty()) {
-                    FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
-                        verticalArrangement = Arrangement.spacedBy(TappySpacing.sm),
-                    ) {
-                        grouped.orders.forEach { a ->
-                            ActionButton(
-                                label = actionLabel(a),
-                                icon = Icons.Filled.Restaurant,
-                                border = tappyCategoryColors.red.accent.copy(alpha = 0.6f),
-                                tint = tappyCategoryColors.red.accent,
-                                onClick = { commerce.onCardTap(facts.domain); openPlaceAction(context, a, commerce) },
-                            )
-                        }
-                    }
                 }
                 if (grouped.others.isNotEmpty()) {
                     FlowRow(

@@ -161,10 +161,10 @@ class PlaceDecisionSectionTest {
     }
 
     @Test
-    fun `14 map leads, 15 order platforms follow, 16-18 review website call are secondary`() {
+    fun `14 order platforms are book actions (drawn before the map), 16-18 review website call are secondary`() {
         val g = fullFacts.actions
         assertEquals("maps", g.maps?.kind)
-        assertEquals(listOf("ShopeeFood", "GrabFood"), g.orders.map { it.platform })
+        assertEquals(listOf("ShopeeFood", "GrabFood"), g.books.map { it.platform })
         assertEquals(listOf("review", "website", "call"), g.others.map { it.kind })
         assertEquals("tel:+842838214455", g.others.last().url)
     }
@@ -173,8 +173,8 @@ class PlaceDecisionSectionTest {
     fun `labels are web's - the platform comes from the host when the action did not say`() {
         val g = fullFacts.actions
         assertEquals(R.string.place_action_maps to null, actionLabelSpec(g.maps!!))
-        assertEquals(R.string.place_action_search_on to "ShopeeFood", actionLabelSpec(g.orders[0]))
-        assertEquals(R.string.place_action_search_on to "GrabFood", actionLabelSpec(g.orders[1]))
+        assertEquals(R.string.place_action_search_on to "ShopeeFood", actionLabelSpec(g.books[0]))
+        assertEquals(R.string.place_action_search_on to "GrabFood", actionLabelSpec(g.books[1]))
         // "Tìm review trên YouTube": a review SEARCH, platform read off youtube.com.
         assertEquals(R.string.place_action_review_search_on to "YouTube", actionLabelSpec(g.others[0]))
         assertEquals(R.string.place_action_website to null, actionLabelSpec(g.others[1]))
@@ -225,7 +225,7 @@ class PlaceDecisionSectionTest {
         assertNull(f.phone); assertNull(f.tappyRating); assertNull(f.priceRangeText)
         assertTrue(f.chips.isEmpty()); assertTrue(f.reasons.isEmpty())
         assertEquals("maps", f.actions.maps?.kind)
-        assertTrue(f.actions.orders.isEmpty()); assertTrue(f.actions.others.isEmpty())
+        assertTrue(f.actions.books.isEmpty()); assertTrue(f.actions.others.isEmpty())
     }
 
     @Test
@@ -442,5 +442,27 @@ class PlaceDecisionSectionTest {
             dir = dir.parentFile
         }
         error("$rel not found")
+    }
+
+    // ── UAT4 P1-b (owner): the action that does the thing precedes Maps on every vertical ──
+    @Test
+    fun `UAT4 - order, booking, reservation, ticket and purchase are all book actions`() {
+        val kinds = listOf("order", "booking", "reservation", "ticket", "purchase", "delivery")
+        val actions = listOf(PlaceCardAction(kind = "maps", urlKind = "direct", url = "https://maps.google.com/?q=1", labelKey = "v3.action.maps")) +
+            kinds.map { PlaceCardAction(kind = it, urlKind = "direct", url = "https://x.example/$it", labelKey = "v3.action.$it") } +
+            PlaceCardAction(kind = "website", urlKind = "direct", url = "https://w.example", labelKey = "v3.action.website")
+        val g = groupActions(actions)
+        assertEquals(kinds, g.books.map { it.kind })
+        assertEquals("maps", g.maps?.kind)
+        assertEquals(listOf("website"), g.others.map { it.kind })
+    }
+
+    @Test
+    fun `UAT4 - the card draws the book row before the map button`() {
+        val src = java.io.File(generateSequence(java.io.File(".").absoluteFile) { it.parentFile }.first { java.io.File(it, "android/app/src/main").isDirectory },
+            "android/app/src/main/java/com/tappyai/app/chat/PlaceCard.kt").readText()
+        val books = src.indexOf("if (grouped.books.isNotEmpty())")
+        val maps = src.indexOf("grouped.maps?.let { maps ->")
+        assertTrue(books in 1 until maps)
     }
 }

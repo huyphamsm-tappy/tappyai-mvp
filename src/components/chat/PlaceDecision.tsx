@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone } from 'lucide-react'
+import { MapPin, Clock, Star, Utensils, Map as MapIcon, ChevronRight, Phone, Ticket, BedDouble, CalendarCheck } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { cn } from '@/lib/utils'
 import { actionLabel } from '@/lib/recommendation/actionLabel'
@@ -137,6 +137,9 @@ function CardPhoto({ src }: { src: string }) {
  * own composition, not dumped into prose), it simply stops numbering them and
  * stops styling the first row as a lead.
  */
+/** Actions that DO the thing (order, book, reserve, buy) — rendered before Maps (UAT4 P1-b). */
+const BOOK_KINDS: ReadonlySet<string> = new Set(['order', 'delivery', 'booking', 'reservation', 'ticket', 'purchase'])
+
 function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ranked: boolean }) {
   const { t, locale } = useTranslation()
   const popular = ranked && position === 0 && typeof p.ratingCount === 'number' && p.ratingCount >= POPULAR_MIN_RATINGS
@@ -151,11 +154,14 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
   // presentation used to put maps first and file the reservation among "others", which is
   // how a verified reservation hold once rendered after two search links.
   const lead = p.actions.find(a => a.commerce?.primary === true)
-  // Then maps, then ordering; anything else becomes a secondary button. Every entry already
-  // has a real destination (liveView drops the rest), so nothing here can render a dead button.
+  // UAT4 P1-b (owner): the action that DOES the thing — order, book, reserve, buy the ticket —
+  // comes before Maps on every vertical, whenever the card has one. It used to sit below Maps
+  // (orders) or among the secondary buttons (booking / reservation / ticket / purchase).
+  // Every entry already has a real destination (liveView drops the rest), so nothing here can
+  // render a dead button; a card with no such action keeps Maps first.
+  const books = p.actions.filter(a => a !== lead && BOOK_KINDS.has(a.kind))
   const maps = p.actions.find(a => a !== lead && (a.kind === 'maps' || a.kind === 'directions'))
-  const orders = p.actions.filter(a => a !== lead && (a.kind === 'order' || a.kind === 'delivery'))
-  const others = p.actions.filter(a => a !== lead && a !== maps && !orders.includes(a))
+  const others = p.actions.filter(a => a !== lead && a !== maps && !books.includes(a))
 
   return (
     <div
@@ -328,6 +334,26 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
             {actionLabel(lead, t)}
           </a>
         )}
+        {books.length > 0 && (
+          <div className="flex flex-wrap gap-2" data-testid="place-book">
+            {books.map(a => {
+              const Icon = a.kind === 'order' || a.kind === 'delivery' ? Utensils : a.kind === 'ticket' ? Ticket : a.kind === 'booking' ? BedDouble : CalendarCheck
+              return (
+                <a
+                  key={a.url}
+                  href={a.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-action-kind={a.kind}
+                  onClick={a.commerce ? () => commerceTap(a, p.domain) : undefined}
+                  className="inline-flex min-h-[40px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-rose-300 bg-rose-50 px-3 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-100 dark:border-rose-800 dark:bg-rose-950/30 dark:text-rose-300 dark:hover:bg-rose-950/50"
+                >
+                  <Icon size={14} aria-hidden="true" /> {actionLabel(a, t)}
+                </a>
+              )
+            })}
+          </div>
+        )}
         {maps && (
           <a
             href={maps.url}
@@ -338,20 +364,8 @@ function PlaceCard({ p, position, ranked }: { p: LivePlace; position: number; ra
             <MapIcon size={14} aria-hidden="true" /> {t('v3.action.maps')}
           </a>
         )}
-        {(orders.length > 0 || others.length > 0) && (
+        {others.length > 0 && (
           <div className="flex flex-wrap gap-2">
-            {orders.map(a => (
-              <a
-                key={a.url}
-                href={a.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={a.commerce ? () => commerceTap(a, p.domain) : undefined}
-                className="inline-flex min-h-[36px] flex-1 items-center justify-center gap-1.5 rounded-xl border border-rose-300 px-3 text-xs font-medium text-rose-700 transition-colors hover:bg-rose-50 dark:border-rose-800 dark:text-rose-300 dark:hover:bg-rose-950/30"
-              >
-                <Utensils size={12} aria-hidden="true" /> {actionLabel(a, t)}
-              </a>
-            ))}
             {others.map(a => {
               // A dialler is not a web page: `tel:` opens the phone app in place,
               // so it takes neither a new tab nor the cross-origin rel.

@@ -320,3 +320,32 @@ describe('A.4 — card photo: one proportionate retry, then the documented fallb
     expect(img.getAttribute('referrerpolicy')).toBeNull()
   })
 })
+
+// ── UAT4 P1-b (owner, 2026-09-27): the booking / order action comes BEFORE Maps ────────────────
+describe('UAT4: the action that does the thing leads Maps on every vertical', () => {
+  const kinds = [
+    ['food', 'order', 'https://shopeefood.vn/ho-chi-minh/anan'],
+    ['travel', 'booking', 'https://www.booking.com/hotel/vn/anan.html'],
+    ['spa', 'reservation', 'https://spa.example/booking'],
+    ['entertainment', 'ticket', 'https://www.cgv.vn/ticket'],
+    ['shopping', 'purchase', 'https://www.klook.com/activity/1'],
+  ] as const
+  it.each(kinds)('%s: the %s button precedes "Xem bản đồ" in the card', (domain, kind, url) => {
+    const p = place('Nơi A', { domain: domain as LivePlace['domain'], actions: [action(), action({ kind: 'website' as never, url: 'https://a.example' }), action({ kind: kind as never, url, labelKey: `v3.action.${kind}` })] })
+    render(<PlaceDecision view={view({ items: [p] } as never)} />)
+    const card = screen.getAllByTestId('place-card')[0]
+    const links = [...card.querySelectorAll('a')]
+    const book = links.findIndex(a => a.getAttribute('href') === url)
+    const maps = links.findIndex(a => a.getAttribute('href') === 'https://maps.google.com/?q=1')
+    expect(book).toBeGreaterThan(-1)
+    expect(maps).toBeGreaterThan(-1)
+    expect(book).toBeLessThan(maps)
+    expect(within(card).getByTestId('place-book')).toBeTruthy()
+  })
+  it('a card with no such action keeps Maps first and renders no booking row', () => {
+    render(<PlaceDecision view={view({ items: [place('Nơi B', { actions: [action(), action({ kind: 'website' as never, url: 'https://b.example' })] })] } as never)} />)
+    const card = screen.getAllByTestId('place-card')[0]
+    expect(within(card).queryByTestId('place-book')).toBeNull()
+    expect(card.querySelector('a')!.getAttribute('href')).toBe('https://maps.google.com/?q=1')
+  })
+})
