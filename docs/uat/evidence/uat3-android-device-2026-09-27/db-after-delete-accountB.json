@@ -1,0 +1,16 @@
+{
+ "user": "19b71e23-dbfa-48ac-8a5c-2469972d4214",
+ "auth_users": 0,
+ "nonzero_public_rows": {
+  "account_deletion_jobs.user_id": 1
+ },
+ "deletion_job": [
+  {
+   "created_at": "2026-09-27T08:38:04.334Z",
+   "done_at": null,
+   "attempts": 0,
+   "g": null,
+   "t": null
+  }
+ ]
+}
