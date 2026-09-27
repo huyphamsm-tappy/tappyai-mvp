@@ -9,8 +9,8 @@ enum ResponseDecoder {
         d.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let raw = try container.decode(String.self)
-            if let date = ISO8601DateFormatter.withFractionalSeconds.date(from: raw)
-                ?? ISO8601DateFormatter.standard.date(from: raw) {
+            if let date = (try? Date(raw, strategy: iso8601WithFractionalSeconds))
+                ?? (try? Date(raw, strategy: iso8601)) {
                 return date
             }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unrecognized date: \(raw)")
@@ -25,11 +25,8 @@ enum ResponseDecoder {
     }()
 }
 
-private extension ISO8601DateFormatter {
-    static let standard = ISO8601DateFormatter()
-    static let withFractionalSeconds: ISO8601DateFormatter = {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f
-    }()
-}
+// `Date.ISO8601FormatStyle` is a Sendable value type, so these can be shared across
+// concurrency domains (`ISO8601DateFormatter` is a non-Sendable class). Same two formats as
+// before: internet date-time, with and without fractional seconds.
+private let iso8601 = Date.ISO8601FormatStyle()
+private let iso8601WithFractionalSeconds = Date.ISO8601FormatStyle(includingFractionalSeconds: true)
