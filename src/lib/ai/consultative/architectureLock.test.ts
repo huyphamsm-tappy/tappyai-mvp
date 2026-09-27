@@ -26,8 +26,20 @@ describe('the chat route still makes exactly one model call', () => {
     expect((code(ROUTE).match(/AI\.stream\(/g) || []).length).toBe(1)
   })
 
-  it('no AI.generate() was introduced for ranking, need extraction or the Pick', () => {
-    expect(code(ROUTE)).not.toContain('AI.generate(')
+  // UAT4 P1-f (owner decision 2026-09-27, option A): ONE narrow exception — a planning turn that
+  // announced its plan and stopped may make at most one extra call, from inside the plan-completion
+  // wrapper's `complete` callback (planCompletion.ts calls it at most once, only when the block is
+  // missing). Any other AI.generate() in the route is still forbidden.
+  it('no AI.generate() was introduced for ranking, need extraction or the Pick — only the plan completion', () => {
+    const src = code(ROUTE)
+    const calls = [...src.matchAll(/AI\.generate\(/g)].map(m => m.index!)
+    expect(calls.length).toBeLessThanOrEqual(1)
+    for (const at of calls) {
+      const wrap = src.lastIndexOf('planCompletionStream(', at)
+      expect(wrap).toBeGreaterThan(-1)
+      expect(src.slice(wrap, at)).toMatch(/complete: async/)
+      expect(at - wrap).toBeLessThan(1200)
+    }
   })
 })
 
