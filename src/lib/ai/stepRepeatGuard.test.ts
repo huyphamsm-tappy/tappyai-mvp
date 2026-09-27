@@ -85,3 +85,64 @@ describe('stepRepeatGuard (streamed steps)', () => {
     expect(lines).toContain(annotation)
   })
 })
+
+// ── UAT4 P1-a (2026-09-27): a SHORTER repeat, and a phrase repeated back to back ────────────────
+import { dedupeSentences, collapseAdjacentRepeats, cleanRepeats } from '@/lib/chat/replyRepeat'
+const uat4 = JSON.parse(readFileSync('docs/uat/evidence/uat4-2026-09-27/finding-repeat-samples.json', 'utf8')) as { web_ent4: string; android_t7: string }
+const web = uat4.web_ent4
+const secondCopyAt = web.indexOf('Mình hiểu bạn muốn tìm thủy cung', 10)
+const answerAt = web.indexOf('Mình tìm được 3 thủy cung')
+const clarify = web.slice(0, secondCopyAt)
+const shorterRepeat = web.slice(secondCopyAt, answerAt)
+const answer = web.slice(answerAt)
+const count = (s: string, needle: string) => s.split(needle).length - 1
+
+describe('UAT4: a shorter repeat of the clarify questions', () => {
+  it('the measured repeat is NOT caught by the whole-reply test (why this change exists)', () => {
+    expect(similarity(clarify, shorterRepeat)).toBeLessThan(REPEAT_SIMILARITY)
+  })
+
+  it('buffered in one text: every repeated sentence goes, the answer stays', () => {
+    const out = cleanRepeats(web)
+    expect(count(out, 'Mình hiểu bạn muốn tìm thủy cung ở Sài Gòn')).toBe(1)
+    expect(count(out, 'Bạn muốn đi khi nào?')).toBe(1)
+    expect(count(out, 'Mình sẽ tìm thủy cung phù hợp nhất cho bạn ngay')).toBe(1)
+    expect(out).toContain('Mình tìm được 3 thủy cung ở Sài Gòn!')
+    expect(out).toContain('Ưu tiên gì?')
+  })
+
+  it('streamed: step 2 (shorter repeat + answer) keeps only its new sentences; tool frames pass', async () => {
+    const { text, lines } = await run([t(clarify), stepEnd, toolCall, toolResult, t(shorterRepeat.slice(0, 40)), t(shorterRepeat.slice(40) + answer), done])
+    expect(count(text, 'Mình hiểu bạn muốn tìm thủy cung ở Sài Gòn')).toBe(1)
+    expect(count(text, 'Bạn muốn đi khi nào?')).toBe(1)
+    expect(text).toContain('Mình tìm được 3 thủy cung ở Sài Gòn!')
+    expect(lines.some(l => l.startsWith('9:'))).toBe(true)
+    expect(lines.some(l => l.startsWith('a:'))).toBe(true)
+  })
+
+  it('Android turn 7: a phrase repeated back to back collapses to one', () => {
+    const out = collapseAdjacentRepeats(uat4.android_t7)
+    expect(count(out, '(1 giờ sáng) nhé!')).toBe(1)
+    expect(out).toContain('Nếu bạn muốn ăn thật khuya hơn!')
+  })
+})
+
+describe('UAT4: what the sentence dedupe must NOT touch', () => {
+  it('two venues with similar but different sentences both stay', () => {
+    const r = 'Quán Phở Hòa mở cửa đến 22:00 nên bạn có thể ghé ăn tối muộn. Quán Phở Thìn mở cửa đến 23:00 nên bạn có thể ghé ăn tối muộn.'
+    expect(dedupeSentences(r)).toBe(r)
+  })
+  it('short repeated lines and list rows stay', () => {
+    const r = '- Giá: chưa có giá\n- Giá: chưa có giá\nNhé! Nhé!'
+    expect(dedupeSentences(r)).toBe(r)
+  })
+  it('blocks are never edited, even when a sentence in them repeats the prose', () => {
+    const s = 'Mình chọn Phở Hòa cho bạn vì có rating cao nhất khu vực.'
+    const r = `${s}\n[TAPPY_PLAN]{"title":"${s}"}[/TAPPY_PLAN]`
+    expect(dedupeSentences(r)).toBe(r)
+  })
+  it('"ha ha" and repeated numbers are not phrase repeats', () => {
+    expect(collapseAdjacentRepeats('ha ha ha ha vui quá')).toBe('ha ha ha ha vui quá')
+    expect(collapseAdjacentRepeats('1 2 1 2 3')).toBe('1 2 1 2 3')
+  })
+})

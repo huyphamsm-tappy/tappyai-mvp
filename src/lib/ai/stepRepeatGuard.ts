@@ -1,4 +1,4 @@
-import { REPEAT_SIMILARITY, MIN_PROSE, similarity, dropRepeatedReply } from '@/lib/chat/replyRepeat'
+import { REPEAT_SIMILARITY, MIN_PROSE, similarity, dropRepeatedReply, dedupeSentences } from '@/lib/chat/replyRepeat'
 
 export { REPEAT_SIMILARITY, similarity, dropRepeatedReply }
 
@@ -27,6 +27,7 @@ export function stepRepeatGuard(): TransformStream<Uint8Array, Uint8Array> {
   let carry = ''
   let prevProse = ''      // prose of the last step that emitted any
   let stepProse = ''      // prose of the current step
+  let sentProse = ''      // every prose character already on the wire this turn
   let holding = false     // the current step's frames are held
   let held: Frame[] = []
 
@@ -42,8 +43,20 @@ export function stepRepeatGuard(): TransformStream<Uint8Array, Uint8Array> {
       const heldText = held.map(f => f.text ?? '').join('')
       const repeat = heldText.trim().length > 0 && similarity(prevProse, heldText) >= REPEAT_SIMILARITY
       if (repeat) console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'step_repeat', kind: 'dropped_step_text', chars: heldText.length }))
-      for (const f of held) if (f.text === null) out(c, f.line); else if (!repeat) out(c, f.line)
-      if (!repeat && heldText.trim()) stepProse = heldText
+      // UAT4 P1-a: a step that repeats only SOME of what was already said (a shorter copy of the
+      // clarify questions before the answer) keeps its new sentences and loses the repeated ones.
+      const kept = repeat ? '' : dedupeSentences(heldText, [sentProse])
+      if (!repeat && kept !== heldText) {
+        console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'step_repeat', kind: 'dropped_repeated_sentences', chars: heldText.length - kept.length }))
+        let textOut = false
+        for (const f of held) {
+          if (f.text === null) out(c, f.line)
+          else if (!textOut) { emitText(c, kept); textOut = true }
+        }
+      } else {
+        for (const f of held) if (f.text === null) out(c, f.line); else if (!repeat) out(c, f.line)
+      }
+      if (!repeat && kept.trim()) { stepProse = kept; sentProse += kept }
       held = []
       holding = false
     }
@@ -66,6 +79,7 @@ export function stepRepeatGuard(): TransformStream<Uint8Array, Uint8Array> {
       const text = f.text.length >= MIN_PROSE * 2 ? dropRepeatedReply(f.text) : f.text
       if (text !== f.text) console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'step_repeat', kind: 'collapsed_in_frame', chars: f.text.length - text.length }))
       stepProse += text
+      sentProse += text
       emitText(c, text)
       return
     }

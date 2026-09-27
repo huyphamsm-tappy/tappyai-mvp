@@ -39,6 +39,57 @@ internal object ReplyRepeat {
         return 2.0 * inter / (ga.values.sum() + gb.values.sum())
     }
 
+    // ── UAT4 P1-a (2026-09-27): sentence-level repeats — port of web `dedupeSentences`,
+    // `collapseAdjacentRepeats`, `cleanRepeats` (same thresholds; ReplyRepeatTest pins the cases).
+    private const val MIN_SENTENCE_KEY = 20
+    private const val NEAR_DUPLICATE = 0.9
+    private val SENTENCE = Regex("""[^.!?…\n]+(?:[.!?…]+|\n|$)[\s\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE0F}\x{200D}]*""")
+    private val PHRASE_RUN = Regex("""((?:\S+[ \t]+){2,12}?)(?:\1)+""")
+
+    private fun key(s: String) = tokens(s).joinToString(" ")
+
+    private fun segments(text: String): List<Pair<Boolean, String>> {
+        val out = mutableListOf<Pair<Boolean, String>>()
+        var last = 0
+        for (m in BLOCK.findAll(text)) {
+            if (m.range.first > last) out += false to text.substring(last, m.range.first)
+            out += true to m.value
+            last = m.range.last + 1
+        }
+        if (last < text.length) out += false to text.substring(last)
+        return out
+    }
+
+    private fun sentences(prose: String): List<String> =
+        SENTENCE.findAll(prose).map { it.value }.filter { it.isNotEmpty() }.toList().ifEmpty { listOf(prose) }
+
+    private fun isRepeat(k: String, seen: List<String>): Boolean =
+        k.length >= MIN_SENTENCE_KEY && seen.any { it == k || (it.length >= MIN_SENTENCE_KEY && similarity(it, k) >= NEAR_DUPLICATE) }
+
+    /** Drops every prose sentence that repeats an earlier one; blocks are untouched. */
+    fun dedupeSentences(text: String): String {
+        val seen = mutableListOf<String>()
+        var changed = false
+        val out = segments(text).joinToString("") { (block, seg) ->
+            if (block) seg else sentences(seg).joinToString("") { s ->
+                val k = key(s)
+                if (isRepeat(k, seen)) { changed = true; "" } else { if (k.isNotEmpty()) seen += k; s }
+            }
+        }
+        return if (changed) out.replace(Regex("[ \t]+\n"), "\n").replace(Regex("\n{3,}"), "\n\n") else text
+    }
+
+    /** A run of 2–12 words repeated back to back → once. */
+    fun collapseAdjacentRepeats(text: String): String = segments(text).joinToString("") { (block, seg) ->
+        if (block) seg else PHRASE_RUN.replace(seg) { m ->
+            val unit = m.groupValues[1]
+            if (unit.filterNot { it.isWhitespace() }.length >= 10 && unit.any { it.isLetter() }) unit else m.value
+        }
+    }
+
+    /** The last pass over a finished reply: whole-reply repeat, then sentences, then phrases. */
+    fun cleanRepeats(text: String): String = collapseAdjacentRepeats(dedupeSentences(dropRepeatedReply(text)))
+
     /** The same reply twice in one text → the last version; anything else unchanged. */
     fun dropRepeatedReply(text: String): String {
         val t = text.trimStart()

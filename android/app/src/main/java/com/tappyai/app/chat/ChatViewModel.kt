@@ -677,7 +677,7 @@ class ChatViewModel @Inject constructor(
                 // the model didn't inline any, so existing Android followups don't regress.
                 // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
                 // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
-                val finalReply = ReplyRepeat.dropRepeatedReply(reply.toString())
+                val finalReply = ReplyRepeat.cleanRepeats(reply.toString())
                 val parsed = ChatResponseParser.parse(finalReply)
                 val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
                 _messages.update { msgs ->
