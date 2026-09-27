@@ -103,8 +103,11 @@ jobs:
   # Signed Release archive, uploaded to TestFlight. Manual only (workflow_dispatch): it spends an
   # App Store build number and needs the signing secrets, so it must never fire from a PR.
   #
-  # Signing is automatic via the App Store Connect API key: -allowProvisioningUpdates lets
-  # xcodebuild create the certificate and profiles it needs, so no .p12 or profile is stored.
+  # Signing is MANUAL: an Apple Distribution certificate (.p12) and an App Store profile, both
+  # from repository secrets. Automatic signing archives with a *development* profile, which Apple
+  # refuses to create for a team with no registered devices (run #13), and it would also mint a
+  # new development certificate on every fresh runner until the account hit its cap. The App
+  # Store Connect API key is still used, but only to upload.
   testflight:
     name: Archive + upload to TestFlight
     if: github.event_name == 'workflow_dispatch'
@@ -167,6 +170,51 @@ jobs:
           } > Config/Secrets.xcconfig
           echo "Secrets.xcconfig defines: $(grep -oE '^[A-Z_]+' Config/Secrets.xcconfig | xargs)"
 
+      # A throwaway keychain holds the distribution identity for this job only; the cleanup step
+      # deletes it. Xcode 16+ reads profiles from UserData, older Xcode from MobileDevice.
+      - name: Install distribution certificate + App Store profile
+        env:
+          DIST_CERT_P12_BASE64: ${{ secrets.DIST_CERT_P12_BASE64 }}
+          DIST_CERT_P12_PASSWORD: ${{ secrets.DIST_CERT_P12_PASSWORD }}
+          APPSTORE_PROFILE_BASE64: ${{ secrets.APPSTORE_PROFILE_BASE64 }}
+        run: |
+          for v in DIST_CERT_P12_BASE64 DIST_CERT_P12_PASSWORD APPSTORE_PROFILE_BASE64; do
+            [ -n "${!v}" ] || { echo "::error::secret $v is not set"; exit 1; }
+          done
+          keychain="$RUNNER_TEMP/signing.keychain-db"
+          kc_pass="$(openssl rand -hex 24)"
+          security create-keychain -p "$kc_pass" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$kc_pass" "$keychain"
+          p12="$RUNNER_TEMP/dist.p12"
+          printf '%s' "$DIST_CERT_P12_BASE64" | base64 --decode > "$p12"
+          security import "$p12" -P "$DIST_CERT_P12_PASSWORD" -A -t cert -f pkcs12 -k "$keychain"
+          rm -f "$p12"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$kc_pass" "$keychain" > /dev/null
+          security list-keychains -d user -s "$keychain" $(security list-keychains -d user | xargs)
+          echo "--- signing identities in the job keychain"
+          security find-identity -v -p codesigning "$keychain"
+          security find-identity -v -p codesigning "$keychain" | grep -q '"Apple Distribution' || { echo "::error::no valid Apple Distribution identity after import"; exit 1; }
+
+          profile="$RUNNER_TEMP/appstore.mobileprovision"
+          printf '%s' "$APPSTORE_PROFILE_BASE64" | base64 --decode > "$profile"
+          security cms -D -i "$profile" > "$RUNNER_TEMP/profile.plist"
+          uuid="$(plutil -extract UUID raw -o - "$RUNNER_TEMP/profile.plist")"
+          name="$(plutil -extract Name raw -o - "$RUNNER_TEMP/profile.plist")"
+          for dir in "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles" "$HOME/Library/MobileDevice/Provisioning Profiles"; do
+            mkdir -p "$dir"
+            cp "$profile" "$dir/$uuid.mobileprovision"
+          done
+          echo "profile: $name ($uuid), expires $(plutil -extract ExpirationDate raw -o - "$RUNNER_TEMP/profile.plist")"
+          {
+            echo "SIGNING_KEYCHAIN=$keychain"
+            echo "PROFILE_UUID=$uuid"
+            echo "PROFILE_NAME=$name"
+          } >> "$GITHUB_ENV"
+          # Target-level only: Release.xcconfig is the TappyAI target's config file, so the
+          # profile applies to the app and not to the Swift packages (which reject a profile).
+          echo "PROVISIONING_PROFILE_SPECIFIER = $uuid" >> Config/Secrets.xcconfig
+
       - name: Generate Xcode project
         run: |
           xcodegen generate
@@ -182,12 +230,13 @@ jobs:
             -destination 'generic/platform=iOS'
             -archivePath build/TappyAI.xcarchive
             -skipPackagePluginValidation
-            -allowProvisioningUpdates
-            -authenticationKeyPath "$ASC_KEY_PATH"
-            -authenticationKeyID "$ASC_KEY_ID"
-            -authenticationKeyIssuerID "$ASC_ISSUER_ID"
-            CODE_SIGN_STYLE=Automatic
+            # Style, identity and team are safe on the command line (they reach the Swift
+            # packages too, which is harmless). The profile is NOT: it comes from the
+            # target-level Secrets.xcconfig written in the install step.
+            CODE_SIGN_STYLE=Manual
+            CODE_SIGN_IDENTITY="Apple Distribution"
             DEVELOPMENT_TEAM="$APPLE_TEAM_ID"
+            OTHER_CODE_SIGN_FLAGS="--keychain $SIGNING_KEYCHAIN"
             CURRENT_PROJECT_VERSION="$BUILD_NUMBER"
           )
           xcodebuild archive "${args[@]}" 2>&1 | tee build/archive.log
@@ -219,13 +268,17 @@ jobs:
             /usr/libexec/PlistBuddy -c "Add :method string app-store-connect" \
               -c "Add :destination string $1" \
               -c "Add :teamID string $APPLE_TEAM_ID" \
-              -c "Add :signingStyle string automatic" \
+              -c "Add :signingStyle string manual" \
+              -c "Add :signingCertificate string Apple Distribution" \
+              -c "Add :provisioningProfiles dict" \
+              -c "Add :provisioningProfiles:com.tappyai.ios string $PROFILE_UUID" \
               -c "Add :manageAppVersionAndBuildNumber bool false" \
               -c "Add :uploadSymbols bool true" \
               "build/ExportOptions-$1.plist" > /dev/null
           }
           write_plist upload
           write_plist export
+          # The API key is used here only to authenticate the upload; signing is manual.
           auth=(
             -allowProvisioningUpdates
             -authenticationKeyPath "$ASC_KEY_PATH"
@@ -252,15 +305,23 @@ jobs:
           for f in build/archive.log build/export-upload.log build/export-ipa.log build/altool.log; do
             [ -f "$f" ] || continue
             echo "=== $f ==="
-            grep -E "(error:|: error |ERROR ITMS|\*\* (ARCHIVE|EXPORT) FAILED|No profiles|No signing certificate|requires a provisioning profile|has no devices)" "$f" | sort -u | head -80 || true
+            grep -E "(error:|: error |ERROR ITMS|\*\* (ARCHIVE|EXPORT) FAILED|No profiles|No signing certificate|requires a provisioning profile|has no devices|doesn't match|doesn't include|errSecInternalComponent)" "$f" | sort -u | head -80 || true
           done
 
-      # Always runs, including after a failure or a cancel: the key and the config must not
-      # outlive the job on the runner.
+      # Always runs, including after a failure or a cancel: the keys, the signing identity, the
+      # profile and the config must not outlive the job on the runner.
       - name: Remove key material from the runner
         if: always()
         working-directory: .
         run: |
           rm -rf "$HOME/private_keys"
           rm -f ios/Config/Secrets.xcconfig
-          echo "removed ~/private_keys and ios/Config/Secrets.xcconfig"
+          if [ -n "${SIGNING_KEYCHAIN:-}" ] && [ -f "$SIGNING_KEYCHAIN" ]; then
+            security delete-keychain "$SIGNING_KEYCHAIN" || true
+          fi
+          if [ -n "${PROFILE_UUID:-}" ]; then
+            rm -f "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/$PROFILE_UUID.mobileprovision" \
+                  "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
+          fi
+          rm -f "$RUNNER_TEMP/dist.p12" "$RUNNER_TEMP/appstore.mobileprovision" "$RUNNER_TEMP/profile.plist"
+          echo "removed: API key, Secrets.xcconfig, signing keychain, App Store profile"
