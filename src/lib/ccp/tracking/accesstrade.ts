@@ -53,6 +53,10 @@ export function wrapWithAccesstrade(input: WrapInput): WrapResult {
   if (input.tracking.network !== 'accesstrade' || !input.tracking.campaignId) return { ok: false, reason: 'not_configured', detail: 'no accesstrade campaign' }
   if (input.tracking.approval !== 'approved') return { ok: false, reason: 'campaign_not_approved', detail: input.tracking.approval }
   if (input.tracking.safeWrapper !== 'deep_link') return { ok: false, reason: 'unsafe_wrapper', detail: input.tracking.safeWrapper }
+  // A merchant whose campaign does not credit the generic Deep Link (TikTok Shop: product-feed
+  // links only, portal rule 27 Sep 2026) must never receive one — a link that earns nothing is not
+  // "tracked", it is a detour.
+  if (input.tracking.unsafeWrappers.includes('deep_link')) return { ok: false, reason: 'unsafe_wrapper', detail: 'deep_link not credited by this campaign' }
 
   const utm: Record<string, string> = { utm_source: 'tappyai', utm_medium: 'ccp' }
   if (input.utmContent) utm.utm_content = input.utmContent

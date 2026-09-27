@@ -104,19 +104,31 @@ const logged = new Set<string>()
 
 /**
  * The tracking configuration a link may be wrapped with, or undefined for a DIRECT link.
- *  - no row            → the code registry's own tracking config (as before)
+ *  - no row            → the code registry's own tracking config (as before), unless the code
+ *                        records that the campaign does not credit the Deep Link (TikTok Shop)
  *  - row, deeplink off → undefined (direct), whatever the code says
  *  - row, deeplink on  → Accesstrade with the row's campaign id (falling back to the code's id),
  *                        or a template wrapper; neither present ⇒ error logged, direct
  */
 export function effectiveTracking(entry: Pick<ProviderRegistryEntry, 'providerId' | 'tracking'>): TrackingConfig | undefined {
   const o = providerOverride(entry.providerId)
-  if (!o) return entry.tracking
+  // A merchant whose campaign does not credit the Deep Link has no usable tracking config at all.
+  if (!o) return entry.tracking?.unsafeWrappers.includes('deep_link') ? undefined : entry.tracking
   if (!o.active || !o.deeplinkEnabled) return undefined
   if (o.network === 'template') {
     if (o.wrapperTemplate && /^https:\/\/.+\{url\}/.test(o.wrapperTemplate)) return { network: 'template', template: o.wrapperTemplate, approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] } as unknown as TrackingConfig
   } else {
     const campaignId = o.campaignId ?? entry.tracking?.campaignId ?? null
+    // The code registry records merchants whose campaign does NOT credit the Deep Link (TikTok Shop:
+    // product-feed links only). A row cannot override that fact — it is technical, not commercial.
+    if (entry.tracking?.unsafeWrappers.includes('deep_link')) {
+      const k = `${o.providerId}:deep_link_unsafe`
+      if (!logged.has(k)) {
+        logged.add(k)
+        console.error(JSON.stringify({ type: 'tappyai_commerce_registry', step: 'deeplink_not_credited_by_campaign', providerId: o.providerId, action: 'direct link emitted' }))
+      }
+      return undefined
+    }
     if (campaignId && /^\d{10,25}$/.test(campaignId)) return { network: 'accesstrade', campaignId, approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: entry.tracking?.unsafeWrappers ?? [] }
   }
   const key = `${o.providerId}:${o.updatedAt ?? ''}`
