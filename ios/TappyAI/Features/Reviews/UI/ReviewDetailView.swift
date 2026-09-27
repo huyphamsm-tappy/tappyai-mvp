@@ -121,7 +121,7 @@ struct ReviewDetailView: View {
                     }
                     .onDisappear { videoPlayer.setActive(false) }
             } else if review.sourceType == "youtube", let videoId = youTubeId(review.sourceUrl) {
-                YouTubeEmbedView(videoId: videoId)
+                YouTubeEmbedView(videoId: videoId, isActive: true)
             } else if let photos = review.photos, !photos.isEmpty {
                 ReviewPhotoCarousel(photos: photos)
             } else if let thumb = review.thumbnail, let url = URL(string: thumb) {

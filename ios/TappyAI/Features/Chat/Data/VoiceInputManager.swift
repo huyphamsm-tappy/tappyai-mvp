@@ -21,9 +21,7 @@ final class VoiceInputManager: AppObservableObject {
     /// Dictation listens in the APP language — you speak the language you chose to work in. This is
     /// deliberately NOT the message language: read-aloud follows the reply, input follows the user.
     /// Defaults to the app's current UI language rather than a hardcoded locale.
-    // Optional + resolved in the body: a default argument is evaluated outside the main actor.
-    init(appLanguage: String? = nil) {
-        let appLanguage = appLanguage ?? LocalizationManager.currentLanguageCode
+    init(appLanguage: String = LocalizationManager.currentLanguageCode) {
         recognizer = SFSpeechRecognizer(
             locale: Locale(identifier: VoiceLocale.inputTag(forAppLanguage: appLanguage))
         )

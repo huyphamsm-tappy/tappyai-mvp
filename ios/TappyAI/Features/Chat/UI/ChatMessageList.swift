@@ -121,12 +121,12 @@ struct ChatMessageList: View {
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.md)
             }
-            .onChange(of: messages.count) {
+            .onChange(of: messages.count) { _ in
                 withAnimation(.easeOut(duration: 0.2)) {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             }
-            .onChange(of: messages.last?.content) {
+            .onChange(of: messages.last?.content) { _ in
                 if isStreaming {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
