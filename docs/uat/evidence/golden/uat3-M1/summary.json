@@ -1,0 +1,249 @@
+{
+  "label": "uat3-M1",
+  "base": "http://localhost:3007",
+  "calls": 12,
+  "at": "2026-09-27T07:07:30.677Z",
+  "cases": [
+    {
+      "id": "M1",
+      "group": "multi-domain-long-thread",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16864,
+          "tools": [
+            "search_places",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Karaoke Avatar",
+              "Karaoke MEI",
+              "Karaoke ICOOL",
+              "Karaoke ICOOL - Trần Não Vòng Xoay Thủ Thiêm",
+              "Karaoke ICOOL",
+              "Karaoke Bambi",
+              "Karaoke iCool 90 Mạc Đĩnh Chi",
+              "Kingdom Karaoke"
+            ]
+          ],
+          "dup": false,
+          "chars": 568
+        },
+        {
+          "status": 200,
+          "ms": 5562,
+          "tools": [],
+          "cards": [],
+          "dup": true,
+          "chars": 592
+        },
+        {
+          "status": 200,
+          "ms": 14987,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Quán Cơm Gà, Mẹt, Gỏi - Gà Ta Ngon Số 1 - Chi Nhánh 72 Út Tịch, Tân Bình",
+              "Cháo sườn chú Chen",
+              "Cơm Cháo Triều Châu 63",
+              "Bánh mì chảo Dì Nữ",
+              "Bánh Mì Chảo Buê Đuê - Cô Lệ",
+              "Cháo Mực Thanh Sơn"
+            ],
+            [
+              "Quán Cơm Gà, Mẹt, Gỏi - Gà Ta Ngon Số 1 - Chi Nhánh 72 Út Tịch, Tân Bình",
+              "Cháo sườn chú Chen",
+              "Cơm Cháo Triều Châu 63",
+              "Bánh mì chảo Dì Nữ",
+              "Bánh Mì Chảo Buê Đuê - Cô Lệ",
+              "Cháo Mực Thanh Sơn"
+            ]
+          ],
+          "dup": false,
+          "chars": 488
+        },
+        {
+          "status": 200,
+          "ms": 15739,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Chef Chảo",
+              "Hồng Ký Mì Gia - Quận 1",
+              "Sài Gòn Bò Chảo và Nướng",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "NAO - Ăn uống ngay nào",
+              "Cháo sườn chú Chen",
+              "Cháo lòng Chị Thanh"
+            ],
+            [
+              "Chef Chảo",
+              "Hồng Ký Mì Gia - Quận 1",
+              "Sài Gòn Bò Chảo và Nướng",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "NAO - Ăn uống ngay nào",
+              "Cháo sườn chú Chen",
+              "Cháo lòng Chị Thanh"
+            ]
+          ],
+          "dup": false,
+          "chars": 510
+        },
+        {
+          "status": 200,
+          "ms": 17522,
+          "tools": [
+            "search_places",
+            "search_places"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 1116
+        },
+        {
+          "status": 200,
+          "ms": 25595,
+          "tools": [
+            "search_places",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Sài Gòn Bò Chảo và Nướng",
+              "NAO - Ăn uống ngay nào",
+              "Cháo sườn chú Chen",
+              "Cháo lòng Chị Thanh",
+              "Cháo Lòng Bà Út",
+              "Bánh mì chảo Dì Nữ"
+            ],
+            [
+              "Sài Gòn Bò Chảo và Nướng",
+              "NAO - Ăn uống ngay nào",
+              "Cháo sườn chú Chen",
+              "Cháo lòng Chị Thanh",
+              "Cháo Lòng Bà Út",
+              "Bánh mì chảo Dì Nữ"
+            ]
+          ],
+          "dup": false,
+          "chars": 356
+        },
+        {
+          "status": 200,
+          "ms": 43496,
+          "tools": [
+            "get_flight_prices",
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Nhà Hàng Cá Khói",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Nhà Hàng Cơm Quy Nhơn",
+              "Phố ẩm thực Quy Nhơn"
+            ],
+            [
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Nhà Hàng Cá Khói",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Nhà Hàng Cơm Quy Nhơn"
+            ]
+          ],
+          "dup": false,
+          "chars": 888
+        },
+        {
+          "status": 200,
+          "ms": 43959,
+          "tools": [
+            "get_flight_prices",
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Khách Sạn Sala Quy Nhon Beach",
+              "Grand Hyams Hotel - Quy Nhon Beach",
+              "Hostel Bình Yên",
+              "Fleur De Lys Hotel Quy Nhon",
+              "Le Mint Hotel Quy Nhơn",
+              "ANYA BEACH HOTEL QUY NHON",
+              "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+              "Khách Sạn Lucien Hotel Quy Nhơn"
+            ],
+            [
+              "Khách sạn Sài Gòn - Quy Nhơn",
+              "Khách Sạn Sala Quy Nhon Beach",
+              "Grand Hyams Hotel - Quy Nhon Beach",
+              "Hostel Bình Yên",
+              "Fleur De Lys Hotel Quy Nhon",
+              "Le Mint Hotel Quy Nhơn",
+              "ANYA BEACH HOTEL QUY NHON",
+              "L'amor Boutique Hotel Quy Nhơn | 360° City View"
+            ]
+          ],
+          "dup": false,
+          "chars": 968
+        },
+        {
+          "status": 200,
+          "ms": 5906,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 311
+        },
+        {
+          "status": 200,
+          "ms": 22427,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 897
+        },
+        {
+          "status": 200,
+          "ms": 18207,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 811
+        },
+        {
+          "status": 200,
+          "ms": 11988,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1323
+        }
+      ]
+    }
+  ]
+}

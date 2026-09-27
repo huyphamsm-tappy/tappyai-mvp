@@ -1,0 +1,237 @@
+{
+  "label": "uat3-M234",
+  "base": "http://localhost:3007",
+  "calls": 10,
+  "at": "2026-09-27T07:10:06.367Z",
+  "cases": [
+    {
+      "id": "M2",
+      "group": "switch-food-spa-entertainment",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17587,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Tám Riêu - Lý Chính Thắng",
+              "CƠM NIÊU ĐẨU",
+              "GÓC HUẾ - Kỳ Đồng",
+              "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "Bánh tráng trộn chú Viên"
+            ],
+            [
+              "Tám Riêu - Lý Chính Thắng",
+              "CƠM NIÊU ĐẨU",
+              "GÓC HUẾ - Kỳ Đồng",
+              "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "Bánh tráng trộn chú Viên"
+            ]
+          ],
+          "dup": false,
+          "chars": 481
+        },
+        {
+          "status": 200,
+          "ms": 17582,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+              "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+              "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+              "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+              "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+              "Tiệm gội đầu Chị Bảy"
+            ],
+            [
+              "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+              "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+              "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+              "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+              "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+              "Tiệm gội đầu Chị Bảy"
+            ]
+          ],
+          "dup": false,
+          "chars": 502
+        },
+        {
+          "status": 200,
+          "ms": 14362,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Mega GS Cinemas - Cao Thắng",
+              "CGV Lý Chính Thắng",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ],
+            [
+              "Mega GS Cinemas - Cao Thắng",
+              "CGV Lý Chính Thắng",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ]
+          ],
+          "dup": false,
+          "chars": 399
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "group": "switch-fold-collisions",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13767,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+              "Ashima Nguyễn Trãi",
+              "Asanoha - Modern Japanese Hotpot",
+              "Lẩu Bò Quang Khải",
+              "Lẩu bò Hồng Tiêu",
+              "LẨU NGON 79",
+              "Hàng Dương Quán Quận 1",
+              "Vạn Quán - Lẩu Gà Lá É CN3 Q.1"
+            ],
+            [
+              "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+              "Ashima Nguyễn Trãi",
+              "Asanoha - Modern Japanese Hotpot",
+              "Lẩu Bò Quang Khải",
+              "Lẩu bò Hồng Tiêu",
+              "LẨU NGON 79",
+              "Hàng Dương Quán Quận 1",
+              "Vạn Quán - Lẩu Gà Lá É CN3 Q.1"
+            ]
+          ],
+          "dup": false,
+          "chars": 501
+        },
+        {
+          "status": 200,
+          "ms": 5932,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 215
+        },
+        {
+          "status": 200,
+          "ms": 22419,
+          "tools": [
+            "get_weather",
+            "search_places",
+            "search_places",
+            "search_places"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 1493
+        },
+        {
+          "status": 200,
+          "ms": 9181,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 659
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "group": "switch-spa-shopping-spa",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 19199,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "Trải Nghiệm Mầm Gạo Spa Với Giá Tốt Độc Quyền",
+              "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "Paradise spa"
+            ],
+            [
+              "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "Trải Nghiệm Mầm Gạo Spa Với Giá Tốt Độc Quyền",
+              "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "Paradise spa"
+            ]
+          ],
+          "dup": false,
+          "chars": 547
+        },
+        {
+          "status": 200,
+          "ms": 18760,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 750
+        },
+        {
+          "status": 200,
+          "ms": 16137,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Mèo Mây Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "Bèo & Fê - Chi nhánh 2"
+            ],
+            [
+              "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Mèo Mây Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "Bèo & Fê - Chi nhánh 2"
+            ]
+          ],
+          "dup": false,
+          "chars": 531
+        }
+      ]
+    }
+  ]
+}
