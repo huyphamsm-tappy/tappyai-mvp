@@ -9,11 +9,12 @@
 
     <!-- Universal Links + Shared Web Credentials for www.tappyai.com.
          Requires the apple-app-site-association file served at /.well-known/apple-app-site-association
-         and the Apple Team ID substituted in that file. -->
+         and the Apple Team ID substituted in that file.
+         www only: the apex tappyai.com answers 308 -> www, and Apple does not follow redirects
+         when fetching the association file, so an apex applinks entry can never verify. -->
     <key>com.apple.developer.associated-domains</key>
     <array>
         <string>applinks:www.tappyai.com</string>
-        <string>applinks:tappyai.com</string>
         <string>webcredentials:www.tappyai.com</string>
     </array>
 </dict>
