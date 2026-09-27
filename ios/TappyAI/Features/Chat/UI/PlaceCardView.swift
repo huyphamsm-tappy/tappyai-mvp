@@ -213,6 +213,8 @@ private struct PlaceCardRow: View {
 /// 🚨 THE URL IS OPENED VERBATIM. No rewrite, no fallback to a homepage, no other merchant: the
 /// action's URL is the one the Commerce Capability Platform validated. A device with nothing able
 /// to open it reports a failed handoff rather than an error on a card the user can still read.
+/// Main actor: `UIApplication` is main-actor-only; every caller is a SwiftUI button action.
+@MainActor
 func openPlaceAction(_ action: PersistedPlaceAction) {
     guard let url = URL(string: action.url) else {
         if let c = action.commerce {
