@@ -157,6 +157,8 @@ struct ProfileMainView: View {
                 Divider().padding(.leading, 52)
                 menuRow(icon: "bell", label: "profile.row.notifications", desc: "profile.row.notifications.desc", dest: .notificationsInbox)
                 Divider().padding(.leading, 52)
+                menuRow(icon: "person.2", label: "profile.row.social", desc: "profile.row.social.desc", dest: .social)
+                Divider().padding(.leading, 52)
                 menuRow(icon: "magnifyingglass", label: "profile.row.userSearch", desc: "profile.row.userSearch.desc", dest: .userSearch)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "person.3", label: "profile.row.groupDining", desc: "profile.row.groupDining.desc", dest: .groupDining)
