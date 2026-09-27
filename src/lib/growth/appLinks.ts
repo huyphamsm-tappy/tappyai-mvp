@@ -2,7 +2,9 @@
 // App Links (Android) / Universal Links (iOS) association files.
 //
 // ANDROID — prepared, not active. `assetlinks.json` is served only once the
-// owner sets the signing fingerprints; until then the route 404s.
+// owner sets the signing fingerprints; until then the route 404s. The
+// fingerprint is NOT in this repository: it comes from Play Console →
+// Setup → App signing (app signing key + upload key SHA-256).
 //
 // iOS — LIVE. The iOS app is signed with the `applinks:www.tappyai.com`
 // Associated Domains entitlement, so the association file is built from
@@ -21,8 +23,31 @@ export const ANDROID_PACKAGE = 'com.tappyai.app'
 
 const SHA256_RE = /^([0-9A-F]{2}:){31}[0-9A-F]{2}$/
 
+/**
+ * The certificate of the legacy Trusted Web Activity `com.tappyai.twa` — the fingerprint the
+ * static `public/.well-known/assetlinks.json` carried until 2026-09-27 (superseded by the native
+ * app, docs/Android_Sprint_Go_NoGo.md §8). It is a real certificate, but not `com.tappyai.app`'s,
+ * so pasting it into the env would publish a statement that verifies nothing.
+ */
+export const LEGACY_TWA_FINGERPRINT =
+  '19:3F:97:CF:83:36:96:F7:DA:70:E1:8E:69:31:D3:E4:81:12:E3:EA:BD:FB:B1:64:56:12:8B:44:31:2F:C3:A4'
+
+/**
+ * A value shaped like a fingerprint but made up — `AA:BB:CC:…`, `00:00:…`, `12:34:56:…`.
+ *
+ * A real SHA-256 has ~30 distinct bytes out of 32; fewer than 20 happens with negligible
+ * probability, while every hand-typed sample repeats a short cycle (the docs' own
+ * `AA:BB:…:99` pattern has 16).
+ */
+export function isPlaceholderFingerprint(fp: string): boolean {
+  return new Set(fp.split(':')).size < 20
+}
+
 export function androidFingerprints(env: NodeJS.ProcessEnv = process.env): string[] {
-  return (env[ANDROID_FINGERPRINTS_ENV] ?? '').split(',').map(s => s.trim().toUpperCase()).filter(s => SHA256_RE.test(s))
+  return (env[ANDROID_FINGERPRINTS_ENV] ?? '')
+    .split(',')
+    .map(s => s.trim().toUpperCase())
+    .filter(s => SHA256_RE.test(s) && !isPlaceholderFingerprint(s) && s !== LEGACY_TWA_FINGERPRINT)
 }
 
 /** Digital Asset Links statement list, or null when not configured. Pure. */

@@ -2,14 +2,21 @@ import { describe, it, expect } from 'vitest'
 import fs from 'node:fs'
 import path from 'node:path'
 import {
-  assetLinks, androidFingerprints, appleAppSiteAssociation,
+  assetLinks, androidFingerprints, appleAppSiteAssociation, isPlaceholderFingerprint,
+  ANDROID_PACKAGE, LEGACY_TWA_FINGERPRINT,
   APPLE_TEAM_ID, IOS_BUNDLE_ID, IOS_APP_ID, IOS_UNIVERSAL_LINK_COMPONENTS,
 } from './appLinks'
 import { GET as getAasa } from '@/app/.well-known/apple-app-site-association/route'
+import { GET as getAssetLinks } from '@/app/.well-known/assetlinks.json/route'
 
-const FP = 'AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99'
+/**
+ * A made-up fingerprint (SHA-256 of a fixture string), NOT a real certificate — shaped like a
+ * real one on purpose, because the code rejects the hand-typed `AA:BB:CC:…` kind.
+ */
+const FP = '40:D2:36:46:8D:03:DC:82:F3:EF:2C:CE:A6:37:E2:57:9D:CA:50:F9:91:2C:C5:43:02:F3:40:69:34:98:0A:C9'
 const env = (o: Record<string, string>) => o as unknown as NodeJS.ProcessEnv
 const read = (p: string) => fs.readFileSync(p, 'utf8')
+const FINGERPRINT_RE = /([0-9A-Fa-f]{2}:){31}[0-9A-Fa-f]{2}/
 
 describe('App Links (Android) — inert until configured', () => {
   it('serves nothing without configuration', () => {
@@ -20,14 +27,60 @@ describe('App Links (Android) — inert until configured', () => {
     expect(androidFingerprints(env({ ANDROID_APP_LINKS_SHA256: `${FP.toLowerCase()}, junk` }))).toEqual([FP])
     expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))).toEqual([{ relation: ['delegate_permission/common.handle_all_urls'], target: { namespace: 'android_app', package_name: 'com.tappyai.app', sha256_cert_fingerprints: [FP] } }])
   })
+  it('never publishes a placeholder, or the legacy TWA certificate', () => {
+    const samples = [
+      'AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99',
+      Array(32).fill('00').join(':'),
+      Array(32).fill('FF').join(':'),
+      Array.from({ length: 32 }, (_, i) => ['12', '34', '56', '78'][i % 4]).join(':'),
+    ]
+    for (const s of samples) {
+      expect(isPlaceholderFingerprint(s), s).toBe(true)
+      expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: s })), s).toBeNull()
+    }
+    expect(isPlaceholderFingerprint(FP)).toBe(false)
+    expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: LEGACY_TWA_FINGERPRINT }))).toBeNull()
+    // A real fingerprint next to a rejected one still publishes the real one only.
+    expect(androidFingerprints(env({ ANDROID_APP_LINKS_SHA256: `${samples[0]},${FP}` }))).toEqual([FP])
+  })
+  it('the route is 404 without configuration and 200 application/json with it', async () => {
+    const saved = process.env.ANDROID_APP_LINKS_SHA256
+    try {
+      delete process.env.ANDROID_APP_LINKS_SHA256
+      expect(getAssetLinks().status).toBe(404)
+      process.env.ANDROID_APP_LINKS_SHA256 = FP
+      const res = getAssetLinks()
+      expect(res.status).toBe(200)
+      expect(res.headers.get('content-type')).toMatch(/^application\/json/)
+      expect(await res.json()).toEqual(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP })))
+    } finally {
+      if (saved === undefined) delete process.env.ANDROID_APP_LINKS_SHA256
+      else process.env.ANDROID_APP_LINKS_SHA256 = saved
+    }
+  })
+  it('no static file in public/ shadows the route (the legacy com.tappyai.twa statement did)', () => {
+    expect(fs.existsSync('public/.well-known/assetlinks.json')).toBe(false)
+  })
+  it('no fingerprint is hard-coded into anything the site serves', () => {
+    const walk = (dir: string): string[] => fs.existsSync(dir)
+      ? fs.readdirSync(dir, { withFileTypes: true }).flatMap(e => {
+        const p = path.join(dir, e.name)
+        return e.isDirectory() ? walk(p) : /\.(json|txt|html|xml|js|webmanifest)$|^[^.]+$/.test(e.name) ? [p] : []
+      })
+      : []
+    for (const f of walk('public')) expect(read(f), f).not.toMatch(FINGERPRINT_RE)
+  })
 })
 
 describe('App Links — the Android side is prepared and matches the server statement', () => {
   const manifest = read('android/app/src/main/AndroidManifest.xml')
   const gradle = read('android/app/build.gradle.kts')
   it('the package the statement names is the applicationId the app builds with', () => {
-    expect(gradle).toContain('applicationId = "com.tappyai.app"')
-    expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))![0]).toMatchObject({ target: { package_name: 'com.tappyai.app' } })
+    const applicationId = gradle.match(/^\s*applicationId = "([^"]+)"/m)?.[1]
+    expect(applicationId).toBe('com.tappyai.app')
+    expect(ANDROID_PACKAGE).toBe(applicationId)
+    expect(ANDROID_PACKAGE).not.toBe('com.tappyai.twa')
+    expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))![0]).toMatchObject({ target: { package_name: applicationId } })
   })
   it('the app claims /r/ only, through an alias that is disabled unless the build enables it', () => {
     const alias = manifest.split('<activity-alias')[1]?.split('</activity-alias>')[0] ?? ''

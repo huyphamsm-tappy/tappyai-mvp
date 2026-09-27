@@ -36,6 +36,8 @@ Expected: the app receives the intent and the public page opens in a Custom Tab 
 
 ## 5. Not done / not claimed
 
+- **The signing fingerprint is not in this repository** — get the SHA-256 values from Play Console → *Setup* → *App signing* (app signing key + upload key) and put them in `ANDROID_APP_LINKS_SHA256`. The static `public/.well-known/assetlinks.json` that production served until 2026-09-27 named the legacy TWA `com.tappyai.twa` and shadowed the route; it was removed, so the endpoint is 404 until the env var is set. `androidFingerprints()` rejects placeholder-shaped values and that legacy TWA certificate.
+
 - No device run yet: `PublicLinkOpener` is inert while the flag is off and **must be exercised on a device on first enablement** (the Custom Tab session binding is what prevents an app-link loop).
 - iOS Universal Links: **live** since 2026-09-27. The AASA is built from constants (Team ID `6UAG75G2US`, bundle `com.tappyai.ios`) — no env var — and the app ships the `applinks:www.tappyai.com` entitlement. Not yet verified on a device.
 - Attribution: an App-Link open lands on the web page inside the tab; the existing `share_out` / `share_viewed` events fire as on any browser. There is no `android_deep_link` source (nothing emits it).
