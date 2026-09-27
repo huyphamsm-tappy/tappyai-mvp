@@ -94,6 +94,8 @@ import { compactHistory } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
+import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
+import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
@@ -2241,7 +2243,35 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let photoTotalMs = 0
   let photoMaxPlaceMs = 0
 
-  const sdkResponse = result.toDataStreamResponse()
+  const streamed = result.toDataStreamResponse()
+  // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
+  // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
+  const sdkResponse = planningIntent && streamed.body
+    ? new Response(planCompletionStream(streamed.body, {
+      needed: true,
+      complete: async (soFar) => {
+        const steps = await result.steps
+        const toolResults = [
+          ...(presearchOutcome ? [{ toolName: presearchOutcome.toolName, result: presearchOutcome.result }] : []),
+          ...steps.flatMap(st => ((st.toolResults ?? []) as unknown as Array<{ toolName: string; result?: unknown }>).map(r => ({ toolName: r.toolName, result: r.result }))),
+        ]
+        const done = await AI.generate({
+          role: 'planning',
+          systemShared,
+          system: systemPrompt,
+          messages: [
+            ...(modelMessages as CoreMessage[]),
+            { role: 'assistant', content: soFar || '…' },
+            { role: 'user', content: `${toolResultDigest(toolResults)}
+
+${completionInstruction(lang)}` },
+          ],
+          maxTokens: 4096,
+        })
+        return done.text
+      },
+    }), { status: streamed.status, headers: streamed.headers })
+    : streamed
   // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
   const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
   // B7-A: photos are fetched only for the places the finished reply actually
