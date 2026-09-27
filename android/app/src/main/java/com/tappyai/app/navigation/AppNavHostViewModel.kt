@@ -10,6 +10,7 @@ import com.tappyai.core.deeplink.DeepLinkParser
 import com.tappyai.core.navigation.TappyRoute
 import com.tappyai.core.network.NetworkResult
 import com.tappyai.app.onboarding.data.OnboardingRepository
+import com.tappyai.app.notifications.data.PushRegistration
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.features.auth.data.AuthSessionState
 import com.tappyai.features.auth.navigation.AuthRoute
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -45,9 +47,17 @@ class AppNavHostViewModel @Inject constructor(
     private val pendingShellDestination: PendingShellDestination,
     private val authDeepLinkParser: DeepLinkParser,
     private val stringProvider: StringProvider,
+    private val pushRegistration: PushRegistration,
 ) : ViewModel() {
     val sessionState: StateFlow<AuthSessionState> = authRepository.sessionState
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AuthSessionState.Loading)
+
+    init {
+        // UAT3: register this device for push each time an ACCOUNT session starts (see PushRegistration).
+        viewModelScope.launch {
+            authRepository.sessionState.distinctUntilChanged().collect { if (it == AuthSessionState.Authenticated) pushRegistration.onSignedIn() }
+        }
+    }
 
     /**
      * Whether a just-logged-in user should see onboarding first. Delegates to the repository

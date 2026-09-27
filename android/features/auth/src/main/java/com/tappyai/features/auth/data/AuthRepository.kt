@@ -391,6 +391,9 @@ class AuthRepository @Inject constructor(
      */
     fun isAnonymous(): Boolean = isAnonymousSession(tokenProvider.getAccessToken())
 
+    /** Any session at all (an account or an anonymous identity) — a bearer token is present. */
+    fun hasSession(): Boolean = !tokenProvider.getAccessToken().isNullOrBlank()
+
     private fun <T> NetworkResult<T>.logOnError(operation: String): NetworkResult<T> = also {
         if (it is NetworkResult.Error) {
             logger.e(TAG, "$operation failed", (it.error as? NetworkError.Unknown)?.throwable)
