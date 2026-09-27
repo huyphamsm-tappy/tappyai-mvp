@@ -27,6 +27,12 @@ class FcmRegistrationTest {
     }
 
     @Test
+    fun `the commerce handoff beacon carries platform android too`() {
+        val body = appJson.encodeToString(com.tappyai.app.chat.data.CommerceHandoffBodyDto(linkId = "l", requestId = "r"))
+        assertTrue(body, body.contains("\"platform\":\"android\""))
+    }
+
+    @Test
     fun `only an account registers a device - no session and anonymous are skipped`() {
         assertTrue(NotificationSubscriptionRepository.shouldRegister(hasSession = true, anonymous = false))
         assertFalse(NotificationSubscriptionRepository.shouldRegister(hasSession = false, anonymous = false))

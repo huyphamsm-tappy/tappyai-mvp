@@ -21,11 +21,14 @@ import javax.inject.Singleton
  * the OPAQUE ids the Commerce Capability Platform minted, and which client sent them. Never the URL,
  * never anything about the person — the server rejects any other shape with a 400.
  */
+// UAT3 (2026-09-27): a default is NOT encoded by the app's Json, so `platform` never left the device
+// and Android handoffs were counted with no platform. Same defect as FcmSubscriptionDto.provider.
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 @Serializable
 data class CommerceHandoffBodyDto(
     @SerialName("linkId") val linkId: String,
     @SerialName("requestId") val requestId: String,
-    val platform: String = "android",
+    @kotlinx.serialization.EncodeDefault val platform: String = "android",
 )
 
 /**
