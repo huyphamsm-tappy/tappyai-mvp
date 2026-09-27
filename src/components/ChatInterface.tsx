@@ -11,6 +11,14 @@ import posthog from 'posthog-js'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
+import { inlineLinkTap } from '@/lib/recommendation/handoff'
+
+// A tap on a link inside the rendered reply text: a tracked affiliate link reports GA4
+// `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
+function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+  const a = (e.target as HTMLElement | null)?.closest?.('a')
+  if (a instanceof HTMLAnchorElement) inlineLinkTap(a.href)
+}
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard from '@/components/TripPlanCard'
 import { parsePlan } from '@/lib/structuredContent/parsePlan'
@@ -1418,7 +1426,7 @@ export default function ChatInterface({
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
+                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
                       </div>
                       {plan && <TripPlanCard plan={plan} />}
                       {shopView && (
@@ -1601,7 +1609,7 @@ export default function ChatInterface({
                     ))}
                     {(typeof msg.content === 'string' ? msg.content : '').trim() && (
                       <div className="bg-interactive text-white rounded-2xl rounded-br-md px-4 py-2.5 text-base leading-[1.6]">
-                        <div className="message-content whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
+                        <div className="message-content whitespace-pre-wrap" onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(typeof msg.content === 'string' ? msg.content : '') }} />
                       </div>
                     )}
                   </div>

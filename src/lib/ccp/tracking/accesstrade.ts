@@ -17,7 +17,8 @@ import { compareDestinations, decodeWrapperDestination } from '../validation/par
 // reserved for the link-creation / transactions API (later phase) and is also
 // read only inside this module — the architecture guard enforces that.
 
-export const ACCESSTRADE_WRAPPER_HOSTS = ['go.isclix.com'] as const
+import { ACCESSTRADE_WRAPPER_HOSTS } from './wrapperHosts'
+export { ACCESSTRADE_WRAPPER_HOSTS }
 const DEEP_LINK_BASE = 'https://go.isclix.com/deep_link'
 
 /** Read at call time so tests can set/unset without module reloads. */
