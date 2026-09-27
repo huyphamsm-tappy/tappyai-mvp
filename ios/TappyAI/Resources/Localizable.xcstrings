@@ -996,6 +996,23 @@
         }
       }
     },
+    "chat.age.blocked.exhausted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've already changed your date of birth once. Please contact support if it's still wrong."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã sửa ngày sinh một lần. Hãy liên hệ hỗ trợ nếu thông tin vẫn chưa đúng."
+          }
+        }
+      }
+    },
     "chat.age.blocked.title": {
       "extractionState": "manual",
       "localizations": {
@@ -1009,6 +1026,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "TappyAI dành cho người từ 18 tuổi"
+          }
+        }
+      }
+    },
+    "chat.age.correct.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I entered the wrong date"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi nhập sai ngày sinh"
+          }
+        }
+      }
+    },
+    "chat.age.correct.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can change your date of birth only once. Please check it carefully before saving."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn chỉ có thể sửa ngày sinh một lần. Hãy kiểm tra kỹ trước khi lưu."
+          }
+        }
+      }
+    },
+    "chat.age.correct.submit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save date of birth"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lưu ngày sinh"
+          }
+        }
+      }
+    },
+    "chat.age.correct.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correct your date of birth"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sửa ngày sinh"
           }
         }
       }

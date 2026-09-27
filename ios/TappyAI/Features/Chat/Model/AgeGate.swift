@@ -85,12 +85,52 @@ enum AgeStatus: String, Sendable {
     case eligible, ineligible, unknown
 }
 
-/// Body of a successful `PATCH /api/profile` with a date of birth.
-struct DateOfBirthUpdateResponse: Decodable, Sendable {
+/// The age fields of `GET /api/profile` and of a successful `PATCH /api/profile` with a date of
+/// birth: `{ ageStatus, canCorrectAge, … }`.
+struct DateOfBirthUpdateResponse: Decodable, Sendable, Equatable {
     let ageStatus: String?
     let canCorrectAge: Bool?
 
     var status: AgeStatus { ageStatus.flatMap(AgeStatus.init(rawValue:)) ?? .unknown }
+    /// Web `AgeCheckView` treats a missing `canCorrectAge` as true; the server still has the last word (409).
+    var mayCorrect: Bool { canCorrectAge ?? true }
+}
+
+/// What the chat does after an account saves (or corrects) its date of birth — the same branches
+/// as web `AgeCheckView.submit`.
+enum AgeCorrectionOutcome: Equatable, Sendable {
+    /// Now eligible: resend the refused turn.
+    case resend
+    /// Still under 18: the blocked state, with whether another correction is allowed.
+    case blocked(canCorrect: Bool)
+    /// 409 `age_correction_exhausted`: blocked, correction no longer offered, support shown.
+    case correctionExhausted
+    /// Anything else: keep the form open with this sentence.
+    case formError(String)
+
+    static func from(_ result: Result<DateOfBirthUpdateResponse, Error>) -> AgeCorrectionOutcome {
+        switch result {
+        case .success(let r):
+            switch r.status {
+            case .eligible: return .resend
+            case .ineligible: return .blocked(canCorrect: r.mayCorrect)
+            case .unknown: return .formError(NSLocalizedString("chat.age.error.failed", comment: ""))
+            }
+        case .failure(let error):
+            if case .network(_, let code?)? = error as? AppError, code == "age_correction_exhausted" {
+                return .correctionExhausted
+            }
+            if case .validation(let message)? = error as? AppError {
+                return .formError(message)   // the server's localized `age.invalidDate`
+            }
+            return .formError(NSLocalizedString("chat.age.error.failed", comment: ""))
+        }
+    }
+}
+
+/// Where a blocked account can ask for help once its correction is used (web `AgeCheckView`).
+enum AgeGateSupport {
+    static let email = "support@tappyai.com"
 }
 
 enum AgeGateCalendar {

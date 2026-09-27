@@ -31,6 +31,9 @@ struct ChatMessageList: View {
     var onDeclareAge: (String) -> Void = { _ in }
     var onSubmitDateOfBirth: (_ day: String, _ month: String, _ year: String) -> Void = { _, _, _ in }
     var onEditDateOfBirth: () -> Void = {}
+    var ageBlocked = AgeBlockedState()
+    var onStartAgeCorrection: () -> Void = {}
+    var onCancelAgeCorrection: () -> Void = {}
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -111,7 +114,10 @@ struct ChatMessageList: View {
                             ageFormError: ageFormError,
                             onDeclareAge: onDeclareAge,
                             onSubmitDateOfBirth: onSubmitDateOfBirth,
-                            onEditDateOfBirth: onEditDateOfBirth
+                            onEditDateOfBirth: onEditDateOfBirth,
+                            ageBlocked: ageBlocked,
+                            onStartAgeCorrection: onStartAgeCorrection,
+                            onCancelAgeCorrection: onCancelAgeCorrection
                         )
                     }
 
@@ -407,6 +413,9 @@ private struct ChatErrorBanner: View {
     let onDeclareAge: (String) -> Void
     let onSubmitDateOfBirth: (String, String, String) -> Void
     let onEditDateOfBirth: () -> Void
+    let ageBlocked: AgeBlockedState
+    let onStartAgeCorrection: () -> Void
+    let onCancelAgeCorrection: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
@@ -425,17 +434,15 @@ private struct ChatErrorBanner: View {
                                       onEdit: onEditDateOfBirth)
 
                 case .ageIneligible(let message):
-                    VStack(alignment: .leading, spacing: Spacing.xs) {
-                        Text("chat.age.blocked.title")
-                            .font(TappyFont.bodyEmphasis)
-                            .foregroundStyle(TappyColor.textPrimary)
-                        Text(message ?? NSLocalizedString("chat.age.blocked.desc", comment: ""))
-                            .font(TappyFont.callout)
-                            .foregroundStyle(TappyColor.textSecondary)
+                    if ageBlocked.correcting {
+                        DateOfBirthPrompt(serverMessage: nil, submitting: ageSubmitting,
+                                          formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                          onEdit: onEditDateOfBirth,
+                                          mode: .correction, onCancel: onCancelAgeCorrection)
+                    } else {
+                        AgeBlockedPanel(message: message, state: ageBlocked,
+                                        onCorrect: onStartAgeCorrection)
                     }
-                    .padding(Spacing.sm)
-                    .background(TappyColor.surface)
-                    .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
 
                 case .authRequired, .anonLimitReached:
                     VStack(alignment: .leading, spacing: Spacing.xs) {

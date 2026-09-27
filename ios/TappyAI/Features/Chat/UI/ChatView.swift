@@ -16,7 +16,10 @@ struct ChatView: View {
             savedMessages: savedMessages,
             planShare: PlanShareService(api: deps.api, isAuthenticated: { session.state.isAuthenticated }),
             saveDateOfBirth: { [api = deps.api] iso in
-                try await ProfileService(api: api).updateDateOfBirth(iso).status
+                try await ProfileService(api: api).updateDateOfBirth(iso)
+            },
+            loadAgeStatus: { [api = deps.api] in
+                try await ProfileService(api: api).fetchAgeStatus()
             }
         ))
     }
@@ -63,7 +66,11 @@ struct ChatView: View {
                         ageFormError: vm.ageFormError,
                         onDeclareAge: { vm.declareGuestAge($0) },
                         onSubmitDateOfBirth: { d, m, y in Task { await vm.submitDateOfBirth(day: d, month: m, year: y) } },
-                        onEditDateOfBirth: { vm.clearAgeFormError() }
+                        onEditDateOfBirth: { vm.clearAgeFormError() },
+                        ageBlocked: AgeBlockedState(isGuest: vm.isGuest, canCorrect: vm.canCorrectAge,
+                                                    correcting: vm.ageCorrecting),
+                        onStartAgeCorrection: { vm.startAgeCorrection() },
+                        onCancelAgeCorrection: { vm.cancelAgeCorrection() }
                     )
                 }
 
