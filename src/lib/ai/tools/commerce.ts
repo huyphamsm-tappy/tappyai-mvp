@@ -18,7 +18,7 @@ import {
 import { refreshProviderConfig, isProviderActive, inactiveMerchants, hasProviderConfigSource } from '@/lib/ccp'
 import { installProviderConfigSource } from '@/lib/commerce/providerConfigSource'
 import { feedHintsFor, type FeedHint } from '@/lib/commerce/feedHints'
-import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, sameCityKey, stripTrailingCity } from '@/lib/links/otaTitle'
+import { cleanOtaTitle, cityKeyOf, otaCityKeyOf, otaPageContradictsCity, stripTrailingCity } from '@/lib/links/otaTitle'
 import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdentity'
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
 import { entertainmentCapabilityOf, filmTitleMatches, filmTitleOf, foodCapabilityOf, requestedProviderOf, type UserTurns } from './commerceIntent'
@@ -345,6 +345,9 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
       listKey: ctx.hotelListPass ? 'hotel_list' : 'search_results',
       maxLinks: MAX_HOTEL_LINKS_PER_ROW,
       maxQueries: MAX_HOTEL_QUERIES,
+      // UAT4 P1-g (emulator, Vũng Tàu): the ranked card picks from the WHOLE hotel list — it showed
+      // the 4th row (Melissa), which the 3-row default had never resolved. One query per row.
+      ...(ctx.hotelListPass ? { maxRows: MAX_HOTEL_QUERIES } : {}),
       // P1-8: the OTA title, reduced to the hotel's name ("Book Oc Tien Sa Hotel Danang i Da Nang
       // på Agoda.com" → "Oc Tien Sa Hotel"); the entity builder applies the same cleaner for display.
       subjectOf: row => { const n = stripTrailingCity(cleanOtaTitle(str(row.name) ?? str(row.title))); return n || undefined },
@@ -352,7 +355,7 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
       // P2-8: an OTA page filed under another city is not a result for this request.
       rejects: row => {
         const rowCity = otaCityKeyOf(str(row.link))
-        return requestedCity && rowCity && !sameCityKey(rowCity, requestedCity) ? `city_mismatch:${rowCity}` : null
+        return otaPageContradictsCity(str(row.link), requestedCity, str(row.title) ?? str(row.name)) ? `city_mismatch:${rowCity}` : null
       },
     }
   }
@@ -474,10 +477,8 @@ const isPastListing = (title: string | undefined, snippet: string | undefined, n
 }
 
 /** Is this URL filed under a city other than the one requested? (null city on either side = not contradicted) */
-const contradictsCity = (url: string | undefined, requestedCity: string | null): boolean => {
-  const c = otaCityKeyOf(url)
-  return !!requestedCity && !!c && !sameCityKey(c, requestedCity)
-}
+const contradictsCity = (url: string | undefined, requestedCity: string | null, title?: string): boolean =>
+  otaPageContradictsCity(url, requestedCity, title)
 
 /**
  * Resolve Commerce Links for the turn's leading rows and attach them as
@@ -613,7 +614,7 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
             // §8: a discovered listing that names another product (a case, the Pro Max) is not a hint for this row.
             .filter(d => !plan.sameSubject || plan.sameSubject(s.subject, d.title, false, s.title))
             .map(d => ({ url: d.url, title: d.title ?? s.subject })),
-        ].filter(h => !contradictsCity(h.url, requestedCity)) // P2-8: a Trip.com page in another city is not this hotel
+        ].filter(h => !contradictsCity(h.url, requestedCity, h.title)) // P2-8: a Trip.com page in another city is not this hotel
         if (hints.length > 0) hintsOf.set(s.id, hints)
       }
       let attachedAny = false

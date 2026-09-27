@@ -99,6 +99,29 @@ export function sameCityKey(a: string | null | undefined, b: string | null | und
 }
 
 /**
+ * UAT4 P1-g (measured 27 Sep 2026): since the 2025 provincial merger Trip.com files Vũng Tàu
+ * hotels under `ho-chi-minh-city-hotel-detail-…` ("Fusion Suites Vũng Tàu", "Aloha Hotel Vũng
+ * Tàu", "Melissa - Vung Tau") and Hội An ones under `da-nang-hotel-detail-…` ("Anantara Hoi An
+ * Resort"), so every such page read as "another city" and the card had no booking link. For a
+ * request in the SMALLER city, a page filed under the larger one is this city's hotel only when
+ * its title or slug names the smaller city ("Fusion Suites Saigon" stays out). Never the other
+ * way round: a Đà Nẵng request still refuses a page filed under Hội An.
+ */
+const MERGED_INTO: Readonly<Record<string, string>> = { 'vung-tau': 'ho-chi-minh', 'hoi-an': 'da-nang' }
+
+/** Is this OTA page filed under a city other than the requested one? (unknown on either side = no) */
+export function otaPageContradictsCity(url: string | undefined | null, requestedCity: string | null | undefined, title?: string | null): boolean {
+  const filed = otaCityKeyOf(url)
+  if (!requestedCity || !filed || sameCityKey(filed, requestedCity)) return false
+  const parent = MERGED_INTO[requestedCity]
+  if (!parent || !sameCityKey(filed, parent)) return true
+  const own = CITY_KEYS.find(([, key]) => key === requestedCity)?.[0]
+  let slug = ''
+  try { slug = new URL(url!).pathname.replace(/[-/]/g, ' ') } catch { /* no slug */ }
+  return !own || !own.test(`${(title ?? '').normalize('NFC')} ${slug}`)
+}
+
+/**
  * Drop a trailing city token ("Oc Tien Sa Hotel Danang" → "Oc Tien Sa Hotel") so the discovery
  * query quotes the venue name and appends the city itself. Only the LAST word(s) are considered,
  * only when they name a known city, and only when something is left.

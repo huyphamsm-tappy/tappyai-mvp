@@ -287,3 +287,45 @@ describe('UAT4: the hotel tool\'s CARD rows (hotel_list) get the booking link to
     expect(links(cardRow).find(l => l.providerId === 'tripcom')).toMatchObject({ intentType: 'book_hotel', domain: 'travel' })
   })
 })
+
+// UAT4 P1-g on the emulator (27 Sep 2026, "khách sạn ở vũng tàu cuối tuần này"): the ranked card showed
+// Melissa / Fusion Suites / Aloha with no booking button. Trip.com files all three under
+// `ho-chi-minh-city-hotel-detail` since the 2025 merger (real Serper hits below), so the city check
+// dropped them; and Melissa was the 4th hotel_list row, outside the 3 rows that were resolved.
+describe('UAT4: Vũng Tàu hotels filed under Hồ Chí Minh City on Trip.com', () => {
+  const HITS: Record<string, SearchRow[]> = {
+    '"Fusion Suites"': [
+      { title: 'Fusion Suites Vũng Tàu - Giá cả và Ưu đãi 2026, TP. Hồ ...', link: 'https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-56443834/fusion-suites-vung-tau/', snippet: '' },
+      { title: 'Fusion Suites Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí ...', link: 'https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-5483003/fusion-suites-saigon/', snippet: '' },
+    ],
+    '"Aloha Hotel"': [{ title: 'Khách sạn Aloha Vũng Tàu - Giá cả và Ưu đãi 2026, TP. ...', link: 'https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94138867/aloha-hotel-vung-tau/', snippet: '' }],
+    '"Vias Hotel"': [{ title: 'Khách sạn Vias Vũng Tàu - Giá cả và Ưu đãi 2026', link: 'https://vn.trip.com/hotels/vung-tau-hotel-detail-23780170/vias-hotel-vung-tau/', snippet: '' }],
+    '"Melissa': [{ title: 'Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu', link: 'https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-105061137/melissa-hotel/', snippet: '' }],
+  }
+  const hotelList = () => [
+    { name: 'Fusion Suites Vũng Tàu' }, { name: 'Aloha Hotel Vũng Tàu' }, { name: 'Vias Hotel Vung Tau' },
+    { name: 'Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu' },
+  ]
+  const tripUrl = (row: Record<string, unknown>) => links(row).find(l => l.providerId === 'tripcom')?.url ?? null
+
+  it('every hotel of the four gets its own Trip.com page — the 4th row included', async () => {
+    const { search } = searchStub(HITS)
+    const rows = hotelList()
+    await attachCommerceLinks('get_hotel_prices', { search_results: [], hotel_list: rows }, { enabled: true, search, now: NOW, location: 'Vũng Tàu', checkIn: '2026-10-03', checkOut: '2026-10-04' })
+    expect(rows.map(tripUrl).map(u => u && decodeURIComponent(u).match(/hotelId=(\d+)|detail-(\d+)/)?.slice(1).find(Boolean))).toEqual(['56443834', '94138867', '23780170', '105061137'])
+  })
+
+  it('a page under the merged city that names neither Vũng Tàu nor its slug stays out ("Fusion Suites Saigon")', async () => {
+    const { search } = searchStub({ '"Fusion Suites"': [HITS['"Fusion Suites"'][1]] })
+    const row = { name: 'Fusion Suites Vũng Tàu' }
+    await attachCommerceLinks('get_hotel_prices', { search_results: [], hotel_list: [row] }, { enabled: true, search, now: NOW, location: 'Vũng Tàu' })
+    expect(tripUrl(row)).toBeNull()
+  })
+
+  it('never the other way round: a Hồ Chí Minh request refuses a page filed under Vũng Tàu', async () => {
+    const { search } = searchStub({ '"Vias Hotel"': HITS['"Vias Hotel"'] })
+    const row = { name: 'Vias Hotel' }
+    await attachCommerceLinks('get_hotel_prices', { search_results: [], hotel_list: [row] }, { enabled: true, search, now: NOW, location: 'Hồ Chí Minh' })
+    expect(tripUrl(row)).toBeNull()
+  })
+})
