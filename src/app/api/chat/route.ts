@@ -92,6 +92,7 @@ import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
+import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
@@ -146,9 +147,20 @@ export async function POST(req: Request) {
   // Rejections keep the old user-facing behaviour where it existed: a size violation is still a
   // 413 with the same Vietnamese copy, and every other contract violation is a 400 carrying a
   // machine-readable code and nothing else.
+  // UAT3 D2: a hard ceiling on the RAW body, before anything is parsed (lib/http/readCappedBody).
+  const capped = await readCappedBody(req)
+  if (!capped.ok || exceedsTextCeiling(capped.text)) {
+    const tooLarge = !capped.ok ? capped.reason === 'too_large' : true
+    return new Response(
+      JSON.stringify(tooLarge
+        ? { error: 'body_too_large', message: serverMessage('chat.tooLong', requestLocale(req)) }
+        : { error: 'invalid_request' }),
+      { status: tooLarge ? 413 : 400, headers: { 'Content-Type': 'application/json' } },
+    )
+  }
   let rawBody: unknown
   try {
-    rawBody = await req.json()
+    rawBody = JSON.parse(capped.text)
   } catch {
     return new Response(
       JSON.stringify({ error: 'invalid_request' }),
