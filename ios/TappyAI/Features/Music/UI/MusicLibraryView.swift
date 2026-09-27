@@ -336,7 +336,9 @@ final class MusicAudioPlayer: ObservableObject {
             object: item,
             queue: .main
         ) { [weak self] _ in
-            self?.onEnded?()
+            // Delivered on `queue: .main`, so this is already the main actor; say so to the
+            // compiler rather than hopping (keeps the callback synchronous, as before).
+            MainActor.assumeIsolated { self?.onEnded?() }
         }
         player?.play()
     }

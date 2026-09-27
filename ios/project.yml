@@ -10,8 +10,8 @@ options:
 
 settings:
   base:
-    SWIFT_VERSION: "5.9"                       # CI round 1: Swift 5 mode to get a green build first; revisit Swift 6 later
-    SWIFT_STRICT_CONCURRENCY: minimal          # CI round 1: tighten back to complete when syncing Phase 7/8
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
     SWIFT_TREAT_WARNINGS_AS_ERRORS: NO         # keep clean; flip to YES once verified on a Mac
     GCC_TREAT_WARNINGS_AS_ERRORS: NO
     ENABLE_USER_SCRIPT_SANDBOXING: YES
@@ -27,7 +27,7 @@ configs:
 packages:
   Supabase:
     url: https://github.com/supabase/supabase-swift
-    from: "2.0.0"
+    exactVersion: "2.55.2"   # pinned to the version CI resolved; bump deliberately
 
 targets:
   TappyAI:

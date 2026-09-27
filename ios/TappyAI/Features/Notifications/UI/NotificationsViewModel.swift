@@ -15,6 +15,13 @@ final class NotificationsViewModel: AppObservableObject {
     private let log = AppLogger.app
     private var realtimeTask: Task<Void, Never>?
     private var refetchDebounce: Task<Void, Never>?
+    /// The subscribed channel, kept so closing the inbox can unsubscribe and remove it. Cancelling
+    /// the listening task alone left the channel registered on the client, subscribed, under the
+    /// same topic the next open creates again.
+    private var channel: RealtimeChannelV2?
+    /// A removal still in flight from the previous close; the next open waits for it, so two
+    /// channels with the same topic never coexist.
+    private var removal: Task<Void, Never>?
 
     init(service: NotificationsService, supabase: SupabaseClient, userId: String?) {
         self.service = service
@@ -52,17 +59,24 @@ final class NotificationsViewModel: AppObservableObject {
     /// (ADR-014: the client re-fetches the REST endpoint rather than trusting the realtime payload
     /// as state directly — same pattern as Web's `NotificationProvider`).
     ///
-    /// UNVERIFIED — the exact `supabase-swift` v2 Realtime channel/postgresChange API surface has
-    /// not been confirmed against a real compile in this environment (no Mac/Xcode here; same
-    /// class of risk already flagged for the Auth SDK calls in `SupabaseAuthService`). If the API
-    /// differs by version, this method is the one place to fix — `load()` above works standalone
-    /// via plain polling/pull-to-refresh regardless of whether this succeeds.
+    /// Uses the `RealtimePostgresFilter` API of supabase-swift 2.55 (the raw-string `filter:`
+    /// overload is deprecated). The filter is the same `user_id=eq.<uid>` Web subscribes with; RLS
+    /// already limits delivery to this user's rows, so the events received are unchanged.
+    /// `load()` above works standalone via pull-to-refresh regardless of whether this succeeds.
     func startRealtimeIfPossible() {
         guard let userId, realtimeTask == nil else { return }
+        let pendingRemoval = removal
         realtimeTask = Task { [weak self] in
-            guard let self else { return }
+            await pendingRemoval?.value
+            guard let self, !Task.isCancelled else { return }
             let channel = self.supabase.channel("notifications:\(userId)")
-            let changes = channel.postgresChange(AnyAction.self, schema: "public", table: "notifications")
+            self.channel = channel
+            let changes = channel.postgresChange(
+                AnyAction.self,
+                schema: "public",
+                table: "notifications",
+                filter: .eq("user_id", value: userId)
+            )
             do {
                 try await channel.subscribeWithError()
             } catch {
@@ -75,9 +89,19 @@ final class NotificationsViewModel: AppObservableObject {
         }
     }
 
+    /// Called when the inbox closes: stop listening AND unsubscribe + remove the channel from the
+    /// client (`removeChannel` unsubscribes first), so the next open starts from a clean slate.
     func stopRealtime() {
         realtimeTask?.cancel()
         realtimeTask = nil
+        refetchDebounce?.cancel()
+        refetchDebounce = nil
+        guard let channel else { return }
+        self.channel = nil
+        let supabase = self.supabase
+        removal = Task {
+            await supabase.removeChannel(channel)
+        }
     }
 
     private func scheduleRefetch() {

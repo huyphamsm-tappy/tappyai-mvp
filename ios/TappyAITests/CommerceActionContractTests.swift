@@ -212,7 +212,7 @@ final class CommerceActionContractTests: XCTestCase {
             let lock = NSLock()
             func post(_ body: CommerceHandoffBody) async throws {
                 await gate?.pass()
-                lock.lock(); posted.append(body); lock.unlock()
+                lock.withLock { posted.append(body) }   // lock()/unlock() are unavailable in async code
                 didPost?.fulfill()
                 if fail { throw URLError(.notConnectedToInternet) }
             }

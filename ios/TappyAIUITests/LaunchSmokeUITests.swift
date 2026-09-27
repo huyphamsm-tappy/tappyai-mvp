@@ -2,6 +2,7 @@ import XCTest
 
 /// Minimal launch smoke test. Feature UI flows are added with their phases.
 final class LaunchSmokeUITests: XCTestCase {
+    @MainActor   // XCUIApplication is main-actor-isolated
     func testAppLaunches() {
         let app = XCUIApplication()
         app.launch()

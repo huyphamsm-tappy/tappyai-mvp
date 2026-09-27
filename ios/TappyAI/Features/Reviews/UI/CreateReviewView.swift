@@ -236,7 +236,9 @@ struct CreateReviewView: View {
     // MARK: - Photo section
 
     private var photoSection: some View {
-        VStack(spacing: Spacing.sm) {
+        // Read on the main actor here: PhotosPicker's label builder is nonisolated.
+        let photoUploading = vm.photoUploading
+        return VStack(spacing: Spacing.sm) {
             if vm.photoURLs.isEmpty {
                 PhotosPicker(
                     selection: $photoSelection,
@@ -244,7 +246,7 @@ struct CreateReviewView: View {
                     matching: .images
                 ) {
                     VStack(spacing: Spacing.sm) {
-                        if vm.photoUploading {
+                        if photoUploading {
                             ProgressView()
                                 .tint(TappyColor.primary)
                         } else {
@@ -275,6 +277,8 @@ struct CreateReviewView: View {
     }
 
     private var photoGrid: some View {
+        // Read on the main actor here: PhotosPicker's label builder is nonisolated.
+        let photoUploading = vm.photoUploading
         let columns = vm.photoURLs.count == 1
             ? [GridItem(.flexible())]
             : vm.photoURLs.count == 2
@@ -316,7 +320,7 @@ struct CreateReviewView: View {
                         matching: .images
                     ) {
                         VStack {
-                            if vm.photoUploading {
+                            if photoUploading {
                                 ProgressView().tint(TappyColor.primary)
                             } else {
                                 Image(systemName: "plus")
