@@ -1,29 +1,36 @@
 import type { Metadata } from 'next'
 import LegalDocument from '@/components/legal/LegalDocument'
-import { bullets, type LegalDoc } from '@/components/legal/legalDoc'
 import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
+import { selfDeleteEnabled } from '@/lib/account/selfDelete'
+import { deleteAccountDoc } from './deleteAccountDoc'
 
-// Public account-deletion page, required by Google Play: an app that offers
-// in-app account deletion must also document the route on the open web, at a
-// URL reachable without signing in. This page *describes* the existing in-app
-// flow — it deliberately adds no web deletion path of its own.
+// Public account-deletion page, required by Google Play and linked from the App Store listing:
+// an app that lets people create an account must document how to delete it on the open web, at
+// a URL reachable without signing in.
 //
-// The flow it describes is request-based, matching what Android ships: the
-// Settings item reads "Request account deletion" and opens a prefilled email to
-// support (SettingsScreen.kt -> launchAccountDeletionEmail); there is no
-// self-service deletion endpoint. An earlier revision of this page claimed
-// immediate in-app deletion, which did not match the app — Play compares the
-// two, so this copy must be updated in lockstep with the Android flow.
+// It describes the deletion routes that actually exist, chosen by the same switch the API reads
+// (`ACCOUNT_SELF_DELETE_ENABLED`, see deleteAccountDoc.ts):
+//   - always: the REQUEST route Android and iOS ship — Settings → "Request account deletion"
+//     opens a prefilled email to support (SettingsScreen.kt, SettingsView.swift). An earlier
+//     revision of this page claimed immediate in-app deletion, which did not match the apps —
+//     Play compares the two (accountDeletionParity.test.ts);
+//   - only when the switch is on: the self-service route on the website
+//     (/profile/settings/delete-account → POST /api/account/delete).
 //
-// Server component so the route keeps its metadata (a 'use client' module
-// cannot export `metadata`); the localized body is rendered by LegalDocument,
-// which reads the site-wide locale through useTranslation, so the page follows
-// the LanguagePicker and shows one language at a time — never both at once.
+// Rendered per request, not at build time: the switch is an environment variable read at request
+// time by the API and by /profile/settings/delete-account, and a page baked with the other value
+// would publish a route that does not exist (or hide one that does).
+//
+// Server component so the route keeps its metadata (a 'use client' module cannot export
+// `metadata`); the localized body is rendered by LegalDocument, which reads the site-wide locale
+// through useTranslation, so the page follows the LanguagePicker and shows one language at a time.
+
+export const dynamic = 'force-dynamic'
 
 const PAGE_URL = `${SITE_URL}/delete-account`
 const TITLE = 'Delete Your TappyAI Account — TappyAI'
 const DESCRIPTION =
-  'How to request deletion of your TappyAI account from inside the app, what happens after you send the request, what deletion removes, and which records may be retained where the law requires it.'
+  'How to delete your TappyAI account — yourself where available, or by sending a request from the app — what deletion removes, and which records may be retained where the law requires it.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -45,55 +52,10 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: [`${SITE_URL}${OG_IMAGE}`],
   },
-  // Must stay indexable: the Play Console listing points reviewers and users here.
+  // Must stay indexable: the Play Console and App Store listings point reviewers here.
   robots: { index: true, follow: true },
 }
 
-// Document structure only — every string lives in src/lib/i18n/legal.ts.
-const DELETE_ACCOUNT: LegalDoc = {
-  titleKey: 'legal.delete.title',
-  effectiveKey: 'legal.delete.effective',
-  sections: [
-    {
-      id: 'how-to-request-account-deletion',
-      headingKey: 'legal.delete.s1.heading',
-      blocks: [
-        { kind: 'lead', key: 'legal.delete.s1.lead' },
-        { kind: 'steps', keys: bullets('legal.delete.s1.step', 4) },
-      ],
-    },
-    {
-      id: 'what-happens-next',
-      headingKey: 'legal.delete.s2.heading',
-      blocks: [
-        { kind: 'p', key: 'legal.delete.s2.p1' },
-        { kind: 'p', key: 'legal.delete.s2.p2' },
-      ],
-    },
-    {
-      id: 'what-deletion-removes',
-      headingKey: 'legal.delete.s3.heading',
-      blocks: [
-        { kind: 'lead', key: 'legal.delete.s3.lead' },
-        { kind: 'bullets', keys: bullets('legal.delete.s3.b', 6) },
-      ],
-    },
-    {
-      id: 'data-we-may-retain',
-      headingKey: 'legal.delete.s4.heading',
-      blocks: [{ kind: 'p', key: 'legal.delete.s4.p1' }],
-    },
-    {
-      id: 'contact',
-      headingKey: 'legal.delete.s5.heading',
-      blocks: [
-        { kind: 'p', key: 'legal.delete.s5.p1' },
-        { kind: 'contact' },
-      ],
-    },
-  ],
-}
-
 export default function DeleteAccountPage() {
-  return <LegalDocument doc={DELETE_ACCOUNT} />
+  return <LegalDocument doc={deleteAccountDoc(selfDeleteEnabled())} />
 }
