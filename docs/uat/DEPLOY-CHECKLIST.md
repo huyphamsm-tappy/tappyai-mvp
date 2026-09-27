@@ -695,6 +695,40 @@ Smoke test (throwaway account only, never a real one): create → Settings → X
 → confirmation screen → sign-in with the same email fails → `select done_at from account_deletion_jobs`
 fills after the next 01:45 run (or trigger the cron as above).
 
+### 4e. Android release, push, share links and uploads — UAT3 (added 2026-09-27)
+
+**(a) The Android build must ship to Play with the UAT3 fixes, and be promoted to Production.** The fixes live only in
+the app: FCM registration (`7ba545d` — before it, NO Android device was ever subscribed for push), the location prompt
+(`d059ae1`), in-app account deletion (`93e1b52`, `d1ef6ec`), the repeated-reply guard (`84f9307`, Android half), the
+commerce-handoff platform field (`41d4495`).
+1. Build the release AAB from the deployed commit (rc/web-uat SHA) — `versionCode` bumped.
+2. Play Console → Testing → Internal testing → create release → upload → roll out; install from Play on one device,
+   sign in, send one chat turn, open Settings → Xóa tài khoản shows the in-app dialog (only if §4d step 3 is live).
+3. Promote the same release to **Production** (Testing → release → Promote release → Production) and submit.
+4. Check: `https://play.google.com/store/apps/details?id=com.tappyai.app` opens in a **private/incognito** window
+   (on 2026-09-27 it was 404 for anyone not signed in as a tester). Only then add the Google Play badge to the QR card.
+
+**(b) Push: the two server variables, then one real push.** Checked read-only on 2026-09-27 (`vercel env ls`, names
+only): `GCP_FCM_SERVICE_ACCOUNT` and `FIREBASE_PROJECT_ID` exist on **Production** and are **absent on Preview**;
+`fcm.googleapis.com` is enabled on `aerobic-lock-498409-u7` (`gcloud services list --enabled`). Before release:
+1. `vercel env ls` → both names still listed for Production (never print the values).
+2. After deploy + the Play build installed on a device: sign in → `notification_subscriptions` has a row for that
+   account with `provider = 'fcm'`, `enabled = true` (SQL editor, service role).
+3. Send ONE real push to that account (back office notification tool, or a comment on the account's review from a
+   second account) → it arrives on the device. Record device, time, result. If it does not arrive: check the Vercel
+   function log for `[fcm]` errors before anything else.
+4. Preview deployments cannot send push (variables absent) — expected, not a bug.
+
+**(c) Share links.** `NEXT_PUBLIC_SITE_URL` (and `NEXT_PUBLIC_APP_URL`) on Production must be
+`https://www.tappyai.com`; Android always builds links on that origin (`TappyShare.CANONICAL_ORIGIN`). Production had
+no `/api/plans/share` route on 2026-09-27 (404) — the plan-share feature ships with this release. After deploy: share a
+plan from the web and from Android, open both links signed-out → the brochure. (docs/uat/PLAN-SHARE-404-AND-IMAGE-FEASIBILITY.md)
+
+**(d) Avatar / cover uploads work only on a Vercel deployment.** Locally they fail with "Workload Identity Federation
+failed at the oidc stage" (no deployment identity; measured 2026-09-27 on web and the emulator — the validation passes,
+the GCS write is refused). After deploy: upload a ~1 MB JPEG as avatar and as cover on the web and on Android → both
+show; the object is in the media bucket under `avatars/` / `covers/`.
+
 ## 5. Post-deploy smoke test (run on production immediately after)
 
 1. **Home** loads (200); no console errors on first paint.

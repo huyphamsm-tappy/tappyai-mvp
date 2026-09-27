@@ -391,3 +391,10 @@ Emulator `Pixel_8_uat`, bản debug trỏ `http://localhost:3007/` qua `adb reve
 - Clip cũ mang header `public`, 1 năm.
 - Upload lỗi `WifExchangeError` ở localhost.
 - `npm test` ghi đè `docs/audit/*.json`. Lần mở đầu mỗi trang chậm. Home Android thoáng hiện "Chào bạn!" trước khi hiện tên. Huy hiệu dev ghi SHA lúc server khởi động.
+
+## Sau deploy — các mục chỉ kiểm được trên bản thật (UAT3, 2026-09-27)
+
+- [ ] **Ảnh đại diện + ảnh bìa (web và Android):** tải một ảnh JPEG ~1 MB làm ảnh đại diện, rồi làm ảnh bìa → cả hai hiện ngay và còn sau khi tải lại trang. *Trên máy local luôn lỗi "Không thể tải ảnh lên" / "Máy chủ đang gặp sự cố" vì không có danh tính Vercel để ghi GCS (log: "Workload Identity Federation failed at the oidc stage") — không phải lỗi app.* (DEPLOY-CHECKLIST §4e-d)
+- [ ] **Link kế hoạch chia sẻ:** chia sẻ một kế hoạch từ web và từ Android → mở link ở trình duyệt chưa đăng nhập → ra brochure, không "Không tìm thấy trang". *Trên local, link Android luôn là www.tappyai.com trong khi kế hoạch nằm ở DB audit, nên 404 là đúng.* (§4e-c)
+- [ ] **Thông báo đẩy Android:** cài bản Play mới, đăng nhập → nhận được 1 push thật. (§4e-b)
+- [ ] **Google Play công khai:** `play.google.com/store/apps/details?id=com.tappyai.app` mở được trong cửa sổ ẩn danh → mới thêm huy hiệu Google Play vào thẻ QR. (§4e-a)
