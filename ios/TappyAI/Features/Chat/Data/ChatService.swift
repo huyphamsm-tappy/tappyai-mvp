@@ -159,7 +159,7 @@ final class ChatService: Sendable {
 
     func fetchPreferences() async -> [String]? {
         let endpoint = Endpoint(path: "/api/preferences", method: .get, requiresAuth: true)
-        guard let result = try? await api.send(endpoint, as: PreferencesResponse.self) else { return nil }
+        guard let result = try? await api.send(endpoint, as: ChatPreferencesResponse.self) else { return nil }
         return result.preferences
     }
 
@@ -201,7 +201,7 @@ final class ChatService: Sendable {
 }
 
 private struct MemoryCheckResponse: Decodable {
-    let memory: AnyCodable?
+    let memory: IgnoredJSONValue?
 }
 
 /// `language` is null when the server cannot name a language it supports, and `speakable` mirrors
@@ -211,11 +211,11 @@ private struct VoiceLanguageResponse: Decodable {
     let speakable: Bool
 }
 
-private struct PreferencesResponse: Decodable {
+private struct ChatPreferencesResponse: Decodable {
     let preferences: [String]?
 }
 
-private struct AnyCodable: Decodable {
+private struct IgnoredJSONValue: Decodable {
     init(from decoder: Decoder) throws {
         _ = try decoder.singleValueContainer()
     }

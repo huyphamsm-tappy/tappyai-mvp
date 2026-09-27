@@ -99,7 +99,7 @@ struct PreferencesView: View {
                 .foregroundStyle(TappyColor.textSecondary)
 
             // Quick chips
-            FlowLayout(spacing: 6) {
+            PreferencesFlowLayout(spacing: 6) {
                 ForEach(quickChips.filter { !preferences.contains($0) }, id: \.self) { chip in
                     Button { addPref(chip) } label: {
                         Text("+ \(chip)")
@@ -146,7 +146,7 @@ struct PreferencesView: View {
 
             // Added preferences
             if !preferences.isEmpty {
-                FlowLayout(spacing: 6) {
+                PreferencesFlowLayout(spacing: 6) {
                     ForEach(preferences, id: \.self) { pref in
                         HStack(spacing: 4) {
                             Text(pref)
@@ -266,7 +266,7 @@ struct PreferencesView: View {
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundStyle(TappyColor.textPrimary)
 
-            FlowLayout(spacing: 8) {
+            PreferencesFlowLayout(spacing: 8) {
                 ForEach(cuisineOptions, id: \.self) { item in
                     Button { toggleCuisine(item) } label: {
                         Text(item)
@@ -402,7 +402,7 @@ struct PreferencesView: View {
     }
 }
 
-private struct FlowLayout: Layout {
+private struct PreferencesFlowLayout: Layout {
     var spacing: CGFloat = 6
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         arrange(proposal: proposal, subviews: subviews).size

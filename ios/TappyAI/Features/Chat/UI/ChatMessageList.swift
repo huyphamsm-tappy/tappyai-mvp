@@ -295,7 +295,7 @@ private struct AssistantBubble: View {
 
                 // CTA buttons with favorite toggle
                 if !ctaButtons.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
+                    ChatFlowLayout(spacing: Spacing.xs) {
                         ForEach(ctaButtons) { btn in
                             HStack(spacing: 4) {
                                 CTAButtonView(button: btn)
@@ -316,7 +316,7 @@ private struct AssistantBubble: View {
 
                 // Follow-up chips
                 if !followups.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
+                    ChatFlowLayout(spacing: Spacing.xs) {
                         ForEach(followups, id: \.self) { f in
                             Button { onFollowup(f) } label: {
                                 Text(f)
@@ -560,9 +560,9 @@ private struct StreamingCursor: View {
     }
 }
 
-// MARK: - FlowLayout
+// MARK: - ChatFlowLayout
 
-struct FlowLayout: Layout {
+struct ChatFlowLayout: Layout {
     var spacing: CGFloat = 8
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
