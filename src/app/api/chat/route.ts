@@ -47,6 +47,7 @@ import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { commerceActorHash } from '@/lib/ccp'
 import { rendersDecisionCard as rendersDecisionCardFor } from '@/lib/ai/decisionSurface'
 import { normalizePwLang } from '@/lib/priceWatch/messages'
 import { runAiWriteAction } from '@/lib/ai/actions/runAction'
@@ -406,6 +407,8 @@ export async function POST(req: Request) {
   /** Durable preferences, reused by the need profile as a LOW-WEIGHT prior. */
   let storedPrefs: StoredPreferences | null = null
   let authedUserId: string | null = null
+  /** Verified identity (account OR anonymous session) — only ever leaves this route as the keyed `commerceActorHash`. */
+  let commerceIdentityId: string | null = null
   let existingMemory: UserMemory | null = null
   let isPro = false
   // ── The ONE AI question quota ─────────────────────────────────────────────
@@ -488,6 +491,7 @@ export async function POST(req: Request) {
   let ageGatePassed = false
   try {
     const { user, supabase } = await getRequestUser(req)
+    commerceIdentityId = user?.id ?? null
     // The clip the user is asking about, read through THIS caller's client —
     // guests included (the anon-key client sees exactly what the public feed
     // sees). Null on any miss; the turn then runs as plain chat.
@@ -1383,10 +1387,15 @@ export async function POST(req: Request) {
   const surfaceHeader = req.headers.get('x-tappy-surface')
   const rendersDecisionCard = rendersDecisionCardFor(surfaceHeader)
   // CommerceContext for the CCP seam: the surface header is the only platform signal the route
-  // has, and the response language is what the merchant page should open in. No user identifier.
+  // has, and the response language is what the merchant page should open in. No raw user identifier:
+  // attribution travels only as the keyed hash below.
   const commercePlatform: 'web' | 'android' | 'ios' | undefined =
     surfaceHeader === 'web' || surfaceHeader === 'android' || surfaceHeader === 'ios' ? surfaceHeader : undefined
   const commerceLocale: 'vi' | 'en' | undefined = lang === 'en' ? 'en' : lang === 'vi' ? 'vi' : undefined
+  // Affiliate attribution (sub1): a keyed, domain-separated hash of the verified identity — never the
+  // id itself, never PII. Absent secret or identity ⇒ undefined ⇒ the link is still tracked, just
+  // not attributable to a Tappy identity (src/lib/ccp/tracking/attribution.ts).
+  const commerceActorHashValue = commerceActorHash(commerceIdentityId)
   // The stream filter reads this to decide whether the per-place photo/link block
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
@@ -1787,7 +1796,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // CCP (Phase 6, owner decision P6-B): Commerce Links ride the ranked rows as
           // `commerce_links`, read by buildActions below and carved from the model by forModel.
           // Identity-preserving and a no-op while CCP_ENABLED is false.
-          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('search_places', result, { location, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           // Unified recommendation architecture — canonical entities and their
           // recommendations are built on EVERY place turn, whether or not the
           // `[TAPPY_PLACES]` block is emitted. Building unconditionally is what
@@ -1826,7 +1835,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -1888,7 +1897,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // Completion Pass (14 Sep 2026): an EVENT question is answered here, not by the places
           // tool — Ticketbox listings are discovered and validated by CCP and projected as
           // `event_links` (when CCP is on); the result is untouched otherwise.
-          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('web_search', r, { query, location: needProfile.location.text ?? undefined, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           return withTravelEditorial(r, editorial)
         }
       }),
@@ -1921,7 +1930,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const filtered = budget ? applyBudgetFilter(r, budget, 've may bay') : r
           // Completion Pass (14 Sep 2026): the booking links are CCP-resolved when CCP is on
           // (Trip.com / Traveloka dated fare lists, airline entry pages); untouched otherwise.
-          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_flight_prices', filtered, { origin, destination, departDate, returnDate, passengers, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           return filtered
         }
       }),
@@ -1939,7 +1948,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const { result, pick } = rankForModel('get_hotel_prices', filtered)
           if (pick) turnPick = pick
           turnPlaceLocation = location
-          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_hotel_prices', result, { location, checkIn, checkOut, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           enrichment.setPlacesRecommendations(stayRecommendations(result, pickContext(pick)), producerSubject('get_hotel_prices'))
           // Model copy = the decision set (≤5 hotel rows, no photos/coords) — the card was built
           // from the full list above. Same trim as places (cost item 4).
@@ -1976,7 +1985,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const mode = m.mode
           const [r, editorial] = await Promise.all([getTransportOptions(origin, destination, mode === 'taxi' ? 'taxi' : undefined, lang), travelEditorialFor(destination)])
           // Completion Pass (14 Sep 2026): the Vexere link is CCP-resolved (route page + date) when CCP is on.
-          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, userText: lastText, userTexts: recentUserTexts })
+          await attachCommerceLinks('get_transport_options', r, { origin, destination, departDate: date, transportMode: mode === 'taxi' ? 'taxi' : 'intercity', platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, userText: lastText, userTexts: recentUserTexts })
           return withTravelEditorial(r, editorial)
         }
       }),

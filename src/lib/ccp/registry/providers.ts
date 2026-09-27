@@ -143,9 +143,13 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
       price: { freshnessType: 'unknown', ttlMs: null, note: 'price read on the merchant page; feed display off (D7)' },
     },
     rights: FEED_RIGHTS_WCR,
-    // ACCESSTRADE TikTok Shop CPS is APPROVED (11 Sep 2026). Affiliate = monetisation layer only:
-    // the provider works on direct links; the wrapper is applied by the existing tracking module.
-    tracking: { network: 'accesstrade', campaignId: '6648523843406889655', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    // ACCESSTRADE TikTok Shop CPS is APPROVED (portal re-checked 27 Sep 2026: "Create link"). BUT the
+    // campaign's own rules (portal, 27 Sep 2026) say commission is credited ONLY for links created in
+    // the TikTok Shop product-feed tool (pub2.accesstrade.vn/tool/product-feeds, i.e. the v2
+    // tiktokshop product-feed API) — links from any other tool "sẽ không được ghi nhận". A generic
+    // Deep Link therefore earns nothing here, so it is marked UNSAFE: the wrapper refuses it and the
+    // runtime overlay cannot re-enable it. Direct links until a product-feed link integration exists.
+    tracking: { network: 'accesstrade', campaignId: '6648523843406889655', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: ['deep_link', 'product_link'] },
     enabledFlag: 'CCP_ADAPTER_TIKTOKSHOP',
     tier: 'mvp',
     segment: 'marketplace',
@@ -180,11 +184,13 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
       price: { freshnessType: 'unknown', ttlMs: null, note: 'price read on the merchant page' },
     },
     rights: FEED_RIGHTS_WCR,
-    tracking: { network: 'accesstrade', campaignId: '5087153089503673507', approval: 'pending', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    // Portal 27 Sep 2026: APPROVED ("Create link"); Deep Link followed end to end → lazada.vn with
+    // laz_trackid / sub_aff_id (docs/commerce/AFFILIATE_STATUS.md).
+    tracking: { network: 'accesstrade', campaignId: '5087153089503673507', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_LAZADA',
     tier: 'mvp',
     segment: 'marketplace',
-    notes: ['Desired, subject to integration conditions (affiliate pending → direct links).', 'Product grammar: /products/<slug>-i<id>.html; search grammar: /catalog/?q=<q>.'],
+    notes: ['ACCESSTRADE campaign approved (portal 27 Sep 2026) — tracked through the Deep Link.', 'Product grammar: /products/<slug>-i<id>.html; search grammar: /catalog/?q=<q>.'],
     discovery: { site: 'lazada.vn/products', subjectKind: 'product' },
   },
   {
@@ -387,10 +393,12 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     linkStrategy: { book_transport: ['tracked', 'direct', 'search'] },
     freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'route slugs + ids' }, availability: { freshnessType: 'realtime', ttlMs: 0, note: 'seats live on the merchant page' } },
     rights: LINK_ONLY_RIGHTS,
-    tracking: { network: 'accesstrade', campaignId: '5222734619328835827', approval: 'pending', safeWrapper: 'deep_link', unsafeWrappers: [] },
+    // Portal 27 Sep 2026: APPROVED ("Create link"); Deep Link followed end to end → the dated route
+    // page with aid + aff_sid (docs/commerce/AFFILIATE_STATUS.md).
+    tracking: { network: 'accesstrade', campaignId: '5222734619328835827', approval: 'approved', safeWrapper: 'deep_link', unsafeWrappers: [] },
     enabledFlag: 'CCP_ADAPTER_VEXERE',
     tier: 'mvp',
-    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'Affiliate pending → direct links (monetisation only).'],
+    notes: ['Route pages (/vi-VN/ve-xe-khach-tu-<from>-di-<to>-<ids>.html) are DISCOVERED — the ids are Vexere\'s; the adapter appends the date and checks the slug names both places.', 'No composable search grammar (verified 404); the landing page is the fallback.', 'ACCESSTRADE campaign approved (portal 27 Sep 2026).'],
     discovery: { site: 'vexere.com/vi-VN', subjectKind: 'route' },
   },
   {
@@ -496,8 +504,9 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     linkStrategy: { book_flight: ['configured_search'], book_hotel: ['detail', 'handoff'] },
     freshness: { identity: { freshnessType: 'static', ttlMs: 30 * DAY, note: 'route codes; property slugs' }, price: { freshnessType: 'realtime', ttlMs: 0, note: 'fares live on the results page' } },
     rights: LINK_ONLY_RIGHTS,
-    // AT → Partnerize programme approved per the audit; the wrapper for this merchant has not been
-    // param-echo verified, so no tracking config is declared — direct links (monetisation only).
+    // AT → Partnerize programme APPROVED (portal 27 Sep 2026). The campaign id lives in the RUNTIME
+    // registry (commerce_providers row), not here: the Deep Link was followed end to end on 27 Sep
+    // 2026 (prf.hn → the dated fare list with clickref, route and date intact).
     enabledFlag: 'CCP_ADAPTER_TRAVELOKA',
     tier: 'mvp',
     notes: ['Flights: fullsearch grammar verified 14 Sep 2026 (one-way). A second date in dt= is IGNORED by the merchant (renders "Một chiều", live UAT 14 Sep) — the return leg is page-only.', 'Hotels: property pages the hotel tool\'s OTA search returns pass through; landing fallback.'],
@@ -528,7 +537,9 @@ export const PROVIDER_REGISTRY: readonly ProviderRegistryEntry[] = [
     linkStrategy: { book_flight: ['handoff'] },
     freshness: { identity: { freshnessType: 'static', ttlMs: null, note: 'landing page' } },
     rights: LINK_ONLY_RIGHTS,
-    // ACCESSTRADE approved with forced UTM per the audit; not param-echo verified → no wrapper.
+    // ACCESSTRADE APPROVED (portal 27 Sep 2026). Campaign rule: only links on www.vietnamairlines.com
+    // are credited — the only host this entry emits. The campaign id lives in the RUNTIME registry
+    // (commerce_providers row); Deep Link verified end to end 27 Sep 2026 (aff_sid on the landing).
     enabledFlag: 'CCP_ADAPTER_VIETNAMAIRLINES',
     tier: 'mvp',
     notes: ['Direct merchant handoff at L1; nothing deeper is composed.'],

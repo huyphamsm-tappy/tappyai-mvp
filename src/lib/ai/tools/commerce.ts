@@ -92,6 +92,11 @@ export interface CommerceAttachContext {
   platform?: 'web' | 'android' | 'ios'
   locale?: 'vi' | 'en'
   /**
+   * Pseudonymous attribution id (24 hex) for the affiliate `sub1` — the keyed hash the route derives
+   * from the verified identity via `commerceActorHash`. Never a raw id, e-mail, name or phone.
+   */
+  actorHash?: string
+  /**
    * The user's latest message (kept for callers that have only that).
    * Prefer `userTexts`: the last few user turns, oldest first.
    */
@@ -413,6 +418,21 @@ function candidateRows(rows: Row[], r: Row, max: number): Row[] {
 }
 
 /** Keep CCP's ranking order, at most one link per provider, at most `max` overall (P2-1). */
+/**
+ * The links already on a row that belong to THIS caller's attribution id. The tools memoise their
+ * result object process-wide (keyed by the query, not the user), so two concurrent turns can meet
+ * on the same row; a link wrapped with another identity's `sub1` must never be kept for this one —
+ * it would credit the click to the wrong person. Links without a `sub1` match a caller without one.
+ */
+function sameActorLinks(value: unknown, actorHash: string | undefined): CommerceLinkRow[] {
+  if (!Array.isArray(value)) return []
+  return (value as CommerceLinkRow[]).filter(l => {
+    let sub1: string | null = null
+    try { sub1 = new URL(l.url).searchParams.get('sub1') } catch { return false }
+    return (sub1 ?? undefined) === actorHash
+  })
+}
+
 function dedupeLinks(existing: CommerceLinkRow[], incoming: CommerceLinkRow[], max = MAX_LINKS_PER_ROW): CommerceLinkRow[] {
   const out = [...existing]
   const perProvider = new Map<string, number>()
@@ -574,7 +594,7 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
       if (subject) subjects.push({ id: String(i), subject, locality: ctx.location, knownUrls: plan.knownUrlsOf(row), title: str(row.title) ?? str(row.name) })
     })
 
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
     const requested = requestedProvider(ctx)
     const constraints = ctx.location || requested
       ? { constraints: { ...(ctx.location ? { city: ctx.location.slice(0, 80) } : {}), ...(requested ? { merchantAllowList: requested.merchantAllowList } : {}) } }
@@ -636,7 +656,7 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
           .filter(l => l.depth >= MIN_ROW_LINK_DEPTH && l.kind !== 'SEARCH_HANDOFF')
           .map(l => projectCommerceLinkRow(l, out.requestId, intentType, cfg?.assumed ?? [], { primary }))
         if (projected.length === 0) continue
-        const existing = Array.isArray(row[COMMERCE_LINKS_KEY]) ? (row[COMMERCE_LINKS_KEY] as CommerceLinkRow[]) : []
+        const existing = sameActorLinks(row[COMMERCE_LINKS_KEY], ctx.actorHash)
         row[COMMERCE_LINKS_KEY] = dedupeLinks(existing, projected, plan.maxLinks)
         attachedAny = true
       }
@@ -770,7 +790,7 @@ async function attachRouteLinks(toolName: 'get_flight_prices' | 'get_transport_o
         hints = hits.map(h => ({ url: h.url, title: h.title ?? subject }))
       } catch { hints = [] }
     }
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
     const requested = requestedProvider(ctx)
     const request: CommerceRequest = { domain: 'travel', intentType, capability: capabilityForIntent(intentType), subject, configuration, ...(requested ? { constraints: { merchantAllowList: requested.merchantAllowList } } : {}), context }
     const out = (ctx.resolve ?? resolveCommerce)(request, { hints, now, enabled: true })
@@ -835,7 +855,7 @@ async function attachWebHandoffs(r: Row, ctx: CommerceAttachContext): Promise<un
     const scopes = requested ? requested.scopesFor('entertainment', intentType) : undefined
     let hits: DiscoveredHint[] = []
     try { hits = await discoverBySubject('entertainment', intentType, event ? `${subject} ${now.getFullYear()}` : subject, ctx.location, { search: ctx.search, perScope: MAX_EVENT_LINKS + 2, ...(scopes ? { scopes } : {}) }) } catch { hits = [] }
-    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), allowTracking: true }
+    const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }
     const rows: CommerceLinkRow[] = []
     const names: string[] = []
     const reads = { left: MAX_EVENT_PAGE_READS }

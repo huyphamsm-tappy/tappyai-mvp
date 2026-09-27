@@ -17,6 +17,7 @@ export { setProviderConfigSource, refreshProviderConfig, providerOverride, isPro
 export { inactiveMerchants, isRemovedMerchant, hasProviderConfigSource } from './registry'
 export { COMMERCE_CAPABILITIES, INTENT_CAPABILITY, DOMAIN_CAPABILITIES, capabilityForIntent } from './domain/types'
 export { resolveDeepLink } from './resolver/resolve'
+export { commerceActorHash } from './tracking/attribution'
 export { rankLinks } from './ranking/score'
 export { RANKING_WEIGHTS, RANKING_VERSION } from './ranking/weights'
 export { projectToCta, actionKindFor, urlKindFor, type CommerceCta } from './cta/projection'

@@ -577,7 +577,8 @@ Confirm these on the **production** project/host (they were unset in the audit e
 | `RESEND_API_KEY` | outbound email / OTP sign-in | email flows off (email+password still works) |
 | `GOOGLE_CLIENT_ID` / `NEXT_PUBLIC_GOOGLE_WEB_CLIENT_ID` | Google OAuth sign-in | OAuth off |
 | `STRIPE_SECRET_KEY` / `STRIPE_WEBHOOK_SECRET` | Pro purchase / upgrade | purchase flow off |
-| `ACCESSTRADE_PUBLISHER_ID` | affiliate deal-link wrapping (F-020) | wrapping off — **pending provider approval** |
+| `ACCESSTRADE_PUBLISHER_ID` | affiliate deal-link wrapping (F-020) — **set in Vercel Prod+Preview 27 Sep 2026** (docs/commerce/AFFILIATE_STATUS.md) | every commerce link direct |
+| `CCP_ATTRIBUTION_SECRET` | pseudonymous affiliate `sub1` (≥32 random chars, per environment) | links tracked but not attributable |
 | `CJ_API_KEY` | CJ affiliate network | off |
 
 ### 4a. Behaviour flags — production must match what Session C tested (2026-09-22)

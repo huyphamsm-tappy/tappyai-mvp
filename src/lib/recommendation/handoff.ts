@@ -1,6 +1,7 @@
 import type { LiveAction } from './liveView'
 import type { EntityDomain } from './entity'
 import { trackGa } from '@/lib/tracking/tracker'
+import { trackedLinkFacts } from '@/lib/ccp/tracking/trackedLink'
 
 // ── Reporting a commerce handoff from the client ─────────────────────────────
 // When a user follows a Commerce Link, the click is the one CCP event the
@@ -45,4 +46,16 @@ export function commerceTap(action: Pick<LiveAction, 'commerce'>, domain: Entity
   const c = action.commerce as { providerId?: string; tracked?: boolean } | undefined
   if (!c) return
   trackGa('affiliate_click', { domain, provider: c.providerId ?? 'unknown', tracked: c.tracked === true })
+}
+
+// ── A tracked link inside the reply TEXT ─────────────────────────────────────
+// Route / flight commerce links are also rendered in the prose (markdown → <a>), where no Action
+// exists. A tap on one mirrors the card path's GA4 `affiliate_click` (same event, same three
+// params) so text links are not invisible to the funnel. There is no opaque link id in the text,
+// so the internal handoff beacon stays card-only; card buttons live outside the text, so a tap is
+// never counted twice. Anything that is not a recognised tracked link is ignored.
+export function inlineLinkTap(href: string): void {
+  const facts = trackedLinkFacts(href)
+  if (!facts) return
+  trackGa('affiliate_click', { domain: facts.domain, provider: facts.providerId, tracked: true })
 }

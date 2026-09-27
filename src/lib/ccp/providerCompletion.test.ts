@@ -38,9 +38,10 @@ describe('the frozen provider list is the registry, exactly', () => {
 
   it('affiliate state is a monetisation fact, never availability: every pending merchant is ACTIVE_DIRECT', () => {
     const pending = PROVIDER_REGISTRY.filter(p => monetizationStatus(p) === 'PENDING')
-    expect(pending.map(p => p.providerId).sort()).toEqual(['dmx', 'lazada', 'shopee', 'vexere'])
+    expect(pending.map(p => p.providerId).sort()).toEqual(['dmx', 'shopee']) // Lazada + Vexere approved (portal 27 Sep 2026)
     for (const p of pending) expect(providerStatus(p)).toBe(p.tier === 'mvp' ? 'ACTIVE_DIRECT' : 'HANDOFF_ONLY')
-    expect(providerStatus(getProvider('tiktokshop')!)).toBe('ACTIVE')
+    // TikTok Shop: approved, but the campaign credits only product-feed links → no Deep Link → direct.
+    expect(providerStatus(getProvider('tiktokshop')!)).toBe('ACTIVE_DIRECT')
     expect(providerStatus(getProvider('booking')!)).toBe('ACTIVE_DIRECT')
     expect(monetizationStatus(getProvider('vietjet')!)).toBe('NOT_APPLICABLE')
   })
