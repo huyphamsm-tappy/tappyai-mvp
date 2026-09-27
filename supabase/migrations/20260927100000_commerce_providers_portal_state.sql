@@ -18,27 +18,27 @@
 
 update public.commerce_providers
    set deeplink_enabled = true, tier = 1, network = 'accesstrade', campaign_id = '5087153089503673507',
-       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026); Deep Link verified end to end'
+       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026) — Deep Link verified end to end'
  where provider_id = 'lazada';
 
 update public.commerce_providers
    set deeplink_enabled = true, tier = 1, network = 'accesstrade', campaign_id = '5222734619328835827',
-       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026); Deep Link verified end to end'
+       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026) — Deep Link verified end to end'
  where provider_id = 'vexere';
 
 update public.commerce_providers
    set deeplink_enabled = true, tier = 1, network = 'accesstrade', campaign_id = '6654251588167732819',
-       note = 'Tier 1 — ACCESSTRADE → Partnerize approved (portal 27 Sep 2026); Deep Link verified end to end'
+       note = 'Tier 1 — ACCESSTRADE → Partnerize approved (portal 27 Sep 2026) — Deep Link verified end to end'
  where provider_id = 'traveloka';
 
 update public.commerce_providers
    set deeplink_enabled = true, tier = 1, network = 'accesstrade', campaign_id = '6318680441596031865',
-       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026); only www.vietnamairlines.com links are credited'
+       note = 'Tier 1 — ACCESSTRADE approved (portal 27 Sep 2026) — only www.vietnamairlines.com links are credited'
  where provider_id = 'vietnamairlines';
 
 update public.commerce_providers
    set deeplink_enabled = false, tier = 2, network = 'accesstrade', campaign_id = '6648523843406889655',
-       note = 'Tier 2 — campaign approved but credits ONLY TikTok Shop product-feed links (portal rule 27 Sep 2026); Deep Link earns nothing'
+       note = 'Tier 2 — campaign approved but credits ONLY TikTok Shop product-feed links (portal rule 27 Sep 2026) — Deep Link earns nothing'
  where provider_id = 'tiktokshop';
 
 update public.commerce_providers
