@@ -72,12 +72,26 @@ final class ChatViewModel: AppObservableObject {
     /// Publishes a plan for sharing (`POST /api/plans/share`). Nil only in tests that never share.
     let planShare: PlanSharing?
 
+    /// Saves a signed-in user's date of birth (`PATCH /api/profile`) and returns the server's
+    /// `ageStatus`. Nil only where no account flow exists (tests that never hit the gate).
+    typealias DateOfBirthSaver = @Sendable (String) async throws -> AgeStatus
+    private let saveDateOfBirth: DateOfBirthSaver?
+    private let guestAge: GuestAgeStore
+
+    /// Set while the date of birth is being saved; the form shows its "Saving…" state.
+    @AppPublished var ageSubmitting: Bool = false
+    /// The form's inline error (invalid date, save failed, correction already used).
+    @AppPublished var ageFormError: String? = nil
+
     init(service: ChatService, session: SessionStore, category: String = "general",
          conversationId: String? = nil, savedMessages: [Conversation.ConversationMessage]? = nil,
-         planShare: PlanSharing? = nil) {
+         planShare: PlanSharing? = nil, saveDateOfBirth: DateOfBirthSaver? = nil,
+         guestAge: GuestAgeStore = GuestAgeStore()) {
         self.service = service
         self.session = session
         self.planShare = planShare
+        self.saveDateOfBirth = saveDateOfBirth
+        self.guestAge = guestAge
         self.category = category
         self.conversationId = conversationId
         wireReadAloudLanguage()
@@ -116,6 +130,66 @@ final class ChatViewModel: AppObservableObject {
     }
 
     var isAuthenticated: Bool { session.state.isAuthenticated }
+
+    /// Whether `/api/chat` treats this request as a guest (`!user || user.is_anonymous`): no
+    /// session or an anonymous one. `.onboarding` is a real account server-side.
+    var isGuest: Bool {
+        switch session.state {
+        case .authenticated, .onboarding: return false
+        case .unknown, .anonymous: return true
+        }
+    }
+
+    // MARK: - 18+ gate
+
+    /// The guest answered the inline prompt (`18plus` or a birth year): store it — under 18
+    /// included, the server decides — and resend the same turn, as Android's `onDeclareAge` does.
+    func declareGuestAge(_ value: String) {
+        guard !isStreaming else { return }
+        guestAge.save(value)
+        retry()
+    }
+
+    /// The signed-in user entered a date of birth: save it, then resend the turn if the server now
+    /// says eligible. Under 18 → the blocked state; nothing is resent.
+    func submitDateOfBirth(day: String, month: String, year: String) async {
+        guard !ageSubmitting, !isStreaming else { return }
+        guard let iso = DateOfBirthInput.iso(day: day, month: month, year: year) else {
+            ageFormError = NSLocalizedString("chat.age.error.invalid", comment: "")
+            return
+        }
+        guard let saveDateOfBirth else {
+            ageFormError = NSLocalizedString("chat.age.error.failed", comment: "")
+            return
+        }
+        ageSubmitting = true
+        defer { ageSubmitting = false }
+        do {
+            switch try await saveDateOfBirth(iso) {
+            case .eligible:
+                ageFormError = nil
+                retry()
+            case .ineligible:
+                ageFormError = nil
+                error = .ageIneligible(message: nil)
+            case .unknown:
+                ageFormError = NSLocalizedString("chat.age.error.failed", comment: "")
+            }
+        } catch {
+            ageFormError = Self.dateOfBirthErrorText(error)
+        }
+    }
+
+    static func dateOfBirthErrorText(_ error: Error) -> String {
+        switch error as? AppError {
+        case .validation(let message)?:
+            return message   // the server's localized `age.invalidDate`
+        case .network(_, let code?)? where code == "age_correction_exhausted":
+            return NSLocalizedString("chat.age.error.correctionExhausted", comment: "")
+        default:
+            return NSLocalizedString("chat.age.error.failed", comment: "")
+        }
+    }
 
     // MARK: - Load existing conversation
 
@@ -376,7 +450,8 @@ final class ChatViewModel: AppObservableObject {
                 messages: payloads,
                 userPreferences: self.userPreferences.isEmpty ? nil : self.userPreferences,
                 responseStyle: nil,
-                userLocation: self.activeLocation
+                userLocation: self.activeLocation,
+                guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil
             )
 
             do {
@@ -515,7 +590,7 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Error mapping
 
-    private static func mapError(_ error: Error) -> ChatError {
+    static func mapError(_ error: Error) -> ChatError {
         guard let appError = error as? AppError else {
             return .generic
         }
@@ -524,6 +599,13 @@ final class ChatViewModel: AppObservableObject {
             switch reason {
             case .anonLimitReached: return .anonLimitReached
             case .freeLimitReached: return .freeLimitReached
+            case .ageGate(let code, let message):
+                switch AgeGateCode(rawValue: code) {
+                case .declarationRequired: return .ageDeclarationRequired(message: message)
+                case .verificationRequired: return .ageVerificationRequired(message: message)
+                case .ineligible: return .ageIneligible(message: message)
+                case nil: return .authRequired
+                }
             case .unauthenticated: return .authRequired
             default: return .authRequired
             }
@@ -542,11 +624,18 @@ enum ChatError: Equatable, Sendable {
     case authRequired
     case anonLimitReached
     case freeLimitReached
+    /// 18+ gate — guest must state their age (inline year / "I am 18 or older").
+    case ageDeclarationRequired(message: String?)
+    /// 18+ gate — account has no date of birth; collect it and save via `PATCH /api/profile`.
+    case ageVerificationRequired(message: String?)
+    /// 18+ gate — under 18. Blocked; no way around it from the client.
+    case ageIneligible(message: String?)
 
     var isRetriable: Bool {
         switch self {
         case .generic, .offline: return true
-        case .authRequired, .anonLimitReached, .freeLimitReached: return false
+        case .authRequired, .anonLimitReached, .freeLimitReached,
+             .ageDeclarationRequired, .ageVerificationRequired, .ageIneligible: return false
         }
     }
 }

@@ -130,6 +130,9 @@ final class URLSessionAPIClient: APIClient {
         case (_, "free_limit_reached"): return .authentication(reason: .freeLimitReached)
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
+        case (403, let code?) where AgeGateCode(rawValue: code) != nil:
+            let message = (try? JSONSerialization.jsonObject(with: data) as? [String: Any])?["message"] as? String
+            return .authentication(reason: .ageGate(code: code, message: message))
         case (403, _): return .authentication(reason: .forbidden)
         default: return .network(status: status, code: code)
         }

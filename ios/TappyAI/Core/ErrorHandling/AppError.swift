@@ -26,6 +26,9 @@ enum AppError: Error, Equatable {
         case forbidden              // authenticated but not allowed
         case anonLimitReached       // backend 401 anon_limit_reached
         case freeLimitReached       // backend 429 free_limit_reached
+        /// backend 403 from the 18+ gate (`age_declaration_required` | `age_verification_required`
+        /// | `age_ineligible`); `message` is the server's localized sentence, when present.
+        case ageGate(code: String, message: String?)
     }
 
     /// Whether the UI should offer a "Retry" affordance (see docs/ios/06 error states).

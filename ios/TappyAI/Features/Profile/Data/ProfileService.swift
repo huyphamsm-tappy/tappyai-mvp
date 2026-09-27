@@ -25,6 +25,16 @@ struct ProfileService {
         _ = try await api.send(endpoint)
     }
 
+    /// Stores the signed-in user's date of birth (`PATCH /api/profile {"dateOfBirth":"YYYY-MM-DD"}`,
+    /// `src/app/api/profile/route.ts`). The route is deliberately outside the age gate, so an
+    /// account refused by `/api/chat` can still reach it. 400 → `.validation(serverMessage)`;
+    /// 409 `age_correction_exhausted` once the one self-correction is used.
+    func updateDateOfBirth(_ iso: String) async throws -> DateOfBirthUpdateResponse {
+        let body = try JSONSerialization.data(withJSONObject: ["dateOfBirth": iso])
+        let endpoint = Endpoint(path: "/api/profile", method: .patch, body: body, requiresAuth: true)
+        return try await api.send(endpoint, as: DateOfBirthUpdateResponse.self)
+    }
+
     func uploadAvatar(_ data: Data, boundary: String) async throws -> String? {
         let endpoint = Endpoint(
             path: "/api/profile",

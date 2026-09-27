@@ -95,20 +95,151 @@ struct CTAButton: Equatable, Sendable, Identifiable {
     var id: String { "\(label)-\(url)" }
 }
 
+/// The `[TAPPY_PLAN]` block, in the shape the backend emits (the planning prompt in
+/// `src/lib/ai/promptBuilder.ts`; web type `TappyPlan` in `src/components/TripPlanCard.tsx`;
+/// Android `chat/ChatResponse.kt`):
+///
+///     {"type","title","people","budget_total","days":[{"label","items":[{"time","emoji",
+///      "category","name","description","price","address","maps_link","booking_link",
+///      "place_id","photo_url"}]}],"cost_breakdown":{…},"share_text","local_tips":[…]}
+///
+/// Required: `days`, and `items` on every day — a block without them does not decode, so a plan
+/// in another shape can never turn into days with nothing in them. An item without a `name` is
+/// dropped (web `derivePlans` / the share snapshot do the same). Prices go through
+/// `PlanPrice.amount`, like web `projectPlanPrices`: a sentinel such as "chưa có giá" is not a price.
 struct TappyPlan: Equatable, Sendable, Decodable {
+    let type: String?
+    /// May be empty: the model usually writes one, but only `days` is validated server-side.
+    let title: String
+    let people: Int?
+    let budgetTotal: String?
     let days: [PlanDay]
+    let costBreakdown: [String: String]?
+    let shareText: String?
+    let localTips: [LocalTip]?
 
     struct PlanDay: Equatable, Sendable, Decodable {
-        let day: Int?
-        let title: String?
-        let activities: [Activity]?
+        /// "Ngày 1", "Tối nay"… Empty when the block has none; surfaces fall back to "Day N".
+        let label: String
+        let items: [PlanItem]
 
-        struct Activity: Equatable, Sendable, Decodable {
-            let time: String?
-            let title: String?
-            let description: String?
-            let cost: String?
+        private enum CodingKeys: String, CodingKey { case label, items }
+
+        init(label: String, items: [PlanItem]) {
+            self.label = label
+            self.items = items
         }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            label = ((try? c.decodeIfPresent(String.self, forKey: .label)) ?? nil)?
+                .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            // Required: a day without `items` is not a plan day.
+            items = try c.decode([Lossy<PlanItem>].self, forKey: .items).compactMap(\.value)
+        }
+    }
+
+    struct PlanItem: Equatable, Sendable, Decodable {
+        let time: String
+        let emoji: String
+        let category: String
+        let name: String
+        let description: String?
+        let price: String?
+        let address: String?
+        let mapsLink: String?
+        let bookingLink: String?
+        let placeId: String?
+        let photoUrl: String?
+
+        private enum CodingKeys: String, CodingKey {
+            case time, emoji, category, name, description, price, address
+            case mapsLink = "maps_link", bookingLink = "booking_link"
+            case placeId = "place_id", photoUrl = "photo_url"
+        }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            func text(_ key: CodingKeys) -> String? {
+                guard let raw = (try? c.decodeIfPresent(String.self, forKey: key)) ?? nil else { return nil }
+                let v = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+                return v.isEmpty ? nil : v
+            }
+            guard let name = text(.name) else {
+                throw DecodingError.keyNotFound(CodingKeys.name, .init(codingPath: c.codingPath,
+                                                                       debugDescription: "plan item without a name"))
+            }
+            self.name = name
+            time = text(.time) ?? ""
+            emoji = text(.emoji) ?? ""
+            category = text(.category) ?? ""
+            description = text(.description)
+            price = PlanPrice.amount(text(.price))
+            address = text(.address)
+            mapsLink = text(.mapsLink)
+            bookingLink = text(.bookingLink)
+            placeId = text(.placeId)
+            photoUrl = text(.photoUrl)
+        }
+    }
+
+    struct LocalTip: Equatable, Sendable, Decodable {
+        let text: String
+        /// "tool" | "general"
+        let basis: String
+        let place: String?
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case type, title, people, days
+        case budgetTotal = "budget_total", costBreakdown = "cost_breakdown"
+        case shareText = "share_text", localTips = "local_tips"
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        // Required: the one field web `parsePlan` validates.
+        days = try c.decode([PlanDay].self, forKey: .days)
+        type = (try? c.decodeIfPresent(String.self, forKey: .type)) ?? nil
+        title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        let people = (try? c.decodeIfPresent(Int.self, forKey: .people)) ?? nil
+        self.people = (people ?? 0) > 0 ? people : nil
+        budgetTotal = PlanPrice.amount((try? c.decodeIfPresent(String.self, forKey: .budgetTotal)) ?? nil)
+        let breakdown = ((try? c.decodeIfPresent([String: String].self, forKey: .costBreakdown)) ?? nil)?
+            .compactMapValues { PlanPrice.amount($0) } ?? [:]
+        costBreakdown = breakdown.isEmpty ? nil : breakdown
+        let share = ((try? c.decodeIfPresent(String.self, forKey: .shareText)) ?? nil)?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        shareText = (share?.isEmpty ?? true) ? nil : share
+        let tips: [Lossy<LocalTip>]? = (try? c.decodeIfPresent([Lossy<LocalTip>].self, forKey: .localTips)) ?? nil
+        localTips = tips?.compactMap(\.value)
+    }
+
+    /// Decodes an element or yields nil, so one malformed element does not sink the whole array.
+    private struct Lossy<T: Decodable & Sendable>: Decodable, Sendable {
+        let value: T?
+        init(from decoder: Decoder) throws { value = try? T(from: decoder) }
+    }
+}
+
+/// A plan price is shown only when it IS a price — port of web `planAmount`
+/// (`src/lib/plans/planPrice.ts`) and Android `PlanPrice.kt`. A value is kept when it has a digit
+/// or says the thing is free; the model's "no price" sentinels are dropped, never rewritten.
+enum PlanPrice {
+    private static let noPrice = try! NSRegularExpression(
+        pattern: #"chưa\s*có\s*giá|chưa\s*rõ\s*giá|không\s*rõ\s*giá|price\s*not\s*available|no\s*price|\bn/a\b|\bunknown\b"#,
+        options: [.caseInsensitive])
+    private static let free = try! NSRegularExpression(
+        pattern: #"^(?:miễn\s*phí|free)(?!\p{L})"#, options: [.caseInsensitive])
+
+    static func amount(_ raw: String?) -> String? {
+        guard let v = raw?.trimmingCharacters(in: .whitespacesAndNewlines), !v.isEmpty else { return nil }
+        let range = NSRange(v.startIndex..., in: v)
+        if noPrice.firstMatch(in: v, range: range) != nil { return nil }
+        if v.rangeOfCharacter(from: .decimalDigits) != nil { return v }
+        if free.firstMatch(in: v, range: range) != nil { return v }
+        return nil
     }
 }
 

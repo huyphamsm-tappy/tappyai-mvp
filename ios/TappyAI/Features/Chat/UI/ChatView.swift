@@ -14,7 +14,10 @@ struct ChatView: View {
             service: service, session: session,
             category: category, conversationId: conversationId,
             savedMessages: savedMessages,
-            planShare: PlanShareService(api: deps.api, isAuthenticated: { session.state.isAuthenticated })
+            planShare: PlanShareService(api: deps.api, isAuthenticated: { session.state.isAuthenticated }),
+            saveDateOfBirth: { [api = deps.api] iso in
+                try await ProfileService(api: api).updateDateOfBirth(iso).status
+            }
         ))
     }
 
@@ -55,7 +58,11 @@ struct ChatView: View {
                         onReport: { vm.reportFeedback(messageIndex: $0) },
                         onSavePlaceManual: { vm.savePlaceManual(name: $0) },
                         onSavePlaceFavorite: { vm.savePlaceFavorite(placeId: $0, name: $1, address: $2, type: $3) },
-                        onZoomImage: { vm.zoomedImageUrl = $0 }
+                        onZoomImage: { vm.zoomedImageUrl = $0 },
+                        ageSubmitting: vm.ageSubmitting,
+                        ageFormError: vm.ageFormError,
+                        onDeclareAge: { vm.declareGuestAge($0) },
+                        onSubmitDateOfBirth: { d, m, y in Task { await vm.submitDateOfBirth(day: d, month: m, year: y) } }
                     )
                 }
 

@@ -25,6 +25,11 @@ struct ChatMessageList: View {
     let onSavePlaceManual: (String) -> Void
     let onSavePlaceFavorite: (String, String, String, String) -> Void
     let onZoomImage: (String) -> Void
+    /// 18+ gate (see `ChatViewModel.declareGuestAge` / `submitDateOfBirth`).
+    var ageSubmitting: Bool = false
+    var ageFormError: String? = nil
+    var onDeclareAge: (String) -> Void = { _ in }
+    var onSubmitDateOfBirth: (_ day: String, _ month: String, _ year: String) -> Void = { _, _, _ in }
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -100,7 +105,11 @@ struct ChatMessageList: View {
                             error: error,
                             isAuthenticated: isAuthenticated,
                             onRetry: onRetry,
-                            onLogin: onLogin
+                            onLogin: onLogin,
+                            ageSubmitting: ageSubmitting,
+                            ageFormError: ageFormError,
+                            onDeclareAge: onDeclareAge,
+                            onSubmitDateOfBirth: onSubmitDateOfBirth
                         )
                     }
 
@@ -391,6 +400,10 @@ private struct ChatErrorBanner: View {
     let isAuthenticated: Bool
     let onRetry: () -> Void
     let onLogin: () -> Void
+    let ageSubmitting: Bool
+    let ageFormError: String?
+    let onDeclareAge: (String) -> Void
+    let onSubmitDateOfBirth: (String, String, String) -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
@@ -400,6 +413,26 @@ private struct ChatErrorBanner: View {
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 switch error {
+                case .ageDeclarationRequired(let message):
+                    GuestAgeDeclarationPrompt(serverMessage: message, onDeclare: onDeclareAge)
+
+                case .ageVerificationRequired(let message):
+                    DateOfBirthPrompt(serverMessage: message, submitting: ageSubmitting,
+                                      formError: ageFormError, onSubmit: onSubmitDateOfBirth)
+
+                case .ageIneligible(let message):
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text("chat.age.blocked.title")
+                            .font(TappyFont.bodyEmphasis)
+                            .foregroundStyle(TappyColor.textPrimary)
+                        Text(message ?? NSLocalizedString("chat.age.blocked.desc", comment: ""))
+                            .font(TappyFont.callout)
+                            .foregroundStyle(TappyColor.textSecondary)
+                    }
+                    .padding(Spacing.sm)
+                    .background(TappyColor.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
                 case .authRequired, .anonLimitReached:
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(error == .anonLimitReached
@@ -497,38 +530,42 @@ private struct TripPlanCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            ForEach(Array(plan.days.enumerated()), id: \.offset) { _, day in
+            if !plan.title.isEmpty {
+                Text(plan.title)
+                    .font(TappyFont.bodyEmphasis)
+                    .foregroundStyle(TappyColor.textPrimary)
+            }
+            ForEach(Array(plan.days.enumerated()), id: \.offset) { index, day in
                 VStack(alignment: .leading, spacing: Spacing.xs) {
-                    if let title = day.title {
-                        Text(title)
-                            .font(TappyFont.bodyEmphasis)
-                            .foregroundStyle(TappyColor.textPrimary)
-                    }
-                    if let activities = day.activities {
-                        ForEach(Array(activities.enumerated()), id: \.offset) { _, activity in
-                            HStack(alignment: .top, spacing: Spacing.xs) {
-                                if let time = activity.time {
-                                    Text(time)
+                    Text(day.label.isEmpty ? String(format: NSLocalizedString("chat.plan.dayFallback", comment: ""), index + 1) : day.label)
+                        .font(TappyFont.bodyEmphasis)
+                        .foregroundStyle(TappyColor.textPrimary)
+                    ForEach(Array(day.items.enumerated()), id: \.offset) { _, item in
+                        HStack(alignment: .top, spacing: Spacing.xs) {
+                            if !item.time.isEmpty {
+                                Text(item.time)
+                                    .font(TappyFont.caption)
+                                    .foregroundStyle(TappyColor.textSecondary)
+                                    .frame(width: 50, alignment: .leading)
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text([item.emoji, item.name].filter { !$0.isEmpty }.joined(separator: " "))
+                                    .font(TappyFont.callout)
+                                    .foregroundStyle(TappyColor.textPrimary)
+                                if let desc = item.description {
+                                    Text(desc)
                                         .font(TappyFont.caption)
                                         .foregroundStyle(TappyColor.textSecondary)
-                                        .frame(width: 50, alignment: .leading)
                                 }
-                                VStack(alignment: .leading, spacing: 2) {
-                                    if let title = activity.title {
-                                        Text(title)
-                                            .font(TappyFont.callout)
-                                            .foregroundStyle(TappyColor.textPrimary)
-                                    }
-                                    if let desc = activity.description {
-                                        Text(desc)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.textSecondary)
-                                    }
-                                    if let cost = activity.cost {
-                                        Text(cost)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.primary)
-                                    }
+                                if let address = item.address {
+                                    Text("📍 \(address)")
+                                        .font(TappyFont.caption)
+                                        .foregroundStyle(TappyColor.textSecondary)
+                                }
+                                if let price = item.price {
+                                    Text(price)
+                                        .font(TappyFont.caption)
+                                        .foregroundStyle(TappyColor.primary)
                                 }
                             }
                         }

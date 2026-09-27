@@ -59,8 +59,8 @@ struct PlanShareService: PlanSharing {
     }
 
     /// `{ "plan": <the block as one JSON object> }` — parsed once so it is well-formed, never
-    /// re-modelled: fields `TappyPlan` does not carry (`photo_url`, the wire `label`/`items`)
-    /// reach the server intact for it to whitelist.
+    /// re-modelled: the block goes out as emitted (unprojected prices, nameless items, unknown
+    /// keys included) and the server's snapshot does its own whitelisting.
     static func requestBody(planJSON: String) -> Data? {
         guard let data = planJSON.data(using: .utf8),
               let object = try? JSONSerialization.jsonObject(with: data),
