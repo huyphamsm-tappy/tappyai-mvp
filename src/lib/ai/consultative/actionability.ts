@@ -293,6 +293,10 @@ export function turnStartsNewConsultation(input: { messages: Array<{ role: strin
   if (users.length < 2) return false
   const last = users[users.length - 1]
   if (typeof last.content !== 'string') return false
+  // UAT4 c40 T3 with V1 on (27 Sep 2026): "Cái thứ hai có bao gồm ăn sáng không?" after a hotel list
+  // read as a FOOD turn ("ăn sáng"), cut the consultation, and got the canned "Tầm giá? Mấy người?".
+  // A turn that points back at an answered item continues that consultation, whatever nouns it uses.
+  if (ANAPHORA.test(fold(last.content))) return false
   // F (2026-09-20, measured Android session B: cinema → hotel → spa → "an gi ngon gio" read as a refinement of
   // the spa consultation and the spa budget satisfied the FOOD gate): the domain to compare against is the
   // thread BEFORE this turn — the whole thread with the new turn in it reads the new turn's own domain back.

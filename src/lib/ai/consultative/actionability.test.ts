@@ -179,3 +179,21 @@ describe('purchase advice is answered, not clarified or searched (golden G5b / G
     expect(deriveDecisionFrame({ messages, need, planningIntent: null, forcedTool: null, hasGps: false, storedPreferences: null, now: new Date('2026-09-27T05:00:00Z') }).goal).not.toBe('inform')
   })
 })
+
+// UAT4 c40 T3 with V1 on: a follow-up about an answered hotel was cut as a new FOOD consultation.
+import { turnStartsNewConsultation } from './actionability'
+describe('a follow-up pointing back at an answered item continues the consultation (c40 T3)', () => {
+  const hotelThread = [
+    { role: 'user', content: 'Khách sạn Đà Nẵng gần biển dưới 1 triệu/đêm' },
+    { role: 'assistant', content: 'Mình chọn Khách sạn A. Ngoài ra có Khách sạn B và Khách sạn C.' },
+  ]
+  it('"Cái thứ hai có bao gồm ăn sáng không?" is not a new (food) consultation, and is not clarified', () => {
+    const messages = [...hotelThread, { role: 'user', content: 'Cái thứ hai có bao gồm ăn sáng không?' }]
+    expect(turnStartsNewConsultation({ messages, hasGps: true, lang: 'vi' })).toBe(false)
+    expect(assessActionability({ messages, hasGps: true, lang: 'vi', lastAssistantText: hotelThread[1].content }).actionable).toBe(true)
+  })
+  it('a real switch to food is still a new consultation', () => {
+    const messages = [...hotelThread, { role: 'user', content: 'giờ tìm quán ăn sáng ngon gần đây' }]
+    expect(turnStartsNewConsultation({ messages, hasGps: true, lang: 'vi' })).toBe(true)
+  })
+})
