@@ -221,9 +221,10 @@ describe('the grid is defined once, in tokens', () => {
 
   it('defines both palettes, so the control has something to switch between', () => {
     const code = stripComments(css)
-    expect(code).toContain('.dark .v3-theme {')
+    // The dark block also matches `.v3-theme.dark` (surfaces pinned dark on one element — UAT4 P0).
+    expect(code).toMatch(/\.dark \.v3-theme,\s*\.v3-theme\.dark \{/)
     // The light palette lives on the bare class; without it the "light" state is unstyled.
-    const lightBlock = code.slice(code.indexOf('.v3-theme {'), code.indexOf('.dark .v3-theme {'))
+    const lightBlock = code.slice(code.indexOf('.v3-theme {'), code.indexOf('.dark .v3-theme,'))
     expect(lightBlock).toContain('--v3-page')
     expect(lightBlock).toContain('--v3-fg:')
   })
