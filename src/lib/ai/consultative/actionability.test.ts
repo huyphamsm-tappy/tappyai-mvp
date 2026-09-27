@@ -197,3 +197,18 @@ describe('a follow-up pointing back at an answered item continues the consultati
     expect(turnStartsNewConsultation({ messages, hasGps: true, lang: 'vi' })).toBe(true)
   })
 })
+
+// UAT4 golden M4 with V1 on: a named hair dryer was answered with "Bạn muốn mua món gì?" ("máy" folds to "may" = "mấy").
+describe('a machine is a product (golden M4 turn 2)', () => {
+  it('"tiện mua máy sấy tóc Philips dưới 1 triệu" — alone and after a spa turn — is not clarified', () => {
+    const t2 = { role: 'user', content: 'tiện mua máy sấy tóc Philips dưới 1 triệu' }
+    for (const messages of [[t2], [{ role: 'user', content: 'spa massage chân ở Phú Nhuận dưới 300k' }, { role: 'assistant', content: 'Mình tìm được 10 spa.' }, t2]]) {
+      const r = assessActionability({ messages, hasGps: true, lang: 'vi', lastAssistantText: null })
+      expect(r.actionable, JSON.stringify(r.missing)).toBe(true)
+    }
+  })
+  it('"mua mấy cái gì" and a bare "mua gì bây giờ" still ask for the product', () => {
+    expect(assessActionability({ messages: [{ role: 'user', content: 'mua mấy cái gì giờ' }], hasGps: true, lang: 'vi', lastAssistantText: null }).actionable).toBe(false)
+    expect(assessActionability({ messages: [{ role: 'user', content: 'mua gì bây giờ' }], hasGps: true, lang: 'vi', lastAssistantText: null }).actionable).toBe(false)
+  })
+})

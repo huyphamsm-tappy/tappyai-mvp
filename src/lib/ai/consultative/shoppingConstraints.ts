@@ -334,7 +334,10 @@ const textOf = (m: Msg): string =>
  */
 export function namesUnknownProduct(k: Pick<ShoppingConstraints, 'unknownType' | 'productType'>): boolean {
   if (k.productType || !k.unknownType) return false
-  return !/^(?:gi|cai gi|do|hang|san pham|qua|thu|mon|cai|nhung|may|vai|do gi|gi do|cai nao|loai nao)(?:\s|$)/.test(k.unknownType)
+  // UAT4 golden M4 (V1 on): folded "may" is both "mấy" (how many — not a product) and "máy" (a machine),
+  // so "mua máy sấy tóc Philips" was read as naming nothing and got "Bạn muốn mua món gì?". Only a
+  // bare "mấy" or "mấy + a counter" (cái / món / thứ / đồ) asks for a product.
+  return !/^(?:gi|cai gi|do|hang|san pham|qua|thu|mon|cai|nhung|may (?:cai|mon|thu|do)|may(?=\s*$)|vai|do gi|gi do|cai nao|loai nao)(?:\s|$)/.test(k.unknownType)
 }
 
 export function deriveShoppingConstraints(
