@@ -27,7 +27,9 @@ final class SupabaseAuthService: AuthService {
     }
 
     func verifyEmailOTP(email: String, token: String) async throws -> AuthTokens {
-        let session = try await supabase.auth.verifyOTP(email: email, token: token, type: .email)
+        // supabase-swift v2: `verifyOTP` returns `AuthResponse` (`.session` / `.user`), not `Session`.
+        let response = try await supabase.auth.verifyOTP(email: email, token: token, type: .email)
+        guard let session = response.session else { throw AuthError.sessionMissing }
         return AuthTokens(session: session)
     }
 
