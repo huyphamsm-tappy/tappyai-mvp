@@ -15,7 +15,7 @@
 // suggested query the model may sharpen when it is specified. Never on a movie-recommendation
 // turn (its place tool is dropped on purpose) and never when the frame asks for a location.
 
-import type { DecisionFrame } from './decisionFrame'
+import { ADVICE_RE, type DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
 import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
@@ -92,6 +92,9 @@ export function deriveSearchNow(input: {
   const { situation, frame } = input
   if (!situation || !input.isFirstReply || input.movieRecommend) return null
   if (frame.clarify) return null
+  // An advice question ("mua xe máy cũ cần kiểm tra gì") names a product but asks what to watch for:
+  // no product call (measured golden G5b/G5c: the directive made the model "pick" a spare part).
+  if (frame.goal === 'inform' && ADVICE_RE.test(normalizeVN(input.text.toLowerCase()))) return null
   // Shopping after a clarify (measured GATE A S5b: "nước hoa" → the model asked about the scent
   // instead of searching; and with no subject the occasion "sinh nhật" would have routed the call to
   // RESTAURANTS): the product the user just named IS the call — the need profile's subject when it

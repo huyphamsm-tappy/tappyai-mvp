@@ -154,3 +154,28 @@ describe('E3 — a buy-verb message naming an unknown product is actionable even
     expect(assess('mua tinh dầu massage body chính hãng online').actionable).toBe(true)
   })
 })
+
+// UAT4 golden with V1 on (27 Sep 2026): purchase ADVICE questions were clarified ("Bạn muốn mua món gì?")
+// or turned into a product pick. They are answered — no clarify, no product directive.
+import { deriveDecisionFrame } from './decisionFrame'
+import { deriveNeedProfile } from './needProfile'
+import { deriveSituation } from './situationFrame'
+import { deriveSearchNow } from './searchNow'
+describe('purchase advice is answered, not clarified or searched (golden G5b / G5c / G5d)', () => {
+  for (const text of ['mua đồ cũ trên group Facebook thì lưu ý gì', 'mua xe máy cũ Honda Wave cần kiểm tra gì', 'mua ô tô cũ tầm 300 triệu cần check gì']) {
+    it(text, () => {
+      const messages = [{ role: 'user', content: text }]
+      expect(assessActionability({ messages, hasGps: true, lang: 'vi', lastAssistantText: null }).actionable).toBe(true)
+      const need = deriveNeedProfile(messages, { gps: { lat: 10.77, lng: 106.7 } })
+      const frame = deriveDecisionFrame({ messages, need, planningIntent: null, forcedTool: null, hasGps: true, storedPreferences: null, now: new Date('2026-09-27T05:00:00Z') })
+      expect(frame.goal).toBe('inform')
+      const situation = deriveSituation([text], need, { hasGps: true })
+      expect(deriveSearchNow({ text, situation, frame, need, forcedTool: null, isFirstReply: true, movieRecommend: false })).toBeNull()
+    })
+  }
+  it('a real purchase request is still a product request', () => {
+    const messages = [{ role: 'user', content: 'mua xe máy cũ Honda Wave dưới 15 triệu' }]
+    const need = deriveNeedProfile(messages, { gps: null })
+    expect(deriveDecisionFrame({ messages, need, planningIntent: null, forcedTool: null, hasGps: false, storedPreferences: null, now: new Date('2026-09-27T05:00:00Z') }).goal).not.toBe('inform')
+  })
+})

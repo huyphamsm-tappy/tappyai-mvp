@@ -96,6 +96,13 @@ const UTILITY_RE = /thoi tiet|du bao|gia vang|ty gia|tin tuc|\bnews\b|\bweather\
 
 const COMPARE_RE = /so sanh|\bvs\.?\b|\bhay la\b|\bhay\b.*\bhon\b|\bor\b.*\bbetter\b|\bcompare\b|nen chon (cai|con|quan|chiec) nao|cai nao (tot|hon)|\bwhich (one|is better)\b/
 const DECIDE_RE = /chon giup|chon dum|nen (di|an|mua|chon|o|dat) (dau|gi|nao|cai nao|quan nao)|quyet dinh (giup|dum)|\bdecide for me\b|\bpick (one|for me)\b|nen chon/
+/**
+ * UAT4 golden with V1 on (27 Sep 2026): "mua đồ cũ trên group Facebook thì lưu ý gì" got "Bạn muốn
+ * mua món gì?", and "mua xe máy cũ Honda Wave cần kiểm tra gì" / "mua ô tô cũ … cần check gì" got a
+ * product search that "picked" a Shopee spare part. They ask for ADVICE about a purchase, not for a
+ * product: the goal is inform. ("meo" is left out: folded, it is also "mèo".)
+ */
+export const ADVICE_RE = /(?:luu y|chu y|kiem tra|check|can biet|chuan bi|can tranh|de phong)\s+(?:gi|nhung gi|nhung dieu gi|dieu gi|cai gi)\b|\bkinh nghiem\b|nhung (?:dieu|diem|luu y) can\b|(?:thi|can) (?:luu y|chu y) (?:nhung )?gi\b/
 const RECOMMEND_RE = /goi y|de xuat|\brecommend\b|\bsuggest\b|\btim\b|\bfind\b|\bo dau\b|\bdi dau\b|\ban gi\b|\bmua gi\b|\bnao ngon\b|\bnao tot\b|\bnao hay\b|\bwhere\b|\bwhat should i\b|\bgan day\b|\bnearby\b|\bcho minh\b|\bcho toi\b/
 
 const MEAL: ReadonlyArray<[RegExp, DecisionFrame['occasion']['meal']]> = [
@@ -149,6 +156,7 @@ function detectDomains(t: string, need: NeedProfile, forcedTool: string | null, 
 
 function detectGoal(t: string, planningIntent: FrameInput['planningIntent'], domains: FrameDomain[]): FrameGoal {
   if (planningIntent) return 'plan'
+  if (ADVICE_RE.test(t)) return 'inform'
   if (COMPARE_RE.test(t)) return 'compare'
   if (DECIDE_RE.test(t)) return 'decide'
   if (RECOMMEND_RE.test(t)) return 'recommend'
