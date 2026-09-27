@@ -422,14 +422,16 @@ function candidateRows(rows: Row[], r: Row, max: number): Row[] {
  * The links already on a row that belong to THIS caller's attribution id. The tools memoise their
  * result object process-wide (keyed by the query, not the user), so two concurrent turns can meet
  * on the same row; a link wrapped with another identity's `sub1` must never be kept for this one —
- * it would credit the click to the wrong person. Links without a `sub1` match a caller without one.
+ * it would credit the click to the wrong person. A link without a `sub1` (a direct link, or a tracked
+ * one with no attribution secret) carries no identity and is kept for every caller — dropping it lost
+ * the CGV film page whenever an attributed turn's Klook pass wrote next (PR #255 review).
  */
 function sameActorLinks(value: unknown, actorHash: string | undefined): CommerceLinkRow[] {
   if (!Array.isArray(value)) return []
   return (value as CommerceLinkRow[]).filter(l => {
     let sub1: string | null = null
     try { sub1 = new URL(l.url).searchParams.get('sub1') } catch { return false }
-    return (sub1 ?? undefined) === actorHash
+    return sub1 === null || sub1 === actorHash
   })
 }
 

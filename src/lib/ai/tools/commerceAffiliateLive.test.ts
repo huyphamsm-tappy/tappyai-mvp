@@ -170,3 +170,23 @@ describe('a memoised tool result shared by two users never keeps the other ident
     expect(new Set(subs)).toEqual(new Set([b]))
   })
 })
+
+// Review of PR #255 (27 Sep 2026): with an attribution id, a DIRECT link an earlier intent put on the
+// row (CGV's film page, no sub1) was dropped when the next intent (Klook) wrote — a direct link
+// carries no identity, so it belongs to every caller.
+describe('an attributed turn keeps the direct links of every intent', () => {
+  beforeEach(() => { __resetProviderConfig(); setCommerceEventWriter(() => undefined) })
+  afterEach(() => { setProviderConfigSource(null); setCommerceEventWriter(null) })
+
+  it('cinema row: the CGV film page (buy_ticket) survives the Klook pass (book_activity), with or without actorHash', async () => {
+    const search = async (q: string) => q.includes('site:klook.com') ? [{ title: 'CGV Vincom Đồng Khởi', link: 'https://www.klook.com/vi/activity/12345-cgv-vincom-dong-khoi/', snippet: '' }] : []
+    const run = async (actorHash?: string) => {
+      const row: Record<string, unknown> = { name: 'CGV Vincom Đồng Khởi', website_uri: 'https://www.cgv.vn/default/inside-out-2.html' }
+      await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'entertainment' }, { enabled: true, search, now: new Date('2026-09-27T08:00:00Z'), ...(actorHash ? { actorHash } : {}) })
+      return ((row[COMMERCE_LINKS_KEY] as CommerceLinkRow[] | undefined) ?? []).map(l => l.providerId).sort()
+    }
+    const anonymous = await run()
+    expect(anonymous).toContain('cgv')
+    expect(await run('c'.repeat(24))).toEqual(anonymous)
+  })
+})
