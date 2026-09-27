@@ -5,6 +5,25 @@ Campaign states were read in the ACCESSTRADE publisher portal (pub2.accesstrade.
 
 No secrets are in this file. Campaign ids and the publisher id are public: they appear in every tracked link.
 
+## 0. Release state (27 Sep 2026, evening)
+
+| Item | State |
+|---|---|
+| Code | `feat/affiliate-live` @ `edd6111`, pushed; PR #255 → `rc/web-uat` open (CI running) |
+| Production | `main` @ `842379b` — does **not** contain CCP; no tracked link is served in production yet |
+| Vercel Preview of the branch | built OK (`tappyai-mvp-git-feat-affiliate-live-…vercel.app`, behind Vercel login) |
+| `ACCESSTRADE_PUBLISHER_ID` | set in Vercel Production + Preview |
+| `CCP_ATTRIBUTION_SECRET` | **not set** — owner (automated secret write is refused by policy) |
+| Prod `commerce_providers` rows | still the 20 Sep seed (read 27 Sep): Traveloka / Vietnam Airlines without campaign, TikTok Shop row Tier 1 (the code guard keeps it direct). The 27 Sep migration is **not applied** — owner runs it in the SQL Editor |
+| GA4 `affiliate_click` / Tappy click on a deployed UI | **not verified** — needs a production deployment (GA4 is configured for Production only) |
+
+### Categories
+
+- **Tracked (resolver + live redirect verified; production pending release):** Trip.com, CellphoneS, Klook, Lazada, Vexere, Traveloka, Vietnam Airlines.
+- **Approved but direct:** TikTok Shop (the campaign credits only product-feed links); VinWonders (reached through Klook pages).
+- **Pending:** Shopee, Điện Máy Xanh (also inactive by owner decision), FPT Shop, Agoda.
+- **Out of scope / not applied:** Tiki (removed), Booking.com (CJ not activated), Vietjet / CGV / Ticketbox / GrabFood / ShopeeFood (no programme).
+
 ## 1. How a click becomes attributable
 
 ```
