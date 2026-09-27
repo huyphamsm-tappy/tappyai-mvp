@@ -7998,6 +7998,40 @@
         }
       }
     },
+    "legal.loadFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not load this page. Check your connection or open it in the browser."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tải được trang. Kiểm tra kết nối hoặc mở bằng trình duyệt."
+          }
+        }
+      }
+    },
+    "legal.openInBrowser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in browser"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở bằng trình duyệt"
+          }
+        }
+      }
+    },
     "legal.privacy.heading": {
       "extractionState": "manual",
       "localizations": {
