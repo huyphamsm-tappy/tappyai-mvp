@@ -23,6 +23,7 @@ import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdent
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
 import { entertainmentCapabilityOf, filmTitleMatches, filmTitleOf, foodCapabilityOf, requestedProviderOf, type UserTurns } from './commerceIntent'
 import { cityToIATA } from './travel'
+import { normalizeVN } from '@/lib/ai/intent'
 import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, type FetchTextFn } from './eventSchedule'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
@@ -291,6 +292,15 @@ function placeDomainForSeam(r: Row, ctx: CommerceAttachContext): string | undefi
   return str(r.amenity_type) === 'attraction' ? 'entertainment' : stated
 }
 
+/** Lodging words in the searched query (folded), or a lodging place type on the result. */
+const LODGING_RE = /(?:^|\s)(khach san|hotel|resort|homestay|villa|hostel|nha nghi|motel|can ho dich vu|serviced apartment|lodging)(?:\s|$)/
+function isLodgingSearch(ctx: CommerceAttachContext, r: Row): boolean {
+  const type = str(r.place_type) ?? str(r.type)
+  if (type === 'hotel' || type === 'lodging') return true
+  const q = normalizeVN((str(ctx.query) ?? str(r.query) ?? '').toLowerCase())
+  return LODGING_RE.test(` ${q} `)
+}
+
 function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext, now: Date): Plan | null {
   if (toolName === 'search_products') {
     return {
@@ -348,6 +358,23 @@ function planFor(toolName: CommerceToolName, r: Row, ctx: CommerceAttachContext,
   // eligibility boundary), yet it is exactly what the activity catalogues sell (live UAT 14 Sep
   // 2026: "Tìm hoạt động ở Đà Nẵng trên Klook" reached the seam as 'place' and got nothing).
   const stated = placeDomainForSeam(r, ctx)
+  // UAT4 P1-g (owner): a hotel found by the PLACES tool had no way to book — Commerce Links were
+  // planned for `get_hotel_prices` only, so "khách sạn Đà Nẵng gần biển" got Maps / Website / Gọi.
+  // A lodging search (the places tool files it under the generic 'place' domain) now discovers
+  // each hotel's own Trip.com page by name — the tracked (Accesstrade) provider for book_hotel.
+  // No dates are known here, so the link is the hotel's detail page and the user picks dates on
+  // it (the adapter's undated grammar, labelled as such). Not primary: the card already puts a
+  // booking action before Maps (P1-b); the lead slot stays for a handoff the user asked for.
+  if (toolName === 'search_places' && (stated === 'place' || stated === undefined) && isLodgingSearch(ctx, r)) {
+    return {
+      domain: 'travel',
+      intents: [{ intentType: 'book_hotel', primary: false, subjectDiscovery: true, configurationFor: noConfiguration }],
+      listKey: 'results',
+      subjectOf: row => { const n = stripTrailingCity(cleanOtaTitle(str(row.name) ?? '')); return n || undefined },
+      knownUrlsOf: row => [str(row.website_uri)].filter((u): u is string => !!u),
+      maxRows: 3,
+    }
+  }
   const domainIntents: Record<string, { domain: CommerceDomain; intents: PlannedIntent[] }> = {
     food: { domain: 'food_drink', intents: foodIntents(ctx) },
     entertainment: { domain: 'entertainment', intents: entertainmentIntents(ctx, now) },

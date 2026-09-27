@@ -256,3 +256,24 @@ describe('idempotence on a memoised tool result', () => {
     expect(new Set(links(row).map(l => l.providerId)).size).toBe(first)
   })
 })
+
+// ── UAT4 P1-g (owner, 2026-09-27): a hotel found by the places tool gets a booking link ────────
+describe('UAT4: lodging from search_places is bookable', () => {
+  const tripHit = [{ title: 'M Hotel Da Nang - Trip.com', link: 'https://vn.trip.com/hotels/da-nang-hotel-detail-1234567/m-hotel-da-nang/', snippet: '' }]
+  it('"khách sạn Đà Nẵng gần biển" → the hotel\'s own Trip.com page as book_hotel (not primary)', async () => {
+    const { search, calls } = searchStub({ 'trip.com': tripHit })
+    const row = { name: 'M Hotel Da Nang' }
+    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'place' }, { enabled: true, search, now: NOW, query: 'khách sạn Đà Nẵng gần biển', location: 'Đà Nẵng' })
+    const l = links(row).find(x => x.providerId === 'tripcom')
+    expect(l).toMatchObject({ intentType: 'book_hotel', domain: 'travel' })
+    expect(l!.url).toContain('1234567')
+    expect(calls.some(q => q.includes('M Hotel') && q.includes('site:vn.trip.com/hotels'))).toBe(true)
+  })
+  it('a food search in the same city asks nothing of Trip.com', async () => {
+    const { search, calls } = searchStub({ 'trip.com': tripHit })
+    const row = { name: 'Bún chả cá Bà Lữ' }
+    await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, search, now: NOW, query: 'bún chả cá Đà Nẵng' })
+    expect(links(row).some(x => x.intentType === 'book_hotel')).toBe(false)
+    expect(calls.some(q => q.includes('trip.com'))).toBe(false)
+  })
+})
