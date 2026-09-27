@@ -14,7 +14,11 @@ export interface BudgetForFit { min: number; max: number; type: 'range' | 'under
 
 /** "vừa vặn ngân sách", "rất hợp budget", "nằm trong tầm", "fits your budget". */
 const FIT_RE = /(vừa vặn|vua van|(?:rất |khá |hoàn toàn )?(?:vừa|phù hợp|hợp)\s+(?:với\s+)?(?:ngân sách|ngan sach|budget|tầm giá|tam gia|túi tiền|tui tien)|nằm trong (?:tầm|ngân sách|budget)|nam trong (?:tam|ngan sach|budget)|trong tầm (?:giá|ngân sách|budget)|đúng (?:tầm|ngân sách|budget)|(?:fits?|within|matches|in) (?:your |the )?budget|hợp túi tiền)/iu
-const CLAUSE_DELIM = /[,;()]|:(?!\d)|\s[—–-]\s/g
+/** A negated fit or a restated search — not a claim about a venue (letter-bounded: `\b` fails on Vietnamese). */
+const NOT_A_CLAIM = /(?<!\p{L})(chưa|không|chẳng|chua|khong|no|not|tìm|tim|kiếm|kiem|search|looking)(?!\p{L})/iu
+/** The fit assertion with its connector and addressee: "nên phù hợp ngân sách của bạn". */
+const FIT_PHRASE = new RegExp(String.raw`(?:\s*(?:nên là|nên|và|so|and)\s+)?(?:là\s+)?(?:${FIT_RE.source})(?:\s+(?:với\s+)?(?:ngân sách|ngan sach|budget|tầm giá|tam gia|túi tiền|tui tien))?(?:\s+(?:của|với|cho)\s+(?:bạn|mình))?`, 'iu')
+const CLAUSE_DELIM =/[,;()]|:(?!\d)|\s[—–-]\s/g
 const HAS_LETTER = /\p{L}/u
 
 function clauses(sentence: string): Array<{ start: number; end: number }> {
@@ -66,12 +70,25 @@ export function guardBudgetFitInText(text: string, budget: BudgetForFit | null |
     const cl = clauses(s)
     const parts = cl.map(c => s.slice(c.start, c.end))
     const doomed = new Set<number>()
-    parts.forEach((p, i) => { if (FIT_RE.test(p)) doomed.add(i) })
+    // UAT4 P1-d (golden G3a): a clause that DENIES a fit ("chưa tìm được quán nào … nằm trong
+    // tầm dưới 50k") or merely restates the SEARCH ("Mình tìm các quán … trong tầm giá dưới 50k")
+    // asserts nothing about a venue — those two sentences, and with them the picked café's name,
+    // were deleted as if they were overclaims.
+    parts.forEach((p, i) => { if (FIT_RE.test(p) && !NOT_A_CLAIM.test(p)) doomed.add(i) })
+    // Only the fit phrase is false ("giá tham khảo dưới 100k nên phù hợp ngân sách của bạn" —
+    // the band is a fact, "fits" is the claim): cut the phrase and keep the rest of the clause
+    // when anything meaningful remains; the whole clause goes only when nothing would.
+    const trimmed = new Map<number, string>()
+    for (const i of doomed) {
+      const rest = parts[i].replace(FIT_PHRASE, '').replace(/\s{2,}/g, ' ')
+      if (rest.trim().split(/\s+/).filter(w => HAS_LETTER.test(w)).length >= 3) trimmed.set(i, rest)
+    }
     let kept = ''
     let lastEnd = 0
     cl.forEach((c, i) => {
       const delim = s.slice(lastEnd, c.start)
-      if (!doomed.has(i)) kept += (kept || !/^\s*[,;:—–-]/.test(delim) ? delim : '') + s.slice(c.start, c.end)
+      const body = trimmed.get(i) ?? (doomed.has(i) ? null : s.slice(c.start, c.end))
+      if (body !== null) kept += (kept || !/^\s*[,;:—–-]/.test(delim) ? delim : '') + body
       lastEnd = c.end
     })
     kept = kept.replace(/\s*([,;:])\s*(?=[.!?]|$)/g, '').replace(/([,;:])\s*[,;:]/g, '$1').replace(/\(\s*\)/g, '').replace(/[ \t]{2,}/g, ' ')

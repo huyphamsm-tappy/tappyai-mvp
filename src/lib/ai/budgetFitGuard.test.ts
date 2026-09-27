@@ -67,3 +67,23 @@ describe('a fit phrase about an UNPRICED venue is unsupported', () => {
     expect(guardBudgetFitInText(t, UNDER_100K, { unpricedNames: unpriced }).text).not.toContain('hợp túi tiền')
   })
 })
+
+// ── UAT4 P1-d (2026-09-27): golden G3a lost the picked café's name ────────────────────────────
+import { readFileSync as _read } from 'node:fs'
+describe('UAT4 G3a: cut only the false fit, never the pick', () => {
+  const g3a = JSON.parse(_read('docs/uat/evidence/golden/uat4-golden/G3a.json', 'utf8'))
+  const raw = (g3a.turns[0].preGuard as string).replace(/\[(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/\1\]/g, '')
+  const out = guardBudgetFitInText(raw, { min: 0, max: 50_000, type: 'under' }).text
+
+  it('the picked café keeps its sentence and its name', () => {
+    expect(out).toContain('**Little Cam Saigon (Trần Quốc Thảo)**')
+    expect(out).toContain('giá tham khảo dưới 100k')
+  })
+  it('only the false fit phrase goes', () => {
+    expect(out).not.toMatch(/phù hợp ngân sách của bạn/)
+  })
+  it('the honest "none confirmed under 50k" sentence and the search lead-in stay', () => {
+    expect(out).toContain('chưa tìm được quán nào được xác nhận nằm trong tầm dưới 50k')
+    expect(out).toContain('Mình tìm các quán cà phê yên tĩnh ở Quận 3 trong tầm giá dưới 50k')
+  })
+})

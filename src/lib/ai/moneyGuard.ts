@@ -385,7 +385,11 @@ export function sentenceSpans(text: string): Array<[number, number]> {
     // Splitting on it cut "7.99–10.99M" in half and left "99–10.99M" behind as
     // a brand-new claim — caught by the C3-B.9 fixtures.
     const next = text[i + 1]
-    if (next !== undefined && !/\s/.test(next)) continue
+    // UAT4 P1-d: two streamed steps glue as "…cho bạn nhé.Mình chọn **X**…" — no space. A
+    // lowercase letter, the stop, then an uppercase letter is a sentence end ("TP.HCM" and
+    // "7.99" are not: an uppercase or a digit precedes the stop).
+    const glued = next !== undefined && /\p{Lu}/u.test(next) && i > 0 && /\p{Ll}/u.test(text[i - 1])
+    if (next !== undefined && !/\s/.test(next) && !glued) continue
     bounds.add(i + 1)
   }
   const sorted = [...bounds].sort((x, y) => x - y)
