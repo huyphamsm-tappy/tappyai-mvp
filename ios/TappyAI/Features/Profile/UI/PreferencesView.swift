@@ -351,8 +351,7 @@ struct PreferencesView: View {
                 dietary = s.dietaryRestrictions ?? ""
             }
             if let session = try? await deps.supabase.auth.session,
-               let meta = session.user.userMetadata,
-               let gJson = meta["gender"],
+               let gJson = session.user.userMetadata["gender"],
                case .string(let g) = gJson,
                g == "male" || g == "female" {
                 gender = g
