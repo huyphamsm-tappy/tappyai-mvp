@@ -1,4 +1,4 @@
-import { guardSnippetPricesInText } from 'D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/g1-place-guard/src/lib/ai/snippetPriceGuard'
+import { guardSnippetPricesInText } from '../../../../../src/lib/ai/snippetPriceGuard'
 const user = 'Mình đi Đà Nẵng 2 ngày 1 đêm, 2 người, ngân sách 20 triệu'
 const cands = [
   '**Tổng ước tính: ~8.500.000 VND** cho 2 người, còn dư khoảng 11.500.000 VND cho ăn uống, mua sắm, hoặc nâng cấp.',
