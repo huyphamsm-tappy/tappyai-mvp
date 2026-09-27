@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 5829,
+  "evidenceId": "466b208a-f1c4-48c2-9abb-ea93e02addcb",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin về khả năng đặt trước online cho Hyan Spa từ kết quả tìm kiếm. Thường các spa ở Quận 1 có thể đặt trước qua:\n\n• **Gọi trực tiếp** — nhanh nhất, hỏi luôn giá massage chân và xem còn slot không\n• **Facebook/Zalo** — nhiều spa có fanpage hoặc nhóm để đặt lịch\n• **Google Maps** — xem có nút \"Đặt lịch\" hay không\n\nBạn có thể vào Google Maps tìm \"Hyan Spa\" hoặc gọi số điện thoại trên Maps để xác nhận giá và đặt trước.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 với giá dưới 300k cho bạn nhé.\n\nMình gợi ý **Hyan Spa** cho bạn — cách bạn chỉ 0.9km, đánh giá 5⭐ từ 103 khách hàng, mở 10:00–21:00. Spa chuyên massage chân, body và gội đầu, vị trí trên Nguyễn Thị Minh Khai rất tiện. \n\nCả hai spa này đều nằm trong khu vực gần bạn. Tuy nhiên, mình chưa tìm thấy giá cụ thể massage chân dưới 300k trên kết quả tìm kiếm — bạn nên gọi hoặc ghé trực tiếp để hỏi giá dịch vụ massage chân nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân cụ thể bao nhiêu?|Spa nào mở sớm nhất?|Có dịch vụ khác ngoài massage chân?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin về khả năng đặt trước online cho Hyan Spa từ kết quả tìm kiếm. Thường các spa ở Quận 1 có thể đặt trước qua:\n\n• **Gọi trực tiếp** — nhanh nhất, hỏi luôn giá massage chân và xem còn slot không\n• **Facebook/Zalo** — nhiều spa có fanpage hoặc nhóm để đặt lịch\n• **Google Maps** — xem có nút \"Đặt lịch\" hay không\n\nBạn có thể vào Google Maps tìm \"Hyan Spa\" hoặc gọi số điện thoại trên Maps để xác nhận giá và đặt trước."
+    }
+  ]
+}

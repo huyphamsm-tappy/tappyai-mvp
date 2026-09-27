@@ -1,0 +1,172 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 13895,
+  "evidenceId": "5e2fabce-57da-42a8-9afb-b93a59e22a04",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa dưới 300k",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Norah Spa",
+      "rating": 4.9,
+      "count": 4804,
+      "hours": "09:30–23:00",
+      "distance_km": 0.9,
+      "address": "114 Lê Thị Hồng Gấm, Street, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3177,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 200,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "HANA SPA",
+      "rating": 4.8,
+      "count": 124,
+      "hours": "09:00–23:00",
+      "distance_km": 0.7,
+      "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE DUBAI LUXURY",
+      "rating": 4.6,
+      "count": 609,
+      "hours": "09:00–03:00",
+      "distance_km": 0.9,
+      "address": "41 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+      "rating": 4.5,
+      "count": 20,
+      "hours": "10:00–00:00",
+      "distance_km": 0.9,
+      "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Norah Spa",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 4804,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "09:30–23:00"
+      }
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3177,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3550,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa/massage dưới 300k gần bạn ở Quận 1 ngay nhé!\n\nMình chọn **Norah Spa** cho bạn! 🎯\n\nNorah Spa là lựa chọn tốt nhất vì:\n- **Massage Cổ Phong Q1** (1.3km) — chuyên massage kiểu Trung Quốc, 4.9⭐ với 3.177 đánh giá\n\n*Gợi ý: Bạn nên gọi hoặc vào website Norah Spa để hỏi giá cụ thể các gói massage dưới 300k nhé!*[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Norah Spa\",\"type\":\"website\",\"url\":\"http://www.norahspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Norah Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5986186213544795615\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem review trên Maps|Tìm spa khác gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2. **Bạn ưu tiên gì?** (chất lượng cao, giá rẻ, gần nhất, v.v.)\n\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2.\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm! 😊"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa/massage dưới 300k gần bạn ở Quận 1 ngay nhé!\n\nMình chọn **Norah Spa** cho bạn! 🎯\n\nNorah Spa là lựa chọn tốt nhất vì:\n- **Massage Cổ Phong Q1** (1.3km) — chuyên massage kiểu Trung Quốc, 4.9⭐ với 3.177 đánh giá\n\n*Gợi ý: Bạn nên gọi hoặc vào website Norah Spa để hỏi giá cụ thể các gói massage dưới 300k nhé!*[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Norah Spa\",\"type\":\"website\",\"url\":\"http://www.norahspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Norah Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5986186213544795615\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem review trên Maps|Tìm spa khác gần đây[/FOLLOWUPS]"
+    }
+  ]
+}

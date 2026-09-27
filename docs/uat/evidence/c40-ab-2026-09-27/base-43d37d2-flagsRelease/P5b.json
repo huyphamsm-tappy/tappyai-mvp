@@ -1,0 +1,172 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 14822,
+  "evidenceId": "6f2e1978-afa5-486a-b4bc-46e6e93dcdbf",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa dưới 300k",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3179,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "rating": 4.9,
+      "count": 948,
+      "hours": "09:00–22:00",
+      "distance_km": 1,
+      "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bloom Spa Quận 1 - Massage Body & Gội Đầu Dưỡng Sinh",
+      "rating": 4.9,
+      "count": 539,
+      "hours": "09:00–22:00",
+      "distance_km": 1.1,
+      "address": "165/48 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "HANA SPA",
+      "rating": 4.8,
+      "count": 124,
+      "hours": "09:00–23:00",
+      "distance_km": 0.7,
+      "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE DUBAI LUXURY",
+      "rating": 4.6,
+      "count": 609,
+      "hours": "09:00–03:00",
+      "distance_km": 0.9,
+      "address": "41 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa Quận 1",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 1.3,
+      "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3179,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 948,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "09:00–22:00"
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3550,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa/massage dưới 300k gần bạn ở Quận 1 ngay nhé!\n\nMình chọn **Massage Cổ Phong Q1** cho bạn! 🎯\n\n Cách bạn chỉ 1.3km, mở đến 22:30 nên rất tiện. Chuyên massage theo phong cách Trung Hoa truyền thống, phù hợp với nhu cầu thư giãn của bạn.\n\n**Ngoài ra còn 2 lựa chọn khác:**\n- **Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa** (4.9⭐, 948 đánh giá) — gần hơn (1km), nếu bạn ưu tiên khoảng cách\n\n*Gợi ý dựa trên đánh giá thực tế từ Google Maps và vị trí gần bạn. Giá cụ thể bạn có thể gọi hoặc xem trên website để chắc chắn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem các spa khác gần đây|Massage loại nào bạn thích|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n• **Bạn muốn ở đâu?** (gần Quận 1 hay khu vực khác?)\n• **Ngan sách khoảng bao nhiêu?** (để mình tìm phù hợp)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn! 😊"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa/massage dưới 300k gần bạn ở Quận 1 ngay nhé!\n\nMình chọn **Massage Cổ Phong Q1** cho bạn! 🎯\n\n Cách bạn chỉ 1.3km, mở đến 22:30 nên rất tiện. Chuyên massage theo phong cách Trung Hoa truyền thống, phù hợp với nhu cầu thư giãn của bạn.\n\n**Ngoài ra còn 2 lựa chọn khác:**\n- **Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa** (4.9⭐, 948 đánh giá) — gần hơn (1km), nếu bạn ưu tiên khoảng cách\n\n*Gợi ý dựa trên đánh giá thực tế từ Google Maps và vị trí gần bạn. Giá cụ thể bạn có thể gọi hoặc xem trên website để chắc chắn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá|Xem các spa khác gần đây|Massage loại nào bạn thích|[/FOLLOWUPS]"
+    }
+  ]
+}

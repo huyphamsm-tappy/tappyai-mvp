@@ -1,0 +1,1235 @@
+{
+  "id": "L1",
+  "group": "travel-local-tips",
+  "criteria": [
+    "Gives a complete [TAPPY_PLAN] with real places from tools",
+    "Local tips (UAT3 P2, 2026-09-27): every tip is tied to a stop in the plan (basis tool) or flagged as general knowledge; no invented venue, price, hour or showtime in a tip; no tips at all is acceptable when nothing supports one"
+  ],
+  "turns": [
+    {
+      "user": "Lên kế hoạch đi Quy Nhơn 3 ngày 2 đêm cho 2 người, budget 8 triệu, thích ăn đồ địa phương",
+      "status": 200,
+      "elapsedMs": 46530,
+      "usage": {
+        "promptTokens": 4513,
+        "completionTokens": 4492
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn địa phương Quy Nhơn ngon",
+            "location": "Quy Nhơn",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Quy Nhơn"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Quy Nhơn",
+            "passengers": 2
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "address": "84-86 Đống Đa, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 128,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "06:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "address": "23 Phan Văn Lân, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 79,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phố ẩm thực Quy Nhơn",
+              "address": "07 Ngô Văn Sở, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 1134,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "14:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+              "address": "15 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 616,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đặc Sản Quy Nhơn: Làm Quà",
+              "address": "03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 90,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng ẩm thực đồng quê",
+                "Cửa hàng bán thực phẩm đặc sản"
+              ],
+              "hours": "07:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+              "address": "4 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 144,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "16:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản Tươi sống Ông Minh",
+              "address": "29 Diên Hồng, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 2710,
+              "price": "100-500 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phố ẩm thực Phan Bội Châu",
+              "address": "Đường Phan Bội Châu, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 92,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng ăn nhanh"
+              ],
+              "hours": "00:00–11:55, 17:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:13.78440,109.22292",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBw_n9mX6CGcN298qt0lma82A4JE_hAie-mRuYplT_4hkWwcLMFPNkGVFedfH0MPmSJ0d4iiBRc44iXU1y3aHXC5iXPkUbvQnFhR4DJb37ZM92hZRpDODKjgAEYxaRxYFh4SxcxHyZ-yc",
+                "address": "84-86 Đống Đa, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 128,
+                "openingHours": "06:00–22:00",
+                "openNow": false,
+                "phone": "+84 906 400 545",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–22:00",
+                  "Thứ Hai": "06:00–22:00",
+                  "Thứ Ba": "06:00–22:00",
+                  "Thứ Tư": "06:00–22:00",
+                  "Thứ Năm": "06:00–22:00",
+                  "Thứ Sáu": "06:00–22:00",
+                  "Thứ Bảy": "06:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11628986471622613412",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=N%E1%BA%ABu%20Cu%E1%BB%91n%20-%20Qu%C3%A1n%20%C4%82n%20Ngon%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://naucuon.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906400545",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.78167,109.22588",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktWBNZ03CJ-eUZEeooibP2R41fJAC4XR0PIOMl3DTDF0WO59YTtum82ta60gePjB3ju4v2aeZ9sZiWoxDRk3l-GJAFbi-q0H4TEfUqTR8tIEQhFd4z3H0R-ObVfjw4CWCBzjT0Yo3prAxG",
+                "address": "23 Phan Văn Lân, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 79,
+                "openingHours": "06:00–21:30",
+                "openNow": false,
+                "phone": "+84 908 319 357",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–21:30",
+                  "Thứ Hai": "06:00–21:30",
+                  "Thứ Ba": "06:00–21:30",
+                  "Thứ Tư": "06:00–21:30",
+                  "Thứ Năm": "06:00–21:30",
+                  "Thứ Sáu": "06:00–21:30",
+                  "Thứ Bảy": "06:00–21:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13226199828310724599",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BA%B7c%20S%E1%BA%A3n%20B%C3%ACnh%20%C4%90%E1%BB%8Bnh%20Quy%20Nh%C6%A1n%20%C3%94ng%20B%E1%BA%A3y%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dacsanbinhdinhquynhon.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908319357",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.76452,109.22425",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phố ẩm thực Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkcv6q64L1nm-QQwEISK12uWL48NuFodkHs_Wnu9OHwjiL80vmsT8gDOSXs_B17LOsNbt8jr_pwzNsjyXcAFSAnQbmQcUoj_YuPn14oLRdY_8YTg6EpKjO0Vw2my2Hr1fCdOMfR",
+                "address": "07 Ngô Văn Sở, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 1134,
+                "openingHours": "14:00–00:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "14:00–00:00",
+                  "Thứ Hai": "14:00–00:00",
+                  "Thứ Ba": "14:00–00:00",
+                  "Thứ Tư": "14:00–00:00",
+                  "Thứ Năm": "14:00–00:00",
+                  "Thứ Sáu": "14:00–00:00",
+                  "Thứ Bảy": "14:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13913696063932798674",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%91%20%E1%BA%A9m%20th%E1%BB%B1c%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://quynhontourist.vn/pho-am-thuc-quy-nhon/",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.75718,109.21504",
+                "domain": "food",
+                "kind": "place",
+                "name": "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-NIiC7mK66AEeu-dAwSCqEmXAlT-6LpLB1YblLVCFNAy0GQ1rlHzlNrLas4Qqag0Ws8zBlEQt8qvF61EFoEUhueVtKYlo2-wLIfKsH8hJYplQyGuSNM74vSQSKYyRJbAJIPvmQQ",
+                "address": "15 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 616,
+                "openingHours": "09:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 447 081",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:00",
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12705741387033972281",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%81%20NG%E1%BB%AA%20%C4%90%E1%BA%A0I%20D%C6%AF%C6%A0NG%20CH%E1%BB%8A%20THU%E1%BA%ACN%20QUY%20NH%C6%A0N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://cangudaiduongquynhon.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905447081",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.76541,109.21665",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đặc Sản Quy Nhơn: Làm Quà",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2axq8dbBpQ6_nH6T9iENQ6EmdU_zOtWF1XzBzqjwSlBJ-b6T8ecv--68w83hIc94N-7ruTF6XEFCFWxlyme0-IqLMJXcqbsiNYyelWXftVbgb_QP8IBA-EY7TosfIxmM2klvQ38Jndgvt",
+                "address": "03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 90,
+                "openingHours": "07:00–20:30",
+                "openNow": false,
+                "phone": "+84 977 006 068",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–20:30",
+                  "Thứ Hai": "07:00–20:30",
+                  "Thứ Ba": "07:00–20:30",
+                  "Thứ Tư": "07:00–20:30",
+                  "Thứ Năm": "07:00–20:30",
+                  "Thứ Sáu": "07:00–20:30",
+                  "Thứ Bảy": "07:00–20:30"
+                },
+                "categories": [
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Cửa hàng bán thực phẩm đặc sản"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18258014560512854841",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BA%B7c%20S%E1%BA%A3n%20Quy%20Nh%C6%A1n%3A%20L%C3%A0m%20Qu%C3%A0%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@hue.thanh06?_r=1&_t=ZS-984nMiqMRRC",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977006068",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.75745,109.21510",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBo4Kmw2BVy33PcC7ddILDzrkTUPHc6iod8xDu31f3ujhJUrlx4fPH0L6nFz9uDKarMVKiwrlSsHYFM7zsUHhUbUTNBhul-Wp_O9esh7qpF_sV5CHIljDuKiz0f7VxovVBiZlA",
+                "address": "4 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 144,
+                "openingHours": "16:00–02:00",
+                "openNow": true,
+                "phone": "+84 766 420 777",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–02:00",
+                  "Thứ Hai": "16:00–02:00",
+                  "Thứ Ba": "16:00–02:00",
+                  "Thứ Tư": "16:00–02:00",
+                  "Thứ Năm": "16:00–02:00",
+                  "Thứ Sáu": "16:00–02:00",
+                  "Thứ Bảy": "16:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14813187015018967574",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=T%E1%BB%A7%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20%C4%90%C3%AAm%20%7C%20Qu%C3%A1n%20nh%E1%BA%ADu%20t%E1%BA%A1i%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61560652328312&mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84766420777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.77260,109.22083",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản Tươi sống Ông Minh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkxwT5fPQyMi8a0H-WhNNSAxkUsZBwptkzfhaekQ1DwverSmYJx0rWZQgNzuXc18lB7NmySMBBkqJ_9eFhPPS9DXdQGj6ueOVSKANgb8d9glqht8Yt1NcN7-Lqmf6jb3sJxXaFjhdpjxa4H",
+                "address": "29 Diên Hồng, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 2710,
+                "openingHours": "10:00–01:00",
+                "openNow": true,
+                "phone": "+84 335 549 959",
+                "priceRangeText": "100-500 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–01:00",
+                  "Thứ Hai": "10:00–01:00",
+                  "Thứ Ba": "10:00–01:00",
+                  "Thứ Tư": "10:00–01:00",
+                  "Thứ Năm": "10:00–01:00",
+                  "Thứ Sáu": "10:00–01:00",
+                  "Thứ Bảy": "10:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=23206850385491721",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20T%C6%B0%C6%A1i%20s%E1%BB%91ng%20%C3%94ng%20Minh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84335549959",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.77368,109.23533",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phố ẩm thực Phan Bội Châu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2wXe-GEW7tyW2M_d7bnXxOacyF4urIeH70k5mhA6dbPGnwKkQYyhJHuazyrwZRQbzslLDTG07mnfVtDP84_QRc6StcxfGXGXounjTS6R_pFPG7Sl_8EnhSFdBHuZZYBd2BSNJ62qL7_ze",
+                "address": "Đường Phan Bội Châu, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 92,
+                "openingHours": "00:00–11:55, 17:00–00:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "00:00–11:55, 17:00–00:00",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "17:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng ăn nhanh"
+                ],
+                "rank": 7,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5487226891486287815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%91%20%E1%BA%A9m%20th%E1%BB%B1c%20Phan%20B%E1%BB%99i%20Ch%C3%A2u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20%C4%91%E1%BB%8Ba%20ph%C6%B0%C6%A1ng%20Quy%20Nh%C6%A1n%20ngon%20Quy%20Nh%C6%A1n",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "address": "23 Phan Văn Lân, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 79,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "79 reviews"
+              ]
+            },
+            {
+              "name": "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "address": "84-86 Đống Đa, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 128,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "06:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phố ẩm thực Quy Nhơn",
+              "address": "07 Ngô Văn Sở, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 1134,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "14:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+              "address": "15 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 616,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đặc Sản Quy Nhơn: Làm Quà",
+              "address": "03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 90,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng ẩm thực đồng quê",
+                "Cửa hàng bán thực phẩm đặc sản"
+              ],
+              "hours": "07:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+              "address": "4 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 144,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "16:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản Tươi sống Ông Minh",
+              "address": "29 Diên Hồng, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 2710,
+              "price": "100-500 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–01:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phố ẩm thực Phan Bội Châu",
+              "address": "Đường Phan Bội Châu, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 92,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng ăn nhanh"
+              ],
+              "hours": "00:00–11:55, 17:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:13.78167,109.22588",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWktWBNZ03CJ-eUZEeooibP2R41fJAC4XR0PIOMl3DTDF0WO59YTtum82ta60gePjB3ju4v2aeZ9sZiWoxDRk3l-GJAFbi-q0H4TEfUqTR8tIEQhFd4z3H0R-ObVfjw4CWCBzjT0Yo3prAxG",
+                "address": "23 Phan Văn Lân, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 79,
+                "openingHours": "06:00–21:30",
+                "openNow": false,
+                "phone": "+84 908 319 357",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–21:30",
+                  "Thứ Hai": "06:00–21:30",
+                  "Thứ Ba": "06:00–21:30",
+                  "Thứ Tư": "06:00–21:30",
+                  "Thứ Năm": "06:00–21:30",
+                  "Thứ Sáu": "06:00–21:30",
+                  "Thứ Bảy": "06:00–21:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "79 reviews",
+                    "params": {
+                      "count": 79
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13226199828310724599",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BA%B7c%20S%E1%BA%A3n%20B%C3%ACnh%20%C4%90%E1%BB%8Bnh%20Quy%20Nh%C6%A1n%20%C3%94ng%20B%E1%BA%A3y%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dacsanbinhdinhquynhon.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908319357",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.78440,109.22292",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBw_n9mX6CGcN298qt0lma82A4JE_hAie-mRuYplT_4hkWwcLMFPNkGVFedfH0MPmSJ0d4iiBRc44iXU1y3aHXC5iXPkUbvQnFhR4DJb37ZM92hZRpDODKjgAEYxaRxYFh4SxcxHyZ-yc",
+                "address": "84-86 Đống Đa, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 128,
+                "openingHours": "06:00–22:00",
+                "openNow": false,
+                "phone": "+84 906 400 545",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–22:00",
+                  "Thứ Hai": "06:00–22:00",
+                  "Thứ Ba": "06:00–22:00",
+                  "Thứ Tư": "06:00–22:00",
+                  "Thứ Năm": "06:00–22:00",
+                  "Thứ Sáu": "06:00–22:00",
+                  "Thứ Bảy": "06:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11628986471622613412",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=N%E1%BA%ABu%20Cu%E1%BB%91n%20-%20Qu%C3%A1n%20%C4%82n%20Ngon%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://naucuon.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906400545",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.76452,109.22425",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phố ẩm thực Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkcv6q64L1nm-QQwEISK12uWL48NuFodkHs_Wnu9OHwjiL80vmsT8gDOSXs_B17LOsNbt8jr_pwzNsjyXcAFSAnQbmQcUoj_YuPn14oLRdY_8YTg6EpKjO0Vw2my2Hr1fCdOMfR",
+                "address": "07 Ngô Văn Sở, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 1134,
+                "openingHours": "14:00–00:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "14:00–00:00",
+                  "Thứ Hai": "14:00–00:00",
+                  "Thứ Ba": "14:00–00:00",
+                  "Thứ Tư": "14:00–00:00",
+                  "Thứ Năm": "14:00–00:00",
+                  "Thứ Sáu": "14:00–00:00",
+                  "Thứ Bảy": "14:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13913696063932798674",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%91%20%E1%BA%A9m%20th%E1%BB%B1c%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://quynhontourist.vn/pho-am-thuc-quy-nhon/",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.75718,109.21504",
+                "domain": "food",
+                "kind": "place",
+                "name": "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl-NIiC7mK66AEeu-dAwSCqEmXAlT-6LpLB1YblLVCFNAy0GQ1rlHzlNrLas4Qqag0Ws8zBlEQt8qvF61EFoEUhueVtKYlo2-wLIfKsH8hJYplQyGuSNM74vSQSKYyRJbAJIPvmQQ",
+                "address": "15 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 616,
+                "openingHours": "09:00–23:00",
+                "openNow": false,
+                "phone": "+84 905 447 081",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:00",
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12705741387033972281",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%81%20NG%E1%BB%AA%20%C4%90%E1%BA%A0I%20D%C6%AF%C6%A0NG%20CH%E1%BB%8A%20THU%E1%BA%ACN%20QUY%20NH%C6%A0N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://cangudaiduongquynhon.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905447081",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.76541,109.21665",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đặc Sản Quy Nhơn: Làm Quà",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn2axq8dbBpQ6_nH6T9iENQ6EmdU_zOtWF1XzBzqjwSlBJ-b6T8ecv--68w83hIc94N-7ruTF6XEFCFWxlyme0-IqLMJXcqbsiNYyelWXftVbgb_QP8IBA-EY7TosfIxmM2klvQ38Jndgvt",
+                "address": "03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 90,
+                "openingHours": "07:00–20:30",
+                "openNow": false,
+                "phone": "+84 977 006 068",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–20:30",
+                  "Thứ Hai": "07:00–20:30",
+                  "Thứ Ba": "07:00–20:30",
+                  "Thứ Tư": "07:00–20:30",
+                  "Thứ Năm": "07:00–20:30",
+                  "Thứ Sáu": "07:00–20:30",
+                  "Thứ Bảy": "07:00–20:30"
+                },
+                "categories": [
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Cửa hàng bán thực phẩm đặc sản"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18258014560512854841",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BA%B7c%20S%E1%BA%A3n%20Quy%20Nh%C6%A1n%3A%20L%C3%A0m%20Qu%C3%A0%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@hue.thanh06?_r=1&_t=ZS-984nMiqMRRC",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977006068",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.75745,109.21510",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmBo4Kmw2BVy33PcC7ddILDzrkTUPHc6iod8xDu31f3ujhJUrlx4fPH0L6nFz9uDKarMVKiwrlSsHYFM7zsUHhUbUTNBhul-Wp_O9esh7qpF_sV5CHIljDuKiz0f7VxovVBiZlA",
+                "address": "4 Bùi Hữu Nghĩa, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 144,
+                "openingHours": "16:00–02:00",
+                "openNow": true,
+                "phone": "+84 766 420 777",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–02:00",
+                  "Thứ Hai": "16:00–02:00",
+                  "Thứ Ba": "16:00–02:00",
+                  "Thứ Tư": "16:00–02:00",
+                  "Thứ Năm": "16:00–02:00",
+                  "Thứ Sáu": "16:00–02:00",
+                  "Thứ Bảy": "16:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14813187015018967574",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=T%E1%BB%A7%20-%20Qu%C3%A1n%20Nh%E1%BA%ADu%20%C4%90%C3%AAm%20%7C%20Qu%C3%A1n%20nh%E1%BA%ADu%20t%E1%BA%A1i%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61560652328312&mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84766420777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.77260,109.22083",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản Tươi sống Ông Minh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkxwT5fPQyMi8a0H-WhNNSAxkUsZBwptkzfhaekQ1DwverSmYJx0rWZQgNzuXc18lB7NmySMBBkqJ_9eFhPPS9DXdQGj6ueOVSKANgb8d9glqht8Yt1NcN7-Lqmf6jb3sJxXaFjhdpjxa4H",
+                "address": "29 Diên Hồng, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 2710,
+                "openingHours": "10:00–01:00",
+                "openNow": true,
+                "phone": "+84 335 549 959",
+                "priceRangeText": "100-500 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–01:00",
+                  "Thứ Hai": "10:00–01:00",
+                  "Thứ Ba": "10:00–01:00",
+                  "Thứ Tư": "10:00–01:00",
+                  "Thứ Năm": "10:00–01:00",
+                  "Thứ Sáu": "10:00–01:00",
+                  "Thứ Bảy": "10:00–01:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@gioivietbep/video/7317902983310609666",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=23206850385491721",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84335549959",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20T%C6%B0%C6%A1i%20s%E1%BB%91ng%20%C3%94ng%20Minh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:13.77368,109.23533",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phố ẩm thực Phan Bội Châu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk2wXe-GEW7tyW2M_d7bnXxOacyF4urIeH70k5mhA6dbPGnwKkQYyhJHuazyrwZRQbzslLDTG07mnfVtDP84_QRc6StcxfGXGXounjTS6R_pFPG7Sl_8EnhSFdBHuZZYBd2BSNJ62qL7_ze",
+                "address": "Đường Phan Bội Châu, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 92,
+                "openingHours": "00:00–11:55, 17:00–00:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "00:00–11:55, 17:00–00:00",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "17:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng ăn nhanh"
+                ],
+                "rank": 7,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5487226891486287815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%E1%BB%91%20%E1%BA%A9m%20th%E1%BB%B1c%20Phan%20B%E1%BB%99i%20Ch%C3%A2u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20%C4%91%E1%BB%8Ba%20ph%C6%B0%C6%A1ng%20Quy%20Nh%C6%A1n%20ngon%20Quy%20Nh%C6%A1n",
+            "picked": [
+              "place:osm:13.78167,109.22588",
+              "place:osm:13.77260,109.22083"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:13.78167,109.22588",
+            "place:osm:13.77260,109.22083"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+          "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+          "Phố ẩm thực Quy Nhơn",
+          "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+          "Đặc Sản Quy Nhơn: Làm Quà",
+          "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+          "Hải sản Tươi sống Ông Minh",
+          "Phố ẩm thực Phan Bội Châu"
+        ],
+        [
+          "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+          "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+          "Phố ẩm thực Quy Nhơn",
+          "CÁ NGỪ ĐẠI DƯƠNG CHỊ THUẬN QUY NHƠN",
+          "Đặc Sản Quy Nhơn: Làm Quà",
+          "Tủ - Quán Nhậu Đêm | Quán nhậu tại Quy Nhơn",
+          "Hải sản Tươi sống Ông Minh",
+          "Phố ẩm thực Phan Bội Châu"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Quy Nhơn cho 2 người với ngân sách 8 triệu, tập trung vào ăn đồ địa phương.\n\nMình đang tìm các quán ăn địa phương ngon ở Quy Nhơn để xây dựng kế hoạch chi tiết cho bạn.\n\nTuyệt vời! Bây giờ mình sẽ lập kế hoạch chi tiết cho 3 ngày 2 đêm của bạn.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"3 ngày 2 đêm ở Quy Nhơn - Ăn đặc sản địa phương\",\"people\":2,\"budget_total\":\"8.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối (Đến Quy Nhơn)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Quy Nhơn\",\"description\":\"Máy bay từ TP.HCM đến sân bay Phù Cát (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3\",\"place_id\":\"\"},{\"time\":\"17:30\",\"emoji\":\"🚕\",\"category\":\"transport\",\"name\":\"Xe từ sân bay → trung tâm Quy Nhơn\",\"description\":\"Grab/taxi từ sân bay Phù Cát đến trung tâm (khoảng 30 km, 45 phút)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát → Quy Nhơn\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"19:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Đặc Sản Bình Định Quy Nhơn Ông Bảy\",\"description\":\"Quán ăn đặc sản Bình Định với 4.8⭐ (79 đánh giá), mở 6h-21h30, giá 1-100k/món\",\"price\":\"chưa có giá\",\"address\":\"23 Phan Văn Lân, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=13226199828310724599\",\"booking_link\":\"https://zalo.me/0908319357\",\"place_id\":\"ChIJK2KLuyttbzER9w_LHqvmjLc\"}]},{\"label\":\"Ngày 2 - Sáng & Trưa\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cơm Cảng 9 gốc nằm trong chợ Cảng\",\"description\":\"Quán cơm địa phương nổi tiếng, 4.5⭐ (102 đánh giá), mở 22h-5h, giá 1-100k/món\",\"price\":\"~100.000 VND (2 người)\",\"address\":\"Chợ Cảng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=6859337338153456606\",\"booking_link\":\"\",\"place_id\":\"ChIJ-wc49gBtbzER3lMAtVhnMV8\"},{\"time\":\"10:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi biển Quy Nhơn\",\"description\":\"Thư giãn trên bãi biển, chụp ảnh, tắm biển (thời tiết hôm nay 26°C, mưa nhẹ, nên mang áo khoác)\",\"price\":\"Miễn phí\",\"address\":\"Bãi biển Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/bai+bien+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"12:30\",\"emoji\":\"🦞\",\"category\":\"food\",\"name\":\"Hải sản Tươi sống Ông Minh\",\"description\":\"Nhà hàng hải sản nổi tiếng với 4.6⭐ (2.710 đánh giá), mở 10h-1h\",\"price\":\"chưa có giá\",\"address\":\"29 Diên Hồng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=23206850385491721\",\"booking_link\":\"\",\"place_id\":\"ChIJj2pTUmBtbzERCTeV6YFyUgA\"}]},{\"label\":\"Ngày 2 - Chiều tối\",\"items\":[{\"time\":\"17:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Khách sạn 3 sao ở Quy Nhơn\",\"description\":\"\",\"price\":\"chưa có giá\",\"address\":\"Trung tâm Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/khach+san+quy+nhon\",\"booking_link\":\"https://www.booking.com/searchresults.vi.html?ss=Quy+Nhon\",\"place_id\":\"\"},{\"time\":\"19:30\",\"emoji\":\"🍲\",\"category\":\"food\",\"name\":\"Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn\",\"description\":\"Quán ăn Việt Nam với 4.7⭐ (128 đánh giá), mở 6h-22h, giá 1-400k/món, đặc sản cuốn\",\"price\":\"chưa có giá\",\"address\":\"84-86 Đống Đa, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=11628986471622613412\",\"booking_link\":\"http://zalo.me/0906400545\",\"place_id\":\"ChIJX7c-GwBtbzERpJnjOpV1YqE\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Phố ẩm thực Phan Bội Châu\",\"description\":\"Phố ẩm thực với 4.5⭐ (92 đánh giá), mở 17h-00h, giá 1-100k/món, nhiều lựa chọn địa phương\",\"price\":\"chưa có giá\",\"address\":\"Đường Phan Bội Châu, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=5487226891486287815\",\"booking_link\":\"\",\"place_id\":\"ChIJyS56ofhtbzERx9cCBcmLJkw\"},{\"time\":\"11:00\",\"emoji\":\"🏛️\",\"category\":\"entertainment\",\"name\":\"Tham quan Tháp Nhạn & Thành cổ Quy Nhơn\",\"description\":\"Khám phá di tích lịch sử, tháp Nhạn cổ kính, thành cổ (miễn phí hoặc vé nhỏ)\",\"price\":\"chưa có giá\",\"address\":\"Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/thap+nhan+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"13:30\",\"emoji\":\"🦀\",\"category\":\"food\",\"name\":\"Quán Ghẹ 23\",\"description\":\"Quán ăn ghẹ & hải sản với 4.4⭐ (163 đánh giá), mở 10h-21h\",\"price\":\"chưa có giá\",\"address\":\"23 Võ Đình Tú, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=3985327017114637510\",\"booking_link\":\"\",\"place_id\":\"ChIJt37YhINsbzERxpTikM65Tjc\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Xe từ Quy Nhơn → sân bay Phù Cát\",\"description\":\"Grab/taxi về sân bay (khoảng 45 phút)\",\"price\":\"chưa có giá\",\"address\":\"Quy Nhơn → Sân bay Phù Cát\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"18:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Quy Nhơn → TP.HCM\",\"description\":\"Máy bay về TP.HCM (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát\",\"maps_link\":\"\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi (2 người)\":\"chưa có giá\",\"Lưu trú 2 đêm (khách sạn 3 sao)\":\"chưa có giá\",\"Ăn uống (6 bữa ăn địa phương)\":\"chưa có giá\",\"Di chuyển (Grab/taxi)\":\"chưa có giá\",\"Tham quan & hoạt động\":\"~100.000 VND\"},\"local_tips\":[{\"text\":\"Đặc sản Bình Định nổi tiếng với các món ăn truyền thống như bánh hoai, bánh canh cua, cơm gà — đây là những món bạn nhất định phải thử.\",\"basis\":\"general\"}],\"share_text\":\"3 ngày 2 đêm ở Quy Nhơn - ăn đặc sản địa phương, hải sản tươi sống, tham quan di tích lịch sử 🌊🍜 #TappyAI\"}\n[/TAPPY_PLAN]\n\n- **Hải sản Ông Minh**: Quán hải sản nổi tiếng nhất Quy Nhơn (4.6⭐ từ 2.710 đánh giá), giá cả hợp lý cho chất lượng\n- **Quán Ghẹ 23**: Chuyên ghẹ & hải sản tươi sống, rất phù hợp với ngân sách\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem bản đồ Quy Nhơn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/maps/search/quy+nhon\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "visible": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Quy Nhơn cho 2 người với ngân sách 8 triệu, tập trung vào ăn đồ địa phương.\n\nMình đang tìm các quán ăn địa phương ngon ở Quy Nhơn để xây dựng kế hoạch chi tiết cho bạn.\n\nTuyệt vời! Bây giờ mình sẽ lập kế hoạch chi tiết cho 3 ngày 2 đêm của bạn.\n\n- **Hải sản Ông Minh**: Quán hải sản nổi tiếng nhất Quy Nhơn (4.6⭐ từ 2.710 đánh giá), giá cả hợp lý cho chất lượng\n- **Quán Ghẹ 23**: Chuyên ghẹ & hải sản tươi sống, rất phù hợp với ngân sách",
+      "preGuard": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Quy Nhơn cho 2 người với ngân sách 8 triệu, tập trung vào ăn đồ địa phương. Mình giả sử bạn đi máy bay từ TP.HCM (khoảng 432 km) — nếu muốn đi xe khách thì nói mình nhé.\n\nMình đang tìm các quán ăn địa phương ngon ở Quy Nhơn để xây dựng kế hoạch chi tiết cho bạn.Tuyệt vời! Mình đã tìm được các quán ăn địa phương ngon ở Quy Nhơn. Bây giờ mình sẽ lập kế hoạch chi tiết cho 3 ngày 2 đêm của bạn.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"3 ngày 2 đêm ở Quy Nhơn - Ăn đặc sản địa phương\",\"people\":2,\"budget_total\":\"8.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối (Đến Quy Nhơn)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Quy Nhơn\",\"description\":\"Máy bay từ TP.HCM đến sân bay Phù Cát (khoảng 1 tiếng bay)\",\"price\":\"~2.000.000 VND (2 người)\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3\",\"place_id\":\"\"},{\"time\":\"17:30\",\"emoji\":\"🚕\",\"category\":\"transport\",\"name\":\"Xe từ sân bay → trung tâm Quy Nhơn\",\"description\":\"Grab/taxi từ sân bay Phù Cát đến trung tâm (khoảng 30 km, 45 phút)\",\"price\":\"~300.000 VND\",\"address\":\"Sân bay Phù Cát → Quy Nhơn\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"19:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Đặc Sản Bình Định Quy Nhơn Ông Bảy\",\"description\":\"Quán ăn đặc sản Bình Định với 4.8⭐ (79 đánh giá), mở 6h-21h30, giá 1-100k/món\",\"price\":\"~150.000 VND (2 người)\",\"address\":\"23 Phan Văn Lân, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=13226199828310724599\",\"booking_link\":\"https://zalo.me/0908319357\",\"place_id\":\"ChIJK2KLuyttbzER9w_LHqvmjLc\"}]},{\"label\":\"Ngày 2 - Sáng & Trưa\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Cơm Cảng 9 gốc nằm trong chợ Cảng\",\"description\":\"Quán cơm địa phương nổi tiếng, 4.5⭐ (102 đánh giá), mở 22h-5h, giá 1-100k/món\",\"price\":\"~100.000 VND (2 người)\",\"address\":\"Chợ Cảng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=6859337338153456606\",\"booking_link\":\"\",\"place_id\":\"ChIJ-wc49gBtbzER3lMAtVhnMV8\"},{\"time\":\"10:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi biển Quy Nhơn\",\"description\":\"Thư giãn trên bãi biển, chụp ảnh, tắm biển (thời tiết hôm nay 26°C, mưa nhẹ, nên mang áo khoác)\",\"price\":\"Miễn phí\",\"address\":\"Bãi biển Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/bai+bien+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"12:30\",\"emoji\":\"🦞\",\"category\":\"food\",\"name\":\"Hải sản Tươi sống Ông Minh\",\"description\":\"Nhà hàng hải sản nổi tiếng với 4.6⭐ (2.710 đánh giá), mở 10h-1h, giá 100-500k/món\",\"price\":\"~400.000 VND (2 người)\",\"address\":\"29 Diên Hồng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=23206850385491721\",\"booking_link\":\"\",\"place_id\":\"ChIJj2pTUmBtbzERCTeV6YFyUgA\"}]},{\"label\":\"Ngày 2 - Chiều tối\",\"items\":[{\"time\":\"17:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Khách sạn 3 sao ở Quy Nhơn\",\"description\":\"Lưu trú 2 đêm tại khách sạn 3 sao gần trung tâm (ước tính 1.5-2 triệu/đêm)\",\"price\":\"~3.000.000 VND (2 đêm)\",\"address\":\"Trung tâm Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/khach+san+quy+nhon\",\"booking_link\":\"https://www.booking.com/searchresults.vi.html?ss=Quy+Nhon\",\"place_id\":\"\"},{\"time\":\"19:30\",\"emoji\":\"🍲\",\"category\":\"food\",\"name\":\"Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn\",\"description\":\"Quán ăn Việt Nam với 4.7⭐ (128 đánh giá), mở 6h-22h, giá 1-400k/món, đặc sản cuốn\",\"price\":\"~200.000 VND (2 người)\",\"address\":\"84-86 Đống Đa, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=11628986471622613412\",\"booking_link\":\"http://zalo.me/0906400545\",\"place_id\":\"ChIJX7c-GwBtbzERpJnjOpV1YqE\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Phố ẩm thực Phan Bội Châu\",\"description\":\"Phố ẩm thực với 4.5⭐ (92 đánh giá), mở 17h-00h, giá 1-100k/món, nhiều lựa chọn địa phương\",\"price\":\"~150.000 VND (2 người)\",\"address\":\"Đường Phan Bội Châu, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=5487226891486287815\",\"booking_link\":\"\",\"place_id\":\"ChIJyS56ofhtbzERx9cCBcmLJkw\"},{\"time\":\"11:00\",\"emoji\":\"🏛️\",\"category\":\"entertainment\",\"name\":\"Tham quan Tháp Nhạn & Thành cổ Quy Nhơn\",\"description\":\"Khám phá di tích lịch sử, tháp Nhạn cổ kính, thành cổ (miễn phí hoặc vé nhỏ)\",\"price\":\"~100.000 VND\",\"address\":\"Quy Nhơn\",\"maps_link\":\"https://maps.google.com/maps/search/thap+nhan+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"13:30\",\"emoji\":\"🦀\",\"category\":\"food\",\"name\":\"Quán Ghẹ 23\",\"description\":\"Quán ăn ghẹ & hải sản với 4.4⭐ (163 đánh giá), mở 10h-21h, giá 100-200k/món\",\"price\":\"~250.000 VND (2 người)\",\"address\":\"23 Võ Đình Tú, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=3985327017114637510\",\"booking_link\":\"http://zalo.me/0333734657\",\"place_id\":\"ChIJt37YhINsbzERxpTikM65Tjc\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Xe từ Quy Nhơn → sân bay Phù Cát\",\"description\":\"Grab/taxi về sân bay (khoảng 45 phút)\",\"price\":\"~300.000 VND\",\"address\":\"Quy Nhơn → Sân bay Phù Cát\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"18:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Quy Nhơn → TP.HCM\",\"description\":\"Máy bay về TP.HCM (khoảng 1 tiếng bay)\",\"price\":\"~2.000.000 VND (2 người)\",\"address\":\"Sân bay Phù Cát\",\"maps_link\":\"\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi (2 người)\":\"~4.000.000 VND\",\"Lưu trú 2 đêm (khách sạn 3 sao)\":\"~3.000.000 VND\",\"Ăn uống (6 bữa ăn địa phương)\":\"~1.200.000 VND\",\"Di chuyển (Grab/taxi)\":\"~600.000 VND\",\"Tham quan & hoạt động\":\"~100.000 VND\",\"Dự phòng\":\"~100.000 VND\"},\"local_tips\":[{\"text\":\"Cơm Cảng 9 là quán cơm địa phương nổi tiếng, mở từ 22h-5h sáng, rất phù hợp ăn sáng sớm trước khi bay về.\",\"basis\":\"tool\",\"place\":\"Cơm Cảng 9 gốc nằm trong chợ Cảng\"},{\"text\":\"Hải sản Ông Minh có 2.710 đánh giá Google Maps, là quán hải sản uy tín nhất ở Quy Nhơn, nên đặt bàn trước nếu đi vào giờ cao điểm.\",\"basis\":\"tool\",\"place\":\"Hải sản Tươi sống Ông Minh\"},{\"text\":\"Thời tiết hôm nay 26°C, mưa nhẹ, nên mang theo áo khoác nhẹ và ô khi đi tham quan bãi biển.\",\"basis\":\"general\",\"place\":\"Quy Nhơn\"},{\"text\":\"Đặc sản Bình Định nổi tiếng với các món ăn truyền thống như bánh hoai, bánh canh cua, cơm gà — đây là những món bạn nhất định phải thử.\",\"basis\":\"general\",\"place\":\"Quy Nhơn\"}],\"share_text\":\"3 ngày 2 đêm ở Quy Nhơn - ăn đặc sản địa phương, hải sản tươi sống, tham quan di tích lịch sử 🌊🍜 #TappyAI\"}\n[/TAPPY_PLAN]\n\n**Tổng ngân sách ước tính: ~7.000.000 VND** (còn dư ~1.000.000 VND cho dự phòng hoặc ăn thêm).\n\nMình chọn các quán ăn này vì:\n- **Đặc Sản Bình Định Ông Bảy** & **Nẫu Cuốn**: Đều có rating cao (4.7-4.8⭐) với giá rất hợp lý (1-400k/món), chuyên về đặc sản địa phương Bình Định\n- **Hải sản Ông Minh**: Quán hải sản nổi tiếng nhất Quy Nhơn (4.6⭐ từ 2.710 đánh giá), giá cả hợp lý cho chất lượng\n- **Quán Ghẹ 23**: Chuyên ghẹ & hải sản tươi sống, giá 100-200k/món, rất phù hợp với ngân sách\n\nKế hoạch này tập trung vào ăn uống địa phương, tham quan di tích, và thư giãn bãi biển. Bạn có thể điều chỉnh ngày bay hoặc thay đổi quán ăn nếu muốn!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3\",\"primary\":true},{\"label\":\"🏨 Tìm khách sạn - Booking.com\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Quy+Nhon\",\"primary\":true},{\"label\":\"📍 Xem bản đồ Quy Nhơn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/maps/search/quy+nhon\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

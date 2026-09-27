@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 6732,
+  "evidenceId": "f4bcbe8c-6081-4ef7-bef3-1646f619cabb",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Nếu bạn muốn chắc chắn, có thể:\n- Gọi quán trực tiếp để hỏi tình trạng đông/vắng\n- Xem trên Google Maps (phần \"Thời gian bận rộn\") để biết giờ nào thường đông nhất\n- Hoặc chọn **えびすEbisu District1** — quán này cũng rất ngon\n\nBạn muốn mình tìm thêm quán khác hoặc giúp gì nữa không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **えびすEbisu District1 (Udon & Sushi)** cho bạn! 🍜 Quán này có rating 4.7⭐ từ 1.024 đánh giá — chuyên ẩm thực Nhật với udon và sushi ngon, mở đến 22:30 nên hoàn hảo cho bữa tối. Ở Chu Mạnh Trinh, Quận 1, rất gần vị trí bạn.\n\nNgoài ra, **Hải Sản Hoàng Gia** (4.7⭐, 981 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn thích hải sản, mở đến nửa đêm.\n\nBạn muốn đặt bàn hay xem thêm chi tiết quán nào không? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Đặt bàn - Ebisu\",\"type\":\"website\",\"url\":\"https://www.google.com/maps/reserve/v/dine/c/dfKQGPW5Ddc?source=pa&opi=79508299\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem hải sản Hoàng Gia|Tìm quán Việt Nam|Quán khác gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Nếu bạn muốn chắc chắn, có thể:\n- Gọi quán trực tiếp để hỏi tình trạng đông/vắng\n- Xem trên Google Maps (phần \"Thời gian bận rộn\") để biết giờ nào thường đông nhất\n- Hoặc chọn **えびすEbisu District1** — quán này cũng rất ngon\n\nBạn muốn mình tìm thêm quán khác hoặc giúp gì nữa không?"
+    }
+  ]
+}

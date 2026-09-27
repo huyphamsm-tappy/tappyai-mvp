@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 8272,
+  "evidenceId": "331ea1f2-7678-44ce-845e-f682db258c09",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn có thể xem một vài phim hay tùy theo tâm trạng:\n\n**Nếu muốn thư giãn, cười**: *Trạng Tí Nổi Loạn* hoặc *Cua Lại Vợ Bầu* — những bộ phim hài Việt vui nhộn, không cần suy nghĩ nhiều, hoàn hảo để thả lỏng sau một ngày dài.\n\n**Nếu muốn xem gì đó nhẹ nhàng, ấm áp**: *Cô Gái Đến Từ Hôm Qua* — tình cảm, lãng mạn, phù hợp để thưởng thức một buổi tối yên tĩnh.\n\n**Nếu muốn hồi hộp, kịch tính**: *Ròm* hoặc *Tôi Thấy Hoa Vàng Trên Cỏ Xanh* — những bộ phim sâu sắc, cuốn hút, để bạn không rời mắt khỏi màn hình.\n\nBạn muốn xem loại phim nào? Hay cần tìm rạp chiếu gần bạn để xem phim nào đó cụ thể? 🎬",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn có thể xem một vài phim hay tùy theo tâm trạng:\n\n**Nếu muốn thư giãn, cười**: *Trạng Tí Nổi Loạn* hoặc *Cua Lại Vợ Bầu* — những bộ phim hài Việt vui nhộn, không cần suy nghĩ nhiều, hoàn hảo để thả lỏng sau một ngày dài.\n\n**Nếu muốn xem gì đó nhẹ nhàng, ấm áp**: *Cô Gái Đến Từ Hôm Qua* — tình cảm, lãng mạn, phù hợp để thưởng thức một buổi tối yên tĩnh.\n\n**Nếu muốn hồi hộp, kịch tính**: *Ròm* hoặc *Tôi Thấy Hoa Vàng Trên Cỏ Xanh* — những bộ phim sâu sắc, cuốn hút, để bạn không rời mắt khỏi màn hình.\n\nBạn muốn xem loại phim nào? Hay cần tìm rạp chiếu gần bạn để xem phim nào đó cụ thể? 🎬"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6711,
+  "evidenceId": "25d8a5ff-0bf9-43ef-b325-0133cf029103",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn có thể xem một vài phim hay tùy theo tâm trạng:\n\n**Nếu muốn thư giãn, cười lên**: *Crazy Rich Asians* hoặc *Knives Out* — vui nhộn, hấp dẫn, không quá nặng nề.\n\n**Nếu muốn xem gì đó sâu sắc**: *Parasite* hoặc *The Farewell* — những bộ phim tuyệt vời về con người, gia đình, xã hội.\n\n**Nếu chỉ muốn giải trí nhẹ nhàng**: *Paddington 2* — ấm áp, dễ chịu, phù hợp để thư giãn sau ngày dài.\n\nBạn thích xem loại phim nào — hành động, tình cảm, hài, hay kinh dị? Hay bạn muốn biết xem ở đâu (Netflix, Disney+, rạp chiếu...)?\n\n[FOLLOWUPS]Phim hành động|Phim tình cảm|Xem ở rạp gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn có thể xem một vài phim hay tùy theo tâm trạng:\n\n**Nếu muốn thư giãn, cười lên**: *Crazy Rich Asians* hoặc *Knives Out* — vui nhộn, hấp dẫn, không quá nặng nề.\n\n**Nếu muốn xem gì đó sâu sắc**: *Parasite* hoặc *The Farewell* — những bộ phim tuyệt vời về con người, gia đình, xã hội.\n\n**Nếu chỉ muốn giải trí nhẹ nhàng**: *Paddington 2* — ấm áp, dễ chịu, phù hợp để thư giãn sau ngày dài.\n\nBạn thích xem loại phim nào — hành động, tình cảm, hài, hay kinh dị? Hay bạn muốn biết xem ở đâu (Netflix, Disney+, rạp chiếu...)?\n\n[FOLLOWUPS]Phim hành động|Phim tình cảm|Xem ở rạp gần đây[/FOLLOWUPS]"
+    }
+  ]
+}

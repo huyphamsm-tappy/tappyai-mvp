@@ -1,0 +1,1074 @@
+{
+  "id": "T2",
+  "group": "entertainment-imax",
+  "criteria": [
+    "Turn 2 searches specifically for IMAX; does not re-ask whether the user means IMAX",
+    "Renders cards (annotation items) for the cinemas it names",
+    "If it cannot confirm which cinema has an IMAX screen, says so ONCE and gives a way to check; does not present uncertain cinemas as answers",
+    "Uses 'phòng chiếu IMAX', not 'sàn IMAX'"
+  ],
+  "turns": [
+    {
+      "user": "Rạp chiếu phim IMAX ở TP HCM",
+      "status": 200,
+      "elapsedMs": 943,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    },
+    {
+      "user": "quận nào cũng được",
+      "status": 200,
+      "elapsedMs": 16324,
+      "usage": {
+        "promptTokens": 2778,
+        "completionTokens": 563
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "rạp chiếu phim",
+            "type": "cinema"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "searching"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "CGV Giga Mall Thủ Đức",
+              "address": "Tầng 6 TTTM Giga Mall, 240, 242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 5401,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 6.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Center Đồng Khởi",
+              "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4507,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 0.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Plaza Phan Văn Trị",
+              "address": "12 Đ. Phan Văn Trị, Hạnh Thông, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 5019,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 5.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "BHD Star Cineplex Lê Văn Việt",
+              "address": "Vincom Plaza, Đ. Lê Văn Việt, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 1819,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 11.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Thủ Đức",
+              "address": "216 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 5140,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 10.8,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Celadon Tân Phú",
+              "address": "AEON MAll, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 7742,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 9.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Galaxy Cinema Nguyễn Du",
+              "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 9381,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Beta Cinemas Ung Văn Khiêm",
+              "address": "tòa nhà PAX SKY, 26 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 1459,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 3.8,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.82760,106.72121",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Giga Mall Thủ Đức",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdAioYLbG5wIlNonF2r_-0r7Dp9Bu_Y6sRww218QDjlaOoxsGZ0cZMgCTFCTQ79dIrnWYOsw1bS6lHQIOY45wf1pyYShrCsode8RDbjTWy2IQjKYrBjWnDisk4LrfDR_sTVGCLEQ",
+                "address": "Tầng 6 TTTM Giga Mall, 240, 242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 5401,
+                "phone": "+84 1900 6017",
+                "distanceKm": 6.1,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18374629410795805531",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Giga%20Mall%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77792,106.70195",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Center Đồng Khởi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmttS4gmd-sKJUc7LTNZftRz_f7K_aGNPvMj_9wjA-fzYilMk2vRxjdh3ZwZLMs43B2OjgjYzzhm6-GhpWHMX7pbK__qT3gT4ORrqBS6NyLHLby46iRpG--uSPObX_LP8kXKvrh",
+                "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4507,
+                "phone": "+84 1900 6017",
+                "distanceKm": 0.2,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11214787039782498171",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.82711,106.68928",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Plaza Phan Văn Trị",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnWmXm9T-heRH1b4F-NCkVnNnMdrrfiEPI8BHp0WArVdfNEVzUZ9YIVRIOax99MifV486ZJgMnqzGfDkfP4_uZk-uW0wi-c-q6oZuE_Ry7oJzazidCdqVsG86pqelFErvZUaRNPNg",
+                "address": "12 Đ. Phan Văn Trị, Hạnh Thông, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 5019,
+                "phone": "+84 1900 6017",
+                "distanceKm": 5.7,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7743330468892113925",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Plaza%20Phan%20V%C4%83n%20Tr%E1%BB%8B%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.84516,106.77869",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "BHD Star Cineplex Lê Văn Việt",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQKisS5R-HaP94j7hvrdyOOnZwH7ONp4fuDnoHKmAQeQtI8SiMUq37fILay0-7tu89KsvDimAuYO-dw4BWMkFaClKQ_yyYr4Eo8oL42ni1QOjm1Qm0Tr425b-icW0yF6G_u8-UPiUdtMo",
+                "address": "Vincom Plaza, Đ. Lê Văn Việt, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 1819,
+                "distanceKm": 11.4,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://bhdstar.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7929852652105045426",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=BHD%20Star%20Cineplex%20L%C3%AA%20V%C4%83n%20Vi%E1%BB%87t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.85008,106.76525",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Thủ Đức",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0tEOYLelNluhfEPOSjhzqPNp2LDmkGCzIFZCQHH02Bl0EZwImYw9JRsidmgNwuIJW2_7oCYVTbksHjFOmSzYD49ZLnsnkHsphJPvLYo15w8G5rUpOoyIxlk6V4GddiKXkAs5K",
+                "address": "216 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 5140,
+                "phone": "+84 1900 6017",
+                "distanceKm": 10.8,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2306368870792414730",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80170,106.61797",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Celadon Tân Phú",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl23bBDmPGD0HIQgibweebpY3nAD610T-vXnS1fDquIiQFEUwNxUEnsRwEoIxxK85x6RhQSuCXtGxQ_FTAp6o6PjrQFe9eWy5I41VBZJWZwaTuvtoMGsGDcVroM2qyo_uwoQ73t",
+                "address": "AEON MAll, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 7742,
+                "phone": "+84 28 3636 5757",
+                "distanceKm": 9.5,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14362103492196088478",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Celadon%20T%C3%A2n%20Ph%C3%BA%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836365757",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77313,106.69319",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Galaxy Cinema Nguyễn Du",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSrhIYN5epEeWLS9apq_O3xgSHiWprJWBdzOgxZa9DlCUy63BGW74DurpUZeg8WocWUwjtdZexGWqi0DM8TU4aymjiWVXmjl4Q2KugPGYsXJpSbV95KnrwH0B5m4caHbeQqvms",
+                "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 9381,
+                "distanceKm": 0.9,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://galaxycine.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7959510044504727677",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Nguy%E1%BB%85n%20Du%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80892,106.71332",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Beta Cinemas Ung Văn Khiêm",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWma_xWJuNqss65i-ECxzswN1mS-oxPvcLQi9noZpeMvs8tKkvhCW0tQlhbYQ8lgCy3pVPwLcg0pJRmtfHX_ulkzvikROoFkoJgrIoqh2KsYbrEK1emgzrbkgbps3XCi2FN7O0E7XQ",
+                "address": "tòa nhà PAX SKY, 26 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 1459,
+                "phone": "+84 969 874 873",
+                "distanceKm": 3.8,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://betacinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11913708340329651227",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Beta%20Cinemas%20Ung%20V%C4%83n%20Khi%C3%AAm%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84969874873",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20chi%E1%BA%BFu%20phim%20",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "entertainment"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Galaxy Cinema Nguyễn Du",
+              "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 9381,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 0.9,
+              "recommended": true,
+              "reasons": [
+                "rated 4.3",
+                "9381 reviews",
+                "0.9km away"
+              ]
+            },
+            {
+              "name": "CGV Giga Mall Thủ Đức",
+              "address": "Tầng 6 TTTM Giga Mall, 240, 242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 5401,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 6.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Center Đồng Khởi",
+              "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4507,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 0.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Plaza Phan Văn Trị",
+              "address": "12 Đ. Phan Văn Trị, Hạnh Thông, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 5019,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 5.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "BHD Star Cineplex Lê Văn Việt",
+              "address": "Vincom Plaza, Đ. Lê Văn Việt, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 1819,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 11.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Vincom Thủ Đức",
+              "address": "216 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 5140,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 10.8,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Celadon Tân Phú",
+              "address": "AEON MAll, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 7742,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 9.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Beta Cinemas Ung Văn Khiêm",
+              "address": "tòa nhà PAX SKY, 26 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 1459,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 3.8,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.77313,106.69319",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Galaxy Cinema Nguyễn Du",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSrhIYN5epEeWLS9apq_O3xgSHiWprJWBdzOgxZa9DlCUy63BGW74DurpUZeg8WocWUwjtdZexGWqi0DM8TU4aymjiWVXmjl4Q2KugPGYsXJpSbV95KnrwH0B5m4caHbeQqvms",
+                "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 9381,
+                "distanceKm": 0.9,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.3",
+                    "params": {
+                      "value": 4.3
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "9381 reviews",
+                    "params": {
+                      "count": 9381
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "0.9km away",
+                    "params": {
+                      "km": 0.9
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://galaxycine.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7959510044504727677",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Galaxy%20Cinema%20Nguy%E1%BB%85n%20Du%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.82760,106.72121",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Giga Mall Thủ Đức",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdAioYLbG5wIlNonF2r_-0r7Dp9Bu_Y6sRww218QDjlaOoxsGZ0cZMgCTFCTQ79dIrnWYOsw1bS6lHQIOY45wf1pyYShrCsode8RDbjTWy2IQjKYrBjWnDisk4LrfDR_sTVGCLEQ",
+                "address": "Tầng 6 TTTM Giga Mall, 240, 242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 5401,
+                "phone": "+84 1900 6017",
+                "distanceKm": 6.1,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18374629410795805531",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Giga%20Mall%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77792,106.70195",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Center Đồng Khởi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmttS4gmd-sKJUc7LTNZftRz_f7K_aGNPvMj_9wjA-fzYilMk2vRxjdh3ZwZLMs43B2OjgjYzzhm6-GhpWHMX7pbK__qT3gT4ORrqBS6NyLHLby46iRpG--uSPObX_LP8kXKvrh",
+                "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4507,
+                "phone": "+84 1900 6017",
+                "distanceKm": 0.2,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11214787039782498171",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Center%20%C4%90%E1%BB%93ng%20Kh%E1%BB%9Fi%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.82711,106.68928",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Plaza Phan Văn Trị",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnWmXm9T-heRH1b4F-NCkVnNnMdrrfiEPI8BHp0WArVdfNEVzUZ9YIVRIOax99MifV486ZJgMnqzGfDkfP4_uZk-uW0wi-c-q6oZuE_Ry7oJzazidCdqVsG86pqelFErvZUaRNPNg",
+                "address": "12 Đ. Phan Văn Trị, Hạnh Thông, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 5019,
+                "phone": "+84 1900 6017",
+                "distanceKm": 5.7,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7743330468892113925",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Plaza%20Phan%20V%C4%83n%20Tr%E1%BB%8B%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.84516,106.77869",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "BHD Star Cineplex Lê Văn Việt",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkQKisS5R-HaP94j7hvrdyOOnZwH7ONp4fuDnoHKmAQeQtI8SiMUq37fILay0-7tu89KsvDimAuYO-dw4BWMkFaClKQ_yyYr4Eo8oL42ni1QOjm1Qm0Tr425b-icW0yF6G_u8-UPiUdtMo",
+                "address": "Vincom Plaza, Đ. Lê Văn Việt, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 1819,
+                "distanceKm": 11.4,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://bhdstar.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7929852652105045426",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=BHD%20Star%20Cineplex%20L%C3%AA%20V%C4%83n%20Vi%E1%BB%87t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.85008,106.76525",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Vincom Thủ Đức",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0tEOYLelNluhfEPOSjhzqPNp2LDmkGCzIFZCQHH02Bl0EZwImYw9JRsidmgNwuIJW2_7oCYVTbksHjFOmSzYD49ZLnsnkHsphJPvLYo15w8G5rUpOoyIxlk6V4GddiKXkAs5K",
+                "address": "216 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 5140,
+                "phone": "+84 1900 6017",
+                "distanceKm": 10.8,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2306368870792414730",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Vincom%20Th%E1%BB%A7%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80170,106.61797",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Celadon Tân Phú",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl23bBDmPGD0HIQgibweebpY3nAD610T-vXnS1fDquIiQFEUwNxUEnsRwEoIxxK85x6RhQSuCXtGxQ_FTAp6o6PjrQFe9eWy5I41VBZJWZwaTuvtoMGsGDcVroM2qyo_uwoQ73t",
+                "address": "AEON MAll, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 7742,
+                "phone": "+84 28 3636 5757",
+                "distanceKm": 9.5,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14362103492196088478",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20Celadon%20T%C3%A2n%20Ph%C3%BA%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836365757",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80892,106.71332",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Beta Cinemas Ung Văn Khiêm",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWma_xWJuNqss65i-ECxzswN1mS-oxPvcLQi9noZpeMvs8tKkvhCW0tQlhbYQ8lgCy3pVPwLcg0pJRmtfHX_ulkzvikROoFkoJgrIoqh2KsYbrEK1emgzrbkgbps3XCi2FN7O0E7XQ",
+                "address": "tòa nhà PAX SKY, 26 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 1459,
+                "phone": "+84 969 874 873",
+                "distanceKm": 3.8,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://betacinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11913708340329651227",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Beta%20Cinemas%20Ung%20V%C4%83n%20Khi%C3%AAm%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84969874873",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20chi%E1%BA%BFu%20phim%20",
+            "picked": [
+              "place:osm:10.77313,106.69319",
+              "place:osm:10.77792,106.70195"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.77313,106.69319",
+            "place:osm:10.77792,106.70195"
+          ],
+          "domain": "entertainment"
+        }
+      ],
+      "cardItems": [
+        [
+          "CGV Giga Mall Thủ Đức",
+          "CGV Vincom Center Đồng Khởi",
+          "CGV Vincom Plaza Phan Văn Trị",
+          "BHD Star Cineplex Lê Văn Việt",
+          "CGV Vincom Thủ Đức",
+          "CGV Celadon Tân Phú",
+          "Galaxy Cinema Nguyễn Du",
+          "Beta Cinemas Ung Văn Khiêm"
+        ],
+        [
+          "Galaxy Cinema Nguyễn Du",
+          "CGV Giga Mall Thủ Đức",
+          "CGV Vincom Center Đồng Khởi",
+          "CGV Vincom Plaza Phan Văn Trị",
+          "BHD Star Cineplex Lê Văn Việt",
+          "CGV Vincom Thủ Đức",
+          "CGV Celadon Tân Phú",
+          "Beta Cinemas Ung Văn Khiêm"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX** trong kết quả. Các rạp lớn nhất hiện tại là **CGV** (nhiều chi nhánh), **Galaxy Cinema**, **BHD Star Cineplex** và **Cinestar** — chúng có công nghệ chiếu hiện đại nhưng không phải định dạng IMAX.\n\nNếu bạn muốn xem phim với công nghệ tốt nhất hiện có, mình gợi ý:\n\n**CGV Vincom Center Đồng Khởi** — **4.3⭐ (4.507 đánh giá)** — cách bạn chỉ ~0.2km, ở Quận 1, rất gần. Đây là rạp trung tâm, tiện lợi nhất để xem phim ngay hôm nay.\n\nHoặc **CGV Celadon Tân Phú** — **4.4⭐ (7.742 đánh giá)** — ở Quận Tân Phú, có nhiều sàn chiếu và công nghệ tốt.",
+      "visible": "Mình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX** trong kết quả. Các rạp lớn nhất hiện tại là **CGV** (nhiều chi nhánh), **Galaxy Cinema**, **BHD Star Cineplex** và **Cinestar** — chúng có công nghệ chiếu hiện đại nhưng không phải định dạng IMAX.\n\nNếu bạn muốn xem phim với công nghệ tốt nhất hiện có, mình gợi ý:\n\n**CGV Vincom Center Đồng Khởi** — **4.3⭐ (4.507 đánh giá)** — cách bạn chỉ ~0.2km, ở Quận 1, rất gần. Đây là rạp trung tâm, tiện lợi nhất để xem phim ngay hôm nay.\n\nHoặc **CGV Celadon Tân Phú** — **4.4⭐ (7.742 đánh giá)** — ở Quận Tân Phú, có nhiều sàn chiếu và công nghệ tốt.",
+      "preGuard": "Mình tìm được các rạp chiếu phim ở TP HCM, nhưng **không có rạp IMAX** trong kết quả. Các rạp lớn nhất hiện tại là **CGV** (nhiều chi nhánh), **Galaxy Cinema**, **BHD Star Cineplex** và **Cinestar** — chúng có công nghệ chiếu hiện đại nhưng không phải định dạng IMAX.\n\nNếu bạn muốn xem phim với công nghệ tốt nhất hiện có, mình gợi ý:\n\n**CGV Vincom Center Đồng Khởi** — **4.3⭐ (4.507 đánh giá)** — cách bạn chỉ ~0.2km, ở Quận 1, rất gần. Đây là rạp trung tâm, tiện lợi nhất để xem phim ngay hôm nay.\n\nHoặc **CGV Celadon Tân Phú** — **4.4⭐ (7.742 đánh giá)** — ở Quận Tân Phú, có nhiều sàn chiếu và công nghệ tốt.\n\nBạn có thể vào trang CGV.vn hoặc app CGV để xem lịch chiếu phim và đặt vé. Hiện tại TP HCM chưa có rạp IMAX, nhưng nếu bạn muốn trải nghiệm IMAX, có thể cần tìm ở các thành phố khác hoặc chờ rạp mới khai trương.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Xem lịch chiếu CGV\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - CGV Đồng Khởi\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11214787039782498171\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

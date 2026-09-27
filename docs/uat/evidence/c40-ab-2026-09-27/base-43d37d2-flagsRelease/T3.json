@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4420,
+  "evidenceId": "b4733e0e-aced-44cd-a771-af2315731687",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình không có thông tin chi tiết về các khách sạn từ lần tìm kiếm trước để biết cái thứ hai là cái nào và liệu có bao gồm ăn sáng hay không 😅\n\nBạn có thể cho mình biết:\n- **Tên khách sạn** bạn đang hỏi là gì?\n- **Ngày check-in và check-out** cụ thể không?\n\nMình sẽ tìm lại để xem chi tiết về bữa sáng và giá chính xác nhất cho bạn!",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy danh sách khách sạn Đà Nẵng nhưng chưa có thông tin giá cụ thể trong kết quả. Hầu hết các khách sạn trong danh sách đều nằm ở khu vực Ngũ Hành Sơn hoặc An Hải — những khu gần biển nhất.\n\n Bạn có ngày check-in cụ thể không? Mình có thể tìm lại với ngày đó để xem giá chính xác hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng\",\"primary\":true}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình không có thông tin chi tiết về các khách sạn từ lần tìm kiếm trước để biết cái thứ hai là cái nào và liệu có bao gồm ăn sáng hay không 😅\n\nBạn có thể cho mình biết:\n- **Tên khách sạn** bạn đang hỏi là gì?\n- **Ngày check-in và check-out** cụ thể không?\n\nMình sẽ tìm lại để xem chi tiết về bữa sáng và giá chính xác nhất cho bạn!"
+    }
+  ]
+}

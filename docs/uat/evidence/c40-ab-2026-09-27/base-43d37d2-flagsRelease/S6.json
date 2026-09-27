@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 4335,
+  "evidenceId": "1d1e743b-23b1-4381-a91e-01e28a702ffb",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bây giờ là 20:36 tối Chủ Nhật, nhiều quán ăn, cafe, cửa hàng vẫn đang mở 🌙\n\nBạn muốn mua **cái gì** cụ thể? Ví dụ:\n- **Đồ ăn/uống** (cơm, phở, cafe, trà...)\n- **Sản phẩm** (điện thoại, quần áo, mỹ phẩm...)\n- **Dịch vụ** (spa, massage, cắt tóc...)\n\nMình sẽ giúp bạn tìm nơi mở cửa gần đây ở Quận 1 ngay! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Bây giờ là 20:36 tối Chủ Nhật, nhiều quán ăn, cafe, cửa hàng vẫn đang mở 🌙\n\nBạn muốn mua **cái gì** cụ thể? Ví dụ:\n- **Đồ ăn/uống** (cơm, phở, cafe, trà...)\n- **Sản phẩm** (điện thoại, quần áo, mỹ phẩm...)\n- **Dịch vụ** (spa, massage, cắt tóc...)\n\nMình sẽ giúp bạn tìm nơi mở cửa gần đây ở Quận 1 ngay! 😊"
+    }
+  ]
+}

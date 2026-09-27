@@ -1,0 +1,199 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 9899,
+  "evidenceId": "c15ca46c-aff5-4696-af07-5c66073d497f",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "hours": "11:00–22:00",
+      "distance_km": 0.9,
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "rating": 4.7,
+      "count": 1024,
+      "hours": "11:30–22:30",
+      "distance_km": 0.7,
+      "address": "2A Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 981,
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1209,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NAO - Ăn uống ngay nào",
+      "rating": 4.4,
+      "count": 133,
+      "hours": "12:00–22:30",
+      "distance_km": 2.3,
+      "address": "TK43/2 Trần Hưng Đạo, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 201,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "11:00–22:00"
+      }
+    },
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1024,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "11:30–22:30"
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 981,
+        "distance_km": 1.9,
+        "open_now": true,
+        "opening_hours": "08:00–00:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những quán ăn tối ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Danh giá cao + gần + đông khách là lý do mình nghiêng về quán này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ebisu udon & sushi|Hải sản Hoàng Gia|Quán Bụi Việt Nam[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn tối ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Danh giá cao + gần + đông khách là lý do mình nghiêng về quán này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ebisu udon & sushi|Hải sản Hoàng Gia|Quán Bụi Việt Nam[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8428,
+  "evidenceId": "d5b7a7a4-6d82-4b21-8929-db997be81ee0",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm giúp bạn vé máy bay từ TP.HCM đến Hà Nội tuần sau nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể tìm chuyến bay rẻ nhất tuần sau qua các trang này:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — Trang kết quả chuyến bay theo ngày; chọn chuyến rồi nhập thông tin hành khách.\n\n[Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — Kết quả chuyến bay theo ngày; chọn chuyến và nhập thông tin hành khách.\n\nMẹo: Thường vé rẻ nhất là các chuyến sáng sớm hoặc chiều tối, và bay vào thứ 2-4 thường rẻ hơn cuối tuần. Bạn có thể so sánh giá giữa các ngày trong tuần để tìm giá tốt nhất! 🛫\n\n[FOLLOWUPS]Giá vé hôm nay bao nhiêu?|Muốn bay ngày cụ thể nào?|Cần vé khứ hồi không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn vé máy bay từ TP.HCM đến Hà Nội tuần sau nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể tìm chuyến bay rẻ nhất tuần sau qua các trang này:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — Trang kết quả chuyến bay theo ngày; chọn chuyến rồi nhập thông tin hành khách.\n\n[Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — Kết quả chuyến bay theo ngày; chọn chuyến và nhập thông tin hành khách.\n\nMẹo: Thường vé rẻ nhất là các chuyến sáng sớm hoặc chiều tối, và bay vào thứ 2-4 thường rẻ hơn cuối tuần. Bạn có thể so sánh giá giữa các ngày trong tuần để tìm giá tốt nhất! 🛫\n\n[FOLLOWUPS]Giá vé hôm nay bao nhiêu?|Muốn bay ngày cụ thể nào?|Cần vé khứ hồi không?[/FOLLOWUPS]"
+    }
+  ]
+}

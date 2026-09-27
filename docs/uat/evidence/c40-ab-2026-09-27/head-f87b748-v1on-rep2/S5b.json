@@ -1,0 +1,80 @@
+{
+  "id": "S5b",
+  "text": "nước hoa",
+  "parent": "S5",
+  "status": 200,
+  "ms": 19260,
+  "evidenceId": "d0283cef-d159-4d65-945e-1ed86ee1218f",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "nước hoa nữ 800k 1 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "(sẵn) Full set Nước hoa Đêm Bên Bờ Biển - Đêm Bên Làn Nước (Twilight Of The Fringe Tree - Low Tide In Twilight)",
+      "rating": 5,
+      "count": 9,
+      "price": 600000
+    },
+    {
+      "name": "Tách Lẻ nước hoa mini 4-5ml Laco -220k/1 lọ",
+      "price": 412000
+    },
+    {
+      "name": "Nước hoa nữ Hathor 10ml/30ml/75ml",
+      "price": 459000
+    },
+    {
+      "name": "Nước Hoa Kẹp Cửa Gió Ô Tô- 1 Pine+ 1 Refill- Lime Basil & Mandarin",
+      "price": 490000
+    },
+    {
+      "name": "Nước Hoa Nữ Mới Nhất 2022",
+      "price": 749000
+    },
+    {
+      "name": "Chloe For Women EDP 75ml (Dung tích: Chiết 30ml) | Nước Hoa Cao Cấp, Nước Hoa Nam, Nước Hoa Nữ",
+      "price": 870000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "recipient"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"(sẵn) Full set Nước hoa Đêm Bên Bờ Biển - Đêm Bên Làn Nước (Twilight Of The Fringe Tree - Low Tide In Twilight)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":600000,\"priceHigh\":600000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSLJ33lISKVNi-tYM2gGo9rCL3MFUSO0J3RAxP9GVrZargJj5lhl7RfMfKAPRYXgulsHeX1mENVG6_HeLmIlInpfex9lGiMFx-tS4hIWo4_pTB0IGYEAP-k\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12247194191928305354,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":600000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":9}]},{\"key\":\"uncertain:1\",\"name\":\"Tách Lẻ nước hoa mini 4-5ml Laco -220k/1 lọ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":412000,\"priceHigh\":412000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS5SYrgJl1gXHHYBPdR3J-68Pa1M8BuTB_QDamZVJaPqGFUUoXgyAUxuMNcJZv62CBtU6FMREgPMt0HUJWc4ZCtYOjIuHuLEjttm1X-Glo0\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:3196058949671619128,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":412000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Nước hoa nữ Hathor 10ml/30ml/75ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":459000,\"priceHigh\":459000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTOXEyRfIlxm-i-QyIIDQCJXJSzfQRYKbgJgwrTY9YHQdBBR1ouVfMtYcpdks_UbAAu7vJOLsnLnYw-BaifmWZstXlQUO4NbTyrds_TgebIdz5dOUVz276I\",\"offers\":[{\"seller\":\"Rootoo Vietnam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7982637361091939245,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":459000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Nước Hoa Kẹp Cửa Gió Ô Tô- 1 Pine+ 1 Refill- Lime Basil & Mandarin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":490000,\"priceHigh\":490000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcStl2MzFBBCCzwEin_h69yKicCKjzOj8NNjwr3TjP-2Trd4wZAMH2r1H4k9zsUBi1UkMhtIgz3xiH9Hb7CnO8YdvdK-xu9X\",\"offers\":[{\"seller\":\"Xe5s.VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:14091852514127855882,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Nước Hoa Nữ Mới Nhất 2022\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSEOjVjN-gUn4rfkrAa1_j5rNbioogJsHSHIag_is_4LTBcUaUgCh52P7d-PycIGQwU0OwNZ8ZgtOrw0OPqT2FBgkOji5e-QjuOILbj7Y4x874csvEdsC3D6w\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12920738191949802137,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Chloe For Women EDP 75ml (Dung tích: Chiết 30ml) | Nước Hoa Cao Cấp, Nước Hoa Nam, Nước Hoa Nữ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":870000,\"priceHigh\":870000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQfHCJu3tL3DAYZC_UVWKUAYXBQQhBt1BjVHFgGMLPB3BggzuiDBhRlc65PlTFMFZDWNO5xrGYmUiqLYTGWOcBccMCWYxNAfftkWbYKWLHA8utWPzSZnvk72A\",\"offers\":[{\"seller\":\"Perfume168.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:14799064431178238906,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":870000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"600000 VND\",\"params\":{\"priceVnd\":600000}},{\"attribute\":\"reviewCount\",\"evidence\":\"9 reviews\",\"params\":{\"count\":9}}],\"tradeOff\":{\"attribute\":\"price\",\"evidence\":\"412000 VND\",\"params\":{\"priceVnd\":412000}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nĐể gợi ý đúng ý, mình cần tìm ngay.\n\nMình chọn **Full set Nước hoa Đêm Bên Bờ Biển** vì có đánh giá 5⭐ từ 9 người mua — đây là dấu hiệu tin cậy khi tặng quà.\nNếu muốn rẻ hơn, có **Nước hoa mini Laco** — nhưng đây là chiết nhỏ, nên nếu bạn gái thích nước hoa thì full set sẽ ấn tượng hơn. **Chloe For Women** là hương nước ngoài nổi tiếng, nhưng mình chưa xác nhận được chính xác dung tích và loại (chiết hay chính hãng) — bạn nên kiểm tra trên trang bán trước khi đặt.\n\nMình gợi ý chọn full set vì vừa giá, vừa có đánh giá tốt, và là quà tặng hoàn chỉnh cho sinh nhật 🎁\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo\n\n[FOLLOWUPS]Nước hoa nữ nào thơm lâu nhất|Cách chọn nước hoa phù hợp với bạn gái|Quà sinh nhật khác trong tầm 1tr[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Quà loại gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "nước hoa"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"(sẵn) Full set Nước hoa Đêm Bên Bờ Biển - Đêm Bên Làn Nước (Twilight Of The Fringe Tree - Low Tide In Twilight)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":600000,\"priceHigh\":600000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSLJ33lISKVNi-tYM2gGo9rCL3MFUSO0J3RAxP9GVrZargJj5lhl7RfMfKAPRYXgulsHeX1mENVG6_HeLmIlInpfex9lGiMFx-tS4hIWo4_pTB0IGYEAP-k\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12247194191928305354,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":600000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":9}]},{\"key\":\"uncertain:1\",\"name\":\"Tách Lẻ nước hoa mini 4-5ml Laco -220k/1 lọ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":412000,\"priceHigh\":412000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS5SYrgJl1gXHHYBPdR3J-68Pa1M8BuTB_QDamZVJaPqGFUUoXgyAUxuMNcJZv62CBtU6FMREgPMt0HUJWc4ZCtYOjIuHuLEjttm1X-Glo0\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:3196058949671619128,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":412000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Nước hoa nữ Hathor 10ml/30ml/75ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":459000,\"priceHigh\":459000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTOXEyRfIlxm-i-QyIIDQCJXJSzfQRYKbgJgwrTY9YHQdBBR1ouVfMtYcpdks_UbAAu7vJOLsnLnYw-BaifmWZstXlQUO4NbTyrds_TgebIdz5dOUVz276I\",\"offers\":[{\"seller\":\"Rootoo Vietnam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7982637361091939245,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":459000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Nước Hoa Kẹp Cửa Gió Ô Tô- 1 Pine+ 1 Refill- Lime Basil & Mandarin\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":490000,\"priceHigh\":490000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcStl2MzFBBCCzwEin_h69yKicCKjzOj8NNjwr3TjP-2Trd4wZAMH2r1H4k9zsUBi1UkMhtIgz3xiH9Hb7CnO8YdvdK-xu9X\",\"offers\":[{\"seller\":\"Xe5s.VN\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:14091852514127855882,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":490000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Nước Hoa Nữ Mới Nhất 2022\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSEOjVjN-gUn4rfkrAa1_j5rNbioogJsHSHIag_is_4LTBcUaUgCh52P7d-PycIGQwU0OwNZ8ZgtOrw0OPqT2FBgkOji5e-QjuOILbj7Y4x874csvEdsC3D6w\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:12920738191949802137,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Chloe For Women EDP 75ml (Dung tích: Chiết 30ml) | Nước Hoa Cao Cấp, Nước Hoa Nam, Nước Hoa Nữ\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":870000,\"priceHigh\":870000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQfHCJu3tL3DAYZC_UVWKUAYXBQQhBt1BjVHFgGMLPB3BggzuiDBhRlc65PlTFMFZDWNO5xrGYmUiqLYTGWOcBccMCWYxNAfftkWbYKWLHA8utWPzSZnvk72A\",\"offers\":[{\"seller\":\"Perfume168.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+800k+1+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:14799064431178238906,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":870000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"600000 VND\",\"params\":{\"priceVnd\":600000}},{\"attribute\":\"reviewCount\",\"evidence\":\"9 reviews\",\"params\":{\"count\":9}}],\"tradeOff\":{\"attribute\":\"price\",\"evidence\":\"412000 VND\",\"params\":{\"priceVnd\":412000}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nĐể gợi ý đúng ý, mình cần tìm ngay.\n\nMình chọn **Full set Nước hoa Đêm Bên Bờ Biển** vì có đánh giá 5⭐ từ 9 người mua — đây là dấu hiệu tin cậy khi tặng quà.\nNếu muốn rẻ hơn, có **Nước hoa mini Laco** — nhưng đây là chiết nhỏ, nên nếu bạn gái thích nước hoa thì full set sẽ ấn tượng hơn. **Chloe For Women** là hương nước ngoài nổi tiếng, nhưng mình chưa xác nhận được chính xác dung tích và loại (chiết hay chính hãng) — bạn nên kiểm tra trên trang bán trước khi đặt.\n\nMình gợi ý chọn full set vì vừa giá, vừa có đánh giá tốt, và là quà tặng hoàn chỉnh cho sinh nhật 🎁\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, không phải quảng cáo\n\n[FOLLOWUPS]Nước hoa nữ nào thơm lâu nhất|Cách chọn nước hoa phù hợp với bạn gái|Quà sinh nhật khác trong tầm 1tr[/FOLLOWUPS]"
+    }
+  ]
+}

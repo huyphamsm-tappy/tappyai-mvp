@@ -1,0 +1,25 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 6692,
+  "evidenceId": "78903236-ddbb-452c-b573-c38ed168befc",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Chào bạn! 👋 Cuối tuần này (28-29/9) bạn có thể thử những gợi ý này:\n\n**Thư giãn & ăn uống** — Tìm quán cà phê hay nhà hàng ngon quanh Quận 1 để nghỉ ngơi, hoặc đặt bàn ăn tối lãng mạn.\n\n**Hoạt động ngoài trời** — Nếu thời tiết đẹp, có thể đi công viên, dạo phố, hoặc tham quan các điểm du lịch gần TP.HCM.\n\n**Giải trí** — Xem phim, karaoke, hoặc các hoạt động vui chơi khác.\n\n**Spa & thư giãn** — Đi massage, làm đẹp để thư giãn sau tuần làm việc.\n\nBạn muốn mình giúp tìm cụ thể cái gì? Ví dụ: quán ăn ngon, quán cà phê yên tĩnh, spa, rạp phim, hay điểm tham quan nào đó? 😊\n\n[FOLLOWUPS]quán ăn ngon Quận 1|quán cà phê yên tĩnh|spa thư giãn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (28-29/9) bạn có thể thử những gợi ý này:\n\n**Thư giãn & ăn uống** — Tìm quán cà phê hay nhà hàng ngon quanh Quận 1 để nghỉ ngơi, hoặc đặt bàn ăn tối lãng mạn.\n\n**Hoạt động ngoài trời** — Nếu thời tiết đẹp, có thể đi công viên, dạo phố, hoặc tham quan các điểm du lịch gần TP.HCM.\n\n**Giải trí** — Xem phim, karaoke, hoặc các hoạt động vui chơi khác.\n\n**Spa & thư giãn** — Đi massage, làm đẹp để thư giãn sau tuần làm việc.\n\nBạn muốn mình giúp tìm cụ thể cái gì? Ví dụ: quán ăn ngon, quán cà phê yên tĩnh, spa, rạp phim, hay điểm tham quan nào đó? 😊\n\n[FOLLOWUPS]quán ăn ngon Quận 1|quán cà phê yên tĩnh|spa thư giãn[/FOLLOWUPS]"
+    }
+  ]
+}

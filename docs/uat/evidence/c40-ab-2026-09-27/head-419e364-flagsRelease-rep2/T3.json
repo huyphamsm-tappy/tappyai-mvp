@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 5400,
+  "evidenceId": "24d0a127-9aa1-4228-8880-3be3f65459cd",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể mà bạn đang hỏi vì lần trước mình chưa gọi tool tìm kiếm đầy đủ. \n\nĐể trả lời chính xác về bao gồm ăn sáng hay không, mình cần biết:\n- **Bạn muốn check-in ngày nào, check-out ngày nào?** (để mình tìm giá và chi tiết phòng đúng ngày)\n\nSau đó mình sẽ tìm các khách sạn gần biển Đà Nẵng dưới 1 triệu và xem rõ từng cái có bao gồm ăn sáng không nhé.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy kết quả tìm được khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể trong tầm dưới 1 triệu. Để gợi ý chính xác theo budget của bạn, mình cần xem giá thực tế theo ngày bạn muốn lưu trú.\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày check-in|Ngày check-out|Số người lưu trú[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể mà bạn đang hỏi vì lần trước mình chưa gọi tool tìm kiếm đầy đủ. \n\nĐể trả lời chính xác về bao gồm ăn sáng hay không, mình cần biết:\n- **Bạn muốn check-in ngày nào, check-out ngày nào?** (để mình tìm giá và chi tiết phòng đúng ngày)\n\nSau đó mình sẽ tìm các khách sạn gần biển Đà Nẵng dưới 1 triệu và xem rõ từng cái có bao gồm ăn sáng không nhé."
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 18598,
+  "evidenceId": "9a6a0499-1dc9-4beb-9bd7-ba1534a61830",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": [
+    "upscale"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Ocean Bay Resort & Spa** cho kỷ niệm này — 4.7⭐ với 3.183 đánh giá, có spa và nhà hàng riêng, lý tưởng cho dịp đặc biệt.\n\nNgoài ra **Thiên Thanh Phú Quốc Resort** cũng 4.7⭐ (1.759 đánh giá) và nằm trên đường Trần Hưng Đạo, dễ di chuyển. Cả hai đều có spa để bạn thư giãn sau ngày chơi.\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9798373748855425577\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ở mấy đêm?|Ngân sách khoảng bao nhiêu?|Muốn gần biển hay trung tâm?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Ocean Bay Resort & Spa** cho kỷ niệm này — 4.7⭐ với 3.183 đánh giá, có spa và nhà hàng riêng, lý tưởng cho dịp đặc biệt.\n\nNgoài ra **Thiên Thanh Phú Quốc Resort** cũng 4.7⭐ (1.759 đánh giá) và nằm trên đường Trần Hưng Đạo, dễ di chuyển. Cả hai đều có spa để bạn thư giãn sau ngày chơi.\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9798373748855425577\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ở mấy đêm?|Ngân sách khoảng bao nhiêu?|Muốn gần biển hay trung tâm?[/FOLLOWUPS]"
+    }
+  ]
+}

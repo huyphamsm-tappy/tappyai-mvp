@@ -1,0 +1,156 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14394,
+  "evidenceId": "2753ab91-f84c-4af4-8753-43df804dbf49",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng ngon phòng riêng",
+        "type": "restaurant",
+        "location": "quan 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "price": "200-600 N ₫",
+      "hours": "07:30–22:30",
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Tiệm Yến Nha Trang - chi nhánh Hồ Chí Minh",
+      "rating": 5,
+      "count": 100,
+      "price": "200-300 N ₫",
+      "hours": "09:00–23:30",
+      "address": "110 Trần Đình Xu, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 619,
+      "hours": "14:00–22:00",
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 981,
+      "hours": "08:00–00:00",
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng hải sản & lẩu Yeebo (Quận 1) - Yeebo Seafood and Hotpot Restaurant (District 1)",
+      "rating": 4.2,
+      "count": 657,
+      "hours": "09:00–14:00, 17:00–22:00",
+      "address": "Không nằm trong Lim Tower, 1 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "private_room"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử tổ chức tiệc hôm nay ở Quận 1. Dựa trên kết quả tìm kiếm, **Nhà Hàng Ngon** là lựa chọn mình nghiêng về nhất — **4⭐ (11.428 đánh giá Google Maps)**, khoảng giá 200-600k/người, mở cửa đến 22:30, có website riêng để liên hệ đặt phòng riêng. Địa chỉ 160 Pasteur, Quận 1, rất trung tâm.\n\nNgoài ra, **Hàng Dương Quán** (4.5⭐, 723 đánh giá) cũng là lựa chọn tốt — có link đặt bàn trực tiếp trên website, mở cả ngày, giá phù hợp. Tuy nhiên, cả hai chỗ đều chưa xác nhận rõ ràng về phòng riêng, nên **bạn nên gọi trước để chắc chắn họ có phòng riêng cho 8 người** và xác nhận giá cụ thể.\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":true},{\"label\":\"🌐 Website - Nhà Hàng Ngon\",\"type\":\"website\",\"url\":\"https://nhahangngon.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để đặt phòng riêng|Xem thêm quán khác|Cần giúp gì nữa?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử tổ chức tiệc hôm nay ở Quận 1. Dựa trên kết quả tìm kiếm, **Nhà Hàng Ngon** là lựa chọn mình nghiêng về nhất — **4⭐ (11.428 đánh giá Google Maps)**, khoảng giá 200-600k/người, mở cửa đến 22:30, có website riêng để liên hệ đặt phòng riêng. Địa chỉ 160 Pasteur, Quận 1, rất trung tâm.\n\nNgoài ra, **Hàng Dương Quán** (4.5⭐, 723 đánh giá) cũng là lựa chọn tốt — có link đặt bàn trực tiếp trên website, mở cả ngày, giá phù hợp. Tuy nhiên, cả hai chỗ đều chưa xác nhận rõ ràng về phòng riêng, nên **bạn nên gọi trước để chắc chắn họ có phòng riêng cho 8 người** và xác nhận giá cụ thể.\n\nMình chưa thấy bằng chứng về phòng riêng ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":true},{\"label\":\"🌐 Website - Nhà Hàng Ngon\",\"type\":\"website\",\"url\":\"https://nhahangngon.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để đặt phòng riêng|Xem thêm quán khác|Cần giúp gì nữa?[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 9311,
+  "evidenceId": "2337fd2a-01be-4ffc-bfd0-078341449e3c",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction",
+        "location": "quan 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em công viên Tao Đàn",
+      "rating": 4.6,
+      "count": 46,
+      "address": "QMFR+VC5, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Vincom Đồng Khởi",
+      "rating": 5,
+      "count": 995,
+      "hours": "10:00–22:00",
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình gợi ý **Timezone Vincom Đồng Khởi** cho tối nay — nơi này có 5⭐ từ 995 đánh giá, mở đến 22:00 nên hoàn hảo cho bữa tối. Đây là trung tâm vui chơi với bowling, game điện tử, rất phù hợp để 5 bạn tụ tập và chơi cùng nhau 🎳\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem Timezone Vincom\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":true},{\"label\":\"🌳 Công viên 23 tháng 9\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16774375903398734205\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Timezone Vincom Đồng Khởi** cho tối nay — nơi này có 5⭐ từ 995 đánh giá, mở đến 22:00 nên hoàn hảo cho bữa tối. Đây là trung tâm vui chơi với bowling, game điện tử, rất phù hợp để 5 bạn tụ tập và chơi cùng nhau 🎳\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem Timezone Vincom\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":true},{\"label\":\"🌳 Công viên 23 tháng 9\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16774375903398734205\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

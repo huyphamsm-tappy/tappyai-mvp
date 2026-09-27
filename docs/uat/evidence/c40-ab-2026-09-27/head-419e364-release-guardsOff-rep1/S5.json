@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 6302,
+  "evidenceId": "2320557a-1bb6-485c-9c1d-4cc925e26d65",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm:\n- **Bạn gái thích gì?** (trang sức, mỹ phẩm, điện tử, thời trang, phụ kiện, sách...?)\n- **Cô ấy có sở thích hoặc hobby nào không?** (makeup, du lịch, chơi game, yoga, nấu ăn...?)\n\nVới thông tin này, mình sẽ tìm những sản phẩm chất lượng, giá hợp lý trên Shopee/Lazada/TikTok Shop để bạn chọn 😊\n\n[FOLLOWUPS]Quà trang sức|Quà mỹ phẩm|Quà điện tử|Quà thời trang[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm:\n- **Bạn gái thích gì?** (trang sức, mỹ phẩm, điện tử, thời trang, phụ kiện, sách...?)\n- **Cô ấy có sở thích hoặc hobby nào không?** (makeup, du lịch, chơi game, yoga, nấu ăn...?)\n\nVới thông tin này, mình sẽ tìm những sản phẩm chất lượng, giá hợp lý trên Shopee/Lazada/TikTok Shop để bạn chọn 😊\n\n[FOLLOWUPS]Quà trang sức|Quà mỹ phẩm|Quà điện tử|Quà thời trang[/FOLLOWUPS]"
+    }
+  ]
+}

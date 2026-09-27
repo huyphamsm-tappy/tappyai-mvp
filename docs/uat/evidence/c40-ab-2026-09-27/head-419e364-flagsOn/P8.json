@@ -1,0 +1,159 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 14193,
+  "evidenceId": "75237b62-47cf-4a6d-89aa-c91f5f5dbfd1",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage mở khuya",
+        "type": "spa",
+        "location": "quan 3"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 256,
+      "hours": "09:00–21:00",
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Túc Duyệt Dưỡng Sinh Hội Quán｜Phiếu massage Spa｜ ...",
+      "address": "quan 3"
+    },
+    {
+      "name": "Đào Viên: SPA Ngôi Nhà Phép Thuật (ALLANEE SPA)",
+      "address": "quan 3"
+    },
+    {
+      "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+      "rating": 4.8,
+      "count": 668,
+      "hours": "09:00–21:00",
+      "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 587,
+      "hours": "09:00–19:00",
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Lam Spa Quận 3",
+      "rating": 4.6,
+      "count": 101,
+      "hours": "09:00–21:00",
+      "address": "406 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage Ba Miền Spa First - Gội đầu dưỡng sinh",
+      "rating": 4.9,
+      "count": 284,
+      "hours": "10:00–22:00",
+      "address": "335 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Massage SAIGON STAR l Massage Thư Giãn Quận 3",
+      "rating": 4.7,
+      "count": 51,
+      "hours": "Mở cửa cả ngày",
+      "address": "204 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "YUBII SPA Quận 3 - Massage và Gội đầu dưỡng sinh",
+      "rating": 4.8,
+      "count": 154,
+      "hours": "10:30–21:30",
+      "address": "06 Đ. Kỳ Đồng, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature",
+      "rating": 5,
+      "count": 258,
+      "hours": "09:00–03:30",
+      "address": "40/37 Trần Quang Diệu, Quận 3, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage thư giãn sau 22h. Có 2 spa ở Quận 3 mở khuya đáp ứng nhu cầu này:\n\n**Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature** là lựa chọn tốt nhất — **5⭐ (258 đánh giá Google Maps)**, mở đến 3:30 sáng nên hoàn toàn phù hợp với giờ khuya. Spa này có đánh giá rất cao và chuyên gội đầu dưỡng sinh, chăm sóc da.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Chuỵ Ba Signature\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1Jt9GiPqqu/?mibextid=wwXIfr\",\"primary\":true},{\"label\":\"📍 Google Maps - Chuỵ Ba Signature\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9151013133202926729\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt lịch trước không|Dịch vụ nào ở spa này tốt nhất|Spa khác ở quận khác|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage thư giãn sau 22h. Có 2 spa ở Quận 3 mở khuya đáp ứng nhu cầu này:\n\n**Gội Đầu Dưỡng Sinh Spa Chăm Sóc Da Chuỵ Ba Signature** là lựa chọn tốt nhất — **5⭐ (258 đánh giá Google Maps)**, mở đến 3:30 sáng nên hoàn toàn phù hợp với giờ khuya. Spa này có đánh giá rất cao và chuyên gội đầu dưỡng sinh, chăm sóc da.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Chuỵ Ba Signature\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1Jt9GiPqqu/?mibextid=wwXIfr\",\"primary\":true},{\"label\":\"📍 Google Maps - Chuỵ Ba Signature\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9151013133202926729\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt lịch trước không|Dịch vụ nào ở spa này tốt nhất|Spa khác ở quận khác|[/FOLLOWUPS]"
+    }
+  ]
+}

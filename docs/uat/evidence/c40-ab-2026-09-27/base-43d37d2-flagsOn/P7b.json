@@ -1,0 +1,33 @@
+{
+  "id": "P7b",
+  "text": "1–2 người",
+  "parent": "P7",
+  "status": 200,
+  "ms": 3013,
+  "evidenceId": "c0afc222-7aa8-4a3e-b1fc-759a7cad50d6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn đi 2 người, gần vị trí hiện tại (Quận 1), hôm nay, tầm giá phổ thông. Để gợi ý đúng ý, mình cần thêm:\n\n**Tầm giá bạn muốn?** (dưới 300k / 300–500k / trên 500k)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "1–2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 2 người, gần vị trí hiện tại (Quận 1), hôm nay, tầm giá phổ thông. Để gợi ý đúng ý, mình cần thêm:\n\n**Tầm giá bạn muốn?** (dưới 300k / 300–500k / trên 500k)"
+    }
+  ]
+}

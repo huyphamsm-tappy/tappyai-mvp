@@ -1,0 +1,33 @@
+{
+  "id": "P7b",
+  "text": "1–2 người",
+  "parent": "P7",
+  "status": 200,
+  "ms": 5597,
+  "evidenceId": "29b4e44a-8c23-44b1-aa1d-9b0d1fdb3e87",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cảm ơn bạn! Mình đã biết là 2 người rồi 😊\n\n**An Miên Spa** vẫn là lựa chọn tốt nhất cho 2 người — gần (1km), đánh giá cao 4.9⭐ (948 đánh giá), mở đến 22h nên bạn có thể đi vào buổi tối. Không gian thoải mái, dịch vụ gội đầu dưỡng sinh chuyên nghiệp, phù hợp để 2 người thư giãn cùng nhau.\n\nNếu muốn thêm lựa chọn khác gần đó, mình có thể tìm thêm spa khác trong khu vực không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/An+Miên+Spa+Quận+1+TP+HCM\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]spa khác gần đây|gội đầu + massage|spa cao cấp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các spa gội đầu dưỡng sinh gần bạn ở Quận 1 nhé.Mình chọn **An Miên Spa** — gần nhất (chỉ 1km), đánh giá 4.9⭐ từ 948 khách, mở đến 22h. Ngoài gội đầu dưỡng sinh, còn có dịch vụ massage thư giãn. Bạn có thể xem chi tiết và đặt lịch trên website hoặc Klook.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nemo Gội Đầu 5 sao|H2O Spa gần đây|Giá gội đầu dưỡng sinh[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "1–2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Cảm ơn bạn! Mình đã biết là 2 người rồi 😊\n\n**An Miên Spa** vẫn là lựa chọn tốt nhất cho 2 người — gần (1km), đánh giá cao 4.9⭐ (948 đánh giá), mở đến 22h nên bạn có thể đi vào buổi tối. Không gian thoải mái, dịch vụ gội đầu dưỡng sinh chuyên nghiệp, phù hợp để 2 người thư giãn cùng nhau.\n\nNếu muốn thêm lựa chọn khác gần đó, mình có thể tìm thêm spa khác trong khu vực không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/An+Miên+Spa+Quận+1+TP+HCM\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]spa khác gần đây|gội đầu + massage|spa cao cấp[/FOLLOWUPS]"
+    }
+  ]
+}

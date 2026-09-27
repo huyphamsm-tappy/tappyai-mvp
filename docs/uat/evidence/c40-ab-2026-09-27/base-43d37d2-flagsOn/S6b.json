@@ -1,0 +1,77 @@
+{
+  "id": "S6b",
+  "text": "tai nghe bluetooth",
+  "parent": "S6",
+  "status": 200,
+  "ms": 11516,
+  "evidenceId": "b32fd722-dd0a-4d25-8ac2-daf5ba812c21",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng",
+      "rating": 4.8,
+      "count": 326,
+      "price": 320000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC",
+      "rating": 4.7,
+      "count": 962,
+      "price": 730000
+    },
+    {
+      "name": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+      "rating": 4.7,
+      "count": 321,
+      "price": 990000
+    },
+    {
+      "name": "Baseus Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 -Trắng",
+      "rating": 4.3,
+      "count": 20,
+      "price": 439000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Sony WH-1000XM6",
+      "rating": 4.5,
+      "count": 166,
+      "price": 9990000
+    },
+    {
+      "name": "Tai nghe Devialet Gemini 2",
+      "rating": 4.6,
+      "count": 192,
+      "price": 11350000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS1U4LYK4yyPmTYHiToJtZtAod5sajccoVVT0gqE9rZ7crlIg1akcYfgChwZU63zRFQDyzgm94tD3Ip69w4GfQr9sToEhv7m1vcqd-YCetJl-QqnMkrd_mQhSg\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTzqzJ5RFXU2sfXu8x6LaPN6GGrcaFt6Yq8pO6yHrod_eSyksZiepRhiWvFPe42KHHr0fV6TNwdWU_2Swowis01sOJxrLzY1mQno_Xd-QVtDaL9vfC64Hmn\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTIn--VfzlTYxly0UKVy93BbOhtA6dOLUdw4ZCZzNJVnI_BmseanQogB6xcDYnCvdO9QxAzHXRAQw5yAE_MjBqSfQg6o7xuNDwEfPTPWlxqwjsS-0L9hfIe\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:3\",\"name\":\"Baseus Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 -Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":439000,\"priceHigh\":439000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQo3RF61N1_jaUvRpFZmRMGw9XopnFqdPASk1kaYtKWeOtwo8PyXPphoeiFAUy_8CWTTAPOmLNmGq-8YGIim0guzPG8prV1IU7qXT5dskySSpaODInYIHfz\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:11713069749495372633,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":439000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":20}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth chụp Tai Sony WH-1000XM6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9990000,\"priceHigh\":9990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS5C2wRdmYqasAOQmmrvozYRdVW3Akmack1LSajXkC6OUoWIOVu9pnoIGXVayuZGYDufitSv-rf340mohXaxVCdf3Kqododsx5kswNAQ3ZAnx5zV2e7riDP\",\"offers\":[{\"seller\":\"Sony Store Online\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10565347217797513768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":166}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Devialet Gemini 2\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11350000,\"priceHigh\":11350000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrp5vBLIIklHbrG41vLsrcmjtJ-o0Hm7oDITOPEoKhg_9dFbAms791uJ_0cR-mDOYKjc7hnT-xag3RknqOvndLPM28NjTw6NO29t_WfAubEOz_m5a-jfkk2CI\",\"offers\":[{\"seller\":\"songlongmedia\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:15011041498540625654,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11350000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":192}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},{\"attribute\":\"reviewCount\",\"evidence\":\"326 reviews\",\"params\":{\"count\":326}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"962 reviews\",\"params\":{\"count\":962}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng** — 320.000₫, 4.8⭐ (326 đánh giá), tại Thế Giới Di Động — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình giả sử bạn cần tai nghe Bluetooth dùng bây giờ, tầm giá phổ thông, chất lượng tốt. Để gợi ý chính xác, mình sẽ tìm ngay.\n\n Đây là lựa chọn tốt nhất về giá và chất lượng cho nhu cầu bây giờ.\n\nCòn có các lựa chọn khác như Anker Soundcore V40i (990.000đ, chuyên thể thao) hay Sony WH-1000XM6 (9.990.000đ, cao cấp) nếu bạn muốn nâng cấp hơn.\n\nMình gợi ý Havit vì vừa rẻ, vừa có đánh giá tốt — phù hợp dùng bây giờ mà không cần chi quá nhiều.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Tai nghe chụp tai hay true wireless?|Bạn dùng để làm gì?|Có ngân sách cao hơn không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "tai nghe bluetooth"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS1U4LYK4yyPmTYHiToJtZtAod5sajccoVVT0gqE9rZ7crlIg1akcYfgChwZU63zRFQDyzgm94tD3Ip69w4GfQr9sToEhv7m1vcqd-YCetJl-QqnMkrd_mQhSg\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTzqzJ5RFXU2sfXu8x6LaPN6GGrcaFt6Yq8pO6yHrod_eSyksZiepRhiWvFPe42KHHr0fV6TNwdWU_2Swowis01sOJxrLzY1mQno_Xd-QVtDaL9vfC64Hmn\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTIn--VfzlTYxly0UKVy93BbOhtA6dOLUdw4ZCZzNJVnI_BmseanQogB6xcDYnCvdO9QxAzHXRAQw5yAE_MjBqSfQg6o7xuNDwEfPTPWlxqwjsS-0L9hfIe\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:3\",\"name\":\"Baseus Tai Nghe Chụp Tai Không Dây Baseus Bass BH1 -Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":439000,\"priceHigh\":439000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQo3RF61N1_jaUvRpFZmRMGw9XopnFqdPASk1kaYtKWeOtwo8PyXPphoeiFAUy_8CWTTAPOmLNmGq-8YGIim0guzPG8prV1IU7qXT5dskySSpaODInYIHfz\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:11713069749495372633,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":439000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.3,\"ratingCount\":20}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth chụp Tai Sony WH-1000XM6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9990000,\"priceHigh\":9990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS5C2wRdmYqasAOQmmrvozYRdVW3Akmack1LSajXkC6OUoWIOVu9pnoIGXVayuZGYDufitSv-rf340mohXaxVCdf3Kqododsx5kswNAQ3ZAnx5zV2e7riDP\",\"offers\":[{\"seller\":\"Sony Store Online\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10565347217797513768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":166}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Devialet Gemini 2\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":11350000,\"priceHigh\":11350000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrp5vBLIIklHbrG41vLsrcmjtJ-o0Hm7oDITOPEoKhg_9dFbAms791uJ_0cR-mDOYKjc7hnT-xag3RknqOvndLPM28NjTw6NO29t_WfAubEOz_m5a-jfkk2CI\",\"offers\":[{\"seller\":\"songlongmedia\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:15011041498540625654,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":11350000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.6,\"ratingCount\":192}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},{\"attribute\":\"reviewCount\",\"evidence\":\"326 reviews\",\"params\":{\"count\":326}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"962 reviews\",\"params\":{\"count\":962}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình chọn **Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng** — 320.000₫, 4.8⭐ (326 đánh giá), tại Thế Giới Di Động — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình giả sử bạn cần tai nghe Bluetooth dùng bây giờ, tầm giá phổ thông, chất lượng tốt. Để gợi ý chính xác, mình sẽ tìm ngay.\n\n Đây là lựa chọn tốt nhất về giá và chất lượng cho nhu cầu bây giờ.\n\nCòn có các lựa chọn khác như Anker Soundcore V40i (990.000đ, chuyên thể thao) hay Sony WH-1000XM6 (9.990.000đ, cao cấp) nếu bạn muốn nâng cấp hơn.\n\nMình gợi ý Havit vì vừa rẻ, vừa có đánh giá tốt — phù hợp dùng bây giờ mà không cần chi quá nhiều.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Tai nghe chụp tai hay true wireless?|Bạn dùng để làm gì?|Có ngân sách cao hơn không?[/FOLLOWUPS]"
+    }
+  ]
+}

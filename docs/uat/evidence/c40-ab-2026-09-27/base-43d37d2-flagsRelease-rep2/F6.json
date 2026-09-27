@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 6665,
+  "evidenceId": "d60389bb-1cef-4fe6-bfb2-64a15aa04050",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Dữ liệu mình tìm được chỉ có rating, số đánh giá và giờ mở cửa, chứ không có dữ liệu real-time về lượng khách.\n\nBạn muốn mình tìm thêm quán khác, hay sẽ chọn một trong hai quán này? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **えびすEbisu District1 (Udon & Sushi)** cho bạn! Đây là nhà hàng Nhật chuyên udon và sushi, vừa ngon vừa gần, rất phù hợp cho 2 người.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng có rating 4.7⭐ tương tự, mở suốt đến nửa đêm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Ebisu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Ebisu+District+1+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi Lê Thánh Tôn|Nhà hàng Ngon[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Dữ liệu mình tìm được chỉ có rating, số đánh giá và giờ mở cửa, chứ không có dữ liệu real-time về lượng khách.\n\nBạn muốn mình tìm thêm quán khác, hay sẽ chọn một trong hai quán này? 😊"
+    }
+  ]
+}

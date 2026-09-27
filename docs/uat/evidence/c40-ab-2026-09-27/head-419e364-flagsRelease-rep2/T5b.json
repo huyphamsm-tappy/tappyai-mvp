@@ -1,0 +1,207 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 13721,
+  "evidenceId": "f11d0e85-ebb4-425f-9fd3-0c31966aa1d9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí nhóm 3-5 người",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Master Escape",
+      "rating": 5,
+      "count": 15696,
+      "hours": "07:30–01:00",
+      "distance_km": 3.6,
+      "address": "226 Trần Phú, An Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MenaWorld _ Menas Mall Sai Gon Airport",
+      "rating": 4.9,
+      "count": 1391,
+      "hours": "09:00–21:30",
+      "distance_km": 5.6,
+      "address": "60A Trường Sơn, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1544,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Beehive Premium Kids Cafe",
+      "rating": 4.8,
+      "count": 355,
+      "hours": "09:00–22:00",
+      "distance_km": 4.2,
+      "address": "126 An Dương Vương, An Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Board Game Station",
+      "rating": 4.4,
+      "count": 778,
+      "hours": "09:00–00:00",
+      "distance_km": 1.4,
+      "address": "30 Cô Bắc, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bigfun Teenclub",
+      "rating": 4.4,
+      "count": 271,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "Vạn Hạnh Mall, 11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+      "rating": 4.2,
+      "count": 378,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Master Escape",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 15696,
+        "distance_km": 3.6,
+        "open_now": true,
+        "opening_hours": "07:30–01:00"
+      }
+    },
+    {
+      "name": "MenaWorld _ Menas Mall Sai Gon Airport",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1391,
+        "distance_km": 5.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:30"
+      }
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1544,
+        "distance_km": 5.9,
+        "open_now": true,
+        "opening_hours": "09:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Cảm ơn bạn cho thêm thông tin! Mình sẽ tìm lại những địa điểm vui chơi phù hợp cho nhóm 3–5 người ở Quận 1. 🎉\n\nMình chọn **Master Escape** cho nhóm bạn! 🎮 Đây là trung tâm trò chơi truy tìm lối thoát (escape room) với đánh giá **5⭐ (15.696 đánh giá)** — hoàn hảo cho nhóm 3–5 người vì vừa đủ số lượng để chơi team, vừa có nhiều phòng chơi khác nhau. Mở cửa đến 01:00 nên bạn có thời gian linh hoạt.\n\nNgoài ra còn **Timezone Estella Place** (4.9⭐, 1.544 đánh giá) — có arcade, VR, bowling mini, phù hợp nếu muốn chơi nhiều trò khác nhau. Hoặc **Board Game Station** (4.4⭐, 1.4km gần nhất) nếu thích chơi board game chill với bạn bè. 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Master Escape\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17224612467347230692\",\"primary\":true},{\"label\":\"🌐 Website - Master Escape\",\"type\":\"website\",\"url\":\"https://masterescape.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Escape room hay arcade hơn?|Muốn chơi gì khác?|Cần gợi ý quán ăn gần đó?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm vui chơi gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Công viên Tao Đàn** cho bạn! 🌳 Nó cách bạn chỉ ~1km, đánh giá 4.5⭐ từ 15.648 người, và đang mở cửa đến 22:00 hôm nay — hoàn hảo để đi chơi chiều/tối.\n\nNgoài ra còn có **Công viên 23 tháng 9** (1.3km, 4.4⭐) và **Thảo Cầm Viên** (1.2km, 4.3⭐) nếu bạn muốn thử các chỗ khác. 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://congvientaodan.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên 23 tháng 9|Thảo Cầm Viên Sài Gòn|Quán cà phê gần đó[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Cảm ơn bạn cho thêm thông tin! Mình sẽ tìm lại những địa điểm vui chơi phù hợp cho nhóm 3–5 người ở Quận 1. 🎉\n\nMình chọn **Master Escape** cho nhóm bạn! 🎮 Đây là trung tâm trò chơi truy tìm lối thoát (escape room) với đánh giá **5⭐ (15.696 đánh giá)** — hoàn hảo cho nhóm 3–5 người vì vừa đủ số lượng để chơi team, vừa có nhiều phòng chơi khác nhau. Mở cửa đến 01:00 nên bạn có thời gian linh hoạt.\n\nNgoài ra còn **Timezone Estella Place** (4.9⭐, 1.544 đánh giá) — có arcade, VR, bowling mini, phù hợp nếu muốn chơi nhiều trò khác nhau. Hoặc **Board Game Station** (4.4⭐, 1.4km gần nhất) nếu thích chơi board game chill với bạn bè. 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Master Escape\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17224612467347230692\",\"primary\":true},{\"label\":\"🌐 Website - Master Escape\",\"type\":\"website\",\"url\":\"https://masterescape.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Escape room hay arcade hơn?|Muốn chơi gì khác?|Cần gợi ý quán ăn gần đó?[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 12163,
+  "evidenceId": "87bf805a-ea47-4f13-83b4-25cf6979433a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí vui chơi",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 17993,
+      "distance_km": 0.3,
+      "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ sông",
+      "rating": 4.4,
+      "count": 8896,
+      "hours": "09:00–17:00",
+      "distance_km": 0.6,
+      "address": "Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8983,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Sala",
+      "rating": 4.6,
+      "count": 3510,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.6,
+      "address": "01 Đ. Hoàng Thế Thiện, An Khánh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1544,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27463,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên dạ cầu Sài Gòn 1",
+      "rating": 4.3,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 17993,
+        "distance_km": 0.3
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15648,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên bờ sông",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 8896,
+        "distance_km": 0.6,
+        "open_now": false,
+        "opening_hours": "09:00–17:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những địa điểm giải trí hay ở gần bạn nhé! 🎉\n\nMình chọn **Nhà hát Thành phố Hồ Chí Minh** cho bạn!\n\nNếu muốn chọn lựa khác, **Công viên Tao Đàn** (1km, 4.5⭐) cũng rất hay — rộng rãi, mở đến 22:00, lý tưởng để dạo bộ thư giãn. Hoặc **Công viên bờ sông** (0.6km, 4.4⭐) nếu thích không khí yên tĩnh gần nước.\n\nBạn muốn xem show hay chỉ dạo chơi thôi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎭 Xem chi tiết - Nhà hát\",\"type\":\"website\",\"url\":\"https://ticket-stations.com/a-o-show\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem show nào hay|Công viên nào gần nhất|Quán ăn gần đó|Karaoke hay bar|Mua sắm ở đâu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm giải trí hay ở gần bạn nhé! 🎉\n\nMình chọn **Nhà hát Thành phố Hồ Chí Minh** cho bạn!\n\nNếu muốn chọn lựa khác, **Công viên Tao Đàn** (1km, 4.5⭐) cũng rất hay — rộng rãi, mở đến 22:00, lý tưởng để dạo bộ thư giãn. Hoặc **Công viên bờ sông** (0.6km, 4.4⭐) nếu thích không khí yên tĩnh gần nước.\n\nBạn muốn xem show hay chỉ dạo chơi thôi? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎭 Xem chi tiết - Nhà hát\",\"type\":\"website\",\"url\":\"https://ticket-stations.com/a-o-show\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem show nào hay|Công viên nào gần nhất|Quán ăn gần đó|Karaoke hay bar|Mua sắm ở đâu[/FOLLOWUPS]"
+    }
+  ]
+}

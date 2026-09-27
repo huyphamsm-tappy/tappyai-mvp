@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 4730,
+  "evidenceId": "b1d060a4-ec42-42c8-b985-f7f96ec5b376",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin về tình trạng đông khách của **Quán Bụi** lúc này. Để kiểm tra xem quán có đông không, bạn có thể:\n\n• Xem trực tiếp trên **Google Maps** — sẽ hiển thị biểu đồ đông khách theo giờ và tình trạng hiện tại\n• **Gọi quán** để hỏi trực tiếp (số điện thoại cũng có trên Maps)\n\nBạn muốn mình tìm quán khác ít đông hơn, hay vẫn thích thử Quán Bụi?\n\n[FOLLOWUPS]Quán khác ở Quận 1|Gọi Quán Bụi để hỏi|Xem Maps để kiểm tra đông khách[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1 với tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **Nhà Hàng Ngon** cho bạn — cách vị trí bạn chỉ 0.1km, rất gần và đang mở cửa. Với **4⭐ từ 11.428 đánh giá Google Maps**, đây là quán ăn Việt Nam nổi tiếng, hoàn hảo cho bữa tối 2 người. Quán mở đến 22:30 nên bạn có thời gian thoải mái 👍\n\nNếu muốn thử ẩm thực khác, **Quán Bụi** (4.5⭐, 901-1.210 đánh giá) cũng rất tuyệt — chuyên phục vụ bữa tối, có cơm, phở, nướng và đồ ăn chay, mở đến 23:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":true},{\"label\":\"🌐 Website - Nhà Hàng Ngon\",\"type\":\"website\",\"url\":\"https://nhahangngon.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi có gì đặc biệt?|Hải Sản Hoàng Gia ở đâu?|Có quán nào gần hơn không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin về tình trạng đông khách của **Quán Bụi** lúc này. Để kiểm tra xem quán có đông không, bạn có thể:\n\n• Xem trực tiếp trên **Google Maps** — sẽ hiển thị biểu đồ đông khách theo giờ và tình trạng hiện tại\n• **Gọi quán** để hỏi trực tiếp (số điện thoại cũng có trên Maps)\n\nBạn muốn mình tìm quán khác ít đông hơn, hay vẫn thích thử Quán Bụi?\n\n[FOLLOWUPS]Quán khác ở Quận 1|Gọi Quán Bụi để hỏi|Xem Maps để kiểm tra đông khách[/FOLLOWUPS]"
+    }
+  ]
+}

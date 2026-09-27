@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 5913,
+  "evidenceId": "59ead25c-20ab-40ba-8c2c-635c416a3569",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin cụ thể về bữa sáng cho khách sạn bạn hỏi vì chưa tìm kiếm chi tiết 😅\n\nĐể mình giúp bạn tìm khách sạn gần biển Đà Nẵng dưới 1 triệu/đêm **có bao gồm ăn sáng**, bạn cần cho mình biết:\n\n- **Ngày check-in và check-out** (để mình xem giá chính xác)\n- Bạn muốn ở **bao lâu** (1 đêm hay nhiều đêm)?\n\nSau đó mình sẽ tìm và so sánh các khách sạn có ăn sáng trong nằm trong ngân sách của bạn nhé! 🏨",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy danh sách khách sạn gần biển Đà Nẵng, nhưng cần xác nhận thêm **giá cụ thể** vì kết quả chưa hiển thị rõ mức giá từng phòng.\n\nBạn muốn check-in ngày nào để mình tìm giá chính xác cho bạn? 🏨\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Google Maps - Khách sạn gần biển\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/khach+san+gan+bien+da+nang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Check-in ngày nào?|Có ưu tiên gì khác không?|Tìm quanh khu vực nào cụ thể?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin cụ thể về bữa sáng cho khách sạn bạn hỏi vì chưa tìm kiếm chi tiết 😅\n\nĐể mình giúp bạn tìm khách sạn gần biển Đà Nẵng dưới 1 triệu/đêm **có bao gồm ăn sáng**, bạn cần cho mình biết:\n\n- **Ngày check-in và check-out** (để mình xem giá chính xác)\n- Bạn muốn ở **bao lâu** (1 đêm hay nhiều đêm)?\n\nSau đó mình sẽ tìm và so sánh các khách sạn có ăn sáng trong nằm trong ngân sách của bạn nhé! 🏨"
+    }
+  ]
+}

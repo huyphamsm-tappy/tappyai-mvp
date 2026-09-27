@@ -1,0 +1,139 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14380,
+  "evidenceId": "69580ec8-18bf-47d4-be29-c6349d067fab",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bua toi dia diem quan 1",
+        "location": "Quan 1, TP HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke quan 1",
+        "location": "Quan 1, TP HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quan an dem quan 1",
+        "location": "Quan 1, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Chill Skybar & Dining",
+      "rating": 4.4,
+      "count": 5938,
+      "hours": "17:30–01:30",
+      "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36882,
+      "hours": "07:00–18:30",
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Chill Skybar & Dining",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 5938,
+        "open_now": true,
+        "opening_hours": "17:30–01:30"
+      }
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 27462,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày"
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36882,
+        "open_now": false,
+        "opening_hours": "07:00–18:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé!\n\nMình chọn **Chill Skybar & Dining** cho buổi tối nay với hội bạn! 🎉\n\nĐịa điểm này mở cửa từ 17:30–01:30, hoàn hảo cho bữa tối và tiệc tối. Nằm ở AB Tower, Lê Lai, Bến Thành — vị trí trung tâm Quận 1, dễ tập trung với 5 người. Không gian skybar với view đẹp, phục vụ cả cocktail, ăn uống và giải trí, rất phù hợp cho nhóm bạn muốn vừa ăn vừa chơi.\n\nNgoài ra, **Phố đi bộ Bùi Viện** cũng là lựa chọn hay nếu muốn đi dạo, ăn uống tự do tại nhiều quán khác nhau — có 27.462 đánh giá, mở cửa cả ngày, sôi động vào buổi tối.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Chill Skybar & Dining\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7070654652790197972\",\"primary\":true},{\"label\":\"🌐 Website - Chill Skybar & Dining\",\"type\":\"website\",\"url\":\"http://www.chillsaigon.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn karaoke thay vì bar?|Tìm nhà hàng ăn tối gần đó?|Có quán nào rẻ hơn?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé!\n\nMình chọn **Chill Skybar & Dining** cho buổi tối nay với hội bạn! 🎉\n\nĐịa điểm này mở cửa từ 17:30–01:30, hoàn hảo cho bữa tối và tiệc tối. Nằm ở AB Tower, Lê Lai, Bến Thành — vị trí trung tâm Quận 1, dễ tập trung với 5 người. Không gian skybar với view đẹp, phục vụ cả cocktail, ăn uống và giải trí, rất phù hợp cho nhóm bạn muốn vừa ăn vừa chơi.\n\nNgoài ra, **Phố đi bộ Bùi Viện** cũng là lựa chọn hay nếu muốn đi dạo, ăn uống tự do tại nhiều quán khác nhau — có 27.462 đánh giá, mở cửa cả ngày, sôi động vào buổi tối.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Chill Skybar & Dining\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7070654652790197972\",\"primary\":true},{\"label\":\"🌐 Website - Chill Skybar & Dining\",\"type\":\"website\",\"url\":\"http://www.chillsaigon.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Muốn karaoke thay vì bar?|Tìm nhà hàng ăn tối gần đó?|Có quán nào rẻ hơn?[/FOLLOWUPS]"
+    }
+  ]
+}

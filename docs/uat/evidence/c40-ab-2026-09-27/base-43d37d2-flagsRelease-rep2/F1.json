@@ -1,0 +1,164 @@
+{
+  "id": "F1",
+  "text": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người",
+  "parent": null,
+  "status": 200,
+  "ms": 13404,
+  "evidenceId": "976d1c17-08b9-4c4c-bb79-5f19ecdd0d8d",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn tối ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "rating": 4.7,
+      "count": 1024,
+      "hours": "11:30–22:30",
+      "distance_km": 0.7,
+      "address": "2A Chu Mạnh Trinh, Bến Nghé, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 981,
+      "hours": "08:00–00:00",
+      "distance_km": 1.9,
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1210,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cục Gạch Quán",
+      "rating": 4.3,
+      "count": 4272,
+      "hours": "09:00–23:30",
+      "distance_km": 2.2,
+      "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NAO - Ăn uống ngay nào",
+      "rating": 4.4,
+      "count": 133,
+      "hours": "12:00–22:30",
+      "distance_km": 2.3,
+      "address": "TK43/2 Trần Hưng Đạo, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Ốc Đào",
+      "rating": 4.2,
+      "count": 2472,
+      "hours": "11:00–22:15",
+      "distance_km": 2.2,
+      "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "えびすEbisu District1( Udon & Sushi)",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1024,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "11:30–22:30"
+      }
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 981,
+        "distance_km": 1.9,
+        "open_now": true,
+        "opening_hours": "08:00–00:00"
+      }
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 1210,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "07:00–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **えびすEbisu District1 (Udon & Sushi)** cho bạn! Đây là nhà hàng Nhật chuyên udon và sushi, vừa ngon vừa gần, rất phù hợp cho 2 người.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng có rating 4.7⭐ tương tự, mở suốt đến nửa đêm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Ebisu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Ebisu+District+1+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi Lê Thánh Tôn|Nhà hàng Ngon[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **えびすEbisu District1 (Udon & Sushi)** cho bạn! Đây là nhà hàng Nhật chuyên udon và sushi, vừa ngon vừa gần, rất phù hợp cho 2 người.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng có rating 4.7⭐ tương tự, mở suốt đến nửa đêm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Ebisu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Ebisu+District+1+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Ebisu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15517132992011241645\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi Lê Thánh Tôn|Nhà hàng Ngon[/FOLLOWUPS]"
+    }
+  ]
+}

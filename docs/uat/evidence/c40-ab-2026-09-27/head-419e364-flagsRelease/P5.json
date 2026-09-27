@@ -1,0 +1,191 @@
+{
+  "id": "P5",
+  "text": "massage",
+  "parent": null,
+  "status": 200,
+  "ms": 15828,
+  "evidenceId": "43972ac9-2900-4e7b-b9b7-a9187bb4dd8c",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Senva Spa - Quận 1",
+      "rating": 4.9,
+      "count": 854,
+      "hours": "09:30–23:00",
+      "distance_km": 1,
+      "address": "153 Ký Con, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "LaVie En Spa - Massage Hochiminh | Massage near me | 胡志明市按摩",
+      "rating": 4.8,
+      "count": 192,
+      "hours": "09:00–02:30",
+      "distance_km": 0.9,
+      "address": "255 Lý Tự Trọng, P. Phú Thuận, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "An Spa 1",
+      "rating": 4.7,
+      "count": 538,
+      "hours": "10:00–00:00",
+      "distance_km": 0.7,
+      "address": "222 228 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "rating": 4.8,
+      "count": 74,
+      "hours": "09:30–23:30",
+      "distance_km": 1,
+      "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Senva Spa - Quận 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 854,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "09:30–23:00"
+      }
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 103,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–21:00"
+      }
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3550,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "09:30–22:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa/massage gần bạn ở Quận 1 nhé! 🧖‍♀️\n\nMình chọn **Senva Spa - Quận 1** cho bạn! 💆‍♀️ Spa này có **4.9⭐ (854 đánh giá Google Maps)** — rất được tin tưởng. Cách bạn chỉ ~1km, mở đến 23:00 nên rất tiện. Ngoài ra, **Hyan Spa** cũng tuyệt vời với rating 5⭐ và gần hơn (0.9km), hoặc nếu bạn muốn nhiều lựa chọn dịch vụ, **Hạ Spa** có 3.550 đánh giá — spa lớn với đủ loại massage.\n\nBạn muốn massage loại nào — body massage, foot massage hay gội đầu?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Senva Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3479517558071959535\",\"primary\":true},{\"label\":\"🌐 Website Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hyan Spa gần hơn|Hạ Spa có nhiều dịch vụ|Xem tất cả spa gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa/massage gần bạn ở Quận 1 nhé! 🧖‍♀️\n\nMình chọn **Senva Spa - Quận 1** cho bạn! 💆‍♀️ Spa này có **4.9⭐ (854 đánh giá Google Maps)** — rất được tin tưởng. Cách bạn chỉ ~1km, mở đến 23:00 nên rất tiện. Ngoài ra, **Hyan Spa** cũng tuyệt vời với rating 5⭐ và gần hơn (0.9km), hoặc nếu bạn muốn nhiều lựa chọn dịch vụ, **Hạ Spa** có 3.550 đánh giá — spa lớn với đủ loại massage.\n\nBạn muốn massage loại nào — body massage, foot massage hay gội đầu?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Senva Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3479517558071959535\",\"primary\":true},{\"label\":\"🌐 Website Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hyan Spa gần hơn|Hạ Spa có nhiều dịch vụ|Xem tất cả spa gần đây[/FOLLOWUPS]"
+    }
+  ]
+}

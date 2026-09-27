@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 5560,
+  "evidenceId": "737b469a-5d83-4e75-8ef2-d1cfb9a91b9d",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Cơm Khay Gỗ** mở từ **10:00 đến 21:00** 🕙\n\nBây giờ là 20:34 nên quán vẫn còn mở khoảng 26 phút nữa. Nếu bạn muốn ăn trưa cuối tuần (trưa mai hoặc ngày khác) thì quán mở từ 10 giờ sáng, rất tiện cho gia đình 6 người.\n\nBạn định đi hôm nay hay ngày mai?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nít, có chỗ đậu xe ô tô nhé.Mình gợi ý **Cơm Khay Gỗ** — quán gia đình lý tưởng cho bữa trưa cuối tuần với 6 người 👨‍👩‍👧‍👦\n\n**4.8⭐ (931 đánh giá Google Maps)**\n📍 214 Nguyễn Trọng Tuyển, Phú Nhuận\n⏰ 10:00–21:00 (mở cửa)\n\nQuán chuyên cơm, lẩu, mì — đa dạng món ăn phù hợp cả lớn lẫn bé. Không gian rộng.\n\nHai lựa chọn khác cũng tốt: **Tám Riêu** (4.7⭐, 2.114 đánh giá) hoặc **Nhà hàng Hoàng Tâm** (4.5⭐, 1.662 đánh giá) — cả hai đều ở Phan Xích Long, gần nhau.\n\nBạn muốn xem thêm chi tiết hoặc cần gợi ý về loại món ăn cụ thể không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán khác ở Phú Nhuận|Gợi ý món ăn cho con nít|Quán có khu vui chơi cho trẻ[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Cơm Khay Gỗ** mở từ **10:00 đến 21:00** 🕙\n\nBây giờ là 20:34 nên quán vẫn còn mở khoảng 26 phút nữa. Nếu bạn muốn ăn trưa cuối tuần (trưa mai hoặc ngày khác) thì quán mở từ 10 giờ sáng, rất tiện cho gia đình 6 người.\n\nBạn định đi hôm nay hay ngày mai?"
+    }
+  ]
+}

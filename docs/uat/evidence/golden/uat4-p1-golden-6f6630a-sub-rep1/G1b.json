@@ -1,0 +1,29 @@
+{
+  "id": "G1b",
+  "group": "entertainment-single",
+  "criteria": [
+    "Names cinemas near Quận 7 as cards with names",
+    "Does not ask which district again",
+    "Reply appears once"
+  ],
+  "turns": [
+    {
+      "user": "Tối nay đi xem phim ở rạp nào gần Quận 7",
+      "status": 200,
+      "elapsedMs": 457,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    }
+  ]
+}

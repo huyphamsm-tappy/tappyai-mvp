@@ -1,0 +1,210 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 16650,
+  "evidenceId": "3070b7e2-77ba-446d-ba85-5f40a8f2cb34",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-09-28",
+        "checkOut": "2026-09-30"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng ăn tối Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan du lịch Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hải Sản Ku Tom Đà Nẵng",
+      "rating": 4.9,
+      "count": 3522,
+      "hours": "10:00–02:00",
+      "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "NGON DA NANG - VIETNAMESE CUISINE RESTAURANT",
+      "rating": 4.9,
+      "count": 2206,
+      "hours": "09:00–22:30",
+      "address": "88B Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ăn Thôi",
+      "rating": 4.8,
+      "count": 8095,
+      "hours": "10:30–21:30",
+      "address": "114 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà An - Vietnamese local food restaurant and vegan",
+      "rating": 4.8,
+      "count": 4120,
+      "hours": "10:00–23:00",
+      "address": "101 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+      "rating": 4.8,
+      "count": 3189,
+      "hours": "06:00–23:00",
+      "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "ĐÀ THÀNH QUÁN",
+      "rating": 4.8,
+      "count": 2847,
+      "hours": "10:00–02:00",
+      "address": "122 Nguyễn Văn Thoại, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+      "rating": 4.9,
+      "count": 591,
+      "hours": "10:00–22:00",
+      "address": "300 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cơm nhà vui",
+      "rating": 4.8,
+      "count": 2201,
+      "hours": "10:00–22:00",
+      "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 10000, Việt Nam"
+    },
+    {
+      "name": "Cơm Nhà Vui",
+      "rating": 4.7,
+      "count": 2912,
+      "hours": "10:00–22:00",
+      "address": "133 Hà Bổng, An Hải, Đà Nẵng 10000, Việt Nam"
+    },
+    {
+      "name": "Ngon Hà Nội Xưa Restaurant",
+      "rating": 4.7,
+      "count": 1301,
+      "hours": "09:30–22:00",
+      "address": "285 Hồ Nghinh, Sơn Trà, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công ty Du lịch Bản Địa Đà Nẵng",
+      "rating": 5,
+      "count": 11,
+      "hours": "Mở cửa cả ngày",
+      "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công viên Biển Đông",
+      "rating": 4.6,
+      "count": 2585,
+      "hours": "Mở cửa cả ngày",
+      "address": "Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cầu Rồng",
+      "rating": 4.5,
+      "count": 9551,
+      "hours": "Mở cửa cả ngày",
+      "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Tượng Cá Chép Hóa Rồng",
+      "rating": 4.5,
+      "count": 1484,
+      "hours": "Mở cửa cả ngày",
+      "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+      "rating": 4.6,
+      "count": 218,
+      "address": "364F+2C5, Bạch Đằng, Hòa Cường, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Công Viên APEC",
+      "rating": 4.4,
+      "count": 1911,
+      "address": "Đ. 2 Tháng 9, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo Tàng Đà Nẵng",
+      "rating": 4.3,
+      "count": 3718,
+      "hours": "08:00–17:00",
+      "address": "31 Trần Phú, P, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+      "rating": 4.2,
+      "count": 8222,
+      "hours": "07:00–17:00",
+      "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)",
+      "rating": 4.4,
+      "count": 178,
+      "hours": "Mở cửa cả ngày",
+      "address": "26 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Làng Bích họa Đà Nẵng",
+      "rating": 3.9,
+      "count": 891,
+      "hours": "08:00–21:30",
+      "address": "75 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người với ngân sách 6 triệu. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn đi máy bay hay xe khách?** (Máy bay nhanh hơn nhưng tốn chi phí, xe khách tiết kiệm hơn)\n\nTrong khi đó, mình sẽ tìm kiếm khách sạn, nhà hàng, và điểm tham quan ở Đà Nẵng để chuẩn bị kế hoạch chi tiết cho bạn.\n\nTuyệt vời! Mình đã tìm được các lựa chọn khách sạn, nhà hàng, và điểm tham quan ở Đà Nẵng. Thời tiết dự báo **27°C, có mây, độ ẩm 82%** — khá dễ chịu để tham quan 👍\n\nTrước khi lập kế hoạch chi tiết, **bạn muốn đi máy bay hay xe khách?** Điều này sẽ ảnh hưởng đến ngân sách và thời gian bạn có ở Đà Nẵng.\n\nTrong khi chờ, mình sẽ tìm thêm thông tin về giá vé để gợi ý chính xác nhất cho bạn.\n\n[FOLLOWUPS]Máy bay từ TP.HCM|Xe khách từ TP.HCM|Đã có vé rồi[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người với ngân sách 6 triệu. Để gợi ý chính xác, mình cần biết:\n\n**Bạn muốn đi máy bay hay xe khách?** (Máy bay nhanh hơn nhưng tốn chi phí, xe khách tiết kiệm hơn)\n\nTrong khi đó, mình sẽ tìm kiếm khách sạn, nhà hàng, và điểm tham quan ở Đà Nẵng để chuẩn bị kế hoạch chi tiết cho bạn.\n\nTuyệt vời! Mình đã tìm được các lựa chọn khách sạn, nhà hàng, và điểm tham quan ở Đà Nẵng. Thời tiết dự báo **27°C, có mây, độ ẩm 82%** — khá dễ chịu để tham quan 👍\n\nTrước khi lập kế hoạch chi tiết, **bạn muốn đi máy bay hay xe khách?** Điều này sẽ ảnh hưởng đến ngân sách và thời gian bạn có ở Đà Nẵng.\n\nTrong khi chờ, mình sẽ tìm thêm thông tin về giá vé để gợi ý chính xác nhất cho bạn.\n\n[FOLLOWUPS]Máy bay từ TP.HCM|Xe khách từ TP.HCM|Đã có vé rồi[/FOLLOWUPS]"
+    }
+  ]
+}

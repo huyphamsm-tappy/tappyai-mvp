@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7001,
+  "evidenceId": "3395d29d-e675-40a2-afdb-2ca5c5be15b3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Dữ liệu mình tìm được không cho biết số lượng khách hiện tại hay mức độ bận rộn.\n\nCách tốt nhất là bạn có thể:\n- Gọi điện trực tiếp cho quán để hỏi\n\nBạn muốn mình tìm thêm quán khác gần đó không, hay cần thông tin gì khác về **The Cajun Cua** hay **Quán Bụi**?\n\n[FOLLOWUPS]Gọi đặt bàn trước|Xem review trên Maps|Tìm quán khác gần Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **The Cajun Cua** cho bạn! 🦞 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km. Mở đến 23:00 nên hoàn hảo cho bữa tối. Dù **Hải Sản Hoàng Gia** có rating cao hơn (4.7⭐), nhưng nó xa hơn (1.9km) và The Cajun Cua vẫn rất ngon với số lượng review khủng.\n\nNgoài ra, **Quán Bụi** (0.7km, 4.5⭐) cũng là lựa chọn tuyệt vời nếu bạn thích ẩm thực Việt Nam truyền thống.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có rating cao hơn|Quán Bụi ăn Việt gần hơn|Tìm quán khác ở Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Dữ liệu mình tìm được không cho biết số lượng khách hiện tại hay mức độ bận rộn.\n\nCách tốt nhất là bạn có thể:\n- Gọi điện trực tiếp cho quán để hỏi\n\nBạn muốn mình tìm thêm quán khác gần đó không, hay cần thông tin gì khác về **The Cajun Cua** hay **Quán Bụi**?\n\n[FOLLOWUPS]Gọi đặt bàn trước|Xem review trên Maps|Tìm quán khác gần Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

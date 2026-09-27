@@ -1,0 +1,204 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 17909,
+  "evidenceId": "d3b54b07-4c86-412b-b1d7-1fcb0333ba80",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm du lịch gia đình gần Sài Gòn",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12809,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "rating": 4.5,
+      "count": 48592,
+      "hours": "07:00–18:00",
+      "distance_km": 0.6,
+      "address": "Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Chợ Bến Thành",
+      "rating": 4,
+      "count": 87029,
+      "distance_km": 0.6,
+      "address": "Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu du lịch Văn Thánh",
+      "rating": 4.3,
+      "count": 5248,
+      "hours": "07:00–21:00",
+      "distance_km": 3,
+      "address": "48/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CÔNG VIÊN GIA ĐỊNH",
+      "rating": 4.6,
+      "count": 2776,
+      "hours": "04:00–22:00",
+      "distance_km": 4.9,
+      "address": "Đường Hoàng Minh Giám, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "KHU DU LỊCH BÌNH QUỚI 1",
+      "rating": 4.4,
+      "count": 270,
+      "hours": "08:00–21:00",
+      "distance_km": 7.2,
+      "address": "1147 Bình Quới, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Du Lịch Bến Xưa",
+      "rating": 4.3,
+      "count": 1593,
+      "hours": "07:00–22:00",
+      "distance_km": 8.8,
+      "address": "39A Hà Huy Giáp, An Phú Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên văn hóa Suối Tiên",
+      "rating": 4.3,
+      "count": 22901,
+      "hours": "08:00–17:00",
+      "distance_km": 14.9,
+      "address": "120 Song Hành Xa Lộ Hà Nội, Tăng Nhơn Phú, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12809,
+        "distance_km": 0.5,
+        "open_now": false,
+        "opening_hours": "08:00–21:00"
+      }
+    },
+    {
+      "name": "Dinh Độc Lập",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 48592,
+        "distance_km": 0.6,
+        "open_now": false,
+        "opening_hours": "07:00–18:00"
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36881,
+        "distance_km": 1.2,
+        "open_now": false,
+        "opening_hours": "07:00–18:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm giúp bạn những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé! 🎯\n\nCuối tuần này trời TP.HCM nắng nóng (33°C), mình gợi ý 3 địa điểm vui chơi gia đình gần bạn:\n\n**Đường sách Thành phố Hồ Chí Minh** — **4.6⭐ (12.809 đánh giá Google Maps)** · Cách bạn 0.5km\nKhông gian yên tĩnh, lý tưởng cho gia đình. Có sách, quán cà phê, vui chơi cho trẻ em. Mở 08:00–21:00, nên đi sáng sớm hoặc chiều tránh nắng gắt.\n\n**Thảo Cầm Viên Sài Gòn** — **4.3⭐ (36.881 đánh giá Google Maps)** · Cách bạn 1.2km\nVườn bách thú lớn, trẻ em thích xem động vật. Mở 07:00–18:30, nên đi sáng để tránh nóng.\n\n**Công viên Gia Định** — **4.6⭐ (2.776 đánh giá Google Maps)** · Cách bạn 4.9km\nCông viên rộng, có khu vui chơi trẻ em, mở cả sáng lẫn chiều (04:00–22:00). Đi chiều tối sẽ mát hơn.\n\nVì trời nóng, mình gợi ý chọn **Đường sách** hoặc **Thảo Cầm Viên** sáng sớm, hoặc **Công viên Gia Định** chiều tối. Bạn muốn đi đâu nhất? 🎪\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Thảo Cầm Viên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":false},{\"label\":\"📍 Xem Công viên Gia Định\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1597779693383310824\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đi sáng hay chiều?|Có thích vườn bách thú không?|Muốn ở gần hay xa một chút?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn những địa điểm vui chơi gần Sài Gòn phù hợp cho gia đình 4 người cuối tuần này nhé! 🎯\n\nCuối tuần này trời TP.HCM nắng nóng (33°C), mình gợi ý 3 địa điểm vui chơi gia đình gần bạn:\n\n**Đường sách Thành phố Hồ Chí Minh** — **4.6⭐ (12.809 đánh giá Google Maps)** · Cách bạn 0.5km\nKhông gian yên tĩnh, lý tưởng cho gia đình. Có sách, quán cà phê, vui chơi cho trẻ em. Mở 08:00–21:00, nên đi sáng sớm hoặc chiều tránh nắng gắt.\n\n**Thảo Cầm Viên Sài Gòn** — **4.3⭐ (36.881 đánh giá Google Maps)** · Cách bạn 1.2km\nVườn bách thú lớn, trẻ em thích xem động vật. Mở 07:00–18:30, nên đi sáng để tránh nóng.\n\n**Công viên Gia Định** — **4.6⭐ (2.776 đánh giá Google Maps)** · Cách bạn 4.9km\nCông viên rộng, có khu vui chơi trẻ em, mở cả sáng lẫn chiều (04:00–22:00). Đi chiều tối sẽ mát hơn.\n\nVì trời nóng, mình gợi ý chọn **Đường sách** hoặc **Thảo Cầm Viên** sáng sớm, hoặc **Công viên Gia Định** chiều tối. Bạn muốn đi đâu nhất? 🎪\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"📍 Xem Thảo Cầm Viên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":false},{\"label\":\"📍 Xem Công viên Gia Định\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1597779693383310824\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đi sáng hay chiều?|Có thích vườn bách thú không?|Muốn ở gần hay xa một chút?[/FOLLOWUPS]"
+    }
+  ]
+}

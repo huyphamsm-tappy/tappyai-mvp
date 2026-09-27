@@ -1,0 +1,25 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 5831,
+  "evidenceId": "9735c6a5-e282-41ff-8fa8-4af1ae96a012",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🎬 **Gợi ý giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n💆 **Spa & làm đẹp** - thư giãn sau tuần làm việc\n🛍️ **Mua sắm** - nếu cần gì đó\n🚶 **Tham quan** - những điểm vui chơi hay dạo phố\n\nBạn đang ở Quận 1, TP.HCM phải không? Bạn muốn làm gì cụ thể - ăn gì, chơi gì, hay thư giãn?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🎬 **Gợi ý giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n💆 **Spa & làm đẹp** - thư giãn sau tuần làm việc\n🛍️ **Mua sắm** - nếu cần gì đó\n🚶 **Tham quan** - những điểm vui chơi hay dạo phố\n\nBạn đang ở Quận 1, TP.HCM phải không? Bạn muốn làm gì cụ thể - ăn gì, chơi gì, hay thư giãn?"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "id": "P2",
+  "text": "spa massage chan gan q1 duoi 300k",
+  "parent": null,
+  "status": 200,
+  "ms": 22973,
+  "evidenceId": "0f730f8c-7366-4ed1-98f5-ee0c91717b9d",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage chân Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+      "rating": 4.9,
+      "count": 34,
+      "hours": "Mở cửa cả ngày",
+      "address": "166 Đ. Cống Quỳnh, quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+      "address": "Quận 1, TP HCM"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP HCM"
+    },
+    {
+      "name": "Charm Spa | Massage Foot Quận 1",
+      "rating": 1.8,
+      "count": 31,
+      "hours": "09:00–00:00",
+      "address": "153 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "LV SPA - body massage - foot massage Quận 1",
+      "rating": 4.6,
+      "count": 33,
+      "hours": "09:00–01:00",
+      "address": "8B Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 71006, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "rating": 4.8,
+      "count": 74,
+      "hours": "09:30–23:30",
+      "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Golden",
+      "rating": 4.5,
+      "count": 86,
+      "hours": "09:00–00:00",
+      "address": "25 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "May Xưa Spa Quận 1 - Massage body, Foot, Gội đầu dưỡng sinh, tắm tẩy tế bào dưỡng mịn, xông hơi",
+      "rating": 4.4,
+      "count": 317,
+      "hours": "Mở cửa cả ngày",
+      "address": "283/16 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý đúng ý, mình cần biết: **bạn muốn massage chân thôi hay kèm toàn bộ cơ thể?** Hay mình tìm luôn các spa massage chân chuyên biệt gần đây?\n\nĐể mình tìm nhanh, mình sẽ search spa massage chân ở Quận 1 ngay:\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng **chưa xác nhận được giá cụ thể** của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, mình gợi ý **Hyan Spa** — có **5⭐ từ 103 đánh giá Google Maps**, mở 10:00–21:00, chuyên massage chân & body. Hoặc **CHARM SPA Garden** — **4.9⭐ (234 đánh giá)**, mở 10:00–00:00, nếu bạn muốn tối nay.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Hyan Spa - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 CHARM SPA Garden\",\"type\":\"website\",\"url\":\"https://charmspa.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi Hyan Spa hỏi giá|Tìm spa khác rẻ hơn|Massage body kèm chân được không|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần biết: **bạn muốn massage chân thôi hay kèm toàn bộ cơ thể?** Hay mình tìm luôn các spa massage chân chuyên biệt gần đây?\n\nĐể mình tìm nhanh, mình sẽ search spa massage chân ở Quận 1 ngay:\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng **chưa xác nhận được giá cụ thể** của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, mình gợi ý **Hyan Spa** — có **5⭐ từ 103 đánh giá Google Maps**, mở 10:00–21:00, chuyên massage chân & body. Hoặc **CHARM SPA Garden** — **4.9⭐ (234 đánh giá)**, mở 10:00–00:00, nếu bạn muốn tối nay.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Hyan Spa - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 CHARM SPA Garden\",\"type\":\"website\",\"url\":\"https://charmspa.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi Hyan Spa hỏi giá|Tìm spa khác rẻ hơn|Massage body kèm chân được không|[/FOLLOWUPS]"
+    }
+  ]
+}

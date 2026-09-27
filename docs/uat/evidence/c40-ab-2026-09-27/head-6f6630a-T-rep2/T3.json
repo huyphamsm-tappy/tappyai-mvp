@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4299,
+  "evidenceId": "b1876f40-3594-4918-b3b4-7b58b98ff7f9",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về các gói phòng và dịch vụ kèm theo (ăn sáng, wifi, v.v.) từ kết quả tìm kiếm. Để biết khách sạn thứ hai có bao gồm ăn sáng hay không, bạn cần kiểm tra trực tiếp trên trang đặt phòng khi chọn loại phòng — thường sẽ có ghi rõ \"Bao gồm ăn sáng\" hoặc \"Không bao gồm\" ở mục chi tiết gói phòng.\n\nBạn muốn mình tìm thêm khách sạn khác có ăn sáng miễn phí, hay kiểm tra cái này trước?\n\n[FOLLOWUPS]Khách sạn khác có ăn sáng|Xem chi tiết M Hotel|Tìm resort gần biển[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nMình giả sử bạn muốn ở 1 đêm cuối tuần tới (check-in 3/10, check-out 4/10) gần biển Đà Nẵng. Để tìm khách sạn phù hợp, mình cần gọi công cụ ngay.\n\nMình thấy kết quả tìm được 10 khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể để so sánh với ngân sách 1 triệu của bạn. Để xem giá chính xác theo ngày bạn muốn, bạn có thể kiểm tra trực tiếp trên các nền tảng đặt phòng:\n\n\n[FOLLOWUPS]Khách sạn nào gần biển nhất?|Có khách sạn nào dưới 800k không?|Muốn ở nhiều đêm hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về các gói phòng và dịch vụ kèm theo (ăn sáng, wifi, v.v.) từ kết quả tìm kiếm. Để biết khách sạn thứ hai có bao gồm ăn sáng hay không, bạn cần kiểm tra trực tiếp trên trang đặt phòng khi chọn loại phòng — thường sẽ có ghi rõ \"Bao gồm ăn sáng\" hoặc \"Không bao gồm\" ở mục chi tiết gói phòng.\n\nBạn muốn mình tìm thêm khách sạn khác có ăn sáng miễn phí, hay kiểm tra cái này trước?\n\n[FOLLOWUPS]Khách sạn khác có ăn sáng|Xem chi tiết M Hotel|Tìm resort gần biển[/FOLLOWUPS]"
+    }
+  ]
+}

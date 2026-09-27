@@ -1,0 +1,25 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 7323,
+  "evidenceId": "b118c870-cbaf-4006-b2f1-1b856d529204",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần này cho gia đình 4 người gần Sài Gòn! 🎉 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại hoạt động nào?**\n- Tham quan danh lam thắng cảnh (chùa, công viên, bảo tàng)?\n- Ăn uống, quán cà phê, nhà hàng?\n- Giải trí (công viên nước, khu vui chơi, karaoke)?\n- Thư giãn, spa?\n- Hay kết hợp nhiều hoạt động?\n\nVà **bạn có ưu tiên gì khác không?** (ví dụ: gần nhất, giá hợp lý, phù hợp với trẻ em...)\n\nMình sẽ tìm những địa điểm phù hợp nhất cho gia đình bạn! 😊\n\n[FOLLOWUPS]Tham quan danh lam|Ăn uống & giải trí|Công viên nước|Spa thư giãn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần này cho gia đình 4 người gần Sài Gòn! 🎉 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại hoạt động nào?**\n- Tham quan danh lam thắng cảnh (chùa, công viên, bảo tàng)?\n- Ăn uống, quán cà phê, nhà hàng?\n- Giải trí (công viên nước, khu vui chơi, karaoke)?\n- Thư giãn, spa?\n- Hay kết hợp nhiều hoạt động?\n\nVà **bạn có ưu tiên gì khác không?** (ví dụ: gần nhất, giá hợp lý, phù hợp với trẻ em...)\n\nMình sẽ tìm những địa điểm phù hợp nhất cho gia đình bạn! 😊\n\n[FOLLOWUPS]Tham quan danh lam|Ăn uống & giải trí|Công viên nước|Spa thư giãn[/FOLLOWUPS]"
+    }
+  ]
+}

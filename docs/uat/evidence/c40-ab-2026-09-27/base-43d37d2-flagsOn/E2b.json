@@ -1,0 +1,128 @@
+{
+  "id": "E2b",
+  "text": "dưới 200k/người",
+  "parent": "E2",
+  "status": 200,
+  "ms": 14960,
+  "evidenceId": "5d9072fa-adb9-4d78-be96-66415e10348a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim giá rẻ dưới 200k",
+        "location": "Quận 1 TP HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9380,
+      "distance_km": 0.9,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4507,
+      "distance_km": 0.2,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1751,
+      "distance_km": 0.2,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1260,
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6034,
+      "distance_km": 2.1,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1326,
+      "distance_km": 1.9,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas Lý Chính Thắng",
+      "rating": 4,
+      "count": 2591,
+      "distance_km": 2.1,
+      "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam"
+    },
+    {
+      "name": "LOTTE Cinema Goldview",
+      "rating": 4.4,
+      "count": 1041,
+      "distance_km": 2.5,
+      "address": "346 Bến Vân Đồn, Vĩnh Hội, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CGV Hoàng Văn Thụ",
+      "rating": 4.3,
+      "count": 4912,
+      "distance_km": 5.1,
+      "address": "415 Đ. Hoàng Văn Thụ, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mega GS Cinemas - Cao Thắng",
+      "rating": 4.3,
+      "count": 3436,
+      "distance_km": 2.2,
+      "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **CGV Liberty Citypoint** — 4.4⭐ (1.751 đánh giá Google Maps).\n\nMình giả sử bạn đi 1–2 người hôm nay. Rạp hiện đại, dễ tìm.\n\nLưu ý: giá vé có thể khác tùy ngày/suất chiếu — bạn nên kiểm tra lịch chiếu trực tiếp trên trang rạp để chọn suất và xem giá chính xác.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Xem lịch chiếu CGV\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phim gì đang chiếu?|Muốn xem phim nào?|Cần gợi ý phim hay?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 200k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **CGV Liberty Citypoint** — 4.4⭐ (1.751 đánh giá Google Maps).\n\nMình giả sử bạn đi 1–2 người hôm nay. Rạp hiện đại, dễ tìm.\n\nLưu ý: giá vé có thể khác tùy ngày/suất chiếu — bạn nên kiểm tra lịch chiếu trực tiếp trên trang rạp để chọn suất và xem giá chính xác.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Xem lịch chiếu CGV\",\"type\":\"website\",\"url\":\"https://www.cgv.vn/default/cinox/site/cgv-vincom-dong-khoi\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Phim gì đang chiếu?|Muốn xem phim nào?|Cần gợi ý phim hay?[/FOLLOWUPS]"
+    }
+  ]
+}

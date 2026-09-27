@@ -1,0 +1,120 @@
+{
+  "id": "P1",
+  "text": "Spa nào tốt rẻ ở Đà Nẵng",
+  "parent": null,
+  "status": 200,
+  "ms": 15647,
+  "evidenceId": "e4aa2d10-49f7-4b30-b957-8f81c1c15a67",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Jang Mi Spa & Massage",
+      "rating": 4.9,
+      "count": 8641,
+      "hours": "09:00–22:00",
+      "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Q&B Luxury Spa – Massage & Sauna Đà Nẵng",
+      "rating": 4.8,
+      "count": 208,
+      "hours": "08:30–04:00",
+      "address": "46 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Mo Ran Spa Massage Da Nang",
+      "rating": 4.9,
+      "count": 920,
+      "hours": "09:00–22:30",
+      "address": "88 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 553300, Việt Nam"
+    },
+    {
+      "name": "Luxury Healthy Spa & Massage",
+      "rating": 4.8,
+      "count": 4584,
+      "hours": "09:00–04:00",
+      "address": "224 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam"
+    },
+    {
+      "name": "Panda Spa & Massage",
+      "rating": 4.8,
+      "count": 2907,
+      "hours": "09:00–23:45",
+      "address": "Panda Spa, 229 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+      "rating": 4.8,
+      "count": 1443,
+      "hours": "08:30–23:00",
+      "address": "266 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Lee spa & Massage Đà Nẵng",
+      "rating": 4.9,
+      "count": 119,
+      "hours": "10:00–00:00",
+      "address": "8 Phước Trường 8, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Juno Spa & Massage 마사지 按摩",
+      "rating": 4.8,
+      "count": 898,
+      "hours": "Mở cửa cả ngày",
+      "address": "35 Hà Bổng, An Hải, Đà Nẵng 50400, Việt Nam"
+    },
+    {
+      "name": "RORA Spa & Massage Da Nang - 다낭 마사지 - 다낭 스파",
+      "rating": 4.7,
+      "count": 1250,
+      "hours": "09:00–23:00",
+      "address": "16-18 An Thượng 26, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bali Spa•Cafe | Da Nang Massage & Facial • 다낭 마사지",
+      "rating": 4.9,
+      "count": 1729,
+      "hours": "09:00–02:00",
+      "address": "485 Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Jang Mi Spa & Massage** — 4.9⭐ (8.641 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:00–22:00.\n\nMình giả sử bạn muốn tìm spa massage giá phổ thông gần đây hôm nay. Để gợi ý đúng ý, mình sẽ tìm ngay các spa ở Đà Nẵng 🔍\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Jang Mi Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6104490640027775177\",\"primary\":true},{\"label\":\"💬 Nhắn Zalo Jang Mi Spa\",\"type\":\"website\",\"url\":\"https://zalo.me/0363457969\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]massage thư giãn bao nhiêu tiền|spa nào gần nhất|spa nào mở đêm|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Jang Mi Spa & Massage** — 4.9⭐ (8.641 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:00–22:00.\n\nMình giả sử bạn muốn tìm spa massage giá phổ thông gần đây hôm nay. Để gợi ý đúng ý, mình sẽ tìm ngay các spa ở Đà Nẵng 🔍\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Jang Mi Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6104490640027775177\",\"primary\":true},{\"label\":\"💬 Nhắn Zalo Jang Mi Spa\",\"type\":\"website\",\"url\":\"https://zalo.me/0363457969\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]massage thư giãn bao nhiêu tiền|spa nào gần nhất|spa nào mở đêm|[/FOLLOWUPS]"
+    }
+  ]
+}

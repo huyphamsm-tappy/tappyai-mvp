@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 8223,
+  "evidenceId": "a3ce4172-0e06-425c-924b-d480b395e647",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, đây là lựa chọn tuyệt vời. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**2. Twisters** — Nếu muốn xem phim thảm họa với những cảnh quay ấn tượng, phim này có cốt truyện hấp dẫn và những cảnh quay thiên nhiên tuyệt đẹp.\n\n**3. Sing 2** — Nếu thích phim hoạt hình nhẹ nhàng, vui vẻ với âm nhạc hay, đây là bộ phim gia đình vui nhộn, giúp thư giãn tâm trạng.\n\nBạn thích thể loại nào nhất — hành động, hài, hay phim nhẹ nhàng? 😊\n\n[FOLLOWUPS]Xem ở đâu / Lich chieu / Rap gan nhat[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**1. Deadpool & Wolverine** — Nếu thích hành động sôi động, hài hước và những pha hành động cực kỳ, đây là lựa chọn tuyệt vời. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**2. Twisters** — Nếu muốn xem phim thảm họa với những cảnh quay ấn tượng, phim này có cốt truyện hấp dẫn và những cảnh quay thiên nhiên tuyệt đẹp.\n\n**3. Sing 2** — Nếu thích phim hoạt hình nhẹ nhàng, vui vẻ với âm nhạc hay, đây là bộ phim gia đình vui nhộn, giúp thư giãn tâm trạng.\n\nBạn thích thể loại nào nhất — hành động, hài, hay phim nhẹ nhàng? 😊\n\n[FOLLOWUPS]Xem ở đâu / Lich chieu / Rap gan nhat[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 4572,
+  "evidenceId": "a8c9515c-1e5c-436c-80e7-95fc73e21a87",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bạn muốn mua cái gì vậy? 😊 Mình có thể giúp bạn tìm sản phẩm, so sánh giá trên các nền tảng, hoặc gợi ý mua sắm theo nhu cầu của bạn.\n\nBạn có thể nói:\n- **Tên sản phẩm cụ thể** (vd: laptop, điện thoại, quần áo...)\n- **Nhu cầu của bạn** (vd: cần máy tính để làm việc, tìm tai nghe chất lượng tốt...)\n- **Ngân sách** nếu có\n\nMình sẽ tìm giá tốt nhất cho bạn! 🛒",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn muốn mua cái gì vậy? 😊 Mình có thể giúp bạn tìm sản phẩm, so sánh giá trên các nền tảng, hoặc gợi ý mua sắm theo nhu cầu của bạn.\n\nBạn có thể nói:\n- **Tên sản phẩm cụ thể** (vd: laptop, điện thoại, quần áo...)\n- **Nhu cầu của bạn** (vd: cần máy tính để làm việc, tìm tai nghe chất lượng tốt...)\n- **Ngân sách** nếu có\n\nMình sẽ tìm giá tốt nhất cho bạn! 🛒"
+    }
+  ]
+}

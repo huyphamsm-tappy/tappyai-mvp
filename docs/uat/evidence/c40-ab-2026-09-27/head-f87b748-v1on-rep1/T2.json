@@ -1,0 +1,82 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 17418,
+  "evidenceId": "80282880-5f5b-408c-ad24-2a630f2c14d5",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "pickUnmatched"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần biết:\n\n**Bạn sẽ ở bao lâu?** (1 đêm hay nhiều đêm?) và **ngày check-in/check-out cụ thể là khi nào?**\n\nMình tìm được 10 khách sạn gần biển Đà Nẵng, nhưng cần xác nhận **ngày check-in/check-out cụ thể** để hiển thị giá chính xác. Hiện tại mình giả sử 1 đêm (3-4/10).\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[FOLLOWUPS]Khách sạn gần biển Đà Nẵng|Giá phòng dưới 1 triệu|Đặt phòng cuối tuần[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần biết:\n\n**Bạn sẽ ở bao lâu?** (1 đêm hay nhiều đêm?) và **ngày check-in/check-out cụ thể là khi nào?**\n\nMình tìm được 10 khách sạn gần biển Đà Nẵng, nhưng cần xác nhận **ngày check-in/check-out cụ thể** để hiển thị giá chính xác. Hiện tại mình giả sử 1 đêm (3-4/10).\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[FOLLOWUPS]Khách sạn gần biển Đà Nẵng|Giá phòng dưới 1 triệu|Đặt phòng cuối tuần[/FOLLOWUPS]"
+    }
+  ]
+}

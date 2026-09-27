@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 6741,
+  "evidenceId": "8d6841c2-6766-4f10-ad7c-de1d982b1dac",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Dữ liệu mình có chỉ cho thấy đánh giá và giờ mở cửa, nhưng không có số liệu thực time về lượng khách.\n\nBạn có thể:\n- **Xem trên Google Maps** - phần \"Thời gian bận\" sẽ cho thấy mức độ đông vào giờ bạn dự định đi\n\nBạn muốn mình tìm thêm quán khác gần Quận 1 không, hoặc bạn muốn chọn quán số 1 (Izakaya Choioinoodle) thay vì vậy? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn!\n\n Hoặc **Hải Sản Hoàng Gia** nếu bạn thích hải sản, 4.7⭐ và mở suốt đến nửa đêm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Quận 1|Quán ăn Việt ngon|Cafe đẹp gần đây[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Dữ liệu mình có chỉ cho thấy đánh giá và giờ mở cửa, nhưng không có số liệu thực time về lượng khách.\n\nBạn có thể:\n- **Xem trên Google Maps** - phần \"Thời gian bận\" sẽ cho thấy mức độ đông vào giờ bạn dự định đi\n\nBạn muốn mình tìm thêm quán khác gần Quận 1 không, hoặc bạn muốn chọn quán số 1 (Izakaya Choioinoodle) thay vì vậy? 😊"
+    }
+  ]
+}

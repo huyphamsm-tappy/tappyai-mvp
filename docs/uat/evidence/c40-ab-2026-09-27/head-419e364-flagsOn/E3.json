@@ -1,0 +1,165 @@
+{
+  "id": "E3",
+  "text": "quán bar nào chill có nhạc sống Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 19522,
+  "evidenceId": "0f5f66be-13b0-4e47-932e-c47439f35cc4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán bar nhạc sống",
+        "type": "bar",
+        "location": "quan 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Carmen Bar",
+      "rating": 4.3,
+      "count": 1069,
+      "price": "Trên 1 Tr ₫",
+      "hours": "19:00–01:00",
+      "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Vé Quán bar nhạc Hàn Quốc tại Seoul: ShowFilx",
+      "address": "quan 1"
+    },
+    {
+      "name": "Quán Bar Bên Tháp Quảng Châu・Quán Bar Ngắm Cảnh ...",
+      "address": "quan 1"
+    },
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "21:00–03:00",
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Amber Lounge Ground Floor - LIVE MUSIC - 1st Floor Pool & Karaoke",
+      "rating": 4.9,
+      "count": 719,
+      "hours": "16:00–05:00",
+      "address": "64 Đ. Tôn Thất Thiệp, Sài Gòn, Hồ Chí Minh 71006, Việt Nam"
+    },
+    {
+      "name": "Phòng trà Bến Thành",
+      "rating": 4.3,
+      "count": 323,
+      "price": "Trên 1 Tr ₫",
+      "hours": "09:00–22:00",
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Drinking Healing",
+      "rating": 4.4,
+      "count": 741,
+      "price": "200-300 N ₫",
+      "hours": "17:00–02:00",
+      "address": "25 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "District K",
+      "rating": 4.4,
+      "count": 1831,
+      "price": "Trên 1 Tr ₫",
+      "hours": "17:00–02:00",
+      "address": "30 Thủ Khoa Huân, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "rating": 5,
+      "count": 202,
+      "price": "100-600 N ₫",
+      "hours": "07:00–00:00",
+      "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động và có nhạc sống 🎵\n\n**Amber Lounge** là lựa chọn mình nghiêng về nhất — **4.9⭐ (719 đánh giá Google Maps)**, mở từ 16:00–05:00 nên hoàn hảo cho tối nay.\n\nNếu muốn rẻ hơn, **The Lủi** cũng hay — **4.9⭐ (513 đánh giá)**, nhưng đóng cửa 23:30 nên phù hợp nếu bạn đi sớm. Còn **Phòng trà Bến Thành** (4.3⭐) chuyên ca nhạc trực tiếp, mở đến 22:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Amber Lounge trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1970421699266319361\",\"primary\":true},{\"label\":\"🌐 Website Amber Lounge\",\"type\":\"website\",\"url\":\"https://amberloungesg.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Amber Lounge có gì đặc biệt|Quán bar khác ở Quận 1|Đặt bàn được không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi hôm nay ở Quận 1 với không khí sôi động và có nhạc sống 🎵\n\n**Amber Lounge** là lựa chọn mình nghiêng về nhất — **4.9⭐ (719 đánh giá Google Maps)**, mở từ 16:00–05:00 nên hoàn hảo cho tối nay.\n\nNếu muốn rẻ hơn, **The Lủi** cũng hay — **4.9⭐ (513 đánh giá)**, nhưng đóng cửa 23:30 nên phù hợp nếu bạn đi sớm. Còn **Phòng trà Bến Thành** (4.3⭐) chuyên ca nhạc trực tiếp, mở đến 22:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Amber Lounge trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1970421699266319361\",\"primary\":true},{\"label\":\"🌐 Website Amber Lounge\",\"type\":\"website\",\"url\":\"https://amberloungesg.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Amber Lounge có gì đặc biệt|Quán bar khác ở Quận 1|Đặt bàn được không[/FOLLOWUPS]"
+    }
+  ]
+}

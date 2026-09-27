@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7188,
+  "evidenceId": "4c3dcdfa-321d-44b1-82a9-db875be24270",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Dữ liệu mình có chỉ hiển thị rating và đánh giá chung, không có real-time về số lượng khách.\n\n Bạn có thể:\n\n• **Gọi trực tiếp** quán để hỏi tình trạng đông/vắng lúc này\n• **Xem trên Google Maps**\n• **Chọn The Cajun Cua** nếu muốn chắc chắn có chỗ, vì quán này cũng rất tốt và có thể ít đông hơn\n\nBạn muốn mình tìm thêm lựa chọn khác, hay sẽ thử một trong hai quán này? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **The Cajun Cua** cho bạn! 🦞 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km. Mở đến 23:00 nên hoàn hảo cho bữa tối.\n\nNgoài ra, mở đến nửa đêm. Hoặc **Quán Bụi** (0.7km) nếu thích ẩm thực Việt Nam truyền thống, gần nhất trong ba lựa chọn này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có rating cao hơn không?|Quán Bụi gần hơn được không?|Tìm quán ăn chay ở Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Dữ liệu mình có chỉ hiển thị rating và đánh giá chung, không có real-time về số lượng khách.\n\n Bạn có thể:\n\n• **Gọi trực tiếp** quán để hỏi tình trạng đông/vắng lúc này\n• **Xem trên Google Maps**\n• **Chọn The Cajun Cua** nếu muốn chắc chắn có chỗ, vì quán này cũng rất tốt và có thể ít đông hơn\n\nBạn muốn mình tìm thêm lựa chọn khác, hay sẽ thử một trong hai quán này? 😊"
+    }
+  ]
+}

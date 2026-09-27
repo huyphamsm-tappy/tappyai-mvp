@@ -1,0 +1,80 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 13777,
+  "evidenceId": "b189e95f-b83c-4a3c-bc09-82de994f0707",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "pickUnmatched"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy kết quả tìm được khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể trong tầm dưới 1 triệu. Để gợi ý chính xác theo budget của bạn, mình cần xem giá thực tế theo ngày bạn muốn lưu trú.\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày check-in|Ngày check-out|Số người lưu trú[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm khách sạn Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy kết quả tìm được khách sạn gần biển Đà Nẵng, nhưng chưa có thông tin giá cụ thể trong tầm dưới 1 triệu. Để gợi ý chính xác theo budget của bạn, mình cần xem giá thực tế theo ngày bạn muốn lưu trú.\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày check-in|Ngày check-out|Số người lưu trú[/FOLLOWUPS]"
+    }
+  ]
+}

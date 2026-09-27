@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7397,
+  "evidenceId": "60d08a7d-f02b-4147-bd75-1b74cb6fd047",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Nếu bạn muốn chắc chắn, có thể:\n- Gọi quán trước để hỏi tình trạng chỗ\n- Xem trên Google Maps để kiểm tra mức độ đông đúc hiện tại\n\nBạn có muốn mình tìm thêm quán khác hoặc cần thông tin gì khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Cajun+Cua+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé.\n\nMình chọn **The Cajun Cua** cho bạn 👍 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km, và mở đến 23:00 nên hoàn hảo cho bữa tối. Ngoài ra, **Hải Sản Hoàng Gia** (1.9km) có rating cao hơn 4.7⭐ nếu bạn muốn chọn hải sản cao cấp hơn, hoặc **Quán Bụi** (0.7km) nếu thích ẩm thực Việt truyền thống.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia cao cấp hơn?|Quán Bụi ẩm thực Việt?|Tìm quán khác gần đây?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Nếu bạn muốn chắc chắn, có thể:\n- Gọi quán trước để hỏi tình trạng chỗ\n- Xem trên Google Maps để kiểm tra mức độ đông đúc hiện tại\n\nBạn có muốn mình tìm thêm quán khác hoặc cần thông tin gì khác không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Cajun+Cua+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

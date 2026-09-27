@@ -1,0 +1,105 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 18006,
+  "evidenceId": "3f763a42-3698-4761-976b-6529fc49a7da",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [
+    {
+      "name": "The Poplar Resort",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 320
+      }
+    },
+    {
+      "name": "Ocean Bay Resort & Spa Phu Quoc",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 3183
+      }
+    },
+    {
+      "name": "Thiên Thanh Phú Quốc Resort",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1759
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟 Đây là resort sang trọng nhất trong danh sách — **4.9⭐ (320 đánh giá Google Maps)** với thiết kế hiện đại, phù hợp lắm cho kỷ niệm đặc biệt. Resort có không gian yên tĩnh, dịch vụ chất lượng cao, lý tưởng để tận hưởng những khoảnh khắc lãng mạn.\n\nNgoài ra, **Ocean Bay Resort & Spa** cũng là lựa chọn tuyệt vời — 4.7⭐ với 3.183 đánh giá, có spa riêng nên bạn có thể thư giãn cùng nhau. Hoặc **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) nếu muốn không gian riêng tư hơn.\n\nBạn định ở bao nhiêu đêm và muốn check-in khi nào? Mình sẽ giúp xem giá cụ thể nhé! 💕\n\n\n[FOLLOWUPS]Bao nhiêu đêm?|Ngân sách bao nhiêu?|Muốn gần biển hay trung tâm?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟 Đây là resort sang trọng nhất trong danh sách — **4.9⭐ (320 đánh giá Google Maps)** với thiết kế hiện đại, phù hợp lắm cho kỷ niệm đặc biệt. Resort có không gian yên tĩnh, dịch vụ chất lượng cao, lý tưởng để tận hưởng những khoảnh khắc lãng mạn.\n\nNgoài ra, **Ocean Bay Resort & Spa** cũng là lựa chọn tuyệt vời — 4.7⭐ với 3.183 đánh giá, có spa riêng nên bạn có thể thư giãn cùng nhau. Hoặc **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) nếu muốn không gian riêng tư hơn.\n\nBạn định ở bao nhiêu đêm và muốn check-in khi nào? Mình sẽ giúp xem giá cụ thể nhé! 💕\n\n\n[FOLLOWUPS]Bao nhiêu đêm?|Ngân sách bao nhiêu?|Muốn gần biển hay trung tâm?[/FOLLOWUPS]"
+    }
+  ]
+}

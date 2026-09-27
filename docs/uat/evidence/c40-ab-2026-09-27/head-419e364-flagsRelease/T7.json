@@ -1,0 +1,34 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8129,
+  "evidenceId": "6ee939ae-deab-45c9-a31b-559968bfc90f",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm giúp bạn vé máy bay từ TP.HCM đến Hà Nội tuần sau nhé.\n\nMình chua có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể tìm chuyến bay rẻ nhất tuần sau qua các nền tảng này:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — xem kết quả chuyến bay theo ngày, chọn chuyến rồi nhập thông tin hành khách\n\n[Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — so sánh giá giữa các hãng bay\n\nThường tuần sau (4-10/10) vé sẽ rẻ hơn so với ngày lẻ. Bạn nên so sánh giá các ngày trong tuần để tìm chuyến rẻ nhất nhé 🛫\n\n[FOLLOWUPS]Muốn bay ngày cụ thể nào?|Cần vé khứ hồi hay một chiều?|Bao nhiêu hành khách?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn vé máy bay từ TP.HCM đến Hà Nội tuần sau nhé.\n\nMình chua có kết quả giá vé trực tuyến cho ngày 4/10, nhưng bạn có thể tìm chuyến bay rẻ nhất tuần sau qua các nền tảng này:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — xem kết quả chuyến bay theo ngày, chọn chuyến rồi nhập thông tin hành khách\n\n[Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY) — so sánh giá giữa các hãng bay\n\nThường tuần sau (4-10/10) vé sẽ rẻ hơn so với ngày lẻ. Bạn nên so sánh giá các ngày trong tuần để tìm chuyến rẻ nhất nhé 🛫\n\n[FOLLOWUPS]Muốn bay ngày cụ thể nào?|Cần vé khứ hồi hay một chiều?|Bao nhiêu hành khách?[/FOLLOWUPS]"
+    }
+  ]
+}

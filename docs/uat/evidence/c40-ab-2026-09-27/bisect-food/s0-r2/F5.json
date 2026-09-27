@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 5388,
+  "evidenceId": "c666c37b-ff91-47ee-80ef-4a3e22a3a199",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu - Phan Xích Long** mở từ **10:30–21:30** hàng ngày, nên bạn có thể đến ăn trưa cuối tuần bình thường nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\"},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Tám+Riêu+Phú+Nhuận\"}],\"primary\":true}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nít, có chỗ đậu xe nhé.Mình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình bạn. Quán có **4.7⭐ (2.114 đánh giá)**, không gian rộng phù hợp cho 6 người, cách bạn ~2.9km. Mở từ 10:30–21:30, chuyên riêu cua ngon. Quán nằm trên Phan Xích Long, khu vực có chỗ đậu xe ô tô.\n\nNếu muốn lựa chọn khác, **Tiệm Cơm Vị Nhà** (4.8⭐, 234 đánh giá) cũng gần, chuyên cơm gia đình, hoặc **Tộ Grillnbeer** (4.7⭐, 612 đánh giá) có sân vườn thoáng, mở 11:00–14:00 trưa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"Tìm kiếm\",\"type\":\"search\",\"url\":\"tel:+84334626060\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Quán nào phù hợp hơn?|Cần gợi ý khác?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu - Phan Xích Long** mở từ **10:30–21:30** hàng ngày, nên bạn có thể đến ăn trưa cuối tuần bình thường nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\"},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Tám+Riêu+Phú+Nhuận\"}],\"primary\":true}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 12708,
+  "evidenceId": "009623a3-e954-427c-a0c1-05563c0bd1a9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu"
+    },
+    {
+      "name": "Trải nghiệm Spa và Massage tại The Spa By Thalgo ở ..."
+    },
+    {
+      "name": "Serene Head Spa & Massage - Saigon Branch",
+      "rating": 5,
+      "count": 195,
+      "hours": "09:30–23:00",
+      "distance_km": 0.4,
+      "address": "54 Đông Du, Ward, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Spa by Park - Massage & Body Care",
+      "rating": 4.9,
+      "count": 236,
+      "hours": "10:00–23:00",
+      "distance_km": 2.1,
+      "address": "214/55BD1 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "LaVie En Spa - Massage Hochiminh | Massage near me | 胡志明市按摩",
+      "rating": 4.8,
+      "count": 192,
+      "hours": "09:00–02:30",
+      "distance_km": 0.9,
+      "address": "255 Lý Tự Trọng, P. Phú Thuận, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "M Spa - Massage & Spa | Park 6, Vinhomes Central Park",
+      "rating": 4.2,
+      "count": 95,
+      "hours": "09:00–23:59",
+      "distance_km": 2.9,
+      "address": "QPVC+2Q7, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "distance_km": 0.9,
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Raku Spa Massage",
+      "rating": 4.7,
+      "count": 109,
+      "hours": "09:00–22:00",
+      "distance_km": 1.7,
+      "address": "153/3 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mandarin Spa & Massage",
+      "rating": 4.4,
+      "count": 855,
+      "hours": "07:30–22:30",
+      "distance_km": 5,
+      "address": "12 Thảo Điền, An Khánh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage gần vị trí hiện tại hôm nay. Tìm được 10 spa quanh Quận 1, nhưng cần lưu ý: **chưa xác nhận được giá cụ thể của các chỗ này**, nên không thể đối chiếu với ngân sách dưới 300k VND của bạn.\n\nDựa trên **đánh giá & khoảng cách**, mình nghiêng về **Serene Head Spa & Massage** — chỉ **0.4km** từ vị trí bạn, **5⭐ (195 đánh giá)**, mở đến 23:00 hôm nay. Đây là lựa chọn gần nhất với đánh giá cao nhất. Bạn có thể gọi hoặc vào website để hỏi giá massage cụ thể trước khi đến.\n\nNếu muốn thêm lựa chọn: **LaVie En Spa** (0.9km, 4.8⭐, mở đến 02:30) hoặc **Hyan Spa** cũng gần và được đánh giá tốt.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":true},{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để hỏi giá|Xem spa khác gần đây|Muốn massage loại nào[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage gần vị trí hiện tại hôm nay. Tìm được 10 spa quanh Quận 1, nhưng cần lưu ý: **chưa xác nhận được giá cụ thể của các chỗ này**, nên không thể đối chiếu với ngân sách dưới 300k VND của bạn.\n\nDựa trên **đánh giá & khoảng cách**, mình nghiêng về **Serene Head Spa & Massage** — chỉ **0.4km** từ vị trí bạn, **5⭐ (195 đánh giá)**, mở đến 23:00 hôm nay. Đây là lựa chọn gần nhất với đánh giá cao nhất. Bạn có thể gọi hoặc vào website để hỏi giá massage cụ thể trước khi đến.\n\nNếu muốn thêm lựa chọn: **LaVie En Spa** (0.9km, 4.8⭐, mở đến 02:30) hoặc **Hyan Spa** cũng gần và được đánh giá tốt.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":true},{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để hỏi giá|Xem spa khác gần đây|Muốn massage loại nào[/FOLLOWUPS]"
+    }
+  ]
+}

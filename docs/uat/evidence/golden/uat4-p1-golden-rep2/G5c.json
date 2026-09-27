@@ -1,0 +1,43 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 24364,
+      "usage": {
+        "promptTokens": 1823,
+        "completionTokens": 824
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mua ô tô cũ tầm 300 triệu cần check gì"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng ô tô và bài viết tư vấn, chứ không phải danh sách xe cụ thể để mua. Nhưng từ các bài viết có sẵn, mình có thể giúp bạn biết **những điều cần check khi mua ô tô cũ tầm 300 triệu**:\n\n**Trước khi chuyển tiền — Rủi ro lừa đảo:**\nTrước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Những điều cần kiểm tra:**\n\n• **Giấy tờ & pháp lý**: Kiểm tra giấy đăng ký, chứng thư bảo hành, lịch sử bảo dưỡng. Đảm bảo xe không bị khoá, không nợ trả góp, không có vấn đề pháp lý.\n\n• **Tình trạng máy móc**: Khởi động máy nghe có bất thường không, kiểm tra dầu nhớt, nước làm mát. Lái thử để cảm nhận phanh, vô lăng, hộp số.\n\n• **Thân vỏ & nội thất**: Kiểm tra vết va đập, mức độ mài mòn của ghế, bảng điều khiển, kính, lốp. Nếu có dấu hiệu sửa chữa lớn, hỏi lý do.\n\n• **Lịch sử sử dụng**: Hỏi số km đã chạy, có từng gặp tai nạn lớn không, bảo dưỡng định kỳ hay không.\n\n**Các dòng xe phổ biến tầm 300 triệu**: Toyota Vios, Hyundai i10, Kia Morning, Mazda 2 — những dòng bền, ít hỏng, phụ tùng dễ tìm.\n\nBạn có thể tìm xe cụ thể trên các trang như Bonbanh, Oto.com.vn, hoặc các nhóm Facebook bán xe để so sánh giá và tình trạng. Chúc bạn tìm được chiếc xe ưng ý! 🚗\n\n📸 _Hình ảnh & link review:_\n\n**Đèn Bi Cầu AS Racing M10-V5 công suất 55W lắp đặt cho ô ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsod5wyFoJoxj30h2sLOrU_fnRJswbxxi6Y6O91G3cvQ&s)\n\n**Mua Thảo quả khô (500gr) tại Nông Sản Hữu Cơ Tuệ Tâm | Tiki**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD7uvoNrMOIVbpAxYDS-_Cw-qbcql-kFwCsiUYPMOSsQ&s)\n\n**Sơn Xịt Xóa Vết Xước Cho Xe TOYOTA INNOVA Màu ĐỒNG ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0YOq1pofiSt_iQDksx4x8w5T_lGG1L2bN1NxvAKr7Q&s)\n\nMình chưa xác nhận được đúng loại sản phẩm từ các listing — bạn kiểm tra trên trang bán trước khi đặt. Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:\n- **Cách trả tiền an toàn:** gặp trực tiếp, kiểm tra xong mới trả tiền, giữ lại hóa đơn / tin nhắn thỏa thuận làm bằng chứng.",
+      "visible": "Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng ô tô và bài viết tư vấn, chứ không phải danh sách xe cụ thể để mua. Nhưng từ các bài viết có sẵn, mình có thể giúp bạn biết **những điều cần check khi mua ô tô cũ tầm 300 triệu**:\n\n**Trước khi chuyển tiền — Rủi ro lừa đảo:**\nTrước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Những điều cần kiểm tra:**\n\n• **Giấy tờ & pháp lý**: Kiểm tra giấy đăng ký, chứng thư bảo hành, lịch sử bảo dưỡng. Đảm bảo xe không bị khoá, không nợ trả góp, không có vấn đề pháp lý.\n\n• **Tình trạng máy móc**: Khởi động máy nghe có bất thường không, kiểm tra dầu nhớt, nước làm mát. Lái thử để cảm nhận phanh, vô lăng, hộp số.\n\n• **Thân vỏ & nội thất**: Kiểm tra vết va đập, mức độ mài mòn của ghế, bảng điều khiển, kính, lốp. Nếu có dấu hiệu sửa chữa lớn, hỏi lý do.\n\n• **Lịch sử sử dụng**: Hỏi số km đã chạy, có từng gặp tai nạn lớn không, bảo dưỡng định kỳ hay không.\n\n**Các dòng xe phổ biến tầm 300 triệu**: Toyota Vios, Hyundai i10, Kia Morning, Mazda 2 — những dòng bền, ít hỏng, phụ tùng dễ tìm.\n\nBạn có thể tìm xe cụ thể trên các trang như Bonbanh, Oto.com.vn, hoặc các nhóm Facebook bán xe để so sánh giá và tình trạng. Chúc bạn tìm được chiếc xe ưng ý! 🚗\n\n📸 _Hình ảnh & link review:_\n\n**Đèn Bi Cầu AS Racing M10-V5 công suất 55W lắp đặt cho ô ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsod5wyFoJoxj30h2sLOrU_fnRJswbxxi6Y6O91G3cvQ&s)\n\n**Mua Thảo quả khô (500gr) tại Nông Sản Hữu Cơ Tuệ Tâm | Tiki**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD7uvoNrMOIVbpAxYDS-_Cw-qbcql-kFwCsiUYPMOSsQ&s)\n\n**Sơn Xịt Xóa Vết Xước Cho Xe TOYOTA INNOVA Màu ĐỒNG ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0YOq1pofiSt_iQDksx4x8w5T_lGG1L2bN1NxvAKr7Q&s)\n\nMình chưa xác nhận được đúng loại sản phẩm từ các listing — bạn kiểm tra trên trang bán trước khi đặt. Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:\n- **Cách trả tiền an toàn:** gặp trực tiếp, kiểm tra xong mới trả tiền, giữ lại hóa đơn / tin nhắn thỏa thuận làm bằng chứng.",
+      "preGuard": "Mình gọi tool tìm kiếm ngay để xem có những thông tin gì về mua ô tô cũ trong tầm giá này nhé.Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng ô tô và bài viết tư vấn, chứ không phải danh sách xe cụ thể để mua. Nhưng từ các bài viết có sẵn, mình có thể giúp bạn biết **những điều cần check khi mua ô tô cũ tầm 300 triệu**:\n\n**Trước khi chuyển tiền — Rủi ro lừa đảo:**\nTrước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\n**Những điều cần kiểm tra:**\n\n• **Giấy tờ & pháp lý**: Kiểm tra giấy đăng ký, chứng thư bảo hành, lịch sử bảo dưỡng. Đảm bảo xe không bị khoá, không nợ trả góp, không có vấn đề pháp lý.\n\n• **Tình trạng máy móc**: Khởi động máy nghe có bất thường không, kiểm tra dầu nhớt, nước làm mát, pin. Lái thử để cảm nhận phanh, vô lăng, hộp số.\n\n• **Thân vỏ & nội thất**: Kiểm tra vết va đập, mức độ mài mòn của ghế, bảng điều khiển, kính, lốp. Nếu có dấu hiệu sửa chữa lớn, hỏi lý do.\n\n• **Lịch sử sử dụng**: Hỏi số km đã chạy, có từng gặp tai nạn lớn không, bảo dưỡng định kỳ hay không.\n\n**Các dòng xe phổ biến tầm 300 triệu**: Toyota Vios, Hyundai i10, Kia Morning, Mazda 2 — những dòng bền, ít hỏng, phụ tùng dễ tìm.\n\nBạn có thể tìm xe cụ thể trên các trang như Bonbanh, Oto.com.vn, hoặc các nhóm Facebook bán xe để so sánh giá và tình trạng. Chúc bạn tìm được chiếc xe ưng ý! 🚗"
+    }
+  ]
+}

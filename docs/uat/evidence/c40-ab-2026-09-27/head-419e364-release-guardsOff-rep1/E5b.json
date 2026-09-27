@@ -1,0 +1,213 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 13850,
+  "evidenceId": "3679177a-9091-436c-9f97-aa43b121b814",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí vui chơi",
+        "location": "Quận 1, TP.HCM",
+        "type": "entertainment"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP.HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8983,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10479,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1546,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36882,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công Viên Nước Đầm Sen",
+      "rating": 4.3,
+      "count": 36028,
+      "hours": "08:30–17:30",
+      "distance_km": 7.1,
+      "address": "3 Hòa Bình, Bình Thới, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Vườn thú Đầm Sen",
+      "rating": 4.2,
+      "count": 146,
+      "hours": "08:00–17:00",
+      "distance_km": 7.3,
+      "address": "QJ6P+QFG, Bình Thới, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Công viên Tao Đàn",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15648,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 8983,
+        "distance_km": 3.2,
+        "open_now": false,
+        "opening_hours": "06:00–21:30"
+      }
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 10479,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những địa điểm giải trí hay gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Công viên Tao Đàn** cho bạn! 🌳 Nó cách bạn chỉ 1km, đang mở cửa (7:00–22:00), và có **4.5⭐ từ 15.648 đánh giá** — đây là lựa chọn tuyệt vời cuối tuần.\n\nCông viên này rộng, thoáng mát, lý tưởng để dạo bộ, thả lỏng sau tuần làm việc. Thời tiết hôm nay khá ổn — 26°C, không mưa (chỉ 19% khả năng mưa), nhưng trưa nóng tới 33°C nên bạn nên đi sáng hoặc chiều để tránh nắng gắt nhé ☀️\n\n**Ngoài ra**, nếu bạn muốn chơi arcade/VR hoặc bowling, **Timezone Estella Place** cũng là lựa chọn hay (4.9⭐, mở tới 22:00), hoặc dạo phố **Bùi Viện** để ăn uống, ngắm cảnh.\n\n Mình giúp tìm quán gần đó! 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://congvientaodan.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì gần công viên|xem phim hay karaoke|quán cafe đẹp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** — cơm, phở, lẩu, hay gì khác?\n🎬 **Gợi ý giải trí** — xem phim, karaoke, bar, cà phê?\n🛍️ **Mua sắm** — cần gì không?\n🏃 **Hoạt động ngoài trời** — công viên, dạo phố, tham quan?\n\nBạn đang ở Quận 1, TP.HCM — mình sẽ gợi ý những chỗ gần bạn nhất. Bạn thích làm gì nhất?\n\n[FOLLOWUPS]Ăn gì ngon|Xem phim|Đi cafe|Chơi gì vui[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm giải trí hay gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Công viên Tao Đàn** cho bạn! 🌳 Nó cách bạn chỉ 1km, đang mở cửa (7:00–22:00), và có **4.5⭐ từ 15.648 đánh giá** — đây là lựa chọn tuyệt vời cuối tuần.\n\nCông viên này rộng, thoáng mát, lý tưởng để dạo bộ, thả lỏng sau tuần làm việc. Thời tiết hôm nay khá ổn — 26°C, không mưa (chỉ 19% khả năng mưa), nhưng trưa nóng tới 33°C nên bạn nên đi sáng hoặc chiều để tránh nắng gắt nhé ☀️\n\n**Ngoài ra**, nếu bạn muốn chơi arcade/VR hoặc bowling, **Timezone Estella Place** cũng là lựa chọn hay (4.9⭐, mở tới 22:00), hoặc dạo phố **Bùi Viện** để ăn uống, ngắm cảnh.\n\n Mình giúp tìm quán gần đó! 🍽️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://congvientaodan.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì gần công viên|xem phim hay karaoke|quán cafe đẹp[/FOLLOWUPS]"
+    }
+  ]
+}

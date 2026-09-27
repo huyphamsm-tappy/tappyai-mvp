@@ -1,0 +1,169 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 13490,
+  "evidenceId": "8fd3fdd9-3f24-4daa-a547-78ebb70be448",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí nhóm bạn Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "entertainment"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 17993,
+      "distance_km": 0.3,
+      "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "hours": "17:00–23:30",
+      "distance_km": 2.1,
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "CLB Bắn Cung Tinh Võ Quận 5",
+      "rating": 5,
+      "count": 1216,
+      "hours": "09:00–21:00",
+      "distance_km": 4.6,
+      "address": "107B Trần Hưng Đạo/1108 Võ Văn Kiệt, An Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Saigon Sniper – CLB Bắn Súng Thể Thao | Sports Shooting Range in Saigon",
+      "rating": 4.6,
+      "count": 665,
+      "hours": "08:00–22:00",
+      "distance_km": 1.3,
+      "address": "25 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8983,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố Nhật Sài Gòn",
+      "rating": 4.3,
+      "count": 2638,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.5,
+      "address": "8A Thái Văn Lung, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MEOW BILLIARDS CLUB CỐNG QUỲNH - CÂU LẠC BỘ BIDA LỖ - BI-A LỖ",
+      "rating": 4.5,
+      "count": 534,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.9,
+      "address": "Hẻm 189 Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 17993,
+        "distance_km": 0.3
+      }
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 513,
+        "distance_km": 2.1,
+        "open_now": true,
+        "opening_hours": "17:00–23:30"
+      }
+    },
+    {
+      "name": "CLB Bắn Cung Tinh Võ Quận 5",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 1216,
+        "distance_km": 4.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những địa điểm giải trí phù hợp cho nhóm 3–5 người ở Quận 1 nhé! 🎉\n\nMình chọn **Nhà hát Thành phố Hồ Chí Minh** cho nhóm bạn! 🎭 Cách bạn chỉ 0.3km, 4.6⭐ với gần 18.000 đánh giá — nơi này hoàn hảo để nhóm 3–5 người xem show, concert hay sự kiện văn hóa. Không gian sang trọng, dễ tập trung với bạn bè.\n\nNếu muốn vui chơi năng động hơn, **The Lủi - Quán Nhậu Chill** (4.9⭐, 513 đánh giá) là quán nhậu chill vừa ăn vừa chơi, mở đến 23:30 — phù hợp để nhóm bạn thả lỏng sau giờ làm việc. 🍻\n\nHoặc nếu thích trải nghiệm độc lạ, **CLB Bắn Cung Tinh Võ** (5⭐, 1.216 đánh giá) là hoạt động team-building hay ho — nhóm bạn có thể thử bắn cung cùng nhau, mở 09:00–21:00.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":true},{\"label\":\"🍻 The Lủi - Quán Nhậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13472285667380578245\",\"primary\":false},{\"label\":\"🏹 CLB Bắn Cung\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3925963281262998068\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]xem show hôm nay|quán nhậu gần đây|hoạt động team-building[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm giải trí hay gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Timezone Vincom Đồng Khởi** cho bạn! Nơi đây có arcade, bowling, VR và nhiều trò chơi điện tử hay ho.\n\nNếu bạn thích không gian xanh hơn, **Công viên Tao Đàn** cách 1km cũng là lựa chọn tuyệt vời — 4.5⭐ với hơn 15.000 đánh giá, mở đến 22:00 nên có thể đi tối. 🌳\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết - Timezone Vincom\",\"type\":\"website\",\"url\":\"https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/\",\"primary\":true},{\"label\":\"📍 Chỉ đường\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Timezone có gì hay|Công viên Tao Đàn ở đâu|Quán ăn gần đó[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những địa điểm giải trí phù hợp cho nhóm 3–5 người ở Quận 1 nhé! 🎉\n\nMình chọn **Nhà hát Thành phố Hồ Chí Minh** cho nhóm bạn! 🎭 Cách bạn chỉ 0.3km, 4.6⭐ với gần 18.000 đánh giá — nơi này hoàn hảo để nhóm 3–5 người xem show, concert hay sự kiện văn hóa. Không gian sang trọng, dễ tập trung với bạn bè.\n\nNếu muốn vui chơi năng động hơn, **The Lủi - Quán Nhậu Chill** (4.9⭐, 513 đánh giá) là quán nhậu chill vừa ăn vừa chơi, mở đến 23:30 — phù hợp để nhóm bạn thả lỏng sau giờ làm việc. 🍻\n\nHoặc nếu thích trải nghiệm độc lạ, **CLB Bắn Cung Tinh Võ** (5⭐, 1.216 đánh giá) là hoạt động team-building hay ho — nhóm bạn có thể thử bắn cung cùng nhau, mở 09:00–21:00.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎭 Nhà hát Thành phố\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6193911520574615099\",\"primary\":true},{\"label\":\"🍻 The Lủi - Quán Nhậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13472285667380578245\",\"primary\":false},{\"label\":\"🏹 CLB Bắn Cung\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3925963281262998068\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]xem show hôm nay|quán nhậu gần đây|hoạt động team-building[/FOLLOWUPS]"
+    }
+  ]
+}

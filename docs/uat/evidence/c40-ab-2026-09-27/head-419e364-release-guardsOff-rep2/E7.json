@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6147,
+  "evidenceId": "67131574-933f-426d-b2fe-abb4cf061684",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn có thể xem một vài phim hay này:\n\n**Dune: Part Two** — nếu bạn thích phim hành động/khoa học viễn tưởng hoành tráng, cảnh quay tuyệt đẹp và câu chuyện sâu sắc 🎬\n\n**Oppenheimer** — phim tiểu sử kịch tính về nhà vật lý hạt nhân, nếu bạn muốn xem điều gì đó trí tuệ và hấp dẫn\n\n**Barbie** — nếu bạn muốn thứ gì đó nhẹ nhàng, vui vẻ và có chút châm biếm thông minh\n\nBạn thích xem phim thể loại nào — hành động, tâm lý, hài, hay khoa học viễn tưởng? Mình có thể gợi ý cụ thể hơn 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn có thể xem một vài phim hay này:\n\n**Dune: Part Two** — nếu bạn thích phim hành động/khoa học viễn tưởng hoành tráng, cảnh quay tuyệt đẹp và câu chuyện sâu sắc 🎬\n\n**Oppenheimer** — phim tiểu sử kịch tính về nhà vật lý hạt nhân, nếu bạn muốn xem điều gì đó trí tuệ và hấp dẫn\n\n**Barbie** — nếu bạn muốn thứ gì đó nhẹ nhàng, vui vẻ và có chút châm biếm thông minh\n\nBạn thích xem phim thể loại nào — hành động, tâm lý, hài, hay khoa học viễn tưởng? Mình có thể gợi ý cụ thể hơn 😊"
+    }
+  ]
+}

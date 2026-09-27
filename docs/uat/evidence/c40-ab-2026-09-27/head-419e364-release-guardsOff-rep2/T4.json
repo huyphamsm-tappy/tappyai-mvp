@@ -1,0 +1,25 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 6389,
+  "evidenceId": "1ab8c096-21fe-4b25-9263-a2649b2b623f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần này với gia đình 4 người gần Sài Gòn. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại hoạt động nào?** Ví dụ:\n- Tham quan danh lam thắng cảnh (chùa, công viên, bảo tàng)\n- Vui chơi giải trí (công viên nước, khu vui chơi, trò chơi)\n- Thư giãn, spa, ăn uống\n- Hay kết hợp nhiều hoạt động?\n\nHoặc nếu bạn muốn mình tìm luôn những địa điểm phổ biến gần đây, mình có thể gợi ý ngay mà không cần chờ! 😊\n\n[FOLLOWUPS]công viên gần Sài Gòn|khu vui chơi gia đình|quán ăn gia đình[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ đi chơi cuối tuần này với gia đình 4 người gần Sài Gòn. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn thích loại hoạt động nào?** Ví dụ:\n- Tham quan danh lam thắng cảnh (chùa, công viên, bảo tàng)\n- Vui chơi giải trí (công viên nước, khu vui chơi, trò chơi)\n- Thư giãn, spa, ăn uống\n- Hay kết hợp nhiều hoạt động?\n\nHoặc nếu bạn muốn mình tìm luôn những địa điểm phổ biến gần đây, mình có thể gợi ý ngay mà không cần chờ! 😊\n\n[FOLLOWUPS]công viên gần Sài Gòn|khu vui chơi gia đình|quán ăn gia đình[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 7260,
+  "evidenceId": "01a11d4f-c825-49e6-ac7b-ad517ece5d05",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Quán **Tám Riêu - Phan Xích Long** mở từ **10:30 đến 21:30** hàng ngày.\n\nHôm nay (Chủ Nhật) quán đang đóng cửa, nhưng sẽ mở từ 10:30 sáng mai (Thứ Hai). Nếu bạn muốn ăn trưa **cuối tuần này**, có thể gọi trước để xác nhận lịch mở cửa hoặc chọn một trong hai quán khác mình gợi ý ở trên — chúng đều mở cả trưa cuối tuần 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/T%C3%A1m+Ri%C3%AAu+Phan+X%C3%ADch+Long+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nhỏ, có chỗ đậu xe ô tô nhé.Mình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình bạn 👍\n\n📍 235 Phan Xích Long, Cầu Kiệu | Cách bạn ~2.9km\n⏰ 10:30–21:30 (hôm nay đang đóng, mở từ 10:30 ngày mai)\n\nQuán chuyên riêu cua, có không gian rộng phù hợp cho gia đình 6 người, đặc biệt tốt cho trưa cuối tuần. Được 2.114 người đánh giá cao trên Google Maps — đây là dấu hiệu uy tín mạnh. Quán có chỗ đậu xe ô tô.\n\nHai lựa chọn khác nếu bạn muốn so sánh: **CƠM KHAY GỖ** (4.8⭐, 931 đánh giá, nhà hàng gia đình) hoặc **Nhà hàng Hoàng Tâm** (4.5⭐, 1.662 đánh giá, mở cả trưa).\n\nBạn muốn gọi trước để đặt bàn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt bàn trước|Xem menu Tám Riêu|Tìm quán khác gần hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Quán **Tám Riêu - Phan Xích Long** mở từ **10:30 đến 21:30** hàng ngày.\n\nHôm nay (Chủ Nhật) quán đang đóng cửa, nhưng sẽ mở từ 10:30 sáng mai (Thứ Hai). Nếu bạn muốn ăn trưa **cuối tuần này**, có thể gọi trước để xác nhận lịch mở cửa hoặc chọn một trong hai quán khác mình gợi ý ở trên — chúng đều mở cả trưa cuối tuần 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/T%C3%A1m+Ri%C3%AAu+Phan+X%C3%ADch+Long+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

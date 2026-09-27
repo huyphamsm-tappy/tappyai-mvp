@@ -1,0 +1,155 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 18470,
+  "evidenceId": "844712d4-6576-40c9-a053-384fdce910f3",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Gò Vấp",
+        "location": "Gò Vấp, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "KAMELA Music Box",
+      "rating": 4.8,
+      "count": 287,
+      "hours": "10:00–03:00",
+      "address": "214/2 Nguyễn Oanh, Gò Vấp, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Santori",
+      "rating": 4.5,
+      "count": 358,
+      "hours": "Mở cửa cả ngày",
+      "address": "176 Đ. Lê Văn Thọ, Thông Tây Hội, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke Nnice 524 Phan Văn Trị",
+      "rating": 4.2,
+      "count": 2651,
+      "hours": "08:00–02:00",
+      "address": "524 Đ. Phan Văn Trị, Hạnh Thông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke 526KTV",
+      "rating": 4.4,
+      "count": 76,
+      "hours": "Mở cửa cả ngày",
+      "address": "526 Nguyễn Văn Khối, Thông Tây Hội, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "KARAOKE NEWSTYLE",
+      "rating": 4.2,
+      "count": 1237,
+      "hours": "10:00–04:00",
+      "address": "40 Đ. Lê Đức Thọ, Hạnh Thông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke Gold Star",
+      "rating": 4.2,
+      "count": 418,
+      "hours": "Mở cửa cả ngày",
+      "address": "142 Đ. Lê Văn Thọ, Thông Tây Hội, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Queen Star",
+      "rating": 4.2,
+      "count": 191,
+      "hours": "Mở cửa cả ngày",
+      "address": "378 Đ. Nguyễn Văn Lượng, An Hội Đông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke X-Men",
+      "rating": 3.8,
+      "count": 112,
+      "hours": "Mở cửa cả ngày",
+      "address": "14 Đ. Số 4, Hạnh Thông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke CADILLAC",
+      "rating": 3.8,
+      "count": 58,
+      "hours": "Mở cửa cả ngày",
+      "address": "1388 Đ. Lê Đức Thọ, An Hội Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Hạ Trắng",
+      "rating": 3.4,
+      "count": 185,
+      "hours": "Mở cửa cả ngày",
+      "address": "11 Đ. Số 4, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm karaoke ở Gò Vấp cho 10 người với budget khoảng 100k/người nhé.\n\nMình tìm được 10 karaoke ở Gò Vấp, nhưng chưa xác nhận được giá cụ thể của chúng. Tuy nhiên, mình gợi ý **KAMELA Music Box** — nơi này có **4.8⭐ (287 đánh giá Google Maps)**, mở cửa đến 3h sáng, rất phù hợp cho nhóm 10 người. Bạn nên gọi trực tiếp **(+84 928 888 050)** để hỏi giá phòng hát cho 10 người trong tầm 100k/người.\n\nNgoài ra, **Karaoke Santori** cũng là lựa chọn tốt với **4.5⭐ (358 đánh giá)** và mở cửa cả ngày — bạn có thể liên hệ **(+84 587 176 176)** để so sánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem KAMELA Music Box trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9919035890912573737\",\"primary\":true},{\"label\":\"📍 Xem Karaoke Santori trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17009804611308589550\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá phòng|Xem karaoke khác ở Gò Vấp|Cần địa điểm khác?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm karaoke ở Gò Vấp cho 10 người với budget khoảng 100k/người nhé.\n\nMình tìm được 10 karaoke ở Gò Vấp, nhưng chưa xác nhận được giá cụ thể của chúng. Tuy nhiên, mình gợi ý **KAMELA Music Box** — nơi này có **4.8⭐ (287 đánh giá Google Maps)**, mở cửa đến 3h sáng, rất phù hợp cho nhóm 10 người. Bạn nên gọi trực tiếp **(+84 928 888 050)** để hỏi giá phòng hát cho 10 người trong tầm 100k/người.\n\nNgoài ra, **Karaoke Santori** cũng là lựa chọn tốt với **4.5⭐ (358 đánh giá)** và mở cửa cả ngày — bạn có thể liên hệ **(+84 587 176 176)** để so sánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem KAMELA Music Box trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9919035890912573737\",\"primary\":true},{\"label\":\"📍 Xem Karaoke Santori trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17009804611308589550\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá phòng|Xem karaoke khác ở Gò Vấp|Cần địa điểm khác?[/FOLLOWUPS]"
+    }
+  ]
+}

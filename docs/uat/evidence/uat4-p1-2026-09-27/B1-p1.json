@@ -1,0 +1,79 @@
+{
+ "label": "p1fix",
+ "mobile": false,
+ "results": [
+  {
+   "id": "hotel",
+   "q": "khách sạn Đà Nẵng gần biển dưới 1 triệu/đêm",
+   "sent": "sent",
+   "ms": 20229,
+   "status": 200,
+   "carousel": true,
+   "cards": 3,
+   "products": 0,
+   "shopping": false,
+   "decision": true,
+   "inlineImgs": 1,
+   "legacyDelivery": false,
+   "cardText": "#1 🔥 Phổ biến M Hotel Da Nang 4.8 (2860 đánh giá) 286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam +84 236 3816 868 Khách sạn Vì sao: đánh giá 4.8 · 2.860 lượt đánh giá Xem bản đồ Review trên TikTok Website Gọi Tìm review trên YouTube",
+   "cardPhoto": true,
+   "cardLinks": [
+    "Xem bản đồ",
+    "Review trên TikTok",
+    "Website",
+    "Gọi",
+    "Tìm review trên YouTube"
+   ],
+   "extLinks": [
+    "maps.google.com",
+    "www.tiktok.com",
+    "mhotel.vn",
+    "",
+    "www.youtube.com",
+    "nalod.com.vn",
+    "havilandhouse.com"
+   ],
+   "prose": "Mình thấy kết quả tìm được nhưng chưa có thông tin giá cụ thể từ các trang booking. Bạn cho mình biết: Bạn dự định check-in ngày nào và check-out ngày nào? (hoặc bao nhiêu đêm?) — Mình sẽ tìm giá chính xác cho những ngày đó nhé. Hiện tại, danh sách khách sạn gần biển mình tìm được có M Hotel Da Nang (4.8⭐, 2.860 đánh giá), Seahorse (4.8⭐), NALOD Đà Nẵng (4.7⭐, 4.464 đánh giá) — tất cả đều nằm ở khu vực Võ Nguyên Giáp/An Hải gần biển. Nhưng giá cụ thể phải xem theo ngày bạn muốn lưu trú. Giờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé. Tất cả (8) #1 🔥 Phổ biến M Hotel Da Nang 4.8 (2860 đánh giá) 286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, V",
+   "errorText": false
+  },
+  {
+   "id": "food",
+   "q": "quán bún bò ngon ở quận 1",
+   "sent": "sent",
+   "ms": 14119,
+   "status": 200,
+   "carousel": true,
+   "cards": 3,
+   "products": 0,
+   "shopping": false,
+   "decision": true,
+   "inlineImgs": 1,
+   "legacyDelivery": false,
+   "cardText": "#1 Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện 5 (8 đánh giá) 84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam +84 919 402 182 08:00–12:30 · đang đóng dưới 100.000 ₫ Quán ăn nhỏ Vì sao: đánh giá 5 · 8 lượt đánh giá Đánh đổi: 1.011 lượt đánh giá Xem bản đồ Tìm review trên YouTube Gọi",
+   "cardPhoto": true,
+   "cardLinks": [
+    "Xem bản đồ",
+    "Tìm review trên YouTube",
+    "Gọi"
+   ],
+   "extLinks": [
+    "maps.google.com",
+    "www.youtube.com",
+    ""
+   ],
+   "prose": "Mình tìm quán bún bò ngon ở Quận 1 cho bạn nhé. Mình chọn Bún Bò Cô Tiên cho bạn — quán này có rating 5⭐ từ Google Maps, mặc dù số lượng đánh giá ít hơn nhưng chất lượng rất cao. Tuy nhiên, nếu bạn muốn chọn quán có nhiều người đã thử, BẾP ÔNG CẬU là lựa chọn thay thế tuyệt vời với 4.8⭐ từ 1.011 đánh giá — quán này còn mở đến 22:00 nên tiện hơn nếu bạn muốn ăn khuya 👍 Tất cả (8) Đang mở cửa Đánh giá cao #1 Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện 5 (8 đánh giá) 84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam +84 919 402 182 08:00–12:30 · đang đóng dưới 100.000 ₫ Quán ăn nhỏ Vì sao: đánh giá 5 · 8 lượt đánh giá Đánh đổi: 1.011 lượt đánh giá Xem bản đồ Tìm review trên YouTu",
+   "errorText": false
+  }
+ ],
+ "errors": [
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs"
+ ],
+ "http": []
+}

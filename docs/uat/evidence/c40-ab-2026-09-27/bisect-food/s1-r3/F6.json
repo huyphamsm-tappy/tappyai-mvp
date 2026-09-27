@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7117,
+  "evidenceId": "4bcf70c4-ae7f-449e-b0e7-1c270e79ec11",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bạn có thể:\n- Xem trên Google Maps (mục \"Thời gian bận nhất\") để biết giờ nào thường đông\n- Hoặc thử **The Cajun Cua** mà mình gợi ý trước và bạn có thể kiểm tra tình trạng trước khi đi 😊\n\nBạn muốn mình tìm thêm quán khác hoặc cần thông tin gì khác không?\n\n[FOLLOWUPS]Tìm quán ăn khác gần Quận 1|Xem chi tiết The Cajun Cua|Tìm quán ăn vắng hơn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **The Cajun Cua** cho bạn! 🦞 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km. Mở đến 23:00 nên hoàn hảo cho bữa tối. Ngoài ra, **Hải Sản Hoàng Gia** cũng là lựa chọn tuyệt vời với rating cao hơn (4.7⭐) nếu bạn muốn thử hải sản khác, hoặc **Quán Bụi** gần hơn (0.7km) với ẩm thực Việt Nam authentic.\n\n*Gợi ý dựa trên đánh giá thực tế trên Google Maps\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Google\",\"type\":\"search\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có gì đặc biệt?|Quán Bụi phù hợp cho 2 người không?|Có quán nào gần hơn không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn có thể:\n- Xem trên Google Maps (mục \"Thời gian bận nhất\") để biết giờ nào thường đông\n- Hoặc thử **The Cajun Cua** mà mình gợi ý trước và bạn có thể kiểm tra tình trạng trước khi đi 😊\n\nBạn muốn mình tìm thêm quán khác hoặc cần thông tin gì khác không?\n\n[FOLLOWUPS]Tìm quán ăn khác gần Quận 1|Xem chi tiết The Cajun Cua|Tìm quán ăn vắng hơn[/FOLLOWUPS]"
+    }
+  ]
+}

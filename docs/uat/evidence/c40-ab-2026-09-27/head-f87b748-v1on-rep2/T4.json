@@ -1,0 +1,164 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 15984,
+  "evidenceId": "510238e7-7d08-4611-953c-3808c94a7dce",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí gia đình Sài Gòn",
+        "location": "TP HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8514,
+      "hours": "08:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Nước Đầm Sen",
+      "rating": 4.3,
+      "count": 36028,
+      "hours": "08:30–17:30",
+      "distance_km": 7.1,
+      "address": "3 Hòa Bình, Bình Thới, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Công viên văn hóa Suối Tiên",
+      "rating": 4.3,
+      "count": 22902,
+      "hours": "08:00–17:00",
+      "distance_km": 14.9,
+      "address": "120 Song Hành Xa Lộ Hà Nội, Tăng Nhơn Phú, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CÔNG VIÊN GIA ĐỊNH",
+      "rating": 4.6,
+      "count": 2776,
+      "hours": "04:00–22:00",
+      "distance_km": 4.9,
+      "address": "Đường Hoàng Minh Giám, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36884,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Giải Trí Nta",
+      "rating": 4.1,
+      "count": 7,
+      "distance_km": 7.3,
+      "address": "3 Quốc Lộ 1K, Bình Quới, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ sông sài gòn",
+      "rating": 4.6,
+      "count": 86,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.1,
+      "address": "25/3A Lương Định Của, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KHU DU LỊCH BÌNH QUỚI 1",
+      "rating": 4.4,
+      "count": 270,
+      "hours": "08:00–21:00",
+      "distance_km": 7.2,
+      "address": "1147 Bình Quới, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/giải trí gần Sài Gòn cho gia đình 4 người vào cuối tuần. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các điểm vui chơi phổ biến quanh khu vực này.\n\nMình chọn **Thảo Cầm Viên Sài Gòn** cho gia đình bạn — cách vị trí hiện tại chỉ 1.2km, rất gần, đặc biệt. Mở cửa từ 7h sáng đến 6h30 chiều, hoàn hảo cho một buổi sáng hoặc chiều cuối tuần.\n\nNếu muốn trải nghiệm nước, **Công Viên Nước Đầm Sen** (4.3⭐, 36.028 đánh giá) cách 7.1km cũng là lựa chọn tuyệt vời — mở 8h30 đến 5h30 chiều, phù hợp cho ngày hè cuối tuần.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"📍 Xem Đầm Sen trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15688581395936079051\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên có gì hay|Đầm Sen có bao nhiêu tiền vé|Quanh đó ăn gì ngon[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/giải trí gần Sài Gòn cho gia đình 4 người vào cuối tuần. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các điểm vui chơi phổ biến quanh khu vực này.\n\nMình chọn **Thảo Cầm Viên Sài Gòn** cho gia đình bạn — cách vị trí hiện tại chỉ 1.2km, rất gần, đặc biệt. Mở cửa từ 7h sáng đến 6h30 chiều, hoàn hảo cho một buổi sáng hoặc chiều cuối tuần.\n\nNếu muốn trải nghiệm nước, **Công Viên Nước Đầm Sen** (4.3⭐, 36.028 đánh giá) cách 7.1km cũng là lựa chọn tuyệt vời — mở 8h30 đến 5h30 chiều, phù hợp cho ngày hè cuối tuần.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"📍 Xem Đầm Sen trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15688581395936079051\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên có gì hay|Đầm Sen có bao nhiêu tiền vé|Quanh đó ăn gì ngon[/FOLLOWUPS]"
+    }
+  ]
+}

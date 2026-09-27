@@ -1,0 +1,50 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 26591,
+      "usage": {
+        "promptTokens": 7312,
+        "completionTokens": 1077
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "mua ô tô cũ tầm 300 triệu cần check gì"
+          }
+        },
+        {
+          "name": "web_search",
+          "args": {
+            "query": "mua ô tô cũ cần check những gì rủi ro gì"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng xe và trang web mua bán, chứ không phải hướng dẫn cụ thể. Để giúp bạn tốt hơn, mình sẽ tìm kiếm thêm thông tin chi tiết về những điều cần kiểm tra khi mua ô tô cũ.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\nMua ô tô cũ tầm 300 triệu là quyết định lớn — rủi ro chính là **xe đã từng tai nạn/đâm đụng, tua đồng hồ (ODO), không rõ nguồn gốc, hoặc có bệnh máy/khung gầm ẩn**. Dưới đây là những điều cần check trước khi quyết định:\n\n**Rủi ro & cách tránh:**\n• **Giấy tờ & nguồn gốc** — Yêu cầu xem cà-vẹt gốc, đối chiếu với CMND người bán, kiểm tra xe có bị cấm sang tên hay nợ trả góp. Xe không rõ nguồn gốc hoặc từng chạy dịch vụ dễ có vấn đề ẩn.\n• **Lịch sử bảo dưỡng & sửa chữa** — Xe không có hồ sơ rõ ràng là dấu hiệu cảnh báo. Kiểm tra ODO (đồng hồ công-tơ-mét) có bị tua hay không — so sánh với tuổi xe và tình trạng ngoài.\n• **Thân xe & khung gầm** — Kiểm tra vết sơn, khe hàn, độ thẳng của khung. Xe đâm đụng sẽ có dấu hiệu như sơn không đều, khe hàn lệch, hoặc chi tiết không khớp.\n• **Máy, dầu & khí thải** — Kiểm tra mức dầu, màu sắc khí thải, tiếng máy có bất thường không. Máy hỏng hoặc sửa chữa kém sẽ tốn tiền sau này.\n\n**Cách mua an toàn:** Chỉ mua khi xem trực tiếp xe, kiểm tra kỹ trước, và gặp người bán trực tiếp để xác nhận giấy tờ. Nếu giá quá rẻ so với thị trường hoặc người bán gấp gáp → cần cảnh báo cao.\n\nMình chưa xác nhận được đúng loại sản phẩm từ các listing — bạn kiểm tra trên trang bán trước khi đặt. Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:\n- **Cách trả tiền an toàn:** gặp trực tiếp, kiểm tra xong mới trả tiền, giữ lại hóa đơn / tin nhắn thỏa thuận làm bằng chứng.\n\n[FOLLOWUPS]Mẫu xe nào bạn đang xem xét|Cần hỗ trợ kiểm tra giấy tờ hay máy móc|Bạn đang ở đâu để tìm xe[/FOLLOWUPS]\n\n📸 _Hình ảnh & link review:_\n\n**Đèn Bi Cầu AS Racing M10-V5 công suất 55W lắp đặt cho ô ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsod5wyFoJoxj30h2sLOrU_fnRJswbxxi6Y6O91G3cvQ&s)\n\n**Mua Thảo quả khô (500gr) tại Nông Sản Hữu Cơ Tuệ Tâm | Tiki**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD7uvoNrMOIVbpAxYDS-_Cw-qbcql-kFwCsiUYPMOSsQ&s)\n\n**Sơn Xịt Xóa Vết Xước Cho Xe TOYOTA INNOVA Màu ĐỒNG ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0YOq1pofiSt_iQDksx4x8w5T_lGG1L2bN1NxvAKr7Q&s)",
+      "visible": "Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng xe và trang web mua bán, chứ không phải hướng dẫn cụ thể. Để giúp bạn tốt hơn, mình sẽ tìm kiếm thêm thông tin chi tiết về những điều cần kiểm tra khi mua ô tô cũ.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\nMua ô tô cũ tầm 300 triệu là quyết định lớn — rủi ro chính là **xe đã từng tai nạn/đâm đụng, tua đồng hồ (ODO), không rõ nguồn gốc, hoặc có bệnh máy/khung gầm ẩn**. Dưới đây là những điều cần check trước khi quyết định:\n\n**Rủi ro & cách tránh:**\n• **Giấy tờ & nguồn gốc** — Yêu cầu xem cà-vẹt gốc, đối chiếu với CMND người bán, kiểm tra xe có bị cấm sang tên hay nợ trả góp. Xe không rõ nguồn gốc hoặc từng chạy dịch vụ dễ có vấn đề ẩn.\n• **Lịch sử bảo dưỡng & sửa chữa** — Xe không có hồ sơ rõ ràng là dấu hiệu cảnh báo. Kiểm tra ODO (đồng hồ công-tơ-mét) có bị tua hay không — so sánh với tuổi xe và tình trạng ngoài.\n• **Thân xe & khung gầm** — Kiểm tra vết sơn, khe hàn, độ thẳng của khung. Xe đâm đụng sẽ có dấu hiệu như sơn không đều, khe hàn lệch, hoặc chi tiết không khớp.\n• **Máy, dầu & khí thải** — Kiểm tra mức dầu, màu sắc khí thải, tiếng máy có bất thường không. Máy hỏng hoặc sửa chữa kém sẽ tốn tiền sau này.\n\n**Cách mua an toàn:** Chỉ mua khi xem trực tiếp xe, kiểm tra kỹ trước, và gặp người bán trực tiếp để xác nhận giấy tờ. Nếu giá quá rẻ so với thị trường hoặc người bán gấp gáp → cần cảnh báo cao.\n\nMình chưa xác nhận được đúng loại sản phẩm từ các listing — bạn kiểm tra trên trang bán trước khi đặt. Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n⚠️ Trước khi trả tiền, kiểm tra mấy điều này — tình trạng máy/xe/hàng xét sau:\n- **Cách trả tiền an toàn:** gặp trực tiếp, kiểm tra xong mới trả tiền, giữ lại hóa đơn / tin nhắn thỏa thuận làm bằng chứng.\n\n📸 _Hình ảnh & link review:_\n\n**Đèn Bi Cầu AS Racing M10-V5 công suất 55W lắp đặt cho ô ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsod5wyFoJoxj30h2sLOrU_fnRJswbxxi6Y6O91G3cvQ&s)\n\n**Mua Thảo quả khô (500gr) tại Nông Sản Hữu Cơ Tuệ Tâm | Tiki**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD7uvoNrMOIVbpAxYDS-_Cw-qbcql-kFwCsiUYPMOSsQ&s)\n\n**Sơn Xịt Xóa Vết Xước Cho Xe TOYOTA INNOVA Màu ĐỒNG ...**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA0YOq1pofiSt_iQDksx4x8w5T_lGG1L2bN1NxvAKr7Q&s)",
+      "preGuard": "Mình gọi tool tìm kiếm ngay để xem có những thông tin gì về mua ô tô cũ trong tầm giá này nhé.Mình thấy kết quả tìm kiếm chủ yếu là các phụ tùng xe và trang web mua bán, chứ không phải hướng dẫn cụ thể. Để giúp bạn tốt hơn, mình sẽ tìm kiếm thêm thông tin chi tiết về những điều cần kiểm tra khi mua ô tô cũ.**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào Cảnh báo lừa đảo trong TappyAI để kiểm tra nhé.**\n\nMua ô tô cũ tầm 300 triệu là quyết định lớn — rủi ro chính là **xe đã từng tai nạn/đâm đụng, tua đồng hồ (ODO), không rõ nguồn gốc, hoặc có bệnh máy/khung gầm ẩn**. Dưới đây là những điều cần check trước khi quyết định:\n\n**Rủi ro & cách tránh:**\n• **Giấy tờ & nguồn gốc** — Yêu cầu xem cà-vẹt gốc, đối chiếu với CMND người bán, kiểm tra xe có bị cấm sang tên hay nợ trả góp. Xe không rõ nguồn gốc hoặc từng chạy dịch vụ dễ có vấn đề ẩn.\n• **Lịch sử bảo dưỡng & sửa chữa** — Xe không có hồ sơ rõ ràng là dấu hiệu cảnh báo. Kiểm tra ODO (đồng hồ công-tơ-mét) có bị tua hay không — so sánh với tuổi xe và tình trạng ngoài.\n• **Thân xe & khung gầm** — Kiểm tra vết sơn, khe hàn, độ thẳng của khung. Xe đâm đụng sẽ có dấu hiệu như sơn không đều, khe hàn lệch, hoặc chi tiết không khớp.\n• **Máy, dầu & khí thải** — Kiểm tra mức dầu, màu sắc khí thải, tiếng máy có bất thường không. Máy hỏng hoặc sửa chữa kém sẽ tốn tiền sau này.\n\n**Cách mua an toàn:** Chỉ mua khi xem trực tiếp xe, kiểm tra kỹ trước, và gặp người bán trực tiếp để xác nhận giấy tờ. Nếu giá quá rẻ so với thị trường hoặc người bán gấp gáp → cần cảnh báo cao.\n\n[FOLLOWUPS]Mẫu xe nào bạn đang xem xét|Cần hỗ trợ kiểm tra giấy tờ hay máy móc|Bạn đang ở đâu để tìm xe[/FOLLOWUPS]"
+    }
+  ]
+}

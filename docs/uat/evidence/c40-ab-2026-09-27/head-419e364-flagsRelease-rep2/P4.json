@@ -1,0 +1,178 @@
+{
+  "id": "P4",
+  "text": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7",
+  "parent": null,
+  "status": 200,
+  "ms": 17537,
+  "evidenceId": "34f30743-e77d-4d8c-8b20-14b0b3fd3dbf",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa yên tĩnh sạch sẽ Quận 7",
+        "location": "Quận 7, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Lê Vy Massage Spa - Gội Đầu Dưỡng Sinh Quận 7",
+      "rating": 4.9,
+      "count": 1266,
+      "hours": "08:00–22:00",
+      "address": "157 Đ. Lâm Văn Bền, Tân Thuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Kim Spa Massage Quận 7",
+      "rating": 4.9,
+      "count": 587,
+      "hours": "10:00–23:00",
+      "address": "F11 Đ. 3A, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Q7 Spa - Massage Body & Foot - 신체 마사지",
+      "rating": 4.9,
+      "count": 116,
+      "hours": "09:00–22:30",
+      "address": "198A Đ. Hà Huy Tập, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+      "address": "Quận 7, TP.HCM"
+    },
+    {
+      "name": "Trải nghiệm Elle'B Beaute Spa tại Chợ Bến Thành, Hồ Chí ...",
+      "address": "Quận 7, TP.HCM"
+    },
+    {
+      "name": "Chiee Beauty Spa Quận 7",
+      "rating": 4.9,
+      "count": 132,
+      "address": "398 Lê Văn Lương, Quận 7, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nàng spa relax quận7",
+      "rating": 5,
+      "count": 23,
+      "hours": "09:00–20:00",
+      "address": "02 Lô X, Đường số 40, Khu định cư Tân Quy Đông, Tân Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "The Kén - Gội đầu dưỡng sinh Quận 7",
+      "rating": 4.8,
+      "count": 48,
+      "address": "152 Nguyễn Thị Thập, Tân Thuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AMORIS SPA MASSAGE | MASSAGE PHÚ MỸ HƯNG | MASSAGE QUẬN 7",
+      "rating": 4.7,
+      "count": 106,
+      "hours": "09:00–22:30",
+      "address": "95 Phan Khiêm Ích, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "N Spa - Massage Body Quận 7",
+      "rating": 4.4,
+      "count": 666,
+      "hours": "09:00–22:30",
+      "address": "198 Đ. Hà Huy Tập, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Lê Vy Massage Spa - Gội Đầu Dưỡng Sinh Quận 7",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1266,
+        "open_now": true,
+        "opening_hours": "08:00–22:00"
+      }
+    },
+    {
+      "name": "Kim Spa Massage Quận 7",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 587,
+        "open_now": true,
+        "opening_hours": "10:00–23:00"
+      }
+    },
+    {
+      "name": "Q7 Spa - Massage Body & Foot - 신체 마사지",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 116,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa yên tĩnh, sạch sẽ ở Quận 7 cho bạn và mẹ nhé.\n\nMình chọn **Lê Vy Massage Spa** cho bạn — **4.9⭐ (1.266 đánh giá Google Maps)**, mở 08:00–22:00 hàng ngày. Spa này được đánh giá cao nhất với số lượng review khủng, chứng tỏ chất lượng ổn định và khách hàng tin tưởng. Lâm Văn Bền, Tân Thuận, rất thuận tiện cho cuối tuần.\n\nNgoài ra, **Kim Spa Massage** (4.9⭐, 587 review) cũng là lựa chọn tốt nếu bạn muốn không gian khác, mở đến 23:00 nên linh hoạt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Lê Vy Massage Spa\",\"type\":\"website\",\"url\":\"http://levyspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Lê Vy Massage Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18083040432215947148\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt lịch trước không|Dịch vụ nào phù hợp cho mẹ|Spa nào gần nhất từ vị trí bạn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa yên tĩnh, sạch sẽ ở Quận 7 cho bạn và mẹ nhé.\n\nMình chọn **Lê Vy Massage Spa** cho bạn — **4.9⭐ (1.266 đánh giá Google Maps)**, mở 08:00–22:00 hàng ngày. Spa này được đánh giá cao nhất với số lượng review khủng, chứng tỏ chất lượng ổn định và khách hàng tin tưởng. Lâm Văn Bền, Tân Thuận, rất thuận tiện cho cuối tuần.\n\nNgoài ra, **Kim Spa Massage** (4.9⭐, 587 review) cũng là lựa chọn tốt nếu bạn muốn không gian khác, mở đến 23:00 nên linh hoạt hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Lê Vy Massage Spa\",\"type\":\"website\",\"url\":\"http://levyspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Lê Vy Massage Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18083040432215947148\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt lịch trước không|Dịch vụ nào phù hợp cho mẹ|Spa nào gần nhất từ vị trí bạn[/FOLLOWUPS]"
+    }
+  ]
+}

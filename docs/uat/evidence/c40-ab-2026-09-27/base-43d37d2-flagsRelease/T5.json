@@ -1,0 +1,164 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 11151,
+  "evidenceId": "4ee5be7d-20ed-48b7-8502-8a8967ae87ee",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm giải trí vui chơi",
+        "location": "Quận 1, TP HCM",
+        "type": "entertainment"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Timezone Vincom Đồng Khởi",
+      "rating": 5,
+      "count": 995,
+      "hours": "10:00–22:00",
+      "distance_km": 0.1,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên bờ sông",
+      "rating": 4.4,
+      "count": 8896,
+      "hours": "09:00–17:00",
+      "distance_km": 0.6,
+      "address": "Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8983,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Sala",
+      "rating": 4.6,
+      "count": 3510,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.6,
+      "address": "01 Đ. Hoàng Thế Thiện, An Khánh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1544,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Timezone Vincom Đồng Khởi",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 995,
+        "distance_km": 0.1,
+        "open_now": true,
+        "opening_hours": "10:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15648,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Công viên bờ sông",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 8896,
+        "distance_km": 0.6,
+        "open_now": false,
+        "opening_hours": "09:00–17:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những địa điểm giải trí hay gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Timezone Vincom Đồng Khởi** cho bạn! Nơi đây có arcade, bowling, VR và nhiều trò chơi điện tử hay ho.\n\nNếu bạn thích không gian xanh hơn, **Công viên Tao Đàn** cách 1km cũng là lựa chọn tuyệt vời — 4.5⭐ với hơn 15.000 đánh giá, mở đến 22:00 nên có thể đi tối. 🌳\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết - Timezone Vincom\",\"type\":\"website\",\"url\":\"https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/\",\"primary\":true},{\"label\":\"📍 Chỉ đường\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Timezone có gì hay|Công viên Tao Đàn ở đâu|Quán ăn gần đó[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những địa điểm giải trí hay gần bạn ở Quận 1 nhé! 🎉\n\nMình chọn **Timezone Vincom Đồng Khởi** cho bạn! Nơi đây có arcade, bowling, VR và nhiều trò chơi điện tử hay ho.\n\nNếu bạn thích không gian xanh hơn, **Công viên Tao Đàn** cách 1km cũng là lựa chọn tuyệt vời — 4.5⭐ với hơn 15.000 đánh giá, mở đến 22:00 nên có thể đi tối. 🌳\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎮 Xem chi tiết - Timezone Vincom\",\"type\":\"website\",\"url\":\"https://www.timezonegames.com/vi-vn/dia-diem/tphcm/vincom-dong-khoi/\",\"primary\":true},{\"label\":\"📍 Chỉ đường\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12809848465957405356\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Timezone có gì hay|Công viên Tao Đàn ở đâu|Quán ăn gần đó[/FOLLOWUPS]"
+    }
+  ]
+}
