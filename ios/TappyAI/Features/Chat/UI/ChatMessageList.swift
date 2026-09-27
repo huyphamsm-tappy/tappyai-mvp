@@ -30,6 +30,7 @@ struct ChatMessageList: View {
     var ageFormError: String? = nil
     var onDeclareAge: (String) -> Void = { _ in }
     var onSubmitDateOfBirth: (_ day: String, _ month: String, _ year: String) -> Void = { _, _, _ in }
+    var onEditDateOfBirth: () -> Void = {}
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -109,7 +110,8 @@ struct ChatMessageList: View {
                             ageSubmitting: ageSubmitting,
                             ageFormError: ageFormError,
                             onDeclareAge: onDeclareAge,
-                            onSubmitDateOfBirth: onSubmitDateOfBirth
+                            onSubmitDateOfBirth: onSubmitDateOfBirth,
+                            onEditDateOfBirth: onEditDateOfBirth
                         )
                     }
 
@@ -404,6 +406,7 @@ private struct ChatErrorBanner: View {
     let ageFormError: String?
     let onDeclareAge: (String) -> Void
     let onSubmitDateOfBirth: (String, String, String) -> Void
+    let onEditDateOfBirth: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
@@ -418,7 +421,8 @@ private struct ChatErrorBanner: View {
 
                 case .ageVerificationRequired(let message):
                     DateOfBirthPrompt(serverMessage: message, submitting: ageSubmitting,
-                                      formError: ageFormError, onSubmit: onSubmitDateOfBirth)
+                                      formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                      onEdit: onEditDateOfBirth)
 
                 case .ageIneligible(let message):
                     VStack(alignment: .leading, spacing: Spacing.xs) {

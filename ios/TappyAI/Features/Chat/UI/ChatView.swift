@@ -62,7 +62,8 @@ struct ChatView: View {
                         ageSubmitting: vm.ageSubmitting,
                         ageFormError: vm.ageFormError,
                         onDeclareAge: { vm.declareGuestAge($0) },
-                        onSubmitDateOfBirth: { d, m, y in Task { await vm.submitDateOfBirth(day: d, month: m, year: y) } }
+                        onSubmitDateOfBirth: { d, m, y in Task { await vm.submitDateOfBirth(day: d, month: m, year: y) } },
+                        onEditDateOfBirth: { vm.clearAgeFormError() }
                     )
                 }
 
@@ -123,6 +124,10 @@ struct ChatView: View {
                             : "Tappy theo dõi "
                         }
                     )
+                    // Blocked under 18: the input is locked (and send() refuses too).
+                    .disabled(vm.isAgeBlocked)
+                    .opacity(vm.isAgeBlocked ? 0.4 : 1)
+                    .accessibilityHint(vm.isAgeBlocked ? Text("chat.age.blocked.title") : Text(verbatim: ""))
                 }
             }
             .background(TappyColor.background)

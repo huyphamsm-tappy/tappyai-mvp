@@ -9,8 +9,15 @@ struct GuestAgeDeclarationPrompt: View {
     let onDeclare: (String) -> Void
 
     @State private var year = ""
+    @FocusState private var focused: Bool
 
     private var yearValue: String? { GuestAgeDeclaration.value(forBirthYear: year) }
+
+    private func submit() {
+        guard let v = yearValue else { return }
+        focused = false
+        onDeclare(v)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
@@ -21,6 +28,7 @@ struct GuestAgeDeclarationPrompt: View {
             HStack(spacing: Spacing.xs) {
                 TextField(String(localized: "chat.age.declaration.yearPlaceholder"), text: $year)
                     .keyboardType(.numberPad)
+                    .focused($focused)
                     .font(TappyFont.callout)
                     .padding(.horizontal, Spacing.sm)
                     .padding(.vertical, Spacing.xs)
@@ -33,13 +41,24 @@ struct GuestAgeDeclarationPrompt: View {
                     }
 
                 AgeGateButton(titleKey: "chat.age.declaration.continue", filled: true,
-                              enabled: yearValue != nil) {
-                    if let v = yearValue { onDeclare(v) }
-                }
+                              enabled: yearValue != nil, action: submit)
             }
 
             AgeGateButton(titleKey: "chat.age.declaration.adult", filled: false, enabled: true) {
+                focused = false
                 onDeclare(GuestAgeDeclaration.adult)
+            }
+        }
+        // The number pad has no return key: Done and Continue sit above it, so the keyboard can
+        // neither trap the user nor cover the button.
+        .toolbar {
+            if focused {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button(NSLocalizedString("common.done", comment: "")) { focused = false }
+                    Spacer()
+                    Button(NSLocalizedString("chat.age.declaration.continue", comment: ""), action: submit)
+                        .disabled(yearValue == nil)
+                }
             }
         }
         .padding(Spacing.sm)
@@ -55,10 +74,23 @@ struct DateOfBirthPrompt: View {
     let submitting: Bool
     let formError: String?
     let onSubmit: (_ day: String, _ month: String, _ year: String) -> Void
+    /// Any field changed: the error about the previous attempt is cleared.
+    var onEdit: () -> Void = {}
 
     @State private var day = ""
     @State private var month = ""
     @State private var year = ""
+    @FocusState private var focusedField: Field?
+
+    private enum Field: Hashable { case day, month, year }
+
+    private var canSubmit: Bool { !submitting && !day.isEmpty && !month.isEmpty && year.count == 4 }
+
+    private func submit() {
+        guard canSubmit else { return }
+        focusedField = nil
+        onSubmit(day, month, year)
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
@@ -70,9 +102,9 @@ struct DateOfBirthPrompt: View {
                 .foregroundStyle(TappyColor.textSecondary)
 
             HStack(spacing: Spacing.xs) {
-                field("chat.age.dob.day", text: $day, maxDigits: 2)
-                field("chat.age.dob.month", text: $month, maxDigits: 2)
-                field("chat.age.dob.year", text: $year, maxDigits: 4)
+                field("chat.age.dob.day", text: $day, maxDigits: 2, as: .day)
+                field("chat.age.dob.month", text: $month, maxDigits: 2, as: .month)
+                field("chat.age.dob.year", text: $year, maxDigits: 4, as: .year)
             }
 
             if let formError {
@@ -86,9 +118,18 @@ struct DateOfBirthPrompt: View {
                 .foregroundStyle(TappyColor.textSecondary)
 
             AgeGateButton(titleKey: submitting ? "chat.age.dob.submitting" : "chat.age.dob.submit",
-                          filled: true,
-                          enabled: !submitting && !day.isEmpty && !month.isEmpty && year.count == 4) {
-                onSubmit(day, month, year)
+                          filled: true, enabled: canSubmit, action: submit)
+        }
+        // The number pad has no return key: Done, next field and Continue sit above it, so the
+        // keyboard can neither trap the user nor cover the Continue button.
+        .toolbar {
+            if focusedField != nil {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button(NSLocalizedString("common.done", comment: "")) { focusedField = nil }
+                    Spacer()
+                    Button(NSLocalizedString("chat.age.dob.submit", comment: ""), action: submit)
+                        .disabled(!canSubmit)
+                }
             }
         }
         .padding(Spacing.sm)
@@ -96,9 +137,10 @@ struct DateOfBirthPrompt: View {
         .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
     }
 
-    private func field(_ key: String.LocalizationValue, text: Binding<String>, maxDigits: Int) -> some View {
+    private func field(_ key: String.LocalizationValue, text: Binding<String>, maxDigits: Int, as which: Field) -> some View {
         TextField(String(localized: key), text: text)
             .keyboardType(.numberPad)
+            .focused($focusedField, equals: which)
             .font(TappyFont.callout)
             .multilineTextAlignment(.center)
             .padding(.vertical, Spacing.xs)
@@ -108,6 +150,15 @@ struct DateOfBirthPrompt: View {
             .onChange(of: text.wrappedValue) { newValue in
                 let digits = String(newValue.filter(\.isNumber).prefix(maxDigits))
                 if digits != newValue { text.wrappedValue = digits }
+                onEdit()
+                // A full field moves on to the next one, as on web.
+                if digits.count == maxDigits {
+                    switch which {
+                    case .day: focusedField = .month
+                    case .month: focusedField = .year
+                    case .year: break
+                    }
+                }
             }
     }
 }

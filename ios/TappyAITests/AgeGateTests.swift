@@ -131,6 +131,14 @@ final class AgeGateTests: XCTestCase {
         }
     }
 
+    func testOnlyTheUnder18BlockLocksTheChatInput() {
+        XCTAssertTrue(ChatError.ageIneligible(message: nil).locksInput)
+        for other: ChatError in [.generic, .offline, .authRequired, .anonLimitReached, .freeLimitReached,
+                                 .ageDeclarationRequired(message: nil), .ageVerificationRequired(message: nil)] {
+            XCTAssertFalse(other.locksInput, "\(other)")
+        }
+    }
+
     func testSignedInUserNeverGetsTheGuestYearForm() {
         // A signed-in user only sees age_declaration_required when the server's identity lookup
         // failed; the guest form would loop (the account never sends the guest header).

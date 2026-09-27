@@ -244,10 +244,19 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Send message
 
+    /// Under 18 (`age_ineligible`): the chat input is locked and nothing is sent — the server would
+    /// only refuse again. (Correction of a wrong date is the account's own flow.)
+    var isAgeBlocked: Bool { error?.locksInput ?? false }
+
+    /// The user is editing the date again: an error about the previous attempt no longer applies.
+    func clearAgeFormError() {
+        if ageFormError != nil { ageFormError = nil }
+    }
+
     func send() {
         cancelAutoSend()
         let text = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty, !isStreaming else { return }
+        guard !text.isEmpty, !isStreaming, !isAgeBlocked else { return }
         inputText = ""
         error = nil
 
@@ -258,7 +267,7 @@ final class ChatViewModel: AppObservableObject {
     }
 
     func sendQuickPrompt(_ text: String) {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAgeBlocked else { return }
         inputText = ""
         error = nil
 
@@ -285,7 +294,7 @@ final class ChatViewModel: AppObservableObject {
     // MARK: - Regenerate
 
     func regenerate() {
-        guard !isStreaming else { return }
+        guard !isStreaming, !isAgeBlocked else { return }
         if let last = messages.last, last.isAssistant {
             messages.removeLast()
         }
@@ -636,6 +645,13 @@ enum ChatError: Equatable, Sendable {
     case ageVerificationRequired(message: String?)
     /// 18+ gate — under 18. Blocked; no way around it from the client.
     case ageIneligible(message: String?)
+
+    /// Under 18: nothing may be sent, so the chat input is locked. Every other state leaves the
+    /// input usable (the age forms included — the user may still type while answering them).
+    var locksInput: Bool {
+        if case .ageIneligible = self { return true }
+        return false
+    }
 
     var isRetriable: Bool {
         switch self {
