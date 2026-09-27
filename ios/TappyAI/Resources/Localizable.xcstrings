@@ -12376,6 +12376,176 @@
         }
       }
     },
+    "review.report.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't send the report. Please try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không gửi được báo cáo. Vui lòng thử lại."
+          }
+        }
+      }
+    },
+    "review.report.reason.copyright": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright infringement"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vi phạm bản quyền"
+          }
+        }
+      }
+    },
+    "review.report.reason.harassment": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harassment or hate"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quấy rối hoặc thù ghét"
+          }
+        }
+      }
+    },
+    "review.report.reason.inappropriate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inappropriate content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung không phù hợp"
+          }
+        }
+      }
+    },
+    "review.report.reason.misinformation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Misinformation"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông tin sai lệch"
+          }
+        }
+      }
+    },
+    "review.report.reason.other": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khác"
+          }
+        }
+      }
+    },
+    "review.report.reason.spam": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spam or scam"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Spam hoặc lừa đảo"
+          }
+        }
+      }
+    },
+    "review.report.reason.violence": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Violence or danger"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạo lực hoặc nguy hiểm"
+          }
+        }
+      }
+    },
+    "review.report.thanks": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report sent. Thanks for helping keep the community safe."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã gửi báo cáo. Cảm ơn bạn đã giúp giữ cộng đồng an toàn."
+          }
+        }
+      }
+    },
+    "review.report.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo cáo"
+          }
+        }
+      }
+    },
     "review.share.copyLink": {
       "extractionState": "manual",
       "localizations": {
