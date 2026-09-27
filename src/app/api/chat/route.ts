@@ -2294,12 +2294,8 @@ ${completionInstruction(lang)}` },
       },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed
-  // Answer first (owner 2026-09-28): the gate's one question ends the reply when the model did not ask it.
-  const answeredResponse = gateAskAfter && sdkResponse.body
-    ? new Response(askAfterStream(sdkResponse.body, gateAskAfter, lang), { status: sdkResponse.status, headers: sdkResponse.headers })
-    : sdkResponse
   // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
-  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), answeredResponse.body), { status: answeredResponse.status, headers: answeredResponse.headers }) : answeredResponse
+  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.
@@ -2509,8 +2505,11 @@ ${completionInstruction(lang)}` },
     }
   }
   // UAT3: a multi-step turn must not reach the client as two copies of the same reply (stepRepeatGuard).
+  // Answer first (owner 2026-09-28): the gate's one question ends the reply when the FINAL text does not
+  // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
+  // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? finalResponse.body.pipeThrough(stepRepeatGuard()).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+    ? askAfterStream(finalResponse.body, gateAskAfter, lang).pipeThrough(stepRepeatGuard()).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }

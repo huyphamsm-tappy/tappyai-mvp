@@ -84,7 +84,7 @@ describe('what the model and the client receive', () => {
     // One call: the place search or (owner 2026-09-28, c40 T7) the fare call.
     expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
     expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
-    expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), answeredResponse\.body\)/)
+    expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), sdkResponse\.body\)/)
     expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchMessages\(presearchOutcome\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })
