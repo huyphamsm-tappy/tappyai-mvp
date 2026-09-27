@@ -129,6 +129,8 @@ struct ProfileMainView: View {
                 Divider().padding(.leading, 52)
                 menuRow(icon: "bubble.left.and.bubble.right", label: "profile.row.history", desc: "profile.row.history.desc", dest: .history)
                 Divider().padding(.leading, 52)
+                menuRow(icon: "map", label: "profile.row.planner", desc: "profile.row.planner.desc", dest: .planner)
+                Divider().padding(.leading, 52)
                 menuRow(icon: "calendar", label: "profile.row.bookings", desc: "profile.row.bookings.desc", dest: .bookings)
                 Divider().padding(.leading, 52)
                 menuRow(icon: "heart", label: "profile.row.preferences", desc: "profile.row.preferences.desc", dest: .preferences)

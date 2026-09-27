@@ -159,6 +159,8 @@ struct PlaceholderShellView: View {
                         NotificationsInboxView(deps: deps)
                     case .userSearch:
                         UserSearchView(deps: deps)
+                    case .planner:
+                        PlannerView(deps: deps)
                     case .groupDining:
                         GroupDiningView(deps: deps)
                     }

@@ -213,6 +213,8 @@ enum ProfileDestination: Hashable {
     case notificationsInbox
     /// People search — the counterpart of Android's ReviewSearchSection and the web user search.
     case userSearch
+    /// AI Planner — the plans found in the user's conversations (web `/planner`).
+    case planner
     /// Group dining — the counterpart of Android's GroupDiningScreen and the web's `/group/new`.
     ///
     /// 🚨 Was NOT a destination at all: the row called `UIApplication.shared.open` on a hardcoded
