@@ -1,0 +1,101 @@
+# iOS CI — compile the app and run the TappyAITests unit tests on the iOS Simulator.
+#
+# Build-only gate: no code signing, no archive, no upload, no secrets. Config/Secrets.xcconfig
+# is gitignored and optional (`#include?`), so the build uses the placeholder values in
+# Config/Debug.xcconfig.
+name: iOS
+
+on:
+  pull_request:
+    paths:
+      - "ios/**"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: ios-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    name: Build + TappyAITests
+    runs-on: macos-latest
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ios
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: |
+          xcodegen generate
+          mkdir -p build
+
+      - name: Pick iOS Simulator
+        id: sim
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          data = json.load(sys.stdin)["devices"]
+          ios = sorted((k for k in data if "iOS" in k), reverse=True)
+          for runtime in ios:
+              for d in data[runtime]:
+                  if d["name"].startswith("iPhone"):
+                      print(d["udid"]); sys.exit(0)
+          sys.exit(1)
+          ')
+          echo "Using simulator $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+
+      - name: Build (iOS Simulator)
+        run: |
+          set -o pipefail
+          xcodebuild build \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-build.log
+
+      - name: Test (TappyAITests)
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project TappyAI.xcodeproj \
+            -scheme TappyAI \
+            -configuration Debug \
+            -destination "id=${{ steps.sim.outputs.udid }}" \
+            -derivedDataPath build/DerivedData \
+            -skipPackagePluginValidation \
+            -only-testing:TappyAITests \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            | tee build/xcodebuild-test.log
+
+      - name: Error summary
+        if: failure()
+        run: |
+          for f in build/xcodebuild-build.log build/xcodebuild-test.log; do
+            [ -f "$f" ] || continue
+            echo "=== $f ==="
+            grep -E "(error:|: error |Test Case .* failed|\*\* (BUILD|TEST) FAILED)" "$f" | sort -u | head -300 || true
+            echo "unique errors: $(grep -E 'error:' "$f" | sort -u | wc -l)"
+          done
