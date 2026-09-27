@@ -111,11 +111,32 @@ export function planPriceEvidenceFromRows(
   return byEntity
 }
 
-type PlanItem = { name?: string; price?: string }
+type PlanItem = { name?: string; price?: string; description?: string }
 type Plan = {
   budget_total?: unknown
   days?: Array<{ items?: PlanItem[] }>
   cost_breakdown?: Record<string, unknown>
+}
+
+/**
+ * Clauses of a plan-item description that state an amount the pool does not support are removed;
+ * every other clause is kept verbatim. A clause is a run between ", ", "; ", ". ", " - ", " — ",
+ * " · " or "|" separators (a period only before a space or the end, so never a decimal point: "4.6⭐", "1.2-1.5 triệu").
+ */
+export function stripUnsupportedMoney(description: string, pool: number[]): { text: string; removed: number } {
+  if (extractMoneyClaims(description).length === 0) return { text: description, removed: 0 }
+  const parts = description.split(/((?:,(?=\s)|[;|·]|\.(?=\s|$)|\s[-–—]\s)\s*)/)
+  let removed = 0
+  const kept: string[] = []
+  for (let i = 0; i < parts.length; i += 2) {
+    const clause = parts[i]
+    const sep = parts[i + 1] ?? ''
+    if (clause && !supported(clause, pool)) { removed++; continue }
+    kept.push(clause + sep)
+  }
+  if (removed === 0) return { text: description, removed: 0 }
+  const text = kept.join('').replace(/(?:[,;|·]|\s[-–—])\s*$/, '').replace(/\s{2,}/g, ' ').trim()
+  return { text, removed }
 }
 
 /** A VND amount or range, as the plan states it. */
@@ -201,6 +222,14 @@ export function guardPlanPrices(
       if (!item || typeof item !== 'object') continue
       const own = amountsFor(item.name ?? '', evidence.byEntity)
       entityPool.push(...own)
+      // UAT4 P1-e: the description is money too. Measured on the golden set: the item's `price`
+      // said "chưa có giá" while its description said "giá tham khảo 140.000-190.000 VND/người"
+      // (T1, L1, M1 t8, G4a). Same evidence rule as `price`; only the clause carrying the
+      // unsupported amount goes — the rating, hours and kind of place in the same line stay.
+      if (typeof item.description === 'string') {
+        const cut = stripUnsupportedMoney(item.description, [...own, ...evidence.userAmounts])
+        if (cut.removed > 0) { item.description = cut.text; redacted += cut.removed; changed = true }
+      }
       if (typeof item.price !== 'string') { itemAmounts.push(null); continue }
       // The user's number is allowed on an item too (they may have priced a step
       // themselves), but it does not make the item's amount a retrieved cost.

@@ -357,3 +357,39 @@ describe('budget is not a cost — derived lines are the server\'s, never the mo
     expect(prose).toContain('Với ngân sách 3 triệu')
   })
 })
+
+// ── UAT4 P1-e (2026-09-27): the description carries money too ─────────────────────────────────
+import { stripUnsupportedMoney } from './planPriceGuard'
+
+describe('UAT4: invented prices inside a plan item description', () => {
+  // Verbatim descriptions from docs/uat/evidence/golden/uat4-golden (B4 t3, G1a, G4a).
+  const coach = 'Xe Phương Trang, khoảng 2 giờ, giá tham khảo 140.000-190.000 VND/người'
+  const seafood = '**4.6⭐ (1.658 đánh giá Google Maps)** - Hải sản tươi sống, view biển đẹp, mở 10:30-14:00 & 17:00-22:30. Khoảng giá 200-600k/người'
+  const hotel = 'Khách sạn 4.9⭐ (6.194 đánh giá), vị trí trung tâm, view đẹp, giá tham khảo 1.2-1.5 triệu/đêm'
+
+  it('an unsupported amount loses only its clause; rating, hours and kind stay', () => {
+    expect(stripUnsupportedMoney(coach, [])).toEqual({ text: 'Xe Phương Trang, khoảng 2 giờ', removed: 1 })
+    const s = stripUnsupportedMoney(seafood, [])
+    expect(s.removed).toBe(1)
+    expect(s.text).toBe('**4.6⭐ (1.658 đánh giá Google Maps)** - Hải sản tươi sống, view biển đẹp, mở 10:30-14:00 & 17:00-22:30.')
+    expect(stripUnsupportedMoney(hotel, []).text).toBe('Khách sạn 4.9⭐ (6.194 đánh giá), vị trí trung tâm, view đẹp')
+  })
+
+  it('an amount the rows supplied for THIS item stays', () => {
+    expect(stripUnsupportedMoney(seafood, [200_000, 600_000])).toEqual({ text: seafood, removed: 0 })
+    expect(stripUnsupportedMoney(hotel, [1_200_000, 1_500_000]).removed).toBe(0)
+  })
+
+  it('no money → untouched (decimal points in ratings are not clause breaks)', () => {
+    const d = 'Quảng trường 4.5⭐ (14.672 đánh giá), mở cả ngày, không gian yên tĩnh'
+    expect(stripUnsupportedMoney(d, [])).toEqual({ text: d, removed: 0 })
+  })
+
+  it('the whole guard rewrites the description inside [TAPPY_PLAN]', () => {
+    const plan = { title: 'x', days: [{ label: 'Ngày 1', items: [{ name: 'Xe Phương Trang', price: 'chưa có giá', description: coach }] }] }
+    const out = guardPlanPrices(`[TAPPY_PLAN]${JSON.stringify(plan)}[/TAPPY_PLAN]`, { byEntity: new Map(), userAmounts: [] }, 'vi')
+    const p = JSON.parse(out.text.slice(out.text.indexOf(']') + 1, out.text.lastIndexOf('[')))
+    expect(p.days[0].items[0].description).toBe('Xe Phương Trang, khoảng 2 giờ')
+    expect(out.redacted).toBeGreaterThanOrEqual(1)
+  })
+})
