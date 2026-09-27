@@ -11,6 +11,7 @@ import TappyPresence from '@/components/v3/TappyPresence'
 import { heroGreeting, type HeroClock } from '@/lib/home/heroGreeting'
 import SmartToolCard from '@/components/v3/SmartToolCard'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import { SHOW_HOME_CATEGORY_ROW } from '@/lib/config/product'
 import { formatRelativeTime, cn } from '@/lib/utils'
 import { homeSmartTools, SMART_TOOLS_HREF } from '@/lib/tools/registry'
 import {
@@ -513,6 +514,8 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             full-bleed image with the words scrimmed over it. The mockup does none of those: the
             scene occupies the upper band, the card's own surface carries the title and one line
             under it, and a small round chevron sits at the right. */}
+        {/* UAT3: behind SHOW_HOME_CATEGORY_ROW (default hidden) — the main chat bar is the way in. */}
+        {SHOW_HOME_CATEGORY_ROW && (
         <section data-home-section="capabilities" aria-label={t('v3.home.canHelpTitle')}>
           {/* 🚨 NO HEADING. The approved mockup runs the prompt row straight into these cards —
               they are part of the hero's own offer, not a titled section of the page. The label
@@ -603,6 +606,7 @@ export default function HomeV3({ user, userInfo, firstName, suggestions, convers
             </Link>
           </div>
         </section>
+        )}
 
         {/* ── 3. Hỏi Tappy thử — rendered ONLY when the server sent items ─── */}
         {/* ND-001: a discovery/content preview drawn from an EXISTING source, never a

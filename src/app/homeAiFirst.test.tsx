@@ -93,24 +93,10 @@ describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
     // the opposite of that, and the next test proves it rather than trusting this comment.
     //
     // Order is an OWNER DECISION: ask → what Tappy can do → discover → tools → resume.
-    expect(sections).toEqual(['hero', 'capabilities', 'for-you', 'tools', 'continue'])
-  })
-
-  it('the capabilities strip leads into the assistant, never into another destination', () => {
-    // The guard on the new section. Each tile must open the chat with a REAL category, and the
-    // only tile allowed to leave the assistant is the "more" one, which goes to the Tools page.
-    const { container } = renderHome()
-    const tiles = [...container.querySelectorAll('[data-capability]')]
-    expect(tiles.length, 'five real categories plus the way out').toBe(6)
-    for (const tile of tiles) {
-      const href = tile.getAttribute('href')!
-      const id = tile.getAttribute('data-capability')
-      if (id === 'more') { expect(href).toBe('/tools'); continue }
-      expect(href, `${id} must open the assistant`).toBe(`/chat?category=${id}`)
-    }
-    // The ids are the product's own vocabulary, not a taxonomy invented for the grid.
-    expect(tiles.map(t => t.getAttribute('data-capability')))
-      .toEqual(['food', 'shopping', 'travel', 'entertainment', 'spa', 'more'])
+    // UAT3 (2026-09-27): the category row is hidden by SHOW_HOME_CATEGORY_ROW (owner) — the row
+    // and its guard live on in homeCategoryRowFlag.test.tsx, which renders Home with the flag ON.
+    expect(sections).toEqual(['hero', 'for-you', 'tools', 'continue'])
+    expect(container.querySelectorAll('[data-capability]').length).toBe(0)
   })
 
   it('renders no other destination inside Home', () => {
@@ -119,7 +105,7 @@ describe('Home is ONE PAGE, not an ecosystem dashboard', () => {
     const { container } = renderHome()
     const region = homeRegion(container)
     const own = new Set([...region.querySelectorAll('[data-home-section]')].map(s => s.getAttribute('data-home-section')))
-    expect(own.size, 'Home owns only its five sections').toBe(5)
+    expect(own.size, 'Home owns only its four sections (the category row is hidden, UAT3)').toBe(4)
 
     // No destination's content is reproduced here: no feed, no inbox rows, no deal cards,
     // no marketplace, no profile panel.

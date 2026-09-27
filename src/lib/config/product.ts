@@ -128,6 +128,15 @@ export const SHOW_MUSIC = false
  */
 export const SHOW_MARKETPLACE = false
 /**
+ * Home's category card row (Ẩm thực · Mua sắm · Du lịch · Giải trí · Thư giãn · Khám phá thêm).
+ *
+ * HIDDEN, NOT DELETED (owner, UAT3 2026-09-27): "visual clutter — I want users going to the main
+ * chat bar instead". `HomeV3` renders the section only when this is true; the cards, their art, the
+ * `/chat?category=…` links and the test that pins them (`homeCategoryRowFlag.test.tsx`) are all
+ * kept, so flipping this back restores the row exactly. Web only — Android's Home has no such row.
+ */
+export const SHOW_HOME_CATEGORY_ROW = false
+/**
  * Wallet / Tappy Points - HIDDEN, NOT DELETED.
  *
  * 🚨 THE ROW PROMISED A FEATURE THAT DOES NOT EXIST YET, AND IT DID NOT EVEN GO THERE.
