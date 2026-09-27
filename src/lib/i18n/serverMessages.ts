@@ -291,6 +291,12 @@ const MESSAGES = {
   'links.urlRequired': { vi: 'Vui lòng nhập đường liên kết.', en: 'Please enter a link.' },
   'links.unsupportedSource': { vi: 'Nguồn liên kết này chưa được hỗ trợ.', en: 'That kind of link is not supported yet.' },
 
+  // ── UAT3 P0 · in-app account deletion (/api/account/delete) ─────────────────
+  'account.deleteUnavailable': { vi: 'Chức năng tự xóa tài khoản chưa được bật. Hãy gửi yêu cầu xóa qua trang hướng dẫn.', en: 'Self-service deletion is not available here. Please send a deletion request instead.' },
+  'account.deleteConfirmRequired': { vi: 'Hãy gõ từ xác nhận để xóa tài khoản.', en: 'Type the confirmation word to delete your account.' },
+  'account.deleteStaff': { vi: 'Tài khoản có quyền quản trị không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ.', en: 'An account with admin access cannot be deleted from here. Please contact support.' },
+  'account.deleteFailed': { vi: 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.', en: 'Your account was not deleted and is unchanged. Please try again.' },
+
   'notif.markReadFailed': { vi: 'Không thể đánh dấu đã đọc.', en: "Couldn't mark these as read." },
 } as const satisfies Record<string, Message>
 

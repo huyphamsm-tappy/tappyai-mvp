@@ -1,0 +1,35 @@
+{
+ "at": "2026-09-27T05:40:04.077Z",
+ "note": "throwaway users on AUDIT; route called with a real JWT",
+ "seeded": {
+  "profile": 1,
+  "share": 1,
+  "group": 1,
+  "integration": 1,
+  "notification_in_O": 1,
+  "user_memory": 1
+ },
+ "wrong_word": 400,
+ "delete_status": 200,
+ "after": {
+  "auth_user": 0,
+  "profile": 0,
+  "share": 0,
+  "group": 0,
+  "integration": 0,
+  "notification_in_O": 0,
+  "user_memory": 0,
+  "deletion_job": {
+   "queued": true,
+   "group_ids_match": true,
+   "google_tokens_captured": 1,
+   "done_at": null
+  }
+ },
+ "after_delete_same_token": 401,
+ "cleanup": {
+  "O_left": 0,
+  "U_left": 0,
+  "job_left": 0
+ }
+}

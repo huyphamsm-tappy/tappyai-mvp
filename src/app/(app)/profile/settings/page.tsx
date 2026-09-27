@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import SettingsView from './SettingsView'
+import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 
 export default async function SettingsPage() {
   const supabase = createClient()
@@ -15,5 +16,5 @@ export default async function SettingsPage() {
 
   const userInfo = profile || { full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, email: user.email }
 
-  return <SettingsView user={userInfo} />
+  return <SettingsView user={userInfo} selfDelete={selfDeleteEnabled()} />
 }

@@ -91,4 +91,13 @@ describe('Settings → Request Account Deletion', () => {
     // renders light-on-light once Header puts `dark` on <html>.
     expect(link.innerHTML).toMatch(/dark:/)
   })
+
+  // UAT3 P0: where ACCOUNT_SELF_DELETE_ENABLED is on, the same row opens the in-app deletion page.
+  it('opens the in-app deletion page when self-service deletion is enabled', () => {
+    setLocale('vi')
+    render(<SettingsView user={user} selfDelete />)
+    const link = screen.getByRole('link', { name: /^Xóa tài khoản$/ })
+    expect(link.getAttribute('href')).toBe('/profile/settings/delete-account')
+    setLocale('en')
+  })
 })

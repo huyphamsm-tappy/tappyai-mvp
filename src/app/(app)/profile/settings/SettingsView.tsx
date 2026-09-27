@@ -24,7 +24,11 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 // light/dark control is real but it lives in the V3 header (`useThemeMode`, the Sun/Moon button in
 // `V3Shell`), which is now on this page too — there is one control, reachable from every V3
 // screen, and a second switch here would be a second source of truth for the same preference.
-export default function SettingsView({ user }: { user: ComponentProps<typeof Header>['user'] }) {
+export default function SettingsView({ user, selfDelete = false }: {
+  user: ComponentProps<typeof Header>['user']
+  /** `ACCOUNT_SELF_DELETE_ENABLED` on this deployment: the row opens the in-app deletion page. */
+  selfDelete?: boolean
+}) {
   const { t } = useTranslation()
 
   return (
@@ -65,9 +69,9 @@ export default function SettingsView({ user }: { user: ComponentProps<typeof Hea
         {/* Account actions. Grouped in one card the way the Android Settings screen
             groups them (SettingsScreen.kt: Sign out, divider, Request account
             deletion — both danger-styled), so the two platforms read the same.
-            The deletion entry links to the public /delete-account page rather
-            than acting directly: deletion is a request handled by support, and
-            that page is the route Google Play requires to be documented. */}
+            Where self-service deletion is enabled (UAT3 P0) the row opens the
+            in-app deletion page; elsewhere it links to the public /delete-account
+            page, where deletion is a request handled by support. */}
         <div className="v3-panel space-y-1 p-2">
           <SignOutButton />
           {/* rounded-xl + overflow-hidden so MenuItem's square hover fill is clipped
@@ -77,8 +81,8 @@ export default function SettingsView({ user }: { user: ComponentProps<typeof Hea
           <div className="overflow-hidden rounded-xl">
             <MenuItem
               icon={Trash2}
-              label={t('settings.deleteAccount')}
-              href="/delete-account"
+              label={selfDelete ? t('settings.deleteAccountSelf') : t('settings.deleteAccount')}
+              href={selfDelete ? '/profile/settings/delete-account' : '/delete-account'}
               danger
             />
           </div>

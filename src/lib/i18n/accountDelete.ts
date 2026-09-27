@@ -1,0 +1,77 @@
+// In-app account deletion (UAT3 P0, 2026-09-27) — `/profile/settings/delete-account`.
+//
+// 🚨 The lists are `docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md` §3 and §3b WORD FOR WORD, and the
+// "what happens next" sentence is its §2 ("…removes your data from our database at once; the
+// photos, videos and audio you uploaded are removed from our file storage within 48 hours after
+// that"), because each line is backed by a measured mechanism (the draft's §"Đối chiếu" table).
+// Change a line here only together with the draft and the mechanism behind it.
+
+export const vi = {
+  'settings.deleteAccountSelf': 'Xóa tài khoản',
+
+  'accountDelete.title': 'Xóa tài khoản',
+  'accountDelete.back': 'Quay lại Cài đặt',
+  'accountDelete.warning': 'Việc xóa là vĩnh viễn và không thể hoàn tác. Tài khoản bị xóa ngay khi bạn xác nhận.',
+  'accountDelete.removes.heading': 'Việc xóa sẽ loại bỏ vĩnh viễn:',
+  'accountDelete.removes.1': 'Tài khoản và hồ sơ của bạn, gồm tên, ảnh đại diện, ảnh bìa và phần giới thiệu.',
+  'accountDelete.removes.2': 'Các cuộc trò chuyện với TappyAI và bộ nhớ AI.',
+  'accountDelete.removes.3': 'Địa điểm đã lưu, mục yêu thích, tùy chọn cá nhân, theo dõi giá và kế hoạch.',
+  'accountDelete.removes.4': 'Các đánh giá, bình luận và lượt thích bạn đã đăng, kèm ảnh và video.',
+  'accountDelete.removes.5': 'Các trang kết quả bạn đã chia sẻ công khai — đường link sẽ không còn mở được.',
+  'accountDelete.removes.6': 'Ảnh, video và âm thanh bạn đã tải lên, được xóa khỏi kho lưu trữ tệp của chúng tôi.',
+  'accountDelete.removes.7': 'Các nhóm bạn đã tạo, và tư cách thành viên của bạn trong nhóm do người khác tạo.',
+  'accountDelete.removes.8': 'Các thông báo bạn tạo ra trong hộp thư của người khác (ví dụ "… đã bình luận đánh giá của bạn").',
+  'accountDelete.removes.9': 'Kết nối Google Lịch — chúng tôi đồng thời thu hồi quyền truy cập của TappyAI tại Google.',
+  'accountDelete.kept.heading': 'Được giữ lại nhưng không còn gắn với bạn',
+  'accountDelete.kept.lead': 'Một số nội dung bạn đã gửi cho người khác cũng thuộc về lịch sử của họ, nên được giữ lại nhưng không còn tên hay tài khoản của bạn:',
+  'accountDelete.kept.1': 'Tin nhắn bạn đã gửi cho người khác vẫn nằm trong cuộc trò chuyện của họ và hiển thị là từ một tài khoản đã xóa.',
+  'accountDelete.kept.2': 'Báo cáo vi phạm và quyết định kiểm duyệt liên quan đến nội dung hoặc tài khoản được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn.',
+  'accountDelete.retained': 'Dữ liệu có thể được lưu lại theo quy định pháp luật',
+  'accountDelete.confirm.label': 'Để xác nhận, hãy gõ {word}',
+  'accountDelete.confirm.word': 'XÓA',
+  'accountDelete.submit': 'Xóa vĩnh viễn tài khoản',
+  'accountDelete.deleting': 'Đang xóa…',
+  'accountDelete.cancel': 'Hủy',
+  'accountDelete.error.staff': 'Tài khoản này có quyền quản trị nên không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ.',
+  'accountDelete.error.failed': 'Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại.',
+  'accountDelete.error.signIn': 'Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại rồi thử lại.',
+  'accountDelete.done.title': 'Tài khoản của bạn đã được xóa',
+  'accountDelete.done.p1': 'Dữ liệu của bạn đã được xóa khỏi cơ sở dữ liệu; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó.',
+  'accountDelete.done.p2': 'Bạn đã được đăng xuất. Nếu có câu hỏi, hãy liên hệ {email}.',
+  'accountDelete.done.home': 'Về trang chủ',
+} as const
+
+export const en: Record<keyof typeof vi, string> = {
+  'settings.deleteAccountSelf': 'Delete account',
+
+  'accountDelete.title': 'Delete account',
+  'accountDelete.back': 'Back to Settings',
+  'accountDelete.warning': 'Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm.',
+  'accountDelete.removes.heading': 'Deletion permanently removes:',
+  'accountDelete.removes.1': 'Your account and profile, including your name, profile photo, cover photo and bio.',
+  'accountDelete.removes.2': 'Your chats with TappyAI and your AI memory.',
+  'accountDelete.removes.3': 'Your saved places, favourites, preferences, price watches and plans.',
+  'accountDelete.removes.4': 'The reviews, comments and likes you posted, including their photos and videos.',
+  'accountDelete.removes.5': 'The result pages you shared publicly — their links stop working.',
+  'accountDelete.removes.6': 'The photos, videos and audio you uploaded, removed from our file storage.',
+  'accountDelete.removes.7': 'Groups you created, and your place in groups created by others.',
+  'accountDelete.removes.8': 'Notifications you caused in other people\'s inboxes (for example "… commented on your review").',
+  'accountDelete.removes.9': 'Your Google Calendar connection — we also revoke TappyAI\'s access at Google.',
+  'accountDelete.kept.heading': 'Kept, but no longer linked to you',
+  'accountDelete.kept.lead': 'Some things you shared with other people belong to their record as well, so they stay without your name or account attached:',
+  'accountDelete.kept.1': 'Messages you sent to other people stay in their conversation and are shown as coming from a deleted account.',
+  'accountDelete.kept.2': 'Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account.',
+  'accountDelete.retained': 'Data we may retain where the law requires it',
+  'accountDelete.confirm.label': 'To confirm, type {word}',
+  'accountDelete.confirm.word': 'DELETE',
+  'accountDelete.submit': 'Permanently delete account',
+  'accountDelete.deleting': 'Deleting…',
+  'accountDelete.cancel': 'Cancel',
+  'accountDelete.error.staff': 'This account has admin access, so it cannot be deleted from here. Please contact support.',
+  'accountDelete.error.failed': 'Your account was not deleted and is unchanged. Please try again.',
+  'accountDelete.error.signIn': 'Your session has expired. Sign in again, then try again.',
+  'accountDelete.done.title': 'Your account has been deleted',
+  'accountDelete.done.p1': 'Your data has been removed from our database; the photos, videos and audio you uploaded are removed from our file storage within 48 hours after that.',
+  'accountDelete.done.p2': 'You have been signed out. If you have questions, contact {email}.',
+  'accountDelete.done.home': 'Go to Home',
+}
