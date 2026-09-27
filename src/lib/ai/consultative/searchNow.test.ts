@@ -146,3 +146,22 @@ describe('flights: search now, ask the date after (c40 T7)', () => {
     for (const d of ['vé máy bay khuyến mãi đi Đà Nẵng', 'vé một chiều đi Hà Nội', 'tháng sau đi Đà Nẵng']) expect(SPECIFIC_DATE.test(fold(d)), d).toBe(false)
   })
 })
+
+// Golden D1 / M3 (2026-09-28): the dish the user named was replaced by the meal-time default.
+describe('a named dish is the food query', () => {
+  const food = (text: string) => {
+    const messages = [{ role: 'user', content: text }]
+    const need = deriveNeedProfile(messages)
+    const frame = deriveDecisionFrame({ messages, need, planningIntent: null, forcedTool: null, hasGps: true, storedPreferences: null, now: new Date('2026-09-28T16:00:00Z') })
+    return deriveSearchNow({ text, situation: deriveSituation([text], need, { hasGps: true }), frame, need, forcedTool: null, isFirstReply: true, movieRecommend: false })
+  }
+  it('"Quán phở ngon ở Quận 3" → phở, "ăn lẩu ở đâu ngon quận 1" → lẩu (never "quán ăn khuya")', () => {
+    expect(food('Quán phở ngon ở Quận 3')?.query).toBe('quán phở ngon')
+    expect(food('ăn lẩu ở đâu ngon quận 1')?.query).toBe('quán lẩu ngon')
+    expect(food('tim quan bun bo ngon o q1')?.query).toContain('bún bò')
+  })
+  it('no dish named → the meal-time default as before; "lầu 2" is not lẩu', () => {
+    expect(food('ăn gì ngon giờ')?.query).toMatch(/^quán ăn/)
+    expect(food('quán ăn ngon lầu 2 quận 1 cho 2 người')?.query).not.toContain('lẩu')
+  })
+})

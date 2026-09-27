@@ -95,11 +95,11 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // gone — BUOC 1 at the top carries the same instruction (measured 2026-09-18: the top block is
   // the one that moved "đi chơi ở đâu" to a search; the bottom line predates it).
   const searchNow = ''
-  // Answer first: the one question the gate left for this turn, asked LAST (it is the rule-5 question).
-  const askAfterLine = input.askAfter
-    ? `
-8. HOI SAU (luot nay): tim va CHON truoc (luat 1-3). Cau CUOI cung cua cau tra loi la DUNG 1 cau hoi nay, khong hoi gi khac: "${input.askAfter.q}"${input.askAfter.options.length ? ` (${input.askAfter.options.join(' / ')})` : ''}.${input.askAfter.options.length ? ` Ket thuc bang [FOLLOWUPS]${input.askAfter.options.slice(0, 3).join('|')}[/FOLLOWUPS].` : ''}`
-    : ''
+  // Answer first (2026-09-28): the gate's one question is NOT given to the model. Measured (golden B2,
+  // c40 T8 / F4): with the question in the block the model asked it FIRST ("mình cần biết: …") and
+  // skipped the search. askAfterStream (route, after every guard) adds it at the end instead.
+  void input.askAfter
+  const askAfterLine = ''
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
     : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'

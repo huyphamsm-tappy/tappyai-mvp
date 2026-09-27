@@ -145,3 +145,23 @@ describe('planFlightPresearch', () => {
     expect(planFlightPresearch(flight('x'), 'Vé máy bay Sài Gòn Hà Nội', now, { planning: true })).toBeNull()
   })
 })
+
+// Golden B2 (2026-09-28): a lossless suggestion is pre-searched; a lossy one still goes to the model.
+import { queryCoversRequest } from './presearch'
+describe('queryCoversRequest', () => {
+  it('B2 — party / age / "gần đây" are carried by other means: covered', () => {
+    expect(queryCoversRequest('quán ăn ngon có khu trẻ em', 'Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây')).toBe(true)
+    expect(queryCoversRequest('quán bún bò ngon', 'tim quan bun bo ngon o q1 duoi 80k')).toBe(true)
+    expect(queryCoversRequest('quán karaoke', 'Karaoke cho 10 người tầm 100k/người Gò Vấp', 'Gò Vấp')).toBe(true)
+  })
+  it('a word the query lacks keeps the model step: cuisine, sub-service, format', () => {
+    expect(queryCoversRequest('quán ăn ngon yên tĩnh', 'quán Nhật yên tĩnh Quận 1')).toBe(false)
+    expect(queryCoversRequest('spa massage', 'spa massage chan gan q1 duoi 300k')).toBe(false)
+    expect(queryCoversRequest('rạp chiếu phim', 'Rạp chiếu phim IMAX ở TP HCM')).toBe(false)
+  })
+  it('planPresearch runs a covered suggestion, not a lossy one', () => {
+    const s = deriveSituation(['Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây'], { budget: null as never, location: { text: null, gps: null } }, { hasGps: true })
+    expect(planPresearch({ query: 'quán ăn ngon có khu trẻ em', type: 'restaurant', exact: false }, s, { userText: 'Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây' })?.args.query).toBe('quán ăn ngon có khu trẻ em')
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation, { userText: 'spa massage chan gan q1' })).toBeNull()
+  })
+})

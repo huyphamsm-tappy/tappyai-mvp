@@ -37,7 +37,7 @@ export function endsWithQuestion(text: string): boolean {
 export function askAfterStream(body: ReadableStream<Uint8Array>, q: ClarifyQuestion | null, lang: string, log: (e: Record<string, unknown>) => void = (e) => console.log(JSON.stringify(e))): ReadableStream<Uint8Array> {
   if (!q) return body
   const dec = new TextDecoder(), enc = new TextEncoder()
-  let rest = '', text = '', failed = false
+  let rest = '', text = '', failed = false, answered = false
   const held: string[] = []
   return body.pipeThrough(new TransformStream<Uint8Array, Uint8Array>({
     transform(chunk, c) {
@@ -47,17 +47,20 @@ export function askAfterStream(body: ReadableStream<Uint8Array>, q: ClarifyQuest
         if (l.startsWith('d:')) { held.push(l); continue }
         if (l.startsWith('0:')) { try { text += JSON.parse(l.slice(2)) } catch { /* not ours */ } }
         if (l.startsWith('3:')) failed = true
+        if (l.startsWith('9:') || l.startsWith('a:')) answered = true
         c.enqueue(enc.encode(l + '\n'))
       }
     },
     flush(c) {
       if (rest) { if (rest.startsWith('d:')) held.push(rest); else c.enqueue(enc.encode(rest + '\n')) }
-      if (!failed && text.replace(BLOCK_RE, '').trim().length > 0 && !endsWithQuestion(text)) {
+      // Only AFTER an answer: a turn that searched nothing (golden B2: the model asked instead) must not
+      // get a second question stacked on its own.
+      if (!failed && answered && text.replace(BLOCK_RE, '').trim().length > 0 && !endsWithQuestion(text)) {
         const chips = /\[FOLLOWUPS\]/.test(text) || q.options.length === 0 ? '' : `\n\n[FOLLOWUPS]${q.options.slice(0, 3).join('|')}[/FOLLOWUPS]`
         c.enqueue(enc.encode(`0:${JSON.stringify(`\n\n${askAfterSentence(q, lang)}${chips}`)}\n`))
         log({ type: 'tappyai_ask_after', appended: true, q: q.q })
       } else {
-        log({ type: 'tappyai_ask_after', appended: false, q: q.q, reason: failed ? 'error' : 'model_asked' })
+        log({ type: 'tappyai_ask_after', appended: false, q: q.q, reason: failed ? 'error' : !answered ? 'no_answer' : 'model_asked' })
       }
       for (const l of held) c.enqueue(enc.encode(l + '\n'))
     },

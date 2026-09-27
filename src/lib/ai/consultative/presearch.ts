@@ -22,6 +22,7 @@
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import type { SearchNow } from './searchNow'
 import type { SituationFrame } from './situationFrame'
+import { normalizeVN } from '../intent'
 import { routeInText } from '@/lib/ai/tools/travel'
 
 export interface PresearchPlan {
@@ -44,9 +45,9 @@ const PLACE_TYPES = new Set(['restaurant', 'cafe', 'spa', 'bar', 'attraction', '
 // goes back to the model as the directive it sharpens. A "more" turn repeats the previous search
 // and keeps its pre-search (`more`). An exact call with no place in the situation takes the district
 // the user stated earlier in the same subject (`statedArea`), not nothing.
-export function planPresearch(searchNow: SearchNow | null, situation: SituationFrame | null, opts: { clip?: boolean; planning?: boolean; movie?: boolean; more?: boolean; statedArea?: string | null } = {}): PresearchPlan | null {
+export function planPresearch(searchNow: SearchNow | null, situation: SituationFrame | null, opts: { clip?: boolean; planning?: boolean; movie?: boolean; more?: boolean; statedArea?: string | null; userText?: string } = {}): PresearchPlan | null {
   if (!searchNow || !situation || opts.clip || opts.planning || opts.movie) return null
-  if (!searchNow.exact && !opts.more) return null
+  if (!searchNow.exact && !opts.more && !(opts.userText && queryCoversRequest(searchNow.query, opts.userText, situation.place.text ?? opts.statedArea))) return null
   if (!PLACE_TYPES.has(searchNow.type)) return null
   if (!searchNow.query.trim()) return null
   const location = situation.place.text?.trim() || opts.statedArea?.trim() || undefined
@@ -80,6 +81,28 @@ export function planFlightPresearch(searchNow: SearchNow | null, text: string, n
     if (day >= 1 && day <= 31 && month >= 1 && month <= 12) departDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
   }
   return { toolName: 'get_flight_prices', args: { ...route, ...(departDate ? { departDate } : {}) } }
+}
+
+/**
+ * Golden B2 (2026-09-28): "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây" carried a
+ * SUGGESTED directive ("quán ăn ngon có khu trẻ em"), the model asked "Bạn muốn ăn gì?" instead of
+ * calling, and no cards came back. A suggestion is pre-searched when it loses nothing: every word of
+ * the request is in the query, or is party / age / occasion / time / budget / area / filler — words
+ * the route passes on by other means (situation, budget filter, location). A request with a word the
+ * query lacks ("quán Nhật", "massage chân", "IMAX") still goes to the model to sharpen.
+ */
+const COVERED_BY_OTHER_MEANS = new Set(('tim kiem giup dum cho minh toi tui em anh chi ban nhe nha nhen voi va o tai gan day khu vuc nao gi dau ngon re dep tot hay '
+  + 'di an uong quan nguoi gia dinh be con tre tuoi duoi tren tam khoang k nghin ngan trieu tr dong vnd sach budget '
+  + 'nay hom trua sang chieu toi mai cuoi tuan gio luc co can muon la mot hai ba bon nam sau bay tam chin muoi cai nhung cac dip '
+  + 'hen ho cap doi dong nghiep sep khach tiep ca nha oi a vay the nhi thi dang dua ruot yeu vo chong me bo ong').split(' '))
+
+export function queryCoversRequest(query: string, userText: string, area?: string | null): boolean {
+  const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/sinh nhat/g, ' ').replace(/[^a-z0-9]+/g, ' ')
+  let text = ` ${fold(userText)} `
+  if (area) text = text.replace(` ${fold(area).trim()} `, ' ')
+  text = text.replace(/ (?:q|quan) ?\d{1,2} /g, ' ')
+  const queryWords = new Set(fold(query).split(' ').filter(Boolean))
+  return text.split(' ').filter(Boolean).every(w => queryWords.has(w) || COVERED_BY_OTHER_MEANS.has(w) || /^\d+k?$/.test(w))
 }
 
 export interface PresearchOutcome {

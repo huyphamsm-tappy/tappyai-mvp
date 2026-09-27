@@ -19,6 +19,7 @@ import { ADVICE_RE, type DecisionFrame } from './decisionFrame'
 import type { SituationFrame } from './situationFrame'
 import type { NeedProfile } from './needProfile'
 import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
+import { detectDish } from '../foodDish'
 import { CLARIFY_JOIN } from './actionability'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 
@@ -64,6 +65,18 @@ const TRANSPORT_REQUEST = /(?:^|\s)(?:xe khach|ve xe|ve may bay|may bay|chuyen b
 const FLIGHT_REQUEST = /(?:^|\s)(?:ve may bay|may bay|chuyen bay|flights?|plane tickets?)(?:\s|$)/
 /** A specific travel date the user named (not "tuần sau" / "tháng sau"). Folded text. */
 export const SPECIFIC_DATE = /\b\d{1,2}\s*[/.-]\s*\d{1,2}\b|\bngay\s+\d{1,2}\b|(?:^|\s)(?:thu\s+[2-7]|thu\s+(?:hai|ba|tu|nam|sau|bay)|chu\s+nhat|(?:ngay|sang|trua|chieu|toi)\s+mai|hom\s+nay|toi\s+nay)(?=\s|$|[,.?!])|\b\d{4}-\d{2}-\d{2}\b/
+/**
+ * Dishes named for the SEARCH QUERY only (foodDish.ts DISHES is also a row filter, where short folded
+ * words collide — "lầu" / "lẩu"; here a wrong hit only sharpens a query). Folded text.
+ */
+const QUERY_ONLY_DISHES: ReadonlyArray<[RegExp, string]> = [
+  [/(?:^|\s)(?:an|quan|nha hang|tiem)\s+lau(?:\s|$)|(?:^|\s)lau\s+(?:ga|bo|de|thai|nam|hai san|nuong|cua|ca|mam|oc|thap cam)(?:\s|$)/, 'lẩu'],
+  [/(?:^|\s)(?:an|quan)\s+oc(?:\s|$)|(?:^|\s)oc\s+(?:ngon|len|huong|mong tay)(?:\s|$)/, 'ốc'],
+  [/(?:^|\s)hai san(?:\s|$)/, 'hải sản'],
+  [/(?:^|\s)(?:do nuong|thit nuong|bbq|nuong)(?:\s|$)/, 'nướng'],
+  [/(?:^|\s)(?:ga ran|fried chicken)(?:\s|$)/, 'gà rán'],
+  [/(?:^|\s)(?:an chay|quan chay|do chay)(?:\s|$)/, 'chay'],
+]
 const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
 // A1 (2026-09-20, measured on the web: "quán cà phê yên tĩnh ở Quận 3 để làm việc"): a café or a
 // bar is a FOOD-domain request whose call is not a restaurant search — the model's own step made
@@ -174,6 +187,11 @@ export function deriveSearchNow(input: {
     if (PLAY_RE.test(kindText)) return { query: withHardFamily('khu vui chơi giải trí'), type: 'attraction', exact: vague }
   }
   if (domain === 'food') {
+    // Golden D1 / M3 (2026-09-28): "Quán phở ngon ở Quận 3" and "ăn lẩu ở đâu ngon quận 1" were
+    // pre-searched as "quán ăn khuya" (the meal-time default) — the dish the user named was lost and
+    // the cards were not phở / lẩu. A named dish IS the query.
+    const dish = detectDish(input.consultationText ?? input.text)?.label ?? QUERY_ONLY_DISHES.find(([re]) => re.test(normalizeVN((input.consultationText ?? input.text).toLowerCase())))?.[1]
+    if (dish) return { query: withHard(`quán ${dish} ngon`), type: 'restaurant', exact: vague }
     const base = frame.occasion.meal ? MEAL_QUERY[frame.occasion.meal] : situation.time === 'tonight' ? 'quán ăn tối ngon' : 'quán ăn ngon'
     const occasion = situation.occasion === 'business' || situation.occasion === 'birthday' || situation.occasion === 'celebration' ? 'nhà hàng ' : ''
     return { query: withHard(occasion ? `${occasion}${base.replace(/^quán ăn /, '')}` : base), type: 'restaurant', exact: vague }

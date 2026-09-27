@@ -58,3 +58,14 @@ describe('endsWithQuestion ignores links (measured: a trailing booking link read
     expect(endsWithQuestion('Bạn muốn bay ngày nào? [Trip.com](https://x.y/?a=b)')).toBe(true)
   })
 })
+
+describe('no answer, no question (golden B2)', () => {
+  it('a turn with no tool frame (the model asked instead of searching) gets nothing appended', async () => {
+    const raw = `0:${JSON.stringify('Để tìm quán phù hợp, mình cần biết: Bạn muốn ăn gì?')}\nd:{"finishReason":"stop"}\n`
+    const events: Array<Record<string, unknown>> = []
+    expect(await read(askAfterStream(streamOf(raw), BUDGET, 'vi', e => { events.push(e) }))).toBe(raw)
+    const noQuestion = `0:${JSON.stringify('Mình chọn quán A.')}\nd:{"finishReason":"stop"}\n`
+    expect(await read(askAfterStream(streamOf(noQuestion), BUDGET, 'vi', e => { events.push(e) }))).toBe(noQuestion)
+    expect(events.at(-1)?.reason).toBe('no_answer')
+  })
+})

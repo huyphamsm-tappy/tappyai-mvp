@@ -987,7 +987,7 @@ export async function POST(req: Request) {
   if (searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
   }
-  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend, more: moreTurn, statedArea: statedArea?.label ?? null }) : null
+  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend, more: moreTurn, statedArea: statedArea?.label ?? null, userText: framingText }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
   // users) is exact; without a row the directive's call stands in and the prior reply's names do.

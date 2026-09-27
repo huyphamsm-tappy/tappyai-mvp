@@ -325,17 +325,18 @@ describe('flag ON — clarify before search (item 1)', () => {
   const BROAD = 'ăn gì ngon giờ'
 
   // Re-frozen 2026-09-28 (owner, "answer first, ask after"): a kind + GPS goes to the model; the
-  // missing budget is ONE question at the end of the answer, carried in the V1 block.
-  it('a broad place request with GPS is answered first — the model runs, the budget question is asked AFTER', async () => {
+  // missing budget is ONE question at the end of the answer, added by askAfterStream after every guard.
+  // The question is deliberately NOT in the model's block: measured (golden B2, c40 T8/F4), the model
+  // then asked it FIRST and skipped the search.
+  it('a broad place request with GPS is answered first — the model runs, and is not told the question', async () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
     await postLoc([{ role: 'user', content: BROAD }])
     const opts = h.state.streamOptions as Record<string, unknown> | null
     expect(opts).not.toBeNull()
     expect(Object.keys((opts?.tools as object) ?? {})).toContain('search_places')
     const system = String(opts?.system)
-    expect(system).toContain('8. HOI SAU (luot nay)')
-    expect(system).toContain('"Tầm giá?" (dưới 100k/người / 100–200k/người / trên 200k/người)')
-    expect(system).toContain('[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]')
+    expect(system).not.toContain('HOI SAU')
+    expect(system).not.toContain('"Tầm giá?"')
   })
 
   it('no area and no GPS: the ONE clarify turn (area) — no model, no tool, no quota', async () => {
