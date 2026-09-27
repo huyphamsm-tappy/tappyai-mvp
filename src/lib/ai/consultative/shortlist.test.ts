@@ -162,7 +162,7 @@ describe('shortlistCandidates under CONSULTATIVE_V1', () => {
     place(`p${i}`, `n${i}`, { rating: 4.5 - i * 0.05, reviewCount: 1000 - i * 50, distanceKm: i + 1 }))
 
   it('flag OFF: still three; flag ON: five, the roles unchanged, runners-up unlabelled', () => {
-    vi.stubEnv('CONSULTATIVE_V1', '')
+    vi.stubEnv('CONSULTATIVE_V1', '0')
     expect(shortlistMax()).toBe(RULE_OF_ONE_TO_THREE_MAX)
     expect(shortlistCandidates(rankCandidates(ten(), DISTANCE_FIRST).ranked).selected).toHaveLength(3)
     vi.stubEnv('CONSULTATIVE_V1', '1')

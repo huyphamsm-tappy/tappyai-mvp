@@ -439,12 +439,14 @@ export function mediaPlacementV2Enabled(env: NodeJS.ProcessEnv = process.env): b
  *
  * Situation frame + no-diacritic Vietnamese detection + reference resolution with named re-search
  * + evidence-only attributes + shortlist of 3–5 + prose-shape guard + transient-memory filter.
- * Everything behind this flag; OFF = byte-identical pipeline. Same shape as the other flags:
- * read at call time, default OFF.
+ * Everything behind this flag; OFF = byte-identical pipeline. Read at call time.
+ *
+ * DEFAULT: ON since 27 Sep 2026 (owner decision after the UAT4 consultative-40 A/B: the release
+ * running with V1 off cost ~8–9 of the 40 points). `CONSULTATIVE_V1=0|false|off` turns it off.
  */
 export function consultativeV1Enabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  const v = env.CONSULTATIVE_V1
-  return v === '1' || v === 'true'
+  const v = env.CONSULTATIVE_V1?.trim().toLowerCase()
+  return !(v === '0' || v === 'false' || v === 'off')
 }
 
 /**

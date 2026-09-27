@@ -196,7 +196,7 @@ describe('flag ON — a large legacy memory informs the pick, never the question
 
 describe('flag OFF — legacy behaviour, byte-identical', () => {
   it('the legacy block and the default-YES gate', async () => {
-    vi.stubEnv('CONSULTATIVE_V1', '')
+    vi.stubEnv('CONSULTATIVE_V1', '0')
     await post([{ role: 'user', content: PLAIN }])
     const sys = system()
     expect(sys).toContain('hoi lai mot cau ngan de xac nhan TRUOC KHI tim kiem')

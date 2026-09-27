@@ -147,7 +147,7 @@ afterEach(() => { vi.unstubAllEnvs() })
 
 describe('flag OFF — byte-identical', () => {
   it('no V1 block, no V1 collector context, no attributes, shortlist of three', async () => {
-    vi.stubEnv('CONSULTATIVE_V1', '')
+    vi.stubEnv('CONSULTATIVE_V1', '0')
     const res = await post([{ role: 'user', content: Q }])
     expect(res.status).toBe(200)
     const before = system()
@@ -357,7 +357,7 @@ describe('flag ON — clarify before search (item 1)', () => {
   })
 
   it('flag OFF: the same broad request goes to the model as before', async () => {
-    vi.stubEnv('CONSULTATIVE_V1', '')
+    vi.stubEnv('CONSULTATIVE_V1', '0')
     await postLoc([{ role: 'user', content: BROAD }])
     expect(h.state.streamOptions).not.toBeNull()
   })

@@ -48,7 +48,7 @@ export default defineConfig({
           name: 'app',
           include: ['src/**/*.test.{ts,tsx}', 'scripts/**/*.test.{ts,mjs}'],
           // The simulated browser speaks Vietnamese; see the file for why.
-          setupFiles: ['src/test/browserLanguage.setup.ts'],
+          setupFiles: ['src/test/browserLanguage.setup.ts', 'src/test/consultativeFlag.setup.ts'],
         },
       },
       {
