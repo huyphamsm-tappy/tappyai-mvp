@@ -108,6 +108,16 @@ CHỖ Ở: user chưa nêu loại → tìm get_hotel_prices (khách sạn trong 
   // the top-of-prompt language override for Travel plans (root cause, 2026-07-30). Every
   // example value below is now a NEUTRAL bracketed description, never real prose in any
   // one language, so this block carries no hardcoded-language risk regardless of `lang`.
+  // LOCAL TIPS (UAT3 P2, 2026-09-27) — trip plans only. What makes a plan feel local: what to order
+  // at a stop, when to go, what to avoid. Optional by design: no basis ⇒ no field. The rule is
+  // backed by a deterministic guard (planLocalTipsGuard) that drops any tip failing it.
+  const localTipsField = planType === 'trip'
+    ? `"local_tips":[{"text":"[one practical tip about a STOP above: what to order / when to go / what to avoid]","basis":"tool","place":"[EXACT name of that stop]"},{"text":"[one practical tip from general knowledge of the destination]","basis":"general"}],`
+    : ''
+  const localTipsRule = planType === 'trip'
+    ? `14. MẸO ĐỊA PHƯƠNG (local_tips, TÙY CHỌN, tối đa 4): chỉ viết mẹo có CĂN CỨ. basis "tool" = mẹo về MỘT điểm dừng có trong kế hoạch (place = đúng tên điểm đó), dựa trên thông tin tool trả về cho điểm đó (loại món, loại hình, review). basis "general" = kinh nghiệm chung về điểm đến (thời tiết, thời điểm nên đi, trang phục, di chuyển) — KHÔNG nêu tên quán/tiệm/hẻm/sạp nào. MỌI mẹo: KHÔNG chứa con số, giá, giờ mở cửa, suất chiếu, vé, rating. Không có căn cứ thì BỎ HẲN trường local_tips — mẹo bịa là lỗi nặng như bịa giờ chiếu.
+`
+    : ''
   const langName = lang !== 'vi' ? (LANG_NAMES[lang] || 'English') : null
   const langReminder = langName
     ? `\n⚠️ NGON NGU: title, description, va share_text trong JSON, cung nhu cau tom tat/gia dinh viet sau block, PHAI viet bang ${langName} — KHONG dung tieng Viet. Cac ten field (title, people, budget_total, days, items...) GIU NGUYEN vi la ma may tinh, khong dich.\n`
@@ -125,7 +135,7 @@ USER CHƯA NÊU HOẠT ĐỘNG → danh sách trên LÀ mặc định của kế
 BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format sau (không thêm text thừa trước block). Mọi giá trị text (title/description/price/share_text...) viết bằng NGÔN NGỮ của câu trả lời cho user — các mô tả trong ngoặc vuông dưới đây chỉ là HƯỚNG DẪN CẤU TRÚC, không phải văn mẫu để chép:
 
 [TAPPY_PLAN]
-{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng ngân sách dạng CHUỖI có đơn vị, vd 5.000.000 VND: đúng con số user nêu nếu có, nếu không thì tổng ước tính từ giá thực]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language: what it is + the real rating/hours/price signal from the tool when present]","price":"[CHUỖI: giá ước tính TỪ TOOL cho bước này, có đơn vị; nếu tool không có giá → ghi đúng 'chưa có giá' (hoặc tương đương trong ngôn ngữ trả lời)]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá dạng chuỗi có đơn vị, hoặc 'chưa có giá']"},"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
+{"type":"${planType}","title":"[short title summarizing the plan, in the response's language]","people":[số người hoặc 1],"budget_total":"[tổng ngân sách dạng CHUỖI có đơn vị, vd 5.000.000 VND: đúng con số user nêu nếu có, nếu không thì tổng ước tính từ giá thực]","days":[{"label":"${planType === 'trip' ? 'Ngày 1' : 'Tối nay'}","items":[{"time":"[HH:MM]","emoji":"[emoji phù hợp: 🏨🍜☕💆🎬🍺🚗]","category":"[hotel|food|spa|entertainment|transport]","name":"[tên địa điểm THỰC TẾ từ tool]","description":"[one short sentence, in the response's language: what it is + the real rating/hours/price signal from the tool when present]","price":"[CHUỖI: giá ước tính TỪ TOOL cho bước này, có đơn vị; nếu tool không có giá → ghi đúng 'chưa có giá' (hoặc tương đương trong ngôn ngữ trả lời)]","address":"[địa chỉ từ tool, để trống nếu không có]","maps_link":"[google maps link từ tool]","booking_link":"[link đặt chỗ nếu có]","place_id":"[place_id từ tool nếu có, để trống nếu không]"}]}],"cost_breakdown":{"[Hạng mục]":"[giá dạng chuỗi có đơn vị, hoặc 'chưa có giá']"},${localTipsField}"share_text":"[short catchy share sentence with an emoji and #TappyAI, in the response's language]"}
 [/TAPPY_PLAN]
 
 QUY TẮC BẮT BUỘC:
@@ -142,7 +152,7 @@ QUY TẮC BẮT BUỘC:
 11. PHƯƠNG TIỆN KHÔNG PHẢI CÂU HỎI: TUYỆT ĐỐI KHÔNG hỏi "đi máy bay hay xe khách/xe máy" — dùng PHƯƠNG TIỆN ĐÃ QUYẾT ĐỊNH ở đầu khối (hoặc tự chọn theo khoảng cách) và nêu là giả định trong MỘT vế câu ("mình tính đi máy bay, đổi thì nói mình"). Nếu user muốn phương tiện khác họ sẽ nói. Câu mở đầu TRƯỚC KHI gọi tool cũng KHÔNG được chứa câu hỏi này.
 12. HỎI MỘT LẦN, KHÔNG HỎI LẠI: điều đã hỏi ở lượt trước mà user không trả lời → coi như user để bạn tự quyết, tự giả định và ghi rõ. KHÔNG bao giờ mở đầu bằng "mình cần xác nhận"/"mình cần biết" trước khi đưa kế hoạch — kế hoạch trước, câu hỏi (nếu có, tối đa MỘT) ở cuối.
 13. SỬA LÀ THAY THẾ: khi user sửa độ dài / ngân sách / khu vực / số người, con số MỚI thay cho con số cũ trong toàn bộ kế hoạch (số ngày trong "days", budget_total, cost_breakdown). Xác nhận bằng MỘT câu ngắn đúng con số mới ("OK, 2 ngày 1 đêm, 20 triệu cho 2 người"), KHÔNG lặp lại con số cũ.
-${langReminder}==========================================================`
+${localTipsRule}${langReminder}==========================================================`
 }
 
 // C3-B: the old R8 (explain the reason) and R9 (source + confidence) were merged

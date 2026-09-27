@@ -12,6 +12,7 @@ import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
+import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
@@ -1947,9 +1948,16 @@ export function applyPlaceEnrichmentStreamFilter(
       byEntity: planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity),
       userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
     }
-    const enriched = enrichedProse.includes('[TAPPY_PLAN]')
+    const pricedPlan = enrichedProse.includes('[TAPPY_PLAN]')
       ? guardPlanPrices(enrichedProse, planEvidence, lang).text
       : enrichedProse
+    // LOCAL TIPS (UAT3 P2, 2026-09-27): a tip survives only tied to a stop retrieved this turn,
+    // or flagged general and naming no venue, price, hour or ticket — see planLocalTipsGuard.
+    const tips = pricedPlan.includes('"local_tips"')
+      ? guardPlanLocalTips(pricedPlan, latestPlaces.map(p => String(p.name ?? '')))
+      : null
+    if (tips && (tips.kept || tips.dropped)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_local_tips', kept: tips.kept, dropped: tips.dropped, reasons: tips.reasons }))
+    const enriched = tips ? tips.text : pricedPlan
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,

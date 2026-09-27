@@ -122,6 +122,8 @@
     <string name="chat_plan_share_cta">📤 Share itinerary</string>
     <string name="chat_plan_cost_title">💰 Estimated cost</string>
     <string name="chat_plan_cost_total">Budget</string>
+    <string name="chat_plan_local_tips_title">📍 Local tips</string>
+    <string name="chat_plan_local_tip_general">General advice</string>
     <string name="chat_plan_map">Map</string>
     <string name="chat_plan_book">Book now</string>
     <string name="chat_save_place">Save place</string>

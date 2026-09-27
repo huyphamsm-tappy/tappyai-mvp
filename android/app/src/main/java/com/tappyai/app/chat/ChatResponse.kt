@@ -20,6 +20,16 @@ data class TappyPlan(
     val days: List<PlanDay> = emptyList(),
     @SerialName("cost_breakdown") val costBreakdown: Map<String, String>? = null,
     @SerialName("share_text") val shareText: String? = null,
+    /** Trip plans only; each tip already passed the server's planLocalTipsGuard (UAT3 P2, 2026-09-27). */
+    @SerialName("local_tips") val localTips: List<LocalTip>? = null,
+)
+
+/** `basis` "tool" = about the stop named in [place]; "general" = flagged general advice. */
+@Serializable
+data class LocalTip(
+    val text: String = "",
+    val basis: String = "",
+    val place: String? = null,
 )
 
 @Serializable

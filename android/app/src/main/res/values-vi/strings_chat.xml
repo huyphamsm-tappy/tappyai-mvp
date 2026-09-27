@@ -121,6 +121,8 @@
     <string name="chat_plan_share_cta">📤 Chia sẻ lịch trình</string>
     <string name="chat_plan_cost_title">💰 Chi phí ước tính</string>
     <string name="chat_plan_cost_total">Ngân sách</string>
+    <string name="chat_plan_local_tips_title">📍 Mẹo địa phương</string>
+    <string name="chat_plan_local_tip_general">Kinh nghiệm chung</string>
     <string name="chat_plan_map">Bản đồ</string>
     <string name="chat_plan_book">Đặt ngay</string>
     <string name="chat_save_place">Lưu địa điểm</string>

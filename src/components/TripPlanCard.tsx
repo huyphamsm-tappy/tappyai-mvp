@@ -35,6 +35,8 @@ export interface TappyPlan {
   days: PlanDay[]
   cost_breakdown?: Record<string, string>
   share_text?: string
+  /** Trip plans only; every tip already passed the server's planLocalTipsGuard (UAT3 P2). */
+  local_tips?: Array<{ text: string; basis: 'tool' | 'general'; place?: string }>
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -202,6 +204,23 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           </div>
         ))}
       </div>
+
+      {/* ── Local tips (grounded: a stop of this plan, or flagged general advice) ── */}
+      {Array.isArray(plan.local_tips) && plan.local_tips.some(tip => tip && typeof tip.text === 'string') && (
+        <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3" data-plan-local-tips>
+          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('tripPlan.localTips')}</p>
+          <ul className="space-y-1.5">
+            {plan.local_tips.filter(tip => tip && typeof tip.text === 'string').map((tip, i) => (
+              <li key={i} className="text-xs leading-snug text-content-secondary">
+                {tip.basis === 'tool' && tip.place
+                  ? <span className="font-semibold text-gray-700 dark:text-gray-300">{tip.place}: </span>
+                  : <span className="mr-1 rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400">{t('tripPlan.generalTip')}</span>}
+                {tip.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* ── Cost breakdown ── */}
       {plan.cost_breakdown && Object.keys(plan.cost_breakdown).length > 0 && (

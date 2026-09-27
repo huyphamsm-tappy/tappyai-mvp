@@ -153,6 +153,34 @@ fun TripPlanCard(plan: TappyPlan, modifier: Modifier = Modifier, planJson: Strin
             }
         }
 
+        // ── Local tips (a stop of this plan, or labelled general advice) — web parity, UAT3 P2 ──
+        val tips = plan.localTips.orEmpty().filter { it.text.isNotBlank() && (it.basis == "tool" || it.basis == "general") }
+        if (tips.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
+                verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
+            ) {
+                Text(
+                    text = stringResource(R.string.chat_plan_local_tips_title),
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                val general = stringResource(R.string.chat_plan_local_tip_general)
+                tips.forEach { tip ->
+                    val lead = if (tip.basis == "tool" && !tip.place.isNullOrBlank()) "${tip.place}: " else "$general · "
+                    Text(
+                        text = lead + tip.text,
+                        fontSize = 12.sp,
+                        lineHeight = 16.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+        }
+
         // ── Cost breakdown ──
         val breakdown = plan.costBreakdown?.filterValues { it.isNotBlank() }.orEmpty()
         if (breakdown.isNotEmpty()) {

@@ -50,6 +50,7 @@ if (planned > MAX_CALLS) { console.error(`REFUSING: ${planned} calls planned > c
 
 function parseFrames(raw) {
   const text = []; const tools = []; const toolResults = []; const annotations = []; const other = {}
+  const stepUsage = []; let finalUsage = null
   for (const line of raw.split('\n')) {
     const i = line.indexOf(':'); if (i < 1) continue
     const prefix = line.slice(0, i); let payload
@@ -58,9 +59,16 @@ function parseFrames(raw) {
     else if (prefix === '9') tools.push({ name: payload.toolName, args: payload.args })
     else if (prefix === 'a') toolResults.push({ name: payload.toolName ?? null, keys: payload.result && typeof payload.result === 'object' ? Object.keys(payload.result).slice(0, 12) : typeof payload.result })
     else if (prefix === '8') for (const a of (Array.isArray(payload) ? payload : [payload])) annotations.push(summariseAnnotation(a))
-    else other[prefix] = (other[prefix] || 0) + 1
+    else {
+      other[prefix] = (other[prefix] || 0) + 1
+      // Token cost (UAT3 local tips, 2026-09-27): `e:` carries each step's usage, `d:` the turn's total.
+      if (prefix === 'e' && payload?.usage) stepUsage.push(payload.usage)
+      if (prefix === 'd' && payload?.usage) finalUsage = payload.usage
+    }
   }
-  return { text: text.join(''), textFrames: text.length, tools, toolResults, annotations, other }
+  const sum = (k) => stepUsage.reduce((n, u) => n + (Number(u[k]) || 0), 0)
+  const usage = finalUsage ?? (stepUsage.length ? { promptTokens: sum('promptTokens'), completionTokens: sum('completionTokens') } : null)
+  return { text: text.join(''), textFrames: text.length, tools, toolResults, annotations, other, usage }
 }
 
 function summariseAnnotation(a) {
@@ -132,18 +140,18 @@ for (const c of cases) {
     const r = await chat(messages, location, slug(`${LABEL}.${c.id}-t${messages.filter(m => m.role === 'user').length}.${Date.now()}`))
     const visible = stripMarkers(r.text)
     const turn = {
-      user, status: r.status, elapsedMs: r.elapsedMs, textFrames: r.textFrames,
+      user, status: r.status, elapsedMs: r.elapsedMs, usage: r.usage, textFrames: r.textFrames,
       tools: r.tools, toolResults: r.toolResults.map(t => t.name), annotations: r.annotations,
       cardItems: r.annotations.filter(a => a.items).map(a => a.items.map(i => i.name)),
       duplicate: longestRepeat(visible), text: r.text, visible, preGuard: r.preGuard,
     }
     turns.push(turn)
     messages.push({ role: 'assistant', content: r.text })
-    console.log(`[${c.id}] turn ${turns.length}/${c.turns.length} ${r.status} ${r.elapsedMs}ms tools=${r.tools.map(t => t.name).join(',') || '-'} cards=${turn.cardItems.map(x => x.length).join('/') || '-'} dup=${turn.duplicate ? turn.duplicate.len : 0}`)
+    console.log(`[${c.id}] turn ${turns.length}/${c.turns.length} ${r.status} ${r.elapsedMs}ms tok=${r.usage ? `${r.usage.promptTokens}/${r.usage.completionTokens}` : '-'} tools=${r.tools.map(t => t.name).join(',') || '-'} cards=${turn.cardItems.map(x => x.length).join('/') || '-'} dup=${turn.duplicate ? turn.duplicate.len : 0}`)
   }
   const rec = { id: c.id, group: c.group, criteria: c.criteria, turns }
   writeFileSync(join(outDir, `${c.id}.json`), JSON.stringify(rec, null, 2))
-  summary.push({ id: c.id, group: c.group, turns: turns.map(t => ({ status: t.status, ms: t.elapsedMs, tools: t.tools.map(x => x.name), cards: t.cardItems, dup: !!t.duplicate, chars: t.visible.length })) })
+  summary.push({ id: c.id, group: c.group, turns: turns.map(t => ({ status: t.status, ms: t.elapsedMs, usage: t.usage, tools: t.tools.map(x => x.name), cards: t.cardItems, dup: !!t.duplicate, chars: t.visible.length })) })
 }
 writeFileSync(join(outDir, 'summary.json'), JSON.stringify({ label: LABEL, base: BASE, calls, at: new Date().toISOString(), cases: summary }, null, 2))
 console.log(`done: ${calls} LLM-reaching calls → ${outDir}`)
