@@ -3,17 +3,23 @@ import { assessActionability, isClarifyReply } from './actionability'
 
 /**
  * Item 1.0 — the 40 eval queries, classified and FROZEN. Eval runs with GPS (`--loc`), so the
- * area is always known and the verdict rests on "budget OR occasion OR stated constraint / mood".
- * A bare subject ("bún bò", "gội đầu") is not a signal (owner's example: "Quán bún bò ngon ở
- * TP.HCM" is too broad); time alone is not a signal. Follow-ups (F5 F6 S3 T3 P3 E4) inherit their
- * parent and are not gated on their own.
+ * area is always known. Follow-ups (F5 F6 S3 T3 P3 E4) inherit their parent and are not gated on
+ * their own.
+ *
+ * RE-FROZEN 2026-09-28 (owner, "answer first, ask after"): a request with a KIND of service and an
+ * area is searched; a missing budget / party size is asked at the end of the answer, never before.
+ * Only truly vague requests are asked first: no kind of service (S5 a gift with no product, S6
+ * "mua gì bây giờ", T5 "đi chơi ở đâu", E5 "cuối tuần làm gì") or no area at all. F7 "ăn gì ngon
+ * giờ", P5 "massage", P7 "gội đầu dưỡng sinh gần đây" and E2 "rap phim nao gan q1" moved from N to
+ * A — the golden set failed 6 cases on the old rule (G1b "Tối nay đi xem phim ở rạp nào gần Quận 7"
+ * got "Tầm giá? Mấy người?" and no cards).
  */
 const CLASS: Record<string, ['A' | 'N', string]> = {
   F1: ['A', 'Tìm quán ăn tối ngon gần Quận 1 cho 2 người'],
   F2: ['A', 'tim quan bun bo ngon o q1 duoi 80k'],
   F3: ['A', 'Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?'],
   F4: ['A', 'Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận'],
-  F7: ['N', 'ăn gì ngon giờ'],
+  F7: ['A', 'ăn gì ngon giờ'],
   F8: ['A', 'Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1'],
   S1: ['A', 'Mua tai nghe bluetooth dưới 1 triệu, pin trâu'],
   S2: ['A', 'mua laptop van phong duoi 15tr'],
@@ -32,12 +38,12 @@ const CLASS: Record<string, ['A' | 'N', string]> = {
   P1: ['A', 'Spa nào tốt rẻ ở Đà Nẵng'],
   P2: ['A', 'spa massage chan gan q1 duoi 300k'],
   P4: ['A', 'Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7'],
-  P5: ['N', 'massage'],
+  P5: ['A', 'massage'],
   P6: ['A', 'Spa couple cho 2 người tối nay gần Quận 1'],
-  P7: ['N', 'gội đầu dưỡng sinh gần đây'],
+  P7: ['A', 'gội đầu dưỡng sinh gần đây'],
   P8: ['A', 'Spa nào mở khuya sau 22h ở Quận 3'],
   E1: ['A', 'Tối nay đi chơi gì với hội bạn 5 người ở Quận 1'],
-  E2: ['N', 'rap phim nao gan q1'],
+  E2: ['A', 'rap phim nao gan q1'],
   E3: ['A', 'quán bar nào chill có nhạc sống Quận 1'],
   E5: ['N', 'cuối tuần làm gì'],
   E6: ['A', 'Karaoke cho 10 người tầm 100k/người Gò Vấp'],
@@ -57,27 +63,39 @@ describe('item 1.0 — the frozen classification of the 40 eval queries (GPS kno
       expect(r.actionable, JSON.stringify({ domain: r.domain, signals: r.signals, missing: r.missing })).toBe(cls === 'A')
     })
   }
-  it('counts: 26 actionable, 8 not, 6 follow-ups (34 classified here)', () => {
-    expect(counts).toEqual({ A: 26, N: 8 })
+  it('counts: 30 actionable, 4 not, 6 follow-ups (34 classified here)', () => {
+    expect(counts).toEqual({ A: 30, N: 4 })
   })
 })
 
 describe('the clarify turn', () => {
-  it('asks at most 3 short questions with options, chips for the first multi-option question, no venue names', () => {
+  // Re-frozen 2026-09-28 (owner, "answer first, ask after").
+  it('answer first: a kind + GPS is searched; the missing budget is ONE question for the end of the answer', () => {
     const r = assess('ăn gì ngon giờ')
+    expect(r.actionable).toBe(true)
+    expect(r.reply).toBeNull()
+    expect(r.askAfter).toEqual({ q: 'Tầm giá?', options: ['dưới 100k/người', '100–200k/người', 'trên 200k/người'] })
+  })
+  it('with a budget stated, the one question after the answer is the party size; with both, none', () => {
+    expect(assess('ăn gì ngon giờ dưới 100k').askAfter?.q).toBe('Mấy người?')
+    expect(assess('ăn gì ngon giờ dưới 100k cho 2 người').askAfter ?? null).toBeNull()
+  })
+  it('without GPS or a named area it asks ONLY the area first, offering only "gần tôi"', () => {
+    const r = assess('quán bún bò ngon', { gps: false })
     expect(r.actionable).toBe(false)
-    expect(r.missing).toEqual(['signal'])
-    expect(r.questions.map(q => q.q)).toEqual(['Tầm giá?', 'Mấy người?'])
-    expect(r.reply).toMatch(/^Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá\? \(dưới 100k\/người \/ 100–200k\/người \/ trên 200k\/người\)\n• Mấy người\? \(1–2 người \/ 3–5 người \/ nhóm đông\)\n/)
-    expect(r.reply).toMatch(/\[FOLLOWUPS\]dưới 100k\/người\|100–200k\/người\|trên 200k\/người\[\/FOLLOWUPS\]$/)
+    expect(r.missing).toEqual(['area'])
+    expect(r.questions).toEqual([{ q: 'Bạn ở khu nào?', options: ['Gần tôi'] }])
+    expect(r.reply).toMatch(/^Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn ở khu nào\? \(Gần tôi\)\n/)
     expect(isClarifyReply(r.reply)).toBe(true)
   })
-  it('without GPS or a named area it asks the area first, offering only "gần tôi"', () => {
-    const r = assess('quán bún bò ngon ở TP.HCM', { gps: false })
+  it('no kind of service ("đi chơi ở đâu") is asked first, with the kind options as chips', () => {
+    const r = assess('đi chơi ở đâu')
     expect(r.actionable).toBe(false)
-    expect(r.missing).toContain('signal')
-    expect(r.questions[0]).toEqual({ q: 'Bạn ở khu nào?', options: ['Gần tôi'] })
-    expect(r.questions.length).toBeLessThanOrEqual(3)
+    expect(r.missing).toEqual(['subject'])
+    expect(r.reply).toMatch(/\[FOLLOWUPS\]ăn uống\|đi chơi \/ giải trí\|spa & làm đẹp\[\/FOLLOWUPS\]$/)
+  })
+  it('a generic outing WITH a signal is searched ("đi chơi gì với hội bạn 5 người ở Quận 1")', () => {
+    expect(assess('Tối nay đi chơi gì với hội bạn 5 người ở Quận 1').actionable).toBe(true)
   })
   it('shopping without a product asks for the product, no chips', () => {
     const r = assess('mua gì bây giờ')
@@ -86,10 +104,11 @@ describe('the clarify turn', () => {
     expect(r.reply).toBe('Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.')
   })
   it('never asks twice in a row: after a clarify, the turn proceeds even when the answer is partial', () => {
-    const first = assess('ăn gì ngon giờ')
+    const first = assess('ăn gì ngon giờ', { gps: false })
+    expect(first.actionable).toBe(false)
     const r = assessActionability({
       messages: [{ role: 'user', content: 'ăn gì ngon giờ' }, { role: 'assistant', content: first.reply }, { role: 'user', content: '2 người' }],
-      hasGps: true, lang: 'vi', lastAssistantText: first.reply,
+      hasGps: false, lang: 'vi', lastAssistantText: first.reply,
     })
     expect(r.actionable).toBe(true)
   })
@@ -101,9 +120,10 @@ describe('the clarify turn', () => {
     expect(r.actionable).toBe(true)
   })
   it('english wording', () => {
-    const r = assess('where to eat', { lang: 'en' })
+    expect(assess('where to eat', { lang: 'en' }).askAfter?.q).toBe('Budget?')
+    const r = assess('where to eat', { lang: 'en', gps: false })
     expect(r.actionable).toBe(false)
-    expect(r.reply).toMatch(/^To pick the right place, I need a little more:\n• Budget\?/)
+    expect(r.reply).toMatch(/^To pick the right place, I need a little more:\n• Which area\? \(Near me\)/)
   })
 })
 
@@ -116,8 +136,10 @@ describe('Phase D — a named cinema question is actionable as asked', () => {
       expect(r.reply).toBeNull()
     }
   })
-  it('a cinema KIND with nothing else stated is still gated like any place pick', () => {
-    expect(assess('rạp chiếu phim nào gần đây?').actionable).toBe(false)
+  // Re-frozen 2026-09-28 (owner): a cinema kind + an area is searched straight away (golden G1b, c40 E2).
+  it('a cinema KIND with an area is searched, not gated', () => {
+    expect(assess('rạp chiếu phim nào gần đây?').actionable).toBe(true)
+    expect(assess('Tối nay đi xem phim ở rạp nào gần Quận 7', { gps: false }).actionable).toBe(true)
   })
 })
 
@@ -210,5 +232,17 @@ describe('a machine is a product (golden M4 turn 2)', () => {
   it('"mua mấy cái gì" and a bare "mua gì bây giờ" still ask for the product', () => {
     expect(assessActionability({ messages: [{ role: 'user', content: 'mua mấy cái gì giờ' }], hasGps: true, lang: 'vi', lastAssistantText: null }).actionable).toBe(false)
     expect(assessActionability({ messages: [{ role: 'user', content: 'mua gì bây giờ' }], hasGps: true, lang: 'vi', lastAssistantText: null }).actionable).toBe(false)
+  })
+})
+
+// Answer first (2026-09-28): an area the user's memory or profile holds answers the only ask-first case left.
+import { memorySignal } from './actionability'
+describe('memory / profile area unblocks the no-area clarify', () => {
+  const noArea = assessActionability({ messages: [{ role: 'user', content: 'quán bún bò ngon' }], hasGps: false, lang: 'vi', lastAssistantText: null })
+  it('memory.location_base, then the profile city; nothing ⇒ still asked', () => {
+    expect(noArea.missing).toEqual(['area'])
+    expect(memorySignal({ location_base: 'Quận 3' }, null, noArea)).toBe('memory.location_base')
+    expect(memorySignal(null, null, noArea, 'TP.HCM')).toBe('profile.city')
+    expect(memorySignal({ location_base: null, budget: { food: { min: 0, max: 100000 } } }, null, noArea)).toBeNull()
   })
 })

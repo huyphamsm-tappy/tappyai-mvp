@@ -82,7 +82,7 @@ describe('what the model and the client receive', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
     expect(route).toMatch(/let presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
     expect(route).toMatch(/search_places\.execute\(presearchPlan\.args/)
-    expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), sdkResponse\.body\)/)
+    expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), answeredResponse\.body\)/)
     expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchMessages\(presearchOutcome\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
   })

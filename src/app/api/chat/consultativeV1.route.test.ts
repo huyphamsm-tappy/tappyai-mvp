@@ -324,15 +324,28 @@ describe('flag ON — clarify before search (item 1)', () => {
   }
   const BROAD = 'ăn gì ngon giờ'
 
-  it('a broad place request (GPS known, no budget / occasion / constraint) is answered with the clarify turn — no model, no tool, no quota', async () => {
+  // Re-frozen 2026-09-28 (owner, "answer first, ask after"): a kind + GPS goes to the model; the
+  // missing budget is ONE question at the end of the answer, carried in the V1 block.
+  it('a broad place request with GPS is answered first — the model runs, the budget question is asked AFTER', async () => {
+    vi.stubEnv('CONSULTATIVE_V1', '1')
+    await postLoc([{ role: 'user', content: BROAD }])
+    const opts = h.state.streamOptions as Record<string, unknown> | null
+    expect(opts).not.toBeNull()
+    expect(Object.keys((opts?.tools as object) ?? {})).toContain('search_places')
+    const system = String(opts?.system)
+    expect(system).toContain('8. HOI SAU (luot nay)')
+    expect(system).toContain('"Tầm giá?" (dưới 100k/người / 100–200k/người / trên 200k/người)')
+    expect(system).toContain('[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]')
+  })
+
+  it('no area and no GPS: the ONE clarify turn (area) — no model, no tool, no quota', async () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
     const identity = aiQuotaIdentity({ id: 'u1', is_anonymous: false } as never, '127.0.0.1')
     const before = (await peekAiQuestionQuota(identity)).used
-    const res = await postLoc([{ role: 'user', content: BROAD }])
-    const body = await res.text()
+    const body = await (await post([{ role: 'user', content: BROAD }])).text()
     expect(body).toContain('Để chọn đúng chỗ, mình cần biết thêm:')
-    expect(body).toContain('Tầm giá?')
-    expect(body).toContain('[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]')
+    expect(body).toContain('Bạn ở khu nào?')
+    expect(body).not.toContain('Tầm giá?')
     expect(h.state.streamOptions).toBeNull()
     expect(h.state.placeCalls).toEqual([])
     expect((await peekAiQuestionQuota(identity)).used).toBe(before)
@@ -340,10 +353,10 @@ describe('flag ON — clarify before search (item 1)', () => {
 
   it('the turn after the clarify goes to the model with tools and the search-now directive — never asks twice', async () => {
     vi.stubEnv('CONSULTATIVE_V1', '1')
-    const first = await (await postLoc([{ role: 'user', content: BROAD }])).text()
+    const first = await (await post([{ role: 'user', content: BROAD }])).text()
     const clarify = JSON.parse(first.split('\n')[0].slice(2)) as string
     h.state.streamOptions = null
-    await postLoc([{ role: 'user', content: BROAD }, { role: 'assistant', content: clarify }, { role: 'user', content: '2 người' }])
+    await postLoc([{ role: 'user', content: BROAD }, { role: 'assistant', content: clarify }, { role: 'user', content: 'Gần tôi' }])
     const opts = h.state.streamOptions as Record<string, unknown> | null
     expect(opts).not.toBeNull()
     expect(Object.keys((opts?.tools as object) ?? {})).toContain('search_places')

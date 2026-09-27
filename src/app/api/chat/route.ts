@@ -96,6 +96,7 @@ import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
+import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
 import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
@@ -453,12 +454,16 @@ export async function POST(req: Request) {
    * actionability.ts. Decided here, beside the canned decision and before the quota is spent,
    * from the thread and GPS only (memory loads after the quota branch).
    */
+  /** Answer first (owner 2026-09-28): the ONE question an actionable place turn asks at the END of its reply. */
+  let gateAskAfter: { q: string; options: string[] } | null = null
   let clarifyGate = (() => {
     if (cannedEarly !== null || intent === 'chitchat' || !consultativeV1Enabled() || clipRef || hasImage || decisionStage === 'confirmation') return null
     // A turn that starts a new consultation is gated on its own words (see ownDomainSwitch).
     const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
     const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
     console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
+    // One question per consultation: a reply that already ended by asking is not followed by another.
+    gateAskAfter = a.askAfter && !(lastAssistantText && endsWithQuestion(lastAssistantText)) ? a.askAfter : null
     return a.actionable ? null : a
   })()
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
@@ -665,7 +670,7 @@ export async function POST(req: Request) {
       // Item 1: memory is a signal — a returning user's stored budget / tastes / companions unblock
       // a request a stranger would be asked about (owner 2026-09-18: memory chooses, never asks).
       if (clarifyGate) {
-        const unblockedBy = memorySignal(existingMemory, storedPrefs, clarifyGate)
+        const unblockedBy = memorySignal(existingMemory, storedPrefs, clarifyGate, chatContext.identity?.city ?? null)
         if (unblockedBy) {
           console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: true, unblocked_by: unblockedBy, domain: clarifyGate.domain }))
           clarifyGate = null
@@ -1466,7 +1471,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null, reuseShown: presearchPlan?.reuse?.shown })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -2281,8 +2286,12 @@ ${completionInstruction(lang)}` },
       },
     }), { status: streamed.status, headers: streamed.headers })
     : streamed
+  // Answer first (owner 2026-09-28): the gate's one question ends the reply when the model did not ask it.
+  const answeredResponse = gateAskAfter && sdkResponse.body
+    ? new Response(askAfterStream(sdkResponse.body, gateAskAfter, lang), { status: sdkResponse.status, headers: sdkResponse.headers })
+    : sdkResponse
   // A1(c): the pre-search's `9:` / `a:` frames lead the stream, exactly where the SDK would have put them.
-  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), sdkResponse.body), { status: sdkResponse.status, headers: sdkResponse.headers }) : sdkResponse
+  const baseResponse = presearchOutcome ? new Response(prefixBody(presearchFrames(presearchOutcome), answeredResponse.body), { status: answeredResponse.status, headers: answeredResponse.headers }) : answeredResponse
   // B7-A: photos are fetched only for the places the finished reply actually
   // names — the filter selects them, this resolves them. Each place degrades to
   // "no photo" independently; one slow or failing lookup never blocks the rest.

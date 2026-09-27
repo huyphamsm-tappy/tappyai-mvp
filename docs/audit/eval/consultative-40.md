@@ -250,3 +250,22 @@ first pass (S5b men's perfume, E2b pick cut) → reruns pass; memory pass 5/6 (F
 Differentiation metric, unit cost table (a)–(e) and the open findings: `docs/audit/final-job-report-2026-09-19.md`.
 Cost cold: $1.2015 / 34 conversations = $0.0353; T2 warm measured $0.0218/turn. Runs 56/70.
 
+
+## 2026-09-28 RUBRIC CHANGE — "answer first, ask after" (owner decision after UAT4)
+
+Replaces the item-1.0 rule from 2026-09-19. **Why:** that rule asked before searching whenever a place request had
+no budget, party or constraint. In the UAT4 golden set it produced 6 FAILs: G1b "Tối nay đi xem phim ở rạp nào gần
+Quận 7", T2 "Rạp chiếu phim IMAX ở TP HCM", D1 and M2–M4 all got "Tầm giá? Mấy người?" with no cards, and the thread
+lost its context afterwards. The owner reversed the decision on E2 "rap phim nao gan q1" explicitly.
+
+- **Search now** when the request names a KIND of service and an AREA. The area can be named in the text, come
+  from memory or the profile city, or come from GPS (the eval always has GPS, `--loc`). A missing budget or party size
+  is asked as **at most ONE question at the END** of the answer, after the pick and the cards. Asking it before, or
+  instead of, the answer is ❌.
+- **Ask first (one server-authored turn, $0)** only when the request is truly vague: no kind of service (S5 gift with
+  no product, S6 "mua gì bây giờ", T5 "đi chơi ở đâu", E5 "cuối tuần làm gì"), or no area and no GPS.
+- Re-frozen classification (`actionability.test.ts`): **30 actionable, 4 ask-first** (S5 S6 T5 E5). F7, P5, P7 and E2
+  moved to actionable.
+- The fixed answer turns F7b, P5b, P7b and E2b are still sent. They now follow an ANSWER, so each is graded as a
+  refinement: the budget or party is applied to the pick (re-search or re-rank) without asking again. The parent
+  passes only if it searched first and asked at most one question at the end.

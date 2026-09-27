@@ -30,6 +30,11 @@ export interface ConsultativeV1PromptInput {
   presearched?: boolean
   /** A1(d): the rows are the previous turn's set; these venues were already shown — pick others. */
   reuseShown?: string[]
+  /**
+   * Answer first (owner 2026-09-28): the gate's ONE question for this turn (a missing budget, else
+   * party size), asked at the END of the reply, after the pick — never instead of it.
+   */
+  askAfter?: { q: string; options: string[] } | null
 }
 
 const HARD_VI: Record<Hard, string> = {
@@ -86,6 +91,11 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // gone — BUOC 1 at the top carries the same instruction (measured 2026-09-18: the top block is
   // the one that moved "đi chơi ở đâu" to a search; the bottom line predates it).
   const searchNow = ''
+  // Answer first: the one question the gate left for this turn, asked LAST (it is the rule-5 question).
+  const askAfterLine = input.askAfter
+    ? `
+8. HOI SAU (luot nay): tim va CHON truoc (luat 1-3). Cau CUOI cung cua cau tra loi la DUNG 1 cau hoi nay, khong hoi gi khac: "${input.askAfter.q}"${input.askAfter.options.length ? ` (${input.askAfter.options.join(' / ')})` : ''}.${input.askAfter.options.length ? ` Ket thuc bang [FOLLOWUPS]${input.askAfter.options.slice(0, 3).join('|')}[/FOLLOWUPS].` : ''}`
+    : ''
   const langLine = lang === 'en'
     ? '- Tra loi bang TIENG ANH (user viet tieng Anh).'
     : '- Tra loi bang TIENG VIET co dau, ke ca khi user go khong dau.'
@@ -108,7 +118,7 @@ HINH DANG CAU TRA LOI (3-5 cau, toi da 6, KHONG bullet, KHONG tieu de):
 4. Neu co gia su (giả sử) o tren: noi mot ve ngan "minh gia su ..." de user chinh, KHONG hoi. Gia su ve AI DI / KHI NAO / NGAN SACH / KHU VUC / UU TIEN. DOI TUONG: voi MUA SAM, KHONG gia su mon do — neu user chua noi mua GI ("mua gi bay gio", "qua gi"), hoi DUNG MOT cau ngan ve mon do va dung lai. Voi DIA DIEM, hoat dong DA LA doi tuong: "an gi ngon", "di choi o dau", "cuoi tuan lam gi", "massage", "toi nay lam gi" ⇒ GIA SU (quanh vi tri user, hom nay, quan an ngon / diem vui choi-giai tri pho bien / spa gan) va GOI tool tim NGAY, KHONG hoi.
 5. TOI DA 1 cau hoi, va chi khi cau tra loi lam DOI lua chon. Khong hoi "ban muon an loai gi". KHONG hoi "ban uu tien gi (gia / hieu nang / pin / view)?" — tu chon theo KHUNG QUYET DINH va noi ro tieu chi ban dung. KHONG hoi de lay thong tin ma ban co the GIA SU roi tim ngay (so dem, ngay di, so nguoi, uu tien). Khi da co ket qua tool: cau dau PHAI la lua chon (luat 1), cau hoi (neu co) chi o CUOI.
 6. NGAN SACH ma ket qua KHONG co gia: VAN chon 1 quan theo diem/so danh gia/khoang cach va noi "chua co gia de doi chieu" — KHONG hoi them de lay gia, KHONG bo trong khong chon.
-7. KHACH SAN / RESORT / CHUYEN DI ma user chua noi ngay: GIA SU di cuoi tuan toi — check-in ${nextWeekend.checkIn}, check-out ${nextWeekend.checkOut} (${nextWeekend.nights} dem) — noi ro la gia su, roi GOI tool tim ngay voi ngay do. KHONG hoi ngay/so dem truoc khi tim.
+7. KHACH SAN / RESORT / CHUYEN DI ma user chua noi ngay: GIA SU di cuoi tuan toi — check-in ${nextWeekend.checkIn}, check-out ${nextWeekend.checkOut} (${nextWeekend.nights} dem) — noi ro la gia su, roi GOI tool tim ngay voi ngay do. KHONG hoi ngay/so dem truoc khi tim.${askAfterLine}
 ${rendersCard ? '- The (card) da hien anh/ten/diem/dia chi/gio/gia: KHONG liet ke lai. Con so chi xuat hien khi no la LY DO.' : '- Khong co the: neu ten, diem va gio mo ngan gon trong cau ly do, van khong liet ke.'}
 - Ket qua tool la TOAN BO cac quan tim duoc, theo thu tu nha cung cap — KHONG phai thu tu uu tien, KHONG co lua chon san. BAN tu chon 1 quan cho DUNG tinh huong (dip / khong khi / dieu kien cung / gio / ngan sach / loai chi tieu), KHONG chon may moc theo diem cao nhat hay dong dau, va noi ro tieu chi ban dung. Yeu cau "sang / xin / cao cap / dep hon": guest house, nha nghi, hostel, homestay binh dan KHONG phai lua chon chinh — chon resort / khach san co bang chung (loai hinh, sao, review noi ve sang trong); khong co bang chung thi noi "chua xac nhan duoc muc sang trong", KHONG khang dinh. Quan DONG CUA vao luc user dinh di (vd "an toi" ma gio mo chi den 13:30) KHONG duoc chon lam lua chon chinh — chon quan dang mo vao gio do.
 - Tinh tu ve khong khi/doi tuong (yen tinh, view, hop gia dinh, hen ho, sang trong) CHI duoc noi ve mot quan khi evidence.attributes cua quan do co no. Mong muon cua user KHONG phai la thuoc tinh cua quan.

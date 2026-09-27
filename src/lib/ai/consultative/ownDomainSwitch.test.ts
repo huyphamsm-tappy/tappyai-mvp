@@ -39,8 +39,8 @@ describe('turnStartsNewConsultation', () => {
     const own = assessActionability({ messages: B9.slice(-1), lastAssistantText: null, ...gps })
     expect(own.actionable).toBe(false)
     expect(own.domain).toBe('entertainment')
-    expect(own.questions.map(q => q.q)).toEqual(['Tầm giá?', 'Mấy người?'])
-    expect(own.questions[0].options).toEqual(['dưới 200k/người', '200–500k/người', 'trên 500k/người'])
+    // Answer first (2026-09-28): "đi chơi đâu" names no kind of service — the ONE question is what to do.
+    expect(own.questions.map(q => q.q)).toEqual(['Bạn muốn làm gì?'])
   })
 
   it('as routed: the intent gate reads it as new_consultation', () => {
@@ -81,7 +81,10 @@ describe('a food ask after several other place consultations is a new consultati
     ]
     expect(turnStartsNewConsultation({ messages: msgs, ...gps })).toBe(true)
     const own = assessActionability({ messages: msgs.slice(-1), lastAssistantText: null, ...gps })
-    expect(own.actionable).toBe(false)
+    // Answer first (2026-09-28): searched now; the spa budget is not the food budget, so the one
+    // question after the answer is the FOOD budget.
+    expect(own.actionable).toBe(true)
     expect(own.domain).toBe('food')
+    expect(own.askAfter?.options).toEqual(['dưới 100k/người', '100–200k/người', 'trên 200k/người'])
   })
 })

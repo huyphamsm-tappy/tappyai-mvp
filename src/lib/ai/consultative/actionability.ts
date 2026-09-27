@@ -1,25 +1,30 @@
-// ── CONSULTATIVE V1 — clarify BEFORE search (item 1, owner decision 2026-09-19) ──────────────
+// ── CONSULTATIVE V1 — ANSWER FIRST, ASK AFTER (owner decision 2026-09-28) ─────────────────────
 //
 // THE single place in the system that decides whether a request is answered by searching now or
 // by asking first. Everything else that used to ask ("R7(c)", the legacy memory line, the model's
 // own reflex) is removed by item 7 or overridden by the V1 block; this module is the only gate.
 //
+// 2026-09-28 (owner, after UAT4): the 2026-09-19 rule "area AND a budget / occasion / constraint
+// signal, else ask first" made the golden set fail 6 cases — "Tối nay đi xem phim ở rạp nào gần
+// Quận 7", "Rạp chiếu phim IMAX ở TP HCM"… were answered with "Tầm giá? Mấy người?" and no cards.
+// The rule is now "answer first, ask after":
+//
 // ACTIONABLE — search straight away:
-//   · places (food / spa / entertainment / travel-place): the AREA is known (a district, a landmark,
-//     "gần tôi", or GPS — GPS counts, never ask for it) AND at least one signal a pick can be
-//     advised on: a budget, an occasion (who / why — party size, companions, a named occasion), a
-//     stated hard constraint (phòng riêng, đậu xe, mở khuya…) or a mood. A bare subject ("bún bò",
-//     "gội đầu") is NOT a signal — "Quán bún bò ngon ở TP.HCM" is the owner's own example of too
-//     broad. Time alone ("giờ", "tối nay") is not a signal either.
+//   · places (food / spa / entertainment / travel-place): the KIND of service is known and the AREA
+//     is known (a district, a landmark, "gần tôi", GPS, or — re-checked after the quota branch — the
+//     area in the user's memory / profile). A missing budget / party size never blocks: the gate
+//     hands back ONE `askAfter` question, which the reply asks at its END, after the cards.
 //   · shopping: the product is known. A gift with no product is not.
 //   · travel planning / inform ("Hội An có gì hay"), movies, follow-ups, chitchat: not gated here.
 //
-// NOT ACTIONABLE — ask ONCE, in ONE turn, at most 3 short questions with tappable options (the
-// clients' follow-up chips), NO tool call and NO model: the turn is server-authored, costs $0 and
-// is not charged to the AI-question quota (same as canned replies). The gate runs BEFORE the quota
-// is spent, which is also why it reads no memory: memory is loaded after the quota branch. After
-// one clarify the next turn proceeds on whatever was answered, assumptions stated — never twice in
-// a row (`isClarifyReply` on the previous assistant text).
+// NOT ACTIONABLE — only when truly vague: no kind of service ("đi chơi ở đâu", "cuối tuần làm gì",
+// "mua gì bây giờ", a gift with no product), or no area at all (no place named, no GPS, nothing in
+// memory). Then ask ONCE, in ONE turn, short questions with tappable options (the clients'
+// follow-up chips), NO tool call and NO model: the turn is server-authored, costs $0 and is not
+// charged to the AI-question quota (same as canned replies). The gate runs BEFORE the quota is
+// spent, so it reads no memory; `memorySignal` re-checks after memory loads. After one clarify the
+// next turn proceeds on whatever was answered, assumptions stated — never twice in a row
+// (`isClarifyReply` on the previous assistant text).
 //
 // Options come from the question and GPS — a district the user named, "gần tôi" when GPS is
 // present, the domain's usual price bands — never invented venues or areas.
@@ -42,6 +47,8 @@ export interface Actionability {
   signals: { area: boolean; budget: boolean; occasion: boolean; constraint: boolean; subject: boolean }
   questions: ClarifyQuestion[]
   reply: string | null
+  /** Answer first: the ONE question an actionable place turn asks at the END of its reply (missing budget, else party size). */
+  askAfter?: ClarifyQuestion | null
 }
 
 const LEAD_VI = 'Để chọn đúng chỗ, mình cần biết thêm:'
@@ -64,6 +71,8 @@ const BUDGET_OPTIONS: Record<'food' | 'spa' | 'entertainment' | 'travel', { vi: 
 
 /** Venue kinds a city has only a few of — the kind itself is the pick. */
 const RARE_VENUE_KIND = /\b(cong vien nuoc|water ?park|thuy cung|aquarium)\b/
+/** An entertainment request that names WHAT to do (a venue kind), not just "đi chơi". Folded text. */
+const ENTERTAINMENT_KIND = /\b(karaoke|rap|phim|cinema|imax|bar|pub|club|rooftop|cong vien|bowling|bida|billiards?|escape|thuy cung|aquarium|bao tang|trien lam|khu vui choi|game|concert|nhac song|show|kich|truot bang|ho boi|be boi|so thu|tre em)\b/
 /** A follow-up pointing back at an answered venue: "rạp đó", "quán này", "cái thứ hai", "số 2". Folded text. */
 const ANAPHORA = /(?:^|\s)(?:rap do|quan do|cho do|cai do|tiem do|spa do|khach san do|o do|cai nay|quan nay|cho nay|cai thu (?:nhat|hai|ba|tu|nam)|cai dau|cai cuoi|so \d|cai so \d|ben do|ben day)(?:\s|$|[,.?!])/
 /** An event / concert TICKET ask — where to buy, not which venue to pick. Folded text. */
@@ -116,10 +125,14 @@ export function assessActionability(input: {
   // "cuối tuần làm gì / đi đâu / chơi gì" with no domain and no one-to-go-with: nothing to search
   // yet — one question about the KIND of outing (options are domains, never venues). With a party
   // stated ("gia đình 4 người đi đâu") the model can already pick; that turn is not gated.
-  if (!domain && ACTIVITY.test(last) && frame.goal !== 'plan' && !occasionSignal && !need.budget) {
+  // Answer first (2026-09-28): an ENTERTAINMENT reading of a generic outing ("đi chơi ở đâu") names
+  // no kind of service either — the same one question, unless something else was said.
+  const genericOuting = !domain || (domain === 'entertainment' && !ENTERTAINMENT_KIND.test(last))
+  if (genericOuting && ACTIVITY.test(last) && frame.goal !== 'plan' && !occasionSignal && !need.budget && situation.hard.length === 0 && situation.mood === null) {
     const q: ClarifyQuestion = { q: en ? 'What kind of outing?' : 'Bạn muốn làm gì?', options: en ? ['eat & drink', 'go out', 'spa & beauty'] : ['ăn uống', 'đi chơi / giải trí', 'spa & làm đẹp'] }
     const signals = { area: input.hasGps || !!need.location.text, budget: !!need.budget, occasion: false, constraint: false, subject: false }
-    return { actionable: false, domain: null, missing: ['subject'], signals, questions: [q], reply: buildReply([q], en ? LEAD_EN : LEAD_VI, en) }
+    // The domain the frame read (entertainment for "đi chơi") is kept: it is what turnStartsNewConsultation compares.
+    return { actionable: false, domain: domain ?? null, missing: ['subject'], signals, questions: [q], reply: buildReply([q], en ? LEAD_EN : LEAD_VI, en) }
   }
 
   if (!domain) return { ...none, domain }
@@ -164,23 +177,20 @@ export function assessActionability(input: {
   const occasion = occasionSignal
   const constraint = situation.hard.length > 0 || situation.mood !== null
   const signals = { area, budget, occasion, constraint, subject: true }
-  const missing: Missing[] = []
-  if (!area) missing.push('area')
-  if (!budget && !occasion && !constraint) missing.push('signal')
-  if (missing.length === 0) return { ...none, domain, signals }
+  // Answer first (owner 2026-09-28): a missing budget / party size never blocks the search — it is
+  // ONE question the reply asks at its end, after the cards. Budget first: it changes the pick most.
+  const askAfter: ClarifyQuestion | null = !budget
+    ? { q: en ? 'Budget?' : 'Tầm giá?', options: BUDGET_OPTIONS[domain][en ? 'en' : 'vi'] }
+    : !occasion
+      ? { q: en ? 'How many people?' : 'Mấy người?', options: en ? ['1–2', '3–5', 'a big group'] : ['1–2 người', '3–5 người', 'nhóm đông'] }
+      : null
+  if (area) return { ...none, domain, signals, askAfter }
 
-  const questions: ClarifyQuestion[] = []
-  if (!area) {
-    questions.push({
-      q: en ? 'Which area?' : 'Bạn ở khu nào?',
-      // Nothing to offer but "near me": a district list would be invented.
-      options: [en ? 'Near me' : 'Gần tôi'],
-    })
-  }
-  if (!budget) questions.push({ q: en ? 'Budget?' : 'Tầm giá?', options: BUDGET_OPTIONS[domain][en ? 'en' : 'vi'] })
-  if (!occasion) questions.push({ q: en ? 'How many people?' : 'Mấy người?', options: en ? ['1–2', '3–5', 'a big group'] : ['1–2 người', '3–5 người', 'nhóm đông'] })
-  const qs = questions.slice(0, 3)
-  return { actionable: false, domain, missing, signals, questions: qs, reply: buildReply(qs, en ? LEAD_EN : LEAD_VI, en) }
+  // No area at all (no place named, no GPS; memory is re-checked by memorySignal): the one question
+  // that has to come first — there is nowhere to search yet.
+  // Nothing to offer but "near me": a district list would be invented.
+  const qs: ClarifyQuestion[] = [{ q: en ? 'Which area?' : 'Bạn ở khu nào?', options: [en ? 'Near me' : 'Gần tôi'] }]
+  return { actionable: false, domain, missing: ['area'], signals, questions: qs, reply: buildReply(qs, en ? LEAD_EN : LEAD_VI, en), askAfter }
 }
 
 /**
@@ -248,11 +258,15 @@ export function collapseClarifyTurns<T extends { role: string; content: unknown 
  * named. Never a silent decision: the route logs what unblocked the turn.
  */
 export function memorySignal(
-  memory: { preferences?: Record<string, string[] | undefined>; budget?: Record<string, unknown>; companions?: string | null } | null,
+  memory: { preferences?: Record<string, string[] | undefined>; budget?: Record<string, unknown>; companions?: string | null; location_base?: string | null } | null,
   prefs: { budget_level?: string | null; cuisine_likes?: string[] | null } | null,
   a: Actionability,
+  /** The city the user's profile states (contextBuilder identity) — an area, like memory's location_base. */
+  profileCity?: string | null,
 ): string | null {
-  if (a.actionable || !a.domain || a.domain === 'shopping' || a.missing.includes('area')) return null
+  if (a.actionable || !a.domain || a.domain === 'shopping') return null
+  // Answer first (2026-09-28): the only place clarify left is "no area"; a remembered area answers it.
+  if (a.missing.includes('area')) return memory?.location_base?.trim() ? 'memory.location_base' : profileCity?.trim() ? 'profile.city' : null
   const domain = a.domain
   const b = memory?.budget ?? {}
   if (b[domain] || b.default || b.general) return `memory.budget.${b[domain] ? domain : 'default'}`
