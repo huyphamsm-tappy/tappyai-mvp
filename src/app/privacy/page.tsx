@@ -13,7 +13,7 @@ import { OG_IMAGE, SITE_URL } from '@/components/landing/config'
 const PAGE_URL = `${SITE_URL}/privacy`
 const TITLE = 'Privacy Policy — TappyAI'
 const DESCRIPTION =
-  'How TappyAI collects, uses, stores, and protects your information, including Google account data, conversation history, personalization, usage analytics, and the third-party providers we rely on.'
+  'How TappyAI collects, uses, stores, and protects your information, including sign-in data, date of birth for the 18+ check, location, conversation history, personalization, purchases, usage analytics, and the third-party providers we rely on.'
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -49,7 +49,7 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s1.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s1.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s1.b', 8) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s1.b', 14) },
         { kind: 'note', key: 'legal.privacy.s1.note' },
       ],
     },
@@ -58,7 +58,7 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s2.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s2.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s2.b', 7) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s2.b', 8) },
         { kind: 'note', key: 'legal.privacy.s2.note' },
       ],
     },
@@ -67,10 +67,11 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s3.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s3.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s3.b', 8) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s3.b', 11) },
         { kind: 'p', key: 'legal.privacy.s3.p1' },
         { kind: 'p', key: 'legal.privacy.s3.p2' },
         { kind: 'p', key: 'legal.privacy.s3.p3' },
+        { kind: 'p', key: 'legal.privacy.s3.p4' },
       ],
     },
     {
@@ -86,8 +87,13 @@ const PRIVACY: LegalDoc = {
       headingKey: 'legal.privacy.s5.heading',
       blocks: [
         { kind: 'lead', key: 'legal.privacy.s5.lead' },
-        { kind: 'bullets', keys: bullets('legal.privacy.s5.b', 3) },
+        { kind: 'bullets', keys: bullets('legal.privacy.s5.b', 5) },
       ],
+    },
+    {
+      id: 'people-under-18',
+      headingKey: 'legal.privacy.children.heading',
+      blocks: [{ kind: 'p', key: 'legal.privacy.children.p1' }],
     },
     {
       id: 'changes-to-this-policy',
