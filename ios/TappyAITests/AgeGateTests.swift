@@ -131,6 +131,19 @@ final class AgeGateTests: XCTestCase {
         }
     }
 
+    func testSignedInUserNeverGetsTheGuestYearForm() {
+        // A signed-in user only sees age_declaration_required when the server's identity lookup
+        // failed; the guest form would loop (the account never sends the guest header).
+        let refusal = AppError.authentication(reason: .ageGate(code: "age_declaration_required", message: "m"))
+        let signedIn = ChatViewModel.mapError(refusal, isGuest: false)
+        XCTAssertEqual(signedIn, .generic)
+        XCTAssertTrue(signedIn.isRetriable, "a temporary failure: offer a retry")
+        XCTAssertEqual(ChatViewModel.mapError(refusal, isGuest: true), .ageDeclarationRequired(message: "m"))
+        // The account codes are unaffected.
+        let noDob = AppError.authentication(reason: .ageGate(code: "age_verification_required", message: nil))
+        XCTAssertEqual(ChatViewModel.mapError(noDob, isGuest: false), .ageVerificationRequired(message: nil))
+    }
+
     func testDateOfBirthSaveErrorsShowTheRightSentence() {
         XCTAssertEqual(ChatViewModel.dateOfBirthErrorText(AppError.validation(message: "Ngày sinh không hợp lệ.")),
                        "Ngày sinh không hợp lệ.")

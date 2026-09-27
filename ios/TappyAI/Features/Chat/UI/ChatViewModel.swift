@@ -206,7 +206,7 @@ final class ChatViewModel: AppObservableObject {
                 )
             }
         } catch {
-            self.error = Self.mapError(error)
+            self.error = Self.mapError(error, isGuest: isGuest)
             log.error("load conversation failed: \(error)")
         }
         isLoadingConversation = false
@@ -523,7 +523,7 @@ final class ChatViewModel: AppObservableObject {
                     self.messages[assistantIndex].status = .failed
                 }
 
-                self.error = Self.mapError(error)
+                self.error = Self.mapError(error, isGuest: self.isGuest)
                 self.log.error("stream error: \(error)")
             }
         }
@@ -590,7 +590,12 @@ final class ChatViewModel: AppObservableObject {
 
     // MARK: - Error mapping
 
-    static func mapError(_ error: Error) -> ChatError {
+    /// [isGuest] matters for one code: `age_declaration_required` is the GUEST answer. A signed-in
+    /// user only receives it when the server's identity lookup failed and it fell back to the guest
+    /// check (`route.ts`, "UNMETERED MUST NEVER MEAN UNGATED"). Showing the guest birth-year form
+    /// there loops — the account's request never carries the guest header — so it is a temporary
+    /// failure: retriable, nothing to fill in.
+    static func mapError(_ error: Error, isGuest: Bool = true) -> ChatError {
         guard let appError = error as? AppError else {
             return .generic
         }
@@ -601,7 +606,8 @@ final class ChatViewModel: AppObservableObject {
             case .freeLimitReached: return .freeLimitReached
             case .ageGate(let code, let message):
                 switch AgeGateCode(rawValue: code) {
-                case .declarationRequired: return .ageDeclarationRequired(message: message)
+                case .declarationRequired:
+                    return isGuest ? .ageDeclarationRequired(message: message) : .generic
                 case .verificationRequired: return .ageVerificationRequired(message: message)
                 case .ineligible: return .ageIneligible(message: message)
                 case nil: return .authRequired
