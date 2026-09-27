@@ -2,6 +2,533 @@
   "sourceLanguage": "en",
   "version": "1.0",
   "strings": {
+    "account.delete.back": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back to Settings"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quay lại Cài đặt"
+          }
+        }
+      }
+    },
+    "account.delete.cancel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hủy"
+          }
+        }
+      }
+    },
+    "account.delete.confirm.label": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To confirm, type %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để xác nhận, hãy gõ %@"
+          }
+        }
+      }
+    },
+    "account.delete.confirm.word": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "DELETE"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XÓA"
+          }
+        }
+      }
+    },
+    "account.delete.deleting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deleting…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang xóa…"
+          }
+        }
+      }
+    },
+    "account.delete.done.home": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Go to Home"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Về trang chủ"
+          }
+        }
+      }
+    },
+    "account.delete.done.p1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your data has been removed from our database; the photos, videos and audio you uploaded are removed from our file storage within 48 hours after that."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dữ liệu của bạn đã được xóa khỏi cơ sở dữ liệu; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó."
+          }
+        }
+      }
+    },
+    "account.delete.done.p2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have been signed out. If you have questions, contact %@."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã được đăng xuất. Nếu có câu hỏi, hãy liên hệ %@."
+          }
+        }
+      }
+    },
+    "account.delete.done.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your account has been deleted"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản của bạn đã được xóa"
+          }
+        }
+      }
+    },
+    "account.delete.error.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your account was not deleted and is unchanged. Please try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa xóa được tài khoản. Tài khoản của bạn vẫn còn nguyên — vui lòng thử lại."
+          }
+        }
+      }
+    },
+    "account.delete.error.signIn": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your session has expired. Sign in again, then try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại rồi thử lại."
+          }
+        }
+      }
+    },
+    "account.delete.error.staff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This account has admin access, so it cannot be deleted from here. Please contact support."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản này có quyền quản trị nên không thể tự xóa. Vui lòng liên hệ bộ phận hỗ trợ."
+          }
+        }
+      }
+    },
+    "account.delete.finalConfirm.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete your account now?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa tài khoản ngay bây giờ?"
+          }
+        }
+      }
+    },
+    "account.delete.kept.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Messages you sent to other people stay in their conversation and are shown as coming from a deleted account."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn bạn đã gửi cho người khác vẫn nằm trong cuộc trò chuyện của họ và hiển thị là từ một tài khoản đã xóa."
+          }
+        }
+      }
+    },
+    "account.delete.kept.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo cáo vi phạm và quyết định kiểm duyệt liên quan đến nội dung hoặc tài khoản được giữ để bảo đảm an toàn và tuân thủ pháp luật, không còn liên kết với tài khoản của bạn."
+          }
+        }
+      }
+    },
+    "account.delete.kept.heading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kept, but no longer linked to you"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Được giữ lại nhưng không còn gắn với bạn"
+          }
+        }
+      }
+    },
+    "account.delete.kept.lead": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some things you shared with other people belong to their record as well, so they stay without your name or account attached:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Một số nội dung bạn đã gửi cho người khác cũng thuộc về lịch sử của họ, nên được giữ lại nhưng không còn tên hay tài khoản của bạn:"
+          }
+        }
+      }
+    },
+    "account.delete.removes.1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your account and profile, including your name, profile photo, cover photo and bio."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản và hồ sơ của bạn, gồm tên, ảnh đại diện, ảnh bìa và phần giới thiệu."
+          }
+        }
+      }
+    },
+    "account.delete.removes.2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your chats with TappyAI and your AI memory."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các cuộc trò chuyện với TappyAI và bộ nhớ AI."
+          }
+        }
+      }
+    },
+    "account.delete.removes.3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your saved places, favourites, preferences, price watches and plans."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Địa điểm đã lưu, mục yêu thích, tùy chọn cá nhân, theo dõi giá và kế hoạch."
+          }
+        }
+      }
+    },
+    "account.delete.removes.4": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The reviews, comments and likes you posted, including their photos and videos."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các đánh giá, bình luận và lượt thích bạn đã đăng, kèm ảnh và video."
+          }
+        }
+      }
+    },
+    "account.delete.removes.5": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The result pages you shared publicly — their links stop working."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các trang kết quả bạn đã chia sẻ công khai — đường link sẽ không còn mở được."
+          }
+        }
+      }
+    },
+    "account.delete.removes.6": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The photos, videos and audio you uploaded, removed from our file storage."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh, video và âm thanh bạn đã tải lên, được xóa khỏi kho lưu trữ tệp của chúng tôi."
+          }
+        }
+      }
+    },
+    "account.delete.removes.7": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Groups you created, and your place in groups created by others."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các nhóm bạn đã tạo, và tư cách thành viên của bạn trong nhóm do người khác tạo."
+          }
+        }
+      }
+    },
+    "account.delete.removes.8": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notifications you caused in other people's inboxes (for example \"… commented on your review\")."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Các thông báo bạn tạo ra trong hộp thư của người khác (ví dụ \"… đã bình luận đánh giá của bạn\")."
+          }
+        }
+      }
+    },
+    "account.delete.removes.9": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your Google Calendar connection — we also revoke TappyAI's access at Google."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối Google Lịch — chúng tôi đồng thời thu hồi quyền truy cập của TappyAI tại Google."
+          }
+        }
+      }
+    },
+    "account.delete.removes.heading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deletion permanently removes:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Việc xóa sẽ loại bỏ vĩnh viễn:"
+          }
+        }
+      }
+    },
+    "account.delete.retained": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data we may retain where the law requires it"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dữ liệu có thể được lưu lại theo quy định pháp luật"
+          }
+        }
+      }
+    },
+    "account.delete.submit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permanently delete account"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa vĩnh viễn tài khoản"
+          }
+        }
+      }
+    },
+    "account.delete.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete account"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa tài khoản"
+          }
+        }
+      }
+    },
+    "account.delete.warning": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Việc xóa là vĩnh viễn và không thể hoàn tác. Tài khoản bị xóa ngay khi bạn xác nhận."
+          }
+        }
+      }
+    },
     "account.editProfile": {
       "extractionState": "manual",
       "localizations": {
@@ -13953,6 +14480,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Không tìm thấy ứng dụng email"
+          }
+        }
+      }
+    },
+    "settings.deleteAccountSelf": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete account"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xóa tài khoản"
           }
         }
       }

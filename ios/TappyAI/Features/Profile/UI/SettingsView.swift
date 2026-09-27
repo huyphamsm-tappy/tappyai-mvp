@@ -15,6 +15,9 @@ struct ProfileSettingsView: View {
     @State private var showSignOutConfirm = false
     @State private var confirmDeleteAccount = false
     @State private var noMailAppMessage: String?
+    /// Server flag `accountSelfDelete`; false until /api/config says otherwise.
+    @State private var selfDeleteEnabled = false
+    @State private var showSelfDelete = false
 
     var body: some View {
         ScrollView {
@@ -48,6 +51,20 @@ struct ProfileSettingsView: View {
             Button { noMailAppMessage = nil } label: { Text("common.ok") }
         } message: {
             Text(noMailAppMessage ?? "")
+        }
+        .sheet(isPresented: $showSelfDelete) {
+            NavigationStack {
+                AccountDeletionView(deps: deps, onUnavailable: {
+                    // Switched off between showing the row and submitting: email request instead.
+                    showSelfDelete = false
+                    selfDeleteEnabled = false
+                    confirmDeleteAccount = true
+                })
+            }
+        }
+        .task {
+            let flag = (try? await deps.configService.config())?.flags.accountSelfDelete
+            selfDeleteEnabled = AccountDeletion.usesInAppDeletion(flag: flag)
         }
     }
 
@@ -200,8 +217,19 @@ struct ProfileSettingsView: View {
                 // before anything is erased, and the app deletes nothing itself. The label is
                 // fixed word-for-word by step 3 of that page, which is why it is asserted rather
                 // than written freely.
-                settingsRow(icon: "trash", labelKey: "settings.deleteAccount", desc: nil) {
-                    confirmDeleteAccount = true
+                //
+                // When the server enables in-app self-deletion (`flags.accountSelfDelete`, web
+                // `ACCOUNT_SELF_DELETE_ENABLED`, off on production today) the row opens that flow
+                // instead (`AccountDeletionView`, a separate screen); the email request below stays
+                // the fallback whenever the flag is off, absent, or turns out off at submit time.
+                if selfDeleteEnabled {
+                    settingsRow(icon: "trash", labelKey: "settings.deleteAccountSelf", desc: nil) {
+                        showSelfDelete = true
+                    }
+                } else {
+                    settingsRow(icon: "trash", labelKey: "settings.deleteAccount", desc: nil) {
+                        confirmDeleteAccount = true
+                    }
                 }
             }
             .background(TappyColor.cardBackground)
