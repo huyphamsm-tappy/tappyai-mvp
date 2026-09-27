@@ -47,8 +47,8 @@
 // The neutral glyphs are reserved for the ACTIONS (Email, Inbox, Save, Copy,
 // Other apps), so a real mark can never be mistaken for a generic one.
 
-import { useEffect, useState } from 'react'
-import { Copy, Check, Share2, X, Mail, Inbox, Download, Link2 } from 'lucide-react'
+import { useEffect, useState, type ReactNode } from 'react'
+import { Copy, Check, Share2, X, Mail, Inbox, Download, Link2, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import {
   WEB_SHARE_TARGETS, buildShareUrl, buildTextShareUrl, canHandoffToZalo, canOpenMessenger, isShareableUrl, zaloMobileHandoff, type ShareTargetId,
@@ -60,6 +60,7 @@ import { planBrochureStrings } from '@/lib/i18n/planBrochure'
 import { PLAN_SHARE_ID_RE, planShareUrl } from '@/lib/plans/share/planShare'
 import NewMessageSheet from '@/components/messaging/NewMessageSheet'
 import SharePreview from './SharePreview'
+import { TAPPY_MARK_SRC } from '@/components/brand/TappyLockup'
 
 type Feedback = { kind: 'ok' | 'error'; text: string } | null
 
@@ -107,6 +108,8 @@ export default function ShareMenu({
   onClose,
   onShared,
   onPublicLink,
+  variant = 'default',
+  profileName,
 }: {
   /** The canonical artifact. When absent, `url` + `title` are shared as a link (Reviews). */
   artifact?: ShareArtifact
@@ -127,6 +130,16 @@ export default function ShareMenu({
    * never a replacement for the artifact share above it.
    */
   onPublicLink?: () => void
+  /**
+   * `profile`: the approved "Chia sẻ với mọi người" sheet for sharing a PROFILE link (UAT3,
+   * 2026-09-27) — title + subtitle, the TappyAI card, a profile card with the link and a
+   * prominent Copy, the app grid under its heading, "Tùy chọn khác" rows with a description
+   * line, and the promo banner. Same targets, same handlers, same honesty rules as `default`;
+   * only the layout differs. Needs no session: a stranger can open it from a shared profile.
+   */
+  variant?: 'default' | 'profile'
+  /** The profile's display name for the profile card (empty → "TappyAI" alone). */
+  profileName?: string
 }) {
   const { t, locale } = useTranslation()
   const [feedback, setFeedback] = useState<Feedback>(null)
@@ -375,19 +388,112 @@ export default function ShareMenu({
     return kind === 'url-handoff' && textIsMoreThanUrl && id !== 'tiktok' ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
   }
 
+  // ── The profile layout (approved design, UAT3). Every control calls the same `handle`. ──
+  const copiedNow = feedback?.text === t('share.copiedContent') || feedback?.text === t('share.copied') || feedback?.text === t('share.copiedLink')
+  const optionRow = (testId: string, icon: ReactNode, label: string, desc: string, onClick: () => void) => (
+    <button data-testid={testId} onClick={onClick} disabled={!!busy || linkPending}
+      className="flex w-full items-center gap-4 rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-left transition hover:bg-gray-100 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-white/[0.08]">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center" aria-hidden="true">{icon}</span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-[15px] font-semibold text-gray-900 dark:text-gray-50">{label}</span>
+        <span className="block text-[13px] text-gray-500 dark:text-gray-400">{desc}</span>
+      </span>
+      <ChevronRight size={18} className="shrink-0 text-gray-400" aria-hidden="true" />
+    </button>
+  )
+  const profilePanel = (
+    <div data-share-variant="profile">
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-[22px] font-extrabold leading-tight text-gray-900 dark:text-gray-50">{t('share.profile.title')}</h2>
+          <p className="mt-1 text-[14px] text-primary-600 dark:text-sky-300">{t('share.profile.subtitle')}</p>
+        </div>
+        <button onClick={onClose} aria-label={t('share.close')} className="rounded-full p-1.5 text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/10">
+          <X size={20} />
+        </button>
+      </div>
+
+      {/* The TappyAI card over the profile card — one bordered block, as in the design. */}
+      <div className="mb-5 overflow-hidden rounded-2xl border border-gray-200 dark:border-white/10" data-share-profile-card>
+        <a href="/" className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 transition hover:bg-gray-50 dark:border-white/10 dark:hover:bg-white/[0.04]">
+          {/* eslint-disable-next-line @next/next/no-img-element -- same-origin brand mark, fixed box */}
+          <img src={TAPPY_MARK_SRC} alt="" width={48} height={48} className="h-12 w-12 shrink-0 rounded-full object-cover" />
+          <span className="min-w-0 flex-1">
+            <span className="block text-[17px] font-bold text-gray-900 dark:text-gray-50">TappyAI</span>
+            <span className="block truncate text-[13px] text-gray-500 dark:text-gray-400">{t('v3.page.subtitle')}</span>
+          </span>
+          <ChevronRight size={18} className="shrink-0 text-gray-400" aria-hidden="true" />
+        </a>
+        <div className="flex flex-wrap items-center gap-3 px-4 py-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[16px] font-bold text-gray-900 dark:text-gray-50">{profileName ? `${profileName} · TappyAI` : 'TappyAI'}</p>
+            <p className="text-[13px] text-gray-500 dark:text-gray-400">{t('share.profile.cardLine')}</p>
+            <p className="truncate text-[13px] text-primary-600 dark:text-sky-300" data-share-profile-url>{a.url}</p>
+          </div>
+          <button data-testid="share-target-copy" onClick={() => handle('copy')} disabled={!!busy || linkPending}
+            className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2.5 text-[14px] font-semibold text-primary-700 transition hover:bg-primary-100 dark:bg-white/10 dark:text-gray-50 dark:hover:bg-white/15">
+            {copiedNow ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+            {t('share.profile.copyLink')}
+          </button>
+        </div>
+      </div>
+
+      <h3 className="mb-2.5 text-[16px] font-bold text-gray-900 dark:text-gray-50">{t('share.profile.quick')}</h3>
+      <div className="mb-5 grid grid-cols-4 gap-2">
+        {apps.map((target) => {
+          const mark = shareBrandMark(target.id)
+          return (
+            <button key={target.id} data-testid={`share-target-${target.id}`} onClick={() => handle(target.id)}
+              disabled={!!busy || linkPending} title={buttonLabel(target.id, target.kind)}
+              className="flex flex-col items-center gap-1.5 rounded-2xl border border-gray-200 px-1 py-3 transition hover:border-primary active:scale-95 disabled:opacity-60 dark:border-white/10 dark:bg-white/[0.03]">
+              {mark
+                // eslint-disable-next-line @next/next/no-img-element -- local SVG, fixed box
+                ? <img src={mark.logo} alt="" width={40} height={40} draggable={false} decoding="async" className="h-10 w-10 select-none object-contain" data-share-brand={mark.id} />
+                : <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-100" aria-hidden="true" data-share-glyph={target.id}><Mail size={18} /></span>}
+              <span className="text-center text-[12px] leading-tight text-gray-800 dark:text-gray-100">{buttonLabel(target.id, target.kind)}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <h3 className="mb-2.5 text-[16px] font-bold text-gray-900 dark:text-gray-50">{t('share.profile.other')}</h3>
+      <div className="mb-5 flex flex-col gap-2">
+        {optionRow('share-target-inbox', <Inbox size={24} className="text-orange-500" />, t('share.inbox'), t('share.profile.inboxDesc'), () => handle('inbox'))}
+        {optionRow('share-target-save', <Download size={24} className="text-gray-600 dark:text-gray-200" />, t('share.save'), t('share.profile.saveDesc'), () => handle('save'))}
+        {/* The OS sheet only where it exists — never a dead row. */}
+        {canNativeShare && optionRow('share-target-native', <Share2 size={24} className="text-gray-600 dark:text-gray-200" />, t('share.more'), t('share.profile.moreDesc'), () => handle('native'))}
+      </div>
+
+      {feedback && (
+        <p role="status" className={`mb-3 text-xs ${feedback.kind === 'ok' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{feedback.text}</p>
+      )}
+
+      <a href="/" data-share-banner className="flex items-center gap-3 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-blue-600 to-sky-500 py-2 pl-2 pr-3 text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element -- same-origin mascot */}
+        <img src="/tappy/wave.png" alt="" width={84} height={84} className="h-[84px] w-[84px] shrink-0 object-contain" />
+        <span className="min-w-0 flex-1">
+          <span className="block text-[14.5px] font-bold leading-snug">{t('share.profile.bannerTitle')}</span>
+          <span className="mt-0.5 block text-[12px] text-sky-100">{t('share.profile.bannerSub')}</span>
+        </span>
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/20" aria-hidden="true"><ChevronRight size={18} /></span>
+      </a>
+    </div>
+  )
+
   return (
     <>
       <div
         className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
-        aria-label={t('share.previewTitle')}
+        aria-label={variant === 'profile' ? t('share.profile.title') : t('share.previewTitle')}
         onClick={onClose}
       >
         <div
           className="w-full sm:max-w-md max-h-[92dvh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-white dark:bg-gray-900 p-5 shadow-xl"
           onClick={(e) => e.stopPropagation()}
         >
+          {variant === 'profile' ? profilePanel : (<>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-semibold text-gray-900 dark:text-gray-50">{t('share.previewTitle')}</h2>
             <button onClick={onClose} aria-label={t('share.close')} className="p-1.5 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
@@ -485,6 +591,7 @@ export default function ShareMenu({
               {feedback.text}
             </p>
           )}
+          </>)}
         </div>
       </div>
 

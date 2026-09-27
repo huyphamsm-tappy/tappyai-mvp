@@ -232,6 +232,8 @@ export default function QRProfileView({
       <ShareMenu
         url={shareUrl}
         title={displayName ? `${displayName} · TappyAI` : 'TappyAI'}
+        variant="profile"
+        profileName={displayName}
         open={shareOpen}
         onClose={() => setShareOpen(false)}
       />

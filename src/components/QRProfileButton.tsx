@@ -102,6 +102,8 @@ export default function QRProfileButton({ userId, name }: { userId: string; name
       <ShareMenu
         url={shareUrl}
         title={name ? `${name} · TappyAI` : 'TappyAI'}
+        variant="profile"
+        profileName={name ?? ''}
         open={shareOpen}
         onClose={() => setShareOpen(false)}
       />

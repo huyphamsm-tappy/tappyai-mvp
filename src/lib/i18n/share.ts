@@ -83,6 +83,18 @@ export const vi = {
   'share.scam.hint': 'Tạo trang công khai với kết quả kiểm tra để gửi vào nhóm Zalo, Messenger…',
   'share.scam.title': 'Kiểm tra lừa đảo: {host} — TappyAI',
   'share.scam.checkAnother': 'Kiểm tra một link khác',
+  // Profile share sheet (UAT3, approved design "Chia sẻ với mọi người", 2026-09-27)
+  'share.profile.title': 'Chia sẻ với mọi người',
+  'share.profile.subtitle': 'Cùng lan tỏa những địa điểm, trải nghiệm hay với TappyAI!',
+  'share.profile.cardLine': 'Xem hồ sơ của mình trên TappyAI',
+  'share.profile.copyLink': 'Sao chép link',
+  'share.profile.quick': 'Chia sẻ nhanh qua ứng dụng',
+  'share.profile.other': 'Tùy chọn khác',
+  'share.profile.inboxDesc': 'Gửi qua TappyAI',
+  'share.profile.saveDesc': 'Tải ảnh hoặc link về thiết bị',
+  'share.profile.moreDesc': 'Xem thêm tùy chọn chia sẻ',
+  'share.profile.bannerTitle': 'Cùng khám phá thế giới xung quanh với TappyAI!',
+  'share.profile.bannerSub': 'Ăn ngon • Đi chơi hay • Mua sắm thông minh • Và hơn thế nữa',
   'share.unlistedNotice': 'Bạn chưa đăng nhập: liên kết vẫn mở được cho mọi người nhưng không xuất hiện trên tìm kiếm cho đến khi bạn tạo tài khoản.',
 }
 
@@ -151,6 +163,18 @@ export const en = {
   'share.scam.hint': 'Creates a public page with this verdict to send into Zalo, Messenger…',
   'share.scam.title': 'Scam check: {host} — TappyAI',
   'share.scam.checkAnother': 'Check another link',
+  // Profile share sheet (UAT3, approved design, 2026-09-27)
+  'share.profile.title': 'Share with everyone',
+  'share.profile.subtitle': 'Spread great places and experiences with TappyAI!',
+  'share.profile.cardLine': 'See my profile on TappyAI',
+  'share.profile.copyLink': 'Copy link',
+  'share.profile.quick': 'Quick share via apps',
+  'share.profile.other': 'More options',
+  'share.profile.inboxDesc': 'Send via TappyAI',
+  'share.profile.saveDesc': 'Save an image or the link to your device',
+  'share.profile.moreDesc': 'See more ways to share',
+  'share.profile.bannerTitle': 'Explore the world around you with TappyAI!',
+  'share.profile.bannerSub': 'Great food • Fun outings • Smart shopping • And more',
   'share.unlistedNotice': 'You are not signed in: the link opens for anyone but stays out of search until you create an account.',
 }
 
