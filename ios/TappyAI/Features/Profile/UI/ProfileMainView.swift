@@ -10,6 +10,7 @@ struct ProfileMainView: View {
     @State private var loading = true
     @State private var showProUpgrade = false
     @State private var showAppConnections = false
+    @State private var showQR = false
 
     private var service: ProfileService { ProfileService(api: deps.api) }
 
@@ -61,7 +62,11 @@ struct ProfileMainView: View {
                 }
             }
             Spacer()
-            qrButton(p)
+            // No user id, no profile page to point at: the button is hidden rather than sharing
+            // a link that opens nothing.
+            if let url = ProfileQR.profileURL(userId: session.userId) {
+                qrButton(url)
+            }
         }
         .padding(Spacing.lg)
         .background(TappyColor.cardBackground)
@@ -95,15 +100,12 @@ struct ProfileMainView: View {
     }
 
     @ViewBuilder
-    private func qrButton(_ p: UserProfile) -> some View {
+    private func qrButton(_ url: URL) -> some View {
+        // Was a bare share sheet with `https://tappyai.vn/users/…` — a non-canonical host and no
+        // code to scan. Now the web's "Share profile": the QR of the canonical profile URL plus
+        // a share button (`ProfileQRView`).
         Button {
-            // QR share - uses native share sheet
-            let link = "https://tappyai.vn/users/\(session.userId ?? "")"
-            let av = UIActivityViewController(activityItems: [link], applicationActivities: nil)
-            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let root = scene.windows.first?.rootViewController {
-                root.present(av, animated: true)
-            }
+            showQR = true
         } label: {
             Image(systemName: "qrcode")
                 .font(.system(size: 18))
@@ -113,6 +115,10 @@ struct ProfileMainView: View {
                 .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
         }
         .buttonStyle(.plain)
+        .accessibilityLabel(Text("qr.title"))
+        .sheet(isPresented: $showQR) {
+            ProfileQRView(url: url)
+        }
     }
 
     // MARK: - Account Section
