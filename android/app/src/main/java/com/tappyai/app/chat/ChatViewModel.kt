@@ -675,7 +675,10 @@ class ChatViewModel @Inject constructor(
                 // them from the visible text — web parity (see ChatResponseParser). Web parses
                 // followups from the reply itself; keep the dedicated endpoint as a fallback when
                 // the model didn't inline any, so existing Android followups don't regress.
-                val parsed = ChatResponseParser.parse(reply.toString())
+                // UAT3: one reply, not two — a reply that streamed the same answer twice is kept as
+                // its last version, on screen AND in what is saved (ReplyRepeat, web parity).
+                val finalReply = ReplyRepeat.dropRepeatedReply(reply.toString())
+                val parsed = ChatResponseParser.parse(finalReply)
                 val followups = parsed.followups.ifEmpty { chatRepository.getFollowups(category) }
                 _messages.update { msgs ->
                     msgs + ChatMessage(
@@ -695,7 +698,7 @@ class ChatViewModel @Inject constructor(
                         placesView = livePlaces?.toShareView(),
                         // What gets SAVED. See [ChatMessage.raw]: the stripped text cannot rebuild
                         // a card, so the unstripped reply is carried alongside it.
-                        raw = reply.toString(),
+                        raw = finalReply,
                     )
                 }
                 persistConversation()

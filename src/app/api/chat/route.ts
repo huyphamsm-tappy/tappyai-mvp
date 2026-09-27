@@ -93,6 +93,7 @@ import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
+import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
@@ -2451,8 +2452,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       } catch { /* audit only */ }
     }
   }
+  // UAT3: a multi-step turn must not reach the client as two copies of the same reply (stepRepeatGuard).
   const timedBody = finalResponse.body
-    ? finalResponse.body.pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+    ? finalResponse.body.pipeThrough(stepRepeatGuard()).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }

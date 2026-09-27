@@ -38,6 +38,7 @@ import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { dropRepeatedReply } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
@@ -796,7 +797,13 @@ export default function ChatInterface({
       emitQuery({ domain: category, result_id: rid })
     },
     initialMessages: savedMessages?.map((m, i) => ({ id: String(i), role: m.role, content: m.content })),
-    onFinish: async (message) => {
+    onFinish: async (finished) => {
+      // UAT3: one reply, not two. A reply that streamed the same answer twice (lib/chat/replyRepeat)
+      // is collapsed to its last version — on screen and in what is saved. The server guard
+      // (stepRepeatGuard) catches the multi-step shape; this catches a repeat inside one step.
+      const collapsed = typeof finished.content === 'string' ? dropRepeatedReply(finished.content) : finished.content
+      const message = collapsed === finished.content ? finished : { ...finished, content: collapsed }
+      if (message !== finished) setMessages(prev => prev.map(m => (m.id === finished.id ? message : m)))
       if (pendingResultIdRef.current) {
         resultIdsRef.current.set(message.id, pendingResultIdRef.current)
         pendingResultIdRef.current = null
