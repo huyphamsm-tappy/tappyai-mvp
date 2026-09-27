@@ -5,21 +5,23 @@ Campaign states were read in the ACCESSTRADE publisher portal (pub2.accesstrade.
 
 No secrets are in this file. Campaign ids and the publisher id are public: they appear in every tracked link.
 
-## 0. Release state (27 Sep 2026, evening)
+## 0. Release state (27 Sep 2026, night)
 
 | Item | State |
 |---|---|
-| Code | `feat/affiliate-live` @ `edd6111`, pushed; PR #255 → `rc/web-uat` open (CI running) |
-| Production | `main` @ `842379b` — does **not** contain CCP; no tracked link is served in production yet |
-| Vercel Preview of the branch | built OK (`tappyai-mvp-git-feat-affiliate-live-…vercel.app`, behind Vercel login) |
-| `ACCESSTRADE_PUBLISHER_ID` | set in Vercel Production + Preview |
-| `CCP_ATTRIBUTION_SECRET` | **not set** — owner (automated secret write is refused by policy) |
-| Prod `commerce_providers` rows | still the 20 Sep seed (read 27 Sep): Traveloka / Vietnam Airlines without campaign, TikTok Shop row Tier 1 (the code guard keeps it direct). The 27 Sep migration is **not applied** — owner runs it in the SQL Editor |
-| GA4 `affiliate_click` / Tappy click on a deployed UI | **not verified** — needs a production deployment (GA4 is configured for Production only) |
+| Code | `feat/affiliate-live`, pushed; PR #255 → `rc/web-uat` open, CI green except the pre-existing, non-required "No protected work stranded" check (10 old side branches). **Not merged**: the merge is refused by the agent's safety policy ("Merge Without Review"), so the owner merges it |
+| Production | `main` @ `842379b`, which does **not** contain CCP. No tracked link is served on www.tappyai.com until PR #255 → `rc/web-uat` → PR #252 → `main` is released |
+| Prod `commerce_providers` (`fwznnobrdctuskgrvuik`) | **applied 27 Sep 13:36 UTC** in the SQL Editor; verified 7 tracked rows with exactly the portal campaign ids; TikTok Shop / Shopee direct; DMX inactive |
+| Audit `commerce_providers` (`zdaprdfgpbpnxyofagmc`) | **applied** — same 7 tracked rows |
+| `ACCESSTRADE_PUBLISHER_ID` | set in Vercel Production + Preview; UAT `.env.local` |
+| `CCP_ATTRIBUTION_SECRET` | **set** in Vercel Production + Preview (different random values, Sensitive) and in the UAT `.env.local` (a third value). Takes effect on the next deployment of each environment |
+| Deployed verification (Vercel Preview of the branch, prod database) | A real chat turn ("vé máy bay SGN → HAN 10/10/2026") rendered a Trip.com link = `go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=<dated fare search>&…&sub1=<24 hex>`; tapping it landed on vn.trip.com with Trip.com's affiliate parameters (`allianceid`, `SID`, `trip_sub1`) |
+| Click analytics | Card buttons: `/api/commerce/handoff` beacon + GA4 `affiliate_click` (existing). Links in the reply TEXT (e.g. the flight answer): GA4 `affiliate_click` added 27 Sep; no handoff beacon (no link id in text). GA4 is configured for Production only, so it is **not verified** until the production release |
+| Vercel Deployment Protection | the temporary automation bypass secret created by `vercel curl` on 27 Sep was removed |
 
 ### Categories
 
-- **Tracked (resolver + live redirect verified; production pending release):** Trip.com, CellphoneS, Klook, Lazada, Vexere, Traveloka, Vietnam Airlines.
+- **Tracked (resolver + live redirect verified; on a deployed Preview for Trip.com; production pending release):** Trip.com, CellphoneS, Klook, Lazada, Vexere, Traveloka, Vietnam Airlines.
 - **Approved but direct:** TikTok Shop (the campaign credits only product-feed links); VinWonders (reached through Klook pages).
 - **Pending:** Shopee, Điện Máy Xanh (also inactive by owner decision), FPT Shop, Agoda.
 - **Out of scope / not applied:** Tiki (removed), Booking.com (CJ not activated), Vietjet / CGV / Ticketbox / GrabFood / ShopeeFood (no programme).
@@ -84,7 +86,7 @@ State lives in `commerce_providers` (runtime; the owner flips it without a deplo
 | Variable | Where | Status 27 Sep | Effect when missing |
 |---|---|---|---|
 | `ACCESSTRADE_PUBLISHER_ID` = `6277265300509373567` | Vercel Production + Preview | **set 27 Sep** (takes effect on the next deployment) | every link is direct |
-| `CCP_ATTRIBUTION_SECRET` (random, ≥32 chars, different per environment) | Vercel Production + Preview, local `.env.local` | **owner to set** | links are tracked but carry no `sub1` |
+| `CCP_ATTRIBUTION_SECRET` (random, ≥32 chars, different per environment) | Vercel Production + Preview, local `.env.local` | **set 27 Sep** | links are tracked but carry no `sub1` |
 | `ACCESSTRADE_API_KEY` + `ACCESSTRADE_FEED_ENDPOINT` | Vercel | not set (owner) | feed ingest reports `blocked_no_credentials`; TikTok Shop product-feed links impossible |
 
 ## 4. Operational steps
