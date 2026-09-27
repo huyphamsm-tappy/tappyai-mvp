@@ -19,13 +19,21 @@
  * Also answers the report-only question "does V3 insert images/links mid-sentence?"
  * by re-running `injectPlaceEnrichment` on run 2's captured rows (mobile path — the
  * web run itself skips injection when the decision card owns enrichment).
+ *
+ * Runs ONLY with AUDIT_REPLAY=1 — the captures are not committed, so the normal suite
+ * (and CI) skips it. `AUDIT` is this checkout's `docs/audit`; run it from the AUDIT
+ * worktree, or point AUDIT_DIR at one:
+ *
+ *   AUDIT_REPLAY=1 npx vitest run scripts/audit/g1Replay.audit.test.ts
  */
 import { describe, expect, it } from 'vitest'
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { guardPlaceClaimsInText, type PlaceClaimEvidence } from '@/lib/ai/placeClaimGuard'
 import { injectPlaceEnrichment } from '@/lib/ai/streamEnrichment'
 
-const AUDIT = 'D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/audit-nonprod/docs/audit'
+const ENABLED = process.env.AUDIT_REPLAY === '1'
+const AUDIT = process.env.AUDIT_DIR ?? fileURLToPath(new URL('../../docs/audit', import.meta.url))
 const CAPTURES = [
   { run: 1, file: `${AUDIT}/capture-v3/preguard-v3-run1.jsonl`, runJson: `${AUDIT}/capture-v3/run1.json`, rebuildRatings: true },
   { run: 2, file: `${AUDIT}/capture-v3/preguard-v3.jsonl`, runJson: `${AUDIT}/capture-v3/run2.json`, rebuildRatings: false },
@@ -175,7 +183,7 @@ function midSentenceInsertions(r: Rec, placement: 'v1' | 'v2' = 'v1'): { inserte
   return { inserted, mid_sentence: mid, samples }
 }
 
-describe('G1 acceptance replay', () => {
+describe.skipIf(!ENABLED)('G1 acceptance replay', () => {
   it('replays the captured pre-guard text through v1 and v2 and writes the metrics', () => {
     const rows: Array<Record<string, unknown> & { run: number; ran_guard: boolean; v1: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[] }; v2: { chars: number; removed?: number; ratio: number; fragments: string[]; fabricated_surviving: string[]; unattributable?: number; fallback_used: boolean; pick_attributable: boolean | null; attribution?: Record<string, number>; reasons?: Record<string, number>; cta_kept: boolean }; pick: string | null; fabricated_in_input: string[]; cta_in_input: boolean; cta_kept_v1: boolean; injection: { inserted: number; mid_sentence: number; samples: string[] }; injection_v2: { inserted: number; mid_sentence: number; samples: string[] } }> = []
     const notes: string[] = []
@@ -255,6 +263,7 @@ describe('G1 acceptance replay', () => {
         samples: rows.flatMap(r => r.injection_v2.samples).slice(0, 6),
       },
     }
+    mkdirSync(AUDIT, { recursive: true })
     writeFileSync(`${AUDIT}/g1-replay.json`, JSON.stringify(rows, null, 2))
     writeFileSync(`${AUDIT}/g1-replay-metrics.json`, JSON.stringify(metrics, null, 2))
     expect(rows.length).toBeGreaterThan(0)

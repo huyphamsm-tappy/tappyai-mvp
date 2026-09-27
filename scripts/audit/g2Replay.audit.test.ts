@@ -11,14 +11,22 @@
  * Gates (owner, G2): 0 fabricated prices surviving; 0 true ratings/counts removed
  * together with a price; 0 sentences removed for a metre distance; 0 fragments;
  * 0 replies ≤ 35 %; v2 ≥ v1 kept-ratio on every turn.
+ *
+ * Runs ONLY with AUDIT_REPLAY=1 — the captures are not committed, so the normal suite
+ * (and CI) skips it. `AUDIT` is this checkout's `docs/audit`; run it from the AUDIT
+ * worktree, or point AUDIT_DIR at one:
+ *
+ *   AUDIT_REPLAY=1 npx vitest run scripts/audit/g2Replay.audit.test.ts
  */
 import { describe, expect, it } from 'vitest'
-import { readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from '@/lib/ai/snippetPriceGuard'
 import { extractMoneyClaims } from '@/lib/ai/moneyGuard'
 import { bandFromRow, amountWithinBand, type PriceBand } from '@/lib/recommendation/priceBand'
 
-const AUDIT = 'D:/Claude/Projects/TappyAI/tappyai-mvp/.claude/worktrees/audit-nonprod/docs/audit'
+const ENABLED = process.env.AUDIT_REPLAY === '1'
+const AUDIT = process.env.AUDIT_DIR ?? fileURLToPath(new URL('../../docs/audit', import.meta.url))
 const CAPTURES = [
   { run: 1, file: `${AUDIT}/capture-v3/preguard-v3-run1.jsonl`, runJson: `${AUDIT}/capture-v3/run1.json` },
   { run: 2, file: `${AUDIT}/capture-v3/preguard-v3.jsonl`, runJson: `${AUDIT}/capture-v3/run2.json` },
@@ -66,7 +74,7 @@ function trueFactSentences(input: string, r: Rec): string[] {
 /** The rating/count tokens of a sentence, to check they survived (the sentence may legitimately lose its price clause). */
 const factTokens = (s: string): string[] => [...s.matchAll(/\d(?:[.,]\d)?\s*(?:⭐|★)|\d[\d.,]*\s*(?:đánh giá|reviews?)(?!\p{L})/giu)].map(m => m[0])
 
-describe('G2 acceptance replay', () => {
+describe.skipIf(!ENABLED)('G2 acceptance replay', () => {
   it('replays the captured guard input through v1 and v2 with reconstructed evidence and writes the metrics', () => {
     const rows: Array<Record<string, unknown> & { ran: boolean; v1: { ratio: number; fragments: string[]; fabricated_surviving: string[]; metre_removed: number; true_fact_lost: string[] }; v2: { ratio: number; fragments: string[]; fabricated_surviving: string[]; metre_removed: number; true_fact_lost: string[]; stats: unknown } }> = []
     const notes: string[] = []
@@ -138,6 +146,7 @@ describe('G2 acceptance replay', () => {
         totals: g.reduce((acc, r) => { for (const [k, v] of Object.entries((r.v2.stats ?? {}) as Record<string, number>)) acc[k] = (acc[k] ?? 0) + v; return acc }, {} as Record<string, number>) },
       v2_vs_v1: { better: g.filter(r => r.v2.ratio > r.v1.ratio).length, worse: g.filter(r => r.v2.ratio < r.v1.ratio).length, equal: g.filter(r => r.v2.ratio === r.v1.ratio).length },
     }
+    mkdirSync(AUDIT, { recursive: true })
     writeFileSync(`${AUDIT}/g2-replay.json`, JSON.stringify(rows, null, 2))
     writeFileSync(`${AUDIT}/g2-replay-metrics.json`, JSON.stringify(metrics, null, 2))
     expect(g.length).toBeGreaterThan(0)
