@@ -54,7 +54,9 @@
 	<key>NSCameraUsageDescription</key>
 	<string>TappyAI uses the camera to record reviews and scan menus/receipts.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>TappyAI uses the microphone to record video reviews and original sounds.</string>
+	<string>TappyAI uses the microphone to record video reviews and original sounds, and for voice input in chat.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>TappyAI turns what you say into a chat message. Your voice is transcribed by Apple speech recognition and is not stored by TappyAI.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TappyAI accesses your photos to upload reviews and images.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
