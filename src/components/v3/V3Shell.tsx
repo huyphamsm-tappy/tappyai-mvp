@@ -9,7 +9,7 @@ import {
   Home, PlayCircle, Search, Upload, Users, Bookmark, History,
   Tag, Store, Wrench, CalendarRange, ShieldCheck, Inbox as InboxIcon,
   Bell, Sun, Moon, UserCircle, QrCode, Wallet, Settings, Languages, HelpCircle,
-  MessageSquare, LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
+  LogOut, Sparkles, MessageCircle, Grid3x3, Plus, ChevronRight,
   Music2, Sparkle, PenLine,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -195,7 +195,9 @@ const GROUPS: NavGroup[] = [
       { href: '/profile/settings', labelKey: 'v3.action.settings', icon: Settings },
       { href: '/profile/settings', labelKey: 'v3.nav.language', icon: Languages },
       { href: '/how-to-use', labelKey: 'v3.nav.help', icon: HelpCircle },
-      { href: '/profile', labelKey: 'v3.nav.feedback', icon: MessageSquare },
+      // UAT3 (2026-09-27): a "Feedback" row sat here, linking to `/profile` since e661f17 — no feedback
+      // form, route or table exists, so it opened the profile. Removed; per-reply 👍/👎/report
+      // (`/api/message-feedback`) is the only feedback channel today.
       /**
        * 🚨 THIS ROW SAID "LOGOUT" TO EVERYONE, AND IT WAS A LINK TO `/login`.
        *
