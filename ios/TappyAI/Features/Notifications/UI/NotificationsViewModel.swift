@@ -52,17 +52,21 @@ final class NotificationsViewModel: AppObservableObject {
     /// (ADR-014: the client re-fetches the REST endpoint rather than trusting the realtime payload
     /// as state directly — same pattern as Web's `NotificationProvider`).
     ///
-    /// UNVERIFIED — the exact `supabase-swift` v2 Realtime channel/postgresChange API surface has
-    /// not been confirmed against a real compile in this environment (no Mac/Xcode here; same
-    /// class of risk already flagged for the Auth SDK calls in `SupabaseAuthService`). If the API
-    /// differs by version, this method is the one place to fix — `load()` above works standalone
-    /// via plain polling/pull-to-refresh regardless of whether this succeeds.
+    /// Uses the `RealtimePostgresFilter` API of supabase-swift 2.55 (the raw-string `filter:`
+    /// overload is deprecated). The filter is the same `user_id=eq.<uid>` Web subscribes with; RLS
+    /// already limits delivery to this user's rows, so the events received are unchanged.
+    /// `load()` above works standalone via pull-to-refresh regardless of whether this succeeds.
     func startRealtimeIfPossible() {
         guard let userId, realtimeTask == nil else { return }
         realtimeTask = Task { [weak self] in
             guard let self else { return }
             let channel = self.supabase.channel("notifications:\(userId)")
-            let changes = channel.postgresChange(AnyAction.self, schema: "public", table: "notifications")
+            let changes = channel.postgresChange(
+                AnyAction.self,
+                schema: "public",
+                table: "notifications",
+                filter: .eq("user_id", value: userId)
+            )
             do {
                 try await channel.subscribeWithError()
             } catch {
