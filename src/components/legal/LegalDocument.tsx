@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import Header from '@/components/Header'
 import { SITE_URL, SUPPORT_EMAIL } from '@/components/landing/config'
 import { useTranslation } from '@/lib/i18n/useTranslation'
@@ -93,6 +94,37 @@ export default function LegalDocument({ doc }: { doc: LegalDoc }) {
               </dd>
             </div>
           </dl>
+        )
+      case 'faq':
+        return (
+          <dl key={i} className="space-y-5">
+            {block.items.map(({ q, a }) => (
+              <div key={q}>
+                <dt className="text-fluid-body font-semibold text-gray-900 dark:text-white">
+                  {t(q)}
+                </dt>
+                <dd className="mt-1.5 text-fluid-body text-gray-600 dark:text-gray-300">
+                  {t(a)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )
+      case 'links':
+        return (
+          <ul key={i} className="space-y-2.5">
+            {block.items.map(({ href, labelKey }) => (
+              <li key={href} className="flex gap-3 text-fluid-body">
+                <span
+                  aria-hidden="true"
+                  className="mt-[0.65em] h-1.5 w-1.5 flex-shrink-0 rounded-full bg-accent-500"
+                />
+                <Link href={href} className={linkClass}>
+                  {t(labelKey)}
+                </Link>
+              </li>
+            ))}
+          </ul>
         )
       case 'contact':
         return (

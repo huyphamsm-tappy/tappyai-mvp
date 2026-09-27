@@ -5,11 +5,13 @@ import Link from 'next/link'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { BRAND_NAME, LOGO } from './config'
 
-// Legal links point at the existing production pages — no new routes.
+// Legal links point at the public legal/help pages. /support is the App Store Support URL, so it
+// is linked from the one footer every visitor sees.
 const LEGAL_LINKS = [
   { href: '/terms', key: 'landing.footer.terms' },
   { href: '/privacy', key: 'landing.footer.privacy' },
   { href: '/copyright', key: 'landing.footer.copyrightPolicy' },
+  { href: '/support', key: 'landing.footer.support' },
 ]
 
 export default function LandingFooter() {

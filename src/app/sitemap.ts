@@ -10,7 +10,7 @@ import { SCAM_KB_PATH, scenarioPages } from '@/lib/scam-shield/knowledgePages'
 
 export const revalidate = 3600
 
-const STATIC_PUBLIC_PATHS = ['/', '/about', '/scam-shield', '/extension', '/extension/privacy', '/how-to-use', '/privacy', '/terms', '/startup'] as const
+const STATIC_PUBLIC_PATHS = ['/', '/about', '/scam-shield', '/extension', '/extension/privacy', '/how-to-use', '/privacy', '/terms', '/support', '/startup'] as const
 export const SITEMAP_SHARED_RESULTS_MAX = 2000
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

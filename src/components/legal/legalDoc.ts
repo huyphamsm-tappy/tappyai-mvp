@@ -20,6 +20,12 @@ export type LegalBlock =
   // plus the website: the copyright policy has to publish its own agent address, and a notice
   // sent to support instead of the agent is a notice that arrives in the wrong queue.
   | { kind: 'email'; labelKey: string; address: string }
+  // Question/answer pairs (the /support FAQ). A <dl> so each answer is tied to its question for
+  // assistive tech, rather than two paragraphs that merely sit next to each other.
+  | { kind: 'faq'; items: { q: string; a: string }[] }
+  // Links to other public pages of this site (e.g. /support → /privacy, /terms,
+  // /delete-account). Internal paths only: these render through next/link.
+  | { kind: 'links'; items: { href: string; labelKey: string }[] }
 
 export interface LegalSection {
   id: string
@@ -31,6 +37,31 @@ export interface LegalDoc {
   titleKey: string
   effectiveKey: string
   sections: LegalSection[]
+}
+
+/**
+ * The translation keys a block renders. `contact` renders fixed shared labels, so it contributes
+ * none; `email` contributes only its label (the address beside it is a literal). One definition,
+ * so a new block kind is handled here once instead of in every test that walks a document.
+ */
+export function blockKeys(block: LegalBlock): string[] {
+  switch (block.kind) {
+    case 'lead':
+    case 'p':
+    case 'note':
+      return [block.key]
+    case 'bullets':
+    case 'steps':
+      return block.keys
+    case 'email':
+      return [block.labelKey]
+    case 'faq':
+      return block.items.flatMap(({ q, a }) => [q, a])
+    case 'links':
+      return block.items.map(({ labelKey }) => labelKey)
+    case 'contact':
+      return []
+  }
 }
 
 /** Builds numbered bullet keys, e.g. bullets('x.b', 3) -> ['x.b1','x.b2','x.b3']. */

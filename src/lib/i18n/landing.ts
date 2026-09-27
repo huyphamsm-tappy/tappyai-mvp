@@ -127,6 +127,7 @@ export const en: Record<string, string> = {
   'landing.footer.terms': 'Terms of Service',
   'landing.footer.privacy': 'Privacy Policy',
   'landing.footer.copyrightPolicy': 'Copyright Policy',
+  'landing.footer.support': 'Support',
   'landing.footer.rights': '© 2026 TappyAI. All rights reserved.',
 }
 
@@ -251,5 +252,6 @@ export const vi: Record<string, string> = {
   'landing.footer.terms': 'Điều khoản sử dụng',
   'landing.footer.privacy': 'Chính sách bảo mật',
   'landing.footer.copyrightPolicy': 'Chính sách bản quyền',
+  'landing.footer.support': 'Hỗ trợ',
   'landing.footer.rights': '© 2026 TappyAI. Bảo lưu mọi quyền.',
 }

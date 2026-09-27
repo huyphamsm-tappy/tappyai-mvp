@@ -241,6 +241,7 @@ export const ROUTE_TITLES: Record<string, { vi: string; en: string }> = {
   '/delete-account': { en: 'Delete Your TappyAI Account — TappyAI', vi: 'Xoá tài khoản TappyAI — TappyAI' },
   '/how-to-use': { en: 'How to use TappyAI', vi: 'Hướng dẫn sử dụng TappyAI' },
   '/privacy': { en: 'Privacy Policy — TappyAI', vi: 'Chính sách bảo mật — TappyAI' },
+  '/support': { en: 'Support — TappyAI', vi: 'Hỗ trợ — TappyAI' },
   '/terms': { en: 'Terms of Service — TappyAI', vi: 'Điều khoản dịch vụ — TappyAI' },
   '/viet-content': { en: 'Social media content writer — TappyAI', vi: 'Viết content mạng xã hội — TappyAI' },
   '/game/supertux': { en: 'SuperTux — TappyAI Games', vi: 'SuperTux — Trò chơi TappyAI' },

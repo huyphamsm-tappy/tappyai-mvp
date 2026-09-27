@@ -25,7 +25,7 @@ vi.mock('@/lib/share/sharedResultStore', () => ({
 }))
 
 const ORIGIN = 'https://www.tappyai.com'
-const INDEXABLE_STATIC = ['/', '/about', '/startup', ...HUB_DOMAINS.map((d) => `/${d}`), '/scam-shield', SCAM_KB_PATH, ...scenarioPages().map((p) => p.path), '/extension', '/extension/privacy', '/how-to-use', '/privacy', '/terms']
+const INDEXABLE_STATIC = ['/', '/about', '/startup', ...HUB_DOMAINS.map((d) => `/${d}`), '/scam-shield', SCAM_KB_PATH, ...scenarioPages().map((p) => p.path), '/extension', '/extension/privacy', '/how-to-use', '/privacy', '/terms', '/support']
 const NOT_IN_SITEMAP_BY_DESIGN = ['/extension/welcome']
 
 describe('public acquisition surfaces — the crawlable set', () => {
