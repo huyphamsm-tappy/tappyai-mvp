@@ -3,6 +3,7 @@
      docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md §3/§3b — change them together (accountDeletionParity.test.ts). -->
 <resources>
     <string name="settings_delete_account_self">Delete account</string>
+    <string name="settings_delete_account_self_desc">Permanently delete your account and data</string>
     <string name="account_delete_warning">Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm.</string>
     <string name="account_delete_removes_heading">Deletion permanently removes:</string>
     <string name="account_delete_kept_heading">Kept, but no longer linked to you</string>

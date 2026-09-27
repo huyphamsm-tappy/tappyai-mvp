@@ -42,6 +42,8 @@ class AccountDeletionTest {
         val settings = File(root(), "app/src/main/java/com/tappyai/app/profile/SettingsScreen.kt").readText()
         assertTrue("the email flow stays as the fallback", settings.contains("Intent.ACTION_SENDTO"))
         assertTrue(settings.contains("DeleteAccountDialog("))
+        // Device run 2026-09-27: the subtitle still said "Request deletion…" on the in-app flow.
+        assertTrue("subtitle follows the flow", settings.contains("R.string.settings_delete_account_self_desc else R.string.settings_delete_account_desc"))
     }
 
     @Test

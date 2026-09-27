@@ -3,6 +3,7 @@
      docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md §3/§3b — change them together (accountDeletionParity.test.ts). -->
 <resources>
     <string name="settings_delete_account_self">Xóa tài khoản</string>
+    <string name="settings_delete_account_self_desc">Xóa vĩnh viễn tài khoản và dữ liệu của bạn</string>
     <string name="account_delete_warning">Việc xóa là vĩnh viễn và không thể hoàn tác. Tài khoản bị xóa ngay khi bạn xác nhận.</string>
     <string name="account_delete_removes_heading">Việc xóa sẽ loại bỏ vĩnh viễn:</string>
     <string name="account_delete_kept_heading">Được giữ lại nhưng không còn gắn với bạn</string>

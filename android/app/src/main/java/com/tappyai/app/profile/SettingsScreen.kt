@@ -268,7 +268,8 @@ fun SettingsScreen(
                         TappyMenuRow(
                             icon = Icons.Filled.DeleteOutline,
                             title = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self else R.string.settings_delete_account),
-                            subtitle = stringResource(R.string.settings_delete_account_desc),
+                            // UAT3 device run: the subtitle still said "Request deletion…" on the in-app flow.
+                            subtitle = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self_desc else R.string.settings_delete_account_desc),
                             accent = AccentRed,
                             titleFontWeight = FontWeight.SemiBold,
                             onClick = { confirmDeleteAccount = true },
