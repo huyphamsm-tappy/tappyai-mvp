@@ -79,7 +79,7 @@ import { applyHardConstraintGate, entityTextsOf } from '@/lib/ai/consultative/ha
 import { admitsForHard } from '@/lib/ai/consultative/upscale'
 import { closesLate } from '@/lib/ai/consultative/hardConstraints'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation } from '@/lib/ai/consultative/actionability'
-import { currentSubjectMessages, currentSubjectUserTexts } from '@/lib/ai/consultative/subjectScope'
+import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
@@ -290,8 +290,9 @@ export async function POST(req: Request) {
   // whatever their subject.
   const priorUserTexts: string[] = subjectUserTexts.slice(-4, -1)
   const ownPlanningIntent = detectPlanningIntent(lastText)
+  // UAT3 P0: the nearest plan, but never across a purchase or another tool subject (subjectScope.ts).
   const inheritedPlanningIntent = ownPlanningIntent === null && isPlanningRefinement(lastText)
-    ? (priorUserTexts.map(detectPlanningIntent).reverse().find(p => p !== null) ?? null)
+    ? inheritPlanningIntent(priorUserTexts, { hasGps: !!userLocation, lang })
     : null
   const planningIntent = ownPlanningIntent ?? inheritedPlanningIntent
   // A plan's budget is the WHOLE envelope, and its searches are the activities

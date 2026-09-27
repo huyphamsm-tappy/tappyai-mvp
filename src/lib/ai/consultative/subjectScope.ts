@@ -1,4 +1,5 @@
-import { turnStartsNewConsultation } from './actionability'
+import { turnStartsNewConsultation, turnDomain } from './actionability'
+import { detectPlanningIntent, isPlanningRefinement } from '../intent'
 
 // ── What a follow-up may inherit: only the CURRENT subject's turns ───────────────────────────────
 //
@@ -29,6 +30,27 @@ export function currentSubjectMessages<T extends Msg>(messages: readonly T[], op
     }
   }
   return messages.slice()
+}
+
+/**
+ * The plan type a refinement turn inherits: the nearest earlier planning turn, walking back through
+ * `priorUserTexts` (the current subject's user turns before this one, oldest first) and STOPPING at
+ * a turn about something a plan is not — a purchase, or another tool subject (news, gold, a
+ * ticket…). A plan's own follow-ups ("mai đi mốt về, budget 20 triệu", "gần biển") carry no
+ * planning words and are walked through.
+ *
+ * UAT3 P0 (2026-09-27): "kiếm con nào m1 dram 32gb, ổ cứng 512 á" — two turns into a MacBook
+ * purchase — inherited `trip` from a Quy Nhơn plan three turns up, the planning block went out
+ * on a laptop question, and the model ran flights/hotels/weather and appended the plan.
+ */
+export function inheritedPlanningIntent(priorUserTexts: readonly string[], opts: { hasGps: boolean; lang: string }): 'trip' | 'evening' | null {
+  for (let i = priorUserTexts.length - 1; i >= 0; i--) {
+    const t = priorUserTexts[i]
+    const p = detectPlanningIntent(t)
+    if (p) return p
+    if (!isPlanningRefinement(t) || turnDomain({ role: 'user', content: t }, opts) === 'shopping') return null
+  }
+  return null
 }
 
 /** The user texts of the current subject (strings only), oldest first. */

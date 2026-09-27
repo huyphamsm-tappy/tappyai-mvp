@@ -111,14 +111,21 @@ export const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['monitor', /\b(man hinh may tinh|man hinh laptop roi|monitor)\b/],
   ['kitchen', /\b(noi chien khong dau|noi com dien|may xay|may ep|binh dun|bep tu|lo vi song|lo nuong|may pha ca phe|am sieu toc)\b/],
   ['skincare', /\b(kem duong|serum|kem chong nang|sua rua mat|toner|my pham|son moi|nuoc tay trang)\b/],
-  ['shoes', /\b(giay|giay the thao|sneaker|sandal|boots?)\b/],
-  ['clothing', /\b(ao (?:thun|so mi|khoac|len|polo|dai)|quan (?:jean|tay|short|dai)|vay|dam|quan ao)\b/],
+  // 🚨 UAT3 P0 (2026-09-27, measured on a real thread): these patterns run on FOLDED text, where
+  // several product nouns collide with everyday words — "vậy" (so) folds to "vay" like "váy"
+  // (dress), "đám"/"đậm" to "dam" like "đầm", "giây"/"giấy" (second/paper) to "giay" like "giày",
+  // "nem nướng" to "nem" like "nệm", "bim bim" (snack) to "bim" like "bỉm". "vậy lập kế hoạch đi
+  // quy nhơn đi" was read as a CLOTHING purchase; that moved the subject boundary and let a Quy
+  // Nhơn trip plan leak into a MacBook answer. A colliding noun now counts only in a product
+  // context (a garment/shoe/mattress qualifier, or a buy/wear verb or classifier before it).
+  ['shoes', /\b((?<!\d |\d|vai |may |mot |it |tung |nua |khan |to )giay(?! (?:to|phep|in|ve sinh|khai sinh|bao|a\d|note|chung nhan|xac nhan|moi|gioi thieu|dang ky|ket hon|ra vien|khen|nhap|ghi chu|lau|nen|thi)\b)|sneaker|sandal|boots?)\b/],
+  ['clothing', /\b(ao (?:thun|so mi|khoac|len|polo|dai)|quan (?:jean|tay|short|dai)|vay (?:ngu|cuoi|di tiec|xoe|body|lien|cong so|maxi|midi|jean|ngan|dai|du tiec|hoa|bau|tennis)|dam (?:du tiec|di tiec|body|maxi|suong|xoe|cong so|bau|hoa|lien|da hoi)|(?:mua|chiec|may|mac|bo) (?:vay|dam)\b(?! (?:thi|roi|la|di|nha|nhe|a|ha|sao)\b)|quan ao)\b/],
   ['bag', /\b(tui xach|balo|ba lo|vali|vi da|tui deo cheo)\b/],
   ['console', /\b(ps5|playstation|nintendo switch|xbox|may choi game)\b/],
   ['bike', /\b(xe dap|xe dap dien|xe may dien)\b/],
-  ['baby', /\b(xe day|ghe an dam|noi cho be|sua bot|ta (?:bim|giay)|bim)\b/],
+  ['baby', /\b(xe day|ghe an dam|noi cho be|sua bot|ta (?:bim|giay)|(?<!bim )bim(?! bim))\b/],
   ['book', /\b(cuon sach|sach giay|mua sach|truyen tranh|tieu thuyet)\b/], // never bare "sach": "ngân sách" is the budget
-  ['furniture', /\b(ghe (?:gaming|van phong|cong thai hoc)|ban lam viec|nem|giuong|sofa|tu quan ao)\b/],
+  ['furniture', /\b(ghe (?:gaming|van phong|cong thai hoc)|ban lam viec|nem (?:cao su|lo xo|foam|bong|ep|ngu|hoi|topper)|(?:mua|tam|chiec|cai) nem\b(?! (?:nuong|ran|chua|lui|cuon|chay|tai|thinh)\b)|giuong|sofa|tu quan ao)\b/],
 ]
 
 /** B2: the Vietnamese noun each family is searched as — the need profile's `subject` and the search query. */

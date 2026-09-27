@@ -27,7 +27,7 @@
 import { deriveNeedProfile } from './needProfile'
 import { deriveDecisionFrame } from './decisionFrame'
 import { deriveSituation, type SituationFrame } from './situationFrame'
-import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
+import { normalizeVN, namedCinemaQuery, namedVenueIn, detectPlanningIntent } from '../intent'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 
 export type Missing = 'area' | 'signal' | 'subject'
@@ -296,7 +296,31 @@ export function turnStartsNewConsultation(input: { messages: Array<{ role: strin
   // F (2026-09-20, measured Android session B: cinema → hotel → spa → "an gi ngon gio" read as a refinement of
   // the spa consultation and the spa budget satisfied the FOOD gate): the domain to compare against is the
   // thread BEFORE this turn — the whole thread with the new turn in it reads the new turn's own domain back.
+  //
+  // UAT3 P0 (2026-09-27, measured on a 22-turn thread: Sài Gòn evening → Quy Nhơn trip plan →
+  // MacBook): the thread's domain is the domain of the NEAREST earlier user turn that has one of
+  // its own. The whole-thread reading was dominated by whatever the thread said most, so
+  // "giờ tui muốn mua cái máy Macbook" never cut after a trip plan, and the plan's turns stayed in
+  // the "current subject" of a laptop purchase. The whole-thread reading remains the fallback when
+  // no earlier turn names a domain on its own.
+  const own = turnDomain(last, input)
+  if (!own) return false
+  for (let i = users.length - 2; i >= 0; i--) {
+    const d = turnDomain(users[i], input)
+    if (d) return d !== own
+  }
   const thread = assessActionability({ messages: input.messages.slice(0, -1), hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
-  const own = assessActionability({ messages: [last], hasGps: input.hasGps, lang: input.lang, lastAssistantText: null })
-  return !!own.domain && !!thread.domain && own.domain !== thread.domain
+  return !!thread.domain && own !== thread.domain
+}
+
+/**
+ * The domain ONE user turn names on its own. A trip-planning turn is travel whatever venue nouns it
+ * lists ("lên kế hoạch đi Quy Nhơn … vé máy bay, khách sạn, chỗ ăn chơi" read as FOOD — food comes
+ * first in the frame's domain order). An evening plan spans food and entertainment, so it keeps the
+ * gate's own reading.
+ */
+export function turnDomain(m: { role: string; content: unknown }, opts: { hasGps: boolean; lang: string }): Actionability['domain'] {
+  if (typeof m.content !== 'string') return null
+  if (detectPlanningIntent(m.content) === 'trip') return 'travel'
+  return assessActionability({ messages: [m], hasGps: opts.hasGps, lang: opts.lang, lastAssistantText: null }).domain
 }
