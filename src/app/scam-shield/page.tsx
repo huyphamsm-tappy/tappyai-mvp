@@ -3,6 +3,7 @@ import { BRAND, ROUTE_TITLES, absoluteUrl, brandedOgImage } from '@/lib/share/op
 import { breadcrumbJsonLd, homeCrumb } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import ScamShieldView from './ScamShieldView'
+import JsonLd from '@/components/JsonLd'
 
 // G1 completion — Scam Shield is the highest-intent public entry Tappy has
 // ("kiểm tra link lừa đảo", "check scam link") and had NO metadata: the tab,
@@ -36,7 +37,7 @@ const breadcrumb = breadcrumbJsonLd([homeCrumb(), { name: 'Scam Shield', path: '
 export default function ScamShieldPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      <JsonLd data={breadcrumb} />
       <ScamShieldView />
     </>
   )

@@ -5,6 +5,7 @@ import { breadcrumbJsonLd, homeCrumb } from '@/lib/discovery/siteJsonLd'
 import { hubText } from '@/lib/i18n/discovery'
 import { SCAM_KB_PATH, scenarioForParam, scenarioJsonLd, scenarioMeta, scenarioPages, scenarioPath } from '@/lib/scam-shield/knowledgePages'
 import ScenarioPageBody from './ScenarioPageBody'
+import JsonLd from '@/components/JsonLd'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // /scam-shield/kich-ban/<id> — one official scam scenario as a public page.
@@ -55,7 +56,7 @@ export default function ScamScenarioPage({ params }: Props) {
   return (
     <main className="v3-theme min-h-dvh bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-50">
       {jsonLd.map((ld, i) => (
-        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+        <JsonLd key={i} data={ld} />
       ))}
       <ScenarioPageBody scenario={s} />
     </main>
