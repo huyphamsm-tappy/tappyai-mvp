@@ -18,7 +18,9 @@ type Row = Record<string, any>;
 
 const h = vi.hoisted(() => {
   const state = { inserted: null as Row | null, user: { id: 'author-1' } as any };
-  const builder = (): any => {
+  // `writes` = whether this client may INSERT. Since security-audit H1 the route writes the row
+  // with the SERVICE ROLE; the caller's client has no INSERT on `reviews` and must never be used.
+  const builder = (writes: boolean): any => {
     const b: any = {
       select: () => b,
       eq: () => b,
@@ -30,6 +32,7 @@ const h = vi.hoisted(() => {
       // Duplicate/booking lookups resolve to "nothing found".
       maybeSingle: () => Promise.resolve({ data: null, error: null }),
       insert: (row: Row) => {
+        if (!writes) throw new Error('POST /api/reviews inserted with the CALLER client — it must use the service role');
         state.inserted = row;
         return {
           select: () => ({
@@ -50,10 +53,11 @@ const h = vi.hoisted(() => {
     fn === 'user_age_status'
       ? Promise.resolve({ data: [{ has_dob: true, age_years: 30, age_band: '25_34', corrections_used: 0 }], error: null })
       : Promise.resolve({ data: null, error: null });
-  return { state, client: { from: () => builder(), rpc } };
+  return { state, client: { from: () => builder(false), rpc }, admin: { from: () => builder(true) } };
 });
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }));
+vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.admin }));
 vi.mock('@/lib/auth/getRequestUser', () => ({
   getRequestUser: () => Promise.resolve({ user: h.state.user, supabase: h.client }),
 }));

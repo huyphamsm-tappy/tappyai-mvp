@@ -16,6 +16,7 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { getTrack } from '@/modules/music/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 const MUSIC_PAYLOAD_VERSION = 1
 
@@ -233,12 +234,26 @@ export async function POST(req: NextRequest) {
   )
   Object.assign(reviewData, lifecycle)
 
-  let { data: insData, error: insertError } = await supabase.from('reviews').insert(reviewData).select('id').maybeSingle()
+  // ── The write goes through the SERVICE ROLE, never the caller's client ─────
+  //
+  // security-audit H1: `reviews` is closed to direct INSERT from the `authenticated` role
+  // (migration 20260928_revoke_reviews_insert.sql) — otherwise anyone could skip this route and
+  // POST a row to PostgREST with publication_state 'PUBLISHED', is_verified true and any counters,
+  // which is moderation bypassed by construction. So this route is the only writer, and every
+  // column it writes is decided HERE: user_id from the verified session, is_verified from the
+  // booking lookup, the lifecycle columns from decidePublication, the rest from the parsed and
+  // validated body fields above (the body is never spread into the row).
+  //
+  // Everything RLS used to enforce on this insert is enforced before this line: sign-in (401),
+  // anonymous sessions refused, account restrictions, the 18+ gate, the daily cap, validation,
+  // and the one-review-per-place check.
+  const writer = createAdminClient()
+  let { data: insData, error: insertError } = await writer.from('reviews').insert(reviewData).select('id').maybeSingle()
 
   // If photos column doesn't exist yet, retry without it
   if (insertError && photos.length > 0 && insertError.message?.includes('photos')) {
     console.warn('photos column missing, retrying without photos:', insertError.message)
-    const { error: retryError } = await supabase.from('reviews').insert({ ...reviewData, photos: undefined })
+    const { error: retryError } = await writer.from('reviews').insert({ ...reviewData, photos: undefined })
     insertError = retryError ?? null
   }
 
@@ -247,7 +262,7 @@ export async function POST(req: NextRequest) {
     console.warn('rating constraint, retrying without rating:', insertError.message)
     const dataNoRating = { ...reviewData }
     delete dataNoRating.rating
-    const { error: retryError2 } = await supabase.from('reviews').insert(dataNoRating)
+    const { error: retryError2 } = await writer.from('reviews').insert(dataNoRating)
     insertError = retryError2 ?? null
   }
 
