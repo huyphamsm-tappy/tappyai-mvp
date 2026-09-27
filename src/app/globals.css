@@ -503,7 +503,13 @@
   color: var(--v3-fg);
 }
 
-.dark .v3-theme {
+/* 🚨 UAT4 P0 (2026-09-27): `.v3-theme.dark` too. Five surfaces pin themselves dark on the SAME
+   element (`<div class="v3-theme dark">`: chat, a conversation, the plan brochure, Explore, a
+   public profile). `.dark .v3-theme` needs `.dark` on an ANCESTOR, so with the app theme light
+   those surfaces kept this block's LIGHT ground while every Tailwind `dark:` variant inside them
+   switched to light text — product names and prices in chat measured white-on-white. */
+.dark .v3-theme,
+.v3-theme.dark {
   --v3-page: #0A0F1C;
   --v3-panel: #111827;
   --v3-panel-elevated: #161F32;
