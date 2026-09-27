@@ -34,11 +34,21 @@ export interface PresearchPlan {
 
 const PLACE_TYPES = new Set(['restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
 
-export function planPresearch(searchNow: SearchNow | null, situation: SituationFrame | null, opts: { clip?: boolean; planning?: boolean; movie?: boolean } = {}): PresearchPlan | null {
+// UAT4 consultative-40 A/B (27 Sep 2026, flags ON, head vs 19 Sep): the pre-search ran the SUGGESTED
+// query too — `exact: false` means "the model may sharpen it" — so a specified request lost its
+// subject and its area before the model ever saw it. Measured live: "tim quan bun bo ngon o q1 duoi
+// 80k" → `quán ăn khuya @ null` (2 rows), "Karaoke … Gò Vấp" → `quán karaoke @ null`, "spa massage
+// chan gan q1" → `spa massage @ null`; the 19 Sep model wrote "bún bò ngon Quận 1 @ Quận 1". Now only
+// an EXACT directive (vague request, clarify answer, named venue) is pre-searched; a suggested one
+// goes back to the model as the directive it sharpens. A "more" turn repeats the previous search
+// and keeps its pre-search (`more`). An exact call with no place in the situation takes the district
+// the user stated earlier in the same subject (`statedArea`), not nothing.
+export function planPresearch(searchNow: SearchNow | null, situation: SituationFrame | null, opts: { clip?: boolean; planning?: boolean; movie?: boolean; more?: boolean; statedArea?: string | null } = {}): PresearchPlan | null {
   if (!searchNow || !situation || opts.clip || opts.planning || opts.movie) return null
+  if (!searchNow.exact && !opts.more) return null
   if (!PLACE_TYPES.has(searchNow.type)) return null
   if (!searchNow.query.trim()) return null
-  const location = situation.place.text?.trim() || undefined
+  const location = situation.place.text?.trim() || opts.statedArea?.trim() || undefined
   return { toolName: 'search_places', args: { query: searchNow.query.trim(), type: searchNow.type, ...(location ? { location } : {}) }, exact: searchNow.exact }
 }
 

@@ -1,5 +1,6 @@
 import { extractBudget, type Budget } from '../budget'
 import { normalizeVN, namedVenueIn } from '../intent'
+import { statedDistrict } from '../districts'
 import { foldForLexicon } from '../foldSense'
 import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
 
@@ -533,13 +534,24 @@ export function deriveNeedProfile(
     }
 
     // ── Location ───────────────────────────────────────────────────────────
+    let placedThisTurn = false
     for (const place of PLACES) {
-      if (t.includes(place)) { p.location.text = place; p.changedAtTurn.location = turn; break }
+      if (t.includes(place)) { p.location.text = place; p.changedAtTurn.location = turn; placedThisTurn = true; break }
     }
     const district = t.match(/\bquan\s+(\d{1,2})\b/)
     if (district && !p.location.text) {
       p.location.text = `quan ${district[1]}`
       p.changedAtTurn.location = turn
+      placedThisTurn = true
+    }
+    // UAT4 A/B (27 Sep 2026): "q1", "Gò Vấp", "Bình Thạnh", "Phú Nhuận" left the location EMPTY
+    // (only a spelled-out "quận N" and the city list were read), so the search centred on the GPS
+    // and the reply argued with the user ("Bạn vừa nói Gò Vấp, nhưng vị trí hiện tại…"). The
+    // district table the route already trusts (districts.ts) names it; a district named in a later
+    // turn replaces the earlier one.
+    if (!placedThisTurn && !district) {
+      const named = statedDistrict(raw)
+      if (named) { p.location.text = named.label; p.changedAtTurn.location = turn }
     }
 
     // ── Use cases ──────────────────────────────────────────────────────────

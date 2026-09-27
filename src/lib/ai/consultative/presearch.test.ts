@@ -37,6 +37,24 @@ describe('planPresearch', () => {
   })
 })
 
+// UAT4 A/B (27 Sep 2026): the suggested directive of a SPECIFIED request was pre-searched as-is —
+// "tim quan bun bo ngon o q1 duoi 80k" became `quán ăn khuya @ null` (measured live, 2 rows).
+describe('planPresearch — only the exact call is run before the model', () => {
+  const s = deriveSituation(['tim quan bun bo ngon o q1 duoi 80k'], { budget: null as never, location: { text: null, gps: null } }, { hasGps: true })
+  it('a suggestion (exact: false) goes back to the model to sharpen — no pre-search', () => {
+    expect(planPresearch({ query: 'quán ăn khuya', type: 'restaurant', exact: false }, s)).toBeNull()
+    expect(planPresearch({ query: 'quán karaoke', type: 'attraction', exact: false }, situation)).toBeNull()
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation)).toBeNull()
+  })
+  it('a "more" turn repeats its search even from a suggestion', () => {
+    expect(planPresearch({ query: 'spa massage', type: 'spa', exact: false }, situation, { more: true })?.args.query).toBe('spa massage')
+  })
+  it('an exact call with no place in the situation takes the district stated earlier in the subject', () => {
+    expect(planPresearch({ query: 'rạp chiếu phim', type: 'cinema', exact: true }, s, { statedArea: 'Quận 1' })?.args.location).toBe('Quận 1')
+    expect(planPresearch({ query: 'quán ăn ngon', type: 'restaurant', exact: true }, situation, { statedArea: 'Quận 7' })?.args.location).toBe('Quận 1') // the situation's own place wins
+  })
+})
+
 const outcome: PresearchOutcome = { toolCallId: 'presearch_abc', toolName: 'search_places', args: { query: 'quán ăn ngon', type: 'restaurant', location: 'Quận 1' }, result: { source: 'serper_maps', count: 1, results: [{ name: 'Quán A' }] }, ms: 1200 }
 
 describe('what the model and the client receive', () => {

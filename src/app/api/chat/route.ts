@@ -985,7 +985,7 @@ export async function POST(req: Request) {
   // first reply, and the venues the previous reply named are what the model must pick around.
   const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && wantsMoreFromSet(lastText) && priorVenuesIn(lastAssistantText).length > 0
   const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null
-  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend }) : null
+  let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend, more: moreTurn, statedArea: statedArea?.label ?? null }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
   // users) is exact; without a row the directive's call stands in and the prior reply's names do.

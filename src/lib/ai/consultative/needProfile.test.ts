@@ -390,3 +390,22 @@ describe('E3 — a message that opens with a buy verb is shopping whatever venue
     expect(p.domain).toBe('shopping')
   })
 })
+
+// UAT4 A/B (27 Sep 2026): a district written the way users write it left the location empty.
+describe('location — every district the route recognises', () => {
+  const loc = (...turns: string[]) => deriveNeedProfile(turns.map(content => ({ role: 'user', content }))).location.text
+  it('"q1", named districts and unaccented forms', () => {
+    expect(loc('tim quan bun bo ngon o q1 duoi 80k')).toBe('Quận 1')
+    expect(loc('Karaoke cho 10 người tầm 100k/người Gò Vấp')).toBe('Gò Vấp')
+    expect(loc('cafe Bình Thạnh yên tĩnh')).toBe('Bình Thạnh')
+    expect(loc('nha hang phu nhuan')).toBe('Phú Nhuận')
+  })
+  it('the spelled-out form and the city list are read as before; no district ⇒ still null', () => {
+    expect(loc('quán ốc ngon quận 4')).toBe('quan 4')
+    expect(loc('ăn gì ngon giờ')).toBeNull()
+    expect(loc('mua tai nghe 10 người dùng')).toBeNull()
+  })
+  it('a district named in a later turn replaces the earlier one', () => {
+    expect(loc('karaoke cho 10 người ở q1', 'thôi Gò Vấp đi')).toBe('Gò Vấp')
+  })
+})
