@@ -452,3 +452,27 @@ export async function getTransportOptions(origin: string, destination: string, m
   setCache(cacheKey, result, 20 * 60 * 1000)
   return result
 }
+
+/**
+ * Owner 2026-09-28 (c40 T7): the two airports a flight request names, in the order written
+ * ("Vé máy bay Sài Gòn Hà Nội tuần sau" → SGN → HAN). Longest names first so "tp hcm" is not also
+ * read as "hcm"; a city named twice counts once. Null unless two distinct airports are named — the
+ * pre-search then leaves the call to the model.
+ */
+export function routeInText(text: string): { origin: string; destination: string } | null {
+  const t = ` ${normalizeVN((text || '').toLowerCase()).replace(/[^a-z0-9]+/g, ' ')} `
+  const taken: Array<[number, number]> = []
+  const hits: Array<{ at: number; code: string }> = []
+  for (const key of Object.keys(IATA_MAP).sort((a, b) => b.length - a.length)) {
+    let from = 0
+    for (;;) {
+      const at = t.indexOf(` ${key} `, from)
+      if (at === -1) break
+      const span: [number, number] = [at + 1, at + 1 + key.length]
+      if (!taken.some(([a, b]) => span[0] < b && a < span[1])) { taken.push(span); hits.push({ at: span[0], code: IATA_MAP[key] }) }
+      from = at + 1
+    }
+  }
+  const codes = hits.sort((a, b) => a.at - b.at).map(h => h.code).filter((c, i, all) => all.indexOf(c) === i)
+  return codes.length >= 2 ? { origin: codes[0], destination: codes[1] } : null
+}

@@ -76,7 +76,8 @@ describe('deriveSearchNow — the concrete first call for a place request', () =
 describe('a transport request is never a place directive', () => {
   it('coach / flight / rail requests get no search_places call', () => {
     expect(derive('xe khách Sài Gòn đi Đà Lạt tối mai, vé bao nhiêu và mấy giờ chạy?')).toBeNull()
-    expect(derive('vé máy bay Sài Gòn Hà Nội 10/10 cho 2 người')).toBeNull()
+    // 2026-09-28: a flight gets its OWN directive (get_flight_prices, c40 T7) — still never a place call.
+    expect(derive('vé máy bay Sài Gòn Hà Nội 10/10 cho 2 người')?.type).toBe('flight')
     expect(derive('tàu hỏa Hà Nội đi Sa Pa tối nay')).toBeNull()
   })
 })
@@ -123,5 +124,25 @@ describe('E3 — a known product family with no where-word is a product turn, no
   })
   it('a karaoke VENUE ask still does', () => {
     expect(derive('karaoke gần đây cho nhóm 8 người tối nay, tầm 150k/người')).toMatchObject({ type: 'attraction', query: expect.stringContaining('quán karaoke') })
+  })
+})
+
+// Owner 2026-09-28 (c40 T7): a flight request is searched without a date; the date is asked after.
+import { SPECIFIC_DATE } from './searchNow'
+import { normalizeVN } from '../intent'
+describe('flights: search now, ask the date after (c40 T7)', () => {
+  const fold = (s: string) => normalizeVN(s.toLowerCase())
+  it('"Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất" → a flight directive, and "tuần sau" is not a specific date', () => {
+    const text = 'Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất'
+    const messages = [{ role: 'user', content: text }]
+    const need = deriveNeedProfile(messages)
+    const frame = deriveDecisionFrame({ messages, need, planningIntent: null, forcedTool: null, hasGps: true, storedPreferences: null, now: new Date('2026-09-28T03:00:00Z') })
+    const situation = deriveSituation([text], need, { hasGps: true })
+    expect(deriveSearchNow({ text, situation, frame, need, forcedTool: null, isFirstReply: true, movieRecommend: false })?.type).toBe('flight')
+    expect(SPECIFIC_DATE.test(fold(text))).toBe(false)
+  })
+  it('specific dates are recognised; "khuyến mãi" and "một chiều" are not dates', () => {
+    for (const d of ['ve may bay di ha noi 12/10', 'bay ngày 5 tháng sau', 'thứ 6 này bay', 'bay sáng mai', 'bay 2026-10-10']) expect(SPECIFIC_DATE.test(fold(d)), d).toBe(true)
+    for (const d of ['vé máy bay khuyến mãi đi Đà Nẵng', 'vé một chiều đi Hà Nội', 'tháng sau đi Đà Nẵng']) expect(SPECIFIC_DATE.test(fold(d)), d).toBe(false)
   })
 })

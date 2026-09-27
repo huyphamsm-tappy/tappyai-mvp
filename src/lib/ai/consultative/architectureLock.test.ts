@@ -78,9 +78,11 @@ describe('no tool forcing, no step rewriting, no prefetch', () => {
     expect(outsideTools).not.toContain('searchProducts(')
     expect(outsideTools).not.toContain('getHotelPrices(')
     expect(outsideTools).not.toContain('rankForModel(')
-    // Exactly one pre-generation invocation, and it goes through the wrapped tool.
-    expect((outsideTools.match(/search_places\.execute\(presearchPlan\.args/g) || []).length).toBe(1)
+    // Exactly one pre-generation invocation, and it goes through the wrapped tool. Owner 2026-09-28
+    // (c40 T7): that one call is the place search OR the fare call the flight directive names — no other.
+    expect((outsideTools.match(/\[preCall\.name\]\.execute\(preCall\.args/g) || []).length).toBe(1)
     expect((outsideTools.match(/\.execute\(/g) || []).length).toBe(1)
+    expect(outsideTools).toContain("name: 'search_places' | 'get_flight_prices'")
   })
 
   it('the pre-search never chooses its own arguments — planPresearch reads the search-now directive only', () => {

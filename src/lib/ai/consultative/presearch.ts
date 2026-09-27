@@ -22,6 +22,7 @@
 import { buildProgressAnnotation } from '@/lib/recommendation/progressAnnotation'
 import type { SearchNow } from './searchNow'
 import type { SituationFrame } from './situationFrame'
+import { routeInText } from '@/lib/ai/tools/travel'
 
 export interface PresearchPlan {
   toolName: 'search_places'
@@ -52,10 +53,39 @@ export function planPresearch(searchNow: SearchNow | null, situation: SituationF
   return { toolName: 'search_places', args: { query: searchNow.query.trim(), type: searchNow.type, ...(location ? { location } : {}) }, exact: searchNow.exact }
 }
 
+/**
+ * Owner 2026-09-28 (c40 T7): a flight request is the fare tool's call, and the fare tool needs no
+ * date. When the request names two airports, the route runs that call before the model, exactly as
+ * it runs a place search, so the turn is one model step. Measured without it: the model still wrote
+ * "Để tìm vé rẻ nhất, mình cần biết: … Sau khi bạn nói ngày…" before calling. A date written as
+ * dd/mm (or dd/mm/yyyy) becomes departDate; anything vaguer ("tuần sau") leaves it out.
+ */
+export interface FlightPresearchPlan {
+  toolName: 'get_flight_prices'
+  args: { origin: string; destination: string; departDate?: string }
+}
+
+export function planFlightPresearch(searchNow: SearchNow | null, text: string, now: Date, opts: { planning?: boolean } = {}): FlightPresearchPlan | null {
+  if (searchNow?.type !== 'flight' || opts.planning) return null
+  const route = routeInText(text)
+  if (!route) return null
+  const m = text.match(/(?<!\d)(\d{1,2})\s*[/.-]\s*(\d{1,2})(?:\s*[/.-]\s*(\d{4}))?(?!\d)/)
+  let departDate: string | undefined
+  if (m) {
+    const day = Number(m[1]), month = Number(m[2])
+    const vnToday = new Date(now.getTime() + 7 * 3600 * 1000)
+    let year = m[3] ? Number(m[3]) : vnToday.getUTCFullYear()
+    const d = new Date(Date.UTC(year, month - 1, day))
+    if (!m[3] && d.getTime() < Date.UTC(vnToday.getUTCFullYear(), vnToday.getUTCMonth(), vnToday.getUTCDate())) year++
+    if (day >= 1 && day <= 31 && month >= 1 && month <= 12) departDate = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  }
+  return { toolName: 'get_flight_prices', args: { ...route, ...(departDate ? { departDate } : {}) } }
+}
+
 export interface PresearchOutcome {
   toolCallId: string
   toolName: string
-  args: PresearchPlan['args']
+  args: PresearchPlan['args'] | FlightPresearchPlan['args']
   result: unknown
   ms: number
 }

@@ -84,8 +84,8 @@ import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningInten
 import { statedDistrict } from '@/lib/ai/districts'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
-import { deriveSearchNow } from '@/lib/ai/consultative/searchNow'
-import { planPresearch, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
+import { deriveSearchNow, SPECIFIC_DATE } from '@/lib/ai/consultative/searchNow'
+import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
 import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
@@ -983,6 +983,10 @@ export async function POST(req: Request) {
   // first reply, and the venues the previous reply named are what the model must pick around.
   const moreTurn = consultativeV1 && !ownDomainSwitch && !clipContext && !planningIntent && wantsMoreFromSet(lastText) && priorVenuesIn(lastAssistantText).length > 0
   const searchNow = situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null
+  // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
+  if (searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+    gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
+  }
   let presearchPlan = consultativeV1 ? planPresearch(searchNow, situation, { clip: !!clipContext, planning: !!planningIntent, movie: movieRecommend, more: moreTurn, statedArea: statedArea?.label ?? null }) : null
   // A1(d): "gợi ý thêm" — the same search again (the 30-minute cache answers it on a warm instance),
   // the model told which venues were already shown. moreFromSet.ts. The stored search (signed-in
@@ -993,6 +997,8 @@ export async function POST(req: Request) {
   } else if (presearchPlan && moreTurn) {
     presearchPlan = { ...presearchPlan, reuse: { shown: priorVenuesIn(lastAssistantText).map(v => v.name).slice(0, 8) } }
   }
+  // Owner 2026-09-28 (c40 T7): a flight request naming two airports runs its fare call before the model.
+  const flightPresearch = consultativeV1 && !presearchPlan && !clipContext ? planFlightPresearch(searchNow, lastText, new Date(), { planning: !!planningIntent }) : null
 
   /**
    * VnExpress Travel — the LIMITED editorial supplement (see vnexpressTravel.ts).
@@ -1431,6 +1437,7 @@ export async function POST(req: Request) {
     || forcedTool === 'search_places'
     || frameSaysDecision
     || v1PriorVenues.length > 0
+    || searchNow?.type === 'flight'
   )
   /** Cost optimization item 8: a follow-up fully answerable from the carried facts, or null. */
   let cannedFollowUp: string | null = null
@@ -1464,7 +1471,7 @@ export async function POST(req: Request) {
     // left "ăn gì ngon giờ" / "đi chơi ở đâu" answered with a question and no tool call.
     // The turn after a clarify (item 1) is the first REAL reply: it must search now, never ask again.
     if (searchNow) console.log(JSON.stringify({ type: 'tappyai_consultative_v1', step: 'search_now', domain: decisionFrame.domains[0] ?? null, placeType: searchNow.type, exact: searchNow.exact }))
-    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter })
+    return buildConsultativeV1Block({ frame: situation, hardGaps: [], rendersCard: rendersDecisionCard, lang, now: new Date(), searchNow: presearchPlan?.reuse ? { query: presearchPlan.args.query, type: presearchPlan.args.type ?? 'restaurant', exact: true } : searchNow, afterClarify, presearched: presearchPlan !== null || flightPresearch !== null, reuseShown: presearchPlan?.reuse?.shown, askAfter: gateAskAfter })
       + renderReferencedBlock(referenced, []) + refetchLines
   })()
 
@@ -2030,7 +2037,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * turn changes: same code, same order, same frames; only the first byte moves from after the
    * search to before it. A failure inside becomes an SDK error frame (`3:`), never a hung stream.
    */
-  const willPresearch = !!(presearchPlan && !noToolTurn && tools && typeof (tools as Record<string, { execute?: unknown }>).search_places?.execute === 'function')
+  const toolExecutes = (name: string) => typeof (tools as Record<string, { execute?: unknown }> | undefined)?.[name]?.execute === 'function'
+  // The ONE call run before the model: the place search, or (owner 2026-09-28, c40 T7) the fare call.
+  const preCall: { name: 'search_places' | 'get_flight_prices'; args: PresearchPlan['args'] | FlightPresearchPlan['args'] } | null =
+    presearchPlan && toolExecutes('search_places') ? { name: 'search_places', args: presearchPlan.args }
+      : flightPresearch && toolExecutes('get_flight_prices') ? { name: 'get_flight_prices', args: flightPresearch.args }
+        : null
+  const willPresearch = !!(!noToolTurn && tools && preCall)
   const finishTurn = async (): Promise<Response> => {
   /**
    * A1(c) PRE-SEARCH (presearch.ts). When the search-now directive names the call, the route runs
@@ -2040,17 +2053,19 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * result the model reads exactly as it reads a failed live call.
    */
   let presearchOutcome: PresearchOutcome | null = null
-  if (willPresearch && presearchPlan) {
+  if (willPresearch && preCall) {
     const t0 = Date.now()
     const toolCallId = 'presearch_' + randomUUID().slice(0, 8)
     let result: unknown
     try {
-      result = await (tools as unknown as { search_places: { execute: (args: PresearchPlan['args'], ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> } }).search_places.execute(presearchPlan.args, { toolCallId, messages: [] })
+      result = await (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>)[preCall.name].execute(preCall.args, { toolCallId, messages: [] })
     } catch (e) {
       result = { error: e instanceof Error ? e.message.slice(0, 200) : 'presearch_failed' }
     }
-    presearchOutcome = { toolCallId, toolName: 'search_places', args: presearchPlan.args, result, ms: Date.now() - t0 }
-    console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error: (result as { error?: unknown })?.error ? true : false }))
+    presearchOutcome = { toolCallId, toolName: preCall.name, args: preCall.args, result, ms: Date.now() - t0 }
+    const error = (result as { error?: unknown })?.error ? true : false
+    if (presearchPlan) console.log(JSON.stringify({ type: 'tappyai_presearch', reuse: !!presearchPlan.reuse, exact: presearchPlan.exact, query: presearchPlan.args.query, location: presearchPlan.args.location ?? null, placeType: presearchPlan.args.type, ms: presearchOutcome.ms, rows: Array.isArray((result as { results?: unknown[] })?.results) ? (result as { results: unknown[] }).results.length : null, error }))
+    else if (flightPresearch) console.log(JSON.stringify({ type: 'tappyai_presearch', tool: 'get_flight_prices', origin: flightPresearch.args.origin, destination: flightPresearch.args.destination, departDate: flightPresearch.args.departDate ?? null, ms: presearchOutcome.ms, fares: Array.isArray((result as { flights?: unknown[] })?.flights) ? (result as { flights: unknown[] }).flights.length : null, error }))
   }
   const modelMessagesWithPresearch = presearchOutcome ? [...modelMessages, ...presearchMessages(presearchOutcome)] : modelMessages
   // F-015: give the question back if this turn ends in a terminal model failure. Single-shot: a

@@ -81,7 +81,9 @@ describe('what the model and the client receive', () => {
   it('route.ts wires it: the plan from the directive, the frames onto the response, the pair into the model messages, the count into usage', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
     expect(route).toMatch(/let presearchPlan = consultativeV1 \? planPresearch\(searchNow, situation/)
-    expect(route).toMatch(/search_places\.execute\(presearchPlan\.args/)
+    // One call: the place search or (owner 2026-09-28, c40 T7) the fare call.
+    expect(route).toMatch(/\[preCall\.name\]\.execute\(preCall\.args/)
+    expect(route).toMatch(/presearchPlan && toolExecutes\('search_places'\) \? \{ name: 'search_places', args: presearchPlan\.args \}/)
     expect(route).toMatch(/prefixBody\(presearchFrames\(presearchOutcome\), answeredResponse\.body\)/)
     expect(route).toMatch(/\[\.\.\.modelMessages, \.\.\.presearchMessages\(presearchOutcome\)\]/)
     expect(route).toMatch(/\+ \(presearchOutcome \? 1 : 0\)/)
@@ -120,7 +122,26 @@ describe('A1(b): the first byte does not wait for the search', () => {
     expect(route).toMatch(/const finishTurn = async \(\): Promise<Response> => \{/)
     expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(searchingFrame\(lang\), finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
     expect(route).toMatch(/return finishTurn\(\)\s*\}\s*$/)
-    expect(route).toMatch(/if \(willPresearch && presearchPlan\) \{/)
+    expect(route).toMatch(/if \(willPresearch && preCall\) \{/)
   })
 })
 
+
+// Owner 2026-09-28 (c40 T7): the fare call is run before the model when two airports are named.
+import { planFlightPresearch } from './presearch'
+describe('planFlightPresearch', () => {
+  const now = new Date('2026-09-28T03:00:00Z')
+  const flight = (q: string) => ({ query: q, type: 'flight' as const, exact: false })
+  it('"Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất" → SGN → HAN, no date', () => {
+    expect(planFlightPresearch(flight('x'), 'Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất', now)).toEqual({ toolName: 'get_flight_prices', args: { origin: 'SGN', destination: 'HAN' } })
+  })
+  it('a dd/mm date becomes departDate (next occurrence); order follows the text', () => {
+    expect(planFlightPresearch(flight('x'), 've may bay tu da nang ve tp hcm 12/10', now)?.args).toEqual({ origin: 'DAD', destination: 'SGN', departDate: '2026-10-12' })
+    expect(planFlightPresearch(flight('x'), 'bay Hà Nội đi Phú Quốc 5/1', now)?.args.departDate).toBe('2027-01-05')
+  })
+  it('one airport only, a non-flight directive, or a planning turn ⇒ no pre-search (the model decides)', () => {
+    expect(planFlightPresearch(flight('x'), 've may bay di da nang 12/10', now)).toBeNull()
+    expect(planFlightPresearch({ query: 'x', type: 'restaurant', exact: true }, 'Sài Gòn Hà Nội', now)).toBeNull()
+    expect(planFlightPresearch(flight('x'), 'Vé máy bay Sài Gòn Hà Nội', now, { planning: true })).toBeNull()
+  })
+})

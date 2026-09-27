@@ -50,3 +50,11 @@ describe('askAfterStream', () => {
     expect(endsWithQuestion('Chọn A vì 4.8⭐.\n\n[FOLLOWUPS]a|b[/FOLLOWUPS]')).toBe(false)
   })
 })
+
+describe('endsWithQuestion ignores links (measured: a trailing booking link read as a question)', () => {
+  it('a "?" inside a URL is not a question', () => {
+    expect(endsWithQuestion('Xem giá rẻ nhất trên:\n👉 [Trip.com](https://go.isclix.com/deep_link/1/2?url=https%3A%2F%2Fvn.trip.com)')).toBe(false)
+    expect(endsWithQuestion('Xem tại https://vn.trip.com/flights/showfarefirst?dcity=sgn')).toBe(false)
+    expect(endsWithQuestion('Bạn muốn bay ngày nào? [Trip.com](https://x.y/?a=b)')).toBe(true)
+  })
+})

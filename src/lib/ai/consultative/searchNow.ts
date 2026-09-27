@@ -22,7 +22,7 @@ import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
 import { CLARIFY_JOIN } from './actionability'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 
-export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product'
+export type SearchNowType = 'restaurant' | 'cafe' | 'spa' | 'bar' | 'attraction' | 'cinema' | 'hotel' | 'product' | 'flight'
 export interface SearchNow {
   query: string
   type: SearchNowType
@@ -61,6 +61,9 @@ function domainOf(frame: DecisionFrame, need: NeedProfile | null, situation: Sit
 }
 
 const TRANSPORT_REQUEST = /(?:^|\s)(?:xe khach|ve xe|ve may bay|may bay|chuyen bay|tau hoa|tau lua|ve tau|xe buyt|xe bus|xe limousine|coach|bus ticket|flight|train ticket)(?:\s|$)/
+const FLIGHT_REQUEST = /(?:^|\s)(?:ve may bay|may bay|chuyen bay|flights?|plane tickets?)(?:\s|$)/
+/** A specific travel date the user named (not "tuần sau" / "tháng sau"). Folded text. */
+export const SPECIFIC_DATE = /\b\d{1,2}\s*[/.-]\s*\d{1,2}\b|\bngay\s+\d{1,2}\b|(?:^|\s)(?:thu\s+[2-7]|thu\s+(?:hai|ba|tu|nam|sau|bay)|chu\s+nhat|(?:ngay|sang|trua|chieu|toi)\s+mai|hom\s+nay|toi\s+nay)(?=\s|$|[,.?!])|\b\d{4}-\d{2}-\d{2}\b/
 const SHOP_REQUEST = /\b(mua|qua|gift|present|shopping|san pham|dat mua)\b/
 // A1 (2026-09-20, measured on the web: "quán cà phê yên tĩnh ở Quận 3 để làm việc"): a café or a
 // bar is a FOOD-domain request whose call is not a restaurant search — the model's own step made
@@ -122,6 +125,10 @@ export function deriveSearchNow(input: {
   // as RESTAURANTS ("tối" read as a meal) and the reply ended with a vegetarian restaurant and its
   // photos under the coach fares. A transport / flight request has its own tools and never a
   // place directive.
+  // Owner 2026-09-28 (c40 T7): "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất" was answered with "Ngày cụ
+  // thể nào?" and no tool call. A flight request is searched NOW — the fare tool needs no date (it
+  // returns the cheapest fares with their days) — and the date is asked at the END (askAfter).
+  if (FLIGHT_REQUEST.test(normalizeVN(input.text.toLowerCase()))) return { query: input.text.trim(), type: 'flight', exact: false }
   if (input.need?.domain === 'transport') return null
   if (TRANSPORT_REQUEST.test(normalizeVN(input.text.toLowerCase()))) return null
   // Phase D: a NAMED venue is its own place — "rạp CGV Vincom Đồng Khởi" needs neither a district nor

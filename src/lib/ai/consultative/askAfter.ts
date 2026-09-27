@@ -19,6 +19,8 @@ export function askAfterSentence(q: ClarifyQuestion, lang: string): string {
   const opts = q.options.length ? ` (${q.options.join(' / ')})` : ''
   if (q.q === 'Tầm giá?') return `Bạn muốn tầm giá khoảng bao nhiêu${opts}?`
   if (q.q === 'Mấy người?') return `Bạn đi mấy người${opts}?`
+  if (q.q === 'Ngày bay?') return 'Bạn muốn bay ngày nào để mình xem giá đúng ngày đó?'
+  if (q.q === 'Which date?') return 'Which day do you want to fly, so I can check that exact date?'
   if (q.q === 'Budget?') return `What budget do you have in mind${opts}?`
   if (q.q === 'How many people?') return `How many of you are going${opts}?`
   return en ? `${q.q}${opts}` : `${q.q}${opts}`
@@ -26,7 +28,9 @@ export function askAfterSentence(q: ClarifyQuestion, lang: string): string {
 
 /** Does the visible reply already end by asking something (last ~200 chars)? */
 export function endsWithQuestion(text: string): boolean {
-  const visible = text.replace(BLOCK_RE, '').trim()
+  // Links carry "?" in their query strings ("…/deep_link/…?url=…") — measured on the flight reply,
+  // where a trailing booking link read as a question and the date question was not asked.
+  const visible = text.replace(BLOCK_RE, '').replace(/\[[^\]]*\]\([^)]*\)/g, '').replace(/https?:\/\/\S+/g, '').trim()
   return /\?[\s)"'”»*_🙂😊💬👇]*$/u.test(visible) || /\?[^.!?]{0,40}$/u.test(visible.slice(-200))
 }
 

@@ -68,10 +68,14 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
     : ''
   const call = input.searchNow && input.presearched && input.reuseShown
     ? `KET QUA search_places DA CO SAN trong tool result ngay tren — la CUNG bo ket qua cua luot truoc (user muon THEM lua chon). KHONG goi search_places lai. Chon 2-3 cho KHAC voi nhung cho da gioi thieu: ${input.reuseShown.map(n => `"${n}"`).join(', ') || '(chua co)'}. Neu trong ket qua khong con cho nao khac phu hop, noi that va de nghi doi khu vuc/tieu chi.`
+    : input.searchNow?.type === 'flight' && input.presearched
+    ? `KET QUA get_flight_prices DA CO SAN trong tool result ngay tren (he thong da tra gia cho chang bay user hoi). KHONG goi lai, KHONG hoi ngay truoc. Trinh bay 2-3 gia re nhat kem NGAY BAY va nguon ghi trong ket qua; neu ket qua khong co gia, noi that la chua co gia truc tiep va dua link dat ve cua ket qua`
     : input.searchNow && input.presearched
     ? `KET QUA search_places DA CO SAN trong tool result ngay tren (he thong da tim "${input.searchNow.query}" quanh vi tri user). DUNG rows do de chon — KHONG goi search_places lai, tru khi rows ro rang sai vung/sai loai.`
     : input.searchNow
-    ? (input.searchNow.type === 'product'
+    ? (input.searchNow.type === 'flight'
+      ? `goi get_flight_prices NGAY voi origin / destination theo yeu cau cua user — departDate BO TRONG neu user chua noi mot NGAY cu the ("tuan sau" khong phai ngay cu the). KHONG hoi ngay truoc khi goi. Trinh bay 2-3 gia re nhat kem NGAY BAY va nguon ghi trong ket qua tool; neu ket qua tool khong co gia, noi that la chua co gia truc tiep va dua link dat ve cua ket qua tool`
+      : input.searchNow.type === 'product'
       ? `goi search_products({ query: "${input.searchNow.query}" })`
       : input.searchNow.type === 'hotel'
         ? `goi get_hotel_prices NGAY voi location theo yeu cau cua user${input.searchNow.query ? ` (vd "${input.searchNow.query}")` : ''}, checkIn "${nextWeekend.checkIn}", checkOut "${nextWeekend.checkOut}" (gia su cuoi tuan toi — noi ro la gia su, KHONG hoi ngay)`
@@ -102,7 +106,7 @@ export function buildConsultativeV1Block(input: ConsultativeV1PromptInput): stri
   // The concrete first call goes FIRST, before the situation: measured, the same line at the end of
   // the block moved "ăn gì ngon giờ" to a search but "đi chơi ở đâu" still asked "bạn muốn chơi gì?".
   const searchFirst = input.searchNow
-    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)}${input.presearched ? '' : ' NGAY, truoc khi viet bat ky chu nao'}. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 ${input.searchNow.type === 'product' ? 'san pham' : 'dia diem'} tu ket qua va noi ro "minh gia su ...".${afterClarify}
+    ? `\n\n===== BUOC 1 CUA LUOT NAY (bat buoc) =====\n${call.charAt(0).toUpperCase()}${call.slice(1)}${input.presearched ? '' : ' NGAY, truoc khi viet bat ky chu nao'}. Cau hoi "ban muon choi gi / an gi / loai nao?" bi CAM o luot nay: user da noi hoat dong, phan con lai la gia su (ghi o TINH HUONG). Chon 1 ${input.searchNow.type === 'product' ? 'san pham' : input.searchNow.type === 'flight' ? 'chuyen bay' : 'dia diem'} tu ket qua va noi ro "minh gia su ...".${afterClarify}
 =====================================`
     : afterClarify
       ? `\n\n===== LUOT SAU CAU HOI LAM RO =====${afterClarify}\n=====================================`
