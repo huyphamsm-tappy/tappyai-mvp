@@ -39,6 +39,9 @@ struct AppConfig: Decodable, Sendable {
         /// `ACCOUNT_SELF_DELETE_ENABLED` (`flags.accountSelfDelete`). Absent (older /api/config,
         /// production today) is treated as off: the app keeps the email request instead.
         let accountSelfDelete: Bool?
+        /// Sign in with Apple. No server sends it yet (neither rc/web-uat nor main); absent = the
+        /// button stays hidden. See `AppleSignIn.isEnabled`.
+        let appleSignIn: Bool?
     }
 
     struct Upload: Decodable, Sendable {
