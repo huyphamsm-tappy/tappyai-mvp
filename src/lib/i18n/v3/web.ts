@@ -385,6 +385,15 @@ export const vi: Record<string, string> = {
   // claim someone else could act on.
   'v3.qr.title': 'Chia sẻ hồ sơ',
   'v3.qr.scanHint': 'Quét mã QR để xem hồ sơ TappyAI của tôi',
+  // Downloadable QR card (UAT3 approved design, 2026-09-27)
+  'v3.qr.card.invite': 'và kết nối cùng nhau nhé!',
+  'v3.qr.card.slogan': 'Kết nối · Khám phá · Chia sẻ',
+  'v3.qr.card.sloganSub': 'Cùng TappyAI kiến tạo những trải nghiệm tuyệt vời hơn!',
+  'v3.qr.card.websiteLabel': 'Truy cập website',
+  'v3.qr.card.feat1': 'AI Agent thông minh',
+  'v3.qr.card.feat2': 'Khám phá địa điểm',
+  'v3.qr.card.feat3': 'Kết nối cộng đồng',
+  'v3.qr.card.feat4': 'Cuộc sống mỗi ngày tốt đẹp hơn',
   'v3.qr.saveHint': 'Bạn có thể lưu hoặc chia sẻ mã QR này.',
   'v3.qr.share': 'Chia sẻ profile',
   'v3.qr.download': 'Tải mã QR',
@@ -1050,6 +1059,15 @@ export const en: Record<string, string> = {
   // ── QR Profile — see the note in the Vietnamese block above ──────────────
   'v3.qr.title': 'Share profile',
   'v3.qr.scanHint': 'Scan this QR code to view my TappyAI profile',
+  // Downloadable QR card (UAT3 approved design, 2026-09-27)
+  'v3.qr.card.invite': "and let's connect!",
+  'v3.qr.card.slogan': 'Connect · Explore · Share',
+  'v3.qr.card.sloganSub': 'Better everyday experiences with TappyAI!',
+  'v3.qr.card.websiteLabel': 'Visit the website',
+  'v3.qr.card.feat1': 'A smart AI agent',
+  'v3.qr.card.feat2': 'Discover places',
+  'v3.qr.card.feat3': 'Connect with people',
+  'v3.qr.card.feat4': 'A better everyday life',
   'v3.qr.saveHint': 'You can save or share this QR code.',
   'v3.qr.share': 'Share profile',
   'v3.qr.download': 'Download QR',

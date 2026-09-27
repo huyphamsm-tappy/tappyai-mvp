@@ -128,6 +128,13 @@ export default function QRProfileView({
         // No store badges — see the note on `website` in brandedCard.ts.
         tagline: t('v3.page.subtitle'),
         website: cardWebsite(),
+        // The approved card's remaining copy (UAT3): invitation line, banner, website label and the
+        // feature strip. No @username and no store badges — owner decisions, see brandedCard.ts.
+        invite: t('v3.qr.card.invite'),
+        slogan: t('v3.qr.card.slogan'),
+        sloganSub: t('v3.qr.card.sloganSub'),
+        websiteLabel: t('v3.qr.card.websiteLabel'),
+        features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
         qrPx: QR_PX * DOWNLOAD_SCALE,
         quietModules: QR_MARGIN,
       })
