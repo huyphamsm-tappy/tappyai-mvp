@@ -1,0 +1,29 @@
+{
+  "id": "B2",
+  "group": "budget-unit-quantity-age",
+  "criteria": [
+    "No budget is inferred from '5-6 người' or 'dưới 5 tuổi' (no 5k/6k ceiling in the reply or on the cards)",
+    "Cards are ordinary family restaurants at normal prices — not emptied or filtered by a phantom budget",
+    "The group size and the child's age are used as needs (space, kid-friendly), not as money"
+  ],
+  "turns": [
+    {
+      "user": "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây",
+      "status": 200,
+      "elapsedMs": 5229,
+      "usage": {
+        "promptTokens": 3,
+        "completionTokens": 200
+      },
+      "textFrames": 2,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại (Quận 1) hôm nay. Để tìm quán phù hợp, mình cần biết:\n\nThông tin này sẽ giúp mình chọn quán có không gian thoải mái cho bé, không quá ồn ào, và phù hợp với nhu cầu của gia đình bạn.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+      "visible": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại (Quận 1) hôm nay. Để tìm quán phù hợp, mình cần biết:\n\nThông tin này sẽ giúp mình chọn quán có không gian thoải mái cho bé, không quá ồn ào, và phù hợp với nhu cầu của gia đình bạn.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "preGuard": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại (Quận 1) hôm nay. Để tìm quán phù hợp, mình cần biết:\n\n**Bạn muốn ăn vào lúc nào?** (trưa / chiều / tối) và **tầm giá bao nhiêu/người?** (dưới 100k / 100–200k / trên 200k)\n\nThông tin này sẽ giúp mình chọn quán có không gian thoải mái cho bé, không quá ồn ào, và phù hợp với nhu cầu của gia đình bạn."
+    }
+  ]
+}

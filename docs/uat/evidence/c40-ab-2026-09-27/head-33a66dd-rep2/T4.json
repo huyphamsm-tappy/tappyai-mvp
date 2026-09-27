@@ -1,0 +1,165 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 14847,
+  "evidenceId": "0704dd48-830e-40b2-a3e6-8ff55a667ea6",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi gia đình cuối tuần Sài Gòn",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36884,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3284,
+      "hours": "Đóng cửa",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "303 TỔ HỢP GARDEN + LOUNGE GÒ VẤP",
+      "rating": 4.6,
+      "count": 628,
+      "hours": "00:00–10:00, 15:00–00:00",
+      "distance_km": 4.9,
+      "address": "303 Đ. Phạm Văn Đồng, Hạnh Thông, Hồ Chí Minh 727010, Việt Nam"
+    },
+    {
+      "name": "Ccomaya Kids Cafe",
+      "rating": 4.4,
+      "count": 457,
+      "hours": "Đóng cửa",
+      "distance_km": 5.8,
+      "address": "101 - 107 Khu Phố Mỹ Hào, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vườn thú Đầm Sen",
+      "rating": 4.2,
+      "count": 146,
+      "hours": "08:00–17:00",
+      "distance_km": 7.3,
+      "address": "QJ6P+QFG, Bình Thới, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Văn hoá Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 385,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CÔNG VIÊN GIA ĐỊNH",
+      "rating": 4.6,
+      "count": 2776,
+      "hours": "04:00–22:00",
+      "distance_km": 4.9,
+      "address": "Đường Hoàng Minh Giám, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hồ Con Rùa",
+      "rating": 4.3,
+      "count": 4714,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "Công trường Quốc Tế, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/ăn uống gần Sài Gòn cho gia đình 4 người vào cuối tuần. Để gợi ý đúng ý, mình cần tìm các lựa chọn phù hợp ngay.\n\nMình chọn **Thảo Cầm Viên Sài Gòn** cho gia đình bạn — cách vị trí hiện tại chỉ 1.2km, có 4.3⭐ từ 36.884 đánh giá Google Maps. Bạn có thể đi bộ hoặc đi xe rất gần.\n\nLưu ý: Thảo Cầm Viên đóng cửa lúc 6h30 chiều, nên bạn nên đi sớm để có đủ thời gian tham quan. Công viên Gia Định mở đến 10h tối, linh hoạt hơn nếu bạn muốn đi chiều tối.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"📍 Xem Công viên Gia Định trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1597779693383310824\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì sau chơi|quán ăn gia đình gần đó|có chỗ ngủ qua đêm không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi/ăn uống gần Sài Gòn cho gia đình 4 người vào cuối tuần. Để gợi ý đúng ý, mình cần tìm các lựa chọn phù hợp ngay.\n\nMình chọn **Thảo Cầm Viên Sài Gòn** cho gia đình bạn — cách vị trí hiện tại chỉ 1.2km, có 4.3⭐ từ 36.884 đánh giá Google Maps. Bạn có thể đi bộ hoặc đi xe rất gần.\n\nLưu ý: Thảo Cầm Viên đóng cửa lúc 6h30 chiều, nên bạn nên đi sớm để có đủ thời gian tham quan. Công viên Gia Định mở đến 10h tối, linh hoạt hơn nếu bạn muốn đi chiều tối.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"📍 Xem Công viên Gia Định trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1597779693383310824\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]ăn gì sau chơi|quán ăn gia đình gần đó|có chỗ ngủ qua đêm không[/FOLLOWUPS]"
+    }
+  ]
+}

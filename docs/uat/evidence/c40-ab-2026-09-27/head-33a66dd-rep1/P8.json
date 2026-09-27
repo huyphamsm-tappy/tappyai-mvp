@@ -1,0 +1,155 @@
+{
+  "id": "P8",
+  "text": "Spa nào mở khuya sau 22h ở Quận 3",
+  "parent": null,
+  "status": 200,
+  "ms": 14007,
+  "evidenceId": "cd51b609-de74-4013-996f-a153657472ba",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage mở khuya sau 22h Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Mela Spa - Massage gội đầu dưỡng sinh Quận 3",
+      "rating": 5,
+      "count": 256,
+      "hours": "09:00–21:00",
+      "address": "224 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage Trị Liệu Lụa Spa Quận 3",
+      "rating": 4.8,
+      "count": 586,
+      "hours": "09:00–19:00",
+      "address": "179A Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Win Win Spa | Dưỡng Sinh Đông Y Quận 3 | Massage Body Quận 3",
+      "rating": 4.8,
+      "count": 667,
+      "hours": "09:00–21:00",
+      "address": "222 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AN MIÊN SPA - GỘI ĐẦU THẢO DƯỢC & MASSAGE QUẬN 3",
+      "rating": 4.8,
+      "count": 513,
+      "hours": "09:00–22:00",
+      "address": "274/1 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72120, Việt Nam"
+    },
+    {
+      "name": "Tỉnh Thức Spa - Spa Quận 3 - Body Massage | Facial Care",
+      "rating": 4.9,
+      "count": 845,
+      "hours": "10:00–20:30",
+      "address": "118/54 Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "rating": 4.9,
+      "count": 1168,
+      "hours": "11:00–21:30",
+      "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage SAIGON STAR l Massage Thư Giãn Quận 3",
+      "rating": 4.7,
+      "count": 51,
+      "hours": "Mở cửa cả ngày",
+      "address": "204 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "YUBII SPA Quận 3 - Massage và Gội đầu dưỡng sinh",
+      "rating": 4.8,
+      "count": 154,
+      "hours": "10:30–21:30",
+      "address": "06 Đ. Kỳ Đồng, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Lạc Yên Healing Spa CN2 - Gội Đầu Dưỡng Sinh & Massage Spa Quận 3",
+      "rating": 5,
+      "count": 328,
+      "hours": "09:00–21:00",
+      "address": "490/4 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MỘC NẮNG SPA - Chi Nhánh 1",
+      "rating": 4.9,
+      "count": 1463,
+      "hours": "09:30–20:30",
+      "address": "483/2 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa mở khuya ở Quận 3 cho bạn ngay nhé.\n\nMình tìm được **Massage SAIGON STAR** — **4.7⭐ (51 đánh giá Google Maps)** — là spa mở cả ngày ở Quận 3, nên bạn có thể đến sau 22h.\n\nNgoài ra, **AN MIÊN SPA** cũng mở đến 22:00 — **4.8⭐ (513 đánh giá)** — chuyên gội đầu thảo dược & massage, ở 274/1 Nam Kỳ Khởi Nghĩa. Nếu bạn đến trước 22h thì còn kịp.\n\nTuy nhiên, hầu hết các spa khác ở Quận 3 đóng cửa trước 21:30.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - SAIGON STAR\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1575406426745654141\",\"primary\":true},{\"label\":\"🌐 Website - AN MIÊN SPA\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Massage SAIGON STAR|AN MIÊN SPA|Spa khác ở Quận 3[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào mở khuya sau 22h ở Quận 3"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa mở khuya ở Quận 3 cho bạn ngay nhé.\n\nMình tìm được **Massage SAIGON STAR** — **4.7⭐ (51 đánh giá Google Maps)** — là spa mở cả ngày ở Quận 3, nên bạn có thể đến sau 22h.\n\nNgoài ra, **AN MIÊN SPA** cũng mở đến 22:00 — **4.8⭐ (513 đánh giá)** — chuyên gội đầu thảo dược & massage, ở 274/1 Nam Kỳ Khởi Nghĩa. Nếu bạn đến trước 22h thì còn kịp.\n\nTuy nhiên, hầu hết các spa khác ở Quận 3 đóng cửa trước 21:30.\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - SAIGON STAR\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1575406426745654141\",\"primary\":true},{\"label\":\"🌐 Website - AN MIÊN SPA\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Massage SAIGON STAR|AN MIÊN SPA|Spa khác ở Quận 3[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?"
+    }
+  ]
+}

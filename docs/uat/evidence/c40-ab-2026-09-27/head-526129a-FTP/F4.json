@@ -1,0 +1,160 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 16690,
+  "evidenceId": "075f1e7a-9976-40b3-aa4b-0b034f683b3a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn trưa gia đình Phú Nhuận có chỗ đậu xe phù hợp trẻ em",
+        "location": "Phú Nhuận, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.7,
+      "count": 2114,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:30",
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "price": "100-200 N ₫",
+      "hours": "15:00–05:00",
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "rating": 4.3,
+      "count": 576,
+      "price": "1-100.000 ₫",
+      "hours": "Đóng cửa",
+      "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 410,
+      "price": "100-200 N ₫",
+      "hours": "08:00–22:00",
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Cơm tấm Bà Chị Hai",
+      "rating": 4,
+      "count": 346,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–14:00, 16:00–21:00",
+      "address": "51 Đ. Đặng Văn Ngữ, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ốc Quỳnh 106A Phùng Văn Cung, F7, Q.Phú Nhuận",
+      "rating": 4.1,
+      "count": 546,
+      "price": "100-200 N ₫",
+      "hours": "14:30–22:30",
+      "address": "106 Đ. Phùng Văn Cung, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ốc Hân - Quán Ốc Ngon Phú Nhuận",
+      "rating": 4.5,
+      "count": 240,
+      "price": "200-300 N ₫",
+      "hours": "11:00–23:00",
+      "address": "9 Hoa Sứ, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hoài Niệm Quán - Bún Đậu Mắm Tôm Hà Nội",
+      "rating": 4.8,
+      "count": 1666,
+      "price": "1-100.000 ₫",
+      "hours": "10:30–21:30",
+      "address": "316 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bánh mì chảo Bếp Nhà 56 - 53 Phan Đình Phùng",
+      "rating": 4,
+      "count": 440,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "53 Đ. Phan Đình Phùng, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "parking",
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý chính xác, mình sẽ tìm ngay.\n\n**Tám Riêu - Phan Xích Long** là lựa chọn mình nghiêng về nhất cho bữa trưa gia đình 6 người.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán hỏi chỗ đậu xe|Quán khác gần Phú Nhuận|Ăn gì khác cho trẻ em[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác, mình sẽ tìm ngay.\n\n**Tám Riêu - Phan Xích Long** là lựa chọn mình nghiêng về nhất cho bữa trưa gia đình 6 người.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi quán hỏi chỗ đậu xe|Quán khác gần Phú Nhuận|Ăn gì khác cho trẻ em[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?"
+    }
+  ]
+}

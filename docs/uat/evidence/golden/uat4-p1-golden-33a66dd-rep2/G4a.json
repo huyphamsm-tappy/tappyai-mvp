@@ -1,0 +1,1243 @@
+{
+  "id": "G4a",
+  "group": "over-clarifying",
+  "criteria": [
+    "Gives a useful first answer (a sketch plan or concrete suggestions) with stated assumptions",
+    "Asks at most ONE question, and only one that would materially change the result",
+    "Does not re-ask anything already stated (destination, timing)"
+  ],
+  "turns": [
+    {
+      "user": "Đi Đà Lạt cuối tuần này",
+      "status": 200,
+      "elapsedMs": 46248,
+      "usage": {
+        "promptTokens": 8924,
+        "completionTokens": 3212
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Lạt",
+            "checkIn": "2026-10-03",
+            "checkOut": "2026-10-04"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn ngon Đà Lạt",
+            "location": "Đà Lạt",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Đà Lạt thắng cảnh",
+            "location": "Đà Lạt",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Lạt"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Khu du lịch Thác Datanla",
+              "address": "QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 25358,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–16:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quảng trường Lâm Viên",
+              "address": "Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 14672,
+              "price": null,
+              "categories": [
+                "Quảng trường",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thung lũng Tình Yêu",
+              "address": "3-5-7 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 20217,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khu du lịch Fresh Garden Dalat",
+              "address": "90B Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3592,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Vườn hoa Đà Lạt",
+              "address": "02 Đ. Trần Nhân Tông, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 4269,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Công viên",
+                "Vườn"
+              ],
+              "hours": "06:30–18:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đường Hầm Điêu Khắc",
+              "address": "Thành phố Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 16566,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khu Du Lịch Lang Biang",
+              "address": "305 Langbiang, Lang Biang - Đà Lạt, Lâm Đồng 672700, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 8909,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:30–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thác Prenn",
+              "address": "VFHC+385, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 282,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "08:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:11.90343,108.44970",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu du lịch Thác Datanla",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOUtF-x5rGy-XA9ZNehAcAuBkV59UpDxSF1BclkwXbUgrI85C5RWx1nzufxVEPB__sL4H2037MSUClOJwrsnCjgsdUePZi7XNHZjez7VUuAQk7MvC5mb4DAQHjKd5t0Tcp-Pwg2",
+                "address": "QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 25358,
+                "openingHours": "07:30–16:30",
+                "openNow": false,
+                "phone": "+84 981 166 068",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–16:30",
+                  "Thứ Ba": "07:30–16:30",
+                  "Thứ Tư": "07:30–16:30",
+                  "Thứ Năm": "07:30–16:30",
+                  "Thứ Sáu": "07:30–16:30",
+                  "Thứ Bảy": "07:30–16:30",
+                  "Chủ Nhật": "07:30–16:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17928424083927973989",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dalattourist.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20du%20l%E1%BB%8Bch%20Th%C3%A1c%20Datanla%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981166068",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.93936,108.44520",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quảng trường Lâm Viên",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNlcEW-mABFirwZ49uLY4nlhRaofpoXZgCkqCQhVhZimBY427j3eeB3U1U5jo73w0TZlczjkKvLKSwRfI-uxo0M2jdz_REYMUqB6asJcg1DTNj8MTGgeBO2--RgyJUiDXIBs25tSw",
+                "address": "Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 14672,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quảng trường",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7416178250348386697",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%E1%BA%A3ng%20tr%C6%B0%E1%BB%9Dng%20L%C3%A2m%20Vi%C3%AAn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.97881,108.44831",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thung lũng Tình Yêu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO4tKK0jlovCSrcEsE4KzDC6olvZNSESRJrarsKCTdCnEDyL6z5wmDrEH5tK4cXWswiFmcecK9oeiNFlM2qy8KeM8HFAEWPWEwidvzzVHA5I0gexZqIKietVco0ORSdPxmqiZ_l",
+                "address": "3-5-7 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 20217,
+                "openingHours": "07:30–17:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:00",
+                  "Thứ Ba": "07:30–17:00",
+                  "Thứ Tư": "07:30–17:00",
+                  "Thứ Năm": "07:30–17:00",
+                  "Thứ Sáu": "07:30–17:00",
+                  "Thứ Bảy": "07:30–17:00",
+                  "Chủ Nhật": "07:30–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13350656737474802166",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ticketssee.com/thunglungtinhyeu/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Thung%20l%C5%A9ng%20T%C3%ACnh%20Y%C3%AAu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94769,108.40907",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu du lịch Fresh Garden Dalat",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOCy5EOXWXTaOpCu7N8FB6ltp74kjGRrDJPvnadgVcP4pk_v64wrZ6tg4cQxASQzYSy0K9N9Aghv2iKi3pZxhqrkhPJgLEqFYRHxfMmWn2HAPlu97t9O7LjjlqRKxO95rPTlVBV",
+                "address": "90B Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3592,
+                "openingHours": "07:30–17:30",
+                "openNow": false,
+                "phone": "+84 908 974 949",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30",
+                  "Chủ Nhật": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4050295607137020464",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://freshdalat.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20du%20l%E1%BB%8Bch%20Fresh%20Garden%20Dalat%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908974949",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.95025,108.44983",
+                "domain": "food",
+                "kind": "place",
+                "name": "Vườn hoa Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYobtsIyVpUxrVlKZraOg32kfEMAPxR91t4w_hqIQRzmDifkowumTFkADOb-OqNTSUXJAnS2o4ICtJVXi1oVqVag2mFF3mafxlsvetAwOrhKEB33nG38TBf7QAWd7G8dXEABmd5w",
+                "address": "02 Đ. Trần Nhân Tông, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 4269,
+                "openingHours": "06:30–18:00",
+                "openNow": false,
+                "phone": "+84 263 3837 771",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:30–18:00",
+                  "Thứ Ba": "06:30–18:00",
+                  "Thứ Tư": "06:30–18:00",
+                  "Thứ Năm": "06:30–18:00",
+                  "Thứ Sáu": "06:30–18:00",
+                  "Thứ Bảy": "06:30–18:00",
+                  "Chủ Nhật": "06:30–18:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Công viên",
+                  "Vườn"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7108760654706798290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://vuonhoathanhphodalat.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=V%C6%B0%E1%BB%9Dn%20hoa%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633837771",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.88251,108.41157",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đường Hầm Điêu Khắc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNEkdJ2M2eJJRj-p9PTjisouSHayR8ofa0d6qbysmmcZeffV1GcOC7AqYCFT47UoI_0FnpcdB1baNKVS_4mL1AQksYxZz6J6sMgn9uLdMeDI8s_968KlQBWDZYUUQkQzUav7R3l",
+                "address": "Thành phố Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 16566,
+                "openingHours": "07:00–17:00",
+                "openNow": false,
+                "phone": "+84 338 985 899",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–17:00",
+                  "Thứ Ba": "07:00–17:00",
+                  "Thứ Tư": "07:00–17:00",
+                  "Thứ Năm": "07:00–17:00",
+                  "Thứ Sáu": "07:00–17:00",
+                  "Thứ Bảy": "07:00–17:00",
+                  "Chủ Nhật": "07:00–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4438438102778886233",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C6%B0%E1%BB%9Dng%20H%E1%BA%A7m%20%C4%90i%C3%AAu%20Kh%E1%BA%AFc%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84338985899",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:12.01932,108.42439",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu Du Lịch Lang Biang",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMSVJ7YbB0RF4VoeMGAlXxYryPbTZRDP6OTLgZTXQZqAhlo-UuDYRGpybfU7rQlan16iwBiMFk93Sg3t9meC4ZEK1oiIoZYt-EU4bEu15JUGwaZdSKp64gyPHdfmW-1iD8ROAHP",
+                "address": "305 Langbiang, Lang Biang - Đà Lạt, Lâm Đồng 672700, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 8909,
+                "openingHours": "07:30–17:00",
+                "openNow": false,
+                "phone": "+84 263 3839 456",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:00",
+                  "Thứ Ba": "07:30–17:00",
+                  "Thứ Tư": "07:30–17:00",
+                  "Thứ Năm": "07:30–17:00",
+                  "Thứ Sáu": "07:30–17:00",
+                  "Thứ Bảy": "07:30–17:00",
+                  "Chủ Nhật": "07:30–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=288633811461070287",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dalattourist.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20Du%20L%E1%BB%8Bch%20Lang%20Biang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633839456",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.87695,108.47071",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thác Prenn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNXfQ8UIQ_lUodBIVG1JJfPTgbd66VhckLiXkJ-hvk4fk_w5_OnLfAJR6FHM5duOlMb4TtZMQNd72BJIB19mzYBLgwZ8YW33rTfnrHSUynUgymH1dP8iE_tQRcM9JLu8_e1C3_lMw",
+                "address": "VFHC+385, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 282,
+                "openingHours": "08:00–17:00",
+                "openNow": false,
+                "phone": "+84 944 391 616",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–17:00",
+                  "Thứ Ba": "08:00–17:00",
+                  "Thứ Tư": "08:00–17:00",
+                  "Thứ Năm": "08:00–17:00",
+                  "Thứ Sáu": "08:00–17:00",
+                  "Thứ Bảy": "08:00–17:00",
+                  "Chủ Nhật": "08:00–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16983086886745196739",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A1c%20Prenn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84944391616",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20%C4%90%C3%A0%20L%E1%BA%A1t%20th%E1%BA%AFng%20c%E1%BA%A3nh%20%C4%90%C3%A0%20L%E1%BA%A1t",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Khu du lịch Thác Datanla",
+              "address": "QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 25358,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–16:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.4",
+                "25358 reviews"
+              ]
+            },
+            {
+              "name": "Quảng trường Lâm Viên",
+              "address": "Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 14672,
+              "price": null,
+              "categories": [
+                "Quảng trường",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thung lũng Tình Yêu",
+              "address": "3-5-7 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 20217,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khu du lịch Fresh Garden Dalat",
+              "address": "90B Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3592,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Vườn hoa Đà Lạt",
+              "address": "02 Đ. Trần Nhân Tông, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 4269,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Công viên",
+                "Vườn"
+              ],
+              "hours": "06:30–18:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đường Hầm Điêu Khắc",
+              "address": "Thành phố Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 16566,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khu Du Lịch Lang Biang",
+              "address": "305 Langbiang, Lang Biang - Đà Lạt, Lâm Đồng 672700, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 8909,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:30–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thác Prenn",
+              "address": "VFHC+385, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 282,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "08:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:11.90343,108.44970",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu du lịch Thác Datanla",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOUtF-x5rGy-XA9ZNehAcAuBkV59UpDxSF1BclkwXbUgrI85C5RWx1nzufxVEPB__sL4H2037MSUClOJwrsnCjgsdUePZi7XNHZjez7VUuAQk7MvC5mb4DAQHjKd5t0Tcp-Pwg2",
+                "address": "QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 25358,
+                "openingHours": "07:30–16:30",
+                "openNow": false,
+                "phone": "+84 981 166 068",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–16:30",
+                  "Thứ Ba": "07:30–16:30",
+                  "Thứ Tư": "07:30–16:30",
+                  "Thứ Năm": "07:30–16:30",
+                  "Thứ Sáu": "07:30–16:30",
+                  "Thứ Bảy": "07:30–16:30",
+                  "Chủ Nhật": "07:30–16:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "shortlistPosition": 2,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.4",
+                    "params": {
+                      "value": 4.4
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "25358 reviews",
+                    "params": {
+                      "count": 25358
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17928424083927973989",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dalattourist.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20du%20l%E1%BB%8Bch%20Th%C3%A1c%20Datanla%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981166068",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.93936,108.44520",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quảng trường Lâm Viên",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNlcEW-mABFirwZ49uLY4nlhRaofpoXZgCkqCQhVhZimBY427j3eeB3U1U5jo73w0TZlczjkKvLKSwRfI-uxo0M2jdz_REYMUqB6asJcg1DTNj8MTGgeBO2--RgyJUiDXIBs25tSw",
+                "address": "Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 14672,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quảng trường",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7416178250348386697",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@hongphuonghoteldalat42/video/7662926517797719316",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%E1%BA%A3ng%20tr%C6%B0%E1%BB%9Dng%20L%C3%A2m%20Vi%C3%AAn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.97881,108.44831",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thung lũng Tình Yêu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO4tKK0jlovCSrcEsE4KzDC6olvZNSESRJrarsKCTdCnEDyL6z5wmDrEH5tK4cXWswiFmcecK9oeiNFlM2qy8KeM8HFAEWPWEwidvzzVHA5I0gexZqIKietVco0ORSdPxmqiZ_l",
+                "address": "3-5-7 Đường Mai Anh Đào, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 20217,
+                "openingHours": "07:30–17:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:00",
+                  "Thứ Ba": "07:30–17:00",
+                  "Thứ Tư": "07:30–17:00",
+                  "Thứ Năm": "07:30–17:00",
+                  "Thứ Sáu": "07:30–17:00",
+                  "Thứ Bảy": "07:30–17:00",
+                  "Chủ Nhật": "07:30–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13350656737474802166",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@bananhp/video/7652585582127828232",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ticketssee.com/thunglungtinhyeu/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Thung%20l%C5%A9ng%20T%C3%ACnh%20Y%C3%AAu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94769,108.40907",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu du lịch Fresh Garden Dalat",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOCy5EOXWXTaOpCu7N8FB6ltp74kjGRrDJPvnadgVcP4pk_v64wrZ6tg4cQxASQzYSy0K9N9Aghv2iKi3pZxhqrkhPJgLEqFYRHxfMmWn2HAPlu97t9O7LjjlqRKxO95rPTlVBV",
+                "address": "90B Vạn Thành, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3592,
+                "openingHours": "07:30–17:30",
+                "openNow": false,
+                "phone": "+84 908 974 949",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30",
+                  "Chủ Nhật": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4050295607137020464",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://freshdalat.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20du%20l%E1%BB%8Bch%20Fresh%20Garden%20Dalat%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908974949",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.95025,108.44983",
+                "domain": "food",
+                "kind": "place",
+                "name": "Vườn hoa Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYobtsIyVpUxrVlKZraOg32kfEMAPxR91t4w_hqIQRzmDifkowumTFkADOb-OqNTSUXJAnS2o4ICtJVXi1oVqVag2mFF3mafxlsvetAwOrhKEB33nG38TBf7QAWd7G8dXEABmd5w",
+                "address": "02 Đ. Trần Nhân Tông, Lâm Viên - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 4269,
+                "openingHours": "06:30–18:00",
+                "openNow": false,
+                "phone": "+84 263 3837 771",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:30–18:00",
+                  "Thứ Ba": "06:30–18:00",
+                  "Thứ Tư": "06:30–18:00",
+                  "Thứ Năm": "06:30–18:00",
+                  "Thứ Sáu": "06:30–18:00",
+                  "Thứ Bảy": "06:30–18:00",
+                  "Chủ Nhật": "06:30–18:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Công viên",
+                  "Vườn"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7108760654706798290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://vuonhoathanhphodalat.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=V%C6%B0%E1%BB%9Dn%20hoa%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633837771",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.88251,108.41157",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đường Hầm Điêu Khắc",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNEkdJ2M2eJJRj-p9PTjisouSHayR8ofa0d6qbysmmcZeffV1GcOC7AqYCFT47UoI_0FnpcdB1baNKVS_4mL1AQksYxZz6J6sMgn9uLdMeDI8s_968KlQBWDZYUUQkQzUav7R3l",
+                "address": "Thành phố Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 16566,
+                "openingHours": "07:00–17:00",
+                "openNow": false,
+                "phone": "+84 338 985 899",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–17:00",
+                  "Thứ Ba": "07:00–17:00",
+                  "Thứ Tư": "07:00–17:00",
+                  "Thứ Năm": "07:00–17:00",
+                  "Thứ Sáu": "07:00–17:00",
+                  "Thứ Bảy": "07:00–17:00",
+                  "Chủ Nhật": "07:00–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4438438102778886233",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%C6%B0%E1%BB%9Dng%20H%E1%BA%A7m%20%C4%90i%C3%AAu%20Kh%E1%BA%AFc%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84338985899",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:12.01932,108.42439",
+                "domain": "food",
+                "kind": "place",
+                "name": "Khu Du Lịch Lang Biang",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMSVJ7YbB0RF4VoeMGAlXxYryPbTZRDP6OTLgZTXQZqAhlo-UuDYRGpybfU7rQlan16iwBiMFk93Sg3t9meC4ZEK1oiIoZYt-EU4bEu15JUGwaZdSKp64gyPHdfmW-1iD8ROAHP",
+                "address": "305 Langbiang, Lang Biang - Đà Lạt, Lâm Đồng 672700, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 8909,
+                "openingHours": "07:30–17:00",
+                "openNow": false,
+                "phone": "+84 263 3839 456",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–17:00",
+                  "Thứ Ba": "07:30–17:00",
+                  "Thứ Tư": "07:30–17:00",
+                  "Thứ Năm": "07:30–17:00",
+                  "Thứ Sáu": "07:30–17:00",
+                  "Thứ Bảy": "07:30–17:00",
+                  "Chủ Nhật": "07:30–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=288633811461070287",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dalattourist.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Khu%20Du%20L%E1%BB%8Bch%20Lang%20Biang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633839456",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.87695,108.47071",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thác Prenn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNXfQ8UIQ_lUodBIVG1JJfPTgbd66VhckLiXkJ-hvk4fk_w5_OnLfAJR6FHM5duOlMb4TtZMQNd72BJIB19mzYBLgwZ8YW33rTfnrHSUynUgymH1dP8iE_tQRcM9JLu8_e1C3_lMw",
+                "address": "VFHC+385, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 282,
+                "openingHours": "08:00–17:00",
+                "openNow": false,
+                "phone": "+84 944 391 616",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–17:00",
+                  "Thứ Ba": "08:00–17:00",
+                  "Thứ Tư": "08:00–17:00",
+                  "Thứ Năm": "08:00–17:00",
+                  "Thứ Sáu": "08:00–17:00",
+                  "Thứ Bảy": "08:00–17:00",
+                  "Chủ Nhật": "08:00–17:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16983086886745196739",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A1c%20Prenn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84944391616",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20%C4%90%C3%A0%20L%E1%BA%A1t%20th%E1%BA%AFng%20c%E1%BA%A3nh%20%C4%90%C3%A0%20L%E1%BA%A1t",
+            "picked": [
+              "place:osm:11.90343,108.44970",
+              "place:osm:11.93936,108.44520",
+              "place:osm:11.97881,108.44831"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:11.90343,108.44970",
+            "place:osm:11.93936,108.44520",
+            "place:osm:11.97881,108.44831"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Khu du lịch Thác Datanla",
+          "Quảng trường Lâm Viên",
+          "Thung lũng Tình Yêu",
+          "Khu du lịch Fresh Garden Dalat",
+          "Vườn hoa Đà Lạt",
+          "Đường Hầm Điêu Khắc",
+          "Khu Du Lịch Lang Biang",
+          "Thác Prenn"
+        ],
+        [
+          "Khu du lịch Thác Datanla",
+          "Quảng trường Lâm Viên",
+          "Thung lũng Tình Yêu",
+          "Khu du lịch Fresh Garden Dalat",
+          "Vườn hoa Đà Lạt",
+          "Đường Hầm Điêu Khắc",
+          "Khu Du Lịch Lang Biang",
+          "Thác Prenn"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch cho chuyến đi Đà Lạt cuối tuần này cho bạn. Mình giả sử là 2 ngày 1 đêm (từ thứ 7 đến chủ nhật), 1-2 người, và ngân sách phổ thông — nếu khác thì bạn cứ nói mình điều chỉnh nhé.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Cuối tuần Đà Lạt - Thưởng thức thiên nhiên & ẩm thực địa phương\",\"people\":1,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Thứ 7 (3/10)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ TP.HCM đến Đà Lạt\",\"description\":\"Khoảng cách ~229 km, thời gian ~4-5 tiếng\",\"price\":\"chưa có giá\",\"address\":\"Từ TP.HCM đến Đà Lạt\",\"maps_link\":\"\",\"booking_link\":\"https://www.vexere.com/\"},{\"time\":\"19:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"MerPerle Dalat Hotel\",\"description\":\"**4.9⭐ (6.193 đánh giá Google Maps)** - Khách sạn 4 sao, vị trí trung tâm, dịch vụ tuyệt vời\",\"price\":\"chưa có giá\",\"address\":\"1 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=2925261577989617457\",\"booking_link\":\"https://www.booking.com/searchresults.vi.html?ss=MerPerle+Dalat+Hotel\",\"place_id\":\"ChIJb3zd0SsTcTERMXcrD-idmCg\"},{\"time\":\"20:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Quán cơm Linh Đà Lạt - Sương Nguyệt Anh\",\"description\":\"**4.8⭐ (1.516 đánh giá Google Maps)** - Cơm Việt ngon, mở 17:00-19:30\",\"price\":\"chưa có giá\",\"address\":\"23 D. Sương Nguyệt Anh, Lâm Viên - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=1726489612638132032\",\"booking_link\":\"https://www.facebook.com/quancomlinh.dalat\",\"place_id\":\"ChIJiW-diXETcTERQJeyxSe59Rc\"}]},{\"label\":\"Ngày 2 - Chủ nhật (4/10)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Tiệm ăn Đà Lạt Phố - Restaurant\",\"description\":\"**4.7⭐ (1.687 đánh giá Google Maps)** - Ăn sáng, cà phê, mở 09:30\",\"price\":\"chưa có giá\",\"address\":\"38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=1249534276121307597\",\"booking_link\":\"\",\"place_id\":\"ChIJMzXtGY4TcTERzanixs08VxE\"},{\"time\":\"10:00\",\"emoji\":\"🎢\",\"category\":\"entertainment\",\"name\":\"Khu du lịch Thác Datanla\",\"description\":\"**4.4⭐ (25.358 đánh giá Google Maps)** - Thác nước đẹp, cáp treo, mở 07:30-16:30\",\"price\":\"chưa có giá\",\"address\":\"QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=17928424083927973989\",\"booking_link\":\"https://dalattourist.com.vn/\",\"place_id\":\"ChIJQTO5pKEUcTERZcAVKbeOzvg\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Tiệm Nướng Trên Mây\",\"description\":\"**4.5⭐ (1.248 đánh giá Google Maps)** - Nướng Đà Lạt, mở 10:00-22:00\",\"price\":\"chưa có giá\",\"address\":\"19A Đặng Thái Thân, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=14228451707315774581\",\"booking_link\":\"https://tiemnuongtrenmay.com/\",\"place_id\":\"ChIJkdWFyFwTcTERdWRbNnGddcU\"},{\"time\":\"15:00\",\"emoji\":\"🌸\",\"category\":\"entertainment\",\"name\":\"Quảng trường Lâm Viên\",\"description\":\"**4.5⭐ (14.672 đánh giá Google Maps)** - Quảng trường trung tâm, mở cửa cả ngày, lý tưởng chụp ảnh\",\"price\":\"chưa có giá\",\"address\":\"Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=7416178250348386697\",\"booking_link\":\"\",\"place_id\":\"ChIJKQb-oyQTcTERiVn-etOO62Y\"},{\"time\":\"17:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ Đà Lạt về TP.HCM\",\"description\":\"Khoảng cách ~229 km, thời gian ~4-5 tiếng\",\"price\":\"chưa có giá\",\"address\":\"Từ Đà Lạt về TP.HCM\",\"maps_link\":\"\",\"booking_link\":\"https://www.vexere.com/\"}]}],\"cost_breakdown\":{\"Xe khách (khứ hồi)\":\"chưa có giá\",\"Khách sạn (1 đêm)\":\"chưa có giá\",\"Ăn uống\":\"chưa có giá\",\"Vé tham quan\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Thác Datanla có cáp treo xuống thác, nên đi sớm để tránh đông khách\",\"basis\":\"tool\",\"place\":\"Khu du lịch Thác Datanla\"},{\"text\":\"Quán cơm Linh nổi tiếng với cơm tấm và các món ăn kèm, đặc biệt là cơm gà — nên thử\",\"basis\":\"tool\",\"place\":\"Quán cơm Linh Đà Lạt - Sương Nguyệt Anh\"}],\"share_text\":\"Cuối tuần Đà Lạt: thác nước, ẩm thực địa phương & không khí mát mẻ 🌲✨ #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn **MerPerle Dalat Hotel** cho bạn vì nó có **4.9⭐ từ 6.193 đánh giá** — đó là khách sạn được yêu thích nhất ở Đà Lạt, vị trí trung tâm, dễ di chuyển. Bữa tối ở **Quán cơm Linh** (4.8⭐) — cơm Việt ngon, giá phải chăng. Cuối cùng là **Quảng trường Lâm Viên** để chụp ảnh trước khi về.\n\nThời tiết Đà Lạt cuối tuần này sẽ **mát mẻ 15-24°C, có sương mù sáng sớm** — nhớ mang áo khoác nhẹ nhé 🧥\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem bản đồ Đà Lạt\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Da+Lat\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thay đổi khách sạn|Thêm hoạt động khác|Hỏi về ăn uống địa phương[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch cho chuyến đi Đà Lạt cuối tuần này cho bạn. Mình giả sử là 2 ngày 1 đêm (từ thứ 7 đến chủ nhật), 1-2 người, và ngân sách phổ thông — nếu khác thì bạn cứ nói mình điều chỉnh nhé.\n\nMình chọn **MerPerle Dalat Hotel** cho bạn vì nó có **4.9⭐ từ 6.193 đánh giá** — đó là khách sạn được yêu thích nhất ở Đà Lạt, vị trí trung tâm, dễ di chuyển. Bữa tối ở **Quán cơm Linh** (4.8⭐) — cơm Việt ngon, giá phải chăng. Cuối cùng là **Quảng trường Lâm Viên** để chụp ảnh trước khi về.\n\nThời tiết Đà Lạt cuối tuần này sẽ **mát mẻ 15-24°C, có sương mù sáng sớm** — nhớ mang áo khoác nhẹ nhé 🧥",
+      "preGuard": "Mình sẽ lập kế hoạch cho chuyến đi Đà Lạt cuối tuần này cho bạn. Mình giả sử là 2 ngày 1 đêm (từ thứ 7 đến chủ nhật), 1-2 người, và ngân sách phổ thông — nếu khác thì bạn cứ nói mình điều chỉnh nhé.\n\nMình đang tìm khách sạn, quán ăn ngon, điểm tham quan, và kiểm tra thời tiết để lập kế hoạch hoàn chỉnh cho bạn.[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Cuối tuần Đà Lạt - Thưởng thức thiên nhiên & ẩm thực địa phương\",\"people\":1,\"budget_total\":\"3.500.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Thứ 7 (3/10)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ TP.HCM đến Đà Lạt\",\"description\":\"Khoảng cách ~229 km, thời gian ~4-5 tiếng\",\"price\":\"300.000 VND\",\"address\":\"Từ TP.HCM đến Đà Lạt\",\"maps_link\":\"\",\"booking_link\":\"https://www.vexere.com/\"},{\"time\":\"19:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"MerPerle Dalat Hotel\",\"description\":\"**4.9⭐ (6.193 đánh giá Google Maps)** - Khách sạn 4 sao, vị trí trung tâm, dịch vụ tuyệt vời\",\"price\":\"1.200.000 VND\",\"address\":\"1 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=2925261577989617457\",\"booking_link\":\"https://www.booking.com/searchresults.vi.html?ss=MerPerle+Dalat+Hotel\",\"place_id\":\"ChIJb3zd0SsTcTERMXcrD-idmCg\"},{\"time\":\"20:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Quán cơm Linh Đà Lạt - Sương Nguyệt Anh\",\"description\":\"**4.8⭐ (1.516 đánh giá Google Maps)** - Cơm Việt ngon, giá 100-200k, mở 17:00-19:30\",\"price\":\"150.000 VND\",\"address\":\"23 D. Sương Nguyệt Anh, Lâm Viên - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=1726489612638132032\",\"booking_link\":\"https://www.facebook.com/quancomlinh.dalat\",\"place_id\":\"ChIJiW-diXETcTERQJeyxSe59Rc\"}]},{\"label\":\"Ngày 2 - Chủ nhật (4/10)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Tiệm ăn Đà Lạt Phố - Restaurant\",\"description\":\"**4.7⭐ (1.687 đánh giá Google Maps)** - Ăn sáng, cà phê, giá 100-200k, mở 09:30\",\"price\":\"120.000 VND\",\"address\":\"38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=1249534276121307597\",\"booking_link\":\"\",\"place_id\":\"ChIJMzXtGY4TcTERzanixs08VxE\"},{\"time\":\"10:00\",\"emoji\":\"🎢\",\"category\":\"entertainment\",\"name\":\"Khu du lịch Thác Datanla\",\"description\":\"**4.4⭐ (25.358 đánh giá Google Maps)** - Thác nước đẹp, cáp treo, mở 07:30-16:30\",\"price\":\"150.000 VND\",\"address\":\"QL20 Đèo Prenn, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=17928424083927973989\",\"booking_link\":\"https://dalattourist.com.vn/\",\"place_id\":\"ChIJQTO5pKEUcTERZcAVKbeOzvg\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Tiệm Nướng Trên Mây\",\"description\":\"**4.5⭐ (1.248 đánh giá Google Maps)** - Nướng Đà Lạt, giá 100-600k, mở 10:00-22:00\",\"price\":\"300.000 VND\",\"address\":\"19A Đặng Thái Thân, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=14228451707315774581\",\"booking_link\":\"https://tiemnuongtrenmay.com/\",\"place_id\":\"ChIJkdWFyFwTcTERdWRbNnGddcU\"},{\"time\":\"15:00\",\"emoji\":\"🌸\",\"category\":\"entertainment\",\"name\":\"Quảng trường Lâm Viên\",\"description\":\"**4.5⭐ (14.672 đánh giá Google Maps)** - Quảng trường trung tâm, mở cửa cả ngày, lý tưởng chụp ảnh\",\"price\":\"0 VND\",\"address\":\"Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt, Lâm Đồng\",\"maps_link\":\"https://maps.google.com/?cid=7416178250348386697\",\"booking_link\":\"\",\"place_id\":\"ChIJKQb-oyQTcTERiVn-etOO62Y\"},{\"time\":\"17:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ Đà Lạt về TP.HCM\",\"description\":\"Khoảng cách ~229 km, thời gian ~4-5 tiếng\",\"price\":\"300.000 VND\",\"address\":\"Từ Đà Lạt về TP.HCM\",\"maps_link\":\"\",\"booking_link\":\"https://www.vexere.com/\"}]}],\"cost_breakdown\":{\"Xe khách (khứ hồi)\":\"600.000 VND\",\"Khách sạn (1 đêm)\":\"1.200.000 VND\",\"Ăn uống\":\"570.000 VND\",\"Vé tham quan\":\"150.000 VND\"},\"local_tips\":[{\"text\":\"Đà Lạt sáng sớm hay có sương mù, mang áo khoác nhẹ để tránh lạnh — nhiệt độ chỉ 15-24°C\",\"basis\":\"general\"},{\"text\":\"Thác Datanla có cáp treo xuống thác, nên đi sớm để tránh đông khách\",\"basis\":\"tool\",\"place\":\"Khu du lịch Thác Datanla\"},{\"text\":\"Quán cơm Linh nổi tiếng với cơm tấm và các món ăn kèm, đặc biệt là cơm gà — nên thử\",\"basis\":\"tool\",\"place\":\"Quán cơm Linh Đà Lạt - Sương Nguyệt Anh\"}],\"share_text\":\"Cuối tuần Đà Lạt: thác nước, ẩm thực địa phương & không khí mát mẻ 🌲✨ #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn **MerPerle Dalat Hotel** cho bạn vì nó có **4.9⭐ từ 6.193 đánh giá** — đó là khách sạn được yêu thích nhất ở Đà Lạt, vị trí trung tâm, dễ di chuyển. Bữa tối ở **Quán cơm Linh** (4.8⭐) — cơm Việt ngon, giá phải chăng. Sáng hôm sau, bạn thưởng thức **Thác Datanla** (4.4⭐, 25k+ đánh giá) — thác nước đẹp nhất Đà Lạt với cáp treo, rồi ăn trưa nướng ở **Tiệm Nướng Trên Mây** (4.5⭐) — đặc sản địa phương. Cuối cùng là **Quảng trường Lâm Viên** để chụp ảnh trước khi về.\n\nTổng ước tính **3.5 triệu VND** cho 2 ngày 1 đêm (xe khách khứ hồi, khách sạn, ăn uống, vé tham quan). Thời tiết Đà Lạt cuối tuần này sẽ **mát mẻ 15-24°C, có sương mù sáng sớm** — nhớ mang áo khoác nhẹ nhé 🧥\n\nNếu muốn thay đổi khách sạn (rẻ hơn hoặc sang trọng hơn), hoặc thêm hoạt động khác như Thung lũng Tình Yêu hay Vườn hoa Đà Lạt, cứ nói mình điều chỉnh!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🚗 Đặt vé xe Vexere\",\"type\":\"website\",\"url\":\"https://www.vexere.com/\",\"primary\":true},{\"label\":\"🏨 Booking.com - MerPerle Dalat\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=MerPerle+Dalat+Hotel\",\"primary\":true},{\"label\":\"📍 Xem bản đồ Đà Lạt\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Da+Lat\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thay đổi khách sạn|Thêm hoạt động khác|Hỏi về ăn uống địa phương[/FOLLOWUPS]"
+    }
+  ]
+}

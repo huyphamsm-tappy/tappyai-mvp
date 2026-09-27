@@ -1,0 +1,88 @@
+{
+  "id": "S6b",
+  "text": "tai nghe bluetooth",
+  "parent": "S6",
+  "status": 200,
+  "ms": 14277,
+  "evidenceId": "5b00b2cb-d89c-4019-bd17-95a6e3e8c33c",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tai Nghe Bluetooth Soundcore R50i NC",
+      "rating": 4.9,
+      "count": 133,
+      "price": 450000
+    },
+    {
+      "name": "Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng",
+      "rating": 4.8,
+      "count": 326,
+      "price": 320000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC",
+      "rating": 4.7,
+      "count": 962,
+      "price": 730000
+    },
+    {
+      "name": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+      "rating": 4.7,
+      "count": 321,
+      "price": 990000
+    },
+    {
+      "name": "Tai nghe Bluetooth TWS EDIFIER X2S",
+      "rating": 4.2,
+      "count": 173,
+      "price": 330000
+    },
+    {
+      "name": "Tai nghe Sony WH-1000XM6",
+      "rating": 4.5,
+      "count": 166,
+      "price": 9990000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai Nghe Bluetooth Soundcore R50i NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSVsuH-gsQ9Kc2vvnEk6rcbGQ0LJ9Ebt4gzhUx7XGLYgC27Ym6_epnbvmtkZX4EUZ_l51qmjClJvCajCzVnEv-51sYhuTSNdUevW5yW0hOnSmB5f-VYRuel\",\"offers\":[{\"seller\":\"anker.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2213404791100174742,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":133}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRWVTyfydAwuvvIc8cwKypAuL8uIq1jPO1mfFSSQzooTi1Lv6pWl2nNRFgjx2qwZApsSHCtgUFXsBWEbmMxIvGmYDgt2rxzZhB2Tz6UMxf5zA5sFVK8rT816nk\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGxKfdRL0NN-gDV8rSqA4NIAaKwD1E6jjoEZYh_F0gafX_v8Z7p0AaSh5SLlg9nJLoEbNwDkfrBsaosA2ZOK031HKdYcq3RT06fLmXueOtJgHsogCgwn_d\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTUpkDlnzSFhnBjhuCNnh8Au7snH2yqbkH5QWbwBcXKds-VrUDa4nBSB19LcGwTqwd1Qjpj__LJ37ggSWKCLgD-TuIHtd9rq6lopKV4VY9q6_hGP9xTPvZyow\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth TWS EDIFIER X2S\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":330000,\"priceHigh\":330000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSPfcP8tp20o5nhMJ07pcH5lrTf7uZI5CtQNpAyM_w4wZod9SGP41KGD3dl3SzyWxlsNCklIaXjOypUMEZLSYfCDla8h-jcG5KthKGwNjVnxUS9y-YbsbeNzw\",\"offers\":[{\"seller\":\"Nguyễn Vũ Store\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3288637639204592082,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":330000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":173}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Sony WH-1000XM6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9990000,\"priceHigh\":9990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRgHY50oiyINlbpmD6hUt5VpeOLwd_wzMXGbtk1fG6DELoHCoAGg1jmjkFAVpiKGK-ek3sLbWeVKBNiNRaf6HzNdbY1mGzM\",\"offers\":[{\"seller\":\"Sony Store Online\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10565347217797513768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":166}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"anker.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},{\"attribute\":\"price\",\"evidence\":\"450000 VND\",\"params\":{\"priceVnd\":450000}},{\"attribute\":\"reviewCount\",\"evidence\":\"133 reviews\",\"params\":{\"count\":133}}],\"tradeOff\":{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình tìm tai nghe Bluetooth cho bạn ngay.\n\nMình nghiêng về **Tai Nghe Bluetooth Soundcore R50i NC** — có đánh giá 4.9⭐ từ 133 người dùng, giá 450.000đ trên anker.vn. Đây là lựa chọn cân bằng tốt giữa chất lượng và giá.\n\nNếu ưu tiên tiết kiệm, đánh giá 4.8⭐ từ 326 người — cũng là lựa chọn đáng xem.\n\nNgoài ra còn các tùy chọn khác: Baseus Bass BH1 NC (730.000đ, chụp tai), Anker Soundcore V40i (990.000đ, thể thao), hay Sony WH-1000XM6 (cao cấp).\n\nBạn muốn xem chi tiết hoặc so sánh thêm loại nào không?\n\n\n[FOLLOWUPS]Soundcore R50i NC có gì đặc biệt|So sánh với Havit TW996 Pro|Tai nghe chụp hay True Wireless[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    },
+    {
+      "role": "user",
+      "content": "tai nghe bluetooth"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai Nghe Bluetooth Soundcore R50i NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSVsuH-gsQ9Kc2vvnEk6rcbGQ0LJ9Ebt4gzhUx7XGLYgC27Ym6_epnbvmtkZX4EUZ_l51qmjClJvCajCzVnEv-51sYhuTSNdUevW5yW0hOnSmB5f-VYRuel\",\"offers\":[{\"seller\":\"anker.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:2213404791100174742,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":133}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRWVTyfydAwuvvIc8cwKypAuL8uIq1jPO1mfFSSQzooTi1Lv6pWl2nNRFgjx2qwZApsSHCtgUFXsBWEbmMxIvGmYDgt2rxzZhB2Tz6UMxf5zA5sFVK8rT816nk\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRGxKfdRL0NN-gDV8rSqA4NIAaKwD1E6jjoEZYh_F0gafX_v8Z7p0AaSh5SLlg9nJLoEbNwDkfrBsaosA2ZOK031HKdYcq3RT06fLmXueOtJgHsogCgwn_d\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTUpkDlnzSFhnBjhuCNnh8Au7snH2yqbkH5QWbwBcXKds-VrUDa4nBSB19LcGwTqwd1Qjpj__LJ37ggSWKCLgD-TuIHtd9rq6lopKV4VY9q6_hGP9xTPvZyow\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth TWS EDIFIER X2S\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":330000,\"priceHigh\":330000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSPfcP8tp20o5nhMJ07pcH5lrTf7uZI5CtQNpAyM_w4wZod9SGP41KGD3dl3SzyWxlsNCklIaXjOypUMEZLSYfCDla8h-jcG5KthKGwNjVnxUS9y-YbsbeNzw\",\"offers\":[{\"seller\":\"Nguyễn Vũ Store\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3288637639204592082,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":330000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.2,\"ratingCount\":173}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Sony WH-1000XM6\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9990000,\"priceHigh\":9990000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRgHY50oiyINlbpmD6hUt5VpeOLwd_wzMXGbtk1fG6DELoHCoAGg1jmjkFAVpiKGK-ek3sLbWeVKBNiNRaf6HzNdbY1mGzM\",\"offers\":[{\"seller\":\"Sony Store Online\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:10565347217797513768,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":166}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"anker.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.9\",\"params\":{\"value\":4.9}},{\"attribute\":\"price\",\"evidence\":\"450000 VND\",\"params\":{\"priceVnd\":450000}},{\"attribute\":\"reviewCount\",\"evidence\":\"133 reviews\",\"params\":{\"count\":133}}],\"tradeOff\":{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình tìm tai nghe Bluetooth cho bạn ngay.\n\nMình nghiêng về **Tai Nghe Bluetooth Soundcore R50i NC** — có đánh giá 4.9⭐ từ 133 người dùng, giá 450.000đ trên anker.vn. Đây là lựa chọn cân bằng tốt giữa chất lượng và giá.\n\nNếu ưu tiên tiết kiệm, đánh giá 4.8⭐ từ 326 người — cũng là lựa chọn đáng xem.\n\nNgoài ra còn các tùy chọn khác: Baseus Bass BH1 NC (730.000đ, chụp tai), Anker Soundcore V40i (990.000đ, thể thao), hay Sony WH-1000XM6 (cao cấp).\n\nBạn muốn xem chi tiết hoặc so sánh thêm loại nào không?\n\n\n[FOLLOWUPS]Soundcore R50i NC có gì đặc biệt|So sánh với Havit TW996 Pro|Tai nghe chụp hay True Wireless[/FOLLOWUPS]"
+    }
+  ]
+}

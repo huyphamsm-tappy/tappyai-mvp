@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 3344,
+  "evidenceId": "4bf8d8d7-2c39-4c02-b85d-0534ec05aaeb",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa gợi ý quán cụ thể nào cho bạn cả. Bạn có thể cho mình biết:\n\n1. **Tầm giá** bạn dự tính cho bữa cơm gia đình (dưới 100k/người, 100–200k/người, hay trên 200k/người)?\n\nSau đó mình sẽ tìm quán phù hợp và cho bạn biết giờ mở cửa luôn! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm quán ăn trưa gia đình ở Phú Nhuận với chỗ đậu xe và phù hợp trẻ em. Để gợi ý đúng ý, mình cần biết tầm giá bạn dự tính cho bữa cơm này nhé — dưới 100k/người, 100–200k/người, hay trên 200k/người?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa gợi ý quán cụ thể nào cho bạn cả. Bạn có thể cho mình biết:\n\n1. **Tầm giá** bạn dự tính cho bữa cơm gia đình (dưới 100k/người, 100–200k/người, hay trên 200k/người)?\n\nSau đó mình sẽ tìm quán phù hợp và cho bạn biết giờ mở cửa luôn! 😊"
+    }
+  ]
+}

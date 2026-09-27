@@ -1,0 +1,145 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 12837,
+  "evidenceId": "4a2ed398-9d7a-4827-b4dd-64fb4edf57d2",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Dollhouse Bar Quận 1 chỗ đậu xe parking",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1395,
+      "hours": "19:00–02:00",
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BÃI XE PARKING PRO",
+      "rating": 2.5,
+      "count": 72,
+      "hours": "Mở cửa cả ngày",
+      "address": "2B Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bar 22 Girl Bar Ho Chi Minh City",
+      "rating": 4.9,
+      "count": 421,
+      "price": "400-500 N ₫",
+      "hours": "16:00–04:00",
+      "address": "22 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "IDOL BAR",
+      "rating": 4.4,
+      "count": 84,
+      "price": "Trên 1 Tr ₫",
+      "hours": "19:30–02:00",
+      "address": "15B/64 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bãi Gửi Xe Phố Đi Bộ",
+      "rating": 2.3,
+      "count": 194,
+      "address": "8(Hoc vien Ngan hang Viet Nam) Đ. Tôn Thất Thiệp, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bar OZA",
+      "rating": 3.5,
+      "count": 58,
+      "price": "Trên 1 Tr ₫",
+      "hours": "20:00–01:00",
+      "address": "8A/12C2 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KIZUNA BAR",
+      "rating": 4.2,
+      "count": 9,
+      "address": "8a Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "live_music"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin về chỗ đậu xe ở Dollhouse Bar cho bạn.\n\nMình chua xác nhận được thông tin về chỗ đậu xe ở **Dollhouse Bar** từ Google Maps. Bạn nên gọi trực tiếp **+84 762 903 161** để hỏi về parking — quán ở đường Thái Văn Lung, Quận 1, nên có thể có chỗ gửi xe hoặc bãi xe gần đó.\n\nNgoài ra, khu vực Quận 1 có vài bãi xe công cộng gần quán (như Bãi Xe Phố Đi Bộ trên đường Tôn Thất Thiệp), nhưng mình khuyên gọi quán trước để chắc chắn nhất. 🅿️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán phù hợp.\n\nDựa trên đánh giá và vị trí, mình gợi ý **Dollhouse Bar** — **5⭐ (1.395 đánh giá Google Maps)**, quán này chill, đông khách, mở từ 19:00–02:00 hôm nay. Ngoài ra còn **Loop 1 - Cocktail Bar & Kitchen** (4.8⭐, 2.521 đánh giá) nếu bạn thích cocktail chất lượng cao.\n\nBạn có thể gọi trước hoặc xem review trên Google Maps để chắc chắn. Tầm giá bạn muốn là bao nhiêu? 🎵\n\nMình chưa thấy bằng chứng về nhạc sống ở các quán này — nên gọi hỏi trước khi đi.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Dollhouse Bar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website Loop 1\",\"type\":\"website\",\"url\":\"https://www.facebook.com/loop1cocktailnkitchen1/\",\"primary\":false}]}[/CTA_BUTTONS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 200k/người / 200–500k/người / trên 500k/người)?"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin về chỗ đậu xe ở Dollhouse Bar cho bạn.\n\nMình chua xác nhận được thông tin về chỗ đậu xe ở **Dollhouse Bar** từ Google Maps. Bạn nên gọi trực tiếp **+84 762 903 161** để hỏi về parking — quán ở đường Thái Văn Lung, Quận 1, nên có thể có chỗ gửi xe hoặc bãi xe gần đó.\n\nNgoài ra, khu vực Quận 1 có vài bãi xe công cộng gần quán (như Bãi Xe Phố Đi Bộ trên đường Tôn Thất Thiệp), nhưng mình khuyên gọi quán trước để chắc chắn nhất. 🅿️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+W1=base-43d37d2-flagsOn(19/09) W2=33a66dd-rep2 W3=33a66dd-rep1 | Y1=golden-33a66dd-rep1 Y2=golden-final-rep1(V1 on, old gate) Y3=uat4-golden(V1 off) Y4=golden-33a66dd-rep2

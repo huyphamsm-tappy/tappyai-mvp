@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5962,
+  "evidenceId": "84e244ff-4f1b-4426-a0d2-7c3d4a75bdff",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, không cần suy nghĩ nhiều, phù hợp để thả lỏng sau một ngày làm việc.\n\n**Nếu thích kịch tính, hồi hộp**: *Dune: Phần Hai* — tác phẩm hành động hoành tráng, cốt truyện cuốn hút, phù hợp nếu bạn muốn沉浸vào một thế giới khác.\n\n**Nếu muốn nhẹ nhàng, cảm xúc**: *Về nhà ăn cơm* — phim Việt ấm áp, kể về gia đình, rất phù hợp cho buổi tối yên tĩnh.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, không cần suy nghĩ nhiều, phù hợp để thả lỏng sau một ngày làm việc.\n\n**Nếu thích kịch tính, hồi hộp**: *Dune: Phần Hai* — tác phẩm hành động hoành tráng, cốt truyện cuốn hút, phù hợp nếu bạn muốn沉浸vào một thế giới khác.\n\n**Nếu muốn nhẹ nhàng, cảm xúc**: *Về nhà ăn cơm* — phim Việt ấm áp, kể về gia đình, rất phù hợp cho buổi tối yên tĩnh.\n"
+    }
+  ]
+}

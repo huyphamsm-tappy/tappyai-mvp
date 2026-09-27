@@ -1,0 +1,173 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 15552,
+  "evidenceId": "80013030-6173-44f0-8869-5a8b4f4fb329",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "ăn khuya quán ăn bình dân dưới 100k Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "DOYA JJAMBBONG",
+      "rating": 4.8,
+      "count": 437,
+      "hours": "00:00–21:30",
+      "distance_km": 1.8,
+      "address": "77I Bùi Thị Xuân, P. Phú Thuận, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Hùng Xíu",
+      "rating": 4.1,
+      "count": 76,
+      "hours": "17:00–04:00",
+      "distance_km": 1.2,
+      "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Thố Xá Lị - Tôn Thất Đạm",
+      "rating": 4.9,
+      "count": 99,
+      "hours": "09:30–13:30",
+      "distance_km": 0.6,
+      "address": "76/6 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún thịt nướng Kiều Bảo",
+      "rating": 4,
+      "count": 1599,
+      "hours": "11:00–21:00",
+      "distance_km": 1.5,
+      "address": "139 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+      "rating": 4.2,
+      "count": 345,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.4,
+      "address": "150/56 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+      "rating": 3.9,
+      "count": 2434,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.4,
+      "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "PHỞ HÀ",
+      "rating": 4,
+      "count": 1050,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.7,
+      "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Haidilao Huoguo 海底捞火锅 Bitexco",
+      "rating": 4.9,
+      "count": 13278,
+      "hours": "10:00–04:00",
+      "distance_km": 0.7,
+      "address": "TTTM Bitexco, 2 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bánh Ướt Ban Mê Giang Vương - Tôn Thất Tùng",
+      "rating": 4.4,
+      "count": 604,
+      "hours": "09:00–21:30",
+      "distance_km": 1.5,
+      "address": "10 Tôn Thất Tùng, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm được 10 quán, nhưng cần nói thẳng: **chưa xác nhận được giá cụ thể của các quán này** nên không chắc chúng nằm trong ngân sách dưới 100k/người. Tuy nhiên, dựa trên loại quán (bình dân, nhỏ), mình gợi ý:\n\n**Quán Ăn Hùng Xíu** — **4.1⭐ (76 đánh giá)**, cách bạn 1.2km, mở 17:00–04:00.\nNếu muốn chắc chắn hơn về giá, bạn có thể:\n- Gọi quán trực tiếp (số điện thoại sẽ hiện trên thẻ)\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Hùng Xíu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9628037356867564204\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn gì đó ngon gần đây, hôm nay. Mình chọn **Quán Ăn Hùng Xíu** cho bạn — **4.1⭐ (76 đánh giá Google Maps)**, mở đến 4 sáng, cách bạn chỉ 1.2km ở Bến Thành. Quán nhỏ, bình dân, mở cửa lúc này nên ăn được ngay 👍\n\nNếu muốn cơm tấm ngon hơn, **Bún Thái A Tùng** (3.5km) có **4.9⭐ từ 1.919 đánh giá** — mở cả ngày, rất được yêu thích.\n\nTầm giá bạn muốn bao nhiêu? 🍜\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Hùng Xíu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9628037356867564204\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 quán, nhưng cần nói thẳng: **chưa xác nhận được giá cụ thể của các quán này** nên không chắc chúng nằm trong ngân sách dưới 100k/người. Tuy nhiên, dựa trên loại quán (bình dân, nhỏ), mình gợi ý:\n\n**Quán Ăn Hùng Xíu** — **4.1⭐ (76 đánh giá)**, cách bạn 1.2km, mở 17:00–04:00.\nNếu muốn chắc chắn hơn về giá, bạn có thể:\n- Gọi quán trực tiếp (số điện thoại sẽ hiện trên thẻ)\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Hùng Xíu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9628037356867564204\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -1,0 +1,157 @@
+{
+  "id": "P1",
+  "text": "Spa nào tốt rẻ ở Đà Nẵng",
+  "parent": null,
+  "status": 200,
+  "ms": 22096,
+  "evidenceId": "6bcb1686-0a75-41a8-9998-32e747649a1e",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage",
+        "type": "spa",
+        "location": "da nang"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Q&B Luxury Spa – Massage & Sauna Đà Nẵng",
+      "rating": 4.8,
+      "count": 212,
+      "hours": "08:30–04:00",
+      "address": "46 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm Maha Spa & Massage ở Đà Nẵng",
+      "address": "da nang"
+    },
+    {
+      "name": "Trải nghiệm Clover Spa & Massage ở Đà Nẵng, Việt Nam",
+      "address": "da nang"
+    },
+    {
+      "name": "Luxury Healthy Spa & Massage",
+      "rating": 4.8,
+      "count": 4584,
+      "hours": "09:00–04:00",
+      "address": "224 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 55000, Việt Nam"
+    },
+    {
+      "name": "Jang Mi Spa & Massage",
+      "rating": 4.9,
+      "count": 8643,
+      "hours": "09:00–22:00",
+      "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Mo Ran Spa Massage Da Nang",
+      "rating": 4.9,
+      "count": 920,
+      "hours": "09:00–22:30",
+      "address": "88 Trần Bạch Đằng, Ngũ Hành Sơn, Đà Nẵng 553300, Việt Nam"
+    },
+    {
+      "name": "Panda Spa & Massage",
+      "rating": 4.8,
+      "count": 2908,
+      "hours": "09:00–23:45",
+      "address": "Panda Spa, 229 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Shang Hai Spa Massage Da Nang",
+      "hours": "Mở cửa cả ngày",
+      "address": "23 Tuệ Tĩnh, Hòa Cường, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "HANA SPA - Massage -岘港按摩 - 다낭 마사지",
+      "rating": 5,
+      "count": 44,
+      "hours": "Mở cửa cả ngày",
+      "address": "43 Phan Liêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Clover Spa - Best Spa Massage Da Nang 다낭 마사지",
+      "rating": 4.8,
+      "count": 1443,
+      "hours": "08:30–23:00",
+      "address": "266 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage thư giãn trong hôm nay, tầm giá phổ thông. Mình chọn **Jang Mi Spa & Massage** cho bạn — nó có **4.9⭐ (8.643 đánh giá Google Maps)**, đông khách nhất trong danh sách, nên chất lượng khá ổn định 👍\n\nMở 09:00–22:00 (hiện đang đóng cửa, mở lại sáng mai).\n\nNgoài ra, **Luxury Healthy Spa** cũng rất tốt — 4.8⭐ với 4.584 đánh giá, mở sớm từ 09:00 và mở đến 04:00 sáng hôm sau, nếu bạn muốn massage tối.\n\nTầm giá nào bạn dự tính?\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage thư giãn trong hôm nay, tầm giá phổ thông. Mình chọn **Jang Mi Spa & Massage** cho bạn — nó có **4.9⭐ (8.643 đánh giá Google Maps)**, đông khách nhất trong danh sách, nên chất lượng khá ổn định 👍\n\nMở 09:00–22:00 (hiện đang đóng cửa, mở lại sáng mai).\n\nNgoài ra, **Luxury Healthy Spa** cũng rất tốt — 4.8⭐ với 4.584 đánh giá, mở sớm từ 09:00 và mở đến 04:00 sáng hôm sau, nếu bạn muốn massage tối.\n\nTầm giá nào bạn dự tính?\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    }
+  ]
+}

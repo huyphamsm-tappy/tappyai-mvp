@@ -1,0 +1,284 @@
+{
+  "label": "uat4-p1-golden-526129a-sub-rep1",
+  "base": "http://localhost:3007",
+  "calls": 9,
+  "at": "2026-09-27T23:37:00.363Z",
+  "cases": [
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15787,
+          "usage": {
+            "promptTokens": 2743,
+            "completionTokens": 478
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "Cinestar Satra Quận 6",
+              "CGV Sư Vạn Hạnh",
+              "CGV Vincom Center Đồng Khởi",
+              "BHD Star Cineplex Lê Văn Việt",
+              "CGV Celadon Tân Phú",
+              "Galaxy Cinema Nguyễn Du"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "Cinestar Satra Quận 6",
+              "CGV Sư Vạn Hạnh",
+              "BHD Star Cineplex Lê Văn Việt",
+              "CGV Celadon Tân Phú",
+              "Galaxy Cinema Nguyễn Du"
+            ]
+          ],
+          "dup": false,
+          "chars": 646
+        },
+        {
+          "status": 200,
+          "ms": 17126,
+          "usage": {
+            "promptTokens": 2866,
+            "completionTokens": 695
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Hoàng Văn Thụ",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vincom Thủ Đức",
+              "CGV Saigonres Nguyễn Xí"
+            ],
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Hoàng Văn Thụ",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vincom Thủ Đức",
+              "CGV Saigonres Nguyễn Xí"
+            ]
+          ],
+          "dup": false,
+          "chars": 559
+        }
+      ]
+    },
+    {
+      "id": "G1b",
+      "group": "entertainment-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13492,
+          "usage": {
+            "promptTokens": 3016,
+            "completionTokens": 588
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "Chiin Coffee & Cinema Quận 7",
+              "LOTTE Mart Quận 7",
+              "Galaxy Cinema Huỳnh Tấn Phát",
+              "CGV Crescent Mall",
+              "LOTTE Cinema Nam Sài Gòn",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "Sho Cinema - Lovetech Quận 7 - 48Đ77"
+            ],
+            [
+              "Chiin Coffee & Cinema Quận 7",
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "Galaxy Cinema Huỳnh Tấn Phát",
+              "CGV Crescent Mall",
+              "LOTTE Cinema Nam Sài Gòn",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "Sho Cinema - Lovetech Quận 7 - 48Đ77"
+            ]
+          ],
+          "dup": false,
+          "chars": 495
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "group": "budget-unit-quantity-age",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 10955,
+          "usage": {
+            "promptTokens": 3245,
+            "completionTokens": 508
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+              "Quán ăn sáng chị Hoà & Hồng",
+              "Bún Riêu Yến",
+              "Quán ăn Cô Ba",
+              "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+              "Quán ăn sáng Quang",
+              "Quán ăn Sáng Hạnh",
+              "Quán ăn sáng Nhung Ngô"
+            ],
+            [
+              "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+              "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+              "Quán ăn sáng chị Hoà & Hồng",
+              "Bún Riêu Yến",
+              "Quán ăn Cô Ba",
+              "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+              "Quán ăn sáng Quang",
+              "Quán ăn Sáng Hạnh"
+            ]
+          ],
+          "dup": false,
+          "chars": 368
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "group": "district-stated-vs-gps",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12343,
+          "usage": {
+            "promptTokens": 3440,
+            "completionTokens": 477
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+              "Phở Phú Vương | Phở Ngon Quận 3",
+              "Phở 34 Cao Thắng",
+              "Phở Việt Nam",
+              "Phở Hòa Pasteur",
+              "Atispho - Phở Atiso",
+              "Phở Anh",
+              "Phở Chua Thành"
+            ],
+            [
+              "Atispho - Phở Atiso",
+              "Phở NHON - Phở Bò | Phở Gà Trống Thiến | Miến Gà | Cơm Gà | Xôi Gà | Phở Ngon Phường Nhiêu Lộc | Phở NHON Sài Gòn",
+              "Phở Phú Vương | Phở Ngon Quận 3",
+              "Phở 34 Cao Thắng",
+              "Phở Việt Nam",
+              "Phở Hòa Pasteur",
+              "Phở Anh",
+              "Phở Chua Thành"
+            ]
+          ],
+          "dup": false,
+          "chars": 504
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "group": "switch-fold-collisions",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 9624,
+          "usage": {
+            "promptTokens": 3394,
+            "completionTokens": 612
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Lẩu Bò Tí Chuột - 1",
+              "LẨU NGON 79",
+              "Lẩu bò Hồng Tiêu",
+              "Vạn Quán - Lẩu Gà Lá É CN3 Q.1",
+              "Pachi Pachi Nướng Lẩu Nhật Bản",
+              "Lẩu bò Quang Khải Võ Văn Kiệt",
+              "Quán Lẩu Dê 218 - 老賴羊肉火锅 - 1980",
+              "Lẩu Bò Quang Khải"
+            ],
+            [
+              "Lẩu bò Hồng Tiêu",
+              "Lẩu Bò Tí Chuột - 1",
+              "LẨU NGON 79",
+              "Vạn Quán - Lẩu Gà Lá É CN3 Q.1",
+              "Pachi Pachi Nướng Lẩu Nhật Bản",
+              "Lẩu bò Quang Khải Võ Văn Kiệt",
+              "Quán Lẩu Dê 218 - 老賴羊肉火锅 - 1980",
+              "Lẩu Bò Quang Khải"
+            ]
+          ],
+          "dup": false,
+          "chars": 497
+        },
+        {
+          "status": 200,
+          "ms": 3376,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 196
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 347
+        },
+        {
+          "status": 200,
+          "ms": 5799,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 416
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 430
+        },
+        {
+          "status": 200,
+          "ms": 5778,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 371
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 384
+        }
+      ]
+    }
+  ]
+}

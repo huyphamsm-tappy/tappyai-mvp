@@ -1,0 +1,84 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 20107,
+  "evidenceId": "e9d14f97-02a7-46f1-8b68-0a7dcd47ddbb",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": [
+    "upscale"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Để gợi ý đúng ý, mình cần tìm ngay 🏨\n\nMình gợi ý **Ocean Bay Resort & Spa Phú Quốc** — 4.7⭐ (3.183 đánh giá) với hơn 3.000 lượt đánh giá là dấu hiệu mạnh về chất lượng. Resort này có spa riêng, phù hợp cho dịp kỷ niệm.\nNgoài ra, **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) cũng là lựa chọn tương đương, nằm trên đường Trần Hưng Đạo trung tâm.\n\nGia tham khảo thay đổi theo loại phòng & ngày — bạn bấm vào resort để xem giá chính xác nhé 🏝️\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 1tr/đêm / 1–2tr/đêm / trên 2tr/đêm)?\n\n[FOLLOWUPS]dưới 1tr/đêm|1–2tr/đêm|trên 2tr/đêm[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần tìm ngay 🏨\n\nMình gợi ý **Ocean Bay Resort & Spa Phú Quốc** — 4.7⭐ (3.183 đánh giá) với hơn 3.000 lượt đánh giá là dấu hiệu mạnh về chất lượng. Resort này có spa riêng, phù hợp cho dịp kỷ niệm.\nNgoài ra, **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) cũng là lựa chọn tương đương, nằm trên đường Trần Hưng Đạo trung tâm.\n\nGia tham khảo thay đổi theo loại phòng & ngày — bạn bấm vào resort để xem giá chính xác nhé 🏝️\n\nMình chưa thấy bằng chứng về mức sang trọng ở các quán này — nên gọi hỏi trước khi đi.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 1tr/đêm / 1–2tr/đêm / trên 2tr/đêm)?\n\n[FOLLOWUPS]dưới 1tr/đêm|1–2tr/đêm|trên 2tr/đêm[/FOLLOWUPS]"
+    }
+  ]
+}

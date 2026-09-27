@@ -1,0 +1,25 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 449,
+  "evidenceId": "6abaf775-ab6c-4b67-aee3-7729ad77044e",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    }
+  ]
+}

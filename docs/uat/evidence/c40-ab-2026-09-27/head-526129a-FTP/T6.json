@@ -1,0 +1,339 @@
+{
+  "id": "T6",
+  "text": "Hội An có gì hay, đi 1 ngày",
+  "parent": null,
+  "status": 200,
+  "ms": 44009,
+  "evidenceId": "3171d4f8-18db-4e88-8f80-0031640f80fe",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn ngon Hội An",
+        "location": "Hội An",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "dạo phố cổ tham quan Hội An",
+        "location": "Hội An",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "cafe đẹp Hội An",
+        "location": "Hội An",
+        "type": "cafe"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Hội An"
+      }
+    },
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Đà Nẵng",
+        "departDate": "2026-09-28",
+        "returnDate": "2026-09-28",
+        "passengers": 1
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nhà Hàng - Bar Vina Ngon",
+      "rating": 4.9,
+      "count": 304,
+      "price": "100-200 N ₫",
+      "hours": "09:00–22:00",
+      "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Hoi An Old Town Table - Cơm Nhà Hội An",
+      "rating": 4.7,
+      "count": 50,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:00",
+      "address": "56 phan bội châu - Hội An ward Da Nang city, Hội An, Quảng Nam, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Hội An Hoa",
+      "rating": 4.8,
+      "count": 84,
+      "price": "200-300 N ₫",
+      "hours": "08:00–21:00",
+      "address": "Đ. Hai Bà Trưng, Hội An Tây, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Ngon",
+      "rating": 4.8,
+      "count": 4,
+      "address": "54 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Hội",
+      "rating": 4.8,
+      "count": 1583,
+      "price": "100-600 N ₫",
+      "hours": "10:30–22:00",
+      "address": "21 La Hối, An Hội, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+      "rating": 4.9,
+      "count": 14207,
+      "price": "100-300 N ₫",
+      "hours": "10:00–22:30",
+      "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Quán ăn Cô Hoa",
+      "rating": 5,
+      "count": 232,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–22:00",
+      "address": "27 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Quán Cao Lầu Thanh",
+      "rating": 4.6,
+      "count": 2569,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–19:00",
+      "address": "26 Thái Phiên, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Quán Cao lầu Bá Lễ",
+      "rating": 4.7,
+      "count": 2771,
+      "price": "1-100.000 ₫",
+      "hours": "11:00–21:30",
+      "address": "49/3 Trần Hưng Đạo, Hội An, Đà Nẵng 56000, Việt Nam"
+    },
+    {
+      "name": "Món Huế - Hội An",
+      "rating": 4.9,
+      "count": 72,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–12:30",
+      "address": "bán lồng đèn, vào tầm nhà, 128/9, hẻm Nguyễn Trường Tộ, Hội An, Đà Nẵng 56000, Việt Nam"
+    },
+    {
+      "name": "Phố cổ Hội An",
+      "rating": 4.9,
+      "count": 14,
+      "hours": "Mở cửa cả ngày",
+      "address": "V8HH+5H2, Phố cổ, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Phố Cổ Hội An",
+      "rating": 4.8,
+      "count": 676,
+      "hours": "Mở cửa cả ngày",
+      "address": "Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Phố cổ hội an",
+      "rating": 4.7,
+      "count": 66,
+      "address": "V8GG+7MR, An Hội, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Đảo Ký Ức Hội An - Cổng đón khách Cầu Ánh Trăng",
+      "rating": 4.7,
+      "count": 56,
+      "hours": "16:00–22:00",
+      "address": "88 Trần Quang Khải, Hội An Đông, Đà Nẵng 563820, Việt Nam"
+    },
+    {
+      "name": "phố cổ hội an",
+      "address": "V9H2+MM8, ĐX 19, Hội An Đông, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Sông Hoài Phố Cổ Hội An",
+      "rating": 4.6,
+      "count": 97,
+      "address": "V8GF+HMQ, An Hội, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Tấn Ký",
+      "rating": 4.2,
+      "count": 1529,
+      "hours": "08:30–17:45",
+      "address": "101 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Bay Mau Coconut Forest Tour",
+      "rating": 4.7,
+      "count": 1978,
+      "hours": "09:00–17:00",
+      "address": "Võ Chí Công, Hội An Đông, Đà Nẵng 51300, Việt Nam"
+    },
+    {
+      "name": "Quầy thông tin du lịch và bán vé tham quan Khu Phố Cổ",
+      "rating": 2.7,
+      "count": 26,
+      "hours": "08:00–18:00",
+      "address": "10 Nguyễn Huệ, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Ks phố cổ hội an",
+      "rating": 4.6,
+      "count": 5,
+      "address": "51 Đào Duy Từ, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Faifo Coffee",
+      "rating": 4.1,
+      "count": 4007,
+      "price": "1-100.000 ₫",
+      "hours": "07:30–21:00",
+      "address": "130 Trần Phú, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Moments Hoi An",
+      "rating": 4.7,
+      "count": 2552,
+      "price": "100-200 N ₫",
+      "hours": "08:00–22:00",
+      "address": "47 Lê Lợi, Old Town, Hội An, Đà Nẵng 51000, Việt Nam"
+    },
+    {
+      "name": "Hoi An Roastery",
+      "rating": 4.3,
+      "count": 1605,
+      "price": "1-100.000 ₫",
+      "hours": "07:30–20:30",
+      "address": "135 Trần Phú, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Mê Hội An Rooftop Coffee & Kitchen",
+      "rating": 4.9,
+      "count": 2762,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–22:30",
+      "address": "166 Trần Phú, Old Town, Hội An, Đà Nẵng 560000, Việt Nam"
+    },
+    {
+      "name": "U Cafe Hoi An",
+      "rating": 4.7,
+      "count": 387,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–17:00",
+      "address": "120 Huyền Trân Công Chúa, t.p, Hội An Đông, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "son Cafe Hoi An",
+      "rating": 4.9,
+      "count": 299,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–19:00",
+      "address": "49/10 Trần Hưng Đạo, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Hoi An Roastery Espresso & Coffee House",
+      "rating": 4.7,
+      "count": 524,
+      "price": "1-100.000 ₫",
+      "hours": "07:30–20:30",
+      "address": "84 Đ. Trần Cao Vân, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Olivier Coffee",
+      "rating": 4.9,
+      "count": 1268,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–17:30",
+      "address": "9 Trần Trung Tri, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Trốn Hội An Coffee & Brunch",
+      "rating": 4.8,
+      "count": 442,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–17:00",
+      "address": "151 Trần Hưng Đạo, Hội An, Đà Nẵng 560000, Việt Nam"
+    },
+    {
+      "name": "Hoi An Roastery Espresso & Coffee House II",
+      "rating": 4.8,
+      "count": 1056,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–21:00",
+      "address": "186 / 2 Trần Phú, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **Nhà Hàng - Bar Vina Ngon** — 4.9⭐ (304 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:00–22:00.\n\nMình giả sử bạn muốn lên kế hoạch 1 ngày ở Hội An từ TP.HCM, đi máy bay và quay lại cùng ngày. Mình sẽ tìm những điểm vui chơi, ăn uống hay nhất ở đó cho bạn ngay.\n\nMình sẽ lập kế hoạch 1 ngày cho bạn với những trải nghiệm hay nhất. Thời tiết hôm nay khá đẹp — 25-29°C, ít mưa (21% chance), nên bạn có thể thoải mái dạo phố cổ và uống cà phê ngoài trời.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Khám phá Hội An trong 1 ngày: Phố cổ, ẩm thực & cà phê\",\"people\":1,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Hội An\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm để có thời gian tối đa ở Hội An. Từ sân bay Đà Nẵng đi Hội An khoảng 30 phút.\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+da+nang\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-09-28%26rdate%3D2026-09-28%26flighttype%3Drt%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177\",\"place_id\":\"\"},{\"time\":\"10:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Quán Cao Lầu Thanh\",\"description\":\"**4.6⭐ (2.569 đánh giá Google Maps)** — Cao lầu Hội An nổi tiếng, giá phổ thông 1-100k, mở từ 7h sáng.\",\"price\":\"chưa có giá\",\"address\":\"26 Thái Phiên, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7876147479275815919\",\"booking_link\":\"\",\"place_id\":\"ChIJVfRmEnkOQjER78PSHGeyTW0\"},{\"time\":\"11:30\",\"emoji\":\"🚶\",\"category\":\"attraction\",\"name\":\"Phố Cổ Hội An\",\"description\":\"**4.8⭐ (676 đánh giá Google Maps)** — Dạo bộ phố cổ, ngắm kiến trúc cổ kính, mua sắm lồng đèn & quà lưu niệm. Mở cửa cả ngày.\",\"price\":\"chưa có giá\",\"address\":\"Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16041945140456063900\",\"booking_link\":\"\",\"place_id\":\"ChIJE3yuYgAPQjERnAMwgxxwoN4\"},{\"time\":\"14:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Mê Hội An Rooftop Coffee & Kitchen\",\"description\":\"**4.9⭐ (2.762 đánh giá Google Maps)** — Cà phê view đẹp trên rooftop, giá 1-100k, mở 8h-22h30. Lý tưởng để nghỉ ngơi & ngắm phố.\",\"price\":\"chưa có giá\",\"address\":\"166 Trần Phú, Old Town, Hội An\",\"maps_link\":\"https://maps.google.com/?cid=14326689060177770475\",\"booking_link\":\"\",\"place_id\":\"ChIJb_HrObEPQjER6_deT8uf0sY\"},{\"time\":\"16:00\",\"emoji\":\"🚣\",\"category\":\"attraction\",\"name\":\"Bay Mau Coconut Forest Tour\",\"description\":\"**4.7⭐ (1.978 đánh giá Google Maps)** — Tour thuyền qua rừng dừa, trải nghiệm độc đáo. Mở 9h-17h\",\"price\":\"chưa có giá\",\"address\":\"Võ Chí Công, Hội An Đông, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14526963969458245829\",\"booking_link\":\"https://coconutboattourhoian.com/en/coconut-boat-tour\",\"place_id\":\"ChIJTZ_704kPQjERxRB1WMMkmsk\"},{\"time\":\"18:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"MẸT Hội An - Vietnamese cuisine & Vegetarian options\",\"description\":\"**4.9⭐ (14.207 đánh giá Google Maps)** — Nhà hàng Việt Nam chất lượng cao, có option chay, mở 10h-22h30.\",\"price\":\"chưa có giá\",\"address\":\"49 Nguyễn Thái Học, Old Town, Hội An\",\"maps_link\":\"https://maps.google.com/?cid=8609020210729391502\",\"booking_link\":\"https://metvietnameserestaurant.com/\",\"place_id\":\"ChIJgxsiJQAPQjERjhWv5ERieXc\"},{\"time\":\"20:30\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều để về TP.HCM. Từ Hội An đi sân bay Đà Nẵng khoảng 30 phút.\",\"price\":\"(Đã tính trong vé khứ hồi)\",\"address\":\"Sân bay Đà Nẵng\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+da+nang\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi\":\"chưa có giá\",\"Ăn sáng (Cao lầu)\":\"chưa có giá\",\"Cà phê chiều\":\"chưa có giá\",\"Tour thuyền dừa\":\"chưa có giá\",\"Ăn tối\":\"chưa có giá\",\"Vé tham quan (nếu vào nhà cổ)\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Mê Hội An Rooftop có view toàn cảnh phố cổ — đây là chỗ lý tưởng để uống cà phê chiều và chụp ảnh.\",\"basis\":\"tool\",\"place\":\"Mê Hội An Rooftop Coffee & Kitchen\"}],\"share_text\":\"1 ngày ở Hội An: phố cổ, cao lầu, tour thuyền dừa & cà phê rooftop 🌅 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì bạn có thể trải nghiệm đầy đủ Hội An trong 1 ngày: ăn đặc sản, dạo phố cổ, uống cà phê view đẹp, và thử tour thuyền dừa độc đáo.\n\nThời tiết hôm nay khá mát (25-29°C), nên dạo phố sẽ thoải mái — chỉ cần mang ô vì có 21% chance mưa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Phố Cổ Hội An trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16041945140456063900\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bạn muốn thêm hoạt động gì ở Hội An?|Cần gợi ý quán ăn khác?|Muốn biết cách di chuyển từ sân bay?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Hội An có gì hay, đi 1 ngày"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Nhà Hàng - Bar Vina Ngon** — 4.9⭐ (304 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:00–22:00.\n\nMình giả sử bạn muốn lên kế hoạch 1 ngày ở Hội An từ TP.HCM, đi máy bay và quay lại cùng ngày. Mình sẽ tìm những điểm vui chơi, ăn uống hay nhất ở đó cho bạn ngay.\n\nMình sẽ lập kế hoạch 1 ngày cho bạn với những trải nghiệm hay nhất. Thời tiết hôm nay khá đẹp — 25-29°C, ít mưa (21% chance), nên bạn có thể thoải mái dạo phố cổ và uống cà phê ngoài trời.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Khám phá Hội An trong 1 ngày: Phố cổ, ẩm thực & cà phê\",\"people\":1,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Hội An\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm để có thời gian tối đa ở Hội An. Từ sân bay Đà Nẵng đi Hội An khoảng 30 phút.\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+da+nang\",\"booking_link\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Ddad%26ddate%3D2026-09-28%26rdate%3D2026-09-28%26flighttype%3Drt%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177\",\"place_id\":\"\"},{\"time\":\"10:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Quán Cao Lầu Thanh\",\"description\":\"**4.6⭐ (2.569 đánh giá Google Maps)** — Cao lầu Hội An nổi tiếng, giá phổ thông 1-100k, mở từ 7h sáng.\",\"price\":\"chưa có giá\",\"address\":\"26 Thái Phiên, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7876147479275815919\",\"booking_link\":\"\",\"place_id\":\"ChIJVfRmEnkOQjER78PSHGeyTW0\"},{\"time\":\"11:30\",\"emoji\":\"🚶\",\"category\":\"attraction\",\"name\":\"Phố Cổ Hội An\",\"description\":\"**4.8⭐ (676 đánh giá Google Maps)** — Dạo bộ phố cổ, ngắm kiến trúc cổ kính, mua sắm lồng đèn & quà lưu niệm. Mở cửa cả ngày.\",\"price\":\"chưa có giá\",\"address\":\"Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16041945140456063900\",\"booking_link\":\"\",\"place_id\":\"ChIJE3yuYgAPQjERnAMwgxxwoN4\"},{\"time\":\"14:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Mê Hội An Rooftop Coffee & Kitchen\",\"description\":\"**4.9⭐ (2.762 đánh giá Google Maps)** — Cà phê view đẹp trên rooftop, giá 1-100k, mở 8h-22h30. Lý tưởng để nghỉ ngơi & ngắm phố.\",\"price\":\"chưa có giá\",\"address\":\"166 Trần Phú, Old Town, Hội An\",\"maps_link\":\"https://maps.google.com/?cid=14326689060177770475\",\"booking_link\":\"\",\"place_id\":\"ChIJb_HrObEPQjER6_deT8uf0sY\"},{\"time\":\"16:00\",\"emoji\":\"🚣\",\"category\":\"attraction\",\"name\":\"Bay Mau Coconut Forest Tour\",\"description\":\"**4.7⭐ (1.978 đánh giá Google Maps)** — Tour thuyền qua rừng dừa, trải nghiệm độc đáo. Mở 9h-17h\",\"price\":\"chưa có giá\",\"address\":\"Võ Chí Công, Hội An Đông, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14526963969458245829\",\"booking_link\":\"https://coconutboattourhoian.com/en/coconut-boat-tour\",\"place_id\":\"ChIJTZ_704kPQjERxRB1WMMkmsk\"},{\"time\":\"18:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"MẸT Hội An - Vietnamese cuisine & Vegetarian options\",\"description\":\"**4.9⭐ (14.207 đánh giá Google Maps)** — Nhà hàng Việt Nam chất lượng cao, có option chay, mở 10h-22h30.\",\"price\":\"chưa có giá\",\"address\":\"49 Nguyễn Thái Học, Old Town, Hội An\",\"maps_link\":\"https://maps.google.com/?cid=8609020210729391502\",\"booking_link\":\"https://metvietnameserestaurant.com/\",\"place_id\":\"ChIJgxsiJQAPQjERjhWv5ERieXc\"},{\"time\":\"20:30\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều để về TP.HCM. Từ Hội An đi sân bay Đà Nẵng khoảng 30 phút.\",\"price\":\"(Đã tính trong vé khứ hồi)\",\"address\":\"Sân bay Đà Nẵng\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+da+nang\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi\":\"chưa có giá\",\"Ăn sáng (Cao lầu)\":\"chưa có giá\",\"Cà phê chiều\":\"chưa có giá\",\"Tour thuyền dừa\":\"chưa có giá\",\"Ăn tối\":\"chưa có giá\",\"Vé tham quan (nếu vào nhà cổ)\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Mê Hội An Rooftop có view toàn cảnh phố cổ — đây là chỗ lý tưởng để uống cà phê chiều và chụp ảnh.\",\"basis\":\"tool\",\"place\":\"Mê Hội An Rooftop Coffee & Kitchen\"}],\"share_text\":\"1 ngày ở Hội An: phố cổ, cao lầu, tour thuyền dừa & cà phê rooftop 🌅 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì bạn có thể trải nghiệm đầy đủ Hội An trong 1 ngày: ăn đặc sản, dạo phố cổ, uống cà phê view đẹp, và thử tour thuyền dừa độc đáo.\n\nThời tiết hôm nay khá mát (25-29°C), nên dạo phố sẽ thoải mái — chỉ cần mang ô vì có 21% chance mưa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Phố Cổ Hội An trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16041945140456063900\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bạn muốn thêm hoạt động gì ở Hội An?|Cần gợi ý quán ăn khác?|Muốn biết cách di chuyển từ sân bay?[/FOLLOWUPS]"
+    }
+  ]
+}

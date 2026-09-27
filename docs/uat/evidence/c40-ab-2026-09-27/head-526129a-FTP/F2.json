@@ -1,0 +1,159 @@
+{
+  "id": "F2",
+  "text": "tim quan bun bo ngon o q1 duoi 80k",
+  "parent": null,
+  "status": 200,
+  "ms": 11213,
+  "evidenceId": "12c01855-50e7-4d05-9391-5225364f02da",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán bún bò ngon",
+        "type": "restaurant",
+        "location": "Quận 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "rating": 4.8,
+      "count": 1011,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–22:00",
+      "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "rating": 4.8,
+      "count": 63,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–13:00",
+      "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bún Bò Huế Cống Quỳnh",
+      "rating": 3.8,
+      "count": 124,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–12:30, 16:00–20:30",
+      "address": "262 Đ. Cống Quỳnh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Huế O Xuân",
+      "rating": 3.9,
+      "count": 692,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–21:30",
+      "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 31",
+      "rating": 4,
+      "count": 249,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–14:00",
+      "address": "31 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Đông Ba - Bún Bò Huế (Hue Beef Noodle)",
+      "rating": 3.9,
+      "count": 1398,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–21:30",
+      "address": "207B Nguyễn Văn Thủ, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 24H",
+      "rating": 4.1,
+      "count": 420,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế Ty (CN Sài Gòn)",
+      "rating": 4.7,
+      "count": 128,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–13:30, 17:00–22:00",
+      "address": "23 Trần Nguyên Đán, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn sáng hoặc trưa hôm nay ở Quận 1. **Bếp Ông Cậu** là lựa chọn mình nghiêng về nhất — **4.8⭐ (1.011 đánh giá)** với bún bò thố đá đặc biệt, mở từ 6:30 sáng, và giá dưới 80k.\n\nNếu muốn chọn khác: **Bún Bò Huế Ty** cũng 4.7⭐ (128 đánh giá), mở 6:30–13:30 & 17:00–22:00, hoặc **Đông Ba** có 1.398 đánh giá (3.9⭐), mở cả ngày nên linh hoạt hơn.\n\nBạn muốn ăn lúc nào trong hôm nay?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ăn sáng hay trưa?|Thích bún bò kiểu nào?|Có muốn giao hàng không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "tim quan bun bo ngon o q1 duoi 80k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn sáng hoặc trưa hôm nay ở Quận 1. **Bếp Ông Cậu** là lựa chọn mình nghiêng về nhất — **4.8⭐ (1.011 đánh giá)** với bún bò thố đá đặc biệt, mở từ 6:30 sáng, và giá dưới 80k.\n\nNếu muốn chọn khác: **Bún Bò Huế Ty** cũng 4.7⭐ (128 đánh giá), mở 6:30–13:30 & 17:00–22:00, hoặc **Đông Ba** có 1.398 đánh giá (3.9⭐), mở cả ngày nên linh hoạt hơn.\n\nBạn muốn ăn lúc nào trong hôm nay?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ăn sáng hay trưa?|Thích bún bò kiểu nào?|Có muốn giao hàng không?[/FOLLOWUPS]"
+    }
+  ]
+}

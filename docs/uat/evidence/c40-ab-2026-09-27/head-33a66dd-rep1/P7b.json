@@ -1,0 +1,165 @@
+{
+  "id": "P7b",
+  "text": "1–2 người",
+  "parent": "P7",
+  "status": 200,
+  "ms": 17315,
+  "evidenceId": "c8e306f5-2f8e-4296-b80a-6dd118a0ff94",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "gội đầu dưỡng sinh spa",
+        "location": "Quận 1, TP HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Gội Đầu Dưỡng Sinh SEA | Massage quận 1",
+      "rating": 4.7,
+      "count": 28,
+      "hours": "09:00–02:00",
+      "distance_km": 2,
+      "address": "212b/4 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP HCM"
+    },
+    {
+      "name": "Spa Quê Một Cục - Dịch Vụ Chăm Sóc Tóc Giá Tốt Nhất",
+      "address": "Quận 1, TP HCM"
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh Quận 1",
+      "rating": 5,
+      "count": 6,
+      "hours": "09:00–21:00",
+      "distance_km": 1.7,
+      "address": "210 Nguyễn Khắc Nhu, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Gội đầu dưỡng sinh Cô Giang Saigon",
+      "rating": 4.9,
+      "count": 244,
+      "hours": "09:00–20:00",
+      "distance_km": 2.4,
+      "address": "375/9 Hoàng Sa, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+      "rating": 4.9,
+      "count": 34,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.7,
+      "address": "166 Đ. Cống Quỳnh, quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+      "rating": 5,
+      "count": 31,
+      "hours": "10:00–00:00",
+      "distance_km": 1.8,
+      "address": "47 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "distance_km": 1.2,
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+      "rating": 5,
+      "count": 34,
+      "hours": "09:30–23:00",
+      "distance_km": 1.3,
+      "address": "95/21 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "rating": 4.9,
+      "count": 948,
+      "hours": "09:00–22:00",
+      "distance_km": 1,
+      "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm kiếm spa gội đầu dưỡng sinh gần bạn cho 2 người nhé.\n\nMình chọn **An Miên Spa** cho bạn — cách bạn chỉ 1km, mở cửa đến 22:00 hôm nay, và có 4.9⭐ từ 948 đánh giá Google Maps. Đây là spa gội đầu dưỡng sinh nổi tiếng nhất khu vực, khách rất đông.\n\nNếu muốn gần hơn, **Nemo Gội Đầu Dưỡng Sinh** (1.3km, 5⭐ từ 34 đánh giá) cũng tốt và mở đến 23:00.\n\nBạn muốn gọi đặt chỗ hay cần thêm thông tin gì không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":true},{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ An Miên Spa|Xem spa khác gần đây|Gội đầu ở đâu rẻ|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay. Mình tìm được vài spa tốt quanh đây — chọn **Serene Head Spa & Massage** vì nó gần nhất (chỉ 0.4km), đạt 5⭐ từ 198 đánh giá Google Maps, và chuyên gội đầu dưỡng sinh. Spa này mở từ 9:30–23:00, nên bạn có thể ghé bất cứ lúc nào hôm nay.\n\nNếu muốn lựa chọn khác, **Spa & Massage Lisa** cũng rất gần (0.5km), mở cả ngày, và có 4.7⭐ từ 421 đánh giá. Hoặc **AN's spa** (0.9km) nổi tiếng với 4.9⭐ từ 3.414 đánh giá — đây là spa được yêu thích nhất khu vực.\n\nTầm giá bạn muốn là bao nhiêu?\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "1–2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm kiếm spa gội đầu dưỡng sinh gần bạn cho 2 người nhé.\n\nMình chọn **An Miên Spa** cho bạn — cách bạn chỉ 1km, mở cửa đến 22:00 hôm nay, và có 4.9⭐ từ 948 đánh giá Google Maps. Đây là spa gội đầu dưỡng sinh nổi tiếng nhất khu vực, khách rất đông.\n\nNếu muốn gần hơn, **Nemo Gội Đầu Dưỡng Sinh** (1.3km, 5⭐ từ 34 đánh giá) cũng tốt và mở đến 23:00.\n\nBạn muốn gọi đặt chỗ hay cần thêm thông tin gì không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":true},{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ An Miên Spa|Xem spa khác gần đây|Gội đầu ở đâu rẻ|[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 9420,
+  "evidenceId": "3311814d-1307-4a6d-a03e-e87165507d29",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "SGN",
+        "destination": "HAN"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi tuần sau (khoảng 5-11 tháng 10). Hiện tại hệ thống chưa có dữ liệu giá cụ thể, nhưng mình tìm được các nền tảng để bạn xem giá rẻ nhất:\n\n[Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Dhan%26ddate%3D2026-10-05%26flighttype%3Dow%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177) và [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177) đều cho phép so sánh giá theo từng ngày — bạn có thể chọn ngày nào rẻ nhất trong tuần.\n\nMẹo: **Thứ 2-4 thường rẻ hơn thứ 5-7** 🛫 Bạn muốn đi ngày cụ thể nào không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi tuần sau (khoảng 5-11 tháng 10). Hiện tại hệ thống chưa có dữ liệu giá cụ thể, nhưng mình tìm được các nền tảng để bạn xem giá rẻ nhất:\n\n[Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Dhan%26ddate%3D2026-10-05%26flighttype%3Dow%26class%3Dy%26quantity%3D1%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177) và [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=6794dcba9501fc5c49867177) đều cho phép so sánh giá theo từng ngày — bạn có thể chọn ngày nào rẻ nhất trong tuần.\n\nMẹo: **Thứ 2-4 thường rẻ hơn thứ 5-7** 🛫 Bạn muốn đi ngày cụ thể nào không?"
+    }
+  ]
+}

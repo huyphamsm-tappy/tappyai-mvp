@@ -1,0 +1,173 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 15773,
+  "evidenceId": "6d874397-fadb-4914-921d-348c0372d1d7",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa dưới 300k Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "SoYoung Spa Quận 1",
+      "rating": 5,
+      "count": 35,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.2,
+      "address": "55/34 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 07000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3548,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3174,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 200,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1073,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Lisa Nail & Spa - Tiệm Nail Quận 1 - Nail Salon - Head Spa - Foot Scrub - Massage - 네일 살롱",
+      "rating": 4.9,
+      "count": 8612,
+      "hours": "09:00–21:00",
+      "distance_km": 2.1,
+      "address": "416A Hai Bà Trưng, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa Quận 1",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 1.3,
+      "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "rating": 4.9,
+      "count": 421,
+      "hours": "10:00–02:00",
+      "distance_km": 0.9,
+      "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm được 10 spa gần bạn, nhưng chưa xác nhận được giá cụ thể của chúng. Mình gợi ý **Trạm Relax Spa** — chỉ cách bạn 0.9km, mở cửa đến 2:00 sáng, có 4.9⭐ từ 421 đánh giá. Spa này chuyên gội đầu dưỡng sinh và massage, rất gần và tiện lợi.\n\n- **Phaya Thai Spa** (1.3km, 4.6⭐ từ 620 đánh giá, mở 09:00–22:00)\n- **Massage Cổ Phong Q1** (1.3km, 4.9⭐ từ 3.174 đánh giá, mở 09:00–22:30)\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Trạm Relax Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5080874049103554919\",\"primary\":true},{\"label\":\"🌐 Website - Trạm Relax Spa\",\"type\":\"website\",\"url\":\"http://tramrelax.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage gần đây hôm nay. Mình chọn **Serene Head Spa & Massage** — chỉ cách bạn 0.4km, đang mở cửa lúc này (09:30–23:00), và có đánh giá 5⭐ từ 197 khách trên Google Maps. Spa này chuyên massage đầu và body care, rất gần và tiện lợi 👌\n\nNếu muốn chọn khác: **AN's spa** (0.9km, 4.9⭐ từ 3.414 đánh giá, mở đến 23:30) hoặc **LOTUS SPA** (0.6km, 4.7⭐, mở cả đêm) cũng là lựa chọn tốt.\n\nBạn muốn đặt chỗ hay cần thêm thông tin gì không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt chỗ massage|Xem spa khác gần đây|Massage chân hay body?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa gần bạn, nhưng chưa xác nhận được giá cụ thể của chúng. Mình gợi ý **Trạm Relax Spa** — chỉ cách bạn 0.9km, mở cửa đến 2:00 sáng, có 4.9⭐ từ 421 đánh giá. Spa này chuyên gội đầu dưỡng sinh và massage, rất gần và tiện lợi.\n\n- **Phaya Thai Spa** (1.3km, 4.6⭐ từ 620 đánh giá, mở 09:00–22:00)\n- **Massage Cổ Phong Q1** (1.3km, 4.9⭐ từ 3.174 đánh giá, mở 09:00–22:30)\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Trạm Relax Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5080874049103554919\",\"primary\":true},{\"label\":\"🌐 Website - Trạm Relax Spa\",\"type\":\"website\",\"url\":\"http://tramrelax.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}
