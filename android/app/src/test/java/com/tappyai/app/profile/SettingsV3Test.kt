@@ -23,8 +23,10 @@ class SettingsV3Test {
 
     @Test
     fun `the ten rows, in order, keep their actions - and the sound toggle, language and appearance pickers are the same calls`() {
-        val body = screen.substring(screen.indexOf("SettingsV3Header(onBack = onBack)"), screen.indexOf("if (confirmDeleteAccount) {"))
-        val rows = Regex("""(?<!sub)title = stringResource\(R\.string\.(settings_\w+)\)""").findAll(body).map { it.groupValues[1] }.toList()
+        // UAT3 P0 (2026-09-27): the delete row's title and dialog branch on `flags.accountSelfDelete`
+        // (in-app deletion via POST /api/account/delete, else the email request) — same row, same place.
+        val body = screen.substring(screen.indexOf("SettingsV3Header(onBack = onBack)"), screen.indexOf("if (confirmDeleteAccount && viewModel.selfDeleteEnabled"))
+        val rows = Regex("""(?<!sub)title = stringResource\((?:if \([^)]*\) R\.string\.settings_delete_account_self else )?R\.string\.(settings_\w+)\)""").findAll(body).map { it.groupValues[1] }.toList()
         assertEquals(
             // 2026-09-17: "Giao diện" (System / Light / Dark) joins the options card after Language.
             // 2026-09-21: "Chính sách bản quyền" joins the legal rows after Privacy (F-032 cleanup —

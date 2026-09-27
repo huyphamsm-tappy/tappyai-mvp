@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UAT3 P0 in-app account deletion. Word for word from src/lib/i18n/accountDelete.ts (web), which is
+     docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md §3/§3b — change them together (accountDeletionParity.test.ts). -->
+<resources>
+    <string name="settings_delete_account_self">Delete account</string>
+    <string name="account_delete_warning">Deletion is permanent and cannot be undone. Your account is deleted as soon as you confirm.</string>
+    <string name="account_delete_removes_heading">Deletion permanently removes:</string>
+    <string name="account_delete_kept_heading">Kept, but no longer linked to you</string>
+    <string name="account_delete_kept_lead">Some things you shared with other people belong to their record as well, so they stay without your name or account attached:</string>
+    <string name="account_delete_confirm_word">DELETE</string>
+    <string name="account_delete_submit">Permanently delete account</string>
+    <string name="account_delete_deleting">Deleting…</string>
+    <string name="account_delete_cancel">Cancel</string>
+    <string name="account_delete_error_staff">This account has admin access, so it cannot be deleted from here. Please contact support.</string>
+    <string name="account_delete_error_failed">Your account was not deleted and is unchanged. Please try again.</string>
+    <string name="account_delete_error_sign_in">Your session has expired. Sign in again, then try again.</string>
+    <string name="account_delete_done_title">Your account has been deleted</string>
+    <string name="account_delete_done_p1">Your data has been removed from our database; the photos, videos and audio you uploaded are removed from our file storage within 48 hours after that.</string>
+    <string name="account_delete_done_ok">Go to Home</string>
+    <string name="account_delete_removes_1">Your account and profile, including your name, profile photo, cover photo and bio.</string>
+    <string name="account_delete_removes_2">Your chats with TappyAI and your AI memory.</string>
+    <string name="account_delete_removes_3">Your saved places, favourites, preferences, price watches and plans.</string>
+    <string name="account_delete_removes_4">The reviews, comments and likes you posted, including their photos and videos.</string>
+    <string name="account_delete_removes_5">The result pages you shared publicly — their links stop working.</string>
+    <string name="account_delete_removes_6">The photos, videos and audio you uploaded, removed from our file storage.</string>
+    <string name="account_delete_removes_7">Groups you created, and your place in groups created by others.</string>
+    <string name="account_delete_removes_8">Notifications you caused in other people\'s inboxes (for example \"… commented on your review\").</string>
+    <string name="account_delete_removes_9">Your Google Calendar connection — we also revoke TappyAI\'s access at Google.</string>
+    <string name="account_delete_kept_1">Messages you sent to other people stay in their conversation and are shown as coming from a deleted account.</string>
+    <string name="account_delete_kept_2">Reports and moderation decisions about content or accounts are kept for safety and legal compliance, without a link to your account.</string>
+    <string name="account_delete_confirm_label">To confirm, type %1$s</string>
+    <string name="account_delete_done_p2">You will be signed out. If you have questions, contact %1$s.</string>
+</resources>

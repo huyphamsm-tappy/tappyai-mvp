@@ -18,6 +18,7 @@ import {
   ONBOARDING_INTERESTS,
   ONBOARDING_CITIES,
 } from '@/lib/config/product'
+import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 
 // GET /api/config — the backend-owned product configuration, as a stable
 // contract for ALL clients (Web, Android, iOS). Native clients read quotas,
@@ -51,6 +52,11 @@ export async function GET() {
         // Music is hidden on every platform while the catalogue licensing is undecided.
         // Native reads this; the underlying routes and catalogue are untouched.
         showMusic: SHOW_MUSIC,
+        // UAT3 P0: native Settings offers the in-app deletion (POST /api/account/delete) only where
+        // the server can keep the promise (ACCOUNT_SELF_DELETE_ENABLED, after D1/D2/D4). Off = the
+        // request-by-email flow. This route is static, so the value is the build's env — flipping the
+        // variable needs a redeploy (DEPLOY-CHECKLIST §4d step 3 says so).
+        accountSelfDelete: selfDeleteEnabled(),
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

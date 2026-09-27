@@ -14,6 +14,11 @@ import com.tappyai.core.network.NetworkResult
 import com.tappyai.features.auth.data.AuthRepository
 import com.tappyai.app.AppearanceMode
 import com.tappyai.app.AppearanceStore
+import com.tappyai.app.account.data.AccountDeletionApi
+import com.tappyai.app.account.data.DeleteAccountRequestDto
+import com.tappyai.app.account.data.DeleteOutcome
+import com.tappyai.app.account.data.deleteOutcomeFor
+import com.tappyai.app.account.data.isDeleteConfirmWord
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,7 +46,55 @@ class SettingsViewModel @Inject constructor(
     private val settingsErrorMessages: SettingsErrorMessages,
     @ApplicationContext private val appContext: android.content.Context,
     private val appearance: AppearanceStore,
+    private val deletionApi: AccountDeletionApi,
 ) : ViewModel() {
+
+    // ── In-app account deletion (UAT3 P0) ────────────────────────────────────────────────────
+    //
+    // Offered only where the server says it can keep the promise (`flags.accountSelfDelete` from
+    // GET /api/config); otherwise the row stays the request-by-email flow. A failed config read is
+    // "not offered" — never a button the server would refuse.
+
+    var selfDeleteEnabled by mutableStateOf(false)
+        private set
+
+    /** null = idle; otherwise the last answer (or [DeletePhase.InFlight]). */
+    var deletePhase by mutableStateOf<DeletePhase?>(null)
+        private set
+
+    init {
+        viewModelScope.launch {
+            selfDeleteEnabled = runCatching { deletionApi.config().flags.accountSelfDelete }
+                .onFailure { logger.e(TAG, "config read failed: ${it.javaClass.simpleName}") }
+                .getOrDefault(false)
+        }
+    }
+
+    fun deleteAccount(typed: String) {
+        if (!isDeleteConfirmWord(typed) || deletePhase == DeletePhase.InFlight) return
+        deletePhase = DeletePhase.InFlight
+        viewModelScope.launch {
+            val outcome = runCatching { deleteOutcomeFor(deletionApi.deleteAccount(DeleteAccountRequestDto(typed.trim())).code()) }
+                .getOrDefault(DeleteOutcome.Failed)
+            // Counts only in the log — never the user or the typed word.
+            logger.i(TAG, "self-delete outcome=$outcome")
+            deletePhase = DeletePhase.Answered(outcome)
+        }
+    }
+
+    fun clearDeleteError() {
+        if (deletePhase is DeletePhase.Answered && (deletePhase as DeletePhase.Answered).outcome != DeleteOutcome.Deleted) deletePhase = null
+    }
+
+    /**
+     * After "Deleted": the account no longer exists server-side. The session is torn down only
+     * when the person dismisses the confirmation, so they read what happens next first;
+     * [AuthRepository.signOut] clears the local session even if the remote call fails for a user
+     * that is gone, and AppNavHost then routes to Login.
+     */
+    fun finishAfterDeletion() {
+        viewModelScope.launch { authRepository.signOut() }
+    }
 
     /** "Giao diện": Theo hệ thống / Sáng / Tối — the same store MainActivity resolves the theme from. */
     val appearanceMode: StateFlow<AppearanceMode> = appearance.mode
@@ -139,4 +192,9 @@ class SettingsViewModel @Inject constructor(
     private companion object {
         const val TAG = "SettingsViewModel"
     }
+}
+
+sealed interface DeletePhase {
+    data object InFlight : DeletePhase
+    data class Answered(val outcome: DeleteOutcome) : DeletePhase
 }

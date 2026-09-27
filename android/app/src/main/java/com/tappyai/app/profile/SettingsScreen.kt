@@ -260,9 +260,14 @@ fun SettingsScreen(
                         // Request-based on purpose: support verifies the requester owns the account
                         // before anything is erased. The app deletes nothing itself. The red tile is
                         // the destructive accent; the confirmation dialog below is unchanged.
+                        //
+                        // UAT3 P0: where the server offers it (`flags.accountSelfDelete`), the same
+                        // row is the in-app deletion — DeleteAccountDialog → POST /api/account/delete
+                        // with the user's Bearer token, the web's exact path. Otherwise it stays the
+                        // request-by-email flow above, word for word.
                         TappyMenuRow(
                             icon = Icons.Filled.DeleteOutline,
-                            title = stringResource(R.string.settings_delete_account),
+                            title = stringResource(if (viewModel.selfDeleteEnabled && !viewModel.isAnonymous) R.string.settings_delete_account_self else R.string.settings_delete_account),
                             subtitle = stringResource(R.string.settings_delete_account_desc),
                             accent = AccentRed,
                             titleFontWeight = FontWeight.SemiBold,
@@ -315,7 +320,16 @@ fun SettingsScreen(
         }
     }
 
-    if (confirmDeleteAccount) {
+    if (confirmDeleteAccount && viewModel.selfDeleteEnabled && !viewModel.isAnonymous) {
+        DeleteAccountDialog(
+            phase = viewModel.deletePhase,
+            supportEmail = SUPPORT_EMAIL,
+            onDelete = viewModel::deleteAccount,
+            onTyping = viewModel::clearDeleteError,
+            onDismiss = { confirmDeleteAccount = false; viewModel.clearDeleteError() },
+            onFinished = { confirmDeleteAccount = false; viewModel.finishAfterDeletion() },
+        )
+    } else if (confirmDeleteAccount) {
         val subject = stringResource(R.string.settings_delete_account_email_subject)
         val body = stringResource(R.string.settings_delete_account_email_body)
         val noEmailApp = stringResource(R.string.settings_delete_account_no_email)
