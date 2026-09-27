@@ -1,7 +1,7 @@
 // ── get_flight_prices `passengers`: the per-booking cap, applied with a message ──────────────
 //
-// The provider side: fares (Travelpayouts) are per person and take no passenger count; the dated
-// booking links (Trip.com `quantity`, Traveloka `ps=`) carry it. The real limit is the industry
+// The provider side: there is no fare API, so the passenger count lives only in the dated
+// booking links (Trip.com `quantity`, Traveloka `ps=`). The real limit is the industry
 // one — "most airlines define a group booking as 10+ passengers" (Trip.com group-travel guide,
 // read 2026-09-19); Traveloka's help centre states no number. So an individual booking is at most
 // 9, and a bigger party needs split tickets or a group desk. The schema used to say `.max(9)`,

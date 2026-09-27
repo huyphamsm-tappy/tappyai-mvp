@@ -293,7 +293,6 @@ Saved *places* (distinct from `review_saves`).
 **AI provider adapters:** `ANTHROPIC_API_KEY` — one provider adapter's credential, held inside the provider layer (`src/lib/ai/llm/providers/`; see `docs/architecture/AI_PLATFORM.md`). Backs the AI capability layer used by chat, tools, OCR `/api/scan`, viet-content, translate, crons.
 **Stripe:** `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRO_PRICE_ID`.
 **Search / Places:** `SERPER_API_KEY` (Serper — images + price-check), `GOOGLE_PLACES_API_KEY` (noted EMPTY in prod; OSM/Overpass is the live substrate).
-**Travel:** `TRAVELPAYOUTS_TOKEN` (Aviasales flight prices).
 **Music ingest:** `JAMENDO_CLIENT_ID` (CC-BY track ingest, `scripts/ingest-jamendo.mjs`).
 **Web Push (VAPID):** `NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_CONTACT_EMAIL`.
 **Analytics:** `NEXT_PUBLIC_POSTHOG_KEY`, `NEXT_PUBLIC_POSTHOG_HOST`.
@@ -343,5 +342,5 @@ The iOS app shares the same Supabase project and holds only the **anon key** →
 2. **RLS is uniform and strict:** public-read on social/catalog tables, `auth.uid()`-self-scoped on all user-owned tables, service-role-only writes on billing/subscriptions/milestones/reports — iOS holds only the anon key and is bound identically to the web browser.
 3. **The dominant fixed bug** was RLS silently zeroing denormalized counters; every counter/watch-stat function was re-created `SECURITY DEFINER SET search_path=public`, plus one-time backfills — iOS must never write counters, only junction rows + RPCs.
 4. **Security hardening** removed public email/stripe exposure (isolated into `billing_customers`; email dropped), closed anonymous group-join, revoked anon view-count inflation and place-photo cache-poisoning, and gated Original-Sound UGC uploads on explicit rights-confirmation.
-5. **No Supabase Storage buckets** — all media is Vercel Blob (`BLOB_READ_WRITE_TOKEN`, client-direct tokens, public access, 50 MB video / 20 MB audio caps); external services = Supabase, AI provider adapters (credentials inside the provider layer only), Stripe, Serper, Jamendo, VAPID web-push, PostHog, Zalo, Google, Vercel Blob, Travelpayouts, plus `CRON_SECRET`/`ADMIN_IDS`.
+5. **No Supabase Storage buckets** — all media is Vercel Blob (`BLOB_READ_WRITE_TOKEN`, client-direct tokens, public access, 50 MB video / 20 MB audio caps); external services = Supabase, AI provider adapters (credentials inside the provider layer only), Stripe, Serper, Jamendo, VAPID web-push, PostHog, Zalo, Google, Vercel Blob, plus `CRON_SECRET`/`ADMIN_IDS`.
 

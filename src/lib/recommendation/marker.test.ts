@@ -173,7 +173,7 @@ describe('the persistence policy is enforced, not remembered', () => {
 
   it('mayPersist names google_places and nothing else', () => {
     expect(mayPersist('google_places')).toBe(false)
-    for (const s of ['osm', 'serper_shopping', 'serper_search', 'serper_images', 'travelpayouts', 'tappy_reviews', 'computed'] as const) {
+    for (const s of ['osm', 'serper_shopping', 'serper_search', 'serper_images', 'tappy_reviews', 'computed'] as const) {
       expect(mayPersist(s), s).toBe(true)
     }
   })

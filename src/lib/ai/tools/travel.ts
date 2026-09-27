@@ -33,11 +33,12 @@ export function isSpecificOtaHotelPage(link: string): boolean {
   }
 }
 
-// ===== FLIGHT PRICES: Travelpayouts Data API (free, can dang ky token) =====
-// Token is read from TRAVELPAYOUTS_TOKEN env var (set in Vercel / .env.local).
-// If missing, flight-price lookups are skipped and the AI falls back to the search link.
-const TRAVELPAYOUTS_TOKEN = process.env.TRAVELPAYOUTS_TOKEN || ''
-
+// ===== FLIGHTS: dated booking links, no fare provider =====
+// There is no fare API behind this tool. Travelpayouts (Aviasales) was removed on 2026-09-27
+// when TappyAI moved its affiliate programme to Accesstrade; its token had been absent in every
+// environment, so the fare lookup never ran in production (docs/audit/autorun-2026-09-20.md C2).
+// A mapped route returns the `notConfigured` answer + dated booking links — the exact result
+// production was already returning.
 const IATA_MAP: Record<string, string> = {
   'ha noi': 'HAN', 'hanoi': 'HAN', 'hn': 'HAN',
   'ho chi minh': 'SGN', 'tp ho chi minh': 'SGN', 'tp hcm': 'SGN', 'hcm': 'SGN', 'sai gon': 'SGN', 'saigon': 'SGN', 'tphcm': 'SGN',
@@ -69,13 +70,6 @@ const IATA_MAP: Record<string, string> = {
   'sydney': 'SYD',
 }
 
-const AIRLINE_NAMES: Record<string, string> = {
-  VN: 'Vietnam Airlines', VJ: 'VietJet Air', QH: 'Bamboo Airways', BL: 'Pacific Airlines',
-  '3K': 'Jetstar Asia', SQ: 'Singapore Airlines', TG: 'Thai Airways', TR: 'Scoot',
-  KE: 'Korean Air', OZ: 'Asiana Airlines', JL: 'Japan Airlines', NH: 'ANA',
-  CX: 'Cathay Pacific', MU: 'China Eastern', AK: 'AirAsia',
-}
-
 export function cityToIATA(name: string): string | null {
   const n = normalizeVN((name || '').toLowerCase().trim())
   if (/^[a-z]{3}$/i.test(n)) return n.toUpperCase()
@@ -104,46 +98,9 @@ export async function getFlightPrices(origin: string, destination: string, lang 
     ? buildFlightLinks(originCode, destCode, defaultDepartISO).filter(l => !/google\./i.test(l.url))
     : []
 
-  let result: unknown
-  if (!originCode || !destCode) {
-    result = { error: messages.flights.unknownAirport(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
-  } else if (!TRAVELPAYOUTS_TOKEN) {
-    result = { error: messages.flights.notConfigured(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
-  } else {
-    try {
-      const params = new URLSearchParams({ origin: originCode, destination: destCode, currency: 'vnd', token: TRAVELPAYOUTS_TOKEN })
-      const resp = await Promise.race([
-        fetch('https://api.travelpayouts.com/v1/prices/cheap?' + params.toString(), { headers: { 'Accept': 'application/json' } }),
-        new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), 6000))
-      ])
-      const data = await (resp as Response).json()
-      const routeData = data?.data?.[destCode]
-      if (data?.success && routeData) {
-        type Fare = { price: number; airline: string; flight_number: number; departure_at?: string; return_at?: string }
-        const options = Object.values(routeData as Record<string, Fare>)
-        // Point the deep-links at the cheapest fare's departure day when available.
-        const cheapestDepart = options.map(o => o.departure_at).filter(Boolean).sort()[0]
-        const departISO = cheapestDepart ? String(cheapestDepart).slice(0, 10) : defaultDepartISO
-        result = {
-          source: messages.flights.source(),
-          origin: originCode, destination: destCode, currency: 'VND',
-          flights: options.map(o => ({
-            price_vnd: o.price,
-            airline: AIRLINE_NAMES[o.airline] || o.airline,
-            flight_number: o.airline + o.flight_number,
-            departure_at: o.departure_at || null,
-            return_at: o.return_at || null,
-          })),
-          booking_links: buildFlightLinks(originCode, destCode, departISO),
-          note: messages.flights.cheapestNote(lang)
-        }
-      } else {
-        throw new Error('no data')
-      }
-    } catch {
-      result = { error: messages.flights.fetchError(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
-    }
-  }
+  const result = !originCode || !destCode
+    ? { error: messages.flights.unknownAirport(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
+    : { error: messages.flights.notConfigured(lang), booking_links: bookingLinks, note: messages.flights.findOnPlatforms(lang) }
   setCache(cacheKey, result, 60 * 60 * 1000) // cache 1 gio
   return result
 }

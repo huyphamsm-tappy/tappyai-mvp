@@ -96,11 +96,6 @@ export const messages = {
     unknownAirport: (lang: Lang) => isVi(lang) ? 'Khong nhan dien duoc san bay tu ten dia diem' : "Couldn't recognize an airport from that place name",
     findOnPlatforms: (lang: Lang) => isVi(lang) ? 'Tim chuyen bay tren cac nen tang tren' : 'Find flights on the platforms above',
     notConfigured: (lang: Lang) => isVi(lang) ? 'Chua cau hinh API gia ve may bay' : 'Flight price API is not configured',
-    source: () => 'Travelpayouts (Aviasales)',
-    cheapestNote: (lang: Lang) => isVi(lang)
-      ? 'Day la gia ve re gan nhat ma he thong tim duoc cho tuyen nay (khong chac dung ngay user hoi), gia co the da thay doi - bam link de xem gia chinh xac va dat ve theo ngay cu the.'
-      : "This is the cheapest fare the system found for this route (not necessarily the exact date asked) and prices may have changed — tap the link for the exact price and to book a specific date.",
-    fetchError: (lang: Lang) => isVi(lang) ? 'Khong lay duoc gia ve may bay luc nay' : "Couldn't fetch flight prices right now",
   },
   hotels: {
     sourceSerperOsm: () => 'Google Search (Serper) + OpenStreetMap',

@@ -17,7 +17,7 @@ Next.js 14 API routes (Vercel, node + edge runtimes)
    │        provider SDKs / model ids / provider keys outside the provider layer; streaming via Vercel AI SDK
    ├── Data: Supabase service-role (admin) for privileged writes (billing, milestones, counters)
    ├── Media: Vercel Blob (client-direct upload tokens issued here)
-   └── External: Serper, OSM/Overpass, open.er-api.com, Travelpayouts, Jamendo, Stripe, web-push (VAPID)
+   └── External: Serper, OSM/Overpass, open.er-api.com, Jamendo, Stripe, web-push (VAPID)
    ▼
 Supabase Postgres (~30 tables, RLS everywhere) + Supabase Auth (Google/Zalo/Email-OTP)
 ```
