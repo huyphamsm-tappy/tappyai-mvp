@@ -64,8 +64,46 @@ final class TappyPlanDecodeTests: XCTestCase {
         XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":{"label":"Ngày 1"}}"#))
     }
 
-    func testADayWithoutItemsIsNotAPlan() {
-        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1","items":[{"name":"A"}]},{"label":"Ngày 2"}]}"#))
+    func testOneBrokenDayIsDroppedNotTheWholePlan() throws {
+        // Day 2 has no items, day 3's items have no names: only those days go.
+        let p = try XCTUnwrap(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1","items":[{"name":"A"}]},{"label":"Ngày 2"},{"label":"Ngày 3","items":[{"time":"09:00"}]},{"label":"Ngày 4","items":[{"name":"B"}]}]}"#))
+        XCTAssertEqual(p.days.map(\.label), ["Ngày 1", "Ngày 4"])
+    }
+
+    func testNoUsableDayIsNotAPlan() {
+        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[{"label":"Ngày 1"},{"label":"Ngày 2","items":[]}]}"#))
+        XCTAssertNil(plan(#"{"title":"Đà Nẵng","days":[]}"#))
+    }
+
+    // MARK: - Card content (web TripPlanCard)
+
+    func testCardSummaryTipsAndLinks() throws {
+        let p = try XCTUnwrap(plan(#"""
+        {"title":"Đà Nẵng","people":3,"budget_total":"2.500.000đ","days":[{"label":"Ngày 1","items":[{"name":"A","maps_link":"https://maps.google.com/?q=A","booking_link":"javascript:alert(1)"}]}],
+         "cost_breakdown":{"Ăn uống":"800.000đ","Khách sạn":"chưa có giá"},
+         "local_tips":[{"text":"Đi sớm","basis":"tool","place":"Bà Nà"},{"text":"Mang áo mưa","basis":"general"},{"text":"  ","basis":"general"}]}
+        """#))
+        XCTAssertEqual(PlanCardContent.summary(p), String(format: NSLocalizedString("chat.plan.people", comment: ""), 3) + " · 2.500.000đ")
+        XCTAssertEqual(p.costBreakdown, ["Ăn uống": "800.000đ"], "a no-price sentinel is not a cost")
+        let tips = PlanCardContent.tips(p)
+        XCTAssertEqual(tips.map { $0.text }, ["Đi sớm", "Mang áo mưa"])
+        XCTAssertEqual(tips.map { $0.place }, ["Bà Nà", nil])
+        XCTAssertNotNil(PlanCardContent.link(p.days[0].items[0].mapsLink))
+        XCTAssertNil(PlanCardContent.link(p.days[0].items[0].bookingLink), "only http(s) links open")
+    }
+
+    func testSummaryWithoutPeopleOrBudget() throws {
+        let solo = try XCTUnwrap(plan(#"{"people":1,"days":[{"label":"","items":[{"name":"A"}]}]}"#))
+        XCTAssertNil(PlanCardContent.summary(solo))
+        let budgetOnly = try XCTUnwrap(plan(#"{"budget_total":"500k","days":[{"label":"","items":[{"name":"A"}]}]}"#))
+        XCTAssertEqual(PlanCardContent.summary(budgetOnly), "500k")
+    }
+
+    func testCardStringsExist() {
+        for key in ["chat.plan.people", "chat.plan.map", "chat.plan.bookNow", "chat.plan.localTips",
+                    "chat.plan.generalTip", "chat.plan.costBreakdown", "chat.plan.totalEstimate"] {
+            XCTAssertNotEqual(NSLocalizedString(key, comment: ""), key, key)
+        }
     }
 
     func testAnItemWithoutANameIsDroppedNotShownBlank() throws {

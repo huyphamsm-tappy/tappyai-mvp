@@ -1593,6 +1593,40 @@
         }
       }
     },
+    "chat.plan.bookNow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book now"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt ngay"
+          }
+        }
+      }
+    },
+    "chat.plan.costBreakdown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💰 Estimated cost"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💰 Chi phí ước tính"
+          }
+        }
+      }
+    },
     "chat.plan.dayFallback": {
       "extractionState": "manual",
       "localizations": {
@@ -1606,6 +1640,91 @@
           "stringUnit": {
             "state": "translated",
             "value": "Ngày %ld"
+          }
+        }
+      }
+    },
+    "chat.plan.generalTip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General advice"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinh nghiệm chung"
+          }
+        }
+      }
+    },
+    "chat.plan.localTips": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📍 Local tips"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📍 Mẹo địa phương"
+          }
+        }
+      }
+    },
+    "chat.plan.map": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản đồ"
+          }
+        }
+      }
+    },
+    "chat.plan.people": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld people"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld người"
+          }
+        }
+      }
+    },
+    "chat.plan.totalEstimate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngân sách"
           }
         }
       }

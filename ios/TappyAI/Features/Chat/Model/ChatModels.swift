@@ -198,8 +198,16 @@ struct TappyPlan: Equatable, Sendable, Decodable {
 
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
-        // Required: the one field web `parsePlan` validates.
-        days = try c.decode([PlanDay].self, forKey: .days)
+        // Required: the one field web `parsePlan` validates. Per DAY it is lossy: one malformed day
+        // (no `items`, or none with a name) is dropped and the rest of the plan still renders. Only
+        // a block with no usable day at all is not a plan — never a card of empty days.
+        let usable = try c.decode([Lossy<PlanDay>].self, forKey: .days)
+            .compactMap(\.value)
+            .filter { !$0.items.isEmpty }
+        guard !usable.isEmpty else {
+            throw DecodingError.dataCorruptedError(forKey: .days, in: c, debugDescription: "no usable plan day")
+        }
+        days = usable
         type = (try? c.decodeIfPresent(String.self, forKey: .type)) ?? nil
         title = ((try? c.decodeIfPresent(String.self, forKey: .title)) ?? nil)?
             .trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -220,6 +228,39 @@ struct TappyPlan: Equatable, Sendable, Decodable {
     private struct Lossy<T: Decodable & Sendable>: Decodable, Sendable {
         let value: T?
         init(from decoder: Decoder) throws { value = try? T(from: decoder) }
+    }
+}
+
+/// What the plan card shows beyond the days — the same pieces as web `TripPlanCard`.
+enum PlanCardContent {
+    /// "3 người · 2.500.000đ": people (only when more than one) and the budget, joined so a
+    /// missing half leaves no dangling separator. Nil when neither exists.
+    static func summary(_ plan: TappyPlan) -> String? {
+        var parts: [String] = []
+        if let people = plan.people, people > 1 {
+            parts.append(String(format: NSLocalizedString("chat.plan.people", comment: ""), people))
+        }
+        if let budget = plan.budgetTotal { parts.append(budget) }
+        return parts.isEmpty ? nil : parts.joined(separator: " · ")
+    }
+
+    /// Tips with text; a "tool" tip keeps its place, anything else is general advice.
+    static func tips(_ plan: TappyPlan) -> [(place: String?, text: String)] {
+        (plan.localTips ?? []).compactMap { tip in
+            let text = tip.text.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !text.isEmpty else { return nil }
+            let place = tip.place?.trimmingCharacters(in: .whitespacesAndNewlines)
+            return (tip.basis == "tool" && !(place ?? "").isEmpty ? place : nil, text)
+        }
+    }
+
+    /// A Maps / booking link the card may open: http(s) with a host, else nil.
+    static func link(_ raw: String?) -> URL? {
+        guard let raw, let url = URL(string: raw),
+              let scheme = url.scheme?.lowercased(), scheme == "https" || scheme == "http",
+              url.host?.isEmpty == false
+        else { return nil }
+        return url
     }
 }
 

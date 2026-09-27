@@ -535,6 +535,12 @@ private struct TripPlanCardView: View {
                     .font(TappyFont.bodyEmphasis)
                     .foregroundStyle(TappyColor.textPrimary)
             }
+            // Web header line: "N people · budget", joined so a missing half leaves no dangling "·".
+            if let summary = PlanCardContent.summary(plan) {
+                Text(summary)
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+            }
             ForEach(Array(plan.days.enumerated()), id: \.offset) { index, day in
                 VStack(alignment: .leading, spacing: Spacing.xs) {
                     Text(day.label.isEmpty ? String(format: NSLocalizedString("chat.plan.dayFallback", comment: ""), index + 1) : day.label)
@@ -567,9 +573,69 @@ private struct TripPlanCardView: View {
                                         .font(TappyFont.caption)
                                         .foregroundStyle(TappyColor.primary)
                                 }
+                                let maps = PlanCardContent.link(item.mapsLink)
+                                let booking = PlanCardContent.link(item.bookingLink)
+                                if maps != nil || booking != nil {
+                                    HStack(spacing: Spacing.sm) {
+                                        if let maps {
+                                            Link(destination: maps) { Label("chat.plan.map", systemImage: "map") }
+                                        }
+                                        if let booking {
+                                            Link(destination: booking) { Label("chat.plan.bookNow", systemImage: "calendar.badge.plus") }
+                                        }
+                                    }
+                                    .font(TappyFont.caption.weight(.semibold))
+                                    .foregroundStyle(TappyColor.primary)
+                                }
                             }
                         }
                     }
+                }
+            }
+
+            // Local tips: a stop of this plan ("Place: tip"), or flagged general advice.
+            let tips = PlanCardContent.tips(plan)
+            if !tips.isEmpty {
+                Divider()
+                Text("chat.plan.localTips")
+                    .font(TappyFont.caption.weight(.semibold))
+                    .foregroundStyle(TappyColor.textSecondary)
+                ForEach(Array(tips.enumerated()), id: \.offset) { _, tip in
+                    Group {
+                        if let place = tip.place {
+                            Text(verbatim: place + ": ").bold() + Text(verbatim: tip.text)
+                        } else {
+                            Text("chat.plan.generalTip").bold() + Text(verbatim: " · " + tip.text)
+                        }
+                    }
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            if let breakdown = plan.costBreakdown {
+                Divider()
+                Text("chat.plan.costBreakdown")
+                    .font(TappyFont.caption.weight(.semibold))
+                    .foregroundStyle(TappyColor.textSecondary)
+                ForEach(breakdown.keys.sorted(), id: \.self) { key in
+                    HStack {
+                        Text(key).foregroundStyle(TappyColor.textSecondary)
+                        Spacer()
+                        Text(breakdown[key] ?? "").foregroundStyle(TappyColor.textPrimary)
+                    }
+                    .font(TappyFont.caption)
+                }
+                // Web shows the total under the breakdown; the header line above carries it too.
+                if let total = plan.budgetTotal {
+                    HStack {
+                        Text("chat.plan.totalEstimate")
+                        Spacer()
+                        Text(total).foregroundStyle(TappyColor.primary)
+                    }
+                    .font(TappyFont.callout.weight(.bold))
+                    .foregroundStyle(TappyColor.textPrimary)
                 }
             }
         }
