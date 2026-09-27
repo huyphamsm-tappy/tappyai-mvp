@@ -1,32 +1,30 @@
 import { describe, it, expect } from 'vitest'
-import { assetLinks, appleAppSiteAssociation, androidFingerprints, UNIVERSAL_LINK_PATHS } from './appLinks'
+import fs from 'node:fs'
+import path from 'node:path'
+import {
+  assetLinks, androidFingerprints, appleAppSiteAssociation,
+  APPLE_TEAM_ID, IOS_BUNDLE_ID, IOS_APP_ID, IOS_UNIVERSAL_LINK_COMPONENTS,
+} from './appLinks'
+import { GET as getAasa } from '@/app/.well-known/apple-app-site-association/route'
 
 const FP = 'AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99'
 const env = (o: Record<string, string>) => o as unknown as NodeJS.ProcessEnv
+const read = (p: string) => fs.readFileSync(p, 'utf8')
 
-describe('App Links / Universal Links association files — inert until configured', () => {
-  it('serve nothing without configuration', () => {
+describe('App Links (Android) — inert until configured', () => {
+  it('serves nothing without configuration', () => {
     expect(assetLinks(env({}))).toBeNull()
-    expect(appleAppSiteAssociation(env({}))).toBeNull()
     expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: 'not-a-fingerprint' }))).toBeNull()
-    expect(appleAppSiteAssociation(env({ IOS_UNIVERSAL_LINKS_APP_ID: 'nope' }))).toBeNull()
   })
-  it('produce the standard statements once configured', () => {
+  it('produces the standard statement once configured', () => {
     expect(androidFingerprints(env({ ANDROID_APP_LINKS_SHA256: `${FP.toLowerCase()}, junk` }))).toEqual([FP])
     expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))).toEqual([{ relation: ['delegate_permission/common.handle_all_urls'], target: { namespace: 'android_app', package_name: 'com.tappyai.app', sha256_cert_fingerprints: [FP] } }])
-    const aasa = appleAppSiteAssociation(env({ IOS_UNIVERSAL_LINKS_APP_ID: 'ABCDE12345.com.tappyai.app' })) as { applinks: { details: { appID: string; paths: string[] }[] } }
-    expect(aasa.applinks.details[0].appID).toBe('ABCDE12345.com.tappyai.app')
-    expect(aasa.applinks.details[0].paths).toEqual([...UNIVERSAL_LINK_PATHS])
-  })
-  it('only ever claims public surfaces', () => {
-    for (const p of UNIVERSAL_LINK_PATHS) expect(p).not.toMatch(/^\/(chat|api|admin|profile|login)/)
   })
 })
 
 describe('App Links — the Android side is prepared and matches the server statement', () => {
-  const fs = require('node:fs') as typeof import('node:fs')
-  const manifest = fs.readFileSync('android/app/src/main/AndroidManifest.xml', 'utf8')
-  const gradle = fs.readFileSync('android/app/build.gradle.kts', 'utf8')
+  const manifest = read('android/app/src/main/AndroidManifest.xml')
+  const gradle = read('android/app/build.gradle.kts')
   it('the package the statement names is the applicationId the app builds with', () => {
     expect(gradle).toContain('applicationId = "com.tappyai.app"')
     expect(assetLinks(env({ ANDROID_APP_LINKS_SHA256: FP }))![0]).toMatchObject({ target: { package_name: 'com.tappyai.app' } })
@@ -37,6 +35,102 @@ describe('App Links — the Android side is prepared and matches the server stat
     expect(alias).toContain('android:pathPrefix="/r/"')
     expect(alias).toContain('android:enabled="@bool/tappy_app_links_enabled"')
     expect(gradle).toMatch(/resValue\("bool", "tappy_app_links_enabled", \(project\.findProperty\("TAPPYAI_APP_LINKS_ENABLED"\)\?\.toString\(\) == "true"\)\.toString\(\)\)/)
-    expect(UNIVERSAL_LINK_PATHS[0]).toBe('/r/*')
+  })
+})
+
+describe('Universal Links (iOS) — apple-app-site-association', () => {
+  type Aasa = {
+    applinks: { details: { appIDs: string[]; components: { '/': string; exclude?: boolean }[] }[] }
+    webcredentials: { apps: string[] }
+  }
+  const aasa = appleAppSiteAssociation() as Aasa
+  const includes = IOS_UNIVERSAL_LINK_COMPONENTS.filter(c => !c.exclude).map(c => c['/'])
+
+  it('names the real app — never the placeholder production served until 2026-09-27', () => {
+    expect(APPLE_TEAM_ID).toMatch(/^[A-Z0-9]{10}$/)
+    expect(IOS_APP_ID).toBe('6UAG75G2US.com.tappyai.ios')
+    expect(aasa.applinks.details[0].appIDs).toEqual([IOS_APP_ID])
+    expect(aasa.webcredentials.apps).toEqual([IOS_APP_ID])
+    expect(JSON.stringify(aasa)).not.toContain('APPLE_TEAM_ID')
+  })
+
+  it('no static file in public/ shadows the route (that is how the placeholder reached production)', () => {
+    expect(fs.existsSync('public/.well-known/apple-app-site-association')).toBe(false)
+    expect(fs.existsSync('public/.well-known/apple-app-site-association.json')).toBe(false)
+  })
+
+  it('the route answers 200 application/json with the same document', async () => {
+    const res = getAasa()
+    expect(res.status).toBe(200)
+    expect(res.headers.get('content-type')).toMatch(/^application\/json/)
+    expect(await res.json()).toEqual(aasa)
+  })
+
+  it('matches what the iOS app is built with: bundle id and Associated Domains', () => {
+    expect(read('ios/Config/Release.xcconfig')).toMatch(new RegExp(`^PRODUCT_BUNDLE_IDENTIFIER = ${IOS_BUNDLE_ID.replace(/\./g, '\\.')}\\s*$`, 'm'))
+    const entitlements = read('ios/TappyAI/TappyAI.entitlements')
+    expect(entitlements).toContain('<string>applinks:www.tappyai.com</string>')
+    expect(entitlements).toContain('<string>webcredentials:www.tappyai.com</string>')
+  })
+
+  it('claims no catch-all and no private, auth or web-only surface', () => {
+    for (const p of includes) {
+      expect(p).not.toBe('/*')
+      expect(p).not.toMatch(/^\/(chat|api|admin|profile|login|register|auth|r|plan|\.well-known)(\/|$)/)
+    }
+  })
+
+  it('every claimed path is one the iOS DeepLinkHandler routes natively', () => {
+    const handler = read('ios/TappyAI/Core/Navigation/DeepLinkHandler.swift')
+    const tabs = read('ios/TappyAI/Core/Navigation/AppTab.swift')
+    for (const p of includes) {
+      if (p === '/') {
+        expect(handler).toContain('if normalized == "/" { return .tab(.home) }')
+      } else if (p.endsWith('/*')) {
+        const segment = p.slice(1, -2)
+        expect(handler, p).toContain(`case "${segment}":`)
+      } else {
+        expect(tabs, p).toContain(`return "${p}"`)
+      }
+    }
+  })
+
+  it('every web page under a claimed prefix is either excluded or handled by the app', () => {
+    // A web page at /reviews/new under a claimed /reviews/* would open the app, which reads "new"
+    // as a review id. So each static child route must be excluded — or handled by name in Swift
+    // (`/group/new` is: `id == "new" ? .groupCreate`).
+    const handler = read('ios/TappyAI/Core/Navigation/DeepLinkHandler.swift')
+    const excluded = IOS_UNIVERSAL_LINK_COMPONENTS.filter(c => c.exclude).map(c => c['/'])
+    const staticChildren = (segment: string): string[] => {
+      const found = new Set<string>()
+      const walk = (dir: string, url: string[]) => {
+        for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+          if (!e.isDirectory()) continue
+          const isGroup = /^\(.*\)$/.test(e.name)
+          const next = isGroup ? url : [...url, e.name]
+          if (next[0] === 'api') continue
+          if (next.length === 2 && next[0] === segment && !e.name.startsWith('[')) found.add(e.name)
+          walk(path.join(dir, e.name), next)
+        }
+      }
+      walk('src/app', [])
+      return [...found]
+    }
+    for (const p of includes.filter(p => p.endsWith('/*'))) {
+      const segment = p.slice(1, -2)
+      for (const child of staticChildren(segment)) {
+        const isExcluded = excluded.some(x => x === `/${segment}/${child}` || x === `/${segment}/${child}/*`)
+        const isHandled = handler.includes(`id == "${child}"`)
+        expect(isExcluded || isHandled, `/${segment}/${child}`).toBe(true)
+      }
+    }
+  })
+
+  it('exclusions come before the entries they carve out of (iOS takes the first match)', () => {
+    const order = IOS_UNIVERSAL_LINK_COMPONENTS.map(c => c['/'])
+    for (const c of IOS_UNIVERSAL_LINK_COMPONENTS.filter(c => c.exclude)) {
+      const parent = '/' + c['/'].split('/')[1] + '/*'
+      expect(order.indexOf(c['/']), c['/']).toBeLessThan(order.indexOf(parent))
+    }
   })
 })

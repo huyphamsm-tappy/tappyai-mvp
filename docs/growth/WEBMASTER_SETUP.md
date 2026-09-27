@@ -14,7 +14,7 @@
 | hreflang | **none by design** (no per-language URLs; SSR vi, client reconciles) — do not add | `SEARCH_DISCOVERY.md` S8 |
 | Structured data | WebSite+SearchAction, Organization `@id`, AboutPage, BreadcrumbList, FAQPage (hubs), QAPage (`/r/*`), Article (scam pages), SoftwareApplication (`/extension`) | per-page tests |
 | noindex | `/extension/welcome`, anonymous-owned `/r/*`, private metadata builder; everything else index,follow | tests |
-| Association files | `/.well-known/assetlinks.json`, `/.well-known/apple-app-site-association`, `/.well-known/indexnow/<key>.txt` — all **404 until their env var is set** | `publicSurfaces.test.ts` |
+| Association files | `/.well-known/assetlinks.json`, `/.well-known/indexnow/<key>.txt` — **404 until their env var is set**; `/.well-known/apple-app-site-association` — always served (no env var) | `publicSurfaces.test.ts` |
 
 ## 1. Cốc Cốc (Vietnam's #2 search engine)
 

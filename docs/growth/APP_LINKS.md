@@ -16,7 +16,7 @@
 
 ## 2. Why only `/r/*`
 
-The five hubs and other public pages have no native destination; claiming them would open the app on a screen that is not the page. `/r/<slug>` is the one link people receive from other people, and it opens the exact page in-app. The server statement (`UNIVERSAL_LINK_PATHS`) lists more paths for the iOS AASA template; Android claims only `/r/`.
+The five hubs and other public pages have no native destination; claiming them would open the app on a screen that is not the page. `/r/<slug>` is the one link people receive from other people, and it opens the exact page in-app. Android claims only `/r/`. iOS applies the same rule to its own router: the AASA claims only the pages `DeepLinkHandler.swift` renders natively (`IOS_UNIVERSAL_LINK_COMPONENTS` in `src/lib/growth/appLinks.ts`), and iOS has no `/r/` screen, so it does not claim `/r/`.
 
 ## 3. Owner action — enabling
 
@@ -37,5 +37,5 @@ Expected: the app receives the intent and the public page opens in a Custom Tab 
 ## 5. Not done / not claimed
 
 - No device run yet: `PublicLinkOpener` is inert while the flag is off and **must be exercised on a device on first enablement** (the Custom Tab session binding is what prevents an app-link loop).
-- iOS Universal Links: AASA route prepared (`IOS_UNIVERSAL_LINKS_APP_ID`), entitlement needs Xcode — FUTURE.
+- iOS Universal Links: **live** since 2026-09-27. The AASA is built from constants (Team ID `6UAG75G2US`, bundle `com.tappyai.ios`) — no env var — and the app ships the `applinks:www.tappyai.com` entitlement. Not yet verified on a device.
 - Attribution: an App-Link open lands on the web page inside the tab; the existing `share_out` / `share_viewed` events fire as on any browser. There is no `android_deep_link` source (nothing emits it).

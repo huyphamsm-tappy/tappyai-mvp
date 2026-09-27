@@ -48,10 +48,13 @@ describe('public acquisition surfaces — the crawlable set', () => {
   })
 
   it('the env-gated association files are 404 until the owner configures them (nothing invented)', () => {
-    for (const k of ['ANDROID_APP_LINKS_SHA256', 'IOS_UNIVERSAL_LINKS_APP_ID', 'INDEXNOW_KEY']) delete process.env[k]
+    for (const k of ['ANDROID_APP_LINKS_SHA256', 'INDEXNOW_KEY']) delete process.env[k]
     expect(getAssetLinks().status).toBe(404)
-    expect(getAasa().status).toBe(404)
     expect(getIndexNowKey(new Request('https://x'), { params: { key: 'deadbeefdeadbeef.txt' } }).status).toBe(404)
+  })
+
+  it('the iOS association file is always served — the app ships with the entitlement (appLinks.test.ts)', () => {
+    expect(getAasa().status).toBe(200)
   })
 
   it('the machine-readable surfaces answer and list only public pages', async () => {

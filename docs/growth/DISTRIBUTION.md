@@ -58,7 +58,7 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 
 | Mechanism | Class | Status | What exists now |
 |---|---|---|---|
-| Universal Links for `/r/*` and hubs | D | Prepared server-side | `GET /.well-known/apple-app-site-association` serves `applinks` once `IOS_UNIVERSAL_LINKS_APP_ID` (`TEAMID.bundle`) is set. Requires the Associated Domains entitlement in the iOS project (needs Xcode). |
+| Universal Links (iOS) | D | Live server-side | `GET /.well-known/apple-app-site-association` always serves `applinks` + `webcredentials` for `6UAG75G2US.com.tappyai.ios`, claiming only pages the app renders natively (reviews, profiles, groups, Home/Explore/Deals) — not `/r/*` or the hubs, which have no iOS screen. The app carries the Associated Domains entitlement. |
 | App Clip (QR / public result → instant experience) | D | Not built | Needs an App Clip target, `appclips` block in the AASA, App Store Connect experience config. The public JSON `GET /api/shared-results/<slug>` is the data source an App Clip would consume — no new backend needed. |
 | Share extension (receive URLs/text into Tappy) | C | Not built | Mirror of Android Direct Share; needs Xcode. |
 | iOS share sheet from Tappy (share-out) | B | Not built | Same API as Android (`/api/shared-results/preview`, `/api/shared-results`). |
@@ -71,5 +71,5 @@ Companion to `G1_GROWTH_ARCHITECTURE.md` (loop + measurement), `G1_GROWTH_BUILD_
 ## Owner actions to activate the D-class surfaces (not part of this phase)
 
 1. Android App Links: publish the release cert SHA-256 → `ANDROID_APP_LINKS_SHA256`; build the release with `-PTAPPYAI_APP_LINKS_ENABLED=true`; verify on a device (`adb shell pm get-app-links com.tappyai.app`). The intent-filter alias and the Custom Tab handler already exist — steps and expected output in `APP_LINKS.md` §3–§4.
-2. iOS: `IOS_UNIVERSAL_LINKS_APP_ID`, Associated Domains entitlement, App Clip target (Xcode/macOS required).
+2. iOS: App Clip target (Xcode/macOS required). Universal Links need no further setup.
 3. Zalo Mini App: unchanged from G1 — untouched in this phase by instruction.

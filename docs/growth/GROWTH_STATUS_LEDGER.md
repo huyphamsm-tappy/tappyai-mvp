@@ -106,7 +106,7 @@
 |---|---|---|
 | Web | `/`, `/food`, `/shopping`, `/entertainment`, `/travel`, `/spa`, `/about`, `/extension`, `/scam-shield`, `/scam-shield/kich-ban/bca-2026-01`, `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/feed.xml`, `/opensearch.xml` | 200; `robots.txt` carries `Sitemap:`; sitemap lists the static set |
 | Web | `/extension/welcome`, an anonymous-owned `/r/*` | 200 with `noindex`; absent from the sitemap |
-| Web | `/.well-known/assetlinks.json`, `/.well-known/apple-app-site-association`, `/.well-known/indexnow/x.txt` | 404 while the env vars are unset |
+| Web | `/.well-known/assetlinks.json`, `/.well-known/indexnow/x.txt` (404 while the env vars are unset); `/.well-known/apple-app-site-association` (always served, from constants) | |
 | Share | one real share from chat → `/r/<slug>` 200 → appears in `sitemap.xml` → `share_viewed` lands → `view_count` ≥ 1 (`G1_MIGRATION_APPLY_CHECKLIST.md` §3) | all four |
 | Search | Search Console property verified; sitemap "Success"; 7 inspections requested; Bing site verified; IndexNow key file 200 and key shown in Bing | recorded with dates |
 | Extension | unpacked or store install → `/extension/welcome` opens once → right-click "Ask Tappy" → `/chat?q=…&src=browser_extension` → "Check this link" → `/scam-shield?url=…` prefilled, not auto-checked | all |
