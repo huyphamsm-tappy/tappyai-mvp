@@ -28,6 +28,7 @@
 // turn stays one; the frame costs a few hundred prompt tokens, never a call.
 
 import { normalizeVN, namedCinemaQuery, namedVenueIn } from '../intent'
+import { foldForLexicon } from '../foldSense'
 import type { NeedProfile } from './needProfile'
 import { deriveShoppingConstraints, namesUnknownProduct } from './shoppingConstraints'
 import type { RankedEntry } from './rank'
@@ -82,11 +83,15 @@ const text = (m: { role: string; content: unknown }): string =>
 
 // 🚨 "quận" (district) normalizes to "quan", the same as "quán" (eatery) — so a bare
 // "quan" is never a food cue; only "quán ăn / quán cafe / quán nhậu…" are.
-const FOOD_RE = /\ban\b|\bquan (?:an|nhau|com|pho|bun|cafe|ca phe|nuong|lau|oc|chay)\b|nha hang|\bcafe\b|ca phe|\bcoffee\b|tra sua|\bbua\b|\bmon\b|\bpho\b|\bbun\b|\bcom\b|\blau\b|\bnuong\b|hai san|\bbuffet\b|\bpizza\b|\bsushi\b|\bfood\b|\beat\b|\bdinner\b|\blunch\b|\bbreakfast\b|\brestaurant\b|\bdrink\b/
-const SHOPPING_RE = /(?<!nhay )\bmua\b|san pham|\bshopee\b|\btiki\b|\blazada\b|\blaptop\b|dien thoai|\biphone\b|\btai nghe\b|\bproduct\b|\bbuy\b|\bshop\b|\bgia bao nhieu\b/
+// UAT3 (2026-09-27): these run on `foldForLexicon` text, so a colliding word typed WITH
+// diacritics already keeps its sense (foldSense.ts). The guards below cover text typed WITHOUT
+// diacritics, where only context can tell "an" (Hội An, an toàn) from "ăn", "pho" (thành phố, phố
+// cổ) from "phở", "lau" (bao lâu) from "lẩu", "mua" (trời mưa, mùa hè) from the buy verb.
+const FOOD_RE = /(?<!hoi |binh |bao |thai |yen |truong |vinh |long |phu |que |tan )\ban\b(?! (?:toan|ninh|tam|khang|giang|nhien|lanh|cu|do|duong)\b)|\bquan (?:an|nhau|com|pho|bun|cafe|ca phe|nuong|lau|oc|chay)\b|nha hang|\bcafe\b|ca phe|\bcoffee\b|tra sua|\bbua\b|\bmon\b(?! (?:hoc|the thao|phai)\b)|(?<!thanh |duong |khu |via |dao |ngo |tuyen )\bpho\b(?! (?:co|di bo|hang|xa|tay|nui|thi|bien|cang)\b)|(?<!tam |ngam )\bbun\b(?! (?:lay|dat|khoang)\b)|(?<!\.)\bcom\b|(?<!bao |mat |khong |cang |chua |quen |het )\blau\b(?! (?:roi|qua|lam|dai|nua|khong|hon|ngay)\b)|\bnuong\b|hai san|\bbuffet\b|\bpizza\b|\bsushi\b|\bfood\b|\beat\b|\bdinner\b|\blunch\b|\bbreakfast\b|\brestaurant\b|\bdrink\b/
+const SHOPPING_RE = /(?<!nhay |troi |con |cuoi |dau |vao |giua )\bmua\b(?! (?:he|dong|thu|xuan|mua|le hoi|cao diem|thap diem|roi|to|phun|bao|ret|lan)\b)|san pham|\bshopee\b|\btiki\b|\blazada\b|\blaptop\b|dien thoai|\biphone\b|\btai nghe\b|\bproduct\b|\bbuy\b|\bshop\b|\bgia bao nhieu\b/
 const ENTERTAINMENT_RE = /\bbar\b|\bpub\b|\bclub\b|nhay mua|(?<!loa |dan |micro |mic |may |bo )\bkaraoke\b|xem phim|rap phim|\bcinema\b|\bmovie\b|nightlife|night out|\bconcert\b|\bshow\b|giai tri|vui choi|di choi|an choi|\bgame\b|bida|\bbilliard/
 const TRAVEL_RE = /du lich|khach san|\bhotel\b|\bresort\b|ve may bay|chuyen bay|\bflight\b|\btrip\b|lich trinh|itinerary|\bxe khach\b|\btau\b|\btrain\b|tham quan|thang canh|diem du lich|\bhomestay\b|\btour\b|\bcheck-?in\b/
-const SPA_RE = /\bspa\b|\bmassage\b|\bnail\b|lam dep|\bsalon\b|toc\b|\bbeauty\b|\bfacial\b|goi dau|cham soc da|\bxong hoi\b/
+const SPA_RE = /\bspa\b|\bmassage\b|\bnail\b|lam dep|\bsalon\b|(?<!dan |cap |gia |sieu )\btoc\b(?! (?:do|hanh)\b)|\bbeauty\b|\bfacial\b|goi dau|cham soc da|\bxong hoi\b/
 const UTILITY_RE = /thoi tiet|du bao|gia vang|ty gia|tin tuc|\bnews\b|\bweather\b|gold price|la gi\b|\bwhat is\b|\bnghia la\b|\bwhy\b|tai sao|\bvi sao\b|may gio/
 
 const COMPARE_RE = /so sanh|\bvs\.?\b|\bhay la\b|\bhay\b.*\bhon\b|\bor\b.*\bbetter\b|\bcompare\b|nen chon (cai|con|quan|chiec) nao|cai nao (tot|hon)|\bwhich (one|is better)\b/
@@ -128,7 +133,9 @@ const NEEDS: Record<Criterion, EvidenceKey[]> = {
   cuisine: ['cuisine'],
 }
 
-function detectDomains(t: string, need: NeedProfile, forcedTool: string | null): FrameDomain[] {
+// UAT3: the domain lexicons read `foldForLexicon` text (a colliding word typed with diacritics
+// keeps its sense — "trời mưa" is not the buy verb); UTILITY keeps plain folding ("vì sao").
+function detectDomains(t: string, need: NeedProfile, forcedTool: string | null, plain: string = t): FrameDomain[] {
   const out: FrameDomain[] = []
   if (SPA_RE.test(t) || need.subject === 'spa') out.push('spa')
   if (ENTERTAINMENT_RE.test(t)) out.push('entertainment')
@@ -136,7 +143,7 @@ function detectDomains(t: string, need: NeedProfile, forcedTool: string | null):
   if (SHOPPING_RE.test(t) || need.domain === 'shopping' || forcedTool === 'search_products') out.push('shopping')
   if (FOOD_RE.test(t)) out.push('food')
   if (out.length === 0 && need.domain === 'places') out.push('food')
-  if (out.length === 0 && UTILITY_RE.test(t)) out.push('utility')
+  if (out.length === 0 && UTILITY_RE.test(plain)) out.push('utility')
   return out
 }
 
@@ -172,7 +179,8 @@ export function deriveDecisionFrame(input: FrameInput): DecisionFrame {
   const recent = normalizeVN(userTurns.slice(-3).join(' \n ').toLowerCase())
   const last = normalizeVN((userTurns[userTurns.length - 1] ?? '').toLowerCase())
 
-  const domains = detectDomains(recent, input.need, input.forcedTool)
+  // Per turn: whether a message was typed with diacritics is a property of that message.
+  const domains = detectDomains(userTurns.slice(-3).map(u => foldForLexicon(u)).join(' \n '), input.need, input.forcedTool, recent)
   const goal = detectGoal(last, input.planningIntent, domains)
   const placeDecision = goal !== 'inform' && domains.some(d => d === 'food' || d === 'spa' || d === 'entertainment' || d === 'travel')
 

@@ -1,4 +1,5 @@
 import { normalizeVN } from '../intent'
+import { foldForLexicon } from '../foldSense'
 import { parseProductSpecs } from '../productSpecs'
 import type { Budget } from '../budget'
 import type { Candidate } from './candidate'
@@ -96,7 +97,8 @@ export const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['tablet', /\b(ipad|may tinh bang|tablet)\b/],
   ['watch', /\b(dong ho thong minh|smartwatch|apple watch)\b/],
   ['tv', /\b(tivi|smart tv|android tv)\b/],
-  ['camera', /\b(may anh|camera|ong kinh)\b/],
+  // UAT3: unaccented "may anh oi" is "mấy anh ơi" (you guys), not "máy ảnh" (foldSense.ts covers accents).
+  ['camera', /\b(may anh(?! (?:oi|nhe|a|ay|co|lam|noi|di|em|chi|biet)\b)|camera|ong kinh)\b/],
   // B2 (2026-09-20, owner: "perfume, robot vacuum, air purifier resolve to null"). Families whose
   // Vietnamese product noun is unambiguous. Each maps to the noun a listing title carries.
   ['perfume', /\b(nuoc hoa|perfume|eau de (?:parfum|toilette)|edp|edt)\b/],
@@ -105,7 +107,8 @@ export const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['vacuum', /\b(may hut bui|vacuum cleaner)\b/],
   ['air_conditioner', /\b(may lanh|dieu hoa|air conditioner)\b/],
   ['fan', /\b(quat (?:dien|dung|cay|tran|hop|khong canh)|quat may)\b/],
-  ['fridge', /\b(tu lanh|tu mat|tu dong|refrigerator|fridge)\b/],
+  // UAT3: unaccented "tu dong" is far more often "tự động" (automatic) than "tủ đông" (freezer).
+  ['fridge', /\b(tu lanh|tu mat|tu dong(?! (?:hoa|gia han|thanh toan|tra|luu|bat|tat|cap nhat|nhan|dang|chuyen|dong bo|phat|bi)\b)|refrigerator|fridge)\b/],
   ['washer', /\b(may giat|washing machine)\b/],
   ['speaker', /\b(loa bluetooth|loa keo|loa|speaker|soundbar)\b/],
   ['monitor', /\b(man hinh may tinh|man hinh laptop roi|monitor)\b/],
@@ -347,7 +350,9 @@ export function deriveShoppingConstraints(
   for (const raw of userTexts) {
     const t = norm(raw)
     let typed = false
-    for (const [type, re] of PRODUCT_TYPES) if (re.test(t)) { k.productType = type; k.unknownType = null; typed = true; break }
+    // UAT3: product nouns read sense-preserving folding ("tự động" is not "tủ đông").
+    const tSense = foldForLexicon(raw)
+    for (const [type, re] of PRODUCT_TYPES) if (re.test(tSense)) { k.productType = type; k.unknownType = null; typed = true; break }
     // B2: a buy verb followed by a noun the lexicon does not know — kept as a gap, never silence.
     if (!typed && !k.productType) {
       const m = t.match(BUY_NOUN)
