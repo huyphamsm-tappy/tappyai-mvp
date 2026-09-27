@@ -1,11 +1,37 @@
 # ADR-027 — Chat response language: the client's locale as the tie-breaker
 
-**Status:** Accepted — Owner decision, 2026-09-09 · **Scope:** Web backend (authoritative), web client, Android client
+**Status:** Accepted — Owner decision, 2026-09-09 · **Amended 2026-09-28 (owner): the conversation's language outranks the client locale — see §0** · **Scope:** Web backend (authoritative), web client, Android client
 **Amends:** `ADR-016` §2 (known limitation 1), §3 (architecture flow), §9 (accepted costs) — the detection algorithm itself is unchanged and every rule in ADR-016 §2–§4 still binds.
 **Also updates:** `docs/Localization_Architecture.md` §2.1/§2.3 · `supabase/migrations/add_user_language_preference.sql` (comment only)
 **Required by:** `00_Constitution.md` §8.2 — changing a shipped decision is a Design Change and needs an ADR.
 
 ---
+
+## 0. Amendment 2026-09-28 — the reply follows the CONVERSATION, not the UI
+
+**Owner decision (after UAT4):** the reply language follows the conversation's language, meaning the earlier user turns
+plus the current one. It does not follow the interface language. A short unaccented turn inside a Vietnamese
+conversation is answered in Vietnamese.
+
+**Why.** It was measured on the Android emulator with the UI set to English. A thread in Vietnamese (accented and
+unaccented) was answered in Vietnamese until the turn `len ke hoach 2 ngay 1 dem`. No text detector can settle that
+turn (`detectLangConfident` → `null`), so step 3 below, the client locale `en`, decided it, and the plan came back in
+English mid-thread. The UI locale describes the app's chrome, not the conversation.
+
+**Order now** (`src/lib/ai/replyLanguage.ts` → `resolveReplyLanguage`, called by `src/app/api/chat/route.ts`):
+
+| # | Source | Function |
+|---|---|---|
+| 1 | An explicit request in the message | `detectExplicitLangRequest(lastText)` |
+| 2 | The language the message is **clearly** in | `detectLangConfident(lastText)` |
+| 3 | **The conversation:** the nearest earlier user turn that settles a language (an explicit request there holds for the thread) | `detectExplicitLangRequest(t) ?? detectLangConfident(t)` over earlier user turns, newest first |
+| 4 | The client's locale — only when nothing the user wrote settles it (a first-turn "ok") | `requestLocale(req)` |
+| 5 | Whole-sentence detection (defensive tail) | `detectLang(lastText)` |
+
+The rules below still hold. Nothing is stored, and the conversation is read only from the messages the client sent
+in this request, so ADR-016 §8's rejection of a stored per-user AI language still stands. `detectLangConfident` and
+`detectLang` are unchanged. The tests are in `src/lib/ai/replyLanguage.test.ts`, including the emulator turn above.
+§2 below is the 2026-09-09 decision. Its step 3 (client locale) is now step 4.
 
 ## 1. Context
 

@@ -97,6 +97,7 @@ import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
 import { stepRepeatGuard } from '@/lib/ai/stepRepeatGuard'
 import { planCompletionStream, toolResultDigest, completionInstruction } from '@/lib/ai/planCompletion'
 import { askAfterStream, endsWithQuestion } from '@/lib/ai/consultative/askAfter'
+import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
@@ -258,26 +259,18 @@ export async function POST(req: Request) {
   // (which answers with cinemas). We drop search_places for the turn so the model
   // recommends titles from film knowledge; a venue/showtime ask keeps the tool.
   const movieRecommend = detectMovieRecommendationIntent(lastText)
-  // Response language, in priority order:
-  //   1. an explicit request in the message ("Answer in English", "Trả lời bằng tiếng Việt"),
-  //   2. the language the CLIENT says the user is using (`Accept-Language` / `?lang`),
-  //   3. detection from the message text.
-  //
-  // Step 2 is new, and it reverses the previous rule, which read the language out of the message
-  // text alone and deliberately ignored the UI locale. That rule breaks on the most ordinary
-  // Vietnamese input there is: typing without diacritics. "Tim quan bun bo ngon o TPHCM" has no
-  // accented characters and no Vietnamese function words that `detectLang` weighs, so it scores as
-  // English and the assistant answers a Vietnamese user in English — reproduced repeatedly on
-  // 2026-09-08 against the live pipeline.
-  //
-  // Text detection remains the fallback for a client that sends no locale at all, so nothing
-  // regresses for callers that never had one, and an explicit in-message request still wins over
-  // both — asking for English in a Vietnamese app still gets English, for that turn.
+  // Response language — ADR-027 as amended 2026-09-28 (replyLanguage.ts): an explicit request, then
+  // the language the message is clearly in, then the CONVERSATION's language (the nearest earlier
+  // user turn that settles one), and the client's UI locale only when nothing the user wrote does.
+  // Measured on an English-UI Android emulator: a Vietnamese thread flipped to English on the short
+  // unaccented "len ke hoach 2 ngay 1 dem" because the UI locale was the tie-breaker.
   const clientLocale = requestLocale(req)
-  const lang = detectExplicitLangRequest(lastText)
-    ?? detectLangConfident(lastText)
-    ?? clientLocale
-    ?? detectLang(lastText)
+  const earlierUserTexts: string[] = messages.slice(0, -1)
+    .filter((m: { role: string }) => m.role === 'user')
+    .map((m: { content?: unknown }) => (typeof m.content === 'string' ? m.content : ''))
+    .filter((t: string) => t.length > 0)
+  const replyLanguage = resolveReplyLanguage({ lastText, priorUserTexts: earlierUserTexts, clientLocale })
+  const lang = replyLanguage.lang
   const forcedTool = detectForcedTool(lastText)
   // P0: a travel turn buffers and runs the fail-closed dynamic-fact guard, so no
   // fabricated fare/price/schedule/availability can reach the user.
