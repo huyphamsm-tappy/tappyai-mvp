@@ -126,16 +126,28 @@ fun ChatScreen(
      */
     onSignIn: () -> Unit = {},
 ) {
-    // Location: the first chat send asks ONCE for coarse location. Granted → the repository sends
-    // the last known position with every turn (ChatLocationSource) and the cards carry a distance;
-    // denied → nothing changes (the search stays centred on the named destination). No fix is
-    // requested here; this is only the permission prompt, which must come from a screen.
-    val locationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { }
+    // Location (UAT3, 2026-09-27 — see LocationPrompt): a send asks for coarse location at most ONCE
+    // per install and the 📍 chip asks whenever it is missing. Granted → the repository sends the
+    // last known position with every turn (ChatLocationSource); denied → the turn goes out anyway
+    // and the server asks for the area in the chat. 🚨 While the system dialog is up, the send WAITS
+    // — the action runs from the launcher callback — so the composer keeps its text and nothing typed
+    // is lost; it used to send first and let the dialog cover the composer.
     val context = LocalContext.current
-    val askLocationOnce = remember {
-        {
-            val granted = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-            if (!granted) locationLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+    var afterLocationPrompt by remember { mutableStateOf<(() -> Unit)?>(null) }
+    val locationLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) {
+        val action = afterLocationPrompt
+        afterLocationPrompt = null
+        action?.invoke()
+    }
+    val withLocationPrompt: (explicit: Boolean, action: () -> Unit) -> Unit = { explicit, action ->
+        val has = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        if (LocationPrompt.shouldAsk(hasPermission = has, explicit = explicit, askedBefore = LocationPrompt.askedBefore(context))) {
+            LocationPrompt.markAsked(context)
+            afterLocationPrompt = action
+            locationLauncher.launch(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION))
+        } else {
+            action()
         }
     }
     // Lifecycle-aware: an AI reply streams a token at a time, and plain collectAsState() keeps
@@ -507,9 +519,15 @@ fun ChatScreen(
 
         // Quick prompt chips (web parity: the 4 static action chips above the composer —
         // ChatInterface "Action chips" row). Always visible, disabled while responding.
+        // The 📍 chip IS the person asking for location, so it may ask again (explicit = true);
+        // the other chips send as they always did.
+        val nearbyPrompt = stringResource(R.string.chat_chip_nearby_prompt)
         ChatActionChips(
             isResponding = isResponding,
-            onSend = viewModel::onQuickPromptSelected,
+            onSend = { prompt ->
+                if (prompt == nearbyPrompt) withLocationPrompt(true) { viewModel.onQuickPromptSelected(prompt) }
+                else viewModel.onQuickPromptSelected(prompt)
+            },
             onPrefill = viewModel::onInputChange,
         )
 
@@ -519,7 +537,7 @@ fun ChatScreen(
             hasPendingImage = viewModel.pendingImageUri != null,
             onInputChange = viewModel::onInputChange,
             onEmojiPicked = viewModel::onEmojiPicked,
-            onSend = { askLocationOnce(); viewModel.onSend() },
+            onSend = { withLocationPrompt(false) { viewModel.onSend() } },
             onStop = viewModel::onStop,
             isListening = isListening,
             onVoice = {
