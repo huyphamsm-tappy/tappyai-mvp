@@ -91,6 +91,7 @@ import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
 import { compactHistory } from '@/lib/ai/historyCompaction'
+import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
 export const maxDuration = 60
@@ -153,6 +154,17 @@ export async function POST(req: Request) {
       JSON.stringify({ error: 'invalid_request' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } },
     )
+  }
+
+  // UAT3 P0 (2026-09-27): a long thread's assistant turns carry their [TAPPY_*] payloads, so a
+  // 22-turn conversation passed the 24k budget and EVERY later turn was a 413 ("Mình gặp trục
+  // trặc…") — on web, and on Android/iOS, which send the same verbatim history. Older assistant
+  // turns are reduced to prose (the model never reads those blocks: they are stripped below) and,
+  // still over budget, the oldest turns drop. It only ever REMOVES client text, so the input
+  // budget below still bounds everything that is left.
+  if (rawBody && typeof rawBody === 'object' && Array.isArray((rawBody as { messages?: unknown }).messages)) {
+    const body = rawBody as { messages: Array<{ role: string; content: unknown }> }
+    rawBody = { ...body, messages: compactRequestMessages(body.messages) }
   }
 
   const validated = validateClientInput(rawBody)

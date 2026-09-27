@@ -37,6 +37,7 @@ import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
+import { withCompactedHistory } from '@/lib/chat/requestHistory'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
 // Mood chips — labels and the message each sends are dictionary keys so both
@@ -770,6 +771,11 @@ export default function ChatInterface({
      * keeps exactly today's behaviour.
      */
     headers: { 'x-tappy-surface': 'web' },
+    // UAT3 P0: the request's history is compacted (older assistant turns lose their machine
+    // blocks; over budget, the oldest turns go) so a long thread never hits the server's input
+    // budget and 413s on every turn. Only the request body changes — see lib/chat/requestHistory.
+    // Done in `fetch` rather than experimental_prepareRequestBody, which would drop `body` below.
+    fetch: withCompactedHistory,
     body: {
       ...(userLocation ? { userLocation: { lat: userLocation.lat, lng: userLocation.lng, address: userLocation.address } } : {}),
       ...(userPreferences.length > 0 ? { userPreferences } : {}),
