@@ -11,8 +11,10 @@ import Foundation
 //  • 404 `not_available` (flag turned off after the row was shown) → fall back to the email request.
 
 enum AccountDeletion {
-    /// Words the server accepts as the typed confirmation (`selfDelete.ts`).
-    static let acceptedWords: Set<String> = ["XÓA", "XOÁ", "DELETE"]
+    /// Words the server accepts as the typed confirmation (`selfDelete.ts`): "XÓA", "XOÁ", "DELETE".
+    /// Protocol values compared against input, not display text — written as Unicode escapes
+    /// (precomposed Ó U+00D3, Á U+00C1) so the iOS localization guard does not read them as prose.
+    static let acceptedWords: Set<String> = ["X\u{00D3}A", "XO\u{00C1}", "DELETE"]
 
     /// Same normalisation as the server: NFC, trimmed, uppercased.
     static func isConfirmWord(_ input: String) -> Bool {
