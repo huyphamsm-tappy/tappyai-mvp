@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 7143,
+  "evidenceId": "6cfb9a23-bce7-4ddd-8055-2862066a0fc7",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì nhỉ? 🎬 Mình gợi ý vài bộ hay:\n\n**Deadpool & Wolverine** — nếu thích hành động sôi động, hài hước, cặp đôi này cực vui. Phim mới, đang hot lắm.\n\n**Wicked** — nếu muốn xem musical lãng mạn, hoành tráng, âm nhạc hay. Phim vừa ra, rất được khen.\n\n**Joker: Folie à Deux** — nếu thích tâm lý, drama sâu sắc, diễn xuất mạnh. Phim hơi nặng nhưng rất hay.\n\nBạn thích thể loại nào hơn — hành động, hài, hay drama? Hay muốn xem ở rạp nào gần đây? 🎥",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì nhỉ? 🎬 Mình gợi ý vài bộ hay:\n\n**Deadpool & Wolverine** — nếu thích hành động sôi động, hài hước, cặp đôi này cực vui. Phim mới, đang hot lắm.\n\n**Wicked** — nếu muốn xem musical lãng mạn, hoành tráng, âm nhạc hay. Phim vừa ra, rất được khen.\n\n**Joker: Folie à Deux** — nếu thích tâm lý, drama sâu sắc, diễn xuất mạnh. Phim hơi nặng nhưng rất hay.\n\nBạn thích thể loại nào hơn — hành động, hài, hay drama? Hay muốn xem ở rạp nào gần đây? 🎥"
+    }
+  ]
+}

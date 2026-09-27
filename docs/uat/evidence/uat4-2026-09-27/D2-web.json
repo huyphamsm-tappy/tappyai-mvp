@@ -1,0 +1,21 @@
+{
+ "ownerLogin": "submitted → /onboarding",
+ "create": "/group/60c1bc69-9337-4c74-be40-281b1cbceb1e",
+ "ownerControls": {
+  "rename": false,
+  "avatar": false,
+  "text": "Quay lại UAT4 Nhóm ăn tối UAT4 Nhóm ăn tối 0 thành viên đã tham gia CHIA SẺ LINK VỚI NHÓM http://localhost:3007/group/60c1bc69-9337-4c74-be40-281b1cbceb1e Sao chép Chưa có ai tham gia. Chia sẻ link ở trên nhé! Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+ },
+ "memberLogin": "submitted → /onboarding",
+ "join": "Quay lại UAT4 Nhóm ăn tối UAT4 Nhóm ăn tối 1 thành viên đã tham gia 🎉 Đã tham gia! Chờ trưởng nhóm gợi ý nhé 🎉 Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc",
+ "memberAvatarApi": 403,
+ "memberControls": {
+  "rename": false,
+  "file": false
+ },
+ "ownerSeesMember": true,
+ "http": [
+  "403 POST http://localhost:3007/api/group/60c1bc69-9337-4c74-be40-281b1cbceb1e/avatar"
+ ],
+ "errors": []
+}

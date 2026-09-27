@@ -1,0 +1,33 @@
+{
+  "id": "E2b",
+  "text": "dưới 200k/người",
+  "parent": "E2",
+  "status": 200,
+  "ms": 6463,
+  "evidenceId": "c1f3fb14-d5a5-4ea8-a7ed-8eeb1c54db52",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm rạp phim với giá vé dưới 200k/người. Để gợi ý chính xác, mình cần biết thêm:\n\n**Bạn muốn xem phim gì hoặc vào lúc nào?** (vd: phim chiếu hiện tại, giờ chiếu buổi sáng/chiều/tối, ngày nào) — vì giá vé rạp phim thay đổi theo suất chiếu và loại phim.\n\n[FOLLOWUPS]rạp phim nào rẻ nhất Q1|muốn xem phim gì|giờ chiếu nào[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các rạp phim gần Quận 1 cho bạn nhé.\n\nMình chọn **Galaxy Cinema Nguyễn Du** cho bạn — **4.3⭐ (9.380 đánh giá Google Maps)** với lượng đánh giá lớn nhất, chứng tỏ chất lượng ổn định. Rạp này nằm trung tâm Quận 1, tiện lợi cho bạn.\n\n[FOLLOWUPS]Phim gì đang chiếu hôm nay?|Muốn đặt vé trực tiếp?|Rạp nào gần nhất từ vị trí bạn?[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Galaxy Cinema\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7959510044504727677\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 200k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm rạp phim với giá vé dưới 200k/người. Để gợi ý chính xác, mình cần biết thêm:\n\n**Bạn muốn xem phim gì hoặc vào lúc nào?** (vd: phim chiếu hiện tại, giờ chiếu buổi sáng/chiều/tối, ngày nào) — vì giá vé rạp phim thay đổi theo suất chiếu và loại phim.\n\n[FOLLOWUPS]rạp phim nào rẻ nhất Q1|muốn xem phim gì|giờ chiếu nào[/FOLLOWUPS]"
+    }
+  ]
+}

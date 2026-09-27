@@ -1,0 +1,264 @@
+{
+  "id": "T1",
+  "text": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+  "parent": null,
+  "status": 200,
+  "ms": 24194,
+  "evidenceId": "5872edda-fdc4-4205-bfef-652e901088bc",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng",
+        "checkIn": "2026-09-28",
+        "checkOut": "2026-09-30"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng tối lãng mạn Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    },
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Đà Nẵng",
+        "departDate": "2026-09-28",
+        "returnDate": "2026-09-30",
+        "passengers": 2
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Gypsy Rooftop Restaurant & Bar",
+      "rating": 4.9,
+      "count": 2562,
+      "price": "Trên 1 Tr ₫",
+      "hours": "17:00–23:30",
+      "address": "20 Đống Đa, Street, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Le Comptoir",
+      "rating": 4.9,
+      "count": 2417,
+      "price": "Trên 1 Tr ₫",
+      "hours": "17:00–21:00",
+      "address": "16 Chế Lan Viên, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng LoCo",
+      "rating": 4.8,
+      "count": 4335,
+      "price": "200-700 N ₫",
+      "hours": "10:30–22:00",
+      "address": "1C Lê Duẩn, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Amphora Restaurant",
+      "rating": 5,
+      "count": 117,
+      "hours": "16:00–22:30",
+      "address": "36 Lê Mạnh Trinh, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "MOULIN DE DANANG",
+      "rating": 4.9,
+      "count": 217,
+      "price": "Trên 1 Tr ₫",
+      "hours": "12:00–15:00, 17:15–01:00",
+      "address": "92 Võ Văn Kiệt, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Sky View Restaurant",
+      "rating": 4.8,
+      "count": 929,
+      "price": "Trên 1 Tr ₫",
+      "hours": "11:00–23:00",
+      "address": "216 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Vị brewhouse -xưởng Bia thủ công Đà Nẵng - Craft beer & Restaurant (베트남식당) -",
+      "rating": 4.8,
+      "count": 657,
+      "price": "100-200 N ₫",
+      "hours": "14:00–23:30",
+      "address": "37 Quang Trung, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ann Home",
+      "rating": 4.8,
+      "count": 161,
+      "price": "200-300 N ₫",
+      "hours": "14:00–22:00",
+      "address": "01 An Hải 3, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "MeliOh Bistro Danang - ROMANTIC DATING EXPERIENCE",
+      "rating": 4.6,
+      "count": 482,
+      "price": "300-400 N ₫",
+      "hours": "17:00–22:00",
+      "address": "Lot 01-A4, Đảo Xanh 4, Khu Biệt Thự Đảo Xanh, Hòa Cường, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Nén Restaurant",
+      "rating": 4.4,
+      "count": 424,
+      "price": "Trên 1 Tr ₫",
+      "hours": "17:30–20:45",
+      "address": "16 đường Mỹ Đa Tây 2, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Cầu Vàng",
+      "rating": 4.6,
+      "count": 14872,
+      "hours": "08:00–19:00",
+      "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Đỉnh Bàn Cờ",
+      "rating": 4.6,
+      "count": 4474,
+      "hours": "07:30–17:30",
+      "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Cầu Rồng",
+      "rating": 4.5,
+      "count": 9551,
+      "hours": "Mở cửa cả ngày",
+      "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Ngũ Hành Sơn",
+      "rating": 4.4,
+      "count": 42931,
+      "hours": "07:00–17:30",
+      "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Tượng Cá Chép Hóa Rồng",
+      "rating": 4.5,
+      "count": 1484,
+      "hours": "Mở cửa cả ngày",
+      "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+      "rating": 4.6,
+      "count": 218,
+      "address": "364F+2C5, Bạch Đằng, Hòa Cường, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng 3D Art In Paradise",
+      "rating": 4.4,
+      "count": 3418,
+      "hours": "08:30–18:00",
+      "address": "Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Mũi Nghê",
+      "rating": 4.5,
+      "count": 217,
+      "address": "Sơn Trà, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+      "rating": 4.2,
+      "count": 8222,
+      "hours": "07:00–17:00",
+      "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Hải đăng Tiên Sa",
+      "rating": 4.3,
+      "count": 477,
+      "hours": "05:00–21:00",
+      "address": "Sơn Trà, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ lập kế hoạch cho chuyến đi Đà Nẵng 3 ngày 2 đêm cho 2 người với ngân sách 6 triệu VND. Mình tính đi máy bay (nhanh hơn từ TP.HCM), ăn tối lãng mạn, tham quan thắng cảnh và hoạt động yên tĩnh theo sở thích của bạn — nếu muốn điều chỉnh thì nói mình nhé.\n\nMình đang tìm khách sạn, nhà hàng, điểm tham quan và kiểm tra thời tiết để lập kế hoạch chi tiết...Tuyệt vời! Mình đã tìm được các lựa chọn cho chuyến đi. Tuy nhiên, mình cần xác nhận một điều: **bạn muốn đi máy bay hay xe khách?** Máy bay nhanh hơn (~1 giờ) nhưng xe khách rẻ hơn. Mình sẽ lập kế hoạch chi tiết dựa trên lựa chọn của bạn.\n\nTrong khi đó, mình có thể chia sẻ một số thông tin sơ bộ:\n\n**Thời tiết Đà Nẵng:** Trời may, nhiệt độ 25-29°C, độ ẩm 81%, khả năng mưa 22% — thích hợp để tham quan ngoài trời 👍\n\n**Nhà hàng tối lãng mạn:** \n- **Gypsy Rooftop Restaurant & Bar** (4.9⭐, 2.562 đánh giá) — rooftop view tuyệt đẹp, mở 17:00-23:30\n- **Le Comptoir** (4.9⭐, 2.417 đánh giá) — nhà hàng Pháp cao cấp, mở 17:00-21:00\n\n**Điểm tham quan:** Cầu Vàng (4.6⭐, 14.872 đánh giá), Ngũ Hành Sơn (4.4⭐, 42.931 đánh giá), Cầu Rồng (4.5⭐, 9.551 đánh giá)...\n\n**Chọn phương tiện để mình lập kế hoạch chi tiết nhé!** 🚀\n\n[FOLLOWUPS]Máy bay hay xe khách?|Có sở thích ăn gì đặc biệt?|Muốn tham quan hay thư giãn nhiều hơn?[/FOLLOWUPS]\n\n🔗 Liên kết chính thức: [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-30&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=28-09-2026.null&ps=2.0.0&sc=ECONOMY)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ lập kế hoạch cho chuyến đi Đà Nẵng 3 ngày 2 đêm cho 2 người với ngân sách 6 triệu VND. Mình tính đi máy bay (nhanh hơn từ TP.HCM), ăn tối lãng mạn, tham quan thắng cảnh và hoạt động yên tĩnh theo sở thích của bạn — nếu muốn điều chỉnh thì nói mình nhé.\n\nMình đang tìm khách sạn, nhà hàng, điểm tham quan và kiểm tra thời tiết để lập kế hoạch chi tiết...Tuyệt vời! Mình đã tìm được các lựa chọn cho chuyến đi. Tuy nhiên, mình cần xác nhận một điều: **bạn muốn đi máy bay hay xe khách?** Máy bay nhanh hơn (~1 giờ) nhưng xe khách rẻ hơn. Mình sẽ lập kế hoạch chi tiết dựa trên lựa chọn của bạn.\n\nTrong khi đó, mình có thể chia sẻ một số thông tin sơ bộ:\n\n**Thời tiết Đà Nẵng:** Trời may, nhiệt độ 25-29°C, độ ẩm 81%, khả năng mưa 22% — thích hợp để tham quan ngoài trời 👍\n\n**Nhà hàng tối lãng mạn:** \n- **Gypsy Rooftop Restaurant & Bar** (4.9⭐, 2.562 đánh giá) — rooftop view tuyệt đẹp, mở 17:00-23:30\n- **Le Comptoir** (4.9⭐, 2.417 đánh giá) — nhà hàng Pháp cao cấp, mở 17:00-21:00\n\n**Điểm tham quan:** Cầu Vàng (4.6⭐, 14.872 đánh giá), Ngũ Hành Sơn (4.4⭐, 42.931 đánh giá), Cầu Rồng (4.5⭐, 9.551 đánh giá)...\n\n**Chọn phương tiện để mình lập kế hoạch chi tiết nhé!** 🚀\n\n[FOLLOWUPS]Máy bay hay xe khách?|Có sở thích ăn gì đặc biệt?|Muốn tham quan hay thư giãn nhiều hơn?[/FOLLOWUPS]\n\n🔗 Liên kết chính thức: [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-30&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=28-09-2026.null&ps=2.0.0&sc=ECONOMY)"
+    }
+  ]
+}

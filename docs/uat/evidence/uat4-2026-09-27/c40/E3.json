@@ -1,0 +1,149 @@
+{
+  "id": "E3",
+  "text": "quán bar nào chill có nhạc sống Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 16909,
+  "evidenceId": "d3bed527-4690-41bb-8a38-764adda8b71c",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bar nhạc sống Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1394,
+      "hours": "19:00–02:00",
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm ...",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Chương trình múa rối nước văn hóa buổi tối & Du thuyền ...",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Dot Bar",
+      "rating": 4.9,
+      "count": 708,
+      "hours": "17:00–02:00",
+      "address": "37 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "rating": 4.8,
+      "count": 2508,
+      "hours": "17:00–01:00",
+      "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Kim's Tavern Girl Bar Saigon",
+      "rating": 4.8,
+      "count": 781,
+      "hours": "16:00–04:00",
+      "address": "20 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Chill Skybar & Dining",
+      "rating": 4.4,
+      "count": 5938,
+      "hours": "17:30–01:30",
+      "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "21:00–03:00",
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Carmen Bar",
+      "rating": 4.3,
+      "count": 1069,
+      "hours": "19:00–01:00",
+      "address": "8 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình thấy cần tìm thêm thông tin về nhạc sống cụ thể. Để gợi ý chính xác nhất, bạn có thích loại nhạc nào không?\n\nHiện mình tìm được vài quán bar nổi tiếng ở Quận 1 như **Dollhouse Bar** (5⭐, 1.394 đánh giá), **Dot Bar** (4.9⭐, 708 đánh giá), **Loop 1 - Cocktail Bar & Kitchen** (4.8⭐, 2.508 đánh giá) — nhưng cần xác nhận thêm quán nào có nhạc sống để gợi ý đúng ý bạn.\n\n[FOLLOWUPS]quán bar jazz Quận 1|quán bar acoustic Quận 1|quán bar nhạc sống tối nay[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình thấy cần tìm thêm thông tin về nhạc sống cụ thể. Để gợi ý chính xác nhất, bạn có thích loại nhạc nào không?\n\nHiện mình tìm được vài quán bar nổi tiếng ở Quận 1 như **Dollhouse Bar** (5⭐, 1.394 đánh giá), **Dot Bar** (4.9⭐, 708 đánh giá), **Loop 1 - Cocktail Bar & Kitchen** (4.8⭐, 2.508 đánh giá) — nhưng cần xác nhận thêm quán nào có nhạc sống để gợi ý đúng ý bạn.\n\n[FOLLOWUPS]quán bar jazz Quận 1|quán bar acoustic Quận 1|quán bar nhạc sống tối nay[/FOLLOWUPS]"
+    }
+  ]
+}

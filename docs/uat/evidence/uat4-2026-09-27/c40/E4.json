@@ -1,0 +1,33 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 6127,
+  "evidenceId": "06ac5edf-0f26-43ac-82f7-ca8a4df0e43b",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình cần tìm thêm thông tin chi tiết về dịch vụ giữ xe tại các quán bar ở Quận 1. Để gợi ý chính xác, bạn muốn đi bằng xe máy hay ô tô? Và bạn ưu tiên quán nào trong ba quán mình vừa nhắc (**Dollhouse Bar**, **Dot Bar**, **Loop 1**) hay muốn mình tìm thêm quán khác?\n\nThông tin về giữ xe thường không được liệt kê rõ trên Google Maps, nên mình sẽ cần kiểm tra trực tiếp hoặc bạn có thể gọi quán để hỏi khi đặt chỗ nhé.\n\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình thấy cần tìm thêm thông tin về nhạc sống cụ thể. Để gợi ý chính xác nhất, bạn có thích loại nhạc nào không?\n\nHiện mình tìm được vài quán bar nổi tiếng ở Quận 1 như **Dollhouse Bar** (5⭐, 1.394 đánh giá), **Dot Bar** (4.9⭐, 708 đánh giá), **Loop 1 - Cocktail Bar & Kitchen** (4.8⭐, 2.508 đánh giá) — nhưng cần xác nhận thêm quán nào có nhạc sống để gợi ý đúng ý bạn.\n\n[FOLLOWUPS]quán bar jazz Quận 1|quán bar acoustic Quận 1|quán bar nhạc sống tối nay[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần tìm thêm thông tin chi tiết về dịch vụ giữ xe tại các quán bar ở Quận 1. Để gợi ý chính xác, bạn muốn đi bằng xe máy hay ô tô? Và bạn ưu tiên quán nào trong ba quán mình vừa nhắc (**Dollhouse Bar**, **Dot Bar**, **Loop 1**) hay muốn mình tìm thêm quán khác?\n\nThông tin về giữ xe thường không được liệt kê rõ trên Google Maps, nên mình sẽ cần kiểm tra trực tiếp hoặc bạn có thể gọi quán để hỏi khi đặt chỗ nhé.\n\n"
+    }
+  ]
+}

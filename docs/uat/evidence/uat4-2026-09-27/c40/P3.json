@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 6252,
+  "evidenceId": "5fc1343d-64ff-4e43-bbe9-a19707dcaf1c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chắc chắn về việc **MASSAGE HẠ SPA QUẬN 1** có hỗ trợ đặt trước online hay không. Cách an toàn nhất là bạn **gọi điện trực tiếp** hoặc **vào Google Maps** để xem có nút \"Đặt lịch\" không, hoặc nhắn tin qua Facebook/Zalo của spa để xác nhận.\n\nNếu muốn chắc chắn hơn, bạn có thể hỏi luôn về:\n- Giá massage chân hiện tại\n- Có slot trống tuần sau không (vì bạn hay đi vào tuần sau)\n- Cách đặt lịch (online hay gọi điện)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 với budget dưới 300k cho bạn nhé.\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của chúng. Tuy nhiên, dựa trên đánh giá và số lượt review, mình nghiêng về **MASSAGE HẠ SPA QUẬN 1** — có **4.9⭐ (3.550 đánh giá Google Maps)**, đông khách nhất trong danh sách, nên chất lượng khá ổn định 👍\n\nBạn nên gọi trực tiếp hoặc vào website để hỏi giá massage chân cụ thể xem có nằm trong 300k không nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - MASSAGE HẠ SPA\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - MASSAGE HẠ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá massage chân|Xem spa khác ở Quận 1|Tìm spa ở khu vực khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chắc chắn về việc **MASSAGE HẠ SPA QUẬN 1** có hỗ trợ đặt trước online hay không. Cách an toàn nhất là bạn **gọi điện trực tiếp** hoặc **vào Google Maps** để xem có nút \"Đặt lịch\" không, hoặc nhắn tin qua Facebook/Zalo của spa để xác nhận.\n\nNếu muốn chắc chắn hơn, bạn có thể hỏi luôn về:\n- Giá massage chân hiện tại\n- Có slot trống tuần sau không (vì bạn hay đi vào tuần sau)\n- Cách đặt lịch (online hay gọi điện)"
+    }
+  ]
+}

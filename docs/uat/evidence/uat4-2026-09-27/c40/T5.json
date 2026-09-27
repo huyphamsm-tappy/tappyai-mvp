@@ -1,0 +1,25 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 5553,
+  "evidenceId": "b78919b1-2aba-4e2a-836a-1b29e35a56e2",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ chơi! 😊 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn muốn chơi gì?** Ví dụ:\n- Quán ăn/uống (quán tối, cafe, bar...)\n- Hoạt động ngoài trời (công viên, biển...)\n- Giải trí (karaoke, phim, trò chơi...)\n- Spa/thư giãn\n- Cái khác?\n\nVà **bạn đang ở đâu hoặc muốn chơi ở khu vực nào?** (Quận 1, Quận 3, hay chỗ khác?)\n\nCho mình biết là mình sẽ tìm chỗ hay cho bạn!",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ chơi! 😊 Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn muốn chơi gì?** Ví dụ:\n- Quán ăn/uống (quán tối, cafe, bar...)\n- Hoạt động ngoài trời (công viên, biển...)\n- Giải trí (karaoke, phim, trò chơi...)\n- Spa/thư giãn\n- Cái khác?\n\nVà **bạn đang ở đâu hoặc muốn chơi ở khu vực nào?** (Quận 1, Quận 3, hay chỗ khác?)\n\nCho mình biết là mình sẽ tìm chỗ hay cho bạn!"
+    }
+  ]
+}

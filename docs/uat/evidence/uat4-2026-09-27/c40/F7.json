@@ -1,0 +1,25 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 6188,
+  "evidenceId": "f383fccc-ff59-4fb1-a2e5-36bbe0446be3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn đang tìm gì ăn cho bữa tối hôm nay ở Quận 1 🍽️\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm một chút:\n- **Bạn muốn ăn loại gì?** (Ví dụ: cơm, phở, lẩu, hải sản, ăn nhẹ...)\n- **Hay bạn muốn mình gợi ý những món ngon phổ biến tối nay?**\n\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn đang tìm gì ăn cho bữa tối hôm nay ở Quận 1 🍽️\n\nĐể gợi ý đúng ý bạn, mình cần biết thêm một chút:\n- **Bạn muốn ăn loại gì?** (Ví dụ: cơm, phở, lẩu, hải sản, ăn nhẹ...)\n- **Hay bạn muốn mình gợi ý những món ngon phổ biến tối nay?**\n\n"
+    }
+  ]
+}

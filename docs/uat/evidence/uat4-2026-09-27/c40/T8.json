@@ -1,0 +1,25 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 6570,
+  "evidenceId": "27533ed9-f3ff-43d1-9d0c-5f188e7da8b6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm resort Phú Quốc cho kỷ niệm 1 năm, với phong cách sang trọng & lãng mạn. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Khi nào?** (tuần nào trong tháng 10 hay sau?)\n\nMình sẽ tìm ngay khi bạn cho biết! 🏝️\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Phú Quốc bao lâu|Ngân sách bao nhiêu|Khi nào đi[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm resort Phú Quốc cho kỷ niệm 1 năm, với phong cách sang trọng & lãng mạn. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Khi nào?** (tuần nào trong tháng 10 hay sau?)\n\nMình sẽ tìm ngay khi bạn cho biết! 🏝️\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Phú Quốc bao lâu|Ngân sách bao nhiêu|Khi nào đi[/FOLLOWUPS]"
+    }
+  ]
+}
