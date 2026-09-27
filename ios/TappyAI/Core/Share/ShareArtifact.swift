@@ -68,8 +68,11 @@ enum ShareArtifactBuilder {
     /// equal to the web/Android tables by `crossPlatformShare.test.ts`, so the three clients
     /// keep producing the same text.
     private static func labels(_ lang: String) -> Labels {
-        let locale = Locale(identifier: lang.hasPrefix("en") ? "en" : "vi")
-        func s(_ key: String.LocalizationValue) -> String { String(localized: key, locale: locale) }
+        // `String(localized:locale:)` only formats with `locale`; it still resolves the key in the
+        // DEVICE language. Look the key up in the brochure language's own .lproj instead.
+        let code = lang.hasPrefix("en") ? "en" : "vi"
+        let bundle = Bundle.main.path(forResource: code, ofType: "lproj").flatMap(Bundle.init(path:)) ?? .main
+        func s(_ key: String) -> String { bundle.localizedString(forKey: key, value: nil, table: nil) }
         return Labels(
             recommends: s("share.brochure.recommends"), plan: s("share.brochure.plan"),
             reviews: s("share.brochure.reviews"), why: s("share.brochure.why"),
