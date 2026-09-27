@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
-import { compactRequestMessages, proseOnly, withCompactedHistory, REQUEST_HISTORY_BUDGET } from './requestHistory'
+import { compactRequestMessages, proseOnly, withCompactedHistory, stripUiOnlyFields, REQUEST_HISTORY_BUDGET } from './requestHistory'
+import { TEXT_BODY_MAX_BYTES } from '@/lib/http/readCappedBody'
 import { validateClientInput } from '@/lib/ai/security/clientInput'
 
 // UAT3 P0 (2026-09-27): a 22-turn thread was ~36 000 characters because assistant turns carried
@@ -80,5 +81,40 @@ describe('withCompactedHistory', () => {
     expect(body.userLocation).toEqual({ lat: 1, lng: 2 })
     expect(body.decisionEvidenceId).toBe('k')
     expect(size(body.messages)).toBeLessThanOrEqual(REQUEST_HISTORY_BUDGET)
+  })
+
+  // UAT4 P0 (2026-09-27): a 22-turn web thread was a 413 from turn 12 — `parts` repeated every
+  // reply raw and every tool invocation carried its full result rows, past the 256 KB ceiling.
+  it('drops UI-only parts/toolInvocations/annotations so a long tool-heavy thread stays under the raw ceiling', async () => {
+    const rows = Array.from({ length: 8 }, (_, k) => ({ name: `Quán ${k}`, address: 'x'.repeat(600), photo_url: 'https://lh3.example/' + 'p'.repeat(400), reviews: 'r'.repeat(1200) }))
+    const thread: Array<Record<string, unknown>> = []
+    for (let i = 0; i < 22; i++) {
+      thread.push({ role: 'user', content: `câu ${i}`, parts: [{ type: 'text', text: `câu ${i}` }] })
+      const reply = `Trả lời ${i}. ` + 'v'.repeat(900) + `[TAPPY_PLACES]${JSON.stringify(rows)}[/TAPPY_PLACES]`
+      thread.push({
+        role: 'assistant', content: reply, annotations: [{ type: 'tappy.places.v1', items: rows }],
+        parts: [{ type: 'text', text: reply }, { type: 'tool-invocation', toolInvocation: { toolName: 'search_places', state: 'result', result: { results: rows } } }],
+        toolInvocations: [{ toolName: 'search_places', state: 'result', result: { results: rows } }],
+      })
+    }
+    thread.push({ role: 'user', content: 'ảnh này', experimental_attachments: [{ url: 'data:image/png;base64,AAAA', contentType: 'image/png' }] })
+    const raw = JSON.stringify({ messages: thread })
+    expect(new TextEncoder().encode(raw).length).toBeGreaterThan(TEXT_BODY_MAX_BYTES) // the measured failure
+
+    const seen: string[] = []
+    vi.stubGlobal('fetch', vi.fn(async (_u: unknown, init?: RequestInit) => { seen.push(String(init?.body)); return new Response('ok') }))
+    await withCompactedHistory('/api/chat', { method: 'POST', body: raw })
+    const sent = seen[0]
+    expect(new TextEncoder().encode(sent).length).toBeLessThan(TEXT_BODY_MAX_BYTES)
+    const body = JSON.parse(sent) as { messages: Array<Record<string, unknown>> }
+    for (const m of body.messages) for (const k of ['parts', 'toolInvocations', 'annotations']) expect(k in m).toBe(false)
+    // The latest user turn keeps its attachment, and the server contract still accepts the body.
+    expect(body.messages[body.messages.length - 1].experimental_attachments).toEqual([{ url: 'data:image/png;base64,AAAA', contentType: 'image/png' }])
+    expect(validateClientInput(body).ok).toBe(true)
+  })
+
+  it('stripUiOnlyFields leaves a message without UI fields as the same object', () => {
+    const m = { role: 'user', content: 'x' }
+    expect(stripUiOnlyFields(m)).toBe(m)
   })
 })

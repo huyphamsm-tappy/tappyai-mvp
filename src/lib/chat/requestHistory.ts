@@ -61,15 +61,34 @@ export function compactRequestMessages<M extends Msg>(messages: readonly M[], bu
 }
 
 /**
- * `useChat`'s `fetch`: the same request with `messages` compacted. Anything that is not a JSON
- * body with a `messages` array passes through untouched.
+ * UI-only fields `useChat` keeps on every message. The server rebuilds each message from `role` +
+ * `content` and drops these by construction (`validateClientInput`), so they only ever cost bytes.
+ *
+ * 🚨 UAT4 P0 (2026-09-27): compaction above rewrites `content`, but `parts` carries the SAME reply
+ * again — raw, with its [TAPPY_*] blocks — and every tool invocation WITH its full result (the
+ * place/product rows). Measured on web: a 22-turn thread passed the 256 KB raw text ceiling
+ * (`readCappedBody`) at turn 12 and every later turn was a 413, before the server could compact.
+ */
+const UI_ONLY_KEYS = ['parts', 'toolInvocations', 'annotations'] as const
+
+export function stripUiOnlyFields<M extends Msg>(m: M): M {
+  if (!UI_ONLY_KEYS.some(k => k in m)) return m
+  const copy: Msg = { ...m }
+  for (const k of UI_ONLY_KEYS) delete copy[k]
+  return copy as M
+}
+
+/**
+ * `useChat`'s `fetch`: the same request with `messages` compacted and UI-only fields dropped.
+ * Anything that is not a JSON body with a `messages` array passes through untouched.
  */
 export const withCompactedHistory: typeof fetch = (input, init) => {
   if (init && typeof init.body === 'string') {
     try {
       const body = JSON.parse(init.body) as { messages?: unknown }
       if (Array.isArray(body.messages)) {
-        return fetch(input, { ...init, body: JSON.stringify({ ...body, messages: compactRequestMessages(body.messages as Msg[]) }) })
+        const messages = compactRequestMessages((body.messages as Msg[]).map(stripUiOnlyFields))
+        return fetch(input, { ...init, body: JSON.stringify({ ...body, messages }) })
       }
     } catch { /* not JSON — send as is */ }
   }
