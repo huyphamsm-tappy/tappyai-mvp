@@ -121,7 +121,7 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 - Điền **[NGÀY TRIỂN KHAI]** = ngày `1fce328` lên production.
 
 ### Thời hạn xoá tệp — THỐNG NHẤT 2026-09-27 (UAT3): **48 giờ**
-- **Cơ chế thật:** `vercel.json` chạy `/api/cron/account-deletion-jobs` lúc `45 18 * * *` UTC = **01:45 giờ VN, mỗi ngày một lần**, tối đa 20 job mỗi lần (`deletionJobs.ts`), job lỗi được thử lại ở lần chạy sau (tối đa 10 lần).
+- **Cơ chế thật:** `vercel.json` chạy `/api/cron/account-deletion-jobs` lúc `45 18 * * *` UTC = **01:45 giờ VN, mỗi ngày một lần**, đọc hàng đợi theo lô 20 cho tới khi hết (`deletionJobs.ts`), job lỗi được thử lại ở lần chạy sau (tối đa 10 lần).
 - Xoá lúc 01:46 → lần chạy đầu sau ~24 giờ; nếu lần đó lỗi (GCS/Google không trả lời) → lần thử lại sau ~48 giờ. **"Trong vòng 48 giờ" là con số đúng**; "24 giờ" chỉ đúng khi lần chạy đầu thành công.
 - **Hai con số khác nhau là hai cơ chế khác nhau**, không mâu thuẫn: *48 giờ* = tệp bị xoá khỏi kho lưu trữ của chúng ta (mục 2, màn xoá trong app `accountDelete.done.p1`); *một ngày* = bản sao đã tải về máy **người xem** có thể còn thêm tối đa một ngày SAU khi tệp bị xoá (mục 4). Câu ở mục 4 đã sửa để nói rõ "sau khi chúng tôi xóa tệp khỏi kho lưu trữ".
-- ⚠️ Giả định của "48 giờ": hàng đợi dưới 20 lượt xoá/ngày. Vượt mức đó thì phần dư chờ thêm một ngày mỗi 20 job. Test `src/lib/account/deletionWindow.test.ts` khoá con số 48 với lịch cron: đổi lịch hoặc giới hạn mà không sửa lời văn thì test đỏ.
+- ~~Giả định dưới 20 lượt xoá/ngày~~ — BỎ 2026-09-27: mỗi lần chạy giờ đọc hết hàng đợi theo từng lô 20 (dừng nhận job mới sau 50 giây của 60 giây cho phép; phần còn lại sang lần chạy sau). Job lỗi chỉ thử 1 lần/lần chạy. Test `src/lib/account/deletionJobs.test.ts` ("drains the queue") + `deletionWindow.test.ts` khoá con số 48 với lịch cron.

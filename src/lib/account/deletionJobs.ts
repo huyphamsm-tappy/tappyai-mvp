@@ -26,8 +26,15 @@ export interface DeletionDeps {
   media: DeletionMedia
   /** true = revoked or already invalid at Google; false = try again later. */
   revoke: (token: string) => Promise<boolean>
+  /** Jobs per database read (a batch). The run keeps reading batches until the queue is empty. */
   limit?: number
   maxAttempts?: number
+  /**
+   * Stop starting new jobs after this instant (ms since epoch). The cron route has 60 s; the
+   * default leaves 10 s of it for the job in flight. Anything left is the next run's.
+   */
+  deadline?: number
+  now?: () => number
   /**
    * Process only this user's job. A run pointed at a bucket other than the production one (the
    * audit proof) must never mark somebody else's job done — their files are not in that bucket.
@@ -59,18 +66,37 @@ export async function processAccountDeletionJobs(deps: DeletionDeps): Promise<De
   const maxAttempts = deps.maxAttempts ?? DEFAULT_MAX_ATTEMPTS
   const result: DeletionRunResult = { processed: 0, completed: 0, failed: 0, objectsDeleted: 0, tokensRevoked: 0 }
 
-  let query = deps.db
-    .from('account_deletion_jobs')
-    .select('id, user_id, group_ids, google_tokens, attempts, media_deleted')
-    .is('done_at', null)
-    .lt('attempts', maxAttempts)
-  if (deps.userId) query = query.eq('user_id', deps.userId)
-  const { data, error } = await query
-    .order('created_at', { ascending: true })
-    .limit(limit)
-  if (error) throw new Error(`account_deletion_jobs read failed (${error.code ?? 'unknown'})`)
+  const now = deps.now ?? Date.now
+  const deadline = deps.deadline ?? now() + 50_000
+  // UAT3 (2026-09-27): the run used to take ONE batch of 20 and stop, so above 20 deletions a day
+  // the backlog grew and "files removed within 48 hours" stopped being true. It now reads batch
+  // after batch until the queue is empty (or the deadline). A job already tried in THIS run is
+  // excluded from later batches — a failing job waits for the next run instead of looping here.
+  const seen = new Set<string>()
+  for (;;) {
+    if (now() >= deadline) break
+    let query = deps.db
+      .from('account_deletion_jobs')
+      .select('id, user_id, group_ids, google_tokens, attempts, media_deleted')
+      .is('done_at', null)
+      .lt('attempts', maxAttempts)
+    if (deps.userId) query = query.eq('user_id', deps.userId)
+    if (seen.size > 0) query = query.not('id', 'in', `(${[...seen].join(',')})`)
+    const { data, error } = await query
+      .order('created_at', { ascending: true })
+      .limit(limit)
+    if (error) throw new Error(`account_deletion_jobs read failed (${error.code ?? 'unknown'})`)
+    const batch = ((data ?? []) as JobRow[]).filter(j => !seen.has(j.id))
+    if (batch.length === 0) break
+    for (const job of batch) {
+      seen.add(job.id)
+      if (now() >= deadline) break
+      await runJob(job)
+    }
+  }
+  return result
 
-  for (const job of (data ?? []) as JobRow[]) {
+  async function runJob(job: JobRow): Promise<void> {
     result.processed++
     let deleted = 0
     // Revoke first, and completely: whatever happens to the files, a revoked token is dropped
@@ -118,5 +144,4 @@ export async function processAccountDeletionJobs(deps: DeletionDeps): Promise<De
       }).eq('id', job.id)
     }
   }
-  return result
 }

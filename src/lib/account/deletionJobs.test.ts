@@ -16,7 +16,7 @@ function fakeDb(jobs: Job[]) {
     from: () => {
       const q: Record<string, unknown> = {}
       let onlyUser: string | null = null
-      q.select = () => q; q.is = () => q; q.lt = () => q; q.order = () => q
+      q.select = () => q; q.is = () => q; q.lt = () => q; q.order = () => q; q.not = () => q
       q.eq = (_c: string, v: string) => { onlyUser = v; return q }
       q.limit = async () => ({ data: jobs.filter(j => !j.done_at && (onlyUser === null || j.user_id === onlyUser)), error: null })
       q.update = (patch: Record<string, unknown>) => ({ eq: async (_c: string, id: string) => { updates.push({ id, patch }); return { error: null } } })
@@ -113,5 +113,55 @@ describe('processAccountDeletionJobs', () => {
     const err = String(updates[0].patch.last_error)
     expect(err).not.toContain('secret-token')
     expect(err).not.toContain(U)
+  })
+})
+
+// UAT3 (2026-09-27): the run drains the whole queue, not one batch of 20 — "files removed within
+// 48 hours" (deletionWindow.test.ts) must hold when more than 20 accounts are deleted in a day.
+describe('processAccountDeletionJobs — drains the queue', () => {
+  /** A queue that honours done_at, attempts, NOT IN and LIMIT like the real table. */
+  function realisticDb(jobs: Job[]) {
+    let reads = 0
+    const db = {
+      from: () => {
+        let excluded: string[] = []
+        const q: Record<string, unknown> = {}
+        q.select = () => q; q.is = () => q; q.lt = () => q; q.order = () => q; q.eq = () => q
+        q.not = (_c: string, _op: string, list: string) => { excluded = list.replace(/[()]/g, '').split(','); return q }
+        q.limit = async (n: number) => { reads++; return { data: jobs.filter(j => !j.done_at && !excluded.includes(j.id)).slice(0, n), error: null } }
+        q.update = (patch: Record<string, unknown>) => ({ eq: async (_c: string, id: string) => { Object.assign(jobs.find(j => j.id === id)!, patch); return { error: null } } })
+        return q
+      },
+    } as unknown as SupabaseClient
+    return { db, reads: () => reads }
+  }
+  const user = (i: number) => `${String(i).padStart(8, '0')}-1111-4111-8111-111111111111`
+
+  it('45 queued deletions with a batch size of 20 are all completed in one run', async () => {
+    const jobs = Array.from({ length: 45 }, (_, i) => job({ id: `j${i}`, user_id: user(i), group_ids: [], google_tokens: [] }))
+    const { db, reads } = realisticDb(jobs)
+    const r = await processAccountDeletionJobs({ db, media: fakeBucket([]).media, revoke: async () => true, limit: 20 })
+    expect(r.completed).toBe(45)
+    expect(jobs.every(j => j.done_at)).toBe(true)
+    expect(reads()).toBe(4) // 20 + 20 + 5 + the empty read that ends the run
+  })
+
+  it('a failing job is tried once per run — it cannot spin the loop or starve the jobs behind it', async () => {
+    const jobs = [job({ id: 'bad', user_id: user(1), google_tokens: ['t'] }), ...Array.from({ length: 25 }, (_, i) => job({ id: `ok${i}`, user_id: user(i + 2), group_ids: [], google_tokens: [] }))]
+    const { db } = realisticDb(jobs)
+    const r = await processAccountDeletionJobs({ db, media: fakeBucket([]).media, revoke: async () => false, limit: 20 })
+    expect(r.processed).toBe(26)
+    expect(r.completed).toBe(25)
+    expect(jobs.find(j => j.id === 'bad')!.attempts).toBe(1)
+  })
+
+  it('stops starting jobs at the deadline and leaves the rest queued', async () => {
+    const jobs = Array.from({ length: 10 }, (_, i) => job({ id: `j${i}`, user_id: user(i), group_ids: [], google_tokens: [] }))
+    const { db } = realisticDb(jobs)
+    let t = 0
+    const r = await processAccountDeletionJobs({ db, media: fakeBucket([]).media, revoke: async () => true, limit: 20, now: () => (t += 10), deadline: 45 })
+    expect(r.completed).toBeGreaterThan(0)
+    expect(r.completed).toBeLessThan(10)
+    expect(jobs.filter(j => !j.done_at).length).toBe(10 - r.completed)
   })
 })
