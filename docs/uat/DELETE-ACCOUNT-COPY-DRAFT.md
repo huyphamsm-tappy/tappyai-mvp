@@ -73,7 +73,7 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 > - **Server logs** used to keep the service running, kept for **[XÁC NHẬN: số ngày]** and then deleted.
 >
 > Some copies are outside our control and may remain for a while:
-> - A photo or video that someone already viewed can stay on their own device — in their browser or app — for up to one day.
+> - A photo or video that someone already viewed can stay on their own device — in their browser or app — for up to one day after we remove it from our storage.
 > - Videos uploaded before **[NGÀY TRIỂN KHAI]** may remain reachable through their old link for up to one year, because copies of them were stored in Google's network before we changed how videos are stored, and we cannot recall those copies.
 > - A link preview that a social network or messaging app saved when someone shared your page can remain until that service refreshes it.
 
@@ -84,7 +84,7 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 > - **Nhật ký máy chủ** dùng để vận hành dịch vụ, lưu trong **[XÁC NHẬN: số ngày]** rồi xóa.
 >
 > Một số bản sao nằm ngoài tầm kiểm soát của chúng tôi và có thể còn trong một thời gian:
-> - Ảnh hoặc video mà người khác đã xem có thể còn trên chính thiết bị của họ — trong trình duyệt hoặc ứng dụng — tối đa một ngày.
+> - Ảnh hoặc video mà người khác đã xem có thể còn trên chính thiết bị của họ — trong trình duyệt hoặc ứng dụng — tối đa một ngày sau khi chúng tôi xóa tệp khỏi kho lưu trữ.
 > - Video tải lên trước **[NGÀY TRIỂN KHAI]** có thể vẫn mở được qua đường link cũ tối đa một năm, vì bản sao của chúng đã được lưu trong mạng của Google trước khi chúng tôi thay đổi cách lưu video, và chúng tôi không thể thu hồi các bản sao đó.
 > - Bản xem trước đường link mà mạng xã hội hoặc ứng dụng nhắn tin đã lưu khi ai đó chia sẻ trang của bạn có thể còn cho tới khi dịch vụ đó làm mới.
 
@@ -110,7 +110,8 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 
 ### Cập nhật 2026-09-26 — cache sau khi xoá (ĐO 35 phút, `evidence/cache-after-delete-2026-09-26/`)
 - **Một URL đã bị xoá vẫn có thể mở được qua cache biên dùng chung của Google cho tới hết `max-age` của file.** Đo: file max-age=300 còn được phục vụ tới +257 s sau khi xoá rồi dừng; file max-age=86400 vẫn được phục vụ ở 46/68 lần gọi tới hết 35 phút đo. Không có cách buộc dừng: cache tích hợp của GCS **không hỗ trợ vô hiệu hoá** (tài liệu GCS). Suy ra (không đo): clip upload từ nay (max-age 1 ngày) có thể còn mở được tới **1 ngày** sau khi xoá; clip upload trước `1318b95` (max-age 1 năm) tới **1 năm** nếu đã được xem gần đây.
-- Hệ quả cho lời văn: **không được hứa gỡ ngay.** Mục 4 phải nói rõ: "bản sao có thể vẫn mở được qua đường link cũ tối đa 24 giờ". Với clip cũ: **[XÁC NHẬN]** — hoặc đổi Cache-Control clip cũ trước khi đăng lời văn (bản đã nằm trong cache biên vẫn sống tới hết hạn cũ), hoặc ghi "tối đa một năm với video tải lên trước <ngày>".
+- ~~Hệ quả cho lời văn: Mục 4 phải nói rõ: "bản sao có thể vẫn mở được qua đường link cũ tối đa 24 giờ".~~ (ĐÃ THAY bằng mục cache `private` ngay dưới, và mục "Thời hạn xoá tệp" cuối file — không có câu "24 giờ" nào về việc xoá tệp.)
+- Hệ quả cho lời văn: **không được hứa gỡ ngay.** Với clip cũ: **[XÁC NHẬN]** — hoặc đổi Cache-Control clip cũ trước khi đăng lời văn (bản đã nằm trong cache biên vẫn sống tới hết hạn cũ), hoặc ghi "tối đa một năm với video tải lên trước <ngày>".
 - Nếu muốn xoá có hiệu lực ngay tại phía Google: dùng `private, max-age=86400` (cache biên không được lưu, chỉ thiết bị người xem) hoặc Cloud CDN (có vô hiệu hoá) — xem `CACHE-AFTER-DELETE-2026-09-26.md`.
 
 ### Cập nhật 2026-09-26 (sau quyết định của anh) — video cache `private` (`1fce328`)
@@ -118,3 +119,9 @@ Khi triển khai, trang phải đổi số bullet (hiện `bullets('legal.delete
 - **Video tải lên trước thay đổi này** (max-age 1 năm, public) — bản đã nằm trong cache biên sống tới hết hạn cũ, **tối đa 1 năm, không thu hồi được**. Job `scripts/ops/clean-existing-clips.mts --fix-cache-control` chỉ đổi header của object; **không** xoá được bản đã nằm trong cache. Vì vậy câu "video tải lên trước [NGÀY]" phải giữ.
 - ~~[XÁC NHẬN — ảnh]~~ → anh chọn (b) 2026-09-26: ảnh/ảnh đại diện/ảnh bìa đi đường server giờ cũng mang `private, max-age=86400, immutable` (upload multipart); câu "ảnh tối đa một giờ" đã bỏ. Ảnh tải lên TRƯỚC thay đổi này vẫn mang `public, max-age=3600` trên từng object. **Anh quyết 2026-09-26:** đổi header đó trong job dọn ảnh cũ sau launch (chỉ PATCH metadata); **không** thêm câu nào vào lời văn.
 - Điền **[NGÀY TRIỂN KHAI]** = ngày `1fce328` lên production.
+
+### Thời hạn xoá tệp — THỐNG NHẤT 2026-09-27 (UAT3): **48 giờ**
+- **Cơ chế thật:** `vercel.json` chạy `/api/cron/account-deletion-jobs` lúc `45 18 * * *` UTC = **01:45 giờ VN, mỗi ngày một lần**, tối đa 20 job mỗi lần (`deletionJobs.ts`), job lỗi được thử lại ở lần chạy sau (tối đa 10 lần).
+- Xoá lúc 01:46 → lần chạy đầu sau ~24 giờ; nếu lần đó lỗi (GCS/Google không trả lời) → lần thử lại sau ~48 giờ. **"Trong vòng 48 giờ" là con số đúng**; "24 giờ" chỉ đúng khi lần chạy đầu thành công.
+- **Hai con số khác nhau là hai cơ chế khác nhau**, không mâu thuẫn: *48 giờ* = tệp bị xoá khỏi kho lưu trữ của chúng ta (mục 2, màn xoá trong app `accountDelete.done.p1`); *một ngày* = bản sao đã tải về máy **người xem** có thể còn thêm tối đa một ngày SAU khi tệp bị xoá (mục 4). Câu ở mục 4 đã sửa để nói rõ "sau khi chúng tôi xóa tệp khỏi kho lưu trữ".
+- ⚠️ Giả định của "48 giờ": hàng đợi dưới 20 lượt xoá/ngày. Vượt mức đó thì phần dư chờ thêm một ngày mỗi 20 job. Test `src/lib/account/deletionWindow.test.ts` khoá con số 48 với lịch cron: đổi lịch hoặc giới hạn mà không sửa lời văn thì test đỏ.

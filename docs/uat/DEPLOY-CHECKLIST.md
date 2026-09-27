@@ -667,6 +667,34 @@ Watch the two alerts in the logs; the 80 % warning is the moment to raise the ce
 
 ---
 
+### 4d. Self-service account deletion — turn it on in THIS order (UAT3 P0, added 2026-09-27)
+
+The in-app "Xóa tài khoản" button (web `/profile/settings/delete-account`, `POST /api/account/delete`,
+commit `938501e`) deletes the auth user at once. It is behind `ACCOUNT_SELF_DELETE_ENABLED`
+(**unset/false on production**). Turning it on before the migrations would delete accounts while
+leaving AI memory, public share pages, notifications and uploaded files behind — the opposite of
+what the page promises. Do not reorder:
+
+1. **Backup:** `pg_dump` exactly as §0.2, and prove it as §0.3 (a)–(c). No step below before that.
+2. **Migrations on prod, in order:** §1-D1 → §1-D2 → §1-D4 (D3/D5 may go in the same session, they
+   are independent). After D4, confirm the trigger exists:
+   `select tgname from pg_trigger where tgname ilike '%account_deletion%';` → one row.
+   Confirm the cron route answers: `curl -H "Authorization: Bearer $CRON_SECRET" https://<prod>/api/cron/account-deletion-jobs`
+   → `{"ok":true,"processed":0,...}` (a 500 `deletion_jobs_failed` means D4 is not applied).
+3. **Flag:** Vercel → Production → `ACCOUNT_SELF_DELETE_ENABLED=true` → redeploy. Check: Settings
+   shows "Xóa tài khoản" (not "Yêu cầu xóa tài khoản") and it opens the confirm page;
+   `POST /api/account/delete` without a session → 401 (with the flag off it is 404).
+4. **Public page `/delete-account`:** publish `docs/uat/DELETE-ACCOUNT-COPY-DRAFT.md` (fill its
+   [XÁC NHẬN] values), rewriting §1–§2 to describe the button (type XÓA/DELETE → deleted at once;
+   files within 48 hours — the number `src/lib/account/deletionWindow.test.ts` pins to the cron).
+   The live page still says the account "is not deleted automatically", which is false once step 3
+   is live — steps 3 and 4 ship in the same deploy. Android must ship its in-app button in the same
+   release (its Settings row is the flow Google Play reviewers follow).
+
+Smoke test (throwaway account only, never a real one): create → Settings → Xóa tài khoản → type XÓA
+→ confirmation screen → sign-in with the same email fails → `select done_at from account_deletion_jobs`
+fills after the next 01:45 run (or trigger the cron as above).
+
 ## 5. Post-deploy smoke test (run on production immediately after)
 
 1. **Home** loads (200); no console errors on first paint.
