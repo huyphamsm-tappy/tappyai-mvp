@@ -1454,6 +1454,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const phonesByEntity = new Map<string, string[]>()
   /** Today's opening hours per venue (G1b fallback sentence only; never a claim source). */
   const hoursByEntity = new Map<string, string>()
+  /** c40 E8: the provider's published WEEK per venue — the only evidence a weekday closure claim may trace to. */
+  const weekByEntity = new Map<string, Record<string, string>>()
   /** Consultative V1: the row's own address per venue, so a bare "Địa chỉ: …" line reads as a card listing. */
   const addressesByEntity = new Map<string, string>()
   /** G2: the provider's own price band per venue (`price_range_text` / `price_range`) — entity-level price evidence. */
@@ -2021,7 +2023,7 @@ export function applyPlaceEnrichmentStreamFilter(
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
       }))
       : null
-    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved }))
+    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
     // prose guards below cut SENTENCES and CLAUSES — hours ("mở cửa 10:00-21:00"), prices, formats —
     // and they ran over the [TAPPY_PLAN] JSON too: a cut took "lễ tân mở cửa 24/7, check-in từ
@@ -2190,7 +2192,18 @@ export function applyPlaceEnrichmentStreamFilter(
       const row = { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
       if (buildActions(row, 'food').some(a => a.kind === 'order' || a.kind === 'delivery' || a.kind === 'reservation')) orderablePlaces.add(p.name)
     }
-    const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
+    /**
+     * c40 P7b (UAT @ 2bd5c59, 2026-09-28): the clarify answer "1–2 người" ran no tool and its need
+     * profile has no domain ("gội đầu dưỡng sinh" matches no subject row), so `placeIntent` was
+     * false and this guard never ran — "**Spa Thiên Hương** (4.8⭐, 156 đánh giá, 1.1km)", a venue
+     * in no row of the thread, went out verbatim. A no-tool follow-up about the PLACES the previous
+     * reply named is a place turn: the carried facts above are its evidence, so the guard runs
+     * against them. "A place reply" = a carried venue with a distance or hours — the
+     * shape a product reply never has, so a shopping follow-up keeps its current path.
+     */
+    const carriedPlaceFollowUp = !hadPlaceSearch && !shoppingTurn
+      && (collector?.consultativeV1?.carried ?? []).some(c => !!c.name && (c.distanceKm !== null || !!c.hours))
+    const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent || carriedPlaceFollowUp)
       ? guardPlaceClaimsInText(foodGuarded, {
         ratings: placeRatings,
         distancesKm: placeDistancesKm,
@@ -2204,7 +2217,7 @@ export function applyPlaceEnrichmentStreamFilter(
         ticketablePlaces,
         // CCP: sentences carrying a system-placed commerce link are never judged as claims.
         systemLinkUrls,
-      }, { scope: placeClaimScope, attributionV2: guardV2, pickName })
+      }, { scope: carriedPlaceFollowUp ? 'all' : placeClaimScope, attributionV2: guardV2, pickName })
       : null
     const placeGuardedRaw = placeGuardResult
       ? placeGuardResult.text
@@ -2224,7 +2237,20 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
     const hoursGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, { lang })
+      ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, {
+        lang,
+        // c40 E8: the model's copy of a row carries only TODAY's hours; the week rides on the card's
+        // entity (the same data the card shows), so both are read.
+        weekByEntity: (() => {
+          const m = new Map(weekByEntity)
+          for (const r of collector?.placesRecommendations ?? []) {
+            const name = r.entity.identity.name
+            const week = (r.entity.ext as { openingHoursWeek?: Record<string, string> } | undefined)?.openingHoursWeek
+            if (name && week && !m.has(name)) m.set(name, week)
+          }
+          return m
+        })(),
+      })
       : null
     if (hoursGuardResult && hoursGuardResult.redacted > 0) {
       console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'hours', redacted: hoursGuardResult.redacted, unsupported: hoursGuardResult.unsupported.length, evidence_texts: hoursEvidence.length }))
@@ -3000,6 +3026,7 @@ export function applyPlaceEnrichmentStreamFilter(
               // E1: the week's hours are evidence too — a reply may state Friday's closing time today.
               if (row.opening_hours_week && typeof row.opening_hours_week === 'object') {
                 for (const v of Object.values(row.opening_hours_week as Record<string, unknown>)) if (typeof v === 'string') placeTexts.push(v)
+                if (rowName && !weekByEntity.has(rowName)) weekByEntity.set(rowName, row.opening_hours_week as Record<string, string>)
               }
             }
             let newPlaces: PlaceLike[] = []

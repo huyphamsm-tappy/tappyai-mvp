@@ -1,0 +1,114 @@
+{
+ "_source": "c40 UAT @ 2bd5c59, run T6; the [TAPPY_PLAN] block as delivered + the a: rows of its seven stops (opening_hours = the day of the run).",
+ "userText": "Hội An có gì hay, đi 1 ngày",
+ "planBlock": "[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Khám phá Hội An trong 1 ngày - Phố cổ, ẩm thực & giải trí\",\"people\":1,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"MẸT Hội An - Vietnamese cuisine & Vegetarian options 7\",\"description\":\"Nhà hàng Việt Nam nổi tiếng với 4.9⭐ (14.206 đánh giá), mở từ 10:00, chuyên ẩm thực Việt và đồ chay. Bữa sáng/brunch lý tưởng để bắt đầu ngày.\",\"price\":\"chưa có giá\",\"address\":\"49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=8609020210729391502\",\"place_id\":\"ChIJgxsiJQAPQjERjhWv5ERieXc\"},{\"time\":\"09:30\",\"emoji\":\"🏛️\",\"category\":\"attraction\",\"name\":\"Phố cổ Hội An\",\"description\":\"Khu phố cổ UNESCO với kiến trúc độc đáo, mở cửa cả ngày. Đây là trái tim của Hội An - khám phá các nhà cổ, cửa hàng lưu niệm, và Chùa Cầu nổi tiếng.\",\"price\":\"chưa có giá\",\"address\":\"V8HH+5H2, Phố cổ, Old Town, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=10290800982165194763\",\"place_id\":\"ChIJuUMLXgChQTERC4gyZPhE0I4\"},{\"time\":\"12:00\",\"emoji\":\"🍲\",\"category\":\"food\",\"name\":\"Ngon Phố Hội\",\"description\":\"Nhà hàng Việt Nam 4.8⭐ (1.588 đánh giá), chuyên các món ăn truyền thống Hội An. Mở 10:30-22:00, lý tưởng cho bữa trưa.\",\"price\":\"chưa có giá\",\"address\":\"21 La Hối, phường, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=4326963538805675119\",\"booking_link\":\"https://book.chope.co/booking?source=google_dining&rid=ngonphohoi2606vn&rwg_token=AE37R_hkNVGGImTwxE0OSCVhiHKJ934Yt9tWc8VQsjciXR-aPwCp59M3hU7f2kU-YE9MabpcL4_1_WzldsRmU98mch2bGmJNIa7rbmc4IUgWLXHeN-GuY2k%3D\",\"place_id\":\"ChIJJVMiN4kPQjERb1SUzml2DDw\"},{\"time\":\"14:00\",\"emoji\":\"🚤\",\"category\":\"attraction\",\"name\":\"Cocochill Hoi An – Coconut Village & Basket Boat\",\"description\":\"Trải nghiệm thuyền dừa độc đáo với 5⭐ (1.107 đánh giá), mở 07:30-20:00. Khám phá làng dừa, chèo thuyền rổ trên sông - hoạt động không thể bỏ qua.\",\"price\":\"chưa có giá\",\"address\":\"Tổ 7 - Thôn Vạn lăng, Hội An Đông, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=1286007648621227989\",\"place_id\":\"ChIJWaknPGUNQjER1e-AkiTR2BE\"},{\"time\":\"16:30\",\"emoji\":\"☕\",\"category\":\"cafe\",\"name\":\"Mê Hội An Rooftop Coffee & Kitchen\",\"description\":\"Quán cà phê rooftop 4.9⭐ (2.766 đánh giá) với view đẹp, mở 08:00-22:30. Nơi lý tưởng để thư giãn chiều và ngắm hoàng hôn.\",\"price\":\"chưa có giá\",\"address\":\"166 Trần Phú, Old Town, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14326689060177770475\",\"place_id\":\"ChIJb_HrObEPQjER6_deT8uf0sY\"},{\"time\":\"18:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Nhà Hàng - Bar Vina Ngon\",\"description\":\"Nhà hàng & bar 4.9⭐ (304 đánh giá), mở 09:00-22:00. Kết hợp ẩm thực Việt với không gian bar thoải mái cho bữa tối.\",\"price\":\"chưa có giá\",\"address\":\"To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=12169638456266821990\",\"place_id\":\"ChIJeWsnp9ENQjERZpG3zrI946g\"},{\"time\":\"20:30\",\"emoji\":\"🍸\",\"category\":\"entertainment\",\"name\":\"Hoi An T/T Cocktail Bar, Coffee & Antiques\",\"description\":\"Quán bar cocktail 5⭐ (539 đánh giá), mở 10:00-23:00. Không gian cổ kính với đồ uống chất lượng - hoàn hảo để kết thúc ngày.\",\"price\":\"chưa có giá\",\"address\":\"58 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=4668035235367852879\",\"place_id\":\"ChIJZ3fzHf8PQjERT5sbc1AxyEA\"}]}],\"cost_breakdown\":{\"Bữa sáng (MẸT Hội An)\":\"chưa có giá\",\"Tham quan phố cổ\":\"chưa có giá\",\"Bữa trưa (Ngon Phố Hội)\":\"chưa có giá\",\"Tour thuyền dừa (Cocochill)\":\"chưa có giá\",\"Cà phê chiều (Mê Hội An)\":\"chưa có giá\",\"Bữa tối (Vina Ngon)\":\"chưa có giá\",\"Cocktail tối (T/T Bar)\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Phố cổ rất đông khách du lịch vào buổi sáng - nếu muốn tránh đám đông, hãy đi sớm hoặc chiều tối.\",\"basis\":\"general\"}],\"share_text\":\"1 ngày tuyệt vời ở Hội An: phố cổ, thuyền dừa, ẩm thực & cocktail 🌅 #TappyAI\"}\n[/TAPPY_PLAN]",
+ "rows": [
+  {
+   "name": "Nhà Hàng - Bar Vina Ngon",
+   "place_id": "ChIJeWsnp9ENQjERZpG3zrI946g",
+   "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam",
+   "rating_value": 4.9,
+   "rating_count": 304,
+   "google_rating": "4.9⭐ (304 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "09:00–22:00",
+   "place_types": [
+    "Nhà hàng",
+    "Quán bar",
+    "Nhà hàng chuyên phục vụ bữa nửa buổi"
+   ],
+   "maps_link": "https://maps.google.com/?cid=12169638456266821990"
+  },
+  {
+   "name": "Ngon Phố Hội",
+   "place_id": "ChIJJVMiN4kPQjERb1SUzml2DDw",
+   "address": "21 La Hối, phường, Hội An, Đà Nẵng, Việt Nam",
+   "rating_value": 4.8,
+   "rating_count": 1588,
+   "google_rating": "4.8⭐ (1.588 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "10:30–22:00",
+   "place_types": [
+    "Nhà hàng Việt Nam",
+    "Nhà hàng"
+   ],
+   "maps_link": "https://maps.google.com/?cid=4326963538805675119"
+  },
+  {
+   "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+   "place_id": "ChIJgxsiJQAPQjERjhWv5ERieXc",
+   "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+   "rating_value": 4.9,
+   "rating_count": 14206,
+   "google_rating": "4.9⭐ (14.206 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "10:00–22:30",
+   "place_types": [
+    "Nhà hàng Việt Nam",
+    "Nhà hàng",
+    "Nhà hàng món chay"
+   ],
+   "maps_link": "https://maps.google.com/?cid=8609020210729391502"
+  },
+  {
+   "name": "Phố cổ Hội An",
+   "place_id": "ChIJuUMLXgChQTERC4gyZPhE0I4",
+   "address": "V8HH+5H2, Phố cổ, Old Town, Hội An, Đà Nẵng, Việt Nam",
+   "rating_value": 4.9,
+   "rating_count": 14,
+   "google_rating": "4.9⭐ (14 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "Mở cửa cả ngày",
+   "place_types": [
+    "Điểm thu hút khách du lịch"
+   ],
+   "maps_link": "https://maps.google.com/?cid=10290800982165194763"
+  },
+  {
+   "name": "Cocochill Hoi An – Coconut Village & Basket Boat",
+   "place_id": "ChIJWaknPGUNQjER1e-AkiTR2BE",
+   "address": "Tổ 7 - Thôn Vạn lăng, Hội An Đông, Đà Nẵng 51000, Việt Nam",
+   "rating_value": 5,
+   "rating_count": 1107,
+   "google_rating": "5⭐ (1.107 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "07:30–20:00",
+   "place_types": [
+    "Điểm thu hút khách du lịch",
+    "Đại lý du lịch bằng thuyền",
+    "Nhà hàng Việt Nam"
+   ],
+   "maps_link": "https://maps.google.com/?cid=1286007648621227989"
+  },
+  {
+   "name": "Hoi An T/T Cocktail Bar, Coffee & Antiques",
+   "place_id": "ChIJZ3fzHf8PQjERT5sbc1AxyEA",
+   "address": "58 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam",
+   "rating_value": 5,
+   "rating_count": 539,
+   "google_rating": "5⭐ (539 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "10:00–23:00",
+   "place_types": [
+    "Quán bar cocktail"
+   ],
+   "maps_link": "https://maps.google.com/?cid=4668035235367852879"
+  },
+  {
+   "name": "Mê Hội An Rooftop Coffee & Kitchen",
+   "place_id": "ChIJb_HrObEPQjER6_deT8uf0sY",
+   "address": "166 Trần Phú, Old Town, Hội An, Đà Nẵng 560000, Việt Nam",
+   "rating_value": 4.9,
+   "rating_count": 2766,
+   "google_rating": "4.9⭐ (2.766 đánh giá Google Maps)",
+   "open_now": true,
+   "opening_hours": "08:00–22:30",
+   "place_types": [
+    "Quán cà phê",
+    "Quán bar cocktail",
+    "Nhà hàng"
+   ],
+   "maps_link": "https://maps.google.com/?cid=14326689060177770475"
+  }
+ ]
+}

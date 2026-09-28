@@ -18,6 +18,35 @@
 // Non-venue items (moving between stops, rest, free time) are kept as they are, minus any link.
 
 import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
+import { isOpenNow } from './tools/serperPlaces'
+
+// ── c40 T6 (UAT @ 2bd5c59, 2026-09-28): a stop scheduled while the venue is closed ────────────
+//
+// "Hội An có gì hay, đi 1 ngày" put "MẸT Hội An" at 08:00 as breakfast; its own row says
+// 10:00–22:30 (and the item's description even says "mở từ 10:00"). A plan TIME is a claim that
+// the stop can be done then. So, for a venue item matched to a retrieved row whose hours are
+// known (a clock range — `opening_hours` is the provider's hours for the day of the search, the
+// only hours a row carries), a time outside those hours gets the smallest honest change:
+//   · moved to the row's opening time, when that keeps the day's times strictly ascending;
+//   · otherwise the time is CLEARED — the stop stays, no clock is stated. Nothing is invented:
+//     the only time ever written is one the row states. Reordering the day was rejected: it moves
+//     other stops and contradicts the model's own framing ("bữa sáng … bắt đầu ngày").
+// A row that is closed all day, open 24h, or unparseable is left alone ("cannot tell" never
+// becomes a correction).
+
+const TIME_START = /^\s*(\d{1,2})\s*[:h]\s*(\d{2})?/
+function minutesOf(t: unknown): number | null {
+  if (typeof t !== 'string') return null
+  const m = t.match(TIME_START)
+  if (!m) return null
+  const h = Number(m[1]); const min = m[2] ? Number(m[2]) : 0
+  return h < 24 && min < 60 ? h * 60 + min : null
+}
+/** The opening times a row's hours state ("10:00–22:30", "06:00–11:00, 17:00–21:00"), as minutes. */
+function openingsOf(hours: string): number[] {
+  return [...hours.matchAll(/(\d{1,2})[:h](\d{2})\s*[–—\-−]\s*\d{1,2}[:h]\d{2}/g)].map(m => Number(m[1]) * 60 + Number(m[2]))
+}
+const clock = (m: number): string => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`
 
 const OPEN = '[TAPPY_PLAN]'
 const CLOSE = '[/TAPPY_PLAN]'
@@ -60,6 +89,8 @@ export interface PlanPlace extends ActionSource {
   place_types?: unknown
   photo_url?: string
   photo_urls?: string[]
+  /** The provider's hours for the day of the search (c40 T6). */
+  opening_hours?: unknown
 }
 
 function kindsOf(p: PlanPlace): Set<Kind> {
@@ -84,10 +115,37 @@ function bookingUrlFor(p: PlanPlace, kind: Kind): string | null {
 
 type Item = Record<string, unknown>
 
-export interface PlanItemGuardResult { text: string; matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number }
+export interface PlanItemGuardResult {
+  text: string; matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number
+  /** c40 T6: stops moved to their row's opening time / stops whose out-of-hours time was cleared. */
+  timesMoved: number; timesCleared: number
+}
+
+/** c40 T6 — see the header: a venue stop's time must fall inside its row's hours, or be moved / cleared. */
+function fitTimesToHours(items: Item[], placeOf: Map<Item, PlanPlace>, res: { timesMoved: number; timesCleared: number }): void {
+  items.forEach((item, i) => {
+    const place = placeOf.get(item)
+    const hours = typeof place?.opening_hours === 'string' ? place.opening_hours : ''
+    const at = minutesOf(item.time)
+    if (!hours || at === null) return
+    // null = cannot tell (closed all day, unparseable) — left alone; true = open then.
+    if (/đóng cửa|closed/i.test(hours) || isOpenNow(hours, { minutes: at }) !== false) return
+    const openings = openingsOf(hours)
+    if (openings.length === 0) return
+    const target = openings.filter(o => o > at).sort((a, b) => a - b)[0] ?? Math.min(...openings)
+    const neighbour = (from: number, step: number): number | null => {
+      for (let j = from; j >= 0 && j < items.length; j += step) { const m = minutesOf(items[j].time); if (m !== null) return m }
+      return null
+    }
+    const prev = neighbour(i - 1, -1)
+    const next = neighbour(i + 1, 1)
+    if ((prev === null || prev < target) && (next === null || target < next)) { item.time = clock(target); res.timesMoved++ }
+    else { item.time = ''; res.timesCleared++ }
+  })
+}
 
 export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): PlanItemGuardResult {
-  const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0 }
+  const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
   if (start === -1 || end === -1 || end < start) return none
@@ -104,7 +162,8 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0 }
+  const res = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const placeOf = new Map<Item, PlanPlace>()
 
   for (const day of plan.days) {
     if (!Array.isArray(day?.items)) continue
@@ -137,6 +196,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
         for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f]
       }
       used.add(place)
+      placeOf.set(item, place)
       if (place.address && !item.address) item.address = place.address
       if (place.maps_link) item.maps_link = place.maps_link
       if (place.place_id) item.place_id = place.place_id
@@ -149,8 +209,9 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
       kept.push(item)
     }
     day.items = kept
+    fitTimesToHours(kept, placeOf, res)
   }
-  if (!res.matched && !res.replaced && !res.dropped && !res.linksSet && !res.linksRemoved) {
+  if (!res.matched && !res.replaced && !res.dropped && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
