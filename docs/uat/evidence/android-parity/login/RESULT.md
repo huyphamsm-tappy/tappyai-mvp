@@ -1,6 +1,6 @@
 # login
 
-Run `2026-09-28T12-29-32` · UAT `e057e53abdfc645eb78b2a4a95fe2f76c5f8414b`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -31,5 +31,5 @@ Run `2026-09-28T12-29-32` · UAT `e057e53abdfc645eb78b2a4a95fe2f76c5f8414b`
 - ✅ sai mật khẩu → "Email hoặc mật khẩu không đúng."
 - ✅ "Tạo tài khoản" → /register
 
-Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T12-29-32/login/compare/` (4 steps).
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T12-29-32/login/{android,web}/` (outside git — rule 2026-09-28).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/login/compare/` (4 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/login/{android,web}/` (outside git — rule 2026-09-28).

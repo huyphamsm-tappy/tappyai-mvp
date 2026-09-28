@@ -1,6 +1,6 @@
 # recommendations
 
-Run `2026-09-28T11-56-24` · UAT `f8a26b76fac25385277102108755e7b5a03599b3`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -11,7 +11,7 @@ Run `2026-09-28T11-56-24` · UAT `f8a26b76fac25385277102108755e7b5a03599b3`
 - ✅ thẻ có nút "Hỏi Tappy về chỗ này"
 - ✅ thẻ có chip đánh giá / hoạt động
 - ✅ không lộ chữ tiếng Anh của engine (Recently Active / Near)
-- ✅ mở Chat với "Kể mình nghe về …" — Phở Chính Chủ (E2E)
+- ✅ mở Chat với "Kể mình nghe về …" — Cà Phê Chính Chủ (E2E)
 
 ## web: PASS
 
@@ -19,4 +19,5 @@ Run `2026-09-28T11-56-24` · UAT `f8a26b76fac25385277102108755e7b5a03599b3`
 - ✅ thẻ có nút "Hỏi Tappy về chỗ này"
 - ✅ mở /chat với câu hỏi
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T11-56-24/recommendations/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/recommendations/compare/` (2 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/recommendations/{android,web}/` (outside git — rule 2026-09-28).

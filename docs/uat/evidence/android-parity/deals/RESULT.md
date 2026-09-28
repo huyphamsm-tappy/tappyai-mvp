@@ -1,6 +1,6 @@
 # deals
 
-Run `2026-09-28T10-25-05` · UAT `1e11b32390f34a748cb994269c8d79e7b2c3db9a`
+Run `2026-09-28T15-11-17` · UAT `83853cc6c857c7e029ec6dd96a4b43e2dca7f903`
 
 ## android: PASS
 
@@ -16,4 +16,5 @@ Run `2026-09-28T10-25-05` · UAT `1e11b32390f34a748cb994269c8d79e7b2c3db9a`
 - ✅ thẻ "Hỏi Tappy trước khi mua"
 - ✅ mở /chat
 
-Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T10-25-05/deals/` (outside git — size).
+Side-by-side images: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/deals/compare/` (2 steps).
+Video + raw screenshots: `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-11-17/deals/{android,web}/` (outside git — rule 2026-09-28).
