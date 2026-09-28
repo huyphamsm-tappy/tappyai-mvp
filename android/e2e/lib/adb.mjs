@@ -211,3 +211,18 @@ export class Recorder {
     this.remotes = []
   }
 }
+
+// ── share targets (stand-in Zalo / TikTok / Messenger from android/e2e/share-stub) ──────────────
+const STUB_DIR = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '../share-stub/build/outputs/apk')
+export function installShareStubs() {
+  for (const f of ['zalo', 'tiktok', 'messenger']) adb(['install', '-r', path.join(STUB_DIR, f, 'debug', `share-stub-${f}-debug.apk`)])
+}
+export function uninstallShareStubs() {
+  for (const p of ['com.zing.zalo', 'com.zhiliaoapp.musically', 'com.facebook.orca']) adb(['uninstall', p], { allowFail: true })
+}
+export const clearLog = () => adb(['logcat', '-c'], { allowFail: true })
+/** The shares the stubs received since [clearLog], parsed. */
+export function receivedShares() {
+  const out = adb(['logcat', '-d', '-s', 'E2E_SHARE:I'], { allowFail: true }) || ''
+  return out.split(/\r?\n/).map((l) => l.slice(l.indexOf('{'))).filter((l) => l.startsWith('{')).map((l) => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)
+}
