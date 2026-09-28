@@ -476,7 +476,8 @@ export default function ShareMenu({
   const buttonLabel = (id: ShareTargetId, kind: string) => {
     // Desktop Zalo: no app to hand to and no working web widget, so the tile says
     // what it does — copy the link (or the content) — under Zalo's mark.
-    if (id === 'zalo' && !zaloApp) return textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')
+    // UAT 2026-09-28: the tile read "Sao chép liên kết" with no "Zalo", so the owner saw "no Zalo".
+    if (id === 'zalo' && !zaloApp) return `${appName(id)} (${(textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')).toLowerCase()})`
     // TikTok takes a file: the tile says which one leaves.
     if (id === 'tiktok') return videoUrl ? t('share.tiktokVideo') : t('share.tiktokImage')
     return kind === 'url-handoff' && textIsMoreThanUrl ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)

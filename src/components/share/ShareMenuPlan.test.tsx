@@ -303,8 +303,8 @@ describe('what leaves, once the plan has its link', () => {
   })
 
   it('🚨 Zalo on a desktop is LABELLED as copy-link (no app, no working web widget) — it never claims to share; on a phone it is labelled Zalo', async () => {
-    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.copyLink')
-    expect(screen.getByTestId('share-target-zalo').title).toBe('share.copyLink')
+    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zalo (share.copylink)') // the tile keeps Zalo's name (UAT 2026-09-28)
+    expect(screen.getByTestId('share-target-zalo').title).toBe('share.zalo (share.copylink)')
     cleanup()
     vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue('Mozilla/5.0 (Linux; Android 14) Mobile Chrome/128')
     try {

@@ -87,7 +87,7 @@ describe('ShareMenu — targets', () => {
     expect(screen.getByTestId('share-target-facebook').textContent).toContain('share.copyAndOpen:{"app":"share.facebook"}')
     // Desktop Zalo cannot open anything (no app; the official web widget's host does not resolve),
     // so the tile says exactly what it does: copy the content. Never "copy & open Zalo".
-    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.copyContent')
+    expect(screen.getByTestId('share-target-zalo').textContent).toBe('share.zalo (share.copycontent)') // the tile keeps Zalo's name (UAT 2026-09-28)
     // Text handoffs carry the brochure themselves — plain app names.
     expect(screen.getByTestId('share-target-viber').textContent).toContain('share.viber')
     expect(screen.getByTestId('share-target-line').textContent).toContain('share.line')
