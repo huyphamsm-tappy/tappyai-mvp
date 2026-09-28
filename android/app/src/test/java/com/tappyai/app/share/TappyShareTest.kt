@@ -15,7 +15,7 @@ import java.io.File
  */
 class TappyShareTest {
 
-    private val review = "https://www.tappyai.com/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d"
+    private val review = "${TappyShare.CANONICAL_ORIGIN}/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d"
 
     @Test
     fun `offers the same targets in the same order as web`() {
@@ -74,7 +74,7 @@ class TappyShareTest {
     fun `messenger receives its share deep link with the canonical url encoded`() {
         val out = TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, review)
         assertEquals("fb-messenger://share?link=" + java.net.URLEncoder.encode(review, "UTF-8"), out)
-        assertNull(TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, "https://www.tappyai.com/reviews/x?token=secret"))
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, "${TappyShare.CANONICAL_ORIGIN}/reviews/x?token=secret"))
     }
 
     /** No public web endpoint exists; saying so is the feature. */
@@ -94,7 +94,7 @@ class TappyShareTest {
 
     @Test
     fun `text handoff carries the brochure, encoded, for email viber line whatsapp and telegram only`() {
-        val text = "TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n\nGợi ý bởi TappyAI · www.tappyai.com"
+        val text = "TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n\nGợi ý bởi TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"
         val mail = TappyShare.buildTextShareUrl(TappyShare.Target.EMAIL, "TappyAI gợi ý", text)!!
         assertTrue(mail.startsWith("mailto:?subject="))
         assertTrue(mail.contains("&body="))
@@ -145,10 +145,10 @@ class TappyShareTest {
         val bad = listOf(
             "https://y5ozy0i9wdb73mam.public.blob.vercel-storage.com/videos/1.mp4",
             "https://storage.googleapis.com/tappyai-media-prod/videos/u/a.mp4",
-            "https://www.tappyai.com/api/reviews/feed",
-            "https://www.tappyai.com/reviews/x?token=secret",
+            "${TappyShare.CANONICAL_ORIGIN}/api/reviews/feed",
+            "${TappyShare.CANONICAL_ORIGIN}/reviews/x?token=secret",
             "https://tappyai-mvp-abc.vercel.app/reviews/x",
-            "https://www.tappyai.com.evil.test/x",
+            "${TappyShare.CANONICAL_ORIGIN}.evil.test/x",
             "http://www.tappyai.com/x",
             "",
         )
@@ -161,21 +161,21 @@ class TappyShareTest {
     /** A conversation is authenticated; a shared link would only show a login page. */
     @Test
     fun `private chat is not shareable`() {
-        val chat = "https://www.tappyai.com/chat/6164ff68-eae6-49da-abe7-525fbccf2827"
+        val chat = "${TappyShare.CANONICAL_ORIGIN}/chat/6164ff68-eae6-49da-abe7-525fbccf2827"
         assertFalse(TappyShare.isShareableUrl(chat))
         assertNull(TappyShare.buildShareUrl(TappyShare.Target.ZALO, chat))
     }
 
     @Test
     fun `review url is canonical`() {
-        assertEquals("https://www.tappyai.com/reviews/abc", TappyShare.reviewUrl("abc"))
+        assertEquals("${TappyShare.CANONICAL_ORIGIN}/reviews/abc", TappyShare.reviewUrl("abc"))
         assertTrue(TappyShare.isShareableUrl(TappyShare.reviewUrl("abc")))
     }
 
     /** The Inbox URL is the web Messenger — a canonical page, not an API or a chat. */
     @Test
     fun `inbox url is a shareable canonical page`() {
-        assertTrue(TappyShare.INBOX_URL.startsWith("https://www.tappyai.com/"))
+        assertTrue(TappyShare.INBOX_URL.startsWith("${TappyShare.CANONICAL_ORIGIN}/"))
         assertFalse(TappyShare.INBOX_URL.contains("/api/"))
     }
 }

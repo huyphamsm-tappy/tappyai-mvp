@@ -24,8 +24,8 @@ class ShareArtifactTest {
         assertEquals(ShareArtifact.Kind.PLACES, a.kind)
         assertEquals("TappyAI gợi ý: Quán bún bò ngon ở TP.HCM", a.subject)
         assertTrue(a.text.startsWith("TappyAI gợi ý: Quán bún bò ngon ở TP.HCM\n\n1. "))
-        assertTrue(a.text.endsWith("Gợi ý bởi TappyAI · www.tappyai.com"))
-        assertEquals("https://www.tappyai.com", a.url)
+        assertTrue(a.text.endsWith("Gợi ý bởi TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"))
+        assertEquals("${TappyShare.CANONICAL_ORIGIN}", a.url)
         assertEquals(8, a.places.size)
         for ((i, p) in view.items.withIndex()) {
             assertTrue(a.text.contains("${i + 1}. ${p.name}"))
@@ -83,7 +83,7 @@ class ShareArtifactTest {
         assertTrue(a.text.length > ShareArtifactBuilder.INBOX_MAX_BODY)
         val body = ShareArtifactBuilder.inboxBody(a, "vi")
         assertTrue(body.length <= ShareArtifactBuilder.INBOX_MAX_BODY)
-        assertTrue(body.endsWith("Gợi ý bởi TappyAI · www.tappyai.com"))
+        assertTrue(body.endsWith("Gợi ý bởi TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"))
         assertTrue(body.startsWith("TappyAI gợi ý: Quán bún bò ngon ở TP.HCM"))
         assertTrue(Regex("và \\d+ địa điểm khác").containsMatchIn(body))
         // Every URL in the compact body is a complete URL that exists in the full text.
@@ -117,7 +117,7 @@ class ShareArtifactTest {
         assertTrue(a.text.contains("2 người · Ngân sách: 1.500.000₫"))
         assertTrue(a.text.contains("Ngày 1\n  08:00 ☕ Cà phê Cộng\n     Bắt đầu nhẹ\n     60.000₫ · 📍 96 Bạch Đằng\n     Bản đồ: https://maps.google.com/?q=Cong"))
         assertFalse(a.text.contains("javascript:"))
-        assertTrue(a.text.endsWith("Gợi ý bởi TappyAI · www.tappyai.com"))
+        assertTrue(a.text.endsWith("Gợi ý bởi TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"))
     }
 
     @Test
@@ -148,7 +148,7 @@ class ShareArtifactTest {
         val a = ShareArtifactBuilder.buildPlacesArtifact(view, "beef", "en")
         assertTrue(a.text.startsWith("TappyAI recommends: beef"))
         assertTrue(a.text.contains("Maps: https://"))
-        assertTrue(a.text.endsWith("Recommended by TappyAI · www.tappyai.com"))
+        assertTrue(a.text.endsWith("Recommended by TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"))
         assertTrue(a.text.contains("(5,946 reviews)"))
     }
 }

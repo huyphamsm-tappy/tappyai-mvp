@@ -28,7 +28,7 @@ import java.net.SocketTimeoutException
 class PlanShareTest {
 
     private val id = "lSSFn0yDMF6w"
-    private val canonical = "https://www.tappyai.com/plan/lSSFn0yDMF6w"
+    private val canonical = "${TappyShare.CANONICAL_ORIGIN}/plan/lSSFn0yDMF6w"
 
     /** A real reply, the way it arrives after enrichment: the block carries `photo_url`. */
     private val reply = """
@@ -144,7 +144,7 @@ class PlanShareTest {
         assertEquals(PlanShareOutcome.Failed, repo(FakeApi { PlanSharePublishResponse(id = "short") }).publish(block))
         assertEquals(PlanShareOutcome.Failed, repo(FakeApi { PlanSharePublishResponse(id = "AbCdEfGhIjK!") }).publish(block))
         // A url with no id is not trusted either: the id is the contract.
-        assertEquals(PlanShareOutcome.Failed, repo(FakeApi { PlanSharePublishResponse(url = "https://www.tappyai.com/plan/$id") }).publish(block))
+        assertEquals(PlanShareOutcome.Failed, repo(FakeApi { PlanSharePublishResponse(url = "${TappyShare.CANONICAL_ORIGIN}/plan/$id") }).publish(block))
     }
 
     @Test
