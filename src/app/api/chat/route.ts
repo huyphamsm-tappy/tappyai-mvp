@@ -101,7 +101,11 @@ import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
 import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
 
-export const maxDuration = 60
+// Owner decision 28 Sep 2026: 3-day plan turns measured 61–89 s locally, over the old 60 s cap. The
+// project runs on Fluid compute (verified read-only: fluid=true, default timeout 300 s), so 120 s needs no
+// plan change. TURN_DEADLINE_MS keeps 10 s of headroom for the finish frame and post-stream guards.
+export const maxDuration = 120
+const TURN_DEADLINE_MS = 110_000
 
 export async function POST(req: Request) {
   const startTime = Date.now()
@@ -2271,8 +2275,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const sdkResponse = planningIntent && streamed.body
     ? new Response(planCompletionStream(streamed.body, {
       needed: true,
-      // The whole turn must finish under maxDuration (60 s): the completion gets what is left of 55 s.
-      deadlineAt: startTime + 55_000,
+      // The whole turn must finish under maxDuration: the completion gets what is left of the turn deadline.
+      deadlineAt: startTime + TURN_DEADLINE_MS,
       complete: async (soFar) => {
         const steps = await result.steps
         const toolResults = [

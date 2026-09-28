@@ -12,7 +12,7 @@ Gõ đúng nguyên văn các câu dưới đây. Mỗi dòng ghi ✅ hoặc ❌;
 
 | # | Rủi ro | Nền tảng | Gõ | Đạt khi | ⏱ |
 |---|---|---|---|---|---|
-| 1 | 🔴 **Hết giờ ở lượt lập kế hoạch** (local đo 61–89 giây; Vercel cắt ở 60 giây) | Web | `Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu` | Có **thẻ kế hoạch** trong vòng 60 giây, không có bong bóng lỗi, không có dòng `[CTA_BUTTONS]{…` hiện ra dạng chữ | 2' |
+| 1 | 🔴 **Hết giờ ở lượt lập kế hoạch** (local đo 61–89 giây; từ bản có `maxDuration` 120 thì Vercel cắt ở 120 giây) | Web | `Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu` | Có **thẻ kế hoạch** trong vòng 120 giây (ghi lại số giây), không có bong bóng lỗi, không có dòng `[CTA_BUTTONS]{…` hiện ra dạng chữ | 2' |
 | 2 | 🔴 Trả lời trước, hỏi sau | Web **và** Android | `rap phim nao gan q1` | Có thẻ rạp ngay. Có **đúng 1** câu hỏi và câu hỏi nằm **ở cuối** | 3' |
 | 3 | 🔴 Chỉ hỏi trước khi thật sự mơ hồ | Web | `đi chơi ở đâu` | Hỏi "Bạn muốn làm gì?" kèm chip ăn uống / đi chơi / spa. Chưa hiện thẻ | 1' |
 | 4 | 🔴 Tên quán bị mất hoặc bị đổi | Web | `Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1` | Câu đầu nêu **một nhà hàng** (không phải quán nhậu). Không khẳng định "có phòng riêng" (được phép nói "chưa xác nhận", "nên gọi hỏi") | 2' |
@@ -25,4 +25,4 @@ Gõ đúng nguyên văn các câu dưới đây. Mỗi dòng ghi ✅ hoặc ❌;
 
 **Quan sát trong suốt các bước trên:** không có câu trả lời nào bị lặp đoạn (P1-a), và thẻ kế hoạch hiện đủ (P1-f).
 
-Nếu #1 thất bại vì hết giờ: đây là rủi ro đã biết. Chat trên production chịu cùng giới hạn 60 giây, nên cần anh quyết định **trước khi phát hành** (tăng `maxDuration`, hoặc rút gọn lượt lập kế hoạch).
+Nếu #1 vẫn hết giờ ở 120 giây thì báo lại. Việc tăng tốc lượt lập kế hoạch nằm ở backlog sau launch (`docs/uat/POST-LAUNCH-BACKLOG.md` PL-001).

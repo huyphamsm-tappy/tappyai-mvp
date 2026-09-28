@@ -10,7 +10,7 @@
 - **Auth reading:** `getRequestUser(req)` accepts **both** an SSR cookie session (web) **and** `Authorization: Bearer <supabase-jwt>` (native). So most authed routes work for iOS with a Bearer token.
 - **Content types:** JSON unless marked `multipart/form-data` (uploads).
 - **Errors:** routes return `NextResponse.json({ error: "<code/message>" }, { status })`. Common: `400` bad input, `401` unauthenticated / limit-reached, `403` forbidden, `404`, `409` conflict (duplicate), `429` rate-limited, `500`.
-- **Runtimes:** most are node; the reviews feed is edge; `/api/chat` sets `maxDuration=60`.
+- **Runtimes:** most are node; the reviews feed is edge; `/api/chat` sets `maxDuration=120` (turn deadline 110 s). Client timeouts are idle limits (60 s), which is fine: the server never stays silent longer than 45 s.
 
 ## 1. ⚠️ Auth mechanism map (critical for iOS)
 
@@ -37,7 +37,7 @@
 
 ### 2.1 `POST /api/chat` — AI assistant (streaming)
 - **Auth:** optional. Anon allowed (5/day via `tappy_anon` cookie → `401 anon_limit_reached`). Logged-in free 15/day → `429 free_limit_reached`. Pro unlimited. IP flood 30/min.
-- **Runtime:** node, `maxDuration=60`.
+- **Runtime:** node, `maxDuration=120` (turn deadline 110 s).
 - **Request (JSON):** `{ messages: [{role, content}], conversationId?, location?/locationBias?, ...context }` (exact context fields in 02-chat).
 - **Response:** **Vercel AI SDK data-stream line protocol** (NOT SSE, NOT JSON). Newline-delimited `<prefix>:<JSON>`:
   - `0:` text delta · `9:` tool-call · `a:` tool-result · `e:` step-end · `d:` done.

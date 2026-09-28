@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { planCompletionStream, extractPlanBlock, hasCompletePlan, toolResultDigest } from './planCompletion'
+import { planCompletionStream, extractPlanBlock, hasCompletePlan, toolResultDigest, PLAN_COMPLETION_TIMEOUT_MS } from './planCompletion'
 
 // UAT4 P1-f: the stored reply of a planning turn that announced the plan and stopped.
 const sample = JSON.parse(readFileSync(join(process.cwd(), 'docs/uat/evidence/uat4-p1-2026-09-27/p1f-plan-announced-not-written.json'), 'utf8')) as { assistant: string }
@@ -87,7 +87,7 @@ describe('UAT4 P1-f: a planning turn that ends without its plan', () => {
 })
 
 // Round 6 (c40 T1, 28 Sep 2026): the fixed 30 s budget timed out on a 61 s turn; the route runs under
-// maxDuration 60 s. The completion now gets what the TURN has left, and skips when too little is left.
+// maxDuration 60 s (now 120 s, deadline 110 s). The completion gets what the TURN has left, and skips when too little is left.
 describe('the completion is bounded by the turn deadline', () => {
   const plain = frames(sample.assistant)
   it('too little time left → no call, turn shipped as is, outcome no_time', async () => {
@@ -102,5 +102,26 @@ describe('the completion is bounded by the turn deadline', () => {
     const complete = vi.fn(async () => PLAN)
     const out = await read(planCompletionStream(streamOf(plain), { needed: true, complete, deadlineAt: Date.now() + 40_000, log: () => {} }))
     expect(textOf(out).endsWith(`\n\n${PLAN}\n`)).toBe(true)
+  })
+})
+
+// Owner decision 28 Sep 2026: maxDuration 120 (Fluid compute, cap 300) and the turn deadline 110 s.
+// The completion step streams nothing while it waits, so its cap must stay under the clients' IDLE
+// read limits (Android readTimeout 60 s, iOS timeoutInterval 60 s) — a longer turn is fine, a longer silence is not.
+describe('the route budget', () => {
+  const route = readFileSync(join(process.cwd(), 'src/app/api/chat/route.ts'), 'utf8')
+  const maxDuration = Number(route.match(/export const maxDuration = (\d+)/)?.[1])
+  const deadline = Number(route.match(/const TURN_DEADLINE_MS = ([\d_]+)/)?.[1].replace(/_/g, ''))
+  it('the turn deadline sits under maxDuration with headroom, and maxDuration within the Fluid cap', () => {
+    expect(maxDuration).toBe(120)
+    expect(deadline).toBeGreaterThan(0)
+    expect(deadline).toBeLessThanOrEqual(maxDuration * 1000 - 5_000)
+    expect(maxDuration).toBeLessThanOrEqual(300)
+    expect(route).toContain('deadlineAt: startTime + TURN_DEADLINE_MS')
+  })
+  it('the silent completion step stays under the clients\' 60 s idle read limit', () => {
+    const android = readFileSync(join(process.cwd(), 'android/app/src/main/java/com/tappyai/app/chat/data/RealChatRepository.kt'), 'utf8')
+    const idle = Number(android.match(/\.readTimeout\((\d+), TimeUnit\.SECONDS\)/)?.[1]) * 1000
+    expect(PLAN_COMPLETION_TIMEOUT_MS).toBeLessThan(idle)
   })
 })

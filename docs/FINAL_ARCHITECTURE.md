@@ -132,7 +132,7 @@ onFinish (async): extractMemoryFromConversation → memoryService.updateMemory
 - **`src/lib/ai/promptBuilder.ts`** — `buildSystem` (full system prompt with format rules, review/rating rules, CTA-button rules, budget filter, GPS block, planning mode) and `buildSystemSimple` (chitchat), plus `buildPrefBlock`.
 - **`src/lib/ai/provider.ts`** — `getModel(tier)` maps tiers to Claude model IDs (`simple` → `claude-haiku-4-5`; `standard`/`planning`/`vision` → dated Haiku).
 - **`src/lib/ai/streamEnrichment.ts`** — `applyPlaceEnrichmentStreamFilter`, a `TransformStream` that parses the AI SDK data-stream protocol and deterministically appends images/TikTok-review/order-links for any place the tools returned that the LLM failed to render.
-- **`src/app/api/chat/route.ts`** — orchestrator (`maxDuration = 60`). Truncates history to last 10 messages; sets `maxTokens`/`maxSteps` by intent; caches the system prompt via `providerOptions.anthropic.cacheControl`.
+- **`src/app/api/chat/route.ts`** — orchestrator (`maxDuration = 120`, turn deadline 110 s; Fluid compute). Truncates history to last 10 messages; sets `maxTokens`/`maxSteps` by intent; caches the system prompt via `providerOptions.anthropic.cacheControl`.
 
 ### Cost controls (production behavior)
 - History trimmed to last 10 messages.

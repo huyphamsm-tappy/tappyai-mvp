@@ -54,7 +54,7 @@ export interface PlanCompletionOptions {
   /** Makes the extra call with the text streamed so far; resolves to the model's raw answer. */
   complete: (textSoFar: string) => Promise<string>
   timeoutMs?: number
-  /** Epoch ms by which the whole turn must be done (route: request start + 55 s, under maxDuration 60). */
+  /** Epoch ms by which the whole turn must be done (route: request start + TURN_DEADLINE_MS 110 s, under maxDuration 120). */
   deadlineAt?: number
   log?: (event: Record<string, unknown>) => void
 }
