@@ -16,6 +16,9 @@ const ROW = {
   price_range_text: '100-200 N ₫', maps_link: 'https://maps.google.com/?cid=1',
   // E1 (2026-09-20): the reply's "mở đến 3h sáng" must trace to the row's hours, like its band.
   opening_hours: '10:00–03:00',
+  // 2026-09-28: a distance must now trace to the row too (unsupportedClaimGuard R5) — the "100m" case
+  // below is about the money guard not reading metres as money, so the row carries that distance.
+  distance_km: 0.1,
 }
 
 async function runTurn(reply: string, env: Record<string, string> = {}) {
