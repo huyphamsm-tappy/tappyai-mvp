@@ -54,7 +54,7 @@ import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
-import { usesEveningFrame, eveningLocation, EVENING_STAGES, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
+import { usesEveningFrame, eveningLocation, EVENING_STAGES, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -2100,6 +2100,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const eveningOutcomes: PresearchOutcome[] = []
   let eveningBlock: string | null = null
   let eveningAddendum = ''
+  let eveningLead: string | undefined
   if (eveningSearches) {
     const execute = (tools as unknown as Record<string, { execute: (args: unknown, ctx: { toolCallId: string; messages: unknown[] }) => Promise<unknown> }>).search_places.execute
     const location = eveningLocation(statedArea?.label ?? null, lastText)
@@ -2133,6 +2134,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (stops.length > 0) {
       eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, budgetTotal: planning?.totalBudget ?? null })
       eveningAddendum = eveningIntroInstruction(stops, lang)
+      eveningLead = eveningIntro(stops, { lang, area: location })
     }
     presearchOutcome = eveningOutcomes[0] ?? null
   }
@@ -2203,7 +2205,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? 300 : eveningBlock ? 1024 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxTokens: noToolTurn ? 300 : eveningBlock ? 200 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     maxSteps: noToolTurn || eveningBlock ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
@@ -2353,7 +2355,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // UAT4 P1-f: a planning turn that announced its plan and stopped gets the block from one extra
   // call, streamed before the finish frame so every plan guard below still runs (planCompletion.ts).
   const sdkResponse = eveningBlock && streamed.body
-    ? new Response(fixedPlanStream(streamed.body, eveningBlock), { status: streamed.status, headers: streamed.headers })
+    ? new Response(fixedPlanStream(streamed.body, eveningBlock, eveningLead), { status: streamed.status, headers: streamed.headers })
     : planningIntent && streamed.body
     ? new Response(planCompletionStream(streamed.body, {
       needed: true,

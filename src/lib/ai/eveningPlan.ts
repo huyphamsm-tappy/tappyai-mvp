@@ -139,6 +139,27 @@ export function eveningIntroInstruction(stops: readonly EveningStop[], lang: str
     : `\n\n===== KẾ HOẠCH TỐI NAY ĐÃ ĐƯỢC HỆ THỐNG DỰNG =====\nHệ thống đã tìm và chọn các điểm tối nay: ${list}. Viết 2–4 câu ngắn giới thiệu ĐÚNG các điểm này theo ĐÚNG thứ tự (vì sao hợp buổi tối, chỉ dùng thông tin trong kết quả công cụ). KHÔNG gọi thêm tool. KHÔNG viết khối [TAPPY_PLAN] — hệ thống tự thêm. KHÔNG hỏi điểm xuất phát hay phương tiện.`
 }
 
+/**
+ * The introduction, written by code from the SAME stops the plan carries. Measured on uat @ f6c7faf:
+ * the model, told the stops, still introduced a different restaurant than the plan's — so the words
+ * above the plan come from the plan, never from the model.
+ */
+export function eveningIntro(stops: readonly EveningStop[], opts: { lang: string; area?: string }): string {
+  const en = opts.lang === 'en'
+  const verb: Record<EveningStageKey, string> = en
+    ? { dinner: 'dinner at', night: 'then', drinks: 'and a drink at' }
+    : { dinner: 'ăn tối ở', night: 'sau đó ghé', drinks: 'cuối cùng uống nước ở' }
+  const lines = stops.map(({ stage, place }) => {
+    const r = ratingLine(place, opts.lang)
+    return `${stage.time} — ${verb[stage.key]} **${place.name}**${r ? ` (${r})` : ''}`
+  })
+  const head = en
+    ? `Here is tonight${opts.area ? ` in ${opts.area}` : ''}, every stop open at its time:`
+    : `Tối nay${opts.area ? ` ở ${opts.area}` : ''} mình lên lịch như sau, điểm nào cũng còn mở vào giờ đó:`
+  const tail = en ? 'Tap a stop for the map or to book; tell me if you want to swap one.' : 'Bấm từng điểm để xem bản đồ hoặc đặt chỗ; muốn đổi điểm nào cứ nói mình nhé.'
+  return `${head}\n\n${lines.map(l => `- ${l}`).join('\n')}\n\n${tail}`
+}
+
 const MODEL_PLAN_RE = /\[TAPPY_PLAN\][\s\S]*?(?:\[\/TAPPY_PLAN\]|$)/g
 
 /**
@@ -146,7 +167,7 @@ const MODEL_PLAN_RE = /\[TAPPY_PLAN\][\s\S]*?(?:\[\/TAPPY_PLAN\]|$)/g
  * the system's block follows the introduction — all before the finish frame, so every downstream
  * guard (prices, items, photos) treats it like any plan.
  */
-export function fixedPlanStream(body: ReadableStream<Uint8Array>, block: string): ReadableStream<Uint8Array> {
+export function fixedPlanStream(body: ReadableStream<Uint8Array>, block: string, intro?: string): ReadableStream<Uint8Array> {
   const decoder = new TextDecoder()
   const encoder = new TextEncoder()
   let remainder = ''
@@ -166,8 +187,8 @@ export function fixedPlanStream(body: ReadableStream<Uint8Array>, block: string)
     },
     flush(controller) {
       if (remainder) pass(remainder, controller)
-      const intro = text.replace(MODEL_PLAN_RE, '').replace(/\n{3,}/g, '\n\n').trim()
-      controller.enqueue(encoder.encode(`0:${JSON.stringify(`${intro}\n\n${block}\n`)}\n`))
+      const lead = intro ?? text.replace(MODEL_PLAN_RE, '').replace(/\n{3,}/g, '\n\n').trim()
+      controller.enqueue(encoder.encode(`0:${JSON.stringify(`${lead}\n\n${block}\n`)}\n`))
       for (const line of held) controller.enqueue(encoder.encode(line + '\n'))
     },
   }))

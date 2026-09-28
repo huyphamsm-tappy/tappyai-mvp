@@ -190,7 +190,9 @@ export function structuredPrice(rec: EvidenceRecord): number | null {
 }
 
 // Nouns that make a listing an accessory FOR something, rather than the thing.
-const ACCESSORY_RE = /\b(op lung|op |dem tai|dem |mieng dem|cap |day |hop dung|tui |bao da|mieng dan|kinh cuong luc|gia do|ban le|dau tai|nut tai|foam|case|cover|pouch|pad|cushion|cable|charger|adapter|protector|skin|strap|stand|holder|phu kien|thay the|replacement|phim bao ve)\b/
+// UAT 2026-09-28: "day " (a strap) also matched "không dây" (WIRELESS) — "Tai nghe không dây TWS …"
+// was read as an accessory and its real price was removed. A strap is "dây" not after "không".
+const ACCESSORY_RE = /\b(op lung|op |dem tai|dem |mieng dem|cap |(?<!khong )day |hop dung|tui |bao da|mieng dan|kinh cuong luc|gia do|ban le|dau tai|nut tai|foam|case|cover|pouch|pad|cushion|cable|charger|adapter|protector|skin|strap|stand|holder|phu kien|thay the|replacement|phim bao ve)\b/
 /** Suffixes that make a record a DIFFERENT product from the bare model name.
  *  "+" is matched on its own: `\b\+\b` can never fire, because "+" is not a
  *  word character — which let "Galaxy S24+" pass as an exact "Galaxy S24". */
@@ -199,8 +201,14 @@ const VARIANT_RE = /\b(ultra|plus|pro|max|fe|mini|se|earbuds|headphones?|gen ?2|
 const QUERY_NOISE = /\b(price|prices|gia|giá|cost|vietnam|viet nam|vn|mua|buy|where|o dau|ở đâu|best|latest|moi nhat|chinh hang|good|tot|bao nhieu)\b/g
 
 /** The product the request is actually about — derived from the tool query. */
+/**
+ * A budget in the query is not part of the product ("tai nghe bluetooth dưới 1 triệu"): kept, its
+ * words ("duoi", "trieu") matched no title, every record read UNRELATED and every price was removed
+ * (UAT 2026-09-28, the shopping pick lost its real 305.000đ).
+ */
+const BUDGET_PHRASE = /\b(?:duoi|tren|khoang|tam|toi da|chi|re hon|under|below|around|max)?\s*\d+(?:[.,]\d+)*\s*(?:k|nghin|ngan|tr|trieu|cu|m|million|dong|d|vnd)\b/g
 export function requestedEntity(toolQuery: string): string {
-  return strip(toolQuery).replace(QUERY_NOISE, ' ').replace(/\s+/g, ' ').trim()
+  return strip(toolQuery).replace(BUDGET_PHRASE, ' ').replace(QUERY_NOISE, ' ').replace(/\s+/g, ' ').trim()
 }
 
 const entityTokens = (entity: string): string[] =>
@@ -425,6 +433,19 @@ const LEADING_CONNECTIVE = /^\s*(?:và|hoặc|nhưng|còn|and|or|but)\s+/iu
 const DANGLING_TAIL = /(?:^|\s)(?:nên|và|với|là|có|hoặc|nhưng|hay|để|khi|vì|từ|đến|khoảng|tầm|giá|chỉ|mà|thì|cho|của|and|or|with|for|at|about|around|only|is|are|costs?)$/iu
 
 /**
+ * A clause opening with one of these is subordinate: it needs a main clause after it ("Nếu cần chống
+ * ồn tốt, …"). `do` is left out on purpose — clause-initial it is as often "made by" as "because".
+ */
+const SUBORDINATE_HEAD = /^(?:nếu|khi|trong khi|lúc|hễ|vì|bởi vì|bởi|tuy|tuy nhiên nếu|mặc dù|dù|để|if|when|whenever|because|since|although|though|while|unless)(?![\p{L}\p{N}])/iu
+
+/** The last clause of `s` (after its last clause delimiter), without leading space or emphasis. */
+function lastClauseOf(s: string): string {
+  let from = 0
+  for (const m of s.matchAll(CLAUSE_DELIM)) from = m.index! + m[0].length
+  return s.slice(from).replace(/^[\s*_>#-]+/u, '')
+}
+
+/**
  * @param linePrefix the text between the start of this LINE and the sentence. Bold balances per
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
@@ -433,9 +454,16 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
+  /**
+   * UAT 2026-09-28 (shop.t1): the sentence's own STOP is not part of any clause. The last clause
+   * used to run to `sentence.length`, so cutting it took the "." too and the kept head glued onto
+   * the next sentence: "…từ **Phong Vũ** Rẻ nhất…", "…cao hơn Nếu cần chống ồn tốt…". The last
+   * clause now ends before the stop, and the stop stays with whatever the cut keeps.
+   */
+  const stop = sentence.match(/[.!?…]+[\s"'”’]*$/u)?.index ?? sentence.length
   // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
   // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
-  let a = 0, b = sentence.length, bDelim = ''
+  let a = 0, b = Math.max(stop, end), bDelim = ''
   for (const m of sentence.matchAll(CLAUSE_DELIM)) {
     const i = m.index!
     if (i < at) a = i
@@ -476,6 +504,11 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   //     "**…HAVIT H612BT Pro** — giá chỉ **380.000đ** với đánh giá **4.8⭐ (170 lượt)** từ …" became
   //     "**…Pro**** từ Hoàng Hà Mobile." (golden post-f094 B4 t1, measured with the pre-guard capture).
   if (((sentence.slice(a, b).match(/\*\*/g) ?? []).length % 2) === 1) return null
+  // (e) the cut clause is the CONSEQUENCE of a conditional / subordinate clause that stays: "Nếu cần
+  //     chống ồn tốt, **X** 990.000đ, nhưng gần chạm ngân sách." became "Nếu cần chống ồn tốt, nhưng
+  //     gần chạm ngân sách." (UAT shop.t1 2026-09-28). The clause right before the cut opens with a
+  //     subordinator, so what was cut was its main clause: the sentence goes whole.
+  if (before.length > 0 && SUBORDINATE_HEAD.test(lastClauseOf(before))) return null
   // A cut HEAD clause keeps the sentence's own leading whitespace — the space that separated it
   // from the previous sentence — or the survivor glues on ("cho bạn.yên tĩnh.", measured).
   const lead = sentence.match(/^\s*/)?.[0] ?? ''

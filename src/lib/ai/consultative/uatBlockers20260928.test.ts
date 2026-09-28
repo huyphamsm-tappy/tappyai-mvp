@@ -151,3 +151,17 @@ describe('P1b · a new subject resets the intent ("mua đồ ăn vặt" → "t�
     expect(currentSubjectUserTexts(m as never, { hasGps: false, lang: 'vi' })).toEqual(['tối nay đi đâu chơi quận 1'])
   })
 })
+
+describe('P1a · the words above the plan name the plan\'s own stops (uat f6c7faf: the model introduced another restaurant)', () => {
+  it('eveningIntro lists exactly the stops, in order', async () => {
+    const { EVENING_STAGES, eveningIntro, buildEveningPlanBlock } = await import('../eveningPlan')
+    const stops = EVENING_STAGES.map((stage, i) => ({ stage, place: { name: `Nơi ${i + 1}`, rating_value: 4.5, rating_count: 10, opening_hours: '17:00–23:00' } }))
+    const intro = eveningIntro(stops, { lang: 'vi', area: 'TP. Hồ Chí Minh' })
+    const planNames = parsed(buildEveningPlanBlock(stops, { lang: 'vi' })).days[0].items.map((i: { name: string }) => i.name)
+    expect(planNames).toEqual(['Nơi 1', 'Nơi 2', 'Nơi 3'])
+    expect(intro.indexOf('Nơi 1')).toBeLessThan(intro.indexOf('Nơi 2'))
+    expect(intro.indexOf('Nơi 2')).toBeLessThan(intro.indexOf('Nơi 3'))
+    expect(intro).toContain('18:30')
+    expect(intro).not.toMatch(/xuất phát|phương tiện/)
+  })
+})
