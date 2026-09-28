@@ -1,0 +1,7 @@
+# gcloud read 2026-09-28T09:55:36Z; upload window started 2026-09-28T09:54:50Z (UAT d97b261)
+## gs://tappyai-media-uat objects:
+     76824  2026-09-28T09:55:09Z  gs://tappyai-media-uat/avatars/5c674157-7bfd-4eb5-b1b1-6c61d13b30ef-5NspmXjTAEkIrVzPhnfu7MoV.webp
+     69146  2026-09-28T09:55:16Z  gs://tappyai-media-uat/covers/5c674157-7bfd-4eb5-b1b1-6c61d13b30ef-gR5Ec4f2JuGmI1Tgww8a9sNF.webp
+TOTAL: 2 objects, 145970 bytes (142.55kiB)
+## gs://tappyai-media-prod objects created at/after 2026-09-28T09:54:50Z:
+(end — empty list = prod bucket not written)

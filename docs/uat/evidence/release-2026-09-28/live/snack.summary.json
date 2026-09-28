@@ -1,0 +1,20 @@
+{
+  "caseId": "snack",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:12:19.428Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "mua đồ ăn vặt",
+      "status": 200,
+      "ms": 1517,
+      "literalDoubleStar": 0,
+      "unbalancedBoldLines": [],
+      "proseTail": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": null
+    }
+  ]
+}

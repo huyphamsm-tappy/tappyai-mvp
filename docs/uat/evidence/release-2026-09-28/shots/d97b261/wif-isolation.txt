@@ -1,0 +1,12 @@
+# 2026-09-28T09:55:58Z — WIF isolation proof (read-only gcloud)
+## prod SA tappyai-media-bridge: who may impersonate
+['principal://iam.googleapis.com/projects/1023373437508/locations/global/workloadIdentityPools/vercel-oidc/subject/owner:huyphamsm-tappys-projects:project:tappyai-mvp:environment:production']
+## UAT SA tappyai-media-uat: who may impersonate
+['principal://iam.googleapis.com/projects/1023373437508/locations/global/workloadIdentityPools/vercel-oidc-uat/subject/owner:huyphamsm-tappys-projects:project:tappyai-mvp:environment:preview']
+## providers
+projects/1023373437508/locations/global/workloadIdentityPools/vercel-oidc/providers/vercel	assertion.sub == "owner:huyphamsm-tappys-projects:project:tappyai-mvp:environment:production"
+projects/1023373437508/locations/global/workloadIdentityPools/vercel-oidc-uat/providers/vercel-preview	assertion.sub == "owner:huyphamsm-tappys-projects:project:tappyai-mvp:environment:preview"
+## bucket write access
+prod: serviceAccount:tappyai-media-bridge@aerobic-lock-498409-u7.iam.gserviceaccount.com 
+uat : serviceAccount:tappyai-media-uat@aerobic-lock-498409-u7.iam.gserviceaccount.com 
+=> a preview OIDC token (sub …:environment:preview) is accepted only by pool vercel-oidc-uat/provider vercel-preview; the prod SA accepts only …/vercel-oidc/subject/…:environment:production, so preview cannot impersonate it; the UAT SA can write only gs://tappyai-media-uat.

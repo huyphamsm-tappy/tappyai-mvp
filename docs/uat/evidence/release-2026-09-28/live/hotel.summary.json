@@ -1,0 +1,91 @@
+{
+  "caseId": "hotel",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:12:59.596Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "khách sạn Đà Lạt dưới 1 triệu một đêm",
+      "status": 200,
+      "ms": 21636,
+      "literalDoubleStar": 6,
+      "unbalancedBoldLines": [],
+      "proseTail": " đánh giá) – nhà hàng boutique, gần trung tâm\n- **Hana Dalat Hotel** (4.8⭐, 253 đánh giá) – vị trí tốt, dịch vụ chất lượng\n- **Khách sạn Green Eco Đà Lạt** (4.6⭐, 424 đánh giá) – thân thiện môi trường\n\nBạn muốn check-in ngày nào để mình tìm giá chính xác?\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+      "placeActions": [
+        {
+          "name": "HT House - Hotel & Coffee - Khách Sạn Đà Lạt",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=10632273949790084299",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=HT%20House%20-%20Hotel%20%26%20Coffee%20-%20K",
+            "call:v3.action.call:tel:+84819710443"
+          ]
+        },
+        {
+          "name": "Colline Dalat",
+          "actions": [
+            "booking:v3.action.bookingOn:https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2F",
+            "maps:v3.action.maps:https://maps.google.com/?cid=17255277842950743451",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Colline%20Dalat%20review",
+            "call:v3.action.call:tel:+842633665588"
+          ]
+        },
+        {
+          "name": "Hana Dalat Hotel",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=947672848491203643",
+            "website:v3.action.website:https://www.vietnam-hotels.net/en/hotel/hana-dalat-hotel.html",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Hana%20Dalat%20Hotel%20review",
+            "call:v3.action.call:tel:+842633822979"
+          ]
+        },
+        {
+          "name": "Khách Sạn Dalat Palace",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=13632160291114083599",
+            "website:v3.action.website:https://www.dalatpalacehotel.com/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Dalat%20Palace%20r",
+            "call:v3.action.call:tel:+842633825444"
+          ]
+        },
+        {
+          "name": "Grand Mercure Dalat",
+          "actions": [
+            "booking:v3.action.bookingOn:https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2F",
+            "maps:v3.action.maps:https://maps.google.com/?cid=2113144111545030087",
+            "website:v3.action.website:https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=B8H0&merchantid=seo-ma",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Grand%20Mercure%20Dalat%20review",
+            "call:v3.action.call:tel:+842633810826"
+          ]
+        },
+        {
+          "name": "Le House Da Lat",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=8180860991892289494",
+            "website:v3.action.website:https://www.facebook.com/profile.php?id=61550290622942",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Le%20House%20Da%20Lat%20review",
+            "call:v3.action.call:tel:+84345201295"
+          ]
+        },
+        {
+          "name": "Khách sạn Green Eco Đà Lạt",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=11928159268203119740",
+            "website:v3.action.website:https://greenecodalat.com.vn/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Green%20Eco%20%C4%",
+            "call:v3.action.call:tel:+84866522772"
+          ]
+        },
+        {
+          "name": "Khách sạn Le Marais Đà Lạt Hotel",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=5216661450966926137",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Le%20Marais%20%C4%"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": null,
+      "cta": "{\"buttons\":[{\"label\":\"🏨 Agoda - Đà Lạt\",\"type\":\"website\",\"url\":\"https://www.agoda.com/vi-vn/city/dalat-vn.html\",\"primary\":false}]}"
+    }
+  ]
+}

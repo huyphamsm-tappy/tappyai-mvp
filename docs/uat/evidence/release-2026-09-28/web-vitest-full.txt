@@ -1,0 +1,4 @@
+# vitest full run — tree 3c5887a (C:/wtrel), 2026-09-28 12:58:33 +0700
+ Test Files  865 passed | 13 skipped (878)
+      Tests  15410 passed | 69 skipped | 1 todo (15480)
+vitest exit=0

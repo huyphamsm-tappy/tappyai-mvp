@@ -1,0 +1,509 @@
+{
+  "caseId": "trip",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:29:01.245Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "đi du lịch Đà Nẵng 3 ngày 2 đêm, 2 người, 20 triệu",
+      "status": 200,
+      "ms": 54311,
+      "literalDoubleStar": 2,
+      "unbalancedBoldLines": [],
+      "proseTail": "veloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DHAN.DAD%26dt%3D03-10-2026.null%26ps%3D2.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=0ff45faa6e1b803787358167)\n\nBạn cho mình biết đi ngày nào, xuất phát từ đâu và muốn bay hay đi xe/tàu nhé — mình sẽ tìm vé và phòng đúng ngày cho bạn.",
+      "placeActions": [
+        {
+          "name": "Mộc quán Seafood Đà Nẵng",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@stephany1_/video/7682925350069800205",
+            "reservation:v3.action.reservation:https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=3",
+            "maps:v3.action.maps:https://maps.google.com/?cid=2059427300039139311",
+            "website:v3.action.website:https://mocseafood.com/",
+            "call:v3.action.call:tel:+84905665058",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3"
+          ]
+        },
+        {
+          "name": "Cơm nhà vui",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20nh%C3%A0%20vui%20%C4%90%C3%A0%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=10812984134081417631",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C6%A1m%20nh%C3%A0%20vui%20review",
+            "call:v3.action.call:tel:+84933865786"
+          ]
+        },
+        {
+          "name": "Cơm Nhà Vui",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m%20Nh%C3%A0%20Vui%20%C4%90%C3%A0%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=14759426183335990526",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C6%A1m%20Nh%C3%A0%20Vui%20review",
+            "website:v3.action.website:https://www.facebook.com/comngondanang133",
+            "call:v3.action.call:tel:+84931886133"
+          ]
+        },
+        {
+          "name": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine",
+          "actions": [
+            "reservation:v3.action.reservation:https://book.chope.co/booking?source=google_dining&rid=ngonphoda2605vn&rwg_token=AE37R_hyL",
+            "maps:v3.action.maps:https://maps.google.com/?cid=13640010682201251552",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ngon%20Ph%E1%BB%91%20%C4%90%C3%A0%20-%20Homey",
+            "call:v3.action.call:tel:+84812641316",
+            "reservation:v3.action.reservation:https://www.google.com/maps/reserve/v/dine/c/hwMPchKIpUM?source=pa&opi=79508299"
+          ]
+        },
+        {
+          "name": "Nhà An - Vietnamese local food restaurant and vegan",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20An%20-%20Vietnamese%20local%20fo",
+            "maps:v3.action.maps:https://maps.google.com/?cid=2211008984260745311",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Nh%C3%A0%20An%20-%20Vietnamese%20local%20food",
+            "website:v3.action.website:https://business.google.com/v/_/015465186915816999829/5124/_?caid=22362394273&agid=1835206",
+            "call:v3.action.call:tel:+84903518699"
+          ]
+        },
+        {
+          "name": "Bếp Cuốn Đà Nẵng - Michelin Selected 2025-2026",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=B%E1%BA%BFp%20Cu%E1%BB%91n%20%C4%90%C3%A0%2",
+            "maps:v3.action.maps:https://maps.google.com/?cid=15858543023798826021",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=B%E1%BA%BFp%20Cu%E1%BB%91n%20%C4%90%C3%A0%20N",
+            "website:v3.action.website:https://www.facebook.com/DINNER.LUNCH.BEPCUON/",
+            "call:v3.action.call:tel:+84702689989"
+          ]
+        },
+        {
+          "name": "Nhà hàng Ngon Thị Hoa",
+          "actions": [
+            "reservation:v3.action.reservation:https://www.facebook.com/NgonThiHoa",
+            "maps:v3.action.maps:https://maps.google.com/?cid=641975279915482831",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20Ngon%20Th%E1%BB%8B%20H",
+            "call:v3.action.call:tel:+84967220100",
+            "reservation:v3.action.reservation:https://www.google.com/maps/reserve/v/dine/c/Q4HHsiAmycc?source=pa&opi=79508299"
+          ]
+        },
+        {
+          "name": "Nhà Bếp Xưa Restaurant",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Nh%C3%A0%20B%E1%BA%BFp%20X%C6%B0a%20Restaur",
+            "maps:v3.action.maps:https://maps.google.com/?cid=17223004486738205102",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Nh%C3%A0%20B%E1%BA%BFp%20X%C6%B0a%20Restauran",
+            "call:v3.action.call:tel:+84906123858"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": {
+        "type": "trip",
+        "title": "Đà Nẵng 3 ngày 2 đêm - Biển, thắng cảnh & ẩm thực",
+        "people": 2,
+        "budget_total": "20.000.000 VND",
+        "days": [
+          {
+            "label": "Ngày 1 - Khởi hành & Thưởng thức hải sản",
+            "items": [
+              {
+                "time": "08:00",
+                "emoji": "✈️",
+                "category": "transport",
+                "name": "Chuyến bay Hà Nội → Đà Nẵng",
+                "description": "Khởi hành sáng sớm, bay khoảng 1h30 đến Đà Nẵng",
+                "price": "chưa có giá",
+                "address": "Sân bay Nội Bài → Sân bay Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=329807663884316974",
+                "place_id": ""
+              },
+              {
+                "time": "12:00",
+                "emoji": "🏨",
+                "category": "hotel",
+                "name": "M Hotel Da Nang",
+                "description": "4.8⭐ (2.862 đánh giá Google Maps) - Khách sạn 4 sao, vị trí tuyệt vời gần biển, check-in sớm nếu có sẵn phòng",
+                "price": "chưa có giá",
+                "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+                "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+                "photo_url": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg"
+              },
+              {
+                "time": "14:00",
+                "emoji": "🍽️",
+                "category": "food",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "description": "4.8⭐ (30.489 đánh giá Google Maps) - Nhà hàng hải sản nổi tiếng, mở 10:30-22:30, có giao hàng & đặt online",
+                "price": "chưa có giá",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=2059427300039139311",
+                "booking_link": "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE",
+                "place_id": "ChIJx6-KGnIXQjER7x-T0zeOlBw"
+              },
+              {
+                "time": "17:00",
+                "emoji": "🌅",
+                "category": "entertainment",
+                "name": "Cầu Rồng",
+                "description": "4.5⭐ (9.557 đánh giá Google Maps) - Biểu tượng Đà Nẵng, mở cả ngày, lý tưởng để chụp ảnh lúc hoàng hôn",
+                "price": "Miễn phí",
+                "address": "An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=329807663884316974",
+                "booking_link": "",
+                "place_id": "ChIJL1GKWJYZQjERLrEGqlK2kwQ"
+              }
+            ]
+          },
+          {
+            "label": "Ngày 2 - Khám phá thắng cảnh & ẩm thực địa phương",
+            "items": [
+              {
+                "time": "08:00",
+                "emoji": "🥾",
+                "category": "entertainment",
+                "name": "Ngũ Hành Sơn",
+                "description": "4.4⭐ (42.940 đánh giá Google Maps) - Thắng cảnh nổi tiếng, mở 7:00-17:30, view biển tuyệt đẹp, leo núi ~1h",
+                "price": "chưa có giá",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn",
+                "maps_link": "https://maps.google.com/?cid=13577824764986909893",
+                "place_id": "ChIJ2y5L4dQNQjERxeSLc68fbrw"
+              },
+              {
+                "time": "12:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Bếp Cuốn Đà Nẵng - Michelin Selected 2025-2026",
+                "description": "4.9⭐ (18.053 đánh giá Google Maps) - Nhà hàng Việt Nam chất lượng cao, mở 10:30-21:00",
+                "price": "chưa có giá",
+                "address": "31-33 Trần Bạch Đằng, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=15858543023798826021",
+                "place_id": "ChIJ-UgnY_QXQjERJTTHpNvcFNw"
+              },
+              {
+                "time": "15:00",
+                "emoji": "🎨",
+                "category": "entertainment",
+                "name": "Bảo tàng 3D Art In Paradise",
+                "description": "4.4⭐ (3.418 đánh giá Google Maps) - Bảo tàng nghệ thuật tương tác, mở 8:30-18:00, vui vẻ & độc đáo",
+                "price": "chưa có giá",
+                "address": "Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=10503400368954609584",
+                "place_id": "ChIJcVJkUPcXQjERsA8_dfySw5E"
+              },
+              {
+                "time": "19:00",
+                "emoji": "🍲",
+                "category": "food",
+                "name": "Nhà An - Vietnamese local food restaurant and vegan",
+                "description": "4.8⭐ (4.126 đánh giá Google Maps) - Ẩm thực Việt địa phương, mở 10:00-23:00",
+                "price": "chưa có giá",
+                "address": "101 Hồ Nghinh, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=2211008984260745311",
+                "booking_link": "",
+                "place_id": "ChIJT-r1FA0XQjERXxgP7vQUrx4"
+              }
+            ]
+          },
+          {
+            "label": "Ngày 3 - Cầu Vàng & Trở về",
+            "items": [
+              {
+                "time": "08:00",
+                "emoji": "🚗",
+                "category": "transport",
+                "name": "Xe Grab/Xanh SM đến Cầu Vàng",
+                "description": "Từ khách sạn đến Cầu Vàng (~30km, ~45 phút)",
+                "price": "chưa có giá",
+                "address": "Hòa Vang, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7167034678468850957",
+                "booking_link": "",
+                "place_id": ""
+              },
+              {
+                "time": "09:00",
+                "emoji": "🌉",
+                "category": "entertainment",
+                "name": "Cầu Vàng",
+                "description": "4.6⭐ (14.880 đánh giá Google Maps) - Cây cầu nổi tiếng, mở 8:00-19:00, view tuyệt đẹp, chụp ảnh ~1h",
+                "price": "chưa có giá",
+                "address": "Hòa Vang, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7167034678468850957",
+                "booking_link": "",
+                "place_id": "ChIJj9PFGT33QTERDbUKRxFsdmM"
+              },
+              {
+                "time": "12:00",
+                "emoji": "🍽️",
+                "category": "food",
+                "name": "Cơm nhà vui",
+                "description": "4.8⭐ (2.201 đánh giá Google Maps) - Cơm Việt ngon, mở 10:00-22:00",
+                "price": "chưa có giá",
+                "address": "86 Đ. 2 Tháng 9, Hải Châu, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=10812984134081417631",
+                "booking_link": "",
+                "place_id": "ChIJi5XzTqsZQjERn5HbwcdvD5Y"
+              },
+              {
+                "time": "15:00",
+                "emoji": "✈️",
+                "category": "transport",
+                "name": "Chuyến bay Đà Nẵng → Hà Nội",
+                "description": "Bay chiều, về Hà Nội lúc 16:30-17:30, kết thúc chuyến đi",
+                "price": "chưa có giá",
+                "address": "Sân bay Đà Nẵng → Sân bay Nội Bài",
+                "maps_link": "",
+                "place_id": ""
+              }
+            ]
+          },
+          {
+            "label": "Gợi ý thêm (nếu còn thời gian & ngân sách)",
+            "items": [
+              {
+                "time": "Tùy chọn",
+                "emoji": "💆",
+                "category": "spa",
+                "name": "NALOD Đà Nẵng - Spa & Wellness",
+                "description": "4.7⭐ (4.467 đánh giá Google Maps) - Spa cao cấp, có dịch vụ massage & wellness",
+                "price": "chưa có giá",
+                "address": "192 Võ Nguyên Giáp, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7164152589315885317",
+                "place_id": "ChIJN75cdYQXQjERBUnemtIubGM"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Vé máy bay (2 chiều)": "chưa có giá",
+          "Khách sạn (2 đêm)": "chưa có giá",
+          "Ăn uống (4 bữa chính)": "chưa có giá",
+          "Tham quan & vé vào": "chưa có giá",
+          "Di chuyển (Grab/taxi)": "chưa có giá"
+        },
+        "local_tips": [
+          {
+            "text": "Ngũ Hành Sơn nên đi sáng sớm để tránh nắng gắt và đông khách. Mang nước uống đủ vì leo núi khá mệt.",
+            "basis": "general"
+          }
+        ],
+        "share_text": "🌴 Đà Nẵng 3 ngày 2 đêm: Biển xanh, cầu rồng, hải sản tươi & thắng cảnh tuyệt đẹp! Cùng TappyAI lên kế hoạch du lịch hoàn hảo 🎉 #TappyAI"
+      },
+      "cta": null
+    },
+    {
+      "user": "từ Sài Gòn, đi máy bay, ngày 15/10",
+      "status": 200,
+      "ms": 56993,
+      "literalDoubleStar": 2,
+      "unbalancedBoldLines": [],
+      "proseTail": "ass%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=0ff45faa6e1b803787358167) · [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.DAD%26dt%3D15-10-2026.null%26ps%3D2.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=0ff45faa6e1b803787358167)",
+      "placeActions": [],
+      "shopping": null,
+      "plan": {
+        "type": "trip",
+        "title": "Đà Nẵng 3 ngày 2 đêm - Tham quan thắng cảnh & ẩm thực hải sản",
+        "people": 2,
+        "budget_total": "chưa có giá",
+        "days": [
+          {
+            "label": "Ngày 1 (15/10)",
+            "items": [
+              {
+                "time": "14:00",
+                "emoji": "✈️",
+                "category": "transport",
+                "name": "Chuyến bay Sài Gòn - Đà Nẵng",
+                "description": "Bay từ TP HCM đến Đà Nẵng, dự kiến hạ cánh lúc 15:30-16:00",
+                "price": "chưa có giá",
+                "address": "Sân bay Tân Sơn Nhất - Sân bay Đà Nẵng",
+                "maps_link": "https://maps.google.com/?q=san+bay+da+nang",
+                "place_id": ""
+              },
+              {
+                "time": "17:00",
+                "emoji": "🏨",
+                "category": "hotel",
+                "name": "M Hotel Da Nang",
+                "description": "Khách sạn 4.8⭐ (2.862 đánh giá), vị trí Ngũ Hành Sơn gần biển, check-in và nghỉ ngơi",
+                "price": "chưa có giá",
+                "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+                "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+                "photo_url": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg"
+              },
+              {
+                "time": "19:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "description": "Nhà hàng hải sản 4.8⭐ (30.489 đánh giá), mở 10:30-22:30, ăn tối hải sản tươi",
+                "price": "chưa có giá",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=2059427300039139311",
+                "booking_link": "https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE",
+                "place_id": "ChIJx6-KGnIXQjER7x-T0zeOlBw",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_zqzpBMKLU-8fD6XFbionz81v1E1ZRkFc-H5fkWwsQBeMYcIXncSamfUM9F6rdckIMkn70gvJyDdLtyTHF1_K3UBzir3o6eHPp3EJI84Rg1kx5HPiBui0mNg0fDrR2bRyPME"
+              }
+            ]
+          },
+          {
+            "label": "Ngày 2 (16/10)",
+            "items": [
+              {
+                "time": "08:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Hải Sân Đà Nẵng Bé Biển",
+                "description": "Nhà hàng hải sản 4.7⭐ (5.365 đánh giá), mở 7:30-2:00, ăn sáng hải sản",
+                "price": "chưa có giá",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=13916594470133077361",
+                "place_id": "ChIJmQmygLwXQjERcZVy8--sIcE",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOheaFEcQWR8f5h0NsL1J6BxDr2N71TzA0J7csA9hLj-kx16N9AFiT_SYX1uR81Lk-KtD30ylfrDz4UzD2f0fy1y-mK9aljFceQ9xirhafWRiDlfueHkteKMKw0hwvV52y4hAyj3A"
+              },
+              {
+                "time": "10:00",
+                "emoji": "🏔️",
+                "category": "attraction",
+                "name": "Ngũ Hành Sơn",
+                "description": "Thắng cảnh 4.4⭐ (42.940 đánh giá), mở 7:00-17:30, tham quan 5 hang động, view biển đẹp",
+                "price": "chưa có giá",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=13577824764986909893",
+                "place_id": "ChIJ2y5L4dQNQjERxeSLc68fbrw",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKcFDCD4xXJUJGGM3PFb7JMfdz03Tu1fHVUZdyLa5yROKVS9hZeMflXnqx8kLk2VNK-HfZnfE7dGv7o1wb29ltqPuHujvTp5aQaSr0w-YhbRjDR_PnajZYrHD3e_X5BT-euzm0"
+              },
+              {
+                "time": "13:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Hải Sán Ku Tom Đà Nẵng",
+                "description": "Nhà hàng hải sản 4.9⭐ (3.528 đánh giá), mở 10:00-2:00, ăn trưa hải sản tươi",
+                "price": "chưa có giá",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=11082184094803346066",
+                "booking_link": "https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299",
+                "place_id": "ChIJy0rCqNkXQjERksI84rfTy5k",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOc59bV9t3hO7TM7ePfXilEqUtVOuf5T-MvjE9nV_mJJ6EQAsPxbUHXHnw4JekkuvK9F24Oq9E3LxFwU0aoG5LhWexPOtzrVqtIsGh9QVX_XFWDeGpk9FClpoqCkw_ZRcRe0NcHbFR-yx84"
+              },
+              {
+                "time": "16:00",
+                "emoji": "🌉",
+                "category": "attraction",
+                "name": "Cầu Rồng",
+                "description": "Điểm tham quan 4.5⭐ (9.557 đánh giá), mở cả ngày, chụp ảnh cầu Rồng nổi tiếng",
+                "price": "chưa có giá (miễn phí)",
+                "address": "Cầu Rồng, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=329807663884316974",
+                "booking_link": "",
+                "place_id": "ChIJL1GKWJYZQjERLrEGqlK2kwQ",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmPgqEg1CBj7vWsbZAnbRzirWC0hR1a8t93Poup7JVm46Gl0y7tpW_8xWaE_joAy4UYthJI4vQu1UlEU6BdpEixkeTdy4YFem7BOsa_kG-xFlVSESvoSEHNgAEyVn4W57wA9OveR-6s9thlQ"
+              },
+              {
+                "time": "19:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Thèm Hải Sản",
+                "description": "Nhà hàng hải sản 4.8⭐ (11.191 đánh giá), mở 11:00-0:00, ăn tối hải sản",
+                "price": "chưa có giá",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=14378541914985934539",
+                "place_id": "ChIJN84BNSQXQjERyy7N3rDXisc",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmOgYDgqr7h81TuCG-CnwIRktGM9w3JoJnPMUxhnNJ-tIpL_D-cK6W-avzNTr5PCM7HiTeHpkogMXuVrXk6kAbQpYK0vAyzy6xw9VHrTlHbnpGmaHwjhV8EZvqmV9CNqS6OxYjC-OCQ9ofyj"
+              }
+            ]
+          },
+          {
+            "label": "Ngày 3 (17/10)",
+            "items": [
+              {
+                "time": "08:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "description": "Nhà hàng 4.9⭐ (3.010 đánh giá), mở 9:00-22:00, ăn sáng buffet hải sản",
+                "price": "chưa có giá",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=16318222310272472768",
+                "booking_link": "",
+                "place_id": "ChIJW6WmIUoXQjERwBalybv4deI",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmNTknBoeq-A-LeAsVEPlEXabz1T8L0Qh4Kinpm9AT7wuYkFQ6FGVQYzLfmz_qflKAp0BIpvwgqL4i1sQbubk225Us-3LplMP2di6Lbbi8cDoCCCGD6ivnYqTRmqi6_6RPjqKJ415SawveVw"
+              },
+              {
+                "time": "10:00",
+                "emoji": "🌉",
+                "category": "attraction",
+                "name": "Cầu Vàng",
+                "description": "Điểm tham quan 4.6⭐ (14.880 đánh giá), mở 8:00-19:00, chụp ảnh cầu Vàng nổi tiếng",
+                "price": "chưa có giá",
+                "address": "Hòa Vang, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7167034678468850957",
+                "booking_link": "",
+                "place_id": "ChIJj9PFGT33QTERDbUKRxFsdmM",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdPQek2YjkoXzRT7VC4A9EDw1238yHcmb2ZpQlrST8NVlS34r5768sx4P2NUuEcWds8I4gbS6HagEMxuElU0MiqXTklXxjPyqbk9p1gCIRgdQKFPfe2G_1DeIINd57XNz-g3eZy"
+              },
+              {
+                "time": "13:00",
+                "emoji": "🍜",
+                "category": "food",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "description": "Nhà hàng hải sản 4.8⭐ (3.188 đánh giá), mở 6:00-23:00, ăn trưa trước khi về",
+                "price": "chưa có giá",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=8430235641332136898",
+                "booking_link": "https://book.chope.co/booking?source=google_dining&rid=nhahanghaisan2608vn&rwg_token=AE37R_jReuZBd7Q_VBnLotpTXF-GeF0HL2vl_S6GvwNo325ekl8z25UjMu_Mliq7CaqEVMPUSQv0l2ugzpsywnz2COrqQQHaPrjPYXNIMOaJD1PPiaHK1JQ%3D",
+                "place_id": "ChIJfb2A754ZQjERwntwhqY2_nQ",
+                "photo_url": "https://lh3.googleusercontent.com/grass-cs/ACvplmNJ7TVKUyL3QjhYOBHeRYWUj9nBqQy1p0xkC-kWQteXirTSOyZU3x2UBvJedt70dvVQEf_tEB4c1JrrB0dgRp3PTbsGcmOb3N-BOeSMLQDgJ4T7cdG3vkYA9j3ghgrx24v9GPo8VXTb7mtj"
+              },
+              {
+                "time": "15:00",
+                "emoji": "✈️",
+                "category": "transport",
+                "name": "Chuyến bay Đà Nẵng - Sài Gòn",
+                "description": "Bay về TP HCM, dự kiến cất cánh lúc 15:00-16:00",
+                "price": "chưa có giá",
+                "address": "Sân bay Đà Nẵng - Sân bay Tân Sơn Nhất",
+                "maps_link": "https://maps.google.com/?q=san+bay+da+nang",
+                "place_id": ""
+              }
+            ]
+          },
+          {
+            "label": "Checkout",
+            "items": [
+              {
+                "time": "11:00",
+                "emoji": "🏨",
+                "category": "hotel",
+                "name": "M Hotel Da Nang",
+                "description": "Check-out khách sạn",
+                "price": "chưa có giá",
+                "address": "286 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng",
+                "maps_link": "https://maps.google.com/?cid=7069989189938949055",
+                "booking_link": "",
+                "place_id": "ChIJp0AYSgAXQjERv6spuLWlHWI",
+                "photo_url": "https://mhotel.vn/wp-content/uploads/2022/12/m-hotel-4-3-no-scaled.jpg"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Vé máy bay (2 người)": "chưa có giá",
+          "Khách sạn (2 đêm)": "chưa có giá",
+          "Ăn uống (6 bữa)": "chưa có giá",
+          "Tham quan (Ngũ Hành Sơn, Cầu Vàng)": "chưa có giá",
+          "Di chuyển (Grab/taxi)": "chưa có giá"
+        },
+        "local_tips": [
+          {
+            "text": "Ngũ Hành Sơn nên đi sáng sớm để tránh nắng gắt và đông khách, mang nước uống đầy đủ",
+            "basis": "general"
+          },
+          {
+            "text": "Các nhà hàng hải sản ở Đà Nẵng nên đặt bàn trước, đặc biệt vào giờ cao điểm tối",
+            "basis": "general"
+          }
+        ],
+        "share_text": "3 ngày 2 đêm Đà Nẵng: tham quan Cầu Rồng, Ngũ Hành Sơn, Cầu Vàng & ăn hải sản tươi ngon 🦐🌊 #TappyAI"
+      },
+      "cta": null
+    }
+  ]
+}

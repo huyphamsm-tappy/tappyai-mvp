@@ -31,24 +31,24 @@ Design images (D:\redesign, 6 files): age gate · onboarding interests · "Gợi
 Tài khoản & Cài đặt · Đã lưu (with sidebar) · Viết content (AI caption). No design exists for: profile
 content tabs, share-card layouts, Explore upload, chat answers.
 
-### Work list — status with evidence (screenshots under docs/uat/evidence/release-2026-09-28/shots/<uat-sha>/)
-| Item | Commit(s) | Evidence (UAT SHA) | Status |
+### Work list — status with evidence (docs/uat/evidence/release-2026-09-28/shots/<dir>/)
+Latest full run: `final-1e11b32/` (+ `final-a9d634e/` for the cut-sentence fix and P1c). UAT SHA recorded in each dir's `_version.json` or name.
+| Item | Commit(s) | Evidence | Status |
 |---|---|---|---|
-| P1a "tối nay có chỗ nào đi chơi ở sài gòn ko" | 668ffd1 intent; f6c7faf fixed evening FRAME (eveningPlan.ts, code-written searches); a5c19a8 code-written intro | shots/a5c19a8/p1a-run1..5-t1.png — 5/5: 18:30 Quán ăn ngon Sài Gòn → 20:00 Chợ đêm Hồ Thị Kỷ → 21:30 The View Rooftop Bar, maps on every stop, no origin/transport question | PASS |
-| P1b "mua đồ ăn vặt" → "tối nay đi đâu chơi quận 1" | 668ffd1, e05de06 (new subject = only the new turn reaches the model) | shots/e05de06/p1b-snack-then-q1-t2.png — dinner → Bùi Viện → … no snack | PASS (re-shoot on final SHA) |
-| P1c raw URL / glued links / photo link | 1b79b97 (web), 4515b0f (Android) | unit tests only; needs an answer that contains links | CODE-DONE, screenshot TODO |
-| P1d blank gaps | 1b79b97 | shots/p1cd-hotel-t1.png (1b79b97) no gap | PASS |
-| P1e "quán phở ngon quận 3" order buttons | e823425, 062c7ec, c7f78d3 | shots/e05de06/p1e-pho-q3-t1.png (Đặt chỗ / Tìm trên GrabFood) | PASS |
-| A1 shopping buttons | e823425 | shots/e05de06/a1-shop-t1.png (every product Mua trên…/Tìm trên Lazada) | PASS |
-| Cut sentence "…cao hơn Nếu cần…" | a5c19a8 (moneyGuard clause cut + 'không dây' + budget words) | fixture red→green; UAT re-shoot TODO | CODE-DONE |
-| P2a avatar/cover | 5e305f4; infra (c) docs/uat/UAT-MEDIA-INFRA.md | shots/d97b261/p2a-1..3 (before/after/reload), p2a-buckets.txt (UAT bucket has both, prod none), wif-isolation.txt | PASS |
-| P2b own profile tabs | 5e305f4 | needs login in Browser pane | CODE-DONE, screenshot TODO |
-| P2c sidebar | 5e305f4 | shots/auth-probe/p2-profile.png (no Saved/History/Cài đặt/Language/Help in sidebar; rows in the hub) | PASS (re-shoot final) |
-| P3a Explore upload | 4e9f53d (resumable session Origin → CORS) | shots/4e9f53d/p3a-2 (photo), p3a-3 ('Video đã tải lên', AI caption), p3a-result.json (PUT 200, no console error) | PASS |
-| P3b/P4 share | 7e78e58, c835b3e, 91461bd | shots/p4-review-share-sheet-mobile.png; Facebook popup sharer.php?u=uat…/reviews/… + "Đã mở Facebook" (f6c7faf); TikTok desktop download tappyai-post-*.png + tiktok.com/upload + hint; OG tags p4-og-review-*.txt | PASS web (FB/Zalo previews: UAT behind SSO → re-check on prod) |
-| Zalo "crash" | 91461bd | it was MY SCRIPT: desktop tile had no "Zalo" text (label "Sao chép liên kết"); label now "Zalo (sao chép link)" | FIXED, re-shoot TODO |
-| Design conformance R1 Saved, Account&Settings, R2 Viết content, R3 Gợi ý (+photo/address/rating/activity), age gate, onboarding | c87ddac, d97b261, 899bdbf | final re-shoot side-by-side with D:\redesign | CODE-DONE |
-| Share layouts | — | contact sheet sent to owner (Downloads: QR cards 1–4, share sheet 6, plan page 7) — awaiting owner's choice | WAITING OWNER |
+| P1a "tối nay có chỗ nào đi chơi ở sài gòn ko" | f6c7faf fixed frame, a5c19a8 code intro | a5c19a8/p1a-run1..5 (5/5 dinner→Chợ đêm Hồ Thị Kỷ→The View Rooftop Bar), final-1e11b32/p1a-tonight-sg(-mobile) | PASS |
+| P1b snack → "tối nay đi đâu chơi quận 1" | 668ffd1, e05de06 | final-1e11b32/p1b-snack-then-q1-t2 | PASS |
+| P1c raw URL / glued links / photo link | 1b79b97, 4515b0f | final-1e11b32/a1-flight-t1 (chips "Trip.com" · "Traveloka"), 0 raw URLs in every captured answer | PASS |
+| P1d blank gaps | 1b79b97 | final-1e11b32/a1-hotel-t1 | PASS |
+| P1e / A1 buttons (food, delivery, shop, hotel, event, flight) | e823425, 062c7ec, c7f78d3 | final-1e11b32/p1e-pho-q3, a1-* | PASS |
+| Cut sentence "…cao hơn Nếu cần…" | a5c19a8, a9d634e | final-a9d634e/a1-shop-cut-run1..3 (3/3 complete "Nếu …" sentences, real prices kept) | PASS |
+| A4 trip asks date/origin/transport | 2ba8ee9, 348cfe0 | final-1e11b32/a4-trip-t1/t2 | PASS |
+| P2a avatar / cover | 5e305f4 + UAT infra (docs/uat/UAT-MEDIA-INFRA.md) | d97b261/p2a-1..3, p2a-buckets.txt, wif-isolation.txt | PASS |
+| P2b own profile tabs | 5e305f4 | final-1e11b32/p2-profile(-mobile) | PASS (see screenshot) |
+| P2c sidebar | 5e305f4 | final-1e11b32/p2-profile (no Saved/History/Cài đặt/Language/Help) | PASS |
+| P3a Explore photo + clip upload | 4e9f53d | 4e9f53d/p3a-2, p3a-3 | PASS |
+| P4 Facebook / Zalo / TikTok / OG | 7e78e58, c835b3e, 91461bd | final-1e11b32/p4-click-facebook ("Đã mở Facebook"), p4-click-zalo-desktop (clipboard = UAT link + hint), p4-click-tiktok-desktop (file + tiktok.com/upload + hint), p4-og-review.txt | PASS web; FB/Zalo crawler previews only on prod (UAT behind SSO); phone share sheet → owner device test |
+| Design: Saved, Account hub, Viết content, Gợi ý cho bạn, age gate, onboarding | c87ddac, d97b261, 899bdbf, 1e11b32 | final-1e11b32/d-* next to D:edesign | PASS (deviations in RELEASE report) |
+| Share layouts (owner-chosen from Downloads) | — | contact sheet sent 2026-09-28 | WAITING OWNER CHOICE |
 
 ## Coordination
 - Android session (C:\wtandroid) owns android/. Web wrote STOPPED @ 6e392d2. Requests: docs/uat/ANDROID-REQUESTS.md.

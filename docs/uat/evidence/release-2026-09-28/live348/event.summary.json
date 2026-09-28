@@ -1,0 +1,20 @@
+{
+  "caseId": "event",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:28:44.547Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "mua vé concert tháng 10 ở Sài Gòn",
+      "status": 200,
+      "ms": 11858,
+      "literalDoubleStar": 0,
+      "unbalancedBoldLines": [],
+      "proseTail": "box.vn/super-junior-20th-anniversary-tour-in-ho-chi-minh-city-25471) — Tour kỷ niệm 20 năm của Super Junior, một trong những boyband Kpop huyền thoại\n\nBạn có thể vào từng link trên Ticketbox để xem chi tiết ngày diễn, giá vé và chọn hạng vé phù hợp. Ticketbox yêu cầu đăng nhập trước khi chọn ghế/vé, sau đó bạn tiếp tục đến thanh toán.\n\nBạn quan tâm concert nào nhất, hay muốn tìm thêm show khác? 🎵",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": null
+    }
+  ]
+}

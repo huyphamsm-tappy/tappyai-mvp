@@ -1,0 +1,6 @@
+# Vercel API read 2026-09-28 12:59:48 +0700 — deployments of rc/web-uat and the uat.tappyai.com alias
+09-28T05:56 tappyai-17yn1csiz-huyphamsm-tappys-projects.vercel.app preview READY rc/web-uat 3c5887a
+09-28T05:04 tappyai-cntjc7n7n-huyphamsm-tappys-projects.vercel.app preview READY rc/web-uat 6bc7e7b
+uat.tappyai.com -> tappyai-17yn1csiz-huyphamsm-tappys-projects.vercel.app
+
+# domain binding: uat.tappyai.com gitBranch=rc/web-uat (v9/projects/tappyai-mvp/domains); protection all_except_custom_domains (branch domain still SSO-protected: anonymous GET / -> 302 vercel.com/sso-api)

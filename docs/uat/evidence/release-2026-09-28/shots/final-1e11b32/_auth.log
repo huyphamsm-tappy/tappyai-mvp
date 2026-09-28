@@ -1,0 +1,10 @@
+file:///C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/252826a6-7ad2-4155-ad14-6de6aee19cdd/scratchpad/pw/login.mjs:22
+  if (v.error || !v.data.session) throw new Error('verifyOtp failed')
+                                        ^
+
+Error: verifyOtp failed
+    at sessionCookies (file:///C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/252826a6-7ad2-4155-ad14-6de6aee19cdd/scratchpad/pw/login.mjs:22:41)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/252826a6-7ad2-4155-ad14-6de6aee19cdd/scratchpad/pw/authShot.mjs:10:21
+
+Node.js v24.16.0
