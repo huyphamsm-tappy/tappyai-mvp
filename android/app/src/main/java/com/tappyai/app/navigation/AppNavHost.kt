@@ -102,7 +102,11 @@ fun AppNavHost(
     // NavHost stays composed and the start destination is fixed; see the two notes below.
     var hasResolvedSession by remember { mutableStateOf(false) }
     if (sessionState != AuthSessionState.Loading) hasResolvedSession = true
+    // The last settled (non-Loading) state, so a re-announced session can be told from a new one.
+    var lastSettledState by remember { mutableStateOf<AuthSessionState?>(null) }
     LaunchedEffect(sessionState) {
+        val previousSettled = lastSettledState
+        if (sessionState != AuthSessionState.Loading) lastSettledState = sessionState
         if (!hasHandledInitialState) {
             hasHandledInitialState = true
             return@LaunchedEffect
@@ -122,7 +126,7 @@ fun AppNavHost(
         // was. Only a session resolved while the user is on an AUTH screen (Login, OTP, the OAuth
         // callback) is a real login transition and enters the app, clearing the auth screens.
         // Unauthenticated still always returns to Login (sign-out, a cleared session), unchanged.
-        when (sessionRedirectFor(sessionState, onAuthScreen = navController.currentDestination.isAuthScreen())) {
+        when (sessionRedirectFor(sessionState, onAuthScreen = navController.currentDestination.isAuthScreen(), previous = previousSettled)) {
             // A real login — the same point the web gates onboarding at its auth callback. A
             // brand-new user is routed to the wizard first; everyone else to the shell.
             // needsOnboarding() fails open (false) so a check failure never blocks entry.
@@ -257,9 +261,16 @@ internal enum class SessionRedirect { EnterApp, EnterShell, Login }
  * nowhere: the current back stack is the right place to be. [AuthSessionState.Unauthenticated]
  * always goes to [SessionRedirect.Login]; [AuthSessionState.Loading] never redirects.
  */
-internal fun sessionRedirectFor(state: AuthSessionState, onAuthScreen: Boolean): SessionRedirect? = when (state) {
+internal fun sessionRedirectFor(
+    state: AuthSessionState,
+    onAuthScreen: Boolean,
+    /** The last SETTLED (non-Loading) state before this one; null when unknown. */
+    previous: AuthSessionState? = null,
+): SessionRedirect? = when (state) {
     AuthSessionState.Authenticated -> if (onAuthScreen) SessionRedirect.EnterApp else null
-    AuthSessionState.Anonymous -> if (onAuthScreen) SessionRedirect.EnterShell else null
+    // Only a NEW guest session enters the shell. The SDK re-announces the same anonymous session on
+    // every return to the foreground; a guest who opened Login on purpose must stay there (e2e login flow).
+    AuthSessionState.Anonymous -> if (onAuthScreen && previous != AuthSessionState.Anonymous) SessionRedirect.EnterShell else null
     AuthSessionState.Unauthenticated -> SessionRedirect.Login
     AuthSessionState.Loading -> null
 }

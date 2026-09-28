@@ -172,9 +172,11 @@ export async function signIn(email) {
   }
   throw new Error(`could not sign in as ${email}`)
 }
+/** Back to a GUEST: wipe the app's data (a fresh install's state), then launch and let it mint a guest session. */
 export async function signOut() {
-  sh('am', 'start', '-n', HOOK, '--es', 'op', 'signout')
-  await sleep(4000)
+  sh('pm', 'clear', PKG)
+  sh('pm', 'grant', PKG, 'android.permission.POST_NOTIFICATIONS')
+  await launch()
 }
 
 // ── evidence ─────────────────────────────────────────────────────────────────

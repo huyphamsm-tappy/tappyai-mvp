@@ -50,6 +50,19 @@ class SessionRedirectTest {
         assertEquals(SessionRedirect.EnterShell, sessionRedirectFor(AuthSessionState.Anonymous, onAuthScreen = true))
     }
 
+    /**
+     * e2e 2026-09-28 (login flow): a GUEST opened Login from Tôi, pressed Home, came back — and was
+     * on Trang chủ. The SDK re-announces the SAME anonymous session on every return to the
+     * foreground, and "anonymous on an auth screen" was read as a new guest session. Only a guest
+     * session that is NEW (the previous settled state was not already anonymous) enters the shell.
+     */
+    @Test
+    fun `the same guest session re-announced on the login screen does not throw the guest out of Login`() {
+        assertNull(sessionRedirectFor(AuthSessionState.Anonymous, onAuthScreen = true, previous = AuthSessionState.Anonymous))
+        assertEquals(SessionRedirect.EnterShell, sessionRedirectFor(AuthSessionState.Anonymous, onAuthScreen = true, previous = AuthSessionState.Unauthenticated))
+        assertEquals(SessionRedirect.EnterApp, sessionRedirectFor(AuthSessionState.Authenticated, onAuthScreen = true, previous = AuthSessionState.Anonymous))
+    }
+
     @Test
     fun `unauthenticated always returns to Login - sign-out semantics unchanged`() {
         assertEquals(SessionRedirect.Login, sessionRedirectFor(AuthSessionState.Unauthenticated, onAuthScreen = false))
@@ -59,7 +72,7 @@ class SessionRedirectTest {
     @Test
     fun `the host decides from where the user is, keeps the login and sign-out navigations, and still gates onboarding and deep links`() {
         val effect = host.substring(host.indexOf("LaunchedEffect(sessionState) {"), host.indexOf("if (sessionState == AuthSessionState.Loading && !hasResolvedSession)"))
-        assertTrue(effect.contains("when (sessionRedirectFor(sessionState, onAuthScreen = navController.currentDestination.isAuthScreen())) {"))
+        assertTrue(effect.contains("when (sessionRedirectFor(sessionState, onAuthScreen = navController.currentDestination.isAuthScreen(), previous = previousSettled)) {"))
         assertTrue("login → onboarding gate or shell, clearing the auth graph", effect.contains("SessionRedirect.EnterApp -> {") && effect.contains("val destination = if (viewModel.needsOnboarding()) AppRoute.Onboarding else AppRoute.HomeShell"))
         assertTrue("anonymous → shell, no onboarding", effect.contains("SessionRedirect.EnterShell -> {") && effect.contains("navController.navigate(AppRoute.HomeShell) {"))
         assertTrue("sign-out → Login", effect.contains("SessionRedirect.Login -> navController.navigate(AuthRoute.Login) {"))
