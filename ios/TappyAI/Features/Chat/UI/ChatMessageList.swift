@@ -25,6 +25,15 @@ struct ChatMessageList: View {
     let onSavePlaceManual: (String) -> Void
     let onSavePlaceFavorite: (String, String, String, String) -> Void
     let onZoomImage: (String) -> Void
+    /// 18+ gate (see `ChatViewModel.declareGuestAge` / `submitDateOfBirth`).
+    var ageSubmitting: Bool = false
+    var ageFormError: String? = nil
+    var onDeclareAge: (String) -> Void = { _ in }
+    var onSubmitDateOfBirth: (_ day: String, _ month: String, _ year: String) -> Void = { _, _, _ in }
+    var onEditDateOfBirth: () -> Void = {}
+    var ageBlocked = AgeBlockedState()
+    var onStartAgeCorrection: () -> Void = {}
+    var onCancelAgeCorrection: () -> Void = {}
 
     var body: some View {
         ScrollViewReader { proxy in
@@ -100,7 +109,15 @@ struct ChatMessageList: View {
                             error: error,
                             isAuthenticated: isAuthenticated,
                             onRetry: onRetry,
-                            onLogin: onLogin
+                            onLogin: onLogin,
+                            ageSubmitting: ageSubmitting,
+                            ageFormError: ageFormError,
+                            onDeclareAge: onDeclareAge,
+                            onSubmitDateOfBirth: onSubmitDateOfBirth,
+                            onEditDateOfBirth: onEditDateOfBirth,
+                            ageBlocked: ageBlocked,
+                            onStartAgeCorrection: onStartAgeCorrection,
+                            onCancelAgeCorrection: onCancelAgeCorrection
                         )
                     }
 
@@ -121,12 +138,12 @@ struct ChatMessageList: View {
                 .padding(.horizontal, Spacing.md)
                 .padding(.vertical, Spacing.md)
             }
-            .onChange(of: messages.count) {
+            .onChange(of: messages.count) { _ in
                 withAnimation(.easeOut(duration: 0.2)) {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
             }
-            .onChange(of: messages.last?.content) {
+            .onChange(of: messages.last?.content) { _ in
                 if isStreaming {
                     proxy.scrollTo("bottom", anchor: .bottom)
                 }
@@ -295,7 +312,7 @@ private struct AssistantBubble: View {
 
                 // CTA buttons with favorite toggle
                 if !ctaButtons.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
+                    ChatFlowLayout(spacing: Spacing.xs) {
                         ForEach(ctaButtons) { btn in
                             HStack(spacing: 4) {
                                 CTAButtonView(button: btn)
@@ -316,7 +333,7 @@ private struct AssistantBubble: View {
 
                 // Follow-up chips
                 if !followups.isEmpty {
-                    FlowLayout(spacing: Spacing.xs) {
+                    ChatFlowLayout(spacing: Spacing.xs) {
                         ForEach(followups, id: \.self) { f in
                             Button { onFollowup(f) } label: {
                                 Text(f)
@@ -391,6 +408,14 @@ private struct ChatErrorBanner: View {
     let isAuthenticated: Bool
     let onRetry: () -> Void
     let onLogin: () -> Void
+    let ageSubmitting: Bool
+    let ageFormError: String?
+    let onDeclareAge: (String) -> Void
+    let onSubmitDateOfBirth: (String, String, String) -> Void
+    let onEditDateOfBirth: () -> Void
+    let ageBlocked: AgeBlockedState
+    let onStartAgeCorrection: () -> Void
+    let onCancelAgeCorrection: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
@@ -400,6 +425,25 @@ private struct ChatErrorBanner: View {
 
             VStack(alignment: .leading, spacing: Spacing.xs) {
                 switch error {
+                case .ageDeclarationRequired(let message):
+                    GuestAgeDeclarationPrompt(serverMessage: message, onDeclare: onDeclareAge)
+
+                case .ageVerificationRequired(let message):
+                    DateOfBirthPrompt(serverMessage: message, submitting: ageSubmitting,
+                                      formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                      onEdit: onEditDateOfBirth)
+
+                case .ageIneligible(let message):
+                    if ageBlocked.correcting {
+                        DateOfBirthPrompt(serverMessage: nil, submitting: ageSubmitting,
+                                          formError: ageFormError, onSubmit: onSubmitDateOfBirth,
+                                          onEdit: onEditDateOfBirth,
+                                          mode: .correction, onCancel: onCancelAgeCorrection)
+                    } else {
+                        AgeBlockedPanel(message: message, state: ageBlocked,
+                                        onCorrect: onStartAgeCorrection)
+                    }
+
                 case .authRequired, .anonLimitReached:
                     VStack(alignment: .leading, spacing: Spacing.xs) {
                         Text(error == .anonLimitReached
@@ -497,42 +541,112 @@ private struct TripPlanCardView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.sm) {
-            ForEach(Array(plan.days.enumerated()), id: \.offset) { _, day in
+            if !plan.title.isEmpty {
+                Text(plan.title)
+                    .font(TappyFont.bodyEmphasis)
+                    .foregroundStyle(TappyColor.textPrimary)
+            }
+            // Web header line: "N people · budget", joined so a missing half leaves no dangling "·".
+            if let summary = PlanCardContent.summary(plan) {
+                Text(summary)
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+            }
+            ForEach(Array(plan.days.enumerated()), id: \.offset) { index, day in
                 VStack(alignment: .leading, spacing: Spacing.xs) {
-                    if let title = day.title {
-                        Text(title)
-                            .font(TappyFont.bodyEmphasis)
-                            .foregroundStyle(TappyColor.textPrimary)
-                    }
-                    if let activities = day.activities {
-                        ForEach(Array(activities.enumerated()), id: \.offset) { _, activity in
-                            HStack(alignment: .top, spacing: Spacing.xs) {
-                                if let time = activity.time {
-                                    Text(time)
+                    Text(day.label.isEmpty ? String(format: NSLocalizedString("chat.plan.dayFallback", comment: ""), index + 1) : day.label)
+                        .font(TappyFont.bodyEmphasis)
+                        .foregroundStyle(TappyColor.textPrimary)
+                    ForEach(Array(day.items.enumerated()), id: \.offset) { _, item in
+                        HStack(alignment: .top, spacing: Spacing.xs) {
+                            if !item.time.isEmpty {
+                                Text(item.time)
+                                    .font(TappyFont.caption)
+                                    .foregroundStyle(TappyColor.textSecondary)
+                                    .frame(width: 50, alignment: .leading)
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text([item.emoji, item.name].filter { !$0.isEmpty }.joined(separator: " "))
+                                    .font(TappyFont.callout)
+                                    .foregroundStyle(TappyColor.textPrimary)
+                                if let desc = item.description {
+                                    Text(desc)
                                         .font(TappyFont.caption)
                                         .foregroundStyle(TappyColor.textSecondary)
-                                        .frame(width: 50, alignment: .leading)
                                 }
-                                VStack(alignment: .leading, spacing: 2) {
-                                    if let title = activity.title {
-                                        Text(title)
-                                            .font(TappyFont.callout)
-                                            .foregroundStyle(TappyColor.textPrimary)
+                                if let address = item.address {
+                                    Text("📍 \(address)")
+                                        .font(TappyFont.caption)
+                                        .foregroundStyle(TappyColor.textSecondary)
+                                }
+                                if let price = item.price {
+                                    Text(price)
+                                        .font(TappyFont.caption)
+                                        .foregroundStyle(TappyColor.primary)
+                                }
+                                let maps = PlanCardContent.link(item.mapsLink)
+                                let booking = PlanCardContent.link(item.bookingLink)
+                                if maps != nil || booking != nil {
+                                    HStack(spacing: Spacing.sm) {
+                                        if let maps {
+                                            Link(destination: maps) { Label("chat.plan.map", systemImage: "map") }
+                                        }
+                                        if let booking {
+                                            Link(destination: booking) { Label("chat.plan.bookNow", systemImage: "calendar.badge.plus") }
+                                        }
                                     }
-                                    if let desc = activity.description {
-                                        Text(desc)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.textSecondary)
-                                    }
-                                    if let cost = activity.cost {
-                                        Text(cost)
-                                            .font(TappyFont.caption)
-                                            .foregroundStyle(TappyColor.primary)
-                                    }
+                                    .font(TappyFont.caption.weight(.semibold))
+                                    .foregroundStyle(TappyColor.primary)
                                 }
                             }
                         }
                     }
+                }
+            }
+
+            // Local tips: a stop of this plan ("Place: tip"), or flagged general advice.
+            let tips = PlanCardContent.tips(plan)
+            if !tips.isEmpty {
+                Divider()
+                Text("chat.plan.localTips")
+                    .font(TappyFont.caption.weight(.semibold))
+                    .foregroundStyle(TappyColor.textSecondary)
+                ForEach(Array(tips.enumerated()), id: \.offset) { _, tip in
+                    Group {
+                        if let place = tip.place {
+                            Text(verbatim: place + ": ").bold() + Text(verbatim: tip.text)
+                        } else {
+                            Text("chat.plan.generalTip").bold() + Text(verbatim: " · " + tip.text)
+                        }
+                    }
+                    .font(TappyFont.caption)
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+
+            if let breakdown = plan.costBreakdown {
+                Divider()
+                Text("chat.plan.costBreakdown")
+                    .font(TappyFont.caption.weight(.semibold))
+                    .foregroundStyle(TappyColor.textSecondary)
+                ForEach(breakdown.keys.sorted(), id: \.self) { key in
+                    HStack {
+                        Text(key).foregroundStyle(TappyColor.textSecondary)
+                        Spacer()
+                        Text(breakdown[key] ?? "").foregroundStyle(TappyColor.textPrimary)
+                    }
+                    .font(TappyFont.caption)
+                }
+                // Web shows the total under the breakdown; the header line above carries it too.
+                if let total = plan.budgetTotal {
+                    HStack {
+                        Text("chat.plan.totalEstimate")
+                        Spacer()
+                        Text(total).foregroundStyle(TappyColor.primary)
+                    }
+                    .font(TappyFont.callout.weight(.bold))
+                    .foregroundStyle(TappyColor.textPrimary)
                 }
             }
         }
@@ -560,9 +674,9 @@ private struct StreamingCursor: View {
     }
 }
 
-// MARK: - FlowLayout
+// MARK: - ChatFlowLayout
 
-struct FlowLayout: Layout {
+struct ChatFlowLayout: Layout {
     var spacing: CGFloat = 8
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {

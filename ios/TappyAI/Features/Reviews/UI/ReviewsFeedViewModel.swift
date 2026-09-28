@@ -307,6 +307,23 @@ final class ReviewsFeedViewModel: AppObservableObject {
         }
     }
 
+    // MARK: - Report (someone else's post)
+
+    /// Set when a report finishes; the feed shows it as an alert, then clears it.
+    @AppPublished var reportOutcome: ReviewReportOutcome?
+
+    func reportReview(reviewId: String, reason: ReviewReportReason) {
+        Task {
+            let result: Result<ReviewReportResponse, Error>
+            do { result = .success(try await service.reportReview(reviewId: reviewId, reason: reason)) }
+            catch {
+                result = .failure(error)
+                log.error("report review failed: \(error)")
+            }
+            reportOutcome = ReviewReportOutcome.from(result)
+        }
+    }
+
     // MARK: - Interact (watch-time signal)
 
     func interact(reviewId: String, watchSeconds: Int, completionRate: Double) async {

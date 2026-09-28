@@ -116,7 +116,7 @@ struct ChatInputBar: View {
                                 onSend()
                             }
                         }
-                        .onChange(of: text) {
+                        .onChange(of: text) { _ in
                             if pendingSend && isFocused { onCancelAutoSend() }
                         }
                         .onTapGesture {

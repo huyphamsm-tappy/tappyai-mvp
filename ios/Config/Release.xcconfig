@@ -1,5 +1,4 @@
 // Release configuration — non-secret defaults. Secrets go in Config/Secrets.xcconfig (gitignored).
-#include? "Secrets.xcconfig"
 
 PRODUCT_BUNDLE_IDENTIFIER = com.tappyai.ios
 PRODUCT_NAME = TappyAI
@@ -16,3 +15,8 @@ SUPABASE_ANON_KEY = REPLACE_ME_VIA_CI
 APS_ENVIRONMENT = production
 
 SWIFT_ACTIVE_COMPILATION_CONDITIONS =
+
+// Last on purpose: in an xcconfig the LAST assignment wins, so this include must come after
+// the placeholders above for Secrets.xcconfig to override them. At the top of the file, every
+// placeholder above silently beat whatever Secrets.xcconfig set.
+#include? "Secrets.xcconfig"

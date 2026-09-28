@@ -159,7 +159,7 @@ final class ChatService: Sendable {
 
     func fetchPreferences() async -> [String]? {
         let endpoint = Endpoint(path: "/api/preferences", method: .get, requiresAuth: true)
-        guard let result = try? await api.send(endpoint, as: PreferencesResponse.self) else { return nil }
+        guard let result = try? await api.send(endpoint, as: ChatPreferencesResponse.self) else { return nil }
         return result.preferences
     }
 
@@ -172,8 +172,11 @@ final class ChatService: Sendable {
 
     // MARK: - Streaming chat with enrichment
 
+    /// `guestAgeDeclaration`: the guest's stated age (`18plus` | `YYYY`), sent as
+    /// `x-tappy-age-declared`. Nil for accounts — their date of birth is read server-side.
     func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
-                        userLocation: [String: Double]? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        userLocation: [String: Double]? = nil,
+                        guestAgeDeclaration: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
@@ -189,9 +192,14 @@ final class ChatService: Sendable {
         guard let bodyData = try? JSONSerialization.data(withJSONObject: bodyDict) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }
         }
+        var headers: [String: String] = [:]
+        if let declared = guestAgeDeclaration, !declared.isEmpty {
+            headers[GuestAgeDeclaration.header] = declared
+        }
         let endpoint = Endpoint(
             path: "/api/chat",
             method: .post,
+            headers: headers,
             body: bodyData,
             requiresAuth: true,
             timeout: 60
@@ -201,7 +209,7 @@ final class ChatService: Sendable {
 }
 
 private struct MemoryCheckResponse: Decodable {
-    let memory: AnyCodable?
+    let memory: IgnoredJSONValue?
 }
 
 /// `language` is null when the server cannot name a language it supports, and `speakable` mirrors
@@ -211,11 +219,11 @@ private struct VoiceLanguageResponse: Decodable {
     let speakable: Bool
 }
 
-private struct PreferencesResponse: Decodable {
+private struct ChatPreferencesResponse: Decodable {
     let preferences: [String]?
 }
 
-private struct AnyCodable: Decodable {
+private struct IgnoredJSONValue: Decodable {
     init(from decoder: Decoder) throws {
         _ = try decoder.singleValueContainer()
     }

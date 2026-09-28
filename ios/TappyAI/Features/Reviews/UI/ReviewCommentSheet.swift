@@ -13,6 +13,10 @@ struct ReviewCommentSheet: View {
     let onDelete: (String) -> Void
     let onDismiss: () -> Void
 
+    /// First comment asks for the Terms (App Store 1.2); both comment entry points use this sheet.
+    @State private var askTerms = false
+    private let consent = TermsConsent()
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -65,6 +69,16 @@ struct ReviewCommentSheet: View {
                 }
             }
         }
+        .sheet(isPresented: $askTerms) {
+            TermsConsentSheet(
+                onAccept: {
+                    consent.accept()
+                    askTerms = false
+                    onPost()
+                },
+                onCancel: { askTerms = false }
+            )
+        }
     }
 
     @ViewBuilder
@@ -109,7 +123,7 @@ struct ReviewCommentSheet: View {
                 .disabled(!isAuthenticated)
 
             Button {
-                onPost()
+                consent.postOrAsk(ask: { askTerms = true }, post: onPost)
             } label: {
                 if isPosting {
                     ProgressView()
@@ -170,9 +184,7 @@ struct ReviewCommentSheet: View {
 // MARK: - Relative time (matches Web ago())
 
 func ago(_ iso: String) -> String {
-    let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    guard let date = formatter.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
+    guard let date = ISO8601Timestamp.date(from: iso) else { return "" }
     let seconds = Int(Date().timeIntervalSince(date))
 
     if seconds < 60 { return NSLocalizedString("common.justNow", comment: "") }

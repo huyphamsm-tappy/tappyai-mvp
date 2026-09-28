@@ -9,6 +9,8 @@ final class UserSearchViewModel: AppObservableObject {
     @AppPublished var query: String = ""
     @AppPublished var state: LoadState = .idle
     @AppPublished var results: [UserSearchResult] = []
+    @AppPublished var busyIds: Set<String> = []
+    @AppPublished var followFailed = false
 
     private let service: ReviewsService
     private let log = AppLogger.app
@@ -46,6 +48,22 @@ final class UserSearchViewModel: AppObservableObject {
             }
         }
     }
+
+    /// Follow / unfollow from a result. The route toggles, so the row shows the server's answer
+    /// (and its recalculated follower count), never a guess.
+    func toggleFollow(_ id: String) async {
+        guard !busyIds.contains(id) else { return }
+        busyIds.insert(id)
+        do {
+            let response = try await service.toggleFollow(userId: id)
+            results = SocialLists.patch(results, id: id, isFollowing: response.following,
+                                        followerCount: response.followerCount)
+        } catch {
+            log.error("follow toggle failed: \(error)")
+            followFailed = true
+        }
+        busyIds.remove(id)
+    }
 }
 
 struct UserSearchView: View {
@@ -72,6 +90,10 @@ struct UserSearchView: View {
         .background(TappyColor.background)
         .navigationTitle(Text("search.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .alert(NSLocalizedString("social.followError", comment: ""),
+               isPresented: Binding(get: { vm.followFailed }, set: { vm.followFailed = $0 })) {
+            Button(NSLocalizedString("common.ok", comment: "")) { vm.followFailed = false }
+        }
     }
 
     @ViewBuilder
@@ -111,59 +133,15 @@ struct UserSearchView: View {
                 // `UserProfileView` now exists and carries the user's id, so the tap goes where
                 // the row says it goes.
                 List(vm.results) { user in
-                    Button {
-                        router.push(ReviewsDestination.userProfile(id: user.id))
-                    } label: {
-                        row(user)
-                    }
-                    .buttonStyle(.plain)
+                    PersonRow(
+                        person: user,
+                        busy: vm.busyIds.contains(user.id),
+                        onOpen: { router.push(ReviewsDestination.userProfile(id: user.id)) },
+                        onFollow: { Task { await vm.toggleFollow(user.id) } }
+                    )
                 }
                 .listStyle(.plain)
             }
-        }
-    }
-
-    private func row(_ user: UserSearchResult) -> some View {
-        HStack(spacing: Spacing.sm) {
-            avatar(user)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(user.displayName)
-                    .font(TappyFont.body)
-                    .foregroundStyle(TappyColor.textPrimary)
-                Text("search.followerCount \(user.followerCount ?? 0)")
-                    .font(TappyFont.footnote)
-                    .foregroundStyle(TappyColor.textSecondary)
-            }
-            Spacer()
-            if user.isFollowing == true {
-                Text("search.following")
-                    .font(TappyFont.caption)
-                    .foregroundStyle(TappyColor.textSecondary)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-
-    @ViewBuilder
-    private func avatar(_ user: UserSearchResult) -> some View {
-        if let url = user.avatarUrl, let parsed = URL(string: url) {
-            AsyncImage(url: parsed) { phase in
-                if case .success(let image) = phase {
-                    image.resizable().aspectRatio(contentMode: .fill)
-                } else {
-                    Circle().fill(TappyColor.surfaceElevated)
-                }
-            }
-            .frame(width: 40, height: 40)
-            .clipShape(Circle())
-        } else {
-            Circle()
-                .fill(TappyColor.surfaceElevated)
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Image(systemName: "person.fill")
-                        .foregroundStyle(TappyColor.textSecondary)
-                )
         }
     }
 }

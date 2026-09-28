@@ -6,6 +6,9 @@ struct CreateReviewView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var photoSelection: [PhotosPickerItem] = []
     @State private var videoSelection: PhotosPickerItem?
+    /// First post asks for the Terms (App Store 1.2).
+    @State private var askTerms = false
+    private let consent = TermsConsent()
 
     private let preselectedSoundId: String?
     private let prefilledPlaceId: String?
@@ -141,7 +144,7 @@ struct CreateReviewView: View {
                         .foregroundStyle(TappyColor.textPrimary)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { vm.submit() } label: {
+                    Button { consent.postOrAsk(ask: { askTerms = true }, post: { vm.submit() }) } label: {
                         if vm.submitting {
                             ProgressView()
                                 .tint(.white)
@@ -168,6 +171,16 @@ struct CreateReviewView: View {
                 set: { vm.musicPickerOpen = $0 }
             )) {
                 MusicPickerView(vm: vm)
+            }
+            .sheet(isPresented: $askTerms) {
+                TermsConsentSheet(
+                    onAccept: {
+                        consent.accept()
+                        askTerms = false
+                        vm.submit()
+                    },
+                    onCancel: { askTerms = false }
+                )
             }
             .onAppear {
                 if let soundId = preselectedSoundId {

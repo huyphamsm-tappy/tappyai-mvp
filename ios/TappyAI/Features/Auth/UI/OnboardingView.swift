@@ -24,7 +24,7 @@ final class OnboardingViewModel: AppObservableObject {
 
     func loadOptions() async {
         loadState = .loading
-        let locale = LocalizationManager().currentLanguage
+        let locale = LocalizationManager.currentLanguageCode
         do {
             interestOptions = try await config.onboardingInterests(locale: locale)
             cityOptions = try await config.onboardingCities()

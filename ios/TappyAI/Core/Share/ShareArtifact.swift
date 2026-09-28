@@ -68,8 +68,11 @@ enum ShareArtifactBuilder {
     /// equal to the web/Android tables by `crossPlatformShare.test.ts`, so the three clients
     /// keep producing the same text.
     private static func labels(_ lang: String) -> Labels {
-        let locale = Locale(identifier: lang.hasPrefix("en") ? "en" : "vi")
-        func s(_ key: String.LocalizationValue) -> String { String(localized: key, locale: locale) }
+        // `String(localized:locale:)` only formats with `locale`; it still resolves the key in the
+        // DEVICE language. Look the key up in the brochure language's own .lproj instead.
+        let code = lang.hasPrefix("en") ? "en" : "vi"
+        let bundle = Bundle.main.path(forResource: code, ofType: "lproj").flatMap(Bundle.init(path:)) ?? .main
+        func s(_ key: String) -> String { bundle.localizedString(forKey: key, value: nil, table: nil) }
         return Labels(
             recommends: s("share.brochure.recommends"), plan: s("share.brochure.plan"),
             reviews: s("share.brochure.reviews"), why: s("share.brochure.why"),
@@ -181,26 +184,45 @@ enum ShareArtifactBuilder {
         return parts.joined(separator: "\n")
     }
 
-    /// The plan brochure, from the plan STRUCTURE.
+    /// The plan brochure — port of web `planBrochure` (`src/lib/share/shareArtifact.ts`) and
+    /// Android `ShareArtifactBuilder.planBrochure`.
     ///
-    /// The iOS `TappyPlan` model carries days → activities (time, title, description, cost); the
-    /// header uses the turn's subject because the model has no `title`. Nothing model-authored
-    /// is copied verbatim beyond those structured fields.
+    /// Structure comes from `days[].items[]`, not from `share_text`: that is model-authored prose,
+    /// so it contributes at most one introductory line, and only when short and free of URLs.
+    /// `title` is the plan's own title, or the turn's subject when the block has none.
     static func planBrochure(_ plan: TappyPlan, title: String, lang: String, url: String) -> String {
         let l = labels(lang)
-        var parts: [String] = ["\(l.plan): \(title)", ""]
+        var parts: [String] = ["\(l.plan): \(title)"]
+        if let intro = plan.shareText, intro.count <= 160,
+           intro.range(of: "https?://", options: [.regularExpression, .caseInsensitive]) == nil {
+            parts.append(intro)
+        }
+        var facts: [String] = []
+        if let n = plan.people { facts.append(l.people.replacingOccurrences(of: "{n}", with: String(n))) }
+        if let b = plan.budgetTotal { facts.append("\(l.budget): \(b)") }
+        if !facts.isEmpty { parts.append(facts.joined(separator: " · ")) }
+        parts.append("")
         for (i, day) in plan.days.enumerated() {
-            parts.append(day.title ?? (lang.hasPrefix("en") ? "Day \(day.day ?? i + 1)" : "Ngày \(day.day ?? i + 1)"))
-            for it in day.activities ?? [] {
-                let head = [it.time, it.title].compactMap { $0 }.filter { !$0.isEmpty }.joined(separator: " ")
-                if !head.isEmpty { parts.append("  " + head) }
-                if let d = it.description, !d.isEmpty { parts.append("     \(d)") }
-                if let c = it.cost, !c.isEmpty { parts.append("     \(c)") }
+            parts.append(day.label.isEmpty ? dayFallbackLabel(i + 1, lang: lang) : day.label)
+            for it in day.items {
+                parts.append("  " + [it.time, it.emoji, it.name].filter { !$0.isEmpty }.joined(separator: " "))
+                if let d = it.description { parts.append("     \(d)") }
+                var extra: [String] = []
+                if let p = it.price { extra.append(p) }
+                if let a = it.address { extra.append("📍 \(a)") }
+                if !extra.isEmpty { parts.append("     " + extra.joined(separator: " · ")) }
+                if let m = it.mapsLink, isSafeHttpsURL(m) { parts.append("     \(l.maps): \(m)") }
+                if let b = it.bookingLink, isSafeHttpsURL(b) { parts.append("     \(l.booking): \(b)") }
             }
             parts.append("")
         }
         parts.append(footer(l, url))
         return parts.joined(separator: "\n")
+    }
+
+    /// The header for a day whose block carries no `label` (the share snapshot numbers it too).
+    static func dayFallbackLabel(_ n: Int, lang: String) -> String {
+        lang.hasPrefix("en") ? "Day \(n)" : "Ngày \(n)"
     }
 
     /// Fit within `max` without ever cutting a URL — same strategy as the web `compactBrochure`.
@@ -240,9 +262,11 @@ enum ShareArtifactBuilder {
                              text: placesBrochure(title: title, places: places, lang: lang, url: url), url: url, places: places)
     }
 
-    static func buildPlanArtifact(_ plan: TappyPlan, title: String, lang: String, planJSON: String? = nil) -> ShareArtifact {
+    static func buildPlanArtifact(_ plan: TappyPlan, title fallbackTitle: String, lang: String, planJSON: String? = nil) -> ShareArtifact {
         let url = TappyShare.canonicalOrigin
         let l = labels(lang)
+        // The plan's own title (web/Android use it); the turn's subject only when the block has none.
+        let title = plan.title.isEmpty ? fallbackTitle : plan.title
         return ShareArtifact(kind: .plan, title: title, subject: "\(l.plan): \(title)",
                              text: planBrochure(plan, title: title, lang: lang, url: url), url: url, places: [],
                              planJSON: planJSON)

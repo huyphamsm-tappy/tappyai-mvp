@@ -73,6 +73,10 @@ struct ReviewsFeedView: View {
                 SoundPageView(trackId: wrapper.id, deps: deps)
             }
         }
+        .alert(NSLocalizedString(vm.reportOutcome?.messageKey ?? "review.report.thanks", comment: ""),
+               isPresented: Binding(get: { vm.reportOutcome != nil }, set: { if !$0 { vm.reportOutcome = nil } })) {
+            Button(NSLocalizedString("common.ok", comment: "")) { vm.reportOutcome = nil }
+        }
         .task {
             await vm.loadFeed()
         }
@@ -219,7 +223,8 @@ struct ReviewsFeedView: View {
                 },
                 onMusicTap: review.music?.trackId != nil ? {
                     soundPageTrackId = review.music?.trackId
-                } : nil
+                } : nil,
+                onReport: { vm.reportReview(reviewId: review.id, reason: $0) }
             )
         }
         .ignoresSafeArea()

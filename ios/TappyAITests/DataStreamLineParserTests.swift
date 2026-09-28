@@ -30,9 +30,12 @@ final class DataStreamLineParserTests: XCTestCase {
 
     func testAnnotationFrameCarriesPayload() {
         // `8:[…]` is where the `tappy.places.v1` recommendation rides (share parity with web/Android).
-        if case let .annotation(data)? = DataStreamLineParser.parse(line: "8:[{\"kind\":\"tappy.places.v1\"}]") {
+        // Since the parser learned `.places`, an `8:` line that is not a usable place set degrades to
+        // `.unknown` (see the tests below) — but its payload must still be carried, not dropped.
+        if case let .unknown(prefix, data)? = DataStreamLineParser.parse(line: "8:[{\"kind\":\"tappy.places.v1\"}]") {
+            XCTAssertEqual(prefix, "8")
             XCTAssertFalse(data.isEmpty)
-        } else { XCTFail("expected annotation") }
+        } else { XCTFail("expected unknown(8:) carrying the payload") }
     }
 
     func testUnknownPrefixIsPreserved() {

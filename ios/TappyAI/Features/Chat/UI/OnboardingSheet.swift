@@ -114,7 +114,7 @@ struct OnboardingSheet: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: Spacing.xs) {
                 ForEach(options) { option in
-                    chipButton(option.labelKey, selected: isSelected(option)) { onTap(option) }
+                    chipButton(LocalizedStringKey(option.labelKey), selected: isSelected(option)) { onTap(option) }
                 }
             }
         }

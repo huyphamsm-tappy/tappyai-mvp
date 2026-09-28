@@ -47,7 +47,7 @@ final class PlanShareTests: XCTestCase {
         let parsed = ContentParser.parse(reply)
         XCTAssertNotNil(parsed.plan)
         let block = try XCTUnwrap(parsed.planJSON)
-        // Verbatim: the wire fields iOS's model does not carry (label/items/photo_url) survive.
+        // Verbatim: the block is published as emitted, not re-encoded from the model.
         XCTAssertTrue(block.contains("\"photo_url\":\"https://lh3.googleusercontent.com/p/A\""))
         XCTAssertTrue(block.contains("\"label\":\"Ngày 1\""))
         XCTAssertTrue(block.hasPrefix("{") && block.hasSuffix("}"))

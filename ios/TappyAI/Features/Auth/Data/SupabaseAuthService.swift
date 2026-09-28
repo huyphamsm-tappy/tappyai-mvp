@@ -27,7 +27,9 @@ final class SupabaseAuthService: AuthService {
     }
 
     func verifyEmailOTP(email: String, token: String) async throws -> AuthTokens {
-        let session = try await supabase.auth.verifyOTP(email: email, token: token, type: .email)
+        // supabase-swift v2: `verifyOTP` returns `AuthResponse` (`.session` / `.user`), not `Session`.
+        let response = try await supabase.auth.verifyOTP(email: email, token: token, type: .email)
+        guard let session = response.session else { throw AuthError.sessionMissing }
         return AuthTokens(session: session)
     }
 
@@ -50,6 +52,13 @@ final class SupabaseAuthService: AuthService {
 
     func session(fromCallback url: URL) async throws -> AuthTokens {
         let session = try await supabase.auth.session(from: url)
+        return AuthTokens(session: session)
+    }
+
+    func signInWithApple(idToken: String, nonce: String) async throws -> AuthTokens {
+        let session = try await supabase.auth.signInWithIdToken(
+            credentials: OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
+        )
         return AuthTokens(session: session)
     }
 
