@@ -7,7 +7,7 @@
     <string name="auth_continue_with_facebook">Tiếp tục với Facebook</string>
     <string name="auth_or_divider">hoặc</string>
     <string name="auth_email_label">Email</string>
-    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_email_placeholder">ban@email.com</string>
     <string name="auth_send_code">Gửi mã</string>
 
     <string name="auth_otp_title">Kiểm tra email của bạn</string>
@@ -49,4 +49,10 @@
     <string name="auth_and">và</string>
     <string name="auth_privacy">Chính sách bảo mật</string>
     <string name="auth_footer_rights">© 2026 TappyAI. Bảo lưu mọi quyền.</string>
+    <string name="auth_password_label">Mật khẩu</string>
+    <string name="auth_password_placeholder">Tối thiểu 6 ký tự</string>
+    <string name="auth_password_submit">Đăng nhập</string>
+    <string name="auth_create_account">Tạo tài khoản</string>
+    <string name="auth_continue_guest">Tiếp tục với tư cách Khách</string>
+    <string name="auth_signin_failed">Email hoặc mật khẩu không đúng.</string>
 </resources>

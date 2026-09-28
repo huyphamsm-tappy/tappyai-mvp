@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,6 +35,8 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,15 +49,6 @@ import com.tappyai.core.designsystem.component.TappyLoadingIndicator
 import com.tappyai.core.designsystem.component.TappyTextField
 import com.tappyai.core.designsystem.theme.TappyContainers
 import com.tappyai.core.designsystem.theme.TappySpacing
-
-// Email (magic-link) login is implemented end-to-end (LoginViewModel.onSendEmailOtpClick →
-// AuthRepository.sendEmailOtp → Supabase magic link → tappyai://auth-callback deep-link session
-// import) but is DEFERRED from the MVP by owner decision (infrastructure): the Supabase project's
-// built-in email service is rate-limited to ~2–4 emails/hour — an infra limit, not a code issue —
-// which is unusable for real users until custom SMTP is provisioned. The button is hidden behind
-// this flag; no code, backend, or Magic Link flow was removed. Flip to true (and set up SMTP) to
-// re-enable. MVP authentication = Google + Zalo.
-private const val SHOW_EMAIL_LOGIN = false
 
 // Public terms/privacy pages (opened in the browser; the in-app Terms/Privacy screens live behind
 // the post-auth Profile graph, unreachable from this pre-auth screen).
@@ -78,12 +72,27 @@ private val LOGIN_FEATURES = listOf(
 )
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(
+    /** "Tạo tài khoản" — the web /register page on this build's own web origin. */
+    onCreateAccount: () -> Unit = {},
+    /** Pops back to the app; false when Login is the only destination (cold start, no session). */
+    popBack: () -> Boolean = { false },
+    viewModel: LoginViewModel = hiltViewModel(),
+) {
+    val onContinueAsGuest = { viewModel.onContinueAsGuest(popBack) }
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     val isLoading = uiState is UiState.Loading
 
+    // The screen paints its own theme background and content colour. Before 2026-09-28 it had
+    // neither, so in dark mode the page stayed light and every Text without an explicit colour
+    // (the card title, the wordmark, the feature titles) rendered black on the dark card.
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground,
+    ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -179,7 +188,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
 
                     // MVP login methods: Google + Zalo. Facebook and Email are intentionally hidden
                     // from the UI (their ViewModel/AuthRepository implementations are retained for
-                    // future use — Email is gated by SHOW_EMAIL_LOGIN below, deferred on infra grounds).
+                    // future use; email sign-in below is the web card's email + password form).
                     // Web parity intent: both providers read as EQUAL-WEIGHT options rather than a
                     // primary and a fallback. The web draws them white with a border; the shared
                     // TappyButton has no outlined variant and adding one to a component used across
@@ -200,39 +209,55 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                         variant = TappyButtonVariant.Secondary,
                         enabled = !isLoading,
                     )
-                    // DEBUG builds only: a guest entry for emulator runs (AuthRepository.enterDebugGuest).
-                    // `isDebug` is the app's BuildConfig.DEBUG — this block does not exist in a release build.
-                    if (viewModel.isDebug) {
-                        TappyButton(
-                            text = stringResource(R.string.auth_debug_guest),
-                            onClick = viewModel::onDebugGuestClick,
-                            modifier = Modifier.fillMaxWidth().testTag("auth-debug-guest"),
-                            variant = TappyButtonVariant.Ghost,
-                            enabled = !isLoading,
-                        )
-                    }
-
-                    if (SHOW_EMAIL_LOGIN) {
-                        Text(
-                            text = stringResource(R.string.auth_or_divider),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        TappyTextField(
-                            value = viewModel.email,
-                            onValueChange = viewModel::onEmailChange,
-                            label = stringResource(R.string.auth_email_label),
-                            placeholder = stringResource(R.string.auth_email_placeholder),
-                            enabled = !isLoading,
-                        )
-                        TappyButton(
-                            text = stringResource(R.string.auth_send_code),
-                            onClick = viewModel::onSendEmailOtpClick,
-                            modifier = Modifier.fillMaxWidth(),
-                            variant = TappyButtonVariant.Ghost,
-                            enabled = !isLoading,
-                        )
-                    }
+                    // Web /login card, 2026-09-28 parity: "hoặc", Email + Mật khẩu + "Đăng nhập",
+                    // "Tạo tài khoản", then "Tiếp tục với tư cách Khách" — in that order. (The old
+                    // hidden magic-link form and the debug-only guest button are gone; the magic-link
+                    // repository path stays for EmailOtpVerification.)
+                    Text(
+                        text = stringResource(R.string.auth_or_divider),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    TappyTextField(
+                        value = viewModel.email,
+                        onValueChange = viewModel::onEmailChange,
+                        label = stringResource(R.string.auth_email_label),
+                        placeholder = stringResource(R.string.auth_email_placeholder),
+                        enabled = !isLoading,
+                        keyboardType = KeyboardType.Email,
+                        modifier = Modifier.testTag("auth-email"),
+                    )
+                    TappyTextField(
+                        value = viewModel.password,
+                        onValueChange = viewModel::onPasswordChange,
+                        label = stringResource(R.string.auth_password_label),
+                        placeholder = stringResource(R.string.auth_password_placeholder),
+                        enabled = !isLoading,
+                        keyboardType = KeyboardType.Password,
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.testTag("auth-password"),
+                    )
+                    TappyButton(
+                        text = stringResource(R.string.auth_password_submit),
+                        onClick = viewModel::onPasswordSignInClick,
+                        modifier = Modifier.fillMaxWidth().testTag("auth-password-submit"),
+                        variant = TappyButtonVariant.Primary,
+                        enabled = !isLoading && viewModel.email.isNotBlank() && viewModel.password.isNotEmpty(),
+                    )
+                    Text(
+                        text = stringResource(R.string.auth_create_account),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clickable(onClick = onCreateAccount),
+                    )
+                    TappyButton(
+                        text = stringResource(R.string.auth_continue_guest),
+                        onClick = onContinueAsGuest,
+                        modifier = Modifier.fillMaxWidth().testTag("auth-guest"),
+                        variant = TappyButtonVariant.Secondary,
+                        enabled = !isLoading,
+                    )
 
                     // Trust line.
                     Text(
@@ -296,6 +321,7 @@ fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
                 textAlign = TextAlign.Center,
             )
         }
+    }
     }
 }
 

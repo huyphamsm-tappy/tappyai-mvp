@@ -8,7 +8,7 @@
     <string name="auth_continue_with_facebook">Continue with Facebook</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>
-    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_email_placeholder">you@email.com</string>
     <string name="auth_send_code">Send code</string>
 
     <string name="auth_otp_title">Check your email</string>
@@ -51,4 +51,10 @@
     <string name="auth_and">and</string>
     <string name="auth_privacy">Privacy Policy</string>
     <string name="auth_footer_rights">© 2026 TappyAI. All rights reserved.</string>
+    <string name="auth_password_label">Password</string>
+    <string name="auth_password_placeholder">At least 6 characters</string>
+    <string name="auth_password_submit">Sign in</string>
+    <string name="auth_create_account">Create account</string>
+    <string name="auth_continue_guest">Continue as Guest</string>
+    <string name="auth_signin_failed">That email or password is not correct.</string>
 </resources>

@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalUriHandler
+import com.tappyai.app.BuildConfig
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -182,7 +184,15 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination,
     ) {
-        composable<AuthRoute.Login> { LoginScreen() }
+        composable<AuthRoute.Login> {
+            val uriHandler = LocalUriHandler.current
+            LoginScreen(
+                // Web /register on THIS build's web origin (uat.tappyai.com in the uat build), so an
+                // account is never created on a different backend than the one the app signs in to.
+                onCreateAccount = { uriHandler.openUri(BuildConfig.WEB_APP_URL + "/register") },
+                popBack = { navController.previousBackStackEntry != null && navController.popBackStack() },
+            )
+        }
         composable<AuthRoute.EmailOtpVerification> {
             EmailOtpVerificationScreen(onBackClick = { navController.popBackStack() })
         }

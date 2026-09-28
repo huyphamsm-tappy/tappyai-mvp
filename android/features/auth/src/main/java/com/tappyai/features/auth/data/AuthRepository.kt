@@ -17,6 +17,7 @@ import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.handleDeeplinks
 import io.github.jan.supabase.auth.providers.Facebook
 import io.github.jan.supabase.auth.providers.Google
+import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.providers.builtin.OTP
 import io.github.jan.supabase.auth.status.SessionStatus
@@ -238,6 +239,20 @@ class AuthRepository @Inject constructor(
      * `tappyai://auth-callback` deep link → [handleOAuthRedirectIntent], like every other OAuth.
      */
     fun startZaloSignIn(context: Context) = zaloSignInClient.launch(context)
+
+    /**
+     * Email + password — the web /login card's consumer sign-in (`supabase.auth.signInWithPassword`,
+     * first-class there since 2026-09-10). Sign-in only: it cannot create a user; signing up is the
+     * web /register page. The caller shows ONE message for every failure (no enumeration oracle).
+     */
+    suspend fun signInWithPassword(email: String, password: String): NetworkResult<Unit> = safeAuthCall {
+        supabaseClient.auth.signInWith(Email) {
+            this.email = email
+            this.password = password
+        }
+        persistSession()
+        emitSignInAnalytics("email")
+    }.logOnError("signInWithPassword")
 
     suspend fun sendEmailOtp(email: String): NetworkResult<Unit> = safeAuthCall {
         // Web production sends a magic LINK for email login (Supabase project uses the default
