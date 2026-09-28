@@ -70,6 +70,12 @@ Android làm theo D:/redesign, không làm theo web ở các mục dưới:
 - 2026-09-28 (web): Phase 8 overlap §5 (tappyai-phase8 `docs/uat/PHASE8-OVERLAP-2026-09-29.md`): 11 mục KHÔNG làm trong Phase 7
   (Android cũng vậy: không sửa 2 nút Google/Zalo ngoài màu, không tự viết image fallback, không thêm tile "gửi qua tin nhắn"…).
 
+- 2026-09-28 (web): **Khung đầu ra 6 mảng (FOOD / SHOPPING / TRAVEL / ENTERTAINMENT / SPA-WELLNESS / MAIN CHAT) + định dạng dữ liệu**
+  (frame `0:`/`8:`, marker `[TAPPY_PLAN]`/`[TAPPY_SHOPPING]`/`[CTA_BUTTONS]`/`[FOLLOWUPS]` = gợi ý trả lời nhanh, annotation
+  `tappy.places.v1`/`tappy.progress.v1`, nút CCP `labelKey`, hàng tìm kiếm `urlKind:'search'`): `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md`.
+  Đây là hành vi HIỆN TẠI của rc (thiết kế 26/9 chưa tìm thấy). Câu hỏi đóng của server có thể đứng SAU khối CTA/FOLLOWUPS —
+  Android phải hiển thị text sau khối. Câu trả lời thô để test offline: `gs://tappyai-media-uat/evidence/<SHA>/golden-raw/` (xem §5 của file).
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
