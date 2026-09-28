@@ -65,3 +65,35 @@ export function guardClarifications(text: string, policy: ClarificationPolicy): 
   const out = spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join('')
   return { text: out.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trimEnd(), removed: doomed.size }
 }
+
+/**
+ * ANSWER FIRST, ASK AFTER (owner 2026-09-28; c40 P2 on 526129a). The model opened a searched turn
+ * with "Để gợi ý đúng ý bạn, mình cần biết: **bạn muốn massage chân bao lâu** (30 phút, 60 phút, hay
+ * không cụ thể)?" and only then gave the spas. A question that comes BEFORE the answer moves to the
+ * end, with its lead-in ("… mình cần biết:") dropped. When the reply already ends by asking, the
+ * leading question goes instead, so a reply never carries two questions. A reply that is only a
+ * question (nothing answered) is left alone.
+ */
+const LEAD_IN_RE = /^\s*(?:(?:để|de)\s+(?:gợi ý|goi y|chọn|chon|tìm|tim)[^:?]{0,40}[,:]?\s*)?(?:mình|minh|tôi|toi)\s+(?:cần|can)\s+(?:biết|biet|hỏi|hoi)(?:\s+(?:thêm|them))?\s*(?:[:：]\s*)?/iu
+export function answerFirst(text: string): { text: string; moved: 'moved' | 'dropped' | null } {
+  if (!text) return { text, moved: null }
+  const prot = protectedSpans(text)
+  const spans = sentenceSpans(text).filter(([a, b]) => !prot.some(([pa, pb]) => pa === a && pb === b) && text.slice(a, b).trim())
+  if (spans.length < 2) return { text, moved: null }
+  const [qa, qb] = spans[0]
+  const first = text.slice(qa, qb)
+  if (!isQuestion(first)) return { text, moved: null }
+  // Something must be ANSWERED after it: a later sentence that is not a question.
+  const rest = spans.slice(1)
+  if (!rest.some(([a, b]) => !isQuestion(text.slice(a, b)))) return { text, moved: null }
+  const withoutFirst = (text.slice(0, qa) + text.slice(qb)).replace(/^\s+/, '')
+  const [la, lb] = rest[rest.length - 1]
+  if (isQuestion(text.slice(la, lb))) return { text: withoutFirst, moved: 'dropped' }
+  const bare = first.replace(LEAD_IN_RE, '').replace(/^\s*\*\*([^*]+)\*\*/, '$1').trim()
+  const question = bare.charAt(0).toUpperCase() + bare.slice(1)
+  // Before the first machine block, so the question is the last line the user reads.
+  const marker = withoutFirst.search(/\n*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/)
+  const at = marker === -1 ? withoutFirst.length : marker
+  const head = withoutFirst.slice(0, at).replace(/\s+$/, '')
+  return { text: `${head}\n\n${question}${withoutFirst.slice(at)}`, moved: 'moved' }
+}

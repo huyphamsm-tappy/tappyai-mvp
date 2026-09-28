@@ -38,7 +38,7 @@ import { entertainmentCapabilityOf, requestedProviderOf } from './tools/commerce
 import { suppressUngroundedVenues, isGrounded, normalizeHeading, isVenueHeading, type PlaceSearchStatus } from './groundingGate'
 import { shoppingPickFromMarker } from './consultative/pickBackstop'
 import { appendFileSync } from 'fs'
-import { guardClarifications } from './clarificationGuard'
+import { guardClarifications, answerFirst } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
 import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
 import { HARD_GAP_WORDS } from './consultative/hardConstraints'
@@ -2204,7 +2204,11 @@ export function applyPlaceEnrichmentStreamFilter(
      * (where, when, how many, budget, which item) always stay; at most one
      * question survives either way. Prose only — machine blocks untouched.
      */
-    const clarifiedBase = guardClarifications(placeGuarded, collector?.clarificationPolicy ?? 'allow').text
+    // Answer first, ask after (owner 2026-09-28; c40 P2): a question BEFORE the answer on a searched
+    // turn moves to the end (or goes, when the reply already ends asking).
+    const answeredFirst = (hadPlaceSearch || travelIntent) ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
+    if (answeredFirst.moved) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'answer_first', step: answeredFirst.moved }))
+    const clarifiedBase = guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow').text
     /**
      * Consultative V1 (flag): three prose guards, in this order, on prose only.
      *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
