@@ -90,6 +90,7 @@ import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consult
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { frameDomainOf } from '@/lib/ai/consultative/domainFrames'
 import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor } from '@/lib/ai/consultative/consultBrain'
+import { routeConsult } from '@/lib/ai/consultative/consultRouter'
 import { turnUsd, sumCounts, turnCostStream } from '@/lib/ai/turnCost'
 import { planPresearch, planFlightPresearch, type FlightPresearchPlan, presearchMessages, presearchFrames, prefixBody, deferredBody, searchingFrame, type PresearchOutcome, type PresearchPlan } from '@/lib/ai/consultative/presearch'
 import { wantsMoreFromSet, reusablePlaceSearch, type PlaceSearchEvidence } from '@/lib/ai/consultative/moreFromSet'
@@ -338,11 +339,15 @@ export async function POST(req: Request) {
    * pipeline for this turn (never a refusal).
    */
   const priorAssistantText = (() => { const m = [...messages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })()
-  const consultRun = consultV2Enabled() && !hasImage && !clipRef && AI.isConfigured()
+  // Owner §6: the ASK turn and the button turns are decided by CODE (consultRouter.ts: rules per area +
+  // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
+  const consultOn = consultV2Enabled() && !hasImage && !clipRef
+  const routed = consultOn ? routeConsult(messages, { hasGps: !!userLocation, lang }) : null
+  const consultRun = consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
     ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null
-  const consult = consultRun?.decision ?? null
-  console.log(JSON.stringify({ type: 'tappyai_consult', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
+  const consult = consultRun?.decision ?? (routed ? routed.decision : null)
+  console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
   const planningIntent = consult
@@ -1772,8 +1777,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       } catch { /* audit only */ }
     }
     const cannedRes = cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
-    if (!consultRun || !cannedRes.body) return cannedRes
-    const brainIn = consultRun.usage.promptTokens, brainOut = consultRun.usage.completionTokens
+    if (!consult || !cannedRes.body) return cannedRes
+    const brainIn = consultRun?.usage.promptTokens ?? 0, brainOut = consultRun?.usage.completionTokens ?? 0
     return new Response(turnCostStream(cannedRes.body, () => ({ domain: consult?.domains[0] ?? null, turnType: consultAskReply ? 'ask' : kind, model: 'haiku-4.5', tokensIn: brainIn, tokensOut: brainOut, serperCalls: 0, cacheHits: 0, usd: turnUsd({ promptTokens: brainIn, completionTokens: brainOut }) })), { status: cannedRes.status, headers: cannedRes.headers })
   }
 

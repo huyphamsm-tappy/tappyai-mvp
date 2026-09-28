@@ -121,6 +121,9 @@ describe('slot extraction', () => {
     expect(budgetOf(prep('nuoc hoa nam tam 1 cu'))).toBe('tam 1 cu')
     expect(budgetOf(prep('quán nhậu bình dân'))).toBe('bình dân')
     expect(budgetOf(prep('iphone 17 pro max'))).toBeNull()
+    expect(budgetOf(prep('iphone 15 cũ giá bao nhiêu'))).toBeNull() // "cũ" folds to the money slang "cu"
+    expect(budgetOf(prep('nước hoa tầm 2 củ'))).toBe('tầm 2 củ')
+    expect(partyOf(prep('đi đà lạt bằng gì rẻ nhất'))).toBeNull() // "bằng" folds to "ba"+"ng"
     expect(partyOf(prep('buffet cho 6 đứa'))).toBe('6 người')
     expect(partyOf(prep('đi với người yêu'))).toBe('2 người')
     expect(partyOf(prep('nhóm bạn'))).toBeNull()
@@ -146,6 +149,8 @@ describe('slot extraction', () => {
     expect(detectAreas('chỗ nào bán bánh mì ngon quận 1').domains).toEqual(['food'])
     expect(detectAreas('ăn tối rồi đi hát').domains).toEqual(['food', 'entertainment'])
     expect(detectAreas('xin chào').domains).toEqual([])
+    expect(detectAreas('bàn phím cơ cho dân code')).toMatchObject({ domains: ['shopping'], conflict: false }) // phím ≠ phim
+    expect(slotView('travel', 'homestay vũng tàu view biển', true).known.phuong_tien).toBeUndefined() // Vũng Tàu ≠ tàu hỏa
   })
   it('food slots and the dish-adapted first question', () => {
     const v = slotView('food', 'quán phở ngon quận 3', true)

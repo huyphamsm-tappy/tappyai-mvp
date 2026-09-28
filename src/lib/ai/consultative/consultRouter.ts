@@ -82,7 +82,7 @@ const AREA_RULES: AreaRule[] = [
   { d: 'travel', w: 3, on: 'f', id: 'getaway', re: new RegExp(`\\b(?:di dau choi|di choi dau|di dau)\\b.*\\b(?:gan|quanh)\\s+(?:${CITY_ALT}|thanh pho)\\b|\\b(?:gan|quanh)\\s+(?:${CITY_ALT})\\b.*\\b(?:di dau|di choi)\\b|\\b(?:vai hom|may hom|ngay nghi|dip le|nghi le)\\b.*\\bdi (?:dau|choi)\\b|\\bnen di dau\\b`) },
   { d: 'travel', w: 1, on: 'f', re: W(CITY_ALT) },
   // ENTERTAINMENT
-  { d: 'entertainment', w: 3, on: 'f', re: W('karaoke|di hat|quan hat|bida|bi a|billiard|bowling|rap phim|rap chieu|xem phim|phim|cgv|cinema|concert|live ?show|nhac song|live music|acoustic|bar|pub|beer club|rooftop|club|escape room|phong thoat hiem|game center|trung tam tro choi|board ?game|ma soi|san choi|khu vui choi|khu tro choi|cong vien|thao cam vien|so thu|pho di bo|trien lam|bao tang|thuy cung|aquarium|truot bang|paintball|trampoline|workshop|lam gi (?:cho|toi nay|bay gio|cuoi tuan)|toi nay lam gi|chan qua|buon qua|hen ho|di choi nhom|choi nhom|dan (?:con|be|tre|nguoi yeu|ny) di choi|di choi voi (?:con|be|nguoi yeu|ny)') },
+  { d: 'entertainment', w: 3, on: 'f', re: W('karaoke|di hat|quan hat|bida|bi a|billiard|bowling|rap phim|rap chieu|xem phim|(?<!ban )phim|cgv|cinema|concert|live ?show|nhac song|live music|acoustic|bar|pub|beer club|rooftop|club|escape room|phong thoat hiem|game center|trung tam tro choi|board ?game|ma soi|san choi|khu vui choi|khu tro choi|cong vien|thao cam vien|so thu|pho di bo|trien lam|bao tang|thuy cung|aquarium|truot bang|paintball|trampoline|workshop|lam gi (?:cho|toi nay|bay gio|cuoi tuan)|toi nay lam gi|chan qua|buon qua|hen ho|di choi nhom|choi nhom|dan (?:con|be|tre|nguoi yeu|ny) di choi|di choi voi (?:con|be|nguoi yeu|ny)') },
   { d: 'entertainment', w: 3, on: 'lo', re: N('hát|quẩy') },
   { d: 'entertainment', w: 3, on: 'f', id: 'tonight', re: /\b(?:toi nay|dem nay|chieu nay)\b.*\b(?:di choi|choi gi|lam gi|di dau)\b/ },
   { d: 'entertainment', w: 2, on: 'f', re: W('di choi|choi gi|giai tri|date|nightlife') },
@@ -161,12 +161,23 @@ const BUDGET_WORDS: Array<[RegExp, string]> = [
   [W('cao cap|sang trong|sang chanh|xin so|fine dining|luxury'), 'cao cấp'],
 ]
 export function budgetOf(t: Txt): string | null {
-  return grab(t, MONEY) ?? label(t, BUDGET_WORDS)
+  const m = MONEY.exec(t.f)
+  if (m) {
+    const src = t.lo.slice(m.index, m.index + m[0].length).trim()
+    // "củ" (slang for a million) folds to "cu" — so does "cũ" (used): "iphone 15 cũ" is not money.
+    // Folded "cu" counts as money only when written "củ", or qualified ("tầm 1 cu") and not "cũ".
+    const unitCu = /\d\s*cu\b/.test(m[0])
+    const qualified = /^(?:duoi|tam|khoang|tren|toi da|tu|max|under|around)\s/.test(m[0])
+    if (!unitCu || /củ/.test(src) || (qualified && !/cũ|cụ/.test(src))) return src
+  }
+  return label(t, BUDGET_WORDS)
 }
 
 const NUM_WORD: Record<string, string> = { mot: '1', hai: '2', ba: '3', bon: '4', nam: '5', sau: '6', bay: '7', tam: '8', chin: '9', muoi: '10' }
 export function partyOf(t: Txt): string | null {
-  const m = /\b(\d{1,2}|mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi)\s*(?:nguoi|dua|dua ban|ban|khach|pax|ng|thanh vien|dua nho|people|pax)\b/.exec(t.f) ?? /\bnhom\s+(\d{1,2})\b/.exec(t.f)
+  // A digit may touch its unit ("4ng"); a number WORD needs a space ("bằng" folds to "bang" = "ba"+"ng").
+  const UNIT = '(?:nguoi|dua|dua ban|ban|khach|pax|ng|thanh vien|dua nho|people)'
+  const m = new RegExp(`\\b(\\d{1,2})\\s*${UNIT}\\b`).exec(t.f) ?? new RegExp(`\\b(mot|hai|ba|bon|nam|sau|bay|tam|chin|muoi)\\s+${UNIT}\\b`).exec(t.f) ?? /\bnhom\s+(\d{1,2})\b/.exec(t.f)
   if (m) return `${NUM_WORD[m[1]] ?? m[1]} người`
   if (W('mot minh|1 minh|di le|solo|alone').test(t.f)) return '1 người'
   if (W('nguoi yeu|ny|ban gai|ban trai|vo chong|voi vo|voi chong|couple|cap doi|hen ho|voi sep|voi me|voi bo|2 dua|date').test(t.f)) return '2 người'
@@ -306,7 +317,7 @@ const FAMILIES: Family[] = [
     line: { known: W('do gach|do cam|do ruou|do tuoi|mau (?:do|cam|hong|nude|nau)|nude|hong dat|cam chay'), q: q('line', 'Tông màu nào?', 'Which shade?', ['Đỏ', 'Cam', 'Hồng', 'Nude'], ['Red', 'Orange', 'Pink', 'Nude']) },
     budget: B_CHEAP, must: { known: W('li|lì|matte|bong|duong|lau troi|kem|thoi'), q: q('must', 'Chất son?', 'Finish?', ['Son lì', 'Son bóng', 'Son dưỡng'], ['Matte', 'Glossy', 'Balm']) } },
   { id: 'perfume', label: 'nước hoa', re: W('nuoc hoa|perfume'),
-    line: { known: W('tuoi mat|go|ngot|hoa|xa|citrus|woody|musk|dior|chanel|versace|ysl|creed'), q: q('line', 'Thích mùi nào?', 'Which scent?', ['Tươi mát', 'Gỗ ấm', 'Ngọt ngào', 'Chưa biết'], ['Fresh', 'Woody', 'Sweet', 'Not sure']) },
+    line: { known: W('tuoi mat|go am|mui go|ngot|huong hoa|mui hoa|citrus|woody|musk|dior|chanel|versace|ysl|creed'), q: q('line', 'Thích mùi nào?', 'Which scent?', ['Tươi mát', 'Gỗ ấm', 'Ngọt ngào', 'Chưa biết'], ['Fresh', 'Woody', 'Sweet', 'Not sure']) },
     budget: B_MID, purpose: { known: W('di lam|di choi|hen ho|di tiec|hang ngay|tang'), q: q('purpose', 'Dùng dịp nào?', 'For what occasion?', ['Đi làm', 'Đi chơi/hẹn hò', 'Tặng quà'], ['Work', 'Going out', 'Gift']) } },
   { id: 'airfryer', label: 'nồi chiên không dầu', re: W('noi chien'),
     line: { known: /\b\d+(?:[.,]\d)?\s?l(?:it)?\b|\blit\b/, q: q('line', 'Dung tích bao nhiêu?', 'Capacity?', ['Dưới 4L', '4-6L', 'Trên 6L'], ['Under 4L', '4-6L', 'Over 6L']) },
@@ -398,15 +409,15 @@ const STYLE: Array<[RegExp, string]> = [
   [W('nghi duong|resort|thu gian|chill'), 'nghỉ dưỡng'], [W('kham pha|phuot|mao hiem'), 'khám phá'], [W('lang man|honeymoon|trang mat'), 'lãng mạn'],
 ]
 const TRANSPORT: Array<[RegExp, string]> = [
-  [W('may bay|bay|flight|fly'), 'máy bay'], [W('xe rieng|tu lai|lai xe|o to|oto|xe hoi'), 'xe riêng'], [W('xe may|phuot'), 'xe máy'],
-  [W('xe khach|xe giuong nam|limousine|bus'), 'xe khách'], [W('tau hoa|tau lua|tau|train'), 'tàu hỏa'],
+  [W('may bay|bay (?:sang|trua|chieu|toi|dem|thang)|flight|fly'), 'máy bay'], [W('xe rieng|tu lai|lai xe|o to|oto|xe hoi'), 'xe riêng'], [W('xe may|phuot'), 'xe máy'],
+  [W('xe khach|xe giuong nam|limousine|bus'), 'xe khách'], [W('tau hoa|tau lua|di tau|ve tau|train'), 'tàu hỏa'],
 ]
 const FLIGHT_TIME = /\b(?:bay|chuyen|buoi|di)\s+(?:sang|trua|chieu|toi|dem|khuya)\b|\b(?:sau|truoc|tu|khoang)\s+\d{1,2}\s?h\b|\b\d{1,2}\s?h(?:\d{2})?\b|\b(?:morning|afternoon|evening)\b/
 
 // ENTERTAINMENT / SPA ───────────────────────────────────────────────────────────────────────────
 
 const ACTIVITIES: Array<[RegExp, string]> = [
-  [W('karaoke|di hat|quan hat'), 'karaoke'], [W('bida|bi a|billiard'), 'bida'], [W('bowling'), 'bowling'], [W('rap phim|rap chieu|xem phim|phim|cgv|cinema'), 'xem phim'],
+  [W('karaoke|di hat|quan hat'), 'karaoke'], [W('bida|bi a|billiard'), 'bida'], [W('bowling'), 'bowling'], [W('rap phim|rap chieu|xem phim|(?<!ban )phim|cgv|cinema'), 'xem phim'],
   [W('concert|live ?show'), 'concert'], [W('rooftop'), 'rooftop bar'], [W('bar|pub|beer club'), 'bar/pub'], [W('club|quay'), 'club'], [W('nhac song|acoustic|live music'), 'nhạc sống'],
   [W('escape room|phong thoat hiem'), 'escape room'], [W('board ?game|ma soi'), 'board game'], [W('game center|trung tam tro choi|khu vui choi|khu tro choi|san choi'), 'khu vui chơi'],
   [W('cong vien|thao cam vien|so thu'), 'công viên'], [W('pho di bo'), 'phố đi bộ'], [W('trien lam|bao tang'), 'triển lãm/bảo tàng'], [W('thuy cung|aquarium'), 'thủy cung'],
@@ -474,8 +485,10 @@ function foodView(t: Txt, gps: boolean): SlotView {
   }
   if (!party) missing.push(PARTY_Q)
   if (!budget) missing.push(q('budget', 'Tầm bao nhiêu mỗi người?', 'Budget per person?', ['Dưới 100k', '100-300k', '300-500k', 'Trên 500k'], ['Under 100k', '100-300k', '300-500k', 'Over 500k']))
-  if (!area && mode !== 'giao tận nơi') missing.push(AREA_Q(gps))
+  // With GPS the area is covered ("Gần mình" is the default) — asked last, only if room is left.
+  if (!area && !gps && mode !== 'giao tận nơi') missing.push(AREA_Q(gps))
   if (!mode) missing.push(q('mode', 'Ăn tại quán hay giao?', 'Dine in or delivery?', ['Ăn tại quán', 'Giao tận nơi'], ['Dine in', 'Delivery']))
+  if (!area && gps && mode !== 'giao tận nơi') missing.push(AREA_Q(gps))
   const base = dish ? (dish.place ? dish.label : dish.label.startsWith('món ') ? `nhà hàng ${dish.label.slice(4)}` : `quán ${dish.label}`) : 'quán ăn ngon'
   const variantWord = dish?.variant ? grab(t, new RegExp(dish.variant.known.source)) : null
   const queryParts = [base, variantWord && !base.includes(variantWord) ? variantWord : '', vibe ?? '', budget === 'bình dân' ? 'bình dân' : '', mode === 'giao tận nơi' ? 'giao tận nơi' : '']
@@ -609,6 +622,7 @@ function entView(t: Txt, gps: boolean): SlotView {
   if (!area && !gps) missing.push(AREA_Q(gps))
   if (!vibe) missing.push(q('vibe', 'Sôi động hay chill?', 'Lively or chill?', ['Sôi động', 'Chill', 'Lãng mạn'], ['Lively', 'Chill', 'Romantic']))
   if (!budget) missing.push(q('budget', 'Ngân sách mỗi người?', 'Budget per person?', ['Dưới 200k', '200-500k', 'Trên 500k'], ['Under 200k', '200-500k', 'Over 500k']))
+  if (!area && gps) missing.push(AREA_Q(gps))
   const queryParts = [activity ?? (kids ? 'khu vui chơi trẻ em' : date ? 'địa điểm hẹn hò' : 'chỗ đi chơi'), vibe ?? '', party && /\d/.test(party) && Number(party.split(' ')[0]) >= 5 ? 'cho nhóm' : '']
   const assumptions: string[] = []
   if (!party) assumptions.push('Nhóm nhỏ 2-4 người')
@@ -640,7 +654,10 @@ function spaView(t: Txt, gps: boolean): SlotView {
   if (!area && !gps) missing.push(AREA_Q(gps))
   if (!budget) missing.push(q('budget', 'Tầm giá bao nhiêu?', 'Price range?', ['Dưới 200k', '200-500k', '500k-1tr', 'Trên 1tr'], ['Under 200k', '200-500k', '500k-1M', 'Over 1M']))
   if (!time) missing.push(q('time', 'Khi nào đi?', 'When?', ['Hôm nay', 'Tối nay', 'Cuối tuần'], ['Today', 'Tonight', 'Weekend']))
-  if (!special) missing.push(q('special', 'Yêu cầu riêng?', 'Any special request?', ['KTV nữ', 'KTV nam', 'Phòng riêng', 'Không'], ['Female therapist', 'Male therapist', 'Private room', 'None']))
+  // Therapist / room requests only matter for body treatments, not for a gym, nails or a haircut.
+  const bodyCare = !svcKnown || ['massage', 'gội đầu dưỡng sinh', 'xông hơi', 'chăm sóc da', 'waxing', 'tắm trắng', 'bấm huyệt'].includes(svc!.label)
+  if (!special && bodyCare) missing.push(q('special', 'Yêu cầu riêng?', 'Any special request?', ['KTV nữ', 'KTV nam', 'Phòng riêng', 'Không'], ['Female therapist', 'Male therapist', 'Private room', 'None']))
+  if (!area && gps) missing.push(AREA_Q(gps))
   const styleWord = svc?.variant ? grab(t, svc.variant.known) : null
   const queryParts = [svcKnown ? svc!.label : svc?.label === 'làm đẹp' ? 'tiệm làm đẹp' : 'spa thư giãn', styleWord ?? '', special ?? '']
   const assumptions: string[] = []
