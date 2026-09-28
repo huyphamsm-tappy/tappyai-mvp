@@ -34,7 +34,15 @@ Các yêu cầu sửa web/server nằm ở mục 1 bên dưới. Phiên Android 
 
 ## 1. Yêu cầu web/server (Android KHÔNG sửa)
 
-(đang lập trong bước 1 — xem ANDROID-PARITY-MAP.md)
+Bước 1 xong 2026-09-28, xem `ANDROID-PARITY-MAP.md` và `evidence/android-parity/step1-hientrang/`.
+Android làm theo D:/redesign, không làm theo web ở các mục dưới:
+
+| # | Web | Lệch so với D:/redesign hoặc lỗi | Ảnh |
+|---|---|---|---|
+| R1 | `/profile/favorites` (Đã lưu) | Mockup Sep 28 02_06 có: hero "Những điều bạn yêu thích" + mascot, chip lọc (Tất cả/Địa điểm/Bài viết/Video/Deals/Bộ sưu tập), 2 thẻ đếm có mô tả, trạng thái rỗng "Chưa có gì được lưu" + "Khám phá ngay". Web chỉ là 2 dòng đếm. | 11 |
+| R2 | `/viet-content` | Mockup Sep 28 02_12 có: hero xanh-tím với mascot cầm bút, logo thương hiệu FB/TikTok/IG, nút "Thử gợi ý", tone có icon, độ dài có mô tả ("Dưới 50 ký tự"…), nút gradient "Tạo caption ngay". Web: hero hồng-cam, icon emoji. | 10 |
+| R3 | `/recommendations` | Mockup Sep 22 01_41 có: hero "Khám phá những địa điểm nổi bật gần bạn" với 3 điểm nhấn, thẻ địa điểm có "Hỏi Tappy về chỗ này", đoạn cuối trang. Web với khách chuyển sang /age-check (đúng); trang khi đã đăng nhập chưa chụp. | 09 |
+| R4 | Chia sẻ | Không có chọn layout ảnh chia sẻ (web lẫn Android). Ảnh tải về là một layout cố định (`renderCardImage.ts`), nên chưa kiểm được "file tải về đúng layout đã chọn". Cần thiết kế. | — |
 
 ## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
 
