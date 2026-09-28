@@ -184,9 +184,7 @@ struct ReviewCommentSheet: View {
 // MARK: - Relative time (matches Web ago())
 
 func ago(_ iso: String) -> String {
-    let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    guard let date = formatter.date(from: iso) ?? ISO8601DateFormatter().date(from: iso) else { return "" }
+    guard let date = ISO8601Timestamp.date(from: iso) else { return "" }
     let seconds = Int(Date().timeIntervalSince(date))
 
     if seconds < 60 { return NSLocalizedString("common.justNow", comment: "") }

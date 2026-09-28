@@ -469,10 +469,7 @@ struct SubscriptionView: View {
     }
 
     private func formatDate(_ iso: String) -> String {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let date = f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso)
-        guard let date else { return iso }
+        guard let date = ISO8601Timestamp.date(from: iso) else { return iso }
         let df = DateFormatter()
         df.locale = Locale(identifier: "vi_VN")
         df.dateFormat = "dd/MM/yyyy"
