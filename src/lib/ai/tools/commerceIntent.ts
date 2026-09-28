@@ -44,6 +44,8 @@ const DELIVERY = phrase([
   'giao\\s*(?:tận|tan)\\s*(?:nhà|nha|nơi|noi)', 'giao\\s*(?:hàng|hang)', 'giao\\s*(?:đến|den|tới|toi|về|ve)', 'ship',
   'đặt\\s*món', 'dat\\s*mon', 'gọi\\s*món', 'goi\\s*mon', 'order', 'delivery', 'delivered?',
   'mang\\s*(?:về|ve)', 'take\\s*-?away',
+  // UAT 2026-09-28: "mấy quán này ko có link đặt hàng à" / "link order" / "đặt online" read as discovery.
+  'đặt\\s*(?:hàng|đồ\\s*ăn|online)', 'dat\\s*(?:hang|do\\s*an|online)', 'link\\s*(?:đặt|dat)',
 ])
 const RESERVATION = phrase([
   'đặt\\s*bàn', 'dat\\s*ban', 'đặt\\s*chỗ', 'dat\\s*cho', 'giữ\\s*bàn', 'giu\\s*ban', 'giữ\\s*chỗ', 'giu\\s*cho',

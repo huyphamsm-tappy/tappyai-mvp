@@ -1,6 +1,7 @@
 import { discoveryScopesFor, providerOwning, type DiscoveryScope } from '@/lib/ccp'
 import type { CommerceDomain, IntentType } from '@/lib/ccp'
 import { serperSearch } from './common'
+import { streetOf, venueCoreName, venueTitleMatches } from '@/lib/links/venueIdentity'
 
 // ── Commerce discovery — finding a merchant's page for a subject ─────────────
 //
@@ -44,6 +45,8 @@ export interface DiscoverySubject {
   knownUrls?: string[]
   /** The row's full title, for identity checks that need more than the discovery subject. */
   title?: string
+  /** The venue's address (food delivery: the branch street narrows the query and the identity check). */
+  address?: string
 }
 
 export interface DiscoveredHint {
@@ -133,12 +136,24 @@ export async function discoverCommerceHints(
       // A marketplace listing title is long and seller-decorated ("… Chính hãng VN/A [Viettel Store]"), so an
       // exact-phrase query finds nothing there (measured 14 Sep 2026: 0 rows quoted, the product unquoted);
       // the tool layer's product-identity guard keeps the precision. Venue and hotel names stay quoted.
+      // UAT 2026-09-28: …except on a delivery platform, which titles a venue "<brand> - <branch
+      // street>". The quoted Maps name + full locality found NOTHING (measured: 0 of 3 venues); the
+      // core name + street, unquoted, finds the venue at rank 1. The identity check below keeps precision.
+      if (domain === 'food_drink') {
+        const street = streetOf(subject.address)
+        tasks.push({ subjectId: subject.id, scopes: group, query: `${venueCoreName(name).replace(/["\n\r]/g, ' ')}${street ? ` ${street}` : ''} ${siteOperand(group)}` })
+        continue
+      }
       const term = group.every(s => s.segment === 'marketplace') ? name.replace(/["\n\r]/g, ' ').trim() : quote(name)
       tasks.push({ subjectId: subject.id, scopes: group, query: `${term}${locality ? ` ${locality}` : ''} ${siteOperand(group)}` })
     }
     if (budget <= 0) break
   }
-  return runSearches(tasks, search)
+  const hits = await runSearches(tasks, search)
+  if (domain !== 'food_drink') return hits
+  // An unquoted venue query also returns OTHER venues — only a page titled as THIS venue is a hint.
+  const byId = new Map(subjects.map(s => [s.id, s]))
+  return hits.filter(h => { const s = byId.get(h.subjectId); return !!s && venueTitleMatches(s.subject, h.title, s.address, h.url) })
 }
 
 /**

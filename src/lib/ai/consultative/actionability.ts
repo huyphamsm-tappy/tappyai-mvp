@@ -161,7 +161,10 @@ export function assessActionability(input: {
     const namedUnknown = !gift && namesUnknownProduct(deriveShoppingConstraints(input.messages, need.budget))
     const subject = (!!need.subject || namedUnknown) && !frame.clarify && !gift
     const signals = { area: true, budget: !!need.budget, occasion: false, constraint: false, subject }
-    if (subject || (frame.goal === 'inform' && !gift)) return { ...none, domain, signals }
+    // UAT 2026-09-28: the one question after a PRODUCT answer is the product's price range — never the
+    // food buckets ("dưới 100k/người") a thread-level domain used to hand a shopping turn.
+    const shopAsk: ClarifyQuestion | null = subject && !need.budget ? { q: en ? 'Product budget?' : 'Tầm giá sản phẩm?', options: [] } : null
+    if (subject || (frame.goal === 'inform' && !gift)) return { ...none, domain, signals, askAfter: shopAsk }
     const q: ClarifyQuestion = gift
       ? { q: en ? 'What kind of gift?' : 'Quà loại gì?', options: [] }
       : { q: en ? 'What exactly do you want to buy?' : 'Bạn muốn mua món gì?', options: [] }

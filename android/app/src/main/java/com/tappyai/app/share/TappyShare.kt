@@ -23,8 +23,14 @@ package com.tappyai.app.share
  */
 object TappyShare {
 
-    /** Canonical public origin. Must match NEXT_PUBLIC_SITE_URL on the web. */
-    const val CANONICAL_ORIGIN: String = "https://www.tappyai.com"
+    /**
+     * Canonical public origin. Must match NEXT_PUBLIC_SITE_URL on the web.
+     *
+     * UAT 2026-09-28 (plan share 404): this was hardcoded to www.tappyai.com, so a UAT build's
+     * plan link opened production, where a plan saved in the audit DB does not exist. It is the
+     * build's WEB_APP_URL now (production by default; `-PTAPPYAI_WEB_APP_URL` for a UAT build).
+     */
+    val CANONICAL_ORIGIN: String = com.tappyai.app.BuildConfig.WEB_APP_URL.trimEnd('/')
 
     enum class Target(val id: String) {
         FACEBOOK("facebook"),
@@ -181,5 +187,5 @@ object TappyShare {
         shareId?.takeIf { PLAN_SHARE_ID_RE.matches(it) }?.let { "$CANONICAL_ORIGIN/plan/$it" }
 
     /** The web Inbox — the only Tappy Messenger there is. Mobile opens it rather than cloning it. */
-    const val INBOX_URL: String = "$CANONICAL_ORIGIN/profile/notifications?tab=messages"
+    val INBOX_URL: String = "$CANONICAL_ORIGIN/profile/notifications?tab=messages"
 }

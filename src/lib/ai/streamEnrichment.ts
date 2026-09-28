@@ -12,9 +12,11 @@ import { guardUnsupportedClaims } from './unsupportedClaimGuard'
 import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
 import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
-import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
+import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
+import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
@@ -1959,7 +1961,18 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardPlanLocalTips(pricedPlan, latestPlaces.map(p => String(p.name ?? '')))
       : null
     if (tips && (tips.kept || tips.dropped)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_local_tips', kept: tips.kept, dropped: tips.dropped, reasons: tips.reasons }))
-    const enriched = tips ? tips.text : pricedPlan
+    // PLAN ITEMS (UAT 2026-09-28): every venue stop is a place retrieved this turn, its booking link
+    // comes from the action authority, never from the model; markdown leaves the JSON. The `a:` rows
+    // carry the provider fields (booking_links, maps_link); the collector carries the Commerce Links.
+    const tipped = tips ? tips.text : pricedPlan
+    const planItems = tipped.includes('[TAPPY_PLAN]')
+      ? guardPlanItems(tipped, latestPlaces.map(p => {
+        const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
+        return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
+      }))
+      : null
+    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved }))
+    const enriched = planItems ? planItems.text : tipped
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -2101,6 +2114,14 @@ export function applyPlaceEnrichmentStreamFilter(
         if (c.distanceKm !== null) placeDistancesKm.push(c.distanceKm)
       }
     }
+    // UAT 2026-09-28: a venue the CARD offers an order / reservation button for may be said to take
+    // orders — the same action authority decides both, so the prose and the card cannot disagree.
+    for (const p of latestPlaces) {
+      if (!p.name) continue
+      const c = places.find(q => (q.name || '').trim().toLowerCase() === p.name!.trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
+      const row = { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
+      if (buildActions(row, 'food').some(a => a.kind === 'order' || a.kind === 'delivery' || a.kind === 'reservation')) orderablePlaces.add(p.name)
+    }
     const placeGuardResult = (hadPlaceSearch || placeIntent || travelIntent || ticketIntent)
       ? guardPlaceClaimsInText(foodGuarded, {
         ratings: placeRatings,
@@ -2117,7 +2138,14 @@ export function applyPlaceEnrichmentStreamFilter(
         systemLinkUrls,
       }, { scope: placeClaimScope, attributionV2: guardV2, pickName })
       : null
-    const placeGuardedRaw = placeGuardResult ? placeGuardResult.text : foodGuarded
+    const placeGuardedRaw = placeGuardResult
+      ? placeGuardResult.text
+      : (() => {
+        // UAT 2026-09-28: a follow-up that searched nothing may not say a venue takes orders.
+        const d = dropUnbackedOrderingPossession(foodGuarded)
+        if (d.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'ordering_no_evidence', removed: d.removed }))
+        return d.text
+      })()
     /**
      * E1 (2026-09-20) — OPENING HOURS ARE A NUMBER. Every other figure a place reply states is
      * gated; "mở đến 3h sáng" / "mở cửa 08:30–18:00" were not (measured Phase D runs 24/28). The

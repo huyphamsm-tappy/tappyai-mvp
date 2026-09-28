@@ -257,6 +257,9 @@ const WANTS_ACCESSORY = new RegExp(
     'tui', 'balo', 'cap dung', 'op lung', 'ban phim', 'chuot', 'sac', 'cap ',
     'man hinh roi', 'o cung', 'ram roi', 'phu kien', 'dich vu', 'sua chua',
     'cai dat', 'thay pin', 'thay man', 'de tan nhiet', 'gia do', 'dock', 'hub',
+    // UAT 2026-09-28: "tìm giùm cái ốp 17 promax uag" rejected 38 of 40 UAG cases as "accessory" —
+    // the bare noun "ốp" (a case) was not read as asking for one. Word-bounded: "op" lives in "laptop".
+    '(?:^|\\s)op(?:\\s|$)', '(?:^|\\s)case(?:\\s|$)', 'bao da', 'cuong luc', 'mieng dan', 'day deo', 'cap sac',
   ].join('|'),
 )
 

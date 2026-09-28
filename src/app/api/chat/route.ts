@@ -459,10 +459,27 @@ export async function POST(req: Request) {
     const gateMessages = ownDomainSwitch ? messages.slice(-1) : messages
     const a = assessActionability({ messages: gateMessages, hasGps: !!userLocation, lang, lastAssistantText: ownDomainSwitch ? null : lastAssistantText, planningIntent, forcedTool, movieRecommend })
     console.log(JSON.stringify({ type: 'tappyai_clarify_gate', actionable: a.actionable, domain: a.domain, missing: a.missing, signals: a.signals, questions: a.questions.map(q => q.q), scope: ownDomainSwitch ? 'turn' : 'thread' }))
+    // UAT 2026-09-28: the question belongs to THIS turn's domain. A shopping turn in a thread that began
+    // on food ("tìm giùm cái ốp 17 promax uag") was asked "dưới 100k/người" — the thread's food buckets.
+    const own = ownDomainSwitch ? a : assessActionability({ messages: messages.slice(-1), hasGps: !!userLocation, lang, lastAssistantText: null, planningIntent, forcedTool, movieRecommend })
+    const ask = own.domain && own.domain !== a.domain ? (own.askAfter ?? null) : (a.askAfter ?? null)
     // One question per consultation: a reply that already ended by asking is not followed by another.
-    gateAskAfter = a.askAfter && !(lastAssistantText && endsWithQuestion(lastAssistantText)) ? a.askAfter : null
+    gateAskAfter = ask && !(lastAssistantText && endsWithQuestion(lastAssistantText)) ? ask : null
     return a.actionable ? null : a
   })()
+  /**
+   * UAT 2026-09-28 (trip, "3 ngày 2 người, đang có 20 triệu"): a trip is answered first, but nothing in
+   * it can be booked without WHEN and FROM WHERE / HOW — the plan never asked, so no fare or dated room
+   * could follow. One question at the end, only while the thread has no date.
+   */
+  if (!gateAskAfter && planningIntent === 'trip' && consultativeV1Enabled()) {
+    const threadUser = messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
+    const hasDate = SPECIFIC_DATE.test(threadUser) || /\b(thang|ngay)\s+\d{1,2}\b|\bcuoi tuan\b|\btuan (sau|toi)\b/.test(threadUser)
+    const hasOrigin = /\b(tu|xuat phat|from)\s+[a-z]/.test(threadUser)
+    if (!hasDate && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
+      gateAskAfter = lang === 'en' ? { q: 'Travel dates?', options: [] } : { q: hasOrigin ? 'Ngày đi, bay hay xe?' : 'Ngày đi?', options: [] }
+    }
+  }
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   let quotaExempt = cannedEarly !== null || clarifyGate !== null
 

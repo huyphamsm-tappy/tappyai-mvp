@@ -140,14 +140,15 @@ const POPULARITY_RE = /(được nhiều người|duoc nhieu nguoi|nhiều ngư�
  * their own name. This is the lesson the project already recorded once: a rule
  * in the prompt does not bound the model — a deterministic guard does.
  */
-const ORDERING_RE = /(giao hàng|giao hang|giao tận nhà|giao tan nha|giao tận nơi|giao tan noi|giao đến|giao den|đặt bàn|dat ban|đặt chỗ|dat cho|đặt món|dat mon|đặt online|dat online|đặt qua|dat qua|gọi món|goi mon|gọi về nhà|goi ve nha|nhận đơn|nhan don|mang về|mang ve|\bship\b|order online|online ordering|delivery available|offers? delivery|takeaway|take-away|book a table|reservation)/iu
+const ORDERING_RE = /(giao hàng|giao hang|giao tận nhà|giao tan nha|giao tận nơi|giao tan noi|giao đến|giao den|đặt bàn|dat ban|đặt chỗ|dat cho|đặt món|dat mon|đặt online|dat online|đặt qua|dat qua|gọi món|goi mon|gọi về nhà|goi ve nha|nhận đơn|nhan don|mang về|mang ve|\bship\b|order online|online ordering|đặt hàng|dat hang|order qua|order trên|order tren|order về|order ve|link order|link đặt|link dat|delivery available|offers? delivery|takeaway|take-away|book a table|reservation)/iu
 
 /**
  * Wording that ASSERTS the venue has the service, as opposed to merely
  * mentioning it. "có giao hàng", "có đặt bàn", "nhận đơn online" are possession
  * claims whatever else the sentence says.
  */
-const ORDERING_POSSESSION_RE = /(có (?:giao hàng|giao hang|đặt bàn|dat ban|đặt chỗ|dat cho|ship|nhận đơn|nhan don|dịch vụ giao|dich vu giao|đặt online|dat online)|nhận đơn online|nhan don online|dịch vụ giao hàng|dich vu giao hang|offers? delivery|delivery available|has delivery)/iu
+// UAT 2026-09-28: "có đặt hàng online được" / "có thể order qua GrabFood" passed with no order page.
+const ORDERING_POSSESSION_RE = /(có (?:thể )?(?:giao hàng|giao hang|đặt bàn|dat ban|đặt chỗ|dat cho|ship|nhận đơn|nhan don|dịch vụ giao|dich vu giao|đặt online|dat online|đặt hàng online|dat hang online|order online|order qua)|(?:đặt hàng|dat hang|order) online (?:được|duoc)|có link (?:order|đặt|dat)|co link (?:order|dat)|nhận đơn online|nhan don online|dịch vụ giao hàng|dich vu giao hang|offers? delivery|delivery available|has delivery)/iu
 
 /**
  * Wording that frames the platform as somewhere to LOOK, not as a service the
@@ -182,6 +183,29 @@ export function isOrderingClaim(sentence: string): boolean {
   if (CAPABILITY_NEGATION_RE.test(sentence)) return false
   if (USER_WISH_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
+}
+
+/**
+ * A turn that retrieved NOTHING cannot back a claim that a venue takes orders (UAT 2026-09-28: after
+ * "mấy quán này ko có link đặt hàng à" the reply said "Ben.la … có link order rồi!" — no search ran,
+ * the card had no order button). The full place guard does not run on such a turn (it would strip
+ * every quality word for want of ratings), so only POSSESSION sentences go — "có đặt hàng online",
+ * "có link order" — and only in the prose, never inside a marker block. A question is kept.
+ */
+export function dropUnbackedOrderingPossession(text: string): { text: string; removed: number } {
+  const markerAt = (() => { let end = text.length; for (const m of ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']) { const i = text.indexOf(m); if (i !== -1 && i < end) end = i } return end })()
+  const prose = text.slice(0, markerAt)
+  let removed = 0
+  const kept = prose.split('\n').map(line => {
+    const parts = line.split(/(?<=[.!…])\s+/u)
+    const out = parts.filter(s => {
+      const drop = ORDERING_RE.test(s) && ORDERING_POSSESSION_RE.test(s) && !/\?\s*$/.test(s.trim())
+      if (drop) removed++
+      return !drop
+    })
+    return out.join(' ')
+  }).join('\n').replace(/\n{3,}/g, '\n\n')
+  return removed ? { text: kept + text.slice(markerAt), removed } : { text, removed: 0 }
 }
 
 /** "Mình hiểu bạn muốn đặt bàn cho 4 người" restates the USER's wish; it claims nothing about a venue. */

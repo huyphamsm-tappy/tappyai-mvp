@@ -233,6 +233,9 @@ export function normalizeShopping(toolResult: unknown): Candidate[] {
   const isStructured = (r: Record<string, unknown>): boolean =>
     typeof r.price === 'number' || typeof r.price_vnd === 'number'
     || typeof r.productId === 'string' || typeof r.product_id === 'string'
+    // UAT 2026-09-28: a merchant's OWN product page (shopping.ts `merchantProductRows`, URL grammar
+    // checked per host) is a listing too — unpriced, but a real product at a real URL, not an article.
+    || r.merchant_page === true
 
   const rows = [...asArray(root.shopping_results), ...asArray(root.search_results)]
     .filter((i): i is Record<string, unknown> => !!i && typeof i === 'object')
