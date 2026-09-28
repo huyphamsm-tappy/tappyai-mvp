@@ -288,6 +288,11 @@ export default function NewReviewPage() {
 
   /* shared */
   const [body, setBody] = useState('')
+  // The AI suggestion resolves seconds after it was requested; `body` in that closure is the
+  // value from BEFORE the poster started typing (uat 2026-09-28: a typed caption was replaced).
+  // The ref is read when the suggestion lands, so what the poster typed meanwhile is kept.
+  const bodyNow = useRef('')
+  bodyNow.current = body
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [placeName, setPlaceName] = useState('')
@@ -345,11 +350,13 @@ export default function NewReviewPage() {
    */
   const [placeArea, setPlaceArea] = useState('')
   const [areaFromAi, setAreaFromAi] = useState(false)
+  const placeAreaNow = useRef('')
+  placeAreaNow.current = placeArea
   const suggestArea = (ai: { location?: unknown }) => {
     if (typeof ai.location !== 'string') return
     const area = ai.location.replace(/\s+/g, ' ').trim().slice(0, 100)
-    // Never overwrite something the poster typed themselves.
-    if (area && !placeArea.trim()) { setPlaceArea(area); setAreaFromAi(true) }
+    // Never overwrite something the poster typed themselves — read NOW, not when the request began.
+    if (area && !placeAreaNow.current.trim()) { setPlaceArea(area); setAreaFromAi(true) }
   }
 
   /* music — a soundtrack from the Music LIBRARY (Phase 7 restored this; F-024 had removed it
@@ -497,7 +504,7 @@ export default function NewReviewPage() {
         if (aiRes.ok) {
           const ai = await aiRes.json()
           if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
-          if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+          if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
           suggestArea(ai)
           vok('ai-process', tAi, { hashtags: Array.isArray(ai.hashtags) ? ai.hashtags.length : 0, area: typeof ai.location === 'string' && !!ai.location })
         } else {
@@ -557,7 +564,7 @@ export default function NewReviewPage() {
       if (aiRes.ok) {
         const ai = await aiRes.json()
         if (Array.isArray(ai.hashtags) && ai.hashtags.length > 0) setAiHashtags(ai.hashtags)
-        if (!body.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
+        if (!bodyNow.current.trim() && typeof ai.caption === 'string' && ai.caption) setBody(ai.caption)
         suggestArea(ai)
       }
     } catch { /* non-blocking */ }

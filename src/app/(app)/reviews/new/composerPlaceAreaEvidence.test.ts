@@ -41,7 +41,13 @@ describe('the processor area reaches the review row as place_address', () => {
 
   it('🚨 never overwrites what the poster typed', () => {
     const helper = SRC.slice(SRC.indexOf('const suggestArea'), SRC.indexOf('const suggestArea') + 400)
-    expect(helper).toMatch(/if \(area && !placeArea\.trim\(\)\) \{ setPlaceArea\(area\); setAreaFromAi\(true\) \}/)
+    // Read when the suggestion LANDS (a ref), not the value captured when the request began —
+    // uat 2026-09-28: what the poster typed while the AI ran was replaced (area and caption).
+    expect(helper).toMatch(/if \(area && !placeAreaNow\.current\.trim\(\)\) \{ setPlaceArea\(area\); setAreaFromAi\(true\) \}/)
+    expect(SRC).toContain('placeAreaNow.current = placeArea')
+    expect(SRC).toContain('bodyNow.current = body')
+    expect(SRC).not.toMatch(/if \(!body\.trim\(\) && typeof ai\.caption/)
+    expect(SRC.match(/if \(!bodyNow\.current\.trim\(\) && typeof ai\.caption === 'string' && ai\.caption\) setBody\(ai\.caption\)/g)).toHaveLength(2)
     // Editing the field by hand drops the "suggested" mark, so the hint disappears.
     expect(SRC).toContain("onChange={e => { setPlaceArea(e.target.value); setAreaFromAi(false) }}")
   })
