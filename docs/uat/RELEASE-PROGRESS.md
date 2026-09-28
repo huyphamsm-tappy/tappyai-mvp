@@ -60,7 +60,7 @@ edesign | PASS (deviations in RELEASE report) |
 | A1 onboarding counter = real steps ("Bước 1/2", "Bước 2/2") | b08561d | f8a26b7 | f8a26b7/a1-onboarding.png ("Bước 1/2", 2 segments) | PASS |
 | A2 Đã lưu: Deals / Bộ sưu tập chips hidden | b08561d | f8a26b7 | f8a26b7/a2-saved.png, a2-saved-mobile.png (Tất cả / Địa điểm / Bài viết / Video only, no "Sắp có") | PASS |
 | B3 plan share signed-in → opened with no cookies | — | 826d23b | 826d23b/b3-1-plan-signed-in.png, b3-2-share-sheet.png, b3-3-plan-anonymous.png (uat.tappyai.com/plan/AjqWryKzGUYT, authCookies=0, no 404) | PASS |
-| B4 "đi du lịch Đà Nẵng 3 ngày 2 đêm" never invents date/origin/transport; ONE question | 826d23b, 5452fc6, 2bd5c59 | 2bd5c59 | before fix (2/3 fail: dated 3/10–5/10; "Máy bay từ Hà Nội/TP.HCM"): scratch only · 826d23b/b4-trip-run1..3 (no invention, run 3 two questions) · 444774d/b4-trip-run1..3 (run 2 own question leaked, released prefix) · **2bd5c59/b4-trip-run1..3: 3/3 no date, no origin, no leg, exactly one closing question** | PASS 3/3 |
+| B4 "đi du lịch Đà Nẵng 3 ngày 2 đêm" never invents date/origin/transport; ONE question | 826d23b, 5452fc6, 2bd5c59, 5e0a823, af8b4ba | af8b4ba | before fix (2/3 fail: dated 3/10–5/10; "Máy bay từ Hà Nội/TP.HCM"): scratch only · 826d23b/b4-trip-run1..3 (no invention, run 3 two questions) · 444774d/b4-trip-run1..3 (run 2 own question leaked, released prefix) · 2bd5c59/b4-trip-run1..3 (3/3) · 192973d/final/danang-3n2d-run1..3 (1/3: bolded model question slipped past) · **af8b4ba/b4-trip-run1..3: 3/3 — exactly 3 days, no date, no origin, no leg, one closing question** | PASS 3/3 (final SHA) |
 | B4 "ngan sách" typo | 826d23b (fixHalfAccented in markdownNormalize) | — | not emitted by code/prompt; model blends unaccented prompt text; fixed at output | FIXED (unit) |
 | B5 shopping card vs D:\redesign | — | — | D:\redesign has 6 images, none is a shopping card → no side-by-side possible | N/A (no design) |
 | B6 publish real photo + clip (test account), feed + profile, then hide/delete | — | 826d23b / 2bd5c59 | 826d23b/b6/b6-photo-1..3, b6-clip-1..3, b6-feed-fresh-1..2 · 2bd5c59/b6/b6-feed-guest-find-1..3-mobile, b6-profile-owner-published, b6-del-1..2-mobile, b6-feed-*-after-delete-1 | PASS (photos show only in mobile feed — desktop Explore is video-only by design) |
@@ -70,7 +70,9 @@ edesign | PASS (deviations in RELEASE report) |
 | C9–C12 Part B prep | 444774d | — | docs/uat/RELEASE-PLAN-2026-09-29.md, scripts/release/*, docs/ios/HANDOFF-FROM-RELEASE.md | DONE (nothing run on prod) |
 | Consultative design 2026-09-26 restore | — | — | not found anywhere on this PC (full search) → nothing restored, nothing to revert | WAITING OWNER (Q1) |
 | AI baseline on UAT (c40 answer-first rubric, blind) | — | 2bd5c59 | 2bd5c59…/c40-baseline/ (grading, stats, worst-5 replays) · raw streams 2bd5c59…/golden-raw/ (220 files) | **31/40 — BELOW 38 → Part B gate NOT met** (Food 7/8 · Shopping 6/8 · Travel 6/8 · Spa 7/8 · Entertainment 5/8 · Clarify 6/8); golden scorer 55/58 (human 8 PASS/15 PARTIAL/1 FAIL) |
-| Deterministic fixes from the baseline (offline replay, no model calls) | 5e0a823, 7d156e0 | — | fixtures from live T1/O8 streams; evening situation tests | evening frame follows who/mood/budget + real party size; trip days = stated length; no invented travel date (O8); 'gia cụ thể' → 'giá'. Re-measure on the FINAL SHA only |
+| Deterministic fixes from the baseline (offline replay, no model calls) | 5e0a823, 7d156e0, 93b06b3, af8b4ba | — | fixtures from live T1/O8/P7b/E8/T6 streams | evening frame follows who/mood/budget + real party size; trip days = stated length; no invented travel date; no-tool follow-up place guard (P7b); weekday-closure guard (E8); plan times fit hours (T6); bolded trip questions + origin chips |
+| AI final on UAT (same method) | — | 192973d | 192973d/final/ (c40-grading.md, golden-grading.md, owner-and-principles.md, stats, 6 screenshots) · raw 192973d/golden-raw/ (220 exact bodies) | **30/40 — BELOW 38** (Food 7/8 · Shopping 4/8 · Travel 6/8 · Spa 6/8 · Entertainment 7/8 · Clarify 4/8); golden scorer 52/58 (human 8/14/2); owner queries 1✅/7⚠/3❌ (was 1/5/5) |
+| Screenshots on final code | — | 192973d | 192973d/final/tonight-sg-t1.png (3 open stops) · group5-q1-t1.png ("5 người", quán nhậu → karaoke → craft beer) · flight-sgn-han-t1.png (no assumed date) | PASS 3/3 |
 
 Observations (not fixed): desktop post-publish lands on "for you" feed (own post not visible); /profile state tabs need horizontal scroll at 1280px.
 
@@ -88,6 +90,77 @@ Observations (not fixed): desktop post-publish lands on "for you" feed (own post
 | Q4 | Photo posts never show in desktop Explore (video-only by design); owner B6 expected the photo in "the feed". | Unchanged (shows in mobile feed + profile). |
 | Q5 | After posting on desktop the user lands on the "for you" feed, which hides their own post. | Unchanged, noted. |
 | Q6 | Share-image layout choice (Downloads contact sheet). | Waiting — owner picks in the morning. |
+| Q7 | AI stays BELOW the 38/40 gate (baseline 31, final 30 — same method; the turns that got worse are in areas no fix touched, e.g. shopping S2/S4 — model variance). Keep tonight's targeted guard fixes, or revert them? | KEPT: each fix removes a measured invention (P7b venue, E8 closure, O8 date, T1 day 4, T6 hour, E1 people) and is pinned by a live-stream fixture. Nothing was restored ⇒ nothing to revert under the 26/9 rule. **Part B stays blocked by the gate.** |
+| Q8 | rc test red from the Android session's 06b5284 (`AgeCheck.kt:222` hardcoded `contentDescription`). | Not fixed by web (android/ is theirs); request written in ANDROID-REQUESTS.md. |
+| Q9 | An evening plan with no stated party size shows "2 người" without saying it is assumed. | Unchanged (default 2). |
 
 ## Current step
-Login = scratchpad pw/login.mjs (admin magic-link on AUDIT only → @supabase/ssr cookie). Overnight run 2026-09-28→29 (owner: do not stop except at danger points; no prod writes).
+Overnight run 2026-09-28→29 DONE — final UAT SHA af8b4ba; morning report at the end of this file. Waiting on owner: Q1 (26/9 design), Q7 (AI gate), Q6 (share layout). Login = scratchpad pw/login.mjs (AUDIT only).
+
+---
+
+## BÁO CÁO SÁNG 29/09 (overnight run, NO prod writes)
+
+**SHA cuối trên UAT: `af8b4ba`** (rc/web-uat). Evidence = `https://storage.googleapis.com/tappyai-media-uat/evidence/<SHA>/…`
+Tests on the final code: web vitest 15,588 pass (2 failures: a load timeout that passes alone + the Android
+`AgeCheck.kt:222` pin from the Android session's 06b5284, see Q8) · Android unit 833/0 · tsc/eslint clean.
+
+### Mục BẮT BUỘC
+| Mục | Kết quả | Ảnh (gs://tappyai-media-uat/evidence/…) |
+|---|---|---|
+| A1 onboarding đúng số bước | PASS | f8a26b7/a1-onboarding.png |
+| A2 ẩn chip Deals / Bộ sưu tập | PASS | f8a26b7/a2-saved.png, a2-saved-mobile.png |
+| B3 chia sẻ kế hoạch → mở ẩn danh | PASS | 826d23b/b3-1..3 (uat.tappyai.com/plan/AjqWryKzGUYT) |
+| B4 du lịch không bịa ngày/điểm đi/phương tiện, 3/3 | PASS 3/3 | af8b4ba/b4-trip-run1..3 |
+| B4 "ngan sách" | FIXED (output normaliser; not from code/prompt) | — |
+| B5 card mua sắm vs D:\redesign | N/A — no shopping design in D:\redesign | — |
+| B6 đăng thật ảnh + clip, feed + hồ sơ, rồi ẩn/xoá | PASS (ảnh chỉ hiện ở feed mobile — Q4) | 826d23b/b6/*, 2bd5c59/b6/* |
+| B7 clip YouTube → Facebook / Zalo / TikTok | PASS | 826d23b/b7/*, 2bd5c59/b7/* |
+| B7 lỗi AI ghi đè chữ đang gõ | FIXED + PASS | f8a26b7/b7fix-composer-typed-kept.png |
+| B8 5 trạng thái hồ sơ + người khác xem | PASS | 2bd5c59/b8/* |
+| AI tư vấn ≥ 38/40 | **FAIL — 30/40** (baseline 31/40) | 192973d/final/*, 2bd5c59…/c40-baseline/* |
+| Khôi phục thiết kế 26/9 | NOT POSSIBLE — not found (Q1) | — |
+| Chuẩn bị Phần B | DONE (nothing run on prod) | RELEASE-PLAN-2026-09-29.md, scripts/release/* |
+
+### Điểm AI trước / sau (c40 answer-first rubric, blind, same account + method)
+| Mảng | Baseline 2bd5c59 | Final 192973d |
+|---|---|---|
+| Food | 7/8 | 7/8 |
+| Shopping | 6/8 | 4/8 |
+| Travel | 6/8 | 6/8 |
+| Spa | 7/8 | 6/8 |
+| Entertainment | 5/8 | 7/8 |
+| Clarify (b-turns) | 6/8 | 4/8 |
+| **Tổng** | **31/40** | **30/40** |
+Golden set: scripted 55/58 → 52/58 (all 3 lost checks = one malformed plan JSON in golden T1 t2); human 8/15/1 → 8/14/2.
+Owner queries (11): 1✅/5⚠/5❌ → 1✅/7⚠/3❌. Fixed: P7b invented venue, E8 invented closure, E4/F6 invented
+distance/crowd, O8 assumed date, T1 "Ngày 4", T6 hour, E1 people=5. Still open (no code touched): shopping picks
+off-budget/off-category (S2, S4, F7b), invented "phù hợp"/"giá hợp lý" fit claims, text≠card (F4, P5b), no booking
+link for hotels / delivery (O5, O6), no budget arithmetic.
+
+### Lượt chat thật + chi phí (ước tính)
+~246 real /api/chat turns on UAT tonight (baseline 110 + final 116 + ~20 screenshot runs).
+Lower bound from stream usage (Haiku 4.5 list price, no cached input / side calls): ≈ **$2.1**.
+Upper estimate at UAT4's server-measured $0.028/turn: ≈ **$6.9**. Plus Serper searches (not metered here).
+
+### CẦN HUY QUYẾT
+Q1–Q9 in the table above. Most urgent: **Q1** (where is the 26/9 design), **Q7** (AI gate 30/40 < 38 blocks Part B),
+**Q2/Q3** (self-delete flag on prod), **Q6** (share layout numbers).
+
+### Anh test trên máy thật
+1. Web trên điện thoại (uat.tappyai.com): nút Chia sẻ → Facebook / Zalo / TikTok mở đúng app; "Lưu về máy" ra file ảnh.
+2. Web: đăng 1 ảnh + 1 clip từ điện thoại (camera roll), xem ở Khám phá và Hồ sơ.
+3. Web: chat "đi du lịch Đà Nẵng 3 ngày 2 đêm" và "tối nay đi chơi với hội bạn 5 người quận 1".
+4. Android APK (UAT build): đăng nhập → Home giống trước/sau đăng nhập (F-107) → mở lại app vẫn đăng nhập (F-098)
+   → 1 lượt chat → Cài đặt hiện "Yêu cầu xóa tài khoản" (cờ tắt) → nhận 1 thông báo push.
+
+### Việc anh làm lúc release (chi tiết từng bước: RELEASE-PLAN-2026-09-29.md §3)
+(a) ACCESSTRADE Access Key + datafeed URL → `D:\TappyAI-backups\accesstrade.txt` (2 dòng) → báo "accesstrade.txt ready".
+(b) Supabase prod → Connect → Session pooler → host vào `D:\TappyAI-backups\pghost.txt`; tạo `D:\TappyAI-backups\pgpass`
+    (`<host>:5432:postgres:postgres.fwznnobrdctuskgrvuik:<password>`, KHÔNG reset mật khẩu) → báo "pgpass ready".
+(c) Chỉ khi lead không merge được: PR #252 → "Create a merge commit" (không squash/rebase), không xoá nhánh.
+(d) Play Console: kiểm App signing SHA-256 = số build-aab.sh in ra; App bundle explorer: vc10 chưa từng upload →
+    Internal testing → Upload AAB → rollout → test máy thật → Promote to Production → Send for review.
+(e) Env prod: giữ `AUTH_GOOGLE_ENABLED`; lead xoá `ACCOUNT_SELF_DELETE_ENABLED`, thêm `SERPER_DAILY_CREDIT_CEILING=15000`
+    + 2 biến ACCESSTRADE; Supabase prod → Authentication → "Allow anonymous sign-ins" = ON.
+(f) Sau khi ổn định: xoá `pgpass`, `pghost.txt`, `accesstrade.txt`.
