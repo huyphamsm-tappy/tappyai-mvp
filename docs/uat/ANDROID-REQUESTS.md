@@ -51,3 +51,9 @@ Android làm theo D:/redesign, không làm theo web ở các mục dưới:
   (type "evening", days[0].items có time/emoji/category/name/description/price/address/maps_link/place_id/
   photo_url/booking_link) — Android không cần sửa. Luồng trả về có thêm nhiều cặp `9:`/`a:` search_places ở đầu
   (1 cặp cho mỗi chặng) — Android đã bỏ qua frame `9:`/`a:` như trước.
+- 2026-09-28 (web): `GET /api/recommendations` — each recommendation gains OPTIONAL `address`, `photoUrl`, `averageRating`,
+  `reviewCount`, `latestReviewAt` (from the place's community reviews). Additive only.
+- 2026-09-28 (web): UAT media now goes to `gs://tappyai-media-uat` via a UAT-only SA (docs/uat/UAT-MEDIA-INFRA.md). Upload
+  API unchanged. Resumable sessions are opened with the request `Origin` when it is the same host — native apps send no
+  Origin and are unaffected.
+

@@ -41,13 +41,14 @@ content tabs, share-card layouts, Explore upload, chat answers.
 | P1e "quán phở ngon quận 3" order buttons | e823425, 062c7ec, c7f78d3 | shots/e05de06/p1e-pho-q3-t1.png (Đặt chỗ / Tìm trên GrabFood) | PASS |
 | A1 shopping buttons | e823425 | shots/e05de06/a1-shop-t1.png (every product Mua trên…/Tìm trên Lazada) | PASS |
 | Cut sentence "…cao hơn Nếu cần…" | a5c19a8 (moneyGuard clause cut + 'không dây' + budget words) | fixture red→green; UAT re-shoot TODO | CODE-DONE |
-| P2a avatar/cover | 5e305f4 (explicit errors) | ROOT CAUSE: GCP WIF condition = production only → owner decision | BLOCKED (owner) |
+| P2a avatar/cover | 5e305f4; infra (c) docs/uat/UAT-MEDIA-INFRA.md | shots/d97b261/p2a-1..3 (before/after/reload), p2a-buckets.txt (UAT bucket has both, prod none), wif-isolation.txt | PASS |
 | P2b own profile tabs | 5e305f4 | needs login in Browser pane | CODE-DONE, screenshot TODO |
-| P2c sidebar | 5e305f4 | needs a screenshot (guest shell shows sidebar) | CODE-DONE |
-| P3a Explore upload | — | same WIF root cause as P2a | BLOCKED (owner) |
+| P2c sidebar | 5e305f4 | shots/auth-probe/p2-profile.png (no Saved/History/Cài đặt/Language/Help in sidebar; rows in the hub) | PASS (re-shoot final) |
+| P3a Explore upload | 4e9f53d (resumable session Origin → CORS) | shots/4e9f53d/p3a-2 (photo), p3a-3 ('Video đã tải lên', AI caption), p3a-result.json (PUT 200, no console error) | PASS |
 | P3b/P4 share | 7e78e58, c835b3e, 91461bd | shots/p4-review-share-sheet-mobile.png; Facebook popup sharer.php?u=uat…/reviews/… + "Đã mở Facebook" (f6c7faf); TikTok desktop download tappyai-post-*.png + tiktok.com/upload + hint; OG tags p4-og-review-*.txt | PASS web (FB/Zalo previews: UAT behind SSO → re-check on prod) |
 | Zalo "crash" | 91461bd | it was MY SCRIPT: desktop tile had no "Zalo" text (label "Sao chép liên kết"); label now "Zalo (sao chép link)" | FIXED, re-shoot TODO |
-| Design conformance R1 Saved, Account&Settings, R2 Viết content, R3 Gợi ý, age gate, onboarding | agents running | — | DOING |
+| Design conformance R1 Saved, Account&Settings, R2 Viết content, R3 Gợi ý (+photo/address/rating/activity), age gate, onboarding | c87ddac, d97b261, 899bdbf | final re-shoot side-by-side with D:\redesign | CODE-DONE |
+| Share layouts | — | contact sheet sent to owner (Downloads: QR cards 1–4, share sheet 6, plan page 7) — awaiting owner's choice | WAITING OWNER |
 
 ## Coordination
 - Android session (C:\wtandroid) owns android/. Web wrote STOPPED @ 6e392d2. Requests: docs/uat/ANDROID-REQUESTS.md.
@@ -55,4 +56,4 @@ content tabs, share-card layouts, Explore upload, chat answers.
 - Push rule: fetch + rebase, never force.
 
 ## Current step
-Design-conformance agents running; then re-shoot all on the final SHA; owner login needed for P2 screenshots.
+Login = scratchpad pw/login.mjs (admin magic-link on AUDIT only → @supabase/ssr cookie). Waiting on owner's share-layout choice; then final re-shoot of everything on one SHA.
