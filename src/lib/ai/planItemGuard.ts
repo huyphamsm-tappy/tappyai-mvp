@@ -41,7 +41,12 @@ export function dropEveningUnsuitableRows<T>(result: T): { result: T; dropped: s
   const dropped: string[] = []
   const kept = (r.results as PlanPlace[]).filter(p => {
     const words = fold([p?.name ?? '', ...(Array.isArray(p?.place_types) ? (p.place_types as unknown[]).filter((t): t is string => typeof t === 'string') : [])].join(' '))
-    const bad = EVENING_UNSUITABLE.test(words)
+    // Measured on uat @ e05de06: "Công viên Gia Định" and "Suối Tiên" (08:00–17:00) were offered for
+    // tonight. A daytime park, and anything that closes before 20:00 today, is not an evening out.
+    const dayPark = /\bcong vien\b|\bpark\b/.test(words) && !/\b(bo song|ven song|riverside|rooftop)\b/.test(words)
+    const hours = (p as { opening_hours?: unknown }).opening_hours
+    const closedAt20 = typeof hours === 'string' && isOpenNow(hours, { minutes: 20 * 60 }) === false
+    const bad = EVENING_UNSUITABLE.test(words) || dayPark || closedAt20
     if (bad && p?.name) dropped.push(p.name)
     return !bad
   })

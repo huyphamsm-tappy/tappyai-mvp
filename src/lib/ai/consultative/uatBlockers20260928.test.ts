@@ -137,3 +137,16 @@ describe('P1a · an evening plan\'s search rows never include a children\'s park
     expect(r.dropped).toHaveLength(2)
   })
 })
+
+describe('P1a · an evening never offers a daytime park or a place closed by 20:00 (uat e05de06)', () => {
+  it('Công viên Gia Định and Suối Tiên (08:00–17:00) are dropped; a riverside park and a bar stay', async () => {
+    const { dropEveningUnsuitableRows } = await import('../planItemGuard')
+    const r = dropEveningUnsuitableRows({ results: [
+      { name: 'CÔNG VIÊN GIA ĐỊNH', opening_hours: '04:00–22:00' },
+      { name: 'Công viên văn hóa Suối Tiên', opening_hours: '08:00–17:00' },
+      { name: 'Công viên Bờ Sông Sài Gòn', opening_hours: '05:00–22:00' },
+      { name: 'Social Club Rooftop', opening_hours: '15:00–00:00' },
+    ] })
+    expect((r.result as { results: Array<{ name: string }> }).results.map(x => x.name)).toEqual(['Công viên Bờ Sông Sài Gòn', 'Social Club Rooftop'])
+  })
+})
