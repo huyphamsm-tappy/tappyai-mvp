@@ -132,11 +132,25 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'TappyAI sẽ giúp bạn tìm những trải nghiệm phù hợp tại nơi bạn quan tâm.',
     'onboarding.otherCity': 'Nhập tên thành phố hoặc điểm đến khác...',
     'onboarding.start': '🚀 Bắt đầu khám phá',
-    'onboarding.stepInterests': 'Bước 1/2',
-    'onboarding.stepLocation': 'Bước 2/2',
-    'onboarding.tagline': 'Người bạn AI cho ngày vui hơn',
+    // Approved design 2026-09-11 counts the whole account setup as four steps
+    // (1 account + 18+ check, 2 interests, 3 location, 4 start) — so the two
+    // onboarding panels are steps 2 and 3 of 4.
+    'onboarding.stepInterests': 'Bước 2/4',
+    'onboarding.stepLocation': 'Bước 3/4',
+    // English in both locales: the approved VI design prints the brand line so.
+    'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Chọn những chủ đề bạn yêu thích nhé! 💙',
     'onboarding.mascotCaption': 'Khám phá thế giới cùng TappyAI',
+    // The welcome headline split for the design's accent on "TappyAI!".
+    'onboarding.welcomeTitleLead': 'Chào mừng đến với ',
+    'onboarding.welcomeTitleAccent': 'TappyAI!',
+    'onboarding.welcomeTitleEmoji': '👋',
+    'onboarding.interest.food.desc': 'Khám phá quán ngon, công thức nấu ăn và xu hướng ẩm thực mới',
+    'onboarding.interest.spa.desc': 'Chăm sóc bản thân, làm đẹp và sống khỏe mỗi ngày',
+    'onboarding.interest.travel.desc': 'Khám phá điểm đến, lên kế hoạch và trải nghiệm những vùng đất mới',
+    'onboarding.interest.shopping.desc': 'Tìm kiếm sản phẩm yêu thích và cập nhật ưu đãi mới nhất',
+    'onboarding.interest.entertainment.desc': 'Phim ảnh, âm nhạc, sự kiện và những hoạt động thú vị',
+    'onboarding.interest.hotel.desc': 'Tìm nơi lưu trú lý tưởng cho mọi hành trình',
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
@@ -405,11 +419,20 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'TappyAI will help you find experiences that fit the place you care about.',
     'onboarding.otherCity': 'Enter another city or destination...',
     'onboarding.start': '🚀 Start exploring',
-    'onboarding.stepInterests': 'Step 1 of 2',
-    'onboarding.stepLocation': 'Step 2 of 2',
+    'onboarding.stepInterests': 'Step 2 of 4',
+    'onboarding.stepLocation': 'Step 3 of 4',
     'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Pick the topics you love! 💙',
     'onboarding.mascotCaption': 'Explore the world with TappyAI',
+    'onboarding.welcomeTitleLead': 'Welcome to ',
+    'onboarding.welcomeTitleAccent': 'TappyAI!',
+    'onboarding.welcomeTitleEmoji': '👋',
+    'onboarding.interest.food.desc': 'Discover great places to eat, recipes and new food trends',
+    'onboarding.interest.spa.desc': 'Self-care, beauty and feeling good every day',
+    'onboarding.interest.travel.desc': 'Discover destinations, plan trips and experience new places',
+    'onboarding.interest.shopping.desc': 'Find products you love and the latest deals',
+    'onboarding.interest.entertainment.desc': 'Movies, music, events and fun things to do',
+    'onboarding.interest.hotel.desc': 'Find the ideal stay for every journey',
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',

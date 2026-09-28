@@ -3,7 +3,7 @@
 import { Suspense, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Image from 'next/image'
-import { MapPin, ArrowRight, Loader2, Check, Sparkles, Heart } from 'lucide-react'
+import { MapPin, ArrowRight, Loader2, Check, Sparkles, Heart, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 // Single source: the same lists native clients receive via GET /api/config.
@@ -79,9 +79,12 @@ function OnboardingPageInner() {
     router.replace(next)
   }
 
-  // The component has exactly two panels (interests, then location), so the bar
-  // has two segments and the label reads "Bước 1/2" / "Bước 2/2".
-  const filled = step
+  // The approved design (2026-09-11) shows the WHOLE account setup as four
+  // steps: 1 account + 18+ check (done before this page), 2 interests,
+  // 3 location, 4 start. This page's two panels therefore fill segments 2 and 3.
+  // Presentation only: the panel machine below is still `step` 1 | 2.
+  const TOTAL_SETUP_STEPS = 4
+  const filled = step + 1
   const stepLabel = step === 1 ? t('onboarding.stepInterests') : t('onboarding.stepLocation')
 
   return (
@@ -105,30 +108,54 @@ function OnboardingPageInner() {
               priority
               className="h-11 w-11 rounded-2xl object-cover ring-1 ring-white/15"
             />
-            <p className="text-lg font-black tracking-tight sm:text-xl">
-              Tappy<span className="text-blue-400">AI</span>
+            <p data-testid="onboarding-brand" className="text-lg font-black tracking-tight sm:text-2xl">
+              TappyAI
             </p>
           </div>
-          <p className="hidden text-right text-[13px] text-white/45 sm:block">
+          <p className="hidden items-center gap-2 text-right text-[13px] text-white/60 sm:flex">
             {t('onboarding.tagline')}
+            <Sparkles size={16} aria-hidden className="text-blue-400" />
           </p>
         </header>
 
         {/* ── Progress ───────────────────────────────────────────────────── */}
-        <div className="mx-auto mt-5 flex w-full max-w-xs shrink-0 flex-col items-center gap-2">
-          <div className="flex w-full gap-1.5" role="progressbar" aria-valuenow={filled} aria-valuemin={1} aria-valuemax={2}>
-            {[1, 2].map(s => (
+        <div className="mx-auto mt-4 flex w-full max-w-md shrink-0 flex-col items-center gap-3">
+          <div
+            data-testid="onboarding-progress"
+            className="flex w-full gap-1.5"
+            role="progressbar"
+            aria-label={stepLabel}
+            aria-valuenow={filled}
+            aria-valuemin={1}
+            aria-valuemax={TOTAL_SETUP_STEPS}
+          >
+            {Array.from({ length: TOTAL_SETUP_STEPS }, (_, i) => i + 1).map(s => (
               <div
                 key={s}
+                data-filled={s <= filled ? 'true' : 'false'}
                 className={cn(
                   'h-1.5 flex-1 rounded-full transition-all',
-                  s <= filled ? 'bg-gradient-to-r from-blue-500 to-violet-500' : 'bg-white/10'
+                  s <= filled ? 'bg-gradient-to-r from-blue-500 to-sky-400' : 'bg-white/10'
                 )}
               />
             ))}
           </div>
-          <span className="text-[12px] font-medium text-white/50">{stepLabel}</span>
+          <span className="text-[13px] font-medium text-white/55">{stepLabel}</span>
         </div>
+
+        {/* ── Title, centred over the whole composition (design 2026-09-11) ── */}
+        {step === 1 && (
+          <div className="mx-auto mt-6 max-w-3xl shrink-0 text-center">
+            <h1 className="text-[28px] font-black leading-tight tracking-tight sm:text-[40px]">
+              {t('onboarding.welcomeTitleLead')}
+              <span className="text-blue-400">{t('onboarding.welcomeTitleAccent')}</span>{' '}
+              <span aria-hidden>{t('onboarding.welcomeTitleEmoji')}</span>
+            </h1>
+            <p className="mx-auto mt-2.5 max-w-2xl text-[15px] leading-relaxed text-white/60 sm:text-[18px]">
+              {t('onboarding.welcomeDesc')}
+            </p>
+          </div>
+        )}
 
         {/* Mascot (compact) — below lg the three-column composition collapses, so
             the otter appears here, small and centred above the content, keeping
@@ -183,23 +210,18 @@ function OnboardingPageInner() {
           <section className="w-full">
             {step === 1 ? (
               <>
-                <h1 className="text-[28px] font-black leading-tight tracking-tight sm:text-[34px]">
-                  {t('onboarding.welcomeTitle')}
-                </h1>
-                <p className="mt-2.5 max-w-lg text-[15px] leading-relaxed text-white/55">
-                  {t('onboarding.welcomeDesc')}
-                </p>
-
-                <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div data-testid="onboarding-interest-grid" className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
                   {INTERESTS.map(item => {
                     const isOn = selected.includes(item.id)
                     return (
                       <button
                         key={item.id}
+                        type="button"
+                        data-testid={`onboarding-interest-${item.id}`}
                         onClick={() => toggleInterest(item.id)}
                         aria-pressed={isOn}
                         className={cn(
-                          'group relative flex items-center gap-3.5 rounded-2xl border p-4 text-left transition-all',
+                          'group relative flex items-center gap-4 rounded-2xl border p-4 text-left transition-all sm:p-5',
                           isOn
                             ? 'border-blue-400/60 bg-blue-500/10 shadow-[0_0_0_1px_rgba(96,165,250,0.35),0_8px_30px_-8px_rgba(37,99,235,0.5)]'
                             : 'border-white/10 bg-white/[0.04] hover:border-white/20 hover:bg-white/[0.07]'
@@ -207,28 +229,32 @@ function OnboardingPageInner() {
                       >
                         <span
                           className={cn(
-                            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-gradient-to-br text-2xl',
+                            'flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br text-3xl',
                             INTEREST_TINT[item.id] ?? 'from-white/10 to-white/5'
                           )}
                         >
                           {item.emoji}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className={cn('block truncate text-[15px] font-bold', isOn ? 'text-white' : 'text-white/90')}>
+                          <span className={cn('block truncate text-[17px] font-bold', isOn ? 'text-white' : 'text-white/95')}>
                             {t(item.key)}
                           </span>
+                          <span className="mt-1 line-clamp-2 block text-[13px] leading-snug text-white/60">
+                            {t(`onboarding.interest.${item.id}.desc`)}
+                          </span>
                         </span>
-                        {/* Selected indicator — a mark, not colour alone. */}
-                        <span
-                          className={cn(
-                            'flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all',
-                            isOn
-                              ? 'border-transparent bg-gradient-to-br from-blue-500 to-violet-500 text-white'
-                              : 'border-white/15 text-transparent group-hover:border-white/30'
-                          )}
-                        >
-                          <Check size={14} strokeWidth={3} />
-                        </span>
+                        {/* Trailing mark: the design's chevron at rest; a filled
+                            check once chosen, so selection is not colour alone. */}
+                        {isOn ? (
+                          <span
+                            data-testid="onboarding-interest-check"
+                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-violet-500 text-white"
+                          >
+                            <Check size={14} strokeWidth={3} />
+                          </span>
+                        ) : (
+                          <ChevronRight size={20} aria-hidden className="shrink-0 text-white/60 transition-colors group-hover:text-white/85" />
+                        )}
                       </button>
                     )
                   })}
@@ -236,13 +262,17 @@ function OnboardingPageInner() {
 
                 <div className="mt-7 flex flex-col items-center gap-3">
                   <button
+                    type="button"
+                    data-testid="onboarding-next"
                     onClick={() => setStep(2)}
                     disabled={selected.length === 0}
-                    className="flex w-full max-w-md items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-500 to-violet-500 py-3.5 text-[15px] font-bold text-white shadow-lg shadow-blue-900/40 transition-all hover:from-blue-400 hover:to-violet-400 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="flex w-full max-w-lg items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-blue-600 to-blue-500 py-4 text-[17px] font-bold text-white shadow-lg shadow-blue-900/50 transition-all hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    {t('common.next')} <ArrowRight size={18} />
+                    {t('common.next')} <ArrowRight size={20} />
                   </button>
                   <button
+                    type="button"
+                    data-testid="onboarding-skip"
                     onClick={() => setStep(2)}
                     className="text-sm text-white/40 transition-colors hover:text-white/70"
                   >
