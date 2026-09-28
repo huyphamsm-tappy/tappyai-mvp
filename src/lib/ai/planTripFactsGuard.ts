@@ -16,7 +16,7 @@
 // the model. Deterministic, no model call, no network. Edits the PARSED plan and re-serializes, the
 // same way the other plan guards do.
 
-import { normalizeVN } from './intent'
+import { normalizeVN, detectTripLength } from './intent'
 import { missingTripFacts, type TripFact } from './consultative/tripFacts'
 
 const OPEN = '[TAPPY_PLAN]'
@@ -47,6 +47,8 @@ export interface PlanTripFactsResult {
   labelsCleaned: number
   stopsDropped: number
   sentencesDropped: number
+  /** Days beyond the stated trip length, folded into the last day. */
+  daysTrimmed?: number
 }
 
 function stripLabelDate(label: string): string {
@@ -105,7 +107,23 @@ export function guardPlanTripFacts(fullText: string, userTexts: readonly string[
   try { plan = JSON.parse(fullText.slice(start + OPEN.length, end).trim()) } catch { return none }
   if (!plan || typeof plan !== 'object' || plan.type !== 'trip') return none
   const missing = missingTripFacts(fold(userTexts.join(' \n ')))
-  if (missing.length === 0) return none
+  // DAYS = the length the user stated (c40 T1 on uat 2bd5c59: "3 ngày 2 đêm" planned "Ngày 4 (Trước khi
+  // về)"). The nearest stated length wins, as in the planning context; extra days' stops are folded into
+  // the last day (the departure morning is still part of it), never silently dropped.
+  const length = userTexts.slice().reverse().map(detectTripLength).find(v => v !== null) ?? null
+  const days = Array.isArray(plan.days) ? (plan.days as Array<Record<string, unknown>>) : []
+  let daysTrimmed = 0
+  if (length && days.length > length.days && length.days >= 1) {
+    const last = days[length.days - 1]
+    const extra = days.slice(length.days)
+    if (last && typeof last === 'object') {
+      const lastItems = Array.isArray(last.items) ? (last.items as unknown[]) : []
+      last.items = [...lastItems, ...extra.flatMap(d => (d && Array.isArray(d.items) ? (d.items as unknown[]) : []))]
+      plan.days = days.slice(0, length.days)
+      daysTrimmed = extra.length
+    }
+  }
+  if (missing.length === 0 && daysTrimmed === 0) return none
   const miss = new Set(missing)
   const noLeg = miss.has('origin') || miss.has('transport')
 
@@ -145,5 +163,6 @@ export function guardPlanTripFacts(fullText: string, userTexts: readonly string[
     labelsCleaned,
     stopsDropped,
     sentencesDropped: before.dropped + after.dropped,
+    daysTrimmed,
   }
 }

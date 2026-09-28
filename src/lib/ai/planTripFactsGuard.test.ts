@@ -94,6 +94,33 @@ describe('guardPlanTripFacts — date / origin / transport never invented', () =
   })
 })
 
+describe('guardPlanTripFacts — the plan has exactly the stated number of days', () => {
+  it('c40 T1 live (uat 2bd5c59): "3 ngày 2 đêm" planned 4 days → 3, day-4 stops folded into day 3', async () => {
+    const { readFileSync } = await import('node:fs')
+    const live = readFileSync('src/lib/ai/__fixtures__/tripT1FourDays.live.txt', 'utf8')
+    const before = parsed(live)
+    expect(before.days).toHaveLength(4)
+    const stopCount = (p: { days: Array<{ items?: unknown[] }> }) => p.days.reduce((n, d) => n + (d.items?.length ?? 0), 0)
+    const r = guardPlanTripFacts(live, ['Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu'])
+    const after = parsed(r.text)
+    expect(after.days.map((d: { label: string }) => d.label)).toEqual(['Ngày 1', 'Ngày 2', 'Ngày 3'])
+    expect(stopCount(after)).toBe(stopCount(before))
+    expect(r.daysTrimmed).toBe(1)
+  })
+
+  it('the nearest stated length wins (a correction to 2 ngày 1 đêm)', () => {
+    const p = { type: 'trip', title: 't', days: [{ label: 'Ngày 1', items: [] }, { label: 'Ngày 2', items: [] }, { label: 'Ngày 3', items: [{ name: 'x' }] }] }
+    const r = guardPlanTripFacts(plan(p), ['đi Đà Nẵng 3 ngày 2 đêm', 'thôi 2 ngày 1 đêm thôi'])
+    expect(parsed(r.text).days).toHaveLength(2)
+    expect(parsed(r.text).days[1].items).toEqual([{ name: 'x' }])
+  })
+
+  it('fewer days than stated are left alone (nothing is invented)', () => {
+    const p = { type: 'trip', title: 't', days: [{ label: 'Ngày 1', items: [] }] }
+    expect(parsed(guardPlanTripFacts(plan(p), ['đi Huế 3 ngày 2 đêm từ Hà Nội bằng máy bay ngày 3/10']).text).days).toHaveLength(1)
+  })
+})
+
 describe('fixHalfAccented — "ngan sách" (owner 2026-09-28)', () => {
   it('fixes only the half-accented pair', async () => {
     const { fixHalfAccented, normalizeReplyMarkdown } = await import('@/lib/chat/markdownNormalize')

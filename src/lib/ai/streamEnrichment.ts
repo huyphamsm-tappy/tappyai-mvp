@@ -2033,7 +2033,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
     const itemized = planItems ? planItems.text : tipped
     const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText]) : null
-    if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped }))
+    if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     const planMask = maskPlanBody(tripFacts ? tripFacts.text : itemized)
     const enriched = planMask.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and

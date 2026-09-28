@@ -42,6 +42,67 @@ export const EVENING_STAGES: readonly EveningStage[] = [
     searches: [{ query: 'rooftop bar view đẹp', type: 'bar' }, { query: 'quán cà phê mở khuya', type: 'cafe' }] },
 ]
 
+/**
+ * The situation the stages are tuned to — the consultative frame's fields (situationFrame.ts), read from
+ * the user's own words. Owner 2026-09-28: keep the fixed frame and code-written queries, but the CHOICE
+ * follows what the user said — never one script for everyone (uat: "hội bạn 5 người" and a plain
+ * "tối nay đi chơi quận 1" got the same Aniki → Bùi Viện → The View, with people: 2).
+ */
+export interface EveningSituation {
+  who?: 'solo' | 'couple' | 'friends' | 'family' | 'group' | 'colleagues' | null
+  mood?: 'chill' | 'lively' | 'romantic' | 'fancy' | 'cheap_good' | null
+  occasion?: string | null
+  hard?: readonly string[]
+  partySize?: number | null
+  /** Per-person budget ceiling in VND, when stated. */
+  budgetMax?: number | null
+}
+
+type Search = EveningStage['searches'][number]
+const S = (query: string, type: Search['type']): Search => ({ query, type })
+
+/** The three stages with their searches ordered for this situation. Same frame, same times, code-written words. */
+export function eveningStagesFor(sit: EveningSituation | null | undefined): EveningStage[] {
+  const base = EVENING_STAGES
+  if (!sit) return base.map(s => ({ ...s, searches: [...s.searches] }))
+  const who = sit.who ?? null
+  const groupish = who === 'friends' || who === 'group' || who === 'colleagues' || (sit.partySize ?? 0) >= 4
+  const romantic = sit.mood === 'romantic' || who === 'couple' || sit.occasion === 'date'
+  const family = who === 'family'
+  const cheap = sit.mood === 'cheap_good' || (typeof sit.budgetMax === 'number' && sit.budgetMax > 0 && sit.budgetMax <= 150_000)
+  const fancy = sit.mood === 'fancy' || (sit.hard ?? []).includes('upscale')
+  const chill = sit.mood === 'chill' || (sit.hard ?? []).includes('quiet')
+  const lively = sit.mood === 'lively'
+
+  const dinner: Search[] = [
+    cheap ? S('quán ăn tối ngon giá rẻ', 'restaurant')
+      : fancy ? S('nhà hàng sang trọng ăn tối', 'restaurant')
+      : romantic ? S('nhà hàng lãng mạn ăn tối', 'restaurant')
+      : family ? S('nhà hàng gia đình ăn tối', 'restaurant')
+      : groupish ? S('quán nhậu ăn tối nhóm bạn', 'restaurant')
+      : S('nhà hàng ăn tối ngon', 'restaurant'),
+  ]
+  if (dinner[0].query !== 'nhà hàng ăn tối ngon') dinner.push(S('nhà hàng ăn tối ngon', 'restaurant'))
+
+  const walk = S('phố đi bộ chợ đêm', 'attraction')
+  const music = S('live music phòng trà', 'bar')
+  const karaoke = S('karaoke bowling', 'attraction')
+  const night: Search[] = groupish || lively ? [karaoke, walk, music]
+    : romantic || chill ? [music, walk, karaoke]
+    : family ? [walk, karaoke]
+    : [walk, music, karaoke]
+
+  const rooftop = S('rooftop bar view đẹp', 'bar')
+  const cafe = S('quán cà phê mở khuya', 'cafe')
+  const beer = S('quán bia craft beer', 'bar')
+  const drinks: Search[] = family || chill || cheap ? [cafe, rooftop]
+    : groupish || lively ? [beer, rooftop, cafe]
+    : [rooftop, cafe]
+
+  const bySearch: Record<EveningStageKey, Search[]> = { dinner, night, drinks }
+  return base.map(s => ({ ...s, searches: bySearch[s.key] }))
+}
+
 /** Is this evening plan one the fixed frame builds? (An evening plan that names no activity of its own.) */
 export function usesEveningFrame(planningIntent: string | null, planning: { activities?: readonly string[]; inherited?: boolean } | undefined): boolean {
   // "ăn chơi tối nay" names dinner / a drink — the frame's own stages; "lẩu rồi xem phim" names its own.

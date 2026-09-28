@@ -54,7 +54,7 @@ import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
-import { usesEveningFrame, eveningLocation, EVENING_STAGES, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
+import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -2108,15 +2108,17 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const location = eveningLocation(statedArea?.label ?? null, lastText)
     const used = new Set<string>()
     const stops: EveningStop[] = []
+    // Owner 2026-09-28: same frame, but the searches follow what the user said (who / mood / budget).
+    const stages = eveningStagesFor(situation ? { who: situation.who, mood: situation.mood, occasion: situation.occasion, hard: situation.hard, partySize: situation.partySize, budgetMax: situation.budget?.max ?? null } : null)
     // Stage by stage, first search in parallel; a stage whose first search has no open row tries its next.
-    const firsts = await Promise.all(EVENING_STAGES.map(async stage => {
+    const firsts = await Promise.all(stages.map(async stage => {
       const args = { query: stage.searches[0].query, type: stage.searches[0].type, ...(location ? { location } : {}) }
       const toolCallId = 'evening_' + stage.key + '_' + randomUUID().slice(0, 6)
       const t0 = Date.now()
       const result = await execute(args, { toolCallId, messages: [] }).catch(e => ({ error: e instanceof Error ? e.message.slice(0, 200) : 'search_failed' }))
       return { toolCallId, toolName: 'search_places', args, result, ms: Date.now() - t0 } as PresearchOutcome
     }))
-    for (const [i, stage] of EVENING_STAGES.entries()) {
+    for (const [i, stage] of stages.entries()) {
       let outcome = firsts[i]
       eveningOutcomes.push(outcome)
       let pick = pickStageStop(outcome.result, stage, new Set(used))
@@ -2134,7 +2136,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     console.log(JSON.stringify({ type: 'tappyai_evening_frame', location: location ?? null, searches: eveningOutcomes.map(o => (o.args as { query: string }).query), stops: stops.map(s => s.stage.key) }))
     if (stops.length > 0) {
-      eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, budgetTotal: planning?.totalBudget ?? null })
+      eveningBlock = buildEveningPlanBlock(stops, { lang, area: location, people: situation?.partySize ?? null, budgetTotal: planning?.totalBudget ?? null })
       eveningAddendum = eveningIntroInstruction(stops, lang)
       eveningLead = eveningIntro(stops, { lang, area: location })
     }
@@ -2207,7 +2209,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? 300 : eveningBlock ? 200 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxTokens: noToolTurn ? 300 : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     maxSteps: noToolTurn || eveningBlock ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
