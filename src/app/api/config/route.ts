@@ -17,6 +17,7 @@ import {
   AUTH_PROVIDERS,
   ONBOARDING_INTERESTS,
   ONBOARDING_CITIES,
+  publicShareEnabled,
 } from '@/lib/config/product'
 import { selfDeleteEnabled } from '@/lib/account/selfDelete'
 
@@ -57,6 +58,10 @@ export async function GET() {
         // request-by-email flow. This route is static, so the value is the build's env — flipping the
         // variable needs a redeploy (DEPLOY-CHECKLIST §4d step 3 says so).
         accountSelfDelete: selfDeleteEnabled(),
+        // A5 privacy kill switch for the G1 public share (/r/<slug>). Default true; env
+        // SHOW_PUBLIC_SHARE=false|0 turns it off (build env — redeploy after flipping). Clients hide
+        // the "public link" action on false; a missing field (older server) means true.
+        publicShare: publicShareEnabled(),
       },
       upload: {
         maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW,

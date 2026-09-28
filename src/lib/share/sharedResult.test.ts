@@ -97,11 +97,12 @@ describe('sharedResultMetadata', () => {
     expect(m.alternates?.canonical).toBe('https://www.tappyai.com/r/AbCdEfGh12')
     expect(sharedResultOgImageUrl(row, env)).toBe('https://www.tappyai.com/r/AbCdEfGh12/og.png?v=3')
     expect((m.openGraph as { images: { url: string }[] }).images[0].url).toBe('https://www.tappyai.com/r/AbCdEfGh12/og.png?v=3')
-    expect(m.robots).toEqual({ index: true, follow: true, 'max-image-preview': 'large' })
+    // A5 (PRIVACY-REVIEW-G1): every public share is noindex, nofollow — even a real account's.
+    expect(m.robots).toEqual({ index: false, follow: false })
   })
-  it('an anonymous-owned (second-generation) share is public but noindex', () => {
+  it('an anonymous-owned (second-generation) share is public but noindex, nofollow', () => {
     const m = buildSharedResultMetadata({ ...row, owner_is_anonymous: true, parent_id: 'p1' }, env)
-    expect(m.robots).toEqual({ index: false, follow: true })
+    expect(m.robots).toEqual({ index: false, follow: false })
     expect(m.alternates?.canonical).toBe('https://www.tappyai.com/r/AbCdEfGh12')
   })
   it('accepts the scam domain and the scam_check kind; rejects an unknown kind', () => {

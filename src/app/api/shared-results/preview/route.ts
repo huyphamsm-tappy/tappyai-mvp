@@ -8,6 +8,7 @@ import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { validateSharedResultPayload } from '@/lib/share/sharedResult'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+import { publicShareEnabled } from '@/lib/config/product'
 
 // POST /api/shared-results/preview — "This is what others will see."
 //
@@ -18,6 +19,8 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
+  // A5 kill switch: the preview is the first step of publishing, so it closes with the create route.
+  if (!publicShareEnabled()) return NextResponse.json({ error: 'not_available' }, { status: 404 })
   if (!rateLimit(`share-preview:${clientIp(req)}`, 60, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user, supabase } = await getRequestUser(req)
   if (!user) return apiError(req, 'unauthorized', 'auth.required', 401)

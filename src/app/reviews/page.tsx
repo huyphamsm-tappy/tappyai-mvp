@@ -752,7 +752,10 @@ function ReviewsPageInner() {
         const data = await res.json()
         setSearchResults((data.reviews || []).map((r: Review) => ({ ...r, saved_by_me: r.saved_by_me ?? false })))
         setSearchError(false)
-        track('review_search', { query: q })
+        // A5 (PRIVACY-REVIEW-G1): the search text itself is never tracked (`query` is a forbidden
+        // analytics key) — only that a search happened, with a coarse length bucket.
+        const len = q.trim().length
+        track('review_search', { query_len_bucket: len <= 10 ? '1-10' : len <= 30 ? '11-30' : '31+' })
       } catch {
         setSearchResults([])
         setSearchError(true)

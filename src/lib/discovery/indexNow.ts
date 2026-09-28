@@ -12,8 +12,8 @@
 // Cost: $0 — no account, no fee, one outbound POST per new public page.
 // Safety: env-gated (no key → no-op), never awaited on the request path
 // (fire-and-forget with a short timeout), never throws, only ever sends URLs
-// of pages that are public AND listed (an anonymous-owned share is noindex and
-// is never submitted). Pure builders are exported for tests.
+// of public, indexable pages — user share pages (/r/, /plan/) are noindex and are
+// filtered out in `buildIndexNowBody` (A5). Pure builders are exported for tests.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { absoluteUrl } from '@/lib/share/openGraph'
@@ -33,13 +33,24 @@ export function indexNowKeyPath(key: string): string {
   return `/.well-known/indexnow/${key}.txt`
 }
 
-/** The POST body for a list of paths. Pure. Only same-host absolute URLs are sent. */
+/**
+ * A5 (PRIVACY-REVIEW-G1, owner 2026-09-28): user share pages are noindex and are NEVER pushed —
+ * /r/<slug> (shared results, incl. scam verdicts) and /plan/<id> (shared plans). Enforced here so
+ * no caller can submit one by mistake.
+ */
+export function isNeverSubmittedPath(url: string): boolean {
+  let path = url
+  try { path = new URL(url, 'https://x.invalid').pathname } catch { /* keep raw */ }
+  return /^\/(r|plan)(\/|$)/.test(path)
+}
+
+/** The POST body for a list of paths. Pure. Only same-host absolute URLs are sent; share pages never. */
 export function buildIndexNowBody(paths: readonly string[], env: NodeJS.ProcessEnv = process.env): { host: string; key: string; keyLocation: string; urlList: string[] } | null {
   const key = indexNowKey(env)
   if (!key) return null
   const origin = absoluteUrl('/', env).replace(/\/$/, '')
   const host = new URL(origin).host
-  const urlList = [...new Set(paths.map((p) => absoluteUrl(p, env)))].filter((u) => u.startsWith(`${origin}/`))
+  const urlList = [...new Set(paths.map((p) => absoluteUrl(p, env)))].filter((u) => u.startsWith(`${origin}/`) && !isNeverSubmittedPath(u))
   if (urlList.length === 0) return null
   return { host, key, keyLocation: absoluteUrl(indexNowKeyPath(key), env), urlList }
 }

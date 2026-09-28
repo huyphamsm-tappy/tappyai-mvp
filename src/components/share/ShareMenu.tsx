@@ -61,6 +61,7 @@ import { PLAN_SHARE_ID_RE, planShareUrl } from '@/lib/plans/share/planShare'
 import NewMessageSheet from '@/components/messaging/NewMessageSheet'
 import SharePreview from './SharePreview'
 import { TAPPY_MARK_SRC } from '@/components/brand/TappyLockup'
+import { usePublicShareEnabled } from '@/lib/config/usePublicShareFlag'
 
 type Feedback = { kind: 'ok' | 'error'; text: string } | null
 
@@ -142,6 +143,9 @@ export default function ShareMenu({
   profileName?: string
 }) {
   const { t, locale } = useTranslation()
+  // A5 kill switch (SHOW_PUBLIC_SHARE): the "public link" row shows only when the server allows
+  // publishing. Asked only by a menu that actually offers the row, and only once it is open.
+  const publicShareEnabled = usePublicShareEnabled(!!onPublicLink && open)
   const [feedback, setFeedback] = useState<Feedback>(null)
   const [canNativeShare, setCanNativeShare] = useState(false)
   const [messengerApp, setMessengerApp] = useState(false)
@@ -559,7 +563,7 @@ export default function ShareMenu({
               <Inbox size={18} className="text-orange-500" />
               <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.inbox')}</span>
             </button>
-            {onPublicLink && (
+            {onPublicLink && publicShareEnabled && (
               <button data-testid="share-target-public-link" onClick={() => onPublicLink()} disabled={!!busy || linkPending} className="flex items-center gap-3 w-full px-3 py-3 rounded-xl bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-left">
                 <Link2 size={18} className="text-primary-600" />
                 <span className="text-sm text-gray-800 dark:text-gray-100">{t('share.publicResult')}</span>

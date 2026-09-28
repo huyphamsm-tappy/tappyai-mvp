@@ -212,6 +212,8 @@ describe('metadata + social image', () => {
     expect(m.title).toBe('Quy Nhơn 3 ngày 2 đêm | Tappy Plan')
     expect(m.description).toBe('Biển xanh, ẩm thực ngon, nhịp sống bình yên.')
     expect(m.alternates?.canonical).toBe(`https://www.tappyai.com/plan/${ID}`)
+    // A5 (PRIVACY-REVIEW-G1): a shared plan opens by link but is never indexed.
+    expect(m.robots).toEqual({ index: false, follow: false })
     expect(m.openGraph).toMatchObject({ title: 'Quy Nhơn 3 ngày 2 đêm | Tappy Plan', url: `https://www.tappyai.com/plan/${ID}`, siteName: 'TappyAI', type: 'article', locale: 'vi_VN' })
     expect(m.twitter).toMatchObject({ card: 'summary_large_image', title: 'Quy Nhơn 3 ngày 2 đêm | Tappy Plan' })
     // 🚨 The description is THE PLAN'S summary — the exact share_text line, not the brand tagline.

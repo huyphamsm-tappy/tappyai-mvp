@@ -45,13 +45,13 @@ describe('oEmbed — document', () => {
     expect(buildOembed(row, { maxwidth: 10 }, ENV).width).toBe(200)
     expect(JSON.stringify(doc)).not.toMatch(/user_id|anon|session|token/)
   })
-  it('is discoverable from the public page metadata, and the page carries the Discover directive', () => {
+  it('is discoverable from the public page metadata; the page itself is noindex, nofollow (A5)', () => {
     const meta = buildSharedResultMetadata(row, ENV)
     expect(meta.alternates?.types).toEqual({ 'application/json+oembed': 'https://www.tappyai.com/api/oembed?url=https%3A%2F%2Fwww.tappyai.com%2Fr%2FAbCdEfGh12&format=json' })
     expect(oembedDiscoveryUrl('AbCdEfGh12', ENV)).toBe('https://www.tappyai.com/api/oembed?url=https%3A%2F%2Fwww.tappyai.com%2Fr%2FAbCdEfGh12&format=json')
-    expect(meta.robots).toEqual({ index: true, follow: true, 'max-image-preview': 'large' })
+    expect(meta.robots).toEqual({ index: false, follow: false })
     const unlisted = buildSharedResultMetadata({ ...row, owner_is_anonymous: true }, ENV)
-    expect(unlisted.robots).toEqual({ index: false, follow: true })
+    expect(unlisted.robots).toEqual({ index: false, follow: false })
   })
 })
 

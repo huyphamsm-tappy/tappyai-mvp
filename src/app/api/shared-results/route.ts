@@ -4,11 +4,10 @@ import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { apiError } from '@/lib/http/apiError'
 import { rateLimit, clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
-import { SHARE_DAILY_LIMIT_PER_IP } from '@/lib/config/product'
+import { SHARE_DAILY_LIMIT_PER_IP, publicShareEnabled } from '@/lib/config/product'
 import { parseShareRequest, resolveShareSource } from '@/lib/share/shareRequest'
 import { decideSharePolicy } from '@/lib/share/sharePolicy'
 import { createSharedResult, SharedResultError } from '@/lib/share/sharedResultStore'
-import { notifyIndexNow } from '@/lib/discovery/indexNow'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -27,6 +26,9 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
+  // A5 kill switch (SHOW_PUBLIC_SHARE=false|0): no publishing at all — answered before any auth,
+  // rate-limit bucket or database read. Existing pages are untouched.
+  if (!publicShareEnabled()) return NextResponse.json({ error: 'not_available' }, { status: 404 })
   const ip = clientIp(req)
   if (!rateLimit(`share-create:${ip}`, 20, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user, supabase } = await getRequestUser(req)
@@ -63,9 +65,8 @@ export async function POST(req: NextRequest) {
       parentId: policy.parentId,
     })
     const path = `/r/${row.slug}`
-    // A LISTED page (real-account owner) is pushed to the IndexNow engines; an
-    // anonymous-owned share is noindex and is never submitted. Fire-and-forget.
-    if (!row.owner_is_anonymous) notifyIndexNow([path])
+    // A5 (PRIVACY-REVIEW-G1): public shares are noindex and are NOT submitted to IndexNow —
+    // a user's answer is reachable by its link, never pushed to search engines.
     return NextResponse.json({
       id: row.id,
       slug: row.slug,

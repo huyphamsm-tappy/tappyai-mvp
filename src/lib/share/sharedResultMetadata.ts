@@ -37,19 +37,16 @@ export function buildSharedResultMetadata(row: PublicSharedResult, env: NodeJS.P
   const description = summarize(payload.body) || payload.query
   const url = absoluteUrl(sharedResultPath(row.slug), env)
   const image = { url: sharedResultOgImageUrl(row, env), width: OG_IMAGE_WIDTH, height: OG_IMAGE_HEIGHT, alt: payload.title }
-  // An anonymous-owned (second-generation) share is public to open but never
-  // indexed or listed: an anonymous session must not be able to mint search
-  // surface. It becomes indexable only once its owner is a real account.
-  const listed = row.owner_is_anonymous !== true
   return {
     title,
     description,
     // `types` renders <link rel="alternate" type="application/json+oembed">: the oEmbed
     // discovery tag, so a CMS that meets this link can embed the answer as a card.
     alternates: { canonical: url, types: { 'application/json+oembed': oembedDiscoveryUrl(row.slug, env) } },
-    // `max-image-preview: large` is the one directive Google Discover needs beyond
-    // indexing (the per-share OG card is 1200×630). It changes nothing for an unlisted page.
-    robots: listed ? { index: true, follow: true, 'max-image-preview': 'large' } : { index: false, follow: true },
+    // A5 (PRIVACY-REVIEW-G1, owner 2026-09-28): EVERY public share is noindex, nofollow — whoever
+    // owns it. A shared answer is reachable by its link (and previews via OG), never a search
+    // result: it may carry a user's own question. Also kept out of the sitemap and IndexNow.
+    robots: { index: false, follow: false },
     openGraph: {
       type: 'article',
       siteName: BRAND.name,

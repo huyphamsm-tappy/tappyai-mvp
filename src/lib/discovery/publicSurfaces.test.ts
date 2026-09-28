@@ -36,6 +36,19 @@ describe('public acquisition surfaces — the crawlable set', () => {
     expect(urls.some((u) => u.includes('?'))).toBe(false)
   })
 
+  // A5 (PRIVACY-REVIEW-G1, owner 2026-09-28): user share pages are noindex and never listed.
+  it('the sitemap never lists a user share page (/r/<slug>, /plan/<id>), even when public shares exist', async () => {
+    const store = await import('@/lib/share/sharedResultStore')
+    vi.mocked(store.listPublicSharedResults).mockResolvedValue([{ slug: 'AbCdEfGh12', created_at: '2026-09-13T00:00:00.000Z' }] as never)
+    try {
+      const urls = (await sitemap()).map((e) => e.url)
+      expect(urls.some((u) => u.includes('/r/') || u.includes('/plan/'))).toBe(false)
+      expect(readFileSync('src/app/sitemap.ts', 'utf8')).not.toContain('listPublicSharedResults')
+    } finally {
+      vi.mocked(store.listPublicSharedResults).mockResolvedValue([])
+    }
+  })
+
   it('no indexable surface is disallowed for crawlers, and the private ones are', () => {
     const disallowed = [...DISALLOWED_PATHS]
     for (const p of [...INDEXABLE_STATIC, '/r/AbCdEfGh12', '/llms.txt', '/feed.xml', '/opensearch.xml', '/.well-known/assetlinks.json']) {

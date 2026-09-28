@@ -1,6 +1,8 @@
 # PRIVACY REVIEW — G1 Growth (danh bạ & query text đã lưu)
 
-**Trạng thái: 🛑 CHƯA DUYỆT — chờ owner.**
+**Trạng thái: ĐÃ DUYỆT CHO RELEASE (owner 2026-09-28) với các biện pháp trên** — xem §7
+"Cập nhật 2026-09-28 — đã xử lý trong release" (kill switch, chặn key `query`, noindex).
+Các mục §0–§6 bên dưới là bản kiểm kê gốc, giữ nguyên để truy vết.
 Ngày: 2026-09-28 · Cây kiểm tra: `C:/wtrel` (== `origin/rc/web-uat` @ `380e0c9`) · Nguồn yêu cầu:
 `docs/uat/DEPLOY-CHECKLIST.md` §7 "🔒 Privacy review REQUIRED before g1-growth merges".
 
@@ -188,4 +190,70 @@ cần build app mới; và thêm `query` vào `ANALYTICS_FORBIDDEN_KEYS`.
 - [ ] Đối chiếu Data safety trong Play Console (G-9).
 - [ ] Xác nhận quyền trên chính AAB upload (không có `READ_CONTACTS`).
 
-**Trạng thái: CHƯA DUYỆT — chờ owner.**
+---
+
+## 7. Cập nhật 2026-09-28 — đã xử lý trong release
+
+Owner duyệt 2026-09-28 với điều kiện có ba biện pháp dưới đây (task A5, nhánh
+`release/rc-merge-main-2026-09-29`). Không chạm DB, không chạm Vercel.
+
+### 7.1 Kill switch `SHOW_PUBLIC_SHARE` (đóng G-1 cho web + server)
+
+- Flag server `publicShareEnabled()` trong `src/lib/config/product.ts`: **mặc định BẬT**; **TẮT** khi
+  env `SHOW_PUBLIC_SHARE=false` (hoặc `0`).
+- Khi TẮT: `POST /api/shared-results` và `POST /api/shared-results/preview` trả **404
+  `{ "error": "not_available" }`** ngay đầu handler — trước auth, rate-limit và mọi truy vấn DB.
+- `GET /api/config` có thêm `flags.publicShare` (true/false).
+- Web: hàng "Liên kết công khai" trong `ShareMenu` và nút "Chia sẻ câu trả lời" trên trang `/r/…`
+  (chia sẻ thế hệ 2) chỉ hiện khi `/api/config` trả `publicShare !== false`
+  (`src/lib/config/usePublicShareFlag.ts`; thiếu field = BẬT, cho server cũ).
+- Android: **chưa đọc** `flags.publicShare` (app không có bộ đọc `/api/config` chung — mỗi tính năng
+  tự gọi, ví dụ `AccountDeletionApi`). Khi TẮT, nút "Liên kết công khai" trên Android vẫn hiện nhưng
+  bước preview nhận 404 → `ShareOutcome.Failed` → hộp thoại báo lỗi chung; **không có gì được lưu**.
+  Tức là fail an toàn, chỉ UX chưa đẹp (tồn đọng, xem 7.4).
+- Trang `/r/<slug>` đã tạo **vẫn hiển thị** (thu hồi nằm ngoài phạm vi).
+
+**Cách tắt trên prod:** Vercel → Project → Settings → Environment Variables → thêm
+`SHOW_PUBLIC_SHARE` = `false` cho môi trường **Production** → **Redeploy** bản production hiện tại.
+(Bắt buộc redeploy: `/api/config` là route tĩnh nên giá trị flag ở đó là env lúc build; các route
+POST đọc env lúc chạy nhưng env mới cũng chỉ có hiệu lực sau deploy.) Bật lại: xoá biến hoặc đặt
+`true`, rồi redeploy.
+
+### 7.2 Chặn key `query` trong `user_events.metadata` (đóng G-8)
+
+- `query` được thêm vào `ANALYTICS_FORBIDDEN_KEYS` (`src/lib/account/userDataClassification.ts`) →
+  `/api/track` loại bỏ key này ở **mọi độ sâu**, trong `metadata` và `device_context`, cho **mọi**
+  loại sự kiện (kể cả client cũ còn gửi).
+- `src/app/reviews/page.tsx`: `track('review_search', …)` không còn gửi văn bản tìm kiếm — chỉ gửi
+  `query_len_bucket` (`1-10` / `11-30` / `31+`). Sự kiện vẫn giữ để đo tần suất tìm kiếm.
+- Hàng `user_events` **đã ghi trước đó** vẫn còn `metadata.query` (không xoá dữ liệu cũ — xem 7.4).
+
+### 7.3 noindex cho trang chia sẻ công khai (đóng phần "lập chỉ mục" của G-6)
+
+- `/r/<slug>`: metadata luôn `robots: { index: false, follow: false }` → `<meta name="robots"
+  content="noindex, nofollow">` cho **mọi** share (trước đây share của tài khoản thật được index).
+- `/plan/<id>`: thêm `robots: { index: false, follow: false }` cho plan tồn tại (plan không tồn tại
+  vốn đã noindex).
+- Sitemap (`src/app/sitemap.ts`) **không còn** liệt kê `/r/…`; `llms.txt` sửa mô tả tương ứng.
+- IndexNow: `POST /api/shared-results` không gọi `notifyIndexNow` nữa, và `buildIndexNowBody`
+  (`src/lib/discovery/indexNow.ts`) **lọc bỏ mọi đường dẫn `/r/` và `/plan/`** — nên cả
+  `/api/scam-shield/share` cũng không còn gửi được trang share nào lên IndexNow.
+- Header `X-Robots-Tag` **chưa thêm** (tuỳ chọn; thẻ meta đã đủ cho Google/Bing).
+
+### 7.4 Tồn đọng (chưa xử lý trong release này)
+
+- **G-2 Retention**: vẫn vô hạn cho `shared_results` (kể cả hàng `removed`) và `user_events`
+  (kể cả các `metadata.query` cũ đã ghi trước 7.2). Chưa có TTL/cron.
+- **G-3 / D4**: trang chia sẻ vẫn sống sót sau xoá tài khoản cho tới khi migration **D4**
+  (`20260925c_account_deletion_f096`) được áp lên prod.
+- **G-4 UI thu hồi**: vẫn chỉ có API `DELETE`, chưa có nút trên web/Android; thu hồi vẫn là soft-delete.
+- **Android** chưa ẩn nút theo `flags.publicShare` (xem 7.1 — fail an toàn qua 404).
+- **`/api/scam-shield/share`** (share kết quả kiểm tra lừa đảo, cho phép ẩn danh) **không** nằm dưới
+  `SHOW_PUBLIC_SHARE` — trang của nó cũng là `/r/…` nên đã noindex + không vào sitemap/IndexNow,
+  nhưng việc tạo mới chưa tắt được bằng flag.
+- `/r/…` vẫn được liệt kê trên các trang hub `/[domain]` và `feed.xml` (link nội bộ tới trang
+  noindex) — nếu muốn giấu hẳn, cần quyết riêng.
+- G-5 (sanitizer regex), G-7 (privacy policy), G-9 (Data safety), G-10 (`chat_search.query` consumer):
+  giữ nguyên như §4.
+
+**Trạng thái: ĐÃ DUYỆT CHO RELEASE (owner 2026-09-28) với các biện pháp trên.**

@@ -52,6 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: { canonical: url },
+    // A5 (PRIVACY-REVIEW-G1): a shared plan opens for anyone with the link but is never indexed.
+    robots: { index: false, follow: false },
     openGraph: {
       title,
       description,

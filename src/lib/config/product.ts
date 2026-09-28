@@ -153,6 +153,24 @@ export const SHOW_HOME_CATEGORY_ROW = false
  * NOT exported through `GET /api/config`: there is no Android or iOS wallet gate to mirror.
  */
 export const SHOW_WALLET = false
+/**
+ * G1 public share ("Link công khai" → /r/<slug>) — the kill switch (A5, PRIVACY-REVIEW-G1).
+ *
+ * ON by default; OFF when the environment sets `SHOW_PUBLIC_SHARE=false` (or `0`). Unlike the
+ * constants above this one is an ENV flag, so production can turn publishing off with a Vercel env
+ * change + redeploy, without a code change. OFF means:
+ *   · `POST /api/shared-results` and `POST /api/shared-results/preview` answer 404
+ *     `{ error: 'not_available' }` before any auth or database work;
+ *   · the Web share menu hides the "public link" row;
+ *   · `GET /api/config` exposes `flags.publicShare: false`, which Android reads (missing field =
+ *     true, for older servers).
+ * Existing /r/<slug> pages keep rendering — withdrawing them is a separate decision.
+ * `/api/config` is a static route, so its copy of the value is the build's env: flip + redeploy.
+ */
+export function publicShareEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  const raw = env.SHOW_PUBLIC_SHARE?.trim().toLowerCase()
+  return !(raw === 'false' || raw === '0')
+}
 export const SCAM_SHIELD_DAILY_LIMIT_AUTH = 30
 export const SCAM_SHIELD_DAILY_LIMIT_ANON = 10
 

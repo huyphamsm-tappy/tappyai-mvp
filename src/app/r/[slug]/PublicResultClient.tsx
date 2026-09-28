@@ -5,6 +5,7 @@ import { useChat } from 'ai/react'
 import { Share2, Send } from 'lucide-react'
 import ShareMenu from '@/components/share/ShareMenu'
 import SharePreviewDialog from '@/components/share/SharePreviewDialog'
+import { usePublicShareEnabled } from '@/lib/config/usePublicShareFlag'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { loginPathFor } from '@/lib/auth/returnTo'
@@ -76,6 +77,8 @@ export default function PublicResultClient({
   const conversationIdRef = useRef<string | null>(null)
   const [conversationId, setConversationId] = useState<string | null>(null)
   const [shareTurn, setShareTurn] = useState<{ index: number } | null>(null)
+  // A5 kill switch: "share this answer" publishes a child /r/ page, so it follows SHOW_PUBLIC_SHARE.
+  const publicShareEnabled = usePublicShareEnabled(!!conversationId)
 
   // Attribution first, then the view — so the view already carries the share.
   useEffect(() => {
@@ -200,7 +203,7 @@ export default function PublicResultClient({
                     ))}
                   </div>
                 )}
-                {conversationId && !(isLoading && i === messages.length - 1) && (
+                {conversationId && publicShareEnabled && !(isLoading && i === messages.length - 1) && (
                   <button
                     type="button"
                     onClick={() => setShareTurn({ index: i })}

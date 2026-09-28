@@ -45,7 +45,7 @@ export function llmsTxt(env: NodeJS.ProcessEnv = process.env): string {
     '',
     '## Optional',
     '',
-    `- [Sitemap](${absoluteUrl('/sitemap.xml', env)}): includes the newest public shared results (/r/<slug>), each a frozen question-and-answer page.`,
+    `- [Sitemap](${absoluteUrl('/sitemap.xml', env)}): the public product, hub, Scam Shield and help pages. User-shared answers are not listed.`,
     '',
   ]
   return lines.join('\n')
