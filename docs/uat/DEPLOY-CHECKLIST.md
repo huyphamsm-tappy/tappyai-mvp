@@ -48,10 +48,11 @@ schema-only export dated **2026-09-17**. Everything below was diffed against it.
 >    photos only (server path).
 >
 > **🛑 ANDROID RELEASE BLOCKERS — do not ship an Android build until each is checked on a real device (owner 2026-09-26):**
-> 1. **Post-login layout regression (F-107).** The app shows the new V3 layout before sign-in and an
->    older-looking one after. Found by the Zalo session on a real device (`docs/uat/ZALO-REGION-PROBE.md`,
->    commit `d7a830d`) — **that session owns the investigation**. Check in UAT: sign in on Android and compare
->    Home before/after sign-in (MANUAL-UAT-HANDOFF, Android section).
+> 1. **Post-login layout (F-107) — NOT REPRODUCIBLE after reinstall, still watched (owner 2026-09-27).** Originally the app
+>    showed the new V3 layout before sign-in and an older-looking one after (Zalo session, `ZALO-REGION-PROBE.md`, `d7a830d`).
+>    After uninstalling and reinstalling the debug app, Zalo sign-in lands on the new layout; the first install had hung the
+>    phone, so a broken install is the likely cause, not code. No longer a blocker **unless** it reappears: in the next UAT,
+>    on a clean install, compare Home before/after sign-in (MANUAL-UAT-HANDOFF, Android section) — if old layout returns, block again.
 > 2. **Minified release build (F-098).** Release/staging builds are minified and the supabase-kt R8 keep rules from
 >    `cd4cb31` never reached this branch. Sign in with Google on a minified build and stay signed in across a
 >    restart and a token refresh; `SerializationException` / `MissingFieldException` in logcat = add the keep block.
