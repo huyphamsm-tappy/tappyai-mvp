@@ -342,5 +342,8 @@ describe('a block cut at the token limit is dropped, not shown', () => {
   it('complete blocks are untouched', () => {
     const ok = 'A.\n\n[CTA_BUTTONS]{"buttons":[]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]a|b[/FOLLOWUPS]'
     expect(dropTruncatedTrailingBlock(ok)).toBe(ok)
+    // The model writes its block without a close tag; complete JSON is not "cut".
+    const bare = 'A.\n\n[CTA_BUTTONS]{"buttons":[{"label":"x","url":"https://a.b"}]}'
+    expect(dropTruncatedTrailingBlock(bare)).toBe(bare)
   })
 })

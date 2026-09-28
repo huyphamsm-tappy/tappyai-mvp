@@ -380,12 +380,11 @@ function findModelCtaBlock(text: string): { start: number; end: number; json: st
  * set. Text without a readable block is returned unchanged.
  */
 export function validateModelCtaBlock(
-  rawText: string,
+  text: string,
   t: (key: string, vars?: Record<string, string>) => string,
   requestedProviderId?: string | null,
 ): string {
-  if (!rawText || rawText.indexOf('[') === -1) return rawText
-  const text = dropTruncatedTrailingBlock(rawText)
+  if (!text || text.indexOf('[') === -1) return text
   const block = findModelCtaBlock(text)
   if (!block) return text
   let parsed: unknown
@@ -406,17 +405,16 @@ function isOtherRegistryMerchant(url: string, requestedProviderId: string): bool
 
 /**
  * A reply cut at the token limit mid-block (measured round 6, c40 T1 planning turn, 28 Sep 2026: the
- * text ended "[CTA_BUTTONS]{"buttons":[{"label":"✈️ Tìm vé máy bay - Trip.com",…" with no close) put raw
- * JSON in front of the user. A CTA / FOLLOWUPS block opened after its last close is incomplete — it is
- * dropped, everything before it stays. Complete blocks are untouched.
+ * text ended "[CTA_BUTTONS]{"buttons":[{"label":"✈️ Tìm vé máy bay - Trip.com",…" and the client showed the
+ * raw JSON). The model's block is legitimately written WITHOUT a close tag (findModelCtaBlock reads the
+ * balanced JSON), so "unclosed" alone is not "cut": only a trailing CTA block that has no close tag AND
+ * no complete JSON is dropped. Applied to the FINAL text of a buffered turn only — validateModelCtaBlock
+ * keeps a partial block untouched by contract (it also sees text still being streamed).
  */
 export function dropTruncatedTrailingBlock(text: string): string {
-  let out = text
-  for (const tag of ['CTA_BUTTONS', 'FOLLOWUPS']) {
-    const open = out.lastIndexOf(`[${tag}]`)
-    if (open === -1) continue
-    if (out.indexOf(`[/${tag}]`, open) !== -1) continue
-    out = out.slice(0, open).replace(/[ \t\n]+$/, '')
-  }
-  return out
+  const open = text.lastIndexOf(CTA_OPEN)
+  if (open === -1) return text
+  if (text.indexOf(CTA_CLOSE, open) !== -1) return text
+  if (findModelCtaBlock(text.slice(open)) !== null) return text
+  return text.slice(0, open).trimEnd()
 }

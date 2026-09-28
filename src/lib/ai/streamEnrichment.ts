@@ -30,7 +30,7 @@ import { SHOPPING_GAP_WORDS } from '@/lib/ai/consultative/shoppingConstraints'
 /** Item 2: cards above the fold — the model's picks (pick + alternatives) filled from the engine. */
 const CARDS_SHOWN = 3
 import { renderCtaBlock, stripModelCta } from '@/lib/recommendation/cta'
-import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks } from '@/lib/recommendation/ctaValidation'
+import { unlinkMislabelledMerchantLinks, validateModelCtaBlock, stripFalseDisconnectClaims, unemphasizeLinks, dropTruncatedTrailingBlock } from '@/lib/recommendation/ctaValidation'
 import { PROVIDER_REGISTRY } from '@/lib/ccp'
 import { searchTemplates } from '@/lib/ccp/adapters'
 import { actionTranslator } from '@/lib/recommendation/actionLabel'
@@ -2362,7 +2362,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // registry, so the claim is provably wrong — live UAT 15 Sep 2026, a Trip.com hotel turn).
     // …and any markdown link the model wrapped in bold/italic is un-emphasised, so Android's
     // single-pass renderer (which does not recurse into `**…**`) still linkifies the handoff.
-    const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(clarified), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId))
+    const scaffoldStripped = dropTruncatedTrailingBlock(unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMerchantLinks(stripModelScaffolding(clarified), systemPlaced, requestedProviderId), actionTranslator(lang), requestedProviderId), requestedProviderId)))
     /**
      * 🚨 THE GROUNDING GATE. Detection existed already; this is where it becomes
      * enforcement. Applied HERE, before the TikTok fold and before `finalText`
