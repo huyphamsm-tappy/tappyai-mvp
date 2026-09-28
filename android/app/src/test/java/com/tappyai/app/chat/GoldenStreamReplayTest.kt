@@ -95,6 +95,15 @@ class GoldenStreamReplayTest {
         assertTrue(parsed.followups.toString(), parsed.followups.isNotEmpty() && parsed.followups.none { "|" in it || "[" in it })
     }
 
+    @Test fun `the server budget line after the plan block is shown (planBudgetMath, 83853cc)`() {
+        val plan = "[TAPPY_PLAN]{\"type\":\"trip\",\"title\":\"Đà Nẵng 3 ngày\",\"people\":2,\"days\":[{\"label\":\"Ngày 1\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🏖\",\"category\":\"entertainment\",\"name\":\"Biển Mỹ Khê\"}]}]}[/TAPPY_PLAN]"
+        val raw = "Kế hoạch đây.\n\n$plan\n\n💰 Ngân sách: 10.000.000đ ÷ 2 người = 5.000.000đ/người\n[FOLLOWUPS]Khách sạn?|Ăn gì?[/FOLLOWUPS]"
+        val parsed = ChatResponseParser.parse(replay(wire(raw)).filterIsInstance<ChatStreamEvent.Text>().joinToString("") { it.delta })
+        val visible = parsed.segments.filterIsInstance<ReplySegment.Text>().joinToString("\n") { markdownVisibleText(it.markdown) }
+        assertNotNull(parsed.plan)
+        assertTrue(visible, "💰 Ngân sách: 10.000.000đ ÷ 2 người = 5.000.000đ/người" in visible)
+    }
+
     @Test fun `(c) the LAST places frame is the card, picked first`() {
         fun places(prelim: Boolean, picked: String?) = frame("8", """[{"kind":"tappy.places.v1","v":1,"domain":"food",${if (prelim) "\"preliminary\":true," else ""}${picked?.let { "\"picked\":[\"$it\"]," } ?: ""}"items":[
             {"id":"a","domain":"food","kind":"place","name":"Quán A","rank":1,"actions":[]},

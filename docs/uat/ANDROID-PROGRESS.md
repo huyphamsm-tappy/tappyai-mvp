@@ -70,12 +70,25 @@ Bằng chứng bản release **không** chứa hook và secret:
 | 7cc5f1a | L10 tab Chia sẻ khi xem hồ sơ người khác · L16 Deals · cờ SHOW_PUBLIC_SHARE | profile-visitor ✅✅ · deals ✅✅ |
 | 85a99ab | Ảnh bìa + tab hub = web (bỏ "Đã thích") | profile-owner ✅✅ · profile-media ✅✅ |
 | 06b5284 | L4 cổng 18+ theo mockup · L5 "Gợi ý cho bạn" hỏi 18+ · khai tuổi khách trên mọi request | age-gate ✅✅ · recommendations ✅✅ |
-| 311159f | Khách mở Đăng nhập, rời app, quay lại: vẫn ở Đăng nhập | login ✅✅ |
-| a803d09 | App giả Zalo/TikTok/Messenger (đúng package) ghi lại cái nhận được | share-explore ✅✅ (TikTok/Zalo nhận FILE video 12 MB + link) |
-| af5aa27 | Test hiển thị OFFLINE trên 51 lượt golden (không gọi AI) → sửa plan `"people":[1]`, khung lỗi `3:` (link dính: renderer đã tách từ P1c của phiên web, test giờ kiểm chữ hiển thị) | unit (GoldenOfflineRender 9 · GoldenStreamReplay 6) |
+| 389e321 | Khách mở Đăng nhập, rời app, quay lại: vẫn ở Đăng nhập | login ✅✅ |
+| f3b8679 | App giả Zalo/TikTok/Messenger (đúng package) ghi lại cái nhận được | share-explore ✅✅ (TikTok/Zalo nhận FILE video 12 MB + link) |
+| 8f6ca1e (+ac5e973, 3495a49) | Test hiển thị OFFLINE trên 51 lượt golden (không gọi AI) → sửa plan `"people":[1]`, khung lỗi `3:` (link dính: renderer đã tách từ P1c của phiên web, test giờ kiểm chữ hiển thị) | unit (GoldenOfflineRender 9 · GoldenStreamReplay 6) |
 | 6fe2150 ⏸ | Composer đăng VIDEO (3 bước upload, F-099) — **chưa push**, chờ R8 | composer ✅✅ (Android 8/8, web 3/3) |
 
 (✅✅ nghĩa là Android và web cùng PASS.)
+
+## (3) AI tư vấn trên Android — ngữ cảnh gửi lên server (server là "bộ não", không sửa)
+
+| Ngữ cảnh | Web | Android | Ghi chú |
+|---|---|---|---|
+| Vị trí `userLocation` | lat, lng, address | lat, lng | Server dùng lat/lng để tính khoảng cách; `address` chỉ để hiển thị. Sau release. |
+| Giờ GMT+7 | server tự tính (Asia/Ho_Chi_Minh) | server tự tính | Không cần gửi. |
+| Lịch sử | `messages[{role, content}]`, server tự nén | giống web; bong bóng lỗi bị loại ở tầng gửi | ✅ |
+| `decisionEvidenceId` | gửi lại id của lượt trước | **không gửi — theo ADR-024** (mobile giữ không trạng thái; guard web `consultativeArchitecture.test.ts` › "the mobile clients stayed stateless"). Lượt hỏi tiếp trên app nhận khối an toàn của server. Đã thử thêm rồi bỏ (28/09) vì trái ADR. | Muốn đổi → Huy quyết (Q7) |
+| `userPreferences` / `responseStyle` | từ quiz chat (L17) | chưa có | Sau release (L17). |
+| Câu hỏi làm rõ → nút một chạm | `[FOLLOWUPS]` | chip bấm được; test offline + e2e `chat` bấm chip đầu | ✅ |
+| Khung đầu ra 6 mảng | theo `OUTPUT-CONTRACT-6-DOMAINS.md` | kiểm §5 (a)(b)(c)(e)(f) offline; (d) nhãn nút = fixture CCP chung | `3:` lỗi → bong bóng lỗi (đã sửa) |
+| Chữ chạy dần + "đang tìm" | useSmoothText + progress | typewriter + `tappy.progress.v1` | ✅ |
 
 ## (b) Rà các commit android/ của phiên web — KẾT LUẬN: không có P0/P1
 
@@ -118,6 +131,7 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 | Q3 | Cài đặt Android có thêm "Âm thanh thông báo", "Giao diện", "Chính sách bản quyền" mà web không có (L11). | Giữ nguyên, xếp vào "Sau release" (không ảnh hưởng chức năng). |
 | Q4 | "Gợi ý cho bạn" cho khách: server không có nhánh cho khách (R6). | Android hỏi 18+ một lần; vẫn 403 thì mời đăng nhập, không lặp lại. |
 | Q5 | Đăng video Android làm đỏ 2 guard web (`src/lib/config/video{Duration,Size}.test.ts`, chính guard ghi "có picker video thì đổi guard"). Android không được sửa `src/`. | Commit video 6fe2150 **giữ ở máy, không push** để rc không đỏ; đã ghi R8 kèm nội dung guard thay thế. Huy/phiên web đổi guard → Android push ngay. Nếu Huy muốn release không có video trên Android: bỏ commit đó, không ảnh hưởng gì khác. |
+| Q7 | App chưa gửi `decisionEvidenceId` (web có), nên câu hỏi tiếp kiểu "cái đầu tiên" trên app kém hơn web. ADR-024 cố ý giữ mobile không trạng thái. | Giữ ADR-024 (không gửi). Huy muốn ngang web thì phải đổi ADR + guard web; phần Android đã viết sẵn (commit d48a11e, không push). |
 | Q6 | Server gửi khối `[TAPPY_PLAN]` cụt đầu (R7, golden M1#6) → không vẽ được thẻ kế hoạch. | Android bỏ khối, không lộ JSON; chờ server sửa. |
 
 ## Việc tiếp theo
