@@ -55,7 +55,8 @@ import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
-import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
+import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
+import { buildLeanConsultSystem, consultTools, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -1409,7 +1410,9 @@ export async function POST(req: Request) {
   // quận 1" was detected as a NEW consultation (ownDomainSwitch), yet the model still read the snack
   // turns and planned "Tối nay ăn vặt & dạo phố". A new subject is answered on its own words: the
   // earlier subject's turns do not reach the model.
-  const trimmedMessages = ownDomainSwitch ? messages.slice(-1) : messages.length > 10 ? messages.slice(-10) : messages
+  // Consult V2 (owner 2026-09-29): the STATE block carries what was said; the model sees the last 3 turns only,
+  // so a turn's cost does not grow with the session.
+  const trimmedMessages = ownDomainSwitch ? messages.slice(-1) : consult ? recentTurns(messages, 3) : messages.length > 10 ? messages.slice(-10) : messages
 
   // V2 highlighted regression: on a tool-less follow-up ("Giá cả thế nào?",
   // "cụ thể hơn", "chọn giúp tôi"), no PLACE_TOOL runs so bufferMode stays
@@ -1617,8 +1620,25 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     consultativeBlock || undefined,
     planning,
   )
-  const systemShared = built?.shared
-  const systemPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
+  const legacyShared = built?.shared
+  const legacyPrompt = (built ? built.dynamic : buildSystemSimple(lang, memoryBlock)) + styleBlock + shareContextBlock
+  // Consult V2 lean prompt: small fixed core + this area's tool rules + the frame/state (leanConsultPrompt.ts).
+  // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).
+  const lean = consult && consult.turn !== 'chat' && consult.domains.length > 0
+    ? (() => {
+        const now = new Date()
+        return buildLeanConsultSystem({
+          lang, langName: lang === 'en' ? 'English' : 'Vietnamese',
+          vnDateTime: now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' }),
+          vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
+          domains: consult.domains,
+          consultBlock: consultativeBlock,
+          extra: [memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', styleBlock, shareContextBlock],
+        })
+      })()
+    : null
+  const systemShared = lean ? lean.shared : legacyShared
+  const systemPrompt = lean ? lean.dynamic : legacyPrompt
 
   // ── Model timing instrumentation ────────────────────────────────────────
   //
@@ -2264,7 +2284,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
     maxTokens: noToolTurn ? 300 : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
-    maxSteps: noToolTurn || eveningBlock ? 1 : planningIntent ? 8 : hasImage ? 3 : 5,
+    // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
+    maxSteps: noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? 8 : hasImage ? 3 : lean ? 3 : 5,
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
     // generateText only (bundle line 4177); streamText (line 5193) takes
@@ -2288,7 +2309,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // cacheable size, so it was never cached to begin with — measured
     // cacheCreationTokens:0 / cacheReadTokens:0 on every chitchat turn in both
     // the baseline and the post-B1 run. The tool path keeps its own lineage.
-    tools,
+    tools: lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools,
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
