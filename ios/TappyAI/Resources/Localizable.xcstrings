@@ -979,6 +979,295 @@
         }
       }
     },
+    "chat.age.blocked.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI is only available to people aged 18 and over."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI chỉ dành cho người từ 18 tuổi trở lên."
+          }
+        }
+      }
+    },
+    "chat.age.blocked.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI is for people aged 18 and over"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI dành cho người từ 18 tuổi"
+          }
+        }
+      }
+    },
+    "chat.age.declaration.adult": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I am 18 or older"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi đủ 18 tuổi"
+          }
+        }
+      }
+    },
+    "chat.age.declaration.continue": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục"
+          }
+        }
+      }
+    },
+    "chat.age.declaration.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy is for people 18 and over. Tell us your birth year, or confirm you are an adult."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy dành cho người từ 18 tuổi. Cho Tappy biết năm sinh của bạn, hoặc xác nhận bạn đã đủ 18 tuổi."
+          }
+        }
+      }
+    },
+    "chat.age.declaration.yearPlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Birth year"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Năm sinh"
+          }
+        }
+      }
+    },
+    "chat.age.dob.day": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Day"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngày"
+          }
+        }
+      }
+    },
+    "chat.age.dob.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng."
+          }
+        }
+      }
+    },
+    "chat.age.dob.month": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Month"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tháng"
+          }
+        }
+      }
+    },
+    "chat.age.dob.privacy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "We use this only to confirm you are 18 or over, and we never show your date of birth on your profile."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn."
+          }
+        }
+      }
+    },
+    "chat.age.dob.submit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếp tục"
+          }
+        }
+      }
+    },
+    "chat.age.dob.submitting": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saving..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang lưu..."
+          }
+        }
+      }
+    },
+    "chat.age.dob.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm you are 18 or over"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xác nhận bạn đủ 18 tuổi"
+          }
+        }
+      }
+    },
+    "chat.age.dob.year": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Year"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Năm"
+          }
+        }
+      }
+    },
+    "chat.age.error.correctionExhausted": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've already changed your date of birth once. Please contact support if it's still wrong."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã sửa ngày sinh một lần. Hãy liên hệ hỗ trợ nếu thông tin vẫn chưa đúng."
+          }
+        }
+      }
+    },
+    "chat.age.error.failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't save. Please try again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể lưu. Vui lòng thử lại."
+          }
+        }
+      }
+    },
+    "chat.age.error.invalid": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "That date of birth isn't valid. Please check it."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngày sinh không hợp lệ. Vui lòng kiểm tra lại."
+          }
+        }
+      }
+    },
     "chat.chip.nearby": {
       "localizations": {
         "en": {
@@ -1300,6 +1589,142 @@
           "stringUnit": {
             "state": "translated",
             "value": "Chọn biểu cảm"
+          }
+        }
+      }
+    },
+    "chat.plan.bookNow": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Book now"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt ngay"
+          }
+        }
+      }
+    },
+    "chat.plan.costBreakdown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💰 Estimated cost"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "💰 Chi phí ước tính"
+          }
+        }
+      }
+    },
+    "chat.plan.dayFallback": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Day %ld"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngày %ld"
+          }
+        }
+      }
+    },
+    "chat.plan.generalTip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "General advice"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kinh nghiệm chung"
+          }
+        }
+      }
+    },
+    "chat.plan.localTips": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📍 Local tips"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "📍 Mẹo địa phương"
+          }
+        }
+      }
+    },
+    "chat.plan.map": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Map"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bản đồ"
+          }
+        }
+      }
+    },
+    "chat.plan.people": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld people"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld người"
+          }
+        }
+      }
+    },
+    "chat.plan.totalEstimate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Budget"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngân sách"
           }
         }
       }
