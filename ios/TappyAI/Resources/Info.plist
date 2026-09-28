@@ -58,7 +58,7 @@
 	<!-- Required by App Store processing (ITMS-90683): chat voice input uses SFSpeechRecognizer
 	     (Features/Chat/Data/VoiceInputManager.swift). Build 16 was rejected without it. -->
 	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>TappyAI turns what you say into text so you can talk to Tappy instead of typing. Your speech is processed by Apple's speech recognition.</string>
+	<string>TappyAI turns what you say into a chat message. Your voice is transcribed by Apple speech recognition and is not stored by TappyAI.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TappyAI accesses your photos to upload reviews and images.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>

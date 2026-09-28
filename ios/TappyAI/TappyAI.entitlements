@@ -17,5 +17,12 @@
         <string>applinks:www.tappyai.com</string>
         <string>webcredentials:www.tappyai.com</string>
     </array>
+
+    <!-- Sign in with Apple. The button stays hidden until the server enables it
+         (flags.appleSignIn or an "apple" auth provider in /api/config). -->
+    <key>com.apple.developer.applesignin</key>
+    <array>
+        <string>Default</string>
+    </array>
 </dict>
 </plist>

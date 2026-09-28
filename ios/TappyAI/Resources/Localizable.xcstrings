@@ -7998,6 +7998,40 @@
         }
       }
     },
+    "legal.loadFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not load this page. Check your connection or open it in the browser."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tải được trang. Kiểm tra kết nối hoặc mở bằng trình duyệt."
+          }
+        }
+      }
+    },
+    "legal.openInBrowser": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open in browser"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở bằng trình duyệt"
+          }
+        }
+      }
+    },
     "legal.privacy.heading": {
       "extractionState": "manual",
       "localizations": {
@@ -17960,6 +17994,125 @@
           "stringUnit": {
             "state": "translated",
             "value": "Đang dịch..."
+          }
+        }
+      }
+    },
+    "ugc.terms.agree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I agree"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi đồng ý"
+          }
+        }
+      }
+    },
+    "ugc.terms.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To post reviews and comments on TappyAI, you agree to the Terms of Service. TappyAI has no tolerance for objectionable content or abusive users."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để đăng review và bình luận trên TappyAI, bạn đồng ý với Điều khoản sử dụng. TappyAI không chấp nhận nội dung phản cảm hay người dùng có hành vi lạm dụng."
+          }
+        }
+      }
+    },
+    "ugc.terms.readFull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read the full Terms of Service"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đọc toàn bộ Điều khoản sử dụng"
+          }
+        }
+      }
+    },
+    "ugc.terms.rule1": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hateful, violent, sexual, harassing or illegal content, and nothing that infringes others' rights."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không đăng nội dung thù ghét, bạo lực, khiêu dâm, quấy rối, vi phạm pháp luật hoặc xâm phạm quyền của người khác."
+          }
+        }
+      }
+    },
+    "ugc.terms.rule2": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anyone can report a post or comment; reports are reviewed and violating content is removed."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ai cũng có thể báo cáo bài đăng hoặc bình luận; báo cáo được xem xét và nội dung vi phạm sẽ bị gỡ."
+          }
+        }
+      }
+    },
+    "ugc.terms.rule3": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accounts that break these rules may be restricted or removed."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tài khoản vi phạm có thể bị hạn chế hoặc bị xoá."
+          }
+        }
+      }
+    },
+    "ugc.terms.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Before you post"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trước khi đăng"
           }
         }
       }

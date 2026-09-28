@@ -1,3 +1,4 @@
+import AuthenticationServices
 import SwiftUI
 
 /// The login screen: Google, Zalo, and Email-OTP, plus a link to registration. Presented modally
@@ -8,6 +9,7 @@ struct AuthFlowView: View {
     private let onClose: () -> Void
 
     private let config: AppConfigService
+    @Environment(\.colorScheme) private var colorScheme
 
     init(repo: AuthRepository, config: AppConfigService, onClose: @escaping () -> Void) {
         self.repo = repo
@@ -53,6 +55,19 @@ struct AuthFlowView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 header
+                if vm.appleEnabled {
+                    SignInWithAppleButton(.continue) { request in
+                        request.requestedScopes = [.fullName, .email]
+                        request.nonce = vm.prepareAppleRequest()
+                    } onCompletion: { result in
+                        let credential = (try? result.get())?.credential as? ASAuthorizationAppleIDCredential
+                        let error: Error? = { if case .failure(let e) = result { return e }; return nil }()
+                        Task { await vm.finishApple(identityToken: credential?.identityToken, error: error) }
+                    }
+                    .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                    .frame(height: 48)
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                }
                 if vm.enabledProviders.contains("google") {
                     Button("auth.continueGoogle") { Task { await vm.continueWithGoogle() } }
                         .buttonStyle(.tappy(.primary))

@@ -55,6 +55,13 @@ final class SupabaseAuthService: AuthService {
         return AuthTokens(session: session)
     }
 
+    func signInWithApple(idToken: String, nonce: String) async throws -> AuthTokens {
+        let session = try await supabase.auth.signInWithIdToken(
+            credentials: OpenIDConnectCredentials(provider: .apple, idToken: idToken, nonce: nonce)
+        )
+        return AuthTokens(session: session)
+    }
+
     func hydrate(accessToken: String, refreshToken: String) async throws -> AuthTokens {
         let session = try await supabase.auth.setSession(accessToken: accessToken, refreshToken: refreshToken)
         return AuthTokens(session: session)

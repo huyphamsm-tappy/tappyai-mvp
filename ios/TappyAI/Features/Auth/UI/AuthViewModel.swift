@@ -15,6 +15,10 @@ final class AuthViewModel: AppObservableObject {
     @AppPublished var showRegister = false
     @AppPublished var providerState: ProviderState = .loading
     @AppPublished var enabledProviders: [String] = []
+    /// Sign in with Apple is shown only when the server enables it (`AppleSignIn.isEnabled`).
+    @AppPublished var appleEnabled = false
+    /// The raw nonce of the Apple request in flight; Apple got its SHA-256.
+    private var appleNonce: String?
 
     private let repo: AuthRepository
     private let config: AppConfigService
@@ -30,6 +34,8 @@ final class AuthViewModel: AppObservableObject {
         providerState = .loading
         do {
             enabledProviders = try await config.enabledProviders()
+            let appleFlag = (try? await config.config())?.flags.appleSignIn
+            appleEnabled = AppleSignIn.isEnabled(flag: appleFlag, providers: enabledProviders)
             providerState = .loaded
         } catch {
             AppLogger.network.info("provider config load failed")
@@ -56,6 +62,30 @@ final class AuthViewModel: AppObservableObject {
 
     func continueWithZalo() async {
         await run { try await self.repo.signInWithZalo(); self.onAuthenticated() }
+    }
+
+    /// Starts an Apple request: a fresh nonce, whose SHA-256 goes into the request.
+    func prepareAppleRequest() -> String {
+        let nonce = AppleSignIn.randomNonce()
+        appleNonce = nonce
+        return AppleSignIn.sha256(nonce)
+    }
+
+    /// The Apple sheet finished. Cancelling it is silent, like the other providers.
+    func finishApple(identityToken: Data?, error: Error?) async {
+        let nonce = appleNonce
+        appleNonce = nil
+        if let error {
+            if (error as NSError).domain == "com.apple.AuthenticationServices.AuthorizationError",
+               (error as NSError).code == 1001 { return }   // ASAuthorizationError.canceled
+            errorMessage = ErrorPresenter.present(.unexpected(message: error.localizedDescription)).message
+            return
+        }
+        guard let identityToken, let token = String(data: identityToken, encoding: .utf8), let nonce else {
+            errorMessage = ErrorPresenter.present(.unexpected(message: "apple identity token missing")).message
+            return
+        }
+        await run { try await self.repo.signInWithApple(idToken: token, nonce: nonce); self.onAuthenticated() }
     }
 
     func backToMethods() { mode = .methods; code = ""; errorMessage = nil }

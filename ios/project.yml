@@ -18,7 +18,8 @@ settings:
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: ""                        # set locally
     IPHONEOS_DEPLOYMENT_TARGET: "16.0"
-    TARGETED_DEVICE_FAMILY: "1,2"              # iPhone + iPad (responsive, per docs/ios/06)
+    TARGETED_DEVICE_FAMILY: "1"                # iPhone only: iPad has never been tested. An iPad
+                                               # build would be reviewed on iPad (App Store 2.4.1).
 
 configs:
   Debug: debug
@@ -48,7 +49,7 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         CURRENT_PROJECT_VERSION: "1"
-        MARKETING_VERSION: "0.1.0"
+        MARKETING_VERSION: "1.0.0"
         CODE_SIGN_ENTITLEMENTS: TappyAI/TappyAI.entitlements
     scheme:
       testTargets:

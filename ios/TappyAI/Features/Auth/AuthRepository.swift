@@ -84,6 +84,15 @@ final class AuthRepository {
         await claimAnonymousHistory(claimToken)
     }
 
+    // MARK: Sign in with Apple — native sheet, then Supabase signInWithIdToken (provider apple)
+
+    func signInWithApple(idToken: String, nonce: String) async throws {
+        let claimToken = anonymousTokenToClaim()   // C33 — read BEFORE the session is replaced
+        let tokens = try await auth.signInWithApple(idToken: idToken, nonce: nonce)
+        await finishAuthentication(tokens)
+        await claimAnonymousHistory(claimToken)
+    }
+
     // MARK: Zalo (survey §5.2 · D2) — one ASWebAuthenticationSession; existing routes; no new endpoints
 
     func signInWithZalo() async throws {

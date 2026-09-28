@@ -512,9 +512,7 @@ struct TappyKnowsView: View {
     }
 
     private func parseDate(_ iso: String) -> Date? {
-        let f = ISO8601DateFormatter()
-        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        return f.date(from: iso) ?? ISO8601DateFormatter().date(from: iso)
+        ISO8601Timestamp.date(from: iso)
     }
 
     private func formatDate(_ date: Date) -> String {
