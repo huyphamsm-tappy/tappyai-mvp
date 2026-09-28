@@ -72,7 +72,7 @@ Bằng chứng bản release **không** chứa hook và secret:
 | 06b5284 | L4 cổng 18+ theo mockup · L5 "Gợi ý cho bạn" hỏi 18+ · khai tuổi khách trên mọi request | age-gate ✅✅ · recommendations ✅✅ |
 | 311159f | Khách mở Đăng nhập, rời app, quay lại: vẫn ở Đăng nhập | login ✅✅ |
 | a803d09 | App giả Zalo/TikTok/Messenger (đúng package) ghi lại cái nhận được | share-explore ✅✅ (TikTok/Zalo nhận FILE video 12 MB + link) |
-| af5aa27 | Test hiển thị OFFLINE trên 51 lượt golden (không gọi AI) → sửa link dính, plan `"people":[1]`, khung lỗi `3:` | unit (GoldenOfflineRender 9 · GoldenStreamReplay 6) |
+| af5aa27 | Test hiển thị OFFLINE trên 51 lượt golden (không gọi AI) → sửa plan `"people":[1]`, khung lỗi `3:` (link dính: renderer đã tách từ P1c của phiên web, test giờ kiểm chữ hiển thị) | unit (GoldenOfflineRender 9 · GoldenStreamReplay 6) |
 | 6fe2150 ⏸ | Composer đăng VIDEO (3 bước upload, F-099) — **chưa push**, chờ R8 | composer ✅✅ (Android 8/8, web 3/3) |
 
 (✅✅ nghĩa là Android và web cùng PASS.)

@@ -1,6 +1,5 @@
 package com.tappyai.app.chat
 
-import com.tappyai.core.designsystem.component.MarkdownNormalize
 import com.tappyai.core.designsystem.component.markdownVisibleText
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -63,10 +62,13 @@ class GoldenOfflineRenderTest {
         RAW_URL.find(v)?.let { "found «${it.value.take(80)}»" }
     })
 
-    @Test fun `no glued links reach the renderer`() = assertNone("glued links", failures { t, _ ->
-        // What TappyMarkdown parses: the server emits "[A](u)[B](v)"; the renderer must separate them.
-        val stream = MarkdownNormalize.forRender(ChatResponseParser.parse(t.raw).streamText)
-        GLUED.find(stream)?.let { "found «${it.value.take(80)}»" }
+    @Test fun `back-to-back links read apart`() = assertNone("glued links", failures { t, v ->
+        // The server writes "[Official Website](u)[Google Maps](v)"; the reader must see "… · …"
+        // (TappyMarkdown's separator, P1c), never "Official WebsiteGoogle Maps".
+        val stream = ChatResponseParser.parse(t.raw).streamText
+        GLUED_PAIR.findAll(stream).map { it.groupValues[1] to it.groupValues[2] }
+            .firstOrNull { (x, y) -> !x.startsWith("http") && !y.startsWith("http") && "$x · $y" !in v }
+            ?.let { (x, y) -> "«$x»«$y» not separated" }
     })
 
     @Test fun `no abnormal whitespace`() = assertNone("abnormal whitespace", failures { _, v ->
@@ -113,7 +115,7 @@ class GoldenOfflineRenderTest {
         val MARKER = Regex("""\[/?(TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\]|\{"[a-z_]+":|\]\(""")
         val PLAN_BODY = Regex("""\[TAPPY_PLAN\]([\s\S]*?)\[/TAPPY_PLAN\]""")
         val RAW_URL = Regex("""https?://\S+""")
-        // Two markdown links back to back with no separator: "[A](u)[B](v)".
-        val GLUED = Regex("""\]\([^)\s]+\)\[""")
+        // Two markdown links back to back: "[A](u)[B](v)" → A, B.
+        val GLUED_PAIR = Regex("""\[([^\]\n]+)\]\([^)\s]+\)\[([^\]\n]+)\]\(""")
     }
 }

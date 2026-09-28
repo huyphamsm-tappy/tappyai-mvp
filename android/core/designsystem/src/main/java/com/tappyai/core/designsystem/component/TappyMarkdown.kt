@@ -70,7 +70,7 @@ fun TappyMarkdown(
     // Bold is balanced per line BEFORE parsing: the inline scan below emits an unterminated `**`
     // literally, so an unmatched one (model slip, guard cut, pair split by a line break) must be
     // gone by then (owner UAT 2026-09-28; mirrors web formatMessage).
-    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.forRender(markdown)) }
+    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)) }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
@@ -86,7 +86,7 @@ fun TappyMarkdown(
  * without a device; it runs the same inline scan the renderer uses.
  */
 fun markdownVisibleText(markdown: String): String =
-    parseMarkdownBlocks(MarkdownNormalize.forRender(markdown)).joinToString("\n") { block ->
+    parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)).joinToString("\n") { block ->
         val inline = { s: String -> buildInlineAnnotated(s, Color.Unspecified, Color.Unspecified).text }
         when (block) {
             is MdBlock.Heading -> inline(block.text)
