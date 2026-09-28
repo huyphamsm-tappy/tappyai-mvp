@@ -16,7 +16,7 @@ import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbacke
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
-import { guardPlanTripFacts } from './planTripFactsGuard'
+import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2034,7 +2034,12 @@ export function applyPlaceEnrichmentStreamFilter(
     const itemized = planItems ? planItems.text : tipped
     const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText]) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
-    const planMask = maskPlanBody(tripFacts ? tripFacts.text : itemized)
+    // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'
+    // while the fare links searched 05/10) — planTripFactsGuard.guardUngivenTravelDate.
+    const tripped = tripFacts ? tripFacts.text : itemized
+    const dated = travelIntent ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
+    if (dated?.dropped) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'travel_ungiven_date', dropped: dated.dropped }))
+    const planMask = maskPlanBody(dated ? dated.text : tripped)
     const enriched = planMask.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence

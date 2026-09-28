@@ -159,6 +159,8 @@ function normalizeBlockBody(name: string, body: string): string {
 const HALF_ACCENTED: Array<[RegExp, string]> = [
   [/(?<!\p{L})([Nn])gan(\s+)(sách)(?!\p{L})/gu, '$1gân$2$3'],
   [/(?<!\p{L})([Nn])gân(\s+)sach(?!\p{L})/gu, '$1gân$2sách'],
+  // c40 O8: "chưa có gia cụ thể". "gia" next to an ACCENTED price word is always "giá" ("gia đình" untouched).
+  [/(?<!\p{L})([Gg])ia(\s+)(cụ thể|vé|phòng|tiền|rẻ|niêm yết)(?!\p{L})/gu, '$1iá$2$3'],
 ]
 export function fixHalfAccented(text: string): string {
   return HALF_ACCENTED.reduce((t, [re, to]) => t.replace(re, to), text)

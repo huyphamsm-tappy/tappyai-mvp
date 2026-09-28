@@ -121,12 +121,36 @@ describe('guardPlanTripFacts — the plan has exactly the stated number of days'
   })
 })
 
+describe('guardUngivenTravelDate — no travel date the user did not give (c40 O8)', () => {
+  it('live O8 (uat): drops "giả sử … hôm nay (28/9)", keeps the fare links and the question', async () => {
+    const { readFileSync } = await import('node:fs')
+    const { guardUngivenTravelDate } = await import('./planTripFactsGuard')
+    const live = readFileSync('src/lib/ai/__fixtures__/flightO8AssumedToday.live.txt', 'utf8')
+    const r = guardUngivenTravelDate(live, ['vé máy bay Sài Gòn đi Hà Nội'])
+    expect(r.text).not.toContain('28/9')
+    expect(r.text).not.toContain('giả sử bạn muốn đi hôm nay')
+    expect(r.text).toContain('[Trip.com](')
+    expect(r.text).toContain('ddate%3D2026-10-05')
+    expect(r.text).toContain('Bạn muốn đi ngày nào cụ thể và bao lâu?')
+    expect(r.text).toContain('[FOLLOWUPS]')
+  })
+
+  it('a stated date keeps everything; links alone never count as a stated date', async () => {
+    const { guardUngivenTravelDate } = await import('./planTripFactsGuard')
+    const t = 'Chuyến 5/10 giá tốt. [Trip.com](https://x.test/?ddate=2026-10-05)'
+    expect(guardUngivenTravelDate(t, ['vé máy bay SGN HAN ngày 5/10']).text).toBe(t)
+    const link = 'Xem giá trên [Trip.com](https://x.test/?ddate=2026-10-05) nhé.'
+    expect(guardUngivenTravelDate(link, ['vé máy bay SGN HAN']).text).toBe(link)
+  })
+})
+
 describe('fixHalfAccented — "ngan sách" (owner 2026-09-28)', () => {
   it('fixes only the half-accented pair', async () => {
     const { fixHalfAccented, normalizeReplyMarkdown } = await import('@/lib/chat/markdownNormalize')
     expect(fixHalfAccented('gần chạm ngang ngan sách.')).toBe('gần chạm ngang ngân sách.')
     expect(fixHalfAccented('Ngân sach 5 triệu')).toBe('Ngân sách 5 triệu')
     expect(fixHalfAccented('ngan sach 5tr; con ngan bay')).toBe('ngan sach 5tr; con ngan bay')
+    expect(fixHalfAccented('chưa có gia cụ thể, gia vé và gia phòng; gia đình')).toBe('chưa có giá cụ thể, giá vé và giá phòng; gia đình')
     expect(normalizeReplyMarkdown('Trong **ngan sách** của bạn')).toBe('Trong **ngân sách** của bạn')
   })
 })

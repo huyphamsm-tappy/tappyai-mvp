@@ -59,8 +59,41 @@ function stripLabelDate(label: string): string {
 /** A question asking for a trip fact (date / origin / transport). */
 const TRIP_QUESTION = /(?<!\p{L})(?:ngày nào|hôm nào|khi nào|lúc nào|thời gian nào|dịp nào|xuất phát|khởi hành|từ đâu|ở đâu đi|bay hay|máy bay|xe khách|tàu|phương tiện|which dates?|when|where .*from|fly|train|bus)(?!\p{L})/iu
 
+/** Link targets and bare URLs carry dates of their own ("ddate=2026-10-05") — they are not a claim in the prose. */
+const withoutUrls = (s: string) => s.replace(/\]\([^)]*\)/g, ']').replace(/https?:\/\/\S+/g, ' ')
+
 function hasCalendarDate(s: string): boolean {
-  return CAL_DATE.test(s.replace(OPEN_ALL_DAY, ''))
+  return CAL_DATE.test(withoutUrls(s).replace(OPEN_ALL_DAY, ''))
+}
+
+/** "Mình giả sử bạn muốn đi hôm nay", "tạm tính đi ngày mai" — a travel day assumed for the user. */
+const ASSUMED_DAY = /(?<!\p{L})(?:giả sử|giả định|mặc định|tạm tính|tạm chọn|assum\w*)(?!\p{L}).{0,60}(?<!\p{L})(?:hôm nay|ngày mai|ngày kia|cuối tuần|tuần sau|today|tomorrow|this weekend|next week)(?!\p{L})/iu
+
+/**
+ * A travel reply (flight / trip) must not state a travel DATE the user never gave (owner 2026-09-28;
+ * c40 O8 on uat: "Mình giả sử bạn muốn đi hôm nay (28/9)" while the fare links searched 05/10). Such
+ * prose sentences are removed; questions, links and marker blocks are kept. No-op when the thread
+ * states a date.
+ */
+export function guardUngivenTravelDate(fullText: string, userTexts: readonly string[]): { text: string; dropped: number } {
+  if (!missingTripFacts(fold(userTexts.join(' \n '))).includes('date')) return { text: fullText, dropped: 0 }
+  // Marker blocks ([TAPPY_PLAN], [CTA_BUTTONS], [FOLLOWUPS]…) are judged elsewhere — only prose here.
+  const parts = fullText.split(/(\[(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*?\[\/(?:TAPPY_[A-Z_]+|CTA_BUTTONS|FOLLOWUPS)\])/)
+  let dropped = 0
+  const out = parts.map((part, i) => {
+    if (i % 2 === 1) return part
+    return part.split('\n').map(line => {
+      const sentences = line.split(/(?<=[.!?…])\s+/u)
+      const kept = sentences.filter(sn => {
+        if (/\?\s*$/u.test(sn)) return true
+        const bad = hasCalendarDate(sn) || ASSUMED_DAY.test(withoutUrls(sn))
+        if (bad) dropped++
+        return !bad
+      })
+      return kept.length === sentences.length ? line : kept.join(' ')
+    }).join('\n')
+  }).join('')
+  return { text: dropped ? out.replace(/\n{3,}/g, '\n\n') : fullText, dropped }
 }
 
 /** Drops the prose sentences that state what the user did not say. Line structure is kept. */
