@@ -1,12 +1,32 @@
-# /api/chat reply output contract: 6 areas (current behaviour)
+# /api/chat reply output contract: 6 areas
 
-> **This describes what the server does today. It is not a new design.**
-> It was written from `release/rc-merge-main-2026-09-29` @ `f8a26b7` by reading the code. Every claim
-> cites `file:line`. The owner's approved per-domain design of 2026-09-26 could not be found on this
-> machine, so where the two differ this file shows only what the code does now. Nothing here was
-> measured against a live server.
->
-> Areas covered: FOOD, SHOPPING, TRAVEL, ENTERTAINMENT, SPA-WELLNESS, MAIN CHAT (general / non-domain).
+> **Update 2026-09-29 — the owner-approved 6-area frames are IMPLEMENTED** (commit `83853cc`,
+> `src/lib/ai/consultative/domainFrames.ts`). The 26/9 design turned out to be a request that had never
+> run; the owner approved the frames below on 2026-09-29. §0 is the approved frame per area; §1–§5 (written
+> from `f8a26b7` by reading the code) still describe the transport, markers and annotations, which did NOT
+> change — the frames change the PROSE the model writes, not the stream format.
+
+## 0. Approved frames (what each reply contains, in order)
+
+Per turn the server loads ONE area frame + a small shared core (V1 block; the area comes from the turn's
+domain, a trip plan → TRAVEL, an evening plan → ENTERTAINMENT, anything else → MAIN).
+
+**Shared core (every area):** no personal info requested · booking/buy buttons are system-placed, search links
+say they are a search and what the user must type · never invent hours, prices, showtimes, promotions,
+availability (one sentence + official source instead) · spending shows arithmetic · no unbacked "phù hợp",
+"giá hợp lý" · **the main pick is the FIRST name in the text** (the card's #1 follows it, so text = card).
+
+| Area | Reply shape |
+|---|---|
+| FOOD | pick + reason (tool numbers) · 1–2 options at another price level · dish to order (only if in data) · price per person (only from tool) · timing: today's closing time; busy hours / booking only if a review says so · parking / alley only if data says so · booking/delivery buttons |
+| SHOPPING | one product of the RIGHT category INSIDE the stated budget (else say so) · 1 alternative + real trade-off · what to check before paying (used goods keep the risk rule) · where to buy, honest link labels · say "chờ" / "không đáng mua" plainly when that is the answer |
+| TRAVEL | uses `[TAPPY_PLAN]`: 1-line summary (days, people, total budget) · day-by-day by time · rain option · where/what to eat · **code-written budget line** `💰 Ngân sách: X ÷ N người = …/người · ÷ D ngày = …/người/ngày` (right after `[/TAPPY_PLAN]`, only when the user stated a budget) · tips & traps (grounded) · to-do before leaving · flight/hotel links labelled as search. Date / origin / transport never assumed — the server's closing question asks. |
+| ENTERTAINMENT | pick matching district / time / company, open at that time · real experience (from data) · book ahead / arrive early / parking (only if data says) · showtimes/tickets: official page, never invented. Evening plans: fixed stages + code-written queries, personalised by who/mood/budget. |
+| SPA | pick by area + budget · service + price (tool, "giá tham khảo") else "gọi hỏi trước" · experience from reviews · booking contact from data · one caution line |
+| MAIN | detect the area; multi-area requests answered area by area with shared constraints; out-of-scope questions answered directly without pretending to be a local-service tool; constraints and corrections carried across turns |
+
+**Android impact:** none on parsing — same frames (`0:`, `8:`), same markers. New visible text: the `💰 Ngân sách: …`
+line after a budgeted plan block (plain text; render it like any prose line after a marker block).
 
 ---
 

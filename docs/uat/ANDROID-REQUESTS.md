@@ -83,6 +83,11 @@ Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (ti
 
 - 2026-09-28 22:00 (web → Android, **test đỏ trên rc**): `src/lib/i18n/androidHardcodedUiStrings.test.ts` ("no contentDescription is a string literal") báo `android/app/src/main/java/com/tappyai/app/age/AgeCheck.kt:222` (`contentDescription = "TappyAI"`, commit 06b5284). Nhờ phiên Android đổi sang `stringResource(...)` (hoặc chuỗi có sẵn như các màn khác). Web KHÔNG sửa android/.
 
+- 2026-09-29 (web): **Khung đầu ra 6 mảng đã duyệt được cài** (83853cc, `domainFrames.ts`) — đổi NỘI DUNG câu chữ, KHÔNG đổi
+  định dạng stream/marker. Mới: dòng `💰 Ngân sách: … ÷ … người = …` (văn bản thường) ngay sau `[/TAPPY_PLAN]` khi user nêu ngân sách —
+  Android hiển thị như một dòng chữ sau khối kế hoạch. Chi tiết: `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md` §0.
+  Câu trả lời thô mới để test offline: `gs://tappyai-media-uat/evidence/83853cc/golden-raw/`.
+
 ## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
 
 - KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
