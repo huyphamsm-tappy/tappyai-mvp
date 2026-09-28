@@ -2437,7 +2437,9 @@ ${completionInstruction(lang)}` },
     } catch (e) {
       console.error('[chat] place evidence save failed (the next "more" turn will search afresh):', e)
     }
-  }, undefined, travelIntent, lastText, needProfile.domain === 'places',
+  // A trip PLAN holds the whole reply too (owner 2026-09-28, B4): on uat @ 444774d a released prefix
+  // carried the model's own "bay hay đi xe khách từ thành phố nào?" past planTripFactsGuard.
+  }, undefined, travelIntent || planningIntent === 'trip', lastText, needProfile.domain === 'places',
   /**
    * 🚨 TIKTOK REVIEW DISCOVERY — THE V1/V2 CAPABILITY, RESTORED WITH A QUERY
    * THAT CAN ACTUALLY BE ATTRIBUTED.
