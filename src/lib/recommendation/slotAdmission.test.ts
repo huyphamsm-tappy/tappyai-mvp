@@ -117,7 +117,9 @@ describe('"ở Quận 1" is a district, not an eatery (CONSULTATIVE-40 E1, 2026-
   it('an outing question admits the entertainment and attraction producers', () => {
     expect(admitsProducer(t, 'entertainment')).toBe(true)
     expect(admitsProducer(t, 'place')).toBe(true)
-    expect(askedSubjects(t).has('food')).toBe(false)
+    // Owner 2026-09-28 (UAT P1a): "tối nay đi chơi …" is an EVENING PLAN — dinner → going out →
+    // a drink — so food is admitted as the dinner step. "ở Quận 1" still names no eatery (below).
+    expect(askedSubjects(t).has('food')).toBe(true)
   })
   it('"quán" without a number is still food', () => {
     expect(askedSubjects('quán nào ngon ở Quận 1').has('food')).toBe(true)
