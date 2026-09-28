@@ -342,6 +342,11 @@ export function turnStartsNewConsultation(input: { messages: Array<{ role: strin
  */
 export function turnDomain(m: { role: string; content: unknown }, opts: { hasGps: boolean; lang: string }): Actionability['domain'] {
   if (typeof m.content !== 'string') return null
-  if (detectPlanningIntent(m.content) === 'trip') return 'travel'
-  return assessActionability({ messages: [m], hasGps: opts.hasGps, lang: opts.lang, lastAssistantText: null }).domain
+  const plan = detectPlanningIntent(m.content)
+  if (plan === 'trip') return 'travel'
+  // UAT 2026-09-28 (owner): "tối nay đi đâu chơi quận 1" after "mua đồ ăn vặt" read no domain of its
+  // own, so it did not cut the snack purchase and the evening was answered with snack stalls. An
+  // evening out names the going-out domain on its own.
+  const own = assessActionability({ messages: [m], hasGps: opts.hasGps, lang: opts.lang, lastAssistantText: null }).domain
+  return own ?? (plan === 'evening' ? 'entertainment' : null)
 }

@@ -84,3 +84,45 @@ describe('A1 · prose may not claim ordering nobody retrieved', () => {
     expect(d.text).toContain('Bạn muốn đặt hàng online không?')
   })
 })
+
+describe('P1a · "tối nay có chỗ nào đi chơi ở sài gòn ko" is an evening out, not a trip', () => {
+  it('planning intent', async () => {
+    const { detectPlanningIntent } = await import('@/lib/ai/intent')
+    expect(detectPlanningIntent('tối nay có chỗ nào đi chơi ở sài gòn ko')).toBe('evening')
+    expect(detectPlanningIntent('tối nay đi đâu chơi quận 1')).toBe('evening')
+    expect(detectPlanningIntent('đi chơi ở sài gòn cuối tuần này')).toBeNull()
+    expect(detectPlanningIntent('đi chơi Đà Lạt cuối tuần')).toBe('trip')
+    expect(detectPlanningIntent('đi du lịch Đà Nẵng 3 ngày 2 đêm')).toBe('trip')
+  })
+
+  const evePlan = (items: unknown[]) => `[TAPPY_PLAN]\n${JSON.stringify({ type: 'evening', title: 'Tối nay', days: [{ label: 'Tối nay', items }] })}\n[/TAPPY_PLAN]`
+  const pool = [
+    { name: 'Khu Vui chơi Trẻ em - Công viên Gia Định', place_id: 'k', maps_link: 'https://maps.google.com/?cid=10', place_types: ['amusement_park'], opening_hours: '07:00–21:00' },
+    { name: 'Quán Bụi Central', place_id: 'f', maps_link: 'https://maps.google.com/?cid=11', place_types: ['restaurant'], opening_hours: '07:00–22:30' },
+    { name: 'Phố đi bộ Nguyễn Huệ', place_id: 'w', maps_link: 'https://maps.google.com/?cid=12', place_types: ['tourist_attraction'] },
+    { name: 'Chill Skybar', place_id: 'b', maps_link: 'https://maps.google.com/?cid=13', place_types: ['bar'], opening_hours: '17:30–02:00' },
+    { name: 'Cà phê sáng', place_id: 'c', maps_link: 'https://maps.google.com/?cid=14', place_types: ['cafe'], opening_hours: '06:00–11:00' },
+  ]
+  it('a children\'s park is replaced; the evening is filled to dinner → going out → a drink, in time order', () => {
+    const r = guardPlanItems(evePlan([{ time: '19:00', category: 'entertainment', name: 'Khu Vui chơi Trẻ em - Công viên Gia Định' }]), pool)
+    const items = parsed(r.text).days[0].items as Array<{ time: string; name: string; maps_link?: string }>
+    expect(items.map(i => i.name)).toEqual(['Quán Bụi Central', 'Phố đi bộ Nguyễn Huệ', 'Chill Skybar'])
+    expect(items.map(i => i.time)).toEqual(['18:30', '19:00', '21:30'])
+    expect(items.every(i => !!i.maps_link)).toBe(true)
+    expect(r.text).not.toContain('Trẻ em')
+  })
+  it('a place closed at the step\'s time is never used', () => {
+    const r = guardPlanItems(evePlan([{ time: '21:30', category: 'cafe', name: 'Cà phê sáng' }]), pool)
+    expect(r.text).not.toContain('Cà phê sáng')
+  })
+})
+
+describe('P1b · a new subject resets the intent ("mua đồ ăn vặt" → "tối nay đi đâu chơi quận 1")', () => {
+  it('the evening turn starts a new consultation and carries no snack subject', async () => {
+    const { turnStartsNewConsultation } = await import('./actionability')
+    const { currentSubjectUserTexts } = await import('./subjectScope')
+    const m = [{ role: 'user', content: 'mua đồ ăn vặt' }, { role: 'assistant', content: 'Bạn muốn mua món gì?' }, { role: 'user', content: 'tối nay đi đâu chơi quận 1' }]
+    expect(turnStartsNewConsultation({ messages: m, hasGps: false, lang: 'vi' })).toBe(true)
+    expect(currentSubjectUserTexts(m as never, { hasGps: false, lang: 'vi' })).toEqual(['tối nay đi đâu chơi quận 1'])
+  })
+})

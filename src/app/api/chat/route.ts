@@ -109,7 +109,8 @@ export const maxDuration = 120
 const TURN_DEADLINE_MS = 110_000
 
 /** A travel turn that is a TRIP (going somewhere), not a single hotel or ticket lookup. Folded text. */
-const TRIP_WORDS = /\b(?:du lich|di choi|chuyen di|lich trinh|ke hoach di|di [a-z]+ \d+ ngay|\d+\s*ngay\s*\d*\s*dem|trip|travel|vacation|holiday)\b/
+// "đi chơi" is NOT here: going out in town is not a trip (UAT 2026-09-28, owner).
+const TRIP_WORDS = /\b(?:du lich|chuyen di|lich trinh|ke hoach di|di [a-z]+ \d+ ngay|\d+\s*ngay\s*\d*\s*dem|trip|travel|vacation|holiday)\b/
 
 export async function POST(req: Request) {
   const startTime = Date.now()
@@ -482,7 +483,8 @@ export async function POST(req: Request) {
   if (consultativeV1Enabled() && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     const threadUser = messages.filter(m => m.role === 'user' && typeof m.content === 'string').map(m => normalizeVN((m.content as string).toLowerCase())).join(' \n ')
     const lastFolded = normalizeVN(lastText.toLowerCase())
-    const tripTurn = planningIntent === 'trip' || (gateDomain === 'travel' && TRIP_WORDS.test(lastFolded))
+    // Origin / transport belong to an inter-city or abroad TRIP only — never to an evening out.
+    const tripTurn = planningIntent === 'trip' || (planningIntent !== 'evening' && gateDomain === 'travel' && TRIP_WORDS.test(lastFolded))
     if (tripTurn) {
       const trip = tripAskAfter(threadUser, lang)
       if (trip) gateAskAfter = trip

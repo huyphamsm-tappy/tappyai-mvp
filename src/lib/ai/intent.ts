@@ -671,6 +671,8 @@ export function detectPlanActivities(text: string): PlanActivity[] {
 }
 
 const EVENING_RE = /\btoi nay\b|\bbuoi toi\b|\bchieu toi\b|\bdem nay\b|\btonight\b|\bthis evening\b|\bevening\b|\bnight out\b|\ba night\b|\bdate night\b/
+/** Going OUT, not a named venue kind: "đi chơi", "đi đâu", "chơi gì", "làm gì", "hang out". Folded text. */
+const OUTING_RE = /\bdi choi\b|\bdi dau\b|\bchoi gi\b|\bchoi o dau\b|\blam gi\b|\bvui choi\b|\bhang ?out\b|\bgo out\b|\bwhat to do\b|\bwhere to go\b/
 const MULTI_DAY_RE = /\d+\s*(ngay|dem|night|day)s?\b|\bcuoi tuan\b|\bweekend\b|\bdu lich\b|\btrip\b|\bchuyen di\b|\btour\b/
 
 /**
@@ -780,13 +782,21 @@ export function detectPlanningIntent(text: string): 'trip' | 'evening' | null {
   const hasMultiActivity =
     (t.includes('spa') || t.includes('massage') || t.includes('xem phim') || t.includes('phim') || t.includes('karaoke') || t.includes('bar') || t.includes('nhau') || t.includes('nhay mua') || t.includes('club')) &&
     (/\ban\b/.test(t) || t.includes('cafe') || t.includes('ca phe') || t.includes('dinner') || t.includes('eat'))
+  // UAT 2026-09-28 (owner): "tối nay có chỗ nào đi chơi ở sài gòn ko" was read as a TRIP ("đi chơi" +
+  // the city name) — family amusement parks, one stop, then "xuất phát từ đâu, bay hay xe/tàu?".
+  // An evening outing in town ("tối nay / đêm nay" + "đi chơi / đi đâu / chơi gì") is an EVENING plan.
+  const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
+  if (isEvening && !hasDays && OUTING_RE.test(t)) return 'evening'
   if (isEvening && (hasMultiActivity || hasPlanKeyword)) return 'evening'
 
   // Trip: destination + (days/nights pattern OR budget pattern OR trip keyword)
-  const hasDays = /\d+\s*(ngay|dem|night|day)/.test(t)
   const hasBudget = t.includes('budget') || t.includes('ngan sach') || /\d+\s*(trieu|tr\b|million)/.test(t)
   const hasDestination = TRIP_DESTINATION_RE.test(t)
-  const hasTripKw = t.includes('trip') || t.includes('du lich') || t.includes('di choi') || t.includes('chuyen di') || hasPlanKeyword
+  // "đi chơi Đà Lạt" is a trip; "đi chơi Ở Sài Gòn" / "đi chơi quanh quận 1" is going out in town.
+  const outingInTown = /\bdi choi\b.{0,20}\b(o|quanh|tai|trong)\b/.test(t) || /\b(o|quanh|tai|trong)\b.{0,20}\bdi choi\b/.test(t)
+  // Going out IN town ("đi chơi ở Sài Gòn cuối tuần") is never a trip: no fare, no room, no origin.
+  if (outingInTown && !hasDays && !t.includes('du lich')) return isEvening ? 'evening' : null
+  const hasTripKw = t.includes('trip') || t.includes('du lich') || (t.includes('di choi') && !outingInTown) || t.includes('chuyen di') || hasPlanKeyword
 
   if (hasDays && (hasDestination || hasBudget || hasTripKw)) return 'trip'
   if (hasTripKw && hasDestination) return 'trip'

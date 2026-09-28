@@ -67,15 +67,19 @@ const PLAN_TOOL_LINES: Record<PlanActivity, string> = {
   hotel: '- get_hotel_prices → khách sạn phù hợp budget',
 }
 
+/** The evening's "go out" step: night activities, never a daytime / children's venue. */
+const EVENING_ACTIVITY_LINE = '- search_places (type=attraction) → hoạt động BUỔI TỐI cho người lớn: phố đi bộ, chợ đêm, show/nhạc sống, rooftop view, karaoke, bowling — KHÔNG khu vui chơi trẻ em, công viên nước, vườn thú, công viên giải trí ban ngày'
+
 export function buildPlanningBlock(planType: 'trip' | 'evening', lang = 'vi', ctx: PlanningContext = {}): string {
   // The searches are decided HERE from the activities the user named — one per
   // activity, in parallel, and nothing else. A request that names none gets the
   // plan type's sensible default; a request that names three gets three. The
   // model never has to guess a tool per activity, and never runs every tool.
   const named = ctx.activities && ctx.activities.length > 0 ? [...new Set(ctx.activities)] : null
-  const defaults: PlanActivity[] = planType === 'trip' ? ['hotel', 'restaurant', 'attraction'] : ['restaurant', 'bar']
+  // UAT 2026-09-28 (owner): an evening plan is a SEQUENCE — eat → go out → a drink — not one stop.
+  const defaults: PlanActivity[] = planType === 'trip' ? ['hotel', 'restaurant', 'attraction'] : ['restaurant', 'attraction', 'bar']
   const activities = named ?? defaults
-  const toolsNeeded = activities.map(a => PLAN_TOOL_LINES[a]).join('\n')
+  const toolsNeeded = activities.map(a => planType === 'evening' && a === 'attraction' ? EVENING_ACTIVITY_LINE : PLAN_TOOL_LINES[a]).join('\n')
     + (planType === 'trip' ? '\n- get_weather → thời tiết nếu biết ngày đi' : '')
   const totalBudgetLine = ctx.totalBudget
     ? `TỔNG NGÂN SÁCH của cả kế hoạch: ${ctx.totalBudget.toLocaleString('vi-VN')} VND (cho TẤT CẢ các bước cộng lại — KHÔNG phải mỗi bước). Khối "BUDGET FILTER" ở nơi khác trong prompt (nếu có) nói về từng lựa chọn; với KẾ HOẠCH thì con số này mới là ràng buộc.`
@@ -139,7 +143,7 @@ BƯỚC 2 - Sau khi có kết quả tool, output KẾ HOẠCH theo ĐÚNG format
 [/TAPPY_PLAN]
 
 QUY TẮC BẮT BUỘC:
-1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực). Mỗi hoạt động user nêu → ít nhất MỘT bước trong kế hoạch, theo thứ tự hợp lý trong ${planType === 'trip' ? 'ngày' : 'buổi tối'}.
+1. Tên địa điểm PHẢI lấy từ kết quả tool (địa điểm có thực). Mỗi hoạt động user nêu → ít nhất MỘT bước trong kế hoạch, theo thứ tự hợp lý trong ${planType === 'trip' ? 'ngày' : 'buổi tối'}.${planType === 'evening' ? ' KẾ HOẠCH TỐI NAY có ÍT NHẤT 3 BƯỚC theo giờ tăng dần: ăn tối (~18:30–19:00) → hoạt động buổi tối (~20:00–20:30) → cafe/bar/rooftop (~21:30–22:00); mỗi bước là MỘT địa điểm cụ thể từ tool, CÒN MỞ CỬA vào giờ đó (theo giờ mở cửa tool trả về), ở gần nhau/gần khu vực user nêu, kèm maps_link của chính địa điểm đó. KHÔNG hỏi điểm xuất phát hay phương tiện.' : ''}
 2. maps_link phải là URL Google Maps thực từ tool (trường maps_link hoặc googleMapsUri). booking_link chỉ khi tool có.
 3. NGÂN SÁCH LÀ TỔNG: budget_total là tổng cho cả kế hoạch — khi TỔNG NGÂN SÁCH ở đầu khối có con số thì budget_total PHẢI là đúng con số đó (KHÔNG BAO GIỜ ghi "chưa có giá" cho budget_total khi user đã nêu). cost_breakdown liệt kê từng bước; TỔNG cost_breakdown PHẢI ≤ budget_total. Giá từng bước lấy từ kết quả tool (price_range / price_level / giá món / giá vé / giá phòng). KHÔNG bịa giá, KHÔNG "ước lượng cho tròn" để phép cộng khớp: bước nào tool không có giá → ghi "chưa có giá" và KHÔNG cộng vào tổng. Sau block, nêu tổng ước tính và phần còn dư so với ngân sách (hoặc nói rõ tổng đang ước tính vì thiếu giá).
 4. GIỜ GIẤC THẬT: nếu tool có opening_hours / open_now → dùng để xếp giờ và nhắc giờ mở/đóng. Nếu không có → giờ trong "time" chỉ là gợi ý sắp xếp, KHÔNG khẳng định quán mở/đóng lúc đó.

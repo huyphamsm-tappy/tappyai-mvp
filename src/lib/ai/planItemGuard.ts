@@ -18,6 +18,22 @@
 // Non-venue items (moving between stops, rest, free time) are kept as they are, minus any link.
 
 import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
+import { isOpenNow } from '@/lib/ai/tools/serperPlaces'
+
+/** Not an evening-out place for adults: children's venues, water parks, zoos, daytime sights. Folded. */
+const EVENING_UNSUITABLE = /\b(tre em|thieu nhi|kid|kids|children|cong vien nuoc|water ?park|vuon thu|thao cam vien|zoo|khu vui choi tre|trampoline|bao tang|museum|chua|pagoda|nha tho|cathedral)\b/
+/** Going out in the evening: walking streets, night markets, shows, rooftops, games. Folded. */
+const EVENING_ACTIVITY = /\b(pho di bo|pho tay|cho dem|night market|rooftop|show|nhac song|live music|acoustic|karaoke|bowling|bida|billiard|du thuyen|cruise|ben bach dang|bui vien)\b/
+/** The steps of an evening, in order: dinner → going out → a drink. */
+const EVENING_STEPS: Array<{ time: string; emoji: string; category: string; kinds: Kind[] }> = [
+  { time: '18:30', emoji: '🍜', category: 'food', kinds: ['food'] },
+  { time: '20:00', emoji: '🎶', category: 'entertainment', kinds: ['entertainment', 'attraction'] },
+  { time: '21:30', emoji: '🍹', category: 'drinks', kinds: ['nightlife', 'cafe'] },
+]
+function minutesOf(time: unknown): number | null {
+  const m = typeof time === 'string' ? time.match(/^(\d{1,2})[:h](\d{2})/) : null
+  return m ? Number(m[1]) * 60 + Number(m[2]) : null
+}
 
 const OPEN = '[TAPPY_PLAN]'
 const CLOSE = '[/TAPPY_PLAN]'
@@ -105,6 +121,23 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
   const res = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0 }
+  // UAT 2026-09-28 (owner): an EVENING plan's stops are evening places — never a children's park,
+  // a daytime sight, or a place closed at the stop's time — and it runs eat → go out → a drink.
+  const evening = plan.type === 'evening'
+  const fitsEvening = (p: PlanPlace, time: unknown): boolean => {
+    if (!evening) return true
+    if (EVENING_UNSUITABLE.test(fold([p.name ?? '', ...(Array.isArray(p.place_types) ? p.place_types.filter((t): t is string => typeof t === 'string') : [])].join(' ')))) return false
+    const minutes = minutesOf(time)
+    const hours = (p as { opening_hours?: unknown }).opening_hours
+    return minutes === null || typeof hours !== 'string' || isOpenNow(hours, { minutes }) !== false
+  }
+  const kindFits = (p: PlanPlace, kind: Kind): boolean => {
+    const ks = [...kindsOf(p)]
+    if (evening && (kind === 'attraction' || kind === 'entertainment')) {
+      return ks.includes('entertainment') || ks.includes('nightlife') || EVENING_ACTIVITY.test(fold(p.name ?? ''))
+    }
+    return ks.some(k => COMPATIBLE[kind].includes(k))
+  }
 
   for (const day of plan.days) {
     if (!Array.isArray(day?.items)) continue
@@ -124,11 +157,13 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
         continue
       }
       let place = (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
+      // A retrieved place that does not fit the evening (a kids' park, closed at that hour) is replaced too.
+      if (place && !fitsEvening(place, item.time)) place = undefined
       if (place) {
         res.matched++
       } else {
         // An invented venue ("Quán bar/lounge Quận 1"): an unused retrieved place of the same kind, or nothing.
-        place = pool.find(p => !used.has(p) && [...kindsOf(p)].some(k => COMPATIBLE[kind].includes(k)))
+        place = pool.find(p => !used.has(p) && kindFits(p, kind) && fitsEvening(p, item.time))
         if (!place) { res.dropped++; continue }
         res.replaced++
         item.name = place.name
@@ -149,6 +184,38 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
       kept.push(item)
     }
     day.items = kept
+  }
+  // Evening sequence: a missing step (dinner, going out, a drink) is filled from the places the turn
+  // retrieved — only a place that fits the evening and is open at that step's time; never invented.
+  if (evening && plan.days.length > 0 && Array.isArray(plan.days[0].items)) {
+    const items = plan.days[0].items as Item[]
+    // An item with no category that names a retrieved place is that place: counted, and never re-added.
+    const itemKinds = (i: Item): Kind[] => {
+      const k = CATEGORY_KIND[String(i.category ?? '').toLowerCase().trim()]
+      if (k) return [k]
+      const p = findByName(String(i.name ?? ''))
+      if (p) { used.add(p); return [...kindsOf(p)] }
+      return []
+    }
+    const present = items.flatMap(itemKinds)
+    const has = (group: Kind[]) => present.some(k => group.includes(k))
+    for (const step of EVENING_STEPS) {
+      if (has(step.kinds)) continue
+      const place = pool.find(p => !used.has(p) && step.kinds.some(k => kindFits(p, k)) && fitsEvening(p, step.time))
+      if (!place) continue
+      used.add(place)
+      const item: Item = { time: step.time, emoji: step.emoji, category: step.category, name: place.name, description: '', price: '' }
+      if (place.address) item.address = place.address
+      if (place.maps_link) item.maps_link = place.maps_link
+      if (place.place_id) item.place_id = place.place_id
+      const photo = place.photo_urls?.[0] ?? place.photo_url
+      if (photo) item.photo_url = photo
+      const url = bookingUrlFor(place, step.kinds[0])
+      if (url) { item.booking_link = url; res.linksSet++ }
+      items.push(item)
+      res.replaced++
+    }
+    items.sort((a, b) => (minutesOf(a.time) ?? 0) - (minutesOf(b.time) ?? 0))
   }
   if (!res.matched && !res.replaced && !res.dropped && !res.linksSet && !res.linksRemoved) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
