@@ -1,5 +1,7 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { serperPost } from './serperClient'
+import { serperCacheGet, serperCacheSet } from './serperCache'
+import { recordSerperCacheHit } from './serperMeter'
 import { messages } from '@/lib/ai/messages'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
 
@@ -422,6 +424,14 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  // L2: the shared 24 h cache (serperCache.ts). Fails open — a miss or a store outage falls
+  // through to the paid call below.
+  const shared = await serperCacheGet<{ title: string; link: string; snippet: string }>('search', query, null)
+  if (shared) {
+    recordSerperCacheHit('search')
+    setCache(searchCacheKey, shared, 5 * 60 * 1000)
+    return shared
+  }
   try {
     const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000)
     if (!resp) return null // A2: over today's Serper ceiling
@@ -433,7 +443,10 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
       .slice(0, 6)
       .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
     // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
-    if (results.length > 0) setCache(searchCacheKey, results, 5 * 60 * 1000)
+    if (results.length > 0) {
+      setCache(searchCacheKey, results, 5 * 60 * 1000)
+      await serperCacheSet('search', query, null, results)
+    }
     return results
   } catch {
     return null
@@ -505,6 +518,14 @@ export interface ShoppingRecord {
 export async function serperShopping(query: string, num = 20): Promise<ShoppingRecord[] | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  // Shared 24 h cache (serperCache.ts), keyed on the query AND `num` — a 12-row answer must not
+  // serve a caller that paid for 20. Fails open.
+  const variant = `n${num}`
+  const shared = await serperCacheGet<ShoppingRecord>('shopping', query, null, variant)
+  if (shared) {
+    recordSerperCacheHit('shopping')
+    return shared
+  }
   try {
     // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
     // for 20 so the ranker has a real field to choose from, and the fallback path keeps the
@@ -515,7 +536,7 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
     if (!(resp as Response).ok) return null
     const data = await (resp as Response).json()
     const rows = (data?.shopping || []) as Array<Record<string, unknown>>
-    return rows
+    const records = rows
       // The `.slice(0, 12)` cap is gone: `num` now bounds the request itself, so slicing here
       // would silently discard rows the caller paid for and asked for.
       .filter(r => typeof r.title === 'string' && typeof r.link === 'string')
@@ -540,6 +561,9 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
         if (typeof r.position === 'number') out.position = r.position
         return out
       })
+    // Only a non-empty, successful answer is shared (serperCacheSet also enforces it).
+    if (records.length > 0) await serperCacheSet('shopping', query, null, records, variant)
+    return records
   } catch {
     return null
   }

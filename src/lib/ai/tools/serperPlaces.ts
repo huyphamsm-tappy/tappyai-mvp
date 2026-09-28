@@ -1,6 +1,8 @@
 import { getCache, setCache, sanitizeUrlForMarkdown } from './common'
 import { serperPost } from './serperClient'
 import { serperPlacesCacheKey } from './cacheKeys'
+import { serperCacheGet, serperCacheSet } from './serperCache'
+import { recordSerperCacheHit } from './serperMeter'
 
 // ── SERPER /maps — THE STRUCTURED PLACE SOURCE ───────────────────────────────
 //
@@ -38,6 +40,11 @@ import { serperPlacesCacheKey } from './cacheKeys'
 // this is a retrieval improvement, NOT a route around the Places storage terms.
 // Nothing here may be written to a database or cached beyond the existing
 // request-scoped TTL.
+// 2026-09-29: the owner asked for a SHARED 24 h cache ("≥ 24 giờ, dùng chung"), so
+// results now also live in serperCache.ts under a hard 24 h EX TTL — still nothing
+// persisted beyond the TTL. The records include `thumbnailUrl` (a googleusercontent
+// URL, not image bytes); whether 24 h of shared retention fits the Maps-content terms
+// is the owner's decision (see serperCache.ts). /images photo lookups are NOT shared.
 
 /**
  * One structured place, exactly as `/maps` returned it.
@@ -115,6 +122,16 @@ export async function serperPlaces(
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !query.trim()) return null
 
+  // L2: the shared 24 h cache (serperCache.ts) — owner-requested TTL; see the Maps/Serper terms
+  // caveat there and in the header above (hard EX TTL, nothing persisted beyond it). Keyed on the
+  // ORIGINAL query + `ll` (2-decimal area); the price retry below never changes the key.
+  const shared = await serperCacheGet<SerperPlaceRecord>('maps', query, ll ?? null)
+  if (shared) {
+    recordSerperCacheHit('maps')
+    setCache(cacheKey, shared, 30 * 60 * 1000)
+    return shared
+  }
+
   const body: Record<string, unknown> = { q: query, gl: 'vn', hl: 'vi' }
   if (ll) body.ll = `@${ll.lat},${ll.lng},${ll.zoom ?? 14}z`
 
@@ -143,7 +160,11 @@ export async function serperPlaces(
   // Only a non-empty result is stored, so a timeout never becomes a hole in the
   // data — the same rule every other Serper cache here follows. TTL matches the
   // existing place cache; nothing is persisted beyond it (Maps/Serper terms).
-  if (out.length > 0) setCache(cacheKey, out, 30 * 60 * 1000)
+  if (out.length > 0) {
+    setCache(cacheKey, out, 30 * 60 * 1000)
+    // The FINAL answer (after any price retry) is shared, under the original query + area.
+    await serperCacheSet('maps', query, ll ?? null, out)
+  }
   return out
 }
 
