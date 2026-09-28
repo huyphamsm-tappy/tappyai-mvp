@@ -1,7 +1,8 @@
 // Turns an e2e run into committed evidence:
-//   docs/uat/evidence/android-parity/<flow>/<NN-step>.png   — web | Android (| D:/redesign) side by side
-//   docs/uat/evidence/android-parity/<flow>/RESULT.md        — checks, PASS/FAIL, UAT SHA, run id
-// Videos (and the raw per-step PNGs) stay OUTSIDE git, copied to D:/TappyAI-backups/android-parity-evidence/<run>/.
+//   <archive>/<run>/<flow>/compare/<NN-step>.png           — web | Android (| D:/redesign) side by side
+//   <archive>/<run>/<flow>/{android,web}/…                 — raw per-step PNGs + videos
+//   docs/uat/evidence/android-parity/<flow>/RESULT.md        — checks, PASS/FAIL, UAT SHA, run id, paths
+// Rule 2026-09-28: no image or video is committed to git; <archive> = D:/TappyAI-backups/android-parity-evidence.
 //
 //   node android/e2e/scripts/evidence.mjs [runId]      (default: the latest run)
 import fs from 'node:fs'
@@ -34,7 +35,9 @@ const b64 = (p) => `data:image/png;base64,${fs.readFileSync(p).toString('base64'
 const browser = await chromium.launch()
 const page = await browser.newPage()
 for (const flow of [...new Set(results.map((r) => r.flow))]) {
-  const dest = path.join(docs, flow)
+  const docDir = path.join(docs, flow)
+  fs.mkdirSync(docDir, { recursive: true })
+  const dest = path.join(archive, flow, 'compare')
   fs.mkdirSync(dest, { recursive: true })
   const aDir = path.join(run, flow, 'android')
   const wDir = path.join(run, flow, 'web')
@@ -57,9 +60,9 @@ for (const flow of [...new Set(results.map((r) => r.flow))]) {
   const rows = results.filter((r) => r.flow === flow)
   const md = [`# ${flow}`, '', `Run \`${runId}\` · UAT \`${uatSha}\``, '',
     ...rows.flatMap((r) => [`## ${r.platform}: ${r.pass ? 'PASS' : 'FAIL'}${r.error ? ` — ${r.error}` : ''}`, '', ...r.checks.map((c) => `- ${c.pass ? '✅' : '❌'} ${c.label}${c.detail ? ` — ${c.detail}` : ''}`), '']),
-    `Video + raw screenshots: \`${archive.replace(/\\/g, '/')}/${flow}/\` (outside git — size).`]
-  fs.writeFileSync(path.join(dest, 'RESULT.md'), md.join('\n') + '\n')
-  fs.mkdirSync(path.join(archive, flow), { recursive: true })
+    `Side-by-side images: \`${dest.replace(/\\/g, '/')}/\` (${steps.length} steps).`,
+    `Video + raw screenshots: \`${path.join(archive, flow).replace(/\\/g, '/')}/{android,web}/\` (outside git — rule 2026-09-28).`]
+  fs.writeFileSync(path.join(docDir, 'RESULT.md'), md.join('\n') + '\n')
   fs.cpSync(path.join(run, flow), path.join(archive, flow), { recursive: true })
   console.log(`${flow}: ${steps.length} step images → ${dest}`)
 }

@@ -1,0 +1,5 @@
+# Evidence media stays OUTSIDE git (rule 2026-09-28): D:/TappyAI-backups/android-parity-evidence/
+*.png
+*.mp4
+*.webm
+*.jpg

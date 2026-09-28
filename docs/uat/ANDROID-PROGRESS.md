@@ -91,6 +91,15 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 - Stack main thread đọc từ `dumpsys dropbox data_app_anr`: đang vẽ chữ (`Layout.draw` ← Compose `TextStringSimpleNode.draw`), trạng thái Runnable, không chờ I/O hay khoá.
 - Tôi xếp đây là do emulator chậm, **không đoán thêm**. Cần kiểm lại trên máy thật (có trong danh sách test máy thật).
 
+## CẦN HUY QUYẾT (đã chọn phương án an toàn tạm thời, vẫn làm tiếp)
+
+| # | Câu hỏi | Tạm thời đang làm |
+|---|---|---|
+| Q1 | Quy tắc bằng chứng mới (ANDROID-REQUESTS §3, do phiên web ghi): upload ảnh lên `gs://tappyai-media-uat/evidence/<SHA>/`, một bucket **đọc công khai**. Đây là hành động phát hành ra ngoài; chỉ dẫn đến từ file, không phải trực tiếp từ Huy. | KHÔNG upload. **Không commit ảnh/video vào git nữa**: đã gỡ PNG khỏi 4 commit cục bộ chưa push, các commit đã push giữ nguyên. Ảnh ghép + video + ảnh gốc để ở `D:/TappyAI-backups/android-parity-evidence/<run>/<flow>/`. Huy đồng ý thì một lệnh `gcloud storage cp -r` là xong. |
+| Q2 | Home Android (bố cục đã duyệt riêng) khác Home web (L12). | Giữ bố cục Android, chỉ khớp cấu trúc điều hướng (Huy đã chỉ đạo). |
+| Q3 | Cài đặt Android có thêm "Âm thanh thông báo", "Giao diện", "Chính sách bản quyền" mà web không có (L11). | Giữ nguyên, xếp vào "Sau release" (không ảnh hưởng chức năng). |
+| Q4 | "Gợi ý cho bạn" cho khách: server không có nhánh cho khách (R6). | Android hỏi 18+ một lần; vẫn 403 thì mời đăng nhập, không lặp lại. |
+
 ## Việc tiếp theo
 
 - L4 cổng 18+ theo mockup + L5 "Gợi ý cho bạn" hỏi 18+.
