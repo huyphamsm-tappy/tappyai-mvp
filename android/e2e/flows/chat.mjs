@@ -21,8 +21,16 @@ const CASES = [
   { id: 'concert', turns: ['vé concert tháng 10'], expect: /ticketbox|ticketgo|vebo|google\./ },
   { id: 'flight', turns: ['vé máy bay đi Đà Nẵng'], expect: /traveloka|trip\.com|vietjet|vietnamairlines|bambooairways|agoda|booking|google\./ },
   { id: 'hotel', turns: ['khách sạn Đà Lạt cuối tuần'], expect: /booking\.com|agoda|traveloka|trip\.com|google\./ },
-  { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
+  { id: 'trip', turns: ['đi du lịch Đà Nẵng 3 ngày 2 đêm'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true },
+  // Every fact given up front, so the consult has nothing left to ask: the plan card + its share.
+  { id: 'trip-full', turns: ['Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản'], expect: /booking\.com|agoda|traveloka|trip\.com|vexere|grab|xanhsm|google\./, plan: true, share: true },
 ]
+
+// E2E_CASES=trip,hotel runs a subset (debugging); the final pass runs all.
+const ONLY = (process.env.E2E_CASES || '').split(',').filter(Boolean)
+const cases = () => (ONLY.length ? CASES.filter((c) => ONLY.includes(c.id)) : CASES)
+// Consult V2: a plan is written only when the user ACCEPTS it (server button).
+const ACCEPT_PLAN = 'Lên kế hoạch chi tiết'
 
 const unwrap = (u) => {
   try {
@@ -101,7 +109,7 @@ export async function android({ a, shot, check, seeded }) {
   for (const p of ['ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION']) a.sh('pm', 'grant', a.PKG, `android.permission.${p}`)
   a.adb(['emu', 'geo', 'fix', '106.7009', '10.7769'], { allowFail: true })
   await a.signIn(email)
-  for (const c of CASES) {
+  for (const c of cases()) {
     await a.launch({ fresh: true })
     await a.tap('Chat', { after: 3000 })
     let raw = ''
@@ -130,7 +138,7 @@ export async function android({ a, shot, check, seeded }) {
           check(`${c.id}: gửi câu trả lời → Tappy trả lời tiếp`, s2.secs < 180)
           raw = (await lastReply(email, picked.join(' · '))) || raw
         }
-      } else if (!ctaOf(raw).length && followupsOf(raw).length && !c.plan && i === c.turns.length - 1) {
+      } else if (!ctaOf(raw).length && followupsOf(raw).length && !/\[TAPPY_PLAN\]/.test(raw) && !followupsOf(raw).includes(ACCEPT_PLAN) && i === c.turns.length - 1) {
         const chips = followupsOf(raw)
         const chip = chips[0]
         // Chips sit in a horizontal row at the end of the reply: reach the row, then scroll it.
@@ -143,6 +151,18 @@ export async function android({ a, shot, check, seeded }) {
           check(`${c.id}: bấm nút trả lời → Tappy trả lời tiếp`, s2.secs < 180)
           raw = await lastReply(email, chip) || raw
         }
+      }
+    }
+    // Plan case: accept the plan the way a user does — the server's "Lên kế hoạch chi tiết" chip.
+    if (c.plan && !/\[TAPPY_PLAN\]/.test(raw)) {
+      for (let k = 0; k < 10 && !a.find(ACCEPT_PLAN); k++) { a.swipe('up'); await a.sleep(700) }
+      const acc = a.find(ACCEPT_PLAN)
+      check(`${c.id}: có nút «${ACCEPT_PLAN}»`, !!acc)
+      if (acc) {
+        await a.tap(acc, { after: 3000 })
+        await settle(a, shot, `${c.id}-accept`)
+        await a.hideKeyboard()
+        raw = (await lastReply(email, ACCEPT_PLAN)) || raw
       }
     }
     shot(`${c.id}-done`)
@@ -208,7 +228,7 @@ async function sharePlan(a, shot, check, id) {
 }
 
 export async function web({ w, page, shot, check }) {
-  for (const c of CASES) {
+  for (const c of cases()) {
     await w.go('/chat', 4000)
     for (const prompt of c.turns) {
       const box = page.getByRole('textbox').last()
@@ -248,6 +268,19 @@ export async function web({ w, page, shot, check }) {
         await page.waitForFunction(() => !document.querySelector('[aria-label*="Dừng"],[aria-label*="Stop"]'), null, { timeout: 180000 }).catch(() => {})
         await page.waitForTimeout(2000)
         raw = (await lastReply(webAccount, chips[0])) || raw
+      }
+    }
+    if (c.plan && !/\[TAPPY_PLAN\]/.test(raw)) {
+      const acc = page.getByText(ACCEPT_PLAN, { exact: true }).last()
+      const has = await acc.count()
+      check(`${c.id}: web có nút «${ACCEPT_PLAN}»`, has > 0)
+      if (has) {
+        await acc.click()
+        await page.waitForTimeout(4000)
+        await page.waitForFunction(() => !document.querySelector('[aria-label*="Dừng"],[aria-label*="Stop"]'), null, { timeout: 180000 }).catch(() => {})
+        await page.waitForTimeout(2000)
+        raw = (await lastReply(webAccount, ACCEPT_PLAN)) || raw
+        check(`${c.id}: web có thẻ kế hoạch`, /\[TAPPY_PLAN\]/.test(raw))
       }
     }
     await shot(`${c.id}-done`)

@@ -298,6 +298,10 @@ class ChatViewModel @Inject constructor(
                                 role = if (isUser) TappyChatRole.User else TappyChatRole.Assistant,
                                 text = parsed?.text ?: stored.content,
                                 plan = parsed?.plan,
+                                // The share payload too — without it a plan reopened from history
+                                // could not be shared ("Không chia sẻ được kế hoạch này từ đây",
+                                // e2e share-plan 2026-09-29); web shares it.
+                                planJson = parsed?.planJson,
                                 ctaButtons = parsed?.ctaButtons ?: emptyList(),
                                 followups = parsed?.followups ?: emptyList(),
                                 ask = parsed?.ask ?: emptyList(),

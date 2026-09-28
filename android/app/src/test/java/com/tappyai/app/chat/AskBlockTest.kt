@@ -69,3 +69,15 @@ class AskBlockTest {
         assertEquals("Để mình gợi ý lịch trình phù hợp:\n• Bạn muốn khởi hành ngày nào?\n• Đi mấy người?", v)
     }
 }
+
+class ChatHistoryBodyTest {
+    @Test fun `an assistant turn goes back raw, markers included (web useChat parity)`() {
+        val raw = "Mình chọn A.\n[FOLLOWUPS]Xem thêm|Lên kế hoạch chi tiết[/FOLLOWUPS]"
+        assertEquals(raw, com.tappyai.app.chat.data.historyBody("assistant", "Mình chọn A.", raw))
+    }
+
+    @Test fun `a user turn, or an assistant turn with no raw, sends its text`() {
+        assertEquals("quán phở", com.tappyai.app.chat.data.historyBody("user", "quán phở", ""))
+        assertEquals("Xin chào", com.tappyai.app.chat.data.historyBody("assistant", "Xin chào", ""))
+    }
+}
