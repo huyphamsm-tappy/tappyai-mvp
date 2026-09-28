@@ -2,11 +2,9 @@
 
 import Link from 'next/link'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
-import Panel from '@/components/v3/Panel'
 import { TappyMascot } from '@/components/TappyMascot'
-import { Settings, UserCircle } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { ProfileRowList, accountRows, settingsRows, signInHref } from './ProfileRows'
+import { AccountSettingsHub, signInHref } from './ProfileRows'
 
 // Signed-out Profile screen. The "Me" tab is one of five primary tabs, so
 // ejecting anonymous visitors to a full-page /login made the whole product look
@@ -56,15 +54,7 @@ export default function GuestProfileView() {
           </div>
         </section>
 
-        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          <Panel title={t('profile.accountSection')} tone="accent" icon={<UserCircle size={13} />} bodyClassName="p-2">
-            <ProfileRowList rows={accountRows()} locked />
-          </Panel>
-
-          <Panel title={t('profile.settingsSection')} tone="violet" icon={<Settings size={13} />} bodyClassName="p-2">
-            <ProfileRowList rows={settingsRows()} locked />
-          </Panel>
-        </div>
+        <AccountSettingsHub locked />
 
         <V3Footer />
       </div>

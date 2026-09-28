@@ -6,14 +6,13 @@ import Image from '@/components/media/SafeImage'
 import UserAvatar from '@/components/UserAvatar'
 import QRProfileButton from '@/components/QRProfileButton'
 import V3Shell, { V3Footer } from '@/components/v3/V3Shell'
-import Panel from '@/components/v3/Panel'
 import {
-  Settings, UserCircle, Pencil, Play, Heart, MessageCircle, MapPin, Camera,
+  Pencil, Play, Heart, MessageCircle, MapPin, Camera,
   Sparkles, QrCode, Loader2, ImageOff, Star, LayoutGrid, List, ArrowRight,
   Bookmark, Video, Images, Share2, ShieldAlert, EyeOff, type LucideIcon,
 } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
-import { ProfileRowList, accountRows, settingsRows } from './ProfileRows'
+import { AccountSettingsHub } from './ProfileRows'
 import { postsInState } from './ownPostStates'
 
 // ── V3 Web · Profile / Me — the personal hub ────────────────────────────────
@@ -176,14 +175,9 @@ export default function ProfileView({
             />
             <ProfileContent />
 
-            <div className="grid grid-cols-1 gap-4 2xl:grid-cols-2">
-              <Panel title={t('profile.accountSection')} tone="accent" icon={<UserCircle size={13} />} bodyClassName="p-2">
-                <ProfileRowList rows={accountRows()} />
-              </Panel>
-              <Panel title={t('profile.settingsSection')} tone="violet" icon={<Settings size={13} />} bodyClassName="p-2">
-                <ProfileRowList rows={settingsRows()} />
-              </Panel>
-            </div>
+            {/* "Tài khoản & Cài đặt" — owner reference 2026-09-22. Cards sit side by side only at
+                2xl here, because the personal rail already takes 320px from `xl` up. */}
+            <AccountSettingsHub wideAt="2xl" />
           </div>
 
           <aside className="w-full flex-shrink-0 space-y-4 xl:sticky xl:top-4 xl:w-[320px] xl:self-start" data-profile-rail>

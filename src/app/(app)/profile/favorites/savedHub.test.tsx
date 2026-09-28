@@ -232,3 +232,92 @@ describe('the data boundary is unchanged', () => {
     expect(rows,'Profile links to Saved rather than duplicating the hub').toContain("href: '/profile/favorites'")
   })
 })
+
+// ── Owner reference 2026-09-28: hero + chips + two count cards + empty-state card ──────────────
+
+describe('the 2026-09-28 Saved layout', () => {
+  it('renders the hero heading and subtitle', async () => {
+    const { container } = await hub()
+    const hero = container.querySelector('[data-saved-hero]') as HTMLElement
+    expect(within(hero).getByRole('heading', { level: 2 }).textContent).toBe('The things you love 💙')
+    expect(hero.textContent).toContain("Every place, post and tip you've saved lives here")
+  })
+
+  it('renders the six chips in the reference order; four link, Deals and Collections are disabled', async () => {
+    const { container } = await hub()
+    const chips = [...container.querySelectorAll('[data-saved-filters] [data-saved-chip]')]
+    expect(chips.map((c) => c.getAttribute('data-saved-chip')))
+      .toEqual(['all', 'places', 'posts', 'videos', 'deals', 'collections'])
+    const href = (k: string) => container.querySelector(`[data-saved-chip="${k}"]`)!.getAttribute('href')
+    expect(href('all')).toBe('/profile/favorites')
+    expect(href('places')).toBe('/profile/favorites?type=places')
+    expect(href('posts')).toBe('/profile/favorites?type=posts')
+    expect(href('videos')).toBe('/profile/favorites?type=videos')
+    for (const k of ['deals', 'collections']) {
+      const chip = container.querySelector(`[data-saved-chip="${k}"]`)!
+      // No data source exists: never a link, always marked disabled / coming soon.
+      expect(chip.tagName).toBe('SPAN')
+      expect(chip.getAttribute('href')).toBeNull()
+      expect(chip.getAttribute('aria-disabled')).toBe('true')
+      expect(chip.textContent).toContain('Soon')
+    }
+  })
+
+  it('marks the chip for the current view as active', async () => {
+    const { container } = await hub()
+    expect(container.querySelector('[data-saved-chip="all"]')!.getAttribute('aria-current')).toBe('page')
+    cleanup()
+    search = new URLSearchParams('type=places')
+    const r = renderSaved()
+    await waitFor(() => expect(r.container.querySelector('[data-saved-category-view]')).toBeTruthy())
+    expect(r.container.querySelector('[data-saved-chip="places"]')!.getAttribute('aria-current')).toBe('page')
+    expect(r.container.querySelector('[data-saved-chip="all"]')!.getAttribute('aria-current')).toBeNull()
+  })
+
+  it('the count cards carry the reference copy', async () => {
+    const { container } = await hub()
+    const places = container.querySelector('[data-saved-category="places"]') as HTMLElement
+    const posts = container.querySelector('[data-saved-category="posts"]') as HTMLElement
+    expect(places.textContent).toContain('Favourite places')
+    expect(places.textContent).toContain('restaurants, cafés, spas')
+    expect(posts.textContent).toContain('Posts, guides, reviews')
+  })
+
+  it('the Video chip is a filter over saved posts: only video posts, no separate count', async () => {
+    search = new URLSearchParams('type=videos')
+    const { container } = renderSaved()
+    await waitFor(() => expect(container.querySelector('[data-saved-category-view]')).toBeTruthy())
+    expect([...container.querySelectorAll('[data-saved-post]')].map((e) => e.getAttribute('data-saved-post'))).toEqual(['r1'])
+    expect(container.querySelector('[data-saved-count="videos"]')).toBeNull()
+  })
+
+  it('shows the empty-state card with an Explore CTA when nothing is saved', async () => {
+    stubFetch([], [])
+    const { container } = await hub()
+    const empty = container.querySelector('[data-saved-empty]') as HTMLElement
+    expect(empty).toBeTruthy()
+    expect(within(empty).getByRole('heading').textContent).toBe('Nothing saved yet')
+    const cta = within(empty).getByRole('link', { name: /Start exploring/ })
+    expect(cta.getAttribute('href')).toBe('/reviews')
+  })
+
+  it('shows no empty-state card when something is saved', async () => {
+    const { container } = await hub()
+    expect(container.querySelector('[data-saved-empty]')).toBeNull()
+  })
+
+  it('speaks the reference Vietnamese copy', async () => {
+    setLocale('vi')
+    stubFetch([], [])
+    const { container } = await hub()
+    expect(container.querySelector('[data-saved-hero] h2')!.textContent).toBe('Những điều bạn yêu thích 💙')
+    const chipText = [...container.querySelectorAll('[data-saved-chip]')].map((c) => c.textContent)
+    expect(chipText.slice(0, 4)).toEqual(['Tất cả', 'Địa điểm', 'Bài viết', 'Video'])
+    expect(chipText[5]).toContain('Bộ sưu tập')
+    const empty = container.querySelector('[data-saved-empty]') as HTMLElement
+    expect(empty.textContent).toContain('Chưa có gì được lưu')
+    expect(empty.textContent).toContain('Hãy bắt đầu khám phá')
+    expect(within(empty).getByRole('link').textContent).toContain('Khám phá ngay')
+    expect(container.querySelector('[data-saved-category="places"]')!.textContent).toContain('địa điểm')
+  })
+})

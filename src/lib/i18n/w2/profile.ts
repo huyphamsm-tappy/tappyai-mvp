@@ -31,6 +31,14 @@ export const vi: Record<string, string> = {
   'profile.settings': 'Cài đặt',
   'profile.settings.desc': 'Ngôn ngữ, thông báo, giao diện',
 
+  // "Tài khoản & Cài đặt" hub (owner reference 2026-09-22) — ProfileRows.AccountSettingsHub
+  'profile.hub.title': 'Tài khoản & Cài đặt',
+  'profile.hub.subtitle': 'Quản lý thông tin cá nhân, sở thích và tùy chỉnh trải nghiệm TappyAI theo cách của bạn.',
+  'profile.hub.accountSubtitle': 'Quản lý thông tin và trải nghiệm của bạn',
+  'profile.hub.settingsSubtitle': 'Tùy chỉnh ứng dụng theo sở thích của bạn',
+  'profile.hub.tagline': 'Your Life More Amazing with TappyAI!',
+  'profile.hub.settingsTagline': 'Small Settings, Big Journeys',
+
   // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': 'Bạn đang dùng thử',
   'profile.guest.subtitle': 'Trang chủ, Chat, Khám phá và Ưu đãi dùng thoải mái, không cần đăng nhập.',
@@ -68,6 +76,13 @@ export const en: Record<string, string> = {
   'profile.settingsSection': 'Settings',
   'profile.settings': 'Settings',
   'profile.settings.desc': 'Language, notifications, appearance',
+
+  'profile.hub.title': 'Account & Settings',
+  'profile.hub.subtitle': 'Manage your personal info and preferences, and tailor TappyAI to the way you like it.',
+  'profile.hub.accountSubtitle': 'Manage your info and experience',
+  'profile.hub.settingsSubtitle': 'Tailor the app to your taste',
+  'profile.hub.tagline': 'Your Life More Amazing with TappyAI!',
+  'profile.hub.settingsTagline': 'Small Settings, Big Journeys',
 
   // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': "You're exploring as a guest",
