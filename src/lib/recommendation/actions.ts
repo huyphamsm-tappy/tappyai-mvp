@@ -96,13 +96,15 @@ export interface CommerceActionFacts {
  * Per-domain priority. A table, not a judgement call at render time — and
  * certainly not the model's opinion about which platform matters.
  */
+// UAT 2026-09-28 (owner): a way to book / order / buy stands BEFORE Maps whenever the card has one —
+// `reservation` (the venue's own booking page) and `ticket` moved ahead of `maps`.
 const PRIORITY: Record<string, ActionKind[]> = {
-  food: ['order', 'delivery', 'maps', 'review', 'website', 'call', 'directions'],
+  food: ['order', 'delivery', 'reservation', 'maps', 'review', 'website', 'call', 'directions'],
   shopping: ['purchase', 'website', 'review'],
-  travel: ['booking', 'maps', 'website', 'review', 'call', 'directions'],
-  entertainment: ['website', 'maps', 'review', 'call', 'ticket', 'directions'],
-  spa: ['website', 'maps', 'call', 'review', 'reservation', 'directions'],
-  place: ['maps', 'website', 'review', 'call', 'directions'],
+  travel: ['booking', 'reservation', 'maps', 'website', 'review', 'call', 'directions'],
+  entertainment: ['ticket', 'reservation', 'website', 'maps', 'review', 'call', 'directions'],
+  spa: ['reservation', 'website', 'maps', 'call', 'review', 'directions'],
+  place: ['booking', 'reservation', 'maps', 'website', 'review', 'call', 'directions'],
 }
 
 const priorityFor = (domain: string, kind: ActionKind): number => {
@@ -220,6 +222,12 @@ export interface ActionSource {
   phone?: string
   link?: string
   booking_link?: string
+  /**
+   * The venue's OWN reservation / order pages, as the maps provider listed them for this place
+   * (Serper `/maps` `bookingLinks`, e.g. `hangduongquan.com/dat-ban.html`, a PasGo page). Entity
+   * evidence, never a template: the provider attached them to this place.
+   */
+  booking_links?: readonly string[]
   agoda_link?: string
   /** The registry provider the user NAMED this turn (stamped by the CCP seam); other merchants' legacy links step aside. */
   _tappy_requested_provider?: string
@@ -385,6 +393,25 @@ export function buildActions(
    * `buildFoodOrderLinks` stays for the prose injector's legacy surfaces only.
    */
   void buildFoodOrderLinks
+
+  /**
+   * 🔑 THE VENUE'S OWN BOOKING / ORDER PAGE, AS THE MAPS PROVIDER LISTED IT (UAT 2026-09-28).
+   *
+   * Measured live: "Hàng Dương Quán Quận 1" arrived with
+   * `booking_links: ["https://hangduongquan.com/dat-ban.html"]` and "Quán Bụi Central" with its
+   * `quan-bui.com/eforms/reservation-form/6/` — and both cards showed Maps / Review / Call only,
+   * because nothing here read the field. They are entity evidence (the provider attached them to
+   * THIS place), deep by construction; a front door (bare host) is still refused. A page on a
+   * delivery platform is an order action, anything else a reservation.
+   */
+  if (domain !== 'shopping' && domain !== 'travel') {
+    for (const url of (src.booking_links ?? []).slice(0, 3)) {
+      if (typeof url !== 'string' || !namesTheVenue(url)) continue
+      const owner = providerOwning(url)
+      const kind: ActionKind = owner === 'shopeefood' || owner === 'grabfood' || owner === 'befood' ? 'order' : 'reservation'
+      out.push(action(kind, url, domain, { urlKind: 'direct', attributed: true }))
+    }
+  }
 
   // ── Platform links — spa and entertainment: website + maps, nothing more ───
   const platformLinks = src.platform_links ?? (

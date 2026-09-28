@@ -4,6 +4,52 @@ import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
 import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
+import { productIdentityMatch } from '@/lib/links/productIdentity'
+import { providerOwning } from '@/lib/ccp'
+import { getProvider } from '@/lib/ccp/registry'
+
+/**
+ * A marketplace / retailer PRODUCT page (never a search, category or shop page), per host. The
+ * patterns are the merchants' own URL grammar, measured 2026-09-28 on the UAT query.
+ */
+const PRODUCT_PAGE: Array<[RegExp, RegExp]> = [
+  [/(^|\.)shopee\.vn$/, /-i\.\d+\.\d+/],
+  [/(^|\.)tiki\.vn$/, /-p\d+\.html/],
+  [/(^|\.)lazada\.vn$/, /^\/products\//],
+  // CellphoneS: a product is ONE slug (`/op-lung-iphone-17-pro-max-uag-….html`); `/phu-kien/…/uag.html` is a category.
+  [/(^|\.)cellphones\.com\.vn$/, /^\/[^/]+\.html$/],
+]
+const MERCHANT_SITES = ['cellphones.com.vn', 'shopee.vn', 'lazada.vn', 'tiki.vn']
+const MAX_MERCHANT_ROWS = 6
+
+function isMerchantProductPage(link: string): boolean {
+  try {
+    const u = new URL(link)
+    const host = u.hostname.toLowerCase()
+    return PRODUCT_PAGE.some(([h, p]) => h.test(host) && p.test(u.pathname))
+  } catch { return false }
+}
+
+const foldSeller = (s: string | undefined) => (s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '')
+function sameSeller(a: string | undefined, b: string | undefined): boolean {
+  const x = foldSeller(a), y = foldSeller(b)
+  return !!x && !!y && (x.includes(y) || y.includes(x))
+}
+
+/** The merchants' own product pages for the query (one billed search), as rows. */
+async function merchantProductRows(query: string): Promise<Array<{ title: string; link: string; source: string; snippet: string; merchant_page: true }>> {
+  const found = await serperSearch(`${query} (${MERCHANT_SITES.map(s => `site:${s}`).join(' OR ')})`).catch(() => null)
+  const out: Array<{ title: string; link: string; source: string; snippet: string; merchant_page: true }> = []
+  for (const r of found ?? []) {
+    if (out.length >= MAX_MERCHANT_ROWS || !isMerchantProductPage(r.link)) continue
+    const owner = providerOwning(r.link)
+    const source = (owner && getProvider(owner)?.merchantName) || new URL(r.link).hostname.replace(/^www\./, '')
+    // The page's own title, minus the merchant's trailing brand ("… | Giá rẻ", "… - Shopee").
+    const title = r.title.replace(/\s*[|–-]\s*(?:giá rẻ.*|shopee.*|lazada.*|tiki.*|cellphones.*)$/i, '').replace(/\s*\.\.\.$/, '').trim()
+    out.push({ title, link: r.link, source, snippet: r.snippet, merchant_page: true })
+  }
+  return out
+}
 
 export async function searchProducts(query: string, lang = 'vi') {
   const cacheKey = productsCacheKey(query, lang)
@@ -42,9 +88,17 @@ export async function searchProducts(query: string, lang = 'vi') {
   // Lazada" and "shop website địa chỉ facebook" variants exist to coax prices
   // and sellers out of web results, and shopping rows already carry both.
   try {
+    // UAT 2026-09-28 ("ốp 17 promax uag"): every Google Shopping row links to a google.com
+    // INTERMEDIARY and is titled by its variant ("Standout / Đen MagSafe"), so the card had no buy
+    // button (A3.3 refuses an intermediary) and the validity bar dropped 19 of 20 rows for not naming
+    // the product — no [TAPPY_SHOPPING] card at all, only a loose image. The merchants' OWN product
+    // pages, found by one site-scoped query in parallel, carry the full product name and a real URL.
+    // Only when /shopping HAS listings: a "no listings" answer falls through to the organic path below,
+    // which already searches the marketplaces — a merchant query there would be a second paid search.
     const rows = await serperShopping(query, 20)
+    const merchantRows = rows && rows.length > 0 ? await merchantProductRows(query) : []
     if (rows && rows.length > 0) {
-      const search_results = rows.map(r => {
+      const shoppingRows = (rows ?? []).map(r => {
         const specs = parseProductSpecs(r.title)
         const priceVnd = parseVndPrice(r.price)
         return {
@@ -60,6 +114,24 @@ export async function searchProducts(query: string, lang = 'vi') {
           ...specs,                                          // only what the title actually stated
         }
       })
+      // A Shopping row whose link is Google's intermediary takes the merchant's OWN page when the SAME
+      // seller lists the same product there (identity both ways) — its price, rating and photo stay
+      // the Shopping row's own. A merchant page no row claimed follows as its own (unpriced) row.
+      const claimed = new Set<string>()
+      for (const s of shoppingRows) {
+        if (isMerchantProductPage(s.link)) continue
+        const m = merchantRows.find(x => !claimed.has(x.link) && sameSeller(s.source, x.source)
+          && productIdentityMatch(s.title, x.title) === 'match' && productIdentityMatch(x.title, s.title) !== 'mismatch')
+        if (!m) continue
+        claimed.add(m.link)
+        s.link = m.link
+      }
+      const unclaimed = merchantRows.filter(m => !claimed.has(m.link) && !shoppingRows.some(s => s.link === m.link))
+      const withPhotos = await Promise.all(unclaimed.map(async m => {
+        const photos = await fetchPlacePhotosByName(m.link, m.title, 1, 'shopping').catch(() => [] as string[])
+        return { ...m, ...parseProductSpecs(m.title), ...(photos.length > 0 ? { photo_url: photos[0] } : {}) }
+      }))
+      const search_results = [...shoppingRows, ...withPhotos]
       result = {
         query,
         source: 'Google Shopping (Serper)',

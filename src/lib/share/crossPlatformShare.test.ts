@@ -160,8 +160,18 @@ describe('every client shares a plan through the ONE published page', () => {
 })
 
 describe('every client uses the same canonical origin', () => {
-  it.each(PLATFORMS)('%s pins https://www.tappyai.com', (_name, src) => {
+  it.each(PLATFORMS.filter(([n]) => n !== 'android'))('%s pins https://www.tappyai.com', (_name, src) => {
     expect(src).toContain('https://www.tappyai.com')
+  })
+
+  // UAT 2026-09-28 (plan share 404): Android takes the origin from the build's WEB_APP_URL, so a UAT
+  // build shares UAT links. The release default of that value is still https://www.tappyai.com.
+  it('android shares on the build WEB_APP_URL, whose release default is https://www.tappyai.com', () => {
+    const android = PLATFORMS.find(([n]) => n === 'android')![1]
+    expect(android).toContain('BuildConfig.WEB_APP_URL')
+    const gradle = readFileSync(join(root, 'android', 'app', 'build.gradle.kts'), 'utf8')
+    expect(gradle).toContain('val prodWebAppUrl = "https://www.tappyai.com"')
+    expect(gradle).toContain('releaseProp("TAPPYAI_WEB_APP_URL", prodWebAppUrl)')
   })
 
   it.each(PLATFORMS)('%s builds review URLs centrally', (_name, src) => {

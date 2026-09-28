@@ -593,7 +593,7 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
     const subjects: DiscoverySubject[] = []
     targets.forEach((row, i) => {
       const subject = plan.subjectOf(row)
-      if (subject) subjects.push({ id: String(i), subject, locality: ctx.location, knownUrls: plan.knownUrlsOf(row), title: str(row.title) ?? str(row.name) })
+      if (subject) subjects.push({ id: String(i), subject, locality: ctx.location, knownUrls: plan.knownUrlsOf(row), title: str(row.title) ?? str(row.name), ...(str(row.address) ? { address: str(row.address) } : {}) })
     })
 
     const context = { ...(ctx.platform ? { platform: ctx.platform } : {}), ...(ctx.locale ? { locale: ctx.locale } : {}), ...(ctx.actorHash ? { actorHash: ctx.actorHash } : {}), allowTracking: true }

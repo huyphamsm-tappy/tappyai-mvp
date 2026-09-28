@@ -23,6 +23,12 @@ export function askAfterSentence(q: ClarifyQuestion, lang: string): string {
   if (q.q === 'Which date?') return 'Which day do you want to fly, so I can check that exact date?'
   if (q.q === 'Budget?') return `What budget do you have in mind${opts}?`
   if (q.q === 'How many people?') return `How many of you are going${opts}?`
+  if (q.q === 'Tầm giá sản phẩm?') return 'Bạn muốn tầm giá khoảng bao nhiêu để mình lọc sát hơn?'
+  if (q.q === 'Product budget?') return 'What price range should I narrow it to?'
+  // A trip plan answered first; what it still needs to book anything is WHEN and FROM WHERE / HOW.
+  if (q.q === 'Ngày đi?') return 'Bạn định đi ngày nào, xuất phát từ đâu và muốn bay hay đi xe? Mình sẽ tìm vé và phòng đúng ngày cho bạn.'
+  if (q.q === 'Ngày đi, bay hay xe?') return 'Bạn định đi ngày nào và muốn bay hay đi xe? Mình sẽ tìm vé và phòng đúng ngày cho bạn.'
+  if (q.q === 'Travel dates?') return 'Which dates are you going, from where, and would you rather fly or take the bus? I will find tickets and rooms for those exact days.'
   return en ? `${q.q}${opts}` : `${q.q}${opts}`
 }
 

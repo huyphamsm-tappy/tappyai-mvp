@@ -51,7 +51,13 @@ const FALLBACK_SITE_URL = 'https://www.tappyai.com'
 
 /** The canonical public origin, without a trailing slash. */
 function siteOrigin(env: NodeJS.ProcessEnv = process.env): string {
-  const raw = (env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL).trim()
+  // 🚨 UAT 2026-09-28 (plan share 404): Next inlines `process.env.NEXT_PUBLIC_*` into the BROWSER
+  // bundle only where it is written out literally. `env.NEXT_PUBLIC_SITE_URL` read through the
+  // parameter stayed empty in client code (ShareMenu), so every web share link fell back to
+  // www.tappyai.com — where a UAT (audit-DB) plan does not exist. The literal read below is the one
+  // the bundler replaces; an explicit env object (tests, server callers) still wins.
+  const inlined = env === process.env ? process.env.NEXT_PUBLIC_SITE_URL : undefined
+  const raw = (env.NEXT_PUBLIC_SITE_URL || inlined || FALLBACK_SITE_URL).trim()
   return raw.replace(/\/+$/, '')
 }
 
