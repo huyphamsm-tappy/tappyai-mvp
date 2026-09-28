@@ -191,6 +191,8 @@ private fun buildInlineAnnotated(
 ): AnnotatedString = buildAnnotatedString {
     var i = 0
     val n = text.length
+    // True right after a link was appended; any other character resets it (link branches `continue`).
+    var lastWasLink = false
     while (i < n) {
         val c = text[i]
         when {
@@ -237,6 +239,9 @@ private fun buildInlineAnnotated(
                         // Real clickable link: withLink + LinkAnnotation.Url. With no explicit
                         // listener, the Text opens it through the ambient UriHandler, i.e. the
                         // system browser (Intent.ACTION_VIEW) — no in-app browser, no analytics.
+                        // UAT 2026-09-28 (P1c): two links written back to back rendered as one
+                        // word ("Official WebsiteGoogle Maps") — a separator keeps them apart.
+                        if (lastWasLink) append(" · ")
                         withLink(
                             LinkAnnotation.Url(
                                 url = url,
@@ -248,9 +253,12 @@ private fun buildInlineAnnotated(
                                 ),
                             ),
                         ) {
-                            append(linkText)
+                            // A label that is itself a URL is never printed: the platform name instead.
+                            append(if (linkText.startsWith("http", ignoreCase = true)) linkLabelFor(url) else linkText)
                         }
                         i = closeParen + 1
+                        lastWasLink = true
+                        continue
                     } else {
                         append(c); i++
                     }
@@ -282,16 +290,45 @@ private fun buildInlineAnnotated(
                             ),
                         ),
                     ) {
-                        append(url)
+                        // UAT 2026-09-28 (P1c): a raw URL is never printed — the place it goes to is.
+                        append(linkLabelFor(url))
                     }
                     i += url.length
+                    lastWasLink = true
+                    continue
                 }
             }
             else -> {
                 append(c); i++
             }
         }
+        lastWasLink = false
     }
+}
+
+private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
+    Regex("""(^|\.)(google\.[a-z.]+|goo\.gl)$""") to "Google Maps",
+    Regex("""(^|\.)(facebook\.com|fb\.com|fb\.me)$""") to "Facebook",
+    Regex("""(^|\.)instagram\.com$""") to "Instagram",
+    Regex("""(^|\.)tiktok\.com$""") to "TikTok",
+    Regex("""(^|\.)(youtube\.com|youtu\.be)$""") to "YouTube",
+    Regex("""(^|\.)shopeefood\.vn$""") to "ShopeeFood",
+    Regex("""(^|\.)grab\.com$""") to "GrabFood",
+    Regex("""(^|\.)shopee\.vn$""") to "Shopee",
+    Regex("""(^|\.)lazada\.vn$""") to "Lazada",
+    Regex("""(^|\.)booking\.com$""") to "Booking.com",
+    Regex("""(^|\.)traveloka\.com$""") to "Traveloka",
+    Regex("""(^|\.)trip\.com$""") to "Trip.com",
+    Regex("""(^|\.)ticketbox\.vn$""") to "Ticketbox",
+)
+
+/** A readable name for a link target — the platform, else the short host. Never the URL (web parity: linkLabelFor). */
+internal fun linkLabelFor(url: String): String {
+    val host = Regex("""^https?://([^/?#:]+)""", RegexOption.IGNORE_CASE).find(url)?.groupValues?.get(1)?.lowercase()?.removePrefix("www.")
+        ?: return "Link"
+    if (Regex("""(^|\.)google\.[a-z.]+$""").containsMatchIn(host) && !url.contains("/maps") && !host.startsWith("maps.")) return "Google"
+    LINK_LABELS.firstOrNull { it.first.containsMatchIn(host) }?.let { return it.second }
+    return if (host.length > 28) host.take(26) + "…" else host
 }
 
 /**

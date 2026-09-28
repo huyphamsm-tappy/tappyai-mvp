@@ -31,11 +31,16 @@ Design images (D:\redesign, 6 files): age gate · onboarding interests · "Gợi
 Tài khoản & Cài đặt · Đã lưu (with sidebar) · Viết content (AI caption). No design exists for: profile
 content tabs, share-card layouts, Explore upload, chat answers.
 
-### Work list (status: TODO / DOING / DONE+evidence)
-- P1a "tối nay … sài gòn" → Công viên Gia Định + trip questions — TODO
-- P1b context sticks after "mua đồ ăn vặt" — TODO
-- P1c raw URLs / glued links / broken photo link in answers — TODO
-- P1d big blank gaps between paragraphs — TODO
+### Work list (status: TODO / DOING / CODE-DONE (needs screenshot) / PASS+evidence)
+- P1a "tối nay … sài gòn" — CODE-DONE 668ffd1. Root cause: detectPlanningIntent read "đi chơi"+city as TRIP.
+- P1b context sticks after "mua đồ ăn vặt" — CODE-DONE 668ffd1 (turnDomain: evening plan names a domain).
+- P1c raw URLs / glued links / broken photo link — web CODE-DONE 1b79b97; Android edits uncommitted
+  (ChatResponse.normalizeImageLinks, TappyMarkdown linkLabelFor + " · " separator) — compile blocked by
+  concurrent gradle, retry.
+- P1d big blank gaps — web CODE-DONE 1b79b97 (confirmed on screenshot p1c-hotel-before-t1.png).
+- ROOT CAUSE uploads on UAT (P2a/P3a): GCP WIF provider condition allows only environment:production
+  (`gcloud iam workload-identity-pools providers describe vercel …` 2026-09-28). Owner decides (asked).
+- Harness: scratchpad pw/chatShot.mjs (headless shell, bypass header only for uat host, guest age via /age-check).
 - P1e A1 "quán phở ngon quận 3" only Maps — TODO (screenshot every vertical)
 - P2a avatar/cover upload — TODO
 - P2b own profile tabs by state (posted/shared/saved/restricted/hidden) — TODO

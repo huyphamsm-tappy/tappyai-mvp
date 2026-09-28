@@ -30,6 +30,24 @@ const EVENING_STEPS: Array<{ time: string; emoji: string; category: string; kind
   { time: '20:00', emoji: '🎶', category: 'entertainment', kinds: ['entertainment', 'attraction'] },
   { time: '21:30', emoji: '🍹', category: 'drinks', kinds: ['nightlife', 'cafe'] },
 ]
+/**
+ * An EVENING plan's search rows, minus the places that are not an evening out for adults (children's
+ * venues, water parks, zoos, museums). Run on the tool result BEFORE ranking, so the model and the
+ * card see the same evening set (UAT 2026-09-28: "Khu Vui chơi Trẻ em - Công viên Gia Định").
+ */
+export function dropEveningUnsuitableRows<T>(result: T): { result: T; dropped: string[] } {
+  const r = result as unknown as { results?: unknown }
+  if (!r || typeof r !== 'object' || !Array.isArray(r.results)) return { result, dropped: [] }
+  const dropped: string[] = []
+  const kept = (r.results as PlanPlace[]).filter(p => {
+    const words = fold([p?.name ?? '', ...(Array.isArray(p?.place_types) ? (p.place_types as unknown[]).filter((t): t is string => typeof t === 'string') : [])].join(' '))
+    const bad = EVENING_UNSUITABLE.test(words)
+    if (bad && p?.name) dropped.push(p.name)
+    return !bad
+  })
+  return dropped.length ? { result: { ...(r as object), results: kept } as unknown as T, dropped } : { result, dropped }
+}
+
 function minutesOf(time: unknown): number | null {
   const m = typeof time === 'string' ? time.match(/^(\d{1,2})[:h](\d{2})/) : null
   return m ? Number(m[1]) * 60 + Number(m[2]) : null

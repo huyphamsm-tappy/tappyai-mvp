@@ -271,8 +271,20 @@ object ChatResponseParser {
     private const val PHOTO_BLOCK_MARK = "📸"
     private val BOLD_ONLY_LINE_RE = Regex("""\*\*[^*]+\*\*""")
 
+    // UAT 2026-09-28 (owner P1c, web parity with formatMessage): a photo written as a LINK
+    // ("[Ảnh địa điểm](https://lh3.googleusercontent.com/…)") or as a bare URL is a photo.
+    private val IMAGE_HOST_RE = Regex("""^https?://([a-z0-9-]+\.)*(googleusercontent\.com|gstatic\.com|ggpht\.com|fbcdn\.net|cdninstagram\.com|tiktokcdn\.com|ytimg\.com)/""", RegexOption.IGNORE_CASE)
+    private val IMAGE_EXT_RE = Regex("""^https?://[^\s?#)]+\.(jpe?g|png|webp|gif|avif)(\?[^\s)]*)?$""", RegexOption.IGNORE_CASE)
+    private val LINK_TO_IMAGE_RE = Regex("""(^|[^!])\[([^\]\n]*)]\((https?://[^\s)]+)\)""")
+    private val BARE_URL_RE = Regex("""(^|\s)(https?://[^\s<)\]]+)""")
+    internal fun isImageUrl(url: String): Boolean =
+        (IMAGE_HOST_RE.containsMatchIn(url) && !url.contains("/maps") && !url.contains("/search")) || IMAGE_EXT_RE.matches(url)
+    internal fun normalizeImageLinks(content: String): String = content
+        .replace(LINK_TO_IMAGE_RE) { m -> if (isImageUrl(m.groupValues[3])) "${m.groupValues[1]}![${m.groupValues[2]}](${m.groupValues[3]})" else m.value }
+        .replace(BARE_URL_RE) { m -> if (isImageUrl(m.groupValues[2])) "${m.groupValues[1]}![](${m.groupValues[2]})" else m.value }
+
     fun parse(content: String): ParsedAssistantReply {
-        var text = content
+        var text = normalizeImageLinks(content)
 
         // 1. Trip/evening plan.
         val planMatch = PLAN_RE.find(text)

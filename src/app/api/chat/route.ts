@@ -54,6 +54,7 @@ import { runAiWriteAction } from '@/lib/ai/actions/runAction'
 import { savePriceWatchPolicy } from '@/lib/ai/actions/savePriceWatch'
 import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, LUXURY_PRICE_FLOOR, applyLuxuryStreamFilter } from '@/lib/ai/budget'
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
+import { dropEveningUnsuitableRows } from '@/lib/ai/planItemGuard'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock } from '@/lib/ai/promptBuilder'
 import { applyPlaceEnrichmentStreamFilter } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
@@ -1818,7 +1819,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           if (constrained.dropped.length > 0 || constrained.demotedClosed > 0 || constrained.priceUnknown > 0 || constraints.district) {
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'constraint_filter', budget_max: constraints.budgetMax, exclude: constraints.exclude, open_now: constraints.openNow, district: constraints.district?.label ?? null, dropped: constrained.dropped, demoted_closed: constrained.demotedClosed, price_unknown: constrained.priceUnknown, price_fits: constrained.priceFits }))
           }
-          const filtered = constrained.result
+          // UAT 2026-09-28 (owner P1a): an evening plan never offers a children's park or a zoo.
+          const eveningRows = planningIntent === 'evening' ? dropEveningUnsuitableRows(constrained.result) : { result: constrained.result, dropped: [] as string[] }
+          if (eveningRows.dropped.length > 0) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'evening_filter', dropped: eveningRows.dropped.length }))
+          const filtered = eveningRows.result
           // Deterministic ranking runs BEFORE the model sees the result, so the
           // order it reads is already the order that fits this user.
           //

@@ -126,3 +126,14 @@ describe('P1b · a new subject resets the intent ("mua đồ ăn vặt" → "t�
     expect(currentSubjectUserTexts(m as never, { hasGps: false, lang: 'vi' })).toEqual(['tối nay đi đâu chơi quận 1'])
   })
 })
+
+describe('P1a · an evening plan\'s search rows never include a children\'s park or a zoo', () => {
+  it('drops unsuitable rows before the model and the card see them', async () => {
+    const { dropEveningUnsuitableRows } = await import('../planItemGuard')
+    const r = dropEveningUnsuitableRows({ results: [
+      { name: 'Khu Vui chơi Trẻ em - Công viên Gia Định' }, { name: 'Vườn thú Đầm Sen' }, { name: 'Timezone - AEON MALL Tân Phú' }, { name: 'Chill Skybar' },
+    ] })
+    expect((r.result as { results: Array<{ name: string }> }).results.map(x => x.name)).toEqual(['Timezone - AEON MALL Tân Phú', 'Chill Skybar'])
+    expect(r.dropped).toHaveLength(2)
+  })
+})
