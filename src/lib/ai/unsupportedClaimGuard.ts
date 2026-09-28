@@ -23,8 +23,10 @@ export interface ClaimEvidence {
   sharedTexts: string[]
   /** What the user asked, across the thread — a feature is judged only when the user asked for it. */
   userTexts: string[]
+  /** Distances (km) the rows carry. Empty = no row has one (no GPS, or a provider without it). */
+  distancesKm?: number[]
 }
-export interface UnsupportedClaimResult { text: string; rewritten: Array<'negation' | 'price_ceiling' | 'budget_fit' | 'service'> }
+export interface UnsupportedClaimResult { text: string; rewritten: Array<'negation' | 'price_ceiling' | 'budget_fit' | 'service' | 'distance'> }
 
 /**
  * Lower-case and strip Vietnamese diacritics ONE UTF-16 unit for one, so an index found in the folded
@@ -57,7 +59,14 @@ const FEATURES: ReadonlyArray<{ re: RegExp; label: string }> = [
 
 const NEG_RE = /(?:^|[\s,(*_])(khong|chua)\s+(co|cung cap|ho tro|phuc vu|kinh doanh)\s+((?:cong nghe|dich vu|phong|khu|cho|rap|phong chieu)\s+)?/g
 const CONFIRMED_NEG_RE = /(?:da |vua )?xac nhan\s+(?:la |rang )?/
-const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong chac)(?=\s)/
+const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duoc )?xac nhan|khong (?:chac|xac nhan)|de chac chan)(?=\s)/
+/**
+ * An indirect question, not a claim: "rạp NÀO có phòng IMAX" (measured round 6, golden T2 t2 — R4
+ * turned "kết quả không xác nhận rõ rạp nào có phòng IMAX" into "rạp nào mình chưa xác nhận được có …").
+ */
+const WHICH_BEFORE_RE = /(?:^|\s)nao\s*$/
+/** "cách bạn khoảng 0.8km", "cách 1.2 km", "cách trung tâm 900m". Folded text. */
+const DISTANCE_RE = /,?\s*(?:va\s+)?cach\s+(?:ban\s+|day\s+|trung tam\s+|vi tri (?:cua )?ban\s+)?(?:chi\s+|khoang\s+|tam\s+|gan\s+)?(\d+(?:[.,]\d+)?)\s*(km|m)(?![a-z])/
 const FOLD_NUM = /(?:gia\s+)?(duoi|khong qua|chua toi|chua den|chi tu|chi|re hon)\s+(\d+(?:[.,]\d+)?)\s*(k|nghin|ngan|tr|trieu)(?![a-z])/
 const FIT_UNPRICED = /(?:,\s*)?(?:gia\s+(?:hop ly|phai chang|vua phai)\s+)?(?:nam\s+)?(?:trong|vua|hop voi|phu hop voi)\s+(?:tam\s+)?(?:ngan sach|budget)(?:\s+(?:cua ban|cua minh))?/
 const POSITIVE_SERVICE = /(?:^|[\s,*_])(co|cung cap|chuyen)\s+((?:dich vu|phong|khu|cho|goi)\s+)?/g
@@ -102,6 +111,7 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         // The retrieved data itself says it is absent → a fact, kept.
         if (new RegExp(`(?:khong|chua)\\s+(?:co|cung cap|ho tro)\\s+(?:\\S+\\s+){0,3}${fm[0]}`).test(allEvidence)) continue
         const negStart = m.index + m[0].indexOf(m[1])
+        if (WHICH_BEFORE_RE.test(f.slice(0, negStart))) continue
         const before = f.slice(0, negStart)
         const conf = before.match(new RegExp(`${CONFIRMED_NEG_RE.source}([^.!?]{0,60})$`))
         const verb = s.slice(negStart + m[1].length + 1, negStart + m[1].length + 1 + m[2].length)
@@ -165,6 +175,7 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         // The hedge must govern THIS claim (just before it) — measured round 6, c40 F8: "cũng có phòng
         // riêng nhưng chưa xác nhận được giá" hedges the PRICE; a sentence-wide check let the room pass.
         if (CONDITIONAL_RE.test(f.slice(Math.max(0, start - 40), start))) continue
+        if (WHICH_BEFORE_RE.test(f.slice(0, verbStart))) continue
         // "cũng có X" → "mình chưa xác nhận được có X" (not "cũng mình chưa …").
         if (f.slice(Math.max(0, start - 5), start) === 'cung ') start -= 5
         const own = venue ? [venue.name, ...venue.texts].map(foldAligned).join(' ') : allEvidence
@@ -177,6 +188,24 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         f = foldAligned(s)
         break
       }
+    }
+    // R5 — a distance no row carries (round 6, c40 P2: "cách bạn khoảng 0.8km" with no distance on any
+    // row). Kept when a row's distance matches (±0.15 km) or the number is in the retrieved text (a
+    // hotel snippet's "cách biển 900 m"); otherwise the distance phrase goes, the sentence stays.
+    for (let guardRounds = 0; guardRounds < 4; guardRounds++) {
+      const dm = f.match(DISTANCE_RE)
+      if (!dm || dm.index === undefined) break
+      const km = parseFloat(dm[1].replace(',', '.')) / (dm[2] === 'm' ? 1000 : 1)
+      const inRows = (ev.distancesKm ?? []).some(d => Math.abs(d - km) <= 0.15)
+      const inText = new RegExp(`(?:^|[^0-9.,])${dm[1].replace(/[.,]/g, '[.,]')}\\s*${dm[2]}(?![a-z])`).test(allEvidence)
+      if (inRows || inText) {
+        // Mark it as seen so the next round looks further along.
+        f = f.slice(0, dm.index) + ' '.repeat(dm[0].length) + f.slice(dm.index + dm[0].length)
+        continue
+      }
+      s = (s.slice(0, dm.index) + s.slice(dm.index + dm[0].length)).replace(/\s+([,.!?])/g, '$1')
+      f = foldAligned(s)
+      rewritten.push('distance')
     }
     out += text.slice(last, a) + s
     last = b

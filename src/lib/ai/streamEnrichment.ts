@@ -2171,6 +2171,7 @@ export function applyPlaceEnrichmentStreamFilter(
         venues: [...claimVenueNames].map(name => ({ name, band: priceBandsByEntity.get(name) ?? null, texts: placeEntityTexts.get(name) ?? [] })),
         sharedTexts: placeTexts,
         userTexts: [...(collector?.userTexts ?? [userText])],
+        distancesKm: placeDistancesKm,
       })
       : { text: districtGuard.text, rewritten: [] as string[] }
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))

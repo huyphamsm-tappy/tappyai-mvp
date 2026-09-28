@@ -98,3 +98,27 @@ describe('R4 — the hedge must govern the claim it sits next to', () => {
     expect(guardUnsupportedClaims(once, { venues: [], sharedTexts: [], userTexts: ['rạp IMAX'] }).text).toBe(once)
   })
 })
+
+// Round 6 (d965363): a distance no row carries, and an indirect question R4 garbled.
+describe('R5 — c40 P2: a distance no row carries', () => {
+  const p2 = JSON.parse(readFileSync(join(EV, 'c40-ab-2026-09-27/head-d965363-claims-B/P2.json'), 'utf8')) as { text: string; prose: string; rows: Array<{ name: string; price?: string; distance_km?: number }> }
+  it('"cách bạn khoảng 0.8km" / "cách khoảng 1.2km" go; the pick and its other facts stay', () => {
+    expect(p2.rows.every(r => r.distance_km === undefined)).toBe(true)
+    const r = guardUnsupportedClaims(p2.prose, { venues: venuesOf(p2.rows), sharedTexts: [], userTexts: [p2.text], distancesKm: [] })
+    expect(r.text).not.toMatch(/0\.8km|1\.2km/)
+    expect(r.text).toContain('mình gợi ý **Hyan Spa** — có **5⭐ (103 đánh giá)**, chuyên foot spa, mở 10:00–21:00')
+    expect(r.rewritten.filter(x => x === 'distance')).toHaveLength(2)
+  })
+  it('a distance a row carries, or a snippet states, is kept', () => {
+    const t = 'Quán A cách bạn khoảng 0.8km. Khách sạn B cách biển 900 m.'
+    const r = guardUnsupportedClaims(t, { venues: [], sharedTexts: ['Khách sạn B - cách biển 900 m'], userTexts: ['quan an'], distancesKm: [0.75] })
+    expect(r.text).toBe(t)
+  })
+})
+
+describe('R1/R4 never rewrite an indirect question (golden T2 t2, round 6)', () => {
+  it('"không xác nhận rõ rạp nào có phòng IMAX" and "để chắc chắn rạp nào có IMAX" are left as written', () => {
+    const t = 'Kết quả không xác nhận rõ rạp nào có phòng IMAX. Để chắc chắn rạp nào có IMAX, bạn nên kiểm tra trên CGV.'
+    expect(guardUnsupportedClaims(t, { venues: [], sharedTexts: [], userTexts: ['Rạp chiếu phim IMAX ở TP HCM'] }).text).toBe(t)
+  })
+})
