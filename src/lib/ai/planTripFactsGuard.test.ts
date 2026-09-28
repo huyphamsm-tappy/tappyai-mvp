@@ -59,6 +59,16 @@ describe('guardPlanTripFacts — date / origin / transport never invented', () =
     expect(r.sentencesDropped).toBe(1)
   })
 
+  it('drops the model\'s own trip-fact question so only the closing one remains (uat 826d23b run 3)', () => {
+    const before = 'Mình chọn M Hotel Da Nang vì gần biển. Bạn dự định đi vào ngày nào? (để xác nhận thời tiết & tính giá khách sạn chính xác)\n'
+    const r = guardPlanTripFacts(plan(DATED, before, `\n\nBạn thích thêm spa không? ${ASK}`), USER)
+    expect(r.text).not.toContain('Bạn dự định đi vào ngày nào?')
+    expect(r.text).not.toContain('để xác nhận thời tiết')
+    expect(r.text).toContain('Mình chọn M Hotel Da Nang vì gần biển.')
+    expect(r.text).toContain('Bạn thích thêm spa không?')
+    expect(r.text).toContain(ASK)
+  })
+
   it('keeps what the user DID say: a stated date and origin stay', () => {
     const r = guardPlanTripFacts(plan(DATED), ['đi Đà Nẵng 3/10 từ Hà Nội bằng máy bay 3 ngày 2 đêm'])
     expect(r.missing).toEqual([])

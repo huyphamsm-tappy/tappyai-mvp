@@ -54,6 +54,9 @@ function stripLabelDate(label: string): string {
   return out || label.replace(/[^\p{L}\s\d]/gu, '').trim()
 }
 
+/** A question asking for a trip fact (date / origin / transport). */
+const TRIP_QUESTION = /(?<!\p{L})(?:ngày nào|hôm nào|khi nào|lúc nào|thời gian nào|dịp nào|xuất phát|khởi hành|từ đâu|ở đâu đi|bay hay|máy bay|xe khách|tàu|phương tiện|which dates?|when|where .*from|fly|train|bus)(?!\p{L})/iu
+
 function hasCalendarDate(s: string): boolean {
   return CAL_DATE.test(s.replace(OPEN_ALL_DAY, ''))
 }
@@ -63,8 +66,21 @@ function guardProse(prose: string, missing: Set<TripFact>): { text: string; drop
   let dropped = 0
   const lines = prose.split('\n').map(line => {
     const parts = line.split(/(?<=[.!?…])\s+/u)
+    let afterDroppedQuestion = false
     const kept = parts.filter(sentence => {
-      if (/\?\s*$/u.test(sentence)) return true // the closing question itself
+      // The "(để xác nhận …)" aside that followed a dropped question goes with it.
+      const aside = afterDroppedQuestion && /^\(.*\)[.!]?$/u.test(sentence.trim())
+      afterDroppedQuestion = false
+      if (aside) return false
+      // At most ONE question (owner-approved rule): the system's closing question (tripFacts.ts, a
+      // statement ending "…cho bạn.") already asks for every missing fact, so the model's own
+      // question about them goes. Measured on uat @ 826d23b run 3: "Bạn dự định đi vào ngày nào?"
+      // sat right above the closing question.
+      if (/\?\s*$/u.test(sentence)) {
+        const own = TRIP_QUESTION.test(sentence)
+        if (own) { dropped++; afterDroppedQuestion = true }
+        return !own
+      }
       const bad = (missing.has('date') && hasCalendarDate(sentence))
         || ((missing.has('origin') || missing.has('transport')) && DEPARTURE.test(sentence))
       if (bad) dropped++
