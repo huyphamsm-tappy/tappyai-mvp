@@ -380,11 +380,12 @@ function findModelCtaBlock(text: string): { start: number; end: number; json: st
  * set. Text without a readable block is returned unchanged.
  */
 export function validateModelCtaBlock(
-  text: string,
+  rawText: string,
   t: (key: string, vars?: Record<string, string>) => string,
   requestedProviderId?: string | null,
 ): string {
-  if (!text || text.indexOf('[') === -1) return text
+  if (!rawText || rawText.indexOf('[') === -1) return rawText
+  const text = dropTruncatedTrailingBlock(rawText)
   const block = findModelCtaBlock(text)
   if (!block) return text
   let parsed: unknown
@@ -401,4 +402,21 @@ export function validateModelCtaBlock(
 function isOtherRegistryMerchant(url: string, requestedProviderId: string): boolean {
   const owner = MERCHANT_BY_HOST.get(hostOf(url))
   return !!owner && owner !== requestedProviderId
+}
+
+/**
+ * A reply cut at the token limit mid-block (measured round 6, c40 T1 planning turn, 28 Sep 2026: the
+ * text ended "[CTA_BUTTONS]{"buttons":[{"label":"✈️ Tìm vé máy bay - Trip.com",…" with no close) put raw
+ * JSON in front of the user. A CTA / FOLLOWUPS block opened after its last close is incomplete — it is
+ * dropped, everything before it stays. Complete blocks are untouched.
+ */
+export function dropTruncatedTrailingBlock(text: string): string {
+  let out = text
+  for (const tag of ['CTA_BUTTONS', 'FOLLOWUPS']) {
+    const open = out.lastIndexOf(`[${tag}]`)
+    if (open === -1) continue
+    if (out.indexOf(`[/${tag}]`, open) !== -1) continue
+    out = out.slice(0, open).replace(/[ \t\n]+$/, '')
+  }
+  return out
 }

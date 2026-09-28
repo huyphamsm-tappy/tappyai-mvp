@@ -326,3 +326,21 @@ describe('A3.3 — a prose link to a registry merchant search page is unmade, th
     expect(unlinkMislabelledMerchantLinks(fare)).toBe(fare)
   })
 })
+
+// Round 6 (28 Sep 2026, c40 T1): a planning reply cut mid-[CTA_BUTTONS] showed raw JSON.
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { dropTruncatedTrailingBlock } from './ctaValidation'
+describe('a block cut at the token limit is dropped, not shown', () => {
+  const t1 = JSON.parse(readFileSync(join(process.cwd(), 'docs/uat/evidence/c40-ab-2026-09-27/head-d965363-claims-A/T1.json'), 'utf8')) as { prose: string }
+  it('the verbatim T1 tail loses its unclosed CTA block; the plan and the weather line stay', () => {
+    const out = dropTruncatedTrailingBlock(t1.prose)
+    expect(out).not.toContain('[CTA_BUTTONS]')
+    expect(out).toContain('[/TAPPY_PLAN]')
+    expect(out.endsWith('nên bạn có thể thoải mái tham quan ngoài trời.')).toBe(true)
+  })
+  it('complete blocks are untouched', () => {
+    const ok = 'A.\n\n[CTA_BUTTONS]{"buttons":[]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]a|b[/FOLLOWUPS]'
+    expect(dropTruncatedTrailingBlock(ok)).toBe(ok)
+  })
+})
