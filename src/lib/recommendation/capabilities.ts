@@ -103,7 +103,9 @@ export function capabilitiesOf(src: CapabilitySource): Capabilities {
   // search is a place to look. Collapsing them here would let the model say
   // "here's the review" about a search page — the exact claim the review ladder
   // was built to prevent.
-  if (Array.isArray(src.commerce_links) && src.commerce_links.length > 0) caps.has_direct_handoff = true
+  // A1 (UAT 2026-09-28): a search-page fallback (`fallback: 'search'`) is a place to look, not a
+  // direct handoff — the model must not say "đặt / mua trực tiếp" on its account.
+  if (Array.isArray(src.commerce_links) && src.commerce_links.some(l => !(l && typeof l === 'object' && (l as { fallback?: unknown }).fallback === 'search'))) caps.has_direct_handoff = true
   if (src.has_tiktok_review && src.tiktok_review_url) caps.has_reviews = 'verified'
   else if (src.maps_link || src.website_uri || src.place_id) caps.has_reviews = 'search'
 

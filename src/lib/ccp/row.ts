@@ -56,6 +56,18 @@ export interface CommerceLinkRow {
   tracked: boolean
   /** Observed price / availability / schedule facts, when a source stated them (CommerceFacts); absent otherwise. */
   facts?: CommerceFacts
+  /**
+   * UAT 2026-09-28 (owner blocker: no buy / order / ticket button): 'search' marks the ONE merchant
+   * SEARCH page (L2, SEARCH_HANDOFF) the seam attaches to a row that has no page of its own on any
+   * platform. It is labelled as a search ("Tìm trên GrabFood"), never leads, never counts as a
+   * direct handoff, and steps aside for any real (L3+) buy / order / booking action on the row.
+   */
+  fallback?: 'search'
+}
+
+/** Is this row attachment the search-page fallback (not the subject's own page)? */
+export function isSearchFallbackRow(r: CommerceLinkRow): boolean {
+  return r.fallback === 'search' && r.kind === 'SEARCH_HANDOFF'
 }
 
 /** The handoff type a login boundary implies (shared by the row, the legacy CTA projection and the clients). */

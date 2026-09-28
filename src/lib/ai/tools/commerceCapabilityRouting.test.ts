@@ -99,14 +99,15 @@ describe('CommerceRequest carries a capability that must agree with its intent',
 })
 
 describe('the seam routes by the user\'s words (Food & Drink)', () => {
-  it('A · delivery intent → no PasGo link; and no platform SEARCH is an order action any more (A3.3 / A3.6, 2026-09-20)', async () => {
+  it('A · delivery intent → no PasGo link; the legacy order searches are gone — ONE GrabFood search fallback, never the lead (A3.3 + A1 2026-09-28)', async () => {
     const row = foodRow()
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
     await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search: pasgoSearch, userText: 'Tôi muốn đặt món ăn giao tận nhà.' })
-    expect(links(row)).toEqual([])
+    expect(links(row).map(l => [l.providerId, l.kind, l.fallback, l.primary])).toEqual([['grabfood', 'SEARCH_HANDOFF', 'search', false]])
     const rec = placeRecommendations(result, 'Quận 3')[0]
-    expect(rec.entity.actions.some(a => a.kind === 'order' && a.urlKind === 'search')).toBe(false)
-    expect(rec.entity.actions.some(a => a.commerce)).toBe(false)
+    expect(rec.entity.actions.some(a => a.kind === 'order' && a.urlKind === 'search')).toBe(false) // the legacy order_links stay out
+    expect(rec.entity.actions.some(a => a.commerce?.primary)).toBe(false)
+    expect(rec.entity.actions.filter(a => a.commerce).map(a => [a.kind, a.urlKind, a.platform])).toEqual([['delivery', 'search', 'GrabFood']])
   })
 
   it('B · reservation intent → NO commerce request, no provider, no link; the venue actions stand (owner decision 14 Sep 2026)', async () => {
@@ -126,12 +127,13 @@ describe('the seam routes by the user\'s words (Food & Drink)', () => {
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
     const search = vi.fn(pasgoSearch)
     await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, userText: 'Tìm nhà hàng Nhật gần tôi' })
-    expect(links(row)).toEqual([])
+    // A1 (2026-09-28): no request is DISCOVERED for; the row's only commerce is the GrabFood search fallback.
+    expect(links(row).map(l => [l.providerId, l.fallback, l.primary])).toEqual([['grabfood', 'search', false]])
     expect(search).not.toHaveBeenCalled()
-    const kinds = placeRecommendations(result, 'Quận 3')[0].entity.actions.map(a => a.kind)
-    // A3.3: the legacy search order links are gone; maps leads.
-    expect(kinds[0]).toBe('maps')
-    expect(kinds).not.toContain('order')
+    const actions = placeRecommendations(result, 'Quận 3')[0].entity.actions
+    // A3.3: the legacy search order links are gone; the search fallback ("Tìm trên GrabFood") stands before maps.
+    expect(actions.map(a => [a.kind, a.urlKind])).toEqual(expect.arrayContaining([['delivery', 'search'], ['maps', 'direct']]))
+    expect(actions.map(a => a.kind)).not.toContain('order')
   })
 
   it('the two intents cannot collapse: a reservation sentence never yields a delivery link, and a delivery sentence never a reservation', async () => {

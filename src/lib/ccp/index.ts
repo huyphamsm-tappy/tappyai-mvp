@@ -24,7 +24,7 @@ export { projectToCta, actionKindFor, urlKindFor, type CommerceCta } from './cta
 export { emitCommerceEvent, setCommerceEventWriter } from './events/sink'
 export { installCommerceObservability } from './events/observabilityBridge'
 export { discoveryScopesFor, discoveryScopeForProvider, providerOwning, type DiscoveryScope } from './discovery'
-export { COMMERCE_LINKS_KEY, projectCommerceLinkRow, isCommerceLinkRow, requiresMerchantLogin, handoffTypeOf, type CommerceLinkRow } from './row'
+export { COMMERCE_LINKS_KEY, projectCommerceLinkRow, isCommerceLinkRow, isSearchFallbackRow, requiresMerchantLogin, handoffTypeOf, type CommerceLinkRow } from './row'
 export type { DiscoveryHint } from './adapters'
 
 // ── Orchestrator (Plan §2 core flow) ─────────────────────────────────────────

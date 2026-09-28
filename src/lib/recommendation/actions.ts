@@ -3,7 +3,8 @@ import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace, type ReviewAction } from '@/lib/ai/consultative/reviewAction'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
-import { actionKindFor, urlKindFor, isCommerceLinkRow, requiresMerchantLogin, providerOwning, type CommerceLinkRow } from '@/lib/ccp'
+import { actionKindFor, urlKindFor, isCommerceLinkRow, isSearchFallbackRow, requiresMerchantLogin, providerOwning, type CommerceLinkRow } from '@/lib/ccp'
+import { linkDepthClass } from '@/lib/commerce/linkDepth'
 import { outboundLinkFacts, isDeepEnough, reportOutboundLink } from '@/lib/commerce/outboundLink'
 
 // ── ONE ACTION LIST, ONE AUTHORITY ───────────────────────────────────────────
@@ -285,6 +286,17 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
   const out: Action[] = []
   rows.forEach((row, index) => {
     if (!isCommerceLinkRow(row)) return
+    // A1 (UAT 2026-09-28): the row's ONE search-page fallback (no own page on any platform). It is a
+    // search and says so ("Tìm trên GrabFood"): never primary, and `buildActions` drops it when the
+    // row has a real buy / order / booking action. Its destination must really be a results page.
+    if (isSearchFallbackRow(row)) {
+      if (row.depth !== 2 || linkDepthClass(row.destinationUrl) !== 'search') return
+      const a = action(actionKindFor(row.intentType), row.url, domain, { urlKind: 'search', platform: row.merchantName })
+      if (!a) return
+      console.log(JSON.stringify({ type: 'tappyai_commerce_search_fallback', provider: row.providerId, tracked: row.tracked, domain }))
+      out.push({ ...a, commerce: commerceFactsOf(row, false) })
+      return
+    }
     // A3.3: a Commerce Link at search / landing depth is not a CTA. The resolver no longer emits
     // one for a row, but a cached result from before still can — judged here, at the last exit.
     const facts = outboundLinkFacts(row.url, row.kind, { commerceDepth: row.depth, commerceKind: row.kind, tracked: row.tracked, providerId: row.providerId })
@@ -299,25 +311,54 @@ function commerceActions(rows: readonly CommerceLinkRow[] | undefined, domain: s
       // Ranked order from CCP is preserved; a fraction keeps every PRIMARY commerce action ahead of
       // index 0. A secondary one keeps the table priority of its kind.
       priority: primary ? COMMERCE_PRIORITY + index / 100 : a.priority,
-      commerce: {
-        linkId: row.linkId,
-        requestId: row.requestId,
-        providerId: row.providerId,
-        depth: row.depth,
-        guestDepth: row.guestDepth,
-        authRequiredAt: row.authRequiredAt,
-        loginRequired: requiresMerchantLogin(row.authRequiredAt),
-        ...(row.handoff ? { handoff: row.handoff } : {}),
-        ...(row.authenticatedDepth !== undefined ? { authenticatedDepth: row.authenticatedDepth } : {}),
-        freshnessType: row.freshness.freshnessType,
-        expiresAt: row.expiresAt,
-        tracked: row.tracked,
-        ...(row.capability ? { capability: row.capability } : {}),
-        primary,
-        ...(row.facts ? { facts: row.facts } : {}),
-      },
+      commerce: commerceFactsOf(row, primary),
     })
   })
+  return out
+}
+
+function commerceFactsOf(row: CommerceLinkRow, primary: boolean): CommerceActionFacts {
+  return {
+    linkId: row.linkId,
+    requestId: row.requestId,
+    providerId: row.providerId,
+    depth: row.depth,
+    guestDepth: row.guestDepth,
+    authRequiredAt: row.authRequiredAt,
+    loginRequired: requiresMerchantLogin(row.authRequiredAt),
+    ...(row.handoff ? { handoff: row.handoff } : {}),
+    ...(row.authenticatedDepth !== undefined ? { authenticatedDepth: row.authenticatedDepth } : {}),
+    freshnessType: row.freshness.freshnessType,
+    expiresAt: row.expiresAt,
+    tracked: row.tracked,
+    ...(row.capability ? { capability: row.capability } : {}),
+    primary,
+    ...(row.facts ? { facts: row.facts } : {}),
+  }
+}
+
+/** Kinds that DO the thing (web PlaceDecision / Android PlaceCard `BOOK_KINDS`). */
+const TRANSACT_KINDS: ReadonlySet<ActionKind> = new Set(['order', 'delivery', 'booking', 'reservation', 'ticket', 'purchase'])
+
+/**
+ * A1: a real action always wins over the search fallback. The fallback leaves the list when the
+ * row has any direct buy / order / booking / ticket action (the venue's own page, a product page),
+ * or any other action on the SAME platform — never two buttons to one merchant.
+ */
+function withoutShadowedFallbacks(actions: Action[], fallbackLinkIds: ReadonlySet<string>): Action[] {
+  if (fallbackLinkIds.size === 0) return actions
+  const isFallback = (a: Action) => !!a.commerce && fallbackLinkIds.has(a.commerce.linkId)
+  const rest = actions.filter(a => !isFallback(a))
+  if (rest.some(a => TRANSACT_KINDS.has(a.kind) && a.urlKind === 'direct')) return rest
+  const platforms = new Set(rest.map(a => a.commerce?.providerId ?? (a.url.startsWith('http') ? providerOwning(a.url) : null)).filter((p): p is string => !!p))
+  const out: Action[] = []
+  let kept = false
+  for (const a of actions) {
+    if (!isFallback(a)) { out.push(a); continue }
+    if (kept || platforms.has(a.commerce!.providerId)) continue
+    kept = true
+    out.push(a)
+  }
   return out
 }
 
@@ -346,12 +387,12 @@ export function buildActions(
   const commerce = commerceActions(src.commerce_links, domain)
   out.push(...commerce)
   const commerceDestinations = new Set(
-    (src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => destinationKey(r.destinationUrl)).filter((k): k is string => !!k),
+    (src.commerce_links ?? []).filter(isCommerceLinkRow).filter(r => !isSearchFallbackRow(r)).map(r => destinationKey(r.destinationUrl)).filter((k): k is string => !!k),
   )
   // Completion Pass live UAT (14 Sep 2026): the hotel tool's row link is the OTA property page
   // WITHOUT the stay (or in another locale); the Commerce Link is the same page with the stay
   // applied. Same merchant, same subject → the row link is the duplicate, by provider.
-  const commerceProviders = new Set((src.commerce_links ?? []).filter(isCommerceLinkRow).map(r => r.providerId))
+  const commerceProviders = new Set((src.commerce_links ?? []).filter(isCommerceLinkRow).filter(r => !isSearchFallbackRow(r)).map(r => r.providerId))
   const rowOwner = src.link ? providerOwning(src.link) : null
   // Live UAT 14 Sep 2026: "… trên Agoda" must not render a Booking.com row link or a Booking.com
   // search beside the Agoda handoff. A legacy link on ANOTHER registry merchant steps aside when
@@ -481,7 +522,8 @@ export function buildActions(
     }))
   }
 
-  return dedupe(out.filter((a): a is Action => a !== null)).sort((a, b) => a.priority - b.priority)
+  const fallbackLinkIds = new Set((src.commerce_links ?? []).filter(isCommerceLinkRow).filter(isSearchFallbackRow).map(r => r.linkId))
+  return withoutShadowedFallbacks(dedupe(out.filter((a): a is Action => a !== null)), fallbackLinkIds).sort((a, b) => a.priority - b.priority)
 }
 
 /**

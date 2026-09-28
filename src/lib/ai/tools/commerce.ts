@@ -5,6 +5,7 @@ import {
   installCommerceObservability,
   COMMERCE_LINKS_KEY,
   type CommerceDomain,
+  type CommerceLink,
   type CommerceLinkRow,
   type CommerceRequest,
   capabilityForIntent,
@@ -24,6 +25,7 @@ import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type Dis
 import { entertainmentCapabilityOf, filmTitleMatches, filmTitleOf, foodCapabilityOf, requestedProviderOf, type UserTurns } from './commerceIntent'
 import { cityToIATA } from './travel'
 import { normalizeVN } from '@/lib/ai/intent'
+import { linkDepthClass } from '@/lib/commerce/linkDepth'
 import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, type FetchTextFn } from './eventSchedule'
 
 // ── The Phase-6 seam: tool result → CCP → `commerce_links` on the row ────────
@@ -602,6 +604,8 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
       ? { constraints: { ...(ctx.location ? { city: ctx.location.slice(0, 80) } : {}), ...(requested ? { merchantAllowList: requested.merchantAllowList } : {}) } }
       : {}
 
+    const searchFallbackOf = new Map<Row, { links: CommerceLink[]; requestId: string; intentType: IntentType }>()
+    let listingsAdded = false
     for (const { intentType, primary, subjectDiscovery, rowDiscovery, discoverySubject, subjectFilter, configurationFor } of plan.intents) {
       const capability = capabilityForIntent(intentType)
       // Discovery is one budgeted pass per intent; the search seam lets tests count it.
@@ -649,6 +653,9 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
         const request: CommerceRequest = { domain: plan.domain, intentType, capability, subject: s.subject.slice(0, 200), ...(cfg ? { configuration: cfg.configuration } : {}), ...constraints, context }
         const out = resolve(request, { hints, now, enabled: true })
         if (!('links' in out) || out.links.length === 0) continue
+        // A1: the merchants' SEARCH pages this request produced are kept aside — the row's fallback
+        // when no subject page is attached by the end of the pass (never attached here).
+        if (primary && !searchFallbackOf.has(row)) searchFallbackOf.set(row, { links: out.links, requestId: out.requestId, intentType })
         // A ROW carries subject links. A merchant's SEARCH page for the row's name is kept only for
         // shopping (owner decision 14 Sep 2026: the marketplaces' honest fallbacks); a hotel or a
         // venue row never gets "Tìm … trên X" for a capability it was not asked for.
@@ -699,15 +706,97 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
         // spa turn has eight venues, so an appended package was never visible (Internal UAT
         // R2, spa). The engine's lead stays the lead; the packages follow it.
         if (added.length > 0) {
+          listingsAdded = true
           const current = r[plan.listKey] as unknown[]
           r[plan.listKey] = [...current.slice(0, 1), ...added, ...current.slice(1)]
         }
       }
     }
+    attachSearchFallbacks(plan, subjects, targets, searchFallbackOf, ctx, { resolve, now, context, constraints }, listingsAdded)
     return result
   } catch {
     // A commerce failure must never cost the user the search result it decorates.
     return result
+  }
+}
+
+// ── A1 (UAT 2026-09-28, owner blocker "no order / buy / ticket link"): the search fallback ──
+//
+// A3.3 stands: a row's CTA is its OWN page (L3+) — a search page is never presented as the
+// subject. But a row with no own page on ANY platform was left with Maps only. Such a row now gets
+// ONE merchant SEARCH page for its name (+ area for a venue), from the merchant's registry grammar
+// (never a composed format), resolved by CCP — so the affiliate wrapper applies where the merchant
+// is in the program — and marked `fallback: 'search'`: labelled "Tìm trên …", never primary, never
+// `has_direct_handoff`, and dropped by the action layer when the row has a real buy / order /
+// booking action. Per vertical: shopping → the marketplaces' search (Shopee / Lazada / CellphoneS),
+// food → GrabFood search (ShopeeFood publishes no search grammar), events → Ticketbox search, and
+// only on a turn that asked for event tickets. Hotels and flights keep their own handoffs.
+type ResolveCtx = { resolve: typeof resolveCommerce; now: Date; context: CommerceRequest['context']; constraints: { constraints?: CommerceRequest['constraints'] } }
+
+function fallbackIntentOf(plan: Plan, ctx: CommerceAttachContext, listingsAdded: boolean): IntentType | null {
+  if (plan.domain === 'shopping') return 'buy_product'
+  // A table-reservation turn is not answered by a delivery platform (owner decision 14 Sep 2026).
+  if (plan.domain === 'food_drink') return foodCapabilityOf(userTurns(ctx)) === 'table_reservation' ? null : 'order_delivery'
+  // A Ticketbox search for a venue's name is only an answer when the user asked for event tickets
+  // AND no event listing of its own was found (a listing row is the real answer; 14 Sep 2026).
+  if (plan.domain === 'entertainment' && !listingsAdded && entertainmentCapabilityOf(userTurns(ctx)) === 'event_ticket') return 'buy_event_ticket'
+  return null
+}
+
+/**
+ * Does the row already carry its OWN order / reservation page (the maps provider's `booking_links`,
+ * entity-scoped `order_search_results`)? The action layer shows those; a search beside them would
+ * be a second, weaker button for the same thing.
+ */
+function rowHasOwnPage(row: Row): boolean {
+  const deep = (u: unknown) => typeof u === 'string' && linkDepthClass(u) === 'product'
+  if (Array.isArray(row.booking_links) && row.booking_links.some(deep)) return true
+  return Array.isArray(row.order_search_results) && (row.order_search_results as Array<{ link?: unknown }>).some(e => deep(e?.link))
+}
+
+/**
+ * Shopping: a marketplace's search fits ANY product; a retailer's (CellphoneS, DMX) only its own
+ * aisle — "Tìm trên CellphoneS" for a dress is a dead end. Marketplaces first.
+ */
+const GENERAL_SEARCH_PROVIDERS: Partial<Record<CommerceDomain, readonly string[]>> = { shopping: ['lazada', 'shopee'] }
+
+/** The one search page to offer: a real results page for the query (not a front door); general-purpose merchant first, then affiliate-tracked, then CCP's rank. */
+function pickSearchFallback(domain: CommerceDomain, links: readonly CommerceLink[]): CommerceLink | null {
+  const ok = links.filter(l => l.kind === 'SEARCH_HANDOFF' && l.depth === 2 && linkDepthClass(l.directUrl) === 'search')
+  const general = GENERAL_SEARCH_PROVIDERS[domain]
+  const pool = general ? (ok.filter(l => general.includes(l.providerId)).length > 0 ? ok.filter(l => general.includes(l.providerId)) : ok) : ok
+  return pool.find(l => l.tracking.mode !== 'none') ?? pool[0] ?? null
+}
+
+function attachSearchFallbacks(
+  plan: Plan,
+  subjects: DiscoverySubject[],
+  targets: Row[],
+  captured: Map<Row, { links: CommerceLink[]; requestId: string; intentType: IntentType }>,
+  ctx: CommerceAttachContext,
+  rc: ResolveCtx,
+  listingsAdded: boolean,
+): void {
+  const intentType = fallbackIntentOf(plan, ctx, listingsAdded)
+  if (!intentType) return
+  for (const s of subjects) {
+    const row = targets[Number(s.id)]
+    if (!row || sameActorLinks(row[COMMERCE_LINKS_KEY], ctx.actorHash).length > 0 || rowHasOwnPage(row)) continue
+    // A product whose own listing link is already the product page needs no search beside it.
+    const own = str(row.link)
+    if (plan.domain === 'shopping' && own && linkDepthClass(own) === 'product') continue
+    let source = captured.get(row)
+    if (!source || source.intentType !== intentType) {
+      const area = plan.domain === 'shopping' ? undefined : str(ctx.location)
+      const subject = (area && !normalizeVN(s.subject.toLowerCase()).includes(normalizeVN(area.toLowerCase())) ? `${s.subject} ${area}` : s.subject).slice(0, 200)
+      const request: CommerceRequest = { domain: plan.domain, intentType, capability: capabilityForIntent(intentType), subject, ...rc.constraints, context: rc.context }
+      const out = rc.resolve(request, { hints: [], now: rc.now, enabled: true })
+      if (!('links' in out)) continue
+      source = { links: out.links, requestId: out.requestId, intentType }
+    }
+    const pick = pickSearchFallback(plan.domain, source.links)
+    if (!pick) continue
+    row[COMMERCE_LINKS_KEY] = [{ ...projectCommerceLinkRow(pick, source.requestId, source.intentType, [], { primary: false }), fallback: 'search' as const }]
   }
 }
 

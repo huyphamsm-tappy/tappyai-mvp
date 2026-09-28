@@ -84,7 +84,9 @@ describe('A · food_delivery → PasGo is impossible', () => {
     const result = { results: [row], _tappy_place_domain: 'food', source: 'Google Maps' }
     const { search } = stub({ 'site:shopeefood.vn': [{ title: 'x', link: 'https://shopeefood.vn/tim-kiem?q=Ph%E1%BB%9F%20H%C3%B2a', snippet: '' }] })
     await attachCommerceLinks('search_places', result, { enabled: true, now: NOW, search, userTexts: ['giao tận nhà'] })
-    expect(links(row)).toEqual([])
+    expect(links(row).filter(l => l.fallback !== 'search')).toEqual([])
+    // A1: the only link is GrabFood's search fallback (ShopeeFood publishes no search grammar).
+    expect(links(row).map(l => l.providerId)).toEqual(['grabfood'])
   })
 })
 
