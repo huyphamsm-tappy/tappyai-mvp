@@ -468,6 +468,22 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - **Rollback:** `supabase/migrations/rollback/20260925d_audit_log_pii_retention_rollback.sql` — 🚨 not after a prune without exporting `audit_log_anchor` first (the restored verifier would report the pruned head).
 - Audit evidence: `docs/uat/evidence/f096-2026-09-26/` (applied; chain 0 problems before and after, 28 rows untouched).
 
+### §1-SEC) Security H1 + M1: two migrations to apply **AFTER** the release code is on production. ⛔ Do NOT apply before that. (Owner decision 2026-09-28)
+
+- `supabase/migrations/20260927_owner_update_column_privileges.sql`: owners may UPDATE only the columns the app edits (reviews: `is_hidden`; profiles: `id, full_name, bio, language, avatar_url, cover_url`). Rollback: `supabase/migrations/rollback/20260927_owner_update_column_privileges_rollback.sql`.
+- `supabase/migrations/20260928_revoke_reviews_insert.sql`: `REVOKE INSERT ON public.reviews` from `anon` and `authenticated`. Reviews are then written only by the server (service role). Rollback: `supabase/migrations/rollback/20260928_revoke_reviews_insert_rollback.sql`.
+
+**Why "after":** UAT (`uat.tappyai.com`) uses the **same database as production**, so applying either migration anywhere affects production at once. The code that production runs today (`origin/main` @ `842379b`, read on 2026-09-28) still INSERTs reviews with the **user's** client: `src/app/api/reviews/route.ts:42` calls `createClient()` from `@/lib/supabase/server`, and the insert plus its 3 retries are at `:248–271`. Applied early, `20260928` makes **every new review fail** on production and on UAT. `20260927` only touches columns that production code writes with the user client (`reviews.is_hidden`; `profiles.full_name/language` + the `id/avatar_url` upsert). Onboarding (`onboarded`) uses the service role. It still goes on only after release, together with `20260928`.
+
+**Order:**
+1. The release code (merge `06abb41`: audit C1/C2/H1 on `rc/web-uat`) is **live on production**. Check that `POST /api/reviews` on production answers from the new build (Vercel deployment = the release SHA).
+2. Smoke test on production **before** the migrations: sign in with a test account → post one review with a photo → it appears on the profile → hide/unhide it → delete it.
+3. Take a **`pg_dump` of the production DB** (at least schema + `public.reviews` + `public.profiles` + grants) and store it outside the repo.
+4. Apply `20260927_owner_update_column_privileges.sql`. Its pre-flight **aborts and changes nothing** if any of the 6 counter functions is SECURITY INVOKER (audit M2). If it aborts, stop and report; do not force it.
+5. Apply `20260928_revoke_reviews_insert.sql`. Its pre-flight aborts if any SECURITY INVOKER function inserts into `reviews`.
+6. Repeat the smoke test from step 2, and also: like/save/comment on a review (counters still move); edit your name and bio, change avatar and cover.
+7. If anything fails: run the rollback files in reverse order (`20260928` first, then `20260927`) and report.
+
 ### §1-V) Already on prod — verify, do NOT re-apply
 ```sql
 SELECT to_regclass('public.chat_messages') IS NOT NULL AS chat_phase1,
