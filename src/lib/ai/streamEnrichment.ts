@@ -18,6 +18,7 @@ import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
+import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
@@ -1613,10 +1614,27 @@ export function applyPlaceEnrichmentStreamFilter(
     console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'egress', path, removed: removed.length, hosts: [...new Set(removed.map(hostOf))].slice(0, 8) }))
   }
 
+  /**
+   * The final markdown normaliser for the BUFFERED path, never at the cost of the released prefix:
+   * when normalising would rewrite bytes the client already has (A5-P1 progressive release), the
+   * text is kept as it was — re-sending the whole reply is worse — and the clients' render-time
+   * bold balancing covers it.
+   */
+  const settleMarkdown = (text: string): string => {
+    const normalized = normalizeReplyMarkdown(text)
+    if (normalized === text) return text
+    return !flushedSent || alignReleasedPrefix(normalized, flushedSent) !== null ? normalized : text
+  }
+
   const flushLive = (controller: TransformStreamDefaultController) => {
     if (bufferMode) return
-    const final = releasableLiveText(liveText, true, allowedUrls)
-    logEgress('live', liveText, final)
+    const settled = releasableLiveText(liveText, true, allowedUrls)
+    logEgress('live', liveText, settled)
+    // Same final normaliser as the buffered path, but the live prefix is already on the client and
+    // cannot be rewritten: it applies only when the released bytes are untouched by it. Otherwise
+    // the text goes out as before and the clients' render-time balancing covers the prefix.
+    const normalized = normalizeReplyMarkdown(settled)
+    const final = normalized.startsWith(liveReleased) ? normalized : settled
     if (!final.startsWith(liveReleased) || final.length === liveReleased.length) return
     controller.enqueue(encoder.encode('0:' + JSON.stringify(final.slice(liveReleased.length)) + '\n'))
     liveReleased = final
@@ -1902,14 +1920,16 @@ export function applyPlaceEnrichmentStreamFilter(
     const aligned = alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
     if (aligned.outcome === 'none' && enginePickName) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'emphasis_dropped_no_model_pick', engine_pick: enginePickName }))
     recsForCard = aligned.recs
-    const placesView = (EMIT_PLACES_ANNOTATION && recsForCard.length)
+    // Place names / reasons render as plain text on every client: no markdown in the annotation
+    // (owner UAT 2026-09-28, literal "**"). URL / id / enum fields are untouched by plainTextDeep.
+    const placesView = plainTextDeep((EMIT_PLACES_ANNOTATION && recsForCard.length)
       ? buildPlacesLiveView(withResolvedPhotos(recsForCard, places), {
         mapsSearchUrl: collector?.placesMapsUrl,
         picked: namedRecs.map(r => r.entity.id),
         shown: CARDS_SHOWN,
         pickUnmatched,
       })
-      : null
+      : null)
     // UAT traceability (2026-09-19): the names are venue names from the provider rows, never user data.
     if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched, emphasis: aligned.outcome, card1: placesRenderOrder(placesView).visible[0]?.name ?? null, model_pick: namedRecs[0]?.entity.identity.name ?? null, engine_pick: enginePickName }))
 
@@ -2553,7 +2573,11 @@ export function applyPlaceEnrichmentStreamFilter(
     // The sentence goes where the body was — BEFORE the first structured block. Appending
     // it after [CTA_BUTTONS]/[FOLLOWUPS] put it below the buttons (measured on the
     // 2026-09-17 replay, run 2 #11), where the client renders it as an orphan line.
-    const groundedProse = (() => {
+    // No literal "**" (UAT 2026-09-28): the model's settled prose — every sentence-cutting guard has
+    // run — has unmatched bold dropped per line and markdown stripped from the string values of its
+    // [TAPPY_PLAN] / [CTA_BUTTONS] / [FOLLOWUPS] blocks (`normalizeReplyMarkdown`). Done HERE, before
+    // `prose` / `finalText` are composed, so the detectors still read exactly what ships.
+    const groundedProse = settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
       // when G1b restores the MODEL's own pick (c40 F8): a restored pick below "Nếu muốn, …" reads
@@ -2569,7 +2593,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const head = gated.text.slice(0, at).replace(/\s+$/, '')
       const tail = gated.text.slice(at)
       return `${head}${head ? '\n\n' : ''}${fallback}${tail ? `\n\n${tail}` : ''}`
-    })()
+    })())
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *

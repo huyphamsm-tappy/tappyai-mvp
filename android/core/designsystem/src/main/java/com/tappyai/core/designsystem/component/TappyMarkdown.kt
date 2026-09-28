@@ -67,7 +67,10 @@ fun TappyMarkdown(
     markdown: String,
     modifier: Modifier = Modifier,
 ) {
-    val blocks = remember(markdown) { parseMarkdownBlocks(markdown) }
+    // Bold is balanced per line BEFORE parsing: the inline scan below emits an unterminated `**`
+    // literally, so an unmatched one (model slip, guard cut, pair split by a line break) must be
+    // gone by then (owner UAT 2026-09-28; mirrors web formatMessage).
+    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)) }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md),

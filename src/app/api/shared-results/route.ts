@@ -28,7 +28,7 @@ export const dynamic = 'force-dynamic'
 export async function POST(req: NextRequest) {
   // A5 kill switch (SHOW_PUBLIC_SHARE=false|0): no publishing at all — answered before any auth,
   // rate-limit bucket or database read. Existing pages are untouched.
-  if (!publicShareEnabled()) return NextResponse.json({ error: 'not_available' }, { status: 404 })
+  if (!publicShareEnabled()) return apiError(req, 'not_available', 'share.publicUnavailable', 404)
   const ip = clientIp(req)
   if (!rateLimit(`share-create:${ip}`, 20, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user, supabase } = await getRequestUser(req)

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { MapPin, Share2, ExternalLink, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import ShareMenu from '@/components/share/ShareMenu'
@@ -51,7 +52,10 @@ function categoryColor(cat: string) {
   return CATEGORY_COLORS[cat] || CATEGORY_COLORS.transport
 }
 
-export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
+export default function TripPlanCard({ plan: rawPlan }: { plan: TappyPlan }) {
+  // Every field below renders as PLAIN text, and the model writes markdown inside the plan JSON
+  // ("**4.7⭐**"): strip it once, here, for every source (live chat, restored history, planner).
+  const plan = useMemo(() => plainTextDeep(rawPlan), [rawPlan])
   const { t } = useTranslation()
   const [activeDay, setActiveDay] = useState(0)
   const [shareOpen, setShareOpen] = useState(false)

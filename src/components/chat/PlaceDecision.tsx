@@ -10,6 +10,7 @@ import { track } from '@/lib/tracking/tracker'
 import { placesRenderOrder, type LivePlace, type PlaceFlag, type PlacesLiveView } from '@/lib/recommendation/liveView'
 import { reasonList, reasonText } from '@/lib/recommendation/reasonText'
 import { formatPriceBandText } from '@/lib/recommendation/priceBand'
+import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 
 // ── The place decision, as the approved Food composition renders it ─────────
 //
@@ -396,7 +397,8 @@ export default function PlaceDecision({ view }: { view: PlacesLiveView | null })
   const { t } = useTranslation()
   // Memoised together so the filter row is not rebuilt on every keystroke elsewhere
   // in the chat; `view` is a stable object for the life of the message.
-  const items = useMemo(() => view?.items ?? [], [view])
+  // UAT 2026-09-28: a view cached before the server cleaned it may still carry markdown in its strings.
+  const items = useMemo(() => plainTextDeep(view?.items ?? []), [view])
   const filters = useMemo(() => buildFilters(items, t), [items, t])
   const [active, setActive] = useState<FilterId>('all')
   // Item 2 (2026-09-19): three cards above the fold — the model's picks first (pick, then its

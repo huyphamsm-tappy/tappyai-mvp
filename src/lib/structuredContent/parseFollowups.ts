@@ -1,3 +1,5 @@
+import { plainText } from '@/lib/chat/markdownNormalize'
+
 // ── The [FOLLOWUPS] reader ───────────────────────────────────────────────────
 //
 // 🔑 MOVED HERE FROM `ChatInterface.tsx`, UNCHANGED, so the G1 shared-result sanitizer can
@@ -16,7 +18,8 @@ export function parseFollowups(content: string): { text: string; followups: stri
   let followups: string[] = []
   let text = content
   if (m) {
-    followups = m[1].split('|').map(s => s.trim()).filter(Boolean).slice(0, 3)
+    // A chip renders as plain text: markdown the model wrote into it ("**Giá**") is stripped.
+    followups = m[1].split('|').map(s => plainText(s.trim())).filter(Boolean).slice(0, 3)
     text = content.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/i, '')
   }
   // Safety net: strip any stray/orphan markers so implementation details are

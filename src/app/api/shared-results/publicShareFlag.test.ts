@@ -42,7 +42,7 @@ describe('SHOW_PUBLIC_SHARE=false — publishing is closed', () => {
       for (const [handler, path] of [[CREATE, '/api/shared-results'], [PREVIEW, '/api/shared-results/preview']] as const) {
         const res = await handler(post(path))
         expect(res.status, path).toBe(404)
-        expect(await res.json()).toEqual({ error: 'not_available' })
+        expect(await res.json()).toMatchObject({ error: 'not_available', message: expect.any(String) })
       }
       expect(getRequestUser).not.toHaveBeenCalled()
       expect(createSharedResult).not.toHaveBeenCalled()

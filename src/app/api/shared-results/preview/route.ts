@@ -20,7 +20,7 @@ export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest) {
   // A5 kill switch: the preview is the first step of publishing, so it closes with the create route.
-  if (!publicShareEnabled()) return NextResponse.json({ error: 'not_available' }, { status: 404 })
+  if (!publicShareEnabled()) return apiError(req, 'not_available', 'share.publicUnavailable', 404)
   if (!rateLimit(`share-preview:${clientIp(req)}`, 60, 60_000).ok) return apiError(req, 'rate_limit', 'rate.tooFast', 429)
   const { user, supabase } = await getRequestUser(req)
   if (!user) return apiError(req, 'unauthorized', 'auth.required', 401)

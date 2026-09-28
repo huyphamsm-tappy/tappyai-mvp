@@ -9,6 +9,7 @@ import OfferRow, { offerDestination, offerActionLabel } from '@/components/chat/
 import CommerceHandoff from '@/components/chat/structured/CommerceHandoff'
 import { reasonList } from '@/lib/recommendation/reasonText'
 import { track } from '@/lib/tracking/tracker'
+import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 
 // ── Phase 9: render the DECISION, not the catalogue ─────────────────────────
 //
@@ -184,7 +185,7 @@ function ProductRow({ e, showMatch }: { e: SynthesisEntityView; showMatch: boole
 }
 
 export default function ShoppingDecision({
-  view,
+  view: rawView,
   heroImage,
   onPriceWatch,
 }: {
@@ -199,6 +200,8 @@ export default function ShoppingDecision({
   onPriceWatch?: (productName: string) => void
 }) {
   const { t, locale } = useTranslation()
+  // Names, configs and reasons render as PLAIN text: no "**" may reach the card (UAT 2026-09-28).
+  const view = plainTextDeep(rawView)
   const entities = view.entities
   if (!entities || entities.length === 0) return null
 

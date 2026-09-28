@@ -1,5 +1,6 @@
 package com.tappyai.app.chat
 
+import com.tappyai.core.designsystem.component.MarkdownNormalize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -276,7 +277,9 @@ object ChatResponseParser {
         // 1. Trip/evening plan.
         val planMatch = PLAN_RE.find(text)
         val plan = planMatch?.let {
-            runCatching { json.decodeFromString<TappyPlan>(it.groupValues[1].trim()) }
+            // Card text renders as PLAIN text: markdown inside the JSON is stripped at decode
+            // (CardMarkdown — the same for every block below).
+            runCatching { json.decodeFromString<TappyPlan>(CardMarkdown.stripPayload(it.groupValues[1].trim())) }
                 .getOrNull()
                 ?.takeIf { p -> p.days.isNotEmpty() }
                 // A "chưa có giá" sentinel is not a price: dropped once, here (PlanPrice.kt).
@@ -316,13 +319,13 @@ object ChatResponseParser {
         text = CTA_PARTIAL_RE.replace(text, "").trimEnd()
 
         val buttons = ctaPayload?.let {
-            runCatching { json.decodeFromString<CtaEnvelope>(it.trim()).buttons }.getOrNull()
+            runCatching { json.decodeFromString<CtaEnvelope>(CardMarkdown.stripPayload(it.trim())).buttons }.getOrNull()
         } ?: emptyList()
 
         // 3. Follow-up suggestion chips.
         val fuMatch = FOLLOWUPS_RE.find(text)
         val followups = fuMatch?.groupValues?.get(1)
-            ?.split("|")?.map { it.trim() }?.filter { it.isNotBlank() }?.take(3)
+            ?.split("|")?.map { MarkdownNormalize.plainText(it.trim()) }?.filter { it.isNotBlank() }?.take(3)
             ?: emptyList()
         if (fuMatch != null) text = FOLLOWUPS_RE.replace(text, "")
 
@@ -338,7 +341,7 @@ object ChatResponseParser {
             ?.removePrefix("[TAPPY_SHOPPING]")?.removePrefix("[tappy_shopping]")
             ?.removeSuffix("[/TAPPY_SHOPPING]")?.removeSuffix("[/tappy_shopping]")
         val shopping = shoppingBody?.let { body ->
-            runCatching { json.decodeFromString<ShoppingDecisionView>(body.trim()) }
+            runCatching { json.decodeFromString<ShoppingDecisionView>(CardMarkdown.stripPayload(body.trim())) }
                 .getOrNull()
                 ?.takeIf { it.entities.isNotEmpty() }
         }
@@ -378,7 +381,7 @@ object ChatResponseParser {
         text = PLACES_PARTIAL_RE.replace(text, "").trimEnd()
 
         val places = placesPayload?.let { body ->
-            runCatching { json.decodeFromString<PlacesMarkerPayload>(body.trim()).items }.getOrNull()
+            runCatching { json.decodeFromString<PlacesMarkerPayload>(CardMarkdown.stripPayload(body.trim())).items }.getOrNull()
         } ?: emptyList()
 
         // Safety net: strip any orphan markers so implementation details never show. Every marker

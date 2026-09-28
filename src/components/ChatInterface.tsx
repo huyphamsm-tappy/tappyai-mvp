@@ -46,6 +46,7 @@ import { track } from '@/lib/tracking/tracker'
 import { ensureAnonymousSession } from '@/lib/auth/ensureAnonymousSession'
 import { attachSavedContext, type SavedMessage } from '@/lib/chat/savedContext'
 import { withCompactedHistory } from '@/lib/chat/requestHistory'
+import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
 import { cleanRepeats } from '@/lib/chat/replyRepeat'
 import { isAgeGateMessage, redirectToAgeCheck } from '@/lib/account/ageGateClient'
 
@@ -463,7 +464,9 @@ export function formatMessage(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
-  const withImages = escapeHtml(content).replace(
+  // Bold is balanced per line FIRST: a matched pair renders bold, an unmatched `**` (model slip,
+  // guard cut, a pair split by a line break) is dropped — never painted, never an empty <em>.
+  const withImages = escapeHtml(balanceBoldPerLine(content)).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
