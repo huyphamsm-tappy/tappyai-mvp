@@ -63,12 +63,17 @@ Bằng chứng bản release **không** chứa hook và secret:
 |---|---|---|
 | aebbf43 / b3ea273 | Mở kênh liên lạc; phiên web báo STOPPED android/ | — |
 | 767e199 | Bước 1: bảng, sơ đồ, 16 chỗ lệch, ảnh hiện trạng | — |
-| 4044b41 | Build type `uat` | — |
+| 4044b41 | Build type `uat` | release-clean 7/7 |
 | a4f72e5 | 9 test chia sẻ lấy origin theo bản build | — |
-| d926617 / 66e8bba | Đăng nhập = web; hub Tôi = web/mockup | (sẽ có flow login) |
-| 865b2a2 | Hạ tầng e2e + tài khoản test + hook uat | — |
-| e870b3b | L10 tab Chia sẻ khi xem hồ sơ người khác · L16 Deals · cờ SHOW_PUBLIC_SHARE | profile-visitor ✅✅ · deals ✅✅ |
-| b6c0db0 | Ảnh bìa + tab hub = web (bỏ "Đã thích") | profile-owner ✅✅ · profile-media ✅✅ |
+| d926617 / 66e8bba | Đăng nhập = web; hub Tôi = web/mockup | login ✅✅ |
+| cb3bc39 | Hạ tầng e2e + tài khoản test + hook uat | nav-back ✅✅ |
+| 7cc5f1a | L10 tab Chia sẻ khi xem hồ sơ người khác · L16 Deals · cờ SHOW_PUBLIC_SHARE | profile-visitor ✅✅ · deals ✅✅ |
+| 85a99ab | Ảnh bìa + tab hub = web (bỏ "Đã thích") | profile-owner ✅✅ · profile-media ✅✅ |
+| 06b5284 | L4 cổng 18+ theo mockup · L5 "Gợi ý cho bạn" hỏi 18+ · khai tuổi khách trên mọi request | age-gate ✅✅ · recommendations ✅✅ |
+| 311159f | Khách mở Đăng nhập, rời app, quay lại: vẫn ở Đăng nhập | login ✅✅ |
+| a803d09 | App giả Zalo/TikTok/Messenger (đúng package) ghi lại cái nhận được | share-explore ✅✅ (TikTok/Zalo nhận FILE video 12 MB + link) |
+| af5aa27 | Test hiển thị OFFLINE trên 51 lượt golden (không gọi AI) → sửa link dính, plan `"people":[1]`, khung lỗi `3:` | unit (GoldenOfflineRender 9 · GoldenStreamReplay 6) |
+| 6fe2150 ⏸ | Composer đăng VIDEO (3 bước upload, F-099) — **chưa push**, chờ R8 | composer ✅✅ (Android 8/8, web 3/3) |
 
 (✅✅ nghĩa là Android và web cùng PASS.)
 
@@ -99,11 +104,11 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 | Q2 | Home Android (bố cục đã duyệt riêng) khác Home web (L12). | Giữ bố cục Android, chỉ khớp cấu trúc điều hướng (Huy đã chỉ đạo). |
 | Q3 | Cài đặt Android có thêm "Âm thanh thông báo", "Giao diện", "Chính sách bản quyền" mà web không có (L11). | Giữ nguyên, xếp vào "Sau release" (không ảnh hưởng chức năng). |
 | Q4 | "Gợi ý cho bạn" cho khách: server không có nhánh cho khách (R6). | Android hỏi 18+ một lần; vẫn 403 thì mời đăng nhập, không lặp lại. |
+| Q5 | Đăng video Android làm đỏ 2 guard web (`src/lib/config/video{Duration,Size}.test.ts`, chính guard ghi "có picker video thì đổi guard"). Android không được sửa `src/`. | Commit video 6fe2150 **giữ ở máy, không push** để rc không đỏ; đã ghi R8 kèm nội dung guard thay thế. Huy/phiên web đổi guard → Android push ngay. Nếu Huy muốn release không có video trên Android: bỏ commit đó, không ảnh hưởng gì khác. |
+| Q6 | Server gửi khối `[TAPPY_PLAN]` cụt đầu (R7, golden M1#6) → không vẽ được thẻ kế hoạch. | Android bỏ khối, không lộ JSON; chờ server sửa. |
 
 ## Việc tiếp theo
 
-- L4 cổng 18+ theo mockup + L5 "Gợi ý cho bạn" hỏi 18+.
-- L7 Đã lưu · L8 Viết content · L6 onboarding.
-- L9 composer (ảnh / video / YouTube).
-- Chat 11 câu · chia sẻ (intent tới Zalo/FB/TikTok qua app stub) · đăng nhập e2e.
-- L11 Cài đặt · L17 quiz chat · screenshot test · rà các commit android/ của phiên web.
+- Lượt kiểm cuối trên UAT: `node run.mjs` (mọi flow) + `chat` (10 ca / 11 câu, nút đặt/mua, chia sẻ kế hoạch Zalo/TikTok).
+- Push 6fe2150 khi guard web (R8) đã đổi; build APK uat trên SHA cuối; cài lên máy thật.
+- Sau release (không ảnh hưởng chức năng): L7 Đã lưu, L8 Viết content, L6 onboarding (bộ đếm "Bước 1/2"), L11 Cài đặt, L12 Home, số đếm tab hồ sơ khách, icon thương hiệu nút đăng nhập, L17 quiz chat (userPreferences), screenshot test.
