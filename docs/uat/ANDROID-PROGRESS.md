@@ -132,6 +132,8 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 | Q4 | "Gợi ý cho bạn" cho khách: server không có nhánh cho khách (R6). | Android hỏi 18+ một lần; vẫn 403 thì mời đăng nhập, không lặp lại. |
 | Q5 | Đăng video Android làm đỏ 2 guard web (`src/lib/config/video{Duration,Size}.test.ts`, chính guard ghi "có picker video thì đổi guard"). Android không được sửa `src/`. | Commit video 6fe2150 **giữ ở máy, không push** để rc không đỏ; đã ghi R8 kèm nội dung guard thay thế. Huy/phiên web đổi guard → Android push ngay. Nếu Huy muốn release không có video trên Android: bỏ commit đó, không ảnh hưởng gì khác. |
 | Q7 | App chưa gửi `decisionEvidenceId` (web có), nên câu hỏi tiếp kiểu "cái đầu tiên" trên app kém hơn web. ADR-024 cố ý giữ mobile không trạng thái. | Giữ ADR-024 (không gửi). Huy muốn ngang web thì phải đổi ADR + guard web; phần Android đã viết sẵn (commit d48a11e, không push). |
+| Q8 | **R13 (P0, server):** bấm «Lên kế hoạch chi tiết» sau một chuyến Đà Nẵng → server trả kế hoạch "Tối nay" với quán ở Omaha (Mỹ), Sơn La, Seattle (Mỹ). Cả web lẫn app. | Không sửa được phía Android (server). Nên chặn release consult V2 tới khi phiên web sửa R13 — Huy quyết. |
+| Q9 | e2e chat đỏ một phần vì server consult V2 (70667d3) đổi hành vi giữa các lượt chạy (lúc hỏi, lúc chọn, lúc hỏi 2 lần — R11, R12). | Android hiển thị đúng những gì server gửi (test offline + e2e từng ca). Không "đuổi" kịch bản theo server đang đổi; chạy lại `node android/e2e/run.mjs chat` khi server ổn định. |
 | Q6 | Server gửi khối `[TAPPY_PLAN]` cụt đầu (R7, golden M1#6) → không vẽ được thẻ kế hoạch. | Android bỏ khối, không lộ JSON; chờ server sửa. |
 
 ## Việc tiếp theo
@@ -139,3 +141,78 @@ Hộp này thỉnh thoảng hiện ở khung hình đầu sau khi cài (emulator
 - Lượt kiểm cuối trên UAT: `node run.mjs` (mọi flow) + `chat` (10 ca / 11 câu, nút đặt/mua, chia sẻ kế hoạch Zalo/TikTok).
 - Push 6fe2150 khi guard web (R8) đã đổi; build APK uat trên SHA cuối; cài lên máy thật.
 - Sau release (không ảnh hưởng chức năng): L7 Đã lưu, L8 Viết content, L6 onboarding (bộ đếm "Bước 1/2"), L11 Cài đặt, L12 Home, số đếm tab hồ sơ khách, icon thương hiệu nút đăng nhập, L17 quiz chat (userPreferences), screenshot test.
+
+
+---
+
+## BÁO CÁO SÁNG — 29/09/2026
+
+**SHA cuối:** `1854594` trên `rc/web-uat` (đã push, không force). Unit Android 2.674/0 (debug + release + uat), test web quét android/ 810/0, release sạch 7/7.
+Commit đăng video `6fe2150` **chưa push** — ở nhánh máy `android/video-held`, chờ R8 (Q5).
+
+### Việc bắt buộc → e2e trên UAT thật (Android | web)
+
+Ảnh ghép Android|web: `D:/TappyAI-backups/android-parity-evidence/<lượt>/<flow>/compare/`. Video + ảnh gốc: `…/<lượt>/<flow>/{android,web}/`. Kết quả từng bước: `docs/uat/evidence/android-parity/<flow>/RESULT.md`.
+
+| Việc | Flow | Android | Web | Lượt (UAT SHA) |
+|---|---|---|---|---|
+| Đăng nhập email / tạo tài khoản / khách | login | ✅ 13/13 | ✅ 10/10 | 15-11-17 (83853cc) |
+| Chat + nút đặt/mua | chat | 🟡 57/59 → 55/63 | 🟡 28/29 → 15/32 | 17-29-54, 19-00-46 (70667d3) |
+| Tải lên (ảnh / video / YouTube) | composer | ✅ 8/8 | ✅ 3/3 | 13-51-39 (776f392) — **video chưa push (Q5)** |
+| Chia sẻ bài Khám phá (TikTok/Zalo nhận FILE) | share-explore | ✅ 10/10 | ✅ 1/1 | 15-11-17 |
+| Chia sẻ kế hoạch (Zalo link, TikTok ảnh PNG) | share-plan | ✅ 8/8 | ✅ 2/2 | 19-00-46 |
+| Nút Back | nav-back | ✅ 11/11 | ✅ 9/9 | 15-59-06 (31c5e84) |
+| Hồ sơ chủ (6 tab) | profile-owner | ✅ 8/8 | ✅ 7/7 | 15-59-06 |
+| Hồ sơ người khác (tab "Chia sẻ") | profile-visitor | ✅ 7/7 | ✅ 5/5 | 15-11-17 |
+| Ảnh đại diện + ảnh bìa | profile-media | ✅ 5/5 | ✅ 3/3 | 15-11-17 |
+| Cổng 18+ / Gợi ý cho bạn / Deals | age-gate · recommendations · deals | ✅ 7/7 · 8/8 · 5/5 | ✅ 2/2 · 3/3 · 3/3 | 15-11-17 |
+
+**Chat, chi tiết:**
+- Android đạt, có bằng chứng từng ca:
+  - Chữ chạy dần, thấy trạng thái "đang tìm".
+  - Không lọt `**`, marker, URL thô, link dính hay khoảng trắng lạ.
+  - Nút bấm được và mở đúng nơi: GrabFood, Lazada (qua link affiliate), Maps, Zalo/Facebook đặt chỗ. Kiểm bằng intent VIEW thật.
+  - Có chip trả lời một chạm và thẻ kế hoạch.
+- Chỗ đỏ còn lại là server consult V2 đang đổi: R11 (mất chủ đề concert), R12 (hỏi 2 lần), R13 (P0, kế hoạch sai thành phố), R9 (lộ lời kể các bước).
+- Test offline trên 51 lượt golden: xanh.
+
+**Lỗi Android tìm ra và đã sửa đêm nay:**
+- **Lịch sử chat gửi sai định dạng:** gửi chữ đã gỡ marker thay vì bản thô như web, nên server "quên" mạch chuyện.
+- **Kế hoạch mở lại từ lịch sử:** không chia sẻ được.
+- **Dòng "•" dính thành một đoạn.**
+- **Thẻ hỏi nhanh `[TAPPY_ASK]`:** đã có, chờ server bật qua header `x-tappy-caps: ask` (R10).
+- **Plan `"people":[1]`:** mất cả thẻ.
+- **Khung lỗi `3:`:** bị nuốt.
+- **TikTok:** báo nhầm "chưa cài" khi ảnh chưa vẽ xong.
+- **Link clip:** thành ảnh vỡ.
+
+### CẦN HUY QUYẾT
+
+Xem bảng ở mục "CẦN HUY QUYẾT" phía trên, Q1–Q9. Gấp nhất:
+- **Q8 / R13 (P0 server):** kế hoạch Đà Nẵng ra quán ở Mỹ.
+- **Q5:** cho push đăng video (cần đổi 2 guard web, R8).
+- **Q7:** ADR-024 (app không gửi `decisionEvidenceId`).
+- **Q1:** upload bằng chứng lên GCS công khai (chưa làm).
+
+### APK uat
+
+- File: `D:/TappyAI-backups/TappyAI-UAT-1854594.apk` (45,5 MB, sha256 bắt đầu `590fb424ea68b886`). Build từ `1854594`.
+- Tên app **"TappyAI UAT"**, package `com.tappyai.app.staging`. Chạy song song với app thật, không đè lên. Máy chủ `uat.tappyai.com`, DB audit.
+- **Máy thật R58RC0V30BH không còn cắm lúc cài (02:50)**, nên chưa cài được. Cách cài:
+  1. Cắm cáp USB, bật **Gỡ lỗi USB** (Cài đặt → Tùy chọn nhà phát triển).
+  2. Chạy lệnh:
+     ```bash
+     adb install -r D:/TappyAI-backups/TappyAI-UAT-1854594.apk
+     ```
+  3. Hoặc chép file APK vào máy, mở bằng Tệp, cho phép "Cài ứng dụng không rõ nguồn".
+
+### Huy test trên máy thật
+
+1. Đăng nhập bằng email; bấm "Tạo tài khoản" (mở `uat.tappyai.com/register`, có thể gặp màn đăng nhập Vercel vì UAT được bảo vệ); "Tiếp tục với tư cách Khách".
+2. Chia sẻ một clip ở Khám phá sang **Zalo thật** và **TikTok thật** (TikTok nhận file video); chia sẻ một kế hoạch sang Zalo và TikTok; Facebook.
+3. Đăng bài: ảnh từ **camera** và thư viện; **video quay bằng máy** (chỉ có sau khi push video, Q5); link YouTube.
+4. Chat 10 câu của Huy trên 4G/wifi thật. Bấm nút GrabFood / Lazada / Booking để xem có mở **app thật** không. Gõ tiếng Việt bằng bàn phím thật.
+5. Cho phép **vị trí thật** rồi hỏi "quán phở gần đây".
+6. Nút Back vật lý / cử chỉ vuốt trên mọi màn.
+7. Đổi ảnh đại diện + ảnh bìa bằng camera.
+8. Xem có còn hộp "isn't responding" không. Trên emulator nó do GPU phần mềm (§ANR); máy thật không nên có.
