@@ -439,10 +439,11 @@ const DANGLING_TAIL = /(?:^|\s)(?:nên|và|với|là|có|hoặc|nhưng|hay|để
 const SUBORDINATE_HEAD = /^(?:nếu|khi|trong khi|lúc|hễ|vì|bởi vì|bởi|tuy|tuy nhiên nếu|mặc dù|dù|để|if|when|whenever|because|since|although|though|while|unless)(?![\p{L}\p{N}])/iu
 
 /** The last clause of `s` (after its last clause delimiter), without leading space or emphasis. */
-function lastClauseOf(s: string): string {
-  let from = 0
-  for (const m of s.matchAll(CLAUSE_DELIM)) from = m.index! + m[0].length
-  return s.slice(from).replace(/^[\s*_>#-]+/u, '')
+export function lastClauseOf(s: string): string {
+  // The last NON-EMPTY clause: "Nếu bạn muốn … cao hơn, " ends in its own delimiter, and the empty
+  // tail after it hid the conditional (uat @ 1e11b32 still showed "Nếu bạn muốn … cao hơn.").
+  const parts = s.split(CLAUSE_DELIM).map(p => p.replace(/^[\s*_>#-]+/u, '').trim()).filter(Boolean)
+  return parts[parts.length - 1] ?? ''
 }
 
 /**

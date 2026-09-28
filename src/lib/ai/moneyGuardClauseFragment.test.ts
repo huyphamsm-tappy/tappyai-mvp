@@ -110,3 +110,12 @@ describe('price identity (UAT 2026-09-28): a real price is not removed for a wir
     expect(requestedEntity('laptop dưới 15tr')).toBe('laptop')
   })
 })
+
+describe('dangling conditional when the kept head ends in its own comma (uat @ 1e11b32)', () => {
+  it('lastClauseOf skips the empty tail after a trailing delimiter', async () => {
+    const { lastClauseOf } = await import('./moneyGuard')
+    expect(lastClauseOf('Nếu bạn muốn chất lượng âm thanh cao hơn, ')).toBe('Nếu bạn muốn chất lượng âm thanh cao hơn')
+    expect(lastClauseOf('Ngoài ra, nếu cần chống ồn tốt, ')).toBe('nếu cần chống ồn tốt')
+    expect(lastClauseOf('Mình chọn A, giá ')).toBe('giá')
+  })
+})
