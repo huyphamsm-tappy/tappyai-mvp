@@ -8,6 +8,7 @@ import { guardFormatClaimsInText } from './formatClaimGuard'
 import { guardDistrictClaims } from './districtClaimGuard'
 import { statedDistrict } from './districts'
 import { guardBudgetFitInText } from './budgetFitGuard'
+import { guardUnsupportedClaims } from './unsupportedClaimGuard'
 import { extractBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets } from './placeClaimGuard'
@@ -2160,7 +2161,19 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardDistrictClaims(formatGuard.text, requestedDistrict, places.map(p => ({ name: p.name, address: p.address })))
       : { text: formatGuard.text, rewritten: 0, venues: [] as string[] }
     if (districtGuard.rewritten > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'district_claim', rewritten: districtGuard.rewritten, district: requestedDistrict?.label }))
-    const placeGuarded = districtGuard.text
+    // Owner 2026-09-28 (round-5 blind grading, golden T2 / c40 F2 T1 P6): four unsupported-claim shapes
+    // — an absolute "không có <asked feature>", a price ceiling read off a band, "trong ngân sách" about
+    // an unpriced venue, an asked-for service the venue data never mentions. Rewritten, never cut.
+    const claimVenueNames = new Set<string>([...priceBandsByEntity.keys(), ...placeEntityTexts.keys(), ...places.map(p => p.name ?? '').filter(Boolean)])
+    const unsupported = (hadPlaceSearch || placeIntent || travelIntent) && !shoppingTurn
+      ? guardUnsupportedClaims(districtGuard.text, {
+        venues: [...claimVenueNames].map(name => ({ name, band: priceBandsByEntity.get(name) ?? null, texts: placeEntityTexts.get(name) ?? [] })),
+        sharedTexts: placeTexts,
+        userTexts: [...(collector?.userTexts ?? [userText])],
+      })
+      : { text: districtGuard.text, rewritten: [] as string[] }
+    if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
+    const placeGuarded = unsupported.text
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.
