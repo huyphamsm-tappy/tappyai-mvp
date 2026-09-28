@@ -3,6 +3,7 @@
      Every feedback string describes what ACTUALLY happened — nothing here says "sent" or
      "delivered", because this client never knows that. -->
 <resources>
+    <string name="share_image_preparing">Preparing the share image… try again in a moment</string>
     <string name="share_title">Share with friends</string>
     <string name="share_preview_from">recommendation</string>
     <string name="share_facebook">Facebook</string>

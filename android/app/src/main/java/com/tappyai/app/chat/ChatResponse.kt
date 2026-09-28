@@ -283,8 +283,11 @@ object ChatResponseParser {
     private val IMAGE_EXT_RE = Regex("""^https?://[^\s?#)]+\.(jpe?g|png|webp|gif|avif)(\?[^\s)]*)?$""", RegexOption.IGNORE_CASE)
     private val LINK_TO_IMAGE_RE = Regex("""(^|[^!])\[([^\]\n]*)]\((https?://[^\s)]+)\)""")
     private val BARE_URL_RE = Regex("""(^|\s)(https?://[^\s<)\]]+)""")
+    // fbcdn / tiktokcdn serve VIDEO too: a clip link stays a link, never a broken image.
+    private val VIDEO_URL_RE = Regex("""\.(mp4|webm|mov|m3u8)(\?|$)|/video/|mime_type=video""", RegexOption.IGNORE_CASE)
     internal fun isImageUrl(url: String): Boolean =
-        (IMAGE_HOST_RE.containsMatchIn(url) && !url.contains("/maps") && !url.contains("/search")) || IMAGE_EXT_RE.matches(url)
+        !VIDEO_URL_RE.containsMatchIn(url) &&
+            ((IMAGE_HOST_RE.containsMatchIn(url) && !url.contains("/maps") && !url.contains("/search")) || IMAGE_EXT_RE.matches(url))
     internal fun normalizeImageLinks(content: String): String = content
         .replace(LINK_TO_IMAGE_RE) { m -> if (isImageUrl(m.groupValues[3])) "${m.groupValues[1]}![${m.groupValues[2]}](${m.groupValues[3]})" else m.value }
         .replace(BARE_URL_RE) { m -> if (isImageUrl(m.groupValues[2])) "${m.groupValues[1]}![](${m.groupValues[2]})" else m.value }

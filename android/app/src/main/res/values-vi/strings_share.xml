@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="share_image_preparing">Đang tạo ảnh chia sẻ… thử lại sau giây lát</string>
     <string name="share_title">Chia sẻ với bạn bè</string>
     <string name="share_preview_from">gợi ý</string>
     <string name="share_facebook">Facebook</string>

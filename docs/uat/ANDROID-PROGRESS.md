@@ -77,6 +77,19 @@ Bằng chứng bản release **không** chứa hook và secret:
 
 (✅✅ nghĩa là Android và web cùng PASS.)
 
+## (b) Rà các commit android/ của phiên web — KẾT LUẬN: không có P0/P1
+
+Đã rà 7e78e58 (P3b/P4), 4515b0f (P1a/P1c), 5e305f4 (P2), 3c5887a (A4), 67714c9, 1dcc877 (chỉ đổi versionCode 10 / 1.0.0).
+Không lộ secret, không có đường uat/debug lọt vào release, trường API khớp server (`moderation.state` của `/api/reviews/mine`), chuỗi mới đủ vi/en.
+
+| Mức | Chỗ | Lỗi | Xử lý |
+|---|---|---|---|
+| P2 | `TappyShareSheet` TikTok | Bấm TikTok khi ảnh chưa vẽ xong → báo "chưa cài TikTok" + chép caption; ảnh PNG ghi 2 lần trên main thread | **Đã sửa**: báo "Đang tạo ảnh chia sẻ…", dùng lại file đã ghi |
+| P2 | `ChatResponse.isImageUrl` | Link clip trên fbcdn/tiktokcdn bị coi là ảnh → ảnh vỡ | **Đã sửa** + `ChatVideoLinkTest` |
+| P2 | `TappyMarkdown.linkLabelFor` | Mọi link `grab.com` hiện "GrabFood" (cả Grab xe); nhãn dự phòng "Link" là chữ cứng | Sau release |
+| P2 | 7e78e58 message | Ghi "clip gửi TikTok dạng video" nhưng tile TikTok trong sheet luôn gửi PNG (clip Khám phá đi qua share sheet hệ thống với FILE video — e2e share-explore đã chứng minh) | Ghi nhận |
+| P2 | 4515b0f tests | Chưa có test cho dấu " · " giữa 2 link | **Đã có**: `GoldenOfflineRenderTest › back-to-back links read apart` |
+
 ## (c) Back "lạc / thoát app" — KẾT LUẬN: lỗi script, không phải lỗi app
 
 Log bước 1 ghi "lạc sau lần Back đầu". Khi tái hiện:

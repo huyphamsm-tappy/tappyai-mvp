@@ -146,13 +146,18 @@ fun TappyShareSheet(
             TappyShare.Target.FACEBOOK -> ShareDelivery.toDialog(context, t, a)
             // TikTok takes a FILE, never a link: the rendered card (for a published plan too — the
             // card is drawn from the plan itself) goes to the TikTok app, else the system chooser.
-            TappyShare.Target.TIKTOK -> ShareDelivery.toTikTok(
+            TappyShare.Target.TIKTOK -> {
+                // The card is still being drawn: say so, instead of a false "TikTok not installed"
+                // plus a clipboard caption (review 2026-09-28 of 7e78e58).
+                if (bitmap == null) { toast(context.getString(R.string.share_image_preparing)); return }
+                ShareDelivery.toTikTok(
                 context,
-                file = bitmap?.let { ShareDelivery.imageUriFor(context, it) },
+                file = imageUri ?: bitmap?.let { ShareDelivery.imageUriFor(context, it) },
                 mimeType = "image/png",
                 caption = TikTokHandoff.caption(a.subject, a.url),
                 chooserTitle = context.getString(R.string.share_title),
             )
+            }
             TappyShare.Target.EMAIL -> ShareDelivery.toEmail(context, a, lang)
             TappyShare.Target.INBOX -> ShareDelivery.toInbox(context, a, lang)
             TappyShare.Target.SAVE -> ShareDelivery.save(context, a, bitmap)

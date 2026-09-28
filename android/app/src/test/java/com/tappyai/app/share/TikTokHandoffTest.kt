@@ -44,7 +44,10 @@ class TikTokHandoffTest {
     @Test
     fun `the sheet sends TikTok a file through ShareDelivery_toTikTok`() {
         val sheet = File("src/main/java/com/tappyai/app/share/TappyShareSheet.kt").readText()
-        assertTrue(sheet.contains("TappyShare.Target.TIKTOK -> ShareDelivery.toTikTok("))
+        val branch = sheet.substringAfter("TappyShare.Target.TIKTOK -> {").substringBefore("TappyShare.Target.EMAIL")
+        assertTrue(branch.contains("ShareDelivery.toTikTok("))
+        // Not drawn yet → "preparing", never a false "not installed" + clipboard (review 2026-09-28).
+        assertTrue(branch.contains("if (bitmap == null) { toast(context.getString(R.string.share_image_preparing)); return }"))
         val delivery = File("src/main/java/com/tappyai/app/share/ShareDelivery.kt").readText()
         val body = delivery.substringAfter("fun toTikTok(").substringBefore("fun toEmail(")
         for (needle in listOf("Intent.ACTION_SEND", "Intent.EXTRA_STREAM", "FLAG_GRANT_READ_URI_PERMISSION", "setPackage(plan.pkg)", "Intent.createChooser")) {
