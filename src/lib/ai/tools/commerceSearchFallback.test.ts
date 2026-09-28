@@ -51,6 +51,14 @@ describe('food venue without its own platform page', () => {
     expect(capabilitiesOf(row as never).has_direct_handoff).toBeUndefined()
   })
 
+  it('EVERY card row gets the fallback, not only the rows discovery searched (live UAT: 2 of 8)', async () => {
+    const rows = Array.from({ length: 8 }, (_, i) => ({ name: `Phở Số ${i + 1}`, maps_link: `https://maps.google.com/?cid=${i + 1}` }))
+    const search = vi.fn(none)
+    await attachCommerceLinks('search_places', { results: rows, _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search, location: 'Quận 1', userTexts: ['quán phở ngon quận 1'] })
+    expect(rows.map(r => links(r).map(l => l.providerId))).toEqual(rows.map(() => ['grabfood']))
+    expect(search.mock.calls.length).toBeLessThanOrEqual(3 * 2) // discovery budget unchanged (≤ maxRows rows)
+  })
+
   it('a table-reservation turn gets no delivery search (not an active capability)', async () => {
     const row = { name: 'Rakuen Hotpot', maps_link: 'https://maps.google.com/?cid=1' }
     await attachCommerceLinks('search_places', { results: [row], _tappy_place_domain: 'food' }, { enabled: true, now: NOW, search: none, userTexts: ['Đặt bàn cho 2 người lúc 19h tối nay'] })

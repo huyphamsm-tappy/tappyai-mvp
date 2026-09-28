@@ -162,6 +162,8 @@ const MAX_HOTEL_QUERIES = 4
  * (flights, coaches), where the merchant's front door with the route typed on site is the truth.
  */
 const MIN_ROW_LINK_DEPTH = 3 // A3.3 (2026-09-20): a row's CTA is the subject's OWN page (L3+) — never a search results page
+/** Rows that get the free search fallback (the card shows at most this many). */
+const MAX_FALLBACK_ROWS = 10
 /** A route handoff is the DATED ROUTE page (L2: the fare list for that route); a merchant front door (L0/L1) is not. */
 const MIN_ROUTE_LINK_DEPTH = 2
 /** The departure the flight / coach tools assume when the user gave no date (+7 days, VN). */
@@ -712,7 +714,16 @@ async function attachOnce(toolName: CommerceToolName, result: unknown, ctx: Comm
         }
       }
     }
-    attachSearchFallbacks(plan, subjects, targets, searchFallbackOf, ctx, { resolve, now, context, constraints }, listingsAdded)
+    // The search fallback costs no search (a registry template), so EVERY card row gets one — not
+    // only the `maxRows` rows the paid discovery above was spent on (UAT 2026-09-28, measured: 2 of 8
+    // food cards had "Tìm trên GrabFood", the other 6 had no way to order).
+    const fallbackRows = rows.slice(0, MAX_FALLBACK_ROWS)
+    const fallbackSubjects: DiscoverySubject[] = []
+    fallbackRows.forEach((row, i) => {
+      const subject = plan.subjectOf(row)
+      if (subject) fallbackSubjects.push({ id: String(i), subject, locality: ctx.location })
+    })
+    attachSearchFallbacks(plan, fallbackSubjects, fallbackRows, searchFallbackOf, ctx, { resolve, now, context, constraints }, listingsAdded)
     return result
   } catch {
     // A commerce failure must never cost the user the search result it decorates.
