@@ -1,5 +1,6 @@
 package com.tappyai.app.reviews.ui
 
+import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -99,16 +100,27 @@ fun ReviewComposerScreen(
     linkSourceType: String? = null,
     linkThumbnailUrl: String? = null,
     isFetchingLinkMeta: Boolean = false,
+    videoPreview: String? = null,
+    hasVideo: Boolean = false,
+    isUploadingVideo: Boolean = false,
+    videoProgress: Int = 0,
+    onPickVideo: () -> Unit = {},
+    onRemoveVideo: () -> Unit = {},
 ) {
-    // A valid pasted link is postable on its own (no body needed), matching the web + backend
-    // rule that a review needs body OR media.
+    // A valid pasted link, an uploaded clip or photos are postable on their own (no body needed),
+    // matching the web + backend rule that a review needs body OR media.
     val hasValidLink = linkSourceType != null && linkUrl.isNotBlank()
+    val hasMedia = when (mediaMode) {
+        ComposerMediaMode.Photo -> photoUrls.isNotEmpty()
+        ComposerMediaMode.Video -> hasVideo
+        ComposerMediaMode.Link -> hasValidLink
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(ComposerBackground),
     ) {
-        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank() || hasValidLink)
+        ComposerHeader(onBack = onBack, onPost = onPost, canPost = (body.isNotBlank() || hasMedia) && !isUploadingVideo && !isUploadingPhoto)
         HorizontalDivider(color = ComposerDivider, thickness = 0.5.dp)
 
         Column(
@@ -123,7 +135,15 @@ fun ReviewComposerScreen(
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
 
             when (mediaMode) {
-                // Photo and Link are the wired media lanes; Video remains a placeholder.
+                // All three lanes are wired (Video since 2026-09-28: web /reviews/new clip upload).
+                ComposerMediaMode.Video -> ComposerVideoSection(
+                    preview = videoPreview,
+                    uploaded = hasVideo,
+                    isUploading = isUploadingVideo,
+                    progress = videoProgress,
+                    onPick = onPickVideo,
+                    onRemove = onRemoveVideo,
+                )
                 ComposerMediaMode.Photo -> ComposerPhotoSection(
                     photoUrls = photoUrls,
                     isUploading = isUploadingPhoto,
@@ -593,4 +613,41 @@ private fun ComposerFilledPreview() {
         onBack = {},
         onPost = {},
     )
+}
+
+/**
+ * The Video lane — web /reviews/new: a picker (MP4/MOV, "mp4 · mov · tối đa 5 phút · 150MB"), the
+ * poster while it uploads with a progress line, "Video đã tải lên" when the server confirmed it.
+ */
+@Composable
+private fun ComposerVideoSection(preview: String?, uploaded: Boolean, isUploading: Boolean, progress: Int, onPick: () -> Unit, onRemove: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .border(1.dp, ComposerDivider, RoundedCornerShape(16.dp))
+                .clickable(enabled = !isUploading, onClick = onPick)
+                .testTag("composer-video-pick"),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (preview != null) {
+                com.tappyai.core.designsystem.component.TappyImage(url = preview, contentDescription = null, modifier = Modifier.fillMaxSize())
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(Icons.Filled.Videocam, contentDescription = null, tint = androidx.compose.ui.graphics.Color(0xFF9CA3AF), modifier = Modifier.size(32.dp))
+                    Text(stringResource(R.string.reviews_composer_video_pick), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(top = 6.dp))
+                }
+            }
+        }
+        Text(stringResource(R.string.reviews_composer_video_hint), color = androidx.compose.ui.graphics.Color(0xFF9CA3AF), fontSize = 12.sp)
+        when {
+            isUploading -> Text(stringResource(R.string.reviews_composer_video_uploading) + " " + progress + "%", color = androidx.compose.ui.graphics.Color(0xFF93C5FD), fontSize = 13.sp)
+            uploaded -> Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.reviews_composer_video_uploaded), color = androidx.compose.ui.graphics.Color(0xFF6EE7B7), fontSize = 13.sp, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.reviews_composer_video_remove), color = androidx.compose.ui.graphics.Color(0xFFFCA5A5), fontSize = 13.sp, modifier = Modifier.clickable(onClick = onRemove))
+            }
+        }
+    }
 }

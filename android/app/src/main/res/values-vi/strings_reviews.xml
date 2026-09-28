@@ -172,4 +172,14 @@
     <string name="reviews_visitor_tab_posts">Bài đăng</string>
     <string name="reviews_visitor_tab_shares">Chia sẻ</string>
     <string name="reviews_visitor_empty_shares">Chưa có nội dung chia sẻ.</string>
+    <string name="reviews_composer_video_pick">Chọn video</string>
+    <string name="reviews_composer_video_hint">mp4 · mov  ·  tối đa 5 phút · 150MB</string>
+    <string name="reviews_composer_video_uploading">Đang tải video lên...</string>
+    <string name="reviews_composer_video_uploaded">Video đã tải lên</string>
+    <string name="reviews_composer_video_remove">Xoá</string>
+    <string name="reviews_composer_video_unsupported">Video này chưa đúng định dạng. Bạn quay hoặc xuất lại thành MP4 hoặc MOV rồi thử lại nhé.</string>
+    <string name="reviews_composer_video_too_large">Video quá lớn. Vui lòng chọn video tối đa 150MB.</string>
+    <string name="reviews_composer_video_read_error">Không đọc được thông tin video</string>
+    <string name="reviews_composer_video_too_long">Video quá dài. Vui lòng chọn video tối đa 5 phút 5 giây.</string>
+    <string name="reviews_composer_video_upload_error">Lỗi tải video. Vui lòng thử lại.</string>
 </resources>

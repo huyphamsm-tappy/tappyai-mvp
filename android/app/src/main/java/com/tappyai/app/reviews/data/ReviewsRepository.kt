@@ -10,6 +10,13 @@ data class LinkAttachment(
     val thumbnailUrl: String?,
 )
 
+/** A clip uploaded through [VideoUploader]: its durable [mediaUrl], a poster [thumbnail] (may be null), its length. */
+data class UploadedVideo(
+    val mediaUrl: String,
+    val thumbnail: String?,
+    val durationSec: Double?,
+)
+
 /**
  * Abstraction over the Reviews backend. ViewModels depend on this, never on Retrofit/OkHttp or
  * the DTOs — every method returns already-mapped domain types wrapped in [NetworkResult] so the
@@ -108,6 +115,8 @@ interface ReviewsRepository {
         rating: Int?,
         photos: List<String>? = null,
         link: LinkAttachment? = null,
+        /** An uploaded clip (web: content_type 'video', media_url, thumbnail, source_type 'upload'). */
+        video: UploadedVideo? = null,
         /**
          * 🚨 Success is NOT the same as published. The returned [ReviewModeration] is the safety
          * gate's outcome for this post: null when the gate is inactive, `PUBLISHED` when it went

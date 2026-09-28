@@ -759,6 +759,9 @@ internal fun ReviewComposerHost(
     val pickPhotos = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickMultipleVisualMedia(MAX_COMPOSER_PHOTOS),
     ) { uris -> viewModel.onPhotosPicked(uris) }
+    val pickVideo = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+    ) { uri -> uri?.let(viewModel::onVideoPicked) }
     // rememberSaveable so a multi-paragraph draft (body/rating/place + the disclosure toggles)
     // survives rotation and process-death — with plain remember the user silently lost the entire
     // review they were writing on any config change. ComposerMediaMode is a plain enum (Serializable),
@@ -828,7 +831,7 @@ internal fun ReviewComposerHost(
         showRating = showRating,
         onToggleRating = { showRating = !showRating },
         onBack = onBack,
-        onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName) },
+        onPost = { viewModel.submit(body = body, rating = rating, placeName = placeName, mode = mediaMode) },
         photoUrls = uiState.photoUrls,
         isUploadingPhoto = uiState.isUploadingPhoto,
         onPickPhotos = {
@@ -840,6 +843,12 @@ internal fun ReviewComposerHost(
         linkSourceType = uiState.linkSourceType,
         linkThumbnailUrl = uiState.linkThumbnailUrl,
         isFetchingLinkMeta = uiState.isFetchingLinkMeta,
+        videoPreview = uiState.videoPreview ?: uiState.video?.thumbnail,
+        hasVideo = uiState.video != null,
+        isUploadingVideo = uiState.isUploadingVideo,
+        videoProgress = uiState.videoProgress,
+        onPickVideo = { pickVideo.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)) },
+        onRemoveVideo = viewModel::onRemoveVideo,
     )
 }
 

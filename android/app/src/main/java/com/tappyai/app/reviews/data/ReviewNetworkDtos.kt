@@ -265,6 +265,8 @@ data class CreateReviewRequestDto(
     @SerialName("source_type") val sourceType: String? = null,
     @SerialName("source_url") val sourceUrl: String? = null,
     val thumbnail: String? = null,
+    /** An uploaded clip's length (web `payload.duration`), for its original-sound record. */
+    val duration: Double? = null,
 )
 
 /** GET /api/explore/oembed?url=… — server-side thumbnail/title proxy for TikTok/Facebook links
