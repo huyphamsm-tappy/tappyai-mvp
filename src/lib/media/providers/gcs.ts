@@ -161,6 +161,8 @@ export function createGcsProvider(deps: GcsProviderDeps): MediaProvider {
             // content type or total length disagrees with what was declared.
             'X-Upload-Content-Type': req.contentType,
             'X-Upload-Content-Length': String(req.sizeBytes),
+            // CORS for the browser's PUTs is granted to the origin declared here (see UploadSessionRequest.origin).
+            ...(req.origin ? { Origin: req.origin } : {}),
           },
           // Object metadata for the pending upload. The object NAME stays in the query string —
           // putting it here as well would give the request two sources of truth for the key.

@@ -29,6 +29,13 @@ export interface UploadSessionRequest {
   contentType: string
   /** Declared byte length; bound into the session at init. */
   sizeBytes: number
+  /**
+   * The browser origin that will PUT to the session. GCS returns CORS headers on the session's
+   * PUT responses only for the Origin declared when the session was opened — without it the file
+   * lands but the browser cannot read the answer and reports a failure (measured on UAT 2026-09-28).
+   * Only ever the caller's own same-host origin (see `sameHostOrigin`).
+   */
+  origin?: string
 }
 
 /**
