@@ -282,3 +282,14 @@ export function shoppingPickName(marker: string | null | undefined): string | nu
     return e?.name?.trim() || null
   } catch { return null }
 }
+
+/** Every product name the shopping marker carries — the candidate set for "Mình còn N lựa chọn nữa". */
+export function shoppingMarkerNames(marker: string | null | undefined): string[] {
+  if (!marker) return []
+  const i = marker.indexOf('{'), j = marker.lastIndexOf('}')
+  if (i < 0 || j <= i) return []
+  try {
+    const v = JSON.parse(marker.slice(i, j + 1)) as { entities?: Array<{ name?: string }> }
+    return (v.entities ?? []).map(e => e.name?.trim() ?? '').filter(Boolean)
+  } catch { return [] }
+}

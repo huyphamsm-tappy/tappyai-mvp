@@ -682,7 +682,7 @@ export function slotView(domain: ConsultDomain, text: string, gps: boolean): Slo
 
 const PLAN_RE = /\b(?:len (?:ke hoach|lich trinh|lich|plan)|lap ke hoach|ke hoach chi tiet|lich trinh chi tiet|ok chot|chot|dat (?:mon|ban|phong|ve|lich|cho)?\s*(?:do|nay)?\s*luon|book luon|huong dan (?:dat|mua|book|di)|make a plan|plan it|go with (?:it|that))\b/
 const MORE_RE = /\b(?:xem them|goi y them|them (?:vai|mot vai|mot so|may)?\s*(?:cho|quan|lua chon|goi y|mau|tiem|noi)|con (?:cho|quan|mau|tiem|khach san|chuyen|spa|cai|noi|dia diem|lua chon)?\s*(?:nao|gi)?\s*(?:khac|nua)|con (?:cho|quan|mau|tiem|khach san|chuyen|spa|cai|noi|dia diem)\s*nao\s*(?:khong|ko)|lua chon khac|show more|more options|any others?)\b/
-const COMPARE_RE = /\b(?:(?:cai|cho|quan|noi|mau|chuyen|khach san|tiem|ben|con) nao (?:(?:tot|ngon|re|dang|hop|on|dep|dang tien|nen chon)\s*)?hon|nen chon (?:cai|cho|quan|mau|ben|chuyen) nao|so sanh|which is better|compare)\b/
+const COMPARE_RE = /\b(?:(?:cai|cho|quan|noi|mau|chuyen|khach san|tiem|ben|con) nao (?:(?:tot|ngon|re|dang|hop|on|dep|dang tien|nen chon)\s*)?hon|nen chon (?:cai|cho|quan|mau|ben|chuyen) nao|so sanh|hay (?:cho|cai|mau|chuyen|quan|tiem|ben|noi|khach san|con) kia|which is better|compare)\b/
 const NEGATIVE_RE = /\b(?:khong|ko|k|hong|chang|cha)\s+(?:thich|muon|hop|ung|can|phu hop|ok|on lam)\b|\b(?:xa|mac|dat|on|on ao|dong|nho|nang|som|tre|muon|cham|cu|xau|chat|hep|nong|lanh|kho|dat do|ban|toi|to|cao|thap)\s+qua\b|\bqua\s+(?:xa|mac|dat|on|dong|nho|nang|som|tre)\b|\b(?:di|co|thu|an|xem|mua|den)\s+roi\b|\b(?:cho|quan|tiem|mau|cai|noi|khach san|chuyen|spa) khac\b|\bkhac di\b|\b(?:too (?:far|expensive|noisy|busy)|don'?t like|not (?:this|that|these))\b/
 const REFINE_RE = /^(?:muon|can|thich|uu tien|chi|phai|nen|lay)\b|\b\w+ hon\b|\b(?:sau|truoc) \d{1,2}\s?h\b|\bduoi \d|\bthoi\s*$/
 const DEICTIC_RE = /\b(?:cho|quan|tiem|khach san|noi|cai|mau|chuyen|spa|mon|ben|nha hang) (?:do|nay|dau tien|thu (?:hai|2|nhat))\b|\b(?:it|that one|this one)\b/
@@ -754,8 +754,17 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   for (let i = ui - 1; i >= 0; i--) if (turns[i].role === 'assistant') { prevAssistant = textOf(turns[i].content); break }
   const t = prep(userText)
   const fq = t.f.replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim()
+  // Replay TRAVEL-3/SHOP-3: a follow-up / compare / more turn carried `known: {}`, so the state block lost the
+  // route, date and people the user already gave and the model asked for them again. An in-thread turn
+  // always carries what the thread's user turns stated.
+  function threadKnown(): Record<string, string> {
+    if (!thread.domains.length) return {}
+    const parts: string[] = []
+    for (let i = Math.max(0, thread.start); i <= ui; i++) if (turns[i].role === 'user') parts.push(stripMarkers(textOf(turns[i].content)))
+    return slotView(thread.domains[0], parts.join(' . '), ctx.hasGps).known
+  }
   const keep = (d: Partial<ConsultDecision> & { turn: ConsultTurn }, confidence: RouteConfidence = 'rule'): TurnOut =>
-    ({ result: { decision: { domains: [], known: {}, assumptions: [], ...d }, confidence }, thread })
+    ({ result: { decision: { domains: [], assumptions: [], ...d, known: d.known && Object.keys(d.known).length ? d.known : d.turn === 'chat' ? {} : threadKnown() }, confidence }, thread })
   const start = (d: Partial<ConsultDecision> & { turn: ConsultTurn; domains: ConsultDomain[] }, confidence: RouteConfidence = 'rule'): TurnOut =>
     ({ result: { decision: { known: {}, assumptions: [], ...d }, confidence }, thread: d.domains.length ? { domains: d.domains, start: ui } : thread })
 
@@ -767,7 +776,10 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     return parts.join(' . ')
   }
   const cur = detectAreas(userText)
-  const names = boldNames(prevAssistant)
+  // The picks under discussion: the NEAREST reply that named any (replay SHOP-3: a follow-up answer with no
+  // bold name made the next "X hay chỗ kia?" read as a brand-new request and ASK again).
+  let names = boldNames(prevAssistant)
+  for (let i = ui - 1; names.length === 0 && i >= Math.max(0, thread.start); i--) if (turns[i].role === 'assistant') names = boldNames(textOf(turns[i].content))
   const inThread = thread.domains.length > 0
 
   const pickFrom = (domains: ConsultDomain[], text: string, turn: 'pick' | 'reject', extra: Partial<ConsultDecision> = {}): RouteResult => {
@@ -776,17 +788,17 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     return { decision: { domains, turn, known: view.known, assumptions: turn === 'pick' ? view.assumptions : [], query: joinQuery([...view.queryParts, mod]), ...(view.area ? { area: view.area } : {}), ...extra }, confidence: 'rule' }
   }
 
-  // 1. The previous Tappy turn asked → this is the answer: pick (never ask twice).
+  // 1. Exact button texts (before the ask-answer rule: "xem thêm" after an ask is still "more").
+  if (BUTTON_MORE.has(fq)) return keep({ domains: thread.domains, turn: 'more' }, inThread ? 'rule' : 'unsure')
+  if (BUTTON_PLAN.has(fq)) return keep({ domains: thread.domains, turn: 'plan', known: inThread ? slotView(thread.domains[0], threadText(thread.start), ctx.hasGps).known : {} }, inThread ? 'rule' : 'unsure')
+
+  // 2. The previous Tappy turn asked → this is the answer: pick (never ask twice).
   if (wasAskReply(prevAssistant)) {
     const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3)
     if (fresh) return { result: pickFrom(cur.domains, userText, 'pick'), thread: { domains: cur.domains, start: ui } }
     if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
     return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
   }
-
-  // 2. Exact button texts.
-  if (BUTTON_MORE.has(fq)) return keep({ domains: thread.domains, turn: 'more' }, inThread ? 'rule' : 'unsure')
-  if (BUTTON_PLAN.has(fq)) return keep({ domains: thread.domains, turn: 'plan', known: inThread ? slotView(thread.domains[0], threadText(thread.start), ctx.hasGps).known : {} }, inThread ? 'rule' : 'unsure')
 
   // 3. Turns about picks already shown.
   if (names.length && inThread) {

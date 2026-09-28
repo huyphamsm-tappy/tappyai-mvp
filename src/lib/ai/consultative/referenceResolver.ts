@@ -54,7 +54,8 @@ export function priorVenuesIn(assistantText: string): PriorVenue[] {
   // Machine blocks carry names too; keep to the prose the user read.
   const prose = assistantText.replace(/\[(?:TAPPY_PLACES|TAPPY_SHOPPING|TAPPY_PLAN|CTA_BUTTONS|FOLLOWUPS)\][\s\S]*$/m, '')
   for (const m of prose.matchAll(/\*\*([^*\n]{2,60}?)\*\*/g)) {
-    const raw = m[1].replace(/^[#\d.\s)-]+/, '').replace(/[:：]\s*$/, '').trim()
+    // Consult V2 pick sentence "**Mình chọn: X**" — the name is after the label (replay ENT-1: the main pick was missed).
+    const raw = m[1].replace(/^\s*(?:mình chọn|minh chon|my pick)\s*[:：]\s*/i, '').replace(/^[#\d.\s)-]+/, '').replace(/[:：]\s*$/, '').trim()
     if (!raw || /[:：]$/.test(m[1].trim())) continue
     // A bolded number is not a name: "**4.8⭐ (2.106 đánh giá)**", "**10:30–21:30**", "**có khả năng khá đông**".
     if (/⭐|danh gia|reviews?|\d\s*(?:sao|stars?)\b/.test(fold(raw)) || raw.replace(/[^\d]/g, '').length * 2 > raw.length) continue

@@ -18,7 +18,7 @@ import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { appendPlanBudgetMath } from './planBudgetMath'
-import { consultRemainingLine, normalizePickSentence, shoppingPickName } from './consultative/consultBrain'
+import { consultRemainingLine, normalizePickSentence, shoppingMarkerNames, shoppingPickName } from './consultative/consultBrain'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2396,8 +2396,24 @@ export function applyPlaceEnrichmentStreamFilter(
     // The pick sentence in the approved "**Mình chọn: X**" form (normalised by code; the model often
     // writes "Mình gợi ý **X**" — replay 2026-09-29).
     const consultPickTurn = ['pick', 'more', 'reject', 'compare'].includes(collector?.consultTurn ?? '')
-    const pickNormalized = consultPickTurn ? normalizePickSentence(budgeted, shoppingPickName(collector?.shoppingMarker)) : budgeted
-    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.map(r => String((r as { name?: unknown }).name ?? '')), lang) : pickNormalized
+    // A place reply with no pick sentence (replay FOOD-1 "more": "gợi ý thêm 3 quán: **A** … **B** …"):
+    // the card's recommended row when the reply names it, else the first candidate the reply bolds.
+    const placePickFallback = (() => {
+      if (!consultPickTurn || collector?.shoppingMarker) return null
+      const bolds = [...budgeted.matchAll(/\*\*([^*\n]{3,120})\*\*/g)].map(m => m[1].trim().toLowerCase())
+      const named = (n: string) => { const f = n.trim().toLowerCase(); return f.length >= 3 && bolds.some(b => f.includes(b) || b.includes(f)) }
+      const rec = collector?.placesRecommendations?.find(r => r.recommended)?.entity.identity.name
+      if (rec && named(rec)) return rec
+      return (collector?.placesRecommendations ?? []).map(r => r.entity.identity.name).find(named) ?? null
+    })()
+    const pickNormalized = consultPickTurn ? normalizePickSentence(budgeted, shoppingPickName(collector?.shoppingMarker) ?? placePickFallback) : budgeted
+    // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
+    // because presearch frames are prefixed outside this filter), then the model's own rows, then products.
+    const consultCandidates = collector?.placesRecommendations?.length
+      ? collector.placesRecommendations.map(r => r.entity.identity.name)
+      : latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.length ? productRecords.map(r => r.title || '') : shoppingMarkerNames(collector?.shoppingMarker)
+    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(pickNormalized, consultCandidates, lang) : pickNormalized
+    if (collector?.consultButtons?.length) console.log(JSON.stringify({ type: 'tappyai_consult_remaining', candidates: consultCandidates.length, recs: collector?.placesRecommendations?.length ?? 0, latest: latestPlaces.length, added: withRemaining !== pickNormalized, hasLine: /Mình còn \d+/.test(withRemaining) }))
     const placeGuarded = collector?.consultButtons?.length
       ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
       : withRemaining
@@ -2758,7 +2774,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // run — has unmatched bold dropped per line and markdown stripped from the string values of its
     // [TAPPY_PLAN] / [CTA_BUTTONS] / [FOLLOWUPS] blocks (`normalizeReplyMarkdown`). Done HERE, before
     // `prose` / `finalText` are composed, so the detectors still read exactly what ships.
-    const groundedProse = settleMarkdown((() => {
+    // Consult V2: the "Mình còn N lựa chọn nữa" line is re-placed HERE, after every sentence guard (replay
+    // FOOD-1: added above, then cut by the V1 prose-shape cap).
+    const groundedProse = (t => collector?.consultButtons?.length ? consultRemainingLine(t, consultCandidates, lang) : t)(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
       // when G1b restores the MODEL's own pick (c40 F8): a restored pick below "Nếu muốn, …" reads
@@ -2774,7 +2792,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const head = gated.text.slice(0, at).replace(/\s+$/, '')
       const tail = gated.text.slice(at)
       return `${head}${head ? '\n\n' : ''}${fallback}${tail ? `\n\n${tail}` : ''}`
-    })())
+    })()))
     /**
      * The batch-level TikTok link, appended once at the very end of the reply.
      *

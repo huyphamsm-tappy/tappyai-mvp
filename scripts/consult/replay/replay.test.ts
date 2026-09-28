@@ -41,7 +41,15 @@ const h = vi.hoisted(() => {
     }
     return b
   }
-  return { client: { from: () => builder(), rpc: () => Promise.resolve({ data: null, error: null }) } }
+  // Decision evidence (decision_evidence_save / _load) is kept in memory, as the audit DB keeps it: the web
+  // client sends the last response's X-Decision-Evidence-Id back, and follow-up turns read the prior search.
+  const evidence = new Map<string, unknown>()
+  const rpc = (fn: string, args: { p_id?: string; p_evidence?: unknown }) => {
+    if (fn === 'decision_evidence_save' && args?.p_id) { evidence.set(args.p_id, JSON.parse(JSON.stringify(args.p_evidence ?? null))); return Promise.resolve({ data: null, error: null }) }
+    if (fn === 'decision_evidence_load' && args?.p_id) return Promise.resolve({ data: evidence.get(args.p_id) ?? null, error: null })
+    return Promise.resolve({ data: null, error: null })
+  }
+  return { client: { from: () => builder(), rpc } }
 })
 
 vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
@@ -102,22 +110,23 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
   }, 120_000)
   afterAll(() => { uninstall?.() })
 
-  const post = async (messages: Msg[]) => {
+  const post = async (messages: Msg[], evidenceId: string | null) => {
     const req = {
       url: 'http://localhost/api/chat',
       nextUrl: new URL('http://localhost/api/chat'),
       headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi' }),
-      json: () => Promise.resolve({ messages, userLocation: USER_LOCATION }),
+      json: () => Promise.resolve({ messages, userLocation: USER_LOCATION, ...(evidenceId ? { decisionEvidenceId: evidenceId } : {}) }),
       signal: undefined,
     }
     const res = await POST(req as never)
-    return { status: res.status, raw: await res.text() }
+    return { status: res.status, raw: await res.text(), evidenceId: res.headers.get('X-Decision-Evidence-Id') }
   }
 
   async function runConversation(c: Conversation, outDir: string, rows: TurnRow[]) {
     const messages: Msg[] = []
     let lastPick: string | null = null, lastAlt: string | null = null
     const shown: string[] = []
+    let evidenceId: string | null = null
     for (let i = 0; i < c.turns.length; i++) {
       const t = c.turns[i]
       const { text: sent, unresolved } = fillPlaceholders(t.text, lastPick, lastAlt)
@@ -128,11 +137,12 @@ describe.skipIf(!ON)('offline replay — chat route, real model, Serper record/r
       const t0 = Date.now()
       let raw = '', status = 0, crash: string | undefined
       try {
-        const r = await Promise.race([
-          post([...messages]),
+        const r: { status: number; raw: string; evidenceId: string | null } = await Promise.race([
+          post([...messages], evidenceId),
           new Promise<never>((_, rej) => setTimeout(() => rej(new Error(`turn timeout ${TURN_TIMEOUT_MS} ms`)), TURN_TIMEOUT_MS)),
         ])
         raw = r.raw; status = r.status
+        if (r.evidenceId) evidenceId = r.evidenceId
         if (status !== 200) crash = `HTTP ${status}: ${raw.slice(0, 300)}`
       } catch (e) {
         crash = e instanceof Error ? `${e.name}: ${e.message}` : String(e)
