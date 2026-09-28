@@ -183,7 +183,8 @@ export async function android({ a, shot, check, seeded }) {
     // the candidates are: the CTA labels still shown, then the card's own action buttons.
     const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const shownCta = buttons.map((b) => strip(b.label)).filter((l) => seen.has(l) || [...seen].some((t) => t.endsWith(l)))
-    const ACTION = /^(Tìm trên .+|Đặt .+|Mua .+|Xem trên .+|Đặt ngay|Đặt bàn|Mua vé.*|Xem bản đồ|Bản đồ)$/
+    // Button labels are short and never questions ("Đặt cho mấy người? (…)" is an ASK line, not a button).
+    const ACTION = /^(Tìm trên [^?()]{2,40}|Đặt [^?()]{2,40}|Mua [^?()]{2,40}|Xem trên [^?()]{2,40}|Đặt ngay|Đặt chỗ|Đặt bàn|Mua vé|Xem bản đồ|Bản đồ)$/
     const cardAction = [...seen].find((t) => ACTION.test(t))
     const label = shownCta[0] || cardAction
     if (label) {
@@ -258,8 +259,8 @@ export async function web({ w, page, shot, check }) {
       await page.waitForFunction(() => !document.querySelector('[aria-label*="Dừng"],[aria-label*="Stop"]'), null, { timeout: 180000 }).catch(() => {})
       await page.waitForTimeout(2000)
       raw = (await lastReply(webAccount, picked.join(' · '))) || raw
-    } else if (!ctaOf(raw).length && chips.length && !c.plan) {
-      const chip = page.getByRole('button', { name: chips[0], exact: true }).last()
+    } else if (!ctaOf(raw).length && chips.length && !chips.includes(ACCEPT_PLAN) && !c.plan) {
+      const chip = page.getByText(chips[0], { exact: true }).last()
       const had = await chip.count()
       check(`${c.id}: web câu hỏi làm rõ có nút «${chips[0]}»`, had > 0)
       if (had) {
