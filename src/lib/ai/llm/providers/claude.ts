@@ -86,9 +86,9 @@ export function createClaudeProvider(overrides: ModelOverrides): AIProvider {
     // second step. A one-step turn pays the premium and gains nothing — accepted:
     // ~65% of measured turns call a tool. Anthropic allows four breakpoints, so
     // the two never conflict, and responses stay identical either way.
-    decorateMessages: (messages: CoreMessage[]) => {
+    decorateMessages: (messages: CoreMessage[], opts?: { cacheHistory?: boolean }) => {
       let marked = false
-      const lastUser = messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
+      const lastUser = opts?.cacheHistory === false ? -1 : messages.reduce((idx, m, i) => (m.role === 'user' ? i : idx), -1)
       return messages.map((m, i) => {
         if (i === lastUser) {
           return { ...m, providerOptions: { anthropic: { cacheControl: { type: 'ephemeral' as const } } } }

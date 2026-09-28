@@ -39,6 +39,11 @@ export interface AIGenerateOptions {
   messages?: CoreMessage[]
   maxTokens?: number
   temperature?: number
+  /**
+   * false = no cache breakpoint on the last user message. Owner 2026-09-29 (Consult V2): a ONE-step turn
+   * pays the +25% write premium on that prefix and never reads it back.
+   */
+  cacheHistory?: boolean
 }
 
 export interface AIStreamOptions extends AIGenerateOptions {

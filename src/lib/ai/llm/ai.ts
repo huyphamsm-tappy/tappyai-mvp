@@ -20,14 +20,14 @@ import type { AIGenerateOptions, AIStreamOptions, AIVisionOptions } from './type
  * the model, but they reach the provider as two separately addressable
  * segments — which is what lets an adapter treat the stable one differently
  * from the request-shaped one. Splitting is inert for providers that don't. */
-function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[] }): CoreMessage[] {
+function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[]; cacheHistory?: boolean }): CoreMessage[] {
   const messages: CoreMessage[] = []
   if (opts.systemShared) messages.push({ role: 'system', content: opts.systemShared })
   if (opts.system) messages.push({ role: 'system', content: opts.system })
   if (opts.messages) messages.push(...opts.messages)
   if (opts.prompt) messages.push({ role: 'user', content: opts.prompt })
   const provider = getProvider()
-  return provider.decorateMessages ? provider.decorateMessages(messages) : messages
+  return provider.decorateMessages ? provider.decorateMessages(messages, { cacheHistory: opts.cacheHistory }) : messages
 }
 
 export const AI = {

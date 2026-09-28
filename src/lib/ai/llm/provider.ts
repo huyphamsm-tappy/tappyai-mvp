@@ -22,5 +22,5 @@ export interface AIProvider {
    * list right before the call (e.g. Anthropic prompt-cache breakpoints).
    * Must be semantically transparent: same conversation in, same answer out.
    */
-  decorateMessages?(messages: CoreMessage[]): CoreMessage[]
+  decorateMessages?(messages: CoreMessage[], opts?: { cacheHistory?: boolean }): CoreMessage[]
 }

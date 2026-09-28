@@ -37,7 +37,7 @@ describe('buildDomainFrame', () => {
   })
   it('follow-up turns: no new search; compare must choose', () => {
     expect(buildDomainFrame('food', 'followup')).toMatch(/KHONG tim lai/)
-    expect(buildDomainFrame('food', 'compare')).toMatch(/CHON MOT/)
+    expect(buildDomainFrame('food', 'compare')).toContain('CAU DAU TIEN phai dung dang "**Mình chọn: <TEN>** vì')
     expect(buildDomainFrame('food', 'more')).toMatch(/KHAC cac cho da neu va da bi bac/)
     expect(buildDomainFrame('food', 'reject')).toMatch(/KHONG nhac lai cho da bac/)
   })

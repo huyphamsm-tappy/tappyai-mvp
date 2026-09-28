@@ -226,3 +226,22 @@ export function placeTypeFor(domain: ConsultDomain | undefined): 'restaurant' | 
     default: return null
   }
 }
+
+/**
+ * "Mình còn N lựa chọn nữa, muốn xem thêm không?" — counted by code (owner §5.3): N = candidates the
+ * search returned that this reply does not name. A model-written count is corrected; none → removed.
+ */
+export function consultRemainingLine(text: string, candidateNames: readonly string[], lang: string): string {
+  const fold = (s: string) => s.normalize('NFC').toLowerCase().replace(/\s+/g, ' ').trim()
+  const body = fold(text)
+  const names = [...new Set(candidateNames.map(fold).filter(n => n.length >= 3))]
+  const shown = names.filter(n => body.includes(n)).length
+  const n = names.length - shown
+  const vi = /Mình còn \d+ lựa chọn[^\n]*/g, en = /I have \d+ more option[^\n]*/g
+  const stripped = text.replace(vi, '').replace(en, '').replace(/\n{3,}/g, '\n\n').trimEnd()
+  if (n <= 0 || shown === 0) return stripped
+  const line = lang === 'en' ? `I have ${n} more option${n > 1 ? 's' : ''} — want to see more?` : `Mình còn ${n} lựa chọn nữa, muốn xem thêm không?`
+  // Before any trailing marker block, after the prose.
+  const m = stripped.match(/\n\s*\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]/)
+  return m && m.index !== undefined ? `${stripped.slice(0, m.index).trimEnd()}\n\n${line}${stripped.slice(m.index)}` : `${stripped}\n\n${line}`
+}

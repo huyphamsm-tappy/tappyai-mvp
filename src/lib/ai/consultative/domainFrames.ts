@@ -46,12 +46,12 @@ Vi du: "Mình hiểu bạn cần gội đầu dưỡng sinh ở quận 3 chiều
 
 const FOLLOW: Record<Exclude<FrameTurn, 'pick' | 'plan'>, string> = {
   followup: `LUOT HOI THEM: tra loi dung cau hoi ve lua chon DA DUA, CHI tu du lieu da co (ket qua luot truoc, review, gio mo, dia chi). Du lieu khong noi → noi that 1 cau + cach kiem (goi quan, trang chinh thuc). KHONG tim lai, KHONG dua lua chon moi.`,
-  compare: `LUOT SO SANH "A hay B": so sanh theo DUNG tieu chi user da noi (ngan sach, khoang cach, khong khi, so nguoi…) bang so lieu da co, roi CHON MOT: "**Mình chọn: <TEN>** vì …". KHONG tra loi "tùy bạn". KHONG tim lai.`,
-  more: `LUOT XEM THEM: dua lua chon KHAC cac cho da neu va da bi bac — van theo KHUNG CHOT (1 chinh + toi da 2 khac + so con lai). Khong con cho nao phu hop → noi that va hoi 1 cau de thu hep.`,
-  reject: `LUOT BAC: user khong thich cac lua chon truoc. Ghi nho ly do bac, KHONG nhac lai cho da bac; chon moi theo KHUNG CHOT. Da bac nhieu lan / het ung vien → hoi 1-2 cau so thich de thu hep truoc khi tim lai.`,
+  compare: `LUOT SO SANH "A hay B": CAU DAU TIEN phai dung dang "**Mình chọn: <TEN>** vì …" (KHONG dung "nghiêng về", "gợi ý", "tùy bạn"). Sau do 2-3 dong so sanh theo DUNG tieu chi user da noi (ngan sach, khoang cach, khong khi, so nguoi…) bang so lieu da co. KHONG tim lai.`,
+  more: `LUOT XEM THEM: CAU DAU phai la "**Mình chọn: <TEN MOI>** vì …" — mot cho KHAC cac cho da neu va da bi bac; roi toi da 2 dong "- **<TEN>**: …". KHONG liet ke ngang hang. Khong con cho nao phu hop → noi that va hoi 1 cau de thu hep.`,
+  reject: `LUOT BAC / DOI YEU CAU: 1 cau ghi nhan ly do (vd "Ok, mình tìm chỗ có kỹ thuật viên nữ"), roi CAU TIEP phai la "**Mình chọn: <TEN MOI>** vì …" dung dieu kien moi + toi da 2 dong khac. KHONG nhac lai cho da bac. Da bac nhieu lan / het ung vien → hoi 1-2 cau so thich de thu hep.`,
 }
 
-const PLAN_HEAD = `KHUNG KE HOACH CHI TIET (GHI DE R1-R4, R3 tieu de va gioi han so tu). Viet "chi tiet toi bat ngo": MOI tieu de ben duoi la MOT dong in dam rieng (vd "**Gọi món**"), theo DUNG thu tu, noi dung ngan gon, cu the cho lua chon DA CHOT. It nhat 2 meo dia phuong CO CAN CU (tu review/du lieu, hoac ghi "theo kinh nghiệm chung"). Co phep tinh chi phi.`
+const PLAN_HEAD = `KHUNG KE HOACH CHI TIET (GHI DE R1-R4, R3 tieu de va gioi han so tu). Ke hoach xoay quanh LUA CHON DA CHOT trong TRANG THAI — KHONG doi sang cho khac; chi tim them khi can mot chang moi (vd quan an truoc karaoke). Viet "chi tiet toi bat ngo": COPY DUNG tung tieu de ben duoi thanh MOT dong in dam rieng ("**<tieu de>**"), theo DUNG thu tu, KHONG bo tieu de nao; duoi moi tieu de 1-4 dong cu the. It nhat 2 meo dia phuong CO CAN CU (tu review/du lieu, hoac ghi "theo kinh nghiệm chung"). Muc chi phi PHAI co phep tinh dang "<so> × <gia> = <tong>" (gia chua co thi ghi "chưa có giá" va van tinh phan da biet).`
 
 /** The required headings of each area's detailed plan (the automated check reads these). */
 export const PLAN_HEADINGS: Record<Exclude<FrameDomain, 'main'>, string[]> = {

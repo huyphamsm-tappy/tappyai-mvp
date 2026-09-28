@@ -531,7 +531,8 @@ export async function POST(req: Request) {
 - User da noi: ${Object.entries(consult.known).map(([k, v]) => `${k}: ${v}`).join(' · ') || '(chua ro)'}
 - Gia dinh cho phan con thieu (noi ro trong cau xac nhan): ${consult.assumptions.join(' · ') || '(khong)'}${consult.rejectReason ? `
 - User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
-- User dang noi toi: ${consult.refers.join(' | ')}` : ''}
+- User dang noi toi: ${consult.refers.join(' | ')}` : ''}${(() => { const m = priorAssistantText.match(/\*\*Mình chọn:\s*([^*\n]+?)\*\*/); return m ? `
+- LUA CHON DA CHOT luot truoc: ${m[1].trim()}` : '' })()}
 =====================================`
     : ''
   if (consult) {
@@ -2289,6 +2290,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     maxTokens: noToolTurn ? 300 : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     maxSteps: noToolTurn || eveningBlock || (lean && presearchAll.length > 0 && !planningIntent) ? 1 : planningIntent ? 8 : hasImage ? 3 : lean ? 3 : 5,
+    // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
+    cacheHistory: !(lean && (noToolTurn || (presearchAll.length > 0 && !planningIntent))),
     // REMOVED (C2): a `prepareStep` block that forced tool choice per step. It
     // never ran — ai@4.3.19 destructures experimental_prepareStep in
     // generateText only (bundle line 4177); streamText (line 5193) takes

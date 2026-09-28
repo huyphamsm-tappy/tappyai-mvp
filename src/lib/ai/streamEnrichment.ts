@@ -18,6 +18,7 @@ import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { appendPlanBudgetMath } from './planBudgetMath'
+import { consultRemainingLine } from './consultative/consultBrain'
 import { buildActions } from '@/lib/recommendation/actions'
 import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { normalizeReplyMarkdown, plainTextDeep } from '@/lib/chat/markdownNormalize'
@@ -2302,9 +2303,12 @@ export function applyPlaceEnrichmentStreamFilter(
     // added AFTER the prose guards so no price guard reads the user's own total ÷ people as a claim.
     const budgeted = appendPlanBudgetMath(planMask.restore(unsupported.text), collector?.userTexts ?? [userText], lang).text
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
+    // The "còn N lựa chọn" line is COUNTED here, not left to the model (replay 2026-09-29: the model
+    // dropped it on every pick): N = candidates the search returned − the ones this reply names.
+    const withRemaining = collector?.consultButtons?.length ? consultRemainingLine(budgeted, latestPlaces.length ? latestPlaces.map(p => p.name ?? '') : productRecords.map(r => String((r as { name?: unknown }).name ?? '')), lang) : budgeted
     const placeGuarded = collector?.consultButtons?.length
-      ? `${budgeted.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
-      : budgeted
+      ? `${withRemaining.replace(/\[FOLLOWUPS\][^\n]*?(?:\[\/FOLLOWUPS\]|\n|$)/gi, '').trimEnd()}\n\n[FOLLOWUPS]${collector.consultButtons.join('|')}[/FOLLOWUPS]`
+      : withRemaining
     // G1 telemetry: what the place-claim guard removed and why. Counts only — never user
     // text, never a venue name. Console-only, like `tappyai_tool_called`; the UsageEvent
     // vocabulary is a privacy surface and is deliberately not extended here.
