@@ -269,6 +269,20 @@ describe('isShareableUrl — what may leave TappyAI', () => {
   it('rejects a lookalike host', () => {
     expect(isShareableUrl('https://www.tappyai.com.evil.test/x', env)).toBe(false)
   })
+
+  // UAT 2026-09-28: the RC runs on uat.tappyai.com; every Facebook/Zalo/TikTok tile answered
+  // "unavailable" because that host failed the www/apex check.
+  it('accepts the deployment’s own configured subdomain, and only that one', () => {
+    const uat = { NEXT_PUBLIC_SITE_URL: 'https://uat.tappyai.com' } as unknown as NodeJS.ProcessEnv
+    expect(isShareableUrl('https://uat.tappyai.com/reviews/x', uat)).toBe(true)
+    expect(buildShareUrl('facebook', 'https://uat.tappyai.com/reviews/x', uat)).toContain('sharer.php?u=')
+    // a different subdomain, or the same subdomain when production is configured, stays refused
+    expect(isShareableUrl('https://staging.tappyai.com/reviews/x', uat)).toBe(false)
+    expect(isShareableUrl('https://uat.tappyai.com/reviews/x', env)).toBe(false)
+    expect(isShareableUrl('https://uat.tappyai.com.evil.test/x', uat)).toBe(false)
+    // the canonical host keeps working under a UAT configuration
+    expect(isShareableUrl(REVIEW, uat)).toBe(true)
+  })
 })
 
 // --------------------------------------------------- private chat boundary

@@ -45,6 +45,9 @@ export default function ReviewShareButton({
     <ShareMenu
       url={url}
       title={reviewShareTitle({ place_name: placeName, body })}
+      // Same approved sheet (and card layout) as the Explore feed's ShareModal.
+      variant="post"
+      profileName={reviewShareTitle({ place_name: placeName, body })}
       open={open}
       onClose={() => setOpen(false)}
       // A completed share becomes a row of the self profile's "Đã share" history.

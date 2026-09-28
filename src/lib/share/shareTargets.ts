@@ -134,7 +134,6 @@ export function isShareableUrl(
 
   // https only: a shared http link is downgraded or blocked by most clients.
   if (url.protocol !== 'https:') return false
-  if (!CANONICAL_HOST.test(url.hostname)) return false
   if (NON_SHAREABLE_PATH.test(url.pathname)) return false
 
   // No query string at all. Tokens, session ids and tracking params all live
@@ -143,16 +142,28 @@ export function isShareableUrl(
 
   // `env` participates so a future non-default canonical host is respected
   // rather than silently rejected.
-  const configured = (env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL).trim()
+  // The literal read is the one Next inlines into the browser bundle (see openGraph.ts siteOrigin):
+  // `env.NEXT_PUBLIC_SITE_URL` through the parameter is empty in client code.
+  const inlined = env === process.env ? process.env.NEXT_PUBLIC_SITE_URL : undefined
+  const configured = (env.NEXT_PUBLIC_SITE_URL || inlined || FALLBACK_SITE_URL).trim()
+  let configuredHost: string
   try {
-    const configuredHost = new URL(configured).hostname
-    if (!CANONICAL_HOST.test(configuredHost)) return false
+    configuredHost = new URL(configured).hostname
   } catch {
     return false
   }
+  if (!CANONICAL_HOST.test(configuredHost) && !OWN_SUBDOMAIN.test(configuredHost)) return false
 
-  return true
+  // 🚨 UAT 2026-09-28: the release candidate runs on `uat.tappyai.com` (NEXT_PUBLIC_SITE_URL), so
+  // every share link it minted failed the www/apex check and Facebook, Zalo and TikTok all answered
+  // "Không thể chia sẻ lúc này". A subdomain of our own apex is admitted ONLY when it is this very
+  // deployment's configured site host — never a `*.vercel.app` preview, never another subdomain.
+  if (CANONICAL_HOST.test(url.hostname)) return true
+  return OWN_SUBDOMAIN.test(url.hostname) && url.hostname.toLowerCase() === configuredHost.toLowerCase()
 }
+
+/** A subdomain of TappyAI's own apex (e.g. `uat.tappyai.com`). Anchored — no suffix impostors. */
+const OWN_SUBDOMAIN = /^[a-z0-9-]+\.tappyai\.(com|vn)$/i
 
 /**
  * The URL that opens a target's share dialog, or null when there isn't one.

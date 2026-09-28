@@ -85,9 +85,12 @@ object TappyShare {
     /** Every package this app may resolve — the manifest `<queries>` must list exactly these. */
     val queriedPackages: List<String> = listOf(
         "com.facebook.orca", "com.zing.zalo", "com.whatsapp", "org.telegram.messenger", "com.viber.voip", "jp.naver.line.android",
-    )
+    ) + TikTokHandoff.PACKAGES
 
     private val canonicalHost = Regex("^(www\\.)?tappyai\\.(com|vn)$", RegexOption.IGNORE_CASE)
+
+    /** A subdomain of our own apex (e.g. `uat.tappyai.com`) — admitted only when it is this build's origin. */
+    private val ownSubdomain = Regex("^[a-z0-9-]+\\.tappyai\\.(com|vn)$", RegexOption.IGNORE_CASE)
     private val nonShareablePath = Regex("^/(api|chat|admin|auth|login)(/|$)", RegexOption.IGNORE_CASE)
 
     /**
@@ -98,12 +101,16 @@ object TappyShare {
      * URL fails the host check, so a Blob or Cloud Storage link can never be
      * shared as if it were a page.
      */
-    fun isShareableUrl(url: String?): Boolean {
+    fun isShareableUrl(url: String?, configuredOrigin: String = CANONICAL_ORIGIN): Boolean {
         if (url.isNullOrEmpty()) return false
         val parsed = runCatching { java.net.URI(url) }.getOrNull() ?: return false
         if (parsed.scheme?.lowercase() != "https") return false
         val host = parsed.host ?: return false
-        if (!canonicalHost.matches(host)) return false
+        // UAT 2026-09-28: a UAT build's origin is uat.tappyai.com, which failed the www/apex check,
+        // so Facebook fell back to copy. Admit our own subdomain ONLY when it is this build's origin.
+        val configuredHost = runCatching { java.net.URI(configuredOrigin).host }.getOrNull()
+        val ownOrigin = configuredHost != null && ownSubdomain.matches(host) && host.equals(configuredHost, ignoreCase = true)
+        if (!canonicalHost.matches(host) && !ownOrigin) return false
         if (!parsed.rawQuery.isNullOrEmpty()) return false
         val path = parsed.path ?: "/"
         if (nonShareablePath.containsMatchIn(path)) return false

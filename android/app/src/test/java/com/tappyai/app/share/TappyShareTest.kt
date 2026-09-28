@@ -34,8 +34,10 @@ class TappyShareTest {
         val manifest = File("src/main/AndroidManifest.xml").readText()
         val declared = Regex("""<package android:name="([^"]+)"""").findAll(manifest).map { it.groupValues[1] }.toList()
         assertEquals(TappyShare.queriedPackages.sorted(), declared.sorted())
-        val mapped = TappyShare.targets.mapNotNull { TappyShare.packageFor(it) }
+        // The text-handoff apps plus TikTok's two packages (the file handoff, TikTokHandoff).
+        val mapped = TappyShare.targets.mapNotNull { TappyShare.packageFor(it) } + TikTokHandoff.PACKAGES
         assertEquals(TappyShare.queriedPackages.sorted(), mapped.sorted())
+        assertTrue(declared.containsAll(listOf("com.zhiliaoapp.musically", "com.ss.android.ugc.trill")))
     }
 
     @Test

@@ -69,10 +69,13 @@ describe('every client declares the same share targets', () => {
   it('android declares exactly the packages it targets', () => {
     const manifest = readFileSync(join(root, 'android', 'app', 'src', 'main', 'AndroidManifest.xml'), 'utf8')
     const declared = [...manifest.matchAll(/<package android:name="([^"]+)"/g)].map((m) => m[1]).sort()
+    // + TikTok's two packages: TikTok takes a FILE (share/TikTokHandoff.kt, UAT 2026-09-28).
     expect(declared).toEqual([
-      'com.facebook.orca', 'com.viber.voip', 'com.whatsapp', 'com.zing.zalo', 'jp.naver.line.android', 'org.telegram.messenger',
+      'com.facebook.orca', 'com.ss.android.ugc.trill', 'com.viber.voip', 'com.whatsapp', 'com.zhiliaoapp.musically', 'com.zing.zalo',
+      'jp.naver.line.android', 'org.telegram.messenger',
     ])
-    for (const pkg of declared) expect(androidSrc).toContain(pkg)
+    const tiktokSrc = readFileSync(join(root, 'android', 'app', 'src', 'main', 'java', 'com', 'tappyai', 'app', 'share', 'TikTokHandoff.kt'), 'utf8')
+    for (const pkg of declared) expect(androidSrc + tiktokSrc).toContain(pkg)
   })
 
   it('ios declares exactly the schemes it queries', () => {

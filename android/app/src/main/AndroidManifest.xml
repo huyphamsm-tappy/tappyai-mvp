@@ -50,6 +50,9 @@
         <package android:name="org.telegram.messenger" />
         <package android:name="com.viber.voip" />
         <package android:name="jp.naver.line.android" />
+        <!-- TikTok takes a FILE (share/TikTokHandoff): global app, then the Asia build. -->
+        <package android:name="com.zhiliaoapp.musically" />
+        <package android:name="com.ss.android.ugc.trill" />
     </queries>
 
     <application

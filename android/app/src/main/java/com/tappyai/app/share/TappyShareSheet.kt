@@ -144,7 +144,15 @@ fun TappyShareSheet(
             // Facebook is the sharer dialog with the artifact's url — the brand url for a
             // recommendation, the plan's own page for a published plan — same as web.
             TappyShare.Target.FACEBOOK -> ShareDelivery.toDialog(context, t, a)
-            TappyShare.Target.TIKTOK -> ShareDelivery.copy(context, a.text).let { ShareDelivery.Result.NotInstalledCopied(t) }
+            // TikTok takes a FILE, never a link: the rendered card (for a published plan too — the
+            // card is drawn from the plan itself) goes to the TikTok app, else the system chooser.
+            TappyShare.Target.TIKTOK -> ShareDelivery.toTikTok(
+                context,
+                file = bitmap?.let { ShareDelivery.imageUriFor(context, it) },
+                mimeType = "image/png",
+                caption = TikTokHandoff.caption(a.subject, a.url),
+                chooserTitle = context.getString(R.string.share_title),
+            )
             TappyShare.Target.EMAIL -> ShareDelivery.toEmail(context, a, lang)
             TappyShare.Target.INBOX -> ShareDelivery.toInbox(context, a, lang)
             TappyShare.Target.SAVE -> ShareDelivery.save(context, a, bitmap)

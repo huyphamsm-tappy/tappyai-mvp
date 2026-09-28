@@ -282,12 +282,22 @@ describe('ShareMenu — what each target really does', () => {
     expect(new URL(url).searchParams.get('text')).toBe(inboxBody(artifact))
   })
 
-  it('TikTok: no endpoint exists — copies and says what to do, never "opened"', async () => {
+  it('TikTok: when no card file can be rendered, copies and says what to do, never "opened"', async () => {
     render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
     fireEvent.click(screen.getByTestId('share-target-tiktok'))
     await waitFor(() => expect(status()).toBe('share.tiktokHint'))
     expect(open).not.toHaveBeenCalled()
     expect(writeText).toHaveBeenCalledWith(artifact.text)
+  })
+
+  it('TikTok on desktop: downloads the card FILE and opens tiktok.com/upload, with the hint', async () => {
+    renderMock.mockResolvedValue(new Blob(['png'], { type: 'image/png' }))
+    render(<ShareMenu artifact={artifact} open onClose={() => {}} />)
+    expect(screen.getByTestId('share-target-tiktok').textContent).toContain('share.tiktokImage')
+    fireEvent.click(screen.getByTestId('share-target-tiktok'))
+    await waitFor(() => expect(status()).toBe('share.tiktokDownloaded'))
+    expect(open).toHaveBeenCalledWith('https://www.tiktok.com/upload', '_blank', 'noopener,noreferrer')
+    expect(URL.createObjectURL).toHaveBeenCalled()
   })
 
   it('Save: falls back to a .txt of the brochure when no image can be rendered — never fails the share', async () => {

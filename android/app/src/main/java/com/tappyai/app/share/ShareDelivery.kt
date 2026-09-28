@@ -95,6 +95,48 @@ object ShareDelivery {
         }
     }
 
+    /**
+     * TikTok takes a FILE: the rendered card (or a video) via the FileProvider, straight to the
+     * installed TikTok app ([TikTokHandoff.PACKAGES]); otherwise the system chooser with the same
+     * file. No file → the caption is copied. See [TikTokHandoff].
+     */
+    fun toTikTok(context: Context, file: Uri?, mimeType: String, caption: String, chooserTitle: String): Result {
+        val installed = { pkg: String ->
+            runCatching { context.packageManager.getLaunchIntentForPackage(pkg) != null }.getOrDefault(false)
+        }
+        return when (val plan = TikTokHandoff.plan(installed, hasFile = file != null, mimeType = mimeType)) {
+            TikTokHandoff.Plan.CopyCaption -> copy(context, caption).let { Result.NotInstalledCopied(TappyShare.Target.TIKTOK) }
+            is TikTokHandoff.Plan.ToApp, is TikTokHandoff.Plan.Chooser -> {
+                val send = Intent(Intent.ACTION_SEND).apply {
+                    type = mimeType
+                    putExtra(Intent.EXTRA_STREAM, file)
+                    putExtra(Intent.EXTRA_TEXT, caption)
+                    clipData = ClipData.newUri(context.contentResolver, "TappyAI", file)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    if (plan is TikTokHandoff.Plan.ToApp) setPackage(plan.pkg)
+                }
+                try {
+                    if (plan is TikTokHandoff.Plan.ToApp) {
+                        context.startActivity(send)
+                        Result.OpenedApp(TappyShare.Target.TIKTOK)
+                    } else {
+                        context.startActivity(Intent.createChooser(send, chooserTitle).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+                        Result.OpenedSystemSheet
+                    }
+                } catch (_: Exception) {
+                    // The resolved app refused (or vanished): the chooser still carries the file.
+                    try {
+                        context.startActivity(Intent.createChooser(send.setPackage(null), chooserTitle).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
+                        Result.OpenedSystemSheet
+                    } catch (_: Exception) {
+                        copy(context, caption)
+                        Result.NotInstalledCopied(TappyShare.Target.TIKTOK)
+                    }
+                }
+            }
+        }
+    }
+
     fun toEmail(context: Context, artifact: ShareArtifact, lang: String): Result {
         val body = ShareArtifactBuilder.inboxBody(artifact, lang)
         val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {

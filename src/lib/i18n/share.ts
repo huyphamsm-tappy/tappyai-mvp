@@ -95,6 +95,15 @@ export const vi = {
   'share.profile.moreDesc': 'Xem thêm tùy chọn chia sẻ',
   'share.profile.bannerTitle': 'Cùng khám phá thế giới xung quanh với TappyAI!',
   'share.profile.bannerSub': 'Ăn ngon • Đi chơi hay • Mua sắm thông minh • Và hơn thế nữa',
+  // The same approved sheet for an Explore post (owner UAT 2026-09-28: Explore still had the old one).
+  'share.post.cardLine': 'Xem bài đăng này trên TappyAI',
+  'share.post.scanHint': 'Quét mã QR để xem bài đăng trên TappyAI',
+  // TikTok takes a FILE (image/video), never a link — the tile says which.
+  'share.tiktokImage': 'TikTok (gửi ảnh)',
+  'share.tiktokVideo': 'TikTok (gửi video)',
+  'share.tiktokPreparing': 'Đang chuẩn bị tệp…',
+  'share.tiktokDownloaded': 'Tệp đã tải về — mở TikTok và chọn tệp này',
+  'share.tiktokShared': 'Đã gửi tệp — chọn TikTok trong bảng chia sẻ',
   'share.unlistedNotice': 'Bạn chưa đăng nhập: liên kết vẫn mở được cho mọi người nhưng không xuất hiện trên tìm kiếm cho đến khi bạn tạo tài khoản.',
 }
 
@@ -175,6 +184,13 @@ export const en = {
   'share.profile.moreDesc': 'See more ways to share',
   'share.profile.bannerTitle': 'Explore the world around you with TappyAI!',
   'share.profile.bannerSub': 'Great food • Fun outings • Smart shopping • And more',
+  'share.post.cardLine': 'See this post on TappyAI',
+  'share.post.scanHint': 'Scan the QR code to see this post on TappyAI',
+  'share.tiktokImage': 'TikTok (image)',
+  'share.tiktokVideo': 'TikTok (video)',
+  'share.tiktokPreparing': 'Preparing the file…',
+  'share.tiktokDownloaded': 'File downloaded — open TikTok and pick this file',
+  'share.tiktokShared': 'File handed over — pick TikTok in the share sheet',
   'share.unlistedNotice': 'You are not signed in: the link opens for anyone but stays out of search until you create an account.',
 }
 

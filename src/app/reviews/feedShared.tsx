@@ -11,6 +11,7 @@ import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import ShareMenu from '@/components/share/ShareMenu'
 import { recordReviewShare } from '@/lib/share/recordReviewShare'
+import { reviewShareVideoUrl } from '@/lib/share/reviewShareMedia'
 import { REPORT_REASONS } from '@/lib/reviews/reportReasons'
 import { absoluteUrl } from '@/lib/share/openGraph'
 import {
@@ -288,6 +289,12 @@ export function ShareModal({ review, onClose }: { review: Review; onClose: () =>
       url={absoluteUrl(`/reviews/${review.id}`)}
       // The place when there is one, else the caption, else the brand — never the sentinel.
       title={reviewShareTitle(review)}
+      // The approved "Chia sẻ với mọi người" sheet (owner UAT 2026-09-28: Explore still showed the
+      // old one); its layout is also what Save and TikTok produce.
+      variant="post"
+      profileName={reviewShareTitle(review)}
+      // An uploaded clip hands TikTok its own video; a YouTube clip has no file → the card.
+      videoUrl={reviewShareVideoUrl(review)}
       open
       onClose={onClose}
       // A completed share becomes a row of the self profile's "Đã share" history.

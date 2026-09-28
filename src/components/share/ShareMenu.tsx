@@ -32,7 +32,9 @@
 //  - a text handoff (Email, Viber, LINE) carries the brochure in the URI. Viber
 //    is a custom scheme that fails silently when the app is absent, so the text
 //    is copied first as insurance and the result says so.
-//  - TikTok publishes no web handoff at all; its action copies and says so.
+//  - TikTok publishes no web handoff for a LINK; it takes a FILE. Its tile shares the card in
+//    the sheet's layout (or an uploaded clip's video) through the OS sheet where files can be
+//    shared, else downloads it and opens tiktok.com/upload — see lib/share/tiktokShare.ts.
 //  - Tappy Inbox is the ONE target that can report delivery, because the
 //    existing messaging endpoint returns 2xx. It reuses NewMessageSheet and
 //    POST /api/messaging/threads/{id}/messages — nothing new.
@@ -55,7 +57,9 @@ import {
 } from '@/lib/share/shareTargets'
 import { shareBrandMark } from '@/lib/share/shareBrands'
 import { inboxBody, planLinkArtifact, type ShareArtifact } from '@/lib/share/shareArtifact'
-import { renderArtifactImage } from '@/lib/share/renderCardImage'
+import { renderShareCard, type ShareCardLayout } from '@/lib/share/shareCardFile'
+import { fetchVideoFile, runTikTokShare, tiktokCaption } from '@/lib/share/tiktokShare'
+import { absoluteUrl } from '@/lib/share/openGraph'
 import { planBrochureStrings } from '@/lib/i18n/planBrochure'
 import { PLAN_SHARE_ID_RE, planShareUrl } from '@/lib/plans/share/planShare'
 import NewMessageSheet from '@/components/messaging/NewMessageSheet'
@@ -111,6 +115,7 @@ export default function ShareMenu({
   onPublicLink,
   variant = 'default',
   profileName,
+  videoUrl,
 }: {
   /** The canonical artifact. When absent, `url` + `title` are shared as a link (Reviews). */
   artifact?: ShareArtifact
@@ -138,9 +143,21 @@ export default function ShareMenu({
    * line, and the promo banner. Same targets, same handlers, same honesty rules as `default`;
    * only the layout differs. Needs no session: a stranger can open it from a shared profile.
    */
-  variant?: 'default' | 'profile'
-  /** The profile's display name for the profile card (empty → "TappyAI" alone). */
+  /**
+   * `post`: the SAME approved sheet for an Explore post (owner UAT 2026-09-28: Explore still showed
+   * the old `default` sheet). Only the card line differs ("Xem bài đăng này trên TappyAI").
+   *
+   * 🔑 The variant is also the LAYOUT of every file this menu produces — Save and TikTok both go
+   * through `renderShareCard(layout = variant)`, so the file matches the sheet on screen.
+   */
+  variant?: 'default' | 'profile' | 'post'
+  /** The profile's display name (profile) or the post's title (post) for the card (empty → "TappyAI" alone). */
   profileName?: string
+  /**
+   * An UPLOADED clip's own video (never a YouTube embed — that has no file). TikTok then shares
+   * the video itself; when it cannot be fetched, the card image in the chosen layout instead.
+   */
+  videoUrl?: string
 }) {
   const { t, locale } = useTranslation()
   // A5 kill switch (SHOW_PUBLIC_SHARE): the "public link" row shows only when the server allows
@@ -221,6 +238,41 @@ export default function ShareMenu({
 
   const appName = (id: ShareTargetId) => t(`share.${id}`)
 
+  // ── THE ONE CARD FILE ─────────────────────────────────────────────────────────
+  // Save and TikTok both call this: the layout is the sheet's own variant, so the file is the
+  // layout the user is looking at. The card is drawn from the ARTIFACT AS BUILT (a plan's full
+  // brochure, not its link-only shell) but carries the link that actually leaves.
+  const layout: ShareCardLayout = variant
+  const sheetLayout = variant === 'profile' || variant === 'post'
+  function cardWebsite(): string {
+    try { return new URL(absoluteUrl('/')).host } catch { return '' }
+  }
+  function makeCardFile(): Promise<File | null> {
+    return renderShareCard({
+      artifact: { ...base, url: a.url },
+      layout,
+      displayName: variant === 'post' ? (profileName ?? a.subject) : profileName,
+      copy: {
+        caption: variant === 'post' ? t('share.post.scanHint') : t('v3.qr.scanHint'),
+        tagline: t('v3.page.subtitle'),
+        invite: variant === 'profile' ? t('v3.qr.card.invite') : undefined,
+        slogan: t('v3.qr.card.slogan'),
+        sloganSub: t('v3.qr.card.sloganSub'),
+        websiteLabel: t('v3.qr.card.websiteLabel'),
+        features: [t('v3.qr.card.feat1'), t('v3.qr.card.feat2'), t('v3.qr.card.feat3'), t('v3.qr.card.feat4')],
+        website: cardWebsite(),
+      },
+    })
+  }
+  /** TikTok's file: an uploaded clip's own video when it can be fetched, else the card. */
+  async function makeTikTokFile(): Promise<File | null> {
+    if (videoUrl) {
+      const video = await fetchVideoFile(videoUrl, 'tappyai-clip')
+      if (video) return video
+    }
+    return makeCardFile()
+  }
+
   async function handle(id: ShareTargetId) {
     if (busy || linkPending) return
     if (!hasContent) { setFeedback({ kind: 'error', text: t('share.nothingToShare') }); return }
@@ -287,14 +339,19 @@ export default function ShareMenu({
           return
         }
         case 'save': {
-          let image = a.image ?? null
+          // A caller-supplied image wins only on the default sheet; the approved sheet's layout
+          // always renders its own card, so the file is what the sheet shows.
+          let image: Blob | null = sheetLayout ? null : (a.image ?? null)
+          let name = ''
           if (!image) {
             // Best effort, never a prerequisite: any failure falls to text.
-            try { image = await renderArtifactImage(a) } catch { image = null }
+            const file = await makeCardFile()
+            image = file
+            name = file?.name ?? ''
           }
           const stamp = new Date().toISOString().slice(0, 10)
           if (image) {
-            download(image, `tappyai-${stamp}.png`)
+            download(image, name || `tappyai-${stamp}.png`)
             setFeedback({ kind: 'ok', text: t('share.savedImage') })
             onShared?.('download')
           } else {
@@ -304,10 +361,35 @@ export default function ShareMenu({
           }
           return
         }
+        case 'tiktok': {
+          // TikTok takes a FILE, never a link (owner requirement, UAT 2026-09-28): the card in
+          // this sheet's layout, or an uploaded clip's own video. A phone that can share files
+          // opens the OS sheet with it (the user picks TikTok); anything else downloads it and
+          // opens tiktok.com/upload. Only when no file can be made at all is the text copied.
+          if (needsLink(id)) { setFeedback({ kind: 'error', text: planStrings.linkRequired }); return }
+          setFeedback({ kind: 'ok', text: t('share.tiktokPreparing') })
+          const file = await makeTikTokFile()
+          if (!file) {
+            const ok = await copyText(a.planLink ? a.url : a.text)
+            setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.tiktokHint') : t('share.copyFailed') })
+            if (ok) onShared?.(id)
+            return
+          }
+          const outcome = await runTikTokShare(file, tiktokCaption(a.subject, a.url), {
+            nav: typeof navigator !== 'undefined' ? navigator : undefined,
+            download: (f) => download(f, f.name),
+            open: (u) => window.open(u, '_blank', 'noopener,noreferrer'),
+            copy: copyText,
+          })
+          if (outcome === 'cancelled') { setFeedback(null); return }
+          if (outcome === 'failed') { setFeedback({ kind: 'error', text: t('share.copyFailed') }); return }
+          setFeedback({ kind: 'ok', text: outcome === 'shared' ? t('share.tiktokShared') : outcome === 'downloaded' ? t('share.tiktokDownloaded') : t('share.tiktokHint') })
+          onShared?.(id)
+          return
+        }
         case 'facebook':
         case 'zalo':
-        case 'messenger':
-        case 'tiktok': {
+        case 'messenger': {
           // A plan with no link yet: refuse out loud rather than hand off the brand root.
           if (needsLink(id)) { setFeedback({ kind: 'error', text: planStrings.linkRequired }); return }
           if (!shareable) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
@@ -327,13 +409,7 @@ export default function ShareMenu({
             return
           }
           const handoff = buildShareUrl(id, a.url)
-          if (!handoff) {
-            // TikTok lands here by design — copy and tell the user what to do.
-            const ok = await copyText(a.planLink ? a.url : a.text)
-            setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? t('share.tiktokHint') : t('share.copyFailed') })
-            if (ok) onShared?.(id)
-            return
-          }
+          if (!handoff) { setFeedback({ kind: 'error', text: t('share.unavailable') }); return }
           if (id === 'messenger') {
             // A custom scheme, like Viber: the page never learns whether the app
             // opened, so the content is copied first and the result says so.
@@ -389,7 +465,9 @@ export default function ShareMenu({
     // Desktop Zalo: no app to hand to and no working web widget, so the tile says
     // what it does — copy the link (or the content) — under Zalo's mark.
     if (id === 'zalo' && !zaloApp) return textIsMoreThanUrl ? t('share.copyContent') : t('share.copyLink')
-    return kind === 'url-handoff' && textIsMoreThanUrl && id !== 'tiktok' ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
+    // TikTok takes a file: the tile says which one leaves.
+    if (id === 'tiktok') return videoUrl ? t('share.tiktokVideo') : t('share.tiktokImage')
+    return kind === 'url-handoff' && textIsMoreThanUrl ? t('share.copyAndOpen', { app: appName(id) }) : appName(id)
   }
 
   // ── The profile layout (approved design, UAT3). Every control calls the same `handle`. ──
@@ -406,7 +484,7 @@ export default function ShareMenu({
     </button>
   )
   const profilePanel = (
-    <div data-share-variant="profile">
+    <div data-share-variant={variant}>
       <div className="mb-4 flex items-start justify-between gap-3">
         <div>
           <h2 className="text-[22px] font-extrabold leading-tight text-gray-900 dark:text-gray-50">{t('share.profile.title')}</h2>
@@ -431,7 +509,7 @@ export default function ShareMenu({
         <div className="flex flex-wrap items-center gap-3 px-4 py-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[16px] font-bold text-gray-900 dark:text-gray-50">{profileName ? `${profileName} · TappyAI` : 'TappyAI'}</p>
-            <p className="text-[13px] text-gray-500 dark:text-gray-400">{t('share.profile.cardLine')}</p>
+            <p className="text-[13px] text-gray-500 dark:text-gray-400">{variant === 'post' ? t('share.post.cardLine') : t('share.profile.cardLine')}</p>
             <p className="truncate text-[13px] text-primary-600 dark:text-sky-300" data-share-profile-url>{a.url}</p>
           </div>
           <button data-testid="share-target-copy" onClick={() => handle('copy')} disabled={!!busy || linkPending}
@@ -490,14 +568,14 @@ export default function ShareMenu({
         className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm"
         role="dialog"
         aria-modal="true"
-        aria-label={variant === 'profile' ? t('share.profile.title') : t('share.previewTitle')}
+        aria-label={sheetLayout ? t('share.profile.title') : t('share.previewTitle')}
         onClick={onClose}
       >
         <div
           className="w-full sm:max-w-md max-h-[92dvh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-white dark:bg-gray-900 p-5 shadow-xl"
           onClick={(e) => e.stopPropagation()}
         >
-          {variant === 'profile' ? profilePanel : (<>
+          {sheetLayout ? profilePanel : (<>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-base font-semibold text-gray-900 dark:text-gray-50">{t('share.previewTitle')}</h2>
             <button onClick={onClose} aria-label={t('share.close')} className="p-1.5 rounded-full text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800">
