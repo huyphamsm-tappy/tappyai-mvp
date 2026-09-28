@@ -5,7 +5,7 @@ Chờ khoảng 3 phút sau khi push rồi mới test.
 
 **Trước khi bắt đầu (1 phút):**
 - Đăng nhập Vercel SSO.
-- Dùng **tài khoản test**, không dùng tài khoản thật. UAT có thể đang dùng **Supabase production**, vì `NEXT_PUBLIC_SUPABASE_URL` là một biến dùng chung cho Production, Preview và Development.
+- Dùng **tài khoản test**. Từ 2026-09-28, UAT dùng **DB audit** (`zdaprdfgpbpnxyofagmc`), không còn dùng prod (DEPLOY-CHECKLIST §4f). Đăng ký bằng email cần anh bật SMTP Brevo trên audit trước.
 - Web: Chrome desktop. Android: bản debug trỏ vào `https://uat.tappyai.com/`, máy để giao diện **tiếng Anh**.
 
 Gõ đúng nguyên văn các câu dưới đây. Mỗi dòng ghi ✅ hoặc ❌; nếu ❌ thì chụp màn hình.

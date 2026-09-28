@@ -473,7 +473,7 @@ applied (editing it in place would drift). NO-OP on prod (no constraint); union 
 - `supabase/migrations/20260927_owner_update_column_privileges.sql`: owners may UPDATE only the columns the app edits (reviews: `is_hidden`; profiles: `id, full_name, bio, language, avatar_url, cover_url`). Rollback: `supabase/migrations/rollback/20260927_owner_update_column_privileges_rollback.sql`.
 - `supabase/migrations/20260928_revoke_reviews_insert.sql`: `REVOKE INSERT ON public.reviews` from `anon` and `authenticated`. Reviews are then written only by the server (service role). Rollback: `supabase/migrations/rollback/20260928_revoke_reviews_insert_rollback.sql`.
 
-**Why "after":** UAT (`uat.tappyai.com`) uses the **same database as production**, so applying either migration anywhere affects production at once. The code that production runs today (`origin/main` @ `842379b`, read on 2026-09-28) still INSERTs reviews with the **user's** client: `src/app/api/reviews/route.ts:42` calls `createClient()` from `@/lib/supabase/server`, and the insert plus its 3 retries are at `:248–271`. Applied early, `20260928` makes **every new review fail** on production and on UAT. `20260927` only touches columns that production code writes with the user client (`reviews.is_hidden`; `profiles.full_name/language` + the `id/avatar_url` upsert). Onboarding (`onboarded`) uses the service role. It still goes on only after release, together with `20260928`.
+**Why "after":** until 2026-09-28 UAT shared the production database; since §4f it uses the audit DB, so the migrations may be tried on **audit** first, but production still waits for the release. The code that production runs today (`origin/main` @ `842379b`, read on 2026-09-28; the C2 hotfix `f42ae4b` changed only `src/lib/apple-iap/`) still INSERTs reviews with the **user's** client: `src/app/api/reviews/route.ts:42` calls `createClient()` from `@/lib/supabase/server`, and the insert plus its 3 retries are at `:248–271`. Applied early, `20260928` makes **every new review fail** on production and on UAT. `20260927` only touches columns that production code writes with the user client (`reviews.is_hidden`; `profiles.full_name/language` + the `id/avatar_url` upsert). Onboarding (`onboarded`) uses the service role. It still goes on only after release, together with `20260928`.
 
 **Order:**
 1. The release code (merge `06abb41`: audit C1/C2/H1 on `rc/web-uat`) is **live on production**. Check that `POST /api/reviews` on production answers from the new build (Vercel deployment = the release SHA).
@@ -745,6 +745,43 @@ plan from the web and from Android, open both links signed-out → the brochure.
 failed at the oidc stage" (no deployment identity; measured 2026-09-27 on web and the emulator — the validation passes,
 the GCS write is refused). After deploy: upload a ~1 MB JPEG as avatar and as cover on the web and on Android → both
 show; the object is in the media bucket under `avatars/` / `covers/`.
+
+### 4f. UAT (Vercel Preview) uses the AUDIT database, not production. (Owner decision 2026-09-28; this replaces "UAT shares the production DB")
+
+**Done 2026-09-28** (Vercel CLI/API; values piped from `.env.local`, never printed):
+
+| Variable | Before | After |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | one shared record, Production + Preview + Development (prod) | Production + Development keep the prod record (value unchanged, hash checked); **new Preview record = audit `zdaprdfgpbpnxyofagmc`** |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | shared Production + Preview + Development (prod) | same split: Preview = audit anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | shared Production + Preview (prod, sensitive) | Production keeps the prod record; **new Preview record (sensitive) = audit** |
+| `ANTHROPIC_API_KEY` | shared by all 3 | **unchanged**: the audit `.env.local` key is the SAME key (hash-equal), so a split changes nothing |
+
+No JWT secret or `DATABASE_URL` exists on Vercel. Preview records apply to **all** preview branches, so no preview deploy can reach the production DB any more. Production was not redeployed; its records only lost the Preview target.
+
+**Verified on `uat.tappyai.com`** (deployment `p4cb99crq`, a redeploy of rc/web-uat `af1b8ec` built with the new env):
+- The client bundle contains the audit ref (2 chunks) and no prod ref (0 of 29 chunks).
+- `/r/QNgw8uoghB` and `/plan/cZAI86wdjVH7` render. They exist only in audit, and production has no `shared_results` table, so the server reads audit.
+- Guest chat: age declaration → `/api/chat` 200 with place cards.
+
+**Audit Auth (Supabase dashboard):**
+- Redirect URLs: added `https://uat.tappyai.com/**`. The list was empty before; nothing was removed.
+- Site URL is still `http://localhost:3000` (unchanged). The web app always passes `emailRedirectTo` = `location.origin/auth/callback`, which the new entry allows.
+- Providers: Email **enabled**, Google **enabled**, anonymous sign-ins enabled, "Confirm email" ON.
+- **Custom SMTP is OFF** → Supabase's default mailer (a few mails/hour, and only to project team members). Until Brevo is set, a normal UAT sign-up gets **no confirmation email**.
+
+**Owner actions (credentials: the agent must not enter them):**
+1. Supabase **audit** → Authentication → Emails → SMTP Settings → enable custom SMTP with the same Brevo values as production (host `smtp-relay.brevo.com`, port 587, the Brevo SMTP user/key, sender `no-reply@…`). Then sign up once on `uat.tappyai.com` with a test mailbox and confirm the email arrives.
+2. Google login on UAT: the Google OAuth client used by the audit provider must list `https://zdaprdfgpbpnxyofagmc.supabase.co/auth/v1/callback` as an authorized redirect URI. Test once with a test Google account; if it fails with `redirect_uri_mismatch`, add that URI in Google Cloud Console.
+3. Accounts and data created on `uat.tappyai.com` **before 2026-09-28 ~10:30 ICT** live in the **production** DB (UAT used it until then). Listing or cleaning them up is an owner decision (R11: no deletes by the agent).
+
+**Zalo:** no VPS change. The zalo-verify VPS is a stateless token check (no DB). Preview keeps its own `ZALO_VERIFY_URL/SECRET` (branch rc/web-uat); account rows are written by the app, so now in audit.
+
+**Still shared by Preview and Production (not changed, known):**
+- `KV_*`/`REDIS_URL` (rate-limit counters and caches; keys are per user/IP, so low risk);
+- `STRIPE_*` (Pro upgrade is hidden: `showProUpgrade=false`);
+- `SMTP_PASS/PORT` (app-level mail);
+- `ZALO_APP_ID/SECRET` (the same Zalo app).
 
 ## 5. Post-deploy smoke test (run on production immediately after)
 
