@@ -50,24 +50,27 @@ Latest full run: `final-1e11b32/` (+ `final-a9d634e/` for the cut-sentence fix a
 | P2c sidebar | 5e305f4 | final-1e11b32/p2-profile (no Saved/History/Cài đặt/Language/Help) | PASS |
 | P3a Explore photo + clip upload | 4e9f53d | 4e9f53d/p3a-2, p3a-3 | PASS |
 | P4 Facebook / Zalo / TikTok / OG | 7e78e58, c835b3e, 91461bd | final-1e11b32/p4-click-facebook ("Đã mở Facebook"), p4-click-zalo-desktop (clipboard = UAT link + hint), p4-click-tiktok-desktop (file + tiktok.com/upload + hint), p4-og-review.txt | PASS web; FB/Zalo crawler previews only on prod (UAT behind SSO); phone share sheet → owner device test |
-| Design: Saved, Account hub, Viết content, Gợi ý cho bạn, age gate, onboarding | c87ddac, d97b261, 899bdbf, 1e11b32 | final-1e11b32/d-* next to D:edesign | PASS (deviations in RELEASE report) |
+| Design: Saved, Account hub, Viết content, Gợi ý cho bạn, age gate, onboarding | c87ddac, d97b261, 899bdbf, 1e11b32 | final-1e11b32/d-* next to D:
+edesign | PASS (deviations in RELEASE report) |
 | Share layouts (owner-chosen from Downloads) | — | contact sheet sent 2026-09-28 | WAITING OWNER CHOICE |
 
 ## Round 3 — owner prompt 2026-09-28 evening (evidence in GCS: `gs://tappyai-media-uat/evidence/<SHA>/`)
 | Item | Commit(s) | UAT SHA | Evidence (gs://tappyai-media-uat/evidence/…) | Status |
 |---|---|---|---|---|
-| A1 onboarding counter = real steps ("Bước 1/2", "Bước 2/2") | b08561d | — | unit tests only so far; UAT shot due in the final pass | CODE DONE, SHOT PENDING |
-| A2 Đã lưu: Deals / Bộ sưu tập chips hidden | b08561d | — | unit tests only so far; UAT shot due in the final pass | CODE DONE, SHOT PENDING |
+| A1 onboarding counter = real steps ("Bước 1/2", "Bước 2/2") | b08561d | f8a26b7 | f8a26b7/a1-onboarding.png ("Bước 1/2", 2 segments) | PASS |
+| A2 Đã lưu: Deals / Bộ sưu tập chips hidden | b08561d | f8a26b7 | f8a26b7/a2-saved.png, a2-saved-mobile.png (Tất cả / Địa điểm / Bài viết / Video only, no "Sắp có") | PASS |
 | B3 plan share signed-in → opened with no cookies | — | 826d23b | 826d23b/b3-1-plan-signed-in.png, b3-2-share-sheet.png, b3-3-plan-anonymous.png (uat.tappyai.com/plan/AjqWryKzGUYT, authCookies=0, no 404) | PASS |
 | B4 "đi du lịch Đà Nẵng 3 ngày 2 đêm" never invents date/origin/transport; ONE question | 826d23b, 5452fc6, 2bd5c59 | 2bd5c59 | before fix (2/3 fail: dated 3/10–5/10; "Máy bay từ Hà Nội/TP.HCM"): scratch only · 826d23b/b4-trip-run1..3 (no invention, run 3 two questions) · 444774d/b4-trip-run1..3 (run 2 own question leaked, released prefix) · **2bd5c59/b4-trip-run1..3: 3/3 no date, no origin, no leg, exactly one closing question** | PASS 3/3 |
 | B4 "ngan sách" typo | 826d23b (fixHalfAccented in markdownNormalize) | — | not emitted by code/prompt; model blends unaccented prompt text; fixed at output | FIXED (unit) |
 | B5 shopping card vs D:\redesign | — | — | D:\redesign has 6 images, none is a shopping card → no side-by-side possible | N/A (no design) |
 | B6 publish real photo + clip (test account), feed + profile, then hide/delete | — | 826d23b / 2bd5c59 | 826d23b/b6/b6-photo-1..3, b6-clip-1..3, b6-feed-fresh-1..2 · 2bd5c59/b6/b6-feed-guest-find-1..3-mobile, b6-profile-owner-published, b6-del-1..2-mobile, b6-feed-*-after-delete-1 | PASS (photos show only in mobile feed — desktop Explore is video-only by design) |
 | B7 YouTube clip in Explore → Facebook / Zalo / TikTok | — | 826d23b / 2bd5c59 | 826d23b/b7/b7-youtube-1..3 · 2bd5c59/b7/b7-sheet-*, b7-click-{facebook,zalo,tiktok}(-mobile), *-popup1, b7-share-results.txt | PASS (FB sharer / Zalo copy+hint (desktop), app scheme (mobile) / TikTok file + upload page) |
-| B7 bug: composer AI replaced the typed caption + area | f8a26b7 | — | 826d23b/b7/b7-youtube-1-composer-filled.png (bug) | FIXED (unit), UAT shot due |
+| B7 bug: composer AI replaced the typed caption + area | f8a26b7 | f8a26b7 | bug: 826d23b/b7/b7-youtube-1-composer-filled.png · fix: f8a26b7/b7fix-composer-typed-kept.png + .json (bodyKept=true, areaKept=true after 20 s) | PASS |
 | B8 own profile 5 states + visitor view | — | 2bd5c59 | 2bd5c59/b8/b8-owner-{published,shared,saved,restricted,hidden}(-mobile), b8-visitor-fresh, b8-visitor-guest(-mobile) | PASS (visitor sees 8 public posts; hidden + restricted absent). All test rows deleted afterwards. |
 | C9–C12 Part B prep | 444774d | — | docs/uat/RELEASE-PLAN-2026-09-29.md, scripts/release/*, docs/ios/HANDOFF-FROM-RELEASE.md | DONE (nothing run on prod) |
-| Consultative design 2026-09-26 restore | — | — | not found anywhere on this PC (search report in chat 2026-09-28); baseline c40 running on UAT | WAITING OWNER (where is the design?) |
+| Consultative design 2026-09-26 restore | — | — | not found anywhere on this PC (full search) → nothing restored, nothing to revert | WAITING OWNER (Q1) |
+| AI baseline on UAT (c40 answer-first rubric, blind) | — | 2bd5c59 | 2bd5c59…/c40-baseline/ (grading, stats, worst-5 replays) · raw streams 2bd5c59…/golden-raw/ (220 files) | **31/40 — BELOW 38 → Part B gate NOT met** (Food 7/8 · Shopping 6/8 · Travel 6/8 · Spa 7/8 · Entertainment 5/8 · Clarify 6/8); golden scorer 55/58 (human 8 PASS/15 PARTIAL/1 FAIL) |
+| Deterministic fixes from the baseline (offline replay, no model calls) | 5e0a823, 7d156e0 | — | fixtures from live T1/O8 streams; evening situation tests | evening frame follows who/mood/budget + real party size; trip days = stated length; no invented travel date (O8); 'gia cụ thể' → 'giá'. Re-measure on the FINAL SHA only |
 
 Observations (not fixed): desktop post-publish lands on "for you" feed (own post not visible); /profile state tabs need horizontal scroll at 1280px.
 
